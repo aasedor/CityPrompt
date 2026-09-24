@@ -28,6 +28,7 @@ celery_app.conf.update(
     task_routes={
         "cityprompt.direct3d.render": {"queue": "direct3d"},
         "cityprompt.direct3d.maintain": {"queue": "direct3d-maintenance"},
+        **({"process_document": {"queue": "classroom-documents"}} if settings.classroom_release else {}),
     },
     beat_schedule=({"recover-direct3d": {"task": "cityprompt.direct3d.maintain", "schedule": 30.0}}
                    if settings.direct_3d_jobs_enabled else {}),

@@ -1,0 +1,7 @@
+# Build from an isolated packet containing www/, nginx.conf and this Dockerfile.
+# Supply an explicit approved base image digest when freezing the release.
+ARG NGINX_BASE_IMAGE
+FROM ${NGINX_BASE_IMAGE}
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY www/ /usr/share/nginx/html/
+EXPOSE 8080

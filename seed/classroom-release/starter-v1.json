@@ -30,7 +30,8 @@
       },
       "dependencies": [
         "repository:seed/classroom-release/models/calgary-infill-flat-roof-minimal-clay-v006.glb",
-        "public:archetypes/buildings/calgary-modern-infill-house/variant_0.png"
+        "public:archetypes/buildings/calgary-modern-infill-house/variant_0.png",
+        "repository:seed/classroom-release/model-bindings.json"
       ]
     },
     {
@@ -54,7 +55,8 @@
       "dependencies": [
         "public:archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
         "repository:seed/model-library/rlasm-architectural-clay/library.json",
-        "repository:seed/model-library/rlasm-architectural-clay/models/calgary-inner-city-bungalow-clay-v005.glb"
+        "repository:seed/model-library/rlasm-architectural-clay/models/calgary-inner-city-bungalow-clay-v005.glb",
+        "repository:seed/classroom-release/model-bindings.json"
       ]
     },
     {
@@ -78,7 +80,8 @@
       "dependencies": [
         "public:archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",
         "repository:seed/model-library/rlasm-architectural-clay/library.json",
-        "repository:seed/model-library/rlasm-architectural-clay/models/calgary-beltline-mid-rise-clay-v003.glb"
+        "repository:seed/model-library/rlasm-architectural-clay/models/calgary-beltline-mid-rise-clay-v003.glb",
+        "repository:seed/classroom-release/model-bindings.json"
       ]
     },
     {
@@ -609,6 +612,14 @@
       "path": "seed/model-library/rlasm-architectural-clay/models/calgary-inner-city-bungalow-clay-v005.glb",
       "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
       "bytes": 1168176
+    },
+    {
+      "id": "repository:seed/classroom-release/model-bindings.json",
+      "location": "repository",
+      "path": "seed/classroom-release/model-bindings.json",
+      "bytes": 8353,
+      "sha256": "2729664f70408c6cede7d98b6c97f3ab14e866115661ba434efd6133f9303401",
+      "normalizeText": true
     }
   ]
 }

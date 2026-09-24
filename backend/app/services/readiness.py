@@ -54,6 +54,15 @@ async def images_ready():
         raise RuntimeError("worker")
 
 
+async def documents_ready():
+    if not get_settings().classroom_release:
+        return "not_enabled"
+    from app.tasks.worker import celery_app
+    queues = await asyncio.to_thread(lambda: celery_app.control.inspect(timeout=1).active_queues())
+    if not any(queue.get("name") == "classroom-documents" for worker in (queues or {}).values() for queue in worker):
+        raise RuntimeError("reference worker")
+
+
 async def assets_ready():
     settings = get_settings()
     if not settings.classroom_release:
@@ -73,7 +82,7 @@ async def assets_ready():
 
 async def readiness():
     probes = {"database": database_ready, "redis": redis_ready, "storage": storage_ready,
-              "image_worker": images_ready, "starter_assets": assets_ready}
+              "image_worker": images_ready, "reference_worker": documents_ready, "starter_assets": assets_ready}
     async def probe(name, check):
         try:
             result = await asyncio.wait_for(check(), timeout=4)

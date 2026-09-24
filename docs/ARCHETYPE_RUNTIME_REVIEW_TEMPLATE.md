@@ -27,6 +27,7 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations:
 - Asset review status and separate publication/activation status:
 - Model Library storage check, configured bucket and result (building GLBs):
+- Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence:
 - Evidence manifest location and hashes; durable shared location for delivery:
 
 ## Gates

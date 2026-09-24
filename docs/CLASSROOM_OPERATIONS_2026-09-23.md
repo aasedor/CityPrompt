@@ -92,8 +92,66 @@ for image identity or refunds. Never replay a restored running paid attempt.
 - Frontend workflow/attempt client/landscape tests and TypeScript checking passed.
 - Docker context now excludes local environment files, credentials and test output.
 
-Remaining: reproducible deployment packaging and asset delivery; reference-document
-worker setup; object-store restore; current separate-account sharing/access checks;
-the final starter/browser rehearsal; a chosen HTTPS destination and hosted checks.
-Faithful AI output remains its own open gate. Preserve this distinction when
-presenting the candidate for deployment approval.
+## Deployment packet and complete restore follow-up
+
+The portable application configuration and operator steps are now in
+[`deployment/classroom/README.md`](../deployment/classroom/README.md). Compose
+schema validation passed without starting or deploying its services. The profile
+separates image, maintenance and reference-document workers and starts web only
+after API readiness. Reference PDFs commit before queue dispatch; broker failure
+preserves the saved file with a readable failed-extraction status. Classroom
+workers reject the paid document pipeline before loading data.
+
+The infill's exact database binding existed only in the local database. All three
+starter bindings are now packaged without account/project identities in
+`seed/classroom-release/model-bindings.json`. The additive installer dry-runs by
+default, hashes each GLB, refuses conflicting rows/objects, and verifies readback.
+Actual installation into a disposable PostgreSQL schema and S3 bucket passed,
+including repeat installation, runtime descriptor acceptance and preservation of
+a changed binding. The existing live bindings were only read and all three passed.
+The shared runtime checklist and review template capture this rule for new assets.
+The starter closure now contains **48 pinned dependencies**, all verified locally.
+
+The first broader hydration check exposed 518 missing direct catalogue references.
+Expanding to the finite full inventory found **2,198 missing/pointer files**; all
+were recoverable from existing tracked Git/LFS data. They were restored to the
+external public root without replacing existing binary assets or generating any
+new models. Local recovery copied 8,718,385,840 bytes. Ignored inventory:
+`artifacts/classroom-runtime/asset-recovery.json`.
+
+`scripts/classroom_frontend_packet.py` produced a candidate at
+`C:/dev-artifacts/CityPrompt/classroom-release/candidate-20260924-a`:
+
+- TypeScript and the optimized Vite build passed (15.79 seconds for bundling).
+- All **4,480 required runtime files** copied with byte validation and LFS hashes:
+  **11,192,774,728 bytes**. Historical experiment folders were excluded.
+- `packet.json` contains actual copied-file hashes and source identity;
+  `starter-receipt.json` explicitly says runtime reviews were **not required**.
+- This is a development candidate from a dirty source tree, **not a qualifying
+  release packet**, and was not uploaded or deployed. Existing large-chunk build
+  warnings remain; browser load timing is the acceptance evidence still needed.
+
+A second coordinated backup paused the local API/scheduler/workers, saved the
+database and all objects, then restarted them. The archive and media snapshot
+were restored into a disposable DB and new private bucket; all **71 projects,
+444 zones, zero attempts and 123 objects (235,117,267 bytes)** verified. Every
+object's SHA-256 and serving metadata matched. The disposable restore destinations
+were removed; the live data and backup were preserved.
+
+Evidence directory:
+`C:/dev-artifacts/CityPrompt/classroom-release/backups/coordinated-20260924T021438Z`.
+DB archive SHA-256:
+`c7d0bfb22fc8afeb2489df091aa45204d028bcce18015dd00bb0dd114d736a20`.
+Media manifest SHA-256:
+`3a2ddc070ce8b0aee081627f4da48356ce279e09740b6ce5599f94d87922b017`.
+`restore-evidence.json` records counts, hashes and the write pause. The reusable
+object backup tool has no prune/delete or overwrite-existing-bucket mode.
+
+Follow-up checks: seven storage-backup tests, seven packet-copy tests, ten roster
+tests, three model-binding tests (including real disposable DB/S3), and 47 backend
+document/startup/processing/media/auth/file tests passed. No paid provider was used.
+
+Remaining: actual container execution and destination asset delivery; current
+separate-account sharing/access checks; final starter/browser rehearsal; chosen
+HTTPS destination, funding decision and hosted checks. Faithful AI output remains
+its own open gate. Preserve these distinctions in deployment approval.

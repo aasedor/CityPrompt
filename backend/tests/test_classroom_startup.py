@@ -13,7 +13,7 @@ from scripts import ensure_admins
 
 @pytest.mark.asyncio
 async def test_readiness_reports_missing_dependencies_without_exception_secrets(monkeypatch):
-    for name in ("database_ready", "redis_ready", "storage_ready", "images_ready", "assets_ready"):
+    for name in ("database_ready", "redis_ready", "storage_ready", "images_ready", "documents_ready", "assets_ready"):
         monkeypatch.setattr(readiness, name, AsyncMock())
     monkeypatch.setattr(readiness, "database_ready", AsyncMock(side_effect=RuntimeError("secret-database-url")))
     response = await readiness_check()
@@ -28,7 +28,7 @@ async def test_readiness_reports_missing_dependencies_without_exception_secrets(
 async def test_readiness_distinguishes_optional_checks_from_passed_checks(monkeypatch):
     for name in ("database_ready", "redis_ready", "storage_ready"):
         monkeypatch.setattr(readiness, name, AsyncMock())
-    for name in ("images_ready", "assets_ready"):
+    for name in ("images_ready", "documents_ready", "assets_ready"):
         monkeypatch.setattr(readiness, name, AsyncMock(return_value="not_enabled"))
     response = await readiness_check()
     assert response.status_code == 200

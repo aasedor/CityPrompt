@@ -12,6 +12,7 @@ const outputPath = resolve(sourceRoot, 'data/runtimeAssetManifest.json');
 const checkOnly = process.argv.includes('--check');
 const requireHydrated = process.argv.includes('--require-hydrated');
 const listRequiredLfsPaths = process.argv.includes('--list-required-lfs-paths');
+const listRequiredFiles = process.argv.includes('--list-required-files-json');
 // For sparse checkouts, inventory tracked metadata without downloading assets.
 // --require-hydrated still fails on every absent file; this is never runtime proof.
 const trackedMetadata = process.argv.includes('--tracked-metadata');
@@ -420,6 +421,13 @@ if (missingReferences.length > 0) {
   console.error(`Runtime asset manifest found ${missingReferences.length} missing direct reference(s).`);
   for (const missing of missingReferences.slice(0, 25)) console.error(`- ${missing.url}`);
   process.exitCode = 1;
+} else if (listRequiredFiles) {
+  // A finite, machine-readable deployment inventory, including non-LFS metadata.
+  // This is not hydration evidence: the consumer must verify actual target bytes.
+  console.log(JSON.stringify([...claimedPaths].sort().map(url => ({
+    path: `frontend/public${url}`,
+    ...assetMetadata(resolve(publicRoot, url.replace(/^\/+/, ''))),
+  }))));
 } else if (listRequiredLfsPaths) {
   for (const path of [...claimedPaths].sort()) {
     const filePath = resolve(publicRoot, path.replace(/^\/+/, ''));

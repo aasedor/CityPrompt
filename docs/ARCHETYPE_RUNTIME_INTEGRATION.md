@@ -70,6 +70,18 @@ these checks passed. The review template is evidence, not a runtime schema.
 
 ## Shared requirements
 
+### Reproducible asset delivery
+
+Ship the runtime binding as well as the asset file. A Model Library GLB needs
+its exact variant/family metadata, native dimensions, storage key and byte hash
+reproducible on an empty database and private bucket. Verify that seeding refuses
+different existing rows/bytes; a developer's already-populated database is not
+deployment proof. The finite classroom example is
+`seed/classroom-release/model-bindings.json` with
+`scripts/classroom_model_library.py`. Procedural parks/streets need the equivalent
+recipe/module closure in the static runtime inventory. Keep asset approval,
+runtime acceptance and publication status separate from successful installation.
+
 ### Site landscape compatibility
 
 Every new building, street and park must work with the shared
