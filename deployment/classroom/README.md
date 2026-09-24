@@ -204,6 +204,18 @@ over the live database.
 
 ## Actual remaining approval evidence
 
+The corrected local packet is `candidate-20260924-c`; packet `b` is rejected.
+Use the image IDs and source bindings in the implementation checkpoint and
+external `delivery.json`. Local Nginx used a read-only packet mount; build the
+immutable web image with the pinned base when preparing the chosen host.
+
+Verify actual model/image/JSON URLs through Nginx, not only `/ready`: the API
+location must retain `^~` precedence over static extension rules. The earlier
+prefix-only route returned 404s for valid GLBs and left placeholder buildings
+despite ready dependencies. Keep both Nginx access logging and Uvicorn raw
+access logging disabled because asset tickets occur in URL query strings;
+application error logs remain available. Do not paste signed URLs into tickets.
+
 The portable Compose schema validates locally. Database/object restore and
 isolated three-model installation have passed. The actual Linux API build and disposable prefork recovery probe now pass locally;
 the assisted Currie exercise and Chrome/Edge native exact downloads also passed.

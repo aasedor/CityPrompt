@@ -103,8 +103,7 @@ External evidence roots:
 - `C:/dev-artifacts/CityPrompt/classroom-release/prefork-20260924/`:
   `prefork-receipt.json`, actual worker logs and Compose output.
 
-The next packet is built from the clean review/roster revision and separately
-verified; its final receipt is recorded below after completion. The earlier
+The accepted frontend packet and final API image are recorded below. The earlier
 `candidate-20260924-a` is obsolete. A local Linux worker pass is not a hosted
 API, TLS, SMTP, quota, cold-load or classroom-concurrency pass.
 
@@ -114,8 +113,66 @@ intercepted `/api/v1/files/.../*.glb` before the API proxy, returning static 404
 and leaving buildings as placeholders. It is rejected as a delivery candidate.
 The API prefix now uses `^~` so authenticated file requests reach the backend.
 This also protects PNG/JSON file routes from the static rule. The failed packet
-is preserved; one corrected packet must pass actual routed byte readback and
-browser capture before acceptance. Readiness alone did not catch this defect.
+is preserved; the corrected packet passed actual routed byte readback and
+browser capture. Readiness alone did not catch this defect.
+
+## Final local delivery
+
+Accepted frontend packet:
+`C:/dev-artifacts/CityPrompt/classroom-release/candidate-20260924-c/`, built from
+clean source `b504ee6deeed5e2c65cfd784565290eaa70210a3`. TypeScript and Vite passed;
+4,480 runtime files, **11,192,774,728 bytes**, were copied and independently
+rehashed with zero mismatches. The 48-dependency release preflight passed. All
+44 public/model assets reachable through HTTP returned their exact pinned bytes,
+including the three API-served building GLBs. The packet's `candidate_only=false`
+means asset/runtime gates were required; it is not hosted-release approval.
+
+The browser reopened the saved trial through packaged Nginx/API at
+`http://127.0.0.1:8088`, displayed all five native buildings, three streets and
+three parks, and downloaded/opened a 1440 × 836 exact PNG (2,735,226 bytes).
+It showed no captured console errors. The PNG bytes match the earlier wide
+exact export. Source `packaged-project.png`, `browser-verification.json`,
+`verification.json` and `final-api-verification.json` retain the checks.
+The earlier failed packet has `REJECTED.txt` and its failure receipt.
+
+The real browser check also found Uvicorn access logs retaining signed asset
+ticket URLs. `backend/scripts/start.sh` now uses `--no-access-log`; application
+errors and readiness logging remain. A rebuilt API served a newly issued signed
+ticket without writing it to access logs. All 44 routed assets were rechecked
+against that image. Its startup-script bytes match the committed source.
+
+Final API image `cityprompt-classroom-api:local-20260924-c`:
+`sha256:4c5b5e7cb8b0268dddff87e69439f4d70b54db901d505d5687d26dfc26c923a8`.
+Frontend source stays `b504ee6de`; the subsequent backend startup/logging change
+does not change its source tree or packet. `delivery.json` records the final
+Git revision, matching frontend tree, API image, pinned Nginx and receipt hashes.
+Nginx base is
+`sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236`.
+Local verification uses the packet mounted read-only in that Linux Nginx image;
+an immutable copied web image and host infrastructure still belong to deployment.
+
+Final `/ready`: HTTP 200, database/Redis/storage/reference worker/starter assets
+ready, image worker explicitly `not_enabled`. Paid images are paused and the
+video POST boundary returns 403. This local classroom-profile API uses the
+preserved dedicated trial DB/Redis/MinIO and a Linux prefork reference worker;
+it is not a production host or a new isolated data installation. The owned
+Windows API/frontend/image/maintenance/scheduler processes were stopped after
+final access and unchanged-project readback. The final packet remains available
+on loopback 8088 (API loopback 8004); old failed verification containers and the
+disposable prefork probe are stopped. No existing data volume was removed.
+
+Final roster/scope/model-binding regressions: 36 passed, with the opt-in isolated
+DB/S3 installation test skipped here because its prior successful evidence was
+reused. Startup/readiness tests: 10 passed. The initial roster test assumed the
+real roster would always remain partial; it now explicitly constructs pending
+and partial review fixtures and still rejects both. Asset keeper flags remain
+false. Git diff checks pass; generated media, packets and runtime credentials
+remain outside tracked source.
+
+Local resource contention caused transient startup 502s and one storage-readiness
+503 while copying/hashing assets; settled checks passed. No classroom cold-load,
+minimum-hardware or concurrency timing claim follows from this machine. Preserve
+the external evidence and stopped debug containers privately before cleanup.
 
 ## Remaining release gates and stopping rule
 
