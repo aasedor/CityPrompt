@@ -248,7 +248,7 @@ exercise does not activate an unapproved family or grant construction compliance
 | 1. Baseline and roster | Asset baseline and deployment inventory implemented locally | 185/185 assembly tests after restoring 65 tracked manifests; exact nine-variant roster and 47 byte-locked dependencies; local preflight 47/47; full inventory distinguishes metadata from hydration |
 | 2. Shared runtime behaviour | Starter integration implemented; final acceptance partial | Native street backend/production renderer, individual homes, exact entrance revisions, starter picker; live Main/Market route check; [checkpoint](CLASSROOM_STARTER_RUNTIME_2026-09-23.md) |
 | 3. Authoring/recovery | Partially demonstrated | September 22/23 local trials; release roster and regular-browser run pending |
-| 4. Presentation | Partially demonstrated | Edge exact PNG; faithful AI comparison remains open |
+| 4. Presentation | Partially demonstrated | Edge exact PNG; [concept fidelity checkpoint](CLASSROOM_RENDER_RECOVERY_2026-09-23.md); durable attempts and faithful AI comparison remain open |
 | 5. Classroom deployment | OAuth state repair verified locally; deployment pending | [Single-use browser-bound sign-in](CLASSROOM_SIGNIN_RECOVERY_2026-09-23.md); local asset repair is not deployment evidence |
 | 6. Release rehearsal | Pending | Depends on the accepted integrated candidate |
 
@@ -271,8 +271,9 @@ and byte checks. All 47 dependencies pass against the current trial public root.
 Sixteen street files were restored from local LFS cache. The existing infill v006
 was packaged unchanged in LFS. `--require-release` remains red until exact-variant
 runtime reviews pass. This is local source/asset evidence, not remote storage or
-hosted success. The next unit is starter selection and the native street compiler,
-saved recipe, rendering and capture integration.
+hosted success. Starter selection and native street compilation, saved recipes,
+rendering and capture integration have since landed in milestone 2. Current work
+addresses presentation recovery and classroom deployment prerequisites.
 
 ## Main evidence
 

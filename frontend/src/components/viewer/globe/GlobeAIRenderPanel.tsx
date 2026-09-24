@@ -186,8 +186,8 @@ export const DIRECT_3D_FIDELITY_OPTIONS: ReadonlyArray<{
   label: string;
   description: string;
 }> = [
-  { id: 'precise', label: 'Precise', description: 'Keep the placed 3D design; check the finish against the source' },
-  { id: 'balanced', label: 'Balanced', description: 'Better finish with modest edge freedom' },
+  { id: 'balanced', label: 'Concept finish', description: 'Keep buildings, street connections and park uses; refine materials, vegetation and details' },
+  { id: 'precise', label: 'Strict detail', description: 'Also check the finish against the source openings and surface details' },
   { id: 'expressive', label: 'Expressive', description: 'Artistic interpretation; review required' },
 ];
 
@@ -267,7 +267,7 @@ export function GlobeAIRenderPanel({
   const [isCheckingDirectCapture, setIsCheckingDirectCapture] = useState(false);
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
-  const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>('precise');
+  const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>(() => resolveDirect3DFidelityPolicy(selectedStyle));
   const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false });
   const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelAvailability?.models.find(entry => entry.id === model)?.available === false);
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
@@ -1369,6 +1369,14 @@ export function GlobeAIRenderPanel({
       {!result && renderPipeline === 'direct3d' && (
         <details className="border-b border-white/20 bg-slate-900/90 px-4 py-2 text-white">
           <summary className="min-h-11 cursor-pointer py-3 text-sm font-bold">Source checks · advanced</summary>
+          <label className="mb-3 block text-sm font-bold">Design fidelity
+            <select value={directFidelityPolicy} disabled={isRendering}
+              onChange={event => setDirectFidelityPolicy(event.target.value as Direct3DFidelityPolicy)}
+              className="mt-1 min-h-11 w-full rounded border border-white/30 bg-slate-900 px-2 text-white">
+              {DIRECT_3D_FIDELITY_OPTIONS.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}
+            </select>
+            <span className="mt-1 block text-xs font-normal text-white/80">{DIRECT_3D_FIDELITY_OPTIONS.find(option => option.id === directFidelityPolicy)?.description}. Compare every AI image with the original before presenting it as your design.</span>
+          </label>
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-sm font-bold text-white">Original 3D view</p>
