@@ -1,4 +1,6 @@
 import { Camera, MapPin, Pencil, Video } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { direct3DAttempts } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 
@@ -48,6 +50,15 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
   canRender: boolean; renderReason: string; streetAccessNotice?: string | null; landscapeNeedsRefresh?: boolean;
   onSite: () => void; onDesign: () => void; onImage: () => void; onVideo: () => void;
 }) {
+  const [videoEnabled, setVideoEnabled] = useState(false);
+  useEffect(() => {
+    if (step !== 'present') return;
+    let active = true;
+    void direct3DAttempts.capabilities().then(capabilities => {
+      if (active) setVideoEnabled(capabilities.video_enabled === true);
+    }).catch(() => { /* Keep optional paid video unavailable if capability lookup fails. */ });
+    return () => { active = false; };
+  }, [step]);
   return <section aria-label={step === 'site' ? 'Choose your site' : 'Present your community'}
     className="space-y-3 rounded-xl border border-slate-900 bg-white/95 p-4 text-slate-950 shadow-md">
     {step === 'site' ? <>
@@ -66,7 +77,7 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
         <button type="button" className="mt-2 min-h-11 font-semibold underline" onClick={onSite}>Refresh site landscape</button>
       </div>}
       <button type="button" className={`${action} bg-[#c9ff3d] disabled:opacity-50`} disabled={!canRender} onClick={onImage}><Camera size={18} aria-hidden />Image</button>
-      <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />Video</button>
+      {videoEnabled && <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />Video</button>}
       {!canRender && <p role="status" className="text-sm text-slate-700">{renderReason}</p>}
       <button type="button" className={`${action} border-transparent underline`} onClick={onDesign}>Back to design</button>
     </>}

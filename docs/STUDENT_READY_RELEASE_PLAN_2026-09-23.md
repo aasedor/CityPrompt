@@ -249,7 +249,7 @@ exercise does not activate an unapproved family or grant construction compliance
 | 2. Shared runtime behaviour | Starter integration implemented; final acceptance partial | Native street backend/production renderer, individual homes, exact entrance revisions, starter picker; live Main/Market route check; [checkpoint](CLASSROOM_STARTER_RUNTIME_2026-09-23.md) |
 | 3. Authoring/recovery | Partially demonstrated | September 22/23 local trials; release roster and regular-browser run pending |
 | 4. Presentation | Durable recovery implemented and verified locally; image fidelity still open | Edge exact PNG; [concept fidelity, durable attempts and 60-student mock queue evidence](CLASSROOM_RENDER_RECOVERY_2026-09-23.md); faithful AI comparison and hosted recovery remain open |
-| 5. Classroom deployment | OAuth state repair verified locally; deployment pending | [Single-use browser-bound sign-in](CLASSROOM_SIGNIN_RECOVERY_2026-09-23.md); local asset repair is not deployment evidence |
+| 5. Classroom deployment | OAuth, startup/readiness, paid scope and database restore verified locally; deployment pending | [Sign-in](CLASSROOM_SIGNIN_RECOVERY_2026-09-23.md); [operations checkpoint](CLASSROOM_OPERATIONS_2026-09-23.md); local success is not hosted evidence |
 | 6. Release rehearsal | Pending | Depends on the accepted integrated candidate |
 
 For each completed work package, record its commit, affected variants, checks,

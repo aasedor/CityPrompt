@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 
 import sentry_sdk
 from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 
@@ -116,6 +117,14 @@ app.include_router(ws_router)
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "version": settings.app_version}
+
+
+@app.get("/ready")
+async def readiness_check():
+    from app.services.readiness import readiness
+    report = await readiness()
+    return JSONResponse(report, status_code=200 if report["status"] == "ready" else 503,
+                        headers={"Cache-Control": "no-store"})
 
 
 if not settings.is_production:

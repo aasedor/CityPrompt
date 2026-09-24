@@ -31,7 +31,7 @@ export function createDirect3DAttemptClient(options: {
     const current = JSON.parse(options.storage().getItem(name) ?? 'null') as Pending | null;
     if (current?.key === key) options.storage().removeItem(name);
   };
-  const capabilities = async () => (await api.get<{ enabled: boolean; images_enabled: boolean }>(`${ROOT}/capabilities`)).data;
+  const capabilities = async () => (await api.get<{ enabled: boolean; images_enabled: boolean; classroom_release?: boolean; video_enabled?: boolean }>(`${ROOT}/capabilities`)).data;
   const list = async (projectId: string) => (await api.get<ImageAttempt[]>(ROOT, { params: { project_id: projectId } })).data;
   const recover = async <T>(attempt: ImageAttempt): Promise<RecoveredImage<T>> => {
     const expected = options.account();

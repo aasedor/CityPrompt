@@ -29,4 +29,9 @@ def render_direct_3d_attempt(attempt_id: str):
 @celery_app.task(name="cityprompt.direct3d.maintain", max_retries=0, ignore_result=True)
 def maintain_direct_3d_attempts():
     from app.services.render_attempts import maintain_attempts
+    from app.services.readiness import maintenance_key
+    import redis
     asyncio.run(_with_session(maintain_attempts))
+    # Readiness confirms the scheduler AND maintenance worker have made progress.
+    with redis.from_url(get_settings().redis_url, socket_connect_timeout=2, socket_timeout=2) as client:
+        client.set(maintenance_key(), "ready", ex=90)

@@ -26,7 +26,8 @@ router = APIRouter(dependencies=[Depends(private_response)])
 @router.get("/direct-3d-attempts/capabilities")
 async def capabilities(user: User = Depends(require_auth)):
     settings = get_settings()
-    return {"enabled": settings.direct_3d_jobs_enabled, "images_enabled": settings.direct_3d_images_enabled}
+    return {"enabled": settings.direct_3d_jobs_enabled, "images_enabled": settings.direct_3d_images_enabled,
+            "classroom_release": settings.classroom_release, "video_enabled": not settings.classroom_release}
 
 
 @router.post("/direct-3d-attempts", status_code=202)

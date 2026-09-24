@@ -125,7 +125,9 @@ def main() -> int:
             errors.append("--require-release requires preflight; metadata alone cannot qualify a release")
         errors.extend(f"Unpackaged dependency: {dep['id']}" for dep in manifest["dependencies"] if dep["location"] == "artifact")
         errors.extend(f"Runtime review pending: {row['variantId']}" for row in manifest["entries"] if row["review"]["runtime"] != "passed")
-    report = {"release": manifest["releaseId"], "command": args.command, "dependencies": results, "errors": errors}
+    report = {"release": manifest["releaseId"], "command": args.command, "dependencies": results, "errors": errors,
+              "roster_sha256": hashlib.sha256(canonical(manifest).encode("utf-8")).hexdigest(),
+              "runtime_reviews_required": args.require_release}
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(canonical(report), encoding="utf-8")

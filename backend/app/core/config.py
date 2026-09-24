@@ -95,6 +95,8 @@ class Settings(BaseSettings):
     app_debug: bool = False
     app_name: str = "3D Development Platform"
     app_version: str = "0.1.0"
+    classroom_release: bool = False
+    classroom_asset_receipt: str = ""
 
     # --- Database ---
     database_url: str = "postgresql+asyncpg://devuser:devpassword@localhost:5432/dev_platform"
@@ -272,6 +274,15 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _validate_render_queue(self) -> "Settings":
+        if self.classroom_release:
+            if not self.direct_3d_jobs_enabled:
+                raise ValueError("CLASSROOM_RELEASE requires DIRECT_3D_JOBS_ENABLED")
+            deferred_keys = (self.anthropic_api_key, self.gemini_api_key, self.meshy_api_key,
+                             self.tripo_api_key, self.stability_api_key, self.fal_key, self.vertex_ai_project)
+            if any(deferred_keys):
+                raise ValueError("Classroom services must not receive keys for deferred AI, mesh or video providers")
+            # Legacy saved layouts still have their deterministic fallback.
+            self.layout_ai_provider = "none"
         if not 1 <= self.direct_3d_queue_limit <= 64:
             raise ValueError("DIRECT_3D_QUEUE_LIMIT must be between 1 and 64")
         if not 1 <= self.direct_3d_project_queue_limit <= self.direct_3d_queue_limit:
