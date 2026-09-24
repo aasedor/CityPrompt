@@ -108,6 +108,15 @@ verified; its final receipt is recorded below after completion. The earlier
 `candidate-20260924-a` is obsolete. A local Linux worker pass is not a hosted
 API, TLS, SMTP, quota, cold-load or classroom-concurrency pass.
 
+The first frozen packet (`candidate-20260924-b`, source `e1303bd94`) passed all
+4,480 asset hashes but failed real HTTP/browser checks: Nginx's extension regex
+intercepted `/api/v1/files/.../*.glb` before the API proxy, returning static 404s
+and leaving buildings as placeholders. It is rejected as a delivery candidate.
+The API prefix now uses `^~` so authenticated file requests reach the backend.
+This also protects PNG/JSON file routes from the static rule. The failed packet
+is preserved; one corrected packet must pass actual routed byte readback and
+browser capture before acceptance. Readiness alone did not catch this defect.
+
 ## Remaining release gates and stopping rule
 
 1. Faithful AI finish remains unresolved. Continue using exact exports; diagnose
