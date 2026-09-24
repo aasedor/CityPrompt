@@ -169,7 +169,7 @@ async def update_project(
     """Update project details. Requires editor permission."""
     await check_project_permission(project_id, user, db, required="editor")
 
-    result = await db.execute(select(Project).where(Project.id == project_id))
+    result = await db.execute(select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True))
     project = result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")

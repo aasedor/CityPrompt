@@ -166,6 +166,7 @@ interface ProviderUsage {
   attempts_used: number;
   attempts_remaining: number | null;
   max_attempts: number | null;
+  allowance_scope?: 'provider' | 'trial';
 }
 
 interface VideoPilotState {
@@ -187,6 +188,7 @@ interface PreflightResult {
   attempts_used: number;
   attempts_remaining: number | null;
   max_attempts: number | null;
+  allowance_scope?: 'provider' | 'trial';
   estimated_cost_usd: number;
   model: string;
   reference_image_count: number;
@@ -635,6 +637,7 @@ export function VideoGeneratePanel({
             attempts_used: result.attempts_used,
             attempts_remaining: result.attempts_remaining,
             max_attempts: result.max_attempts,
+            allowance_scope: result.allowance_scope,
           },
         },
       }));
@@ -741,7 +744,7 @@ export function VideoGeneratePanel({
             <p className="truncate text-[11px] text-white/55">Draw the path. Animate the captured scene. Preserve every building.</p>
           </div>
           <div className="ml-auto hidden items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 sm:flex">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">{provider === 'internal_enhance' ? 'Local runs' : provider === 'seedance_mini' ? 'Seedance calls' : 'Omni calls'}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">{providerUsage.allowance_scope === 'trial' ? 'Paid trial · all providers' : provider === 'internal_enhance' ? 'Local runs' : provider === 'seedance_mini' ? 'Seedance calls' : 'Omni calls'}</span>
             <div className="flex gap-1">
               {usedDots.map((used, index) => (
                 <span key={index} className={`h-2 w-2 rounded-full ${used ? 'bg-[#ff6b57]' : 'bg-white/20'}`} />

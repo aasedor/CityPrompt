@@ -1364,7 +1364,7 @@ async def persist_render_to_gallery(
     path (which persists every paid result, including the untouched provider
     image when a safety fallback replaced it).
     """
-    project_result = await db.execute(select(Project).where(Project.id == project_id).with_for_update())
+    project_result = await db.execute(select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True))
     project = project_result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -1536,7 +1536,7 @@ async def delete_render(
     """Delete a saved render from the project."""
     await check_project_permission(project_id, user, db, required="editor")
 
-    project = await db.get(Project, project_id)
+    project = await db.get(Project, project_id, with_for_update=True, populate_existing=True)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
 

@@ -24,7 +24,7 @@ from sqlalchemy.pool import NullPool
 
 from app.api.v1 import direct_3d_render as direct
 from app.core.config import get_settings
-from app.models.models import User, Project, ProjectShare, Building, SiteZone, RenderAuditLog
+from app.models.models import User, Project, ProjectShare, Building, SiteZone, RenderAuditLog, ApiUsageLog, Document
 from app.models.render_attempt import RenderAttempt
 from app.services import render_attempts as jobs
 from app.services import render_attempt_storage as storage
@@ -46,7 +46,7 @@ async def isolated(monkeypatch):
                                  connect_args={"server_settings": {"search_path": f"{schema},public"}})
     try:
         metadata = MetaData()
-        for model in (User, Project, ProjectShare, Building, SiteZone, RenderAuditLog):
+        for model in (User, Project, ProjectShare, Building, SiteZone, RenderAuditLog, ApiUsageLog, Document):
             model.__table__.to_metadata(metadata)
         # Start from pre-030 tables, then execute the actual additive migration.
         table = metadata.tables["render_audit_logs"]

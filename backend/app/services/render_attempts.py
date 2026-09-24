@@ -18,6 +18,7 @@ from app.models.render_attempt import RenderAttempt
 from app.schemas.direct_3d_render import Direct3DRenderRequest, Direct3DRenderResponse
 from app.services.render_attempt_storage import read_evidence, write_evidence
 from app.services.render_provenance import revision_sha256
+from app.services.render_trial import reserve_image_trial_slot
 
 logger = logging.getLogger(__name__)
 ACTIVE = ("queued", "running")
@@ -70,6 +71,7 @@ async def submit_attempt(db, user, req: Direct3DRenderRequest, key: str):
         idempotency_key=key, request_sha256=fingerprint, status="queued",
         model=req.model, style=req.style, created_at=now(),
     )
+    await reserve_image_trial_slot(db, req.project_id, user.id, key, fingerprint)
     await write_evidence(attempt, "request", payload)
     db.add(attempt)
     await db.commit()
