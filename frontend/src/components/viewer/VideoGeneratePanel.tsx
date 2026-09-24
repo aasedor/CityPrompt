@@ -22,7 +22,8 @@ import {
 import { createPortal } from 'react-dom';
 import toast from 'react-hot-toast';
 
-import { getApiErrorMessage, resolveApiFileUrl, videoRenderApi } from '@/services/api';
+import { authApi, getApiErrorMessage, resolveApiFileUrl, videoRenderApi } from '@/services/api';
+import { useAuthStore } from '@/store';
 import type { Building, SiteZone } from '@/types';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
@@ -653,6 +654,7 @@ export function VideoGeneratePanel({
 
   const generate = useCallback(async () => {
     if (!prepared || !hasValidPreflight || !providerCanRun) return;
+    const requestingUserId = useAuthStore.getState().user?.id;
     setIsGenerating(true);
     setError(null);
     try {
@@ -672,6 +674,13 @@ export function VideoGeneratePanel({
       await loadPilot();
     } finally {
       setIsGenerating(false);
+      // A failed/uncertain response may still have reserved a paid call. Refresh
+      // server accounting without hiding saved video or restoring a signed-out user.
+      if (requestingUserId) void authApi.me().then(user => {
+        if (user.id === requestingUserId && useAuthStore.getState().user?.id === requestingUserId) {
+          useAuthStore.getState().setUser(user);
+        }
+      }).catch(() => { /* Reconciled on the next account refresh. */ });
     }
   }, [hasValidPreflight, loadPilot, onVideoSaved, prepared, providerCanRun]);
 
