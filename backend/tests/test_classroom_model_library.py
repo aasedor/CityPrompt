@@ -25,8 +25,13 @@ def test_exact_model_bindings_are_accepted_by_real_runtime_descriptor():
         assert seed.binding_matches(SimpleNamespace(**vars(entry), is_public=True), row)
 
 
-def test_release_seed_cannot_turn_partial_runtime_review_into_approval():
+@pytest.mark.parametrize("review", ["pending", "partial"])
+def test_release_seed_cannot_turn_partial_runtime_review_into_approval(review):
     roster, _ = seed.load_bindings()
+    roster = copy.deepcopy(roster)
+    for entry in roster["entries"]:
+        entry["review"]["runtime"] = "passed"
+    roster["entries"][0]["review"]["runtime"] = review
     settings = SimpleNamespace(database_url="postgresql://localhost/test", s3_endpoint_url="http://127.0.0.1:9000")
     with pytest.raises(ValueError, match="reviews remain open"):
         seed.validate_target(settings, roster, local_trial=False)

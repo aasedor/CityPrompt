@@ -1,5 +1,7 @@
 # Detailed classroom candidate trial
 
+**September 24 implementation update:** [current evidence and remaining gates](CLASSROOM_IMPLEMENTATION_2026-09-24.md) supersede the earlier interrupted/runtime, Chrome, access, allowance and packaging checkpoints below. The nine [prepared-site reviews](CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md) are consolidated. Faithful AI, hosted acceptance and novice usability remain open. Historical measurements below retain their original scope.
+
 This continues `db6131754` in the Currie worktree. Local assisted evidence is
 separate from hosted acceptance and independent novice usability. No new assets,
 push, deployment or provider-credit purchase is authorized by this milestone.

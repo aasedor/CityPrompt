@@ -1,6 +1,6 @@
 # Runtime integration for every archetype
 
-Version: 2026-09-23. Applies to every new or materially revised building,
+Version: 2026-09-24. Applies to every new or materially revised building,
 street/path, and park/open-space variant intended for the student catalogue.
 Read this before authoring the asset, not only when installing its picker card.
 
@@ -656,3 +656,27 @@ failed measurement can retry twice after different visible geometry settles;
 unchanged or missing coverage must not trigger an unbounded loop. Keep the exact
 export gate closed until all three station samples are available. A settled UI
 loading indicator is not proof that this independent measurement has completed.
+
+
+## Bounded acceptance and private evidence
+
+The [nine starter reviews](CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md) show how to
+accept a defined prepared-site classroom workflow while retaining untested
+natural terrain, forced races and detailed engineering as explicit follow-ups.
+State the accepted scope beside every runtime pass; do not turn unrun template
+rows into universal passes. Runtime, keeper, faithful AI and hosted/novice gates
+remain separate. Reuse unchanged exact-variant evidence rather than repeating
+paid calls or broad tests.
+
+Retain the exact source, provider original and automatic/human fidelity result
+together. Texture can trigger structural metrics; locate the flagged component
+in a same-camera comparison before diagnosing it. Never loosen a threshold merely
+to pass. A video similarity score is advisory, not a fine-geometry certificate.
+Verify actual native download completion and open/play the saved bytes. Browser
+download windows may change the automation target; a lost target is not itself
+an application crash.
+
+Keep raw attempt inputs and video control guides requester-private even when the
+saved output is shared. Test revocation against GET, HEAD, Range and old tickets;
+refresh current project authorization on each read. A healthy process or mocked
+unit test alone does not establish Linux prefork crash/timeout recovery.

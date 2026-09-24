@@ -1,5 +1,7 @@
 # Classroom starter integration checkpoint — 2026-09-23
 
+**September 24 implementation update:** [current evidence and remaining gates](CLASSROOM_IMPLEMENTATION_2026-09-24.md) supersede the earlier interrupted/runtime, Chrome, access, allowance and packaging checkpoints below. The nine [prepared-site reviews](CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md) are consolidated. Faithful AI, hosted acceptance and novice usability remain open. Historical measurements below retain their original scope.
+
 Scope: the nine exact entries and 47 byte-locked dependencies in
 `seed/classroom-release/starter-v1.json`. This is local implementation evidence,
 not publication approval, hosted verification or independent novice usability.

@@ -1,5 +1,7 @@
 # Classroom operations checkpoint
 
+**September 24 implementation update:** [current evidence and remaining gates](CLASSROOM_IMPLEMENTATION_2026-09-24.md) supersede the earlier interrupted/runtime, Chrome, access, allowance and packaging checkpoints below. The nine [prepared-site reviews](CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md) are consolidated. Faithful AI, hosted acceptance and novice usability remain open. Historical measurements below retain their original scope.
+
 This is local implementation evidence for milestone 5 of
 [the release plan](STUDENT_READY_RELEASE_PLAN_2026-09-23.md). It is not a deployed
 classroom approval. No paid provider calls, credit refills or publication were

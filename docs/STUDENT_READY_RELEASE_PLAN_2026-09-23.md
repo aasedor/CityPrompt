@@ -1,5 +1,7 @@
 # Student-ready release plan
 
+**September 24 implementation update:** [current evidence and remaining gates](CLASSROOM_IMPLEMENTATION_2026-09-24.md) supersede the earlier interrupted/runtime, Chrome, access, allowance and packaging checkpoints below. The nine [prepared-site reviews](CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md) are consolidated. Faithful AI, hosted acceptance and novice usability remain open. Historical measurements below retain their original scope.
+
 Updated: 23 September 2026. Owner: Andrew and the City Prompt implementation task.
 Planning baseline: `17096bc99`, worktree `C:/dev/CityPrompt-sol-empty-lot-trial`.
 

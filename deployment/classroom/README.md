@@ -151,7 +151,7 @@ The supplied profile starts paid images paused. Exact 3D downloads and free 3D
 landscape presets remain available. Enabling images requires a funded application
 allowance, a positive global daily token cap and a provider-side spending limit.
 Application tokens are not a USD guarantee; model-specific provider charges and
-Maps traffic need their own budget. Do not infer a funded class budget from the
+Maps traffic need their own budget. Do not infer a funded class budget from
 an old test-account balance or refill it automatically. The detailed local trial
 received its one authorized grant already; see the current accounting in
 [`CLASSROOM_DETAILED_TRIAL_2026-09-24.md`](../../docs/CLASSROOM_DETAILED_TRIAL_2026-09-24.md).
@@ -205,8 +205,9 @@ over the live database.
 ## Actual remaining approval evidence
 
 The portable Compose schema validates locally. Database/object restore and
-isolated three-model installation have passed. Actual Linux container execution,
+isolated three-model installation have passed. The actual Linux API build and disposable prefork recovery probe now pass locally;
+the assisted Currie exercise and Chrome/Edge native exact downloads also passed.
+See [the implementation checkpoint](../../docs/CLASSROOM_IMPLEMENTATION_2026-09-24.md).
 TLS/routing, SMTP delivery, provider quotas, destination asset readback, cold-load
 timing and the class-shaped browser rehearsal remain checks on the chosen host.
-The final Currie exercise and Chrome/Edge exact downloads also remain integrated
-acceptance gates. Do not mark them passed from this configuration file.
+Local results do not mark these destination checks or novice usability passed.

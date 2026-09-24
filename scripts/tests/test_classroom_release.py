@@ -67,4 +67,6 @@ def test_roster_does_not_implicitly_activate_candidates():
     native = [row for row in rows if row["representation"] == "native-modules"]
     assert len(native) == 2
     assert all(row["review"]["asset"] == "candidate" for row in native)
-    assert not all(row["review"]["runtime"] == "passed" for row in rows)
+    # Bounded runtime acceptance never promotes a source asset to keeper status.
+    bindings = json.loads((release.ROOT / "seed/classroom-release/model-bindings.json").read_text(encoding="utf-8"))
+    assert all(row["metadata"]["rlasm"]["keeper_approved"] is False for row in bindings["entries"])
