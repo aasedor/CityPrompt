@@ -183,6 +183,8 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Exact generation inputs preserved separately from later corrected previews:
 - Assisted/native-size trial versus ordinary student authoring and route connectivity:
 - Park-to-street/entrance clearance in preview, drag and save; bounded fit retains size/rotation:
+- Park approach clears neighbouring parks, fixed equipment and full-width street/boundary barriers:
+- Report route evidence matches the scene; stale evidence rejected; absent evidence remains uncertain:
 - Connected bend/body/section edit retains every renderable T/X patch; neighbours unchanged:
 - Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
 - Open failures, untested advertised features, owner and next bounded action:

@@ -161,7 +161,9 @@ async def test_stale_park_snapshot_rejects_before_provider_configuration_reserva
     db = SimpleNamespace(execute=AsyncMock(side_effect=results))
     reservation = AsyncMock()
     provider = AsyncMock()
-    monkeypatch.setattr(endpoint, "get_settings", lambda: SimpleNamespace(openai_api_key=""))
+    monkeypatch.setattr(endpoint, "get_settings", lambda: SimpleNamespace(
+        openai_api_key="", direct_3d_jobs_enabled=False, direct_3d_images_enabled=True,
+    ))
     monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock())
     monkeypatch.setattr(endpoint, "lock_residual_landscape_project", AsyncMock())
     monkeypatch.setattr(endpoint, "_validate_direct_3d_project_zones", MagicMock(return_value={}))

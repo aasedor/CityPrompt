@@ -54,6 +54,7 @@ import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentWorkflowNav, StudentStepPanel, studentLandscapeNeedsRefresh, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
 import { defaultStudentStep } from './studentNavigation';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
+import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessConnections';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
 import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
 import { existingTransport } from '@/features/referenceLayers/existingTransport';
@@ -1252,6 +1253,9 @@ export function ProjectViewPage() {
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
           <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}
+            getParkAccessSnapshot={() => siteZones.every(zone => isPersistedZoneId(zone.id) && zone.updated_at)
+              ? resolveManualParkAccess(siteZones, {}, visibleZones.filter(zone => zone.zone_type === 'road').map(zone => zone.id), transportContext)
+              : undefined}
             planChangeToken={siteZones.map((zone) => `${zone.id}:${zone.updated_at}`).join('|')} canEdit
             onSelectZone={(zoneId) => { closePlanningReport(); selectZone(zoneId); }} />
         </StudioDialog>}

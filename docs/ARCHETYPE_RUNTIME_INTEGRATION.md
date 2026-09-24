@@ -239,6 +239,18 @@ views. The [irregular mixed-scene prototype](CURRIE_MIXED_PROTOTYPE_2026-09-20.m
 records one finite example; its clay model and sparse pad do not transfer
 visual approval to new variants.
 
+Park approaches must clear neighbouring park plots as well as building plots,
+fixed equipment, street bands and the site boundary. Preserve the bounded
+automatic connection distance; arrange facing entrances and circulation through
+ordinary editing rather than increasing tolerances to obtain a connected label.
+Reports accept the same optional `ParkAccessSnapshot` used by scene/capture and
+landscape exclusions. Bind it to the complete saved zone inventory and revisions;
+reject stale evidence. Label a current connection as client-derived, never an
+accessibility certification. Absent evidence retains the polygon-distance
+uncertainty. Printed reports show the retained route geometry. Derived evidence
+must not make a newly created report immediately stale when its saved geometry
+is unchanged.
+
 Plain prepared boundaries use a shared grass finish by default; this represents
 proposed ground cover, not the original Google texture. Authored park and
 residual-landscape materials still own their surfaces. Keep appearance choices

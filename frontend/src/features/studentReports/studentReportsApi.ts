@@ -1,4 +1,5 @@
 import { api } from '@/services/api';
+import type { ParkAccessSnapshot } from '@/components/viewer/globe/parkAccessConnections';
 
 export type StudentChoice = 'implement' | 'adapt' | 'decline';
 export interface ReportSource {
@@ -55,8 +56,10 @@ export const studentReportsApi = {
   latest: async (projectId: string) => (await api.get<StudentReport | null>(`${base}/project/${projectId}`)).data,
   history: async (projectId: string) => (await api.get<ReportSummary[]>(`${base}/project/${projectId}/history`)).data,
   get: async (reportId: string) => (await api.get<StudentReport>(`${base}/${reportId}`)).data,
-  create: async (projectId: string, zoneIds?: string[]) => (
-    await api.post<StudentReport>(`${base}/project/${projectId}`, { zone_ids: zoneIds ?? null })
+  create: async (projectId: string, zoneIds?: string[], parkAccess?: ParkAccessSnapshot) => (
+    await api.post<StudentReport>(`${base}/project/${projectId}`, {
+      zone_ids: zoneIds ?? null, ...(parkAccess ? { park_access_snapshot: parkAccess } : {}),
+    })
   ).data,
   respond: async (reportId: string, findingId: string, decision: {
     choice: StudentChoice; rationale: string; follow_through: string; expected_revision: number;
