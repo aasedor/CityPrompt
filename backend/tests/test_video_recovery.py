@@ -9,8 +9,9 @@ import uuid
 from fastapi import HTTPException
 import pytest
 
-from app.api.v1 import video, documents
-from app.models.models import Project, User
+from app.api.v1 import video, documents, files
+from app.models.models import Project, User, ProjectShare
+from app.core.security import create_project_asset_ticket, create_file_asset_ticket
 from app.services.render_trial import TRIAL_KEY, check_trial_available
 from app.services.render_attempts import now
 from tests.test_omni_video import _jpeg_data_url
@@ -166,3 +167,54 @@ async def test_shared_gallery_excludes_others_private_attempt_recovery(pilot, mo
         own = await video.list_video_attempts(project.id, f.user, db)
         assert len(own.attempts) == 2
         assert own.attempts[1].request_id == private["request_id"]
+
+
+@pytest.mark.asyncio
+async def test_real_membership_saved_video_private_controls_and_revocation(pilot):
+    """Exercise the real permission resolver, including old URL credentials."""
+    f = pilot
+    completed = await generate(f)
+    async with f.sessions() as db:
+        requester = await db.get(User, f.user.id)
+        owner = User(id=uuid.uuid4(), email=f"{uuid.uuid4()}@test.invalid", full_name="Owner", role="editor")
+        viewer = User(id=uuid.uuid4(), email=f"{uuid.uuid4()}@test.invalid", full_name="Viewer", role="viewer")
+        db.add_all([owner, viewer])
+        await db.flush()
+        project = await db.get(Project, f.project.id)
+        project.owner_id = owner.id
+        editor_share = ProjectShare(project_id=project.id, user_id=requester.id, permission="editor")
+        viewer_share = ProjectShare(project_id=project.id, user_id=viewer.id, permission="viewer")
+        db.add_all([editor_share, viewer_share])
+        await db.commit()
+        attempt = project.metadata_["video_pilot_attempts"][0]
+        output = files._key_from_url(completed.attempt.video_url)
+        guide = files._key_from_url(attempt["guide_image_url"])
+        image_evidence = f"projects/{project.id}/render-attempts/private/request.json"
+        for actor in [owner, requester, viewer]:
+            assert await files._authorize_file(output, actor, db, None, None) is False
+            shared = await video.list_video_attempts(project.id, actor, db)
+            assert len(shared.attempts) == 1
+            if actor.id == requester.id:
+                assert shared.attempts[0].request_id
+                assert await files._authorize_file(guide, actor, db, None, None) is False
+            else:
+                assert shared.attempts[0].request_id == ""
+                assert shared.attempts[0].prompt is None
+                with pytest.raises(HTTPException) as exc:
+                    await files._authorize_file(guide, actor, db, None, None)
+                assert exc.value.status_code == 403
+            with pytest.raises(HTTPException) as exc:
+                await files._authorize_file(image_evidence, actor, db, None, None)
+            assert exc.value.status_code == 403
+        project_ticket = create_project_asset_ticket(project.id, requester.id)
+        file_ticket = create_file_asset_ticket(output, requester.id)
+        await db.delete(editor_share)
+        await db.commit()
+        for endpoint in [files.get_file, files.head_file]:
+            for auth in [dict(user=requester), dict(user=None, asset_ticket=project_ticket), dict(user=None, file_ticket=file_ticket)]:
+                with pytest.raises(HTTPException) as exc:
+                    await endpoint(output, db=db, **auth)
+                assert exc.value.status_code == 403
+        with pytest.raises(HTTPException) as exc:
+            await video.list_video_attempts(project.id, requester, db)
+        assert exc.value.status_code == 403
