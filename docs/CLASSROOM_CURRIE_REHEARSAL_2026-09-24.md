@@ -120,6 +120,15 @@ led to the whole-site graph fix rather than being waived.
 
 The revised access-error guidance was verified in the revoked viewer's browser.
 
+After checkpoint `f794c6371`, a bounded park-access follow-up tried two court
+moves, one garden move and unsaved entrance choices. None produced a safe path
+in this constrained arrangement. All three moves were undone through the UI;
+database readback confirmed every saved polygon returned exactly to the accepted
+capture geometry. Free landscape was refreshed again (same 14,664 m²/18 trees).
+No access threshold was widened and no unresolved park was labelled connected.
+The next rehearsal needs a deliberate connecting-path layout, including checks
+against park equipment and neighbouring building plots.
+
 Next: verify the park entrance/path workflow and editor-role
 round trip; complete exact-variant review gaps and Chrome download when connected;
 then rebuild one candidate from the frozen revision. Candidate `20260924-a`
