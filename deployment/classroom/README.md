@@ -120,12 +120,41 @@ interpretation or automatic model generation.
 
 ## Funding and predictable failure
 
+### Disposable Linux recovery probe
+
+The September 24 implementation probe completed the actual Linux API build and
+all migrations through `030_render_attempts`. Run the repeatable test with a
+built `CLASSROOM_API_IMAGE` and a new external `PREFORK_EVIDENCE_DIR`:
+
+```text
+docker compose -f deployment/classroom/prefork-probe.compose.yaml up --abort-on-container-exit --exit-code-from probe
+```
+
+This separate Compose project publishes no ports and uses an internal network,
+its own PostgreSQL/Redis/MinIO, disposable credentials and a mocked provider.
+Only test fixtures are mounted read-only into the built API image; application
+code comes from the image. It exercises two occupied prefork children, real hard
+timeouts, a separate responsive maintenance worker, abrupt child loss, saved
+provider bytes surviving process loss, one-time refunds and duplicate delivery
+without another provider call. The probe shortens Celery's limit to ten seconds
+and ages only disposable rows for reconciliation; production retains its
+600-second hard limit and 900-second recovery threshold.
+
+Evidence is `prefork-receipt.json` plus worker and Compose logs. A pass is process
+recovery evidence, not hosted acceptance or an image-fidelity result. The Compose
+project stops its services when the test exits. Retain evidence before removing
+its disposable containers/volumes; never substitute the live trial environment.
+
+### Classroom allowance
+
 The supplied profile starts paid images paused. Exact 3D downloads and free 3D
 landscape presets remain available. Enabling images requires a funded application
 allowance, a positive global daily token cap and a provider-side spending limit.
 Application tokens are not a USD guarantee; model-specific provider charges and
 Maps traffic need their own budget. Do not infer a funded class budget from the
-current test account's 14 tokens or refill it automatically.
+an old test-account balance or refill it automatically. The detailed local trial
+received its one authorized grant already; see the current accounting in
+[`CLASSROOM_DETAILED_TRIAL_2026-09-24.md`](../../docs/CLASSROOM_DETAILED_TRIAL_2026-09-24.md).
 
 The admission limits are 16 total, 2 per project and 1 per student. One explicit
 request owns one idempotency key; a lost response does not justify another paid
