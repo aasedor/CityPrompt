@@ -120,6 +120,7 @@ import { completeStreetStation, preparedStreetElevation, preparedStreetPreview, 
 import { sharedSiteGroundContains } from './sharedSiteGround';
 import { waitForCaptureTileReadiness } from './tileLoadReadiness';
 import { createPreparedStreetEdges } from './preparedStreetEdges';
+import { createStreetGroundRetry } from './streetGroundRetry';
 
 type RenderStreetIntersection = ConnectedStreetIntersection & { surfaceLayout: StreetJunctionLayout | null };
 
@@ -228,6 +229,8 @@ function StreetRibbonDetail({
   const [measuredTerrain, setMeasuredTerrain] = useState<StreetStationTerrain[] | null>(null);
   const [alignmentUnavailable, setAlignmentUnavailable] = useState(false);
   const [preparedTilesReady, setPreparedTilesReady] = useState(false);
+  const groundRetryRef = useRef(createStreetGroundRetry());
+  const [alignmentRetry, setAlignmentRetry] = useState(0);
   const sectionProfile = useMemo(
     () => resolvePilotStreetSectionProfile(zone),
     [zone],
@@ -318,7 +321,12 @@ function StreetRibbonDetail({
   const nativePilot = nativeStreetPilotForZone(zone);
   const requiresPreparedAlignment = Boolean(preparedSite) && preparedTerrain === null && !sharedGround.active;
   const alignmentStatus = !requiresPreparedAlignment ? 'ready' : alignmentUnavailable ? 'unavailable' : stationTerrain ? 'ready' : 'sampling';
-  const alignmentData = {streetGroundStatus: alignmentStatus, streetGroundZoneId: zone.id};
+  const alignmentData = {streetGroundStatus: alignmentStatus, streetGroundZoneId: zone.id,
+    streetGroundDiagnostics: requiresPreparedAlignment ? {
+      tilesReady: preparedTilesReady, passes: passRef.current,
+      retries: alignmentRetry,
+      missingStations: rawTerrainRef.current?.filter(sample => !completeStreetStation(sample)).length ?? 0,
+    } : undefined};
 
   // Geometry edits (vertex drag commits, re-buffering) change coordinates
   // under the SAME zone id — the frozen drape state must restart or curbs
@@ -334,6 +342,8 @@ function StreetRibbonDetail({
     setMeasuredTerrain(null);
     setSampledTerrain(null);
     setAlignmentUnavailable(false);
+    groundRetryRef.current = createStreetGroundRetry();
+    setAlignmentRetry(0);
   }, [centerLngLat, sharedGround.revision, preparedSite]);
 
   useEffect(() => {
@@ -345,16 +355,31 @@ function StreetRibbonDetail({
     void waitForCaptureTileReadiness(tiles, {timeoutMs: 45000}).then(ready => {
       if (canceled) return;
       setPreparedTilesReady(ready);
-      if (!ready) setAlignmentUnavailable(true);
+      if (!ready) {
+        groundRetryRef.current.failed(tiles?.visibleTiles);
+        setAlignmentUnavailable(true);
+      }
     });
     return () => { canceled = true; };
-  }, [tiles, requiresPreparedAlignment, centerLngLat, preparedSite]);
+  }, [tiles, requiresPreparedAlignment, centerLngLat, preparedSite, alignmentRetry]);
 
   // Drape-and-freeze: first resolve the frame anchor, then batch-sample
   // per-station elevations relative to it. Batches are interval-gated too —
   // consecutive-frame sampling right after mount rays against coarse LOD
   // tiles and bakes garbage; missed stations get re-sampled across passes.
   useFrame(() => {
+    if (requiresPreparedAlignment && alignmentUnavailable
+      && groundRetryRef.current.shouldRetry(tiles?.visibleTiles, performance.now())) {
+      frozenRef.current = false;
+      rawTerrainRef.current = null;
+      hitFlagsRef.current = null;
+      nextStationRef.current = 0;
+      passRef.current = 0;
+      setAlignmentUnavailable(false);
+      setPreparedTilesReady(false);
+      setAlignmentRetry(value => value + 1);
+      return;
+    }
     if (sharedGround.active || preparedTerrain !== null || frozenRef.current || !centerLngLat || !centroid) return;
     if (preparedSite && !preparedTilesReady) return;
     frameCountRef.current += 1;
@@ -443,6 +468,7 @@ function StreetRibbonDetail({
       }
       if (preparedSite && misses > 0) {
         frozenRef.current = true;
+        groundRetryRef.current.failed(tiles?.visibleTiles);
         setAlignmentUnavailable(true);
         return;
       }

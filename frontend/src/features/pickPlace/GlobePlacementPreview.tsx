@@ -17,7 +17,7 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundProvider';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
-import { placementProblem, rectangleAt, rectangleDimensions } from './geometry';
+import { rectangleAt, rectangleDimensions } from './geometry';
 import { snapPlacement } from './snapPlacement';
 import { streetFacingDegrees } from './streetFacing';
 
@@ -81,9 +81,9 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
     properties:placementProperties(asset)} as SiteZone),[asset,draft.width,draft.depth]);
   const degrees = surface && draft.faceStreet ? streetFacingDegrees([surface.lng,surface.lat], zones, draft.degrees) : draft.degrees;
   const proposed = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,degrees) : null;
-  const snapped = proposed ? asset.zoneType === 'building'
+  const snapped = proposed
     ? snapPlacement(proposed,zones,getActiveSiteBoundary(zones),undefined,previewZone.properties)
-    : {coordinates:proposed,problem:placementProblem(proposed,zones,getActiveSiteBoundary(zones))} : null;
+    : null;
   const footprint = snapped?.coordinates;
   const invalid = snapped ? snapped.problem : 'Move over the site and wait for the ground to load.';
   // Report only status transitions, not every pointer coordinate, to the planner.

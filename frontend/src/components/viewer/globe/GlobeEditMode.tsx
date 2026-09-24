@@ -17,7 +17,8 @@ import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
-import { snapBuildingMove } from '@/features/pickPlace/snapPlacement';
+import { snapBuildingMove, snapPlacement } from '@/features/pickPlace/snapPlacement';
+import { snapConnectedStreetEdit } from '@/features/pickPlace/streetEditConnections';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { isFixedSectionStreet, reshapeStreetPoint, streetCoordinateUpdate, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { extractCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
@@ -379,11 +380,15 @@ export function GlobeEditMode({
       const dlat = currentLatLng[1] - bodyDragStartRef.current[1];
 
       let newCoords = bodyDragCoordsRef.current.map(c => [c[0] + dlng, c[1] + dlat]);
-      if (['building', 'residential'].includes(zone.zone_type)) {
-        const snapped = snapBuildingMove(zone, newCoords, zones, getActiveSiteBoundary(zones));
+      if (['building', 'residential', 'green_space'].includes(zone.zone_type)) {
+        const boundary = getActiveSiteBoundary(zones);
+        const snapped = zone.zone_type === 'green_space'
+          ? snapPlacement(newCoords, zones, boundary, zone.id, zone.properties)
+          : snapBuildingMove(zone, newCoords, zones, boundary);
         if (snapped.problem) return; // Hold the last valid preview until space opens.
         newCoords = snapped.coordinates;
       }
+      if (isFixedSectionStreet(zone)) newCoords = snapConnectedStreetEdit(zone, newCoords, zones);
 
       // Write to drag ref (no React state update — useFrame reads this)
       dragRef.current.zoneId = zone.id;
@@ -668,6 +673,7 @@ export function GlobeEditMode({
         const snapped = snapStreetEndpoint(line, index, zones, zone.id, streetSectionWidth(zone));
         if (snapped !== line) newCoords = bufferLineToPolygon(snapped, streetSectionWidth(zone));
       }
+      if (isFixedSectionStreet(zone)) newCoords = snapConnectedStreetEdit(zone, newCoords, zones);
 
       // Write to drag ref (no React state update)
       dragRef.current.zoneId = zone.id;

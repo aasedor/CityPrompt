@@ -182,6 +182,9 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Oblique sky/ground-gap distinction; fallback excluded from picking/support:
 - Exact generation inputs preserved separately from later corrected previews:
 - Assisted/native-size trial versus ordinary student authoring and route connectivity:
+- Park-to-street/entrance clearance in preview, drag and save; bounded fit retains size/rotation:
+- Connected bend/body/section edit retains every renderable T/X patch; neighbours unchanged:
+- Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
 - Open failures, untested advertised features, owner and next bounded action:
 - Runtime integration decision: NOT REVIEWED
 - Asset visual decision (separate): NOT REVIEWED

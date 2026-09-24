@@ -246,11 +246,11 @@ exercise does not activate an unapproved family or grant construction compliance
 | Milestone | Current status | Exit evidence |
 | --- | --- | --- |
 | 1. Baseline and roster | Asset baseline, repeatable model binding installation and frontend packet verified locally | 185/185 assembly tests after restoring 65 tracked manifests; exact nine-variant roster and 48 byte-locked dependencies; local preflight 48/48; 4,480 runtime files byte-verified in the external candidate packet |
-| 2. Shared runtime behaviour | Starter integration implemented; final acceptance partial | Native street backend/production renderer, individual homes, exact entrance revisions, starter picker; live Main/Market route check; [checkpoint](CLASSROOM_STARTER_RUNTIME_2026-09-23.md) |
-| 3. Authoring/recovery | Partially demonstrated | September 22/23 local trials; release roster and regular-browser run pending |
+| 2. Shared runtime behaviour | Starter integration and rehearsal fixes implemented; final acceptance partial | Native street backend/production renderer, individual homes, exact entrance revisions, starter picker; [starter checkpoint](CLASSROOM_STARTER_RUNTIME_2026-09-23.md); [whole-site connected edits and park clearance](CLASSROOM_CURRIE_REHEARSAL_2026-09-24.md) |
+| 3. Authoring/recovery | Local all-nine-starter rehearsal demonstrated with assistance | Fresh irregular Currie site, five buildings, three streets/parks, edits, Undo/Redo, refreshed landscape; all 12 zone snapshots unchanged after reload. Park access and finite per-variant review gaps remain. [Evidence](CLASSROOM_CURRIE_REHEARSAL_2026-09-24.md) |
 | 4. Presentation | Durable recovery implemented and verified locally; image fidelity still open | Edge exact PNG; [concept fidelity, durable attempts and 60-student mock queue evidence](CLASSROOM_RENDER_RECOVERY_2026-09-23.md); faithful AI comparison and hosted recovery remain open |
 | 5. Classroom deployment | Local OAuth, startup/readiness, paid scope, asset packaging and coordinated DB/object restore verified; portable configuration prepared | [Sign-in](CLASSROOM_SIGNIN_RECOVERY_2026-09-23.md); [operations and packet evidence](CLASSROOM_OPERATIONS_2026-09-23.md); [deployment steps](../deployment/classroom/README.md); container/hosted acceptance pending |
-| 6. Release rehearsal | Pending | Depends on the accepted integrated candidate |
+| 6. Release rehearsal | Assisted local rehearsal partial; deployed/independent acceptance pending | Regular Edge wide/close exact downloads opened; separate-account view invitation, wrong-account rejection, revocation and report download verified. Chrome unavailable; editor/media checks still open. [Evidence](CLASSROOM_CURRIE_REHEARSAL_2026-09-24.md) |
 
 For each completed work package, record its commit, affected variants, checks,
 artifact location and remaining limitation in this ledger or a linked checkpoint.

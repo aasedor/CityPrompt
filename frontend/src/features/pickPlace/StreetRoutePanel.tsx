@@ -19,7 +19,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
   return <aside aria-label="Reshape street" className="absolute bottom-4 inset-x-4 z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-4 sm:top-28 sm:max-h-none">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset?.label ?? 'Street'}</h2><button className={button} aria-label="Close street settings" onClick={onClose}>×</button></div>
     <p className="my-3 text-sm text-slate-800">Drag a white route point to bend or extend the street. Drag the street to move it.</p>
-    <p className="mb-3 text-xs text-slate-600">Bring an end close to another street to snap a junction. Leave room away from bends and street ends for both sidewalks. Hold Alt while dragging to place it freely.</p>
+    <p className="mb-3 text-xs text-slate-600">Bring an end close to another street to snap a junction. Leave room away from bends and street ends for both sidewalks. Existing junctions stay connected as you edit. Hold Alt to skip endpoint snapping.</p>
     <p className="mb-3 text-xs text-slate-600">This section stays {width} m wide. Keep route points at least {width} m apart. Choose another street type for a different width.</p>
     {onUpdateDesign && <StreetDesignControls key={`${zone.id}:${zone.properties?.road_archetype_id}:${zone.properties?.road_selected_variant_id}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {onPublicConnection && <div className="mb-3 rounded-lg border border-slate-300 p-2 text-sm text-slate-800">

@@ -184,6 +184,20 @@ Treat a hard rejection against an invisible plot envelope as a classroom defect
 when the visible geometry appears clear; do not blame the student or weaken the
 authoritative envelope to make the test pass.
 
+Parks use the same bounded translation recovery as buildings, with native court
+dimensions and rotation preserved. Hardscape streets and existing entrance paths
+are obstacles for parks in preview, drag and save; only street-to-street authoring
+may deliberately overlap road envelopes to form a junction. Test a sports plot
+near a curved road, not only beside another rectangular plot.
+
+After changing a connected street's bend, body position or section, recheck the
+renderable junction patches, not just polygon contact. Live route edits clamp to
+the nearest connected position along the gesture; neighbouring routes stay put.
+Section replacements that cannot retain a working junction need recovery guidance.
+Keep existing angular, sidewalk and approach-length checks unchanged. The September
+24 Currie rehearsal caught a T that disappeared after an apparently harmless bend
+edit; its exact route is retained in `currieRehearsalStreetEdit.json`.
+
 Paid image generation needs a server-calculated preflight before the call. Show
 the selected engine, exact credits to reserve, remaining balance and number of
 calls beside the action. If the balance cannot fund the request, disable it with
@@ -614,3 +628,14 @@ an oblique editor capture. Preserve original generation inputs when recapturing
 after a visual fix. Native-size DEV asset trials on prepared ground do not prove
 student authoring or street connectivity; see the
 [Currie close-up review](CURRIE_PUBLIC_REALM_CLOSEUPS_2026-09-22.md).
+
+Run connected-edit checks against a whole site, including buildings and the
+boundary, as well as isolated road fixtures. Only road zones may enter the street
+graph. Match the renderer's actual junction surface eligibility at preview and
+save; polygon overlap alone does not establish a usable junction.
+
+Public-road ground measurements must survive asynchronous tile refinement. A
+failed measurement can retry twice after different visible geometry settles;
+unchanged or missing coverage must not trigger an unbounded loop. Keep the exact
+export gate closed until all three station samples are available. A settled UI
+loading indicator is not proof that this independent measurement has completed.

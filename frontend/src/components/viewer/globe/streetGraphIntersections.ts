@@ -148,6 +148,9 @@ function detectStreetIntersections(
   includeThreeArm: boolean,
 ): ConnectedStreetIntersection[] {
   const eligibleZones = [...zones].sort((a, b) => a.id.localeCompare(b.id)).filter((zone) => {
+    // Callers can pass a whole site (e.g. during edits). Buildings and the
+    // boundary must not acquire the default road width and obscure real nodes.
+    if (zone.zone_type !== 'road') return false;
     const native = publicRealmTrialAsset(zone);
     if (native) return native.kind === 'street' && native.dimensions[0] >= 5;
     const props = zone.properties as Record<string, unknown> | undefined;

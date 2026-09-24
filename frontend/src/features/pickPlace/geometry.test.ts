@@ -38,4 +38,12 @@ describe('pick and reshape geometry',()=>{
     expect(placementProblem(coords,[{...zone(coords),name:'Corner homes'}])).toContain('overlaps Corner homes');
     expect(placementProblem(coords,[{...zone(coords,'green_space'),properties:{pick_place_asset:'neighbourhood_park'}}])).toContain('overlaps Neighbourhood park');
   });
+  it('protects streets from park placement while allowing street-to-street junctions', () => {
+    const park = rectangleAt(center,52,39,90);
+    const road = zone(rectangleAt(center,23,150),'road','main-street');
+    expect(placementProblem(park,[road])).toContain('Leave the street and sidewalks clear');
+    expect(placementProblem(park,[road],null,undefined,{allowStreetIntersections:true})).toBeNull();
+    expect(placementProblem(road.coordinates,[zone(park,'green_space','basketball')],null,'main-street',
+      {allowStreetIntersections:true})).toContain('overlaps');
+  });
 });

@@ -29,6 +29,8 @@ import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
+import { snapConnectedStreetEdit, streetEditConnectionCheck } from '@/features/pickPlace/streetEditConnections';
+import { isAxiosError } from 'axios';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
 import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
 import type { PlacementDraft } from '@/features/pickPlace/GlobePlacementPreview';
@@ -280,9 +282,10 @@ export function ProjectViewPage() {
     if (!placementDraft || placementDraft.inputError || placementPending.current || isSaving) return;
     const degrees = placementDraft.faceStreet ? streetFacingDegrees(point, siteZones, placementDraft.degrees) : placementDraft.degrees;
     const proposed = rectangleAt(point, placementDraft.width, placementDraft.depth, degrees);
-    const { coordinates, problem } = placeAsset(placementDraft.assetId).zoneType === 'building'
-      ? snapPlacement(proposed, siteZones, getActiveSiteBoundary(siteZones),undefined,placementProperties(placeAsset(placementDraft.assetId)))
-      : {coordinates:proposed,problem:placementProblem(proposed,siteZones,getActiveSiteBoundary(siteZones))};
+    const { coordinates, problem } = snapPlacement(
+      proposed, siteZones, getActiveSiteBoundary(siteZones), undefined,
+      placementProperties(placeAsset(placementDraft.assetId)),
+    );
     if(problem) { toast.error(problem, { position: 'top-center' }); return; }
     placementPending.current = true;
     try {
@@ -297,7 +300,8 @@ export function ProjectViewPage() {
   };
   const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
     const zone = siteZones.find(item => item.id === zoneId);
-    if (zone && ['building', 'residential'].includes(zone.zone_type)) {
+    if (zone && isFixedSectionStreet(zone)) coordinates = snapConnectedStreetEdit(zone, coordinates, siteZones);
+    if (zone && ['building', 'residential', 'green_space'].includes(zone.zone_type)) {
       const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId,zone.properties);
       if (snapped.problem) return false; // Keep the previous valid location.
       coordinates = snapped.coordinates;
@@ -311,7 +315,8 @@ export function ProjectViewPage() {
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
           parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
         ?? placementProblem(footprint, siteZones,
-          publicRoadConnectionFits(zone, footprint, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
+          publicRoadConnectionFits(zone, footprint, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId,
+          { allowStreetIntersections: isFixedSectionStreet(zone) });
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
     handleZoneUpdated(zoneId, coordinates);
@@ -1063,9 +1068,10 @@ export function ProjectViewPage() {
   }, [project?.documents]);
 
   if (isLoading) return <div className="text-center text-primary-950/50">Loading project...</div>;
+  const accessUnavailable = isAxiosError(projectError) && [403, 404].includes(projectError.response?.status ?? 0);
   if (!project) return <div role="alert" className="mx-auto max-w-lg space-y-4 rounded-xl bg-white p-6 text-slate-800">
-    <h1 className="text-xl font-semibold">{projectError ? 'Your project could not load' : 'Project not found'}</h1>
-    <p>{projectError ? 'Check your connection and try again. A loading problem does not mean your saved work has been deleted.' : 'The project may have been removed or your access may have changed.'}</p>
+    <h1 className="text-xl font-semibold">{accessUnavailable ? 'This project is not available to this account' : projectError ? 'Your project could not load' : 'Project not found'}</h1>
+    <p>{accessUnavailable ? 'Your access may have changed, or the project may have been removed. Ask the owner for a new invitation or sign in with the invited account.' : projectError ? 'Check your connection and try again. A loading problem does not mean your saved work has been deleted.' : 'The project may have been removed or your access may have changed.'}</p>
     <button onClick={() => { void reloadProject(); }} className="btn-primary min-h-11">Try again</button>
     <Link to="/projects" className="ml-4 underline">Your projects</Link>
   </div>;
@@ -1129,7 +1135,7 @@ export function ProjectViewPage() {
               if (isFixedSectionStreet({zone_type:type, properties})) {
                 const problem = streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
                   parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
-                  ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
+                  ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true });
                 if (problem) { toast.error(problem, {position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);
@@ -1264,10 +1270,13 @@ export function ProjectViewPage() {
         {selectedZone && !entrancePick && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
             onUpdateDesign={data => {
-              const problem = streetRouteProblem(data.coordinates, Number(data.properties.width),
+              const problem = (!streetEditConnectionCheck(selectedZone, siteZones)({ ...selectedZone, ...data })
+                ? 'This section needs more room at an existing junction. Keep this street type or move the junction first.' : null)
+                ?? streetRouteProblem(data.coordinates, Number(data.properties.width),
                 parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)
                 ?? placementProblem(data.coordinates, siteZones,
-                  publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id);
+                  publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id,
+                  { allowStreetIntersections: true });
               if (problem) { toast.error(problem); return; }
               updateZone.mutate({ zoneId: selectedZone.id, data,
                 previousData: { coordinates: selectedZone.coordinates, properties: selectedZone.properties } });

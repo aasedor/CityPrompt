@@ -104,5 +104,5 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
       pending.length = 256;
     }
   }
-  return { coordinates, snapped: false, problem: 'There isn’t room here yet. Try a little farther away or choose a smaller building.' };
+  return { coordinates, snapped: false, problem: 'There isn’t room here yet. Try a little farther away or choose a smaller object.' };
 }

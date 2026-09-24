@@ -1,0 +1,644 @@
+{
+  "zones": [
+    {
+      "id": "main",
+      "zone_type": "road",
+      "coordinates": [
+        [
+          -114.124988136,
+          51.017612192
+        ],
+        [
+          -114.12484845,
+          51.017151306
+        ],
+        [
+          -114.124847021,
+          51.017142655
+        ],
+        [
+          -114.12484495,
+          51.01713373
+        ],
+        [
+          -114.124640623,
+          51.016712724
+        ],
+        [
+          -114.124629658,
+          51.016691781
+        ],
+        [
+          -114.124620357,
+          51.016670144
+        ],
+        [
+          -114.124612922,
+          51.016648002
+        ],
+        [
+          -114.124607459,
+          51.016625458
+        ],
+        [
+          -114.124604054,
+          51.01660263
+        ],
+        [
+          -114.124602763,
+          51.016579769
+        ],
+        [
+          -114.124598801,
+          51.016093122
+        ],
+        [
+          -114.124927224,
+          51.01609144
+        ],
+        [
+          -114.124931183,
+          51.016577848
+        ],
+        [
+          -114.124931297,
+          51.016585055
+        ],
+        [
+          -114.124931614,
+          51.016592217
+        ],
+        [
+          -114.124932183,
+          51.016599513
+        ],
+        [
+          -114.124933073,
+          51.016606993
+        ],
+        [
+          -114.124934372,
+          51.016614689
+        ],
+        [
+          -114.124936256,
+          51.01662272
+        ],
+        [
+          -114.12514062,
+          51.017043774
+        ],
+        [
+          -114.125152693,
+          51.017067079
+        ],
+        [
+          -114.125162626,
+          51.017091091
+        ],
+        [
+          -114.125302446,
+          51.017552254
+        ]
+      ],
+      "properties": {
+        "width": 23,
+        "plan_centerline": [
+          [
+            -114.12514529121657,
+            51.01758222310393
+          ],
+          [
+            -114.12500553758584,
+            51.01712119841674
+          ],
+          [
+            -114.12499985728664,
+            51.0171048670879
+          ],
+          [
+            -114.12499278538456,
+            51.017088752205694
+          ],
+          [
+            -114.1247884394384,
+            51.016667722129604
+          ],
+          [
+            -114.12478201467329,
+            51.01665323487678
+          ],
+          [
+            -114.12477671476579,
+            51.01663856859575
+          ],
+          [
+            -114.12477255219837,
+            51.01662375782884
+          ],
+          [
+            -114.12476953677475,
+            51.01660883745863
+          ],
+          [
+            -114.12476767559696,
+            51.01659384262586
+          ],
+          [
+            -114.12476697304844,
+            51.01657880864664
+          ],
+          [
+            -114.12476301223977,
+            51.01609228140144
+          ]
+        ],
+        "public_realm_lego": {
+          "kind": "street",
+          "target": {
+            "length_m": 171.206,
+            "row_width_m": 23.0,
+            "target_type": "street_segment"
+          },
+          "family_id": "street_native_student_main_street_v1",
+          "generator": "street_section",
+          "profile_id": "native-student-main-street-v1-v1",
+          "variant_id": "student_main_street_v1",
+          "recipe_hash": "e7d1108bb83ecdf70cae0918c233498c63e4bd1101fbc37e3a60e5f9a9ea4a96",
+          "archetype_id": "neighborhood_main_street",
+          "family_version": 1,
+          "schema_version": 1,
+          "terrain_policy": "terrain_drape_and_metric_assemblies",
+          "profile_version": 1,
+          "appearance_kit_id": "heritage_brick_stone",
+          "component_set_ids": [
+            "source_recipe:01b88587a564e94f0dfe62062529993096833f4846765ba304917cb3e4430d59",
+            "source_assembly:e0e34bfde671aee925a2199d2845cdd3a49e2935cac587f9d7c2b845e36e2177",
+            "reference:af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392",
+            "module_bench:996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+            "module_bike_rack:0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+            "module_bin:a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1",
+            "module_grove_tree:6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+            "module_heritage_lantern:3128c76ab7eff91eefa2421aef13d01a947408dcb3dc828a0f35146841cbebdc",
+            "module_planter:86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232",
+            "module_timber_seat_wall:921b92412fc7ad93a7910004109ab751d1d02bd476ab889b3408cd291f89b6c8",
+            "module_tree_well_grate:861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+          ],
+          "planting_structure": null,
+          "catalog_fingerprint": "194077d3d52056f1b363b373db8eb806132a37d0fe07b54901813d870e5b31b0",
+          "capability_fingerprint": "76f897718d8b7183658120e19fb0ccf924979fae780d87333ef3ed11365305ed"
+        },
+        "road_archetype_id": "neighborhood_main_street",
+        "plan_route_controls": [
+          [
+            -114.12514529121657,
+            51.01758222310393
+          ],
+          [
+            -114.12500055410186,
+            51.0171047587069
+          ],
+          [
+            -114.12476734303067,
+            51.01662425553622
+          ],
+          [
+            -114.12476301223977,
+            51.01609228140144
+          ]
+        ],
+        "road_selected_variant_id": "student_main_street_v1",
+        "pick_place_street_section": "student_main_street_v1"
+      }
+    },
+    {
+      "id": "local",
+      "zone_type": "road",
+      "coordinates": [
+        [
+          -114.124908872,
+          51.016981729
+        ],
+        [
+          -114.123838057,
+          51.016998824
+        ],
+        [
+          -114.123832261,
+          51.016855141
+        ],
+        [
+          -114.124903076,
+          51.016838046
+        ]
+      ],
+      "properties": {
+        "width": 16,
+        "plan_centerline": [
+          [
+            -114.12490597388937,
+            51.01690988763259
+          ],
+          [
+            -114.12383515865469,
+            51.016926982379246
+          ]
+        ],
+        "public_realm_lego": {
+          "kind": "street",
+          "target": {
+            "length_m": 75.175,
+            "row_width_m": 16.0,
+            "target_type": "street_segment"
+          },
+          "family_id": "street_local_public_realm",
+          "generator": "street_section",
+          "profile_id": "calgary-local-v1",
+          "variant_id": "calgary_local_v0",
+          "recipe_hash": "6195b2105b1cabe8c91473c7abb85838ea5ace3d01be47888b586a57e04580c1",
+          "archetype_id": "calgary_local",
+          "family_version": 1,
+          "schema_version": 1,
+          "terrain_policy": "terrain_drape_and_metric_assemblies",
+          "profile_version": 1,
+          "appearance_kit_id": "calgary_contemporary_native",
+          "component_set_ids": [
+            "street_metric_bands_v1",
+            "street_edges_markings_v1",
+            "public_realm_furnishings_v1"
+          ],
+          "planting_structure": null,
+          "catalog_fingerprint": "194077d3d52056f1b363b373db8eb806132a37d0fe07b54901813d870e5b31b0",
+          "capability_fingerprint": "8c38334fb0715cf955cdca241a8ce4174a68b0212100e95844668b09810f59d2"
+        },
+        "road_archetype_id": "calgary_local",
+        "road_selected_variant_id": "calgary_local_v0",
+        "pick_place_street_section": "calgary_local_v0"
+      }
+    },
+    {
+      "id": "market",
+      "zone_type": "road",
+      "coordinates": [
+        [
+          -114.125428801,
+          51.016467525
+        ],
+        [
+          -114.12476584,
+          51.016469661
+        ],
+        [
+          -114.124765012,
+          51.016307965
+        ],
+        [
+          -114.125427973,
+          51.016305829
+        ]
+      ],
+      "properties": {
+        "width": 18,
+        "plan_centerline": [
+          [
+            -114.12542838741177,
+            51.01638667705441
+          ],
+          [
+            -114.1247654262981,
+            51.016388813055656
+          ]
+        ],
+        "public_realm_lego": {
+          "kind": "street",
+          "target": {
+            "length_m": 46.561,
+            "row_width_m": 18.0,
+            "target_type": "street_segment"
+          },
+          "family_id": "street_native_student_market_street_v1",
+          "generator": "street_section",
+          "profile_id": "native-student-market-street-v1-v1",
+          "variant_id": "student_market_street_v1",
+          "recipe_hash": "d20287db9720eae3a9a87d219e1b358dc69ffa659dbbec7bd70be30347af8f4b",
+          "archetype_id": "pedestrian_only_street",
+          "family_version": 1,
+          "schema_version": 1,
+          "terrain_policy": "terrain_drape_and_metric_assemblies",
+          "profile_version": 1,
+          "appearance_kit_id": "european_cobblestone_v1",
+          "component_set_ids": [
+            "source_recipe:c7670fd29bafdcb6acf7ef095cfe78aa28a0678b47595ae958bad1c52fbb11fe",
+            "source_assembly:81f6715283b740536795300e0a7860c9757dcab77b8c4044b1ed3d99b507b88a",
+            "reference:32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee",
+            "module_bench:996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+            "module_cafe_parasol:c33eb363972b2679a0173c02628cd876c31016bc39df34be6bf345933bf4c065",
+            "module_heritage_lantern:a107d4d6c76e8f1980363eb05f369b7d258120fe6bec5c7f0832c7b33d5bd322",
+            "module_market_stall:571d1debbc930e350fd6018bb6f0d52a3e7350848b25ec4f2c04c6fb1503f33f",
+            "module_planter:86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232",
+            "module_stone_fountain:71c58dc39bbd919a77e765a84f0d60a50526dbf62000dda124ca052c12c27da3"
+          ],
+          "planting_structure": null,
+          "catalog_fingerprint": "194077d3d52056f1b363b373db8eb806132a37d0fe07b54901813d870e5b31b0",
+          "capability_fingerprint": "4f6fee28dee6e4ddf5bb288e0f89bc22646acea6646d0fb86f1062644f464bdf"
+        },
+        "road_archetype_id": "pedestrian_only_street",
+        "plan_route_controls": [
+          [
+            -114.12542838741177,
+            51.01638667705441
+          ],
+          [
+            -114.1247654262981,
+            51.016388813055656
+          ]
+        ],
+        "road_selected_variant_id": "student_market_street_v1",
+        "pick_place_street_section": "student_market_street_v1"
+      }
+    }
+  ],
+  "brokenControls": [
+    [
+      -114.12514529121657,
+      51.01758222310393
+    ],
+    [
+      -114.12503817176075,
+      51.01705564554948
+    ],
+    [
+      -114.12476734303067,
+      51.01662425553622
+    ],
+    [
+      -114.12476301223977,
+      51.01609228140144
+    ]
+  ],
+  "nonRoadZones": [
+    {
+      "id": "context-0",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.125307576,
+          51.017353007
+        ],
+        [
+          -114.125339675,
+          51.017458896
+        ],
+        [
+          -114.125564105,
+          51.017431972
+        ],
+        [
+          -114.125532006,
+          51.017326083
+        ],
+        [
+          -114.125307576,
+          51.017353007
+        ]
+      ],
+      "properties": {}
+    },
+    {
+      "id": "context-3",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.124734787,
+          51.01701262
+        ],
+        [
+          -114.124178062,
+          51.017021508
+        ],
+        [
+          -114.12419219,
+          51.017371736
+        ],
+        [
+          -114.124748915,
+          51.017362849
+        ],
+        [
+          -114.124734787,
+          51.01701262
+        ]
+      ],
+      "properties": {}
+    },
+    {
+      "id": "context-4",
+      "zone_type": "green_space",
+      "coordinates": [
+        [
+          -114.125981227,
+          51.016701804
+        ],
+        [
+          -114.125438605,
+          51.016701804
+        ],
+        [
+          -114.125438605,
+          51.017115027
+        ],
+        [
+          -114.125981227,
+          51.017115027
+        ],
+        [
+          -114.125981227,
+          51.016701804
+        ]
+      ],
+      "properties": {}
+    },
+    {
+      "id": "context-5",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.125271433,
+          51.017247715
+        ],
+        [
+          -114.125315783,
+          51.017351839
+        ],
+        [
+          -114.125536472,
+          51.017314639
+        ],
+        [
+          -114.125492122,
+          51.017210515
+        ],
+        [
+          -114.125271433,
+          51.017247715
+        ]
+      ],
+      "properties": {}
+    },
+    {
+      "id": "context-6",
+      "zone_type": "site_boundary",
+      "coordinates": [
+        [
+          -114.126192428,
+          51.017692577
+        ],
+        [
+          -114.124027146,
+          51.017816973
+        ],
+        [
+          -114.124017624,
+          51.015939646
+        ],
+        [
+          -114.125231472,
+          51.015926811
+        ],
+        [
+          -114.125565074,
+          51.016217279
+        ],
+        [
+          -114.125936069,
+          51.016517048
+        ],
+        [
+          -114.126133116,
+          51.016815036
+        ],
+        [
+          -114.126055296,
+          51.017075001
+        ],
+        [
+          -114.126244083,
+          51.017280383
+        ],
+        [
+          -114.126192428,
+          51.017692577
+        ]
+      ],
+      "properties": {}
+    },
+    {
+      "id": "context-8",
+      "zone_type": "green_space",
+      "coordinates": [
+        [
+          -114.126095683,
+          51.017338597
+        ],
+        [
+          -114.125610173,
+          51.017338597
+        ],
+        [
+          -114.125610173,
+          51.017644023
+        ],
+        [
+          -114.126095683,
+          51.017644023
+        ],
+        [
+          -114.126095683,
+          51.017338597
+        ]
+      ],
+      "properties": {}
+    },
+    {
+      "id": "context-9",
+      "zone_type": "green_space",
+      "coordinates": [
+        [
+          -114.124835293,
+          51.017416194
+        ],
+        [
+          -114.124092747,
+          51.017416194
+        ],
+        [
+          -114.124092747,
+          51.017766536
+        ],
+        [
+          -114.124835293,
+          51.017766536
+        ],
+        [
+          -114.124835293,
+          51.017416194
+        ]
+      ],
+      "properties": {}
+    },
+    {
+      "id": "context-10",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.125028328,
+          51.016687193
+        ],
+        [
+          -114.125090877,
+          51.016816066
+        ],
+        [
+          -114.125364018,
+          51.016763601
+        ],
+        [
+          -114.125301469,
+          51.016634728
+        ],
+        [
+          -114.125028328,
+          51.016687193
+        ]
+      ],
+      "properties": {}
+    },
+    {
+      "id": "context-11",
+      "zone_type": "building",
+      "coordinates": [
+        [
+          -114.124454826,
+          51.016566258
+        ],
+        [
+          -114.124453729,
+          51.016431513
+        ],
+        [
+          -114.124168145,
+          51.016432433
+        ],
+        [
+          -114.124169241,
+          51.016567178
+        ],
+        [
+          -114.124454826,
+          51.016566258
+        ]
+      ],
+      "properties": {}
+    }
+  ]
+}

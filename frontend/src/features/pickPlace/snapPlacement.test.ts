@@ -3,6 +3,7 @@ import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { placementProblem, rectangleAt, rectangleDimensions } from './geometry';
 import { snapPlacement } from './snapPlacement';
+import { bufferLineToPolygon } from '@/utils/roadGeometry';
 
 const ll = (x: number, y: number) => [-114 + x/metersPerDegLon(51),51 + y/METERS_PER_DEG_LAT];
 const zone = (id: string, coords: number[][], zone_type: SiteZone['zone_type'] = 'building') => ({id, coordinates:coords, zone_type,properties:{}} as SiteZone);
@@ -44,5 +45,18 @@ describe('ideation placement snapping',()=>{
     const coords=rectangleAt(ll(0,0),12,16),self=zone('self',coords);
     expect(snapPlacement(coords,[self],site,'self').snapped).toBe(false);
     expect(snapPlacement(coords,[],zone('tiny',rectangleAt(ll(0,0),5,5),'site_boundary')).problem).toBeTruthy();
+  });
+  it('slides a regulation park clear of a street without shrinking or rotating its court', () => {
+    const road = {...zone('main',bufferLineToPolygon([ll(0,-80),ll(0,80)],23),'road'), properties:{width:23}};
+    const park = rectangleAt(ll(27,0),52,39,90);
+    const boundary = zone('site',rectangleAt(ll(0,0),180,180),'site_boundary');
+    const result = snapPlacement(park,[road],boundary,undefined,{pick_place_asset:'park_trio_basketball'});
+    expect(result.snapped).toBe(true);
+    expect(result.problem).toBeNull();
+    expect(placementProblem(result.coordinates,[road],boundary)).toBeNull();
+    const dimensions=rectangleDimensions(result.coordinates);
+    expect(dimensions.width).toBeCloseTo(52,3);
+    expect(dimensions.depth).toBeCloseTo(39,3);
+    expect(dimensions.degrees).toBeCloseTo(90,3);
   });
 });
