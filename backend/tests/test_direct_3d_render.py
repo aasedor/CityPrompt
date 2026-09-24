@@ -4149,7 +4149,7 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0),
+        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
     )
     db = _project_preflight_db(monkeypatch)
     user = SimpleNamespace(role="admin", email="admin@example.com", id="admin")
@@ -4208,7 +4208,7 @@ async def test_success_audit_marks_provider_first_scene_final(monkeypatch):
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0),
+        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
     )
 
     response = await direct_api.generate_direct_3d_render(
@@ -4246,7 +4246,7 @@ async def test_direct_endpoint_refunds_when_provider_produces_no_image(monkeypat
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0),
+        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
     )
 
     with pytest.raises(HTTPException) as exc_info:
@@ -4289,7 +4289,7 @@ async def test_direct_endpoint_keeps_charge_and_audits_post_provider_safety_fail
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0),
+        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
     )
 
     with pytest.raises(HTTPException) as exc_info:
@@ -4335,7 +4335,7 @@ async def test_direct_endpoint_restores_student_credit_but_retains_unknown_provi
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0),
+        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
     )
 
     with pytest.raises(HTTPException) as exc_info:
@@ -4457,7 +4457,10 @@ async def test_unproduced_refund_restores_credit_and_releases_cap_tokens():
     assert user.render_credits == 100
     assert reservation.tokens_spent == 0
     assert "unbilled failure" in reservation.prompt_preview
-    db.refresh.assert_awaited_once_with(user, with_for_update=True)
+    assert reservation.student_refunded_at is not None
+    assert db.refresh.await_count == 2
+    db.refresh.assert_any_await(reservation, with_for_update=True)
+    db.refresh.assert_any_await(user, with_for_update=True)
     db.commit.assert_awaited_once()
 
 

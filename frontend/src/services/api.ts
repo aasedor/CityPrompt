@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createDirect3DAttemptClient } from './direct3DAttempts';
 import type { ImageModelAvailability, OpenAIImageModel } from '@/config/imageModels';
 import { isPublicReadRequest, shouldAttemptTokenRefresh } from './authRefreshPolicy';
 import { assetAccountIdentity, createAssetAccess, type AssetContext } from './assetAccess';
@@ -45,16 +46,15 @@ import type {
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
-// The provider read timeout is 300 seconds. Keep the browser request alive
-// through project validation, image upload, post-generation geometry gates,
-// encoding and billing/audit finalization so callers receive the endpoint's
-// structured outcome instead of retrying an ambiguously billed request.
-const DIRECT_3D_CLIENT_TIMEOUT_MS = 420_000;
-
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 15000,
+});
+
+export const direct3DAttempts = createDirect3DAttemptClient({
+  api, storage: () => localStorage,
+  account: () => assetAccountIdentity(localStorage.getItem('access_token')),
 });
 
 /**
@@ -1658,12 +1658,7 @@ export const rendersApi = {
       mask_retry_used: false;
     };
   }> => {
-    const { data } = await api.post(
-      '/api/v1/render/generate-direct-3d',
-      request,
-      { timeout: DIRECT_3D_CLIENT_TIMEOUT_MS },
-    );
-    return data;
+    return direct3DAttempts.generate(request);
   },
 
   save: async (projectId: string, render: {

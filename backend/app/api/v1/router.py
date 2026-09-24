@@ -27,6 +27,7 @@ from app.api.v1 import (
     master_plan_2d,
     render,
     direct_3d_render,
+    render_attempts,
     feedback,
     elevation,
     geocoding,
@@ -63,6 +64,7 @@ api_router.include_router(master_plan_2d.router, prefix="/master-plan-2d", tags=
 api_router.include_router(render.router, prefix="/render", tags=["AI Render"])
 api_router.include_router(video.router, prefix="/video", tags=["Video Render"])
 api_router.include_router(direct_3d_render.router, prefix="/render", tags=["Direct 3D Render"])
+api_router.include_router(render_attempts.router, prefix="/render", tags=["Direct 3D Render"])
 api_router.include_router(feedback.router, prefix="/feedback", tags=["Beta Feedback"])
 api_router.include_router(elevation.router, prefix="/elevation", tags=["Elevation"])
 api_router.include_router(geocoding.router, prefix="/geocoding", tags=["Geocoding"])

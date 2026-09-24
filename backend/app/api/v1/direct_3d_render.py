@@ -13,6 +13,8 @@ import json
 import logging
 import math
 import re
+import uuid
+from dataclasses import asdict
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
@@ -34,6 +36,8 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
 from app.models.models import Building, RenderAuditLog, SiteZone, User
+from app.models.render_attempt import RenderAttempt
+from app.services.render_attempt_storage import write_evidence
 from app.schemas.direct_3d_render import Direct3DRenderRequest, Direct3DRenderResponse, Direct3DJunctionTopology
 from app.services.community_3d_scope import (
     Community3DScopeError,
@@ -1336,10 +1340,15 @@ async def _reserve_direct_render(
     prompt: str,
     project_id,
     model: str = DIRECT_3D_MODEL,
+    attempt: RenderAttempt | None = None,
 ) -> RenderAuditLog:
     """Atomically reserve credits and a daily-cap audit row before OpenAI."""
 
     try:
+        if attempt is not None:
+            await db.refresh(attempt, with_for_update=True)
+            if attempt.status != "running" or attempt.audit_id is not None:
+                raise HTTPException(409, "This render attempt cannot dispatch again")
         if daily_cap > 0:
             # All Direct 3D requests serialize the cap check + reservation in
             # one PostgreSQL transaction. The committed reservation is then
@@ -1368,6 +1377,7 @@ async def _reserve_direct_render(
             db.add(user)
 
         reservation = RenderAuditLog(
+            id=uuid.uuid4(),
             user_id=user.id,
             user_email=user.email,
             model=model,
@@ -1376,6 +1386,12 @@ async def _reserve_direct_render(
             prompt_preview=f"[Direct 3D reserved] {prompt[:470]}",
         )
         db.add(reservation)
+        if attempt is not None:
+            # Explicit FK ordering; no ORM relationship is needed for the job.
+            # Flush is still inside the same credit/reservation transaction.
+            await db.flush()
+            attempt.audit_id = reservation.id
+            db.add(attempt)
         await db.commit()
         return reservation
     except Exception:
@@ -1391,21 +1407,8 @@ async def _refund_unproduced_direct_render(
     token_cost: int,
     detail: str,
 ) -> None:
-    """Release a reservation only when OpenAI produced no image."""
-
-    try:
-        if not is_admin_or_above(user):
-            await db.refresh(user, with_for_update=True)
-            user.render_credits += token_cost
-            db.add(user)
-        reservation.tokens_spent = 0
-        reservation.prompt_preview = f"[Direct 3D unbilled failure] {detail[:450]}"
-        db.add(reservation)
-        await db.commit()
-    except Exception:
-        await db.rollback()
-        logger.exception("Failed to refund unproduced Direct 3D reservation %s", reservation.id)
-        raise
+    """Release a known-unproduced reservation and refund the student once."""
+    await _refund_direct_reservation(db, user, reservation, unknown=False, detail=detail)
 
 
 async def _refund_unknown_direct_render(
@@ -1416,23 +1419,31 @@ async def _refund_unknown_direct_render(
     token_cost: int,
     detail: str,
 ) -> None:
-    """Restore student credits once; retain the uncertain provider cost in the cap."""
-    marker = "[Direct 3D student refunded; provider cost unknown]"
+    """Restore student credits once; retain uncertain provider cost in the cap."""
+    await _refund_direct_reservation(db, user, reservation, unknown=True, detail=detail)
+
+
+async def _refund_direct_reservation(db, user, reservation, *, unknown: bool, detail: str):
     try:
         await db.refresh(reservation, with_for_update=True)
-        if (reservation.prompt_preview or "").startswith(marker):
+        if getattr(reservation, "student_refunded_at", None) is not None:
+            await db.commit()
             return
+        # Use the server's reservation amount, never a caller-supplied refund.
         if not is_admin_or_above(user):
             await db.refresh(user, with_for_update=True)
-            user.render_credits += token_cost
+            user.render_credits += reservation.tokens_spent
             db.add(user)
-        # tokens_spent remains reserved against the global provider-spend cap.
-        reservation.prompt_preview = f"{marker} {detail[:440]}"
+        reservation.student_refunded_at = datetime.now(timezone.utc)
+        if not unknown:
+            reservation.tokens_spent = 0
+        marker = "student refunded; provider cost unknown" if unknown else "unbilled failure"
+        reservation.prompt_preview = f"[Direct 3D {marker}] {detail[:440]}"
         db.add(reservation)
         await db.commit()
     except Exception:
         await db.rollback()
-        logger.exception("Failed to restore student credits for Direct 3D %s", reservation.id)
+        logger.exception("Failed to refund Direct 3D reservation %s", reservation.id)
         raise
 
 
@@ -1487,9 +1498,23 @@ async def generate_direct_3d_render(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ) -> Direct3DRenderResponse:
-    """Render an authoritative clean 3D capture under the requested mode contract."""
+    """Compatibility route; durable-mode clients must submit an attempt."""
+    if get_settings().direct_3d_jobs_enabled:
+        raise HTTPException(409, "Submit a durable Direct 3D attempt instead")
+    return await run_direct_3d_render(req, user, db)
 
+
+async def run_direct_3d_render(
+    req: Direct3DRenderRequest,
+    user: User,
+    db: AsyncSession,
+    *,
+    attempt: RenderAttempt | None = None,
+) -> Direct3DRenderResponse:
+    """Shared validation and rendering; the worker owns a durable attempt."""
     settings = get_settings()
+    if not settings.direct_3d_images_enabled:
+        raise HTTPException(503, "AI image generation is paused. Exact 3D images remain available.")
 
     await check_project_permission(req.project_id, user, db, required="editor")
     await lock_residual_landscape_project(db, req.project_id)
@@ -1536,6 +1561,13 @@ async def generate_direct_3d_render(
         model=req.model,
     )
 
+    if attempt is not None:
+        # Storage must succeed BEFORE any credit reservation or provider call.
+        await write_evidence(attempt, "source", {
+            "snapshot": source_snapshot, "scene_revision_sha256": scene_revision_sha256,
+            "server_inventory": server_inventory,
+        })
+
     reservation = await _reserve_direct_render(
         db,
         user,
@@ -1544,6 +1576,7 @@ async def generate_direct_3d_render(
         prompt=(f"[mode={req.presentation_mode} style={req.style}] {req.prompt}"),
         project_id=req.project_id,
         model=req.model,
+        **({"attempt": attempt} if attempt is not None else {}),
     )
     try:
         result = await Direct3DRenderService(settings.openai_api_key).generate(
@@ -1553,6 +1586,16 @@ async def generate_direct_3d_render(
         )
     except Direct3DProviderError as exc:
         logger.warning("Direct 3D provider failure: %s", exc)
+        if attempt is not None:
+            try:
+                await write_evidence(attempt, "provider-error", {
+                    "billing_status": exc.billing_status, "message": str(exc),
+                    "provider_request_id": exc.provider_request_id,
+                    "provider_status_code": exc.provider_status_code,
+                    "provider_image_base64": exc.provider_image_base64,
+                })
+            except Exception:
+                logger.exception("Could not retain failed provider evidence for %s", attempt.id)
         if not exc.refund_eligible:
             status_label = "billed safety failure" if exc.billing_status == "produced" else "billing unknown"
             try:
@@ -1609,22 +1652,27 @@ async def generate_direct_3d_render(
             }
         raise HTTPException(status_code=502, detail=error_detail) from exc
     except Exception as exc:
-        await _refund_unproduced_direct_render(
-            db,
-            user,
-            reservation,
-            token_cost=token_cost,
-            detail=f"Unexpected pre-image failure: {exc}",
+        await _refund_unknown_direct_render(
+            db, user, reservation, token_cost=token_cost,
+            detail=f"Unexpected provider failure: {exc}",
         )
-        logger.exception("Unexpected Direct 3D failure before a provider image was produced")
+        logger.exception("Unexpected Direct 3D failure; provider billing is unknown")
         raise HTTPException(
             status_code=502,
             detail={
-                "code": "direct_3d_unproduced_refunded",
+                "code": "direct_3d_provider_failure_refunded",
                 "billed": False,
-                "message": "No provider image was produced; the reservation was refunded.",
+                "provider_billing_status": "unknown",
+                "message": "Your credits were restored. Provider billing is uncertain; this attempt will not retry.",
             },
         ) from exc
+
+    if attempt is not None:
+        # The paid result is durable before optional gallery/audit work. Recovery
+        # returns these exact pixels; it NEVER invokes the provider a second time.
+        await write_evidence(attempt, "provider-result", {
+            "result": asdict(result), "model": req.model,
+        })
 
     try:
         processing_mode = str(result.diagnostics.get("processing_mode", "source_anchored"))

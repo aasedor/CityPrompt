@@ -3,6 +3,7 @@ import { savedRenderNotice, savedRenderIsSource, savedRenderNeedsReview } from '
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import { useRenderDraft } from './useRenderDraft';
 import { ImagePresentationControls } from './ImagePresentationControls';
+import { RecoverImageAttempts } from './RecoverImageAttempts';
 import { ImageFidelityReview, imageFidelityStatus, type ImageFidelityStatus } from './ImageFidelityReview';
 import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice } from '@/config/imageModels';
 import { ImageModelSelect } from '../ImageModelSelect';
@@ -1232,6 +1233,7 @@ export function GlobeAIRenderPanel({
       ) : (
       <div className="min-h-0 flex-1 overflow-y-auto">
       {!result && <>
+      {projectId && <RecoverImageAttempts projectId={projectId} />}
       <ImagePresentationControls style={selectedStyle}
         onStyle={style => { setSelectedStyle(style); setDirectFidelityPolicy(resolveDirect3DFidelityPolicy(style)); }}
         isStyleDisabled={style => isRenderStyleDisabled(renderPipeline, style, hasPlacedMassing)}
