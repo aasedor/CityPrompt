@@ -7,9 +7,13 @@
  * and the manual street picker without implying executable 3D support.
  */
 
+import nativeStreets from '@/data/nativeStreetPilots.json';
+
 export const PUBLIC_REALM_STREET_FAMILY_VERSION = 1 as const;
+type NativeStreetFamilyId = 'street_native_student_main_street_v1' | 'street_native_student_market_street_v1';
 
 export type PublicRealmStreetFamilyId =
+  | NativeStreetFamilyId
   | 'street_local_public_realm'
   | 'street_complete_main_18m'
   | 'street_complete_main_22m'
@@ -81,6 +85,9 @@ export interface PublicRealmStreetSelectionDefinition {
   variantId: string;
   appearanceKitId: StreetAppearanceKitId;
   targetType: 'street_segment' | 'street_node';
+  profileId?: string;
+  rowWidthM?: number;
+  componentSetIds?: readonly string[];
 }
 
 export const STREET_APPEARANCE_KITS: Readonly<Record<StreetAppearanceKitId, StreetAppearanceKit>> = Object.freeze({
@@ -246,7 +253,20 @@ const MAIN_STREET_RENDERLOCK_CROSS_SECTION: readonly ExecutableStreetSectionBand
   { type: 'sidewalk', widthM: 2, label: 'Wide commercial sidewalk', surface: 'architectural concrete' },
 ]);
 
+function nativeFamily(id: NativeStreetFamilyId): PublicRealmStreetFamilyDefinition {
+  const street = nativeStreets.find(row => `street_native_${row.id}` === id);
+  if (!street) throw new Error(`Missing packaged native street: ${id}`);
+  const appearance: StreetAppearanceKitId = street.junctionSurface === 'cobble' ? 'european_cobblestone_v1' : 'heritage_brick_stone';
+  return { id, familyVersion: 1, label: street.title, description: 'Native-size modules along a metric street route.',
+    sourceArchetypeIds: [street.sourceArchetypeId], nativeRowM: street.widthM,
+    crossSection: street.sections.map(band => ({ type: band.name, widthM: band.width, label: band.name.replace(/_/g, ' '), surface: band.material })),
+    defaultAppearanceKitId: appearance, appearanceKitIds: [appearance], capabilities: ['rigid_modules', 'curved_route', 'shared_junctions'],
+  };
+}
+
 export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFamilyId, PublicRealmStreetFamilyDefinition>> = Object.freeze({
+  street_native_student_main_street_v1: nativeFamily('street_native_student_main_street_v1'),
+  street_native_student_market_street_v1: nativeFamily('street_native_student_market_street_v1'),
   street_local_public_realm: {
     id: 'street_local_public_realm',
     familyVersion: 1,
@@ -333,6 +353,17 @@ const explicitSelections = (
 }));
 
 export const PUBLIC_REALM_STREET_SELECTIONS: readonly PublicRealmStreetSelectionDefinition[] = Object.freeze([
+  ...nativeStreets.map(street => ({
+    familyId: `street_native_${street.id}` as NativeStreetFamilyId,
+    archetypeId: street.sourceArchetypeId, variantId: street.id,
+    appearanceKitId: (street.junctionSurface === 'cobble' ? 'european_cobblestone_v1' : 'heritage_brick_stone') as StreetAppearanceKitId,
+    targetType: 'street_segment' as const, rowWidthM: street.widthM,
+    profileId: `native-${street.id.replace(/_/g, '-')}-v1`,
+    componentSetIds: [
+      `source_recipe:${street.sourceRecipeSha256}`, `source_assembly:${street.sourceAssemblySha256}`, `reference:${street.referenceSha256}`,
+      ...Object.entries(street.modules).sort(([a], [b]) => a.localeCompare(b)).map(([kind, module]) => `module_${kind}:${module.sha256}`),
+    ],
+  })),
   {
     familyId: 'street_local_public_realm',
     archetypeId: 'calgary_local',

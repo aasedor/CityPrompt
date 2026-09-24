@@ -665,7 +665,7 @@ export function GlobeEditMode({
         : originalCoordsRef.current.map((c, i) => i === index ? [...lngLat] : [...c]);
       if (isFixedSectionStreet(zone) && !pe.altKey) {
         const line = extractCenterline(newCoords);
-        const snapped = snapStreetEndpoint(line, index, zones, zone.id);
+        const snapped = snapStreetEndpoint(line, index, zones, zone.id, streetSectionWidth(zone));
         if (snapped !== line) newCoords = bufferLineToPolygon(snapped, streetSectionWidth(zone));
       }
 

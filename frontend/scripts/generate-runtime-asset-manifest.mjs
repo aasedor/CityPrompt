@@ -6,12 +6,15 @@ import { fileURLToPath } from 'node:url';
 
 const frontendRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = resolve(frontendRoot, '..');
-const publicRoot = resolve(frontendRoot, 'public');
+const publicRoot = resolve(process.env.CITYPROMPT_PUBLIC_DIR || resolve(frontendRoot, 'public'));
 const sourceRoot = resolve(frontendRoot, 'src');
 const outputPath = resolve(sourceRoot, 'data/runtimeAssetManifest.json');
 const checkOnly = process.argv.includes('--check');
 const requireHydrated = process.argv.includes('--require-hydrated');
 const listRequiredLfsPaths = process.argv.includes('--list-required-lfs-paths');
+// For sparse checkouts, inventory tracked metadata without downloading assets.
+// --require-hydrated still fails on every absent file; this is never runtime proof.
+const trackedMetadata = process.argv.includes('--tracked-metadata');
 
 const runtimePrefixes = Object.freeze([
   '/archetypes/',
@@ -22,6 +25,7 @@ const runtimePrefixes = Object.freeze([
   '/park-kits/',
   '/landscape-pilots/',
   '/park-skins/',
+  '/street-kits/',
 ]);
 const sourceExtensions = new Set(['.html', '.js', '.json', '.ts', '.tsx']);
 // License text ships beside models; normalize it too for Windows/Linux parity.
@@ -92,33 +96,79 @@ function loadLfsIndex() {
 }
 
 const lfsIndex = loadLfsIndex();
+const trackedFiles = new Map();
+const trackedText = new Map();
+if (trackedMetadata) {
+  if (!lfsIndex.size) throw new Error('--tracked-metadata requires a usable Git LFS index.');
+  const lines = execFileSync('git', ['ls-files', '--stage', '-z', 'frontend/public'], { cwd: repoRoot, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 }).split('\0').filter(Boolean);
+  const records = lines.map(line => {
+    const [header, path] = line.split('\t');
+    return { oid: header.split(' ')[1], path, absolute: resolve(publicRoot, path.slice('frontend/public/'.length)) };
+  });
+  const sizes = execFileSync('git', ['cat-file', '--batch-check'], { cwd: repoRoot, encoding: 'utf8', input: records.map(row => row.oid).join('\n') + '\n', maxBuffer: 16 * 1024 * 1024 }).trim().split('\n');
+  records.forEach((row, index) => trackedFiles.set(row.absolute, { ...row, bytes: Number(sizes[index].split(' ')[2]) }));
+  const textRecords = records.filter(row => runtimeTextExtensions.has(extname(row.path)));
+  const blobs = execFileSync('git', ['cat-file', '--batch'], { cwd: repoRoot, input: textRecords.map(row => row.oid).join('\n') + '\n', maxBuffer: 256 * 1024 * 1024 });
+  let cursor = 0;
+  for (const row of textRecords) {
+    const end = blobs.indexOf(10, cursor);
+    const size = Number(blobs.subarray(cursor, end).toString().split(' ')[2]);
+    if (!Number.isFinite(size)) throw new Error(`Cannot read tracked text: ${row.path}`);
+    trackedText.set(row.absolute, blobs.subarray(end + 1, end + 1 + size).toString('utf8'));
+    cursor = end + 1 + size + 1;
+  }
+}
+
+function assetExists(path) {
+  return existsSync(path) || trackedFiles.has(path) || [...trackedFiles.keys()].some(file => file.startsWith(`${path}${sep}`));
+}
+function sourceText(path) {
+  return existsSync(path) ? readFileSync(path, 'utf8') : trackedText.get(path);
+}
 
 function webPath(filePath) {
   return `/${relative(publicRoot, filePath).split(sep).join('/')}`;
 }
 
 function sourcePath(filePath) {
+  const publicRelative = relative(publicRoot, filePath);
+  if (!publicRelative.startsWith(`..${sep}`) && publicRelative !== '..' && !publicRelative.includes(':')) {
+    return `public/${publicRelative.split(sep).join('/')}`;
+  }
   return relative(frontendRoot, filePath).split(sep).join('/');
 }
 
-function walkFiles(root, filter = () => true) {
+function walkFiles(root, filter = () => true, includeTracked = true) {
+  if (trackedMetadata && includeTracked) {
+    return [...new Set([...walkFiles(root, filter, false), ...[...trackedFiles.keys()].filter(path => path.startsWith(`${root}${sep}`) && filter(path))])].sort();
+  }
   if (!existsSync(root)) return [];
   const files = [];
   for (const entry of readdirSync(root, { withFileTypes: true })) {
     const path = resolve(root, entry.name);
-    if (entry.isDirectory()) files.push(...walkFiles(path, filter));
+    if (entry.isDirectory()) files.push(...walkFiles(path, filter, false));
     else if (entry.isFile() && filter(path)) files.push(path);
   }
   return files.sort();
 }
 
 function assetMetadata(filePath) {
+  if (!existsSync(filePath) && trackedFiles.has(filePath)) {
+    const tracked = trackedFiles.get(filePath);
+    const lfs = lfsIndex.get(tracked.path);
+    return lfs ? { ...lfs, hydrated: false } : {
+      logicalBytes: trackedText.has(filePath) ? Buffer.byteLength(trackedText.get(filePath).replace(/\r\n?/g, '\n'), 'utf8') : tracked.bytes,
+      lfsOid: null, hydrated: false,
+    };
+  }
   const stat = statSync(filePath);
   let pointer = null;
   if (stat.size <= 256) {
     pointer = lfsPointerPattern.exec(readFileSync(filePath, 'utf8'));
   }
-  const repoPath = relative(repoRoot, filePath).split(sep).join('/');
+  // Vite and this check may use the same external hydrated public directory.
+  // Git identities remain repository-relative, independent of its disk location.
+  const repoPath = `frontend/public/${relative(publicRoot, filePath).split(sep).join('/')}`;
   const trackedLfs = lfsIndex.get(repoPath);
   if (trackedLfs) {
     return { ...trackedLfs, hydrated: !pointer };
@@ -179,13 +229,20 @@ const sourceFiles = [
   resolve(frontendRoot, 'index.html'),
   resolve(publicRoot, 'manifest.json'),
   resolve(publicRoot, 'sw.js'),
-].filter(existsSync);
+].filter(assetExists);
 
 const references = new Map();
-const urlPattern = /\/(?:archetypes|assets|entourage|families|images|park-kits|park-skins|landscape-pilots)\/[^\s"'`<>)\]}]+/g;
+// The classroom roster also contains dynamically addressed modules. Keep its
+// explicit dependency closure even if a renderer no longer spells out a URL.
+const starterPath = resolve(sourceRoot, 'data/classroomStarter.json');
+const starter = JSON.parse(readFileSync(starterPath, 'utf8'));
+for (const dependency of starter.dependencies) {
+  if (dependency.location === 'public') references.set(`/${dependency.path}`, new Set([sourcePath(starterPath)]));
+}
+const urlPattern = /\/(?:archetypes|assets|entourage|families|images|park-kits|park-skins|landscape-pilots|street-kits)\/[^\s"'`<>)\]}]+/g;
 for (const filePath of sourceFiles) {
   if (catalogPaths.has(filePath)) continue;
-  const text = readFileSync(filePath, 'utf8');
+  const text = sourceText(filePath);
   for (const rawMatch of text.matchAll(urlPattern)) {
     if (rawMatch.index > 0 && text[rawMatch.index - 1] === '@') continue;
     const url = rawMatch[0].replace(/[.,;:]+$/, '').split(/[?#]/, 1)[0];
@@ -234,11 +291,11 @@ let unhydratedRequiredCount = 0;
 
 for (const [url, sources] of [...references].sort(([left], [right]) => compareText(left, right))) {
   const filePath = resolve(publicRoot, url.replace(/^\/+/, ''));
-  if (!existsSync(filePath)) {
+  if (!assetExists(filePath)) {
     missingReferences.push({ url, sources: [...sources].sort() });
     continue;
   }
-  if (statSync(filePath).isDirectory()) {
+  if (existsSync(filePath) ? statSync(filePath).isDirectory() : !trackedFiles.has(filePath)) {
     directoryReferences.push({ url, sources: [...sources].sort() });
     continue;
   }
@@ -314,16 +371,25 @@ const collections = [
     'Published cinema, teaching garden and concert lawn modules selected by the adaptive park renderer.',
     (path) => path.endsWith('.glb'),
   ),
+  summarizeCollection(
+    'native-street-modules',
+    ['/street-kits/pilots/'],
+    'Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.',
+  ),
+  summarizeCollection(
+    'sports-park-modules',
+    ['/landscape-pilots/sports-parks-v1/'],
+    'Sports equipment including the classroom basketball court is selected dynamically by park programme.',
+    (path) => path.endsWith('.glb'),
+  ),
 ];
 
 const allRuntimeFiles = runtimePrefixes.flatMap((prefix) => (
   walkFiles(resolve(publicRoot, prefix.replace(/^\/+|\/+$/g, '')))
 )).map(webPath).sort();
 const unclassifiedPaths = allRuntimeFiles.filter((path) => !claimedPaths.has(path));
-const allFamilyDirectories = readdirSync(resolve(publicRoot, 'families'), { withFileTypes: true })
-  .filter((entry) => entry.isDirectory())
-  .map((entry) => entry.name)
-  .sort();
+const allFamilyDirectories = [...new Set(walkFiles(resolve(publicRoot, 'families'))
+  .map(path => relative(resolve(publicRoot, 'families'), path).split(sep)[0]))].sort();
 
 const manifest = {
   schema: 'cityprompt.runtime-assets@1',
@@ -358,11 +424,11 @@ if (missingReferences.length > 0) {
   for (const path of [...claimedPaths].sort()) {
     const filePath = resolve(publicRoot, path.replace(/^\/+/, ''));
     if (assetMetadata(filePath).lfsOid) {
-      console.log(relative(repoRoot, filePath).split(sep).join('/'));
+      console.log(`frontend/public/${relative(publicRoot, filePath).split(sep).join('/')}`);
     }
   }
 } else if (requireHydrated && unhydratedRequiredCount > 0) {
-  console.error(`Runtime assets are not hydrated: ${unhydratedRequiredCount} required Git LFS pointer file(s) remain.`);
+  console.error(`Runtime assets are not hydrated: ${unhydratedRequiredCount} required file(s) are missing or remain Git LFS pointers.`);
   process.exitCode = 1;
 } else if (checkOnly) {
   const currentManifest = existsSync(outputPath)
@@ -384,12 +450,12 @@ if (missingReferences.length > 0) {
     }
     process.exitCode = 1;
   } else {
-    console.log(`Verified ${claimedPaths.size} required runtime files; manifest is current.`);
+    console.log(`Verified ${claimedPaths.size} required runtime file records; manifest is current.${trackedMetadata ? ' Tracked metadata only; run --require-hydrated on the release package.' : ''}`);
   }
 } else {
   writeFileSync(outputPath, serialized, 'utf8');
   console.log(`Recorded ${claimedPaths.size} required runtime files and ${unclassifiedPaths.length} cleanup candidates.`);
   if (unhydratedRequiredCount > 0) {
-    console.warn(`${unhydratedRequiredCount} required files are Git LFS pointers in this checkout; run git lfs pull before release verification.`);
+    console.warn(`${unhydratedRequiredCount} required files are missing or Git LFS pointers in this checkout; hydrate the release package before release verification.`);
   }
 }

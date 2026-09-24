@@ -62,6 +62,7 @@
     "src/components/viewer/globe/GlobeMeadowFurniture.tsx",
     "src/components/viewer/globe/GlobeMeadowVegetation.tsx",
     "src/components/viewer/globe/GlobeModelSelectionOutline.tsx",
+    "src/components/viewer/globe/GlobeNativeStreetPilotModules.tsx",
     "src/components/viewer/globe/GlobeNeighborhoodParkPilot.tsx",
     "src/components/viewer/globe/GlobeNeighborhoodParkV0StickerAssembly.tsx",
     "src/components/viewer/globe/GlobeParkBatch5Assembly.tsx",
@@ -120,6 +121,9 @@
     "src/components/viewer/globe/modelAssetAvailability.ts",
     "src/components/viewer/globe/modelMaterialQuality.ts",
     "src/components/viewer/globe/modelRenderZones.ts",
+    "src/components/viewer/globe/nativeStreetJunction.ts",
+    "src/components/viewer/globe/nativeStreetModelTrim.ts",
+    "src/components/viewer/globe/nativeStreetPilot.ts",
     "src/components/viewer/globe/neighborhoodParkGeometry.ts",
     "src/components/viewer/globe/neighborhoodParkLayout.ts",
     "src/components/viewer/globe/parkAccessBridgeGeometry.ts",
@@ -220,8 +224,10 @@
     "src/data/archetypeShadeMap.ts",
     "src/data/archetypeVisualSystem.json",
     "src/data/buildingArchetypes.json",
+    "src/data/classroomStarter.json",
     "src/data/landUseColours.ts",
     "src/data/legoFamilySignatures.json",
+    "src/data/nativeStreetPilots.json",
     "src/data/neighborhoodParkV0StickerKit.json",
     "src/data/openSpaceArchetypes.json",
     "src/data/parkKitManifest.ts",
@@ -372,6 +378,7 @@
     "src/types/index.ts",
     "src/utils/coordTransform.ts",
     "src/utils/domEvents.ts",
+    "src/utils/downloadDataImage.ts",
     "src/utils/proceduralRoadNetwork.ts",
     "src/utils/projectWriteQueue.ts",
     "src/utils/renderPersistence.ts",
@@ -380,13 +387,14 @@
     "src/utils/seededRandom.ts",
     "src/utils/sessionReset.ts",
     "src/utils/siteBoundary.ts",
+    "src/utils/streetRouteCurves.ts",
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2610,
-    "dynamicCollectionCount": 5,
-    "requiredFileCount": 4461,
-    "requiredLogicalBytes": 11214776137,
+    "explicitReferenceCount": 2643,
+    "dynamicCollectionCount": 7,
+    "requiredFileCount": 4480,
+    "requiredLogicalBytes": 11230923714,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -1925,6 +1933,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/classroomStarter.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1331259,
@@ -2070,6 +2079,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/classroomStarter.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1514720,
@@ -2098,6 +2108,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/classroomStarter.json",
         "src/features/pickPlace/assetRegistry.ts"
       ],
       "logicalBytes": 1399202,
@@ -10247,6 +10258,7 @@
       "url": "/archetypes/openspaces/basketball-court/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/classroomStarter.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1407609,
@@ -12893,6 +12905,7 @@
       "url": "/archetypes/openspaces/neighborhood-park/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/classroomStarter.json",
         "src/data/neighborhoodParkV0StickerKit.json",
         "src/data/openSpaceArchetypes.json",
         "src/features/pickPlace/assetRegistry.ts"
@@ -13839,6 +13852,7 @@
       "sources": [
         "src/components/viewer/globe/parkTrioLayout.ts",
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/classroomStarter.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1557500,
@@ -16792,6 +16806,7 @@
       "url": "/archetypes/streets/calgary-local/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/classroomStarter.json",
         "src/data/streetPathArchetypes.json",
         "src/features/pickPlace/assetRegistry.ts"
       ],
@@ -23304,12 +23319,123 @@
       "logicalBytes": 3042304
     },
     {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/FOLIAGE_LICENSE.txt",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 1073
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/boulders.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 357708,
+      "lfsOid": "b4ddd1de1e18d549a7e55984caa34efaba00929910bacf17f1f6d1fa91f53bef"
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/gable-pavilion.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 735852,
+      "lfsOid": "f66bbf5c2355e911bdf1f4f0a5b0f6e685a3b0d6ebec5c58159c383e2f67c4ad"
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/manifest.json",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 5552
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/oak-0.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 522732,
+      "lfsOid": "1ad88f57ec42fd7c016c559a6b924dd066c78c2495ca3bb8b6a616d2f587e7df"
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/oak-1.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 518952,
+      "lfsOid": "dcf6f2eb9a03f8ea785c023f8636e272080a81d7aeff56ba03940a74725c19bc"
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/oak-2.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 527916,
+      "lfsOid": "2bc81800969aa53c872490238753eae0de60aead63b0bd6a085860736163fc0c"
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/split-rail.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 363148,
+      "lfsOid": "ccd7da27ace4645cf81b83b174457bbab6757eeac070ba1a189b11dfaee7d18d"
+    },
+    {
       "url": "/landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
       "sources": [
-        "src/components/viewer/globe/GlobeParkTrioPilot.tsx"
+        "src/components/viewer/globe/GlobeParkTrioPilot.tsx",
+        "src/data/classroomStarter.json"
       ],
       "logicalBytes": 698344,
       "lfsOid": "71a4a5b0850c9b5fa34e370b1a2f9540ff6c39d635de780ac655e32e2c9fe8bc"
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/timber-play-tower.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 424388,
+      "lfsOid": "97b717873a30d94c77612392a2560bd707ffabd88a2b4485117a561b23f28dd9"
+    },
+    {
+      "url": "/landscape-pilots/neighborhood-rustic-v5/timber-swing.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 573684,
+      "lfsOid": "000dc4c20e312c638597175d7f624a41f738f6df8695e4cf09108253b6a95e77"
+    },
+    {
+      "url": "/landscape-pilots/park-trio-v3/garden/bed.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 187452,
+      "lfsOid": "4b09f0057c7801bc8670a8a906637a958f56077f37eea285a27610ac1fc26f14"
+    },
+    {
+      "url": "/landscape-pilots/park-trio-v3/garden/label.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 11112,
+      "lfsOid": "f57d7872dc1e4875fb537efa71914845006f24f46343106582ca4ee4ac4bbfc3"
+    },
+    {
+      "url": "/landscape-pilots/park-trio-v3/garden/shelter.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 934296,
+      "lfsOid": "afb3b54313a833b11e654a36945def5b52472808f31e20716bed3e151f163c39"
+    },
+    {
+      "url": "/landscape-pilots/sports-parks-v1/basketball/court.glb",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 675884,
+      "lfsOid": "d63ebe52565957885f8287a2ffd61a4b6f2fb5299d9dfec25aa1384a10d3bccb"
     },
     {
       "url": "/park-kits/neighborhood-park-rustic-v0/natural-boulder-group.glb",
@@ -23350,6 +23476,174 @@
       ],
       "logicalBytes": 580196,
       "lfsOid": "59e624cfd7b8c0e0cf7724832ee12942ca2051cb2277503f1c0a0a6a0683fc46"
+    },
+    {
+      "url": "/park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/albedo.jpg",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 23236,
+      "lfsOid": "ce174730a611715222c0eb116e88bd4c281896741b9bd095499ada3343392e02"
+    },
+    {
+      "url": "/park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/albedo.jpg",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 24715,
+      "lfsOid": "b3ff5aff718793a6b3259ed19c3259c635301d403edfa0b710c2b30cd32094a3"
+    },
+    {
+      "url": "/park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/albedo.jpg",
+      "sources": [
+        "src/data/classroomStarter.json"
+      ],
+      "logicalBytes": 17381,
+      "lfsOid": "2975ceb8144fa8083dffe83ab3e9935542bfbeb9da8ec94eebcc726cae8f03c8"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/bench.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 34024,
+      "lfsOid": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/bike_rack.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 96964,
+      "lfsOid": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/bin.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 80532,
+      "lfsOid": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/grove_tree.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1287628,
+      "lfsOid": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/heritage_lantern.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 17096,
+      "lfsOid": "3128c76ab7eff91eefa2421aef13d01a947408dcb3dc828a0f35146841cbebdc"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/planter.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 131616,
+      "lfsOid": "86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/reference.png",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 985092,
+      "lfsOid": "af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 18172,
+      "lfsOid": "921b92412fc7ad93a7910004109ab751d1d02bd476ab889b3408cd291f89b6c8"
+    },
+    {
+      "url": "/street-kits/pilots/student_main_street_v1/tree_well_grate.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 95608,
+      "lfsOid": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+    },
+    {
+      "url": "/street-kits/pilots/student_market_street_v1/bench.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 34024,
+      "lfsOid": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+    },
+    {
+      "url": "/street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 60388,
+      "lfsOid": "c33eb363972b2679a0173c02628cd876c31016bc39df34be6bf345933bf4c065"
+    },
+    {
+      "url": "/street-kits/pilots/student_market_street_v1/heritage_lantern.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 17092,
+      "lfsOid": "a107d4d6c76e8f1980363eb05f369b7d258120fe6bec5c7f0832c7b33d5bd322"
+    },
+    {
+      "url": "/street-kits/pilots/student_market_street_v1/market_stall.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 47684,
+      "lfsOid": "571d1debbc930e350fd6018bb6f0d52a3e7350848b25ec4f2c04c6fb1503f33f"
+    },
+    {
+      "url": "/street-kits/pilots/student_market_street_v1/planter.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 131616,
+      "lfsOid": "86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232"
+    },
+    {
+      "url": "/street-kits/pilots/student_market_street_v1/reference.png",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1172072,
+      "lfsOid": "32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee"
+    },
+    {
+      "url": "/street-kits/pilots/student_market_street_v1/stone_fountain.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 115904,
+      "lfsOid": "71c58dc39bbd919a77e765a84f0d60a50526dbf62000dda124ca052c12c27da3"
     }
   ],
   "directoryReferences": [
@@ -23544,11 +23838,31 @@
       "fileCount": 7,
       "logicalBytes": 3837824,
       "pathDigest": "4284fcb5070dedde6ab09ccbb174bcee161813f4ecfecbf3ecbac654daecdd03"
+    },
+    {
+      "name": "native-street-modules",
+      "roots": [
+        "/street-kits/pilots/"
+      ],
+      "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
+      "fileCount": 16,
+      "logicalBytes": 4325512,
+      "pathDigest": "4a511659b28ae33ae57affb4d0bcaf793f2c7c16a697db9db040f0670937b931"
+    },
+    {
+      "name": "sports-park-modules",
+      "roots": [
+        "/landscape-pilots/sports-parks-v1/"
+      ],
+      "reason": "Sports equipment including the classroom basketball court is selected dynamically by park programme.",
+      "fileCount": 3,
+      "logicalBytes": 1591472,
+      "pathDigest": "7810637a0bbc6d46ca41576ee2bb191c8810b08b949bacefd6840ac02e09ab00"
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21358,
-    "unclassifiedRuntimePathDigest": "1a1f8a5bc0591272d440352e66f77821f6a9b6da4a87ce0b3a8235315a06f053",
+    "unclassifiedRuntimeFileCount": 21355,
+    "unclassifiedRuntimePathDigest": "768e400f095808f86e4d45e17227247c36cb2cb9f039dd898f8fa10d414e89bb",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",
@@ -23664,8 +23978,68 @@
       "market-historic-iron-glass-v98-canonical",
       "modern-glass-office-institutional",
       "modernist-civic-block",
+      "multifamily-piece1-contemporary-timber-glass-midrise-comparison.jpg",
       "toronto-junction-printing-press",
-      "victorian-heritage-second-empire"
+      "victorian-heritage-second-empire",
+      "wave10-aquatic-comparison.jpg",
+      "wave10-corten-library-comparison.jpg",
+      "wave10-courtyard-pilot-comparison.jpg",
+      "wave10-daylight-factory-comparison.jpg",
+      "wave10-fire-station-comparison.jpg",
+      "wave10-gas-station-comparison.jpg",
+      "wave10-hospital-comparison.jpg",
+      "wave10-motor-inn-comparison.jpg",
+      "wave10-retail-strip-comparison.jpg",
+      "wave10-school-comparison.jpg",
+      "wave10-townhome-comparison.jpg",
+      "wave11-autonomous-tech-campus-silicon-valley-comparison.jpg",
+      "wave11-coastal-mediterranean-resort-comparison.jpg",
+      "wave11-skyline-glass-office-cluster-comparison.jpg",
+      "wave12-cable-stayed-airport-terminal-comparison.jpg",
+      "wave12-collegiate-gothic-gatehouse-comparison.jpg",
+      "wave12-vertical-forest-residential-comparison.jpg",
+      "wave13-art-deco-cream-terracotta-tower-comparison.jpg",
+      "wave13-mid-century-glass-steel-pavilion-comparison.jpg",
+      "wave13-passive-house-timber-block-comparison.jpg",
+      "wave13-restored-kyoto-machiya-comparison.jpg",
+      "wave13-timber-glass-transit-station-block-comparison.jpg",
+      "wave14-art-deco-black-chrome-tower-comparison.jpg",
+      "wave14-art-deco-polychrome-zigzag-tower-comparison.jpg",
+      "wave14-dark-frame-clear-glass-office-comparison.jpg",
+      "wave14-egyptian-revival-theater-comparison.jpg",
+      "wave14-mass-timber-glass-office-comparison.jpg",
+      "wave14-mid-century-white-brise-soleil-pavilion-comparison.jpg",
+      "wave14-mid-century-wood-stone-pavilion-comparison.jpg",
+      "wave14-modern-black-screen-machiya-comparison.jpg",
+      "wave14-red-machiya-cafe-gallery-comparison.jpg",
+      "wave14-streamline-moderne-theater-comparison.jpg",
+      "wave14-variant-overview.jpg",
+      "wave15-bronze-curve-concert-hall-comparison.jpg",
+      "wave15-copenhill-ski-slope-energy-plant-comparison.jpg",
+      "wave15-deconstructivist-concrete-fire-station-comparison.jpg",
+      "wave15-glass-greenhouse-vertical-farm-comparison.jpg",
+      "wave15-historic-iron-glass-market-comparison.jpg",
+      "wave15-monumental-silo-cluster-comparison.jpg",
+      "wave15-parametric-wave-natatorium-comparison.jpg",
+      "wave15-program-diversity-overview.jpg",
+      "wave15-second-empire-clocktower-city-hall-comparison.jpg",
+      "wave15-steel-rib-intermodal-hub-comparison.jpg",
+      "wave15-titanium-fold-art-museum-comparison.jpg",
+      "wave16-classic-corner-bodega-mixed-use-comparison.jpg",
+      "wave16-classic-everyday-overview.jpg",
+      "wave16-classic-everyday-review.html",
+      "wave16-classic-neighbourhood-strip-mall-comparison.jpg",
+      "wave16-craftsman-brick-bungalow-comparison.jpg",
+      "wave16-midcentury-balcony-apartment-slab-comparison.jpg",
+      "wave16-new-law-brick-walkup-comparison.jpg",
+      "wave16-plateau-stone-montreal-duplex-comparison.jpg",
+      "wave16-provincial-brick-neighbourhood-school-comparison.jpg",
+      "wave16-red-brick-edwardian-foursquare-comparison.jpg",
+      "wave16-tilt-up-light-industrial-workshop-comparison.jpg",
+      "wave16-victorian-brick-rowhouse-terrace-comparison.jpg",
+      "wave6-nonresidential-comparison.jpg",
+      "wave8-reference-buildings-comparison.jpg",
+      "wave9-single-family-comparison.jpg"
     ]
   }
 }

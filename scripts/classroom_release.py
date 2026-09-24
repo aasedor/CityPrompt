@@ -19,6 +19,7 @@ COPIES = (
     Path("frontend/src/data/classroomStarter.json"),
     Path("backend/app/data/classroomStarter.json"),
 )
+COMPANIONS = ((Path("frontend/src/data/nativeStreetPilots.json"), Path("backend/app/data/nativeStreetPilots.json")),)
 SHA = re.compile(r"[0-9a-f]{64}")
 LFS = b"version https://git-lfs.github.com/spec/v1"
 
@@ -66,8 +67,12 @@ def canonical(manifest: dict) -> str:
 
 def check_copies(manifest: dict, root: Path) -> list[str]:
     expected = canonical(manifest)
-    return [f"Stale or missing generated copy: {path.as_posix()}" for path in COPIES
+    errors = [f"Stale or missing generated copy: {path.as_posix()}" for path in COPIES
             if not (root / path).is_file() or (root / path).read_text(encoding="utf-8") != expected]
+    for source, target in COMPANIONS:
+        if not (root / target).is_file() or (root / source).read_text(encoding="utf-8") != (root / target).read_text(encoding="utf-8"):
+            errors.append(f"Stale or missing generated copy: {target.as_posix()}")
+    return errors
 
 
 def inspect_dependency(dep: dict, *, root: Path, public_root: Path, artifact_root: Path | None) -> dict:
@@ -107,6 +112,8 @@ def main() -> int:
         for copy in COPIES:
             (ROOT / copy).parent.mkdir(parents=True, exist_ok=True)
             (ROOT / copy).write_text(canonical(manifest), encoding="utf-8", newline="\n")
+        for source, target in COMPANIONS:
+            (ROOT / target).write_text((ROOT / source).read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
     errors.extend(check_copies(manifest, ROOT))
     results = []
     if args.command == "preflight":

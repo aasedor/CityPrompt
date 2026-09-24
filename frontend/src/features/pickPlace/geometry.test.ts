@@ -15,7 +15,7 @@ describe('pick and reshape geometry',()=>{
     const coords=rectangleAt(center,36,16,35),fixed=coords[(corner+2)%4];
     const resized=resizeRectangleCorner(coords,corner,fixed,placeAsset('infill_home'));
     const d=rectangleDimensions(resized);
-    expect(d.width).toBeCloseTo(12,3);expect(d.depth).toBeCloseTo(15,3);
+    expect(d.width).toBeCloseTo(12,3);expect(d.depth).toBeCloseTo(16,3);
     expect(d.degrees).toBeCloseTo(35,3);
     expect(resized[(corner+2)%4][0]).toBeCloseTo(fixed[0],8);
     expect(resized[(corner+2)%4][1]).toBeCloseTo(fixed[1],8);

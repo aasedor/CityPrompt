@@ -22,11 +22,15 @@ def _frontend_variants(filename: str) -> dict[str, tuple[str, ...]]:
 def test_backend_public_realm_trust_index_matches_all_frontend_parents_and_variants():
     generated = public_realm_catalog_variants()
     assert generated["park"] == _frontend_variants("openSpaceArchetypes.json")
-    assert generated["street"] == _frontend_variants("streetPathArchetypes.json")
+    streets = _frontend_variants("streetPathArchetypes.json")
+    native = Path(__file__).resolve().parents[2] / "frontend/src/data/nativeStreetPilots.json"
+    for row in json.loads(native.read_text(encoding="utf-8")):
+        streets[row["sourceArchetypeId"]] = tuple(sorted((*streets[row["sourceArchetypeId"]], row["id"])))
+    assert generated["street"] == streets
     assert len(generated["park"]) == 130
     assert sum(map(len, generated["park"].values())) == 520
     assert len(generated["street"]) == 115
-    assert sum(map(len, generated["street"].values())) == 355
+    assert sum(map(len, generated["street"].values())) == 357
 
 
 def test_family_pending_identity_accepts_known_unbuilt_catalogue_ids_and_exact_variants():

@@ -111,12 +111,13 @@ describe('strict Public Realm LEGO street recipe validation', () => {
     for (const selection of PUBLIC_REALM_STREET_SELECTIONS) {
       const target = selection.targetType === 'street_node'
         ? { target_type: 'street_node', approach_row_width_m: 22, diameter_m: 28, arm_count: 4 }
-        : { target_type: 'street_segment', row_width_m: 10, length_m: 80 };
+        : { target_type: 'street_segment', row_width_m: selection.rowWidthM ?? 10, length_m: 80 };
       const result = validatePublicRealmStreetRecipe(recipe({
         family_id: selection.familyId,
         archetype_id: selection.archetypeId,
         variant_id: selection.variantId,
         appearance_kit_id: selection.appearanceKitId,
+        ...(selection.componentSetIds ? { component_set_ids: selection.componentSetIds, profile_id: selection.profileId } : {}),
         target,
       }));
       expect(result, `${selection.familyId}/${selection.variantId}`).toMatchObject({ valid: true });

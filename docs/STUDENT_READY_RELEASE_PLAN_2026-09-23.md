@@ -245,8 +245,8 @@ exercise does not activate an unapproved family or grant construction compliance
 
 | Milestone | Current status | Exit evidence |
 | --- | --- | --- |
-| 1. Baseline and roster | Asset baseline verified locally; broader deployment manifest work pending | 185/185 assembly tests after restoring 65 tracked manifests; exact nine-variant roster and 47 byte-locked dependencies; local preflight 47/47 |
-| 2. Shared runtime behaviour | Partially demonstrated | Shared route/junction work exists; native catalogue pilots still pending |
+| 1. Baseline and roster | Asset baseline and deployment inventory implemented locally | 185/185 assembly tests after restoring 65 tracked manifests; exact nine-variant roster and 47 byte-locked dependencies; local preflight 47/47; full inventory distinguishes metadata from hydration |
+| 2. Shared runtime behaviour | Starter integration implemented; final acceptance partial | Native street backend/production renderer, individual homes, exact entrance revisions, starter picker; live Main/Market route check; [checkpoint](CLASSROOM_STARTER_RUNTIME_2026-09-23.md) |
 | 3. Authoring/recovery | Partially demonstrated | September 22/23 local trials; release roster and regular-browser run pending |
 | 4. Presentation | Partially demonstrated | Edge exact PNG; faithful AI comparison remains open |
 | 5. Classroom deployment | Unverified against current release | Local asset repair is not deployment evidence |

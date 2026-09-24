@@ -586,6 +586,15 @@ editable route controls separately from sampled surface stations. The
 [curved-street checkpoint](STREET_CURVE_GEOMETRY_2026-09-23.md) records the
 source guidance, visual pilot and remaining Currie acceptance gate.
 
+Native street deliveries must also enter the backend catalogue and emit a
+production-valid saved recipe with profile/revision/module locks. A DEV pilot
+marker is not runtime integration. Verify unchanged Apply in the street editor:
+the exact variant and metric width must survive. Exercise angled T/X joins,
+short terminal arms and sampled curves; endpoint clearance depends on both
+street widths. Never draw standalone legacy crossing overlays when a section
+junction's owned surface is unresolved. Keep unsupported joins visible as open
+limitations. See [starter integration](CLASSROOM_STARTER_RUNTIME_2026-09-23.md).
+
 Keep sky colour separate from missing terrestrial context. A grass fallback
 must be non-pickable ground/context geometry, never the global scene background
 or a source of terrain/support samples. Verify sky and ground simultaneously in

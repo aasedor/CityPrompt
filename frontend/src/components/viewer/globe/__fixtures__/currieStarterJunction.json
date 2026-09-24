@@ -1,0 +1,512 @@
+[
+  {
+    "id": "currie-street-0",
+    "zone_type": "road",
+    "coordinates": [
+      [
+        -114.123825874,
+        51.016230818
+      ],
+      [
+        -114.125855766,
+        51.016233498
+      ],
+      [
+        -114.125855287,
+        51.016377228
+      ],
+      [
+        -114.123825395,
+        51.016374548
+      ]
+    ],
+    "properties": {
+      "width": 16,
+      "volume": "low",
+      "sidewalks": "both",
+      "lane_count": 2,
+      "community_3d": {
+        "kind": "street",
+        "state": "compiled",
+        "generator": "street_section",
+        "compiled_at": "2026-09-23T23:56:40.353267+00:00",
+        "source_hash": "0a0328e0ff98b2557557ee6336f9a7e0b753e607dd8a7a4de6f747b87b5aee8c",
+        "schema_version": 1,
+        "representation_hash": "728cde30312980d37900cfed8b384a9027fa78440fce984d89c74bce22a7f21b"
+      },
+      "road_surface": "asphalt",
+      "has_sidewalks": true,
+      "priority_auto": 1,
+      "plan_centerline": [
+        [
+          -114.1238256345568,
+          51.01630268323563
+        ],
+        [
+          -114.12585552664186,
+          51.01630536307796
+        ]
+      ],
+      "transport_modes": [
+        "walking",
+        "automobile"
+      ],
+      "mobility_profile": "balanced",
+      "priority_cycling": 4,
+      "priority_transit": 4,
+      "public_realm_lego": {
+        "kind": "street",
+        "target": {
+          "length_m": 142.458,
+          "row_width_m": 16.0,
+          "target_type": "street_segment"
+        },
+        "family_id": "street_local_public_realm",
+        "generator": "street_section",
+        "profile_id": "calgary-local-v1",
+        "variant_id": "calgary_local_v0",
+        "recipe_hash": "f4cfa967d31b2366257295d6002fe221a70704d6d2f8e14216b2df5c3290b778",
+        "archetype_id": "calgary_local",
+        "family_version": 1,
+        "schema_version": 1,
+        "terrain_policy": "terrain_drape_and_metric_assemblies",
+        "profile_version": 1,
+        "appearance_kit_id": "calgary_contemporary_native",
+        "component_set_ids": [
+          "street_metric_bands_v1",
+          "street_edges_markings_v1",
+          "public_realm_furnishings_v1"
+        ],
+        "planting_structure": null,
+        "catalog_fingerprint": "194077d3d52056f1b363b373db8eb806132a37d0fe07b54901813d870e5b31b0",
+        "capability_fingerprint": "8c38334fb0715cf955cdca241a8ce4174a68b0212100e95844668b09810f59d2"
+      },
+      "road_archetype_id": "calgary_local",
+      "priority_pedestrian": 2,
+      "terrain_elevation_m": 1100.7952789558599,
+      "connect_to_public_road": true,
+      "road_standard_citation": "Street Manual Draft 4.0, Figure 2",
+      "pick_place_automatic_3d": true,
+      "road_selected_variant_id": "calgary_local_v0",
+      "pick_place_street_section": "calgary_local_v0",
+      "pick_place_definition_version": 1,
+      "community_3d_mask_existing_tiles": true
+    }
+  },
+  {
+    "id": "currie-street-1",
+    "zone_type": "road",
+    "coordinates": [
+      [
+        -114.125470357,
+        51.017550791
+      ],
+      [
+        -114.125006663,
+        51.017576676
+      ],
+      [
+        -114.124976001,
+        51.017577808
+      ],
+      [
+        -114.124945159,
+        51.017578006
+      ],
+      [
+        -114.124914452,
+        51.017577267
+      ],
+      [
+        -114.124362556,
+        51.017554057
+      ],
+      [
+        -114.124376357,
+        51.017347628
+      ],
+      [
+        -114.124928017,
+        51.017370832
+      ],
+      [
+        -114.124948258,
+        51.017371403
+      ],
+      [
+        -114.124968405,
+        51.017371252
+      ],
+      [
+        -114.124988634,
+        51.017370376
+      ],
+      [
+        -114.125452049,
+        51.017344501
+      ]
+    ],
+    "properties": {
+      "width": 23,
+      "community_3d": {
+        "kind": "street",
+        "state": "compiled",
+        "generator": "street_section",
+        "compiled_at": "2026-09-23T23:56:40.353267+00:00",
+        "source_hash": "97b19d32148891b3a8baf5f9a177b39573332121c09d77e139ebfdffa4517cb2",
+        "schema_version": 1,
+        "representation_hash": "10ac7ff1c9f295ac4f4e6589e211f17f81f05de5ac14800e25ab7867a32a7653"
+      },
+      "plan_centerline": [
+        [
+          -114.12546120331265,
+          51.01744764580203
+        ],
+        [
+          -114.12499764855151,
+          51.01747352619989
+        ],
+        [
+          -114.12497220293294,
+          51.01747453018209
+        ],
+        [
+          -114.12494670882381,
+          51.017474704679195
+        ],
+        [
+          -114.12492123450454,
+          51.01747404922384
+        ],
+        [
+          -114.12436945628478,
+          51.01745084240909
+        ]
+      ],
+      "public_realm_lego": {
+        "kind": "street",
+        "target": {
+          "length_m": 77.744,
+          "row_width_m": 23.0,
+          "target_type": "street_segment"
+        },
+        "family_id": "street_native_student_main_street_v1",
+        "generator": "street_section",
+        "profile_id": "native-student-main-street-v1-v1",
+        "variant_id": "student_main_street_v1",
+        "recipe_hash": "ef01995bf1f9ff26ac6eb583bffd7225ecbbfcc4c75e786537a22c09a72a1f64",
+        "archetype_id": "neighborhood_main_street",
+        "family_version": 1,
+        "schema_version": 1,
+        "terrain_policy": "terrain_drape_and_metric_assemblies",
+        "profile_version": 1,
+        "appearance_kit_id": "heritage_brick_stone",
+        "component_set_ids": [
+          "source_recipe:01b88587a564e94f0dfe62062529993096833f4846765ba304917cb3e4430d59",
+          "source_assembly:e0e34bfde671aee925a2199d2845cdd3a49e2935cac587f9d7c2b845e36e2177",
+          "reference:af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392",
+          "module_bench:996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+          "module_bike_rack:0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+          "module_bin:a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1",
+          "module_grove_tree:6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+          "module_heritage_lantern:3128c76ab7eff91eefa2421aef13d01a947408dcb3dc828a0f35146841cbebdc",
+          "module_planter:86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232",
+          "module_timber_seat_wall:921b92412fc7ad93a7910004109ab751d1d02bd476ab889b3408cd291f89b6c8",
+          "module_tree_well_grate:861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+        ],
+        "planting_structure": null,
+        "catalog_fingerprint": "194077d3d52056f1b363b373db8eb806132a37d0fe07b54901813d870e5b31b0",
+        "capability_fingerprint": "76f897718d8b7183658120e19fb0ccf924979fae780d87333ef3ed11365305ed"
+      },
+      "road_archetype_id": "neighborhood_main_street",
+      "plan_route_controls": [
+        [
+          -114.12546120331265,
+          51.01744764580203
+        ],
+        [
+          -114.1249594738669,
+          51.0174756575037
+        ],
+        [
+          -114.12436945628478,
+          51.01745084240909
+        ]
+      ],
+      "terrain_elevation_m": 1102.7651116893633,
+      "road_standard_citation": "City Prompt native-module teaching section",
+      "pick_place_automatic_3d": true,
+      "road_selected_variant_id": "student_main_street_v1",
+      "pick_place_street_section": "student_main_street_v1",
+      "pick_place_definition_version": 1,
+      "community_3d_mask_existing_tiles": true
+    }
+  },
+  {
+    "id": "currie-street-2",
+    "zone_type": "road",
+    "coordinates": [
+      [
+        -114.125195922,
+        51.017519477
+      ],
+      [
+        -114.125909755,
+        51.016895805
+      ],
+      [
+        -114.125921203,
+        51.016884899
+      ],
+      [
+        -114.1259301,
+        51.01687472
+      ],
+      [
+        -114.12593766,
+        51.016864123
+      ],
+      [
+        -114.125943835,
+        51.016853176
+      ],
+      [
+        -114.125948584,
+        51.016841952
+      ],
+      [
+        -114.125951876,
+        51.016830522
+      ],
+      [
+        -114.12595369,
+        51.016818963
+      ],
+      [
+        -114.125954013,
+        51.016807349
+      ],
+      [
+        -114.125952844,
+        51.016795757
+      ],
+      [
+        -114.12595019,
+        51.016784262
+      ],
+      [
+        -114.125945553,
+        51.016771522
+      ],
+      [
+        -114.125698298,
+        51.016199566
+      ],
+      [
+        -114.12540757,
+        51.015527049
+      ],
+      [
+        -114.125628039,
+        51.015489331
+      ],
+      [
+        -114.125918766,
+        51.016161849
+      ],
+      [
+        -114.126167234,
+        51.016736609
+      ],
+      [
+        -114.126174965,
+        51.01675785
+      ],
+      [
+        -114.126180276,
+        51.016780854
+      ],
+      [
+        -114.126182615,
+        51.016804053
+      ],
+      [
+        -114.126181968,
+        51.016827294
+      ],
+      [
+        -114.126178339,
+        51.016850427
+      ],
+      [
+        -114.12617175,
+        51.0168733
+      ],
+      [
+        -114.126162246,
+        51.016895763
+      ],
+      [
+        -114.126149889,
+        51.01691767
+      ],
+      [
+        -114.126134759,
+        51.016938877
+      ],
+      [
+        -114.126116955,
+        51.016959246
+      ],
+      [
+        -114.126097868,
+        51.01697743
+      ],
+      [
+        -114.125381335,
+        51.017603461
+      ]
+    ],
+    "properties": {
+      "width": 16,
+      "volume": "low",
+      "sidewalks": "both",
+      "lane_count": 2,
+      "community_3d": {
+        "kind": "street",
+        "state": "compiled",
+        "generator": "street_section",
+        "compiled_at": "2026-09-23T23:56:40.353267+00:00",
+        "source_hash": "2e331630905eb67bbe7df9502dda83ac3c9cc744ef49980c0b6632907d8933d0",
+        "schema_version": 1,
+        "representation_hash": "0757fe711f4140da86551c9c9f52a643b25589e0cb671c8b2c2296d6ca813211"
+      },
+      "road_surface": "asphalt",
+      "has_sidewalks": true,
+      "priority_auto": 1,
+      "plan_centerline": [
+        [
+          -114.12528862846483,
+          51.01756146873252
+        ],
+        [
+          -114.12600381117458,
+          51.01693661776226
+        ],
+        [
+          -114.12601907906539,
+          51.01692207243842
+        ],
+        [
+          -114.12603242926171,
+          51.01690679876196
+        ],
+        [
+          -114.12604377450164,
+          51.01689089656741
+        ],
+        [
+          -114.12605304062838,
+          51.01687446979752
+        ],
+        [
+          -114.12606016707502,
+          51.016857625823874
+        ],
+        [
+          -114.12606510726044,
+          51.01684047474504
+        ],
+        [
+          -114.1260678288937,
+          51.01682312866694
+        ],
+        [
+          -114.12606831418518,
+          51.016805700970124
+        ],
+        [
+          -114.12606655996282,
+          51.01678830556858
+        ],
+        [
+          -114.1260625776929,
+          51.01677105616523
+        ],
+        [
+          -114.12605639340504,
+          51.0167540655087
+        ],
+        [
+          -114.12580853211765,
+          51.01618070735887
+        ],
+        [
+          -114.12551780447828,
+          51.01550818982631
+        ]
+      ],
+      "transport_modes": [
+        "walking",
+        "automobile"
+      ],
+      "mobility_profile": "balanced",
+      "priority_cycling": 4,
+      "priority_transit": 4,
+      "public_realm_lego": {
+        "kind": "street",
+        "target": {
+          "length_m": 251.187,
+          "row_width_m": 16.0,
+          "target_type": "street_segment"
+        },
+        "family_id": "street_local_public_realm",
+        "generator": "street_section",
+        "profile_id": "calgary-local-v1",
+        "variant_id": "calgary_local_v0",
+        "recipe_hash": "6bc24155f8fbee47467745831e49e74083b991dfecf774b1e479294ce5615471",
+        "archetype_id": "calgary_local",
+        "family_version": 1,
+        "schema_version": 1,
+        "terrain_policy": "terrain_drape_and_metric_assemblies",
+        "profile_version": 1,
+        "appearance_kit_id": "calgary_contemporary_native",
+        "component_set_ids": [
+          "street_metric_bands_v1",
+          "street_edges_markings_v1",
+          "public_realm_furnishings_v1"
+        ],
+        "planting_structure": null,
+        "catalog_fingerprint": "194077d3d52056f1b363b373db8eb806132a37d0fe07b54901813d870e5b31b0",
+        "capability_fingerprint": "8c38334fb0715cf955cdca241a8ce4174a68b0212100e95844668b09810f59d2"
+      },
+      "road_archetype_id": "calgary_local",
+      "plan_route_controls": [
+        [
+          -114.12528862846483,
+          51.01756146873252
+        ],
+        [
+          -114.12609925975701,
+          51.01685322489142
+        ],
+        [
+          -114.12580853211765,
+          51.01618070735887
+        ],
+        [
+          -114.12551780447828,
+          51.01550818982631
+        ]
+      ],
+      "priority_pedestrian": 2,
+      "terrain_elevation_m": 1102.7558495985506,
+      "road_standard_citation": "Street Manual Draft 4.0, Figure 2",
+      "pick_place_automatic_3d": true,
+      "road_selected_variant_id": "calgary_local_v0",
+      "pick_place_street_section": "calgary_local_v0",
+      "pick_place_definition_version": 1,
+      "community_3d_mask_existing_tiles": true
+    }
+  }
+]

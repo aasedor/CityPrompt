@@ -90,6 +90,7 @@ import {
 } from './direct3dCapture';
 import { validateStreetRecipeProperties } from './streetLegoContract';
 import { nativeStreetPilotForZone, placeNativeStreetModules } from './nativeStreetPilot';
+import { publicRealmTrialAsset } from './publicRealmTrial';
 import { GlobeNativeStreetPilotModules } from './GlobeNativeStreetPilotModules';
 import { readCrossings, crossingStation } from '@/features/pickPlace/pedestrianConnections';
 import {
@@ -1595,7 +1596,8 @@ export function GlobeStreetDetailLayer({
   const intersectionNodes = useMemo(
     () => detectConnectedStreetIntersections(detailedRoadZones)
       .map((node) => ({ ...node, surfaceLayout: resolveStreetJunctionLayout(node, detailedRoadZones) }))
-      .filter((node) => node.armCount === 4 || node.surfaceLayout !== null),
+      .filter((node) => node.surfaceLayout !== null || (node.armCount === 4 && node.orthogonal
+        && node.zoneIds.every(id => publicRealmTrialAsset(detailedRoadZones.find(zone => zone.id === id)!)?.kind === 'street'))),
     [detailedRoadZones],
   );
   const furnitureStreetIds = useMemo(

@@ -589,7 +589,7 @@ export function resolvePilotStreetSectionProfile(
 ): StreetSectionProfile | null {
   const nativePilot = typeof zoneOrId === 'string' ? undefined : nativeStreetPilotForZone({
     zone_type: 'road', properties: zoneOrId.properties,
-  });
+  }, true);
   const contract = resolveStreetLegoContract(zoneOrId);
   const normalized = contract.sourceArchetypeId;
   const entry = CATALOG.find((candidate) => normalized === candidate.id)

@@ -1,10 +1,19 @@
 import { useState } from 'react';
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { CANONICAL_CHOICES } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, CLASSROOM_CHOICES, type CanonicalSelection } from './canonicalCatalogue';
 import { canonicalStreetAsset, streetDesignUpdate } from './canonicalStreetPlacement';
 
-const choices = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway');
-const defaults = choices.map(choice => canonicalStreetAsset({ choice, variant: choice.option.variants?.[0] }));
+const starters = CLASSROOM_CHOICES.filter(c => c.domain === 'street_pathway');
+const choices = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway').map(choice => {
+  const starter = starters.find(c => c.option.id === choice.option.id);
+  return !starter ? choice : { ...choice, option: { ...choice.option, variants: [
+    ...(starter.option.variants ?? []), ...(choice.option.variants ?? []).filter(v => !starter.option.variants?.some(s => s.id === v.id)),
+  ] } };
+});
+const selectedAsset = (selection: CanonicalSelection) => starters.flatMap(c => c.placements)
+  .find(a => a.kind === 'street' && a.model.variantId === selection.variant?.id && a.properties.road_archetype_id === selection.choice.option.id)
+  ?? canonicalStreetAsset(selection);
+const defaults = choices.map(choice => selectedAsset({ choice, variant: choice.option.variants?.[0] })).filter(a => a.kind === 'street');
 const widths = [...new Set(defaults.map(a => a.sectionWidth))].sort((a, b) => a - b);
 const field = 'mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-sm';
 
@@ -17,7 +26,8 @@ export function StreetDesignControls({ zone, disabled, onSave }: {
   const [query, setQuery] = useState('');
   const choice = choices.find(c => c.option.id === parent);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
-  const asset = choice ? canonicalStreetAsset({ choice, variant }) : undefined;
+  const selected = choice ? selectedAsset({ choice, variant }) : undefined;
+  const asset = selected?.kind === 'street' ? selected : undefined;
   const choose = (id: string) => { const next = choices.find(c => c.option.id === id)!; setParent(id); setVariantId(next.option.variants?.[0]?.id ?? ''); };
   return <form className="my-3 space-y-2" onSubmit={event => { event.preventDefault(); if (asset) onSave(streetDesignUpdate(zone, asset)); }}>
     <label className="block text-xs font-semibold">Find street type<input type="search" className={field} value={query} onChange={e => setQuery(e.target.value)} /></label>

@@ -6,6 +6,7 @@ import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelec
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
 import { CATALOGUE_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import starter from '@/data/classroomStarter.json';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
@@ -40,6 +41,20 @@ export function catalogueChoices(domains = CANONICAL_DOMAINS, assets = CATALOGUE
   return choices.sort((a, b) => Number(b.placements.length > 0) - Number(a.placements.length > 0));
 }
 export const CANONICAL_CHOICES = catalogueChoices();
+/** Exact starter variants only. Parent cards must not quietly expose their other
+ * variants under the classroom promise. The full catalogue remains separate. */
+export function classroomChoices(choices = CANONICAL_CHOICES): CanonicalChoice[] {
+  return starter.entries.flatMap(entry => {
+    const domain = entry.domain === 'street' ? 'street_pathway' : entry.domain === 'park' ? 'park_plaza' : 'building';
+    const choice = choices.find(item => item.domain === domain && item.option.id === entry.archetypeId);
+    const placement = choice?.placements.find(asset => asset.id === entry.placementId && asset.model.variantId === entry.variantId);
+    if (!choice || !placement) return [];
+    const variant = choice.option.variants?.find(item => item.id === entry.variantId)
+      ?? { id: entry.variantId, label: placement.label, thumbnailUrl: placement.thumbnail };
+    return [{ ...choice, placements: [placement], option: { ...choice.option, variants: [variant] } }];
+  });
+}
+export const CLASSROOM_CHOICES = classroomChoices();
 const normalizeSearch = (v: string) => v.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
 export function choiceMatchesGroup(choice: CanonicalChoice, groupId: string) {
   return !groupId || choice.option.calgaryGuide?.groupId === groupId

@@ -2,6 +2,7 @@ import { PARK_TRIO_ASSETS } from './parkTrioAssets';
 import type { SiteZoneProperties } from '@/types';
 import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
+import nativeStreets from '@/data/nativeStreetPilots.json';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
 export type PlaceAssetId = string;
@@ -42,7 +43,7 @@ export type CatalogueAsset = PlaceAsset | StreetAsset;
 
 const OBJECT_ASSETS: PlaceAsset[] = [
   {
-    id: 'infill_home', kind: 'object', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'repeat_native', model: { variantId: 'infill_flat_roof_minimal', revision: null, method: 'RLASM 6.1' }, label: 'Infill homes',
+    id: 'infill_home', kind: 'object', definitionVersion: 2, readiness: 'pilot', reshapeMode: 'repeat_native', model: { variantId: 'infill_flat_roof_minimal', revision: 'calgary-infill-flat-roof-minimal-clay-v006', method: 'RLASM 6.1' }, label: 'Infill homes',
     calgaryGuide: classifyCalgaryAsset('building', { id: 'calgary_modern_infill_house', developmentType: 'residential_single_family' }),
     description: 'Two-storey homes. Widen the plot to fit more.',
     thumbnail: '/archetypes/buildings/calgary-modern-infill-house/variant_0.png',
@@ -127,15 +128,40 @@ function additionalStreet(archetypeId: string, label: string, description: strin
   };
 }
 
-export const STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET,
+const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
+  id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
+  label: street.title, description: `${street.widthM} m wide · curved routes with native-size furniture`,
+  thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
+  calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
+  model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },
+  properties: { road_archetype_id: street.sourceArchetypeId, road_selected_variant_id: street.id,
+    width: street.widthM, pick_place_street_section: street.id, pick_place_automatic_3d: true,
+    pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
+    road_standard_citation: 'City Prompt native-module teaching section' },
+}));
+
+export const STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET, ...NATIVE_STREET_ASSETS,
   additionalStreet('green_alley', 'Planted laneway', '5 m wide · 3.5 m shared lane with planted edges', { groupId: 'alley', basis: 'form_reference' }),
   additionalStreet('yield_street', 'Shared street', '6 m wide · 5.4 m shared surface with flush edges', { groupId: 'local', basis: 'form_reference' }),
   additionalStreet('calgary_collector', 'Calgary collector', '20 m wide · two lanes, pathway, sidewalk and boulevards', { groupId: 'collector', basis: 'draft_manual' }),
 ];
 
+/** New starter houses place one native model. Existing saved home plots keep
+ * their explicit repeat flag and are resolved by assetForZone as legacy plots. */
+function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
+  if (asset.kind !== 'object' || !['infill_home', 'trial_postwar_bungalow'].includes(asset.id)) return asset;
+  return { ...asset, reshapeMode: 'fixed_native', definitionVersion: Math.max(2, asset.definitionVersion),
+    minWidth: asset.width, minDepth: asset.depth,
+    label: asset.id === 'infill_home' ? 'Infill home' : asset.label,
+    description: asset.id === 'infill_home' ? 'A two-storey home. Place another to build your street.' : asset.description,
+    reshapeDescription: 'One home keeps its size and proportions. Resize the surrounding plot; use Place another for the next home.',
+    properties: { ...asset.properties, native_home_plot: false, native_plot_axes: true },
+  };
+}
+
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, ...STREET_ASSETS,
   ...CATALOGUE_BUILDING_ASSETS,
-  ...PARK_TRIO_ASSETS];
+  ...PARK_TRIO_ASSETS].map(individualStarterHome);
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

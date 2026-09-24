@@ -17,7 +17,17 @@ from app.services.public_realm_lego import (
 MANIFEST = Path(__file__).resolve().parents[2] / "frontend/src/data/nativeStreetPilots.json"
 
 
-def test_native_street_candidates_compile_exact_locked_recipes_without_student_exposure():
+def test_frontend_runtime_fixture_is_an_actual_current_server_recipe():
+    fixtures = MANIFEST.parents[1] / "components/viewer/globe/__fixtures__/classroomStreetRecipes.json"
+    for recipe in json.loads(fixtures.read_text(encoding="utf-8")):
+        compiled = plan_public_realm_recipe(PublicRealmPlanRequest(
+            archetype_id=recipe["archetype_id"], variant_id=recipe["variant_id"],
+            target=StreetSegmentTarget(**recipe["target"]),
+        ))
+        assert compiled.model_dump(mode="json") == recipe
+
+
+def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review():
     catalog = build_native_street_candidate_catalog(MANIFEST)
     rows = {row["id"]: row for row in json.loads(MANIFEST.read_text(encoding="utf-8"))}
     assert len(catalog.capabilities) == 2
@@ -27,8 +37,8 @@ def test_native_street_candidates_compile_exact_locked_recipes_without_student_e
         selection = capability.selections[0]
         pilot = rows[selection.variant_id]
         assert selection.archetype_id == pilot["sourceArchetypeId"]
-        assert capability.family_id not in active.family_ids
-        assert selection.variant_id not in active.variants_by_archetype.get(selection.archetype_id, ())
+        assert capability.family_id in active.family_ids
+        assert selection.variant_id in active.variants_by_archetype.get(selection.archetype_id, ())
         recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=selection.archetype_id,
             variant_id=selection.variant_id,
@@ -38,6 +48,12 @@ def test_native_street_candidates_compile_exact_locked_recipes_without_student_e
         assert recipe.component_set_ids == selection.component_set_ids
         assert f"source_recipe:{pilot['sourceRecipeSha256']}" in recipe.component_set_ids
         assert len(recipe.component_set_ids) == len(pilot["modules"]) + 3
+        live_recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+            archetype_id=selection.archetype_id, variant_id=selection.variant_id,
+            target=StreetSegmentTarget(row_width_m=pilot["widthM"], length_m=96),
+        ))
+        assert live_recipe.component_set_ids == recipe.component_set_ids
+        assert live_recipe.profile_id == recipe.profile_id
         assert recipe.recipe_hash == plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=selection.archetype_id,
             variant_id=selection.variant_id,

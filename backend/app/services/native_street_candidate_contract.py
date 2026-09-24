@@ -1,8 +1,8 @@
 """Offline compiler proposals for hash-locked native street pilots.
 
-These candidates deliberately stay outside the executable/Public Realm LEGO
-catalogue. They can be planned in tests, but cannot be selected by students or
-persisted as supported production recipes until route and junction review.
+The offline builder remains usable for candidate review. The finite classroom
+runtime cohort uses the same validator and locks, from a packaged backend copy.
+Executable support does not imply completion of a live student/visual review.
 """
 
 from __future__ import annotations
@@ -11,6 +11,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from functools import lru_cache
 
 from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 from app.services.public_realm_lego import (
@@ -27,6 +28,26 @@ _APPEARANCE_BY_FINISH = {
     "pavers": "heritage_brick_stone",
     "cobble": "european_cobblestone_v1",
 }
+
+
+@lru_cache(maxsize=1)
+def native_street_runtime_capabilities() -> tuple[PublicRealmFamilyCapability, ...]:
+    data_dir = Path(__file__).resolve().parents[1] / "data"
+    roster = json.loads((data_dir / "classroomStarter.json").read_text(encoding="utf-8"))
+    allowed = {row["variantId"]: row for row in roster["entries"] if row["representation"] == "native-modules"}
+    candidates = build_native_street_candidate_catalog(data_dir / "nativeStreetPilots.json")
+    accepted = []
+    for capability in candidates.capabilities:
+        selection = capability.selections[0]
+        release = allowed.get(selection.variant_id)
+        if release is None:
+            continue
+        if release["archetypeId"] != selection.archetype_id or f"source_recipe:{release['revision']}" not in selection.component_set_ids:
+            raise ValueError(f"Native street release lock disagrees with {selection.variant_id}")
+        accepted.append(capability.model_copy(update={"title": capability.title.removeprefix("Candidate: ")}))
+    if len(accepted) != len(allowed):
+        raise ValueError("Classroom native street manifest is incomplete")
+    return tuple(accepted)
 
 
 def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCapabilityCatalog:

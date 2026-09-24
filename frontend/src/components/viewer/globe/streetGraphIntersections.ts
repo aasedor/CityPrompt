@@ -25,6 +25,7 @@ interface NodeCandidate {
   x: number;
   y: number;
   zoneIds: [string, string];
+  crossing?: boolean;
 }
 
 interface StreetIntersectionBase {
@@ -117,7 +118,11 @@ function segmentIntersection(
   const qy = b0.y - a0.y;
   const ta = (qx * bdy - qy * bdx) / denominator;
   const tb = (qx * ady - qy * adx) / denominator;
-  if (ta < -1e-6 || ta > 1 + 1e-6 || tb < -1e-6 || tb > 1 + 1e-6) return null;
+  // A sub-metre endpoint gap still lies inside the paved join. Intersect the
+  // actual approach axes instead of averaging projections off both axes.
+  const toleranceA = 1 / Math.hypot(adx, ady);
+  const toleranceB = 1 / Math.hypot(bdx, bdy);
+  if (ta < -toleranceA || ta > 1 + toleranceA || tb < -toleranceB || tb > 1 + toleranceB) return null;
   return { x: a0.x + adx * ta, y: a0.y + ady * ta };
 }
 
@@ -233,7 +238,7 @@ function detectStreetIntersections(
           if (crossingAngle < Math.PI / 6 || crossingAngle > Math.PI * 5 / 6) continue;
           const crossing = segmentIntersection(a0, a1, b0, b1);
           if (crossing) {
-            candidates.push({ x: crossing.x, y: crossing.y, zoneIds: [first.zoneId, second.zoneId] });
+            candidates.push({ x: crossing.x, y: crossing.y, zoneIds: [first.zoneId, second.zoneId], crossing: true });
             continue;
           }
           for (const endpoint of [a0, a1]) {
@@ -254,6 +259,12 @@ function detectStreetIntersections(
   }
   const clusters: Array<{ x: number; y: number; count: number; zoneIds: Set<string> }> = [];
   for (const candidate of candidates) {
+    // Nearby sampled-curve stations must not drag a real axis intersection
+    // away from either centerline or create duplicate nodes beside it.
+    if (!candidate.crossing && candidates.some(other => other.crossing
+      && other.zoneIds.every(id => candidate.zoneIds.includes(id))
+      && Math.hypot(other.x - candidate.x, other.y - candidate.y)
+        <= Math.max(...axes.filter(axis => candidate.zoneIds.includes(axis.zoneId)).map(axis => axis.widthM)) )) continue;
     const existing = clusters.find((cluster) => Math.hypot(cluster.x - candidate.x, cluster.y - candidate.y) <= 4);
     if (existing) {
       existing.x = (existing.x * existing.count + candidate.x) / (existing.count + 1);

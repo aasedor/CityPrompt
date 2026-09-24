@@ -63,7 +63,16 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
       return Math.hypot(ax + t * dx, ay + t * dy);
     };
     const line = route.slice(1).map((p, i) => [route[i], p]).sort((a, b) => distance(a[0], a[1]) - distance(b[0], b[1]))[0];
-    if (!node.orthogonal && distance(line[0], line[1]) > .25) return null;
+    if (!node.orthogonal && distance(line[0], line[1]) > .25) {
+      // A terminating approach may stop just short of the through axis. Its
+      // infinite axis must still pass through this exact node; lateral offsets
+      // are not repaired by widening this tolerance.
+      const ax = (line[0][0] - node.longitude) * metersPerDegLon(node.latitude);
+      const ay = (line[0][1] - node.latitude) * METERS_PER_DEG_LAT;
+      const dx = (line[1][0] - line[0][0]) * metersPerDegLon(node.latitude);
+      const dy = (line[1][1] - line[0][1]) * METERS_PER_DEG_LAT;
+      if (distance(line[0], line[1]) > 1.01 || Math.abs(ax * dy - ay * dx) / Math.hypot(dx, dy) > .02) return null;
+    }
     const first = line[0]; const last = line[line.length - 1];
     const angle = Math.atan2((last[1] - first[1]) * METERS_PER_DEG_LAT, (last[0] - first[0]) * metersPerDegLon(node.latitude));
     const axis = Math.abs(Math.cos(angle - node.axisABearingRad)) > 0.9 ? 0 : 1;

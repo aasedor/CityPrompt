@@ -6,12 +6,27 @@ import { LOCAL_STREET_ASSET } from './assetRegistry';
 import * as catalogue from './canonicalCatalogue';
 
 describe('student asset browsing', () => {
+  it('starts with three exact variants per domain and preserves exploratory discovery', () => {
+    render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
+    expect(catalogue.CLASSROOM_CHOICES).toHaveLength(9);
+    fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
+    expect(screen.getByLabelText('Catalogue collection')).toHaveValue('starter');
+    for (const section of ['Buildings', 'Parks', 'Streets']) {
+      fireEvent.click(screen.getAllByRole('button', { name: section })[1]);
+      expect(screen.getAllByRole('article')).toHaveLength(3);
+      expect(catalogue.CLASSROOM_CHOICES.every(choice => choice.placements.length === 1 && choice.option.variants?.length === 1)).toBe(true);
+    }
+    fireEvent.change(screen.getByLabelText('Catalogue collection'), { target: { value: 'explore' } });
+    expect(screen.getAllByRole('article')).toHaveLength(12);
+    expect(screen.getByText(/Exploratory catalogue/)).toBeInTheDocument();
+  });
   it('shows the active fixed width and marks only the selected street card', () => {
     const onPickStreet = vi.fn();
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onPickStreet={onPickStreet}
       activeStreetVariant="yield_street_v0" onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
     expect(screen.getByText('Shared street · 6 m wide')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
+    fireEvent.change(screen.getByLabelText('Catalogue collection'), { target: { value: 'explore' } });
     expect(screen.getByRole('button', { name: /Shared street/ })).toHaveAttribute('aria-pressed','true');
     expect(screen.getByRole('button', { name: /Planted laneway/ })).toHaveAttribute('aria-pressed','false');
     fireEvent.click(screen.getByRole('button', { name: /Planted laneway/ }));
@@ -23,7 +38,7 @@ describe('student asset browsing', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
     fireEvent.change(screen.getByLabelText('Search objects or district code'), { target: { value: 'R-C1' } });
-    expect(screen.getByRole('button', { name: /Infill homes/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Infill home/ })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Neighbourhood park/ })).not.toBeInTheDocument();
     expect(onPick).not.toHaveBeenCalled();
     fireEvent.change(screen.getByLabelText('Search objects or district code'), { target: { value: 'unavailable' } });
@@ -64,6 +79,7 @@ describe('student asset browsing', () => {
     const onPick = vi.fn(), onCancel = vi.fn();
     render(<PlacementPalette onPickCanonical={vi.fn()} selected="craftsman_bungalow" onPick={onPick} onCancel={onCancel} status="ready" message="" onRetry={vi.fn()} />);
     fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
+    fireEvent.change(screen.getByLabelText('Catalogue collection'), { target: { value: 'explore' } });
     fireEvent.click(screen.getByRole('button', { name: /Craftsman bungalows/ }));
     expect(onPick).toHaveBeenCalledWith('craftsman_bungalow');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

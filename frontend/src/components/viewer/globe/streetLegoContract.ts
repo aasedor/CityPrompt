@@ -175,6 +175,19 @@ export function validatePublicRealmStreetRecipe(
   if (!(targetRowM > 0) || !Number.isFinite(targetRowM)) {
     return invalid('target_incompatible', 'The compiled street target requires a positive metric row width.');
   }
+  if (selection.componentSetIds) {
+    const locks = raw.component_set_ids;
+    if (!Array.isArray(locks) || locks.length !== selection.componentSetIds.length
+      || locks.some((lock, index) => lock !== selection.componentSetIds?.[index])
+      || profileId !== selection.profileId || profileVersion !== 1) {
+      return invalid('integrity_incompatible', 'Native street source or module revisions differ from the packaged definition.');
+    }
+    const lengthM = target?.length_m;
+    if (Math.abs(targetRowM - selection.rowWidthM!) > 0.05
+      || typeof lengthM !== 'number' || !Number.isFinite(lengthM) || lengthM < 8 || lengthM > 2000) {
+      return invalid('target_incompatible', 'Native street width is fixed and its route must be 8–2000 metres long.');
+    }
+  }
   const armCount = selection.targetType === 'street_node' && typeof target?.arm_count === 'number'
     ? target.arm_count
     : undefined;
@@ -225,6 +238,10 @@ export function validateStreetRecipeProperties(
   }
   if (legacyVariant && legacyVariant !== validation.recipe.variantId) {
     return invalid('source_identity_mismatch', 'road_selected_variant_id disagrees with the compiled street recipe.');
+  }
+  if (validation.recipe.selection.rowWidthM !== undefined
+    && (typeof props.width !== 'number' || Math.abs(props.width - validation.recipe.selection.rowWidthM) > 0.05)) {
+    return invalid('target_incompatible', 'Street width disagrees with its native module recipe.');
   }
   return validation;
 }

@@ -3388,7 +3388,7 @@ export function GlobeSitePlannerMap({
       const procedural = activeSitePlannerTool === 'road' && !zoneProperties.pick_place_street_section;
       const width = (zoneProperties.width as number) || 10;
       const authored = zoneProperties.pick_place_street_section
-        ? snapStreetEnds(pts, siteZones)
+        ? snapStreetEnds(pts, siteZones, undefined, width)
         : procedural ? snapRoadEndpoints(pts, siteZones, zoneProperties.road_level) : pts;
       const smoothed = activeSitePlannerTool === 'road'
         ? roundAuthoredStreetRoute(authored, width, zoneProperties)

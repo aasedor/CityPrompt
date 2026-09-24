@@ -1,5 +1,6 @@
 import pilots from '@/data/nativeStreetPilots.json';
 import type { SiteZone } from '@/types';
+import { validateStreetRecipeProperties } from './streetLegoContract';
 import {
   PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS,
   PUBLIC_REALM_STREET_SHARED_SURFACE_LIFT_METERS,
@@ -26,9 +27,19 @@ export function nativeStreetPilot(variantId: string): NativeStreetPilot | undefi
   return pilots.find(pilot => pilot.id === variantId);
 }
 
-/** Candidate-only development view. This is not a student catalogue release. */
-export function nativeStreetPilotForZone(zone: Pick<SiteZone, 'zone_type' | 'properties'>): NativeStreetPilot | undefined {
-  if (!import.meta.env.DEV || zone.zone_type !== 'road') return undefined;
+/** Saved production zones require the same module locks as the server compiler.
+ * Section cards may request a draft profile before there is a saved recipe. */
+export function nativeStreetPilotForZone(zone: Pick<SiteZone, 'zone_type' | 'properties'>, preview = false): NativeStreetPilot | undefined {
+  if (zone.zone_type !== 'road') return undefined;
+  const selected = pilots.find(pilot => pilot.id === zone.properties?.road_selected_variant_id);
+  if (selected) {
+    if (zone.properties?.road_archetype_id !== selected.sourceArchetypeId || zone.properties?.width !== selected.widthM) return undefined;
+    if (preview && !zone.properties?.public_realm_lego) return selected;
+    return validateStreetRecipeProperties(zone.properties).valid ? selected : undefined;
+  }
+  // Preserve isolated historical candidate review pages; never execute this
+  // marker in a production build or use it as proof of capture readiness.
+  if (!import.meta.env.DEV) return undefined;
   const id = zone.properties?.native_street_pilot_id;
   const pilot = typeof id === 'string' ? nativeStreetPilot(id) : undefined;
   return pilot && zone.properties?.width === pilot.widthM
