@@ -81,15 +81,67 @@ frame dimensions. Sources: [OpenAI pricing](https://developers.openai.com/api/do
 [Seedance model](https://fal.ai/models/bytedance/seedance-2.0/mini/reference-to-video).
 Provider funding balances are not verified by model access or application tokens.
 
-The first browser image admission was refused before reserving an attempt:
+The first two browser image submissions failed in the worker before provider dispatch:
 native Main Street/Market Street rendered junctions, but the backend still used
 an older three-family eligibility allowlist. The fix derives native eligibility
 from the finite locked runtime capability catalogue, retaining recipe validation
 and all anchor/angle/clearance checks. Both actual trial junction manifests pass
 offline reconstruction; focused tests also reject altered module locks.
+The durable admission counter did reserve both submissions. Neither has an audit
+charge; both show failed, billed=false. Preserve these reservations: the trial's
+conservative policy counts admitted failures, even before provider submission.
 
-At this checkpoint: zero paid image/video attempts. The remaining authorized
-work is source/route review, bounded pilots and outputs, owner readback and
-revoked media checks, final packet and disposable Linux/prefork verification.
-Chrome availability, hosted destination acceptance and actual novices remain
-separate gates. Do not call this a completed classroom release.
+## Interrupted runtime checkpoint, September 24
+
+Source checkpoint: `482138bae`, following report/access `7c5486ed4` and bounded
+media/recovery `942228c0f`. The native-junction fix passed 27 selected junction
+tests and all three native capability contract tests.
+
+One subsequent photographic Flare pilot completed: three image reservations
+total, one provider submission, zero video submissions. Its estimate and debit
+were 212 application tokens, leaving 9,802. Seven image slots and three video
+slots remain; do not reset the allowance or repeat the 10,000-token grant.
+Re-read live counters before further dispatch after restoring the local stack.
+
+The pilot remains `review_required`. The primary result is explicitly the 3D
+source; the AI original is separately labelled unverified. The comparison keeps
+the broad building arrangement, curved street and park locations, but changes
+surrounding texture, vegetation and an ambiguous foreground field into apparent
+water. At this wide scale park details cannot be certified. Diagnostics passed
+all instance-presence checks and most macro overlap checks, but failed coarse
+edge density (4.10 versus maximum 3.0) and one 162-pixel unsupported component.
+These measurements do not alone prove a moved building: texture/shadow changes
+may contribute. Do not relax thresholds or claim design fidelity from this pilot.
+Use the planned closer comparisons to separate material detail from geometry.
+
+Owner readback after reload showed the collaborator's saved park changes. The
+owner opened both saved gallery items, saw their correct fidelity labels, and
+downloaded both PNGs in regular Edge. The downloaded AI original was opened for
+visual review. This does not replace the outstanding close/wide exact-export
+checks or revoked-user access checks.
+
+External evidence: `C:/dev-artifacts/CityPrompt/classroom-release/detailed-trial-20260924/`.
+Each image attempt has a receipt; completed attempt 03 also retains its request,
+source snapshot, source PNG, original provider PNG, result and diagnostics.
+No bulky evidence is staged in Git.
+
+A free high-quality aerial video preview completed: eight seconds, 192 frames,
+1440p source downsampled to 1080p, six depth/normal checkpoints. The interrupted
+browser call did not retain the preview file or establish completed Seedance
+preflight. No paid video was dispatched. Recreate and visually review the source
+route before any paid video request; the preview alone is not acceptance.
+
+The actual Linux API image build reached dependency installation, but Docker
+stopped before a completed image receipt. At the September 24 status check both
+local API/frontend ports and the Docker Linux engine were unavailable. This is
+an interrupted build, not container or prefork validation. Existing candidate
+`candidate-20260924-a` remains stale. Restore the dedicated local stack, finish
+the runtime/access/media checks, freeze the final revision, and build one new
+external packet with actual Linux/prefork verification.
+
+Remaining: seven image slots (use only where useful), three paid video slots
+subject to successful Seedance preflight, current/revoked media authorization,
+close/wide exact exports and any missing starter checks, final packet, Linux
+prefork recovery and release-evidence updates. Chrome availability, hosted
+destination acceptance and actual novices remain separate gates. Do not call
+this a completed classroom release.
