@@ -81,6 +81,13 @@ frame dimensions. Sources: [OpenAI pricing](https://developers.openai.com/api/do
 [Seedance model](https://fal.ai/models/bytedance/seedance-2.0/mini/reference-to-video).
 Provider funding balances are not verified by model access or application tokens.
 
+The first browser image admission was refused before reserving an attempt:
+native Main Street/Market Street rendered junctions, but the backend still used
+an older three-family eligibility allowlist. The fix derives native eligibility
+from the finite locked runtime capability catalogue, retaining recipe validation
+and all anchor/angle/clearance checks. Both actual trial junction manifests pass
+offline reconstruction; focused tests also reject altered module locks.
+
 At this checkpoint: zero paid image/video attempts. The remaining authorized
 work is source/route review, bounded pilots and outputs, owner readback and
 revoked media checks, final packet and disposable Linux/prefork verification.

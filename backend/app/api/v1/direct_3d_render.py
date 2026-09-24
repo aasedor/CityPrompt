@@ -619,6 +619,11 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     # LEGO family yet. Accept only that exact fallback, never arbitrary legacy
     # roads. The capture inventory separately verifies its compiled source hash.
     fallback = properties.get("public_realm_fallback")
+    from app.services.native_street_candidate_contract import native_street_runtime_capabilities
+    junction_families = {
+        "street_local_public_realm", "street_complete_main_18m", "street_complete_main_22m",
+        *(capability.family_id for capability in native_street_runtime_capabilities()),
+    }
     if (
         properties.get("road_archetype_id") == "calgary_collector"
         and properties.get("road_selected_variant_id") == "calgary_collector_v0"
@@ -645,11 +650,7 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         or recipe.get("generator") != "street_section"
         or target.get("target_type") != "street_segment"
         or recipe.get("family_id")
-        not in {
-            "street_local_public_realm",
-            "street_complete_main_18m",
-            "street_complete_main_22m",
-        }
+        not in junction_families
     ):
         return False
     recipe_archetype_id = str(recipe.get("archetype_id") or "").strip()

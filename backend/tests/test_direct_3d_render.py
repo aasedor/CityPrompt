@@ -4637,6 +4637,27 @@ def _tee_street_zones():
     ]
 
 
+@pytest.mark.parametrize("variant_id,archetype_id,width", [
+    ("student_main_street_v1", "neighborhood_main_street", 23),
+    ("student_market_street_v1", "pedestrian_only_street", 18),
+])
+def test_starter_native_street_junction_capture_uses_current_runtime_catalog(variant_id, archetype_id, width):
+    streets = _tee_street_zones()
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id=archetype_id, variant_id=variant_id,
+        target=StreetSegmentTarget(row_width_m=width, length_m=100),
+    ))
+    streets[0].properties.update(width=width, road_archetype_id=archetype_id,
+        road_selected_variant_id=variant_id, public_realm_lego=recipe.model_dump(mode="json"))
+    topology = _junction_topology(streets)
+    assert direct_api._validate_junction_topology(streets, streets, topology)
+    request = _connected_junction_request(streets, topology)
+    assert direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+    # Native-family acceptance must not admit a changed module lock or identity.
+    streets[0].properties["public_realm_lego"]["component_set_ids"] = ["invented"]
+    assert not direct_api._validate_junction_topology(streets, streets, topology)
+
+
 def test_fixed_collector_and_five_metre_alley_support_verified_junctions():
     collector, shared = _tee_street_zones()
     collector.properties.pop("public_realm_lego")

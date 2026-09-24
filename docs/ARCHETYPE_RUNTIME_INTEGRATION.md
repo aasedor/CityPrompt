@@ -645,6 +645,11 @@ Run connected-edit checks against a whole site, including buildings and the
 boundary, as well as isolated road fixtures. Only road zones may enter the street
 graph. Match the renderer's actual junction surface eligibility at preview and
 save; polygon overlap alone does not establish a usable junction.
+Capture admission must use the same finite native street capability catalogue
+as runtime junctions, with canonical recipe identity and module locks intact.
+An old capture-only family allowlist can reject a valid visible junction. Add a
+mixed-family capture-manifest regression for each newly supported street family,
+and verify the complete scene's capture admission before any paid render.
 
 Public-road ground measurements must survive asynchronous tile refinement. A
 failed measurement can retry twice after different visible geometry settles;
