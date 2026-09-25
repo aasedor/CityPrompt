@@ -1166,8 +1166,9 @@ export function ProjectViewPage() {
               canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}
               streetAccessNotice={streetAccessNotice}
               landscapeNeedsRefresh={studentLandscapeNeedsRefresh(cityPromptWorkflow.activeBoundary)}
+              automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
-              onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} />}
+              onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={handleOpenGenerate3D} onRetry3D={automatic3D.retry} />}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}

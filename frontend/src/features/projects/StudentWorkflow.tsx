@@ -44,11 +44,12 @@ export function StudentWorkflowNav({ step, onChange }: {
   </nav>;
 }
 
-export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, streetAccessNotice, landscapeNeedsRefresh = false, onSite, onDesign, onImage, onVideo }: {
+export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, streetAccessNotice, landscapeNeedsRefresh = false, automatic3DStatus = 'idle', automatic3DMessage = '', onSite, onDesign, onImage, onVideo, onRefreshLandscape, onRetry3D }: {
   step: 'site' | 'present'; hasSite: boolean; location?: string | null;
   drawingSite?: boolean;
   canRender: boolean; renderReason: string; streetAccessNotice?: string | null; landscapeNeedsRefresh?: boolean;
-  onSite: () => void; onDesign: () => void; onImage: () => void; onVideo: () => void;
+  automatic3DStatus?: 'idle' | 'updating' | 'ready' | 'error'; automatic3DMessage?: string;
+  onSite: () => void; onDesign: () => void; onImage: () => void; onVideo: () => void; onRefreshLandscape: () => void; onRetry3D?: () => void;
 }) {
   const [videoEnabled, setVideoEnabled] = useState(false);
   useEffect(() => {
@@ -72,13 +73,18 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
       <h2 className="text-base font-bold">Render this view</h2>
       <p className="text-sm">Move around your community to find your view, then choose an output.</p>
       {streetAccessNotice && <p role="status" className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs text-amber-950">{streetAccessNotice}</p>}
-      {landscapeNeedsRefresh && <div className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs text-amber-950">
-        <p role="status">Your design changed, so the site landscape needs a fresh preview before presenting.</p>
-        <button type="button" className="mt-2 min-h-11 font-semibold underline" onClick={onSite}>Refresh site landscape</button>
+      {landscapeNeedsRefresh && automatic3DStatus === 'idle' && <div className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs text-amber-950">
+        <p role="status">Your design changed after the last 3D build. Update the site landscape before presenting.</p>
+        <button type="button" className="mt-2 min-h-11 font-semibold underline" onClick={onRefreshLandscape}>Update site landscape</button>
+      </div>}
+      {!canRender && automatic3DStatus === 'updating' && <p role="status" className="rounded-lg bg-lime-50 p-2 text-sm">Updating your 3D scene for rendering…</p>}
+      {!canRender && automatic3DStatus === 'error' && <div role="alert" className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-sm">
+        <p>{automatic3DMessage || 'The 3D update could not finish.'}</p>
+        {onRetry3D && <button type="button" className="mt-2 min-h-11 font-semibold underline" onClick={onRetry3D}>Retry 3D update</button>}
       </div>}
       <button type="button" className={`${action} bg-[#c9ff3d] disabled:opacity-50`} disabled={!canRender} onClick={onImage}><Camera size={18} aria-hidden />Image</button>
       {videoEnabled && <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />Video</button>}
-      {!canRender && <p role="status" className="text-sm text-slate-700">{renderReason}</p>}
+      {!canRender && (automatic3DStatus === 'idle' || automatic3DStatus === 'ready') && <p role="status" className="text-sm text-slate-700">{renderReason}</p>}
       <button type="button" className={`${action} border-transparent underline`} onClick={onDesign}>Back to design</button>
     </>}
   </section>;

@@ -9,7 +9,8 @@ import { useAutomatic3D } from './useAutomatic3D';
 vi.mock('@/features/legoAssembly/communityCompiler',()=>({compileMixedCommunity3D:vi.fn()}));
 vi.mock('@/services/api',()=>({siteZonesApi:{list:vi.fn()},getApiErrorMessage:(e:Error)=>e.message}));
 vi.mock('@/store/undoActions',()=>({advanceDerivedZoneRevision:vi.fn()}));
-const zone=(x=0,compiled=false):SiteZone=>({id:'zone',project_id:'p',zone_type:'building',color:'#777777',sort_order:0,created_at:'r1',updated_at:'r1',coordinates:[[x,0],[x+1,0],[x+1,1],[x,1]],properties:{pick_place_asset:'infill_home',...(compiled?{community_3d:{schema_version:1,state:'compiled',kind:'building',generator:'lego_assembly',compiled_at:'now'}}:{})}});
+const zone=(x=0,compiled=false):SiteZone=>({id:'zone',project_id:'p',zone_type:'building',color:'#777777',sort_order:0,created_at:'r1',updated_at:'r1',coordinates:[[x,0],[x+1,0],[x+1,1],[x,1]],properties:{pick_place_asset:'validation_minimalist_infill_brick_monolith',...(compiled?{community_3d:{schema_version:1,state:'compiled',kind:'building',generator:'lego_assembly',compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64)}}:{})}});
+const boundary=(state:'compiled'|'stale'):SiteZone=>({id:'boundary',project_id:'p',zone_type:'site_boundary',color:'#777777',sort_order:1,created_at:'r1',updated_at:'r1',coordinates:[[0,0],[4,0],[4,4],[0,4]],properties:{community_3d_landscape:{schema_version:1,state,boundary_id:'boundary',source_hash:'c'.repeat(64)}}});
 const wrapper=({children}:{children:ReactNode})=><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}>{children}</QueryClientProvider>;
 const advance=()=>act(async()=>{await vi.advanceTimersByTimeAsync(750)});
 describe('automatic placement compilation',()=>{
@@ -56,5 +57,28 @@ describe('automatic placement compilation',()=>{
     expect(compileMixedCommunity3D).not.toHaveBeenCalled();
     rerender({zones:[{...edited,coordinates:zone(2).coordinates}]});await advance();
     expect(compileMixedCommunity3D).toHaveBeenCalledOnce();unmount();
+  });
+  it('rebuilds a moved fixed fixture and its stale site landscape together',async()=>{
+    const fixture={...zone(1),zone_type:'green_space',properties:{pick_place_asset:'validation_sculpture_garden_v0',validation_fixed_fixture:true}} as SiteZone;
+    vi.mocked(siteZonesApi.list).mockResolvedValue([zone(1,true),boundary('compiled')]);
+    const {rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{
+      initialProps:{zones:[fixture,boundary('stale')]},wrapper,
+    });
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledWith([fixture],undefined,{
+      includeResidualLandscape:true,scopeZoneIds:['zone'],
+    });
+    rerender({zones:[{...fixture,properties:{...fixture.properties,community_3d:{schema_version:1,state:'compiled',kind:'park',generator:'park_kit',compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64)}}},boundary('compiled')]});
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    unmount();
+  });
+  it('refreshes a stale landscape even when all physical models are current',async()=>{
+    const saved=zone(0,true);
+    vi.mocked(siteZonesApi.list).mockResolvedValue([saved,boundary('compiled')]);
+    const {unmount}=renderHook(()=>useAutomatic3D('p',[saved,boundary('stale')],false),{wrapper});
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    unmount();
   });
 });
