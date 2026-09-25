@@ -4,6 +4,7 @@ import math
 import struct
 import uuid
 import zlib
+from dataclasses import replace
 from datetime import datetime, timezone
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
@@ -4182,10 +4183,16 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
 
 
 @pytest.mark.asyncio
-async def test_success_audit_marks_provider_first_scene_final(monkeypatch):
+@pytest.mark.parametrize("outcome", ["accepted", "review_required"])
+async def test_success_audit_marks_provider_first_scene_final(monkeypatch, outcome):
     request = _request(presentation_mode="scene", style="development")
     prepared = prepare_direct_3d_capture(request)
-    result = _fake_service_result(prepared.audit_input_base64)
+    provider_pixels = _png_b64(Image.new("RGB", (2, 2), "blue"))
+    result = replace(
+        _fake_service_result(prepared.audit_input_base64),
+        provider_image_base64=provider_pixels,
+        outcome=outcome,
+    )
     result.diagnostics.update(
         {
             "processing_mode": "scene",
@@ -4220,7 +4227,8 @@ async def test_success_audit_marks_provider_first_scene_final(monkeypatch):
 
     assert response.diagnostics.processing_mode == "scene"
     assert response.diagnostics.provider_first is True
-    assert finalize_mock.await_args.kwargs["status_label"] == ("accepted provider-first scene")
+    assert response.provider_image_base64 == (provider_pixels if outcome == "review_required" else None)
+    assert finalize_mock.await_args.kwargs["status_label"] == f"{outcome} provider-first scene"
     assert "mode=scene style=development" in finalize_mock.await_args.kwargs["detail"]
 
 

@@ -1754,6 +1754,7 @@ async def run_direct_3d_render(
     return Direct3DRenderResponse(
         saved_render=saved_render,
         provider_original_render=provider_original_render,
+        provider_image_base64=result.provider_image_base64 if result.outcome == "review_required" else None,
         image_base64=result.image_base64,
         model=req.model,
         outcome=result.outcome,

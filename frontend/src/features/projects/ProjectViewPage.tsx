@@ -2013,8 +2013,10 @@ interface ProjectRendersTrayProps {
 }
 
 function RenderSourceNote({ render }: { render: SavedRender }) {
+  const notice = savedRenderNotice(render);
+  if (!notice && !render.provenance_url) return null;
   return <p className="mt-2 text-xs text-white/90">
-    {savedRenderNotice(render)}
+    {notice}
     {render.provenance_url && <a href={resolveApiFileUrl(render.provenance_url)} target="_blank" rel="noreferrer"
       className="ml-2 inline-flex min-h-8 items-center underline">View source record</a>}
   </p>;
@@ -2055,11 +2057,8 @@ function videoRenderLabel(video: VideoAttempt): string {
 }
 
 function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect, onSelectVideo }: ProjectRendersTrayProps) {
-  const [showAiAttempts, setShowAiAttempts] = useState(true);
-  const attemptCount = renders.filter((render) => render.variant === 'provider_original').length;
   const items = [
-    ...renders.filter((render) => showAiAttempts || render.variant !== 'provider_original')
-      .map((render) => ({ kind: 'image' as const, created_at: render.created_at, render })),
+    ...renders.map((render) => ({ kind: 'image' as const, created_at: render.created_at, render })),
     ...videos.map((video) => ({ kind: 'video' as const, created_at: video.created_at, video })),
   ].sort((left, right) => new Date(right.created_at).getTime() - new Date(left.created_at).getTime());
 
@@ -2097,10 +2096,6 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
-        {attemptCount > 0 && <label className="mb-3 flex min-h-11 items-center gap-2 text-xs text-slate-700">
-          <input type="checkbox" checked={showAiAttempts} onChange={(event) => setShowAiAttempts(event.target.checked)} />
-          Show AI originals ({attemptCount})
-        </label>}
         {items.length === 0 ? (
           <div className="flex min-h-36 flex-col items-center justify-center rounded-lg border border-dashed border-primary-950/[0.12] px-4 py-6 text-center">
             <Sparkles size={22} className="text-primary-950/25" />

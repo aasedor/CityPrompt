@@ -650,6 +650,7 @@ class Direct3DRenderDiagnostics(BaseModel):
 class Direct3DRenderResponse(BaseModel):
     saved_render: SavedRenderResponse | None = None
     provider_original_render: SavedRenderResponse | None = None
+    provider_image_base64: str | None = None
     image_base64: str
     model: OpenAIImageModel = DEFAULT_OPENAI_IMAGE_MODEL
     outcome: Direct3DRenderOutcome = "accepted"

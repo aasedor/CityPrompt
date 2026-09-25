@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { authApi, rendersApi } from '@/services/api';
+import { authApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { useAuthStore } from '@/store';
 import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
@@ -432,18 +432,26 @@ export function useDirect3DRender() {
     if (requestingUserId) void authApi.me().then(user => {
       if (user.id === requestingUserId && useAuthStore.getState().user?.id === requestingUserId) useAuthStore.getState().setUser(user);
     }).catch(() => { /* The next account refresh will reconcile the balance. */ });
-    // Respect the server's fidelity decision. The rejected provider image stays
-    // available separately for QA; it must never replace the returned source.
+    // The fidelity result is advisory for presentation. Show the image the user
+    // paid to produce even when the server also retained a clean 3D fallback.
+    // Raw bytes keep the result visible if optional gallery persistence fails.
+    const showProviderImage = response.outcome === 'review_required'
+      && Boolean(response.provider_image_base64 || response.provider_original_render);
+    const imageUrl = showProviderImage
+      ? response.provider_image_base64
+        ? `data:image/png;base64,${response.provider_image_base64}`
+        : resolveApiFileUrl(response.provider_original_render!.image_url)
+      : `data:image/png;base64,${response.image_base64}`;
     return {
       render: {
-        imageUrl: `data:image/png;base64,${response.image_base64}`,
+        imageUrl,
         prompt,
         model: response.model,
         imageQuality: 'high',
-        savedRender: response.saved_render ?? undefined,
-        providerLabel: response.diagnostics.returned_safety_strategy === 'authoritative_source'
-          ? 'Original 3D view · AI finish needs review'
-          : viewMode === 'street'
+        savedRender: showProviderImage
+          ? response.provider_original_render ?? undefined
+          : response.saved_render ?? undefined,
+        providerLabel: viewMode === 'street'
           ? `Direct 3D Street · ${imageModelLabel(response.model)}`
           : `Direct 3D · ${imageModelLabel(response.model)}`,
       },

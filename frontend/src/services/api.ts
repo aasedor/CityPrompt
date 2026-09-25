@@ -1444,6 +1444,7 @@ export const rendersApi = {
     };
   }): Promise<{
     image_base64: string;
+    provider_image_base64?: string | null;
     model: OpenAIImageModel;
     outcome: 'accepted' | 'review_required';
     warnings: string[];
