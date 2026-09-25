@@ -195,6 +195,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const [saving, setSaving] = useState(false);
   const [savedImageKeys, setSavedImageKeys] = useState<Set<string>>(() => new Set());
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
+  const [customPrompt, setCustomPrompt] = useState('');
   // A street view starts with one image call; comparisons are an explicit choice.
   const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false });
   const [imageProgress, setImageProgress] = useState('');
@@ -350,8 +351,9 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
               includePeople ? 'Include a few pedestrians on existing walking surfaces.' : 'Do not add people.',
               includeVehicles ? 'Include a few vehicles on existing carriageways only.' : 'Do not add vehicles.',
               includePeople ? 'Scale people using nearby doors and storeys. Show natural walking or seated poses with believable ground contact; keep feet visible when the captured framing allows. Respect occlusion by existing trees, buildings and furniture, and keep entrances and crossings readable.' : '',
+              customPrompt.trim(),
               'Keep all buildings, facilities, paths and streets in their captured positions.',
-            ].join(' '),
+            ].filter(Boolean).join(' '),
           }), (direct) => {
             const directResult: StreetViewResult = {
               imageUrl: direct.render.imageUrl,
@@ -429,6 +431,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
               useRealContext,
               includePeople,
               includeVehicles,
+              customPrompt: customPrompt.trim() || undefined,
             },
           );
           return providerResult
@@ -479,7 +482,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
@@ -669,6 +672,17 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
               </div>
             )}
           </div>
+          <div className="border-t border-white/10 px-5 py-3">
+            <label htmlFor="street-render-custom-prompt" className="mb-1 block text-xs font-medium text-white">Custom prompt <span className="text-white/50">(optional)</span></label>
+            <textarea
+              id="street-render-custom-prompt"
+              value={customPrompt}
+              onChange={(event) => setCustomPrompt(event.target.value)}
+              placeholder="Describe the lighting, atmosphere, or details you want…"
+              rows={2}
+              className="w-full resize-y rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-xs text-white placeholder:text-white/40 focus:border-amber-400 focus:outline-none"
+            />
+          </div>
           {/* Footer — re-render controls */}
           <div className="flex items-center justify-between border-t border-white/10 px-5 py-3">
             <div className="flex items-center gap-2">
@@ -778,7 +792,18 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
           <button type="button" aria-label="Close 3D preview" onClick={() => setSourcePreview(null)} className="absolute right-2 top-2 rounded bg-black/75 p-2 text-white"><X size={16} /></button>
         </figure>
       )}
-      <div className="street-view-card street-view-card--panel flex flex-wrap items-center justify-center gap-3 rounded-lg px-4 py-3 backdrop-blur-xl">
+      <div className="street-view-card street-view-card--panel flex max-h-[80dvh] flex-wrap items-center justify-center gap-3 overflow-y-auto rounded-lg px-4 py-3 backdrop-blur-xl">
+        <div className="w-full">
+          <label htmlFor="street-render-custom-prompt" className="mb-1 block text-xs font-bold">Custom prompt <span className="font-normal opacity-60">(optional)</span></label>
+          <textarea
+            id="street-render-custom-prompt"
+            value={customPrompt}
+            onChange={(event) => setCustomPrompt(event.target.value)}
+            placeholder="Describe the lighting, atmosphere, or details you want…"
+            rows={2}
+            className="w-full resize-y rounded-lg border-2 border-[#151515]/20 bg-white/80 px-3 py-2 text-xs text-[#151515] placeholder:text-[#151515]/50 focus:border-[#151515] focus:outline-none"
+          />
+        </div>
         {/* Direction controls */}
         <button
           onClick={handleRotateLeft}

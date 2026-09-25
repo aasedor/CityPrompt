@@ -1235,6 +1235,17 @@ export function GlobeAIRenderPanel({
           : resolveDirect3DPresentationMode(style) === 'reproject'
             ? 'Creates a different projection of your design. Check the resulting layout before presenting.' : undefined}
         addPeople={addPeople} addVehicles={addVehicles} onPeople={setAddPeople} onVehicles={setAddVehicles} />
+      <div className="border-b border-white/15 bg-slate-900/90 px-4 py-3 text-white">
+        <label htmlFor="globe-render-custom-prompt" className="mb-1 block text-xs font-bold">Custom prompt <span className="font-normal text-white/60">(optional)</span></label>
+        <textarea
+          id="globe-render-custom-prompt"
+          value={customPrompt}
+          onChange={(event) => setCustomPrompt(event.target.value)}
+          placeholder="Describe the lighting, atmosphere, or details you want…"
+          rows={2}
+          className="w-full resize-y rounded-lg border-2 border-white/20 bg-white/5 px-3 py-2 text-xs text-white placeholder-white/40 focus:border-[#c9ff3d] focus:outline-none"
+        />
+      </div>
       {!direct3DAvailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">{direct3DUnavailableReason}</p>}
       {imageGenerationUnavailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">Image generation is unavailable right now. You can still export your current 3D view below.</p>}
       <details className="border-b border-white/20 bg-slate-900/90 text-white">
@@ -1337,17 +1348,6 @@ export function GlobeAIRenderPanel({
           </label>
         )}
 
-        {/* Custom prompt */}
-        <div>
-          <div className="mb-1 text-[10px] font-black uppercase text-white/50">Prompt</div>
-          <textarea
-            value={customPrompt}
-            onChange={(e) => setCustomPrompt(e.target.value)}
-            placeholder="Additional instructions (optional)..."
-            rows={2}
-            className="w-full resize-none rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-white placeholder-white/35 focus:border-[#c9ff3d] focus:outline-none"
-          />
-        </div>
       </div>
 
       {/* Error display */}

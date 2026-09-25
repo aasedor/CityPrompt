@@ -66,6 +66,24 @@ describe('student street render', () => {
     expect(mocks.direct.mock.calls[0][1].customPrompt).toContain('feet visible when the captured framing allows');
   });
 
+  it('sends the visible custom prompt with a Direct 3D street render', async () => {
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} })} />);
+    fireEvent.change(screen.getByRole('textbox', { name: /custom prompt/i }), { target: { value: 'Soft morning light on the planted courtyard.' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    await waitFor(() => expect(mocks.direct).toHaveBeenCalledTimes(1));
+    expect(mocks.direct.mock.calls[0][1].customPrompt).toContain('Soft morning light on the planted courtyard.');
+    expect(mocks.direct.mock.calls[0][1].customPrompt).toContain('Keep all buildings, facilities, paths and streets in their captured positions.');
+  });
+
+  it('sends the custom prompt through the classic street renderer', async () => {
+    mocks.classic.mockResolvedValue({ imageUrl: 'data:image/png;base64,street', prompt: 'street' });
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" />);
+    fireEvent.change(screen.getByRole('textbox', { name: /custom prompt/i }), { target: { value: 'Rainy evening with warm shop windows.' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    await waitFor(() => expect(mocks.classic).toHaveBeenCalledTimes(3));
+    expect(mocks.classic.mock.calls.every(([, , , options]) => options.customPrompt === 'Rainy evening with warm shop windows.')).toBe(true);
+  });
+
   it('shows the AI illustration first and keeps the source comparison without saving it twice', async () => {
     const original = { id: 'attempt-1', image_url: '/attempt.png', prompt: 'finish' };
     mocks.direct.mockResolvedValue({

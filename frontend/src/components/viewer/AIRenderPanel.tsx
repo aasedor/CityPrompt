@@ -387,6 +387,20 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
           </div>
         )}
 
+        <div>
+          <label htmlFor="aerial-render-custom-prompt" className="mb-1 block text-xs font-medium text-gray-300">
+            Custom prompt <span className="font-normal text-gray-500">(optional)</span>
+          </label>
+          <textarea
+            id="aerial-render-custom-prompt"
+            value={customPrompt}
+            onChange={(event) => setCustomPrompt(event.target.value)}
+            placeholder="Describe the lighting, atmosphere, or details you want…"
+            rows={2}
+            className="w-full resize-y rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/30"
+          />
+        </div>
+
         {/* ── Advanced options disclosure ───────────────────────────────── */}
         <button
           onClick={() => setShowAdvanced((v) => !v)}
@@ -402,27 +416,13 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
           Advanced Options
-          {(customPrompt || referenceImage) && (
+          {referenceImage && (
             <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
           )}
         </button>
 
         {showAdvanced && (
           <div className="space-y-3 rounded-lg border border-white/5 bg-white/[0.02] p-3">
-            {/* Custom prompt */}
-            <div>
-              <label className="mb-1 block text-[11px] font-medium text-gray-400">
-                Custom Prompt
-              </label>
-              <textarea
-                value={customPrompt}
-                onChange={(e) => setCustomPrompt(e.target.value)}
-                placeholder="e.g. rainy evening, reflective puddles, warm streetlights..."
-                rows={2}
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/30"
-              />
-            </div>
-
             {/* Prompt Adherence */}
             <div>
               <div className="mb-1 flex items-center justify-between">

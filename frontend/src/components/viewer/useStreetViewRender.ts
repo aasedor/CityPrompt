@@ -2168,6 +2168,7 @@ export async function generateStreetView(
     fovDeg?: number;
     distanceMeters?: number;
     styleModifier?: string;
+    customPrompt?: string;
     model?: string;
     imageQuality?: OpenAIImageQuality;
     projectId?: string;
@@ -2305,6 +2306,8 @@ export async function generateStreetView(
         'exactly as painted. Never merge separate volumes, never float or stack them, and never let a ' +
         'rear building bleed over a nearer one. Do not copy the flat colors into the output.'
       : '';
+    const userDirection = options?.customPrompt?.trim();
+    const displayPrompt = prompt + (userDirection ? `\n\nADDITIONAL USER INSTRUCTIONS: ${userDirection}` : '');
     const enhancedPrompt =
       prompt + spatialRef + semanticRef +
       (archetypeImages.length > 0
@@ -2312,7 +2315,8 @@ export async function generateStreetView(
           'style and materials for specific zones. Use Image 1 strictly as the structural foundation. ' +
           'Extract material textures and architectural aesthetic from the style reference images. ' +
           `Apply each reference image's style to ${archetypeAnchorNoun}.`
-        : '');
+        : '') +
+      (userDirection ? `\n\nADDITIONAL USER INSTRUCTIONS: ${userDirection}` : '');
 
     const GUIDE_KIND_WIRE: Record<StreetViewGuideKind, string> = {
       clay: 'clay',
@@ -2382,7 +2386,7 @@ export async function generateStreetView(
           'texture sharpness on close elements, and natural landscape detail. ' +
           'Do NOT move, resize, add, or remove any structures. ' +
           'The clay model (Image 2) confirms the correct spatial arrangement.\n\n' +
-          prompt;
+          displayPrompt;
 
         const pass2Body: Record<string, unknown> = {
           prompt: refinementPrompt,
@@ -2412,7 +2416,7 @@ export async function generateStreetView(
     }
 
     const imageUrl = `data:image/png;base64,${resultBase64}`;
-    return { imageUrl, prompt, model: renderModel, imageQuality: options?.imageQuality };
+    return { imageUrl, prompt: displayPrompt, model: renderModel, imageQuality: options?.imageQuality };
   } catch (err) {
     // Surface the real backend/provider detail (e.g. "OpenAI image error (429):
     // …", "Not enough tokens…") instead of collapsing every failure into a
@@ -2445,6 +2449,7 @@ export function useStreetViewRender() {
         fovDeg?: number;
         distanceMeters?: number;
         styleModifier?: string;
+        customPrompt?: string;
         model?: string;
         imageQuality?: OpenAIImageQuality;
         projectId?: string;
