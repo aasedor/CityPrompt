@@ -15,11 +15,22 @@ describe('local student validation discovery',()=>{
     fireEvent.click(screen.getAllByRole('button',{name:'Parks'})[1]);
     expect(screen.getAllByRole('article')).toHaveLength(8);
     fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
-    expect(screen.getAllByRole('article')).toHaveLength(7);
+    expect(screen.getAllByRole('article')).toHaveLength(2);
     expect(screen.getAllByText('Choose & draw route')).toHaveLength(2);
-    expect(screen.getAllByText('Choose & place')).toHaveLength(5);
-    fireEvent.click(screen.getByRole('button',{name:/Tied-arch gateway bridge.*Choose & place/}));
+    fireEvent.click(screen.getByRole('button',{name:/Neighbourhood Main Street.*Choose & draw route/}));
+    expect(onPickStreet).toHaveBeenCalledWith(expect.objectContaining({id:'validation_student_main_street_v1'}));
+    fireEvent.click(screen.getByRole('button',{name:'Streets'}));
+    fireEvent.click(screen.getByRole('button',{name:'Show 5 fixed review segments (placement only)'}));
+    expect(screen.getAllByRole('article')).toHaveLength(7);
+    expect(screen.getAllByText('Place fixed review segment')).toHaveLength(5);
+    fireEvent.click(screen.getByRole('button',{name:/Tied-arch gateway bridge.*Place fixed review segment/}));
     expect(onPick).toHaveBeenCalledWith('validation_landmark_signature_bridge_v2');
-    expect(onPickStreet).not.toHaveBeenCalled();
+  });
+  it('starts point-by-point road drawing directly from the sidebar',()=>{
+    const onPickStreet=vi.fn();
+    render(<PlacementPalette selected={null} onPick={vi.fn()} onPickStreet={onPickStreet}
+      onPickCanonical={vi.fn()} onCancel={vi.fn()} status="idle" message="" onRetry={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Draw a road route'}));
+    expect(onPickStreet).toHaveBeenCalledWith(expect.objectContaining({kind:'street',id:'validation_student_main_street_v1'}));
   });
 });

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
-import { STREET_ASSETS, type StreetAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, STREET_ASSETS, type StreetAsset } from './assetRegistry';
 import { CANONICAL_CHOICES, CLASSROOM_CHOICES, choiceMatchesGroup, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
 import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
@@ -12,6 +12,7 @@ const sections = [
   { id: 'park_plaza', label: 'Parks', icon: Trees },
   { id: 'street_pathway', label: 'Streets', icon: Route },
 ] as const;
+const DRAWABLE_STREETS = CATALOGUE_ASSETS.filter((asset): asset is StreetAsset => asset.kind === 'street');
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
@@ -28,11 +29,16 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const [groupId, setGroupId] = useState('');
   const [limit, setLimit] = useState(12);
   const [collection, setCollection] = useState<'starter' | 'explore'>('starter');
+  const [showFixedStreetSegments, setShowFixedStreetSegments] = useState(false);
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
   const chooseSection = (id: Section) => { setSection(id); setGroupId(''); setQuery(''); setLimit(12); };
   const choices = collection === 'starter' ? CLASSROOM_CHOICES : CANONICAL_CHOICES;
   const groups = CALGARY_GROUPS.filter(group => group.domain === section && choices.some(c => c.domain === section && choiceMatchesGroup(c, group.id)));
-  const assets = filterCanonicalChoices(section, query, groupId, choices);
+  const matchingAssets = filterCanonicalChoices(section, query, groupId, choices);
+  const fixedStreetCount = section === 'street_pathway'
+    ? matchingAssets.filter(choice => choice.placements[0]?.kind !== 'street').length : 0;
+  const assets = section === 'street_pathway' && !showFixedStreetSegments
+    ? matchingAssets.filter(choice => choice.placements[0]?.kind === 'street') : matchingAssets;
   const visibleSections = sections.filter(item => onPickStreet || item.id !== 'street_pathway');
   const activeStreet = STREET_ASSETS.find(asset => asset.model.variantId === activeStreetVariant);
   return <section aria-label="Place 3D objects" className="space-y-2">
@@ -45,6 +51,10 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         <Icon size={22} />{label}
       </button>)}
     </div>
+    {onPickStreet && DRAWABLE_STREETS[0] && <button type="button" onClick={() => onPickStreet(DRAWABLE_STREETS[0])}
+      className="min-h-11 w-full rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950">
+      Draw a road route
+    </button>}
     {activeStreet && <p className="rounded-lg border border-lime-400 bg-lime-50 px-2 py-2 text-xs text-slate-900">
       <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />Draw its route; the width stays fixed.
     </p>}
@@ -80,6 +90,11 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             </select>
           </div>
           <p className="text-xs text-slate-600" role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Choose a design, then place it or draw its outline.</p>
+          {section === 'street_pathway' && fixedStreetCount > 0 && <button type="button"
+            aria-expanded={showFixedStreetSegments} onClick={() => setShowFixedStreetSegments(value => !value)}
+            className="min-h-11 text-left text-xs font-semibold underline">
+            {showFixedStreetSegments ? 'Hide' : 'Show'} {fixedStreetCount} fixed review segments (placement only)
+          </button>}
         </div>
         <div aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
