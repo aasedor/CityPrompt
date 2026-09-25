@@ -44,6 +44,7 @@ import { Environment, Html } from '@react-three/drei';
 import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { pointInPolygon } from '@/utils/coordTransform';
 import { useViewerStore } from '@/store';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
@@ -91,6 +92,8 @@ import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
+import { advanceWalkPose, lookWalkPose, type WalkPose } from './walkNavigation';
+import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { isPlausibleTerrainAnchor } from './globeTerrainUtils';
 import {
@@ -1587,7 +1590,12 @@ export function GlobeSitePlannerMap({
 }: GlobeSitePlannerMapProps) {
   const _latitude = latitude ?? 51.045;
   const _longitude = longitude ?? -114.07;
-  const interactionPaused = externalInteractionPaused || Boolean(entrancePick);
+  const [walkMode, setWalkMode] = useState<'pick' | 'active' | null>(null);
+  const [walkPickError, setWalkPickError] = useState('');
+  const walkPoseRef = useRef<WalkPose | null>(null);
+  const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
+  const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
+  const interactionPaused = externalInteractionPaused || Boolean(entrancePick) || walkMode !== null;
   const [entrancePickError, setEntrancePickError] = useState('');
   const entrancePointerHitRef = useRef<{buildingId:string;hit?:NativeEntranceHit}|null>(null);
   useEffect(() => { setEntrancePickError(''); }, [entrancePick]);
@@ -2262,6 +2270,145 @@ export function GlobeSitePlannerMap({
     cameraInteractionGenerationRef.current += 1;
     projectFrameRequestGenerationRef.current += 1;
   }, []);
+
+  const applyWalkPose = useCallback((next: WalkPose) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+    const groundHeight = authoredCameraGround(terrainZonesRef.current, next.lng, next.lat, next.groundHeight);
+    const pose = { ...next, groundHeight };
+    walkPoseRef.current = pose;
+    const lat = pose.lat * DEG_TO_RAD;
+    const lng = pose.lng * DEG_TO_RAD;
+    const surface = new THREE.Vector3();
+    const east = new THREE.Vector3();
+    const north = new THREE.Vector3();
+    const up = new THREE.Vector3();
+    WGS84_ELLIPSOID.getCartographicToPosition(lat, lng, groundHeight, surface);
+    WGS84_ELLIPSOID.getEastNorthUpAxes(lat, lng, east, north, up);
+    const heading = pose.heading * DEG_TO_RAD;
+    const forward = north.multiplyScalar(Math.cos(heading))
+      .add(east.multiplyScalar(Math.sin(heading)));
+    camera.position.copy(surface).addScaledVector(up, STREET_RENDER_EYE_HEIGHT_METERS);
+    camera.up.copy(up);
+    camera.lookAt(camera.position.clone().add(forward));
+    camera.updateMatrixWorld();
+  }, []);
+
+  const leaveWalk = useCallback(() => {
+    const camera = cameraRef.current;
+    const saved = walkSavedCameraRef.current;
+    const controls = globeControlsRef.current;
+    if (camera && saved) {
+      camera.position.copy(saved.position);
+      camera.quaternion.copy(saved.quaternion);
+      camera.up.copy(saved.up);
+      camera.updateMatrixWorld();
+      if (saved.pivot && controls?.pivotPoint) controls.pivotPoint.copy(saved.pivot);
+    }
+    if (controls?.controls) controls.controls.enabled = true;
+    if (controls) controls.enabled = true;
+    walkSavedCameraRef.current = null;
+    walkPoseRef.current = null;
+    walkPointerRef.current = null;
+    setWalkMode(null);
+  }, []);
+
+  const enterWalkAt = useCallback((hit: { lngLat: [number, number]; height: number }) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+    const tiles = tilesRendererRef.current?.group;
+    const sampledGround = tiles?.children.length
+      ? raycastObjectFilteredTerrainHeightAtLngLat(hit.lngLat[0], hit.lngLat[1], tiles, new THREE.Raycaster(), hit.height)
+      : hit.height;
+    const expectedGround = authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], sampledGround ?? hit.height);
+    if (hit.height > expectedGround + 3) {
+      setWalkPickError('That point is above the ground. Choose a sidewalk, path, or open lawn.');
+      return;
+    }
+    setWalkPickError('');
+    const lat = hit.lngLat[1] * DEG_TO_RAD;
+    const lng = hit.lngLat[0] * DEG_TO_RAD;
+    const east = new THREE.Vector3();
+    const north = new THREE.Vector3();
+    WGS84_ELLIPSOID.getEastNorthUpAxes(lat, lng, east, north, new THREE.Vector3());
+    const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+    const heading = (Math.atan2(forward.dot(east), forward.dot(north)) * RAD_TO_DEG + 360) % 360;
+    walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
+      up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
+    if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
+    if (globeControlsRef.current) globeControlsRef.current.enabled = false;
+    markUserInteracted();
+    applyWalkPose({ lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading });
+    setWalkMode('active');
+  }, [applyWalkPose, markUserInteracted]);
+
+  const renderWalkView = useCallback(() => {
+    const pose = walkPoseRef.current;
+    if (!pose) return;
+    leaveWalk();
+    setStreetViewActive(true);
+    setStreetViewPosition([pose.lng, pose.lat], pose.groundHeight);
+    setStreetViewAngle(Math.round(pose.heading));
+  }, [leaveWalk, setStreetViewActive, setStreetViewAngle, setStreetViewPosition]);
+
+  useEffect(() => {
+    if (walkMode !== 'active') return;
+    const pressed = new Set<string>();
+    const movementKeys = new Set(['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift']);
+    let frame = 0;
+    let lastTime = performance.now();
+    const tick = (time: number) => {
+      const current = walkPoseRef.current;
+      if (current && pressed.size) {
+        const next = advanceWalkPose(current, pressed, (time - lastTime) / 1000);
+        if (next !== current) {
+          const insideBuilding = terrainZonesRef.current.some(zone => isBuildingZoneType(zone.zone_type)
+            && pointInPolygon(next.lng, next.lat, zone.coordinates));
+          applyWalkPose(insideBuilding ? { ...next, lng: current.lng, lat: current.lat } : next);
+        }
+      }
+      lastTime = time;
+      frame = requestAnimationFrame(tick);
+    };
+    const keyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault(); event.stopImmediatePropagation(); leaveWalk(); return;
+      }
+      const target = event.target as HTMLElement | null;
+      if (target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName ?? '')) return;
+      const key = event.key.toLowerCase();
+      if (!movementKeys.has(key)) return;
+      event.preventDefault(); event.stopImmediatePropagation(); pressed.add(key);
+    };
+    const keyUp = (event: KeyboardEvent) => { pressed.delete(event.key.toLowerCase()); };
+    const clearKeys = () => pressed.clear();
+    window.addEventListener('keydown', keyDown, true);
+    window.addEventListener('keyup', keyUp, true);
+    window.addEventListener('blur', clearKeys);
+    frame = requestAnimationFrame(tick);
+    return () => {
+      window.removeEventListener('keydown', keyDown, true);
+      window.removeEventListener('keyup', keyUp, true);
+      window.removeEventListener('blur', clearKeys);
+      cancelAnimationFrame(frame);
+    };
+  }, [walkMode, applyWalkPose, leaveWalk]);
+
+  useEffect(() => {
+    if (walkMode !== 'pick') return;
+    const cancel = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault(); event.stopImmediatePropagation(); setWalkMode(null);
+    };
+    window.addEventListener('keydown', cancel, true);
+    return () => window.removeEventListener('keydown', cancel, true);
+  }, [walkMode]);
+
+  useEffect(() => {
+    if (!walkMode || (!hasDrawingTool && !placementDraft && !streetViewPegman)) return;
+    if (walkMode === 'active') leaveWalk();
+    else setWalkMode(null);
+  }, [walkMode, hasDrawingTool, placementDraft, streetViewPegman, leaveWalk]);
 
   const requestProjectFrame = useCallback(async (
     renderZones: Array<{ coordinates?: [number, number][]; properties?: SiteZone['properties']; zone_type?: SiteZone['zone_type'] }>,
@@ -4370,6 +4517,51 @@ export function GlobeSitePlannerMap({
         </GlobeDragProvider>
       </Canvas>
 
+      {walkMode === 'pick' && <div role="button" tabIndex={0} aria-label="Choose walk starting point"
+        className="absolute inset-0 z-10 cursor-crosshair"
+        onClick={event => {
+          const rect = event.currentTarget.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+          const y = 1 - ((event.clientY - rect.top) / rect.height) * 2;
+          const hit = raycastSurfacePoint(x, y);
+          if (hit) enterWalkAt(hit);
+          else setWalkPickError('No ground is loaded there yet. Choose another clear spot.');
+        }}
+        onKeyDown={event => {
+          if (event.key === 'Escape') setWalkMode(null);
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            const hit = raycastSurfacePoint(0, 0);
+            if (hit) enterWalkAt(hit);
+            else setWalkPickError('No ground is loaded at the centre yet. Choose another clear spot.');
+          }
+        }}>
+        <p role="status" className="pointer-events-none absolute bottom-24 left-1/2 max-w-[90vw] -translate-x-1/2 rounded-lg bg-slate-950/90 px-4 py-2 text-center text-sm font-semibold text-white shadow-lg">
+          {walkPickError || 'Click a clear ground spot to start walking · Esc to cancel'}
+        </p>
+      </div>}
+      {walkMode === 'active' && <>
+        <div aria-label="Walk view" className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing"
+          onPointerDown={event => {
+            walkPointerRef.current = { x: event.clientX, y: event.clientY };
+            event.currentTarget.setPointerCapture(event.pointerId);
+          }}
+          onPointerMove={event => {
+            const previous = walkPointerRef.current;
+            const pose = walkPoseRef.current;
+            if (!previous || !pose) return;
+            applyWalkPose(lookWalkPose(pose, event.clientX - previous.x));
+            walkPointerRef.current = { x: event.clientX, y: event.clientY };
+          }}
+          onPointerUp={() => { walkPointerRef.current = null; }}
+          onPointerCancel={() => { walkPointerRef.current = null; }} />
+        <div className="absolute bottom-20 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-xl border border-slate-950 bg-white/95 p-2 text-xs font-semibold text-slate-950 shadow-xl">
+          <span className="px-2">WASD move · Drag to turn · Shift faster · Esc exit</span>
+          <button type="button" onClick={renderWalkView} className="min-h-11 rounded-lg bg-lime-300 px-3 font-bold">Street view render…</button>
+          <button type="button" onClick={leaveWalk} className="min-h-11 rounded-lg border border-slate-700 px-3">Exit walk</button>
+        </div>
+      </>}
+
       {!isInitialCameraApplied && (
         <div className="absolute inset-0 z-40 flex items-center justify-center bg-black text-white">
           <div className="flex flex-col items-center gap-3 rounded-xl border border-white/10 bg-gray-950/80 px-5 py-4 shadow-2xl backdrop-blur-sm">
@@ -4591,7 +4783,7 @@ export function GlobeSitePlannerMap({
       )}
 
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
-      {!entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
+      {!walkMode && !entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
           {siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
             ? 'Drag the Move handle to reposition this house | Use the reshape panel to resize or rotate | Esc to deselect'
@@ -4616,6 +4808,7 @@ export function GlobeSitePlannerMap({
         </div>
         <button
           type="button"
+          disabled={walkMode !== null}
           onClick={() => {
             const camera = cameraRef.current;
             const hit = focusedSiteAnchorRef.current ?? raycastSurfacePoint(0, 0);
@@ -4636,6 +4829,13 @@ export function GlobeSitePlannerMap({
         >
           {cameraElevation >= 85 ? '3D view' : 'Top view'}
         </button>
+        {!walkMode && !entrancePick && !placementDraft && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
+          <button type="button" onClick={() => { onZoneSelected(null); setWalkPickError(''); setWalkMode('pick'); }}
+            className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] hover:bg-[#dcff81]"
+            title="Explore the development at walking height">
+            Walk
+          </button>
+        )}
         {!areTilesDisplayReady && (
           <div className="flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
             <div className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
