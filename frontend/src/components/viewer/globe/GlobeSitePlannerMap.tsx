@@ -44,7 +44,6 @@ import { Environment, Html } from '@react-three/drei';
 import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
-import { pointInPolygon } from '@/utils/coordTransform';
 import { useViewerStore } from '@/store';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
@@ -2362,9 +2361,9 @@ export function GlobeSitePlannerMap({
       if (current && pressed.size) {
         const next = advanceWalkPose(current, pressed, (time - lastTime) / 1000);
         if (next !== current) {
-          const insideBuilding = terrainZonesRef.current.some(zone => isBuildingZoneType(zone.zone_type)
-            && pointInPolygon(next.lng, next.lat, zone.coordinates));
-          applyWalkPose(insideBuilding ? { ...next, lng: current.lng, lat: current.lat } : next);
+          // A building zone is a planning plot, not a solid collision mesh.
+          // It can contain open courts, arcades and paved passages.
+          applyWalkPose(next);
         }
       }
       lastTime = time;
