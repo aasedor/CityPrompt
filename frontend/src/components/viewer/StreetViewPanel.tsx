@@ -3,7 +3,7 @@
  * is placed on the map. Shows compass direction, rotation controls, and a
  * generate button. Displays the rendered street view in a modal.
  */
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Eye, ArrowLeft, ArrowRight, Loader2, X, Download, Save, Wand2 } from 'lucide-react';
 import { useViewerStore } from '@/store';
 import {
@@ -178,9 +178,10 @@ interface StreetViewPanelProps {
    *  path (per-zone capture claims are derived from them). */
   buildings?: Building[];
   onRenderSaved?: (render: SavedRender) => void;
+  onPrepareCommunity3D?: () => void;
 }
 
-export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings, onRenderSaved }: StreetViewPanelProps) {
+export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings, onRenderSaved, onPrepareCommunity3D }: StreetViewPanelProps) {
   const { streetViewPegman, setStreetViewAngle, setStreetViewPosition, setStreetViewActive } = useViewerStore();
   const { generateStreetView } = useStreetViewRender();
   const { renderDirect3D } = useDirect3DRender();
@@ -206,6 +207,11 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const [editTarget, setEditTarget] = useState<SavedRender | null>(null);
   const [sourcePreview, setSourcePreview] = useState<{ imageUrl: string; position: string; angle: number } | null>(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const currentSceneClaims = useMemo(
+    () => globeCapture ? getCommunity3DCaptureClaims(siteZones, buildings ?? []) : null,
+    [globeCapture, siteZones, buildings],
+  );
+  const needsCommunity3D = Boolean(directStreetMode && globeCapture && !currentSceneClaims?.length);
   const previewStreetSource = async () => {
     if (!globeCapture || !streetViewPegman?.position || isPreviewing) return;
     const position = JSON.stringify(streetViewPegman.position);
@@ -265,6 +271,10 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
 
   const handleGenerate = useCallback(async () => {
     if (!streetViewPegman?.position) return;
+    if (directStreetMode && !currentSceneClaims?.length) {
+      toast.error('Complete Community 3D for the new or changed objects before rendering this street view.');
+      return;
+    }
     const pegmanPosition = streetViewPegman.position;
     const pegmanAngle = streetViewPegman.angle;
     setIsGenerating(true);
@@ -320,11 +330,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
           toast.error('Direct 3D street needs compiled 3D models in the scene — the capture returned no pass stack.');
           return;
         }
-        const claims = getCommunity3DCaptureClaims(siteZones, buildings ?? []);
-        if (!claims?.length) {
-          toast.error('Rebuild Community 3D first — per-zone scene fingerprints are missing.');
-          return;
-        }
+        const claims = currentSceneClaims!;
         const directLabel = 'Direct 3D Street';
         const completedPreviews: StreetViewResult[] = [];
         try {
@@ -473,7 +479,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, buildings, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
@@ -686,7 +692,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
             </div>
             <button
               onClick={handleGenerate}
-              disabled={isGenerating}
+              disabled={isGenerating || needsCommunity3D}
               className="flex items-center gap-1.5 rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50"
             >
               {isGenerating ? <Loader2 size={14} className="animate-spin" /> : <Eye size={14} />}
@@ -759,6 +765,12 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   // Floating panel on the map
   return (
     <div className="absolute bottom-4 left-1/2 z-40 w-[min(94vw,760px)] -translate-x-1/2">
+      {needsCommunity3D && (
+        <div role="status" className="mb-2 flex flex-wrap items-center justify-center gap-2 rounded-lg bg-amber-50 px-4 py-3 text-center text-xs font-semibold text-amber-950 shadow-lg">
+          <span>New or changed objects need Complete Community 3D before a Direct 3D street render.</span>
+          {onPrepareCommunity3D && <button type="button" onClick={onPrepareCommunity3D} className="rounded-full bg-[#c9ff3d] px-3 py-2 font-black text-[#151515]">Open 3D build controls</button>}
+        </div>
+      )}
       {sourcePreview && sourcePreview.position === JSON.stringify(streetViewPegman.position) && sourcePreview.angle === streetViewPegman.angle && (
         <figure className="relative mx-auto mb-2 w-[min(100%,560px)] overflow-hidden rounded-lg bg-black shadow-xl">
           <img src={sourcePreview.imageUrl} alt="Street view 3D preview" className="max-h-[38vh] w-full object-contain" />
@@ -899,7 +911,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         </button>}
         <button
           onClick={handleGenerate}
-          disabled={isGenerating || isPreviewing}
+          disabled={isGenerating || isPreviewing || needsCommunity3D}
           className="street-view-generate-button flex min-h-12 items-center gap-2 rounded-full px-5 py-3 text-sm font-black uppercase transition disabled:opacity-50"
         >
           {isGenerating ? (

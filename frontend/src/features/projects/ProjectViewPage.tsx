@@ -1421,6 +1421,7 @@ export function ProjectViewPage() {
           globeCapture={handleGlobeStreetCapture}
           buildings={visibleBuildings}
           onRenderSaved={rememberSavedRender}
+          onPrepareCommunity3D={handleOpenGenerate3D}
         />
 
         {renderLightbox && (

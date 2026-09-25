@@ -2,12 +2,12 @@ import '@testing-library/jest-dom/vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const mocks = vi.hoisted(() => ({ direct: vi.fn(), classic: vi.fn(), save: vi.fn(), imageModels: vi.fn(), references: vi.fn() }));
+const mocks = vi.hoisted(() => ({ direct: vi.fn(), classic: vi.fn(), save: vi.fn(), imageModels: vi.fn(), references: vi.fn(), claims: vi.fn() }));
 vi.mock('@/store', () => ({ useViewerStore: () => ({ streetViewPegman: { position: [-114, 51], angle: 0 }, setStreetViewAngle: vi.fn(), setStreetViewPosition: vi.fn(), setStreetViewActive: vi.fn() }) }));
 vi.mock('./useStreetViewRender', () => ({ useStreetViewRender: () => ({ generateStreetView: mocks.classic }) }));
 vi.mock('./globe/useDirect3DRender', async (importOriginal) => ({ ...await importOriginal<typeof import('./globe/useDirect3DRender')>(), useDirect3DRender: () => ({ renderDirect3D: mocks.direct }) }));
 vi.mock('./globe/direct3dArchetypeReferences', () => ({ collectDirect3DArchetypeReferences: mocks.references }));
-vi.mock('@/features/community3d/community3d', () => ({ getCommunity3DCaptureClaims: () => [{ zone_id: 'zone-1' }] }));
+vi.mock('@/features/community3d/community3d', () => ({ getCommunity3DCaptureClaims: mocks.claims }));
 vi.mock('./globe/residualLandscape', () => ({ getCurrentResidualLandscapeClaim: () => null }));
 vi.mock('@/utils/renderPersistence', () => ({ getRenderImageKey: (r: {imageUrl: string}) => r.imageUrl, saveRenderedImage: mocks.save }));
 vi.mock('@/services/api', () => ({ rendersApi: { imageModels: mocks.imageModels }, resolveApiFileUrl: (u: string) => u, getApiErrorMessage: () => 'failed' }));
@@ -29,6 +29,7 @@ describe('student street render', () => {
   beforeEach(() => {
     mocks.imageModels.mockResolvedValue({ default_model: 'gpt-image-2', models: [{ id: 'gpt-image-2', available: true }] });
     vi.clearAllMocks();
+    mocks.claims.mockReturnValue([{ zone_id: 'zone-1' }]);
     mocks.references.mockResolvedValue([]);
     mocks.direct.mockResolvedValue({
       outcome: 'review_required',
@@ -136,5 +137,18 @@ describe('student street render', () => {
     expect(capture).toHaveBeenCalledTimes(1);
     expect(mocks.direct).not.toHaveBeenCalled();
     expect(mocks.classic).not.toHaveBeenCalled();
+  });
+
+  it('offers the 3D build controls before a paid capture when scene claims are missing', () => {
+    mocks.claims.mockReturnValue(null);
+    const capture = vi.fn();
+    const prepare = vi.fn();
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} onPrepareCommunity3D={prepare} />);
+    expect(screen.getByText(/New or changed objects need Complete Community 3D/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Render' })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Open 3D build controls' }));
+    expect(prepare).toHaveBeenCalledTimes(1);
+    expect(capture).not.toHaveBeenCalled();
+    expect(mocks.direct).not.toHaveBeenCalled();
   });
 });
