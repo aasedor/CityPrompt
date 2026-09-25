@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { CANONICAL_CHOICES, CLASSROOM_CHOICES, type CanonicalSelection } from './canonicalCatalogue';
-import { canonicalStreetAsset, streetDesignUpdate } from './canonicalStreetPlacement';
+import { CANONICAL_CHOICES, type CanonicalSelection } from './canonicalCatalogue';
+import { streetDesignUpdate } from './canonicalStreetPlacement';
+import type { StreetAsset } from './assetRegistry';
 
-const starters = CLASSROOM_CHOICES.filter(c => c.domain === 'street_pathway');
+// Fixed street fixtures remain placeable, but cannot supply a route cross-section.
 const choices = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway').map(choice => {
-  const starter = starters.find(c => c.option.id === choice.option.id);
-  return !starter ? choice : { ...choice, option: { ...choice.option, variants: [
-    ...(starter.option.variants ?? []), ...(choice.option.variants ?? []).filter(v => !starter.option.variants?.some(s => s.id === v.id)),
-  ] } };
-});
-const selectedAsset = (selection: CanonicalSelection) => starters.flatMap(c => c.placements)
-  .find(a => a.kind === 'street' && a.model.variantId === selection.variant?.id && a.properties.road_archetype_id === selection.choice.option.id)
-  ?? canonicalStreetAsset(selection);
-const defaults = choices.map(choice => selectedAsset({ choice, variant: choice.option.variants?.[0] })).filter(a => a.kind === 'street');
+  const placements = choice.placements.filter((asset): asset is StreetAsset => asset.kind === 'street');
+  return { ...choice, placements, option: { ...choice.option,
+    variants: choice.option.variants?.filter(v => placements.some(a => a.model.variantId === v.id)),
+  } };
+}).filter(choice => choice.placements.length > 0 && choice.option.variants?.length);
+const selectedAsset = ({ choice, variant }: CanonicalSelection) => choice.placements
+  .find((asset): asset is StreetAsset => asset.kind === 'street' && asset.model.variantId === variant?.id);
+const defaults = choices.map(choice => selectedAsset({ choice, variant: choice.option.variants?.[0] }))
+  .filter((asset): asset is StreetAsset => asset !== undefined);
 const widths = [...new Set(defaults.map(a => a.sectionWidth))].sort((a, b) => a - b);
 const field = 'mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-sm';
 
