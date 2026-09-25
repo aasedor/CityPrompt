@@ -1,0 +1,10 @@
+{
+  "park": {
+    "student_neighbourhood_orchard_v1": ["student_neighbourhood_orchard_v1"],
+    "student_garden_square_v1": ["student_garden_square_v1"]
+  },
+  "street": {
+    "student_planted_shared_lane_v1": ["student_planted_shared_lane_v1"],
+    "student_quiet_residential_street_v1": ["student_quiet_residential_street_v1"]
+  }
+}

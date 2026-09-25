@@ -57,6 +57,13 @@ def public_realm_catalog_variants() -> dict[PublicRealmCatalogKind, dict[str, tu
         if parent not in normalized["street"]:
             raise RuntimeError(f"Native street parent is absent from catalogue: {parent}")
         normalized["street"][parent] = tuple(sorted(set((*normalized["street"][parent], variant))))
+    # The local validation roster also contains four exact student variants
+    # absent from the published reference catalogues. Trust only these locked
+    # identities for source-fitted fallback; this does not grant release approval.
+    validation = json.loads((_DATA_DIR / "validation_public_realm_variants.json").read_text(encoding="utf-8"))
+    for kind in ("park", "street"):
+        for parent, variants in validation[kind].items():
+            normalized[kind][parent] = tuple(sorted(set((*normalized[kind].get(parent, ()), *variants))))
     return normalized
 
 
