@@ -104,5 +104,8 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
       pending.length = 256;
     }
   }
-  return { coordinates, snapped: false, problem: 'There isn’t room here yet. Try a little farther away or choose a smaller object.' };
+  // The nearby search can fail even when the asset itself is an appropriate size.
+  // Preserve the actual boundary, neighbour, or entrance conflict so the student
+  // knows what to move instead of being told the object is too large.
+  return { coordinates, snapped: false, problem };
 }

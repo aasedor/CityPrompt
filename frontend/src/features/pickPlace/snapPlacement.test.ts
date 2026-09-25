@@ -46,6 +46,13 @@ describe('ideation placement snapping',()=>{
     expect(snapPlacement(coords,[self],site,'self').snapped).toBe(false);
     expect(snapPlacement(coords,[],zone('tiny',rectangleAt(ll(0,0),5,5),'site_boundary')).problem).toBeTruthy();
   });
+  it('explains the obstruction when a clear nearby position does not exist',()=>{
+    const narrow=zone('site',rectangleAt(ll(0,0),22,24),'site_boundary');
+    const footprint=rectangleAt(ll(0,0),12,16);
+    const park={...zone('park',footprint,'green_space'),name:'Basketball park'};
+    expect(snapPlacement(footprint,[park],narrow).problem).toContain('overlaps Basketball park');
+    expect(snapPlacement(rectangleAt(ll(80,0),12,16),[],narrow).problem).toContain('site boundary');
+  });
   it('slides a regulation park clear of a street without shrinking or rotating its court', () => {
     const road = {...zone('main',bufferLineToPolygon([ll(0,-80),ll(0,80)],23),'road'), properties:{width:23}};
     const park = rectangleAt(ll(27,0),52,39,90);
