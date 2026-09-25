@@ -1,0 +1,57 @@
+name: cityprompt-validation
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    env_file: ../../.validation/env/backend.env
+    environment:
+      POSTGRES_USER: validation
+      POSTGRES_DB: cityprompt_validation_20260924
+    volumes: ["db:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U validation -d cityprompt_validation_20260924"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  redis:
+    image: redis:7-alpine
+  media:
+    image: minio/minio:RELEASE.2024-11-07T00-52-20Z
+    env_file: ../../.validation/env/backend.env
+    entrypoint: ["/bin/sh", "-c"]
+    command: ['export MINIO_ROOT_USER="$$S3_ACCESS_KEY" MINIO_ROOT_PASSWORD="$$S3_SECRET_KEY"; exec minio server /data']
+    volumes: ["media:/data"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  api:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile.render
+    env_file: ../../.validation/env/backend.env
+    environment:
+      VALIDATION_BIND_HOST: 0.0.0.0
+      VALIDATION_API_PORT: "8000"
+    volumes: ["../..:/workspace:ro"]
+    command: ["sh", "-c", "python /workspace/scripts/validation_runtime.py bootstrap && python /workspace/scripts/validation_runtime.py serve"]
+    ports: ["127.0.0.1:8006:8000"]
+    depends_on:
+      db: {condition: service_healthy}
+      media: {condition: service_healthy}
+      redis: {condition: service_started}
+  web:
+    image: node:22-bookworm-slim
+    working_dir: /workspace/frontend
+    volumes: ["../..:/workspace", "node_modules:/workspace/frontend/node_modules"]
+    environment:
+      CITYPROMPT_PUBLIC_DIR: /workspace/.validation/public
+      VITE_ENV_DIR: /workspace/.validation/env/frontend
+      API_PROXY_TARGET: http://api:8000
+    command: ["sh", "-c", "npm ci --no-audit --no-fund && npm run dev -- --host 0.0.0.0 --port 5180 --strictPort"]
+    ports: ["127.0.0.1:5180:5180"]
+    depends_on: [api]
+volumes:
+  db:
+  media:
+  node_modules:
