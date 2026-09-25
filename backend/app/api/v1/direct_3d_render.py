@@ -1634,7 +1634,10 @@ async def run_direct_3d_render(
                     "provider_request_id": exc.provider_request_id,
                     "provider_status_code": exc.provider_status_code,
                     "message": (
-                        "The image provider did not return a usable image. Your City Prompt "
+                        "The connection to the image provider ended before a result arrived. "
+                        "Your City Prompt credits have been restored. You can try again."
+                        if exc.transport_interrupted else
+                        "The image provider did not complete a usable response. Your City Prompt "
                         "credits have been restored. Please try again later."
                     ),
                 }

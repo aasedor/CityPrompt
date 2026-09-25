@@ -3067,6 +3067,7 @@ async def test_provider_read_timeout_is_ambiguous_and_not_refund_eligible(monkey
     assert len(_RecordingClient.calls) == 1
     assert exc_info.value.billing_status == "unknown"
     assert exc_info.value.refund_eligible is False
+    assert exc_info.value.transport_interrupted is True
 
 
 @pytest.mark.asyncio
@@ -4329,6 +4330,7 @@ async def test_direct_endpoint_restores_student_credit_but_retains_unknown_provi
             side_effect=Direct3DProviderError(
                 "read timed out after upload",
                 billing_status="unknown",
+                transport_interrupted=True,
             )
         ),
     )
@@ -4353,8 +4355,8 @@ async def test_direct_endpoint_restores_student_credit_but_retains_unknown_provi
         "provider_request_id": None,
         "provider_status_code": None,
         "message": (
-            "The image provider did not return a usable image. Your City Prompt "
-            "credits have been restored. Please try again later."
+            "The connection to the image provider ended before a result arrived. "
+            "Your City Prompt credits have been restored. You can try again."
         ),
     }
     refund_mock.assert_not_awaited()
