@@ -22,7 +22,9 @@ function FixedModule({
   ground: Ground;
 }) {
   const url =
-    module.asset === "shared/bench"
+    module.asset === 'sports/basketball' ? '/validation-assets/basketball-v4-review/modules/court.glb'
+    : module.asset.startsWith('garden/') ? `/validation-assets/teaching-garden-v5-review-connected/modules/${module.asset.split('/')[1]}.glb`
+    : module.asset === "shared/bench"
       ? "/landscape-pilots/neighborhood-rustic-v5/timber-bench.glb"
       : module.asset.startsWith("sports/")
         ? `/landscape-pilots/sports-parks-v1/${module.asset.split("/")[1]}/court.glb`

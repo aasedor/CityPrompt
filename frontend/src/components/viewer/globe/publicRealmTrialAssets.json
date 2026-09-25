@@ -1924,5 +1924,170 @@
         "tree_kind": "grove_tree"
       }
     ]
+  },
+  {
+    "id": "conservatory-v013",
+    "title": "Conservatory botanical garden",
+    "kind": "park",
+    "dimensions": [
+      48,
+      62
+    ],
+    "sha256": "464f2968e652c84136c1858d3d0d1a1fe7d6bd956824dfc7f785752f3ec551d2",
+    "url": "/validation-assets/conservatory-v013/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "sculpture-v006",
+    "title": "Museum sculpture court",
+    "kind": "park",
+    "dimensions": [
+      30,
+      44
+    ],
+    "sha256": "c84cc3b8a0ff727175ffd6ffe2aa457e35c30bbd64545ee99c94f36c41ec0717",
+    "url": "/validation-assets/sculpture-v006/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "orchard-v002",
+    "title": "Neighbourhood orchard",
+    "kind": "park",
+    "dimensions": [
+      36,
+      30
+    ],
+    "sha256": "ce8d1198b654d8bb8ba3e050d3a540fd48077fe5d635b39377de58fff3f06220",
+    "url": "/validation-assets/orchard-v002/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "performance-v003",
+    "title": "Terraced performance lawn",
+    "kind": "park",
+    "dimensions": [
+      64,
+      64
+    ],
+    "sha256": "ea80cb09b3effdec7a7c041d46dd4adf94998cf081751a80f243be1674d78338",
+    "url": "/validation-assets/performance-v003/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "square-v003",
+    "title": "Timber and stone square",
+    "kind": "park",
+    "dimensions": [
+      32,
+      28
+    ],
+    "sha256": "fab4a16d62e10ff56bd0a48ed78d13059ecb37b2e2f0a60d192cbeddd92a2018",
+    "url": "/validation-assets/square-v003/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "wetland-v005",
+    "title": "Wetland boardwalk",
+    "kind": "park",
+    "dimensions": [
+      64,
+      64
+    ],
+    "sha256": "597aa18495bccb0dade8f3539aa3a28f0e46202e99629e34ebb30d9cb13c8490",
+    "url": "/validation-assets/wetland-v005/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "canal-v005",
+    "title": "Amsterdam canal street",
+    "kind": "street",
+    "dimensions": [
+      36,
+      80
+    ],
+    "sha256": "70398463c12c2a69acc148dd9795558cd7f567e23a65438522ac3ddfc772e9f8",
+    "url": "/validation-assets/canal-v005/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "brt-v004",
+    "title": "BRT transit mall",
+    "kind": "street",
+    "dimensions": [
+      40,
+      100
+    ],
+    "sha256": "a83e47527c56fe19fc846d657017c422c045d3a5ef1669b82920402de3eeda69",
+    "url": "/validation-assets/brt-v004/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "shared-v001",
+    "title": "Planted shared lane",
+    "kind": "street",
+    "dimensions": [
+      14.0,
+      40
+    ],
+    "sha256": "68fdd2f054c1ac324aac9f4bdf9782373e8bdf942c1fe82bd41a532f04263f1a",
+    "url": "/validation-assets/shared-v001/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "residential-v002",
+    "title": "Quiet residential street",
+    "kind": "street",
+    "dimensions": [
+      18,
+      48
+    ],
+    "sha256": "52305899464101def9199c861f1dabe3ae083fef56b87984fbd27bf9cf765bdd",
+    "url": "/validation-assets/residential-v002/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
+  },
+  {
+    "id": "bridge-v003",
+    "title": "Tied-arch gateway bridge",
+    "kind": "street",
+    "dimensions": [
+      36,
+      100
+    ],
+    "sha256": "bdb700b0967dbdaf8a7deb1bdb9d9ebe410736057edc7bdc88e69bf2af05d4aa",
+    "url": "/validation-assets/bridge-v003/assembly-preview.glb",
+    "surfaceRegions": [],
+    "preserveNativeGround": true,
+    "treeWells": [],
+    "junctionSurface": "pavers"
   }
 ]

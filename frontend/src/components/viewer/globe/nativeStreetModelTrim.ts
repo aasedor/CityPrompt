@@ -75,7 +75,8 @@ export function trimNativeStreetModel(scene: THREE.Object3D, placement: NativeSt
     if (!(object instanceof THREE.Mesh)) return;
     const mesh = object as THREE.Mesh;
     const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-    if (materials.every((material) => TRIAL_GROUND_MATERIALS.has(material.name))) { remove.push(mesh); return; }
+    if (!('preserveNativeGround' in placement.asset && placement.asset.preserveNativeGround)
+      && materials.every((material) => TRIAL_GROUND_MATERIALS.has(material.name))) { remove.push(mesh); return; }
     const source = mesh.geometry;
     if (!source?.getAttribute('position')) return;
     const meshToENU = toENU.clone().multiply(mesh.matrixWorld);

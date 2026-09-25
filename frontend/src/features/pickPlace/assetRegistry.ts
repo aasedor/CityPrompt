@@ -1,6 +1,5 @@
-import { PARK_TRIO_ASSETS } from './parkTrioAssets';
+import validation from '@/data/validationCatalogue.json';
 import type { SiteZoneProperties } from '@/types';
-import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
@@ -21,7 +20,7 @@ interface AssetRecord {
 }
 export interface PlaceAsset extends AssetRecord {
   kind: 'object';
-  zoneType: 'building' | 'green_space';
+  zoneType: 'building' | 'green_space' | 'road';
   reshapeMode: 'repeat_native' | 'adaptive_layout' | 'fixed_native' | 'authored_footprint';
   width: number;
   depth: number;
@@ -41,7 +40,7 @@ export interface StreetAsset extends AssetRecord {
 }
 export type CatalogueAsset = PlaceAsset | StreetAsset;
 
-const OBJECT_ASSETS: PlaceAsset[] = [
+export const LEGACY_OBJECT_ASSETS: PlaceAsset[] = [
   {
     id: 'infill_home', kind: 'object', definitionVersion: 2, readiness: 'pilot', reshapeMode: 'repeat_native', model: { variantId: 'infill_flat_roof_minimal', revision: 'calgary-infill-flat-roof-minimal-clay-v006', method: 'RLASM 6.1' }, label: 'Infill homes',
     calgaryGuide: classifyCalgaryAsset('building', { id: 'calgary_modern_infill_house', developmentType: 'residential_single_family' }),
@@ -107,7 +106,7 @@ export const LOCAL_STREET_ASSET: StreetAsset = {
 
 /** Bounded placement release. Widths come from the existing metric catalogue;
  * the section viewer and 3D renderer resolve the same source profiles. */
-function additionalStreet(archetypeId: string, label: string, description: string,
+export function additionalStreet(archetypeId: string, label: string, description: string,
   calgaryGuide: CalgaryClassification): StreetAsset {
   const source = streetCatalogue.archetypes.find(entry => entry.id === archetypeId)!;
   const variantId = `${archetypeId}_v0`;
@@ -140,15 +139,11 @@ const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
     road_standard_citation: 'City Prompt native-module teaching section' },
 }));
 
-export const STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET, ...NATIVE_STREET_ASSETS,
-  additionalStreet('green_alley', 'Planted laneway', '5 m wide · 3.5 m shared lane with planted edges', { groupId: 'alley', basis: 'form_reference' }),
-  additionalStreet('yield_street', 'Shared street', '6 m wide · 5.4 m shared surface with flush edges', { groupId: 'local', basis: 'form_reference' }),
-  additionalStreet('calgary_collector', 'Calgary collector', '20 m wide · two lanes, pathway, sidewalk and boulevards', { groupId: 'collector', basis: 'draft_manual' }),
-];
+export const STREET_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS;
 
 /** New starter houses place one native model. Existing saved home plots keep
  * their explicit repeat flag and are resolved by assetForZone as legacy plots. */
-function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
+export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
   if (asset.kind !== 'object' || !['infill_home', 'trial_postwar_bungalow'].includes(asset.id)) return asset;
   return { ...asset, reshapeMode: 'fixed_native', definitionVersion: Math.max(2, asset.definitionVersion),
     minWidth: asset.width, minDepth: asset.depth,
@@ -159,9 +154,7 @@ function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
   };
 }
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, ...STREET_ASSETS,
-  ...CATALOGUE_BUILDING_ASSETS,
-  ...PARK_TRIO_ASSETS].map(individualStarterHome);
+export const CATALOGUE_ASSETS = validation.assets as CatalogueAsset[];
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';
@@ -187,12 +180,12 @@ export function validateRegistry(assets: CatalogueAsset[]): string[] {
     ids.add(asset.id);
     if (!Number.isInteger(asset.definitionVersion) || asset.definitionVersion < 1 || !asset.model.variantId) errors.push(`Invalid version/variant: ${asset.id}`);
     const group = CALGARY_GROUPS.find(g => g.id === asset.calgaryGuide.groupId);
-    const domain = asset.kind === 'street' ? 'street_pathway' : asset.zoneType === 'building' ? 'building' : 'park_plaza';
+    const domain = asset.kind === 'street' || asset.zoneType === 'road' ? 'street_pathway' : asset.zoneType === 'building' ? 'building' : 'park_plaza';
     if (!group || group.domain !== domain) errors.push(`Invalid Calgary group: ${asset.id}`);
     if (asset.kind === 'object') {
       if (![asset.width, asset.depth, asset.minWidth, asset.minDepth, asset.maxSize].every(n => Number.isFinite(n) && n > 0)
         || asset.width < asset.minWidth || asset.depth < asset.minDepth || asset.width > asset.maxSize || asset.depth > asset.maxSize) errors.push(`Invalid dimensions: ${asset.id}`);
-      const variant = asset.zoneType === 'building' ? asset.properties.development_selected_variant_id : asset.properties.green_space_selected_variant_id;
+      const variant = asset.zoneType === 'building' ? asset.properties.development_selected_variant_id : asset.zoneType === 'road' ? asset.properties.road_selected_variant_id : asset.properties.green_space_selected_variant_id;
       if (variant !== asset.model.variantId) errors.push(`Variant mismatch: ${asset.id}`);
       if (asset.reshapeMode === 'repeat_native' && (!asset.nativeDimensions || asset.properties.native_home_plot !== true)) errors.push(`Missing native repeat contract: ${asset.id}`);
     } else if (!Number.isFinite(asset.sectionWidth) || asset.sectionWidth <= 0 || asset.properties.width !== asset.sectionWidth || asset.properties.road_selected_variant_id !== asset.model.variantId) errors.push(`Invalid street section: ${asset.id}`);

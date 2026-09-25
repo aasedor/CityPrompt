@@ -39,6 +39,11 @@ function Home({url}: {url: string}) {
   const clone=useMemo(()=>centreNativeClayClone(scene.clone(true)),[scene]);
   return <group rotation={[Math.PI/2,0,0]} dispose={null}><primitive object={clone}/></group>;
 }
+function ReviewFixture({url}: {url: string}) {
+  const {scene}=useGLTF(url);
+  const clone=useMemo(()=>scene.clone(true),[scene]);
+  return <group rotation={[Math.PI/2,0,0]} dispose={null}><primitive object={clone}/></group>;
+}
 const ORIGIN = {lng:-114.04677,lat:51.04542};
 const flatGround=()=>0;
 
@@ -102,6 +107,8 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
         {asset.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
           position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}>
           <Home url={instance.model_url}/></group>) : fallback
+          : typeof asset.properties.validation_native_url === 'string'
+            ? <ReviewFixture url={asset.properties.validation_native_url}/>
           : isParkTrio(previewZone)
             ? <GlobeParkTrioPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>
             : asset.id === 'neighbourhood_park'

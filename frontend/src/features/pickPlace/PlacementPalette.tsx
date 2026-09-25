@@ -60,12 +60,12 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
           <label className="flex items-center gap-2 text-sm font-semibold">Collection
             <select aria-label="Catalogue collection" value={collection} className={filterStyle}
               onChange={event => { setCollection(event.target.value as 'starter' | 'explore'); setQuery(''); setGroupId(''); setLimit(12); }}>
-              <option value="starter">Classroom starter</option><option value="explore">Explore more</option>
+              <option value="starter">Approved & validation candidates</option>
             </select>
           </label>
           <p className="text-xs text-slate-600">{collection === 'starter'
-            ? 'Nine selected designs for the classroom exercise. Current build: student trial.'
-            : 'Exploratory catalogue. Detailed 3D support and tested controls vary by design.'}</p>
+            ? '27 exact models: 12 buildings, 8 parks, 7 streets. App validation pending; fixed review models have explicit limits.'
+            : 'Local validation catalogue.'}</p>
           <nav aria-label="Catalogue sections" className="flex gap-2">
             {visibleSections.map(({ id, label, icon: Icon }) => <button key={id} aria-pressed={section === id} onClick={() => chooseSection(id)}
               className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-lg border px-2 text-sm font-semibold ${section === id ? 'border-slate-900 bg-[#c9ff3d]' : 'border-slate-300 bg-white hover:bg-lime-50'}`}><Icon size={18} />{label}</button>)}

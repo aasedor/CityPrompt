@@ -20,7 +20,8 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   onUpdateDesign?: (properties: SiteZoneProperties) => void;
 }) {
   const asset = assetForZone(zone)!;
-  const isPark = zone.zone_type === 'green_space';
+  const fixedFixture = zone.properties?.validation_fixed_fixture === true;
+  const isPark = zone.zone_type === 'green_space' && !fixedFixture;
   const keepOutline = isPark || asset.reshapeMode === 'authored_footprint';
   const dimensions = keepOutline ? parkOutlineDimensions(zone.coordinates) : rectangleDimensions(zone.coordinates);
   const park = useMemo(() => asset.id === 'neighbourhood_park' ? neighborhoodParkLayoutForZone(zone,
@@ -36,8 +37,8 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
   return <aside aria-label="Reshape object" className="absolute bottom-4 inset-x-4 top-auto z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-4 sm:top-28 sm:max-h-none">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
-    <p className="mb-3 text-xs text-slate-600">{isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : (zone.properties?.native_home_plot === true || zone.properties?.native_plot_axes === true) ? 'Drag the Move handle on the selected plot to move this house. Use a corner to reshape or the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
-    {!isPark && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
+    <p className="mb-3 text-xs text-slate-600">{fixedFixture ? 'Fixed review model: move and rotate only. Extension is pending.' : isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : (zone.properties?.native_home_plot === true || zone.properties?.native_plot_axes === true) ? 'Drag the Move handle on the selected plot to move this house. Use a corner to reshape or the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
+    {!isPark && !fixedFixture && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {isPark && onUpdateDesign && <ParkComponentControls key={`${zone.id}:${zone.properties?.skate_spectator_edge}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {park && <div role="status" className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">
       <p className="font-semibold">Current park · {park.status==='full'?'full programme':park.status==='compact'?'compact arrangement':park.loop.length?'reduced programme':'landscape layout'}</p>
@@ -57,8 +58,8 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
         <p className="mt-2 text-xs text-slate-600">Resize keeps your outline. Equipment and courts keep their real size; only features that fit are placed.</p>
       </div>}
       <div className="grid grid-cols-2 gap-2">
-        <label className="text-xs font-semibold text-slate-800">Plot width (m)<input aria-label="Plot width (m)" type="number" min={asset.minWidth} max={asset.maxSize} step="0.1" value={width} onChange={e=>setWidth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
-        <label className="text-xs font-semibold text-slate-800">Plot depth (m)<input aria-label="Plot depth (m)" type="number" min={asset.minDepth} max={asset.maxSize} step="0.1" value={depth} onChange={e=>setDepth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
+        <label className="text-xs font-semibold text-slate-800">Plot width (m)<input aria-label="Plot width (m)" disabled={fixedFixture} type="number" min={asset.minWidth} max={asset.maxSize} step="0.1" value={width} onChange={e=>setWidth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
+        <label className="text-xs font-semibold text-slate-800">Plot depth (m)<input aria-label="Plot depth (m)" disabled={fixedFixture} type="number" min={asset.minDepth} max={asset.maxSize} step="0.1" value={depth} onChange={e=>setDepth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
       </div>
       <label className="mt-2 block text-xs font-semibold text-slate-800">Rotation (°)<input aria-label="Rotation (degrees)" type="number" step="1" value={degrees} onChange={e=>setDegrees(e.target.value)} className="ml-2 min-h-11 w-20 rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
       <p className="my-3 text-xs text-slate-600">{asset.reshapeDescription}</p>

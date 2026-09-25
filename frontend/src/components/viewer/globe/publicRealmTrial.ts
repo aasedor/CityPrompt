@@ -42,6 +42,7 @@ export function publicRealmTrialPlacement(zone: SiteZone, zones: SiteZone[], fal
 
 /** Same last-region-wins ownership as the reviewed authoring recipe. */
 export function publicRealmTrialGroundCells(asset: PublicRealmTrialAsset) {
+  if ('preserveNativeGround' in asset && asset.preserveNativeGround) return [];
   const [w, d] = asset.dimensions;
   const xs = [...new Set([-w / 2, w / 2, ...asset.surfaceRegions.flatMap(r => [r.x - r.width / 2, r.x + r.width / 2])])].sort((a, b) => a - b);
   const ys = [...new Set([-d / 2, d / 2, ...asset.surfaceRegions.flatMap(r => [r.y - r.depth / 2, r.y + r.depth / 2])])].sort((a, b) => a - b);

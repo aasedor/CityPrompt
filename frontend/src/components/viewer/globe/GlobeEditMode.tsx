@@ -663,7 +663,8 @@ export function GlobeEditMode({
       if (!lngLat || !originalCoordsRef.current) return;
 
       const asset = assetForZone(zone);
-      let newCoords = isFixedSectionStreet(zone)
+      let newCoords = zone.properties?.validation_fixed_fixture === true ? originalCoordsRef.current
+        : isFixedSectionStreet(zone)
         ? reshapeStreetPoint(originalCoordsRef.current, index, lngLat, streetSectionWidth(zone))
         : asset && asset.reshapeMode !== 'authored_footprint' && zone.zone_type !== 'green_space' && originalCoordsRef.current.length === 4
         ? resizeRectangleCorner(originalCoordsRef.current, index, lngLat, asset)

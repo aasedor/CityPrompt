@@ -1,3 +1,4 @@
+import validationRoster from '@/data/validationCatalogue.json';
 
 import type { SiteZoneProperties } from '@/types';
 import buildingArchetypeLibrary from '@/data/buildingArchetypes.json';
@@ -828,3 +829,19 @@ export function mapDevelopmentTypeToCategory(_value?: string): string | undefine
 
 
 
+
+// This dedicated local build offers only the exact validation roster, including
+// inspector selectors. Source reference catalogues remain preserved on disk.
+for (const [domain, options] of [
+  ['building', BUILDING_AESTHETIC_OPTIONS_V2], ['park', OPENSPACE_AESTHETIC_OPTIONS_V2],
+  ['street', ROADWAY_AESTHETIC_OPTIONS_V2],
+] as const) {
+  const allowed = validationRoster.entries.filter(entry => entry.domain === domain);
+  const selected = options.flatMap(option => {
+    const entry = allowed.find(row => row.archetype_id === option.id);
+    if (!entry) return [];
+    const asset = validationRoster.assets.find(row => row.id === entry.placement_id)!;
+    return [{ ...option, variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }] }];
+  });
+  options.splice(0, options.length, ...selected);
+}

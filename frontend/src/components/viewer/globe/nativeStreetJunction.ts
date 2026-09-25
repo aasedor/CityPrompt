@@ -34,7 +34,7 @@ function junctionSurface(asset: PublicRealmTrialAsset): JunctionSurface {
 export function nativeStreetJunctions(zones: SiteZone[], terrainHeight: number): NativeStreetJunction[] {
   const streets = zones.flatMap((zone): NativeStreetPlacement[] => {
     const asset = publicRealmTrialAsset(zone);
-    const placement = asset?.kind === 'street' ? publicRealmTrialPlacement(zone, zones, terrainHeight) : null;
+    const placement = asset?.kind === 'street' && !('preserveNativeGround' in asset && asset.preserveNativeGround) ? publicRealmTrialPlacement(zone, zones, terrainHeight) : null;
     return placement ? [{ zone, placement }] : [];
   });
   if (streets.length < 2) return [];

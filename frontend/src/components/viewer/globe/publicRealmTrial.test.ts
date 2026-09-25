@@ -32,6 +32,12 @@ describe('bounded public-realm native trial', () => {
     for (const asset of assets) {
       const cells=publicRealmTrialGroundCells(asset);
       const area=cells.reduce((sum,c)=>sum+c.width*c.depth,0);
+      if ('preserveNativeGround' in asset && asset.preserveNativeGround) {
+        // Reviewed complete assemblies own their authored ground; rebuilding a
+        // second full-footprint grass rectangle would bury their native surfaces.
+        expect(cells).toEqual([]);
+        continue;
+      }
       const holes=asset.surfaceRegions.filter(r=>r.material===null).reduce((sum,r)=>sum+r.width*r.depth,0);
       expect(area+holes).toBeCloseTo(asset.dimensions[0]*asset.dimensions[1],5);
       expect(cells.every(c=>c.width>0&&c.depth>0)).toBe(true);
