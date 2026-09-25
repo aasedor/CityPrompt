@@ -194,7 +194,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const [saving, setSaving] = useState(false);
   const [savedImageKeys, setSavedImageKeys] = useState<Set<string>>(() => new Set());
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
-  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice();
+  // A street view starts with one image call; comparisons are an explicit choice.
+  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false });
   const [imageProgress, setImageProgress] = useState('');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Real Street View / Places / satellite grounding, anchored at the pegman.

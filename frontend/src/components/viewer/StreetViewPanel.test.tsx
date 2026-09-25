@@ -91,7 +91,8 @@ describe('student street render', () => {
       render: { imageUrl: `/${engine}.png`, prompt: 'finish', providerLabel: engine, savedRender: { id: engine } },
     });
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} onRenderSaved={saved} />);
-    await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('compare-all-three'));
+    await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('gpt-image-2.5-flare'));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Image engine' }), { target: { value: 'compare-all-three' } });
     fireEvent.click(screen.getByRole('button', { name: 'Render' }));
     await waitFor(() => expect(saved).toHaveBeenCalledTimes(3));
     expect(capture).toHaveBeenCalledTimes(1);
@@ -112,7 +113,8 @@ describe('student street render', () => {
     }).mockRejectedValueOnce(new Error('Flare unavailable'));
     const saved = vi.fn();
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} })} onRenderSaved={saved} />);
-    await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('compare-all-three'));
+    await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('gpt-image-2.5-flare'));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Image engine' }), { target: { value: 'compare-all-three' } });
     fireEvent.click(screen.getByRole('button', { name: 'Render' }));
     await waitFor(() => expect(mocks.direct).toHaveBeenCalledTimes(2));
     await waitFor(() => expect(screen.getByRole('button', { name: 'Re-render Previews' })).not.toBeDisabled());
