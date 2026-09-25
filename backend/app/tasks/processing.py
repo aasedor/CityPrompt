@@ -347,6 +347,8 @@ def process_document(self, document_id: str, extract_only: bool = False):
     steps 4-6 are skipped: no AI interpretation, no Building records, no 3D
     generation — only text/image extraction into Document.extracted_data.
     """
+    if settings.classroom_release and not extract_only:
+        raise ValueError("Classroom document processing is extraction-only; no AI or model generation")
     logger.info(f"Processing document: {document_id}")
     session = _get_sync_session()
 

@@ -1,0 +1,339 @@
+{
+  "version": 1,
+  "candidates": [
+    {
+      "kind": "basketball",
+      "id": "student_basketball_garden_v1",
+      "title": "Neighbourhood Basketball Garden",
+      "dimensions_m": [
+        41,
+        56
+      ],
+      "playing_m": [
+        15,
+        28
+      ],
+      "module_m": [
+        21,
+        36
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4893792,
+        "sha256": "0d093e636ac27bded95ed58a03706473b40095c8f501e33c54628fb535eac54a"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 929872,
+        "sha256": "1eadff98e26f150bbd730528132d1abb07a61d1cad7762e8813303ed3e8c02f8"
+      },
+      "triangles": 169510,
+      "mesh_instances": 129,
+      "source": "https://assets.fiba.basketball/image/upload/documents-corporate-fiba-official-rules-2024-v10a.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\basketball",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "three_x_three",
+      "id": "student_three_x_three_garden_v1",
+      "title": "3 x 3 Pocket Basketball",
+      "dimensions_m": [
+        39,
+        37
+      ],
+      "playing_m": [
+        15,
+        11
+      ],
+      "module_m": [
+        19,
+        17
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4502252,
+        "sha256": "d5fa41120cc1b7bdc781696ad26838138bbf3c26ff5290a0a97be9164a5c0766"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 549000,
+        "sha256": "e4b3d1abba55e405c7d196d9c227e2c57f42c4b2b31439a37c50a311c8bea7d8"
+      },
+      "triangles": 161844,
+      "mesh_instances": 129,
+      "source": "https://www.fiba.basketball/en/news/fcom-3x3-v2-q-a",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\three_x_three",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "tennis",
+      "id": "student_tennis_garden_v1",
+      "title": "Garden Tennis Court",
+      "dimensions_m": [
+        38.3,
+        56.6
+      ],
+      "playing_m": [
+        10.97,
+        23.77
+      ],
+      "module_m": [
+        18.3,
+        36.6
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 5021956,
+        "sha256": "3b2bf62edf18b26a48005603b04607a323d5275c8758e6b9e8f00eb5d834049f"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 1041848,
+        "sha256": "aac1ca8d8060b2de02f29fe0777d096323bb245bd7355e75260fb968b08d2955"
+      },
+      "triangles": 171350,
+      "mesh_instances": 125,
+      "source": "https://www.itftennis.com/media/7221/2026-rules-of-tennis-english.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\tennis",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "padel",
+      "id": "student_padel_garden_v1",
+      "title": "Glasshouse Padel Garden",
+      "dimensions_m": [
+        32,
+        42
+      ],
+      "playing_m": [
+        10,
+        20
+      ],
+      "module_m": [
+        12,
+        22
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4821972,
+        "sha256": "de7705408b1bee12288c79b3148dd3bfc5b2e7b6a3dc259764c36dcfe87a45e8"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 870832,
+        "sha256": "b40ee04c5dfe1e4aadcba1018a058cb02644e6dc947d335868e2b0deb5e2172a"
+      },
+      "triangles": 167600,
+      "mesh_instances": 127,
+      "source": "https://www.padelfip.com/wp-content/uploads/2025/12/FIP_Rules-of-Padel-1.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\padel",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "volleyball",
+      "id": "student_volleyball_garden_v1",
+      "title": "Community Volleyball Court",
+      "dimensions_m": [
+        35,
+        44
+      ],
+      "playing_m": [
+        9,
+        18
+      ],
+      "module_m": [
+        15,
+        24
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4436056,
+        "sha256": "6e16956408a28b1c06a2766cadabd367e4b27e082969c03ab89718bfe76bed86"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 481636,
+        "sha256": "465a9d5ffa67be64dc7608d0fa2efa87606fafef1a8469c0730d0b92f59900a7"
+      },
+      "triangles": 160250,
+      "mesh_instances": 127,
+      "source": "https://www.fivb.com/wp-content/uploads/2025/01/FIVB-Volleyball_Rules2025_2028-EN-v05.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\volleyball",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "beach_volleyball",
+      "id": "student_beach_volleyball_garden_v1",
+      "title": "Beach Volleyball Grove",
+      "dimensions_m": [
+        34,
+        42
+      ],
+      "playing_m": [
+        8,
+        16
+      ],
+      "module_m": [
+        14,
+        22
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4439204,
+        "sha256": "f74e72fcda19359b550a7b9e5a502b26030368934b77b74546b1d1ae154a2a85"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 486712,
+        "sha256": "36a4b646841634c86b0c77bff3fb47adcdd4cbffc9c6684679cb4404872aa727"
+      },
+      "triangles": 159414,
+      "mesh_instances": 128,
+      "source": "https://www.fivb.com/wp-content/uploads/2025/02/FIVB-BeachVolleyball_Rules2025_2028-EN-v01.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\beach_volleyball",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "badminton",
+      "id": "student_badminton_garden_v1",
+      "title": "Sheltered Badminton Garden",
+      "dimensions_m": [
+        30.1,
+        37.4
+      ],
+      "playing_m": [
+        6.1,
+        13.4
+      ],
+      "module_m": [
+        10.1,
+        17.4
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4471880,
+        "sha256": "d040daf4f592363889a64319b2e85e656746a08f96cae6ba527b10e6f14064b2"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 523084,
+        "sha256": "42dfd0c5180750305c29bacdd7e82a4a3d50de51a435af07d4aa58c61176f72e"
+      },
+      "triangles": 160894,
+      "mesh_instances": 125,
+      "source": "https://www.badmintonengland.co.uk/wp-content/uploads/2022/01/Badminton-Design-Guide.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\badminton",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "netball",
+      "id": "student_netball_garden_v1",
+      "title": "Neighbourhood Netball Court",
+      "dimensions_m": [
+        41.35,
+        56.6
+      ],
+      "playing_m": [
+        15.25,
+        30.5
+      ],
+      "module_m": [
+        21.35,
+        36.6
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4865168,
+        "sha256": "7689179eebfae2fadb8b2a2679e99904af12c74705a4f745d1ea72faea27da76"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 900292,
+        "sha256": "bd52c39e2fb78044b5117b97d10a01ffa0f7d9aa48c33e144fc46c555172fcce"
+      },
+      "triangles": 168994,
+      "mesh_instances": 127,
+      "source": "https://netball.sport/game/facilities-and-equipment/",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\netball",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "bocce",
+      "id": "student_bocce_garden_v1",
+      "title": "Bocce Pergola Garden",
+      "dimensions_m": [
+        26.4,
+        49
+      ],
+      "playing_m": [
+        4,
+        26.5
+      ],
+      "module_m": [
+        6.4,
+        29
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4124776,
+        "sha256": "15df78ee87b37e919d95e36322595bb3688999509932748b653c54c54de0daa5"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 148020,
+        "sha256": "115e619a712eb00d352fa58342ae2eea75423c14f2ab2fd1404eb8595d32c6b8"
+      },
+      "triangles": 153747,
+      "mesh_instances": 126,
+      "source": "https://usbf.us/wp-content/uploads/2026/04/2024-CBI-PRV-English-Version-FINAL-012624.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\bocce",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    },
+    {
+      "kind": "petanque",
+      "id": "student_petanque_garden_v1",
+      "title": "Petanque Social Gardens",
+      "dimensions_m": [
+        32,
+        39
+      ],
+      "playing_m": [
+        4,
+        15
+      ],
+      "module_m": [
+        12,
+        19
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4067852,
+        "sha256": "6046ec17b7fa208db5d1e27dd7f01baa89e1504162427a11e71a7dc067a305d8"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 118008,
+        "sha256": "e1f99a0bc9cb8508222420420a8492dc7665fea1d9f077fd116092d169b0bc02"
+      },
+      "triangles": 152748,
+      "mesh_instances": 125,
+      "source": "https://petanque.nz/documents/fipjp-rules-2021-with-nz-interpretations-202508.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\petanque",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER"
+    }
+  ],
+  "paid_calls": 0,
+  "runtime_activated": false,
+  "browser_status": "DEFERRED_BY_USER",
+  "evidence_root": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23"
+}

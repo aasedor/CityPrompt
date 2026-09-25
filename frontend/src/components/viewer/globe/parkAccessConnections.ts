@@ -197,7 +197,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     const center = local([placement.lng, placement.lat]);
     fixed.push(Array.from({ length: 24 }, (_, i) => add(center, [Math.cos(i * Math.PI / 12) * radius * placement.scale / Math.cos(Math.PI / 24), Math.sin(i * Math.PI / 12) * radius * placement.scale / Math.cos(Math.PI / 24)])));
   }
-  const obstacles = zones.filter((z) => z.id !== park.id && ['building', 'residential', 'development_area', 'water', 'parking'].includes(z.zone_type)).map((z) => z.coordinates.map(local));
+  const obstacles = zones.filter((z) => z.id !== park.id && ['building', 'residential', 'green_space', 'development_area', 'water', 'parking'].includes(z.zone_type)).map((z) => z.coordinates.map(local));
   const roadPolygons = zones.filter((z) => z.zone_type === 'road').map((z) => ({ id: z.id, ring: z.coordinates.map(local) }));
   const boundaryRing = boundary.coordinates.map(local);
   const half = settings.pathWidthM / 2;
@@ -346,7 +346,9 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
       streetPoint: world(candidate.point), gateway: world(candidate.gateway), path: [candidate.point, candidate.gateway, ...route].map(world), widthM: candidate.widthM, streetLiftM: candidate.lift });
     if (connections.length >= settings.maxConnections) break;
   }
-  if (!connections.length) return empty(candidates.length ? 'blocked' : 'unresolved', candidates.length ? 'No whole-width route reaches the fixed path network without crossing a barrier.' : 'No safe adjacent authored sidewalk or path was found.');
+  if (!connections.length) return empty(candidates.length ? 'blocked' : 'unresolved', candidates.length
+    ? 'The entrance cannot reach the park paths without crossing equipment or a barrier. Choose another entrance edge in Connections, or leave more space beside the park.'
+    : `No clear sidewalk approach fits within ${settings.maxGapM} m. Move the park closer to a sidewalk, choose an entrance facing it in Connections, or draw a connecting pedestrian path. Keep the whole path inside the site and clear of neighbouring plots.`);
   return { parkZoneId: park.id, status: 'connected', connections,
     paths: [...(extraLoop ? [{ points: extraLoop.map(world), widthM: settings.pathWidthM }] : []), ...connections.map((c) => ({ points: c.path.slice(1), widthM: c.widthM }))] };
 }

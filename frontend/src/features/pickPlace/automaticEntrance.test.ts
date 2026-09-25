@@ -56,7 +56,7 @@ describe('automatic native entrance connections',()=>{
     expect(readBuildingEntrance(manual,[site,road,manual])?.streetId).toBe('chosen');
     const changed={...house,properties:{...house.properties,development_selected_variant_id:'other'}};
     expect(readBuildingEntrance(changed,[site,road,changed])).toBeNull();
-    const repeated={...house,coordinates:rectangleAt(ll(20,0),36,16)};
+    const repeated={...house,properties:{...house.properties,native_home_plot:true},coordinates:rectangleAt(ll(20,0),36,16)};
     expect(readBuildingEntrance(repeated,[site,road,repeated])).toBeNull();
     expect(placementProperties(placeAsset('craftsman_bungalow')).pedestrian_building_entrance).toBeUndefined();
   });

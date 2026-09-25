@@ -19,6 +19,7 @@ from app.services.student_report import (
     digest,
     report_html,
     select_policy_sources,
+    snapshot_drawing,
 )
 from app.services.policy_intelligence.retrieval import ChunkRecord
 
@@ -384,6 +385,71 @@ def make_row():
         response_revision=0,
         created_at=datetime.now(timezone.utc),
     )
+
+
+@pytest.mark.parametrize("status,connections,kind", [
+    ("connected", [{"id": "approach"}], "source_context"),
+    ("blocked", [], "unresolved_question"),
+    ("unresolved", [], "unresolved_question"),
+    ("connected", [], "unresolved_question"),
+])
+def test_report_distinguishes_derived_access_from_polygon_distance(status, connections, kind):
+    park = zone("green_space", rectangle(x=0.003))
+    plan = snapshot([zone("site_boundary", rectangle(width=0.01, height=0.01)), park, zone("road")])
+    assert any("nearest drawn" in f["observation"] for f in analyze_snapshot(plan)["findings"])
+    plan["park_access_snapshot"] = {"parks": [{"parkZoneId": str(park.id), "status": status,
+        "connections": connections, "reason": "Leave a clear entrance corridor."}]}
+    result = next(f for f in analyze_snapshot(plan)["findings"] if f["id"] == "park-access-" + str(park.id))
+    assert result["kind"] == kind
+    assert "Client-derived" in result["basis"]
+    assert "not an independent" in result["uncertainty"]
+    assert "nearest drawn" not in result["observation"]
+
+
+def test_route_evidence_is_retained_without_making_report_immediately_stale():
+    row = make_row()
+    current = copy.deepcopy(row.snapshot)
+    row.snapshot["park_access_snapshot"] = {"parks": []}
+    row.plan_version = routes._plan_version(row.snapshot)
+    assert not routes._view(row, current)["is_stale"]
+    current["zones"][0]["properties"]["floors"] = 11
+    assert routes._view(row, current)["is_stale"]
+
+
+def test_export_draws_only_current_connected_approaches_in_report_scope():
+    park = zone("green_space")
+    plan = snapshot([park, zone("road", rectangle(x=.002))])
+    approach = {"path": [[-114.069, 51.0405], [-114.068, 51.0405]], "widthM": 2.2}
+    plan["park_access_snapshot"] = {"parks": [
+        {"parkZoneId": str(park.id), "status": "connected", "connections": [approach]},
+        {"parkZoneId": "outside-report", "status": "connected", "connections": [approach]},
+    ]}
+    assert snapshot_drawing(plan).count("<polyline") == 1
+    plan["park_access_snapshot"]["parks"][0]["status"] = "blocked"
+    assert "<polyline" not in snapshot_drawing(plan)
+
+
+@pytest.mark.asyncio
+async def test_report_snapshot_rejects_stale_park_route_inventory():
+    from tests.test_park_access_provenance import inputs
+    from app.schemas.park_access import ParkAccessSnapshot
+    _, zones, _, raw = inputs()
+    for item in zones:
+        item.name = item.zone_type
+        item.is_active_boundary = item.zone_type == "site_boundary"
+        item.building_id = None
+        item.building_ids = []
+    project = SimpleNamespace(name="Park review", description="", site_boundary=None)
+    db = AsyncMock()
+    results = [MagicMock() for _ in range(4)]
+    results[0].scalar_one_or_none.return_value = project
+    for result, values in zip(results[1:], [zones, [], []]):
+        result.scalars.return_value.all.return_value = values
+    db.execute.side_effect = results
+    raw["sources"][0]["updatedAt"] = "2020-01-01T00:00:00Z"
+    with pytest.raises(HTTPException) as error:
+        await routes._snapshot(db, uuid.uuid4(), None, ParkAccessSnapshot.model_validate(raw))
+    assert error.value.status_code == 409
 
 
 @pytest.mark.asyncio

@@ -6,6 +6,7 @@ import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessCon
 import { addStreetBend, CALGARY_LOCAL_PLACEMENT, reshapeStreetPoint, streetCoordinateUpdate, streetRouteProblem } from './streetPlacement';
 import { STREET_ASSETS } from './assetRegistry';
 import { isFixedSectionStreet, streetAssetForZone } from './streetPlacement';
+import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 
 const mLon = 111320*Math.cos(51*Math.PI/180);
 const ll = ([x,y]:number[])=>[-114+x/mLon,51+y/111320];
@@ -25,11 +26,22 @@ describe('fixed sections across street types', () => {
     const reshaped = reshapeStreetPoint(bend, 1, ll([35, 8]), width);
     const updated = streetCoordinateUpdate(saved, reshaped);
     expect(updated.properties?.width).toBe(width);
-    expect(updated.properties?.plan_centerline).toEqual(extractCenterline(reshaped));
+    expect(updated.properties?.plan_route_controls).toEqual(extractCenterline(reshaped));
+    expect(updated.properties?.plan_centerline).toEqual(extractCenterline(updated.coordinates));
+    expect((updated.properties?.plan_centerline as number[][]).length).toBeGreaterThan(3);
+    expect(streetRouteProblem(updated.coordinates, width)).toBeNull();
     const a = xy(reshaped[0]), b = xy(reshaped[reshaped.length - 1]);
     expect(Math.hypot(a[0]-b[0], a[1]-b[1])).toBeCloseTo(width, 2);
-    const moved = streetCoordinateUpdate({ ...saved, ...updated }, reshaped.map(([x,y]) => [x, y + 2/111320]));
+    const moved = streetCoordinateUpdate({ ...saved, ...updated }, updated.coordinates.map(([x,y]) => [x, y + 2/111320]));
     expect(moved.properties?.width).toBe(width);
+    expect((moved.properties?.plan_route_controls as number[][])[1][1]).toBeCloseTo(ll([35, 8])[1] + 2 / 111320, 10);
+    const rotated = streetCoordinateUpdate({ ...saved, ...updated }, updated.coordinates.map(point => {
+      const [x, y] = xy(point);
+      return ll([-y, x]);
+    }));
+    const rotatedBend = xy((rotated.properties?.plan_route_controls as number[][])[1]);
+    expect(rotatedBend[0]).toBeCloseTo(-8, 3);
+    expect(rotatedBend[1]).toBeCloseTo(35, 3);
     expect(streetAssetForZone({ ...saved, ...moved })).toBe(asset);
     expect(streetRouteProblem(bufferLineToPolygon([[0,0],[width-1,0]].map(ll),width),width)).toContain(`${width} m`);
     expect(streetRouteProblem(bufferLineToPolygon([[0,0],[width+1,0]].map(ll),width),width)).toBeNull();
@@ -47,6 +59,17 @@ describe('fixed sections across street types', () => {
 });
 
 describe('Calgary local route placement',()=>{
+  it('keeps seven authored waypoints editable after curved sampling', () => {
+    const controls = [[0,0],[35,0],[70,10],[105,20],[140,20],[175,10],[210,0]].map(ll);
+    const curved = roundAuthoredStreetRoute(controls, 16);
+    const saved = { ...zone, coordinates: bufferLineToPolygon(curved, 16),
+      properties: { ...zone.properties, plan_centerline: curved, plan_route_controls: controls } };
+    const changed = controls.map((point, index) => index === 3 ? ll([105, 27]) : point);
+    const update = streetCoordinateUpdate(saved, bufferLineToPolygon(changed, 16));
+    expect(update.properties?.plan_route_controls).toEqual(changed);
+    expect((update.properties?.plan_centerline as number[][]).length).toBeGreaterThan(changed.length);
+    expect(streetRouteProblem(update.coordinates, 16, changed)).toBeNull();
+  });
   it.each([{points:[[0,0],[60,40]]}, {points:[[0,0],[40,0],[40,40]]}])('keeps every segment 16 m wide including diagonal and bent routes',({points})=>{
     const polygon=bufferLineToPolygon(points.map(ll),16).map(xy), n=points.length;
     for(let i=0;i<n-1;i++){

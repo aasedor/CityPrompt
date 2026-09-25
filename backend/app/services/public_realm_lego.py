@@ -2061,11 +2061,14 @@ def build_public_realm_capability_catalog(
 
     allowed_kinds = set(kinds) if kinds is not None else None
     allowed_families = set(family_ids) if family_ids is not None else None
+    # Import lazily: the native validator reuses this module's recipe types.
+    from app.services.native_street_candidate_contract import native_street_runtime_capabilities
+
     capabilities = tuple(
         sorted(
             (
                 capability
-                for capability in _CAPABILITIES
+                for capability in (*_CAPABILITIES, *native_street_runtime_capabilities())
                 if (allowed_kinds is None or capability.kind in allowed_kinds)
                 and (allowed_families is None or capability.family_id in allowed_families)
             ),

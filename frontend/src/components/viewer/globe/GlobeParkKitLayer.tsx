@@ -1,3 +1,4 @@
+import { GlobeTreeWells } from './GlobeTreeWells';
 import { meadowPlantingDrifts } from './meadowPlantingDrifts';
 import { GlobeMeadowFurniture } from './GlobeMeadowFurniture';
 import { GlobeMeadowVegetation } from './GlobeMeadowVegetation';
@@ -92,7 +93,7 @@ import {
   direct3DInstanceUserData,
   direct3DZoneInstanceDescriptor,
 } from './direct3dCapture';
-import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS } from './publicRealmDepthPolicy';
+import { PUBLIC_REALM_PROGRAM_BASE_LIFT_METERS, PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { derivedParkAccessGuides, getDerivedParkAccess, type ParkAccessConnection } from './parkAccessConnections';
 import { buildParkAccessBridgeGeometry } from './parkAccessBridgeGeometry';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
@@ -2436,6 +2437,13 @@ function ParkKitInstance({
         renderOrder={RENDER_ORDER_PROPS}
       />
       <GlobeParkMicrodetailInstances placements={supportedMeadowDrifts.map(p=>p.placement)} terrainOffsets={supportedMeadowDrifts.map(p=>p.z)} detailedPlanting meadowVegetation palette={dressingAppearance?.palette} renderOrder={RENDER_ORDER_PROPS} />
+      {plantingStructure === 'paved_plaza' && <GlobeTreeWells
+        placements={(byProp.get('tree') ?? []).map(tree => ({
+          x: (tree.lng - centroid.lng) * metersPerDegLon(centroid.lat),
+          y: (tree.lat - centroid.lat) * METERS_PER_DEG_LAT,
+          z: (activeOffsets?.[placements.indexOf(tree)] ?? 0) + PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
+          yawRad: tree.yawRad,
+        }))} renderOrder={RENDER_ORDER_PROPS} />}
       {[...byProp.entries()].map(([propId, group]) => {
         const groupZ = activeOffsets
           ? group.map((g) => activeOffsets[placements.indexOf(g)] ?? 0)

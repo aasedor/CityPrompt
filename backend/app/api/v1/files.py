@@ -104,6 +104,30 @@ async def _authorize_file(
         except ValueError:
             raise HTTPException(status_code=404, detail="File not found") from None
         await check_project_asset_access(project_id, user, db, share_token=share_token, asset_ticket=asset_ticket)
+        if parts[2] == "render-attempts":
+            # Raw requests/provider receipts are private recovery evidence, not
+            # shared project assets. The attempt API checks requester identity
+            # and current project access before returning a recoverable result.
+            raise HTTPException(status_code=403, detail="Use private image attempt recovery for this evidence")
+        if parts[2] == "video-render":
+            project = await db.get(Project, project_id)
+            attempts = (project.metadata_ or {}).get("video_pilot_attempts", []) if project else []
+            saved_output = any(_key_from_url(item.get("video_url")) == file_path for item in attempts)
+            if not saved_output:
+                # The project ticket was verified above, including revocation.
+                # It must not turn another requester's control files into shared
+                # media. Exact-file tickets arrive here as their resolved user.
+                requester_id = str(user.id) if user else (
+                    decode_token(asset_ticket).get("sub") if asset_ticket and not share_token else None
+                )
+                own_attempt = not share_token and requester_id and any(
+                    len(parts) >= 5
+                    and str(item.get("id")) == parts[3]
+                    and str(item.get("requested_by") or project.owner_id) == requester_id
+                    for item in attempts
+                )
+                if not own_attempt:
+                    raise HTTPException(status_code=403, detail="Video capture controls are private to their requester")
         if share_token and parts[2] not in {"models", "thumbnails"}:
             project = await db.get(Project, project_id)
             metadata = (project.metadata_ or {}) if project else {}

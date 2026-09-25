@@ -6,7 +6,7 @@ import { placementPlanRequest } from './catalogue';
 describe('published building catalogue', () => {
   it('includes all approved entries in the default catalogue', () => {
     for (const asset of PUBLISHED_BUILDING_ASSETS) {
-      expect(CATALOGUE_ASSETS).toContain(asset);
+      expect(CATALOGUE_ASSETS.find(row => row.id === asset.id)).toMatchObject({ model: asset.model, readiness: asset.readiness });
       expect(asset.readiness).toBe('ready');
       expect(asset.label).not.toContain('trial');
     }
@@ -14,7 +14,7 @@ describe('published building catalogue', () => {
   it('keeps unpublished local pilots out of the release catalogue', () => {
     expect(CATALOGUE_BUILDING_ASSETS.filter(asset => asset.readiness === 'pilot')).toEqual([]);
     expect(PUBLISHED_BUILDING_ASSETS).toEqual(CATALOGUE_BUILDING_ASSETS);
-    expect(PUBLISHED_BUILDING_ASSETS.every(asset => CATALOGUE_ASSETS.includes(asset))).toBe(true);
+    expect(PUBLISHED_BUILDING_ASSETS.every(asset => CATALOGUE_ASSETS.some(row => row.id === asset.id && row.model.variantId === asset.model.variantId))).toBe(true);
   });
   it('uses valid categories, exact variants and plots larger than complete envelopes', () => {
     expect(validateRegistry(PUBLISHED_BUILDING_ASSETS)).toEqual([]);

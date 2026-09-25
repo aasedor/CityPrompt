@@ -9,10 +9,15 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import json
 import logging
 import math
 import re
+import uuid
+from dataclasses import asdict
 from datetime import datetime, timezone
+from functools import lru_cache
+from pathlib import Path
 
 import boto3
 from botocore.config import Config as BotoConfig
@@ -31,6 +36,8 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
 from app.models.models import Building, RenderAuditLog, SiteZone, User
+from app.models.render_attempt import RenderAttempt
+from app.services.render_attempt_storage import write_evidence
 from app.schemas.direct_3d_render import Direct3DRenderRequest, Direct3DRenderResponse, Direct3DJunctionTopology
 from app.services.community_3d_scope import (
     Community3DScopeError,
@@ -505,8 +512,33 @@ def _street_zone_centerline(zone: SiteZone) -> list[tuple[float, float]] | None:
     return _valid_centerline_points([list(point) for point in centerline])
 
 
+def _collapse_straight_street_stations(
+    points: list[tuple[float, float]],
+) -> list[tuple[float, float]]:
+    """Ignore redundant route stations at a junction, preserving true bends."""
+    if len(points) < 3:
+        return points
+    meters_per_longitude = 111_320 * math.cos(math.radians(points[0][1]))
+    result = [points[0]]
+    for current, following in zip(points[1:-1], points[2:]):
+        previous = result[-1]
+        ax = (current[0] - previous[0]) * meters_per_longitude
+        ay = (current[1] - previous[1]) * 111_320
+        bx = (following[0] - current[0]) * meters_per_longitude
+        by = (following[1] - current[1]) * 111_320
+        lengths = math.hypot(ax, ay) * math.hypot(bx, by)
+        if lengths > 0 and (ax * bx + ay * by) / lengths > math.cos(math.pi / 180):
+            continue
+        result.append(current)
+    result.append(points[-1])
+    return result
+
+
 def _effective_street_width(zone: SiteZone) -> float:
     properties = zone.properties or {}
+    native_width = _local_trial_street_width(zone)
+    if native_width is not None:
+        return native_width
     try:
         width = float(properties.get("width", 10))
     except (TypeError, ValueError):
@@ -534,6 +566,33 @@ def _effective_street_width(zone: SiteZone) -> float:
     return max(width, lanes * 3.5)
 
 
+@lru_cache(maxsize=1)
+def _local_trial_street_registry() -> dict[str, float]:
+    """Review-only native sections; production never reads or trusts this file."""
+    path = Path(__file__).resolve().parents[4] / "frontend/src/components/viewer/globe/publicRealmTrialAssets.json"
+    try:
+        rows = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return {
+        row["id"]: float(row["dimensions"][0])
+        for row in rows
+        if row.get("kind") == "street"
+        and row.get("junctionSurface") in {"pavers", "brick", "cobble", "timber"}
+        and isinstance(row.get("dimensions"), list)
+        and len(row["dimensions"]) == 2
+        and isinstance(row["dimensions"][0], (int, float))
+        and 5 <= row["dimensions"][0] <= 40
+    }
+
+
+def _local_trial_street_width(zone: SiteZone) -> float | None:
+    if get_settings().app_env.lower() != "development":
+        return None
+    asset_id = (zone.properties or {}).get("public_realm_trial_asset")
+    return _local_trial_street_registry().get(asset_id) if isinstance(asset_id, str) else None
+
+
 def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     """Mirror the browser's executable street-axis eligibility, fail closed."""
 
@@ -553,11 +612,18 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
             return False
         if "_plan_snapshot_id" in properties or "_imported_from" in properties:
             return False
+    if _local_trial_street_width(zone) is not None:
+        return True
     raw_recipe = properties.get(PUBLIC_REALM_RECIPE_PROPERTY)
     # The fixed 20 m catalogue collector has a metric section but no promoted
     # LEGO family yet. Accept only that exact fallback, never arbitrary legacy
     # roads. The capture inventory separately verifies its compiled source hash.
     fallback = properties.get("public_realm_fallback")
+    from app.services.native_street_candidate_contract import native_street_runtime_capabilities
+    junction_families = {
+        "street_local_public_realm", "street_complete_main_18m", "street_complete_main_22m",
+        *(capability.family_id for capability in native_street_runtime_capabilities()),
+    }
     if (
         properties.get("road_archetype_id") == "calgary_collector"
         and properties.get("road_selected_variant_id") == "calgary_collector_v0"
@@ -584,11 +650,7 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         or recipe.get("generator") != "street_section"
         or target.get("target_type") != "street_segment"
         or recipe.get("family_id")
-        not in {
-            "street_local_public_realm",
-            "street_complete_main_18m",
-            "street_complete_main_22m",
-        }
+        not in junction_families
     ):
         return False
     recipe_archetype_id = str(recipe.get("archetype_id") or "").strip()
@@ -696,6 +758,7 @@ def _street_sources_form_junction(
         width = _effective_street_width(zone)
         if centerline is None or len(centerline) > 512 or not _street_supports_v1_four_way_junction(zone):
             return False
+        centerline = _collapse_straight_street_stations(centerline)
         geographic_axes.append(
             {
                 "zone_id": str(zone.id),
@@ -849,6 +912,29 @@ def _street_sources_form_junction(
             > 0.5
         ):
             continue
+        # One nearest segment cannot stand in for a curved turn inside the
+        # node. Leave that connection unclaimed until a turn transition is
+        # actually authored; remote bends remain valid.
+        bend_inside_node = False
+        for axis in axes:
+            points = axis["points"]
+            for index in range(1, len(points) - 1):  # type: ignore[arg-type]
+                previous, current, following = points[index - 1:index + 2]  # type: ignore[index]
+                distance_to_node = math.hypot(
+                    current[0] - float(cluster["x"]),
+                    current[1] - float(cluster["y"]),
+                )
+                if distance_to_node > float(axis["width"]) / 2 + 4:
+                    continue
+                before = math.atan2(current[1] - previous[1], current[0] - previous[0])
+                after = math.atan2(following[1] - current[1], following[0] - current[0])
+                if _angle_distance(before, after) > math.pi / 180:
+                    bend_inside_node = True
+                    break
+            if bend_inside_node:
+                break
+        if bend_inside_node:
+            continue
         arms: list[dict[str, object]] = []
         contributing_zone_ids: set[str] = set()
         cluster_zone_ids = cluster["zone_ids"]
@@ -937,17 +1023,25 @@ def _street_sources_form_junction(
             continue
         separation = _undirected_angle_distance(orientations[0], orientations[1])
         if topology is not None:
+            sine = math.sin(separation)
+            if sine < math.sqrt(0.5) - 0.001:
+                continue
             if any(
                 arm["reach"] + 0.01
                 < max(
                     other["width"] / 2 + 4
                     for other in grouped_arms
                     if _undirected_angle_distance(arm["bearing"], other["bearing"]) >= math.pi / 6
-                )
+                ) / sine
                 for arm in grouped_arms
             ):
                 continue
-            if abs(separation - math.pi / 2) <= math.pi / 180 and all(
+            # The compiled renderer owns 45–135 degree section joins as well
+            # as square T/X nodes. The server must independently accept that
+            # same bounded geometry or a valid skew capture always 409s.
+            # Require every authored arm to stay straight at the anchor; a
+            # bent opposing street cannot be laundered by bearing grouping.
+            if all(
                 min(_undirected_angle_distance(float(arm["bearing"]), orientation) for orientation in orientations)
                 <= math.pi / 180
                 for arm in arms
@@ -1247,10 +1341,15 @@ async def _reserve_direct_render(
     prompt: str,
     project_id,
     model: str = DIRECT_3D_MODEL,
+    attempt: RenderAttempt | None = None,
 ) -> RenderAuditLog:
     """Atomically reserve credits and a daily-cap audit row before OpenAI."""
 
     try:
+        if attempt is not None:
+            await db.refresh(attempt, with_for_update=True)
+            if attempt.status != "running" or attempt.audit_id is not None:
+                raise HTTPException(409, "This render attempt cannot dispatch again")
         if daily_cap > 0:
             # All Direct 3D requests serialize the cap check + reservation in
             # one PostgreSQL transaction. The committed reservation is then
@@ -1279,6 +1378,7 @@ async def _reserve_direct_render(
             db.add(user)
 
         reservation = RenderAuditLog(
+            id=uuid.uuid4(),
             user_id=user.id,
             user_email=user.email,
             model=model,
@@ -1287,6 +1387,12 @@ async def _reserve_direct_render(
             prompt_preview=f"[Direct 3D reserved] {prompt[:470]}",
         )
         db.add(reservation)
+        if attempt is not None:
+            # Explicit FK ordering; no ORM relationship is needed for the job.
+            # Flush is still inside the same credit/reservation transaction.
+            await db.flush()
+            attempt.audit_id = reservation.id
+            db.add(attempt)
         await db.commit()
         return reservation
     except Exception:
@@ -1302,21 +1408,8 @@ async def _refund_unproduced_direct_render(
     token_cost: int,
     detail: str,
 ) -> None:
-    """Release a reservation only when OpenAI produced no image."""
-
-    try:
-        if not is_admin_or_above(user):
-            await db.refresh(user, with_for_update=True)
-            user.render_credits += token_cost
-            db.add(user)
-        reservation.tokens_spent = 0
-        reservation.prompt_preview = f"[Direct 3D unbilled failure] {detail[:450]}"
-        db.add(reservation)
-        await db.commit()
-    except Exception:
-        await db.rollback()
-        logger.exception("Failed to refund unproduced Direct 3D reservation %s", reservation.id)
-        raise
+    """Release a known-unproduced reservation and refund the student once."""
+    await _refund_direct_reservation(db, user, reservation, unknown=False, detail=detail)
 
 
 async def _refund_unknown_direct_render(
@@ -1327,23 +1420,31 @@ async def _refund_unknown_direct_render(
     token_cost: int,
     detail: str,
 ) -> None:
-    """Restore student credits once; retain the uncertain provider cost in the cap."""
-    marker = "[Direct 3D student refunded; provider cost unknown]"
+    """Restore student credits once; retain uncertain provider cost in the cap."""
+    await _refund_direct_reservation(db, user, reservation, unknown=True, detail=detail)
+
+
+async def _refund_direct_reservation(db, user, reservation, *, unknown: bool, detail: str):
     try:
         await db.refresh(reservation, with_for_update=True)
-        if (reservation.prompt_preview or "").startswith(marker):
+        if getattr(reservation, "student_refunded_at", None) is not None:
+            await db.commit()
             return
+        # Use the server's reservation amount, never a caller-supplied refund.
         if not is_admin_or_above(user):
             await db.refresh(user, with_for_update=True)
-            user.render_credits += token_cost
+            user.render_credits += reservation.tokens_spent
             db.add(user)
-        # tokens_spent remains reserved against the global provider-spend cap.
-        reservation.prompt_preview = f"{marker} {detail[:440]}"
+        reservation.student_refunded_at = datetime.now(timezone.utc)
+        if not unknown:
+            reservation.tokens_spent = 0
+        marker = "student refunded; provider cost unknown" if unknown else "unbilled failure"
+        reservation.prompt_preview = f"[Direct 3D {marker}] {detail[:440]}"
         db.add(reservation)
         await db.commit()
     except Exception:
         await db.rollback()
-        logger.exception("Failed to restore student credits for Direct 3D %s", reservation.id)
+        logger.exception("Failed to refund Direct 3D reservation %s", reservation.id)
         raise
 
 
@@ -1398,9 +1499,23 @@ async def generate_direct_3d_render(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ) -> Direct3DRenderResponse:
-    """Render an authoritative clean 3D capture under the requested mode contract."""
+    """Compatibility route; durable-mode clients must submit an attempt."""
+    if get_settings().direct_3d_jobs_enabled:
+        raise HTTPException(409, "Submit a durable Direct 3D attempt instead")
+    return await run_direct_3d_render(req, user, db)
 
+
+async def run_direct_3d_render(
+    req: Direct3DRenderRequest,
+    user: User,
+    db: AsyncSession,
+    *,
+    attempt: RenderAttempt | None = None,
+) -> Direct3DRenderResponse:
+    """Shared validation and rendering; the worker owns a durable attempt."""
     settings = get_settings()
+    if not settings.direct_3d_images_enabled:
+        raise HTTPException(503, "AI image generation is paused. Exact 3D images remain available.")
 
     await check_project_permission(req.project_id, user, db, required="editor")
     await lock_residual_landscape_project(db, req.project_id)
@@ -1447,6 +1562,13 @@ async def generate_direct_3d_render(
         model=req.model,
     )
 
+    if attempt is not None:
+        # Storage must succeed BEFORE any credit reservation or provider call.
+        await write_evidence(attempt, "source", {
+            "snapshot": source_snapshot, "scene_revision_sha256": scene_revision_sha256,
+            "server_inventory": server_inventory,
+        })
+
     reservation = await _reserve_direct_render(
         db,
         user,
@@ -1455,6 +1577,7 @@ async def generate_direct_3d_render(
         prompt=(f"[mode={req.presentation_mode} style={req.style}] {req.prompt}"),
         project_id=req.project_id,
         model=req.model,
+        **({"attempt": attempt} if attempt is not None else {}),
     )
     try:
         result = await Direct3DRenderService(settings.openai_api_key).generate(
@@ -1464,6 +1587,16 @@ async def generate_direct_3d_render(
         )
     except Direct3DProviderError as exc:
         logger.warning("Direct 3D provider failure: %s", exc)
+        if attempt is not None:
+            try:
+                await write_evidence(attempt, "provider-error", {
+                    "billing_status": exc.billing_status, "message": str(exc),
+                    "provider_request_id": exc.provider_request_id,
+                    "provider_status_code": exc.provider_status_code,
+                    "provider_image_base64": exc.provider_image_base64,
+                })
+            except Exception:
+                logger.exception("Could not retain failed provider evidence for %s", attempt.id)
         if not exc.refund_eligible:
             status_label = "billed safety failure" if exc.billing_status == "produced" else "billing unknown"
             try:
@@ -1520,22 +1653,27 @@ async def generate_direct_3d_render(
             }
         raise HTTPException(status_code=502, detail=error_detail) from exc
     except Exception as exc:
-        await _refund_unproduced_direct_render(
-            db,
-            user,
-            reservation,
-            token_cost=token_cost,
-            detail=f"Unexpected pre-image failure: {exc}",
+        await _refund_unknown_direct_render(
+            db, user, reservation, token_cost=token_cost,
+            detail=f"Unexpected provider failure: {exc}",
         )
-        logger.exception("Unexpected Direct 3D failure before a provider image was produced")
+        logger.exception("Unexpected Direct 3D failure; provider billing is unknown")
         raise HTTPException(
             status_code=502,
             detail={
-                "code": "direct_3d_unproduced_refunded",
+                "code": "direct_3d_provider_failure_refunded",
                 "billed": False,
-                "message": "No provider image was produced; the reservation was refunded.",
+                "provider_billing_status": "unknown",
+                "message": "Your credits were restored. Provider billing is uncertain; this attempt will not retry.",
             },
         ) from exc
+
+    if attempt is not None:
+        # The paid result is durable before optional gallery/audit work. Recovery
+        # returns these exact pixels; it NEVER invokes the provider a second time.
+        await write_evidence(attempt, "provider-result", {
+            "result": asdict(result), "model": req.model,
+        })
 
     try:
         processing_mode = str(result.diagnostics.get("processing_mode", "source_anchored"))
@@ -1580,6 +1718,8 @@ async def generate_direct_3d_render(
             source_snapshot=source_snapshot,
             capture_fingerprint=result.capture_fingerprint,
             output_fingerprint=result.output_fingerprint,
+            render_diagnostics=result.diagnostics,
+            render_warnings=list(result.warnings),
         )
         if result.provider_image_base64 and strategy not in (
             None,
@@ -1602,6 +1742,8 @@ async def generate_direct_3d_render(
                 source_snapshot=source_snapshot,
                 capture_fingerprint=result.capture_fingerprint,
                 output_fingerprint=hashlib.sha256(base64.b64decode(result.provider_image_base64)).hexdigest(),
+                render_diagnostics=result.diagnostics,
+                render_warnings=list(result.warnings),
             )
     except Exception as gallery_exc:
         logger.warning("Failed to auto-save Direct 3D render to gallery: %s", gallery_exc)

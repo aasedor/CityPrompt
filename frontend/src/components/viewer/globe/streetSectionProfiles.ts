@@ -10,6 +10,7 @@ import {
   type StreetAppearanceKit,
 } from './streetFamilyCatalog';
 import { validateStreetRecipeProperties } from './streetLegoContract';
+import { nativeStreetPilotForZone } from './nativeStreetPilot';
 import {
   PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS,
   PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS,
@@ -586,6 +587,9 @@ function addMarkings(
 export function resolvePilotStreetSectionProfile(
   zoneOrId: Pick<SiteZone, 'properties'> | string,
 ): StreetSectionProfile | null {
+  const nativePilot = typeof zoneOrId === 'string' ? undefined : nativeStreetPilotForZone({
+    zone_type: 'road', properties: zoneOrId.properties,
+  }, true);
   const contract = resolveStreetLegoContract(zoneOrId);
   const normalized = contract.sourceArchetypeId;
   const entry = CATALOG.find((candidate) => normalized === candidate.id)
@@ -681,7 +685,20 @@ export function resolvePilotStreetSectionProfile(
   }
   const familySection = familySectionFor(contract.family);
   const synthetic = SYNTHETIC_SECTIONS[pilotId];
-  const baseCompiledSection = familySection ?? (entry.section?.zones?.length
+  const nativeSection: SyntheticSection | undefined = nativePilot && {
+    rowM: nativePilot.widthM,
+    renderCurbs: nativePilot.id === 'student_main_street_v1',
+    zones: nativePilot.sections.map(section => ({
+      type: section.name.includes('walk') || section.name.includes('furniture') ? 'sidewalk'
+        : section.name.includes('parking') ? 'parking'
+        : section.name === 'road' ? 'travel_lane' : 'multi_use_pathway',
+      width_m: section.width,
+      label: section.name.replace(/_/g, ' '),
+      surface: section.material === 'asphalt' ? 'fine asphalt'
+        : nativePilot.junctionSurface === 'cobble' ? 'stone cobble paving' : 'architectural stone paving',
+    })),
+  };
+  const baseCompiledSection = nativeSection ?? familySection ?? (entry.section?.zones?.length
     ? { rowM: Number(entry.section.row_m) || Number(entry.typicalWidth_m) || 1, zones: entry.section.zones }
     : (synthetic ?? inferCatalogSection(entry)));
   const compiledSection = appearance?.id === 'tropical_boulevard_v1'
@@ -741,7 +758,9 @@ export function resolvePilotStreetSectionProfile(
     title: entry.title ?? pilotId.replace(/_/g, ' '),
     rowM,
     bands,
-    markings: addMarkings(pilotId, bands),
+    markings: nativePilot?.id === 'student_main_street_v1'
+      ? [{ offsetM: 0, color: '#eae8e1', widthM: 0.1, dashed: true }]
+      : addMarkings(pilotId, bands),
     treeOffsetsM,
     curbOffsetsM,
     renderCurbs: curbOffsetsM.length > 0,

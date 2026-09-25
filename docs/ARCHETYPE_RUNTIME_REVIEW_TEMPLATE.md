@@ -21,7 +21,13 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 - Public-realm detail: metric plant height/footprint, paving scale, instance/texture budgets, and native close/aerial evidence:
 - Replacement furniture: complete mesh envelope/base datum, legacy-asset flag independence, component and in-site evidence:
 - Vegetation: canopy envelope, seeded prototype/triangle budget, furniture-scale comparison and route/entrance visibility:
+- Hardscape trees: paired bed/well style and footprint, visible root opening, shared surface datum, paving/joint exclusion, clear routes and sloped-contact evidence:
+- Sports: sourced playing dimensions, full run-off/equipment reserve, measured net/rim heights, open gates, crown clearance and non-coplanar floor finishes; separate recreational adaptations:
+- Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules:
+- Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations:
 - Asset review status and separate publication/activation status:
+- Model Library storage check, configured bucket and result (building GLBs):
+- Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence:
 - Evidence manifest location and hashes; durable shared location for delivery:
 
 ## Gates
@@ -66,6 +72,8 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Direct selection where an authored zone overlaps prepared ground | NOT TESTED | After reload, select the contained zone from the canvas, select the site elsewhere, then reselect the zone; confirm its edit handles and settings. |
 | Proposed off-site public-road endpoint; Undo/Redo/reload and low junction grade | NOT TESTED | Confirm the mapped road visually; marker or stored height alone is insufficient. |
 | Fixed street bend through ordinary controls | NOT TESTED | Add bend point, drag the route handle, then reload and compare centreline, compiler identity and handle count. |
+| Native street production recipe and unchanged Apply | NOT TESTED | Backend catalogue, exact profile/revision/module locks, editor variant/width, reload without DEV marker; no fallback to a sibling. |
+| Angled join and short-arm recovery | NOT TESTED | Width-aware snapping, sampled-curve node identity, owned pavement/sidewalk surface, no crossing-only fallback on unsupported joins. |
 | Sloped site; contacts and route continuity | NOT TESTED | |
 | Prepared level: actual native step pick, current review and route; unresolved export guard | NOT TESTED | |
 | Multiple low steps: choose street-facing step; opposite-side rejection and Cancel preserve saved link | NOT TESTED | |
@@ -174,6 +182,11 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Oblique sky/ground-gap distinction; fallback excluded from picking/support:
 - Exact generation inputs preserved separately from later corrected previews:
 - Assisted/native-size trial versus ordinary student authoring and route connectivity:
+- Park-to-street/entrance clearance in preview, drag and save; bounded fit retains size/rotation:
+- Park approach clears neighbouring parks, fixed equipment and full-width street/boundary barriers:
+- Report route evidence matches the scene; stale evidence rejected; absent evidence remains uncertain:
+- Connected bend/body/section edit retains every renderable T/X patch; neighbours unchanged:
+- Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
 - Open failures, untested advertised features, owner and next bounded action:
 - Runtime integration decision: NOT REVIEWED
 - Asset visual decision (separate): NOT REVIEWED

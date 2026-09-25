@@ -6,8 +6,8 @@ import {
   MAX_STREET_BIKE_RACKS_PER_ZONE,
   MAX_STREET_DRAINS_PER_ZONE,
   MAX_STREET_FIXTURE_STATIONS,
-  MAX_STREET_PLANTING_CELLS_PER_ZONE,
   MAX_STREET_SIDEWALK_JOINTS_PER_ZONE,
+  MAX_STREET_PLANTING_CELLS_PER_ZONE,
   MAX_STREET_WASTE_BINS_PER_ZONE,
   MAX_WOONERF_PLANTERS_PER_ZONE,
   MAX_WOONERF_PLAY_NODES_PER_ZONE,
@@ -231,6 +231,25 @@ describe('street family furniture placement', () => {
         bench.bandEndM - STREET_BENCH_EDGE_CLEARANCE_M + 1e-8,
       );
     });
+  });
+
+  it('pairs every hardscape tree with a street-aligned grate, including long streets and interpolated grades', () => {
+    const profile = mainStreetProfile()!;
+    const paved = { ...profile, bands: profile.bands.map(band => band.kind === 'planting'
+      ? { ...band, surface: 'unit paving' } : band) };
+    const points = straightPoints(1000);
+    const fixtures = buildStreetFamilyFixturePlacements({ points, profile: paved,
+      stationZ: points.map(p => p.x * .02), sectionScale: 1, enabled: true });
+    expect(fixtures.plantingCells).toHaveLength(fixtures.trees.length);
+    expect(fixtures.plantingCells.length).toBeGreaterThan(MAX_STREET_PLANTING_CELLS_PER_ZONE);
+    for (const tree of fixtures.trees) {
+      const cell = fixtures.plantingCells.find(c => c.x === tree.x && c.y === tree.y)!;
+      expect(cell.style).toBe('tree_grate');
+      expect(cell.z).toBeCloseTo(tree.x * .02, 8);
+      expect(cell.surfaceLiftM).toBe(paved.bands.find(band => Math.abs(band.centerM - tree.offsetM) < 1e-6)?.liftM);
+      expect(cell.yawRad).toBeCloseTo(Math.atan2(tree.tangentY, tree.tangentX), 8);
+      expect(cell.widthM).toBeLessThan(cell.bandEndM - cell.bandStartM);
+    }
   });
 
   it('turns benches on opposing boulevards inward toward the street', () => {
@@ -573,7 +592,7 @@ describe('street family furniture placement', () => {
     expect(fixtures.bollards).toEqual([]);
     expect(fixtures.plantingCells.length).toBeGreaterThan(0);
     fixtures.plantingCells.forEach((cell) => {
-      expect(cell.style).toBe('tree_grate');
+      expect(cell.style).toBe('low_planting_cell');
       expect(cell.offsetM - cell.widthM / 2).toBeGreaterThanOrEqual(cell.bandStartM - 1e-8);
       expect(cell.offsetM + cell.widthM / 2).toBeLessThanOrEqual(cell.bandEndM + 1e-8);
     });

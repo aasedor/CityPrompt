@@ -1,3 +1,4 @@
+import { GlobeTreeWells } from './GlobeTreeWells';
 /**
  * GlobeStreetDetailLayer — subtle procedural 3D for road zones: raised curb
  * bands along both edges, a dashed centerline, and a parametric roundabout
@@ -88,6 +89,9 @@ import {
   direct3DZoneInstanceDescriptor,
 } from './direct3dCapture';
 import { validateStreetRecipeProperties } from './streetLegoContract';
+import { nativeStreetPilotForZone, placeNativeStreetModules } from './nativeStreetPilot';
+import { publicRealmTrialAsset } from './publicRealmTrial';
+import { GlobeNativeStreetPilotModules } from './GlobeNativeStreetPilotModules';
 import { readCrossings, crossingStation } from '@/features/pickPlace/pedestrianConnections';
 import {
   buildStreetFamilyFixturePlacements,
@@ -116,6 +120,7 @@ import { completeStreetStation, preparedStreetElevation, preparedStreetPreview, 
 import { sharedSiteGroundContains } from './sharedSiteGround';
 import { waitForCaptureTileReadiness } from './tileLoadReadiness';
 import { createPreparedStreetEdges } from './preparedStreetEdges';
+import { createStreetGroundRetry } from './streetGroundRetry';
 
 type RenderStreetIntersection = ConnectedStreetIntersection & { surfaceLayout: StreetJunctionLayout | null };
 
@@ -224,6 +229,8 @@ function StreetRibbonDetail({
   const [measuredTerrain, setMeasuredTerrain] = useState<StreetStationTerrain[] | null>(null);
   const [alignmentUnavailable, setAlignmentUnavailable] = useState(false);
   const [preparedTilesReady, setPreparedTilesReady] = useState(false);
+  const groundRetryRef = useRef(createStreetGroundRetry());
+  const [alignmentRetry, setAlignmentRetry] = useState(0);
   const sectionProfile = useMemo(
     () => resolvePilotStreetSectionProfile(zone),
     [zone],
@@ -311,9 +318,15 @@ function StreetRibbonDetail({
     ? preparedStreetPreview(preparedSite, centerLngLat.local, centerLngLat.normals, centroid, halfWidth, frameElevation) : null,
   [preparedSite, centerLngLat, centroid, halfWidth, frameElevation]);
   const placementTerrain = sharedGround.active ? undefined : stationTerrain ?? preparedPreview;
+  const nativePilot = nativeStreetPilotForZone(zone);
   const requiresPreparedAlignment = Boolean(preparedSite) && preparedTerrain === null && !sharedGround.active;
   const alignmentStatus = !requiresPreparedAlignment ? 'ready' : alignmentUnavailable ? 'unavailable' : stationTerrain ? 'ready' : 'sampling';
-  const alignmentData = {streetGroundStatus: alignmentStatus, streetGroundZoneId: zone.id};
+  const alignmentData = {streetGroundStatus: alignmentStatus, streetGroundZoneId: zone.id,
+    streetGroundDiagnostics: requiresPreparedAlignment ? {
+      tilesReady: preparedTilesReady, passes: passRef.current,
+      retries: alignmentRetry,
+      missingStations: rawTerrainRef.current?.filter(sample => !completeStreetStation(sample)).length ?? 0,
+    } : undefined};
 
   // Geometry edits (vertex drag commits, re-buffering) change coordinates
   // under the SAME zone id — the frozen drape state must restart or curbs
@@ -329,6 +342,8 @@ function StreetRibbonDetail({
     setMeasuredTerrain(null);
     setSampledTerrain(null);
     setAlignmentUnavailable(false);
+    groundRetryRef.current = createStreetGroundRetry();
+    setAlignmentRetry(0);
   }, [centerLngLat, sharedGround.revision, preparedSite]);
 
   useEffect(() => {
@@ -340,16 +355,31 @@ function StreetRibbonDetail({
     void waitForCaptureTileReadiness(tiles, {timeoutMs: 45000}).then(ready => {
       if (canceled) return;
       setPreparedTilesReady(ready);
-      if (!ready) setAlignmentUnavailable(true);
+      if (!ready) {
+        groundRetryRef.current.failed(tiles?.visibleTiles);
+        setAlignmentUnavailable(true);
+      }
     });
     return () => { canceled = true; };
-  }, [tiles, requiresPreparedAlignment, centerLngLat, preparedSite]);
+  }, [tiles, requiresPreparedAlignment, centerLngLat, preparedSite, alignmentRetry]);
 
   // Drape-and-freeze: first resolve the frame anchor, then batch-sample
   // per-station elevations relative to it. Batches are interval-gated too —
   // consecutive-frame sampling right after mount rays against coarse LOD
   // tiles and bakes garbage; missed stations get re-sampled across passes.
   useFrame(() => {
+    if (requiresPreparedAlignment && alignmentUnavailable
+      && groundRetryRef.current.shouldRetry(tiles?.visibleTiles, performance.now())) {
+      frozenRef.current = false;
+      rawTerrainRef.current = null;
+      hitFlagsRef.current = null;
+      nextStationRef.current = 0;
+      passRef.current = 0;
+      setAlignmentUnavailable(false);
+      setPreparedTilesReady(false);
+      setAlignmentRetry(value => value + 1);
+      return;
+    }
     if (sharedGround.active || preparedTerrain !== null || frozenRef.current || !centerLngLat || !centroid) return;
     if (preparedSite && !preparedTilesReady) return;
     frameCountRef.current += 1;
@@ -438,6 +468,7 @@ function StreetRibbonDetail({
       }
       if (preparedSite && misses > 0) {
         frozenRef.current = true;
+        groundRetryRef.current.failed(tiles?.visibleTiles);
         setAlignmentUnavailable(true);
         return;
       }
@@ -555,7 +586,7 @@ function StreetRibbonDetail({
         .filter((item): item is typeof item & { geometry: THREE.BufferGeometry } => Boolean(item.geometry))
       : [];
     const isCompleteMainStreet = sectionProfile?.archetypeId === 'main_street_complete';
-    const parkingMarkings = isCompleteMainStreet
+    const parkingMarkings = sectionProfile && (isCompleteMainStreet || nativePilot?.id === 'student_main_street_v1')
       ? sectionProfile.bands
         .filter((band) => band.kind === 'parking')
         .map((band) => buildParkingStallMarkingGeometry(
@@ -627,7 +658,7 @@ function StreetRibbonDetail({
       }
     }
     return result;
-  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
+  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, nativePilot?.id, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
 
   const clearOfJunction = useMemo(() => (point: {x: number; y: number}) => !centroid || !intersectionNodes.some(node =>
     node.zoneIds.includes(zone.id) && node.surfaceLayout && streetJunctionContainsPoint(node.surfaceLayout,
@@ -734,6 +765,20 @@ function StreetRibbonDetail({
     });
   }, [geometries]);
 
+  const nativePilotModules = useMemo(() => {
+    if (!nativePilot || !centerLngLat || !centroid) return [];
+    const longitudeScale = metersPerDegLon(centroid.lat);
+    return placeNativeStreetModules(
+      nativePilot,
+      centerLngLat.local.map((point, index) => ({ ...point, z: placementTerrain?.[index]?.centerZ ?? 0 })),
+      intersectionNodes.filter(node => node.zoneIds.includes(zone.id)).map(node => ({
+        x: (node.longitude - centroid.lng) * longitudeScale,
+        y: (node.latitude - centroid.lat) * METERS_PER_DEG_LAT,
+        clearanceM: Math.max(node.axisAHalfWidthM, node.axisBHalfWidthM) + 4,
+      })),
+    );
+  }, [nativePilot, centerLngLat, centroid, placementTerrain, intersectionNodes, zone.id]);
+
   if (!centerLngLat || !centroid || !geometries) return requiresPreparedAlignment
     ? <group userData={{...alignmentData, streetGroundStatus: 'unavailable'}} /> : null;
   const seat = <T extends { x: number; y: number; z: number }>(poses: T[]) => sharedGround.offsetAt
@@ -753,7 +798,7 @@ function StreetRibbonDetail({
           renderOrder={RENDER_ORDER_FLATWORK}
           frustumCulled={false}
         >
-          <primitive object={bandMaterials[index].material} attach="material" dispose={null} />
+          <primitive object={bandMaterials[index].material} attach="material" />
         </mesh>
       ))}
       {geometries.markings.map(({ marking, geometry }, index) => (
@@ -850,6 +895,7 @@ function StreetRibbonDetail({
         }))}
         renderOrder={RENDER_ORDER_FURNITURE + 3}
       />
+      {nativePilot && <GlobeNativeStreetPilotModules poses={seat(nativePilotModules)} />}
       {seat(yieldStreetSigns).map((placement, index) => (
         <group
           key={`yield-street-entry-sign-${index}`}
@@ -1239,24 +1285,24 @@ function RoundaboutDetail({
         {!hasAuthoredNetworkGround && (
           <>
             <mesh geometry={geometry.ring} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.ring.material} attach="material" dispose={null} />
+              <primitive object={roundaboutMaterials.ring.material} attach="material" />
             </mesh>
             <mesh geometry={geometry.apron} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
+              <primitive object={roundaboutMaterials.concrete.material} attach="material" />
             </mesh>
             <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-              <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
+              <primitive object={roundaboutMaterials.concrete.material} attach="material" />
             </mesh>
           </>
         )}
         <mesh geometry={geometry.island} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.planting.material} attach="material" dispose={null} />
+          <primitive object={roundaboutMaterials.planting.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.splitters} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.concrete.material} attach="material" dispose={null} />
+          <primitive object={roundaboutMaterials.concrete.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.splitterPlanting} renderOrder={RENDER_ORDER_RAISED + 1} frustumCulled={false}>
-          <primitive object={roundaboutMaterials.planting.material} attach="material" dispose={null} />
+          <primitive object={roundaboutMaterials.planting.material} attach="material" />
         </mesh>
         <mesh geometry={geometry.approachMarkings} renderOrder={RENDER_ORDER_DASHES + 1} frustumCulled={false}>
           <meshBasicMaterial
@@ -1266,6 +1312,10 @@ function RoundaboutDetail({
             side={THREE.DoubleSide}
           />
         </mesh>
+        <GlobeTreeWells placements={approachTrees.map((tree, index) => ({ ...tree,
+          yawRad: frame.bearingRad + Math.floor(index / 2) * Math.PI / 2,
+          widthM: 1.6 * geometry.scale, lengthM: 1.8 * geometry.scale,
+        }))} renderOrder={RENDER_ORDER_FURNITURE} />
         <GlobeLandscapeTreeStand
           placements={[
             { x: 0, y: 0, z: roundaboutTerrainZ(0, 0) + PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS + STREET_DETAIL_3D.islandHeight_m, yawRad: 0.37, scale: 0.72 * geometry.scale, canopyClass: roundaboutAppearanceStyle.canopyClass },
@@ -1342,20 +1392,32 @@ function AccessibleFourWayIntersectionDetail({
   }, [connectedZones]);
   const surfaceProfile = useMemo(() => {
     const source = connectedZones.find((zone) => zone.id === node.surfaceLayout?.surfaceZoneId);
+    const vehicle = node.surfaceLayout?.pedestrianAxes?.includes(true)
+      ? connectedZones.map(resolvePilotStreetSectionProfile).find((profile) => profile?.bands.some((band) => band.kind === 'motor'))
+      : null;
+    return vehicle ?? (source ? resolvePilotStreetSectionProfile(source) : null);
+  }, [connectedZones, node.surfaceLayout?.surfaceZoneId, node.surfaceLayout?.pedestrianAxes]);
+  const promenadeProfile = useMemo(() => {
+    const source = connectedZones.find((zone) => nativeStreetPilotForZone(zone)?.id === 'student_market_street_v1');
     return source ? resolvePilotStreetSectionProfile(source) : null;
-  }, [connectedZones, node.surfaceLayout?.surfaceZoneId]);
+  }, [connectedZones]);
   const surfaceMaterials = useMemo(() => {
     if (!surfaceProfile) return null;
     const make = (kind: 'motor' | 'sidewalk') => {
-      const band = surfaceProfile.bands.find((item) => item.kind === kind);
+      const band = surfaceProfile.bands.find((item) => item.kind === kind)
+        ?? (kind === 'motor' ? surfaceProfile.bands.find((item) => item.kind === 'path') : undefined);
       if (!band) return null;
       const recipe = resolveStreetBandMaterial(surfaceProfile, band);
       return createStreetSurfaceMaterialResources(recipe.kind, recipe.options);
     };
-    return { pavement: make('motor'), sidewalks: make('sidewalk') };
-  }, [surfaceProfile]);
+    const promenadeBand = promenadeProfile?.bands.find((item) => item.kind === 'path');
+    const promenade = promenadeBand && promenadeProfile
+      ? resolveStreetBandMaterial(promenadeProfile, promenadeBand) : null;
+    return { pavement: make('motor'), sidewalks: make('sidewalk'),
+      promenade: promenade ? createStreetSurfaceMaterialResources(promenade.kind, promenade.options) : null };
+  }, [surfaceProfile, promenadeProfile]);
   useEffect(() => surfaceMaterials ? retainResourceForDeferredDisposal(surfaceMaterials, (owned) => {
-    owned.pavement?.dispose(); owned.sidewalks?.dispose();
+    owned.pavement?.dispose(); owned.sidewalks?.dispose(); owned.promenade?.dispose();
   }) : undefined, [surfaceMaterials]);
   const appearance = surfaceProfile?.appearance ?? STREET_APPEARANCE_KITS[node.appearanceKitId];
   const sharedGround = useStreetGround(node.longitude, node.latitude);
@@ -1372,16 +1434,22 @@ function AccessibleFourWayIntersectionDetail({
     );
     if (!result) return null;
     const surface = node.surfaceLayout && !node.surfaceLayout.sections ? buildStreetJunctionSurface(node.surfaceLayout) : null;
-    const geometry = { ...result, ...surface };
+    const geometry = { ...result, ...surface } as {
+      crosswalks: THREE.BufferGeometry; curbRamps: THREE.BufferGeometry; tactilePads: THREE.BufferGeometry;
+      pavement?: THREE.BufferGeometry; sidewalks?: THREE.BufferGeometry;
+      promenadePaving?: THREE.BufferGeometry; curbs?: THREE.BufferGeometry;
+    };
     if (sharedGround.offsetAt) {
-      const items = Object.values(geometry);
+      const items = Object.values(geometry).filter((item): item is THREE.BufferGeometry =>
+        Boolean(item?.getAttribute('position')?.count));
       if (items.some((item) => !applySharedStreetGround(item, sharedGround.offsetAt!, 0, 0, sharedGround.grid))) {
         items.forEach((item) => item.dispose()); return null;
       }
       return geometry;
     }
     if (!terrainPlane) return geometry;
-    for (const item of Object.values(geometry)) {
+    for (const item of Object.values(geometry).filter((item): item is THREE.BufferGeometry =>
+      Boolean(item?.getAttribute('position')?.count))) {
       applyTerrainPlaneToStreetGeometry(item, terrainPlane, terrain);
     }
     return geometry;
@@ -1465,6 +1533,7 @@ function AccessibleFourWayIntersectionDetail({
       ownedGeometry.tactilePads.dispose();
       ownedGeometry.pavement?.dispose();
       ownedGeometry.sidewalks?.dispose();
+      ownedGeometry.promenadePaving?.dispose();
       ownedGeometry.curbs?.dispose();
     });
   }, [geometry]);
@@ -1477,12 +1546,16 @@ function AccessibleFourWayIntersectionDetail({
       height={terrain}
     >
       {geometry.pavement && <mesh geometry={geometry.pavement} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-        {surfaceMaterials?.pavement ? <primitive object={surfaceMaterials.pavement.material} attach="material" dispose={null} />
+        {surfaceMaterials?.pavement ? <primitive object={surfaceMaterials.pavement.material} attach="material" />
           : <meshStandardMaterial color={appearance.palette.motor} roughness={0.97} metalness={0} side={THREE.DoubleSide} />}
       </mesh>}
       {geometry.sidewalks && <mesh geometry={geometry.sidewalks} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-        {surfaceMaterials?.sidewalks ? <primitive object={surfaceMaterials.sidewalks.material} attach="material" dispose={null} />
+        {surfaceMaterials?.sidewalks ? <primitive object={surfaceMaterials.sidewalks.material} attach="material" />
           : <meshStandardMaterial color={appearance.palette.sidewalk} roughness={0.94} metalness={0} side={THREE.DoubleSide} />}
+      </mesh>}
+      {geometry.promenadePaving && <mesh geometry={geometry.promenadePaving} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
+        {surfaceMaterials?.promenade ? <primitive object={surfaceMaterials.promenade.material} attach="material" />
+          : <meshStandardMaterial color="#aaa69e" roughness={0.94} metalness={0} side={THREE.DoubleSide} />}
       </mesh>}
       {geometry.curbs && <mesh geometry={geometry.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
         <meshStandardMaterial color={appearance.palette.curb} roughness={0.94} metalness={0} side={THREE.DoubleSide} />
@@ -1549,7 +1622,8 @@ export function GlobeStreetDetailLayer({
   const intersectionNodes = useMemo(
     () => detectConnectedStreetIntersections(detailedRoadZones)
       .map((node) => ({ ...node, surfaceLayout: resolveStreetJunctionLayout(node, detailedRoadZones) }))
-      .filter((node) => node.armCount === 4 || node.surfaceLayout !== null),
+      .filter((node) => node.surfaceLayout !== null || (node.armCount === 4 && node.orthogonal
+        && node.zoneIds.every(id => publicRealmTrialAsset(detailedRoadZones.find(zone => zone.id === id)!)?.kind === 'street'))),
     [detailedRoadZones],
   );
   const furnitureStreetIds = useMemo(
@@ -1578,8 +1652,8 @@ export function GlobeStreetDetailLayer({
               preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}
               preparedSite={zone.properties?.connect_to_public_road === true ? preparedSite : undefined}
               intersectionNodes={intersectionNodes}
-              renderFamilyFurniture={furnitureStreetIds.has(zone.id)}
-              renderFamilyTrees={treeStreetIds.has(zone.id)}
+              renderFamilyFurniture={!nativeStreetPilotForZone(zone) && furnitureStreetIds.has(zone.id)}
+              renderFamilyTrees={!nativeStreetPilotForZone(zone) && treeStreetIds.has(zone.id)}
             /></StreetGroundCoverage>
           )}
         </group>

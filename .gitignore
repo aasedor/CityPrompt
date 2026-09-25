@@ -155,3 +155,5 @@ tools/archetype_compiler/sticker_assets/**/.*.tmp.png
 
 # Human-activated architectural-clay runtime assets (Git LFS).
 !seed/model-library/rlasm-architectural-clay/models/*.glb
+# Private, extracted portable validation runtime; never commit credentials.
+.validation/

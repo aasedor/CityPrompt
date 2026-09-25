@@ -30,7 +30,11 @@ def result(value):
         "video_generate",
     ],
 )
-async def test_project_viewer_cannot_start_or_mutate_media(operation, mock_db, test_user):
+async def test_project_viewer_cannot_start_or_mutate_media(operation, mock_db, test_user, monkeypatch):
+    # Exercise the legacy endpoint's permission branch independently of the
+    # environment's durable-only switch (which correctly rejects it with 409).
+    settings = direct_3d_render.get_settings().model_copy(update={"direct_3d_jobs_enabled": False})
+    monkeypatch.setattr(direct_3d_render, "get_settings", lambda: settings)
     project = FakeProject()
     mock_db.execute.side_effect = [result(project), result(SimpleNamespace(permission="viewer"))]
     request = SimpleNamespace(project_id=project.id)

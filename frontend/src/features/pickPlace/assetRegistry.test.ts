@@ -24,10 +24,20 @@ describe('placeable asset registry', () => {
       const saved = JSON.parse(JSON.stringify({ properties: placementProperties(asset, 1042) }));
       expect(assetForZone(legacy)).toBe(asset);
       expect(assetForZone(saved)).toBe(asset);
-      expect(saved.properties).toMatchObject({ ...legacy.properties, pick_place_definition_version: 1, terrain_elevation_m: 1042 });
+      expect(saved.properties).toMatchObject({ ...legacy.properties, pick_place_definition_version: asset.definitionVersion, terrain_elevation_m: 1042 });
     }
     expect(assetForZone({ properties: { pick_place_asset: 'unknown' } })).toBeUndefined();
     expect(() => placeAsset('unknown')).toThrow('Unknown placeable asset');
+  });
+  it.each(['infill_home', 'trial_postwar_bungalow'])('places %s individually without changing an old repeated plot', id => {
+    const asset = placeAsset(id);
+    expect(asset.reshapeMode).toBe('fixed_native');
+    expect(placementProperties(asset)).toMatchObject({ native_home_plot: false, native_plot_axes: true });
+    const oldProperties = { ...asset.properties, pick_place_asset: id, native_home_plot: true };
+    const old = assetForZone({ properties: oldProperties });
+    expect(old?.reshapeMode).toBe('repeat_native');
+    expect(oldProperties.native_home_plot).toBe(true);
+    expect(asset.properties.native_home_plot).toBe(false);
   });
   it('keeps the existing street identity and section for saved routes', () => {
     expect(CALGARY_LOCAL_PLACEMENT).toBe(LOCAL_STREET_ASSET);

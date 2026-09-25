@@ -22,6 +22,8 @@ from app.models.models import (
 from app.models.reference_layers import ReferenceLayer
 from app.models.student_report import StudentPlanningReport
 from app.schemas.student_report import StudentDecisionRequest, StudentReportRequest
+from app.schemas.park_access import ParkAccessSnapshot
+from app.services.park_access_provenance import bind_park_access_snapshot
 from app.services.policy_intelligence.retrieval import ChunkRecord
 from app.services.student_report import (
     analyze_snapshot,
@@ -35,7 +37,8 @@ from app.services.student_report import (
 router = APIRouter(prefix="/student-reports", tags=["student reports"])
 
 
-async def _snapshot(db: AsyncSession, project_id: uuid.UUID, zone_ids: list[str] | None) -> dict:
+async def _snapshot(db: AsyncSession, project_id: uuid.UUID, zone_ids: list[str] | None,
+                    park_access: ParkAccessSnapshot | None = None) -> dict:
     project = (await db.execute(select(Project).where(Project.id == project_id))).scalar_one_or_none()
     if project is None:
         raise HTTPException(404, "Project not found")
@@ -44,7 +47,10 @@ async def _snapshot(db: AsyncSession, project_id: uuid.UUID, zone_ids: list[str]
     references = list(
         (await db.execute(select(ReferenceLayer).where(ReferenceLayer.project_id == project_id))).scalars().all()
     )
-    return build_snapshot(project, zones, buildings, references, zone_ids)
+    snapshot = build_snapshot(project, zones, buildings, references, zone_ids)
+    if park_access is not None:
+        snapshot["park_access_snapshot"] = bind_park_access_snapshot(park_access, zones)
+    return snapshot
 
 
 async def _policy_sources(db: AsyncSession, project_id: uuid.UUID, snapshot: dict) -> list[dict]:
@@ -101,6 +107,12 @@ async def _policy_sources(db: AsyncSession, project_id: uuid.UUID, snapshot: dic
     return sources
 
 
+def _plan_version(snapshot: dict) -> str:
+    # Route evidence belongs to this report; freshness still compares the complete
+    # saved design so later reads need no browser-derived geometry.
+    return digest({key: value for key, value in snapshot.items() if key != "park_access_snapshot"})
+
+
 def _view(row: StudentPlanningReport, current: dict) -> dict:
     return {
         "id": str(row.id),
@@ -109,7 +121,7 @@ def _view(row: StudentPlanningReport, current: dict) -> dict:
         "requested_by_name": row.requested_by_name,
         "created_at": row.created_at.isoformat(),
         "plan_version": row.plan_version,
-        "is_stale": digest(current) != row.plan_version,
+        "is_stale": _plan_version(current) != row.plan_version,
         "analysis": row.analysis,
         "decisions": row.decisions or {},
         "response_revision": row.response_revision,
@@ -192,7 +204,7 @@ async def create_report(
 ):
     await check_project_permission(project_id, user, db, required="editor")
     ids = [str(value) for value in request.zone_ids] if request.zone_ids is not None else None
-    snapshot = await _snapshot(db, project_id, ids)
+    snapshot = await _snapshot(db, project_id, ids, request.park_access_snapshot)
     if ids is not None and set(ids) - {zone["id"] for zone in snapshot["zones"]}:
         raise HTTPException(
             409,
@@ -204,7 +216,7 @@ async def create_report(
         project_id=project_id,
         requested_by=user.id,
         requested_by_name=user.full_name or user.email,
-        plan_version=digest(snapshot),
+        plan_version=_plan_version(snapshot),
         snapshot=snapshot,
         analysis=analyze_snapshot(snapshot, sources),
         decisions={},

@@ -1,0 +1,651 @@
+[
+  {
+    "id": "student_main_street_v1",
+    "sourceArchetypeId": "neighborhood_main_street",
+    "title": "Neighbourhood Main Street",
+    "status": "candidate",
+    "sourceRecipeSha256": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531",
+    "sourceAssemblySha256": "5d4d7133dc53864029a91efc09ffc0b89d7ee5a831ac34d3485df3856c8eb179",
+    "referenceSha256": "af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392",
+    "widthM": 23.0,
+    "fixtureLengthM": 48,
+    "routeAxis": "local_y",
+    "junctionSurface": "pavers",
+    "sections": [
+      {
+        "name": "west_walk",
+        "x": -10.0,
+        "width": 3,
+        "material": "paving"
+      },
+      {
+        "name": "west_furniture",
+        "x": -7.0,
+        "width": 3,
+        "material": "paving"
+      },
+      {
+        "name": "west_parking",
+        "x": -4.25,
+        "width": 2.5,
+        "material": "asphalt"
+      },
+      {
+        "name": "road",
+        "x": 0.0,
+        "width": 6,
+        "material": "asphalt"
+      },
+      {
+        "name": "east_parking",
+        "x": 4.25,
+        "width": 2.5,
+        "material": "asphalt"
+      },
+      {
+        "name": "east_furniture",
+        "x": 7.0,
+        "width": 3,
+        "material": "paving"
+      },
+      {
+        "name": "east_walk",
+        "x": 10.0,
+        "width": 3,
+        "material": "paving"
+      }
+    ],
+    "placements": [
+      {
+        "kind": "grove_tree",
+        "x": -7.0,
+        "y": -16,
+        "z": 0,
+        "yaw": -1.12,
+        "scale": 1
+      },
+      {
+        "kind": "grove_tree",
+        "x": -7.0,
+        "y": -6,
+        "z": 0,
+        "yaw": -0.42000000000000004,
+        "scale": 1
+      },
+      {
+        "kind": "grove_tree",
+        "x": -7.0,
+        "y": 6,
+        "z": 0,
+        "yaw": 0.42000000000000004,
+        "scale": 1
+      },
+      {
+        "kind": "grove_tree",
+        "x": -7.0,
+        "y": 16,
+        "z": 0,
+        "yaw": 1.12,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -7.0,
+        "y": -11,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -7.0,
+        "y": 11,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "bench",
+        "x": -7.0,
+        "y": -3.5,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "bench",
+        "x": -7.0,
+        "y": 3.5,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "bin",
+        "x": -7.0,
+        "y": 20,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "grove_tree",
+        "x": 7.0,
+        "y": -16,
+        "z": 0,
+        "yaw": -1.12,
+        "scale": 1
+      },
+      {
+        "kind": "grove_tree",
+        "x": 7.0,
+        "y": -6,
+        "z": 0,
+        "yaw": -0.42000000000000004,
+        "scale": 1
+      },
+      {
+        "kind": "grove_tree",
+        "x": 7.0,
+        "y": 6,
+        "z": 0,
+        "yaw": 0.42000000000000004,
+        "scale": 1
+      },
+      {
+        "kind": "grove_tree",
+        "x": 7.0,
+        "y": 16,
+        "z": 0,
+        "yaw": 1.12,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 7.0,
+        "y": -11,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 7.0,
+        "y": 11,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "bench",
+        "x": 7.0,
+        "y": -3.5,
+        "z": 0,
+        "yaw": -1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "bench",
+        "x": 7.0,
+        "y": 3.5,
+        "z": 0,
+        "yaw": -1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "bin",
+        "x": 7.0,
+        "y": 20,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "timber_seat_wall",
+        "x": -4.25,
+        "y": -11,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": -4.25,
+        "y": -14.1,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": -4.25,
+        "y": -7.9,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "bike_rack",
+        "x": 7.0,
+        "y": -21,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": -7.0,
+        "y": -16,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": -7.0,
+        "y": -6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": -7.0,
+        "y": 6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": -7.0,
+        "y": 16,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": 7.0,
+        "y": -16,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": 7.0,
+        "y": -6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": 7.0,
+        "y": 6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": 7.0,
+        "y": 16,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      }
+    ],
+    "treeWells": [
+      {
+        "x": -7.0,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.0,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.0,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": -7.0,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.0,
+        "y": -16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.0,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.0,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      },
+      {
+        "x": 7.0,
+        "y": 16,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "grove_tree"
+      }
+    ],
+    "modules": {
+      "bench": {
+        "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+        "bytes": 34024,
+        "url": "/street-kits/pilots/student_main_street_v1/bench.glb"
+      },
+      "bike_rack": {
+        "sha256": "bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76",
+        "bytes": 96964,
+        "url": "/street-kits/pilots/student_main_street_v1/bike_rack.glb"
+      },
+      "bin": {
+        "sha256": "31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c",
+        "bytes": 80532,
+        "url": "/street-kits/pilots/student_main_street_v1/bin.glb"
+      },
+      "grove_tree": {
+        "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278",
+        "bytes": 1287628,
+        "url": "/street-kits/pilots/student_main_street_v1/grove_tree.glb"
+      },
+      "heritage_lantern": {
+        "sha256": "cee3838e334ba6e37a0a20707dec80d9173cce79f7f40e783dcc67acd951c4de",
+        "bytes": 30692,
+        "url": "/street-kits/pilots/student_main_street_v1/heritage_lantern.glb"
+      },
+      "planter": {
+        "sha256": "c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b",
+        "bytes": 131616,
+        "url": "/street-kits/pilots/student_main_street_v1/planter.glb"
+      },
+      "timber_seat_wall": {
+        "sha256": "100ee7db5a4c6889be5a355260bda4670117d7241b1cb7f9ddcebd6e3047dcfd",
+        "bytes": 18172,
+        "url": "/street-kits/pilots/student_main_street_v1/timber_seat_wall.glb"
+      },
+      "tree_well_grate": {
+        "sha256": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618",
+        "bytes": 95608,
+        "url": "/street-kits/pilots/student_main_street_v1/tree_well_grate.glb"
+      }
+    },
+    "thumbnailUrl": "/validation-assets/main-street-v2/reference.png"
+  },
+  {
+    "id": "student_market_street_v1",
+    "sourceArchetypeId": "pedestrian_only_street",
+    "title": "Pedestrian Market Street",
+    "status": "candidate",
+    "sourceRecipeSha256": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345",
+    "sourceAssemblySha256": "a74074b02282f71e486b24e88ce732f9d669f3a195e7c3cb045f004af83d8831",
+    "referenceSha256": "32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee",
+    "widthM": 18.0,
+    "fixtureLengthM": 48,
+    "routeAxis": "local_y",
+    "junctionSurface": "cobble",
+    "sections": [
+      {
+        "name": "west_walk",
+        "x": -7.75,
+        "width": 2.5,
+        "material": "paving"
+      },
+      {
+        "name": "west_furniture",
+        "x": -4.5,
+        "width": 4,
+        "material": "paving"
+      },
+      {
+        "name": "promenade",
+        "x": 0.0,
+        "width": 5,
+        "material": "paving"
+      },
+      {
+        "name": "east_furniture",
+        "x": 4.5,
+        "width": 4,
+        "material": "paving"
+      },
+      {
+        "name": "east_walk",
+        "x": 7.75,
+        "width": 2.5,
+        "material": "paving"
+      }
+    ],
+    "placements": [
+      {
+        "kind": "market_stall",
+        "x": -4.5,
+        "y": -15,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "market_stall",
+        "x": -4.5,
+        "y": -7,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "market_stall",
+        "x": -4.5,
+        "y": 7,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "market_stall",
+        "x": -4.5,
+        "y": 15,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "stone_fountain",
+        "x": 4.5,
+        "y": -10,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "cafe_parasol",
+        "x": 4.5,
+        "y": 6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "cafe_parasol",
+        "x": 4.5,
+        "y": 13,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": -4.5,
+        "y": -20,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -4.5,
+        "y": -22.1,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": -4.5,
+        "y": 20,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -4.5,
+        "y": 17.9,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": 4.5,
+        "y": -20,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 4.5,
+        "y": -22.1,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": 4.5,
+        "y": 20,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 4.5,
+        "y": 17.9,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "bench",
+        "x": 4.5,
+        "y": -17,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": -4.5,
+        "y": -3.8,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": -4.5,
+        "y": 3.8,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": 4.5,
+        "y": -3.8,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "planter",
+        "x": 4.5,
+        "y": 3.8,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      }
+    ],
+    "treeWells": [],
+    "modules": {
+      "bench": {
+        "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+        "bytes": 34024,
+        "url": "/street-kits/pilots/student_market_street_v1/bench.glb"
+      },
+      "cafe_parasol": {
+        "sha256": "60d58e1acfb57d9cde82ea33f60b368d9d95bc3446b6b48f8ae97b194af6a38e",
+        "bytes": 60396,
+        "url": "/street-kits/pilots/student_market_street_v1/cafe_parasol.glb"
+      },
+      "heritage_lantern": {
+        "sha256": "cee3838e334ba6e37a0a20707dec80d9173cce79f7f40e783dcc67acd951c4de",
+        "bytes": 30692,
+        "url": "/street-kits/pilots/student_market_street_v1/heritage_lantern.glb"
+      },
+      "market_stall": {
+        "sha256": "5d7c588fbb89704d7b1199432b17bd257a837f5df9f8b8bc45a8694cad80c2b3",
+        "bytes": 65200,
+        "url": "/street-kits/pilots/student_market_street_v1/market_stall.glb"
+      },
+      "planter": {
+        "sha256": "c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b",
+        "bytes": 131616,
+        "url": "/street-kits/pilots/student_market_street_v1/planter.glb"
+      },
+      "stone_fountain": {
+        "sha256": "263b17b8a091f076e8e5f784c3315eff9270f3c5516124b02e162877e6de12aa",
+        "bytes": 115896,
+        "url": "/street-kits/pilots/student_market_street_v1/stone_fountain.glb"
+      }
+    },
+    "thumbnailUrl": "/validation-assets/market-street-v2/reference.png"
+  }
+]

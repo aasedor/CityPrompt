@@ -9,7 +9,7 @@ import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import { assetForZone } from './catalogue';
 import { representationNotice } from './representationNotice';
 
-const automaticZone = (zone: SiteZone) => (assetForZone(zone) || zone.properties?.pick_place_automatic_3d === true) && !zone.id.startsWith('temp-');
+const automaticZone = (zone: SiteZone) => !zone.properties?.validation_fixed_fixture && (assetForZone(zone) || zone.properties?.pick_place_automatic_3d === true) && !zone.id.startsWith('temp-');
 
 export function authoredPlacementKey(zones: SiteZone[], includeRuntimeEntrance = true): string {
   return JSON.stringify(zones.map(zone => ({ id: zone.id, coordinates: zone.coordinates,

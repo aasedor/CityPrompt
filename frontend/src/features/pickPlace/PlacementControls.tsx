@@ -31,6 +31,7 @@ export function PlacementControls({ draft, onChange }: { draft: PlacementDraft; 
         <input aria-label={`Placement ${key}`} aria-describedby={hintId} type="number" step="any"
           min={key === 'degrees' ? undefined : key === 'width' ? asset.minWidth : asset.minDepth}
           max={key === 'degrees' ? undefined : asset.maxSize}
+          disabled={asset.properties.validation_fixed_fixture === true && key !== 'degrees'}
           value={values[key]} onChange={event => update(key, event.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 p-1" />
       </label>)}
     </div>

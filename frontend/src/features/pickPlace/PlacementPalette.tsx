@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
 import { STREET_ASSETS, type StreetAsset } from './assetRegistry';
-import { CANONICAL_CHOICES, choiceMatchesGroup, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, CLASSROOM_CHOICES, choiceMatchesGroup, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
 import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
@@ -27,10 +27,12 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const [query, setQuery] = useState('');
   const [groupId, setGroupId] = useState('');
   const [limit, setLimit] = useState(12);
+  const [collection, setCollection] = useState<'starter' | 'explore'>('starter');
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
   const chooseSection = (id: Section) => { setSection(id); setGroupId(''); setQuery(''); setLimit(12); };
-  const groups = CALGARY_GROUPS.filter(group => group.domain === section && CANONICAL_CHOICES.some(c => c.domain === section && choiceMatchesGroup(c, group.id)));
-  const assets = filterCanonicalChoices(section, query, groupId);
+  const choices = collection === 'starter' ? CLASSROOM_CHOICES : CANONICAL_CHOICES;
+  const groups = CALGARY_GROUPS.filter(group => group.domain === section && choices.some(c => c.domain === section && choiceMatchesGroup(c, group.id)));
+  const assets = filterCanonicalChoices(section, query, groupId, choices);
   const visibleSections = sections.filter(item => onPickStreet || item.id !== 'street_pathway');
   const activeStreet = STREET_ASSETS.find(asset => asset.model.variantId === activeStreetVariant);
   return <section aria-label="Place 3D objects" className="space-y-2">
@@ -55,6 +57,15 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
     {open && <StudioDialog title="Community catalogue" onClose={close}>
       <div className="flex h-[min(70dvh,640px)] min-h-0 flex-col gap-3 text-slate-900">
         <div className="shrink-0 space-y-3">
+          <label className="flex items-center gap-2 text-sm font-semibold">Collection
+            <select aria-label="Catalogue collection" value={collection} className={filterStyle}
+              onChange={event => { setCollection(event.target.value as 'starter' | 'explore'); setQuery(''); setGroupId(''); setLimit(12); }}>
+              <option value="starter">Approved & validation candidates</option>
+            </select>
+          </label>
+          <p className="text-xs text-slate-600">{collection === 'starter'
+            ? '27 exact models: 12 buildings, 8 parks, 7 streets. App validation pending; fixed review models have explicit limits.'
+            : 'Local validation catalogue.'}</p>
           <nav aria-label="Catalogue sections" className="flex gap-2">
             {visibleSections.map(({ id, label, icon: Icon }) => <button key={id} aria-pressed={section === id} onClick={() => chooseSection(id)}
               className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-lg border px-2 text-sm font-semibold ${section === id ? 'border-slate-900 bg-[#c9ff3d]' : 'border-slate-300 bg-white hover:bg-lime-50'}`}><Icon size={18} />{label}</button>)}
@@ -72,7 +83,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         </div>
         <div aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${choice.id}:${query}:${groupId}`} choice={choice}
+            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}`} choice={choice}
               initialVariantId={preferredCatalogueVariant(choice, query, groupId)}
               selected={selected} activeStreetVariant={activeStreetVariant}
               onPlacement={asset => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}

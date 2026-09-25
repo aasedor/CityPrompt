@@ -103,7 +103,7 @@ describe('manual park access planning', () => {
     expect(snapshot.parks[0].status).toBe('explicit');
     expect(applyManualParkAccessSnapshot([explicit, street], snapshot)[0]).toBe(explicit);
   });
-  it.each(['building', 'water', 'road'] as const)('does not cross an intervening %s to reach the street', (type) => {
+  it.each(['building', 'green_space', 'water', 'road'] as const)('does not cross an intervening %s to reach the street', (type) => {
     const { zones } = fixture();
     const barrier = zone('barrier', type, [[-20, -0.9], [60, -0.9], [60, -0.1], [-20, -0.1]]);
     const snapshot = resolveManualParkAccess([...zones, barrier]);

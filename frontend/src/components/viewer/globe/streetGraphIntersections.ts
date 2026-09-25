@@ -1,11 +1,13 @@
 import type { SiteZone } from '@/types';
-import { effectiveRoadWidth, extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
+import { collapseStraightStreetStations, effectiveRoadWidth, extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import {
   PUBLIC_REALM_STREET_CATALOG_FINGERPRINT,
   PUBLIC_REALM_STREET_FAMILY_VERSION,
 } from './streetFamilyCatalog';
 import { validateStreetRecipeProperties } from './streetLegoContract';
+import { publicRealmTrialAsset } from './publicRealmTrial';
+import { nativeStreetPilotForZone } from './nativeStreetPilot';
 
 interface LocalPoint {
   x: number;
@@ -23,6 +25,7 @@ interface NodeCandidate {
   x: number;
   y: number;
   zoneIds: [string, string];
+  crossing?: boolean;
 }
 
 interface StreetIntersectionBase {
@@ -115,7 +118,11 @@ function segmentIntersection(
   const qy = b0.y - a0.y;
   const ta = (qx * bdy - qy * bdx) / denominator;
   const tb = (qx * ady - qy * adx) / denominator;
-  if (ta < -1e-6 || ta > 1 + 1e-6 || tb < -1e-6 || tb > 1 + 1e-6) return null;
+  // A sub-metre endpoint gap still lies inside the paved join. Intersect the
+  // actual approach axes instead of averaging projections off both axes.
+  const toleranceA = 1 / Math.hypot(adx, ady);
+  const toleranceB = 1 / Math.hypot(bdx, bdy);
+  if (ta < -toleranceA || ta > 1 + toleranceA || tb < -toleranceB || tb > 1 + toleranceB) return null;
   return { x: a0.x + adx * ta, y: a0.y + ady * ta };
 }
 
@@ -141,6 +148,11 @@ function detectStreetIntersections(
   includeThreeArm: boolean,
 ): ConnectedStreetIntersection[] {
   const eligibleZones = [...zones].sort((a, b) => a.id.localeCompare(b.id)).filter((zone) => {
+    // Callers can pass a whole site (e.g. during edits). Buildings and the
+    // boundary must not acquire the default road width and obscure real nodes.
+    if (zone.zone_type !== 'road') return false;
+    const native = publicRealmTrialAsset(zone);
+    if (native) return native.kind === 'street' && native.dimensions[0] >= 5;
     const props = zone.properties as Record<string, unknown> | undefined;
     const lego = props?.public_realm_lego && typeof props.public_realm_lego === 'object'
       ? props.public_realm_lego as Record<string, unknown>
@@ -159,7 +171,19 @@ function detectStreetIntersections(
   const originLat = allCoordinates.reduce((sum, point) => sum + point[1], 0) / allCoordinates.length;
   const mPerLon = metersPerDegLon(originLat);
   const axes: StreetAxis[] = eligibleZones.flatMap((zone) => {
-    const centerline = extractZoneCenterline(zone);
+    const native = publicRealmTrialAsset(zone);
+    const nativePilot = nativeStreetPilotForZone(zone);
+    // Review-native rectangles use local X for section width and local Y for
+    // the route. Generic buffered-road ring pairing follows the opposite
+    // edge order and would make a long street's *width* its graph axis.
+    // Recover the same dominant physical axis as the server's rotated-
+    // rectangle fallback. Native placement validates this exact ring later.
+    const ring = zone.coordinates.length === 5 && zone.coordinates[0].every((value, index) =>
+      value === zone.coordinates[4][index]) ? zone.coordinates.slice(0, 4) : zone.coordinates;
+    const centerline = collapseStraightStreetStations(native?.kind === 'street' && ring.length === 4
+      ? [[(ring[0][0] + ring[1][0]) / 2, (ring[0][1] + ring[1][1]) / 2],
+        [(ring[2][0] + ring[3][0]) / 2, (ring[2][1] + ring[3][1]) / 2]]
+      : extractZoneCenterline(zone));
     if (centerline.length < 2) return [];
     const validation = validateStreetRecipeProperties(zone.properties);
     // Junction anchoring requires a centerline BOTH sides derive identically.
@@ -182,8 +206,8 @@ function detectStreetIntersections(
       );
     return [{
       zoneId: zone.id,
-      widthM: effectiveRoadWidth(zone.properties),
-      supportedV1: centerlineAnchorsJunction && ((props?.road_archetype_id === 'calgary_collector'
+      widthM: native?.dimensions[0] ?? effectiveRoadWidth(zone.properties),
+      supportedV1: centerlineAnchorsJunction && (native?.kind === 'street' || nativePilot !== undefined || ((props?.road_archetype_id === 'calgary_collector'
         && props.road_selected_variant_id === 'calgary_collector_v0'
         && effectiveRoadWidth(zone.properties) === 20
         && (props.public_realm_fallback as Record<string, unknown> | undefined)?.state === 'family_pending') || (validation.valid
@@ -192,7 +216,7 @@ function detectStreetIntersections(
           'street_local_public_realm',
           'street_complete_main_18m',
           'street_complete_main_22m',
-        ].includes(validation.recipe.familyId))),
+        ].includes(validation.recipe.familyId)))),
       points: centerline.map((point) => ({
         x: (point[0] - originLng) * mPerLon,
         y: (point[1] - originLat) * METERS_PER_DEG_LAT,
@@ -217,7 +241,7 @@ function detectStreetIntersections(
           if (crossingAngle < Math.PI / 6 || crossingAngle > Math.PI * 5 / 6) continue;
           const crossing = segmentIntersection(a0, a1, b0, b1);
           if (crossing) {
-            candidates.push({ x: crossing.x, y: crossing.y, zoneIds: [first.zoneId, second.zoneId] });
+            candidates.push({ x: crossing.x, y: crossing.y, zoneIds: [first.zoneId, second.zoneId], crossing: true });
             continue;
           }
           for (const endpoint of [a0, a1]) {
@@ -238,6 +262,12 @@ function detectStreetIntersections(
   }
   const clusters: Array<{ x: number; y: number; count: number; zoneIds: Set<string> }> = [];
   for (const candidate of candidates) {
+    // Nearby sampled-curve stations must not drag a real axis intersection
+    // away from either centerline or create duplicate nodes beside it.
+    if (!candidate.crossing && candidates.some(other => other.crossing
+      && other.zoneIds.every(id => candidate.zoneIds.includes(id))
+      && Math.hypot(other.x - candidate.x, other.y - candidate.y)
+        <= Math.max(...axes.filter(axis => candidate.zoneIds.includes(axis.zoneId)).map(axis => axis.widthM)) )) continue;
     const existing = clusters.find((cluster) => Math.hypot(cluster.x - candidate.x, cluster.y - candidate.y) <= 4);
     if (existing) {
       existing.x = (existing.x * existing.count + candidate.x) / (existing.count + 1);
@@ -264,6 +294,17 @@ function detectStreetIntersections(
     );
     const contributingAxes: StreetAxis[] = [];
     for (const axis of axes) {
+      // A turn inside the node envelope needs a curved transition; choosing
+      // only one adjacent segment here would fabricate a straight through arm.
+      const bendsInsideNode = axis.points.some((point, index) => {
+        if (index === 0 || index === axis.points.length - 1) return false;
+        if (Math.hypot(point.x - cluster.x, point.y - cluster.y) > axis.widthM / 2 + 4) return false;
+        const before = axis.points[index - 1], after = axis.points[index + 1];
+        const firstBearing = Math.atan2(point.y - before.y, point.x - before.x);
+        const secondBearing = Math.atan2(after.y - point.y, after.x - point.x);
+        return angleDistance(firstBearing, secondBearing) > Math.PI / 180;
+      });
+      if (bendsInsideNode) return [];
       let best: ReturnType<typeof closestPointOnSegment> & { segmentIndex: number } | null = null;
       for (let index = 0; index < axis.points.length - 1; index += 1) {
         const closest = closestPointOnSegment(cluster, axis.points[index], axis.points[index + 1]);

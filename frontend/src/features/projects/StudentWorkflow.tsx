@@ -1,4 +1,6 @@
 import { Camera, MapPin, Pencil, Video } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { direct3DAttempts } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 
@@ -24,6 +26,11 @@ export function studentStreetAccessNotice(zones: SiteZone[], boundary: SiteZone 
   return 'No public-road connection is marked for this design. If vehicles need access, select a street in Design and use Connect to a public road.';
 }
 
+export function studentLandscapeNeedsRefresh(boundary: SiteZone | null): boolean {
+  const recipe = boundary?.properties?.community_3d_landscape;
+  return Boolean(recipe && typeof recipe === 'object' && 'state' in recipe && recipe.state === 'stale');
+}
+
 export function StudentWorkflowNav({ step, onChange }: {
   step: StudentStep; onChange: (step: StudentStep) => void;
 }) {
@@ -37,12 +44,21 @@ export function StudentWorkflowNav({ step, onChange }: {
   </nav>;
 }
 
-export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, streetAccessNotice, onSite, onDesign, onImage, onVideo }: {
+export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, streetAccessNotice, landscapeNeedsRefresh = false, onSite, onDesign, onImage, onVideo }: {
   step: 'site' | 'present'; hasSite: boolean; location?: string | null;
   drawingSite?: boolean;
-  canRender: boolean; renderReason: string; streetAccessNotice?: string | null;
+  canRender: boolean; renderReason: string; streetAccessNotice?: string | null; landscapeNeedsRefresh?: boolean;
   onSite: () => void; onDesign: () => void; onImage: () => void; onVideo: () => void;
 }) {
+  const [videoEnabled, setVideoEnabled] = useState(false);
+  useEffect(() => {
+    if (step !== 'present') return;
+    let active = true;
+    void direct3DAttempts.capabilities().then(capabilities => {
+      if (active) setVideoEnabled(capabilities.video_enabled === true);
+    }).catch(() => { /* Keep optional paid video unavailable if capability lookup fails. */ });
+    return () => { active = false; };
+  }, [step]);
   return <section aria-label={step === 'site' ? 'Choose your site' : 'Present your community'}
     className="space-y-3 rounded-xl border border-slate-900 bg-white/95 p-4 text-slate-950 shadow-md">
     {step === 'site' ? <>
@@ -56,8 +72,12 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
       <h2 className="text-base font-bold">Render this view</h2>
       <p className="text-sm">Move around your community to find your view, then choose an output.</p>
       {streetAccessNotice && <p role="status" className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs text-amber-950">{streetAccessNotice}</p>}
+      {landscapeNeedsRefresh && <div className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs text-amber-950">
+        <p role="status">Your design changed, so the site landscape needs a fresh preview before presenting.</p>
+        <button type="button" className="mt-2 min-h-11 font-semibold underline" onClick={onSite}>Refresh site landscape</button>
+      </div>}
       <button type="button" className={`${action} bg-[#c9ff3d] disabled:opacity-50`} disabled={!canRender} onClick={onImage}><Camera size={18} aria-hidden />Image</button>
-      <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />Video</button>
+      {videoEnabled && <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />Video</button>}
       {!canRender && <p role="status" className="text-sm text-slate-700">{renderReason}</p>}
       <button type="button" className={`${action} border-transparent underline`} onClick={onDesign}>Back to design</button>
     </>}

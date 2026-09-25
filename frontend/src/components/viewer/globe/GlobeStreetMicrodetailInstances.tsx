@@ -1,3 +1,4 @@
+import { GlobeTreeWells } from './GlobeTreeWells';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { createPublicRealmPlant } from './publicRealmPlantGeometry';
@@ -175,15 +176,11 @@ export function GlobeStreetMicrodetailInstances({
       placement.heightM,
     )
   )), [fixtures.bollards]);
-  const grateTransforms = useMemo(() => fixtures.plantingCells
-    .filter((placement: StreetPlantingCellPlacement) => placement.style === 'tree_grate')
-    .map((placement) => poseTransform(
-      placement,
-      placement.z + PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS + 0.003,
-      placement.lengthM,
-      placement.widthM,
-      0.012,
-    )), [fixtures.plantingCells]);
+  const treeWells = useMemo(() => fixtures.plantingCells
+    .filter(placement => placement.style === 'tree_grate')
+    .map(placement => ({ ...placement,
+      z: placement.z + (placement.surfaceLiftM ?? PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS),
+    })), [fixtures.plantingCells]);
   const lowCellTransforms = useMemo(() => fixtures.plantingCells
     .filter((placement: StreetPlantingCellPlacement) => placement.style === 'low_planting_cell')
     .map((placement) => poseTransform(
@@ -210,7 +207,7 @@ export function GlobeStreetMicrodetailInstances({
       <InstancedPart geometry={box} transforms={binTransforms} color={fixtureMetalColor} metalness={0.28} roughness={0.58} renderOrder={renderOrder + 1} />
       <InstancedPart geometry={rack} transforms={rackTransforms} color={fixtureMetalColor} metalness={0.58} roughness={0.42} renderOrder={renderOrder + 1} />
       <InstancedPart geometry={cylinder} transforms={bollardTransforms} color="#d6b03c" metalness={0.18} roughness={0.62} renderOrder={renderOrder + 1} />
-      <InstancedPart geometry={box} transforms={grateTransforms} color="#59605f" metalness={0.46} roughness={0.58} renderOrder={renderOrder} />
+      <GlobeTreeWells placements={treeWells} renderOrder={renderOrder} />
       <InstancedPart geometry={box} transforms={lowCellTransforms} color="#4b3c2c" roughness={0.98} renderOrder={renderOrder} />
       <InstancedPart geometry={shrub} transforms={shrubTransforms} color="#627c4d" roughness={0.98} renderOrder={renderOrder + 1} />
     </>

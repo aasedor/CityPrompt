@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 
 from typing import Optional
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.functions import ST_CoveredBy
@@ -779,9 +780,28 @@ async def _restore_zone_snapshot(
         raise HTTPException(status_code=400, detail="Snapshot project id does not match request project id")
 
     coords_str = _wkt_from_snapshot(snapshot)
-    building_ids = snapshot.get("building_ids")
-    if building_ids:
-        building_ids = [str(bid) for bid in building_ids]
+    # Undo can remove a zone's compiled building after the client captured its
+    # snapshot. Rebinding that now-deleted ID violates the FK and makes Redo
+    # fail with a 500. Keep only live links; the authored zone can be compiled
+    # again when its building representation is needed.
+    primary_building_id = _optional_uuid(snapshot.get("building_id"))
+    snapshot_building_ids = _normalize_building_ids(snapshot.get("building_ids"))
+    candidate_building_ids = set(snapshot_building_ids)
+    if primary_building_id:
+        candidate_building_ids.add(primary_building_id)
+    if candidate_building_ids:
+        live_result = await db.execute(
+            select(Building.id).where(
+                Building.project_id == project_id,
+                Building.id.in_(candidate_building_ids),
+            )
+        )
+        live_building_ids = set(live_result.scalars().all())
+    else:
+        live_building_ids = set()
+    building_ids = [str(bid) for bid in snapshot_building_ids if bid in live_building_ids] or None
+    if primary_building_id not in live_building_ids:
+        primary_building_id = uuid.UUID(building_ids[0]) if building_ids else None
 
     zone_result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
     zone = zone_result.scalar_one_or_none()
@@ -812,7 +832,7 @@ async def _restore_zone_snapshot(
         zone.properties = snapshot.get("properties")
         zone.is_active_boundary = snapshot_is_active
         zone.sort_order = snapshot.get("sort_order", 0)
-        zone.building_id = _optional_uuid(snapshot.get("building_id"))
+        zone.building_id = primary_building_id
         zone.building_ids = building_ids
     else:
         zone = SiteZone(
@@ -825,7 +845,7 @@ async def _restore_zone_snapshot(
             properties=snapshot.get("properties"),
             is_active_boundary=snapshot_is_active,
             sort_order=snapshot.get("sort_order", 0),
-            building_id=_optional_uuid(snapshot.get("building_id")),
+            building_id=primary_building_id,
             building_ids=building_ids,
         )
         db.add(zone)
@@ -1144,7 +1164,14 @@ async def fetch_context(
     source_updated_at = zone.updated_at
     shape = to_shape(zone.geometry)
     fetcher = OSMContextFetcher()
-    osm_context = await fetcher.fetch(shape)
+    try:
+        osm_context = await fetcher.fetch(shape)
+    except httpx.HTTPError as exc:
+        logger.warning("Optional OSM context unavailable for zone %s: %s", zone_id, exc)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Nearby map context is temporarily unavailable; the site boundary is saved.",
+        ) from exc
 
     # Fetching context must not overwrite an edit made while the network was slow.
     await lock_residual_landscape_project(db, zone.project_id)

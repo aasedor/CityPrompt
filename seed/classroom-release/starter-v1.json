@@ -1,0 +1,625 @@
+{
+  "schema": "cityprompt.classroom-starter@1",
+  "releaseId": "classroom-starter-v1",
+  "status": "prepared-site-runtime-reviewed",
+  "classroom": {
+    "students": 60,
+    "groupProjects": 8,
+    "defaultFidelity": "balanced",
+    "homes": "individual",
+    "catalogue": "starter-first-with-exploratory-more"
+  },
+  "entries": [
+    {
+      "domain": "building",
+      "archetypeId": "calgary_modern_infill_house",
+      "variantId": "infill_flat_roof_minimal",
+      "placementId": "infill_home",
+      "revision": "calgary-infill-flat-roof-minimal-clay-v006",
+      "representation": "model-library-single-home",
+      "capabilities": [
+        "single-home",
+        "move",
+        "rotate",
+        "reviewed-entrance"
+      ],
+      "review": {
+        "asset": "existing-pilot",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "repository:seed/classroom-release/models/calgary-infill-flat-roof-minimal-clay-v006.glb",
+        "public:archetypes/buildings/calgary-modern-infill-house/variant_0.png",
+        "repository:seed/classroom-release/model-bindings.json"
+      ]
+    },
+    {
+      "domain": "building",
+      "archetypeId": "calgary_inner_city_bungalow",
+      "variantId": "bungalow_postwar_ranch",
+      "placementId": "trial_postwar_bungalow",
+      "revision": "calgary-inner-city-bungalow-clay-v005",
+      "representation": "model-library-single-home",
+      "capabilities": [
+        "single-home",
+        "move",
+        "rotate",
+        "reviewed-entrance"
+      ],
+      "review": {
+        "asset": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "public:archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
+        "repository:seed/model-library/rlasm-architectural-clay/library.json",
+        "repository:seed/model-library/rlasm-architectural-clay/models/calgary-inner-city-bungalow-clay-v005.glb",
+        "repository:seed/classroom-release/model-bindings.json"
+      ]
+    },
+    {
+      "domain": "building",
+      "archetypeId": "calgary_beltline_mid_rise",
+      "variantId": "beltline_brick_modern",
+      "placementId": "clay_beltline_brick_midrise",
+      "revision": "calgary-beltline-mid-rise-clay-v003",
+      "representation": "model-library-fixed-native",
+      "capabilities": [
+        "fixed-native",
+        "move",
+        "rotate",
+        "reviewed-entrance"
+      ],
+      "review": {
+        "asset": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "public:archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",
+        "repository:seed/model-library/rlasm-architectural-clay/library.json",
+        "repository:seed/model-library/rlasm-architectural-clay/models/calgary-beltline-mid-rise-clay-v003.glb",
+        "repository:seed/classroom-release/model-bindings.json"
+      ]
+    },
+    {
+      "domain": "street",
+      "archetypeId": "calgary_local",
+      "variantId": "calgary_local_v0",
+      "placementId": "calgary_local_street",
+      "revision": "draft-4.0-figure-2",
+      "representation": "metric-section",
+      "capabilities": [
+        "fixed-width-16m",
+        "curve",
+        "T",
+        "X",
+        "public-road-tie-in"
+      ],
+      "review": {
+        "asset": "existing-pilot",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "public:archetypes/streets/calgary-local/variant_0.png",
+        "repository:frontend/src/data/streetPathArchetypes.json"
+      ]
+    },
+    {
+      "domain": "street",
+      "archetypeId": "neighborhood_main_street",
+      "variantId": "student_main_street_v1",
+      "placementId": "student_main_street_v1",
+      "revision": "01b88587a564e94f0dfe62062529993096833f4846765ba304917cb3e4430d59",
+      "representation": "native-modules",
+      "capabilities": [
+        "fixed-width-23m",
+        "curve",
+        "T",
+        "X",
+        "rigid-furniture"
+      ],
+      "review": {
+        "asset": "candidate",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/student_main_street_v1/bench.glb",
+        "public:street-kits/pilots/student_main_street_v1/bike_rack.glb",
+        "public:street-kits/pilots/student_main_street_v1/bin.glb",
+        "public:street-kits/pilots/student_main_street_v1/grove_tree.glb",
+        "public:street-kits/pilots/student_main_street_v1/heritage_lantern.glb",
+        "public:street-kits/pilots/student_main_street_v1/planter.glb",
+        "public:street-kits/pilots/student_main_street_v1/reference.png",
+        "public:street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
+        "public:street-kits/pilots/student_main_street_v1/tree_well_grate.glb",
+        "repository:frontend/src/data/nativeStreetPilots.json"
+      ]
+    },
+    {
+      "domain": "street",
+      "archetypeId": "pedestrian_only_street",
+      "variantId": "student_market_street_v1",
+      "placementId": "student_market_street_v1",
+      "revision": "c7670fd29bafdcb6acf7ef095cfe78aa28a0678b47595ae958bad1c52fbb11fe",
+      "representation": "native-modules",
+      "capabilities": [
+        "fixed-width-18m",
+        "curve",
+        "T",
+        "X",
+        "rigid-furniture"
+      ],
+      "review": {
+        "asset": "candidate",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/student_market_street_v1/bench.glb",
+        "public:street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
+        "public:street-kits/pilots/student_market_street_v1/heritage_lantern.glb",
+        "public:street-kits/pilots/student_market_street_v1/market_stall.glb",
+        "public:street-kits/pilots/student_market_street_v1/planter.glb",
+        "public:street-kits/pilots/student_market_street_v1/reference.png",
+        "public:street-kits/pilots/student_market_street_v1/stone_fountain.glb",
+        "repository:frontend/src/data/nativeStreetPilots.json"
+      ]
+    },
+    {
+      "domain": "park",
+      "archetypeId": "neighborhood_park",
+      "variantId": "neighborhood_park_v0",
+      "placementId": "neighbourhood_park",
+      "revision": "neighborhood-rustic-v5",
+      "representation": "adaptive-park",
+      "capabilities": [
+        "adaptive-layout",
+        "native-equipment",
+        "min-30x30m"
+      ],
+      "review": {
+        "asset": "existing-pilot",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "public:archetypes/openspaces/neighborhood-park/variant_0.png",
+        "public:landscape-pilots/neighborhood-rustic-v5/FOLIAGE_LICENSE.txt",
+        "public:landscape-pilots/neighborhood-rustic-v5/boulders.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/gable-pavilion.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/manifest.json",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-0.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-1.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-2.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/split-rail.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-play-tower.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-swing.glb",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/albedo.jpg",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/albedo.jpg",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/albedo.jpg"
+      ]
+    },
+    {
+      "domain": "park",
+      "archetypeId": "research_garden_teaching_arboretum",
+      "variantId": "research_garden_teaching_arboretum_variant_3",
+      "placementId": "park_trio_garden",
+      "revision": "park-trio-v3",
+      "representation": "adaptive-park",
+      "capabilities": [
+        "adaptive-layout",
+        "native-equipment"
+      ],
+      "review": {
+        "asset": "existing-pilot",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "public:archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+        "public:landscape-pilots/neighborhood-rustic-v5/FOLIAGE_LICENSE.txt",
+        "public:landscape-pilots/neighborhood-rustic-v5/boulders.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/gable-pavilion.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/manifest.json",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-0.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-1.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-2.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/split-rail.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-play-tower.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-swing.glb",
+        "public:landscape-pilots/park-trio-v3/garden/bed.glb",
+        "public:landscape-pilots/park-trio-v3/garden/label.glb",
+        "public:landscape-pilots/park-trio-v3/garden/shelter.glb",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/albedo.jpg",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/albedo.jpg",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/albedo.jpg"
+      ]
+    },
+    {
+      "domain": "park",
+      "archetypeId": "basketball_court",
+      "variantId": "basketball_court_v1",
+      "placementId": "park_trio_basketball",
+      "revision": "park-trio-v3",
+      "representation": "adaptive-sports-park",
+      "capabilities": [
+        "native-court",
+        "min-52x39m"
+      ],
+      "review": {
+        "asset": "existing-pilot",
+        "runtime": "passed",
+        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
+      },
+      "dependencies": [
+        "public:archetypes/openspaces/basketball-court/variant_1.png",
+        "public:landscape-pilots/neighborhood-rustic-v5/FOLIAGE_LICENSE.txt",
+        "public:landscape-pilots/neighborhood-rustic-v5/boulders.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/gable-pavilion.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/manifest.json",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-0.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-1.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/oak-2.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/split-rail.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-play-tower.glb",
+        "public:landscape-pilots/neighborhood-rustic-v5/timber-swing.glb",
+        "public:landscape-pilots/sports-parks-v1/basketball/court.glb",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/albedo.jpg",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/albedo.jpg",
+        "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/albedo.jpg"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "public:archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",
+      "location": "public",
+      "path": "archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",
+      "sha256": "39f3dd9260e14f262498e67a1923c07b09d3265873f9e5f0908185ce8b856bc3",
+      "bytes": 1331259
+    },
+    {
+      "id": "public:archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
+      "location": "public",
+      "path": "archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
+      "sha256": "99dddd58994ef0c0f1c1d9abd472420cae16837759c885e9b85c7dca5b8d7ba8",
+      "bytes": 1514720
+    },
+    {
+      "id": "public:archetypes/buildings/calgary-modern-infill-house/variant_0.png",
+      "location": "public",
+      "path": "archetypes/buildings/calgary-modern-infill-house/variant_0.png",
+      "sha256": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8",
+      "bytes": 1399202
+    },
+    {
+      "id": "public:archetypes/openspaces/basketball-court/variant_1.png",
+      "location": "public",
+      "path": "archetypes/openspaces/basketball-court/variant_1.png",
+      "sha256": "aab139515a6cbde875f659405b349e8941f1d9ff2a6f0034500a644804b203bf",
+      "bytes": 1407609
+    },
+    {
+      "id": "public:archetypes/openspaces/neighborhood-park/variant_0.png",
+      "location": "public",
+      "path": "archetypes/openspaces/neighborhood-park/variant_0.png",
+      "sha256": "38c1079127126017edb7945f77f47d73c4d0dde1fe5a566ac5dc0e791473d5c3",
+      "bytes": 1545419
+    },
+    {
+      "id": "public:archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "location": "public",
+      "path": "archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "sha256": "c0ac61bcf1e14b6672288d1f750188a655dab931b902f761e84dbff2dfc57308",
+      "bytes": 1557500
+    },
+    {
+      "id": "public:archetypes/streets/calgary-local/variant_0.png",
+      "location": "public",
+      "path": "archetypes/streets/calgary-local/variant_0.png",
+      "sha256": "caa608c1be23e1c8cd002d820ef32d413712e98e6630cd99e5df6af3a6cbb61c",
+      "bytes": 1418980
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/FOLIAGE_LICENSE.txt",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/FOLIAGE_LICENSE.txt",
+      "normalizeText": true,
+      "sha256": "20e4afadfb10c67952b3d73cd2982d21d165ab4ae82b0dd9e4d6f2166ee349b6",
+      "bytes": 1073
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/boulders.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/boulders.glb",
+      "sha256": "b4ddd1de1e18d549a7e55984caa34efaba00929910bacf17f1f6d1fa91f53bef",
+      "bytes": 357708
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/gable-pavilion.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/gable-pavilion.glb",
+      "sha256": "f66bbf5c2355e911bdf1f4f0a5b0f6e685a3b0d6ebec5c58159c383e2f67c4ad",
+      "bytes": 735852
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/manifest.json",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/manifest.json",
+      "normalizeText": true,
+      "sha256": "3a156f0b17356ef7b966fee23f4d5b4407673c5cc8d8c62e6184cea4f23f021e",
+      "bytes": 5552
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/oak-0.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/oak-0.glb",
+      "sha256": "1ad88f57ec42fd7c016c559a6b924dd066c78c2495ca3bb8b6a616d2f587e7df",
+      "bytes": 522732
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/oak-1.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/oak-1.glb",
+      "sha256": "dcf6f2eb9a03f8ea785c023f8636e272080a81d7aeff56ba03940a74725c19bc",
+      "bytes": 518952
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/oak-2.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/oak-2.glb",
+      "sha256": "2bc81800969aa53c872490238753eae0de60aead63b0bd6a085860736163fc0c",
+      "bytes": 527916
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/split-rail.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/split-rail.glb",
+      "sha256": "ccd7da27ace4645cf81b83b174457bbab6757eeac070ba1a189b11dfaee7d18d",
+      "bytes": 363148
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+      "sha256": "71a4a5b0850c9b5fa34e370b1a2f9540ff6c39d635de780ac655e32e2c9fe8bc",
+      "bytes": 698344
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/timber-play-tower.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/timber-play-tower.glb",
+      "sha256": "97b717873a30d94c77612392a2560bd707ffabd88a2b4485117a561b23f28dd9",
+      "bytes": 424388
+    },
+    {
+      "id": "public:landscape-pilots/neighborhood-rustic-v5/timber-swing.glb",
+      "location": "public",
+      "path": "landscape-pilots/neighborhood-rustic-v5/timber-swing.glb",
+      "sha256": "000dc4c20e312c638597175d7f624a41f738f6df8695e4cf09108253b6a95e77",
+      "bytes": 573684
+    },
+    {
+      "id": "public:landscape-pilots/park-trio-v3/garden/bed.glb",
+      "location": "public",
+      "path": "landscape-pilots/park-trio-v3/garden/bed.glb",
+      "sha256": "4b09f0057c7801bc8670a8a906637a958f56077f37eea285a27610ac1fc26f14",
+      "bytes": 187452
+    },
+    {
+      "id": "public:landscape-pilots/park-trio-v3/garden/label.glb",
+      "location": "public",
+      "path": "landscape-pilots/park-trio-v3/garden/label.glb",
+      "sha256": "f57d7872dc1e4875fb537efa71914845006f24f46343106582ca4ee4ac4bbfc3",
+      "bytes": 11112
+    },
+    {
+      "id": "public:landscape-pilots/park-trio-v3/garden/shelter.glb",
+      "location": "public",
+      "path": "landscape-pilots/park-trio-v3/garden/shelter.glb",
+      "sha256": "afb3b54313a833b11e654a36945def5b52472808f31e20716bed3e151f163c39",
+      "bytes": 934296
+    },
+    {
+      "id": "public:landscape-pilots/sports-parks-v1/basketball/court.glb",
+      "location": "public",
+      "path": "landscape-pilots/sports-parks-v1/basketball/court.glb",
+      "sha256": "d63ebe52565957885f8287a2ffd61a4b6f2fb5299d9dfec25aa1384a10d3bccb",
+      "bytes": 675884
+    },
+    {
+      "id": "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/albedo.jpg",
+      "location": "public",
+      "path": "park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/albedo.jpg",
+      "sha256": "ce174730a611715222c0eb116e88bd4c281896741b9bd095499ada3343392e02",
+      "bytes": 23236
+    },
+    {
+      "id": "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/albedo.jpg",
+      "location": "public",
+      "path": "park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/albedo.jpg",
+      "sha256": "b3ff5aff718793a6b3259ed19c3259c635301d403edfa0b710c2b30cd32094a3",
+      "bytes": 24715
+    },
+    {
+      "id": "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/albedo.jpg",
+      "location": "public",
+      "path": "park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/albedo.jpg",
+      "sha256": "2975ceb8144fa8083dffe83ab3e9935542bfbeb9da8ec94eebcc726cae8f03c8",
+      "bytes": 17381
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/bench.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/bench.glb",
+      "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+      "bytes": 34024
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/bike_rack.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/bike_rack.glb",
+      "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+      "bytes": 96964
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/bin.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/bin.glb",
+      "sha256": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1",
+      "bytes": 80532
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/grove_tree.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/grove_tree.glb",
+      "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+      "bytes": 1287628
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/heritage_lantern.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/heritage_lantern.glb",
+      "sha256": "3128c76ab7eff91eefa2421aef13d01a947408dcb3dc828a0f35146841cbebdc",
+      "bytes": 17096
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/planter.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/planter.glb",
+      "sha256": "86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232",
+      "bytes": 131616
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/reference.png",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/reference.png",
+      "sha256": "af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392",
+      "bytes": 985092
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
+      "sha256": "921b92412fc7ad93a7910004109ab751d1d02bd476ab889b3408cd291f89b6c8",
+      "bytes": 18172
+    },
+    {
+      "id": "public:street-kits/pilots/student_main_street_v1/tree_well_grate.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_main_street_v1/tree_well_grate.glb",
+      "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493",
+      "bytes": 95608
+    },
+    {
+      "id": "public:street-kits/pilots/student_market_street_v1/bench.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_market_street_v1/bench.glb",
+      "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+      "bytes": 34024
+    },
+    {
+      "id": "public:street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
+      "sha256": "c33eb363972b2679a0173c02628cd876c31016bc39df34be6bf345933bf4c065",
+      "bytes": 60388
+    },
+    {
+      "id": "public:street-kits/pilots/student_market_street_v1/heritage_lantern.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_market_street_v1/heritage_lantern.glb",
+      "sha256": "a107d4d6c76e8f1980363eb05f369b7d258120fe6bec5c7f0832c7b33d5bd322",
+      "bytes": 17092
+    },
+    {
+      "id": "public:street-kits/pilots/student_market_street_v1/market_stall.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_market_street_v1/market_stall.glb",
+      "sha256": "571d1debbc930e350fd6018bb6f0d52a3e7350848b25ec4f2c04c6fb1503f33f",
+      "bytes": 47684
+    },
+    {
+      "id": "public:street-kits/pilots/student_market_street_v1/planter.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_market_street_v1/planter.glb",
+      "sha256": "86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232",
+      "bytes": 131616
+    },
+    {
+      "id": "public:street-kits/pilots/student_market_street_v1/reference.png",
+      "location": "public",
+      "path": "street-kits/pilots/student_market_street_v1/reference.png",
+      "sha256": "32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee",
+      "bytes": 1172072
+    },
+    {
+      "id": "public:street-kits/pilots/student_market_street_v1/stone_fountain.glb",
+      "location": "public",
+      "path": "street-kits/pilots/student_market_street_v1/stone_fountain.glb",
+      "sha256": "71c58dc39bbd919a77e765a84f0d60a50526dbf62000dda124ca052c12c27da3",
+      "bytes": 115904
+    },
+    {
+      "id": "repository:frontend/src/data/nativeStreetPilots.json",
+      "location": "repository",
+      "path": "frontend/src/data/nativeStreetPilots.json",
+      "normalizeText": true,
+      "sha256": "64214b931244f15266785e9b1396372f376fe0e2f95806772f6773e4ff4fddbb",
+      "bytes": 13662
+    },
+    {
+      "id": "repository:frontend/src/data/streetPathArchetypes.json",
+      "location": "repository",
+      "path": "frontend/src/data/streetPathArchetypes.json",
+      "normalizeText": true,
+      "sha256": "672faa1fb47c002438c3ffcfe3aa147913a297bf9e2f9e6c2c929eb2da410f24",
+      "bytes": 799529
+    },
+    {
+      "id": "repository:seed/classroom-release/models/calgary-infill-flat-roof-minimal-clay-v006.glb",
+      "location": "repository",
+      "path": "seed/classroom-release/models/calgary-infill-flat-roof-minimal-clay-v006.glb",
+      "sha256": "eeb0d1d878ec474e6743a1e1aeef7bf84dfda360c1150662b60430095f26ac37",
+      "bytes": 909656
+    },
+    {
+      "id": "repository:seed/model-library/rlasm-architectural-clay/library.json",
+      "location": "repository",
+      "path": "seed/model-library/rlasm-architectural-clay/library.json",
+      "normalizeText": true,
+      "sha256": "13c077ff7f1b03dc4f1f438cf26488dccf365c0e55e5014d6cbbf89e28d77385",
+      "bytes": 34612
+    },
+    {
+      "id": "repository:seed/model-library/rlasm-architectural-clay/models/calgary-beltline-mid-rise-clay-v003.glb",
+      "location": "repository",
+      "path": "seed/model-library/rlasm-architectural-clay/models/calgary-beltline-mid-rise-clay-v003.glb",
+      "sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41",
+      "bytes": 5022608
+    },
+    {
+      "id": "repository:seed/model-library/rlasm-architectural-clay/models/calgary-inner-city-bungalow-clay-v005.glb",
+      "location": "repository",
+      "path": "seed/model-library/rlasm-architectural-clay/models/calgary-inner-city-bungalow-clay-v005.glb",
+      "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+      "bytes": 1168176
+    },
+    {
+      "id": "repository:seed/classroom-release/model-bindings.json",
+      "location": "repository",
+      "path": "seed/classroom-release/model-bindings.json",
+      "bytes": 8353,
+      "sha256": "2729664f70408c6cede7d98b6c97f3ab14e866115661ba434efd6133f9303401",
+      "normalizeText": true
+    }
+  ]
+}

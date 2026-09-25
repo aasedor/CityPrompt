@@ -21,6 +21,7 @@ export function rectangleDimensions(coords: number[][]) {
 
 /** Keep the opposite corner fixed, preserve right angles and native-size limits. */
 export function resizeRectangleCorner(coords: number[][], corner: number, pointer: number[], asset: PlaceAsset) {
+  if (asset.properties.validation_fixed_fixture === true) return coords;
   const { degrees } = rectangleDimensions(coords);
   const fixed = coords[(corner+2)%4], yaw = degrees*Math.PI/180, c=Math.cos(yaw), s=Math.sin(yaw);
   const east=(pointer[0]-fixed[0])*metersPerDegLon(fixed[1]), north=(pointer[1]-fixed[1])*METERS_PER_DEG_LAT;
@@ -32,7 +33,10 @@ export function resizeRectangleCorner(coords: number[][], corner: number, pointe
     fixed[1]+(sx*width*s+sy*depth*c)/2/METERS_PER_DEG_LAT,
   ],width,depth,degrees);
 }
-export function placementProblem(coords: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string): string | null {
+export function placementProblem(
+  coords: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string,
+  { allowStreetIntersections = false }: { allowStreetIntersections?: boolean } = {},
+): string | null {
   try {
     if(coords.length<3 || coords.some(p=>!Number.isFinite(p[0]+p[1]))) return 'Choose a valid area.';
     const origin=coords[0];
@@ -40,10 +44,12 @@ export function placementProblem(coords: number[][], zones: SiteZone[], boundary
     const footprint = local(coords);
     if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return 'Keep the whole plot inside your site boundary, including the space around the building. Move it inward or resize the plot.';
     for (const zone of zones) {
-      if (zone.id===ignoreId || !['building','residential','green_space','parking'].includes(zone.zone_type)) continue;
+      if (zone.id===ignoreId || !['building','residential','green_space','parking','road'].includes(zone.zone_type)) continue;
+      if (zone.zone_type === 'road' && allowStreetIntersections) continue;
       if (envelopesOverlap(footprint,local(zone.coordinates))) {
         const label = zone.name?.trim() || assetForZone(zone)?.label
-          || (zone.zone_type === 'green_space' ? 'another park' : zone.zone_type === 'parking' ? 'a parking area' : 'another building plot');
+          || (zone.zone_type === 'road' ? 'a street' : zone.zone_type === 'green_space' ? 'another park' : zone.zone_type === 'parking' ? 'a parking area' : 'another building plot');
+        if (zone.zone_type === 'road') return `This overlaps ${label}. Leave the street and sidewalks clear.`;
         return `This overlaps ${label}. Plots include the space around buildings. Move it or reduce its size to leave room.`;
       }
     }

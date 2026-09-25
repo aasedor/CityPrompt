@@ -1,0 +1,60 @@
+# Disposable local-only verification. No host ports, paid keys, or live volumes.
+name: cityprompt-prefork-probe
+services:
+  probe-db:
+    image: postgis/postgis:15-3.4
+    environment:
+      POSTGRES_DB: prefork_probe
+      POSTGRES_USER: probe
+      POSTGRES_PASSWORD: disposable-probe-only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U probe -d prefork_probe"]
+      interval: 2s
+      retries: 30
+  probe-redis:
+    image: redis:7.2-alpine
+    command: ["redis-server", "--maxmemory-policy", "noeviction"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      retries: 30
+  probe-media:
+    image: minio/minio:latest
+    command: ["server", "/data"]
+    environment:
+      MINIO_ROOT_USER: probe-only
+      MINIO_ROOT_PASSWORD: disposable-probe-only
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 2s
+      retries: 30
+  probe:
+    image: ${CLASSROOM_API_IMAGE:?Set the built API image}
+    environment:
+      APP_ENV: development
+      APP_DEBUG: "false"
+      DATABASE_URL: postgresql+asyncpg://probe:disposable-probe-only@probe-db/prefork_probe
+      DATABASE_URL_SYNC: postgresql://probe:disposable-probe-only@probe-db/prefork_probe
+      REDIS_URL: redis://probe-redis:6379/0
+      S3_ENDPOINT_URL: http://probe-media:9000
+      S3_ACCESS_KEY: probe-only
+      S3_SECRET_KEY: disposable-probe-only
+      S3_BUCKET_NAME: prefork-probe
+      JWT_SECRET_KEY: disposable-network-isolated-probe-only
+      OPENAI_API_KEY: mock-never-sent
+      DIRECT_3D_JOBS_ENABLED: "true"
+      DIRECT_3D_IMAGES_ENABLED: "true"
+      RENDER_GLOBAL_DAILY_TOKEN_CAP: "10000"
+      CITYPROMPT_PREFORK_PROBE: "1"
+      PREFORK_EVIDENCE_DIR: /evidence
+    volumes:
+      - ${PREFORK_EVIDENCE_DIR:?Set a new external evidence directory}:/evidence
+      - ../../backend/tests:/app/tests:ro
+    depends_on:
+      probe-db: {condition: service_healthy}
+      probe-redis: {condition: service_healthy}
+      probe-media: {condition: service_healthy}
+    command: ["bash", "-c", "python -m scripts.prepare_database && pytest tests/test_prefork_recovery.py -q --tb=short"]
+networks:
+  default:
+    internal: true

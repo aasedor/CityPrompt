@@ -15,6 +15,10 @@ for root in a.packages:
       builder_review='Visual review recorded in repository batch report; not independent human approval',
       runtime_status='NOT TESTED; not installed in student picker',source_base_revision=source_revision)
     if 'sport_asset' in r:manifest['sport_asset']=r['sport_asset']
+    if 'image_references' in r:
+        manifest['image_references']=r['image_references']
+        manifest['reference_profile']=r['reference_profile']
+        manifest['reference_assets']=r['reference_assets']
     records.append(manifest)
     intro=f"# Pending runtime review: {r['title']}\n\nExact ID: `{r['id']}`. Native footprint: {r['dimensions_m']} metres.\nAssembly SHA-256: `{r['assembly']['sha256']}`.\nSource base: `{source_revision}`; exact builder hashes in batch manifest.\n\nOffline native geometry passed; this is not runtime acceptance. All runtime\nchecks below remain NOT TESTED. No current picker, seed or catalogue ID is\noverwritten. Integrate with shared terrain/access/recovery/capture and test on\na disposable vacant Currie layout before classroom activation. Street preview\nassemblies must not be bent/repeated; courts must retain their full run-off.\n\n"
     (root/'runtime-review-pending.md').write_text(intro+template,encoding='utf-8')

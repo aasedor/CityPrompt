@@ -6,6 +6,8 @@ import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelec
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
 import { CATALOGUE_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import starter from '@/data/classroomStarter.json';
+import validation from '@/data/validationCatalogue.json';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
@@ -39,7 +41,31 @@ export function catalogueChoices(domains = CANONICAL_DOMAINS, assets = CATALOGUE
   }
   return choices.sort((a, b) => Number(b.placements.length > 0) - Number(a.placements.length > 0));
 }
-export const CANONICAL_CHOICES = catalogueChoices();
+// Local validation roster: no legacy variants or generic massing fallbacks in discovery.
+export const CANONICAL_CHOICES: CanonicalChoice[] = validation.entries.map(entry => {
+  const domain = entry.domain === 'building' ? 'building' : entry.domain === 'park' ? 'park_plaza' : 'street_pathway';
+  const asset = CATALOGUE_ASSETS.find(a => a.id === entry.placement_id)!;
+  const source = CANONICAL_DOMAINS[domain].find(o => o.id === entry.archetype_id);
+  return { id: `${domain}:${entry.archetype_id}`, domain, placements: [asset], option: {
+    ...source, id: entry.archetype_id, label: asset.label, description: asset.description,
+    photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+    variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }],
+  } };
+});
+/** Exact starter variants only. Parent cards must not quietly expose their other
+ * variants under the classroom promise. The full catalogue remains separate. */
+export function classroomChoices(choices = CANONICAL_CHOICES): CanonicalChoice[] {
+  return starter.entries.flatMap(entry => {
+    const domain = entry.domain === 'street' ? 'street_pathway' : entry.domain === 'park' ? 'park_plaza' : 'building';
+    const choice = choices.find(item => item.domain === domain && item.option.id === entry.archetypeId);
+    const placement = choice?.placements.find(asset => asset.id === entry.placementId && asset.model.variantId === entry.variantId);
+    if (!choice || !placement) return [];
+    const variant = choice.option.variants?.find(item => item.id === entry.variantId)
+      ?? { id: entry.variantId, label: placement.label, thumbnailUrl: placement.thumbnail };
+    return [{ ...choice, placements: [placement], option: { ...choice.option, variants: [variant] } }];
+  });
+}
+export const CLASSROOM_CHOICES = CANONICAL_CHOICES;
 const normalizeSearch = (v: string) => v.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
 export function choiceMatchesGroup(choice: CanonicalChoice, groupId: string) {
   return !groupId || choice.option.calgaryGuide?.groupId === groupId

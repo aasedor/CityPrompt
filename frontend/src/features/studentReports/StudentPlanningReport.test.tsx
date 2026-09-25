@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/vitest';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { StudentPlanningReport } from './StudentPlanningReport';
+import type { ParkAccessSnapshot } from '@/components/viewer/globe/parkAccessConnections';
 import { safeSourceUrl, studentReportsApi, type StudentReport } from './studentReportsApi';
 
 vi.mock('./studentReportsApi', async (original) => ({
@@ -57,6 +58,17 @@ afterEach(() => {
 });
 
 describe('StudentPlanningReport', () => {
+  it('reads current route evidence only when the student requests the report', async () => {
+    const access: ParkAccessSnapshot = { version: 1, sourceSignature: 'current', settings: { maxGapM: 8, pathWidthM: 2.2,
+      obstacleClearanceM: 0.25, maxConnections: 2, gridStepM: 2 }, eligibleStreetZoneIds: [], sources: [], parks: [] };
+    const getParkAccessSnapshot = vi.fn(() => structuredClone(access));
+    render(<StudentPlanningReport projectId="project-1" getParkAccessSnapshot={getParkAccessSnapshot} />);
+    await screen.findByText(/Your first report will capture/);
+    expect(getParkAccessSnapshot).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Request report' }));
+    await screen.findByText('Check park access');
+    expect(studentReportsApi.create).toHaveBeenCalledWith('project-1', undefined, access);
+  });
   it('does not replace project B with a late saved response from project A', async () => {
     const pending = deferred<StudentReport>();
     vi.mocked(studentReportsApi.latest).mockImplementation(async (id) => id === 'project-1' ? report : otherReport);
@@ -196,7 +208,7 @@ describe('StudentPlanningReport', () => {
     expect(studentReportsApi.create).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Request report' }));
     expect(await screen.findByText('Check park access')).toBeInTheDocument();
-    expect(studentReportsApi.create).toHaveBeenCalledWith('project-1', ['building-1', 'park-1']);
+    expect(studentReportsApi.create).toHaveBeenCalledWith('project-1', ['building-1', 'park-1'], undefined);
   });
 
   it('saves a declined recommendation with the student’s own reason and leaves design freedom explicit', async () => {

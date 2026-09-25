@@ -5,7 +5,9 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 
-export const TRIAL_GROUND_MATERIALS = new Set(['grass', 'paving', 'soil', 'cycle']);
+// The coloured preview underlays are rebuilt on prepared terrain. Fine paving
+// units and painted symbols remain in the native GLB above that owned ground.
+export const TRIAL_GROUND_MATERIALS = new Set(['grass', 'paving', 'soil', 'cycle', 'asphalt']);
 export type PublicRealmTrialAsset = typeof assets[number];
 export function publicRealmTrialAsset(zone: SiteZone): PublicRealmTrialAsset | null {
   if (!import.meta.env.DEV) return null;
@@ -40,6 +42,7 @@ export function publicRealmTrialPlacement(zone: SiteZone, zones: SiteZone[], fal
 
 /** Same last-region-wins ownership as the reviewed authoring recipe. */
 export function publicRealmTrialGroundCells(asset: PublicRealmTrialAsset) {
+  if ('preserveNativeGround' in asset && asset.preserveNativeGround) return [];
   const [w, d] = asset.dimensions;
   const xs = [...new Set([-w / 2, w / 2, ...asset.surfaceRegions.flatMap(r => [r.x - r.width / 2, r.x + r.width / 2])])].sort((a, b) => a - b);
   const ys = [...new Set([-d / 2, d / 2, ...asset.surfaceRegions.flatMap(r => [r.y - r.depth / 2, r.y + r.depth / 2])])].sort((a, b) => a - b);

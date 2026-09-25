@@ -1,0 +1,231 @@
+{
+  "schema": "cityprompt.ten-street-currie-intersection-trial/v1",
+  "date": "2026-09-23",
+  "project_id": "34972f9d-dd8e-4d63-a590-0ce1b0e8fbf1",
+  "project_url": "http://127.0.0.1:5176/projects/34972f9d-dd8e-4d63-a590-0ce1b0e8fbf1",
+  "reference_boundary_zone_id": "1d421d28-6520-4582-a356-156c3a8c8edb",
+  "trial_boundary_zone_id": "a9f24cbb-ce0f-4068-985d-169b45da05f2",
+  "registry": "frontend/src/components/viewer/globe/publicRealmTrialAssets.json",
+  "source_asset_manifest": "docs/TEN_STREET_ASSET_BATCH_2026-09-22.json",
+  "review_gallery_url": "http://127.0.0.1:5176/__review/ten-street-crossings/index.html",
+  "local_only": true,
+  "published_to_student_picker": false,
+  "crossings": [
+    {
+      "name": "Main Street \u00d7 Cycle Avenue",
+      "center_m": [
+        -58,
+        29
+      ],
+      "overlap_sqm": 552.0,
+      "assets": [
+        {
+          "id": "student_main_street_v1",
+          "zone_id": "de549640-69f9-4d89-828e-f837c387586f",
+          "native_dimensions_m": [
+            23.0,
+            48
+          ],
+          "glb_sha256": "e0e34bfde671aee925a2199d2845cdd3a49e2935cac587f9d7c2b845e36e2177"
+        },
+        {
+          "id": "student_cycle_avenue_v1",
+          "zone_id": "a483db36-016d-4cf4-a13b-358ffc7b8403",
+          "native_dimensions_m": [
+            24.0,
+            48
+          ],
+          "glb_sha256": "673c1618cd6002c7e03523e06faf87b9476d8f5ce3b0c29ba0f237c63e75a2ea"
+        }
+      ],
+      "render_id": "d255a3fc-5f7e-4a22-8098-f354fee2827e",
+      "model": "gpt-image-2.5-flare",
+      "observed_status": "FAIL_INTERSECTION_STITCHING",
+      "observation": "Full street slabs and paint overlap; planting remains in the junction envelope.",
+      "captures": {
+        "source": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\1-source.png",
+          "sha256": "2d625a954ac3881ea9bd8ed08a7757a99e2881baab63c3482b136458a037e8f2"
+        },
+        "render": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\1-render.png",
+          "sha256": "413022f00edaeec6d7fa74ce9b15f74014c78bf419e35e33284fa72f4666cf5f"
+        }
+      }
+    },
+    {
+      "name": "Transit Street \u00d7 Market Street",
+      "center_m": [
+        0,
+        29
+      ],
+      "overlap_sqm": 486.0,
+      "assets": [
+        {
+          "id": "student_transit_street_v1",
+          "zone_id": "e1bba262-39e6-4a4f-89db-db913083f6e0",
+          "native_dimensions_m": [
+            27.0,
+            48
+          ],
+          "glb_sha256": "9f5527e4d54c083b5a640a2ba00bf081a4924d13c9df7500ad58d5166c55971e"
+        },
+        {
+          "id": "student_market_street_v1",
+          "zone_id": "4f5b923d-8545-4c6e-9b31-9c342b052aa8",
+          "native_dimensions_m": [
+            18.0,
+            48
+          ],
+          "glb_sha256": "81f6715283b740536795300e0a7860c9757dcab77b8c4044b1ed3d99b507b88a"
+        }
+      ],
+      "render_id": "ce82ac37-11d6-4397-9f60-a4271680759b",
+      "model": "gpt-image-2.5-flare",
+      "observed_status": "FAIL_INTERSECTION_STITCHING",
+      "observation": "Market paving and furnishings continue through the transit movement area.",
+      "captures": {
+        "source": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\2-source.png",
+          "sha256": "be4fa522f7cf09785e2b53018c6b462cf32921dd1cc403329db8e19369d1bd59"
+        },
+        "render": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\2-render.png",
+          "sha256": "bb2b9f8015d886b989ad2f3949ddd096415ea72ec272b1fd16440afd855fff77"
+        }
+      }
+    },
+    {
+      "name": "School Street \u00d7 Grand Promenade",
+      "center_m": [
+        58,
+        29
+      ],
+      "overlap_sqm": 441.0,
+      "assets": [
+        {
+          "id": "student_school_street_v1",
+          "zone_id": "eeb0f5ae-c951-4023-bd90-267b7dbc381c",
+          "native_dimensions_m": [
+            18.0,
+            48
+          ],
+          "glb_sha256": "9606b8a34562784b1c5aeba0f108445c9e08cb2a83dfeb510fae1135b2ca8f3f"
+        },
+        {
+          "id": "student_grand_promenade_v1",
+          "zone_id": "94ac5ee9-12b5-49dc-8cfd-da76ea12959f",
+          "native_dimensions_m": [
+            24.5,
+            48
+          ],
+          "glb_sha256": "b2a7df47bbc8efbea0e6b5a25b7bdcf124196af44deb992ad0e5fc618d0b9d32"
+        }
+      ],
+      "render_id": "45f34bfa-03a9-4cd5-a30f-c447de6d4ddf",
+      "model": "gpt-image-2.5-flare",
+      "observed_status": "FAIL_INTERSECTION_STITCHING",
+      "observation": "School-route blue paint and the promenade overlap without junction treatment.",
+      "captures": {
+        "source": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\3-source.png",
+          "sha256": "95d4340aab62a5ae3879f5723db502b465091655a857f99599465d655febe87b"
+        },
+        "render": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\3-render.png",
+          "sha256": "a361393a77f610299428acb38973dedb8788a5fd3c1a607e33c6157019560300"
+        }
+      }
+    },
+    {
+      "name": "Planted Lane \u00d7 Heritage Mews",
+      "center_m": [
+        -42,
+        -30
+      ],
+      "overlap_sqm": 120.0,
+      "assets": [
+        {
+          "id": "student_planted_lane_v1",
+          "zone_id": "b9ff19f8-5d41-4018-bdf8-9d1e60053050",
+          "native_dimensions_m": [
+            12.0,
+            40
+          ],
+          "glb_sha256": "4aa6b76af2abee3a0c97e9bea39a2c73c242303a2ec1f210abb41bc3a84b5732"
+        },
+        {
+          "id": "student_heritage_mews_v1",
+          "zone_id": "d5746264-6f16-4cc9-abe2-9d7aee4ace5b",
+          "native_dimensions_m": [
+            10,
+            40
+          ],
+          "glb_sha256": "3c5e8241394b528f9c8af2f10339bed4aaa015aece4717de25949c927df730cd"
+        }
+      ],
+      "render_id": "35fb20da-f90b-434f-9646-248bde5b169a",
+      "model": "gpt-image-2.5-flare",
+      "observed_status": "FAIL_INTERSECTION_STITCHING",
+      "observation": "Paving types meet, but planting and furniture are not reorganized as a junction.",
+      "captures": {
+        "source": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\4-source.png",
+          "sha256": "2274879aacfd152d8c444a95b7a844612a5a2cd55e3335b2f50eb0a54b1538c9"
+        },
+        "render": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\4-render.png",
+          "sha256": "6da321d7f0c91e35eaad47abc3f39cf6eeb544fbcd1bc3d4d84e1ea0a8c7d77b"
+        }
+      }
+    },
+    {
+      "name": "Boardwalk \u00d7 Green Alley",
+      "center_m": [
+        42,
+        -30
+      ],
+      "overlap_sqm": 132.0,
+      "assets": [
+        {
+          "id": "student_boardwalk_v1",
+          "zone_id": "79773321-ab02-4ca6-97b4-ae72f62fef5a",
+          "native_dimensions_m": [
+            12.0,
+            48
+          ],
+          "glb_sha256": "bcaf43f61fbb5b645fbc27b1906d973224894c2a6b050b062c2e901956a306b9"
+        },
+        {
+          "id": "student_green_alley_v1",
+          "zone_id": "1972c7ae-8d37-4f1d-9e71-19dea287447c",
+          "native_dimensions_m": [
+            11,
+            40
+          ],
+          "glb_sha256": "6d9514b1e9ab469ee38f3fa7115c00c6513e9fcb6abf199159108f24599963c5"
+        }
+      ],
+      "render_id": "35c0521c-4131-4556-9123-2734b9cb22f5",
+      "model": "gpt-image-2.5-flare",
+      "observed_status": "FAIL_INTERSECTION_STITCHING",
+      "observation": "Timber boardwalk, railing and alley paving overlap with no accessible tie-in.",
+      "captures": {
+        "source": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\5-source.png",
+          "sha256": "b1282aeb2a573c284a49838c0a25704d1e6e90fe1bd697536b9bfd0fbb41847a"
+        },
+        "render": {
+          "external_path": "C:\\dev-artifacts\\CityPrompt\\streets-ten-currie-2026-09-23\\5-render.png",
+          "sha256": "116930b63f3a8bdf781537da5fac5c8dccdbf2604948aa6810081751c172412e"
+        }
+      }
+    }
+  ],
+  "native_street_count": 10,
+  "saved_render_count": 5,
+  "initial_credits": 458,
+  "final_credits": 328,
+  "credits_spent": 130,
+  "verdict": "Full fixed-native street sections overlap; no proper intersection geometry or clearance is synthesized. AI images reimagine junctions and cannot validate them."
+}

@@ -64,6 +64,27 @@ export function extractZoneCenterline(
     ?? extractCenterline(zone.coordinates);
 }
 
+/** Topology sees a straight route as one segment even when an editor or
+ * public-road extension stores an extra station exactly on the junction.
+ * Keep real bends for rendering and for junction-angle rejection. */
+export function collapseStraightStreetStations(points: number[][]): number[][] {
+  if (points.length < 3) return points;
+  const mLon = 111320 * Math.cos(points[0][1] * Math.PI / 180);
+  const result = [points[0]];
+  for (let index = 1; index < points.length - 1; index += 1) {
+    const previous = result[result.length - 1];
+    const current = points[index];
+    const next = points[index + 1];
+    const ax = (current[0] - previous[0]) * mLon, ay = (current[1] - previous[1]) * 111320;
+    const bx = (next[0] - current[0]) * mLon, by = (next[1] - current[1]) * 111320;
+    const lengths = Math.hypot(ax, ay) * Math.hypot(bx, by);
+    if (lengths > 0 && (ax * bx + ay * by) / lengths > Math.cos(Math.PI / 180)) continue;
+    result.push(current);
+  }
+  result.push(points[points.length - 1]);
+  return result;
+}
+
 /** Centerline used by the compiled 3D street renderer.
  *
  * A clipped connector polygon is no longer the reversible output of the

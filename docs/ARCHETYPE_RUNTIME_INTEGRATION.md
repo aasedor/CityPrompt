@@ -1,6 +1,6 @@
 # Runtime integration for every archetype
 
-Version: 2026-09-20. Applies to every new or materially revised building,
+Version: 2026-09-24. Applies to every new or materially revised building,
 street/path, and park/open-space variant intended for the student catalogue.
 Read this before authoring the asset, not only when installing its picker card.
 
@@ -52,6 +52,10 @@ unusable advertised controls and misleading captures remain blockers. See
    vacant-site project. Use the protected vacant Currie layout as a reference;
    use copies for edits. Choose another genuinely vacant, appropriately sized
    site if the archetype cannot fit Currie. Preserve occupied-land exclusion.
+   For a Model Library GLB, run `python scripts/check_model_library_storage.py`
+   with the same database and S3 environment as the backend before browser
+   review. A database model URL alone does not prove the configured bucket has
+   the asset; resolve missing objects in that environment and rerun the check.
 5. Record PASS, FAIL, NOT TESTED, or N/A for every applicable check. PASS requires
    evidence; N/A requires a reason tied to the advertised capability. A missing
    advertised feature is a failure or untested item, never N/A.
@@ -65,6 +69,18 @@ does **not** yet enforce this whole checklist. Its success does not establish
 these checks passed. The review template is evidence, not a runtime schema.
 
 ## Shared requirements
+
+### Reproducible asset delivery
+
+Ship the runtime binding as well as the asset file. A Model Library GLB needs
+its exact variant/family metadata, native dimensions, storage key and byte hash
+reproducible on an empty database and private bucket. Verify that seeding refuses
+different existing rows/bytes; a developer's already-populated database is not
+deployment proof. The finite classroom example is
+`seed/classroom-release/model-bindings.json` with
+`scripts/classroom_model_library.py`. Procedural parks/streets need the equivalent
+recipe/module closure in the static runtime inventory. Keep asset approval,
+runtime acceptance and publication status separate from successful installation.
 
 ### Site landscape compatibility
 
@@ -168,6 +184,20 @@ Treat a hard rejection against an invisible plot envelope as a classroom defect
 when the visible geometry appears clear; do not blame the student or weaken the
 authoritative envelope to make the test pass.
 
+Parks use the same bounded translation recovery as buildings, with native court
+dimensions and rotation preserved. Hardscape streets and existing entrance paths
+are obstacles for parks in preview, drag and save; only street-to-street authoring
+may deliberately overlap road envelopes to form a junction. Test a sports plot
+near a curved road, not only beside another rectangular plot.
+
+After changing a connected street's bend, body position or section, recheck the
+renderable junction patches, not just polygon contact. Live route edits clamp to
+the nearest connected position along the gesture; neighbouring routes stay put.
+Section replacements that cannot retain a working junction need recovery guidance.
+Keep existing angular, sidewalk and approach-length checks unchanged. The September
+24 Currie rehearsal caught a T that disappeared after an apparently harmless bend
+edit; its exact route is retained in `currieRehearsalStreetEdit.json`.
+
 Paid image generation needs a server-calculated preflight before the call. Show
 the selected engine, exact credits to reserve, remaining balance and number of
 calls beside the action. If the balance cannot fund the request, disable it with
@@ -208,6 +238,18 @@ exact 3D image, then judge the actual composition at both context and close
 views. The [irregular mixed-scene prototype](CURRIE_MIXED_PROTOTYPE_2026-09-20.md)
 records one finite example; its clay model and sparse pad do not transfer
 visual approval to new variants.
+
+Park approaches must clear neighbouring park plots as well as building plots,
+fixed equipment, street bands and the site boundary. Preserve the bounded
+automatic connection distance; arrange facing entrances and circulation through
+ordinary editing rather than increasing tolerances to obtain a connected label.
+Reports accept the same optional `ParkAccessSnapshot` used by scene/capture and
+landscape exclusions. Bind it to the complete saved zone inventory and revisions;
+reject stale evidence. Label a current connection as client-derived, never an
+accessibility certification. Absent evidence retains the polygon-distance
+uncertainty. Printed reports show the retained route geometry. Derived evidence
+must not make a newly created report immediately stale when its saved geometry
+is unchanged.
 
 Plain prepared boundaries use a shared grass finish by default; this represents
 proposed ground cover, not the original Google texture. Authored park and
@@ -341,6 +383,23 @@ Do not assume every section has a raised sidewalk. Flush shared streets and
 paths must use their actual section semantics. A mapped public route is context,
 not proof of precise curb height or safe pedestrian access.
 
+For fixed native street models, also cross two different variants in one
+prepared-site scene. A full-length surface, marking, tree well or furniture
+module must not continue through the junction simply because each individual
+section passed inspection. Review the exact 3D capture before any AI finish:
+image models can invent a clean connection even when the saved street geometry
+only overlaps. The [ten-street Currie crossing trial](TEN_STREET_CURRIE_INTERSECTION_TRIAL_2026-09-23.md)
+records five concrete examples and their source/render comparisons.
+The subsequent [native junction pilot](NATIVE_STREET_JUNCTION_RUNTIME_2026-09-23.md)
+uses the shared graph to cut both fixed sections and create one crossing owner.
+For every new fixed native street, register its metric width/length axes,
+ordered surface regions and a junction finish (`pavers`, `brick`, `cobble` or
+`timber`). The hydration check must reject unknown finishes; the crossing
+regression must include the new variant automatically. Prove the node in the
+exact 3D capture after moving/rotating/reloading. This local four-arm pilot is
+not evidence for T/skew, bent streets, unequal grades, native/procedural mixes
+or public-road endpoints; test those separately when advertised.
+
 ## Parks and open spaces
 
 | ID | Required integration |
@@ -472,6 +531,23 @@ support. Bound instance counts and texture size per exact variant. The
 opt-in geometry, prepared-ground behavior and limits; it is not approval for
 other variants.
 
+Every tree on a sidewalk, plaza or other hardscape must have a visible soil
+opening: a planted bed, open planted well, or metal grate with a trunk opening.
+Never place a bare trunk through continuous paving. Apply this to building
+forecourts, streets, parks and site landscaping, including future archetypes.
+Pair wells with the final tree placements rather than separate furniture
+sampling; keep well dimensions independent of canopy scale and align rectangular
+wells with paving or the street. Existing soft beds need no duplicate well.
+Reserve the full well and guard envelope outside clear walking/cycling routes,
+doors, court run-offs and plot edges. Cut authored paving and joint lines around
+the opening; rebuild the same soil region when runtime replaces preview slabs.
+Review the trunk collar, ground contact, surface ownership and clear route at
+close range. Inspect grade changes explicitly; centre-height matching alone
+does not prove a flat well fits sloping paving. Use the shared metric geometry
+in `treeWellGeometry.ts` / `GlobeTreeWells.tsx` and the offline builder's
+`prepare_tree_wells()` instead of inventing another solid tree-grate slab.
+See [tree-well implementation and bounded evidence](TREE_WELLS_PUBLIC_REALM_2026-09-23.md).
+
 For replacement furniture, prove that the complete new mesh stays inside the
 existing placement envelope, with feet at the shared metric datum. Use batched
 geometry and retain the same yaw, scale and support offsets. An exact variant's
@@ -504,12 +580,58 @@ corridors against the reimported GLB's surface material and obstruction height;
 put sports entries beside, not behind, goals. Full view framing must account
 for render aspect ratio. See [sports/garden assets](SPORTS_GARDEN_ASSET_BATCH_2026-09-22.md).
 
+For sports courts, record the exact playing rectangle separately from its full
+run-off/equipment reserve and whole-park footprint, with governing-body sources
+and explicit recreational adaptations. Measure native nets/rims on the delivered
+mesh; keep tree crowns outside the complete sports reserve. Check open gates at
+their actual clear width, including padel side openings and low boules edging.
+Verify playing surfaces do not coincide with underlay or surrounding granular
+finish top faces: this can render black or flicker despite valid dimensions.
+Native images and material-aware rays
+complement one another. The [ten-court batch](SPORTS_COURT_BATCH_TEN_2026-09-23.md)
+records these offline checks; its browser testing was expressly deferred.
+
+For catalogue-image fidelity, inspect and lock the actual authoritative images
+before assigning amenities. Record observed features separately from borrowed
+or inferred details; a related-sport adaptation is not an exact-image match.
+Vary the surrounding seating, shelter and equipment by archetype instead of
+attaching one identical furniture arrangement to every court. Export new
+amenities at their native origin, verify their delivered module bounds and
+paved contacts, and keep the full court reserve and tree-root openings clear.
+Archive the images with hashes and compare native before/after views. The
+[sports reference details](SPORTS_REFERENCE_DETAILS_2026-09-23.md) preserve
+this mapping and the reusable amenity kit.
+
 For straight street assets, check the full walking width and seating-bay links,
 not just the corridor centreline. Ground ownership regions must meet without
 thin lawn gaps. Orient cycle stencils along travel and verify both directions
 against the intended local traffic convention. These offline checks complement,
 but cannot replace, bent-route and real-road connection trials. See
 [planted street assets](PLANTED_STREET_ASSET_BATCH_2026-09-22.md).
+
+For reference-informed street batches, retain the observed-versus-adapted image
+notes alongside explicit metric cross-section bands. Keep brick, cobble and
+deck pattern phase in world metres when partitioning paving around tree wells
+or planting; do not paint joints across a root opening. Audit full-width route
+endpoints separately from midblock links, and reimport native amenity modules
+to check their real envelopes and ground contacts. A flush transit-stop concept
+must not be presented as a resolved raised boarding island. The
+[ten-street batch](TEN_STREET_ASSET_BATCH_2026-09-22.md) preserves these recipes,
+source-image locks and reusable street details for future archetypes.
+
+New street families should use the shared tangent-arc centreline and retain
+editable route controls separately from sampled surface stations. The
+[curved-street checkpoint](STREET_CURVE_GEOMETRY_2026-09-23.md) records the
+source guidance, visual pilot and remaining Currie acceptance gate.
+
+Native street deliveries must also enter the backend catalogue and emit a
+production-valid saved recipe with profile/revision/module locks. A DEV pilot
+marker is not runtime integration. Verify unchanged Apply in the street editor:
+the exact variant and metric width must survive. Exercise angled T/X joins,
+short terminal arms and sampled curves; endpoint clearance depends on both
+street widths. Never draw standalone legacy crossing overlays when a section
+junction's owned surface is unresolved. Keep unsupported joins visible as open
+limitations. See [starter integration](CLASSROOM_STARTER_RUNTIME_2026-09-23.md).
 
 Keep sky colour separate from missing terrestrial context. A grass fallback
 must be non-pickable ground/context geometry, never the global scene background
@@ -518,3 +640,43 @@ an oblique editor capture. Preserve original generation inputs when recapturing
 after a visual fix. Native-size DEV asset trials on prepared ground do not prove
 student authoring or street connectivity; see the
 [Currie close-up review](CURRIE_PUBLIC_REALM_CLOSEUPS_2026-09-22.md).
+
+Run connected-edit checks against a whole site, including buildings and the
+boundary, as well as isolated road fixtures. Only road zones may enter the street
+graph. Match the renderer's actual junction surface eligibility at preview and
+save; polygon overlap alone does not establish a usable junction.
+Capture admission must use the same finite native street capability catalogue
+as runtime junctions, with canonical recipe identity and module locks intact.
+An old capture-only family allowlist can reject a valid visible junction. Add a
+mixed-family capture-manifest regression for each newly supported street family,
+and verify the complete scene's capture admission before any paid render.
+
+Public-road ground measurements must survive asynchronous tile refinement. A
+failed measurement can retry twice after different visible geometry settles;
+unchanged or missing coverage must not trigger an unbounded loop. Keep the exact
+export gate closed until all three station samples are available. A settled UI
+loading indicator is not proof that this independent measurement has completed.
+
+
+## Bounded acceptance and private evidence
+
+The [nine starter reviews](CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md) show how to
+accept a defined prepared-site classroom workflow while retaining untested
+natural terrain, forced races and detailed engineering as explicit follow-ups.
+State the accepted scope beside every runtime pass; do not turn unrun template
+rows into universal passes. Runtime, keeper, faithful AI and hosted/novice gates
+remain separate. Reuse unchanged exact-variant evidence rather than repeating
+paid calls or broad tests.
+
+Retain the exact source, provider original and automatic/human fidelity result
+together. Texture can trigger structural metrics; locate the flagged component
+in a same-camera comparison before diagnosing it. Never loosen a threshold merely
+to pass. A video similarity score is advisory, not a fine-geometry certificate.
+Verify actual native download completion and open/play the saved bytes. Browser
+download windows may change the automation target; a lost target is not itself
+an application crash.
+
+Keep raw attempt inputs and video control guides requester-private even when the
+saved output is shared. Test revocation against GET, HEAD, Range and old tickets;
+refresh current project authorization on each read. A healthy process or mocked
+unit test alone does not establish Linux prefork crash/timeout recovery.

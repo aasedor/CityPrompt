@@ -1,10 +1,20 @@
 import { useState } from 'react';
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { CANONICAL_CHOICES } from './canonicalCatalogue';
-import { canonicalStreetAsset, streetDesignUpdate } from './canonicalStreetPlacement';
+import { CANONICAL_CHOICES, type CanonicalSelection } from './canonicalCatalogue';
+import { streetDesignUpdate } from './canonicalStreetPlacement';
+import type { StreetAsset } from './assetRegistry';
 
-const choices = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway');
-const defaults = choices.map(choice => canonicalStreetAsset({ choice, variant: choice.option.variants?.[0] }));
+// Fixed street fixtures remain placeable, but cannot supply a route cross-section.
+const choices = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway').map(choice => {
+  const placements = choice.placements.filter((asset): asset is StreetAsset => asset.kind === 'street');
+  return { ...choice, placements, option: { ...choice.option,
+    variants: choice.option.variants?.filter(v => placements.some(a => a.model.variantId === v.id)),
+  } };
+}).filter(choice => choice.placements.length > 0 && choice.option.variants?.length);
+const selectedAsset = ({ choice, variant }: CanonicalSelection) => choice.placements
+  .find((asset): asset is StreetAsset => asset.kind === 'street' && asset.model.variantId === variant?.id);
+const defaults = choices.map(choice => selectedAsset({ choice, variant: choice.option.variants?.[0] }))
+  .filter((asset): asset is StreetAsset => asset !== undefined);
 const widths = [...new Set(defaults.map(a => a.sectionWidth))].sort((a, b) => a - b);
 const field = 'mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-sm';
 
@@ -17,7 +27,8 @@ export function StreetDesignControls({ zone, disabled, onSave }: {
   const [query, setQuery] = useState('');
   const choice = choices.find(c => c.option.id === parent);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
-  const asset = choice ? canonicalStreetAsset({ choice, variant }) : undefined;
+  const selected = choice ? selectedAsset({ choice, variant }) : undefined;
+  const asset = selected?.kind === 'street' ? selected : undefined;
   const choose = (id: string) => { const next = choices.find(c => c.option.id === id)!; setParent(id); setVariantId(next.option.variants?.[0]?.id ?? ''); };
   return <form className="my-3 space-y-2" onSubmit={event => { event.preventDefault(); if (asset) onSave(streetDesignUpdate(zone, asset)); }}>
     <label className="block text-xs font-semibold">Find street type<input type="search" className={field} value={query} onChange={e => setQuery(e.target.value)} /></label>

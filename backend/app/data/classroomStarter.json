@@ -1,0 +1,19 @@
+{
+  "schema": "cityprompt.classroom-starter@1",
+  "entries": [
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "neighborhood_main_street",
+      "variantId": "student_main_street_v1",
+      "revision": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "pedestrian_only_street",
+      "variantId": "student_market_street_v1",
+      "revision": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345"
+    }
+  ]
+}

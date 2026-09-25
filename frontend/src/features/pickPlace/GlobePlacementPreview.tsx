@@ -17,7 +17,7 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundProvider';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
-import { placementProblem, rectangleAt, rectangleDimensions } from './geometry';
+import { rectangleAt, rectangleDimensions } from './geometry';
 import { snapPlacement } from './snapPlacement';
 import { streetFacingDegrees } from './streetFacing';
 
@@ -37,6 +37,11 @@ function Home({url}: {url: string}) {
   const extension=useMemo(()=>createKtx2LoaderExtension(gl),[gl]);
   const {scene}=useGLTF(resolveApiFileUrl(url),true,true,extension);
   const clone=useMemo(()=>centreNativeClayClone(scene.clone(true)),[scene]);
+  return <group rotation={[Math.PI/2,0,0]} dispose={null}><primitive object={clone}/></group>;
+}
+function ReviewFixture({url}: {url: string}) {
+  const {scene}=useGLTF(url);
+  const clone=useMemo(()=>scene.clone(true),[scene]);
   return <group rotation={[Math.PI/2,0,0]} dispose={null}><primitive object={clone}/></group>;
 }
 const ORIGIN = {lng:-114.04677,lat:51.04542};
@@ -81,9 +86,9 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
     properties:placementProperties(asset)} as SiteZone),[asset,draft.width,draft.depth]);
   const degrees = surface && draft.faceStreet ? streetFacingDegrees([surface.lng,surface.lat], zones, draft.degrees) : draft.degrees;
   const proposed = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,degrees) : null;
-  const snapped = proposed ? asset.zoneType === 'building'
+  const snapped = proposed
     ? snapPlacement(proposed,zones,getActiveSiteBoundary(zones),undefined,previewZone.properties)
-    : {coordinates:proposed,problem:placementProblem(proposed,zones,getActiveSiteBoundary(zones))} : null;
+    : null;
   const footprint = snapped?.coordinates;
   const invalid = snapped ? snapped.problem : 'Move over the site and wait for the ground to load.';
   // Report only status transitions, not every pointer coordinate, to the planner.
@@ -102,6 +107,8 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
         {asset.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
           position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}>
           <Home url={instance.model_url}/></group>) : fallback
+          : typeof asset.properties.validation_native_url === 'string'
+            ? <ReviewFixture url={asset.properties.validation_native_url}/>
           : isParkTrio(previewZone)
             ? <GlobeParkTrioPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>
             : asset.id === 'neighbourhood_park'

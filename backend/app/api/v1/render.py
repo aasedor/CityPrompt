@@ -895,7 +895,9 @@ async def _refund_render(db, user, reservation):
 async def image_models(user: User = Depends(require_auth)):
     from app.services.image_model_availability import get_image_model_availability
 
-    return await get_image_model_availability(get_settings().openai_api_key)
+    settings = get_settings()
+    # Show the configured pause before a student prepares a costly capture.
+    return await get_image_model_availability(settings.openai_api_key if settings.direct_3d_images_enabled else "")
 
 
 @router.post("/generate", response_model=RenderResponse)
@@ -905,9 +907,18 @@ async def generate_render(
     db: AsyncSession = Depends(get_db),
 ):
     """Reserve budget atomically, release the transaction, then call the provider."""
+    settings = get_settings()
+    # Internal callers (including custom landscape artwork) do not traverse
+    # the API router's classroom dependency. Enforce the paid boundary here too.
+    if getattr(settings, "classroom_release", False):
+        raise HTTPException(403, detail={
+            "code": "outside_classroom_release", "billed": False,
+            "message": "Custom AI ground artwork is outside the classroom starter release. Choose a free 3D landscape preset or use the current-view image tool. No credits were charged.",
+        })
+    if not getattr(settings, "direct_3d_images_enabled", True):
+        raise HTTPException(503, "Image generation is paused. Free 3D landscape presets and exact image downloads remain available.")
     if req.project_id:
         await check_project_permission(req.project_id, user, db, required="editor")
-    settings = get_settings()
     render_model = req.model if req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
     token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
     reservation = await _reserve_render(db, user, req, render_model, token_cost, settings.render_global_daily_token_cap)
@@ -1344,6 +1355,8 @@ async def persist_render_to_gallery(
     source_snapshot: dict | None = None,
     capture_fingerprint: str | None = None,
     output_fingerprint: str | None = None,
+    render_diagnostics: dict | None = None,
+    render_warnings: list[str] | None = None,
 ) -> SavedRenderResponse:
     """Core gallery save: watermark, dedupe, upload, append to project metadata.
 
@@ -1351,7 +1364,7 @@ async def persist_render_to_gallery(
     path (which persists every paid result, including the untouched provider
     image when a safety fallback replaced it).
     """
-    project_result = await db.execute(select(Project).where(Project.id == project_id).with_for_update())
+    project_result = await db.execute(select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True))
     project = project_result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -1417,6 +1430,8 @@ async def persist_render_to_gallery(
                     "variant": variant,
                     "outcome": outcome,
                     "presentation_strategy": presentation_strategy,
+                    "render_diagnostics": render_diagnostics,
+                    "render_warnings": render_warnings,
                     "original_output_sha256": image_hash,
                     "prompt_sha256": hashlib.sha256(req.prompt.encode("utf-8")).hexdigest(),
                     "image_note": "Gallery PNG includes a visible illustrative label; output fingerprint identifies the original pixels.",
@@ -1521,7 +1536,7 @@ async def delete_render(
     """Delete a saved render from the project."""
     await check_project_permission(project_id, user, db, required="editor")
 
-    project = await db.get(Project, project_id)
+    project = await db.get(Project, project_id, with_for_update=True, populate_existing=True)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
 

@@ -121,6 +121,7 @@ async def landscape_options(user: User = Depends(require_auth)):
     return {
         "tokens": _MODEL_TOKEN_COST[SITE_LANDSCAPE_MODEL],
         "model": SITE_LANDSCAPE_MODEL,
+        "custom_enabled": not get_settings().classroom_release and get_settings().direct_3d_images_enabled,
     }
 
 

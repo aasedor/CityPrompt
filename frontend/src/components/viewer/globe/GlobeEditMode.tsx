@@ -17,10 +17,11 @@ import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
-import { snapBuildingMove } from '@/features/pickPlace/snapPlacement';
+import { snapBuildingMove, snapPlacement } from '@/features/pickPlace/snapPlacement';
+import { snapConnectedStreetEdit } from '@/features/pickPlace/streetEditConnections';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
-import { isFixedSectionStreet, reshapeStreetPoint, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
-import { extractCenterline } from '@/utils/roadGeometry';
+import { isFixedSectionStreet, reshapeStreetPoint, streetCoordinateUpdate, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
+import { extractCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { snapStreetEndpoint } from '@/features/pickPlace/streetSnapping';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
@@ -191,13 +192,19 @@ export function GlobeEditMode({
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [liveCoords, setLiveCoords] = useState<number[][] | null>(null);
+  const [liveRouteControls, setLiveRouteControls] = useState<number[][] | null>(null);
   const [pendingCommitCoords, setPendingCommitCoords] = useState<number[][] | null>(null);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
   const [isRotating, setIsRotating] = useState(false);
   const dragRef = useGlobeDragRef();
   const renderedCoords = liveCoords ?? zone.coordinates;
   const routeEditing = isFixedSectionStreet(zone);
-  const handleCoords = routeEditing ? extractCenterline(renderedCoords) : renderedCoords;
+  const savedRouteControls = useMemo(() => parsePersistedCenterline(zone.properties?.plan_route_controls),
+    [zone.properties?.plan_route_controls]);
+  const handleCoords = routeEditing
+    ? liveRouteControls ?? (liveCoords ? extractCenterline(liveCoords)
+      : savedRouteControls ?? extractCenterline(renderedCoords))
+    : renderedCoords;
   const zoneCentroid = useMemo(() => computeCentroid(zone.coordinates), [zone.coordinates]);
 
   // Disable/enable GlobeControls during drag
@@ -343,6 +350,7 @@ export function GlobeEditMode({
     if (isDraggingBody || isRotating || dragIndex !== null || !pendingCommitCoords) return;
     if (coordsMatch(zone.coordinates, pendingCommitCoords)) {
       setLiveCoords(null);
+      setLiveRouteControls(null);
       setPendingCommitCoords(null);
     }
   }, [dragIndex, isDraggingBody, isRotating, pendingCommitCoords, zone.coordinates]);
@@ -372,11 +380,15 @@ export function GlobeEditMode({
       const dlat = currentLatLng[1] - bodyDragStartRef.current[1];
 
       let newCoords = bodyDragCoordsRef.current.map(c => [c[0] + dlng, c[1] + dlat]);
-      if (['building', 'residential'].includes(zone.zone_type)) {
-        const snapped = snapBuildingMove(zone, newCoords, zones, getActiveSiteBoundary(zones));
+      if (['building', 'residential', 'green_space'].includes(zone.zone_type)) {
+        const boundary = getActiveSiteBoundary(zones);
+        const snapped = zone.zone_type === 'green_space'
+          ? snapPlacement(newCoords, zones, boundary, zone.id, zone.properties)
+          : snapBuildingMove(zone, newCoords, zones, boundary);
         if (snapped.problem) return; // Hold the last valid preview until space opens.
         newCoords = snapped.coordinates;
       }
+      if (isFixedSectionStreet(zone)) newCoords = snapConnectedStreetEdit(zone, newCoords, zones);
 
       // Write to drag ref (no React state update — useFrame reads this)
       dragRef.current.zoneId = zone.id;
@@ -641,7 +653,9 @@ export function GlobeEditMode({
     setControlsEnabled(false); // Disable globe orbit during vertex drag
     gl.domElement.style.cursor = 'grabbing';
     setPendingCommitCoords(null);
-    originalCoordsRef.current = renderedCoords.map(c => [...c]);
+    originalCoordsRef.current = routeEditing && savedRouteControls
+      ? bufferLineToPolygon(savedRouteControls, streetSectionWidth(zone))
+      : renderedCoords.map(c => [...c]);
     const ownerWindow = gl.domElement.ownerDocument?.defaultView ?? window;
 
     const handlePointerMove = (pe: PointerEvent) => {
@@ -649,16 +663,18 @@ export function GlobeEditMode({
       if (!lngLat || !originalCoordsRef.current) return;
 
       const asset = assetForZone(zone);
-      let newCoords = isFixedSectionStreet(zone)
+      let newCoords = zone.properties?.validation_fixed_fixture === true ? originalCoordsRef.current
+        : isFixedSectionStreet(zone)
         ? reshapeStreetPoint(originalCoordsRef.current, index, lngLat, streetSectionWidth(zone))
         : asset && asset.reshapeMode !== 'authored_footprint' && zone.zone_type !== 'green_space' && originalCoordsRef.current.length === 4
         ? resizeRectangleCorner(originalCoordsRef.current, index, lngLat, asset)
         : originalCoordsRef.current.map((c, i) => i === index ? [...lngLat] : [...c]);
       if (isFixedSectionStreet(zone) && !pe.altKey) {
         const line = extractCenterline(newCoords);
-        const snapped = snapStreetEndpoint(line, index, zones, zone.id);
+        const snapped = snapStreetEndpoint(line, index, zones, zone.id, streetSectionWidth(zone));
         if (snapped !== line) newCoords = bufferLineToPolygon(snapped, streetSectionWidth(zone));
       }
+      if (isFixedSectionStreet(zone)) newCoords = snapConnectedStreetEdit(zone, newCoords, zones);
 
       // Write to drag ref (no React state update)
       dragRef.current.zoneId = zone.id;
@@ -666,7 +682,11 @@ export function GlobeEditMode({
       dragRef.current.vertexIndex = index;
       dragRef.current.coords = newCoords as [number, number][];
       dragRef.current.version++;
-      setLiveCoords(newCoords);
+      if (routeEditing) {
+        const preview = streetCoordinateUpdate(zone, newCoords);
+        setLiveRouteControls(extractCenterline(newCoords));
+        setLiveCoords(preview.coordinates);
+      } else setLiveCoords(newCoords);
     };
 
     const handlePointerUp = () => {
@@ -676,11 +696,14 @@ export function GlobeEditMode({
 
       // Commit final coordinates to React state
       if (finalCoords) {
-        setPendingCommitCoords(finalCoords);
-        if (onZoneUpdated(zone.id, finalCoords) === false) { setPendingCommitCoords(null); setLiveCoords(null); }
+        setPendingCommitCoords(routeEditing ? streetCoordinateUpdate(zone, finalCoords).coordinates : finalCoords);
+        if (onZoneUpdated(zone.id, finalCoords) === false) {
+          setPendingCommitCoords(null); setLiveCoords(null); setLiveRouteControls(null);
+        }
       } else {
         setPendingCommitCoords(null);
         setLiveCoords(null);
+        setLiveRouteControls(null);
       }
       // Clear drag state
       dragRef.current.zoneId = null;
@@ -703,7 +726,7 @@ export function GlobeEditMode({
     ownerWindow.addEventListener('pointerup', handlePointerUp);
     ownerWindow.addEventListener('pointercancel', handlePointerUp);
     ownerWindow.addEventListener('blur', handlePointerUp);
-  }, [dragRef, gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone, zones]);
+  }, [dragRef, gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, routeEditing, savedRouteControls, setControlsEnabled, zone, zones]);
 
   return (
     <>

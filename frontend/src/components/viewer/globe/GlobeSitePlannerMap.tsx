@@ -37,9 +37,8 @@ import {
   UpdateOnChangePlugin,
   UnloadTilesPlugin,
   TilesFadePlugin,
-  GLTFExtensionsPlugin,
 } from '3d-tiles-renderer/plugins';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { GlobeTileDecoder } from './GlobeTileDecoder';
 import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { Environment, Html } from '@react-three/drei';
 import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
@@ -51,6 +50,7 @@ import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLay
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
+import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
@@ -92,6 +92,7 @@ import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
 import { SceneSettledMonitor } from './useSceneSettled';
+import { isPlausibleTerrainAnchor } from './globeTerrainUtils';
 import {
   holdTileQueueUpdates,
   type SceneTileRenderer,
@@ -1564,8 +1565,8 @@ export function GlobeSitePlannerMap({
   onCancelPlacement,
   referenceLayers = [],
   transportContext = EMPTY_TRANSPORT,
-  latitude: _latitude = 51.045,
-  longitude: _longitude = -114.07,
+  latitude,
+  longitude,
   preferredView,
   siteZones,
   allSiteZones = siteZones,
@@ -1584,6 +1585,8 @@ export function GlobeSitePlannerMap({
   onGlobeReady,
   onModeledBuildingsChange,
 }: GlobeSitePlannerMapProps) {
+  const _latitude = latitude ?? 51.045;
+  const _longitude = longitude ?? -114.07;
   const interactionPaused = externalInteractionPaused || Boolean(entrancePick);
   const [entrancePickError, setEntrancePickError] = useState('');
   const entrancePointerHitRef = useRef<{buildingId:string;hit?:NativeEntranceHit}|null>(null);
@@ -1956,6 +1959,7 @@ export function GlobeSitePlannerMap({
   const usePassiveGlobeHeightCorrection = shouldUsePassiveGlobeHeightCorrection({
     hasProjectFrameTargets: Boolean(projectZoneFocus),
     hasPreferredCameraPose: Boolean(preferredView),
+    hasProjectLocation: Number.isFinite(latitude) && Number.isFinite(longitude),
   });
   const projectZoneFocusKey = projectZoneFocus
     ? `${projectZoneFocus.lat.toFixed(7)}:${projectZoneFocus.lng.toFixed(7)}:${Math.round(projectZoneFocus.maxDistMeters)}`
@@ -2078,11 +2082,16 @@ export function GlobeSitePlannerMap({
     const tilesGroup = tilesRendererRef.current?.group;
     if (tilesGroup && tilesGroup.children.length > 0) {
       const hits = raycaster.intersectObjects(tilesGroup.children, true);
-      if (hits.length > 0) {
-        const cartographic = pointToCartographic(hits[0].point, terrainEllipsoidRef.current);
+      // Unrefined root tiles can sit kilometres below the real site. They
+      // must not move the Top View pivot or become a student's drawn vertex.
+      const hit = hits.find(({ point }) => isPlausibleTerrainAnchor(
+        WGS84_ELLIPSOID.getPositionElevation(point), terrainElevationRef.current,
+      ));
+      if (hit) {
+        const cartographic = pointToCartographic(hit.point, terrainEllipsoidRef.current);
         return {
           lngLat: [cartographic.lon * RAD_TO_DEG, cartographic.lat * RAD_TO_DEG],
-          height: WGS84_ELLIPSOID.getPositionElevation(hits[0].point),
+          height: WGS84_ELLIPSOID.getPositionElevation(hit.point),
         };
       }
     }
@@ -3385,12 +3394,18 @@ export function GlobeSitePlannerMap({
     let finalCoords: number[][];
     if (linear) {
       const procedural = activeSitePlannerTool === 'road' && !zoneProperties.pick_place_street_section;
-      const smoothed = zoneProperties.pick_place_street_section
-        ? snapStreetEnds(pts, siteZones)
-        : smoothPolyline(procedural ? snapRoadEndpoints(pts, siteZones, zoneProperties.road_level) : pts);
       const width = (zoneProperties.width as number) || 10;
+      const authored = zoneProperties.pick_place_street_section
+        ? snapStreetEnds(pts, siteZones, undefined, width)
+        : procedural ? snapRoadEndpoints(pts, siteZones, zoneProperties.road_level) : pts;
+      const smoothed = activeSitePlannerTool === 'road'
+        ? roundAuthoredStreetRoute(authored, width, zoneProperties)
+        : smoothPolyline(authored);
       finalCoords = sanitizeCoords(bufferLineToPolygon(smoothed, width));
-      if (zoneProperties.pick_place_street_section || procedural) zoneProperties.plan_centerline = smoothed;
+      if (zoneProperties.pick_place_street_section || procedural) {
+        zoneProperties.plan_centerline = smoothed;
+        if (zoneProperties.pick_place_street_section) zoneProperties.plan_route_controls = authored;
+      }
       if (procedural) zoneProperties.procedural_road = 1;
     } else {
       finalCoords = [...pts];
@@ -4166,7 +4181,7 @@ export function GlobeSitePlannerMap({
               the holes) until a full reload. Refreshes the session on 4xx. */}
           <TilesPlugin plugin={GoogleCloudAuthPlugin} args={{ apiToken: API_KEY, useRecommendedSettings: true, autoRefreshToken: true } as any} />
           <TilesPlugin plugin={TileCompressionPlugin} />
-          <TilesPlugin plugin={GLTFExtensionsPlugin} args={{ dracoLoader: new DRACOLoader().setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/') } as any} />
+          <GlobeTileDecoder />
           <TilesPlugin plugin={UpdateOnChangePlugin} />
           <TilesPlugin ref={handleUnloadTilesPluginRef} plugin={UnloadTilesPlugin} />
           <TilesPlugin ref={handleTilesFadePluginRef} plugin={TilesFadePlugin} />
@@ -4176,7 +4191,9 @@ export function GlobeSitePlannerMap({
             // The close project/preferred camera already owns a geodetic
             // height. Passive scene collision sees late Google tile meshes as
             // new ground and can lift that camera kilometres after framing.
-            // Keep passive correction only for the unframed empty-city entry;
+            // A geocoded empty project also owns its camera before the first
+            // boundary is drawn. Keep passive correction only for the
+            // unlocated empty-city entry;
             // pointer/zoom raycasts remain enabled for normal navigation.
             adjustHeight={usePassiveGlobeHeightCorrection}
             maxAltitude={MAX_GLOBE_CAMERA_PITCH_DEGREES * DEG_TO_RAD}

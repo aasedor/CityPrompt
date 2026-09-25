@@ -249,7 +249,8 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).not.toContain('Golden hour');
     expect(prompt).not.toContain('ray-traced');
     expect(prompt).not.toContain('colored polygon');
-    expect(prompt).toContain('openings and roof geometry');
+    expect(prompt).toContain('footprint, height and roof massing');
+    expect(buildDirect3DVisualPrompt('photorealistic', undefined, capture, 'precise')).toContain('openings and roof geometry');
     expect(prompt).not.toContain('floor-to-ceiling');
     expect(prompt).not.toContain('Add realistic public-realm activity');
   });
@@ -304,10 +305,10 @@ describe('Direct 3D presentation adapter', () => {
   });
 
   it('separates aesthetic style from the default fidelity policy', () => {
-    expect(resolveDirect3DFidelityPolicy('survey')).toBe('precise');
-    expect(resolveDirect3DFidelityPolicy('documentary')).toBe('precise');
-    expect(resolveDirect3DFidelityPolicy('photorealistic')).toBe('precise');
-    expect(resolveDirect3DFidelityPolicy('winter')).toBe('precise');
+    expect(resolveDirect3DFidelityPolicy('survey')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('documentary')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('photorealistic')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('winter')).toBe('balanced');
     expect(resolveDirect3DFidelityPolicy('watercolour')).toBe('expressive');
     expect(resolveDirect3DFidelityPolicy('isometric')).toBe('expressive');
     expect(resolveDirect3DFidelityPolicy('site-plan-photo')).toBe('expressive');
@@ -338,7 +339,7 @@ describe('Direct 3D presentation adapter', () => {
       instance_id_image_base64: capture.instanceIdImageBase64,
       instance_id_manifest: capture.instanceIdManifest,
       style: 'photorealistic',
-      fidelity_policy: 'precise',
+      fidelity_policy: 'balanced',
       presentation_mode: 'scene',
       project_id: 'project-1',
       community_3d_claims: community3DClaims,

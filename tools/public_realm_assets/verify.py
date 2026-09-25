@@ -30,6 +30,22 @@ for route in r['clear_routes']:
         for fraction in (-.45,0,.45):
             off=route['width']*fraction
             check(a[0]+dx*t-dy/length*off,a[1]+dy*t+dx/length*off);samples+=1
-result=dict(status='PASS_OFFLINE_GEOMETRY',checks=['self-contained GLB buffers','delivered byte hashes','finite metric bounds',f'{samples} clear material-aware route rays'],runtime_tested=False)
+# Every tree root must resolve to soft ground or its paired physical well.
+# Ray below the low foliage at an offset clear of the authored trunk.
+tree_checks=0
+for tree in r['placements']:
+    if tree['kind'] not in ('shade_tree','grove_tree','ornamental_tree'):continue
+    x,y=tree['x'],tree['y'];surface='grass'
+    for region in r['surface_regions']:
+        if abs(x-region['x'])<=region['width']/2 and abs(y-region['y'])<=region['depth']/2:surface=region['material']
+    assert surface in ('grass','soil'),(tree,'tree without soft root opening')
+    well=next((well for well in r.get('tree_wells',[]) if well['x']==x and well['y']==y),None)
+    if well:
+        hit,p,n,index,obj,matrix=bpy.context.scene.ray_cast(deps,Vector((x+.30,y+.12,.065)),Vector((0,0,-1)))
+        assert hit and -.005<=p.z<=.055,(tree,'missing tree-well surface')
+        mat=obj.data.materials[obj.data.polygons[index].material_index].name.split('.')[0]
+        assert mat in ('soil','kit_linear_vertex_colour'),(tree,'pavement across tree well',mat)
+    tree_checks+=1
+result=dict(status='PASS_OFFLINE_GEOMETRY',checks=['self-contained GLB buffers','delivered byte hashes','finite metric bounds',f'{samples} clear material-aware route rays',f'{tree_checks} tree root openings checked'],runtime_tested=False)
 (root/'geometry-verification.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result))

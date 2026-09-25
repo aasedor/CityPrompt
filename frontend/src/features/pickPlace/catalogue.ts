@@ -28,6 +28,13 @@ export function placeAsset(id: PlaceAssetId): PlaceAsset {
 export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | undefined {
   const properties = zone.properties ?? {};
   const native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset);
+  if (native?.reshapeMode === 'fixed_native' && properties.native_home_plot === true
+    && ['infill_home', 'trial_postwar_bungalow'].includes(native.id)
+    && properties.development_selected_variant_id === native.model.variantId && properties.development_height_override_m == null) {
+    return { ...native, reshapeMode: 'repeat_native', properties: { ...native.properties, native_home_plot: true },
+      ...(native.id === 'infill_home' ? { minDepth: 15 } : {}),
+      reshapeDescription: 'This saved plot repeats complete homes at their native size.' };
+  }
   if (native && properties.development_height_override_m == null && (!properties.development_selected_variant_id || native.model.variantId === properties.development_selected_variant_id)) return native;
   if (native || properties.pick_place_automatic_3d === true || String(properties.pick_place_asset).startsWith('canonical-building:') || String(properties.pick_place_asset).startsWith('canonical-park:')) {
     return canonicalBuildingForProperties(properties) ?? canonicalParkForProperties(properties);
@@ -38,8 +45,10 @@ export function placementProperties(asset: PlaceAsset, elevation?: number): Site
   const entrance = reviewedEntranceForAsset(asset);
   return { ...asset.properties, pick_place_asset: asset.id,
     pick_place_definition_version: asset.definitionVersion,
+    ...(asset.model.revision ? { pick_place_model_revision: asset.model.revision } : {}),
     ...(entrance ? { pedestrian_building_entrance: {
-      version: 1, automatic: true, sourceVariantId: asset.model.variantId, xM: entrance.xM, yM: entrance.yM,
+      version: 1, automatic: true, sourceVariantId: asset.model.variantId,
+      ...(asset.model.revision ? { sourceRevision: asset.model.revision } : {}), xM: entrance.xM, yM: entrance.yM,
       referenceWidthM: entrance.plotWidthM, referenceDepthM: entrance.plotDepthM,
       widthM: entrance.widthM, scaleWithPlot: false, streetId: '', heightAboveBaseM: 0,
       ...(entrance.fixedNative ? { fixedNative: true } : {}),
