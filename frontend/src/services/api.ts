@@ -1703,7 +1703,7 @@ export const videoRenderApi = {
       && request.internal_enhance_quality === 'gpu_detail',
     );
     const { data } = await api.post('/api/v1/video/generate', request, {
-      timeout: isGpuDetail ? 1_500_000 : 720_000,
+      timeout: isGpuDetail ? 1_500_000 : 960_000,
     });
     return data;
   },

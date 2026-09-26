@@ -198,6 +198,14 @@ class Settings(BaseSettings):
     omni_video_model: str = "gemini-omni-1.1-flash"
     omni_video_timeout_seconds: int = 600
     seedance_video_timeout_seconds: int = 900
+    # Structure Lock: Wan 2.2 VACE depth control on fal.
+    vace_depth_endpoint: str = "fal-ai/wan-22-vace-fun-a14b/depth"
+    vace_video_timeout_seconds: int = 900
+    # Grok Video: xAI Imagine video edit / generation.
+    xai_api_key: str = ""
+    grok_video_model: str = "grok-imagine-video-1.5"
+    grok_video_edit_model: str = "grok-imagine-video"
+    grok_video_timeout_seconds: int = 600
     google_maps_api_key: str = ""
     fal_key: str = ""
     fal_style_model: str = "fal-ai/fast-sdxl/image-to-image"

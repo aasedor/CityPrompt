@@ -35,6 +35,14 @@ from app.schemas.direct_3d_render import (
     Direct3DResidualLandscapeClaim,
     Direct3DSemanticClass,
 )
+from app.services.grok_video import (
+    GrokRequestError,
+    build_grok_video_prompt,
+    estimate_grok_video_cost,
+    grok_model_for,
+    grok_runtime_error,
+    request_grok_video_once,
+)
 from app.services.internal_video import (
     INTERNAL_VIDEO_MODEL,
     build_internal_video_contract,
@@ -59,6 +67,12 @@ from app.services.seedance_video import (
     seedance_runtime_error,
 )
 from app.services.scene_revision import compiled_scene_revision_sha256
+from app.services.vace_video import (
+    VaceRequestError,
+    estimate_vace_depth_cost,
+    request_vace_depth_video_once,
+    vace_runtime_error,
+)
 from app.services.video_controls import (
     ControlVideo,
     ControlVideoEncoding,
@@ -66,6 +80,7 @@ from app.services.video_controls import (
     DepthWindow,
     decode_control_video,
     inspect_control_video,
+    normalize_control_video,
 )
 from app.services.video_fidelity import FidelityStatus, score_video_fidelity
 from app.services.video_prompts import (
@@ -75,21 +90,35 @@ from app.services.video_prompts import (
     PromptProfile,
     build_look_sheet,
     build_omni_look_prompt,
+    build_vace_depth_prompt,
+)
+from app.services.video_providers import (
+    VIDEO_PROVIDER_IDS,
+    VIDEO_PROVIDERS,
+    provider_setting_error,
+    video_provider,
 )
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-PILOT_MAX_PROVIDER_CALLS = 49
-SEEDANCE_PILOT_MAX_PROVIDER_CALLS = 4
+# Pilot policy lives in the provider registry; these names remain for callers.
+PILOT_MAX_PROVIDER_CALLS = VIDEO_PROVIDERS["omni"].max_calls
+SEEDANCE_PILOT_MAX_PROVIDER_CALLS = VIDEO_PROVIDERS["seedance_mini"].max_calls
 INTERNAL_ENHANCE_MAX_RUNS: None = None
-VIDEO_CREDIT_COST = 50
-SEEDANCE_VIDEO_CREDIT_COST = 125
+VACE_PILOT_MAX_PROVIDER_CALLS = VIDEO_PROVIDERS["vace_depth"].max_calls
+GROK_PILOT_MAX_PROVIDER_CALLS = VIDEO_PROVIDERS["grok_video"].max_calls
+VIDEO_CREDIT_COST = VIDEO_PROVIDERS["omni"].credit_cost
+SEEDANCE_VIDEO_CREDIT_COST = VIDEO_PROVIDERS["seedance_mini"].credit_cost
+VACE_VIDEO_CREDIT_COST = VIDEO_PROVIDERS["vace_depth"].credit_cost
+GROK_VIDEO_CREDIT_COST = VIDEO_PROVIDERS["grok_video"].credit_cost
 ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
+# Structure Lock works at fal's 720p ceiling; High sources are downsampled.
+VACE_CONTROL_SIZE = (1280, 720)
 
 CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
-VideoProvider = Literal["omni", "seedance_mini", "internal_enhance"]
+VideoProvider = Literal["omni", "seedance_mini", "internal_enhance", "vace_depth", "grok_video"]
 SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
 InternalEnhanceQuality = Literal["fast", "gpu_detail"]
 RenderQuality = Literal["draft", "high"]
@@ -306,6 +335,8 @@ class VideoAttemptResponse(BaseModel):
     geometry_status: FidelityStatus | None = None
     geometry_samples: list[dict[str, float]] = Field(default_factory=list)
     geometry_source: str | None = None
+    grok_reference_mode: str | None = None
+    provider_cost_usd: float | None = None
 
 
 class VideoGenerateResponse(BaseModel):
@@ -350,25 +381,51 @@ def _now() -> str:
 
 def _attempt_provider(attempt: dict) -> VideoProvider:
     provider = attempt.get("provider")
-    if provider in {"omni", "seedance_mini", "internal_enhance"}:
+    if provider in VIDEO_PROVIDERS:
         return provider
     return "omni"
 
 
 def _provider_cap(provider: VideoProvider) -> int | None:
-    if provider == "seedance_mini":
-        return SEEDANCE_PILOT_MAX_PROVIDER_CALLS
-    if provider == "internal_enhance":
-        return INTERNAL_ENHANCE_MAX_RUNS
-    return PILOT_MAX_PROVIDER_CALLS
+    return video_provider(provider).max_calls
 
 
 def _provider_credit_cost(provider: VideoProvider) -> int:
-    if provider == "seedance_mini":
-        return SEEDANCE_VIDEO_CREDIT_COST
-    if provider == "internal_enhance":
-        return 0
-    return VIDEO_CREDIT_COST
+    return video_provider(provider).credit_cost
+
+
+def _estimated_cost_usd(req: VideoPilotRequest, settings) -> float:
+    if req.provider == "seedance_mini":
+        return estimate_seedance_mini_cost(
+            input_video_seconds=req.duration_seconds,
+            output_video_seconds=req.duration_seconds,
+        )
+    if req.provider == "vace_depth":
+        return estimate_vace_depth_cost(output_video_seconds=req.duration_seconds)
+    if req.provider == "grok_video":
+        return estimate_grok_video_cost(
+            model=grok_model_for(
+                req.control_mode,
+                generation_model=settings.grok_video_model,
+                edit_model=settings.grok_video_edit_model,
+            ),
+            output_video_seconds=req.duration_seconds,
+        )
+    if req.provider == "internal_enhance":
+        return 0.0
+    return float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+
+
+def _provider_runtime_error(req: VideoPilotRequest, preview: PreviewVideo | None) -> str | None:
+    if req.provider == "seedance_mini" and preview:
+        return seedance_runtime_error(preview.mime_type)
+    if req.provider == "internal_enhance":
+        return internal_video_runtime_error(require_upscaler=req.internal_enhance_quality == "gpu_detail")
+    if req.provider == "vace_depth":
+        return vace_runtime_error()
+    if req.provider == "grok_video":
+        return grok_runtime_error(req.control_mode, preview.mime_type if preview else None)
+    return None
 
 
 def _count_provider_calls(attempts: list[dict], provider: VideoProvider | None = None) -> int:
@@ -399,21 +456,26 @@ def _provider_model(
     provider: VideoProvider,
     settings,
     internal_quality: InternalEnhanceQuality = "fast",
+    control_mode: str = "preview_video",
 ) -> str:
     if provider == "seedance_mini":
         return SEEDANCE_MINI_ENDPOINT
     if provider == "internal_enhance":
         runtime = internal_video_runtime()
         return runtime.model if internal_quality == "gpu_detail" else INTERNAL_VIDEO_MODEL
+    if provider == "vace_depth":
+        return settings.vace_depth_endpoint
+    if provider == "grok_video":
+        return grok_model_for(
+            control_mode,
+            generation_model=settings.grok_video_model,
+            edit_model=settings.grok_video_edit_model,
+        )
     return settings.omni_video_model
 
 
 def _provider_label(provider: VideoProvider) -> str:
-    if provider == "seedance_mini":
-        return "Seedance Mini"
-    if provider == "internal_enhance":
-        return "Internal Enhance"
-    return "Omni"
+    return video_provider(provider).label
 
 
 async def _project_internal_resources(db: AsyncSession, project_id: uuid.UUID) -> dict:
@@ -677,6 +739,12 @@ def _decode_geometry_checkpoints(req: VideoPilotRequest) -> list[dict[str, Any]]
     return decoded
 
 
+def _require_provider_setting(provider: VideoProvider, settings) -> None:
+    required_setting = video_provider(provider).required_setting
+    if required_setting and not getattr(settings, required_setting, ""):
+        raise HTTPException(status_code=503, detail=provider_setting_error(provider))
+
+
 def _decode_control_videos(req: VideoPilotRequest, preview: PreviewVideo | None) -> list[ControlVideo]:
     """Validate the geometry tracks against the preview they were rendered with."""
     if not req.control_videos:
@@ -723,7 +791,7 @@ INTERNAL_ENHANCE_DEFAULT_BRIEF = (
 
 def _effective_prompt_profile(req: VideoPilotRequest) -> PromptProfile:
     """Seedance and the local cleanup still read the legacy prose; look-sheet engines never do."""
-    if req.provider in {"seedance_mini", "internal_enhance"}:
+    if video_provider(req.provider).prompt_policy != "look_sheet":
         return "legacy"
     return req.prompt_profile
 
@@ -753,6 +821,10 @@ def _build_provider_prompt(req: VideoPilotRequest, *, keyframe_count: int) -> tu
         add_vehicles=req.add_vehicles,
         student_note=req.student_note,
     )
+    if req.provider == "vace_depth":
+        return build_vace_depth_prompt(sheet)
+    if req.provider == "grok_video":
+        return build_grok_video_prompt(camera_motion=req.camera_motion, control_mode=req.control_mode, sheet=sheet), None
     return build_omni_look_prompt(sheet), None
 
 
@@ -779,7 +851,7 @@ def _preflight_values(req: VideoPilotRequest):
         if req.control_mode == "preview_video":
             if preview is None:
                 raise ValueError("Preview-video mode requires the deterministic route preview.")
-            if req.provider in {"omni", "internal_enhance"} and keyframes:
+            if req.provider in {"omni", "internal_enhance", "vace_depth", "grok_video"} and keyframes:
                 raise ValueError("This preview-video mode sends the route video without route keyframe references.")
             if req.provider == "seedance_mini":
                 expected_keyframes = 3 if req.seedance_reference_mode == "preview_plus_keyframes" else 0
@@ -792,6 +864,15 @@ def _preflight_values(req: VideoPilotRequest):
             raise ValueError("The bounded Seedance pilot requires preview-video mode.")
         if req.provider == "internal_enhance" and req.control_mode != "preview_video":
             raise ValueError("Internal Enhance requires the deterministic preview-video mode.")
+        spec = video_provider(req.provider)
+        if req.control_mode not in spec.control_modes:
+            raise ValueError(f"{spec.label} requires the deterministic preview-video mode.")
+        missing_roles = sorted(spec.required_control_videos - {control.role for control in control_videos})
+        if missing_roles:
+            raise ValueError(
+                f"{spec.label} needs the {', '.join(missing_roles)} control track. "
+                "Prepare the preview in a browser with WebCodecs (Chrome or Edge), then check again."
+            )
         prompt, negative_prompt = _build_provider_prompt(req, keyframe_count=len(keyframes))
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -809,19 +890,11 @@ async def preflight_video(
     """Validate the complete request without calling a provider or consuming a pilot slot."""
     await check_project_permission(req.project_id, user, db, required="editor")
     settings = get_settings()
-    if req.provider == "omni" and not settings.gemini_api_key:
-        raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
-    if req.provider == "seedance_mini" and not settings.fal_key:
-        raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
+    _require_provider_setting(req.provider, settings)
     guide, keyframes, preview, geometry_checkpoints, control_videos, prompt, negative_prompt = _preflight_values(req)
-    if req.provider == "seedance_mini" and preview:
-        runtime_error = seedance_runtime_error(preview.mime_type)
-        if runtime_error:
-            raise HTTPException(status_code=503, detail=runtime_error)
-    if req.provider == "internal_enhance":
-        runtime_error = internal_video_runtime_error(require_upscaler=req.internal_enhance_quality == "gpu_detail")
-        if runtime_error:
-            raise HTTPException(status_code=503, detail=runtime_error)
+    runtime_error = _provider_runtime_error(req, preview)
+    if runtime_error:
+        raise HTTPException(status_code=503, detail=runtime_error)
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
     project = await db.get(Project, req.project_id)
     attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
@@ -837,15 +910,7 @@ async def preflight_video(
             status_code=402,
             detail=f"Video Render requires {credit_cost} credits; you have {user.render_credits}.",
         )
-    if req.provider == "seedance_mini":
-        estimated_cost = estimate_seedance_mini_cost(
-            input_video_seconds=req.duration_seconds,
-            output_video_seconds=req.duration_seconds,
-        )
-    elif req.provider == "internal_enhance":
-        estimated_cost = 0.0
-    else:
-        estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+    estimated_cost = _estimated_cost_usd(req, settings)
     return VideoPreflightResponse(
         ready=True,
         width=guide.width,
@@ -857,7 +922,7 @@ async def preflight_video(
         attempts_remaining=usage.attempts_remaining,
         max_attempts=usage.max_attempts,
         estimated_cost_usd=estimated_cost,
-        model=_provider_model(req.provider, settings, req.internal_enhance_quality),
+        model=_provider_model(req.provider, settings, req.internal_enhance_quality, req.control_mode),
         reference_image_count=len(keyframes),
         geometry_checkpoint_count=len(geometry_checkpoints),
         scene_revision_sha256=scene_revision_sha256,
@@ -899,11 +964,7 @@ async def list_video_attempts(
         attempts=[_public_attempt(item) for item in reversed(attempts)],
         attempts_used=omni_usage.attempts_used,
         attempts_remaining=omni_usage.attempts_remaining,
-        provider_usage={
-            "omni": omni_usage,
-            "seedance_mini": _provider_usage(attempts, "seedance_mini"),
-            "internal_enhance": _provider_usage(attempts, "internal_enhance"),
-        },
+        provider_usage={provider_id: _provider_usage(attempts, provider_id) for provider_id in VIDEO_PROVIDER_IDS},
     )
 
 
@@ -991,21 +1052,13 @@ async def generate_video(
     """Reserve a provider-specific pilot slot, then submit exactly one generation."""
     await check_project_permission(req.project_id, user, db, required="editor")
     settings = get_settings()
-    if req.provider == "omni" and not settings.gemini_api_key:
-        raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
-    if req.provider == "seedance_mini" and not settings.fal_key:
-        raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
+    _require_provider_setting(req.provider, settings)
     guide, keyframes, preview, geometry_checkpoints, control_videos, prompt, negative_prompt = _preflight_values(req)
     prompt_profile = _effective_prompt_profile(req)
     depth_control = next((control for control in control_videos if control.role == "depth"), None)
-    if req.provider == "seedance_mini" and preview:
-        runtime_error = seedance_runtime_error(preview.mime_type)
-        if runtime_error:
-            raise HTTPException(status_code=503, detail=runtime_error)
-    if req.provider == "internal_enhance":
-        runtime_error = internal_video_runtime_error(require_upscaler=req.internal_enhance_quality == "gpu_detail")
-        if runtime_error:
-            raise HTTPException(status_code=503, detail=runtime_error)
+    runtime_error = _provider_runtime_error(req, preview)
+    if runtime_error:
+        raise HTTPException(status_code=503, detail=runtime_error)
 
     # Idempotency and the hard cap are persisted before any provider contact.
     project = await _locked_project(db, req.project_id)
@@ -1070,15 +1123,7 @@ async def generate_video(
             ).encode("utf-8")
         )
     guide_hash = control_hash.hexdigest()
-    if req.provider == "seedance_mini":
-        estimated_cost = estimate_seedance_mini_cost(
-            input_video_seconds=req.duration_seconds,
-            output_video_seconds=req.duration_seconds,
-        )
-    elif req.provider == "internal_enhance":
-        estimated_cost = 0.0
-    else:
-        estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+    estimated_cost = _estimated_cost_usd(req, settings)
     resource_updates = (
         await _project_internal_resources(db, req.project_id) if req.provider == "internal_enhance" else {}
     )
@@ -1086,7 +1131,7 @@ async def generate_video(
         "id": attempt_id,
         "request_id": str(req.request_id),
         "provider": req.provider,
-        "model": _provider_model(req.provider, settings, req.internal_enhance_quality),
+        "model": _provider_model(req.provider, settings, req.internal_enhance_quality, req.control_mode),
         "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
         "internal_enhance_quality": (req.internal_enhance_quality if req.provider == "internal_enhance" else None),
         "render_quality": req.render_quality,
@@ -1125,11 +1170,7 @@ async def generate_video(
 
     guide_extension = "png" if primary_guide.mime_type == "image/png" else "jpg"
     guide_key = f"projects/{req.project_id}/video-render/{attempt_id}/route-guide.{guide_extension}"
-    video_name = {
-        "seedance_mini": "seedance-mini.mp4",
-        "internal_enhance": "internal-enhance.mp4",
-        "omni": "omni.mp4",
-    }[req.provider]
+    video_name = video_provider(req.provider).output_name
     video_key = f"projects/{req.project_id}/video-render/{attempt_id}/{video_name}"
     try:
         from app.api.v1.documents import _upload_to_storage
@@ -1245,17 +1286,10 @@ async def generate_video(
         db.add(user)
         await db.commit()
 
-    provider_name = {
-        "seedance_mini": "fal",
-        "internal_enhance": "local",
-        "omni": "gemini",
-    }[req.provider]
-    operation = {
-        "seedance_mini": "seedance_video",
-        "internal_enhance": "internal_video_enhance",
-        "omni": "omni_video",
-    }[req.provider]
-    model = _provider_model(req.provider, settings, req.internal_enhance_quality)
+    provider_spec = video_provider(req.provider)
+    provider_name = provider_spec.vendor
+    operation = provider_spec.operation
+    model = _provider_model(req.provider, settings, req.internal_enhance_quality, req.control_mode)
     interaction_id: str | None = None
     output_seed: int | None = None
     enhancement_updates: dict = {}
@@ -1289,6 +1323,46 @@ async def generate_video(
             )
             interaction_id = result.request_id
             output_seed = result.seed
+        elif req.provider == "vace_depth":
+            if preview is None or depth_control is None:  # Defense in depth after request validation.
+                raise ValueError("Structure Lock requires the deterministic preview and its depth track.")
+            control_mp4 = await normalize_control_video(
+                depth_control,
+                width=VACE_CONTROL_SIZE[0],
+                height=VACE_CONTROL_SIZE[1],
+            )
+            result = await request_vace_depth_video_once(
+                api_key=settings.fal_key,
+                endpoint=settings.vace_depth_endpoint,
+                control_video_mp4=control_mp4,
+                references=[],
+                first_frame=None,
+                prompt=prompt,
+                negative_prompt=negative_prompt or "",
+                timeout_seconds=settings.vace_video_timeout_seconds,
+            )
+            interaction_id = result.request_id
+            output_seed = result.seed
+        elif req.provider == "grok_video":
+            result = await request_grok_video_once(
+                api_key=settings.xai_api_key,
+                prompt=prompt,
+                control_mode=req.control_mode,
+                guide=guide,
+                route_keyframes=keyframes,
+                preview=preview,
+                duration_seconds=req.duration_seconds,
+                generation_model=settings.grok_video_model,
+                edit_model=settings.grok_video_edit_model,
+                timeout_seconds=settings.grok_video_timeout_seconds,
+            )
+            interaction_id = result.request_id
+            model = result.model
+            enhancement_updates = {
+                "model": result.model,
+                "grok_reference_mode": result.reference_mode,
+                "provider_cost_usd": result.provider_cost_usd,
+            }
         else:
             payload = build_omni_payload(
                 model=settings.omni_video_model,
@@ -1381,13 +1455,9 @@ async def generate_video(
         await db.commit()
         await _refresh_automatic_benchmark(db, req.project_id)
     except Exception as exc:
-        secret = (
-            settings.fal_key
-            if req.provider == "seedance_mini"
-            else settings.gemini_api_key if req.provider == "omni" else ""
-        )
+        secret = str(getattr(settings, provider_spec.required_setting or "", "") or "")
         message = str(exc).replace(secret, "[redacted]")[:700] if secret else str(exc)[:700]
-        if isinstance(exc, SeedanceRequestError) and exc.request_id:
+        if isinstance(exc, (SeedanceRequestError, VaceRequestError, GrokRequestError)) and exc.request_id:
             interaction_id = exc.request_id
         logger.exception("%s pilot attempt %s failed", req.provider, attempt_id)
         entry = await _update_attempt(

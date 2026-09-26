@@ -66,12 +66,21 @@ const CONTROL_MODES: Array<{ id: VideoControlMode; name: string; detail: string;
 ];
 
 type MotionId = typeof MOTIONS[number]['id'];
-type VideoProvider = 'omni' | 'seedance_mini' | 'internal_enhance';
+type VideoProvider = 'omni' | 'seedance_mini' | 'internal_enhance' | 'vace_depth' | 'grok_video';
+/** Engines that take the look sheet and can read a route video as the camera. */
+const LOOK_SHEET_PROVIDERS: ReadonlySet<VideoProvider> = new Set(['omni', 'vace_depth', 'grok_video']);
+/** Engines whose image modes still make sense (they animate stills). */
+const IMAGE_MODE_PROVIDERS: ReadonlySet<VideoProvider> = new Set(['omni', 'grok_video']);
+const PROVIDER_COST_FALLBACK_USD: Record<VideoProvider, number> = {
+  omni: 0.8, seedance_mini: 1.98, internal_enhance: 0, vace_depth: 0.8, grok_video: 0.4,
+};
 type SeedanceReferenceMode = 'preview_only' | 'preview_plus_keyframes';
 type InternalEnhanceQuality = 'fast' | 'gpu_detail';
 
 const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
-  { id: 'omni', name: 'Gemini Omni', detail: 'Video-to-video finish · $0.80 estimate' },
+  { id: 'omni', name: 'Gemini Omni', detail: 'Edits your route video · ~$0.80' },
+  { id: 'vace_depth', name: 'Structure Lock', detail: 'Follows the depth track · ~$0.80 · 720p' },
+  { id: 'grok_video', name: 'Grok Video', detail: 'xAI edit of your route video · ~$0.40' },
   { id: 'seedance_mini', name: 'Seedance Mini', detail: 'fal pilot · maximum 4 calls' },
   { id: 'internal_enhance', name: 'Internal Enhance', detail: 'Self-hosted · exact skins · $0' },
 ];
@@ -79,18 +88,24 @@ const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
 function providerName(provider?: VideoProvider): string {
   if (provider === 'seedance_mini') return 'Seedance Mini';
   if (provider === 'internal_enhance') return 'Internal Enhance';
+  if (provider === 'vace_depth') return 'Structure Lock';
+  if (provider === 'grok_video') return 'Grok Video';
   return 'Omni';
 }
 
 function providerSlug(provider?: VideoProvider): string {
   if (provider === 'seedance_mini') return 'seedance-mini';
   if (provider === 'internal_enhance') return 'internal-enhance';
+  if (provider === 'vace_depth') return 'structure-lock';
+  if (provider === 'grok_video') return 'grok-video';
   return 'omni';
 }
 
 function providerOrigin(provider?: VideoProvider): string {
   if (provider === 'seedance_mini') return 'fal Seedance Mini';
   if (provider === 'internal_enhance') return 'City Prompt local pipeline';
+  if (provider === 'vace_depth') return 'fal Wan 2.2 VACE · depth-guided';
+  if (provider === 'grok_video') return 'xAI Grok Imagine';
   return 'Gemini Omni';
 }
 
@@ -422,6 +437,8 @@ export function VideoGeneratePanel({
       omni: { attempts_used: 0, attempts_remaining: 49, max_attempts: 49 },
       seedance_mini: { attempts_used: 0, attempts_remaining: 4, max_attempts: 4 },
       internal_enhance: { attempts_used: 0, attempts_remaining: null, max_attempts: null },
+      vace_depth: { attempts_used: 0, attempts_remaining: 12, max_attempts: 12 },
+      grok_video: { attempts_used: 0, attempts_remaining: 20, max_attempts: 20 },
     },
   });
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
@@ -482,7 +499,8 @@ export function VideoGeneratePanel({
     || providerUsage.attempts_remaining > 0;
   // Look-sheet engines never receive the per-zone lock prose; only the legacy
   // readers (Seedance, Internal Enhance) still get the scene brief.
-  const usesLegacyBrief = provider === 'seedance_mini' || provider === 'internal_enhance';
+  const usesLegacyBrief = !LOOK_SHEET_PROVIDERS.has(provider);
+  const structureLockNeedsDepth = provider === 'vace_depth' && Boolean(routeControls) && !depthTrack;
 
   const loadPilot = useCallback(async () => {
     try {
@@ -499,6 +517,10 @@ export function VideoGeneratePanel({
             ?? { attempts_used: 0, attempts_remaining: 4, max_attempts: 4 },
           internal_enhance: state.provider_usage?.internal_enhance
             ?? { attempts_used: 0, attempts_remaining: null, max_attempts: null },
+          vace_depth: state.provider_usage?.vace_depth
+            ?? { attempts_used: 0, attempts_remaining: 12, max_attempts: 12 },
+          grok_video: state.provider_usage?.grok_video
+            ?? { attempts_used: 0, attempts_remaining: 20, max_attempts: 20 },
         },
       });
       setSelectedAttempt((current) => (
@@ -1020,11 +1042,11 @@ export function VideoGeneratePanel({
                 <div className={`grid gap-1.5 ${showAdvancedModes ? 'grid-cols-3' : 'grid-cols-1'}`}>
                   {CONTROL_MODES.filter((item) => showAdvancedModes || !item.advanced || controlMode === item.id).map((item) => (
                     <button key={item.id} aria-pressed={controlMode === item.id} onClick={() => {
-                      if (provider !== 'omni' && item.id !== 'preview_video') return;
+                      if (!IMAGE_MODE_PROVIDERS.has(provider) && item.id !== 'preview_video') return;
                       setControlMode(item.id);
                       setPreflight(null);
                       setPrepared(null);
-                    }} disabled={isGenerating || isCapturing || isPreparingControls || (provider !== 'omni' && item.id !== 'preview_video')} className={`rounded-xl border px-2 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-30 ${controlMode === item.id ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
+                    }} disabled={isGenerating || isCapturing || isPreparingControls || (!IMAGE_MODE_PROVIDERS.has(provider) && item.id !== 'preview_video')} className={`rounded-xl border px-2 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-30 ${controlMode === item.id ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
                       <span className="block text-[10px] font-bold">{item.name}</span>
                       <span className="mt-0.5 block text-[8px] leading-tight opacity-55">{item.detail}</span>
                     </button>
@@ -1075,7 +1097,7 @@ export function VideoGeneratePanel({
                   {PROVIDERS.map((item) => (
                     <button key={item.id} type="button" aria-pressed={provider === item.id} onClick={() => {
                       setProvider(item.id);
-                      if (item.id !== 'omni') setControlMode('preview_video');
+                      if (!IMAGE_MODE_PROVIDERS.has(item.id)) setControlMode('preview_video');
                       setPreflight(null);
                       setPrepared(null);
                       setError(null);
@@ -1085,6 +1107,27 @@ export function VideoGeneratePanel({
                     </button>
                   ))}
                 </div>
+                {provider === 'vace_depth' && (
+                  <div className="mt-2 rounded-xl border border-[#151515]/15 bg-[#eef8ff] p-2.5">
+                    <p className="text-[9px] font-black uppercase tracking-wider text-[#151515]/50">Depth-guided finish</p>
+                    <p className="mt-1 text-[9px] font-semibold leading-relaxed text-[#315d73]">
+                      Structure Lock receives the depth track rendered from your 3D scene as its control video, so every building, park and street sits where the model placed it. Output is 720p; Draft source quality is enough.
+                    </p>
+                    {structureLockNeedsDepth && (
+                      <p className="mt-1 text-[9px] font-bold text-[#8d2c23]">This preview has no depth track (the browser recorded it without WebCodecs). Prepare the preview in Chrome or Edge, or choose another engine.</p>
+                    )}
+                    <p className="mt-1 text-[8px] font-semibold leading-relaxed text-[#315d73]">Hard server cap: {providerUsage.attempts_used}/{providerUsage.max_attempts} Structure Lock submissions.</p>
+                  </div>
+                )}
+                {provider === 'grok_video' && (
+                  <div className="mt-2 rounded-xl border border-[#151515]/15 bg-[#f4efff] p-2.5">
+                    <p className="text-[9px] font-black uppercase tracking-wider text-[#151515]/50">xAI Grok Imagine</p>
+                    <p className="mt-1 text-[9px] font-semibold leading-relaxed text-[#4a3b7a]">
+                      Grok edits your route video with the look sheet. If xAI rejects the video, the same look animates the first route image instead and the result says so. Silent 720p output.
+                    </p>
+                    <p className="mt-1 text-[8px] font-semibold leading-relaxed text-[#4a3b7a]">Hard server cap: {providerUsage.attempts_used}/{providerUsage.max_attempts} Grok submissions.</p>
+                  </div>
+                )}
                 {provider === 'seedance_mini' && (
                   <div className="mt-2 rounded-xl border border-[#151515]/15 bg-[#eef8ff] p-2.5">
                     <p className="mb-1.5 text-[9px] font-black uppercase tracking-wider text-[#151515]/50">Reference package</p>
@@ -1213,14 +1256,14 @@ export function VideoGeneratePanel({
                     Some source frames are clipped or blank. Render anyway.
                   </label>
                 )}
-                <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || !providerCanRun || needsSourceAcknowledgement} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
+                <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || !providerCanRun || needsSourceAcknowledgement || structureLockNeedsDepth} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
                   {isGenerating ? <Loader2 size={15} className="animate-spin" /> : <Film size={15} />}
                   {isGenerating
                     ? provider === 'internal_enhance' ? 'Restoring exact City Prompt frames…' : 'Rendering one continuous shot…'
                     : provider === 'internal_enhance'
                       ? `${internalEnhanceQuality === 'gpu_detail' ? 'Run GPU pass' : 'Run fast pass'} · unlimited local runs · est. $0.00`
                       : providerCanRun
-                        ? `Generate trial ${providerUsage.attempts_used + 1} of ${providerUsage.max_attempts} · est. $${(preflight?.estimated_cost_usd ?? (provider === 'seedance_mini' ? 1.98 : 0.8)).toFixed(2)}`
+                        ? `Generate trial ${providerUsage.attempts_used + 1} of ${providerUsage.max_attempts} · est. $${(preflight?.estimated_cost_usd ?? PROVIDER_COST_FALLBACK_USD[provider]).toFixed(2)}`
                         : `${providerUsage.max_attempts}-trial cap reached`}
                 </button>
                 {isGenerating && <p className="mt-2 text-center text-[10px] text-white/45">{provider === 'internal_enhance' ? 'Keep this panel open while the local frame restoration finishes.' : 'Keep this panel open. High-quality video can take several minutes.'}</p>}
