@@ -131,9 +131,15 @@ const STREET_TO_DIRECT3D_STYLE: Record<string, string> = {
   'clay-model': 'clay-maquette',
 };
 
+/** Direct 3D street renders always send presentation_mode='scene' to hold the
+ * eye-level camera. The server rejects a reprojecting style in that mode, so a
+ * style that changes projection (plan, axonometric, high-angle maquette) can
+ * never survive a street render — resolve it to the scene-safe default rather
+ * than shipping a request the API is guaranteed to refuse. */
 function resolveDirect3DStreetStyle(streetStyleId: string): string {
   const mapped = STREET_TO_DIRECT3D_STYLE[streetStyleId] ?? streetStyleId;
-  return DIRECT_3D_ALLOWED_STYLES.has(mapped) ? mapped : 'photorealistic';
+  if (!DIRECT_3D_ALLOWED_STYLES.has(mapped)) return 'photorealistic';
+  return resolveDirect3DPresentationMode(mapped) === 'reproject' ? 'photorealistic' : mapped;
 }
 
 function escapeSvgText(value: string): string {

@@ -203,6 +203,41 @@ def _assert_optional_boundary_covers(
             raise HTTPException(status_code=409, detail=detail)
 
 
+_ZONE_KIND_LABELS = {
+    "building": "a building",
+    "residential": "a building",
+    "green_space": "a park",
+    "parking": "a parking area",
+    "road": "a street",
+}
+
+
+def _zone_display_label(zone: SiteZone) -> str:
+    """A student reads this in an error toast, so never show a raw UUID.
+
+    Zones drawn through the student flow are unnamed, so fall back to the
+    human archetype label the picker already stored, then to a titled
+    archetype id, then to the kind of thing it is.
+    """
+    name = (zone.name or "").strip()
+    if name:
+        return name
+    properties = zone.properties or {}
+    label = properties.get("development_archetype_label")
+    if isinstance(label, str) and label.strip():
+        return label.strip()
+    for key in (
+        "building_archetype_id",
+        "green_space_archetype_id",
+        "road_archetype_id",
+        "pick_place_asset",
+    ):
+        value = properties.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.replace("_", " ").replace("-", " ").strip().capitalize()
+    return _ZONE_KIND_LABELS.get(zone.zone_type, "a drawing")
+
+
 async def _assert_boundary_covers_existing_zones(
     db: AsyncSession,
     project_id: uuid.UUID,
@@ -228,10 +263,16 @@ async def _assert_boundary_covers_existing_zones(
         except Exception:
             covered = False
         if not covered:
-            outside.append(existing.name or str(existing.id))
+            outside.append(_zone_display_label(existing))
     if outside:
-        preview = ", ".join(outside[:3])
-        suffix = "" if len(outside) <= 3 else f" and {len(outside) - 3} more"
+        # Repeated archetypes read as "3 x Edwardian Foursquare", not as the
+        # same name listed three times.
+        tally: dict[str, int] = {}
+        for label in outside:
+            tally[label] = tally.get(label, 0) + 1
+        parts = [label if count == 1 else f"{count} x {label}" for label, count in tally.items()]
+        preview = ", ".join(parts[:3])
+        suffix = "" if len(parts) <= 3 else f" and {len(parts) - 3} more"
         raise HTTPException(
             status_code=409,
             detail=(

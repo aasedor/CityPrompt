@@ -374,6 +374,9 @@ export function VideoGeneratePanel({
     },
   });
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
+  // Near-field source problems are advice, not a wall: the student still sees
+  // the free preview and decides whether the paid pass is worth it.
+  const [acknowledgedSourceWarnings, setAcknowledgedSourceWarnings] = useState(false);
   const [prepared, setPrepared] = useState<PreparedVideoRequest | null>(null);
   const [isPreflighting, setIsPreflighting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -402,6 +405,11 @@ export function VideoGeneratePanel({
   );
 
   const { routeControls, setRouteControls, isPreparingControls, prepare: prepareRoutePreview } = useVideoRoutePreview(routeCaptureSignature);
+  useEffect(() => { setAcknowledgedSourceWarnings(false); }, [routeCaptureSignature]);
+  const sourceFrameWarnings = routeControls?.signature === routeCaptureSignature
+    ? (routeControls.sourceFrameWarnings ?? [])
+    : [];
+  const needsSourceAcknowledgement = sourceFrameWarnings.length > 0 && !acknowledgedSourceWarnings;
 
   const currentSignature = useMemo(
     () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
@@ -873,6 +881,15 @@ export function VideoGeneratePanel({
                 )}
                 <a href={routeControls.previewVideoBase64} download={`city-prompt-guide.${routeControls.previewVideoMimeType.includes('mp4') ? 'mp4' : 'webm'}`}
                   className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-xs font-semibold text-white underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"><Download size={14} />Download preview</a>
+                {sourceFrameWarnings.length > 0 && (
+                  <div className="mt-2 rounded-lg border border-[#ffd38a]/40 bg-[#ffd38a]/[0.08] px-2.5 py-2 text-[9px] text-white/70">
+                    <p className="font-black uppercase text-[#ffd38a]">Source frames to check</p>
+                    <ul className="mt-1 list-disc space-y-0.5 pl-3.5 font-semibold">
+                      {sourceFrameWarnings.map((warning) => <li key={warning}>{warning}</li>)}
+                    </ul>
+                    <p className="mt-1 text-white/45">The preview above is the real route. You can move those vertices, or continue and judge the result yourself.</p>
+                  </div>
+                )}
                 {motion === 'street_walkby' && routeControls.streetRenderReadiness && (
                   <div className="mt-2 rounded-lg border border-white/10 bg-white/[0.05] px-2.5 py-2 text-[9px] text-white/55">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-bold">
@@ -1083,7 +1100,14 @@ export function VideoGeneratePanel({
                     <p className="mt-0.5 text-[10px] leading-relaxed text-white/50">{provider === 'internal_enhance' ? `One click = one self-hosted ${internalEnhanceQuality === 'gpu_detail' ? 'model-backed' : 'deterministic'} restoration run at $0.` : 'One click = one paid provider call. There are no automatic retries.'}</p>
                   </div>
                 </div>
-                <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || !providerCanRun} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
+                {sourceFrameWarnings.length > 0 && (
+                  <label className="mt-2 flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-white/[0.06] px-2.5 text-[10px] font-semibold text-white/70">
+                    <input type="checkbox" className="h-4 w-4 accent-[#c9ff3d]" checked={acknowledgedSourceWarnings}
+                      onChange={(event) => setAcknowledgedSourceWarnings(event.target.checked)} />
+                    Some source frames are clipped or blank. Render anyway.
+                  </label>
+                )}
+                <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || !providerCanRun || needsSourceAcknowledgement} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
                   {isGenerating ? <Loader2 size={15} className="animate-spin" /> : <Film size={15} />}
                   {isGenerating
                     ? provider === 'internal_enhance' ? 'Restoring exact City Prompt frames…' : 'Rendering one continuous shot…'

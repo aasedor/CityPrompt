@@ -67,9 +67,17 @@ async function decodeFramePixels(dataUrl: string): Promise<ImageData> {
   return context.getImageData(0, 0, canvas.width, canvas.height);
 }
 
-export async function assertNearFieldVideoSourceQuality(
+/** Report unusable near-field frames instead of aborting the capture.
+ *
+ * Throwing here used to kill the whole route capture, which also destroyed the
+ * FREE local preview — so a student could not even look at their own route to
+ * understand the problem. The advice is worth giving; withholding the picture
+ * is not. Callers surface these as warnings and keep the paid provider call
+ * behind an explicit confirmation. */
+export async function inspectNearFieldVideoSourceQuality(
   framesBase64: string[],
-): Promise<void> {
+): Promise<string[]> {
+  const warnings: string[] = [];
   for (let index = 0; index < framesBase64.length; index += 1) {
     const imageData = await decodeFramePixels(framesBase64[index]);
     const quality = assessVideoSourceFramePixels(
@@ -78,10 +86,11 @@ export async function assertNearFieldVideoSourceQuality(
       imageData.height,
     );
     if (!quality.usable) {
-      throw new Error(
-        `Street source frame ${index + 1} contains clipped or blank foreground geometry. `
-        + 'Move that route vertex farther from the facade or coarse Google photogrammetry; no video provider was called.',
+      warnings.push(
+        `Frame ${index + 1} has clipped or blank foreground geometry. `
+        + 'Move that route vertex farther from the facade, or from coarse Google photogrammetry, for a sharper result.',
       );
     }
   }
+  return warnings;
 }

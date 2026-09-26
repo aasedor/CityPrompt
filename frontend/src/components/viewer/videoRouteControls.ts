@@ -62,6 +62,9 @@ export interface VideoRouteCaptureResult {
     motionFrameCount: number;
   };
   streetRenderReadiness?: StreetRenderReadiness;
+  /** Advisory near-field source problems. Present, but never a reason to
+   * withhold the free local preview from the student. */
+  sourceFrameWarnings?: string[];
 }
 
 const clamp01 = (value: number) => Math.max(0, Math.min(1, value));

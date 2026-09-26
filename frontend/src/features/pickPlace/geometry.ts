@@ -32,19 +32,27 @@ export function resizeRectangleCorner(coords: number[][], corner: number, pointe
     fixed[1]+(sx*width*s+sy*depth*c)/2/METERS_PER_DEG_LAT,
   ],width,depth,degrees);
 }
-export function placementProblem(coords: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string): string | null {
+/** A street route and a building plot fail for the same geometric reasons but
+ * read very differently to a student, so callers say which one they are placing.
+ * Telling someone drawing a road to "resize the plot" is not actionable. */
+export type PlacementSubject = 'plot' | 'route';
+export function placementProblem(coords: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string, subject: PlacementSubject = 'plot'): string | null {
   try {
     if(coords.length<3 || coords.some(p=>!Number.isFinite(p[0]+p[1]))) return 'Choose a valid area.';
     const origin=coords[0];
     const local=(ring:number[][])=>ring.map(p=>({x:(p[0]-origin[0])*metersPerDegLon(origin[1]),y:(p[1]-origin[1])*METERS_PER_DEG_LAT}));
     const footprint = local(coords);
-    if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return 'Keep the whole plot inside your site boundary, including the space around the building. Move it inward or resize the plot.';
+    if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return subject === 'route'
+      ? 'Keep the whole route inside your site boundary, including the full width of the street. Move it inward or shorten it.'
+      : 'Keep the whole plot inside your site boundary, including the space around the building. Move it inward or resize the plot.';
     for (const zone of zones) {
       if (zone.id===ignoreId || !['building','residential','green_space','parking'].includes(zone.zone_type)) continue;
       if (envelopesOverlap(footprint,local(zone.coordinates))) {
         const label = zone.name?.trim() || assetForZone(zone)?.label
           || (zone.zone_type === 'green_space' ? 'another park' : zone.zone_type === 'parking' ? 'a parking area' : 'another building plot');
-        return `This overlaps ${label}. Plots include the space around buildings. Move it or reduce its size to leave room.`;
+        return subject === 'route'
+          ? `This route crosses ${label}. Streets take their full width. Move the route or shorten it to leave room.`
+          : `This overlaps ${label}. Plots include the space around buildings. Move it or reduce its size to leave room.`;
       }
     }
     return null;

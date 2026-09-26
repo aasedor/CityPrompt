@@ -572,6 +572,20 @@ async def _assert_ai_lego_recipes_are_current(
                 zone=zone,
             )
         except AssemblyPlanningError as exc:
+            # An incompatible family is a design fact, not a stale-state glitch.
+            # Telling the student to "regenerate and retry" sends them round a
+            # loop that can never succeed, so pass the planner's own reason
+            # through — it names the native size and floor count.
+            if exc.code in {"family_not_found", "family_incompatible"}:
+                raise HTTPException(
+                    status_code=409,
+                    detail=str(exc)
+                    or (
+                        "This design is fixed at its native size and floor count, so it "
+                        "cannot fill the plot you drew. Resize the plot to the design's "
+                        "own size, or keep this building as planned massing."
+                    ),
+                ) from exc
             raise HTTPException(
                 status_code=409,
                 detail=(

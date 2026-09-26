@@ -995,9 +995,15 @@ export function ZonePropertiesPanel({ zone, belowGlobeControls = false, savedVer
                 id="site-ground-mode"
                 className={panelFieldClass}
                 value={props.community_3d_mask_existing_tiles === false ? 'retain' : 'clear'}
-                onChange={(event) => setProps((current) => ({
-                  ...current, community_3d_mask_existing_tiles: event.target.value === 'clear',
-                }))}
+                onChange={(event) => setProps((current) => (event.target.value === 'clear'
+                  ? { ...current, community_3d_mask_existing_tiles: true }
+                  // Returning to the measured surface must also drop the prepared
+                  // level. A stale terrain_elevation_m keeps draping the boundary
+                  // metres below the restored Google ground, where it disappears.
+                  : {
+                    ...current, community_3d_mask_existing_tiles: false,
+                    terrain_elevation_m: null, terrain_edge_profile: null,
+                  }))}
               >
                 <option value="retain">Follow existing terrain — open sites</option>
                 <option value="clear">Clear site for redevelopment</option>

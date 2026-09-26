@@ -157,12 +157,13 @@ export function createSitePreparationTexture(seed: string, size = 256): THREE.Da
   const dimension = Math.max(16, Math.round(size));
   const data = new Uint8Array(dimension * dimension * 4);
   const phase = hashSeed(seed) * Math.PI * 2;
-  // Keep residual redevelopment ground close to desaturated aerial imagery.
-  // The former vegetation-heavy olive average made a compiled district read
-  // as one green planning slab and visually swallowed authored parks.
-  const earth = [150, 144, 134];
-  const vegetation = [119, 130, 110];
-  const aggregate = [171, 168, 160];
+  // Residual redevelopment ground reads as maintained grass so the image model
+  // does not have to invent landscaping over a grey slab. These stay muted and
+  // light next to the authored park and lawn greens, which keeps the earlier
+  // concern — a single green slab swallowing authored parks — in check.
+  const earth = [130, 144, 104];
+  const vegetation = [112, 132, 88];
+  const aggregate = [158, 158, 138];
 
   for (let y = 0; y < dimension; y += 1) {
     for (let x = 0; x < dimension; x += 1) {
@@ -180,7 +181,7 @@ export function createSitePreparationTexture(seed: string, size = 256): THREE.Da
       // Residual land is mostly neutral retained earth and aggregate. A small
       // amount of seeded cover breaks up the parcel without competing with
       // the authored green-space polygons at district scale.
-      const vegetationMix = clamp01(0.08 + broad * 0.22 + (fine - 0.5) * 0.06);
+      const vegetationMix = clamp01(0.34 + broad * 0.30 + (fine - 0.5) * 0.08);
       const aggregateSignal = (
         Math.sin(nx * Math.PI * 8.3 - phase * 0.4)
         + Math.cos(ny * Math.PI * 7.1 + phase)

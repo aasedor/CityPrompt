@@ -163,7 +163,7 @@ import {
   captureDeterministicVideo,
   getCenterCropRect,
 } from '../deterministicVideoCapture';
-import { assertNearFieldVideoSourceQuality } from '../videoSourceQuality';
+import { inspectNearFieldVideoSourceQuality } from '../videoSourceQuality';
 import {
   applyVideoFrameProjection,
   buildVideoWarmupFrames,
@@ -2878,6 +2878,7 @@ export function GlobeSitePlannerMap({
     let restoreTextureAnisotropy: (() => void) | null = null;
     let releaseTileQueueHold: (() => void) | null = null;
     let streetRenderReadiness: VideoRouteCaptureResult['streetRenderReadiness'];
+    let sourceFrameWarnings: string[] = [];
     const waitForRouteContext = () => request.renderQuality === 'high'
       ? waitForVisibleTileCoverage(tileRenderer, {
           stableMs: 750,
@@ -3039,7 +3040,7 @@ export function GlobeSitePlannerMap({
         }
       }
       if (nearFieldRoute) {
-        await assertNearFieldVideoSourceQuality(keyframesBase64);
+        sourceFrameWarnings = await inspectNearFieldVideoSourceQuality(keyframesBase64);
       }
       if (nearFieldRoute) streetRenderReadiness = inspectStreetRenderReadiness(scene);
 
@@ -3104,6 +3105,7 @@ export function GlobeSitePlannerMap({
         },
         geometryPassProfile: videoGeometryPassProfile(geometryCheckpoints, previewCapture.frameCount),
         streetRenderReadiness,
+        sourceFrameWarnings,
       };
     } finally {
       releaseTileQueueHold?.();
@@ -4502,7 +4504,7 @@ export function GlobeSitePlannerMap({
             setIsInitialCameraApplied(true);
             revealCanvasAfterPose();
           }}
-          className="rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] hover:bg-white"
+          className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] hover:bg-white"
           title={cameraElevation >= 85 ? 'See your community from an angle' : 'Look straight down to draw and resize footprints'}
         >
           {cameraElevation >= 85 ? '3D view' : 'Top view'}
@@ -4520,7 +4522,7 @@ export function GlobeSitePlannerMap({
               setZoneOverlaysVisible(false);
               void requestProjectFrame([{ ...selectedInspectionZone, coordinates: selectedInspectionZone.coordinates as [number, number][] }], 'manual');
             }}
-            className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition hover:bg-[#d8ff72]"
+            className="min-h-11 rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition hover:bg-[#d8ff72]"
             title="Hide planning polygons and focus on the selected building"
           >
             Focus building
@@ -4532,7 +4534,7 @@ export function GlobeSitePlannerMap({
             onClick={() => {
               void requestProjectFrame(siteZones.map(zone => ({ ...zone, coordinates: zone.coordinates as [number, number][] })), 'manual');
             }}
-            className="rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition hover:bg-white"
+            className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition hover:bg-white"
             title="Focus the camera on this development"
           >
             Focus plan
@@ -4543,7 +4545,7 @@ export function GlobeSitePlannerMap({
             type="button"
             onClick={handleBuildingModelsVisibilityToggle}
             aria-pressed={buildingModelsVisible}
-            className={`rounded-full border-2 border-[#151515] px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition ${
+            className={`min-h-11 rounded-full border-2 border-[#151515] px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition ${
               buildingModelsVisible
                 ? 'bg-[#c9ff3d] text-[#151515]'
                 : 'bg-[#fff9ec]/95 text-[#151515]/50'
@@ -4557,7 +4559,7 @@ export function GlobeSitePlannerMap({
           <button
             type="button"
             onClick={() => setZoneOverlaysVisible((visible) => !visible)}
-            className={`rounded-full border-2 border-[#151515] px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition ${
+            className={`min-h-11 rounded-full border-2 border-[#151515] px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition ${
               zoneOverlaysVisible
                 ? 'bg-[#fff9ec]/95 text-[#151515]'
                 : 'bg-[#c9ff3d] text-[#151515]'

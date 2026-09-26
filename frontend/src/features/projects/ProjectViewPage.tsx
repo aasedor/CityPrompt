@@ -297,7 +297,8 @@ export function ProjectViewPage() {
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone)) : null)
         ?? placementProblem(coordinates, siteZones,
-          publicRoadConnectionFits(zone, coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
+          publicRoadConnectionFits(zone, coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId,
+          isFixedSectionStreet(zone) ? 'route' : 'plot');
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
     handleZoneUpdated(zoneId, coordinates);
@@ -1093,8 +1094,12 @@ export function ProjectViewPage() {
               await updateZone.mutateAsync({ zoneId, data: { properties: { ...boundary.properties,
                 community_3d_mask_existing_tiles: clear,
                 terrain_strategy: null,
-                ...(height !== undefined ? { terrain_elevation_m: height } : {}),
-                ...(edges !== undefined ? { terrain_edge_profile: edges } : {}),
+                // Follow-existing-terrain drops the prepared plane, so the stored
+                // level has to go with it or the site drapes below real ground.
+                ...(height !== undefined ? { terrain_elevation_m: height }
+                  : clear ? {} : { terrain_elevation_m: null }),
+                ...(edges !== undefined ? { terrain_edge_profile: edges }
+                  : clear ? {} : { terrain_edge_profile: null }),
               } }, previousData: { properties: boundary.properties } });
             }}
             onPlaceAsset={placeObject}
@@ -1108,7 +1113,7 @@ export function ProjectViewPage() {
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (isFixedSectionStreet({zone_type:type, properties})) {
-                const problem = streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties})) ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
+                const problem = streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties})) ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, 'route');
                 if (problem) { toast.error(problem, {position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);
@@ -1129,7 +1134,11 @@ export function ProjectViewPage() {
         <div
           className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-28 sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[60dvh]'}`}
         >
-          <div className="pointer-events-auto h-full">
+          {/* h-fit, not h-full: the rail's container spans top-28..bottom-16,
+              so a full-height interactive child keeps swallowing map clicks
+              hundreds of pixels below the visible panel — the map simply
+              stops responding down the whole left edge. */}
+          <div className="pointer-events-auto h-fit">
             <StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />
             {activeStudentStep !== 'design' && !showGlobeRender && !showVideoRender && <StudentStepPanel
               step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}

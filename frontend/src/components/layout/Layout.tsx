@@ -175,7 +175,7 @@ export function Layout() {
 
           <button
             onClick={() => setMobileMenuOpen((v) => !v)}
-            className="rounded-full border-2 border-[#151515] bg-white p-2 text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#c9ff3d] sm:hidden"
+            className="grid min-h-11 min-w-11 place-items-center rounded-full border-2 border-[#151515] bg-white p-2 text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#c9ff3d] sm:hidden"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}

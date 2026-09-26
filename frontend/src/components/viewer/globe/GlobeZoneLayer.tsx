@@ -1177,8 +1177,34 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   }, [usesSharedGround, sharedFrameHeight, sharedGround, geoData, centroid]);
   useDeferredDisposable(sharedOutlineGeo);
 
-  if (!geoData || (usesSharedGround && ((sharedGround.status !== 'ready' && !sharedGround.preview)
-    || (!isExtrudedBuilding && !sharedFillGeo)))) return null;
+  // A site whose visible surface is too broken to sample (trees, rubble piles,
+  // roofs) leaves sharedGround 'unavailable'. Dropping the whole mesh then
+  // erases the student's own site outline from the map with no explanation, so
+  // keep drawing the boundary dashes: they carry no sampled ground and already
+  // render depth-test-free above the tiles.
+  const sharedGroundUnready = usesSharedGround
+    && ((sharedGround.status !== 'ready' && !sharedGround.preview)
+      || (!isExtrudedBuilding && !sharedFillGeo));
+  if (geoData && sharedGroundUnready && isSiteBoundary
+    && boundaryOverlayVisible && siteBoundaryDashGeo) {
+    return (
+      <EastNorthUpFrame
+        lat={centroid[1] * DEG_TO_RAD}
+        lon={centroid[0] * DEG_TO_RAD}
+        height={zoneTerrainHeight}
+      >
+        <lineSegments
+          geometry={siteBoundaryDashGeo}
+          renderOrder={260}
+          frustumCulled={false}
+          onPointerDown={handleZonePointerDown}
+        >
+          <lineBasicMaterial color="#ef4444" depthTest={false} depthWrite={false} />
+        </lineSegments>
+      </EastNorthUpFrame>
+    );
+  }
+  if (!geoData || sharedGroundUnready) return null;
 
   const authoredGroundTexture = drapeActive
     ? groundTexture
@@ -1228,7 +1254,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           ) : isPreparedBoundary ? (
             <meshStandardMaterial
               key="prepared-site"
-              color="#d5d0c6"
+              // White multiply: the prepared-ground texture is authoritative for
+              // colour, so grass does not get tinted back toward grey here.
+              color="#ffffff"
               map={preparedSiteTexture ?? undefined}
               roughness={0.98}
               metalness={0}

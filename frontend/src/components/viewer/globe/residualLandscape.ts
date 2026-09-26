@@ -70,7 +70,12 @@ const REGION_KINDS = new Set<ResidualLandscapeKind>([
   'low_groundcover',
 ]);
 
-const BASE_PREPARED_GROUND: [number, number, number] = [151, 146, 137];
+// Unplanted residual site reads as mown grass, not bare grey. The image
+// model treats the source pixels as ground truth, so a grey slab pushes it to
+// invent landscaping — which then fails the design checks as unsupported new
+// structure. This stays lighter and less saturated than the authored park and
+// lawn greens below, so planted areas still read as the richer ground.
+const BASE_PREPARED_GROUND: [number, number, number] = [126, 142, 100];
 const REGION_PALETTES: Record<ResidualLandscapeKind, [number, number, number]> = {
   foundation_planting: [99, 116, 78],
   boulevard_planting: [111, 132, 79],

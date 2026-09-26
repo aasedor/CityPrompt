@@ -41,6 +41,10 @@ const SECTION_LABELS: Record<UrbanDnaSectionName, string> = {
 };
 
 const POLL_MS = 5000;
+// A queued run depends on a background worker. When that worker is down the
+// snapshot stays 'pending' forever, so an unbounded poll spins a spinner and
+// hits the API every 5s with nothing to collect. Give up honestly instead.
+const POLL_TIMEOUT_MS = 180_000;
 
 function confidenceColor(confidence: number): string {
   if (confidence >= 0.75) return 'bg-[#c9ff3d]';
@@ -612,6 +616,7 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   const [applyingId, setApplyingId] = useState<string | null>(null);
   const [soloId, setSoloId] = useState<string | null>(null);
   const [scenariosStale, setScenariosStale] = useState(false);
+  const [pollTimedOut, setPollTimedOut] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
   const [customBrief, setCustomBrief] = useState('');
   const [runningCustom, setRunningCustom] = useState(false);
@@ -746,9 +751,20 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     if (!busy) {
       if (pollRef.current) window.clearInterval(pollRef.current);
       pollRef.current = null;
+      setPollTimedOut(false);
       return;
     }
-    pollRef.current = window.setInterval(refresh, POLL_MS);
+    setPollTimedOut(false);
+    const startedAt = Date.now();
+    pollRef.current = window.setInterval(() => {
+      if (Date.now() - startedAt > POLL_TIMEOUT_MS) {
+        if (pollRef.current) window.clearInterval(pollRef.current);
+        pollRef.current = null;
+        setPollTimedOut(true);
+        return;
+      }
+      void refresh();
+    }, POLL_MS);
     return () => {
       if (pollRef.current) window.clearInterval(pollRef.current);
       pollRef.current = null;
@@ -886,7 +902,11 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
         <>
           <div className="flex items-center justify-between text-[10px] text-[#151515]/60">
             <span>
-              {snapshot.status === 'pending' ? (
+              {snapshot.status === 'pending' && pollTimedOut ? (
+                <span className="text-[#151515]">
+                  still queued — the analysis service may be offline. Use Refresh to retry.
+                </span>
+              ) : snapshot.status === 'pending' ? (
                 <span className="flex items-center gap-1">
                   <Loader2 className="h-3 w-3 animate-spin" /> understanding this place…
                 </span>
