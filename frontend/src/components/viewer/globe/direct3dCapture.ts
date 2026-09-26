@@ -1345,16 +1345,36 @@ function copyMaterialPolicy(source: THREE.Material, target: THREE.Material): voi
 /** A geometry pass must depict the same visible site as beauty. A global
  * overrideMaterial loses tile demolition cuts, cutout foliage, sidedness and
  * depth policy, causing control images to resurrect occluded source buildings. */
+export type Direct3DGeometryPass = 'depth' | 'normal' | 'linear_depth';
+
+/** Distances mapped to white (near) and black (far) by the linear depth pass. */
+export interface Direct3DDepthWindow {
+  nearMeters: number;
+  farMeters: number;
+}
+
+export const DEFAULT_DIRECT_3D_DEPTH_WINDOW: Direct3DDepthWindow = Object.freeze({ nearMeters: 3, farMeters: 2000 });
+
+export const LINEAR_DEPTH_VERTEX_ANCHOR = '#include <project_vertex>';
+export const LINEAR_DEPTH_FRAGMENT_ANCHOR = 'gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );';
+
 export function createDirect3DGeometryMaterial(
   source: THREE.Material,
-  pass: 'depth' | 'normal',
+  pass: Direct3DGeometryPass,
+  depthWindow: Direct3DDepthWindow = DEFAULT_DIRECT_3D_DEPTH_WINDOW,
 ): THREE.Material {
   const target = pass === 'depth'
     // Canvas2D PNG encoding premultiplies alpha. RGBA depth stores fractional
     // depth bits in alpha (often zero), losing its RGB on export. RGB packing
     // keeps 24-bit depth and an opaque alpha channel through the PNG encoder.
     ? new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBDepthPacking })
-    : new THREE.MeshNormalMaterial();
+    : pass === 'linear_depth'
+      // The video depth track is 8-bit grey: normalised inverse depth between
+      // the window's near (white) and far (black) distances, the convention
+      // depth-control video models are trained on. Grey survives H.264 chroma
+      // subsampling; the 24-bit packed pass above would not.
+      ? new THREE.MeshDepthMaterial({ depthPacking: THREE.BasicDepthPacking })
+      : new THREE.MeshNormalMaterial();
   copyMaterialPolicy(source, target);
   const sourceRecord = source as unknown as Record<string, unknown>;
   const targetRecord = target as unknown as Record<string, unknown>;
@@ -1399,16 +1419,40 @@ ${MAP_ALPHA_ONLY_FRAGMENT}
     };
     target.customProgramCacheKey = () => 'direct3d-normal-source-alpha-v1';
   }
+  if (pass === 'linear_depth') {
+    const { nearMeters, farMeters } = depthWindow;
+    target.onBeforeCompile = (shader) => {
+      if (
+        !shader.vertexShader.includes(LINEAR_DEPTH_VERTEX_ANCHOR)
+        || !shader.fragmentShader.includes(LINEAR_DEPTH_FRAGMENT_ANCHOR)
+      ) {
+        throw new Error('The three.js depth shader changed; update the Direct 3D linear depth pass.');
+      }
+      shader.uniforms.cpInvNear = { value: 1 / nearMeters };
+      shader.uniforms.cpInvFar = { value: 1 / farMeters };
+      // View-space distance from a vertex varying, independent of the globe's
+      // logarithmic depth buffer and of the camera near/far planes.
+      shader.vertexShader = `varying float vCpViewDepth;\n${shader.vertexShader}`.replace(
+        LINEAR_DEPTH_VERTEX_ANCHOR,
+        `${LINEAR_DEPTH_VERTEX_ANCHOR}\n\tvCpViewDepth = -mvPosition.z;`,
+      );
+      shader.fragmentShader = `uniform float cpInvNear;\nuniform float cpInvFar;\nvarying float vCpViewDepth;\n${shader.fragmentShader}`.replace(
+        LINEAR_DEPTH_FRAGMENT_ANCHOR,
+        'float cpInverse = clamp( ( 1.0 / max( vCpViewDepth, 1e-3 ) - cpInvFar ) / ( cpInvNear - cpInvFar ), 0.0, 1.0 );\n\tgl_FragColor = vec4( vec3( cpInverse ), opacity );',
+      );
+    };
+    target.customProgramCacheKey = () => `direct3d-linear-depth-v1-${nearMeters}-${farMeters}`;
+  }
   inheritTileSpatialMask(source, target);
   target.name = `direct3d-${pass}-${source.name || source.type}`;
   target.needsUpdate = true;
   return target;
 }
 
-function createGeometryMaterialCache() {
-  const cached = new WeakMap<THREE.Material, Map<'depth' | 'normal', THREE.Material>>();
+function createGeometryMaterialCache(depthWindow: Direct3DDepthWindow = DEFAULT_DIRECT_3D_DEPTH_WINDOW) {
+  const cached = new WeakMap<THREE.Material, Map<Direct3DGeometryPass, THREE.Material>>();
   const created = new Set<THREE.Material>();
-  const getSingle = (source: THREE.Material, pass: 'depth' | 'normal') => {
+  const getSingle = (source: THREE.Material, pass: Direct3DGeometryPass) => {
     let variants = cached.get(source);
     if (!variants) {
       variants = new Map();
@@ -1416,16 +1460,64 @@ function createGeometryMaterialCache() {
     }
     const existing = variants.get(pass);
     if (existing) return existing;
-    const material = createDirect3DGeometryMaterial(source, pass);
+    const material = createDirect3DGeometryMaterial(source, pass, depthWindow);
     variants.set(pass, material);
     created.add(material);
     return material;
   };
   return {
-    get: (source: Direct3DSemanticMaterial, pass: 'depth' | 'normal'): Direct3DSemanticMaterial => (
+    get: (source: Direct3DSemanticMaterial, pass: Direct3DGeometryPass): Direct3DSemanticMaterial => (
       Array.isArray(source) ? source.map((material) => getSingle(material, pass)) : getSingle(source, pass)
     ),
     dispose: () => created.forEach((material) => material.dispose()),
+  };
+}
+
+export interface Direct3DLinearDepthSession {
+  /** Render the scene as 8-bit inverse depth into the default framebuffer. */
+  render(camera: THREE.Camera): void;
+  dispose(): void;
+}
+
+/**
+ * Per-frame depth pass for the video depth track.
+ *
+ * Unlike `captureDirect3DScene` this renders to the live default framebuffer
+ * (the caller copies it, exactly like the beauty frame) and keeps a material
+ * cache alive across all 192 frames, so shaders compile once. It reuses the
+ * beauty visibility rules and the geometry material policy copy, so tile
+ * demolition cuts, alpha cutouts and sidedness match the beauty frame.
+ */
+export function createDirect3DLinearDepthSession(
+  renderer: THREE.WebGLRenderer,
+  scene: THREE.Scene,
+  depthWindow: Direct3DDepthWindow,
+): Direct3DLinearDepthSession {
+  const materials = createGeometryMaterialCache(depthWindow);
+  return {
+    render: (camera) => {
+      const renderables = collectRenderableSnapshots(scene);
+      const rendererSnapshot = snapshotRenderer(renderer, scene);
+      try {
+        for (const snapshot of renderables) {
+          snapshot.object.visible = snapshot.effectivelyVisible && !snapshot.excluded;
+          if (snapshot.material !== undefined) {
+            snapshot.object.material = materials.get(snapshot.material, 'linear_depth');
+          }
+        }
+        scene.background = null;
+        scene.fog = null;
+        scene.overrideMaterial = null;
+        renderer.autoClear = true;
+        renderer.setRenderTarget(null);
+        renderer.setScissorTest(false);
+        renderer.setClearColor(0x000000, 1);
+        renderer.render(scene, camera);
+      } finally {
+        restoreCaptureState(renderer, scene, rendererSnapshot, renderables);
+      }
+    },
+    dispose: () => materials.dispose(),
   };
 }
 

@@ -20,6 +20,7 @@ except ModuleNotFoundError:  # pragma: no cover - exercised by deployment smoke 
     cv2 = None  # type: ignore[assignment]
 
 FidelityStatus = Literal["stable", "review", "drift", "unavailable"]
+GeometrySource = Literal["depth_video", "instance_maps"]
 SAMPLE_PROGRESS = (0.0, 0.25, 0.5, 0.75, 1.0)
 
 
@@ -43,6 +44,14 @@ class VideoFidelityReport:
     samples: tuple[FidelitySample, ...]
     protected_instance_min_score: float | None = None
     temporal_consistency_score: float | None = None
+    # Lighting-invariant silhouette agreement with the geometry that produced
+    # the preview. Reported beside the appearance score so a correct night
+    # render is not called drift; advisory until calibrated.
+    geometry_score: float | None = None
+    geometry_min_score: float | None = None
+    geometry_status: FidelityStatus | None = None
+    geometry_samples: tuple[FidelitySample, ...] = ()
+    geometry_source: GeometrySource | None = None
 
     def metadata(self) -> dict:
         metadata = {
@@ -55,6 +64,12 @@ class VideoFidelityReport:
             metadata["protected_instance_min_score"] = self.protected_instance_min_score
         if self.temporal_consistency_score is not None:
             metadata["temporal_consistency_score"] = self.temporal_consistency_score
+        if self.geometry_score is not None:
+            metadata["geometry_score"] = self.geometry_score
+            metadata["geometry_min_score"] = self.geometry_min_score
+            metadata["geometry_status"] = self.geometry_status
+            metadata["geometry_samples"] = [asdict(sample) for sample in self.geometry_samples]
+            metadata["geometry_source"] = self.geometry_source
         return metadata
 
 
@@ -189,6 +204,107 @@ def classify_fidelity(score: float, minimum_score: float) -> FidelityStatus:
     return "drift"
 
 
+def _clahe_gray(frame: np.ndarray) -> np.ndarray:
+    """Stretch and equalise contrast so a night or hazy finish keeps its silhouettes."""
+    cv = _require_cv2()
+    low, high = np.percentile(frame, (1, 99))
+    stretched = np.clip((frame.astype(np.float32) - float(low)) * (255.0 / max(float(high - low), 1.0)), 0, 255)
+    return cv.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8)).apply(stretched.astype(np.uint8))
+
+
+def _depth_structure_edges(depth_gray: np.ndarray) -> np.ndarray:
+    """Silhouette edges of the inverse-depth track, without the ground ramp."""
+    cv = _require_cv2()
+    blurred = cv.GaussianBlur(depth_gray, (0, 0), 1.0)
+    edges = cv.Canny(blurred, 12, 36) > 0
+    gradient_x = cv.Sobel(blurred, cv.CV_32F, 1, 0, ksize=3)
+    gradient_y = cv.Sobel(blurred, cv.CV_32F, 0, 1, ksize=3)
+    magnitude = np.sqrt(gradient_x * gradient_x + gradient_y * gradient_y)
+    return edges & (magnitude > 6.0)
+
+
+def _long_edges(edges: np.ndarray, min_pixels: int = 24) -> np.ndarray:
+    """Keep edge components long enough to be structure rather than texture."""
+    cv = _require_cv2()
+    count, labels, stats, _ = cv.connectedComponentsWithStats(edges.astype(np.uint8), connectivity=8)
+    keep = np.zeros(count, dtype=bool)
+    for label in range(1, count):
+        keep[label] = stats[label, cv.CC_STAT_AREA] >= min_pixels
+    return keep[labels]
+
+
+def _within(edges: np.ndarray, radius: int) -> np.ndarray:
+    cv = _require_cv2()
+    size = 2 * radius + 1
+    return cv.dilate(edges.astype(np.uint8), np.ones((size, size), np.uint8)) > 0
+
+
+def score_geometry_frame(
+    depth_gray: np.ndarray,
+    reference_frame: np.ndarray,
+    candidate_frame: np.ndarray,
+    region_mask: np.ndarray | None = None,
+) -> float:
+    """0-100 agreement between the finished frame's edges and the source geometry.
+
+    Recall: every depth silhouette must still be drawn (missing or moved
+    buildings lower it). Precision: every long edge in the output must be
+    explained by a depth silhouette or by an edge the preview already had
+    (invented structure lowers it). Lighting changes leave both unchanged.
+    """
+    cv = _require_cv2()
+    reference = _normalized_gray(reference_frame)
+    candidate = _translation_align(reference, _normalized_gray(candidate_frame))
+    depth = cv.resize(depth_gray, (320, 180), interpolation=cv.INTER_AREA)
+    depth_edges = _depth_structure_edges(depth)
+    # CLAHE recovers contrast in dark or hazy finishes; the lower thresholds
+    # keep moderate-contrast silhouettes that the appearance score's 55/140
+    # Canny would drop.
+    candidate_edges = cv.Canny(_clahe_gray(candidate), 30, 90) > 0
+    reference_edges = cv.Canny(_clahe_gray(reference), 30, 90) > 0
+    if region_mask is not None:
+        mask = cv.resize(region_mask.astype(np.uint8), (320, 180), interpolation=cv.INTER_NEAREST) > 0
+        mask = _within(mask, 6)
+        depth_edges &= mask
+        candidate_edges &= mask
+        reference_edges &= mask
+    if not depth_edges.any():
+        return 100.0 if not _long_edges(candidate_edges).any() else 0.0
+    recall = float(np.count_nonzero(depth_edges & _within(candidate_edges, 2)) / np.count_nonzero(depth_edges))
+    long_candidate = _long_edges(candidate_edges)
+    explained = _within(depth_edges | reference_edges, 2)
+    precision = (
+        float(np.count_nonzero(long_candidate & explained) / np.count_nonzero(long_candidate))
+        if long_candidate.any()
+        else 1.0
+    )
+    return round(max(0.0, min(100.0, 100.0 * (0.7 * recall + 0.3 * precision))), 1)
+
+
+def classify_geometry(score: float, minimum_score: float) -> FidelityStatus:
+    """Provisional bands; calibrated by the evaluation harness."""
+    if score >= 68 and minimum_score >= 55:
+        return "stable"
+    if score >= 48 and minimum_score >= 32:
+        return "review"
+    return "drift"
+
+
+def _instance_map_edges(instance_map: np.ndarray) -> np.ndarray:
+    """Boundaries of the authored instances when no depth track exists."""
+    cv = _require_cv2()
+    mask = np.any(instance_map != 0, axis=2) if instance_map.ndim == 3 else instance_map != 0
+    labels = (
+        instance_map[:, :, 0].astype(np.int32) * 65536
+        + instance_map[:, :, 1].astype(np.int32) * 256
+        + instance_map[:, :, 2].astype(np.int32)
+        if instance_map.ndim == 3
+        else instance_map.astype(np.int32)
+    )
+    gradient = cv.morphologyEx(labels.astype(np.float32), cv.MORPH_GRADIENT, np.ones((3, 3), np.uint8)) > 0
+    return (gradient & mask).astype(np.uint8) * 255
+
+
 def _decode_image(data: bytes) -> np.ndarray:
     cv = _require_cv2()
     frame = cv.imdecode(np.frombuffer(data, dtype=np.uint8), cv.IMREAD_COLOR)
@@ -243,6 +359,8 @@ def score_video_fidelity(
     preview_mime_type: str | None = None,
     route_keyframes: Sequence[bytes] = (),
     instance_id_maps: Sequence[bytes] = (),
+    depth_video: bytes | None = None,
+    depth_mime_type: str | None = None,
 ) -> VideoFidelityReport:
     """Compare generated frames with corresponding deterministic controls."""
     generated_frames = _sample_video(generated_video, SAMPLE_PROGRESS, ".mp4")
@@ -293,6 +411,45 @@ def score_video_fidelity(
         status = "drift"
     elif temporal_score < 65 and status == "stable":
         status = "review"
+
+    geometry_samples: tuple[FidelitySample, ...] = ()
+    geometry_source: GeometrySource | None = None
+    cv = _require_cv2()
+    if depth_video:
+        depth_suffix = ".webm" if (depth_mime_type or "").startswith("video/webm") else ".mp4"
+        depth_frames = _sample_video(depth_video, SAMPLE_PROGRESS, depth_suffix)
+        geometry_source = "depth_video"
+        geometry_samples = tuple(
+            FidelitySample(
+                time_seconds=round(progress * duration_seconds, 1),
+                score=score_geometry_frame(
+                    cv.cvtColor(depth, cv.COLOR_BGR2GRAY) if depth.ndim == 3 else depth,
+                    reference,
+                    generated,
+                ),
+            )
+            for progress, depth, reference, generated in zip(
+                SAMPLE_PROGRESS, depth_frames, reference_frames, generated_frames, strict=True
+            )
+        )
+    elif instance_id_maps:
+        decoded_maps = [_decode_image(value) for value in instance_id_maps]
+        geometry_source = "instance_maps"
+        geometry_samples = tuple(
+            FidelitySample(
+                time_seconds=round(progress * duration_seconds, 1),
+                score=score_geometry_frame(
+                    _instance_map_edges(decoded_maps[round(progress * (len(decoded_maps) - 1))]),
+                    reference,
+                    generated,
+                ),
+            )
+            for progress, reference, generated in zip(SAMPLE_PROGRESS, reference_frames, generated_frames, strict=True)
+        )
+    geometry_score = (
+        round(sum(sample.score for sample in geometry_samples) / len(geometry_samples), 1) if geometry_samples else None
+    )
+    geometry_min = min(sample.score for sample in geometry_samples) if geometry_samples else None
     return VideoFidelityReport(
         score=score,
         minimum_score=minimum_score,
@@ -300,4 +457,9 @@ def score_video_fidelity(
         samples=samples,
         protected_instance_min_score=protected_min,
         temporal_consistency_score=temporal_score,
+        geometry_score=geometry_score,
+        geometry_min_score=geometry_min,
+        geometry_status=classify_geometry(geometry_score, geometry_min) if geometry_score is not None else None,
+        geometry_samples=geometry_samples,
+        geometry_source=geometry_source,
     )

@@ -146,8 +146,10 @@ import {
   direct3DInstanceUserData,
   direct3DProposalUserData,
   direct3DZoneInstanceDescriptor,
+  createDirect3DLinearDepthSession,
   type Direct3DCaptureBundle,
   type Direct3DCaptureOptions,
+  type Direct3DLinearDepthSession,
 } from './direct3dCapture';
 import {
   cinematicRouteProgress,
@@ -160,9 +162,10 @@ import {
   type VideoRouteCaptureResult,
 } from '../videoRouteControls';
 import {
-  captureDeterministicVideo,
+  captureDeterministicVideoTracks,
   getCenterCropRect,
 } from '../deterministicVideoCapture';
+import { VIDEO_DEPTH_TRACK_BITRATE, videoDepthWindow } from '../videoDepthWindow';
 import { inspectNearFieldVideoSourceQuality } from '../videoSourceQuality';
 import {
   applyVideoFrameProjection,
@@ -2879,6 +2882,7 @@ export function GlobeSitePlannerMap({
     let releaseTileQueueHold: (() => void) | null = null;
     let streetRenderReadiness: VideoRouteCaptureResult['streetRenderReadiness'];
     let sourceFrameWarnings: string[] = [];
+    let depthSession: Direct3DLinearDepthSession | null = null;
     const waitForRouteContext = () => request.renderQuality === 'high'
       ? waitForVisibleTileCoverage(tileRenderer, {
           stableMs: 750,
@@ -3051,22 +3055,31 @@ export function GlobeSitePlannerMap({
       previewCanvas.height = renderProfile.outputHeight;
       const previewContext = previewCanvas.getContext('2d');
       if (!previewContext) throw new Error('The browser could not prepare the route preview canvas.');
-      const drawPreviewFrame = () => {
-        const sourceWidth = canvas.width;
-        const sourceHeight = canvas.height;
-        const { sx, sy, sw, sh } = getCenterCropRect(
-          sourceWidth,
-          sourceHeight,
-          previewCanvas.width,
-          previewCanvas.height,
-        );
-        previewContext.drawImage(canvas, sx, sy, sw, sh, 0, 0, previewCanvas.width, previewCanvas.height);
+      // The depth track shares the crop and timing of the beauty track, so a
+      // depth-guided engine sees exactly the geometry behind every frame. It
+      // renders through the live framebuffer like beauty; no capture bundle.
+      const depthCanvas = document.createElement('canvas');
+      depthCanvas.width = renderProfile.outputWidth;
+      depthCanvas.height = renderProfile.outputHeight;
+      const depthContext = depthCanvas.getContext('2d');
+      if (!depthContext) throw new Error('The browser could not prepare the depth track canvas.');
+      const drawCroppedFrame = (context: CanvasRenderingContext2D, target: HTMLCanvasElement) => {
+        const { sx, sy, sw, sh } = getCenterCropRect(canvas.width, canvas.height, target.width, target.height);
+        context.drawImage(canvas, sx, sy, sw, sh, 0, 0, target.width, target.height);
       };
+      const depthWindow = videoDepthWindow(request.cameraMotion, cameraOffset.length());
+      depthSession = createDirect3DLinearDepthSession(renderer, scene, depthWindow);
+      // Compile the depth shaders once, outside the timed frame loop.
+      applyRoutePose(cinematicRouteProgress(0));
+      await twoFrames();
+      depthSession.render(camera);
 
-      const previewCapture = await captureDeterministicVideo({
-        canvas: previewCanvas,
+      const trackCapture = await captureDeterministicVideoTracks({
+        tracks: [
+          { id: 'beauty', canvas: previewCanvas, bitrate: renderProfile.bitrate },
+          { id: 'depth', canvas: depthCanvas, bitrate: VIDEO_DEPTH_TRACK_BITRATE },
+        ],
         durationSeconds: request.durationSeconds,
-        bitrate: renderProfile.bitrate,
         renderFrame: async (frame) => {
           if (frame.index % 8 === 0) request.onProgress?.('rendering', frame.index, 192);
           applyRoutePose(cinematicRouteProgress(frame.progress));
@@ -3076,20 +3089,42 @@ export function GlobeSitePlannerMap({
           assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
           renderer.setRenderTarget(null);
           renderer.render(scene, camera);
-          drawPreviewFrame();
+          drawCroppedFrame(previewContext, previewCanvas);
+          depthSession?.render(camera);
+          drawCroppedFrame(depthContext, depthCanvas);
         },
       });
+      const previewCapture = trackCapture.tracks.beauty;
+      const depthCapture = trackCapture.tracks.depth;
       const previewBlob = previewCapture.blob;
-      const previewVideoBase64 = await new Promise<string>((resolve, reject) => {
+      const blobToDataUrl = (blob: Blob) => new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(String(reader.result));
         reader.onerror = () => reject(new Error('The route preview could not be encoded.'));
-        reader.readAsDataURL(previewBlob);
+        reader.readAsDataURL(blob);
       });
+      const previewVideoBase64 = await blobToDataUrl(previewBlob);
+      const controlVideos: NonNullable<VideoRouteCaptureResult['controlVideos']> = depthCapture
+        ? [{
+            role: 'depth',
+            videoBase64: await blobToDataUrl(depthCapture.blob),
+            mimeType: depthCapture.blob.type,
+            width: depthCapture.width,
+            height: depthCapture.height,
+            frameCount: depthCapture.frameCount,
+            fps: depthCapture.fps,
+            encoding: 'inverse_depth_8bit',
+            depthWindow,
+          }]
+        : [];
+      if (!depthCapture) {
+        console.warn('[Video Render] This browser recorded the preview without WebCodecs; no depth track, so depth-guided engines are unavailable for it.');
+      }
       return {
         keyframesBase64,
         previewVideoBase64,
         previewVideoMimeType: previewBlob.type,
+        controlVideos,
         geometryCheckpoints,
         previewCaptureProfile: {
           encoder: previewCapture.encoder,
@@ -3102,12 +3137,15 @@ export function GlobeSitePlannerMap({
           tileWarmupFrameCount: warmupFrames.length,
           tileSetHeld: Boolean(unloadPlugin),
           fixedTimestep: true,
+          controlVideoRoles: controlVideos.map((track) => track.role),
         },
         geometryPassProfile: videoGeometryPassProfile(geometryCheckpoints, previewCapture.frameCount),
         streetRenderReadiness,
         sourceFrameWarnings,
       };
     } finally {
+      depthSession?.dispose();
+      depthSession = null;
       releaseTileQueueHold?.();
       restoreTextureAnisotropy?.();
       camera.position.copy(originalCamera.position);

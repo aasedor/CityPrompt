@@ -95,6 +95,10 @@ PRESERVATION_SENTENCE = (
     "surrounding city stay exactly where they are with the same shapes and counts."
 )
 CLEAN_PLATE_SENTENCE = "No text, labels or markers."
+# Studio reels feel alive through the environment, never the architecture.
+MOTION_SENTENCE = (
+    "Leaves and water may move gently in a light breeze; every building, road and wall stays perfectly still."
+)
 ANCHOR_SENTENCE = "Match the materials, light and colour of the reference image."
 VACE_SCENE_SENTENCE = (
     "Architectural drone footage of this exact scene: every building, park, path and street sits "
@@ -106,7 +110,7 @@ VACE_NEGATIVE_PROMPT = (
 )
 
 STUDENT_NOTE_MAX_CHARS = 240
-MAX_LOOK_SHEET_PROMPT_CHARS = 800
+MAX_LOOK_SHEET_PROMPT_CHARS = 900
 
 _WHITESPACE = re.compile(r"\s+")
 
@@ -186,6 +190,7 @@ def build_omni_look_prompt(sheet: LookSheet) -> str:
                 sheet.note_sentence,
                 CAMERA_SENTENCE,
                 PRESERVATION_SENTENCE,
+                MOTION_SENTENCE,
                 CLEAN_PLATE_SENTENCE,
             ]
         )
@@ -202,6 +207,7 @@ def build_grok_look_prompt(sheet: LookSheet) -> str:
                 sheet.note_sentence,
                 CAMERA_SENTENCE,
                 PRESERVATION_SENTENCE,
+                MOTION_SENTENCE,
                 CLEAN_PLATE_SENTENCE,
             ]
         )
@@ -219,6 +225,7 @@ def build_vace_depth_prompt(sheet: LookSheet) -> tuple[str, str]:
                 sheet.entourage,
                 sheet.note_sentence,
                 CONTROL_CAMERA_SENTENCE,
+                MOTION_SENTENCE,
             ]
         )
     )

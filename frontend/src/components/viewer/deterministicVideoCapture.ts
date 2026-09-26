@@ -35,11 +35,35 @@ export interface SourceCropRect {
   sh: number;
 }
 
+/** One canvas encoded alongside the others from the same frame clock. */
+export interface DeterministicVideoTrack {
+  /** Stable id the caller reads the encoded result back with, e.g. 'beauty'. */
+  id: string;
+  canvas: HTMLCanvasElement;
+  bitrate?: number;
+}
+
+export interface DeterministicVideoTracksResult {
+  tracks: Record<string, DeterministicVideoCaptureResult>;
+  encoder: DeterministicVideoEncoder;
+  frameCount: number;
+  fps: number;
+  /** Requested tracks the compatibility path could not produce. */
+  droppedTrackIds: string[];
+}
+
 interface CaptureOptions {
   canvas: HTMLCanvasElement;
   durationSeconds?: number;
   fps?: number;
   bitrate?: number;
+  renderFrame: (frame: DeterministicVideoFrame) => Promise<void> | void;
+}
+
+interface TracksCaptureOptions {
+  tracks: DeterministicVideoTrack[];
+  durationSeconds?: number;
+  fps?: number;
   renderFrame: (frame: DeterministicVideoFrame) => Promise<void> | void;
 }
 
@@ -183,73 +207,98 @@ const waitForEncoderCapacity = async (encoder: VideoEncoder, maxQueueSize = 6) =
   }
 };
 
+interface PreparedTrack {
+  track: DeterministicVideoTrack;
+  config: VideoEncoderConfig;
+}
+
+/**
+ * Encode every track from one shared frame clock. `renderFrame` runs once per
+ * index; each track's canvas is then encoded with the same timestamp, so a
+ * depth or mask track lines up with the beauty track frame for frame.
+ */
 async function captureWithWebCodecs(
-  options: Required<Omit<CaptureOptions, 'renderFrame'>> & Pick<CaptureOptions, 'renderFrame'>,
+  options: { fps: number; renderFrame: TracksCaptureOptions['renderFrame'] },
   frames: DeterministicVideoFrame[],
-  config: VideoEncoderConfig,
-): Promise<DeterministicVideoCaptureResult> {
+  prepared: PreparedTrack[],
+): Promise<Record<string, DeterministicVideoCaptureResult>> {
   const { VideoEncoderClass, VideoFrameClass } = webCodecsGlobals();
   if (!VideoEncoderClass || !VideoFrameClass) throw new Error('WebCodecs became unavailable during capture.');
 
-  const target = new ArrayBufferTarget();
-  const muxer = new Muxer({
-    target,
-    video: {
-      codec: 'avc',
-      width: options.canvas.width,
-      height: options.canvas.height,
-      frameRate: options.fps,
-    },
-    fastStart: 'in-memory',
+  const lanes = prepared.map(({ track, config }) => {
+    const target = new ArrayBufferTarget();
+    const muxer = new Muxer({
+      target,
+      video: {
+        codec: 'avc',
+        width: track.canvas.width,
+        height: track.canvas.height,
+        frameRate: options.fps,
+      },
+      fastStart: 'in-memory',
+    });
+    let encoderError: Error | null = null;
+    const encoder = new VideoEncoderClass({
+      output: (chunk, metadata) => muxer.addVideoChunk(chunk, metadata),
+      error: (error) => {
+        encoderError = error instanceof Error ? error : new Error(String(error));
+      },
+    });
+    encoder.configure(config);
+    return { track, target, muxer, encoder, error: () => encoderError };
   });
-  let encoderError: Error | null = null;
-  const encoder = new VideoEncoderClass({
-    output: (chunk, metadata) => muxer.addVideoChunk(chunk, metadata),
-    error: (error) => {
-      encoderError = error instanceof Error ? error : new Error(String(error));
-    },
-  });
-  encoder.configure(config);
 
   try {
     for (const frame of frames) {
       await options.renderFrame(frame);
-      if (encoderError) throw encoderError;
-      await waitForEncoderCapacity(encoder);
-      const videoFrame = new VideoFrameClass(options.canvas, {
-        timestamp: frame.timestampMicroseconds,
-        duration: frame.durationMicroseconds,
-        alpha: 'discard',
-      });
-      try {
-        encoder.encode(videoFrame, {
-          keyFrame: frame.index === 0 || frame.index % (options.fps * 2) === 0,
+      for (const lane of lanes) {
+        const encoderError = lane.error();
+        if (encoderError) throw encoderError;
+        await waitForEncoderCapacity(lane.encoder);
+        const videoFrame = new VideoFrameClass(lane.track.canvas, {
+          timestamp: frame.timestampMicroseconds,
+          duration: frame.durationMicroseconds,
+          alpha: 'discard',
         });
-      } finally {
-        videoFrame.close();
+        try {
+          lane.encoder.encode(videoFrame, {
+            keyFrame: frame.index === 0 || frame.index % (options.fps * 2) === 0,
+          });
+        } finally {
+          videoFrame.close();
+        }
       }
     }
-    await encoder.flush();
-    if (encoderError) throw encoderError;
-    muxer.finalize();
+    for (const lane of lanes) {
+      await lane.encoder.flush();
+      const encoderError = lane.error();
+      if (encoderError) throw encoderError;
+      lane.muxer.finalize();
+    }
   } finally {
-    if (encoder.state !== 'closed') encoder.close();
+    for (const lane of lanes) {
+      if (lane.encoder.state !== 'closed') lane.encoder.close();
+    }
   }
 
-  const blob = new Blob([target.buffer], { type: 'video/mp4' });
-  if (blob.size < 1024) throw new Error('The fixed-frame H.264 route render was unexpectedly empty.');
-  return {
-    blob,
-    encoder: 'webcodecs_h264',
-    frameCount: frames.length,
-    fps: options.fps,
-    width: options.canvas.width,
-    height: options.canvas.height,
-  };
+  const results: Record<string, DeterministicVideoCaptureResult> = {};
+  for (const lane of lanes) {
+    const blob = new Blob([lane.target.buffer], { type: 'video/mp4' });
+    if (blob.size < 1024) throw new Error(`The fixed-frame H.264 ${lane.track.id} render was unexpectedly empty.`);
+    results[lane.track.id] = {
+      blob,
+      encoder: 'webcodecs_h264',
+      frameCount: frames.length,
+      fps: options.fps,
+      width: lane.track.canvas.width,
+      height: lane.track.canvas.height,
+    };
+  }
+  return results;
 }
 
 async function captureWithMediaRecorder(
-  options: Required<Omit<CaptureOptions, 'renderFrame'>> & Pick<CaptureOptions, 'renderFrame'>,
+  options: { canvas: HTMLCanvasElement; fps: number; bitrate: number; renderFrame: TracksCaptureOptions['renderFrame'] },
   frames: DeterministicVideoFrame[],
 ): Promise<DeterministicVideoCaptureResult> {
   if (typeof MediaRecorder === 'undefined' || typeof options.canvas.captureStream !== 'function') {
@@ -301,35 +350,72 @@ async function captureWithMediaRecorder(
 }
 
 /**
- * Encode a fixed-timestep City Prompt route locally.
+ * Encode one or more canvases from a single fixed-timestep City Prompt route.
  *
- * WebCodecs is the preferred path because timestamps are supplied explicitly;
- * MediaRecorder is retained only so older browsers can still prepare a pilot.
+ * WebCodecs is the preferred path because timestamps are supplied explicitly
+ * and every track shares them. MediaRecorder is retained only so older
+ * browsers can still prepare a pilot; it records the first track alone and
+ * reports the others as dropped.
  */
-export async function captureDeterministicVideo(
-  options: CaptureOptions,
-): Promise<DeterministicVideoCaptureResult> {
+export async function captureDeterministicVideoTracks(
+  options: TracksCaptureOptions,
+): Promise<DeterministicVideoTracksResult> {
+  if (options.tracks.length === 0) throw new Error('A deterministic capture needs at least one track.');
+  if (new Set(options.tracks.map((track) => track.id)).size !== options.tracks.length) {
+    throw new Error('Deterministic capture track ids must be unique.');
+  }
   const durationSeconds = clampPositiveInteger(
     options.durationSeconds ?? CITY_PROMPT_VIDEO_DURATION_SECONDS,
     CITY_PROMPT_VIDEO_DURATION_SECONDS,
   );
   const fps = clampPositiveInteger(options.fps ?? CITY_PROMPT_VIDEO_FPS, CITY_PROMPT_VIDEO_FPS);
-  const bitrate = clampPositiveInteger(options.bitrate ?? CITY_PROMPT_VIDEO_BITRATE, CITY_PROMPT_VIDEO_BITRATE);
-  const completeOptions = { ...options, durationSeconds, fps, bitrate };
   const frames = buildDeterministicVideoFrames(durationSeconds, fps);
-  const config = await supportedEncoderConfiguration(
-    options.canvas.width,
-    options.canvas.height,
-    fps,
-    bitrate,
+  const bitrateOf = (track: DeterministicVideoTrack) => (
+    clampPositiveInteger(track.bitrate ?? CITY_PROMPT_VIDEO_BITRATE, CITY_PROMPT_VIDEO_BITRATE)
   );
 
-  if (config) {
+  const prepared: PreparedTrack[] = [];
+  for (const track of options.tracks) {
+    const config = await supportedEncoderConfiguration(track.canvas.width, track.canvas.height, fps, bitrateOf(track));
+    if (!config) {
+      prepared.length = 0;
+      break;
+    }
+    prepared.push({ track, config });
+  }
+
+  if (prepared.length === options.tracks.length) {
     try {
-      return await captureWithWebCodecs(completeOptions, frames, config);
+      const tracks = await captureWithWebCodecs({ fps, renderFrame: options.renderFrame }, frames, prepared);
+      return { tracks, encoder: 'webcodecs_h264', frameCount: frames.length, fps, droppedTrackIds: [] };
     } catch (error) {
       console.warn('[Video Render] Fixed-frame H.264 encoding failed; using the WebM compatibility path.', error);
     }
   }
-  return captureWithMediaRecorder(completeOptions, frames);
+
+  const [primary, ...rest] = options.tracks;
+  const result = await captureWithMediaRecorder(
+    { canvas: primary.canvas, fps, bitrate: bitrateOf(primary), renderFrame: options.renderFrame },
+    frames,
+  );
+  return {
+    tracks: { [primary.id]: result },
+    encoder: 'media_recorder_webm',
+    frameCount: frames.length,
+    fps,
+    droppedTrackIds: rest.map((track) => track.id),
+  };
+}
+
+/** Encode a single canvas; kept for callers that only need the beauty track. */
+export async function captureDeterministicVideo(
+  options: CaptureOptions,
+): Promise<DeterministicVideoCaptureResult> {
+  const result = await captureDeterministicVideoTracks({
+    tracks: [{ id: 'primary', canvas: options.canvas, bitrate: options.bitrate }],
+    durationSeconds: options.durationSeconds,
+    fps: options.fps,
+    renderFrame: options.renderFrame,
+  });
+  return result.tracks.primary;
 }

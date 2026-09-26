@@ -100,28 +100,44 @@ def decode_guide_image(value: str) -> GuideImage:
     return GuideImage(data=data, mime_type=mime_type, width=width, height=height)
 
 
-def decode_preview_video(value: str, declared_mime_type: str) -> PreviewVideo:
-    """Decode the browser-recorded deterministic route preview safely."""
+def decode_video_blob(
+    value: str,
+    declared_mime_type: str,
+    *,
+    max_bytes: int,
+    label: str,
+) -> PreviewVideo:
+    """Decode a browser-encoded WebM/MP4 data URL and verify its container magic."""
     encoded = value.split(",", 1)[1] if "," in value else value
     try:
         data = base64.b64decode(encoded, validate=True)
     except (binascii.Error, ValueError) as exc:
-        raise ValueError("The route preview is not valid base64 video data.") from exc
+        raise ValueError(f"The {label} is not valid base64 video data.") from exc
     if len(data) < 1024:
-        raise ValueError("The route preview is empty or incomplete.")
-    if len(data) > MAX_PREVIEW_VIDEO_BYTES:
-        raise ValueError("The route preview exceeds the 24 MB pilot limit.")
+        raise ValueError(f"The {label} is empty or incomplete.")
+    if len(data) > max_bytes:
+        raise ValueError(f"The {label} exceeds the {max_bytes // (1024 * 1024)} MB pilot limit.")
 
     mime_type = declared_mime_type.split(";", 1)[0].strip().lower()
     if mime_type not in {"video/webm", "video/mp4"}:
-        raise ValueError("The route preview must be WebM or MP4.")
+        raise ValueError(f"The {label} must be WebM or MP4.")
     is_webm = data.startswith(b"\x1aE\xdf\xa3")
     is_mp4 = len(data) >= 12 and data[4:8] == b"ftyp"
     if mime_type == "video/webm" and not is_webm:
-        raise ValueError("The route preview MIME type does not match its WebM content.")
+        raise ValueError(f"The {label} MIME type does not match its WebM content.")
     if mime_type == "video/mp4" and not is_mp4:
-        raise ValueError("The route preview MIME type does not match its MP4 content.")
+        raise ValueError(f"The {label} MIME type does not match its MP4 content.")
     return PreviewVideo(data=data, mime_type=mime_type)
+
+
+def decode_preview_video(value: str, declared_mime_type: str) -> PreviewVideo:
+    """Decode the browser-recorded deterministic route preview safely."""
+    return decode_video_blob(
+        value,
+        declared_mime_type,
+        max_bytes=MAX_PREVIEW_VIDEO_BYTES,
+        label="route preview",
+    )
 
 
 def _screen_region(point: Mapping[str, float]) -> str:

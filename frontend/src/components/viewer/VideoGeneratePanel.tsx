@@ -150,6 +150,12 @@ export interface VideoAttempt {
   student_note?: string | null;
   prompt_profile?: string | null;
   prompt_chars?: number | null;
+  control_video_roles?: string[];
+  geometry_score?: number | null;
+  geometry_min_score?: number | null;
+  geometry_status?: 'stable' | 'review' | 'drift' | null;
+  geometry_samples?: Array<{ time_seconds: number; score: number }>;
+  geometry_source?: 'depth_video' | 'instance_maps' | null;
 }
 
 function fidelityTone(status: VideoAttempt['fidelity_status']): string {
@@ -229,6 +235,19 @@ interface VideoCaptureProfile {
   normal_checkpoint_count: number;
   material_checkpoint_count: number;
   motion_frame_count: number;
+  control_video_roles?: Array<'depth'>;
+}
+
+interface PreparedControlVideo {
+  role: 'depth';
+  video_base64: string;
+  mime_type: string;
+  width: number;
+  height: number;
+  frame_count: 192;
+  fps: 24;
+  encoding: 'inverse_depth_8bit';
+  depth_window: { near_meters: number; far_meters: number };
 }
 
 interface PreparedVideoRequest {
@@ -256,6 +275,7 @@ interface PreparedVideoRequest {
     camera: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']>[number]['camera'];
   }>;
   capture_profile?: VideoCaptureProfile;
+  control_videos?: PreparedControlVideo[];
   route_points: VideoRoutePoint[];
   camera_motion: MotionId;
   duration_seconds: 8;
@@ -444,6 +464,9 @@ export function VideoGeneratePanel({
     ? (routeControls.sourceFrameWarnings ?? [])
     : [];
   const needsSourceAcknowledgement = sourceFrameWarnings.length > 0 && !acknowledgedSourceWarnings;
+  const depthTrack = routeControls?.signature === routeCaptureSignature
+    ? routeControls.controlVideos?.find((track) => track.role === 'depth') ?? null
+    : null;
 
   const lookSignature = `${lookStyle}:${addPeople ? 'people' : 'no-people'}:${addVehicles ? 'vehicles' : 'no-vehicles'}:${sanitizeStudentNote(studentNote)}`;
   const currentSignature = useMemo(
@@ -614,6 +637,19 @@ export function VideoGeneratePanel({
         preview_video_base64: activeControls.previewVideoBase64,
         preview_video_mime_type: activeControls.previewVideoMimeType,
       } : {}),
+      ...(controlMode === 'preview_video' && activeControls?.controlVideos?.length ? {
+        control_videos: activeControls.controlVideos.map((track): PreparedControlVideo => ({
+          role: track.role,
+          video_base64: track.videoBase64,
+          mime_type: track.mimeType,
+          width: track.width,
+          height: track.height,
+          frame_count: 192,
+          fps: 24,
+          encoding: track.encoding,
+          depth_window: { near_meters: track.depthWindow.nearMeters, far_meters: track.depthWindow.farMeters },
+        })),
+      } : {}),
       ...(activeControls?.geometryCheckpoints?.length ? {
         geometry_checkpoints: activeControls.geometryCheckpoints.map((checkpoint) => ({
           progress: checkpoint.progress,
@@ -648,6 +684,9 @@ export function VideoGeneratePanel({
           normal_checkpoint_count: activeControls.geometryPassProfile?.normalCheckpointCount ?? 0,
           material_checkpoint_count: activeControls.geometryPassProfile?.materialCheckpointCount ?? 0,
           motion_frame_count: activeControls.geometryPassProfile?.motionFrameCount ?? 0,
+          control_video_roles: controlMode === 'preview_video'
+            ? (activeControls.previewCaptureProfile.controlVideoRoles ?? [])
+            : [],
         },
       } : {}),
       route_points: routePoints,
@@ -921,6 +960,13 @@ export function VideoGeneratePanel({
                 )}
                 <a href={routeControls.previewVideoBase64} download={`city-prompt-guide.${routeControls.previewVideoMimeType.includes('mp4') ? 'mp4' : 'webm'}`}
                   className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-xs font-semibold text-white underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"><Download size={14} />Download preview</a>
+                {depthTrack && (
+                  <a href={depthTrack.videoBase64} download="city-prompt-depth-track.mp4"
+                    className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-xs font-semibold text-white underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                    title={`Inverse depth, white ${Math.round(depthTrack.depthWindow.nearMeters)} m to black ${Math.round(depthTrack.depthWindow.farMeters)} m`}>
+                    <Download size={14} />Depth track · {depthTrack.frameCount} frames
+                  </a>
+                )}
                 {sourceFrameWarnings.length > 0 && (
                   <div className="mt-2 rounded-lg border border-[#ffd38a]/40 bg-[#ffd38a]/[0.08] px-2.5 py-2 text-[9px] text-white/70">
                     <p className="font-black uppercase text-[#ffd38a]">Source frames to check</p>
@@ -1192,6 +1238,11 @@ export function VideoGeneratePanel({
                         {selectedAttempt.is_benchmark && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-[#151515] px-2 py-0.5 text-[8px] font-black uppercase text-white">
                             <Star size={9} fill="currentColor" /> Benchmark
+                          </span>
+                        )}
+                        {typeof selectedAttempt.geometry_score === 'number' && (
+                          <span className={`rounded-full px-2 py-0.5 text-[8px] font-black uppercase ${fidelityTone(selectedAttempt.geometry_status)}`} title="Silhouettes compared with the 3D depth track; ignores lighting and materials">
+                            Geometry {Math.round(selectedAttempt.geometry_score)}/100
                           </span>
                         )}
                         {typeof selectedAttempt.fidelity_score === 'number' && (

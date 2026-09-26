@@ -1,5 +1,6 @@
 import type { StreetRenderReadiness } from './globe/streetRenderReadiness';
 import type { VideoRenderQuality } from './videoRenderQuality';
+import type { VideoDepthWindow } from './videoDepthWindow';
 import type {
   Direct3DCameraManifest,
   Direct3DInstanceDescriptor,
@@ -23,10 +24,27 @@ export interface VideoRouteCaptureRequest {
   onProgress?: (phase: 'loading' | 'checking' | 'rendering', completed: number, total: number) => void;
 }
 
+export type VideoControlVideoRole = 'depth';
+
+/** A per-frame geometry track rendered from the same 192 camera poses as the
+ * beauty preview, for engines that accept a control video. */
+export interface VideoControlVideoTrack {
+  role: VideoControlVideoRole;
+  videoBase64: string;
+  mimeType: string;
+  width: number;
+  height: number;
+  frameCount: number;
+  fps: number;
+  encoding: 'inverse_depth_8bit';
+  depthWindow: VideoDepthWindow;
+}
+
 export interface VideoRouteCaptureResult {
   keyframesBase64: string[];
   previewVideoBase64: string;
   previewVideoMimeType: string;
+  controlVideos?: VideoControlVideoTrack[];
   geometryCheckpoints?: Array<{
     progress: number;
     beautyImageBase64: string;
@@ -51,6 +69,7 @@ export interface VideoRouteCaptureResult {
     tileWarmupFrameCount?: number;
     tileSetHeld?: boolean;
     fixedTimestep: true;
+    controlVideoRoles?: VideoControlVideoRole[];
   };
   geometryPassProfile?: {
     checkpointCount: number;

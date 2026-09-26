@@ -271,7 +271,7 @@ def test_look_sheet_profile_builds_a_short_omni_prompt_without_a_scene_brief():
     assert negative_prompt is None
     assert prompt.startswith("Change only the look of this video: blue-hour night")
     assert "Note: market night." in prompt
-    assert len(prompt) <= 800
+    assert len(prompt) <= 900
     assert "CHECKSUM" not in prompt and "Image1" not in prompt
 
 
