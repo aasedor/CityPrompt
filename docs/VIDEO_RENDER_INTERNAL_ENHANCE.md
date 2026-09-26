@@ -116,9 +116,11 @@ Cleanup only requires `ffmpeg`.
 1. Improve the deterministic source before adding more generation: PBR
    materials, shadows, atmospheric lighting, antialiasing, higher-resolution
    capture, and authored vegetation.
-2. Expand the synchronized beauty, depth, class-ID, instance-ID, and normal
-   controls from six audited checkpoints to all 192 frames, and derive dense
-   motion vectors from the recorded camera/object transforms.
+2. ~~Expand the synchronized depth control from six audited checkpoints to all
+   192 frames~~ — done: the route capture now encodes a per-frame inverse-depth
+   track beside the preview (see `VIDEO_RENDER_STRUCTURE_LOCK.md`). Still open:
+   per-frame class/instance/normal tracks and dense motion vectors from the
+   recorded camera/object transforms.
 3. Train a small temporally consistent enhancement model on City Prompt's own
    render pairs, conditioned by depth and instance identity. Losses should
    heavily penalize silhouette, courtyard, roofline, and context drift.
