@@ -59,6 +59,14 @@ from app.services.seedance_video import (
 )
 from app.services.scene_revision import compiled_scene_revision_sha256
 from app.services.video_fidelity import FidelityStatus, score_video_fidelity
+from app.services.video_prompts import (
+    DEFAULT_LOOK_STYLE,
+    STUDENT_NOTE_MAX_CHARS,
+    LookStyle,
+    PromptProfile,
+    build_look_sheet,
+    build_omni_look_prompt,
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -160,13 +168,16 @@ class VideoPilotRequest(BaseModel):
     route_points: list[RoutePoint] = Field(..., min_length=2, max_length=24)
     camera_motion: CameraMotion = "path_follow"
     duration_seconds: Literal[8] = 8
-    scene_brief: str = Field(
-        default=(
-            "Preserve every authored building, open space, and surrounding context exactly as depicted in Image1."
-        ),
-        min_length=20,
-        max_length=12_000,
-    )
+    # Look sheet: the short, structured description of the finished footage.
+    # Geometry, camera and timing travel as data (preview and control videos),
+    # so the prompt never restates the plan.
+    look_style: LookStyle = DEFAULT_LOOK_STYLE
+    add_people: bool = False
+    add_vehicles: bool = False
+    student_note: str = Field(default="", max_length=STUDENT_NOTE_MAX_CHARS)
+    prompt_profile: PromptProfile = "look_sheet"
+    # Legacy per-zone lock prose; only the legacy profile (and Seedance) reads it.
+    scene_brief: str | None = Field(default=None, min_length=20, max_length=12_000)
     community_3d_claims: list[Direct3DCommunityZoneClaim] = Field(
         default_factory=list,
         max_length=2000,
@@ -195,6 +206,10 @@ class VideoPreflightResponse(BaseModel):
     reference_image_count: int
     geometry_checkpoint_count: int = 0
     scene_revision_sha256: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
+    prompt_chars: int = 0
+    negative_prompt_preview: str | None = None
+    look_style: str | None = None
+    prompt_profile: PromptProfile = "look_sheet"
 
 
 class VideoAttemptResponse(BaseModel):
@@ -237,6 +252,13 @@ class VideoAttemptResponse(BaseModel):
         default=None,
         pattern=r"^[a-fA-F0-9]{64}$",
     )
+    look_style: str | None = None
+    add_people: bool | None = None
+    add_vehicles: bool | None = None
+    student_note: str | None = None
+    prompt_profile: str | None = None
+    negative_prompt: str | None = None
+    prompt_chars: int | None = None
 
 
 class VideoGenerateResponse(BaseModel):
@@ -604,6 +626,46 @@ def _decode_geometry_checkpoints(req: VideoPilotRequest) -> list[dict[str, Any]]
     return decoded
 
 
+INTERNAL_ENHANCE_DEFAULT_BRIEF = (
+    "Preserve every authored building, open space, and surrounding context exactly as depicted in the route preview."
+)
+
+
+def _effective_prompt_profile(req: VideoPilotRequest) -> PromptProfile:
+    """Seedance and the local cleanup still read the legacy prose; look-sheet engines never do."""
+    if req.provider in {"seedance_mini", "internal_enhance"}:
+        return "legacy"
+    return req.prompt_profile
+
+
+def _build_provider_prompt(req: VideoPilotRequest, *, keyframe_count: int) -> tuple[str, str | None]:
+    """Return (prompt, negative_prompt) for the provider and prompt profile."""
+    if req.provider == "internal_enhance":
+        return build_internal_video_contract(req.scene_brief or INTERNAL_ENHANCE_DEFAULT_BRIEF), None
+    if _effective_prompt_profile(req) == "legacy":
+        if not req.scene_brief:
+            raise ValueError("The legacy prompt profile requires a scene brief.")
+        return (
+            build_cinematic_prompt(
+                route_points=[point.model_dump() for point in req.route_points],
+                camera_motion=req.camera_motion,
+                scene_brief=req.scene_brief,
+                duration_seconds=req.duration_seconds,
+                control_mode=req.control_mode,
+                keyframe_count=keyframe_count if req.control_mode == "preview_video" else keyframe_count or 1,
+                provider=req.provider,
+            ),
+            None,
+        )
+    sheet = build_look_sheet(
+        look_style=req.look_style,
+        add_people=req.add_people,
+        add_vehicles=req.add_vehicles,
+        student_note=req.student_note,
+    )
+    return build_omni_look_prompt(sheet), None
+
+
 def _preflight_values(req: VideoPilotRequest):
     try:
         guide = decode_guide_image(req.guide_frame_base64)
@@ -639,22 +701,10 @@ def _preflight_values(req: VideoPilotRequest):
             raise ValueError("The bounded Seedance pilot requires preview-video mode.")
         if req.provider == "internal_enhance" and req.control_mode != "preview_video":
             raise ValueError("Internal Enhance requires the deterministic preview-video mode.")
-        prompt = (
-            build_internal_video_contract(req.scene_brief)
-            if req.provider == "internal_enhance"
-            else build_cinematic_prompt(
-                route_points=[point.model_dump() for point in req.route_points],
-                camera_motion=req.camera_motion,
-                scene_brief=req.scene_brief,
-                duration_seconds=req.duration_seconds,
-                control_mode=req.control_mode,
-                keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
-                provider=req.provider,
-            )
-        )
+        prompt, negative_prompt = _build_provider_prompt(req, keyframe_count=len(keyframes))
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return guide, keyframes, preview, geometry_checkpoints, prompt
+    return guide, keyframes, preview, geometry_checkpoints, prompt, negative_prompt
 
 
 @router.post("/preflight", response_model=VideoPreflightResponse)
@@ -670,7 +720,7 @@ async def preflight_video(
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
-    guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, prompt, negative_prompt = _preflight_values(req)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
@@ -718,6 +768,10 @@ async def preflight_video(
         reference_image_count=len(keyframes),
         geometry_checkpoint_count=len(geometry_checkpoints),
         scene_revision_sha256=scene_revision_sha256,
+        prompt_chars=len(prompt),
+        negative_prompt_preview=negative_prompt,
+        look_style=req.look_style if _effective_prompt_profile(req) == "look_sheet" else None,
+        prompt_profile=_effective_prompt_profile(req),
     )
 
 
@@ -847,7 +901,8 @@ async def generate_video(
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
-    guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, prompt, negative_prompt = _preflight_values(req)
+    prompt_profile = _effective_prompt_profile(req)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
@@ -950,6 +1005,13 @@ async def generate_video(
         "error": None,
         "interaction_id": None,
         "prompt": prompt,
+        "negative_prompt": negative_prompt,
+        "prompt_chars": len(prompt),
+        "prompt_profile": prompt_profile,
+        "look_style": req.look_style if prompt_profile == "look_sheet" else None,
+        "add_people": req.add_people if prompt_profile == "look_sheet" else None,
+        "add_vehicles": req.add_vehicles if prompt_profile == "look_sheet" else None,
+        "student_note": (req.student_note or None) if prompt_profile == "look_sheet" else None,
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,
@@ -1173,6 +1235,9 @@ async def generate_video(
                     "duration_seconds": req.duration_seconds,
                     "model": model,
                     "control_mode": req.control_mode,
+                    "prompt_profile": prompt_profile,
+                    "look_style": req.look_style if prompt_profile == "look_sheet" else None,
+                    "prompt_chars": len(prompt),
                     "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
                     "interaction_id": interaction_id,
                     "seed": output_seed,
@@ -1221,6 +1286,8 @@ async def generate_video(
                     "project_id": str(req.project_id),
                     "model": model,
                     "control_mode": req.control_mode,
+                    "prompt_profile": prompt_profile,
+                    "look_style": req.look_style if prompt_profile == "look_sheet" else None,
                     "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
                     "interaction_id": interaction_id,
                     "estimated_provider_cost_usd": estimated_cost,

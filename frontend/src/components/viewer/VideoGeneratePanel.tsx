@@ -34,6 +34,13 @@ import {
   type VideoRoutePoint,
 } from './videoRenderPath';
 import { buildVideoSceneContract } from './videoSceneContract';
+import { VideoLookControls } from './VideoLookControls';
+import {
+  DEFAULT_VIDEO_LOOK,
+  sanitizeStudentNote,
+  videoLookLabel,
+  type VideoLookStyle,
+} from './videoLookSheet';
 import { useVideoRoutePreview } from './useVideoRoutePreview';
 import {
   type VideoControlMode,
@@ -52,10 +59,10 @@ const MOTIONS = [
   { id: 'detail_flythrough', name: 'Low detail fly-through', detail: '6 m · between buildings' },
 ] as const;
 
-const CONTROL_MODES: Array<{ id: VideoControlMode; name: string; detail: string }> = [
-  { id: 'preview_video', name: 'Preview-video edit', detail: 'Recommended · exact 8-second camera' },
-  { id: 'multi_keyframe', name: 'Route keyframes', detail: 'Experimental · 6 exact City Prompt views' },
-  { id: 'single_frame', name: 'Single frame', detail: 'Original baseline method' },
+const CONTROL_MODES: Array<{ id: VideoControlMode; name: string; detail: string; advanced: boolean }> = [
+  { id: 'preview_video', name: 'Finish my preview', detail: 'Recommended · your exact 8-second camera', advanced: false },
+  { id: 'multi_keyframe', name: 'Route keyframes', detail: 'Advanced · 6 exact City Prompt views', advanced: true },
+  { id: 'single_frame', name: 'Single frame', detail: 'Advanced · original baseline', advanced: true },
 ];
 
 type MotionId = typeof MOTIONS[number]['id'];
@@ -137,6 +144,12 @@ export interface VideoAttempt {
   processing_seconds?: number | null;
   enhancement_warning?: string | null;
   scene_revision_sha256?: string | null;
+  look_style?: string | null;
+  add_people?: boolean | null;
+  add_vehicles?: boolean | null;
+  student_note?: string | null;
+  prompt_profile?: string | null;
+  prompt_chars?: number | null;
 }
 
 function fidelityTone(status: VideoAttempt['fidelity_status']): string {
@@ -158,7 +171,8 @@ function videoAttemptLabel(attempt: VideoAttempt): string {
       : attempt.control_mode === 'preview_video'
         ? 'Preview-video edit'
         : 'Single frame';
-  if (attempt.style === 'source_fidelity') return `${provider} · ${control} · ${motion}`;
+  const look = attempt.look_style ? ` · ${videoLookLabel(attempt.look_style)}` : '';
+  if (attempt.style === 'source_fidelity') return `${provider} · ${control} · ${motion}${look}`;
   return `${provider} · ${attempt.style.split(/[_-]/).join(' ')} · ${motion}`;
 }
 
@@ -191,6 +205,10 @@ interface PreflightResult {
   model: string;
   reference_image_count: number;
   scene_revision_sha256: string;
+  prompt_chars?: number;
+  negative_prompt_preview?: string | null;
+  look_style?: string | null;
+  prompt_profile?: 'look_sheet' | 'legacy';
 }
 
 interface VideoCaptureProfile {
@@ -241,7 +259,12 @@ interface PreparedVideoRequest {
   route_points: VideoRoutePoint[];
   camera_motion: MotionId;
   duration_seconds: 8;
-  scene_brief: string;
+  scene_brief?: string;
+  look_style: VideoLookStyle;
+  add_people: boolean;
+  add_vehicles: boolean;
+  student_note: string;
+  prompt_profile: 'look_sheet' | 'legacy';
   community_3d_claims: Array<{
     zone_id: string;
     source_hash: string;
@@ -360,6 +383,14 @@ export function VideoGeneratePanel({
   const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('high');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
+  // The look sheet: what the finished footage should look like. Geometry and
+  // the camera are never choices here; they come from the 3D scene and route.
+  const [lookStyle, setLookStyle] = useState<VideoLookStyle>(DEFAULT_VIDEO_LOOK);
+  const [addPeople, setAddPeople] = useState(false);
+  const [addVehicles, setAddVehicles] = useState(false);
+  const [studentNote, setStudentNote] = useState('');
+  const [showAdvancedModes, setShowAdvancedModes] = useState(false);
+  const [showPromptPreview, setShowPromptPreview] = useState(false);
   const [sourceCaptureVersion, setSourceCaptureVersion] = useState(0);
   const [previewProgress, setPreviewProgress] = useState('Preparing your route…');
   const [pilot, setPilot] = useState<VideoPilotState>({
@@ -378,6 +409,9 @@ export function VideoGeneratePanel({
   // the free preview and decides whether the paid pass is worth it.
   const [acknowledgedSourceWarnings, setAcknowledgedSourceWarnings] = useState(false);
   const [prepared, setPrepared] = useState<PreparedVideoRequest | null>(null);
+  // Scene contract the prepared body was built from; the body itself no longer
+  // carries the contract text for look-sheet engines.
+  const [preparedSceneSignature, setPreparedSceneSignature] = useState<string | null>(null);
   const [isPreflighting, setIsPreflighting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isScoring, setIsScoring] = useState(false);
@@ -411,17 +445,21 @@ export function VideoGeneratePanel({
     : [];
   const needsSourceAcknowledgement = sourceFrameWarnings.length > 0 && !acknowledgedSourceWarnings;
 
+  const lookSignature = `${lookStyle}:${addPeople ? 'people' : 'no-people'}:${addVehicles ? 'vehicles' : 'no-vehicles'}:${sanitizeStudentNote(studentNote)}`;
   const currentSignature = useMemo(
-    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
-    [controlMode, currentSceneRevisionSignature, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
+    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}:${lookSignature}`,
+    [controlMode, currentSceneRevisionSignature, internalEnhanceQuality, lookSignature, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${preparedSceneSignature === sceneContract.signature ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}:${prepared.look_style}:${prepared.add_people ? 'people' : 'no-people'}:${prepared.add_vehicles ? 'vehicles' : 'no-vehicles'}:${prepared.student_note}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
   const providerCanRun = providerUsage.attempts_remaining === null
     || providerUsage.attempts_remaining > 0;
+  // Look-sheet engines never receive the per-zone lock prose; only the legacy
+  // readers (Seedance, Internal Enhance) still get the scene brief.
+  const usesLegacyBrief = provider === 'seedance_mini' || provider === 'internal_enhance';
 
   const loadPilot = useCallback(async () => {
     try {
@@ -552,11 +590,7 @@ export function VideoGeneratePanel({
 
     const sceneBrief = provider === 'internal_enhance'
       ? `${sceneContract.text}\nSOURCE POLICY: The deterministic City Prompt route preview already contains the approved render-locked GLB skins, open-space assets, context buildings, and exact camera timing. Restore only detail present in those pixels. Do not synthesize or reinterpret any object.`
-      : controlMode === 'multi_keyframe'
-      ? `${sceneContract.text}\nSOURCE POLICY: The ordered City Prompt route images are the only visual authorities. They depict one unchanged scene along the exact desired path. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`
-      : controlMode === 'preview_video'
-        ? `${sceneContract.text}\nSOURCE POLICY: The City Prompt route preview is the exact camera, geography, and geometry authority. Preserve every frame's layout, topology, context, and timing. Omni may improve only the physically plausible visual finish already implied by the source; it must not redesign or relocate anything.`
-        : `${sceneContract.text}\nSOURCE POLICY: Image1 is the only visual input. Animate the captured scene as-is. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`;
+      : `${sceneContract.text}\nSOURCE POLICY: The City Prompt route preview is the exact camera, geography, and geometry authority. Preserve every frame's layout, topology, context, and timing.`;
     const allRouteKeyframes = activeControls?.keyframesBase64 ?? [];
     const routeKeyframes = controlMode === 'multi_keyframe'
       ? allRouteKeyframes
@@ -619,13 +653,18 @@ export function VideoGeneratePanel({
       route_points: routePoints,
       camera_motion: motion,
       duration_seconds: 8,
-      scene_brief: sceneBrief,
+      ...(usesLegacyBrief ? { scene_brief: sceneBrief } : {}),
+      look_style: lookStyle,
+      add_people: addPeople,
+      add_vehicles: addVehicles,
+      student_note: sanitizeStudentNote(studentNote),
+      prompt_profile: usesLegacyBrief ? 'legacy' : 'look_sheet',
       community_3d_claims: community3DClaims,
       ...(residualLandscapeClaim ? {
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [prepareLocalPreview, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
+  }, [addPeople, addVehicles, prepareLocalPreview, community3DClaims, controlMode, internalEnhanceQuality, lookStyle, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, studentNote, usesLegacyBrief]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -634,6 +673,7 @@ export function VideoGeneratePanel({
       const body = await requestBody();
       const result = await videoRenderApi.preflight(body) as PreflightResult;
       setPrepared(body);
+      setPreparedSceneSignature(sceneContract.signature);
       setPreflight(result);
       setPilot((current) => ({
         ...current,
@@ -654,7 +694,7 @@ export function VideoGeneratePanel({
     } finally {
       setIsPreflighting(false);
     }
-  }, [requestBody]);
+  }, [requestBody, sceneContract.signature]);
 
   const generate = useCallback(async () => {
     if (!prepared || !hasValidPreflight || !providerCanRun) return;
@@ -925,9 +965,14 @@ export function VideoGeneratePanel({
 
             <div className="mt-4 grid min-h-0 gap-3 sm:grid-cols-[1.15fr_0.85fr]">
               <div>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Motion control</p>
-                <div className="grid grid-cols-3 gap-1.5">
-                  {CONTROL_MODES.map((item) => (
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Motion control</p>
+                  <button type="button" onClick={() => setShowAdvancedModes((current) => !current)} aria-expanded={showAdvancedModes} className="min-h-8 text-[9px] font-bold uppercase text-white/45 underline hover:text-white">
+                    {showAdvancedModes ? 'Hide advanced' : 'Advanced modes'}
+                  </button>
+                </div>
+                <div className={`grid gap-1.5 ${showAdvancedModes ? 'grid-cols-3' : 'grid-cols-1'}`}>
+                  {CONTROL_MODES.filter((item) => showAdvancedModes || !item.advanced || controlMode === item.id).map((item) => (
                     <button key={item.id} aria-pressed={controlMode === item.id} onClick={() => {
                       if (provider !== 'omni' && item.id !== 'preview_video') return;
                       setControlMode(item.id);
@@ -1040,34 +1085,49 @@ export function VideoGeneratePanel({
 
               <div>
                 <div className="mb-2 flex items-center justify-between">
-                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Scene lock</p>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#fff0bf] px-2 py-1 text-[9px] font-black uppercase text-[#705000]"><ShieldCheck size={11} /> Continuity constrained</span>
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">{usesLegacyBrief ? 'Scene lock' : 'Look'}</p>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#fff0bf] px-2 py-1 text-[9px] font-black uppercase text-[#705000]"><ShieldCheck size={11} /> Geometry from your 3D scene</span>
                 </div>
                 <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
-                  <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
-                  <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
-                    The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.
-                  </p>
-                  <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    {provider === 'internal_enhance'
-                      ? motion === 'street_walkby'
-                        ? 'Internal Enhance processes the deterministic route locally. Original GLBs, PBR skins, open-space assets, vegetation, and lighting remain authoritative inside the proposal; captured Google Tiles remain the surrounding context.'
-                        : 'Internal Enhance processes the deterministic route video locally. Its captured render-locked building skins, open-space assets, Google context, geometry, and timing remain authoritative.'
-                      : provider === 'seedance_mini'
-                      ? seedanceReferenceMode === 'preview_plus_keyframes'
-                        ? 'Seedance receives the exact City Prompt route preview plus three chronological geometry checkpoints.'
-                        : 'Seedance receives the exact City Prompt route preview as its sole visual authority.'
-                      : controlMode === 'multi_keyframe'
-                      ? 'Omni receives six ordered City Prompt views of the same scene, with no style or archetype reference images.'
-                      : controlMode === 'preview_video'
-                        ? 'Omni edits City Prompt’s deterministic route video, which carries the exact camera timing and scene geometry.'
-                        : 'Omni receives one authoritative image plus conservative camera-motion instructions.'}
-                  </p>
+                  {usesLegacyBrief ? (
+                    <>
+                      <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
+                      <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
+                        {provider === 'internal_enhance'
+                          ? 'Internal Enhance processes the deterministic route video locally. Its captured render-locked building skins, open-space assets, Google context, geometry, and timing remain authoritative.'
+                          : seedanceReferenceMode === 'preview_plus_keyframes'
+                            ? 'Seedance receives the exact City Prompt route preview plus three chronological geometry checkpoints.'
+                            : 'Seedance receives the exact City Prompt route preview as its sole visual authority.'}
+                      </p>
+                    </>
+                  ) : (
+                    <VideoLookControls
+                      look={lookStyle}
+                      addPeople={addPeople}
+                      addVehicles={addVehicles}
+                      note={studentNote}
+                      disabled={isGenerating || isPreflighting}
+                      onLookChange={setLookStyle}
+                      onAddPeopleChange={setAddPeople}
+                      onAddVehiclesChange={setAddVehicles}
+                      onNoteChange={setStudentNote}
+                    />
+                  )}
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
                     {provider === 'internal_enhance'
                       ? 'No scene generation: this pass only denoises, sharpens, stabilizes tone, and optionally super-resolves detail already present. The fidelity gate still checks every saved result.'
-                      : `AI concept visualization: ${providerName(provider)} can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.`}
+                      : `${providerName(provider)} finishes the route video City Prompt already rendered: same camera, same buildings, parks and streets. Verify the result against the 3D scene before using it for design decisions.`}
                   </p>
+                  {hasValidPreflight && preflight?.prompt_preview && (
+                    <div className="mt-2">
+                      <button type="button" onClick={() => setShowPromptPreview((current) => !current)} aria-expanded={showPromptPreview} className="min-h-8 text-[9px] font-black uppercase text-[#151515]/55 underline hover:text-[#151515]">
+                        {showPromptPreview ? 'Hide' : 'Show'} what the model is told · {preflight.prompt_chars ?? preflight.prompt_preview.length} characters
+                      </button>
+                      {showPromptPreview && (
+                        <pre className="mt-1 max-h-40 overflow-auto whitespace-pre-wrap rounded-lg bg-[#151515] px-2 py-1.5 text-[9px] leading-relaxed text-white/80">{preflight.prompt_preview}</pre>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 

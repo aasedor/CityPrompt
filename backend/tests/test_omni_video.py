@@ -12,7 +12,9 @@ from app.api.v1.video import (
     SEEDANCE_PILOT_MAX_PROVIDER_CALLS,
     VideoPilotRequest,
     _best_automatic_benchmark_index,
+    _build_provider_prompt,
     _count_provider_calls,
+    _effective_prompt_profile,
     _provider_usage,
     _storage_key_from_file_url,
 )
@@ -54,9 +56,12 @@ def test_decode_preview_video_accepts_browser_webm_and_rejects_mime_mismatch():
         decode_preview_video(encoded, "video/mp4")
 
 
-def test_video_request_exposes_motion_not_visual_style_or_reference_images():
+def test_video_request_exposes_motion_and_a_look_sheet_not_free_style_or_reference_images():
     assert "style" not in VideoPilotRequest.model_fields
     assert "reference_images_base64" not in VideoPilotRequest.model_fields
+    assert VideoPilotRequest.model_fields["look_style"].default == "photorealistic"
+    assert VideoPilotRequest.model_fields["prompt_profile"].default == "look_sheet"
+    assert VideoPilotRequest.model_fields["scene_brief"].default is None
 
     with pytest.raises(ValidationError):
         VideoPilotRequest(
@@ -241,7 +246,65 @@ def test_omni_payload_supports_deterministic_preview_video_edit():
     assert "Match the source video's total travel distance" in prompt
     assert payload["generation_config"] == {"video_config": {"task": "edit"}}
     assert [item["type"] for item in payload["input"]] == ["video", "text"]
-    assert payload["response_format"] == {"type": "video"}
+    assert payload["response_format"] == {
+        "type": "video",
+        "resolution": "1080p",
+        "delivery": "uri",
+    }
+    assert payload["store"] is True
+
+
+def _look_sheet_request(**overrides) -> VideoPilotRequest:
+    base = {
+        "project_id": "00000000-0000-0000-0000-000000000001",
+        "guide_frame_base64": _jpeg_data_url(),
+        "route_points": [{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+    }
+    return VideoPilotRequest(**{**base, **overrides})
+
+
+def test_look_sheet_profile_builds_a_short_omni_prompt_without_a_scene_brief():
+    request = _look_sheet_request(look_style="night", add_people=True, student_note="market night")
+
+    prompt, negative_prompt = _build_provider_prompt(request, keyframe_count=0)
+
+    assert negative_prompt is None
+    assert prompt.startswith("Change only the look of this video: blue-hour night")
+    assert "Note: market night." in prompt
+    assert len(prompt) <= 800
+    assert "CHECKSUM" not in prompt and "Image1" not in prompt
+
+
+def test_legacy_profile_requires_a_scene_brief_and_keeps_the_lock_prose():
+    with pytest.raises(ValueError, match="legacy prompt profile requires a scene brief"):
+        _build_provider_prompt(_look_sheet_request(prompt_profile="legacy"), keyframe_count=0)
+
+    prompt, _ = _build_provider_prompt(
+        _look_sheet_request(prompt_profile="legacy", scene_brief="Two buildings and one park."),
+        keyframe_count=0,
+    )
+    assert "STATIC SCENE IDENTITY" in prompt
+    assert "Two buildings and one park." in prompt
+
+
+def test_seedance_always_reads_the_legacy_prose():
+    request = _look_sheet_request(provider="seedance_mini", scene_brief="Two buildings and one park.")
+    assert _effective_prompt_profile(request) == "legacy"
+    prompt, _ = _build_provider_prompt(request, keyframe_count=0)
+    assert "APPEARANCE LOCK" in prompt
+
+
+def test_internal_enhance_uses_its_contract_without_a_brief():
+    prompt, _ = _build_provider_prompt(_look_sheet_request(provider="internal_enhance"), keyframe_count=0)
+    assert prompt.startswith("SELF-HOSTED CITY PROMPT RESTORATION")
+    assert "route preview" in prompt
+
+
+def test_student_note_is_capped_by_the_request_model():
+    with pytest.raises(ValidationError):
+        _look_sheet_request(student_note="x" * 241)
+    with pytest.raises(ValidationError):
+        _look_sheet_request(look_style="neon")
 
 
 def test_street_walkby_is_pedestrian_height_and_detail_locked():
