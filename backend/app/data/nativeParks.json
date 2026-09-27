@@ -56,7 +56,7 @@
       ],
       "status": "pilot",
       "visualStatus": "source_baseline",
-      "runtimeStatus": "NOT TESTED",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "8e5447c3b253c3f5842c049948620c67eebe4679f73b72ca84145718f58e4a84",
       "surfacePalette": {
         "grass": [
@@ -140,7 +140,7 @@
       ],
       "status": "pilot",
       "visualStatus": "source_baseline",
-      "runtimeStatus": "NOT TESTED",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "5ea667d78cf619fd919494c852c1fe5751f3e951fdc8deccba3904d52500af62",
       "surfacePalette": {
         "grass": [
@@ -246,7 +246,7 @@
       ],
       "status": "pilot",
       "visualStatus": "source_baseline",
-      "runtimeStatus": "NOT TESTED",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "746f5c3037bef70511e1529b7c7ca536697ea9931798231ca4a2c68306bf80ff",
       "surfacePalette": {
         "grass": [
@@ -331,7 +331,7 @@
       ],
       "status": "pilot",
       "visualStatus": "source_baseline",
-      "runtimeStatus": "NOT TESTED",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "e5bbe20222fe6af93f05c33a8ef4688f57b51b8636d0d5dee5672d1c2840d1ee",
       "surfacePalette": {
         "grass": [
@@ -426,7 +426,7 @@
       ],
       "status": "pilot",
       "visualStatus": "source_baseline",
-      "runtimeStatus": "NOT TESTED",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "b0310f14be314d41a61167a5d62627fbadbf65ce37f1d3dc2e3feaef2f8c7400",
       "surfacePalette": {
         "grass": [
@@ -521,7 +521,7 @@
       ],
       "status": "pilot",
       "visualStatus": "source_baseline",
-      "runtimeStatus": "NOT TESTED",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "95c8676b5de15a86550f632d994a1bebe65efb51ea73ee3ad5acabbac6ba1c54",
       "surfacePalette": {
         "grass": [
@@ -598,7 +598,7 @@
       ],
       "status": "pilot",
       "visualStatus": "source_baseline",
-      "runtimeStatus": "NOT TESTED",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "d76573a0a2a7281b71018a9f75dcee148fb8e401ad547e3053eba4f8a475c38e",
       "surfacePalette": {
         "grass": [
@@ -687,7 +687,7 @@
       ],
       "status": "pilot",
       "visualStatus": "source_baseline",
-      "runtimeStatus": "NOT TESTED",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "4682d83edf8fee509fbe4f4edae8cd524849743fa613046c358a4a6615a36fa3",
       "surfacePalette": {
         "grass": [
@@ -1034,8 +1034,8 @@
         }
       ],
       "status": "pilot",
-      "visualStatus": "NEEDS REVIEW",
-      "runtimeStatus": "NOT TESTED",
+      "visualStatus": "user_approved_pilot",
+      "runtimeStatus": "prepared_level_checks_pass_with_limits",
       "contentRevision": "a8ff885863e5e2e7736f118e296af90f8a8d2df22b5493ea957470281ecd7379",
       "surfacePalette": {
         "grass": [

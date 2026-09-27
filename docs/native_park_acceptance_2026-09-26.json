@@ -5,7 +5,7 @@
   "evidenceDirectory": "C:/dev-artifacts/CityPrompt/native-parks-2026-09-26",
   "paidSunburst": {
     "limit": 5,
-    "submitted": 3,
+    "submitted": 5,
     "requests": [
       {
         "number": 1,
@@ -65,8 +65,45 @@
         "tokens_before": 2310,
         "tokens_after": 2216,
         "visual_review": "Conservatory, split curving path, flower beds and fountain remain in the same arrangement; material and lighting realism improve."
+      },
+      {
+        "number": 4,
+        "label": "mixed eight native parks aerial",
+        "project_id": "5d79af7a-f92b-406b-b52d-f05083b48743",
+        "engine": "sunburst",
+        "images": 1,
+        "status": "succeeded",
+        "reserved_at_utc": "2026-09-27 07:38:23 UTC",
+        "source_file": "paid4-source.png",
+        "source_sha256": "D30A29CB3CF39D38143D2D8F62051390FF133FF64365D399D2C869975478A2E6",
+        "prompt": "Overhead photo finish of this exact site. Preserve all eight separate park layouts, the single basketball court, all paths and planting, both Market street approaches, footprints, orientations and this camera. Refine only natural daylight and material realism; add no new objects.",
+        "tokens_before": 2216,
+        "result_file": "paid4-result.png",
+        "result_sha256": "C8C7F7D6A40B17E8CC66971B4DBEE136131F20518AA496102BDA44B439E06B57",
+        "ui_evidence": "paid4-result-ui.png",
+        "tokens_after": 2122,
+        "visual_review": "All eight separate park programs, connected Market roads, single basketball court, and main path/planting shapes remain in the same overhead arrangement. Fine element counts are below audit scale."
+      },
+      {
+        "number": 5,
+        "label": "Teaching Demonstration Garden south entrance street",
+        "project_id": "5d79af7a-f92b-406b-b52d-f05083b48743",
+        "engine": "sunburst",
+        "images": 1,
+        "status": "succeeded",
+        "reserved_at_utc": "2026-09-27 07:50:04 UTC",
+        "source_file": "paid5-teaching-source.png",
+        "source_sha256": "8E638277B225C5DC414FB5661C51C2F16A91361103BD5B14CB37723450933C0F",
+        "prompt": "Street-height photo finish of this exact Teaching Demonstration Garden from its south entrance. Preserve the central paved approach, raised planting beds, arch, side paths, surrounding street connection, object positions and this camera. Refine only daylight, plants and material realism; add no objects.",
+        "tokens_before": 2122,
+        "result_file": "paid5-result.png",
+        "result_sha256": "14F2CA7742B5FFD70E71DC329541D00EB00185DB5D792719E7E62628B8F57521",
+        "ui_evidence": "paid5-result-ui.png",
+        "tokens_after": 2028,
+        "visual_review": "South entry connector, main axis, raised beds and central arch retain the same positions and camera; textures and daylight improve. Individual small plant counts are not audited."
       }
-    ]
+    ],
+    "remainingAuthorized": 0
   },
   "layouts": [
     {
@@ -77,7 +114,7 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "APPROVED PILOT 2026-09-26",
-      "runtime": "PILOT APP CHECKS PASS; SUNBURST WALK BROAD GEOMETRY PASS; PLANT-BY-PLANT FIDELITY NOT ASSERTED",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "botanical-rotated.png",
@@ -86,9 +123,27 @@
         "app-both-walk-active.png",
         "paid3-source.png",
         "paid3-paired-source.png",
-        "paid3-result.png"
+        "paid3-result.png",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json"
       ],
-      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
+      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f",
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
+      "mixedAccess": {
+        "variant": "botanical_garden_v3",
+        "status": "connected",
+        "widthM": 2.2,
+        "sidewalkCenterGapM": 5.886,
+        "reason": null
+      },
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted."
+      ],
+      "runtimeReview": "runtime-reviews/botanical_garden_v3--native-v1.md"
     },
     {
       "layoutId": "sculpture_garden_v0--native-v1",
@@ -98,18 +153,36 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "AGENT NATIVE AERIAL/WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
-      "runtime": "PAIR APP CHECKS PASS; MIXED SCENE AND FINAL PRODUCTION CHECK PENDING",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "pair1-runtime-results.json",
         "pair1-both-connections-reloaded-top.png",
-        "pair1-access-probe.json"
+        "pair1-access-probe.json",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json"
       ],
-      "activation": "LOCAL PAIR 1 REVIEW",
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
       "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743",
       "limitations": [
         "Sculpture connector partly occluded by Market stalls in walking view; visible from above. Fine native gravel shadow aliasing remains a visual follow-up."
-      ]
+      ],
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "mixedAccess": {
+        "variant": "sculpture_garden_v0",
+        "status": "connected",
+        "widthM": 2.2,
+        "sidewalkCenterGapM": 7.228,
+        "reason": null
+      },
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted.",
+        "Sculpture and Performance approach connectors partly occluded by street stalls in low views; saved solver connections passed."
+      ],
+      "runtimeReview": "runtime-reviews/sculpture_garden_v0--native-v1.md"
     },
     {
       "layoutId": "student_neighbourhood_orchard_v1--native-v1",
@@ -119,16 +192,33 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "AGENT NATIVE AERIAL/WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
-      "runtime": "PAIR APP CHECKS PASS; MIXED SCENE AND FINAL PRODUCTION CHECK PENDING",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "pair1-runtime-results.json",
         "pair1-both-connections-reloaded-top.png",
-        "pair1-access-probe.json"
+        "pair1-access-probe.json",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json"
       ],
-      "activation": "LOCAL PAIR 1 REVIEW",
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
       "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743",
-      "limitations": []
+      "limitations": [],
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "mixedAccess": {
+        "variant": "student_neighbourhood_orchard_v1",
+        "status": "connected",
+        "widthM": 1.8,
+        "sidewalkCenterGapM": 4.271,
+        "reason": null
+      },
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted."
+      ],
+      "runtimeReview": "runtime-reviews/student_neighbourhood_orchard_v1--native-v1.md"
     },
     {
       "layoutId": "amphitheater_lawn_v0--native-v1",
@@ -138,14 +228,32 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "AGENT NATIVE WALK/EXACT REVIEW PASS; NO NEW HUMAN APPROVAL",
-      "runtime": "BOUNDED PAIR APP CHECKS PASS; EXTERNAL CONNECTION AND FINAL MIXED/PRODUCTION CHECKS NOT TESTED",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "pair2-runtime-results.json",
-        "pair2-performance-exact-source.png"
+        "pair2-performance-exact-source.png",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json"
       ],
-      "activation": "LOCAL PAIR 2 REVIEW",
-      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743",
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "mixedAccess": {
+        "variant": "amphitheater_lawn_v0",
+        "status": "connected",
+        "widthM": 2.2,
+        "sidewalkCenterGapM": 5.175,
+        "reason": null
+      },
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted.",
+        "Sculpture and Performance approach connectors partly occluded by street stalls in low views; saved solver connections passed."
+      ],
+      "runtimeReview": "runtime-reviews/amphitheater_lawn_v0--native-v1.md"
     },
     {
       "layoutId": "student_garden_square_v1--native-v1",
@@ -155,14 +263,31 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "AGENT NATIVE WALK/EXACT REVIEW PASS; NO NEW HUMAN APPROVAL",
-      "runtime": "BOUNDED PAIR APP CHECKS PASS; EXTERNAL CONNECTION AND FINAL MIXED/PRODUCTION CHECKS NOT TESTED",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "pair2-runtime-results.json",
-        "pair2-square-exact-source.png"
+        "pair2-square-exact-source.png",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json"
       ],
-      "activation": "LOCAL PAIR 2 REVIEW",
-      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743",
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "mixedAccess": {
+        "variant": "student_garden_square_v1",
+        "status": "connected",
+        "widthM": 2.2,
+        "sidewalkCenterGapM": 5.736,
+        "reason": null
+      },
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted."
+      ],
+      "runtimeReview": "runtime-reviews/student_garden_square_v1--native-v1.md"
     },
     {
       "layoutId": "wetland_rain_garden_v0--native-v1",
@@ -172,16 +297,34 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "AGENT NATIVE AERIAL/WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
-      "runtime": "PAIR3 NATIVE APP CHECKS PASS; EXTERNAL CONNECTION AND FINAL MIXED/PRODUCTION CHECKS PENDING; HELD-FORWARD DECK NAVIGATION NOT TESTED",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "pair3-runtime-results.json",
         "pair3-wetland-south-walk.png",
         "pair3-wetland-exact-source.png",
-        "pair3-reload-six-parks-top.png"
+        "pair3-reload-six-parks-top.png",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json"
       ],
-      "activation": "LOCAL PAIR 3 REVIEW",
-      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743",
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "mixedAccess": {
+        "variant": "wetland_rain_garden_v0",
+        "status": "connected",
+        "widthM": 2,
+        "sidewalkCenterGapM": 2.178,
+        "reason": null
+      },
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted.",
+        "Wetland held-forward navigation along the timber deck NOT TESTED; actual surface-height probes passed."
+      ],
+      "runtimeReview": "runtime-reviews/wetland_rain_garden_v0--native-v1.md"
     },
     {
       "layoutId": "research_garden_teaching_arboretum_variant_3--native-v1",
@@ -191,16 +334,33 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "AGENT NATIVE AERIAL/WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
-      "runtime": "PAIR3 NATIVE APP CHECKS PASS; EXTERNAL CONNECTION AND FINAL MIXED/PRODUCTION CHECKS PENDING",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "pair3-runtime-results.json",
         "pair3-teaching-south-walk.png",
         "pair3-teaching-exact-source.png",
-        "pair3-reload-six-parks-top.png"
+        "pair3-reload-six-parks-top.png",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json"
       ],
-      "activation": "LOCAL PAIR 3 REVIEW",
-      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743",
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "mixedAccess": {
+        "variant": "research_garden_teaching_arboretum_variant_3",
+        "status": "connected",
+        "widthM": 2.2,
+        "sidewalkCenterGapM": 4.841,
+        "reason": null
+      },
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted."
+      ],
+      "runtimeReview": "runtime-reviews/research_garden_teaching_arboretum_variant_3--native-v1.md"
     },
     {
       "layoutId": "basketball_court_v1--native-v1",
@@ -210,16 +370,35 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "APPROVED PILOT 2026-09-26",
-      "runtime": "PILOT APP CHECKS PASS; SUNBURST AERIAL BROAD GEOMETRY PASS; COMPONENT DETAIL LIMITED BY SCALE",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "app-basketball-reloaded.png",
         "paid1-onecourt-top.png",
         "paid1-source.png",
         "paid1-result.png",
-        "street-connector-walk.png"
+        "street-connector-walk.png",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json",
+        "basketball-final-edit-results.json"
       ],
-      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
+      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f",
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
+      "mixedAccess": {
+        "variant": "basketball_court_v1",
+        "status": "connected",
+        "widthM": 2.2,
+        "sidewalkCenterGapM": 5.291,
+        "reason": null
+      },
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted."
+      ],
+      "runtimeReview": "runtime-reviews/basketball_court_v1--native-v1.md"
     },
     {
       "layoutId": "basketball_court_v1--long-v1",
@@ -229,7 +408,7 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "APPROVED PILOT 2026-09-26",
-      "runtime": "PILOT APP CHECKS PASS; SUNBURST STREET BROAD GEOMETRY PASS; HOOP COUNT PARTLY OCCLUDED",
+      "runtime": "BOUNDED PREPARED-LEVEL APP CHECKS PASS; MIXED SCENE AND PRODUCTION CHECKS PASS WITH RECORDED LIMITS",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "app-long-preview.png",
@@ -238,9 +417,21 @@
         "both-reloaded.png",
         "paid2-source.png",
         "paid2-paired-source.png",
-        "paid2-result.png"
+        "paid2-result.png",
+        "mixed-runtime-results.json",
+        "production-browser-results.json",
+        "mixed-access-summary.json",
+        "final-focused-checks.json",
+        "basketball-final-edit-results.json"
       ],
-      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
+      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f",
+      "runtimeSourceCheckpoint": "0f2ccd6aafa7ae51197b80f5b2749941bcdfd220",
+      "activation": "LOCAL PILOT; NOT PUBLISHED",
+      "limits": [
+        "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+        "Fine or occluded AI-render component counts are not asserted."
+      ],
+      "runtimeReview": "runtime-reviews/basketball_court_v1--long-v1.md"
     }
   ],
   "checkpoints": [
@@ -259,12 +450,29 @@
     "productionBuild": {
       "status": "PASS",
       "evidence": "production-http-checkpoint.json",
-      "limit": "All nine active layouts and current Walk-entry fix built successfully. Fresh production browser smoke remains pending."
+      "limit": "Runtime source 0f2ccd6aa; subsequent registry changes affect acceptance metadata only, with immutable layout content unchanged."
     },
     "productionAssetResponses": {
       "status": "PASS",
       "evidence": "production-http-checkpoint.json",
-      "detail": "53 production HTTP responses match local content, including all11 native park GLBs, protected Main/Market assets, catalogue thumbnails and entry document."
-    }
-  }
+      "detail": "57 verified responses: initial 53 plus exact logo and three foliage assets restored before final browser checks.",
+      "recoveryEvidence": [
+        "production-logo-recovery.json",
+        "production-landscape-recovery.json"
+      ]
+    },
+    "productionBrowser": {
+      "status": "PASS_WITH_RECORDED_LIMITS",
+      "evidence": "production-browser-results.json"
+    },
+    "acceptanceRegistrySha256": "d0c853b7fda28a17da1604a4d2fb8d0e482f6898d9b078a8468c4eaf8865391d",
+    "metadataOnlyChange": "All nine content revisions, geometry, asset identities and placement contracts unchanged."
+  },
+  "completion": "BOUNDED LOCAL ACCEPTANCE WITH EXPLICIT LIMITS; NOT PUBLISHED",
+  "limits": [
+    "Wetland held-forward navigation along the timber deck NOT TESTED; actual surface-height probes passed.",
+    "Sculpture and Performance approach connectors partly occluded by street stalls in low views; saved solver connections passed.",
+    "Touch, independent novice sessions, unsupported terrain and exhaustive browser fault injection NOT TESTED.",
+    "Fine or occluded AI-render component counts are not asserted."
+  ]
 }

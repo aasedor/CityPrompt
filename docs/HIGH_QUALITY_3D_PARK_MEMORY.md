@@ -53,3 +53,13 @@ published on this preference alone. Future parks still need the fit, terrain,
 access, editing, capture and in-app checks in
 [`ARCHETYPE_RUNTIME_INTEGRATION.md`](ARCHETYPE_RUNTIME_INTEGRATION.md) and
 [`ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md`](ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md).
+
+
+## Local native-runtime evidence
+
+The original validation roster preserves the visual-only baseline fields above.
+Current local implementation and exact-layout acceptance are tracked separately in
+[`native_park_acceptance_2026-09-26.json`](native_park_acceptance_2026-09-26.json)
+and [`NATIVE_PARK_IMPLEMENTATION_2026-09-26.md`](NATIVE_PARK_IMPLEMENTATION_2026-09-26.md).
+Read those current records before describing a park as untested or completed.
+Local runtime evidence does not imply publication or new human visual approval.
