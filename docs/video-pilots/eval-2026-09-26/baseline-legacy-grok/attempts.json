@@ -1,0 +1,512 @@
+[
+  {
+    "id": "4a136eac-84e6-4433-b128-628e352cb933",
+    "seed": null,
+    "error": null,
+    "model": "grok-imagine-video",
+    "style": "golden_hour",
+    "prompt": "Animate this exact City Prompt route. Keep every building footprint, height, roof, facade opening, park kit, street, sidewalk, plot boundary, and background context in the same place and shape. Do not add buildings, roads, parks, cars that change the plan, or landmarks. Do not orbit, zoom, or change altitude except as the source camera already moves. 8 seconds, 16:9, 24fps. Silent.\nFollow the source aerial truck exactly: slow constant-altitude move, gentle bank only on curves.\nWarm low golden-hour sunlight from the side with long soft shadows across paving and lawns. Gentle warm grade with natural greens. Leaves and flags stir slightly in a light breeze.",
+    "status": "complete",
+    "provider": "grok_video",
+    "video_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/grok-video.mp4",
+    "created_at": "2026-09-26T00:17:01.687274+00:00",
+    "request_id": "9194a3ff-4d08-41da-bd4a-0845ac86f872",
+    "size_bytes": 5546045,
+    "completed_at": "2026-09-26T00:18:37.073238+00:00",
+    "control_mode": "preview_video",
+    "guide_sha256": "96de13f06b1f7e68fddc61c9612333bebe9cd5b30ff55bcbc49eadda602ab523",
+    "requested_by": "88379d21-e63a-4138-a8c6-73105f01e5f5",
+    "camera_motion": "path_follow",
+    "fidelity_score": 45.0,
+    "interaction_id": "a39d9ff8-fa21-9091-9f83-d085a4b5af17",
+    "render_quality": "high",
+    "request_sha256": "2899b61a1cc3e38114e536b8020300ea2d1e5cb071cd2aa239ccc415b7e9201f",
+    "capture_profile": {
+      "fps": 24,
+      "width": 1920,
+      "height": 1080,
+      "encoder": "webcodecs_h264",
+      "frame_count": 192,
+      "render_width": 2560,
+      "render_height": 1440,
+      "tile_set_held": true,
+      "fixed_timestep": true,
+      "motion_frame_count": 192,
+      "depth_checkpoint_count": 6,
+      "normal_checkpoint_count": 6,
+      "tile_warmup_frame_count": 192,
+      "geometry_checkpoint_count": 6,
+      "instance_checkpoint_count": 6,
+      "material_checkpoint_count": 6,
+      "semantic_checkpoint_count": 6
+    },
+    "fidelity_status": "drift",
+    "guide_image_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/route-guide.jpg",
+    "duration_seconds": 8,
+    "fidelity_samples": [
+      {
+        "score": 47.5,
+        "time_seconds": 0.0
+      },
+      {
+        "score": 43.9,
+        "time_seconds": 2.0
+      },
+      {
+        "score": 44.5,
+        "time_seconds": 4.0
+      },
+      {
+        "score": 44.0,
+        "time_seconds": 6.0
+      },
+      {
+        "score": 45.2,
+        "time_seconds": 8.0
+      }
+    ],
+    "preview_video_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/route-preview.mp4",
+    "provider_cost_usd": 0.64,
+    "estimated_cost_usd": 0.4,
+    "fidelity_min_score": 43.9,
+    "grok_reference_mode": "preview_video_edit",
+    "route_keyframe_urls": [],
+    "reference_image_count": 0,
+    "scene_revision_sha256": "9580b48f9f53e3ddce2256b027f5697e21e779724dd30b57537281d07a229f00",
+    "seedance_reference_mode": null,
+    "internal_enhance_quality": null,
+    "provider_call_started_at": "2026-09-26T00:17:05.845380+00:00",
+    "geometry_checkpoint_count": 6,
+    "temporal_consistency_score": 93.7,
+    "geometry_checkpoint_controls": [
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-01/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-01/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-01/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-01/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-01/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-01/material_id.png"
+        },
+        "progress": 0.0,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-01/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-02/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-02/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-02/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-02/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-02/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-02/material_id.png"
+        },
+        "progress": 0.2,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-02/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-03/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-03/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-03/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-03/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-03/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-03/material_id.png"
+        },
+        "progress": 0.4,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-03/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-04/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-04/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-04/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-04/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-04/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-04/material_id.png"
+        },
+        "progress": 0.6,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-04/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-05/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-05/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-05/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-05/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-05/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-05/material_id.png"
+        },
+        "progress": 0.8,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-05/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-06/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-06/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-06/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-06/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-06/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-06/material_id.png"
+        },
+        "progress": 1.0,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/4a136eac-84e6-4433-b128-628e352cb933/controls/geometry-06/control.json"
+      }
+    ],
+    "protected_instance_min_score": 36.7
+  },
+  {
+    "id": "b6786b93-b9de-4b30-afe2-d8ffd3dd16c5",
+    "seed": null,
+    "error": null,
+    "model": "grok-imagine-video-1.5",
+    "style": "blue_hour",
+    "prompt": "Animate this exact City Prompt route. Keep every building footprint, height, roof, facade opening, park kit, street, sidewalk, plot boundary, and background context in the same place and shape. Do not add buildings, roads, parks, cars that change the plan, or landmarks. Do not orbit, zoom, or change altitude except as the source camera already moves. 8 seconds, 16:9, 24fps. Silent.\nFollow the source aerial truck exactly: slow constant-altitude move, gentle bank only on curves.\nBlue hour shortly after sunset: deep blue sky with a faint warm horizon. Warm light from existing windows and street lamps, with soft reflections on paving. Only existing fixtures are lit.",
+    "status": "complete",
+    "provider": "grok_video",
+    "video_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/grok-video.mp4",
+    "created_at": "2026-09-26T00:22:56.462333+00:00",
+    "request_id": "8d50943a-6c0f-4f45-9ab7-9ae58970a52b",
+    "size_bytes": 7954941,
+    "completed_at": "2026-09-26T00:24:19.353909+00:00",
+    "control_mode": "multi_keyframe",
+    "guide_sha256": "23a9a2363df7dcca75a7b1565d41eaf91a67e0a69560d272388d16dd44d82bab",
+    "requested_by": "88379d21-e63a-4138-a8c6-73105f01e5f5",
+    "camera_motion": "path_follow",
+    "fidelity_score": 78.0,
+    "interaction_id": "cd641f94-7979-9269-8570-eed7dd3e9340",
+    "render_quality": "high",
+    "request_sha256": "a9a506a88b3844327d41adf416c9e4bb13af880e25cbeddcceac4cb0e2ec49a0",
+    "capture_profile": {
+      "fps": 24,
+      "width": 1920,
+      "height": 1080,
+      "encoder": "webcodecs_h264",
+      "frame_count": 192,
+      "render_width": 2560,
+      "render_height": 1440,
+      "tile_set_held": true,
+      "fixed_timestep": true,
+      "motion_frame_count": 192,
+      "depth_checkpoint_count": 6,
+      "normal_checkpoint_count": 6,
+      "tile_warmup_frame_count": 192,
+      "geometry_checkpoint_count": 6,
+      "instance_checkpoint_count": 6,
+      "material_checkpoint_count": 6,
+      "semantic_checkpoint_count": 6
+    },
+    "fidelity_status": "review",
+    "guide_image_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/route-guide.jpg",
+    "duration_seconds": 8,
+    "fidelity_samples": [
+      {
+        "score": 97.1,
+        "time_seconds": 0.0
+      },
+      {
+        "score": 61.1,
+        "time_seconds": 2.0
+      },
+      {
+        "score": 55.4,
+        "time_seconds": 4.0
+      },
+      {
+        "score": 91.6,
+        "time_seconds": 6.0
+      },
+      {
+        "score": 84.8,
+        "time_seconds": 8.0
+      }
+    ],
+    "preview_video_url": null,
+    "provider_cost_usd": 1.17,
+    "estimated_cost_usd": 0.64,
+    "fidelity_min_score": 55.4,
+    "grok_reference_mode": "route_keyframes",
+    "route_keyframe_urls": [
+      "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/keyframe-01.jpg",
+      "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/keyframe-02.jpg",
+      "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/keyframe-03.jpg",
+      "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/keyframe-04.jpg",
+      "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/keyframe-05.jpg",
+      "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/keyframe-06.jpg"
+    ],
+    "reference_image_count": 6,
+    "scene_revision_sha256": "9580b48f9f53e3ddce2256b027f5697e21e779724dd30b57537281d07a229f00",
+    "seedance_reference_mode": null,
+    "internal_enhance_quality": null,
+    "provider_call_started_at": "2026-09-26T00:22:59.295016+00:00",
+    "geometry_checkpoint_count": 6,
+    "temporal_consistency_score": 95.5,
+    "geometry_checkpoint_controls": [
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-01/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-01/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-01/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-01/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-01/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-01/material_id.png"
+        },
+        "progress": 0.0,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-01/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-02/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-02/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-02/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-02/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-02/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-02/material_id.png"
+        },
+        "progress": 0.2,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-02/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-03/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-03/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-03/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-03/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-03/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-03/material_id.png"
+        },
+        "progress": 0.4,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-03/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-04/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-04/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-04/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-04/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-04/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-04/material_id.png"
+        },
+        "progress": 0.6,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-04/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-05/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-05/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-05/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-05/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-05/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-05/material_id.png"
+        },
+        "progress": 0.8,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-05/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-06/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-06/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-06/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-06/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-06/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-06/material_id.png"
+        },
+        "progress": 1.0,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/b6786b93-b9de-4b30-afe2-d8ffd3dd16c5/controls/geometry-06/control.json"
+      }
+    ],
+    "protected_instance_min_score": 52.2
+  },
+  {
+    "id": "cf7674bd-5067-407e-9aaa-c5e173bd8805",
+    "seed": null,
+    "error": null,
+    "model": "grok-imagine-video-1.5",
+    "style": "winter_morning",
+    "prompt": "Animate this exact City Prompt route. Keep every building footprint, height, roof, facade opening, park kit, street, sidewalk, plot boundary, and background context in the same place and shape. Do not add buildings, roads, parks, cars that change the plan, or landmarks. Do not orbit, zoom, or change altitude except as the source camera already moves. 8 seconds, 16:9, 24fps. Silent.\nFollow the source aerial truck exactly: slow constant-altitude move, gentle bank only on curves.\nCrisp, clear winter morning with low cool sunlight and long blue shadows. Light frost on lawns and roof edges and a cool, clean grade. Breath-still air with only faint movement in branches.",
+    "status": "complete",
+    "provider": "grok_video",
+    "video_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/cf7674bd-5067-407e-9aaa-c5e173bd8805/grok-video.mp4",
+    "created_at": "2026-09-26T00:25:53.085537+00:00",
+    "request_id": "3969b76f-990d-4c47-a7cc-31520525f8a4",
+    "size_bytes": 15057419,
+    "completed_at": "2026-09-26T00:26:35.629693+00:00",
+    "control_mode": "single_frame",
+    "guide_sha256": "4738355470b9789e2d91027a32de2cc1bbd4518d3fa4156f70e6454fb003409b",
+    "requested_by": "88379d21-e63a-4138-a8c6-73105f01e5f5",
+    "camera_motion": "path_follow",
+    "interaction_id": "4f8ba232-c531-91ae-850a-d2cace7e925e",
+    "render_quality": "high",
+    "request_sha256": "5afde86e81f7f8353d6d3f5b1d1eed88f449c95c074ee7682f19a4ad6eec539b",
+    "capture_profile": null,
+    "fidelity_status": null,
+    "guide_image_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/cf7674bd-5067-407e-9aaa-c5e173bd8805/route-guide.jpg",
+    "duration_seconds": 8,
+    "preview_video_url": null,
+    "provider_cost_usd": 1.13,
+    "estimated_cost_usd": 0.64,
+    "grok_reference_mode": "guide_frame",
+    "route_keyframe_urls": [],
+    "reference_image_count": 0,
+    "scene_revision_sha256": "9580b48f9f53e3ddce2256b027f5697e21e779724dd30b57537281d07a229f00",
+    "seedance_reference_mode": null,
+    "internal_enhance_quality": null,
+    "provider_call_started_at": "2026-09-26T00:25:53.153308+00:00",
+    "geometry_checkpoint_count": 0,
+    "geometry_checkpoint_controls": []
+  },
+  {
+    "id": "832523e3-e025-4520-b604-0cdbc0f68636",
+    "seed": null,
+    "error": null,
+    "model": "grok-imagine-video",
+    "style": "after_rain",
+    "prompt": "Animate this exact City Prompt route. Keep every building footprint, height, roof, facade opening, park kit, street, sidewalk, plot boundary, and background context in the same place and shape. Do not add buildings, roads, parks, cars that change the plan, or landmarks. Do not orbit, zoom, or change altitude except as the source camera already moves. 8 seconds, 16:9, 24fps. Silent.\nFollow the source aerial truck exactly: slow constant-altitude move, gentle bank only on curves.\nJust after rain under a clearing sky. Damp paving with soft reflections and a faint shimmer in shallow puddles; fresh, saturated greens. No falling rain.\nLighting and weather note (never changes the plan): Light mist over the wetland, wet paving reflecting the street lamps",
+    "status": "complete",
+    "provider": "grok_video",
+    "video_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/grok-video.mp4",
+    "created_at": "2026-09-26T00:29:17.023162+00:00",
+    "request_id": "05c52e4b-ab38-4d68-af30-590ecd744c9c",
+    "size_bytes": 5550939,
+    "completed_at": "2026-09-26T00:30:35.885635+00:00",
+    "control_mode": "preview_video",
+    "guide_sha256": "96de13f06b1f7e68fddc61c9612333bebe9cd5b30ff55bcbc49eadda602ab523",
+    "requested_by": "88379d21-e63a-4138-a8c6-73105f01e5f5",
+    "camera_motion": "path_follow",
+    "fidelity_score": 47.6,
+    "interaction_id": "fdde6707-d372-9067-900b-588c50e3eba9",
+    "render_quality": "high",
+    "request_sha256": "427dbd96594966e35d66162ebc3e345a3517c1fa9df757c5112cee0d4858be98",
+    "capture_profile": {
+      "fps": 24,
+      "width": 1920,
+      "height": 1080,
+      "encoder": "webcodecs_h264",
+      "frame_count": 192,
+      "render_width": 2560,
+      "render_height": 1440,
+      "tile_set_held": true,
+      "fixed_timestep": true,
+      "motion_frame_count": 192,
+      "depth_checkpoint_count": 6,
+      "normal_checkpoint_count": 6,
+      "tile_warmup_frame_count": 192,
+      "geometry_checkpoint_count": 6,
+      "instance_checkpoint_count": 6,
+      "material_checkpoint_count": 6,
+      "semantic_checkpoint_count": 6
+    },
+    "fidelity_status": "drift",
+    "guide_image_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/route-guide.jpg",
+    "duration_seconds": 8,
+    "fidelity_samples": [
+      {
+        "score": 49.2,
+        "time_seconds": 0.0
+      },
+      {
+        "score": 50.4,
+        "time_seconds": 2.0
+      },
+      {
+        "score": 47.4,
+        "time_seconds": 4.0
+      },
+      {
+        "score": 45.0,
+        "time_seconds": 6.0
+      },
+      {
+        "score": 46.2,
+        "time_seconds": 8.0
+      }
+    ],
+    "preview_video_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/route-preview.mp4",
+    "provider_cost_usd": 0.64,
+    "estimated_cost_usd": 0.4,
+    "fidelity_min_score": 45.0,
+    "grok_reference_mode": "preview_video_edit",
+    "route_keyframe_urls": [],
+    "reference_image_count": 0,
+    "scene_revision_sha256": "9580b48f9f53e3ddce2256b027f5697e21e779724dd30b57537281d07a229f00",
+    "seedance_reference_mode": null,
+    "internal_enhance_quality": null,
+    "provider_call_started_at": "2026-09-26T00:29:21.581991+00:00",
+    "geometry_checkpoint_count": 6,
+    "temporal_consistency_score": 80.5,
+    "geometry_checkpoint_controls": [
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-01/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-01/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-01/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-01/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-01/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-01/material_id.png"
+        },
+        "progress": 0.0,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-01/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-02/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-02/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-02/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-02/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-02/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-02/material_id.png"
+        },
+        "progress": 0.2,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-02/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-03/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-03/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-03/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-03/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-03/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-03/material_id.png"
+        },
+        "progress": 0.4,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-03/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-04/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-04/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-04/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-04/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-04/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-04/material_id.png"
+        },
+        "progress": 0.6,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-04/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-05/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-05/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-05/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-05/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-05/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-05/material_id.png"
+        },
+        "progress": 0.8,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-05/control.json"
+      },
+      {
+        "images": {
+          "depth": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-06/depth.png",
+          "beauty": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-06/beauty.png",
+          "normal": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-06/normal.png",
+          "object_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-06/object_id.png",
+          "instance_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-06/instance_id.png",
+          "material_id": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-06/material_id.png"
+        },
+        "progress": 1.0,
+        "manifest_url": "/api/v1/files/projects/b457601f-ab31-42d8-9c0c-c94859abe6d7/video-render/832523e3-e025-4520-b604-0cdbc0f68636/controls/geometry-06/control.json"
+      }
+    ],
+    "protected_instance_min_score": 36.5
+  }
+]
