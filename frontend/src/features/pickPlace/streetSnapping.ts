@@ -2,6 +2,7 @@ import type { SiteZone } from '@/types';
 import { collapseStraightStreetStations, extractZoneCenterline } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { isFixedSectionStreet, streetSectionWidth } from './streetPlacement';
+import { CANAL_VARIANT, BRIDGE_VARIANT } from '@/components/viewer/globe/specialistStreetProgram';
 
 /** Snap an endpoint to a through street at a supported 45–135 degree angle.
  * Keep the adjacent point fixed and reserve enough straight approach for both
@@ -19,6 +20,30 @@ export function snapStreetEndpoint(line: number[][], index: number, zones: SiteZ
   for (const street of [...zones].sort((a, b) => a.id.localeCompare(b.id))) {
     if (street.id === ownerId || !isFixedSectionStreet(street) || street.properties?._imported_from) continue;
     const target = collapseStraightStreetStations(extractZoneCenterline(street));
+    const variant=street.properties?.road_selected_variant_id;
+    if(variant===CANAL_VARIANT || variant===BRIDGE_VARIANT){
+      if(target.length!==2)continue;
+      const [ax,ay]=local(target[0]),[bx,by]=local(target[1]);
+      const dx=bx-ax,dy=by-ay,length=Math.hypot(dx,dy);if(length<1)continue;
+      let candidates:number[][]=[];
+      if(variant===CANAL_VARIANT){
+        const along=((px-ax)*dx+(py-ay)*dy)/length;
+        const cosine=Math.abs((px*dx+py*dy)/approachLength/length);
+        if(cosine>Math.sin(12*Math.PI/180)||along<incomingWidth/2+4||along>length-incomingWidth/2-4)continue;
+        const sign=Math.sign(-ax*dy+ay*dx)||1;
+        // Snap to the dry OUTER bank, never to the water's centreline.
+        candidates=[[ax+along*dx/length+sign*18*dy/length,ay+along*dy/length-sign*18*dx/length]];
+      }else{
+        if(Math.abs((px*dx+py*dy)/approachLength/length)<.97)continue;
+        candidates=[[ax,ay],[bx,by]];
+      }
+      for(const [x,y] of candidates){
+        const distance=Math.hypot(x-px,y-py);
+        if(distance>4 || (best&&distance>=best.distance))continue;
+        best={point:[adjacent[0]+x/lonM,adjacent[1]+y/METERS_PER_DEG_LAT],distance};
+      }
+      continue;
+    }
     for (let i = 0; i < target.length - 1; i++) {
       const [ax, ay] = local(target[i]), [bx, by] = local(target[i + 1]);
       const dx = bx - ax, dy = by - ay, length = Math.hypot(dx, dy);

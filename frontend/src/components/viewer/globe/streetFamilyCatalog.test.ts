@@ -16,6 +16,7 @@ describe('Public Realm LEGO street family catalog', () => {
       'street_complete_main_22m',
       'street_four_way_intersection',
       'street_local_public_realm',
+      'street_native_amsterdam_gracht_v1',
       'street_native_brt_bus_rapid_transit_corridor_v0',
       'street_native_student_main_street_v1',
       'street_native_student_market_street_v1',

@@ -51,6 +51,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         'student_main_street_v1', 'student_market_street_v1',
         'student_quiet_residential_street_v1', 'student_planted_shared_lane_v1',
         'brt_bus_rapid_transit_corridor_v0',
+        'amsterdam_gracht_v1',
     }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()

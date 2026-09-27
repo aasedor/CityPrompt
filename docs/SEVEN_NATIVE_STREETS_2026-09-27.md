@@ -138,3 +138,40 @@ Current local selection: five route candidates and two fixed review fixtures
 Canal's water, banks, original arch crossing and basin termination; then the
 Bridge's fixed structural span and correctly graded approaches. Preserve the
 separate parked buildings/parks work and use no paid street generations.
+
+## Canal integration checkpoint
+
+The canal-v005 original is reconstructed once from its exact ground, crossing
+and furnishing programs (8,483 meshes). Matched aerial and walking-height views
+were inspected; material-separated round-trip error is at most 0.000009537 m.
+Source files remain unchanged. Hash-verified extraction and staging also prepare
+the fixed bridge span, but Bridge is not activated at this checkpoint.
+
+Canal routes are straight, prepared-level, 36 m wide and 80–320 m long. Only the
+open end extends, using native-size components and the source brick program.
+The basin and original arch remain single instances. The corridor owns its ground
+cutout; water stays at -2.05 m. Ordinary roads snap to the dry outer bank and cannot
+create an asphalt junction across the channel. The outer 1.9 m walk provides a
+connection apron; penetration into the inner bank is rejected.
+
+Production browser checks passed catalogue drawing (243 m), short-route rejection,
+resizing, Walk at the original arch, free exact street/aerial preview, a Market
+bank connection and reopening. Rapid Undo/Redo initially exposed a real revision
+race with automatic compilation. Zone history writes now share the project write
+queue; a fresh rapid Undo/Redo and reopen preserve the 153 m result. The tests also
+retain editing support for existing Calgary Local streets without adding them to
+the finite new-street picker. Earlier failure screenshots remain in the evidence.
+
+Verification: latest 33 targeted tests pass, earlier broader frontend checks pass,
+109 backend tests, registry parity, TypeScript and production build pass. The new
+bank-apron tolerance has unit coverage; browser recheck remains pending. Downloads
+still report `Download was canceled` from agent-browser, while exact previews pass.
+This remains an open delivery check. The shared specialist foundation includes
+unactivated bridge approach/camera helpers. No paid calls or publication.
+
+Evidence lives outside source in `streets-runtime-2026-09-26`, including
+`canal-browser-checkpoint.json`, `canal-roundtrip.json`, `canal-matched-v1/`,
+`canal-bank-snap-ready.png` and `canal-fast-redo-reopened.png`.
+Current local selection is six route candidates plus the fixed Bridge review
+fixture. Full acceptance, fault injection and the seven-usable-street goal remain
+open; candidate activation is not completion approval.

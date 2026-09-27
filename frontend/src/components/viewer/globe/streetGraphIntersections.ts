@@ -8,6 +8,7 @@ import {
 import { validateStreetRecipeProperties } from './streetLegoContract';
 import { publicRealmTrialAsset } from './publicRealmTrial';
 import { nativeStreetPilotForZone } from './nativeStreetPilot';
+import { isSpecialistStreet } from './specialistStreetProgram';
 
 interface LocalPoint {
   x: number;
@@ -151,6 +152,9 @@ function detectStreetIntersections(
     // Callers can pass a whole site (e.g. during edits). Buildings and the
     // boundary must not acquire the default road width and obscure real nodes.
     if (zone.zone_type !== 'road') return false;
+    // Canal bank connections and elevated fixed spans do not create asphalt
+    // nodes at centreline crossings. Their specialist envelope owns topology.
+    if (!zone.properties?.validation_fixed_fixture && isSpecialistStreet(zone.properties?.road_selected_variant_id)) return false;
     const native = publicRealmTrialAsset(zone);
     if (native) return native.kind === 'street' && native.dimensions[0] >= 5;
     const props = zone.properties as Record<string, unknown> | undefined;

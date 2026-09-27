@@ -4522,5 +4522,168 @@
       }
     },
     "thumbnailUrl": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/reference.png"
+  },
+  {
+    "id": "amsterdam_gracht_v1",
+    "sourceArchetypeId": "amsterdam_gracht",
+    "title": "Amsterdam Gracht (Canal Street)",
+    "status": "candidate",
+    "sourceRecipeSha256": "db99c735b29e2d9c9131d89f787fd137fb1f41523cbae55d8a15322e35535ef9",
+    "sourceAssemblySha256": "70398463c12c2a69acc148dd9795558cd7f567e23a65438522ac3ddfc772e9f8",
+    "referenceSha256": "12b631fccef4facfaa4170680acbbb8949c968a001855468ddd9b4f4e7062fff",
+    "widthM": 36,
+    "fixtureLengthM": 80,
+    "routeAxis": "local_y",
+    "junctionSurface": "brick",
+    "sections": [
+      {
+        "name": "west_quay",
+        "x": -13.5,
+        "width": 9,
+        "material": "paving"
+      },
+      {
+        "name": "open_water",
+        "x": 0,
+        "width": 18,
+        "material": "water"
+      },
+      {
+        "name": "east_quay",
+        "x": 13.5,
+        "width": 9,
+        "material": "paving"
+      }
+    ],
+    "placements": [],
+    "treeWells": [],
+    "program": {
+      "schemaVersion": 1,
+      "adapter": "canal-v005-v1",
+      "surfaceRegions": [],
+      "details": [],
+      "paving": "source-native",
+      "pavingModuleM": [
+        0.3,
+        0.15
+      ],
+      "minLengthM": 80,
+      "maxLengthM": 320,
+      "preparedLevelOnly": true,
+      "baseLiftM": 0,
+      "straightOnly": true,
+      "groundOwnership": "entire-canal-corridor-cutout",
+      "topology": "outer-bank-edge-connections-original-arch-only",
+      "sourceAuthoringSha256": "8526b6d7b63718db193eff20677185ef3afbb239d1eb41df23f6994eadf791e2",
+      "sourceFiles": {
+        "build.py": "19a4d81b0224ead51ff4df1c741a90fc702294fd261f0cc3a96e3f86c5048b5b",
+        "canal.py": "efb9835b37956d02afd1c311dc0d6646b90c1217a99b73d1867e669566a40493",
+        "delivery.py": "ba31b4103ef8dad694987e9c751523a4448189fad69a2606b38d696db03f8e35",
+        "details.py": "591fdfc38e8489c632b316031e840d0774ceaec70b0eadadccaf24ab4931676f",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a"
+      },
+      "palette": {
+        "water": [
+          0.055,
+          0.13,
+          0.12
+        ],
+        "brick": [
+          0.26,
+          0.13,
+          0.085
+        ],
+        "paving": [
+          0.31,
+          0.205,
+          0.14
+        ],
+        "roadbrick": [
+          0.22,
+          0.125,
+          0.08
+        ],
+        "coping": [
+          0.45,
+          0.45,
+          0.38
+        ],
+        "mortar": [
+          0.3,
+          0.265,
+          0.22
+        ],
+        "soil": [
+          0.105,
+          0.073,
+          0.045
+        ],
+        "concrete": [
+          0.49,
+          0.47,
+          0.42
+        ],
+        "asphalt": [
+          0.1,
+          0.115,
+          0.11
+        ],
+        "steel": [
+          0.49,
+          0.52,
+          0.5
+        ],
+        "paint": [
+          0.86,
+          0.86,
+          0.77
+        ]
+      },
+      "nativeLengthM": 80,
+      "channelWidthM": 18,
+      "waterHeightM": -2.05,
+      "streetHeightM": 0.12,
+      "basinStationM": 8,
+      "crossingStationM": 60
+    },
+    "programSha256": "f2ff8152c953fc4a0f5d9d8cde0d0e03bd5e39294c4e5cbb40836214bf2ad27e",
+    "modules": {
+      "canal_ground": {
+        "sha256": "08a85bab224aef14f3c720761d315d4ed76304527a065a6f6a3e89bf981d479b",
+        "bytes": 6646648,
+        "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_ground.glb"
+      },
+      "canal_crossing": {
+        "sha256": "098f436d0df567456ec5df3568b8b286a02ec0021cc78f331cf53829c2934839",
+        "bytes": 2769532,
+        "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_crossing.glb"
+      },
+      "canal_furnishings": {
+        "sha256": "99142cd4af5257fc2fddb20bbf389df50133fe835160720f7aa0a001c213315f",
+        "bytes": 10889092,
+        "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_furnishings.glb"
+      },
+      "canal_tree": {
+        "sha256": "0d899baf64da60cdb6e40096a2eefdd15cc69eb5147ffd69f184ca1c99274c95",
+        "bytes": 1278708,
+        "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_tree.glb"
+      },
+      "canal_bench": {
+        "sha256": "a1765bfc10b83423d621479851523389fb06e9023b56cd41929c55be6f583411",
+        "bytes": 15160,
+        "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bench.glb"
+      },
+      "canal_lamp": {
+        "sha256": "5316049c31be3a2dd68c641bc272c6c4c11a4fbac3480d9884c0a609bc00a2ca",
+        "bytes": 5000,
+        "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_lamp.glb"
+      },
+      "canal_bollard": {
+        "sha256": "6b5422458e529bed849406937d9b3f847013e8f7a4b132652245f2a57c30385d",
+        "bytes": 3160,
+        "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bollard.glb"
+      }
+    },
+    "thumbnailUrl": "/street-kits/pilots/amsterdam_gracht_v1/reference.png"
   }
 ]

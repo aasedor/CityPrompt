@@ -1391,7 +1391,9 @@ export function GlobeZoneLayer({
   const showPlanningOverlays = planningOverlaysVisible && !overlaysHidden;
   const parkGroundOwners = useParkAssemblyGroundOwners(zones);
   const preparedRoadOpenings = useMemo(() => preparedPublicRoadMasks(zones).map(zone => zone.coordinates), [zones]);
-  const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...parkGroundOwners.map(zone => zone.coordinates)], [preparedGroundCutouts, parkGroundOwners]);
+  const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...parkGroundOwners.map(zone => zone.coordinates),
+    ...zones.filter(zone=>zone.zone_type==='road' && zone.properties?.road_selected_variant_id==='amsterdam_gracht_v1'
+      && !zone.properties?.validation_fixed_fixture).map(zone=>zone.coordinates)], [preparedGroundCutouts, parkGroundOwners,zones]);
   const sectionGroundIds = useMemo(() => new Set(selectDetailedStreetZones(zones.filter(zone =>
     resolveCommunity3DKind(zone) === 'street' && zone.coordinates.length >= 4 && shouldRenderCommunityGround(zone)))
     .filter(streetSectionOwnsGround)

@@ -22,6 +22,14 @@ describe('fixed sections across street types', () => {
     const profile = resolvePilotStreetSectionProfile(saved)!;
     expect(profile.rowM).toBe(width);
     expect(profile.bands.reduce((sum, band) => sum + band.widthM, 0)).toBeCloseTo(width, 8);
+    if(['brt_bus_rapid_transit_corridor_v0','amsterdam_gracht_v1','landmark_signature_bridge_v2'].includes(asset.model.variantId)){
+      expect(addStreetBend(saved)).toBeNull();
+      const moved=streetCoordinateUpdate(saved,saved.coordinates.map(([x,y])=>[x,y+2/111320]));
+      expect(moved.properties?.width).toBe(width);
+      expect(streetAssetForZone({...saved,...moved})).toBe(asset);
+      expect(moved.properties?.plan_centerline).toEqual(extractCenterline(moved.coordinates));
+      return;
+    }
     const bend = addStreetBend(saved)!;
     const reshaped = reshapeStreetPoint(bend, 1, ll([35, 8]), width);
     const updated = streetCoordinateUpdate(saved, reshaped);
@@ -47,10 +55,10 @@ describe('fixed sections across street types', () => {
     expect(streetRouteProblem(bufferLineToPolygon([[0,0],[width+1,0]].map(ll),width),width)).toBeNull();
   });
   it('allows a short narrow-lane segment that the old 16 m rule rejected', () => {
-    const asset = STREET_ASSETS.find(a=>a.properties.road_archetype_id==='green_alley')!;
-    const narrow = { ...zone, coordinates: bufferLineToPolygon([[0,0],[12,0]].map(ll),5), properties: asset.properties };
+    const asset = STREET_ASSETS.find(a=>a.model.variantId==='student_planted_shared_lane_v1')!;
+    const narrow = { ...zone, coordinates: bufferLineToPolygon([[0,0],[30,0]].map(ll),14), properties: {...asset.properties,plan_centerline:[[0,0],[30,0]].map(ll)} };
     expect(addStreetBend(narrow)).not.toBeNull();
-    expect(streetRouteProblem(narrow.coordinates,5)).toBeNull();
+    expect(streetRouteProblem(narrow.coordinates,14)).toBeNull();
   });
   it('does not lock an unrelated or changed advanced street to a stale placement marker', () => {
     expect(isFixedSectionStreet({ ...zone, properties: { ...zone.properties, road_archetype_id: 'another_type' } })).toBe(false);

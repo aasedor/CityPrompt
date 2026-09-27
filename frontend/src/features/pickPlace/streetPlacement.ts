@@ -4,6 +4,7 @@ import { bufferLineToPolygon, extractCenterline, extractZoneCenterline, parsePer
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
 import { canonicalStreetForZone } from './canonicalStreetPlacement';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
+import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetProgram';
 
 export const CALGARY_LOCAL_PLACEMENT = LOCAL_STREET_ASSET;
 export const CALGARY_LOCAL_WIDTH_M = LOCAL_STREET_ASSET.sectionWidth;
@@ -14,7 +15,9 @@ export function isCalgaryLocalRoute(zone: Pick<SiteZone, 'zone_type' | 'properti
 
 export function streetAssetForZone(zone: Pick<SiteZone, 'zone_type' | 'properties'>) {
   if (zone.zone_type !== 'road') return undefined;
-  return STREET_ASSETS.find(asset => zone.properties?.pick_place_street_section === asset.model.variantId
+  // A finite classroom picker must not remove editing support from an existing
+  // Calgary Local route saved before the candidate-only catalogue was enabled.
+  return [...STREET_ASSETS, LOCAL_STREET_ASSET].find(asset => zone.properties?.pick_place_street_section === asset.model.variantId
     && zone.properties.road_archetype_id === asset.properties.road_archetype_id
     && zone.properties.road_selected_variant_id === asset.model.variantId) ?? canonicalStreetForZone(zone);
 }
@@ -95,6 +98,7 @@ export function streetRouteProblem(
 }
 
 export function addStreetBend(zone: SiteZone): number[][] | null {
+  if(isSpecialistStreet(zone.properties?.road_selected_variant_id) || zone.properties?.road_selected_variant_id==='brt_bus_rapid_transit_corridor_v0')return null;
   const width = streetSectionWidth(zone);
   const savedControls = parsePersistedCenterline(zone.properties?.plan_route_controls);
   const line = savedControls ?? extractZoneCenterline(zone);

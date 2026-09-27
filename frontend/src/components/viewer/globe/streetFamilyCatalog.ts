@@ -12,7 +12,7 @@ import nativeStreets from '@/data/nativeStreetPilots.json';
 export const PUBLIC_REALM_STREET_FAMILY_VERSION = 1 as const;
 type NativeStreetFamilyId = 'street_native_student_main_street_v1' | 'street_native_student_market_street_v1'
   | 'street_native_student_quiet_residential_street_v1' | 'street_native_student_planted_shared_lane_v1'
-  | 'street_native_brt_bus_rapid_transit_corridor_v0';
+  | 'street_native_brt_bus_rapid_transit_corridor_v0' | 'street_native_amsterdam_gracht_v1';
 
 export type PublicRealmStreetFamilyId =
   | NativeStreetFamilyId
@@ -266,6 +266,7 @@ function nativeFamily(id: NativeStreetFamilyId): PublicRealmStreetFamilyDefiniti
     crossSection: street.sections.map(band => ({ type: band.name, widthM: band.width, label: band.name.replace(/_/g, ' '), surface: band.material })),
     defaultAppearanceKitId: appearance, appearanceKitIds: [appearance], capabilities: street.id==='brt_bus_rapid_transit_corridor_v0'
       ? ['rigid_modules','straight_route','manual_stops','junctions_outside_stops']
+      : street.id==='amsterdam_gracht_v1' ? ['rigid_modules','straight_route','outer_bank_connections','native_arch_crossing','open_channel_extension']
       : ['rigid_modules', 'curved_route', 'shared_junctions'],
   };
 }
@@ -276,6 +277,7 @@ export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFami
   street_native_student_quiet_residential_street_v1: nativeFamily('street_native_student_quiet_residential_street_v1'),
   street_native_student_planted_shared_lane_v1: nativeFamily('street_native_student_planted_shared_lane_v1'),
     street_native_brt_bus_rapid_transit_corridor_v0: nativeFamily('street_native_brt_bus_rapid_transit_corridor_v0'),
+  street_native_amsterdam_gracht_v1: nativeFamily('street_native_amsterdam_gracht_v1'),
   street_local_public_realm: {
     id: 'street_local_public_realm',
     familyVersion: 1,

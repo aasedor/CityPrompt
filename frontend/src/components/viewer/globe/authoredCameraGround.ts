@@ -7,12 +7,32 @@ import { readParkTerrain } from './parkTerrain';
 import { sampleSharedSiteGround, sharedSiteGroundContains } from './sharedSiteGround';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { terraceOffset } from './terraceDefinition';
+import { extractZoneCenterline } from '@/utils/roadGeometry';
+import { isSpecialistStreet, specialistWalkingHeight, BRIDGE_VARIANT } from './specialistStreetProgram';
 
 /** Camera feet belong on the authored ground, not the Google mesh hidden
  * underneath it. Unprepared landscape and off-site context keep their hit. */
 export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number, measured: number): number {
   const contains = (zone: SiteZone) => sharedSiteGroundContains(zone.coordinates as [number, number][], lng, lat);
   for (const zone of zones.filter(contains)) {
+    const variant=String(zone.properties?.road_selected_variant_id);
+    if(zone.zone_type==='road' && !zone.properties?.validation_fixed_fixture && isSpecialistStreet(variant)){
+      const route=extractZoneCenterline(zone),a=route[0],b=route[route.length-1];
+      if(a&&b){
+        const sx=metersPerDegLon(a[1]),dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*METERS_PER_DEG_LAT,length=Math.hypot(dx,dy);
+        const x=(lng-a[0])*sx,y=(lat-a[1])*METERS_PER_DEG_LAT;
+        const height=specialistWalkingHeight(variant,(x*dy-y*dx)/length,(x*dx+y*dy)/length,length);
+        const level=resolvePreparedSiteTerrainForZone(zone,zones,measured);
+        if(height!==null&&level!==null){
+          const station=(x*dx+y*dy)/length,deckStart=(length-100)/2;
+          // Retain the lower route when walking through the opening. Entering
+          // a ramp or clicking the deck keeps the upper continuous surface.
+          if(variant===BRIDGE_VARIANT && station>deckStart+8 && station<length-deckStart-8
+            && measured<level+height-2)return level;
+          return level+height;
+        }
+      }
+    }
     const native = readNativePark(zone);
     if (native && !nativeParkFitProblem(zone)) {
       const level = resolvePreparedSiteTerrainForZone(zone, zones, measured);

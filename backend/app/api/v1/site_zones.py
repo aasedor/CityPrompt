@@ -22,6 +22,7 @@ from shapely.geometry import Polygon
 from shapely.validation import explain_validity
 from app.services.native_parks import plan_native_park
 from app.services.native_brt import validate_brt_properties, validate_brt_ground, is_native_brt
+from app.services.native_specialist_streets import validate_specialist_properties, validate_specialist_ground, is_native_specialist
 from app.services.public_road_connection import public_road_connection_fits
 from sqlalchemy import desc, func as sa_func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -1087,6 +1088,8 @@ async def create_zone(
     try:
         validate_brt_properties(zone_in.properties)
         validate_brt_ground(zone_in.properties, active_boundary.properties if active_boundary else None)
+        validate_specialist_properties(zone_in.properties)
+        validate_specialist_ground(zone_in.properties, active_boundary.properties if active_boundary else None)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     if (zone_in.properties or {}).get('green_space_native_layout') is not None:
@@ -1371,6 +1374,10 @@ async def update_zone(
     native_properties = update_data.get('properties', zone.properties) or {}
     try:
         validate_brt_properties(native_properties)
+        validate_specialist_properties(native_properties)
+        if is_native_specialist(native_properties):
+            specialist_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
+            validate_specialist_ground(native_properties, specialist_boundary.properties if specialist_boundary else None)
         if is_native_brt(native_properties):
             brt_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
             validate_brt_ground(native_properties, brt_boundary.properties if brt_boundary else None)

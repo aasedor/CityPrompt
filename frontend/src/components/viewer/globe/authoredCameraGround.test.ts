@@ -6,6 +6,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import type { SiteZone } from '@/types';
 import { rectangleAt } from '@/features/pickPlace/geometry';
 import { authoredCameraGround } from './authoredCameraGround';
+import {bufferLineToPolygon} from '@/utils/roadGeometry';
 
 const boundary: SiteZone = { id:'site', project_id:'test', zone_type:'site_boundary',
   coordinates:rectangleAt([-114,51],100,100), is_active_boundary:true,
@@ -13,6 +14,15 @@ const boundary: SiteZone = { id:'site', project_id:'test', zone_type:'site_bound
   color:'#aaa',sort_order:0,created_at:'now',updated_at:'now' };
 describe('camera ground for authored communities',()=>{
   beforeEach(()=>vi.resetAllMocks());
+  it('keeps a pedestrian below the bridge while deck and ramp users follow their upper surface',()=>{
+    const line=[[-114,51-130/111320],[-114,51+130/111320]];
+    const bridge={...boundary,id:'bridge',zone_type:'road' as const,is_active_boundary:false,coordinates:bufferLineToPolygon(line,36),
+      properties:{width:36,road_selected_variant_id:'landmark_signature_bridge_v2',plan_centerline:line}};
+    const large={...boundary,coordinates:rectangleAt([-114,51],100,300)};
+    expect(authoredCameraGround([large,bridge],-114,51,1103)).toBe(1103);
+    expect(authoredCameraGround([large,bridge],-114,51,1107.3)).toBeCloseTo(1107.3);
+    expect(authoredCameraGround([large,bridge],-114,51-90/111320,1105)).toBeCloseTo(1105.15,2);
+  });
   it('uses verified native steps and lawn heights in the saved placement frame',()=>{
     const layout=nativeParkLayouts.find(p=>p.id==='amphitheater_lawn_v0--native-v1')!;
     const coordinates=rectangleAt([-114,51],70,70,90);

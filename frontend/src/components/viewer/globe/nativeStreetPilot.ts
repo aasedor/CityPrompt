@@ -2,6 +2,7 @@ import pilots from '@/data/nativeStreetPilots.json';
 import bounds from '@/data/nativeStreetModuleBounds.json';
 import type { NativeStreetProgram } from './nativeStreetProgram';
 import { BRT_VARIANT, brtRouteProblem, brtStreetLayout, type BrtStop } from './brtStreetProgram';
+import { isSpecialistStreet, specialistFixtures, specialistRouteProblem } from './specialistStreetProgram';
 import type { SiteZone } from '@/types';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { validateStreetRecipeProperties } from './streetLegoContract';
@@ -41,6 +42,7 @@ export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'prope
   const points=extractZoneCenterline(zone),scale=111320*Math.cos((points[0]?.[1]??0)*Math.PI/180);
   const length=points.slice(1).reduce((sum,p,i)=>sum+Math.hypot((p[0]-points[i][0])*scale,(p[1]-points[i][1])*111320),0);
   if(pilot.id===BRT_VARIANT)return brtRouteProblem(points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})),zone.properties?.road_native_stops??[]);
+  if(isSpecialistStreet(pilot.id))return specialistRouteProblem(pilot.id,points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})));
   return length<program.minLengthM-.01 || length>program.maxLengthM+.01
     ? `${pilot.title} needs a route ${program.minLengthM}–${program.maxLengthM} m long so its complete garden and access program fits.` : null;
 }
@@ -103,9 +105,11 @@ export function placeNativeStreetModules(
   });
   const clearances = [...junctions, ...bendClearances];
   const isBrt = pilot.id===BRT_VARIANT;
-  const source = isBrt ? brtStreetLayout(totalM,stops).fixtures.map(p=>({...p,y:p.y-totalM/2})) : pilot.placements;
+  const specialist = isSpecialistStreet(pilot.id);
+  const source = specialist ? specialistFixtures(pilot.id,totalM).map(p=>({...p,y:p.y-totalM/2}))
+    : isBrt ? brtStreetLayout(totalM,stops).fixtures.map(p=>({...p,y:p.y-totalM/2})) : pilot.placements;
   const modules:Record<string,{url:string;sha256:string}|undefined>=pilot.modules;
-  const centers = isBrt || totalM <= pilot.fixtureLengthM
+  const centers = specialist || isBrt || totalM <= pilot.fixtureLengthM
     ? [totalM / 2]
     : Array.from({ length: Math.ceil(totalM / pilot.fixtureLengthM) }, (_, index) =>
       pilot.fixtureLengthM / 2 + index * pilot.fixtureLengthM);
@@ -143,7 +147,7 @@ export function placeNativeStreetModules(
     const minX=Math.min(...corners.map(p=>p.x)), maxX=Math.max(...corners.map(p=>p.x));
     const minY=Math.min(...corners.map(p=>p.y)), maxY=Math.max(...corners.map(p=>p.y));
     const rotation=segment.angle-Math.PI/2, c=Math.cos(rotation), s=Math.sin(rotation);
-    if (item.kind!=='station_program' && clearances.some(node => {
+    if (!specialist && item.kind!=='station_program' && clearances.some(node => {
       const dx=node.x-x,dy=node.y-y,nx=dx*c+dy*s,ny=-dx*s+dy*c;
       const distance=Math.hypot(nx-Math.max(minX,Math.min(maxX,nx)),ny-Math.max(minY,Math.min(maxY,ny)));
       return distance<Math.max(node.clearanceM,pilot.widthM/2+4);

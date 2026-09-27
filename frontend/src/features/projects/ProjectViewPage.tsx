@@ -32,6 +32,7 @@ import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
 import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 import { brtConnectionProblem } from '@/features/pickPlace/brtConnections';
+import { specialistConnectionProblem } from '@/features/pickPlace/specialistConnections';
 import { snapConnectedStreetEdit, streetEditConnectionCheck } from '@/features/pickPlace/streetEditConnections';
 import { isAxiosError } from 'axios';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
@@ -314,7 +315,8 @@ export function ProjectViewPage() {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
       const streetUpdate = isFixedSectionStreet(zone) ? streetCoordinateUpdate(zone, coordinates) : null;
       const footprint = streetUpdate?.coordinates ?? coordinates;
-      const problem = brtConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
+      const problem = specialistConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
+        ?? brtConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
         ?? nativeStreetRouteProblem({...zone,...(streetUpdate??{coordinates})},getActiveSiteBoundary(siteZones))
         ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
@@ -1139,7 +1141,8 @@ export function ProjectViewPage() {
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (isFixedSectionStreet({zone_type:type, properties})) {
-                const problem = brtConnectionProblem({coordinates,properties},siteZones)
+                const problem = specialistConnectionProblem({coordinates,properties},siteZones)
+                  ?? brtConnectionProblem({coordinates,properties},siteZones)
                   ?? nativeStreetRouteProblem({coordinates,properties},getActiveSiteBoundary(siteZones))
                   ?? streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
                   parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
@@ -1286,6 +1289,7 @@ export function ProjectViewPage() {
               const problem = (!streetEditConnectionCheck(selectedZone, siteZones)({ ...selectedZone, ...data })
                 ? 'This section needs more room at an existing junction. Keep this street type or move the junction first.' : null)
                 ?? nativeStreetRouteProblem({...selectedZone,...data},getActiveSiteBoundary(siteZones))
+                ?? specialistConnectionProblem({...selectedZone,...data},siteZones)
                 ?? brtConnectionProblem({...selectedZone,...data},siteZones)
                 ?? streetRouteProblem(data.coordinates, Number(data.properties.width),
                 parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)

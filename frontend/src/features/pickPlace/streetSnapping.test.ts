@@ -5,6 +5,7 @@ import { detectConnectedStreetIntersections } from '@/components/viewer/globe/st
 import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJunctionGeometry';
 import { CALGARY_LOCAL_PLACEMENT, streetCoordinateUpdate } from './streetPlacement';
 import { snapStreetEndpoint, snapStreetEnds } from './streetSnapping';
+import { STREET_ASSETS } from './assetRegistry';
 
 const lonM = 111320 * Math.cos(51 * Math.PI / 180);
 const ll = ([x, y]: number[]) => [-114 + x / lonM, 51 + y / 111320];
@@ -19,6 +20,16 @@ const street = (id: string, points: number[][]): SiteZone => ({ id, project_id: 
 const main = street('main', [[-50, 0], [50, 0]]);
 
 describe('student street endpoint snapping', () => {
+  it('snaps a canal connection to its outer bank without painting a node across water',()=>{
+    const asset=STREET_ASSETS.find(a=>a.model.variantId==='amsterdam_gracht_v1')!;
+    const points=[[0,0],[0,160]].map(ll);
+    const canal={...main,id:'canal',coordinates:bufferLineToPolygon(points,36),properties:{...asset.properties,plan_centerline:points}};
+    const result=snapStreetEndpoint([[60,90],[19,90]].map(ll),1,[canal],undefined,18);
+    expect(xy(result[1])[0]).toBeCloseTo(18,3);
+    expect(xy(result[1])[1]).toBeCloseTo(90,3);
+    const approach=street('approach',result.map(xy));
+    expect(detectConnectedStreetIntersections([canal,approach])).toEqual([]);
+  });
   it('turns an imprecise near-kerb endpoint into a renderable T and persists the same line', () => {
     const raw = [[0, -45], [2, -6]].map(ll);
     const unjoined = [main, street('arm', [[0, -45], [2, -6]])];

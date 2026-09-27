@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi, zoneHistoryApi } from '@/services/api';
 import { createZoneUpdateAction, createZoneCreateAction, createZoneDeleteAction, createZoneCoordinatesAction, advanceDerivedZoneRevision } from './undoActions';
+import {runProjectWrite} from '@/utils/projectWriteQueue';
 import type { SiteZone } from '@/types';
 import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
 import { bufferLineToPolygon, extractCenterline } from '@/utils/roadGeometry';
@@ -89,6 +90,20 @@ describe('zone undo revision checks', () => {
     expect(restored.coordinates).toEqual(after.coordinates);
     expect(restored.properties?.plan_centerline).toEqual(after.properties?.plan_centerline);
     expect(restored.properties?.plan_route_controls).toEqual(controls);
+  });
+  it('waits for an in-flight local compilation before checking the undo revision',async()=>{
+    const client=new QueryClient();
+    const action=createZoneUpdateAction('project','zone',{name:'before'},{name:'after'},client,'ours');
+    let release!:()=>void;
+    const hold=new Promise<void>(resolve=>{release=resolve;});
+    const compiling=runProjectWrite(client,'project',async()=>{
+      await hold;advanceDerivedZoneRevision(client,'project','zone','ours','compiled');
+    });
+    vi.mocked(siteZonesApi.update).mockResolvedValue({updated_at:'undone'} as SiteZone);
+    const undo=action.undo();
+    await Promise.resolve();expect(siteZonesApi.update).not.toHaveBeenCalled();
+    release();await compiling;await undo;
+    expect(siteZonesApi.update).toHaveBeenCalledWith('zone',{name:'before',expected_updated_at:'compiled'},{skipHistory:true});
   });
   it('accepts our derived compile revision but not a compile over a teammate edit', async () => {
     const client = new QueryClient();

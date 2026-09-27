@@ -4,6 +4,7 @@ import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { UndoableAction } from './undoRedo';
 import { isFixedSectionStreet, streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
 import { readParkTerrain, type ParkTerrainProfile } from '@/components/viewer/globe/parkTerrain';
+import { runProjectWrite } from '@/utils/projectWriteQueue';
 
 // =============================================================================
 // Helpers
@@ -44,6 +45,14 @@ function invalidateProject(queryClient: QueryClient, projectId: string) {
   return queryClient.invalidateQueries({ queryKey: ['project', projectId] });
 }
 
+/** Undo uses the same write lane as drawing and automatic compilation. Read
+ * the expected revision inside that lane, after our derived write has advanced
+ * it; never adopt an unrelated teammate revision to bypass a real conflict. */
+function queuedZoneAction(action: UndoableAction, client: QueryClient, projectId: string): UndoableAction {
+  return {...action, undo:()=>runProjectWrite(client,projectId,action.undo),
+    redo:()=>runProjectWrite(client,projectId,action.redo)};
+}
+
 // =============================================================================
 // Zone Actions
 // =============================================================================
@@ -58,7 +67,7 @@ export function createZoneCreateAction(
   const idRef: IdRef = { current: createdZone.id, revision: createdZone.updated_at };
   rememberRevision(queryClient, projectId, createdZone.id, createdZone.updated_at);
 
-  return {
+  return queuedZoneAction({
     projectId,
     label: 'Create zone',
     getZoneId: () => idRef.current,
@@ -81,7 +90,7 @@ export function createZoneCreateAction(
       rememberRevision(queryClient, projectId, zone.id, zone.updated_at);
       await invalidateZones(queryClient, projectId);
     },
-  };
+  },queryClient,projectId);
 }
 
 export function createZoneDeleteAction(
@@ -92,7 +101,7 @@ export function createZoneDeleteAction(
   const originalZoneId = deletedZone.id;
   const idRef: IdRef = { current: deletedZone.id, revision: deletedZone.updated_at };
 
-  return {
+  return queuedZoneAction({
     projectId,
     label: 'Delete zone',
     getZoneId: () => idRef.current,
@@ -110,7 +119,7 @@ export function createZoneDeleteAction(
       await siteZonesApi.delete(idRef.current, currentRevision(queryClient, projectId, idRef.current, idRef.revision), { skipHistory: true });
       await invalidateZones(queryClient, projectId);
     },
-  };
+  },queryClient,projectId);
 }
 
 export function createZoneUpdateAction(
@@ -123,7 +132,7 @@ export function createZoneUpdateAction(
 ): UndoableAction {
   let revision = savedRevision;
   rememberRevision(queryClient, projectId, zoneId, revision);
-  return {
+  return queuedZoneAction({
     projectId,
     label: 'Update zone',
     zoneId,
@@ -139,7 +148,7 @@ export function createZoneUpdateAction(
       rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
-  };
+  },queryClient,projectId);
 }
 
 export function createZoneCoordinatesAction(
@@ -176,7 +185,7 @@ export function createZoneCoordinatesAction(
     const properties = { ...current.properties, park_terrain: profile };
     return readParkTerrain({ ...current, coordinates, properties }) ? { ...data, properties } : data;
   };
-  return {
+  return queuedZoneAction({
     projectId,
     label: 'Move zone',
     zoneId,
@@ -198,7 +207,7 @@ export function createZoneCoordinatesAction(
       rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
-  };
+  },queryClient,projectId);
 }
 
 // =============================================================================

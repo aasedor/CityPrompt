@@ -2635,6 +2635,8 @@ def plan_public_realm_zone_recipe(
         return None
     from app.services.native_brt import validate_brt_properties
     validate_brt_properties(props)
+    from app.services.native_specialist_streets import validate_specialist_properties
+    validate_specialist_properties(props)
     if props.get('green_space_native_layout') is not None:
         from app.services.native_parks import plan_native_park
         return plan_native_park(geometry_wgs84, props)
