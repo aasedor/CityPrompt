@@ -13,6 +13,8 @@ const sections = [
   { id: 'street_pathway', label: 'Streets', icon: Route },
 ] as const;
 const DRAWABLE_STREETS = CATALOGUE_ASSETS.filter((asset): asset is StreetAsset => asset.kind === 'street');
+const classroomCount = (domain: typeof sections[number]['id']) => CLASSROOM_CHOICES.filter(choice => choice.domain === domain).length;
+const classroomSummary = `${CLASSROOM_CHOICES.length} exact choices: ${classroomCount('building')} buildings, ${classroomCount('park_plaza')} parks, ${classroomCount('street_pathway')} streets. App validation in progress; fixed review models have explicit limits.`;
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
@@ -74,7 +76,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             </select>
           </label>
           <p className="text-xs text-slate-600">{collection === 'starter'
-            ? '27 exact models: 12 buildings, 8 parks, 7 streets. App validation pending; fixed review models have explicit limits.'
+            ? classroomSummary
             : 'Local validation catalogue.'}</p>
           <nav aria-label="Catalogue sections" className="flex gap-2">
             {visibleSections.map(({ id, label, icon: Icon }) => <button key={id} aria-pressed={section === id} onClick={() => chooseSection(id)}
