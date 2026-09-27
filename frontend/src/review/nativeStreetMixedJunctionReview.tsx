@@ -53,7 +53,7 @@ function ReviewStreet({ pilot, route, layout }: {
     {bands.map(({ band, geometry }) => <mesh key={band.label} geometry={geometry} receiveShadow>
       <meshStandardMaterial color={pilot.id === market.id ? '#b8b5ac' : band.color} roughness={0.9} side={THREE.DoubleSide} />
     </mesh>)}
-    <GlobeNativeStreetPilotModules poses={poses} />
+    <GlobeNativeStreetPilotModules poses={poses} expectedCount={poses.length} zone={zone(pilot.id,pilot,route)} />
   </group>;
 }
 

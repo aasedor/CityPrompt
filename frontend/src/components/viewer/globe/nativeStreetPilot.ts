@@ -1,4 +1,5 @@
 import pilots from '@/data/nativeStreetPilots.json';
+import bounds from '@/data/nativeStreetModuleBounds.json';
 import type { SiteZone } from '@/types';
 import { validateStreetRecipeProperties } from './streetLegoContract';
 import {
@@ -12,6 +13,7 @@ export interface StreetRouteStation { x: number; y: number; z?: number }
 export interface NativeStreetPose {
   kind: string;
   url: string;
+  sha256: string;
   x: number;
   y: number;
   z: number;
@@ -87,14 +89,27 @@ export function placeNativeStreetModules(
     ? [totalM / 2]
     : Array.from({ length: Math.ceil(totalM / pilot.fixtureLengthM) }, (_, index) =>
       pilot.fixtureLengthM / 2 + index * pilot.fixtureLengthM);
-  // Keep a long concept corridor responsive without ending its furniture row
-  // abruptly halfway down the route. Components remain native-size.
-  const cycleStride = Math.max(1, Math.ceil(centers.length * source.length / 750));
+  // Every authored repetition is required. Rendering batches identical meshes;
+  // performance must never change the inventory by skipping furnishing cycles.
   const placed: NativeStreetPose[] = [];
-  for (let cycle = 0; cycle < centers.length; cycle += cycleStride) for (const item of source) {
+  for (let cycle = 0; cycle < centers.length; cycle += 1) for (const item of source) {
     const centerM = centers[cycle];
     const stationM = centerM + item.y;
-    if (stationM < 2 || stationM > totalM - 2) continue;
+    const module = pilot.modules[item.kind as keyof typeof pilot.modules];
+    if (!module) throw new Error('A required native street component has no asset binding.');
+    // Co-located source objects (notably tree + well) share one clearance
+    // envelope so clipping cannot strand a tree without its supporting well.
+    const group = source.filter(other => Math.abs(other.x-item.x)<1e-5 && Math.abs(other.y-item.y)<1e-5);
+    const corners = group.flatMap(other => {
+      const asset = pilot.modules[other.kind as keyof typeof pilot.modules];
+      if (!asset) throw new Error('A required native street component has no asset binding.');
+      const envelope = bounds[asset.sha256 as keyof typeof bounds]?.plan;
+      if (!envelope) throw new Error('The street component has no verified occupied bounds.');
+      const c = Math.cos(other.yaw), s = Math.sin(other.yaw);
+      return [envelope[0][0],envelope[1][0]].flatMap(x => [envelope[0][1],envelope[1][1]].map(y =>
+        ({x:(x*c-y*s)*other.scale,y:(x*s+y*c)*other.scale})));
+    });
+    if (corners.some(corner => stationM+corner.y < -1e-5 || stationM+corner.y > totalM+1e-5)) continue;
     const segment = segments.find(segment => stationM <= segment.startM + segment.lengthM + 1e-6)
       ?? last;
     const t = Math.max(0, Math.min(1, (stationM - segment.startM) / segment.lengthM));
@@ -103,9 +118,16 @@ export function placeNativeStreetModules(
     const routeZ = (segment.from.z ?? 0) + ((segment.to.z ?? 0) - (segment.from.z ?? 0)) * t;
     const x = routeX + Math.sin(segment.angle) * item.x;
     const y = routeY - Math.cos(segment.angle) * item.x;
-    if (clearances.some(node => Math.hypot(node.x - x, node.y - y) < Math.max(node.clearanceM, pilot.widthM / 2 + 4))) continue;
-    const module = pilot.modules[item.kind as keyof typeof pilot.modules];
-    if (!module) continue;
+    // Circle against the complete rigid occupied rectangle, including crowns
+    // and roof overhangs. A centre-only test can leave a canopy in a junction.
+    const minX=Math.min(...corners.map(p=>p.x)), maxX=Math.max(...corners.map(p=>p.x));
+    const minY=Math.min(...corners.map(p=>p.y)), maxY=Math.max(...corners.map(p=>p.y));
+    const rotation=segment.angle-Math.PI/2, c=Math.cos(rotation), s=Math.sin(rotation);
+    if (clearances.some(node => {
+      const dx=node.x-x,dy=node.y-y,nx=dx*c+dy*s,ny=-dx*s+dy*c;
+      const distance=Math.hypot(nx-Math.max(minX,Math.min(maxX,nx)),ny-Math.max(minY,Math.min(maxY,ny)));
+      return distance<Math.max(node.clearanceM,pilot.widthM/2+4);
+    })) continue;
     const well = item.kind === 'tree_well_grate' ? pilot.treeWells.find(candidate =>
       Math.abs(candidate.x - item.x) < 1e-5 && Math.abs(candidate.y - item.y) < 1e-5) : undefined;
     const sourceBand = pilot.sections.find(band => Math.abs(item.x - band.x) <= band.width / 2 + 1e-5);
@@ -114,7 +136,7 @@ export function placeNativeStreetModules(
       : sourceBand?.material === 'asphalt'
         ? PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS
         : PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS;
-    placed.push({ kind: item.kind, url: module.url, x, y, z: routeZ + item.z,
+    placed.push({ kind: item.kind, url: module.url, sha256: module.sha256, x, y, z: routeZ + item.z,
       yaw: segment.angle - Math.PI / 2 + item.yaw, scale: item.scale, stationM, surfaceLiftM,
       ...(well ? { wellWidthM: well.width, wellDepthM: well.depth } : {}) });
   }

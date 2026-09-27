@@ -7,6 +7,31 @@ const main = nativeStreetPilot('student_main_street_v1')!;
 const market = nativeStreetPilot('student_market_street_v1')!;
 
 describe('candidate native street modules on route geometry', () => {
+  it('retains every native Main and Market component, including both end lanterns', () => {
+    for (const pilot of [main,market]) {
+      const poses=placeNativeStreetModules(pilot,[{x:0,y:0},{x:0,y:pilot.fixtureLengthM}]);
+      expect(poses).toHaveLength(pilot.placements.length);
+      expect(poses.map(p=>p.kind)).toEqual(pilot.placements.map(p=>p.kind));
+    }
+  });
+
+  it('does not thin furnishing cycles on a long route and preserves reversal counts', () => {
+    for (const pilot of [main,market]) {
+      const length=pilot.fixtureLengthM*40;
+      const poses=placeNativeStreetModules(pilot,[{x:0,y:0},{x:0,y:length}]);
+      const reversed=placeNativeStreetModules(pilot,[{x:0,y:length},{x:0,y:0}]);
+      expect(poses).toHaveLength(pilot.placements.length*40);
+      expect(reversed).toHaveLength(poses.length);
+    }
+  });
+
+  it('never separates a tree from its well when an end or junction clips its crown', () => {
+    for(const length of [12,25,48,61]) {
+      const poses=placeNativeStreetModules(main,[{x:0,y:0},{x:0,y:length}],[{x:0,y:length/2,clearanceM:15}]);
+      const key=(p:{x:number;y:number})=>[p.x,p.y].join(',');
+      expect(poses.filter(p=>p.kind==='grove_tree').map(key)).toEqual(poses.filter(p=>p.kind==='tree_well_grate').map(key));
+    }
+  });
   it('keeps the authored section and native-size modules on straight and bent routes', () => {
     expect(main.widthM).toBe(23);
     expect(main.sections.reduce((sum, band) => sum + band.width, 0)).toBe(main.widthM);

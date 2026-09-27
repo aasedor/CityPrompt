@@ -895,7 +895,7 @@ function StreetRibbonDetail({
         }))}
         renderOrder={RENDER_ORDER_FURNITURE + 3}
       />
-      {nativePilot && <GlobeNativeStreetPilotModules poses={seat(nativePilotModules)} />}
+      {nativePilot && <GlobeNativeStreetPilotModules zone={zone} poses={seat(nativePilotModules)} expectedCount={nativePilotModules.length} />}
       {seat(yieldStreetSigns).map((placement, index) => (
         <group
           key={`yield-street-entry-sign-${index}`}

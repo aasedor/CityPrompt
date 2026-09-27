@@ -19,7 +19,9 @@ import hashlib
 import json
 import math
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+from functools import lru_cache
+from pathlib import Path
 from typing import Annotated, Any, Iterable, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -2736,12 +2738,24 @@ def plan_public_realm_zone_recipe(
         return None
 
 
+@lru_cache(maxsize=1)
+def _historical_catalog_locks() -> dict[str, dict[str, str]]:
+    """Finite source-controlled catalog identities, never hashes supplied by clients.
+
+    A saved recipe can outlive additions to the catalogue only when its exact
+    family definition is still executable. Changed families need their own
+    retained version; an old global fingerprint cannot bless new geometry.
+    """
+    path = Path(__file__).resolve().parents[1] / 'data/publicRealmCatalogHistory.json'
+    return json.loads(path.read_text(encoding='utf-8'))['catalogs']
+
+
 def public_realm_recipe_identity(
     value: PublicRealmRecipePayload | dict[str, Any] | None,
     *,
     catalog: PublicRealmCapabilityCatalog | None = None,
 ) -> dict[str, Any] | None:
-    """Validate a stored recipe against both its hashes and the live catalog."""
+    """Validate immutable recipes against trusted, still-executable capabilities."""
 
     if value is None:
         return None
@@ -2757,8 +2771,6 @@ def public_realm_recipe_identity(
     if public_realm_recipe_hash(recipe) != recipe.recipe_hash:
         return None
     catalog = catalog or build_public_realm_capability_catalog()
-    if recipe.catalog_fingerprint != catalog.fingerprint:
-        return None
     capability = next(
         (
             item
@@ -2771,6 +2783,13 @@ def public_realm_recipe_identity(
         return None
     if public_realm_capability_fingerprint(capability) != recipe.capability_fingerprint:
         return None
+    if recipe.catalog_fingerprint != catalog.fingerprint:
+        trusted = _historical_catalog_locks().get(recipe.catalog_fingerprint, {})
+        if trusted.get(f'{recipe.family_id}@{recipe.family_version}') != recipe.capability_fingerprint:
+            return None
+        # Replan with the same exact capability and original catalogue identity.
+        # All canonical field comparisons below remain mandatory.
+        catalog = replace(catalog, fingerprint=recipe.catalog_fingerprint)
     try:
         canonical = plan_public_realm_recipe(
             PublicRealmPlanRequest(

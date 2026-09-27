@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import type { SiteZone } from '../types';
 import { createRoot } from 'react-dom/client';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
@@ -29,7 +30,7 @@ function Street({ pilot, route }: { pilot: typeof main; route: typeof mainRoute 
     {bands.map(({ band, geometry }) => geometry && <mesh key={band.label} geometry={geometry} receiveShadow>
       <meshStandardMaterial color={band.color} roughness={0.9} side={THREE.DoubleSide} />
     </mesh>)}
-    <GlobeNativeStreetPilotModules poses={poses} />
+    <GlobeNativeStreetPilotModules poses={poses} expectedCount={poses.length} zone={{id:pilot.id,project_id:'review',color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',zone_type:'road',coordinates:route.map(p=>[p.x,p.y]),properties:{road_selected_variant_id:pilot.id}} satisfies SiteZone} />
   </group>;
 }
 

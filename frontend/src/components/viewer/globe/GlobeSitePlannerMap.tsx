@@ -1,4 +1,5 @@
 import { NativeParkLayer, assertNativeParksReady, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
+import { assertNativeStreetsReady, waitForNativeStreetsReady, expectsNativeStreet } from './nativeStreetReadiness';
 import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
 import { assertSiteLandscapeReady } from '@/features/siteLandscape/landscapeCapture';
@@ -2904,6 +2905,7 @@ export function GlobeSitePlannerMap({
           assertSiteLandscapeReady(scene);
           assertPublicRealmTrialsReady(scene);
           await waitForNativeParksReady(scene, terrainZonesRef.current);
+          await waitForNativeStreetsReady(scene, terrainZonesRef.current);
           const captured = await captureDirect3DScene(renderer, scene, camera, {
             includeGeometryPasses: options.includeGeometryPasses,
             maxLongEdge: options.maxLongEdge,
@@ -2916,6 +2918,7 @@ export function GlobeSitePlannerMap({
             throw new Direct3DCaptureError('capture_failed', 'The plan changed during capture. Let the scene settle and try again.');
           }
           assertNativeParksReady(scene, terrainZonesRef.current);
+          assertNativeStreetsReady(scene, terrainZonesRef.current);
           assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
           assertStreetGroundReady(scene);
           return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
@@ -2961,6 +2964,7 @@ export function GlobeSitePlannerMap({
       const accessSnapshot = parkAccessSnapshotRef.current;
       assertPublicRealmTrialsReady(scene);
       await waitForNativeParksReady(scene, terrainZonesRef.current);
+      await waitForNativeStreetsReady(scene, terrainZonesRef.current);
       const captured = await captureDirect3DScene(renderer, scene, camera, {
         ...options,
         // Direct 3D v2 requires the same registered geometry controls at
@@ -2975,13 +2979,14 @@ export function GlobeSitePlannerMap({
         throw new Direct3DCaptureError('capture_failed', 'The plan changed during capture. Let the scene settle and try again.');
       }
       assertNativeParksReady(scene, terrainZonesRef.current);
+      assertNativeStreetsReady(scene, terrainZonesRef.current);
       assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
       assertStreetGroundReady(scene);
       return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
         ? { parkAccessSnapshot: structuredClone(accessSnapshot) } : {}) };
     } catch (err) {
       // A screenshot must never bypass an expected native model or capture revision.
-      if (terrainZonesRef.current.some(hasNativePark)) throw err;
+      if (terrainZonesRef.current.some(zone=>hasNativePark(zone)||expectsNativeStreet(zone))) throw err;
       // A screenshot fallback must not bypass an unfinished road alignment.
       assertStreetGroundReady(scene);
       console.warn('[GlobeSitePlannerMap] Street Direct 3D capture failed — falling back to screenshot:', err);

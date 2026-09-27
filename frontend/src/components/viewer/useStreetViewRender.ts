@@ -1,3 +1,4 @@
+import { bufferLineToPolygon } from '@/utils/roadGeometry';
 /**
  * useStreetViewRender — utilities and React hook for generating street-level
  * architectural renders from a pegman position and viewing angle.
@@ -426,53 +427,7 @@ export function getViewConePolygon(
  * Takes a line [[lng,lat], ...] and a width in meters, returns a polygon [[lng,lat], ...].
  * Uses a simple perpendicular offset approach — good enough for street widths.
  */
-export function bufferLineToPolygon(
-  lineCoords: number[][],
-  widthMeters: number,
-): number[][] {
-  if (lineCoords.length < 2) return lineCoords;
-
-  const halfWidth = widthMeters / 2;
-  const leftSide: number[][] = [];
-  const rightSide: number[][] = [];
-
-  for (let i = 0; i < lineCoords.length; i++) {
-    const [lng, lat] = lineCoords[i];
-
-    // Calculate the direction vector at this point
-    let dx = 0, dy = 0;
-    if (i < lineCoords.length - 1) {
-      dx += lineCoords[i + 1][0] - lng;
-      dy += lineCoords[i + 1][1] - lat;
-    }
-    if (i > 0) {
-      dx += lng - lineCoords[i - 1][0];
-      dy += lat - lineCoords[i - 1][1];
-    }
-
-    // Normalize
-    const len = Math.sqrt(dx * dx + dy * dy);
-    if (len < 1e-12) continue;
-    dx /= len;
-    dy /= len;
-
-    // Perpendicular vector (rotated 90°)
-    const px = -dy;
-    const py = dx;
-
-    // Convert meters to degrees (approximate)
-    const metersPerDegLat = 110540;
-    const metersPerDegLng = metersPerDegLat * Math.cos(lat * DEG_TO_RAD);
-    const offsetLng = (halfWidth / metersPerDegLng) * px;
-    const offsetLat = (halfWidth / metersPerDegLat) * py;
-
-    leftSide.push([lng + offsetLng, lat + offsetLat]);
-    rightSide.push([lng - offsetLng, lat - offsetLat]);
-  }
-
-  // Combine left side forward + right side reversed to form a closed polygon
-  return [...leftSide, ...rightSide.reverse()];
-}
+export { bufferLineToPolygon } from '@/utils/roadGeometry';
 
 /**
  * Pre-process site zones: convert street/path polylines into buffered polygons

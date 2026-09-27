@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 
 import pytest
 from pyproj import CRS
@@ -788,6 +789,37 @@ def test_recipe_identity_fails_closed_after_payload_or_catalog_hash_tampering():
     payload["recipe_hash"] = public_realm_recipe_hash(payload)
     assert public_realm_recipe_hash(payload) == payload["recipe_hash"]
     assert public_realm_recipe_identity(payload) is None
+
+
+@pytest.mark.parametrize('archetype,width,variant', [
+    ('narrow_residential_street', 12, None),
+    ('neighborhood_main_street', 23, 'student_main_street_v1'),
+    ('pedestrian_only_street', 18, 'student_market_street_v1'),
+])
+def test_saved_recipe_survives_catalog_additions_only_with_unchanged_trusted_family(archetype, width, variant):
+    catalog = replace(build_public_realm_capability_catalog(),
+        fingerprint='4e673702affdad9f2354c69d2a64a86a47bf877f77a2eb3425bd813dfafedbdb')
+    recipe = plan_public_realm_recipe(_street_request(archetype, width, variant_id=variant), catalog=catalog)
+    expanded = replace(catalog, fingerprint='a' * 64)
+    identity = public_realm_recipe_identity(recipe, catalog=expanded)
+    assert identity is not None
+    assert identity['recipe'] == recipe.model_dump(mode='json')
+
+    unknown = recipe.model_dump(mode='json')
+    unknown['catalog_fingerprint'] = 'b' * 64
+    unknown['recipe_hash'] = public_realm_recipe_hash(unknown)
+    assert public_realm_recipe_identity(unknown, catalog=expanded) is None
+
+    tampered = recipe.model_dump(mode='json')
+    tampered['appearance_kit_id'] = 'different_geometry'
+    tampered['recipe_hash'] = public_realm_recipe_hash(tampered)
+    assert public_realm_recipe_identity(tampered, catalog=expanded) is None
+
+    changed = replace(expanded, capabilities=tuple(
+        c.model_copy(update={'title': 'changed definition'}) if c.family_id == recipe.family_id else c
+        for c in expanded.capabilities
+    ))
+    assert public_realm_recipe_identity(recipe, catalog=changed) is None
 
 
 def test_linear_greenway_accepts_compact_corridor_but_rejects_square_pond_lobe():

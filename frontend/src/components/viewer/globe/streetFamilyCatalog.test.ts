@@ -16,6 +16,8 @@ describe('Public Realm LEGO street family catalog', () => {
       'street_complete_main_22m',
       'street_four_way_intersection',
       'street_local_public_realm',
+      'street_native_student_main_street_v1',
+      'street_native_student_market_street_v1',
     ]);
     expect(Object.values(PUBLIC_REALM_STREET_FAMILIES).every((family) => family.familyVersion === 1)).toBe(true);
   });
