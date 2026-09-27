@@ -67,6 +67,22 @@ describe('automatic placement compilation',()=>{
     expect(authoredPlacementKey([edited])).not.toBe(authoredPlacementKey([park]));
     unmount();
   });
+  it('includes drawn water in the server-verified scope and rebuilds after a water edit',async()=>{
+    const water={...zone(),id:'water',zone_type:'water',properties:{},coordinates:[[0,0],[1,0],[1,1],[0,1]]} as SiteZone;
+    vi.mocked(siteZonesApi.list).mockResolvedValue([zone(0,true),water]);
+    const {rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{
+      initialProps:{zones:[zone(),water]},wrapper,
+    });
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledWith([zone()],undefined,{
+      includeResidualLandscape:true,scopeZoneIds:['zone','water'],
+    });
+    const movedWater={...water,coordinates:[[2,0],[3,0],[3,1],[2,1]]};
+    rerender({zones:[zone(),movedWater]});
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledTimes(2);
+    unmount();
+  });
   it('debounces changes, waits for saves and does not recompile its own metadata',async()=>{
     const {result,rerender,unmount}=renderHook(({zones,saving})=>useAutomatic3D('p',zones,saving),{initialProps:{zones:[zone()],saving:true},wrapper});
     await advance();expect(compileMixedCommunity3D).not.toHaveBeenCalled();

@@ -14,6 +14,9 @@ import { isCatalogueOnlyScene } from './catalogue';
 import { representationNotice } from './representationNotice';
 
 const physicalZone = (zone: SiteZone) => resolveCommunity3DKind(zone) !== null && !zone.id.startsWith('temp-');
+const physicalScopeZone = (zone: SiteZone) => zone.zone_type !== 'site_boundary'
+  && zone.properties?._plan_role !== 'framework_height'
+  && !zone.id.startsWith('temp-');
 
 export function authoredPlacementKey(zones: SiteZone[], includeRuntimeEntrance = true): string {
   return JSON.stringify(zones.map(zone => ({ id: zone.id, coordinates: zone.coordinates,
@@ -45,6 +48,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
     return()=>{window.removeEventListener('cityprompt:native-park-error',onAssetError);window.removeEventListener('cityprompt:native-street-error',onAssetError);};
   },[projectId]);
   const candidates = zones.filter(physicalZone);
+  const scopeZones = zones.filter(physicalScopeZone);
   const boundary = deriveCityPromptWorkflow(zones).activeBoundary;
   // Catalogue placements build immediately. Other designs enter this path after
   // their first explicit 3D build, so subsequent moves keep renders current.
@@ -55,7 +59,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   // edit changes the model's compiled_at while Undo can restore older zone
   // metadata, stranding an otherwise identical model. Keep the full authored
   // key below for revision comparisons; only the rebuild trigger excludes it.
-  const key = authoredPlacementKey([...candidates, ...(boundary ? [boundary] : [])], false);
+  const key = authoredPlacementKey([...scopeZones, ...(boundary ? [boundary] : [])], false);
   const compiled = deriveCityPromptWorkflow(zones).sceneReady;
 
   useEffect(() => {
@@ -73,10 +77,11 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
         const result = await runProjectWrite(client, projectId, async () => {
           const currentZones = client.getQueryData<SiteZone[]>(['site-zones', projectId]) ?? latest.current;
           const sources = currentZones.filter(physicalZone);
+          const scope = currentZones.filter(physicalScopeZone);
           if (!sources.length) return { plannedMasses: 0 };
           const result = await compileMixedCommunity3D(sources, undefined, {
             includeResidualLandscape: true,
-            scopeZoneIds: sources.map(zone => zone.id),
+            scopeZoneIds: scope.map(zone => zone.id),
           });
           const saved = await siteZonesApi.list(projectId);
           // Derived writes may advance undo's revision only over our own exact source.

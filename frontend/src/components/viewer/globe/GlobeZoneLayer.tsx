@@ -460,6 +460,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const communityKind = resolveCommunity3DKind(zone);
   const isBuilding = communityKind === 'building';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
+  const isWaterSurface = zone.zone_type === 'water';
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
   const residualLandscapeRecipe = useMemo(
     () => (isPreparedBoundary ? getResidualLandscapeRecipe(zone) : null),
@@ -502,6 +503,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const filterObjectHeights = (
     isPreparedBoundary
     || isCompiledGround
+    || isWaterSurface
     || shouldFilterObjectTerrainHeight(zone.zone_type)
   );
   // Drawn buildings are editable massing immediately. Generate to 3D swaps
@@ -514,7 +516,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     isBuilding,
     isCompiledCommunity,
     isCompiledGround,
-    isPark: communityKind === 'park',
+    isPark: communityKind === 'park' || isWaterSurface,
     isPreparedBoundary,
   });
   // Densify imported flat zones too (not just green_space): a long corridor needs
@@ -1199,11 +1201,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           network as one solid ground polygon that contains park parcels
           (no carve-out), so a lower park order leaves parks hidden under a
           gray slab. Real roadway strips (street detail) still draw above. */}
-      {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
+      {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary || isWaterSurface) && (
         <mesh
           ref={flatMeshRef}
           geometry={sharedFillGeo ?? importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData.flatTopGeo}
-          renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
+          renderOrder={isSiteBoundary ? 100 : isWaterSurface ? 121 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
           // Pure planning washes (the translucent boundary/zone fills) are
@@ -1211,7 +1213,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           // captures so they never tint the render. Compiled/drape surfaces
           // stay captured — they ARE the designed ground.
           userData={
-            sectionOwnsGround || (!isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround)
+            sectionOwnsGround || (!isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround && !isWaterSurface)
               ? DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA
               : undefined
           }
@@ -1235,6 +1237,19 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
               polygonOffset
               polygonOffsetFactor={4}
               polygonOffsetUnits={8}
+            />
+          ) : isWaterSurface ? (
+            <meshStandardMaterial
+              key="designed-water"
+              color="#387f8b"
+              roughness={0.38}
+              metalness={0.05}
+              side={THREE.DoubleSide}
+              depthTest
+              depthWrite
+              polygonOffset
+              polygonOffsetFactor={FLAT_ZONE_DEPTH_OFFSET_FACTOR}
+              polygonOffsetUnits={FLAT_ZONE_DEPTH_OFFSET_UNITS}
             />
           ) : isCompiledGround || drapeActive || isWoonerfGround ? (
             <meshStandardMaterial
