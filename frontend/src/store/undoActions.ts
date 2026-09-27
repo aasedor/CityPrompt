@@ -160,6 +160,9 @@ export function createZoneCoordinatesAction(
     zone && readParkTerrain(zone) ? zone.properties?.park_terrain as ParkTerrainProfile : undefined;
   let beforeTerrain = terrain(previousZone), afterTerrain: ParkTerrainProfile | undefined;
   const coordinateData = (current: SiteZone | undefined, coordinates: number[][], profile?: ParkTerrainProfile, snapshot?: SiteZone) => {
+    if (current && snapshot?.properties?.green_space_native_layout) {
+      return {coordinates,properties:{...current.properties,green_space_native_layout:snapshot.properties.green_space_native_layout}};
+    }
     // Curved street controls are authored alongside the sampled centreline.
     // Undo/redo must restore that pair, not infer new controls from the strip.
     if (current && snapshot && isFixedSectionStreet(current) && isFixedSectionStreet(snapshot)) {

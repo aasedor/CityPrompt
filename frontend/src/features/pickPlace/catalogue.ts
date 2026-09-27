@@ -1,7 +1,8 @@
+import { nativeParkLayouts, nativeParkProperties } from '@/features/parks/nativeParkRegistry';
 import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { LegoPlanRequest } from '@/features/legoAssembly/legoAssemblyApi';
-import { CATALOGUE_ASSETS, isPlaceable, type PlaceAsset, type PlaceAssetId } from './assetRegistry';
+import { CATALOGUE_ASSETS, LEGACY_VALIDATION_ASSETS, isPlaceable, type PlaceAsset, type PlaceAssetId } from './assetRegistry';
 import { canonicalParkById, canonicalParkForProperties } from './canonicalParkPlacement';
 import { canonicalBuildingById, canonicalBuildingForProperties } from './canonicalBuildingPlacement';
 import { reviewedEntranceForAsset } from './reviewedEntrances';
@@ -21,13 +22,15 @@ export function placementPlanRequest(asset: PlaceAsset, width: number, depth: nu
 }
 
 export function placeAsset(id: PlaceAssetId): PlaceAsset {
-  const asset = OBJECT_ASSETS.find(asset => asset.id === id) ?? canonicalBuildingById(id) ?? canonicalParkById(id);
+  const asset = OBJECT_ASSETS.find(asset => asset.id === id)
+    ?? LEGACY_VALIDATION_ASSETS.find((asset):asset is PlaceAsset=>asset.kind==='object' && asset.id===id)
+    ?? canonicalBuildingById(id) ?? canonicalParkById(id);
   if (!asset) throw new Error(`Unknown placeable asset: ${id}`);
   return asset;
 }
 export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | undefined {
   const properties = zone.properties ?? {};
-  const native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset);
+  const native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset) ?? LEGACY_VALIDATION_ASSETS.find((asset): asset is PlaceAsset => asset.kind === 'object' && asset.id === properties.pick_place_asset);
   if (native?.reshapeMode === 'fixed_native' && properties.native_home_plot === true
     && ['infill_home', 'trial_postwar_bungalow'].includes(native.id)
     && properties.development_selected_variant_id === native.model.variantId && properties.development_height_override_m == null) {
@@ -41,7 +44,10 @@ export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | u
   }
   return undefined;
 }
-export function placementProperties(asset: PlaceAsset, elevation?: number): SiteZoneProperties {
+export function placementProperties(asset: PlaceAsset, elevation?: number, coordinates?: number[][]): SiteZoneProperties {
+  const layout = nativeParkLayouts.find(p=>p.id===asset.properties.green_space_native_layout_id);
+  if (layout && coordinates) return {...nativeParkProperties(asset.properties,layout,coordinates),pick_place_asset:asset.id,pick_place_definition_version:2,
+    ...(Number.isFinite(elevation)?{terrain_elevation_m:elevation}:{})};
   const entrance = reviewedEntranceForAsset(asset);
   return { ...asset.properties, pick_place_asset: asset.id,
     pick_place_definition_version: asset.definitionVersion,

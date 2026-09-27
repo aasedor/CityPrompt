@@ -1,3 +1,4 @@
+import { readNativePark, hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { isParkTrio } from './parkTrioLayout';
 import type { SiteZone } from '@/types';
 import { effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/roadGeometry';
@@ -147,6 +148,7 @@ function validRing(zone: SiteZone): boolean {
 }
 function supported(zone: SiteZone): boolean {
   if (zone.zone_type !== 'green_space') return false;
+  if (hasNativePark(zone)) return true;
   if (isParkTrio(zone)) return true;
   const profile = resolveParkGroundProfile(zone);
   return (profile.archetypeId.startsWith('urban_pocket_park') || profile.archetypeId.startsWith('neighborhood_park'))
@@ -189,8 +191,9 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
       : [[-rx, -ry], [rx, -ry], [rx, ry], [-rx, ry]];
     return points.map(([x, y]) => add(center, [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)]));
   };
-  const fixed = fit.guides.filter((g) => !['line', 'axis', 'polyline', 'path_loop'].includes(g.kind)).map((g) => guidePolygon(g));
-  for (const placement of (isNeighborhoodParkPilot(park) || isParkTrio(park)) ? [] : computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
+  const native = readNativePark(park);
+  const fixed = (native ? [] : fit.guides).filter((g) => !['line', 'axis', 'polyline', 'path_loop'].includes(g.kind)).map((g) => guidePolygon(g));
+  for (const placement of (native || isNeighborhoodParkPilot(park) || isParkTrio(park)) ? [] : computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
     if (placement.propId !== 'playground' && placement.propId !== 'pavilion') continue;
     const radius = placement.propId === 'playground' ? PARK_PROGRAM_MODULE_SPEC.playground.safetyDiameterM / 2
       : Math.hypot(PARK_PROGRAM_MODULE_SPEC.pavilion.widthM, PARK_PROGRAM_MODULE_SPEC.pavilion.depthM) / 2;
@@ -207,6 +210,23 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     && [...fixed, ...obstacles].every((obstacle) => !hitsObstacle(a, b, obstacle, half + settings.obstacleClearanceM))
     && roadPolygons.every((road) => !corridorOverlaps(a, b, road.ring, half));
   let network: P[][] = fit.guides.filter((g) => g.kind === 'polyline' && g.closed && g.points).map((g) => g.points!.map(guidePoint));
+  if (native) {
+    const {layout,selection:{frame:f}}=native;
+    const entry=layout.entrances[0];
+    if (!entry) return empty('unresolved','This native park entrance is awaiting review.');
+    const nativeLocal=(x:number,y:number):P=>local([
+      f.longitude+(x*Math.cos(f.yaw)-y*Math.sin(f.yaw))/metersPerDegLon(f.latitude),
+      f.latitude+(x*Math.sin(f.yaw)+y*Math.cos(f.yaw))/METERS_PER_DEG_LAT]);
+    const rectangle=(x0:number,y0:number,x1:number,y1:number):P[]=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]].map(([x,y])=>nativeLocal(x,y));
+    // Protect the authored park everywhere except the measured entrance approach.
+    // The shared solver may add a connector, never a path through planting/courts.
+    const clearance=settings.pathWidthM/2+settings.obstacleClearanceM;
+    const corridor=entry.widthM/2+clearance;
+    fixed.push(rectangle(-layout.widthM/2,-layout.depthM/2,entry.x-corridor,layout.depthM/2),
+      rectangle(entry.x+corridor,-layout.depthM/2,layout.widthM/2,layout.depthM/2),
+      rectangle(entry.x-corridor,entry.arrivalY+clearance+.05,entry.x+corridor,layout.depthM/2));
+    network=[[nativeLocal(entry.x,entry.arrivalY-.02),nativeLocal(entry.x,entry.arrivalY)]];
+  }
   let extraLoop: P[] | null = null;
   if (profile.archetypeId.startsWith('urban_pocket_park')) {
     const lawn = fit.guides.find((g) => g.kind === 'ellipse');

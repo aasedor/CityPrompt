@@ -1,3 +1,5 @@
+import { NativeParkLayer, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
+import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
 import { assertSiteLandscapeReady } from '@/features/siteLandscape/landscapeCapture';
 import { BuildingEntranceReviewPanel } from './BuildingEntranceReviewPanel';
@@ -2646,6 +2648,7 @@ export function GlobeSitePlannerMap({
   const handleCanvasClickRef = useRef<((e: MouseEvent) => void) | null>(null);
   const finishDrawingRef = useRef<(() => void) | null>(null);
   const cleanupCanvasListenersRef = useRef<(() => void) | null>(null);
+  const attachCanvasListenersRef = useRef<(() => void) | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -2896,6 +2899,7 @@ export function GlobeSitePlannerMap({
           }
           assertSiteLandscapeReady(scene);
           assertPublicRealmTrialsReady(scene);
+          await waitForNativeParksReady(scene, siteZones);
           const captured = await captureDirect3DScene(renderer, scene, camera, {
             includeGeometryPasses: options.includeGeometryPasses,
             maxLongEdge: options.maxLongEdge,
@@ -2948,6 +2952,7 @@ export function GlobeSitePlannerMap({
     try {
       const accessSnapshot = parkAccessSnapshotRef.current;
       assertPublicRealmTrialsReady(scene);
+      await waitForNativeParksReady(scene, siteZones);
       const captured = await captureDirect3DScene(renderer, scene, camera, {
         ...options,
         // Direct 3D v2 requires the same registered geometry controls at
@@ -4120,8 +4125,9 @@ export function GlobeSitePlannerMap({
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
 
-  // Cleanup canvas listeners on unmount/re-init
+  // Effects restart on Fast Refresh even when R3F keeps the same canvas.
   useEffect(() => {
+    attachCanvasListenersRef.current?.();
     return () => {
       if (cleanupCanvasListenersRef.current) {
         cleanupCanvasListenersRef.current();
@@ -4259,6 +4265,8 @@ export function GlobeSitePlannerMap({
             setBuildingLayerRecoveryGeneration((generation) => generation + 1);
           };
 
+          attachCanvasListenersRef.current = () => {
+          cleanupCanvasListenersRef.current?.();
           cvs.addEventListener('wheel', handleTrackpadWheel, { capture: true, passive: false });
           cvs.addEventListener('pointerdown', handlePointerDown, true);
           cvs.addEventListener('pointermove', handlePointerMove);
@@ -4278,6 +4286,8 @@ export function GlobeSitePlannerMap({
             cvs.removeEventListener('webglcontextlost', handleWebGlContextLost);
             cvs.removeEventListener('webglcontextrestored', handleWebGlContextRestored);
           };
+          };
+          attachCanvasListenersRef.current();
         }}
       >
         <GlobeDragProvider value={globeDragRef}>
@@ -4406,7 +4416,7 @@ export function GlobeSitePlannerMap({
               overlays. Keep them in clean captures alongside building models
               and park props so mixed plans retain their exact lane geometry. */}
           <group name="siteforge-direct3d-street" userData={direct3DProposalUserData('street')}>
-            <GlobeStreetDetailLayer zones={siteZones.filter(zone => !publicRealmTrialAsset(zone))} terrainHeight={terrainElevation} />
+            <GlobeStreetDetailLayer zones={siteZones.filter(zone => !publicRealmTrialAsset(zone) && !hasNativePark(zone))} terrainHeight={terrainElevation} />
             <GlobePedestrianConnections results={pedestrianConnections} zones={connectedSceneZones} terrainHeight={terrainElevation} />
             <GlobeTerraces scene={terraceScene} zones={connectedSceneZones} />
           </group>
@@ -4415,9 +4425,10 @@ export function GlobeSitePlannerMap({
               of the zone-overlay group like the building models. Trees and
               benches stay render-only so they cannot collide with paths. */}
           <group name="siteforge-direct3d-park" userData={direct3DProposalUserData('park')}>
-            <GlobeParkKitLayer zones={terraceParkZones.filter(zone => !publicRealmTrialAsset(zone))} terrainHeight={terrainElevation} />
+            <GlobeParkKitLayer zones={terraceParkZones.filter(zone => !publicRealmTrialAsset(zone) && !hasNativePark(zone))} terrainHeight={terrainElevation} />
           </group>
           <GlobePublicRealmTrialLayer zones={siteZones} terrainHeight={terrainElevation} />
+          <NativeParkLayer zones={connectedSceneZones} terrainHeight={terrainElevation} />
 
           {/* Generated 3D building models — sibling of the zone-overlay group
               on purpose: they're real massing and stay visible in AI-render

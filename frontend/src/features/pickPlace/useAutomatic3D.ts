@@ -1,3 +1,4 @@
+import { clearFailedNativeParkLoads } from '@/features/parks/nativeParkAssets';
 import { runProjectWrite } from '@/utils/projectWriteQueue';
 import { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -26,9 +27,19 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   const [status, setStatus] = useState<'idle'|'updating'|'ready'|'error'>('idle');
   const [message, setMessage] = useState('');
   const [attempt, setAttempt] = useState(0);
+  const [assetError, setAssetError] = useState<{projectId:string|undefined;zoneId:string;message:string}|null>(null);
   const state = useRef({ projectId, busy: false, completed: '', failed: '' });
   const latest = useRef(zones);
   latest.current = zones;
+  useEffect(()=>{
+    const onAssetError=(event:Event)=>{
+      const detail=(event as CustomEvent<{zoneId:string;message:string}>).detail;
+      if(!detail || !latest.current.some(zone=>zone.id===detail.zoneId))return;
+      setAssetError({projectId,...detail});
+    };
+    window.addEventListener('cityprompt:native-park-error',onAssetError);
+    return()=>window.removeEventListener('cityprompt:native-park-error',onAssetError);
+  },[projectId]);
   const candidates = zones.filter(physicalZone);
   const boundary = deriveCityPromptWorkflow(zones).activeBoundary;
   // Catalogue placements build immediately. Other designs enter this path after
@@ -94,7 +105,8 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
     return () => window.clearTimeout(timer);
   }, [projectId, key, compiled, eligible, saving, client, attempt]);
 
-  const visibleStatus = eligible && !compiled && candidates.length > 0 && status !== 'error' ? 'updating' : status;
-  return { status: visibleStatus, message: visibleStatus === 'updating' ? 'Your placed objects are being updated.' : visibleStatus === 'ready' ? representationNotice(candidates) : message, busy: visibleStatus === 'updating',
-    retry: () => { state.current.failed = ''; state.current.completed = ''; setAttempt(value => value + 1); } };
+  const currentAssetError = assetError?.projectId === projectId && zones.some(zone=>zone.id===assetError?.zoneId) ? assetError : null;
+  const visibleStatus = currentAssetError ? 'error' : eligible && !compiled && candidates.length > 0 && status !== 'error' ? 'updating' : status;
+  return { status: visibleStatus, message: currentAssetError?.message ?? (visibleStatus === 'updating' ? 'Your placed objects are being updated.' : visibleStatus === 'ready' ? representationNotice(candidates) : message), busy: visibleStatus === 'updating',
+    retry: () => { setAssetError(null); clearFailedNativeParkLoads(); state.current.failed = ''; state.current.completed = ''; setAttempt(value => value + 1); } };
 }

@@ -1,3 +1,4 @@
+import { nativeParkFootprint, readNativePark } from '@/features/parks/nativeParkRegistry';
 import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useState, type ReactNode } from 'react';
 import type { SiteZone } from '@/types';
 
@@ -30,5 +31,8 @@ export function useParkAssemblyGroundOwners(zones: SiteZone[]) {
   const owners = useContext(OwnersContext);
   return useMemo(() => zones.filter(zone => owners.some(owner =>
     owner.id === zone.id && owner.updated_at === zone.updated_at
-    && JSON.stringify(owner.coordinates) === JSON.stringify(zone.coordinates))), [owners, zones]);
+    && JSON.stringify(owner.coordinates) === JSON.stringify(zone.coordinates))).map(zone => {
+      const native = readNativePark(zone);
+      return native ? {...zone,coordinates:nativeParkFootprint(native.selection,native.layout)} : zone;
+    }), [owners, zones]);
 }

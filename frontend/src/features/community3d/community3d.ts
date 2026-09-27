@@ -1,3 +1,4 @@
+import { hasNativePark, hasExecutableNativeParkRecipe } from '@/features/parks/nativeParkRegistry';
 import type { Building, SiteZone, SiteZoneProperties } from '@/types';
 import { resolveParkLegoContract } from '@/components/viewer/globe/parkLegoFamilies';
 import { validateStreetRecipeProperties } from '@/components/viewer/globe/streetLegoContract';
@@ -292,6 +293,7 @@ export function hasExecutablePublicRealmRecipe(zone: SiteZone): boolean {
   const kind = resolveCommunity3DKind(zone);
   if (kind !== 'park' && kind !== 'street') return true;
   const props = propertiesOf(zone);
+  if (hasNativePark(zone)) return hasExecutableNativeParkRecipe(zone);
   const nested = props.public_realm_lego;
   const fallback = props.public_realm_fallback;
   const isAiPlan = typeof props._plan_scenario === 'string'

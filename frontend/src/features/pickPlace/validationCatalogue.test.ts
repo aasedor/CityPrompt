@@ -26,7 +26,7 @@ describe('exact local validation catalogue', () => {
   });
   it('never stretches or substitutes a fixed review fixture', () => {
     const fixed=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.properties.validation_fixed_fixture);
-    expect(fixed).toHaveLength(11);
+    expect(fixed).toHaveLength(10);
     for(const a of fixed) {
       if(a.kind!=='object')continue;
       const coords=rectangleAt([-114.1,51.0],a.width,a.depth);
@@ -41,8 +41,8 @@ describe('exact local validation catalogue', () => {
       expect(result.clone.children).toHaveLength(1);
     }
   });
-  it('binds the four adaptive public-realm candidates to their native runtimes',()=>{
+  it('preserves the remaining adaptive public-realm candidates to their native runtimes',()=>{
     expect(CATALOGUE_ASSETS.filter(a=>a.kind==='street').map(a=>a.model.variantId).sort()).toEqual(['student_main_street_v1','student_market_street_v1']);
-    expect(CATALOGUE_ASSETS.filter(a=>a.reshapeMode==='adaptive_layout').map(a=>a.model.variantId).sort()).toEqual(['basketball_court_v1','research_garden_teaching_arboretum_variant_3']);
+    expect(CATALOGUE_ASSETS.filter(a=>a.reshapeMode==='adaptive_layout').map(a=>a.model.variantId).sort()).toEqual(['research_garden_teaching_arboretum_variant_3']);
   });
 });

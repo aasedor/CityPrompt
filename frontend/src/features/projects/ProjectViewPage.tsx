@@ -1,3 +1,4 @@
+import { nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import { canonicalParkAsset } from '@/features/pickPlace/canonicalParkPlacement';
 import { canonicalBuildingAsset } from '@/features/pickPlace/canonicalBuildingPlacement';
 import { canonicalStreetAsset } from '@/features/pickPlace/canonicalStreetPlacement';
@@ -291,7 +292,7 @@ export function ProjectViewPage() {
     placementPending.current = true;
     try {
       const zone = await createZone.mutateAsync({ coordinates, zone_type: placeAsset(placementDraft.assetId).zoneType,
-        properties: placementProperties(placeAsset(placementDraft.assetId), height) });
+        properties: placementProperties(placeAsset(placementDraft.assetId), height, coordinates) });
       setPlacementDraft(null); setAdvancedZoneId(null); selectZone(zone.id);
     } catch {
       // Retrying uses the saved draft's idempotency key, not a second placement.
@@ -311,7 +312,7 @@ export function ProjectViewPage() {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
       const streetUpdate = isFixedSectionStreet(zone) ? streetCoordinateUpdate(zone, coordinates) : null;
       const footprint = streetUpdate?.coordinates ?? coordinates;
-      const problem = (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
+      const problem = nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
           parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
@@ -1266,6 +1267,7 @@ export function ProjectViewPage() {
         {/* Zone properties panel */}
         {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
+            zones={siteZones} onUpdateParkLayout={data => updateZone.mutateAsync({zoneId:selectedZone.id,data,previousData:{coordinates:selectedZone.coordinates,properties:selectedZone.properties}})}
             onUpdateDesign={properties => updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } })}
             onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
             onConnections={()=>setConnectionZoneId(selectedZone.id)}

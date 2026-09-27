@@ -1,3 +1,4 @@
+import { hasNativePark, nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import { runProjectWrite } from '@/utils/projectWriteQueue';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient, useIsMutating } from '@tanstack/react-query';
@@ -305,7 +306,12 @@ export function useSiteZones(projectId: string | undefined) {
     mutationFn: (vars: { zoneId: string; coordinates: number[][]; revision?: string }) =>
       runProjectWrite(queryClient, projectId!, async () => {
         const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === vars.zoneId);
-        const result = await siteZonesApi.update(vars.zoneId, { ...streetCoordinateUpdate(
+        const nativeProperties = current && hasNativePark(current) ? nativeParkEditProperties(current,vars.coordinates) : undefined;
+        if (current && nativeProperties) {
+          const problem = nativeParkFitProblem({...current,coordinates:vars.coordinates,properties:nativeProperties});
+          if (problem) throw new Error(problem);
+        }
+        const result = await siteZonesApi.update(vars.zoneId, { ...(nativeProperties ? {properties:nativeProperties} : {}), ...streetCoordinateUpdate(
           queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === vars.zoneId), vars.coordinates),
           ...((current?.updated_at ?? vars.revision) ? { expected_updated_at: current?.updated_at ?? vars.revision } : {}) });
         queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], old => old?.map(z => z.id === result.id ? result : z));

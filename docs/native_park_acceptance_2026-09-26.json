@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "initiative": "Original eight native parks and Basketball Long",
+  "startingCommit": "014300ecc3f41eed93bb7fe0c098363243f8add5",
+  "evidenceDirectory": "C:/dev-artifacts/CityPrompt/native-parks-2026-09-26",
+  "paidSunburst": {
+    "limit": 5,
+    "submitted": 0,
+    "requests": []
+  },
+  "layouts": [
+    {
+      "layoutId": "botanical_garden_v3--native-v1",
+      "contentRevision": "8e5447c3b253c3f5842c049948620c67eebe4679f73b72ca84145718f58e4a84",
+      "variantId": "botanical_garden_v3",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "APPROVED PILOT 2026-09-26",
+      "runtime": "IN PROGRESS",
+      "publication": "NOT PUBLISHED",
+      "evidence": [],
+      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
+    },
+    {
+      "layoutId": "sculpture_garden_v0--native-v1",
+      "contentRevision": "3ee12006e3df5abca1b1d19df0dcdea7312676620a16ac77ffd582a4f61a08e5",
+      "variantId": "sculpture_garden_v0",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "SOURCE BASELINE ONLY",
+      "runtime": "NOT TESTED",
+      "publication": "NOT PUBLISHED",
+      "evidence": []
+    },
+    {
+      "layoutId": "student_neighbourhood_orchard_v1--native-v1",
+      "contentRevision": "51eb19d47e9667453b6a35637c8e8e8b967814556c5c831d87d4dfc6c9dde2ba",
+      "variantId": "student_neighbourhood_orchard_v1",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "SOURCE BASELINE ONLY",
+      "runtime": "NOT TESTED",
+      "publication": "NOT PUBLISHED",
+      "evidence": []
+    },
+    {
+      "layoutId": "amphitheater_lawn_v0--native-v1",
+      "contentRevision": "435e67a190d930c71b7d51d8c288cd2c30ccf848d94c3ab5a09b6b6a216a94a4",
+      "variantId": "amphitheater_lawn_v0",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "SOURCE BASELINE ONLY",
+      "runtime": "NOT TESTED",
+      "publication": "NOT PUBLISHED",
+      "evidence": []
+    },
+    {
+      "layoutId": "student_garden_square_v1--native-v1",
+      "contentRevision": "cf689bdefdd0b9da3fef5437b6fd9d304399295aa51f071b6fb7f5d043dfd46c",
+      "variantId": "student_garden_square_v1",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "SOURCE BASELINE ONLY",
+      "runtime": "NOT TESTED",
+      "publication": "NOT PUBLISHED",
+      "evidence": []
+    },
+    {
+      "layoutId": "wetland_rain_garden_v0--native-v1",
+      "contentRevision": "951555610b3568b5f261e0b393693a589e647b3bf9ea00f258f4f84ee9a58453",
+      "variantId": "wetland_rain_garden_v0",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "SOURCE BASELINE ONLY",
+      "runtime": "NOT TESTED",
+      "publication": "NOT PUBLISHED",
+      "evidence": []
+    },
+    {
+      "layoutId": "research_garden_teaching_arboretum_variant_3--native-v1",
+      "contentRevision": "00a2997139e8c17cf7c40d4f8b8aa6c2152da12cac84e1695fd262beb854cc37",
+      "variantId": "research_garden_teaching_arboretum_variant_3",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "SOURCE BASELINE ONLY",
+      "runtime": "NOT TESTED",
+      "publication": "NOT PUBLISHED",
+      "evidence": []
+    },
+    {
+      "layoutId": "basketball_court_v1--native-v1",
+      "contentRevision": "4682d83edf8fee509fbe4f4edae8cd524849743fa613046c358a4a6615a36fa3",
+      "variantId": "basketball_court_v1",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "APPROVED PILOT 2026-09-26",
+      "runtime": "IN PROGRESS",
+      "publication": "NOT PUBLISHED",
+      "evidence": [],
+      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
+    },
+    {
+      "layoutId": "basketball_court_v1--long-v1",
+      "contentRevision": "a8ff885863e5e2e7736f118e296af90f8a8d2df22b5493ea957470281ecd7379",
+      "variantId": "basketball_court_v1",
+      "assetVerification": "PASS",
+      "dependencyClosure": "PASS",
+      "measuredBounds": "PASS",
+      "visualApproval": "APPROVED PILOT 2026-09-26",
+      "runtime": "IN PROGRESS",
+      "publication": "NOT PUBLISHED",
+      "evidence": [],
+      "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
+    }
+  ],
+  "checkpoints": [
+    {
+      "commit": "4c5c4e31c",
+      "scope": "Native registry, server recipes, source freshness and reproducible staging"
+    }
+  ]
+}

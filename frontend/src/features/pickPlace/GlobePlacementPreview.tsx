@@ -1,3 +1,5 @@
+import { NativeParkModel } from '@/features/parks/NativeParkLayer';
+import { nativeParkLayouts } from '@/features/parks/nativeParkRegistry';
 import { Component, Suspense, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
@@ -57,6 +59,7 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
   const lastCamera=useRef(new THREE.Matrix4());
   const [surface,setSurface]=useState<{lng:number;lat:number;height:number}|null>(null);
   const asset=placeAsset(draft.assetId);
+  const nativePark=nativeParkLayouts.find(p=>p.id===asset.properties.green_space_native_layout_id);
   const projectId=zones[0]?.project_id;
   const request=placementPlanRequest(asset,draft.width,draft.depth,projectId);
   const {data:plan}=useQuery({queryKey:['placement-home-plan',request],
@@ -107,6 +110,7 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
         {asset.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
           position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}>
           <Home url={instance.model_url}/></group>) : fallback
+          : nativePark ? <NativeParkModel layout={nativePark}/>
           : typeof asset.properties.validation_native_url === 'string'
             ? <ReviewFixture url={asset.properties.validation_native_url}/>
           : isParkTrio(previewZone)

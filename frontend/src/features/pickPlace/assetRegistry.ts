@@ -1,3 +1,4 @@
+import { nativeParkLayouts } from '@/features/parks/nativeParkRegistry';
 import validation from '@/data/validationCatalogue.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
@@ -154,7 +155,20 @@ export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
   };
 }
 
-export const CATALOGUE_ASSETS = validation.assets as CatalogueAsset[];
+export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
+export const CATALOGUE_ASSETS: CatalogueAsset[] = LEGACY_VALIDATION_ASSETS.map(asset => {
+  if (asset.kind !== 'object' || asset.zoneType !== 'green_space') return asset;
+  const layout = nativeParkLayouts.find(p => p.variantId === asset.model.variantId && p.mode === 'native_assembly' && p.status === 'pilot');
+  if (!layout) return asset;
+  const properties = {...asset.properties};
+  for (const key of ['public_realm_trial_asset','validation_fixed_fixture','validation_native_url','park_trio_layout']) delete properties[key];
+  return {...asset, id: `native-park:${layout.id}`, definitionVersion: 2, reshapeMode:'authored_footprint',
+    description:'Complete native park layout. Objects retain their real dimensions.',
+    reshapeDescription:'Choose a layout; its objects stay at native size when the surrounding parcel changes.',
+    model:{...asset.model,revision:layout.contentRevision,method:'native_park_v2'},
+    width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
+    properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
+});
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

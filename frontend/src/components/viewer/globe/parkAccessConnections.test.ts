@@ -7,6 +7,7 @@ import { parkGroundSourceSignature, resolveParkGroundProfile } from './parkGroun
 import { buildParkGroundPrompt } from './parkGroundTexture';
 import { computeParkPlacements, parkPlacementClearsExclusions, resolveParkRecipeForZone } from './parkScatter';
 import { resolveParkProgramAnchorLayout } from './parkLegoFamilies';
+import { nativeParkLayouts, nativeParkProperties } from '@/features/parks/nativeParkRegistry';
 
 const ll = ([x, y]: number[]): ParkAccessPoint => [-114 + x / metersPerDegLon(51), 51 + y / METERS_PER_DEG_LAT];
 const xy = ([lng, lat]: number[]): ParkAccessPoint => [(lng + 114) * metersPerDegLon(51), (lat - 51) * METERS_PER_DEG_LAT];
@@ -22,6 +23,20 @@ function fixture() {
 }
 
 describe('manual park access planning', () => {
+  it.each(['basketball_court_v1--native-v1','basketball_court_v1--long-v1','botanical_garden_v3--native-v1'])('connects %s only through its authored entrance',id=>{
+    const layout=nativeParkLayouts.find(p=>p.id===id)!;
+    const park=zone('native','green_space',[[-layout.occupiedWidthM/2,0],[layout.occupiedWidthM/2,0],[layout.occupiedWidthM/2,layout.occupiedDepthM],[-layout.occupiedWidthM/2,layout.occupiedDepthM]]);
+    park.properties=nativeParkProperties({},layout,park.coordinates);
+    const {street,boundary}=fixture();
+    const plan=resolveManualParkAccess([park,street,boundary]).parks[0];
+    expect(plan.status).toBe('connected');
+    expect(plan.connections).toHaveLength(1);
+    const path=plan.connections[0].path;
+    const end=xy(path[path.length-1]);
+    expect(end[0]).toBeCloseTo(0,1);
+    expect(end[1]).toBeCloseTo(layout.occupiedDepthM/2+layout.entrances[0].arrivalY,1);
+    expect(plan.connections[0].path.slice(1).map(xy).every(([x])=>Math.abs(x)<1.3)).toBe(true);
+  });
   it('keeps park access inside the site when its street continues to the public road',()=>{
     const {park,street,boundary}=fixture();
     const line=[[-60,-6],[55,-6]].map(ll);

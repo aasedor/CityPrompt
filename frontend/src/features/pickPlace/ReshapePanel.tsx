@@ -1,3 +1,5 @@
+import { ParkLayoutControls } from '@/features/parks/ParkLayoutControls';
+import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { useMemo, useState } from 'react';
 import { X } from 'lucide-react';
 import type { SiteZone } from '@/types';
@@ -10,7 +12,8 @@ import { ParkComponentControls } from './ParkComponentControls';
 import { BuildingDesignControls } from './BuildingDesignControls';
 import type { SiteZoneProperties } from '@/types';
 
-export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace, onUpdateDesign }: {
+export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace, onUpdateDesign, zones = [], onUpdateParkLayout }: {
+  zones?: SiteZone[]; onUpdateParkLayout?: (data:{coordinates:number[][];properties:SiteZoneProperties})=>Promise<unknown>;
   zone: SiteZone; disabled: boolean;
   onReshape: (coordinates: number[][]) => void; onClose: () => void; onDelete: () => void;
   onDuplicate: (asset: PlaceAssetId, width: number, depth: number, degrees: number) => void;
@@ -39,7 +42,8 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
     <p className="mb-3 text-xs text-slate-600">{fixedFixture ? 'Fixed review model: move and rotate only. Extension is pending.' : isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : (zone.properties?.native_home_plot === true || zone.properties?.native_plot_axes === true) ? 'Drag the Move handle on the selected plot to move this house. Use a corner to reshape or the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
     {!isPark && !fixedFixture && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
-    {isPark && onUpdateDesign && <ParkComponentControls key={`${zone.id}:${zone.properties?.skate_spectator_edge}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
+    {onUpdateParkLayout && <ParkLayoutControls key={`${zone.id}:${zone.updated_at}`} zone={zone} zones={zones} disabled={disabled} onSave={onUpdateParkLayout}/>}
+    {isPark && !hasNativePark(zone) && onUpdateDesign && <ParkComponentControls key={`${zone.id}:${zone.properties?.skate_spectator_edge}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {park && <div role="status" className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">
       <p className="font-semibold">Current park · {park.status==='full'?'full programme':park.status==='compact'?'compact arrangement':park.loop.length?'reduced programme':'landscape layout'}</p>
       {park.notes.map(note=><p className="mt-1" key={note}>{note}</p>)}
@@ -55,7 +59,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
           <option value="">Keep current outline</option><option value="rectangle">Rectangle</option><option value="triangle">Triangle</option><option value="l_shape">L shape</option>
         </select></label>
         <button type="button" className={`${button} mt-2 w-full`} disabled={disabled || zone.coordinates.length >= 128} onClick={()=>onReshape(addParkOutlinePoint(zone.coordinates))}>Add outline point</button>
-        <p className="mt-2 text-xs text-slate-600">Resize keeps your outline. Equipment and courts keep their real size; only features that fit are placed.</p>
+        <p className="mt-2 text-xs text-slate-600">Resize keeps your outline. Equipment and courts keep their real size; the selected complete layout must fit.</p>
       </div>}
       <div className="grid grid-cols-2 gap-2">
         <label className="text-xs font-semibold text-slate-800">Plot width (m)<input aria-label="Plot width (m)" disabled={fixedFixture} type="number" min={asset.minWidth} max={asset.maxSize} step="0.1" value={width} onChange={e=>setWidth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
