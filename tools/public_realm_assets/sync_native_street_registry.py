@@ -19,6 +19,7 @@ BACK = ROOT / 'backend/app/data'
 COHORT = {
     'student_quiet_residential_street_v1', 'student_planted_shared_lane_v1',
     'brt_bus_rapid_transit_corridor_v0', 'amsterdam_gracht_v1', 'landmark_signature_bridge_v2',
+    'student_cycle_avenue_v1', 'student_green_alley_v1', 'student_school_street_v1',
 }
 
 
@@ -43,7 +44,7 @@ def check():
 
 def activate(manifest: Path, variant: str):
     if variant not in COHORT:
-        raise ValueError('Only the explicitly scoped five streets may be added')
+        raise ValueError('Only the explicitly scoped native streets may be added')
     check()
     matches = [row for row in read(manifest) if row['id'] == variant]
     if len(matches) != 1:

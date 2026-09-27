@@ -54,6 +54,30 @@
       "variantId": "landmark_signature_bridge_v2",
       "revision": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "protected_bike_lane_bidirectional",
+      "variantId": "student_cycle_avenue_v1",
+      "revision": "f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "montreal_ruelle_verte",
+      "variantId": "student_green_alley_v1",
+      "revision": "5fa64b56938f1adaaa5088b454d58e736fa23db3930d6f7a47345f95fb746c7b",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "school_street",
+      "variantId": "student_school_street_v1",
+      "revision": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
+      "status": "local-pilot-runtime-pending"
     }
   ]
 }

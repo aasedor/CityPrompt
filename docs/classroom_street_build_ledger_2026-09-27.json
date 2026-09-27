@@ -1,0 +1,426 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-27",
+  "initiative": "classroom-street-catalogue",
+  "startingCommit": "ce24487c8",
+  "browserTestingDeferredByUser": true,
+  "paidRequests": 0,
+  "entries": [
+    {
+      "variant": "student_cycle_avenue_v1",
+      "sourceRecipeSha256": "f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+      "sourceAssemblySha256": "673c1618cd6002c7e03523e06faf87b9476d8f5ce3b0c29ba0f237c63e75a2ea",
+      "programSha256": "99ef1a25957d986e7e79af8c69bffa983ff5ab9f7e9d9cb981ddd336d7f4e07b",
+      "detailTriangles": 660,
+      "maximumRecoveredDetailVertexErrorM": 6.832368419504092e-08,
+      "modules": 9,
+      "runtime_status": "NOT TESTED",
+      "completed": false,
+      "title": "Protected Cycle Avenue",
+      "archetype": "protected_bike_lane_bidirectional",
+      "widthM": 24.0,
+      "fixtureLengthM": 48,
+      "minLengthM": 48,
+      "maxLengthM": 480,
+      "sourceFixtureCount": 43,
+      "referenceSha256": "633f0a4a02171263a705e6eee464c254cb6d7be752aa1c17cca544acb37daca9",
+      "moduleLocks": {
+        "bench": {
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+          "bytes": 34024
+        },
+        "bike_rack": {
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+          "bytes": 96964
+        },
+        "flowering_perennial": {
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+          "bytes": 162120
+        },
+        "grove_tree": {
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+          "bytes": 1287628
+        },
+        "light": {
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+          "bytes": 37668
+        },
+        "meadow_grass": {
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4",
+          "bytes": 68700
+        },
+        "silver_shrub": {
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc",
+          "bytes": 367296
+        },
+        "street_bollard": {
+          "sha256": "530a525ac72258b0ed6b48d4918dbd80a00a14a0c56724fcdd27cb8224e09217",
+          "bytes": 9892
+        },
+        "tree_well_grate": {
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493",
+          "bytes": 95608
+        }
+      },
+      "offlineVisualReview": {
+        "reviewer": "Astra",
+        "scope": "Matched source/frontend reconstruction top, oblique and walk images",
+        "result": "PASS for source reconstruction fidelity; not runtime approval",
+        "evidence": [
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\cycle-comparison\\original-oblique.png",
+            "sha256": "7589bccf766c50eaf273542c7495da1d28d237f97a40614b302d547fd1c902b4"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\cycle-comparison\\original-top.png",
+            "sha256": "479006ef4d13a23d3c9e3009193cc164e5528ea0acbed26a09d998afc5e7e645"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\cycle-comparison\\original-walk.png",
+            "sha256": "88d05888f3eab87d8c4d53bcab027f6a79303c381d84ba0d6b68d2562e2c194b"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\cycle-comparison\\reconstructed-oblique.png",
+            "sha256": "9e22bb95ac1fbf5f56d188721cdb7b9e99e7ff61a83df8fdd0379ad21f34cc33"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\cycle-comparison\\reconstructed-top.png",
+            "sha256": "c4b40d36b3e9a1c6c224a44434ff8e6226d919b02f0ada25d7b5ad8e35a74a03"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\cycle-comparison\\reconstructed-walk.png",
+            "sha256": "d7f4310bde821bfee4b678dba564cacfedc6eedf0e9c4eb50f95c792e70c60fa"
+          }
+        ]
+      },
+      "assetVerification": "PASS",
+      "localAvailability": "staged_and_picker_enabled",
+      "humanVisualApproval": "pending",
+      "hostedPublication": false
+    },
+    {
+      "variant": "student_green_alley_v1",
+      "sourceRecipeSha256": "5fa64b56938f1adaaa5088b454d58e736fa23db3930d6f7a47345f95fb746c7b",
+      "sourceAssemblySha256": "6d9514b1e9ab469ee38f3fa7115c00c6513e9fcb6abf199159108f24599963c5",
+      "programSha256": "6f19f6797e18b954485f6fb70d09f0d10c8e65614932c9d9a25d9450a7dc30f8",
+      "detailTriangles": 332,
+      "maximumRecoveredDetailVertexErrorM": 5.8128863146839855e-08,
+      "modules": 7,
+      "runtime_status": "NOT TESTED",
+      "completed": false,
+      "title": "Ruelle Verte Community Alley",
+      "archetype": "montreal_ruelle_verte",
+      "widthM": 11,
+      "fixtureLengthM": 40,
+      "minLengthM": 40,
+      "maxLengthM": 480,
+      "sourceFixtureCount": 30,
+      "referenceSha256": "9387cb75833f31cb1a7f5127aef73cdf594cbc1d0aa0c9911718a21e9774d0a1",
+      "moduleLocks": {
+        "bench": {
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+          "bytes": 34024
+        },
+        "flowering_perennial": {
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+          "bytes": 162120
+        },
+        "grove_tree": {
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+          "bytes": 1287628
+        },
+        "light": {
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+          "bytes": 37668
+        },
+        "meadow_grass": {
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4",
+          "bytes": 68700
+        },
+        "planted_trellis": {
+          "sha256": "e81afde69f848f2407c607da9b727b1073db8fe315d8568636e75a85b7a0731c",
+          "bytes": 33656
+        },
+        "silver_shrub": {
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc",
+          "bytes": 367296
+        }
+      },
+      "offlineVisualReview": {
+        "reviewer": "Astra",
+        "scope": "Matched source/frontend reconstruction top, oblique and walk images",
+        "result": "PASS for source reconstruction fidelity; not runtime approval",
+        "evidence": [
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\alley-comparison\\original-oblique.png",
+            "sha256": "d3a9b0b00db9ea3180b52c99e3683fc42fe4e83b0701f133a247acef34de7b2f"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\alley-comparison\\original-top.png",
+            "sha256": "aecbc3f3608b0f4a281a1b0f1fe740e5f3dbb4633d6f78c622e50f6de98f30e9"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\alley-comparison\\original-walk.png",
+            "sha256": "51a7ac187c840c74dd2d54e74bb0ad758f0a4cd346a768eb2810d8f8413fd734"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\alley-comparison\\reconstructed-oblique.png",
+            "sha256": "00f81ca27bfa79b0adb5c41b8b1ec5e1c4719cc43d3e0ed55d61fd88592cc66f"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\alley-comparison\\reconstructed-top.png",
+            "sha256": "5688493f76c0bb36ab3f807238f506bd1fbfbc9698adefc07e5bdea13940ab48"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\alley-comparison\\reconstructed-walk.png",
+            "sha256": "25212378e5be090177473722b5f2379f3ac2cc193ece410c3af1d947ac0d99d8"
+          }
+        ]
+      },
+      "assetVerification": "PASS",
+      "localAvailability": "staged_and_picker_enabled",
+      "humanVisualApproval": "pending",
+      "hostedPublication": false
+    },
+    {
+      "variant": "student_school_street_v1",
+      "sourceRecipeSha256": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
+      "sourceAssemblySha256": "9606b8a34562784b1c5aeba0f108445c9e08cb2a83dfeb510fae1135b2ca8f3f",
+      "programSha256": "401d99b1261ff4630f2398670c0c48c01323c9434670341a6384a56d10d9b595",
+      "detailTriangles": 248,
+      "maximumRecoveredDetailVertexErrorM": 6.710976722383944e-08,
+      "modules": 7,
+      "runtime_status": "NOT TESTED",
+      "completed": false,
+      "title": "Playful School Street",
+      "archetype": "school_street",
+      "widthM": 18.0,
+      "fixtureLengthM": 48,
+      "minLengthM": 48,
+      "maxLengthM": 480,
+      "sourceFixtureCount": 28,
+      "referenceSha256": "36eb4c62f554de603e7b3a82b1f7f688ecdd509ee99fbd459af06f6e40d3e17a",
+      "moduleLocks": {
+        "bike_rack": {
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+          "bytes": 96964
+        },
+        "grove_tree": {
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+          "bytes": 1287628
+        },
+        "light": {
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+          "bytes": 37668
+        },
+        "planted_trellis": {
+          "sha256": "815e43e86d7c5d6622390acf36ba5bde84be054c1b2fcfebd6bc0e688b4886d0",
+          "bytes": 33656
+        },
+        "street_bollard": {
+          "sha256": "6316b618afc54fecd980497cebcee3d49d6b930420cab8ad71819ffe9ac4783e",
+          "bytes": 9892
+        },
+        "timber_seat_wall": {
+          "sha256": "21064ded3591dc46184b9be308ab147ae3d3b2fcfc8993707f185fc3b6090248",
+          "bytes": 18172
+        },
+        "tree_well_grate": {
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493",
+          "bytes": 95608
+        }
+      },
+      "offlineVisualReview": {
+        "reviewer": "Astra",
+        "scope": "Matched source/frontend reconstruction top, oblique and walk images",
+        "result": "PASS for source reconstruction fidelity; not runtime approval",
+        "evidence": [
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\school-comparison\\original-oblique.png",
+            "sha256": "d596def5b1b3a2ed752ebfc9172f01e83404bf2b09f9e22d3318a07fa619d122"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\school-comparison\\original-top.png",
+            "sha256": "a19326c99ba9d6bb5cfad4c776dbec095559075381dbcf1439918622207d8da7"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\school-comparison\\original-walk.png",
+            "sha256": "40fb2697e0aaa531f467218b6c52be764af38ee12f5492376291c1b99afde750"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\school-comparison\\reconstructed-oblique.png",
+            "sha256": "0a459e13cc1665b9c429b55f498daab505ae0f897e9f010b03099f042629b6e8"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\school-comparison\\reconstructed-top.png",
+            "sha256": "6d8e025f9cf5cd6ba5af7896ff1eacec603c0bd23bcc08f6de6d46ce915222bb"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\classroom-streets-2026-09-27\\school-comparison\\reconstructed-walk.png",
+            "sha256": "64db55d3f6626a252c6613f28e4acb9751f7f21a999304878cba0ffed887804a"
+          }
+        ]
+      },
+      "assetVerification": "PASS",
+      "localAvailability": "staged_and_picker_enabled",
+      "humanVisualApproval": "pending",
+      "hostedPublication": false
+    }
+  ],
+  "checks": {
+    "vitest": {
+      "passed": 36
+    },
+    "pytest": {
+      "passed": 9
+    },
+    "typecheck": "PASS",
+    "productionCompilation": "PASS with large-chunk warnings",
+    "registryMirrorsAndTrustedCapabilities": "PASS",
+    "httpDelivery": {
+      "live_street_assets": [
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/bench.glb",
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+          "bytes": 34024
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/bike_rack.glb",
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+          "bytes": 96964
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/flowering_perennial.glb",
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+          "bytes": 162120
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/grove_tree.glb",
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+          "bytes": 1287628
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/light.glb",
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+          "bytes": 37668
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/meadow_grass.glb",
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4",
+          "bytes": 68700
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/silver_shrub.glb",
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc",
+          "bytes": 367296
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/street_bollard.glb",
+          "sha256": "530a525ac72258b0ed6b48d4918dbd80a00a14a0c56724fcdd27cb8224e09217",
+          "bytes": 9892
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/tree_well_grate.glb",
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493",
+          "bytes": 95608
+        },
+        {
+          "path": "/street-kits/pilots/student_cycle_avenue_v1/reference.png",
+          "sha256": "633f0a4a02171263a705e6eee464c254cb6d7be752aa1c17cca544acb37daca9",
+          "bytes": 1397063
+        },
+        {
+          "path": "/street-kits/pilots/student_green_alley_v1/bench.glb",
+          "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+          "bytes": 34024
+        },
+        {
+          "path": "/street-kits/pilots/student_green_alley_v1/flowering_perennial.glb",
+          "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+          "bytes": 162120
+        },
+        {
+          "path": "/street-kits/pilots/student_green_alley_v1/grove_tree.glb",
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+          "bytes": 1287628
+        },
+        {
+          "path": "/street-kits/pilots/student_green_alley_v1/light.glb",
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+          "bytes": 37668
+        },
+        {
+          "path": "/street-kits/pilots/student_green_alley_v1/meadow_grass.glb",
+          "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4",
+          "bytes": 68700
+        },
+        {
+          "path": "/street-kits/pilots/student_green_alley_v1/planted_trellis.glb",
+          "sha256": "e81afde69f848f2407c607da9b727b1073db8fe315d8568636e75a85b7a0731c",
+          "bytes": 33656
+        },
+        {
+          "path": "/street-kits/pilots/student_green_alley_v1/silver_shrub.glb",
+          "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc",
+          "bytes": 367296
+        },
+        {
+          "path": "/street-kits/pilots/student_green_alley_v1/reference.png",
+          "sha256": "9387cb75833f31cb1a7f5127aef73cdf594cbc1d0aa0c9911718a21e9774d0a1",
+          "bytes": 1724508
+        },
+        {
+          "path": "/street-kits/pilots/student_school_street_v1/bike_rack.glb",
+          "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+          "bytes": 96964
+        },
+        {
+          "path": "/street-kits/pilots/student_school_street_v1/grove_tree.glb",
+          "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+          "bytes": 1287628
+        },
+        {
+          "path": "/street-kits/pilots/student_school_street_v1/light.glb",
+          "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+          "bytes": 37668
+        },
+        {
+          "path": "/street-kits/pilots/student_school_street_v1/planted_trellis.glb",
+          "sha256": "815e43e86d7c5d6622390acf36ba5bde84be054c1b2fcfebd6bc0e688b4886d0",
+          "bytes": 33656
+        },
+        {
+          "path": "/street-kits/pilots/student_school_street_v1/street_bollard.glb",
+          "sha256": "6316b618afc54fecd980497cebcee3d49d6b930420cab8ad71819ffe9ac4783e",
+          "bytes": 9892
+        },
+        {
+          "path": "/street-kits/pilots/student_school_street_v1/timber_seat_wall.glb",
+          "sha256": "21064ded3591dc46184b9be308ab147ae3d3b2fcfc8993707f185fc3b6090248",
+          "bytes": 18172
+        },
+        {
+          "path": "/street-kits/pilots/student_school_street_v1/tree_well_grate.glb",
+          "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493",
+          "bytes": 95608
+        },
+        {
+          "path": "/street-kits/pilots/student_school_street_v1/reference.png",
+          "sha256": "36eb4c62f554de603e7b3a82b1f7f688ecdd509ee99fbd459af06f6e40d3e17a",
+          "bytes": 1606131
+        }
+      ],
+      "backend_health": "PASS",
+      "production_http_chunks": 31,
+      "production_http_asset_overlay": 26,
+      "browser": "NOT TESTED",
+      "scope": "HTTP and byte checks only; production code with separately staged public assets; no browser or project mutation."
+    }
+  },
+  "limitations": [
+    "Prepared level terrain only",
+    "Browser interactions, actual terrain, Walk, capture and performance NOT TESTED",
+    "Conceptual teaching streets; no traffic-engineering or accessibility certification",
+    "Existing seven street statuses remain in their separate acceptance ledger"
+  ]
+}

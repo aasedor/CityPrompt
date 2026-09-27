@@ -1,0 +1,371 @@
+{
+  "date": "2026-09-27",
+  "scope": "Actual local picker choices; not a completion/approval ledger",
+  "counts": {
+    "building": 20,
+    "park": 15,
+    "street": 10
+  },
+  "entries": [
+    {
+      "domain": "building",
+      "title": "Buff-brick infill",
+      "placementId": "validation_minimalist_infill_brick_monolith",
+      "variant": "minimalist_infill_brick_monolith",
+      "revision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Crystal brewhouse",
+      "placementId": "validation_brewery_crystal_brewhouse",
+      "variant": "brewery_crystal_brewhouse",
+      "revision": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Earth-sheltered museum",
+      "placementId": "validation_museum_earth_sheltered",
+      "variant": "museum_earth_sheltered",
+      "revision": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Halifax clapboard house",
+      "placementId": "validation_clapboard_north_end",
+      "variant": "clapboard_north_end",
+      "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Machiya cafe and gallery",
+      "placementId": "validation_machiya_cafe_gallery",
+      "variant": "machiya_cafe_gallery",
+      "revision": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "SoHo cast-iron loft",
+      "placementId": "validation_cast_iron_italianate",
+      "variant": "cast_iron_italianate",
+      "revision": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Streamline Moderne corner",
+      "placementId": "validation_art_deco_streamline_moderne",
+      "variant": "art_deco_streamline_moderne",
+      "revision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Terraced garden mid-rise",
+      "placementId": "validation_rndsqr_midrise_terraced_garden",
+      "variant": "rndsqr_midrise_terraced_garden",
+      "revision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Timber community hall",
+      "placementId": "validation_rec_centre_timber_hall",
+      "variant": "rec_centre_timber_hall",
+      "revision": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Timber-screen townhouse",
+      "placementId": "validation_contemporary_townhouse_timber_screen",
+      "variant": "contemporary_townhouse_timber_screen",
+      "revision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Conservatory botanical garden",
+      "placementId": "native-park:botanical_garden_v3--native-v1",
+      "variant": "botanical_garden_v3",
+      "revision": "8e5447c3b253c3f5842c049948620c67eebe4679f73b72ca84145718f58e4a84",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Museum sculpture court",
+      "placementId": "native-park:sculpture_garden_v0--native-v1",
+      "variant": "sculpture_garden_v0",
+      "revision": "5ea667d78cf619fd919494c852c1fe5751f3e951fdc8deccba3904d52500af62",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Neighbourhood orchard",
+      "placementId": "native-park:student_neighbourhood_orchard_v1--native-v1",
+      "variant": "student_neighbourhood_orchard_v1",
+      "revision": "746f5c3037bef70511e1529b7c7ca536697ea9931798231ca4a2c68306bf80ff",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Terraced performance lawn",
+      "placementId": "native-park:amphitheater_lawn_v0--native-v1",
+      "variant": "amphitheater_lawn_v0",
+      "revision": "e5bbe20222fe6af93f05c33a8ef4688f57b51b8636d0d5dee5672d1c2840d1ee",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Timber and stone square",
+      "placementId": "native-park:student_garden_square_v1--native-v1",
+      "variant": "student_garden_square_v1",
+      "revision": "b0310f14be314d41a61167a5d62627fbadbf65ce37f1d3dc2e3feaef2f8c7400",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Wetland boardwalk",
+      "placementId": "native-park:wetland_rain_garden_v0--native-v1",
+      "variant": "wetland_rain_garden_v0",
+      "revision": "95c8676b5de15a86550f632d994a1bebe65efb51ea73ee3ad5acabbac6ba1c54",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Amsterdam Gracht (Canal Street)",
+      "placementId": "amsterdam_gracht_v1",
+      "variant": "amsterdam_gracht_v1",
+      "revision": "db99c735b29e2d9c9131d89f787fd137fb1f41523cbae55d8a15322e35535ef9",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "BRT Bus Rapid Transit Corridor",
+      "placementId": "brt_bus_rapid_transit_corridor_v0",
+      "variant": "brt_bus_rapid_transit_corridor_v0",
+      "revision": "c18cdf29bc7474a90b1bbbc5531650faefb388e0366f6ce2d1ba98c75bbecb1c",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Planted Shared Lane",
+      "placementId": "student_planted_shared_lane_v1",
+      "variant": "student_planted_shared_lane_v1",
+      "revision": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Quiet Residential Street",
+      "placementId": "student_quiet_residential_street_v1",
+      "variant": "student_quiet_residential_street_v1",
+      "revision": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Landmark Signature Bridge",
+      "placementId": "landmark_signature_bridge_v2",
+      "variant": "landmark_signature_bridge_v2",
+      "revision": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Beltline mixed-use mid-rise",
+      "placementId": "validation_beltline_brick_modern",
+      "variant": "beltline_brick_modern",
+      "revision": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Calgary Modern Infill",
+      "placementId": "validation_infill_flat_roof_minimal",
+      "variant": "infill_flat_roof_minimal",
+      "revision": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Teaching demonstration garden",
+      "placementId": "native-park:research_garden_teaching_arboretum_variant_3--native-v1",
+      "variant": "research_garden_teaching_arboretum_variant_3",
+      "revision": "d76573a0a2a7281b71018a9f75dcee148fb8e401ad547e3053eba4f8a475c38e",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Basketball park",
+      "placementId": "native-park:basketball_court_v1--native-v1",
+      "variant": "basketball_court_v1",
+      "revision": "4682d83edf8fee509fbe4f4edae8cd524849743fa613046c358a4a6615a36fa3",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Neighbourhood Main Street",
+      "placementId": "validation_student_main_street_v1",
+      "variant": "student_main_street_v1",
+      "revision": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Pedestrian Market Street",
+      "placementId": "validation_student_market_street_v1",
+      "variant": "student_market_street_v1",
+      "revision": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Shaded Reading Garden",
+      "placementId": "native-park:student_reading_garden_v2--native-v1",
+      "variant": "student_reading_garden_v2",
+      "revision": "5c6a709fb7e69eeeb6de039809c16776bc30645de9614afffab85397c711c50a",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Pickleball Social Garden",
+      "placementId": "native-park:student_pickleball_garden_v1--native-v1",
+      "variant": "student_pickleball_garden_v1",
+      "revision": "ef5762251943079d6a7510f529b4d117a31d2837fe857f11d461ae4cdb47e7e3",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Garden Tennis Court",
+      "placementId": "native-park:student_tennis_garden_v2--native-v1",
+      "variant": "student_tennis_garden_v2",
+      "revision": "e2f7e20157f3ad95782137f984524f16f980670bcbdf9caa0034b43bdc063a41",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Bocce Pergola Garden",
+      "placementId": "native-park:student_bocce_garden_v2--native-v1",
+      "variant": "student_bocce_garden_v2",
+      "revision": "935250c769cf950991ce35e6ccc4a7fc580c43bbf808bb2d5bc4bbcb25f26fc0",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Rustic Pocket Garden",
+      "placementId": "native-park:urban_pocket_park_v0--native-v1",
+      "variant": "urban_pocket_park_v0",
+      "revision": "aa17f01fdb4a44036d038696728e54ec5b35974f30adae2be7a1258d557eaaad",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Railway Meadow Greenway",
+      "placementId": "native-park:linear_park_greenway_v0--native-v1",
+      "variant": "linear_park_greenway_v0",
+      "revision": "58be0c48376bb8b565fa8a9449072a542b68ec41d9b793be2018b58683e5d1b1",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "park",
+      "title": "Inclusive Woodland Playground",
+      "placementId": "native-park:inclusive_accessible_playground_v0--native-v1",
+      "variant": "inclusive_accessible_playground_v0",
+      "revision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Side-by-side duplex",
+      "placementId": "clay_side_by_side_duplex",
+      "variant": "infill_duplex",
+      "revision": "calgary-side-by-side-duplex-clay-v004",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Plateau stacked duplex",
+      "placementId": "clay_montreal_plateau_duplex",
+      "variant": "montreal_duplex_plateau",
+      "revision": "montreal-plateau-duplex-clay-v004",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Brick courtyard entrance building",
+      "placementId": "clay_courtyard_brick_modern",
+      "variant": "courtyard_family_brick_modern",
+      "revision": "courtyard-brick-modern-clay-v004",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Post-war bungalow",
+      "placementId": "trial_postwar_bungalow",
+      "variant": "bungalow_postwar_ranch",
+      "revision": "calgary-inner-city-bungalow-clay-v005",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Edwardian Foursquare",
+      "placementId": "trial_edwardian_foursquare",
+      "variant": "toronto_foursquare_red_brick",
+      "revision": "toronto-edwardian-foursquare-clay-v004",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Rammed-earth timber infill",
+      "placementId": "clay_rammed_earth_infill",
+      "variant": "detached_infill_rammed_earth",
+      "revision": "detached_contemporary_infill-clay-v003",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Blue glass office tower",
+      "placementId": "clay_blue_glass_office_tower",
+      "variant": "glass_tower_blue_reflective",
+      "revision": "glass_tower_podium_modern-clay-v003",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "building",
+      "title": "Vancouver balcony and podium tower",
+      "placementId": "clay_vancouver_balcony_podium_tower",
+      "variant": "vancouverism_classic",
+      "revision": "vancouverism-tower-podium-clay-v004",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Protected Cycle Avenue",
+      "placementId": "student_cycle_avenue_v1",
+      "variant": "student_cycle_avenue_v1",
+      "revision": "f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Ruelle Verte Community Alley",
+      "placementId": "student_green_alley_v1",
+      "variant": "student_green_alley_v1",
+      "revision": "5fa64b56938f1adaaa5088b454d58e736fa23db3930d6f7a47345f95fb746c7b",
+      "readiness": "pilot"
+    },
+    {
+      "domain": "street",
+      "title": "Playful School Street",
+      "placementId": "student_school_street_v1",
+      "variant": "student_school_street_v1",
+      "revision": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
+      "readiness": "pilot"
+    }
+  ]
+}

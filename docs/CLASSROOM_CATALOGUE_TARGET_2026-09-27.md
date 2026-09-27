@@ -1,5 +1,15 @@
 # Student catalogue target: 20 buildings, 15 parks, 10 streets
 
+## Build checkpoint
+
+The Astra build phase now exposes **20 buildings, 15 parks and 10 streets** in
+the local student picker. Eight building, seven park and three street additions
+have exact assets staged and offline checks recorded. The new entries remain
+pilots: current browser acceptance is **NOT TESTED**. See the three domain
+catalogue documents, exact ledgers, `classroom_student_roster_2026-09-27.json`
+and `CLASSROOM_45_SOL_HANDOFF_2026-09-27.md`. The count records available choices,
+not 45 completed classroom approvals. No push or hosted publication occurred.
+
 User direction, 27 September 2026: prioritize a useful, high-quality student
 catalogue. Advanced resizing and video can follow. Fixed native building and
 park layouts are sufficient; streets retain their advertised route controls.

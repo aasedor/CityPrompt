@@ -179,6 +179,42 @@
       "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Protected Cycle Avenue",
+      "archetype_id": "protected_bike_lane_bidirectional",
+      "variant_id": "student_cycle_avenue_v1",
+      "version": "student_cycle_avenue_v1",
+      "placement_id": "student_cycle_avenue_v1",
+      "sha256": "673c1618cd6002c7e03523e06faf87b9476d8f5ce3b0c29ba0f237c63e75a2ea",
+      "asset_review": "source_reconstruction_verified",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Ruelle Verte Community Alley",
+      "archetype_id": "montreal_ruelle_verte",
+      "variant_id": "student_green_alley_v1",
+      "version": "student_green_alley_v1",
+      "placement_id": "student_green_alley_v1",
+      "sha256": "6d9514b1e9ab469ee38f3fa7115c00c6513e9fcb6abf199159108f24599963c5",
+      "asset_review": "source_reconstruction_verified",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Playful School Street",
+      "archetype_id": "school_street",
+      "variant_id": "student_school_street_v1",
+      "version": "student_school_street_v1",
+      "placement_id": "student_school_street_v1",
+      "sha256": "9606b8a34562784b1c5aeba0f108445c9e08cb2a83dfeb510fae1135b2ca8f3f",
+      "asset_review": "source_reconstruction_verified",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -740,6 +776,96 @@
         "native_plot_axes": true,
         "native_home_plot": false,
         "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_cycle_avenue_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Protected Cycle Avenue",
+      "description": "24.0 m wide; native planting and furniture on a drawn route.",
+      "thumbnail": "/street-kits/pilots/student_cycle_avenue_v1/reference.png",
+      "model": {
+        "variantId": "student_cycle_avenue_v1",
+        "revision": "f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "active",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 24.0,
+      "properties": {
+        "road_archetype_id": "protected_bike_lane_bidirectional",
+        "road_selected_variant_id": "student_cycle_avenue_v1",
+        "width": 24.0,
+        "pick_place_street_section": "student_cycle_avenue_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_green_alley_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Ruelle Verte Community Alley",
+      "description": "11 m wide; native planting and furniture on a drawn route.",
+      "thumbnail": "/street-kits/pilots/student_green_alley_v1/reference.png",
+      "model": {
+        "variantId": "student_green_alley_v1",
+        "revision": "5fa64b56938f1adaaa5088b454d58e736fa23db3930d6f7a47345f95fb746c7b",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "alley",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 11,
+      "properties": {
+        "road_archetype_id": "montreal_ruelle_verte",
+        "road_selected_variant_id": "student_green_alley_v1",
+        "width": 11,
+        "pick_place_street_section": "student_green_alley_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_school_street_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Playful School Street",
+      "description": "18.0 m wide; native planting and furniture on a drawn route.",
+      "thumbnail": "/street-kits/pilots/student_school_street_v1/reference.png",
+      "model": {
+        "variantId": "student_school_street_v1",
+        "revision": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "calming",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 18.0,
+      "properties": {
+        "road_archetype_id": "school_street",
+        "road_selected_variant_id": "student_school_street_v1",
+        "width": 18.0,
+        "pick_place_street_section": "student_school_street_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
       }
     }
   ]

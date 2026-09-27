@@ -12,6 +12,8 @@ export interface NativeStreetRegion { x:number;y:number;width:number;depth:numbe
 export interface NativeStreetProgram {
   schemaVersion:number;adapter:string;surfaceRegions:NativeStreetRegion[];
   details:Array<NativeStreetRegion & {z:number;height:number}>;
+  /** Source-authored markings and low edging; rigid furniture stays in modules. */
+  meshDetails?:Array<{material:string;positions:number[];indices:number[]}>;
   paving:string;pavingModuleM:number[];minLengthM:number;maxLengthM:number;preparedLevelOnly:boolean;
   baseLiftM:number;palette:Record<string,number[]|undefined>;
 }
@@ -54,6 +56,17 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
     const group=groups.get(material)??{positions:[],indices:[]};const n=group.positions.length/3;
     group.positions.push(...vertices.flat());group.indices.push(n,n+1,n+2,n,n+2,n+3);groups.set(material,group);
   };
+  const clipAtStation=(vertices:number[][], boundary:number, keepAfter:boolean):number[][]=>{
+    const result:number[][]=[];
+    for(let i=0;i<vertices.length;i++){
+      const a=vertices[i],b=vertices[(i+1)%vertices.length];
+      const insideA=keepAfter?a[1]>=boundary:a[1]<=boundary;
+      const insideB=keepAfter?b[1]>=boundary:b[1]<=boundary;
+      if(insideA)result.push(a);
+      if(insideA!==insideB){const t=(boundary-a[1])/(b[1]-a[1]);result.push(a.map((v,j)=>v+(b[j]-v)*t));}
+    }
+    return result;
+  };
   const rect=(material:string,x0:number,x1:number,y0:number,y1:number,z:number,height=0)=>{
     y0=Math.max(0,y0);y1=Math.min(total,y1);if(y1-y0<1e-6 || x1-x0<1e-6)return;
     const stations=[y0,...segments.slice(1).map(s=>s.start).filter(y=>y>y0+1e-7 && y<y1-1e-7),y1];
@@ -84,6 +97,17 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
       }
     }
     for(const detail of program.details)rect(detail.material!,detail.x-detail.width/2,detail.x+detail.width/2,center+detail.y-detail.depth/2,center+detail.y+detail.depth/2,detail.z,detail.height);
+    for(const detail of program.meshDetails??[])for(let i=0;i<detail.indices.length;i+=3){
+      const triangle=detail.indices.slice(i,i+3).map(index=>[detail.positions[index*3],center+detail.positions[index*3+1],detail.positions[index*3+2]]);
+      for(const segment of segments){
+        const polygon=clipAtStation(clipAtStation(triangle,segment.start,true),segment.start+segment.length,false);
+        if(polygon.length<3)continue;
+        const group=groups.get(detail.material)??{positions:[],indices:[]},first=group.positions.length/3;
+        group.positions.push(...polygon.flatMap(v=>point(v[0],v[1],v[2])));
+        for(let j=1;j<polygon.length-1;j++)group.indices.push(first,first+j,first+j+1);
+        groups.set(detail.material,group);
+      }
+    }
   }
   return [...groups].map(([material,data])=>{
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(data.positions,3));geometry.setIndex(data.indices);geometry.computeVertexNormals();geometry.computeBoundingSphere();

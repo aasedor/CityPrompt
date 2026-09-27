@@ -15,6 +15,9 @@ describe('finite native street placement limits',()=>{
     ['brt_bus_rapid_transit_corridor_v0',100,480],
     ['amsterdam_gracht_v1',80,320],
     ['landmark_signature_bridge_v2',260,480],
+    ['student_cycle_avenue_v1',48,480],
+    ['student_green_alley_v1',40,480],
+    ['student_school_street_v1',48,480],
   ] as const)('%s accepts both limits and rejects undersize, oversize or missing prepared ground',(variant,min,max)=>{
     const pilot=nativeStreetPilot(variant)!;
     const boundary:SiteZone={id:'site',project_id:'test',zone_type:'site_boundary',coordinates:[],color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',properties:{terrain_strategy:'level',community_3d_mask_existing_tiles:true}};
