@@ -721,7 +721,7 @@
       "archetypeId": "basketball_court",
       "variantId": "basketball_court_v1",
       "title": "Basketball park",
-      "label": "Two courts \u00b7 Long",
+      "label": "Two courts · Long",
       "mode": "module_assembly",
       "widthM": 92,
       "depthM": 39,
@@ -1051,6 +1051,1458 @@
       },
       "occupiedWidthM": 92,
       "occupiedDepthM": 39
+    },
+    {
+      "id": "student_reading_garden_v2--native-v1",
+      "archetypeId": "student_reading_garden",
+      "variantId": "student_reading_garden_v2",
+      "title": "Shaded Reading Garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 30,
+      "depthM": 26,
+      "occupiedWidthM": 30.0,
+      "occupiedDepthM": 26.0,
+      "measuredBoundsM": [
+        [
+          -15.0,
+          -13.0,
+          -0.11999999731779099
+        ],
+        [
+          15.0,
+          13.0,
+          8.04883861541748
+        ]
+      ],
+      "sourceRecipeSha256": "4cf2f9f3a55b602b6b6788b0cfc990a275c3005670c0a0012dfd3f9ce40e263c",
+      "sourceRecipePath": "seed/classroom-parks/reading-v002/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "3482efa2b69276a5ae88229288bc5f288fdcfebac9bd2aa5c1fb878d05dc47ac",
+          "archivePath": "seed/classroom-parks/reading-v002/assembly-preview.glb",
+          "url": "/native-park-assets/3482efa2b69276a5ae88229288bc5f288fdcfebac9bd2aa5c1fb878d05dc47ac.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "c5a650c4cad95a3abef617dbd640c8bf5fdd35ea1432fbd9dce705bcb6534815",
+        "archivePath": "seed/classroom-parks/reading-v002/preview.png",
+        "url": "/native-park-assets/c5a650c4cad95a3abef617dbd640c8bf5fdd35ea1432fbd9dce705bcb6534815.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -12.8
+          ],
+          "b": [
+            0,
+            12.8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -14.8,
+            0
+          ],
+          "b": [
+            14.8,
+            0
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -13.0,
+          "widthM": 2.4,
+          "arrivalY": -11.0
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "5c6a709fb7e69eeeb6de039809c16776bc30645de9614afffab85397c711c50a"
+    },
+    {
+      "id": "student_pickleball_garden_v1--native-v1",
+      "archetypeId": "student_pickleball_garden",
+      "variantId": "student_pickleball_garden_v1",
+      "title": "Pickleball Social Garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 34,
+      "depthM": 34,
+      "occupiedWidthM": 34.0,
+      "occupiedDepthM": 34.0,
+      "measuredBoundsM": [
+        [
+          -17.0,
+          -17.0,
+          -0.11999999731779099
+        ],
+        [
+          17.0,
+          17.0,
+          8.04883861541748
+        ]
+      ],
+      "sourceRecipeSha256": "707585e7240e1c2101615085be49f6c9eeb8600b0e6d91f1a5019649c4970526",
+      "sourceRecipePath": "seed/classroom-parks/pickleball-tree-wells-v001/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "bdb0f854fab104dba862b0f8f3426b09db8c29e35a6b2bad3c2769d08e00c48a",
+          "archivePath": "seed/classroom-parks/pickleball-tree-wells-v001/assembly-preview.glb",
+          "url": "/native-park-assets/bdb0f854fab104dba862b0f8f3426b09db8c29e35a6b2bad3c2769d08e00c48a.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "f8097bb4f869cf9a854192fba3e67155368b17348737fff6356b62c538f0251f",
+        "archivePath": "seed/classroom-parks/pickleball-tree-wells-v001/preview.png",
+        "url": "/native-park-assets/f8097bb4f869cf9a854192fba3e67155368b17348737fff6356b62c538f0251f.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -16.9
+          ],
+          "b": [
+            0,
+            -5.0
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -17,
+          "widthM": 1.8,
+          "arrivalY": -15
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "ef5762251943079d6a7510f529b4d117a31d2837fe857f11d461ae4cdb47e7e3"
+    },
+    {
+      "id": "student_tennis_garden_v2--native-v1",
+      "archetypeId": "student_tennis_garden",
+      "variantId": "student_tennis_garden_v2",
+      "title": "Garden Tennis Court",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 38.3,
+      "depthM": 56.6,
+      "occupiedWidthM": 38.3,
+      "occupiedDepthM": 56.6,
+      "measuredBoundsM": [
+        [
+          -19.149999618530273,
+          -28.299999237060547,
+          -0.11999999731779099
+        ],
+        [
+          19.149999618530273,
+          28.299999237060547,
+          8.04883861541748
+        ]
+      ],
+      "sourceRecipeSha256": "2dcdc344414b89c26d058723454374f37c469b1e0ef669da5ef5d41ea23d5120",
+      "sourceRecipePath": "seed/classroom-parks/tennis-v002/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "c94401f7b526e450c194f5ce46fb9976486aca83256fb30e192cc9802b3bd9fd",
+          "archivePath": "seed/classroom-parks/tennis-v002/assembly-preview.glb",
+          "url": "/native-park-assets/c94401f7b526e450c194f5ce46fb9976486aca83256fb30e192cc9802b3bd9fd.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "b8264e62966be8443a2eb2184d502f13851e607f947faf2e9a67121ec3ab75e1",
+        "archivePath": "seed/classroom-parks/tennis-v002/preview.png",
+        "url": "/native-park-assets/b8264e62966be8443a2eb2184d502f13851e607f947faf2e9a67121ec3ab75e1.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            3.2,
+            -28.2
+          ],
+          "b": [
+            3.2,
+            -25.3
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            3.2,
+            -25.3
+          ],
+          "b": [
+            0,
+            -25.3
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -25.3
+          ],
+          "b": [
+            0,
+            -18.3
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -18.3
+          ],
+          "b": [
+            -10.85,
+            -18.3
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -10.85,
+            -18.3
+          ],
+          "b": [
+            -10.85,
+            -13.3
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 3.2,
+          "y": -28.3,
+          "widthM": 1.8,
+          "arrivalY": -25.3
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "e2f7e20157f3ad95782137f984524f16f980670bcbdf9caa0034b43bdc063a41"
+    },
+    {
+      "id": "student_bocce_garden_v2--native-v1",
+      "archetypeId": "student_bocce_garden",
+      "variantId": "student_bocce_garden_v2",
+      "title": "Bocce Pergola Garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 26.4,
+      "depthM": 49,
+      "occupiedWidthM": 26.4,
+      "occupiedDepthM": 49.0,
+      "measuredBoundsM": [
+        [
+          -13.199999809265137,
+          -24.5,
+          -0.12999999523162842
+        ],
+        [
+          13.199999809265137,
+          24.5,
+          8.04883861541748
+        ]
+      ],
+      "sourceRecipeSha256": "93bf939c7fe9c4c46824c5c18ad579863f11f4091e82b504cce5475a169fd81b",
+      "sourceRecipePath": "seed/classroom-parks/bocce-v002/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "3933e3b09b9b2dd00567d63b9b26af04e3449d5efa6ad209a28e4178cd0eef28",
+          "archivePath": "seed/classroom-parks/bocce-v002/assembly-preview.glb",
+          "url": "/native-park-assets/3933e3b09b9b2dd00567d63b9b26af04e3449d5efa6ad209a28e4178cd0eef28.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "3d3bfef46dca5d933d89ec61ea442c73770a81166a9d3e2ecdedd1d02048299b",
+        "archivePath": "seed/classroom-parks/bocce-v002/preview.png",
+        "url": "/native-park-assets/3d3bfef46dca5d933d89ec61ea442c73770a81166a9d3e2ecdedd1d02048299b.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            3.2,
+            -24.4
+          ],
+          "b": [
+            3.2,
+            -21.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            3.2,
+            -21.5
+          ],
+          "b": [
+            0,
+            -21.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -21.5
+          ],
+          "b": [
+            0,
+            -14.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -14.5
+          ],
+          "b": [
+            -4.9,
+            -14.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -4.9,
+            -14.5
+          ],
+          "b": [
+            -4.9,
+            -9.5
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 3.2,
+          "y": -24.5,
+          "widthM": 1.8,
+          "arrivalY": -21.5
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "935250c769cf950991ce35e6ccc4a7fc580c43bbf808bb2d5bc4bbcb25f26fc0"
+    },
+    {
+      "id": "urban_pocket_park_v0--native-v1",
+      "archetypeId": "urban_pocket_park",
+      "variantId": "urban_pocket_park_v0",
+      "title": "Rustic Pocket Garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 30,
+      "depthM": 26,
+      "occupiedWidthM": 30.0,
+      "occupiedDepthM": 26.0,
+      "measuredBoundsM": [
+        [
+          -15.0,
+          -13.0,
+          -0.11000001430511475
+        ],
+        [
+          15.0,
+          13.0,
+          10.439022064208984
+        ]
+      ],
+      "sourceRecipeSha256": "0b272a3a164d356225f6afd9e25f78cc6233f8058afb580e69950a0332e4e05b",
+      "sourceRecipePath": "seed/classroom-parks/pocket-native-v003/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "985726fcef5a5964c0038088ceff65b21072e07456844d07994d509ff8493d5e",
+          "archivePath": "seed/classroom-parks/pocket-native-v003/assembly-preview.glb",
+          "url": "/native-park-assets/985726fcef5a5964c0038088ceff65b21072e07456844d07994d509ff8493d5e.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "9ba6102ae7bd7376dcd8cfc5b213faec1e05384af1250242da2842e857882901",
+        "archivePath": "seed/classroom-parks/pocket-native-v003/preview.png",
+        "url": "/native-park-assets/9ba6102ae7bd7376dcd8cfc5b213faec1e05384af1250242da2842e857882901.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            -14.8,
+            0
+          ],
+          "b": [
+            -4.6,
+            0
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            6.65,
+            0.0
+          ],
+          "b": [
+            6.564163804518976,
+            0.9811122038181564
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            6.564163804518976,
+            0.9811122038181564
+          ],
+          "b": [
+            6.309263307440383,
+            1.9324138097900283
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            6.309263307440383,
+            1.9324138097900283
+          ],
+          "b": [
+            5.893043531382079,
+            2.8249999999999997
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            5.893043531382079,
+            2.8249999999999997
+          ],
+          "b": [
+            5.328151103622226,
+            3.631749994728947
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            5.328151103622226,
+            3.631749994728947
+          ],
+          "b": [
+            4.631749994728947,
+            4.328151103622226
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            4.631749994728947,
+            4.328151103622226
+          ],
+          "b": [
+            3.8250000000000006,
+            4.893043531382078
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            3.8250000000000006,
+            4.893043531382078
+          ],
+          "b": [
+            2.932413809790029,
+            5.309263307440382
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            2.932413809790029,
+            5.309263307440382
+          ],
+          "b": [
+            1.981112203818157,
+            5.564163804518976
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.981112203818157,
+            5.564163804518976
+          ],
+          "b": [
+            1.0000000000000004,
+            5.65
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.0000000000000004,
+            5.65
+          ],
+          "b": [
+            0.018887796181843775,
+            5.564163804518976
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0.018887796181843775,
+            5.564163804518976
+          ],
+          "b": [
+            -0.9324138097900272,
+            5.309263307440383
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.9324138097900272,
+            5.309263307440383
+          ],
+          "b": [
+            -1.8249999999999988,
+            4.893043531382079
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.8249999999999988,
+            4.893043531382079
+          ],
+          "b": [
+            -2.6317499947289478,
+            4.328151103622226
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -2.6317499947289478,
+            4.328151103622226
+          ],
+          "b": [
+            -3.3281511036222255,
+            3.631749994728948
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -3.3281511036222255,
+            3.631749994728948
+          ],
+          "b": [
+            -3.8930435313820775,
+            2.825000000000002
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -3.8930435313820775,
+            2.825000000000002
+          ],
+          "b": [
+            -4.309263307440382,
+            1.9324138097900292
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -4.309263307440382,
+            1.9324138097900292
+          ],
+          "b": [
+            -4.564163804518976,
+            0.9811122038181561
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -4.564163804518976,
+            0.9811122038181561
+          ],
+          "b": [
+            -4.65,
+            6.919254415182546e-16
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -4.65,
+            6.919254415182546e-16
+          ],
+          "b": [
+            -4.5641638045189765,
+            -0.9811122038181547
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -4.5641638045189765,
+            -0.9811122038181547
+          ],
+          "b": [
+            -4.309263307440383,
+            -1.932413809790028
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -4.309263307440383,
+            -1.932413809790028
+          ],
+          "b": [
+            -3.8930435313820784,
+            -2.8250000000000006
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -3.8930435313820784,
+            -2.8250000000000006
+          ],
+          "b": [
+            -3.328151103622228,
+            -3.631749994728945
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -3.328151103622228,
+            -3.631749994728945
+          ],
+          "b": [
+            -2.631749994728948,
+            -4.3281511036222255
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -2.631749994728948,
+            -4.3281511036222255
+          ],
+          "b": [
+            -1.8250000000000028,
+            -4.8930435313820775
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.8250000000000028,
+            -4.8930435313820775
+          ],
+          "b": [
+            -0.9324138097900274,
+            -5.309263307440383
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.9324138097900274,
+            -5.309263307440383
+          ],
+          "b": [
+            0.018887796181843552,
+            -5.564163804518976
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0.018887796181843552,
+            -5.564163804518976
+          ],
+          "b": [
+            0.999999999999999,
+            -5.65
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0.999999999999999,
+            -5.65
+          ],
+          "b": [
+            1.9811122038181543,
+            -5.5641638045189765
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.9811122038181543,
+            -5.5641638045189765
+          ],
+          "b": [
+            2.93241380979003,
+            -5.309263307440382
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            2.93241380979003,
+            -5.309263307440382
+          ],
+          "b": [
+            3.8249999999999966,
+            -4.893043531382081
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            3.8249999999999966,
+            -4.893043531382081
+          ],
+          "b": [
+            4.631749994728947,
+            -4.328151103622226
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            4.631749994728947,
+            -4.328151103622226
+          ],
+          "b": [
+            5.328151103622225,
+            -3.631749994728949
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            5.328151103622225,
+            -3.631749994728949
+          ],
+          "b": [
+            5.893043531382079,
+            -2.8249999999999984
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            5.893043531382079,
+            -2.8249999999999984
+          ],
+          "b": [
+            6.309263307440383,
+            -1.9324138097900276
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            6.309263307440383,
+            -1.9324138097900276
+          ],
+          "b": [
+            6.564163804518976,
+            -0.9811122038181568
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            6.564163804518976,
+            -0.9811122038181568
+          ],
+          "b": [
+            6.65,
+            -1.3838508830365093e-15
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": -15,
+          "y": 0,
+          "widthM": 2.4,
+          "arrivalX": -12,
+          "arrivalY": 0
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "aa17f01fdb4a44036d038696728e54ec5b35974f30adae2be7a1258d557eaaad"
+    },
+    {
+      "id": "linear_park_greenway_v0--native-v1",
+      "archetypeId": "linear_park_greenway",
+      "variantId": "linear_park_greenway_v0",
+      "title": "Railway Meadow Greenway",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 18,
+      "depthM": 64,
+      "occupiedWidthM": 18.0,
+      "occupiedDepthM": 64.1,
+      "measuredBoundsM": [
+        [
+          -9.0,
+          -32.00625991821289,
+          -0.02500000037252903
+        ],
+        [
+          9.0,
+          32.00022888183594,
+          4.419999599456787
+        ]
+      ],
+      "sourceRecipeSha256": "a1e230bb960e372d1a0a7f4f3418a9ae9bae4f3a7a46e428210c30c690a3fbdb",
+      "sourceRecipePath": "seed/classroom-parks/greenway-native-v002/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "c99516036b3f990387b91311d34786b3d65b0899c177a00c75e8df684a0de63e",
+          "archivePath": "seed/classroom-parks/greenway-native-v002/assembly-preview.glb",
+          "url": "/native-park-assets/c99516036b3f990387b91311d34786b3d65b0899c177a00c75e8df684a0de63e.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "c8e21483ed9ac6ae20be7aa48ac869da3e0f8be5469185264e2978baac84ffa1",
+        "archivePath": "seed/classroom-parks/greenway-native-v002/preview.png",
+        "url": "/native-park-assets/c8e21483ed9ac6ae20be7aa48ac869da3e0f8be5469185264e2978baac84ffa1.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0.03926738492125646,
+            -31.8
+          ],
+          "b": [
+            0.3901806440322565,
+            -30
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0.3901806440322565,
+            -30
+          ],
+          "b": [
+            0.7653668647301796,
+            -28
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0.7653668647301796,
+            -28
+          ],
+          "b": [
+            1.1111404660392044,
+            -26
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.1111404660392044,
+            -26
+          ],
+          "b": [
+            1.4142135623730951,
+            -24
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.4142135623730951,
+            -24
+          ],
+          "b": [
+            1.6629392246050905,
+            -22
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.6629392246050905,
+            -22
+          ],
+          "b": [
+            1.8477590650225735,
+            -20
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.8477590650225735,
+            -20
+          ],
+          "b": [
+            1.9615705608064609,
+            -18
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.9615705608064609,
+            -18
+          ],
+          "b": [
+            2.0,
+            -16
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            2.0,
+            -16
+          ],
+          "b": [
+            1.9615705608064609,
+            -14
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.9615705608064609,
+            -14
+          ],
+          "b": [
+            1.8477590650225735,
+            -12
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.8477590650225735,
+            -12
+          ],
+          "b": [
+            1.6629392246050907,
+            -10
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.6629392246050907,
+            -10
+          ],
+          "b": [
+            1.4142135623730951,
+            -8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.4142135623730951,
+            -8
+          ],
+          "b": [
+            1.1111404660392044,
+            -6
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            1.1111404660392044,
+            -6
+          ],
+          "b": [
+            0.7653668647301798,
+            -4
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0.7653668647301798,
+            -4
+          ],
+          "b": [
+            0.3901806440322572,
+            -2
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0.3901806440322572,
+            -2
+          ],
+          "b": [
+            2.4492935982947064e-16,
+            0
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            2.4492935982947064e-16,
+            0
+          ],
+          "b": [
+            -0.3901806440322567,
+            2
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.3901806440322567,
+            2
+          ],
+          "b": [
+            -0.7653668647301793,
+            4
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.7653668647301793,
+            4
+          ],
+          "b": [
+            -1.111140466039204,
+            6
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.111140466039204,
+            6
+          ],
+          "b": [
+            -1.414213562373095,
+            8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.414213562373095,
+            8
+          ],
+          "b": [
+            -1.6629392246050905,
+            10
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.6629392246050905,
+            10
+          ],
+          "b": [
+            -1.847759065022573,
+            12
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.847759065022573,
+            12
+          ],
+          "b": [
+            -1.9615705608064606,
+            14
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.9615705608064606,
+            14
+          ],
+          "b": [
+            -2.0,
+            16
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -2.0,
+            16
+          ],
+          "b": [
+            -1.9615705608064609,
+            18
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.9615705608064609,
+            18
+          ],
+          "b": [
+            -1.5837934843050627,
+            20
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.5837934843050627,
+            20
+          ],
+          "b": [
+            -1.1878137318607793,
+            22
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -1.1878137318607793,
+            22
+          ],
+          "b": [
+            -0.8081220356417688,
+            24
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.8081220356417688,
+            24
+          ],
+          "b": [
+            -0.4762030568739447,
+            26
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.4762030568739447,
+            26
+          ],
+          "b": [
+            -0.21867624706576594,
+            28
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.21867624706576594,
+            28
+          ],
+          "b": [
+            -0.0557400920046082,
+            30
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.0557400920046082,
+            30
+          ],
+          "b": [
+            -0.0005609626417322454,
+            31.8
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -32,
+          "widthM": 2.4,
+          "arrivalY": -30
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "58be0c48376bb8b565fa8a9449072a542b68ec41d9b793be2018b58683e5d1b1"
+    },
+    {
+      "id": "inclusive_accessible_playground_v0--native-v1",
+      "archetypeId": "inclusive_accessible_playground",
+      "variantId": "inclusive_accessible_playground_v0",
+      "title": "Inclusive Woodland Playground",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 38,
+      "depthM": 36,
+      "occupiedWidthM": 38.0,
+      "occupiedDepthM": 36.0,
+      "measuredBoundsM": [
+        [
+          -19.0,
+          -18.0,
+          -0.0637499988079071
+        ],
+        [
+          19.0,
+          18.0,
+          4.753912448883057
+        ]
+      ],
+      "sourceRecipeSha256": "9fe5755f12037aadc147d42ca903ac8d779b35d903c752f714bb0a6f15ac072c",
+      "sourceRecipePath": "seed/classroom-parks/inclusive-native-v002/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12",
+          "archivePath": "seed/classroom-parks/inclusive-native-v002/assembly-preview.glb",
+          "url": "/native-park-assets/1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "1991a23fdb78085178a14e145132115f1f223824bd551db7e025ed8319308372",
+        "archivePath": "seed/classroom-parks/inclusive-native-v002/preview.png",
+        "url": "/native-park-assets/1991a23fdb78085178a14e145132115f1f223824bd551db7e025ed8319308372.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -17.8
+          ],
+          "b": [
+            0,
+            -10
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -10
+          ],
+          "b": [
+            3,
+            -10
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            3,
+            -10
+          ],
+          "b": [
+            3,
+            0
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -10
+          ],
+          "b": [
+            -3,
+            -10
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -3,
+            -10
+          ],
+          "b": [
+            -3,
+            -7
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -3,
+            -7
+          ],
+          "b": [
+            -5,
+            -7
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -18,
+          "widthM": 2.4,
+          "arrivalY": -16
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888"
     }
   ]
 }

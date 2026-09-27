@@ -1,5 +1,6 @@
 import { nativeParkLayouts } from '@/features/parks/nativeParkRegistry';
 import validation from '@/data/validationCatalogue.json';
+import expansion from '@/data/classroomExpansion.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
@@ -159,7 +160,7 @@ export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
 }
 
 export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
-export const CATALOGUE_ASSETS: CatalogueAsset[] = LEGACY_VALIDATION_ASSETS.map(asset => {
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[]].map(asset => {
   if (asset.kind==='object' && asset.zoneType==='road') {
     const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
     if(native)return {...native,calgaryGuide:asset.calgaryGuide};

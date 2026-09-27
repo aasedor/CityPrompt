@@ -8,6 +8,7 @@ import type { SiteZoneProperties, SiteZoneType } from '@/types';
 import { CATALOGUE_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
+import expansion from '@/data/classroomExpansion.json';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
@@ -42,7 +43,7 @@ export function catalogueChoices(domains = CANONICAL_DOMAINS, assets = CATALOGUE
   return choices.sort((a, b) => Number(b.placements.length > 0) - Number(a.placements.length > 0));
 }
 // Local validation roster: no legacy variants or generic massing fallbacks in discovery.
-export const CANONICAL_CHOICES: CanonicalChoice[] = validation.entries.map(entry => {
+export const CANONICAL_CHOICES: CanonicalChoice[] = [...validation.entries, ...expansion.entries].map(entry => {
   const domain = entry.domain === 'building' ? 'building' : entry.domain === 'park' ? 'park_plaza' : 'street_pathway';
   const asset = CATALOGUE_ASSETS.find(a => a.id === entry.placement_id || a.model.variantId === entry.variant_id)!;
   const source = CANONICAL_DOMAINS[domain].find(o => o.id === entry.archetype_id);

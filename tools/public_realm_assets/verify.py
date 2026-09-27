@@ -45,6 +45,11 @@ for tree in r['placements']:
         assert hit and -.005<=p.z<=.055,(tree,'missing tree-well surface')
         mat=obj.data.materials[obj.data.polygons[index].material_index].name.split('.')[0]
         assert mat in ('soil','kit_linear_vertex_colour'),(tree,'pavement across tree well',mat)
+    else:
+        hit,p,n,index,obj,matrix=bpy.context.scene.ray_cast(deps,Vector((x+.30,y+.12,.065)),Vector((0,0,-1)))
+        assert hit and -.025<=p.z<=.025,(tree,'missing soft ground at root')
+        mat=obj.data.materials[obj.data.polygons[index].material_index].name.split('.')[0]
+        assert mat in ('soil','grass'),(tree,'hard ground across tree root',mat)
     tree_checks+=1
 result=dict(status='PASS_OFFLINE_GEOMETRY',checks=['self-contained GLB buffers','delivered byte hashes','finite metric bounds',f'{samples} clear material-aware route rays',f'{tree_checks} tree root openings checked'],runtime_tested=False)
 (root/'geometry-verification.json').write_text(json.dumps(result,indent=2)+'\n')

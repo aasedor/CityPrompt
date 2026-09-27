@@ -56,3 +56,6 @@ backend/scripts/start.sh text eol=lf
 tools/catalogue_*_pilot/evidence/independent-review.json -text whitespace=cr-at-eol
 seed/model-library/rlasm-architectural-clay/evidence/*.json -text whitespace=cr-at-eol
 seed/validation/runtime-assets.zip filter=lfs diff=lfs merge=lfs -text
+seed/classroom-parks/**/*.glb filter=lfs diff=lfs merge=lfs -text
+seed/classroom-parks/**/*.png filter=lfs diff=lfs merge=lfs -text
+seed/classroom-parks/**/*.json -text whitespace=cr-at-eol

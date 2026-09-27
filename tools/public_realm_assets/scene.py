@@ -173,15 +173,18 @@ def export(path,objects):
         for original in group:
             c=original.copy();c.data=original.data.copy();bpy.context.collection.objects.link(c);c.select_set(True);copies.append(c)
         bpy.context.view_layer.objects.active=copies[0];bpy.ops.object.join();joined=bpy.context.object;joined.name=mat
+        # A rotated first component must not leave the entire material group in
+        # its local frame: that exaggerates exported occupied bounds.
+        bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
         selected.append(joined);temporary.append(joined)
     bpy.ops.object.select_all(action='DESELECT')
     for o in selected:o.select_set(True)
     bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_cameras=False,export_lights=False)
     for o in temporary:bpy.data.objects.remove(o,do_unlink=True)
     return dict(path=Path(path).name,bytes=Path(path).stat().st_size,sha256=hashlib.sha256(Path(path).read_bytes()).hexdigest())
-def deliver(out,recipe,cameras):
+def deliver(out,recipe,cameras,build_surfaces=True):
     recipe['tree_wells']=prepare_tree_wells()
-    build_ground()
+    if build_surfaces:build_ground()
     out=Path(out);objects=[o for o in bpy.context.scene.objects if o.type=='MESH']
     recipe['placements']=list(PLACEMENTS)
     recipe['surface_regions']=list(SURFACES)

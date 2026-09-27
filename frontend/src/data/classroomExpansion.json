@@ -1,0 +1,314 @@
+{
+  "entries": [
+    {
+      "domain": "park",
+      "title": "Shaded Reading Garden",
+      "archetype_id": "student_reading_garden",
+      "variant_id": "student_reading_garden_v2",
+      "version": "reading-v002",
+      "placement_id": "native-park:student_reading_garden_v2--native-v1",
+      "sha256": "3482efa2b69276a5ae88229288bc5f288fdcfebac9bd2aa5c1fb878d05dc47ac",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Pickleball Social Garden",
+      "archetype_id": "student_pickleball_garden",
+      "variant_id": "student_pickleball_garden_v1",
+      "version": "pickleball-tree-wells-v001",
+      "placement_id": "native-park:student_pickleball_garden_v1--native-v1",
+      "sha256": "bdb0f854fab104dba862b0f8f3426b09db8c29e35a6b2bad3c2769d08e00c48a",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Garden Tennis Court",
+      "archetype_id": "student_tennis_garden",
+      "variant_id": "student_tennis_garden_v2",
+      "version": "tennis-v002",
+      "placement_id": "native-park:student_tennis_garden_v2--native-v1",
+      "sha256": "c94401f7b526e450c194f5ce46fb9976486aca83256fb30e192cc9802b3bd9fd",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Bocce Pergola Garden",
+      "archetype_id": "student_bocce_garden",
+      "variant_id": "student_bocce_garden_v2",
+      "version": "bocce-v002",
+      "placement_id": "native-park:student_bocce_garden_v2--native-v1",
+      "sha256": "3933e3b09b9b2dd00567d63b9b26af04e3449d5efa6ad209a28e4178cd0eef28",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Rustic Pocket Garden",
+      "archetype_id": "urban_pocket_park",
+      "variant_id": "urban_pocket_park_v0",
+      "version": "pocket-native-v003",
+      "placement_id": "native-park:urban_pocket_park_v0--native-v1",
+      "sha256": "985726fcef5a5964c0038088ceff65b21072e07456844d07994d509ff8493d5e",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Railway Meadow Greenway",
+      "archetype_id": "linear_park_greenway",
+      "variant_id": "linear_park_greenway_v0",
+      "version": "greenway-native-v002",
+      "placement_id": "native-park:linear_park_greenway_v0--native-v1",
+      "sha256": "c99516036b3f990387b91311d34786b3d65b0899c177a00c75e8df684a0de63e",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Inclusive Woodland Playground",
+      "archetype_id": "inclusive_accessible_playground",
+      "variant_id": "inclusive_accessible_playground_v0",
+      "version": "inclusive-native-v002",
+      "placement_id": "native-park:inclusive_accessible_playground_v0--native-v1",
+      "sha256": "1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    }
+  ],
+  "assets": [
+    {
+      "id": "native-park:student_reading_garden_v2--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Shaded Reading Garden",
+      "description": "Two shaded reading pergolas, flowering beds and quiet social seating.",
+      "thumbnail": "/native-park-assets/c5a650c4cad95a3abef617dbd640c8bf5fdd35ea1432fbd9dce705bcb6534815.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 30.0,
+      "depth": 26.0,
+      "minWidth": 30.0,
+      "minDepth": 26.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_reading_garden_v2",
+        "revision": "5c6a709fb7e69eeeb6de039809c16776bc30645de9614afffab85397c711c50a",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_reading_garden",
+        "green_space_selected_variant_id": "student_reading_garden_v2",
+        "green_space_native_layout_id": "student_reading_garden_v2--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_pickleball_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Pickleball Social Garden",
+      "description": "A native-size pickleball court, shaded social seating and planted tree wells.",
+      "thumbnail": "/native-park-assets/f8097bb4f869cf9a854192fba3e67155368b17348737fff6356b62c538f0251f.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 34.0,
+      "depth": 34.0,
+      "minWidth": 34.0,
+      "minDepth": 34.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_pickleball_garden_v1",
+        "revision": "ef5762251943079d6a7510f529b4d117a31d2837fe857f11d461ae4cdb47e7e3",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_pickleball_garden",
+        "green_space_selected_variant_id": "student_pickleball_garden_v1",
+        "green_space_native_layout_id": "student_pickleball_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_tennis_garden_v2--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Garden Tennis Court",
+      "description": "A garden tennis court with covered benches, spectator seating and lighting.",
+      "thumbnail": "/native-park-assets/b8264e62966be8443a2eb2184d502f13851e607f947faf2e9a67121ec3ab75e1.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 38.3,
+      "depth": 56.6,
+      "minWidth": 38.3,
+      "minDepth": 56.6,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_tennis_garden_v2",
+        "revision": "e2f7e20157f3ad95782137f984524f16f980670bcbdf9caa0034b43bdc063a41",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_tennis_garden",
+        "green_space_selected_variant_id": "student_tennis_garden_v2",
+        "green_space_native_layout_id": "student_tennis_garden_v2--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_bocce_garden_v2--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Bocce Pergola Garden",
+      "description": "A native bocce lane with vine pergola, cafe seating and garden borders.",
+      "thumbnail": "/native-park-assets/3d3bfef46dca5d933d89ec61ea442c73770a81166a9d3e2ecdedd1d02048299b.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 26.4,
+      "depth": 49.0,
+      "minWidth": 26.4,
+      "minDepth": 49.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_bocce_garden_v2",
+        "revision": "935250c769cf950991ce35e6ccc4a7fc580c43bbf808bb2d5bc4bbcb25f26fc0",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_bocce_garden",
+        "green_space_selected_variant_id": "student_bocce_garden_v2",
+        "green_space_native_layout_id": "student_bocce_garden_v2--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:urban_pocket_park_v0--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Rustic Pocket Garden",
+      "description": "A circular lawn, curved timber seat, rustic pergola and layered flowering borders.",
+      "thumbnail": "/native-park-assets/9ba6102ae7bd7376dcd8cfc5b213faec1e05384af1250242da2842e857882901.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 30.0,
+      "depth": 26.0,
+      "minWidth": 30.0,
+      "minDepth": 26.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "urban_pocket_park_v0",
+        "revision": "aa17f01fdb4a44036d038696728e54ec5b35974f30adae2be7a1258d557eaaad",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "urban_pocket_park",
+        "green_space_selected_variant_id": "urban_pocket_park_v0",
+        "green_space_native_layout_id": "urban_pocket_park_v0--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:linear_park_greenway_v0--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Railway Meadow Greenway",
+      "description": "A curving meadow trail with preserved rails, seating alcoves and an iron truss gateway.",
+      "thumbnail": "/native-park-assets/c8e21483ed9ac6ae20be7aa48ac869da3e0f8be5469185264e2978baac84ffa1.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 18.0,
+      "depth": 64.1,
+      "minWidth": 18.0,
+      "minDepth": 64.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "linear_park_greenway_v0",
+        "revision": "58be0c48376bb8b565fa8a9449072a542b68ec41d9b793be2018b58683e5d1b1",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "linear_park_greenway",
+        "green_space_selected_variant_id": "linear_park_greenway_v0",
+        "green_space_native_layout_id": "linear_park_greenway_v0--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:inclusive_accessible_playground_v0--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Inclusive Woodland Playground",
+      "description": "Two timber play towers, a ramp, slides, supported swings, sensory play and sheltered seating.",
+      "thumbnail": "/native-park-assets/1991a23fdb78085178a14e145132115f1f223824bd551db7e025ed8319308372.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 38.0,
+      "depth": 36.0,
+      "minWidth": 38.0,
+      "minDepth": 36.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "inclusive_accessible_playground_v0",
+        "revision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "inclusive_accessible_playground",
+        "green_space_selected_variant_id": "inclusive_accessible_playground_v0",
+        "green_space_native_layout_id": "inclusive_accessible_playground_v0--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    }
+  ]
+}
