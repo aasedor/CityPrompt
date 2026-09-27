@@ -47,7 +47,7 @@ export const CANONICAL_CHOICES: CanonicalChoice[] = [...validation.entries, ...e
   const domain = entry.domain === 'building' ? 'building' : entry.domain === 'park' ? 'park_plaza' : 'street_pathway';
   const asset = CATALOGUE_ASSETS.find(a => a.id === entry.placement_id || a.model.variantId === entry.variant_id)!;
   const source = CANONICAL_DOMAINS[domain].find(o => o.id === entry.archetype_id);
-  return { id: `${domain}:${entry.archetype_id}`, domain, placements: [asset], option: {
+  return { id: `${domain}:${entry.archetype_id}:${entry.variant_id}`, domain, placements: [asset], option: {
     ...source, id: entry.archetype_id, label: asset.label, description: asset.description,
     photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
     variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }],

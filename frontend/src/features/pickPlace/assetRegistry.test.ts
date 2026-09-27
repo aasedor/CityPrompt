@@ -6,13 +6,15 @@ import { CALGARY_LOCAL_PLACEMENT, CALGARY_LOCAL_WIDTH_M, isCalgaryLocalRoute } f
 describe('placeable asset registry', () => {
   it('rejects duplicate identities, incompatible categories and mismatched variants', () => {
     expect(validateRegistry(CATALOGUE_ASSETS)).toEqual([]);
-    expect(validateRegistry([...CATALOGUE_ASSETS, CATALOGUE_ASSETS[0]])).toContain('Duplicate or empty asset ID: infill_home');
+    expect(validateRegistry([...CATALOGUE_ASSETS, CATALOGUE_ASSETS[0]])).toContain(`Duplicate or empty asset ID: ${CATALOGUE_ASSETS[0].id}`);
     expect(validateRegistry([{ ...LOCAL_STREET_ASSET, calgaryGuide: { groupId: 'detached', basis: 'form_reference' } }])).toContain('Invalid Calgary group: calgary_local_street');
     expect(validateRegistry([{ ...placeAsset('infill_home'), model: { variantId: 'wrong', revision: null, method: 'test' } }])).toContain('Variant mismatch: infill_home');
   });
   it('searches Calgary districts and purpose without promoting candidates or retired assets', () => {
-    expect(browseAssets('R-C1').map(a => a.id)).toEqual(['infill_home', 'craftsman_bungalow', 'trial_postwar_bungalow', 'trial_edwardian_foursquare', 'clay_rammed_earth_infill']);
-    expect(browseAssets('', 'local').map(a => a.id)).toEqual(['calgary_local_street', 'yield_street_street']);
+    const fixtures = [placeAsset('infill_home'), placeAsset('craftsman_bungalow'), LOCAL_STREET_ASSET];
+    expect(browseAssets('R-C1', '', fixtures).map(a => a.id)).toEqual(['infill_home', 'craftsman_bungalow']);
+    expect(browseAssets('', 'local', fixtures).map(a => a.id)).toEqual(['calgary_local_street']);
+    expect(CATALOGUE_ASSETS.some(a => a.id === 'infill_home')).toBe(false);
     const candidate = { ...LOCAL_STREET_ASSET, id: 'candidate', readiness: 'candidate' as const };
     const retired = { ...candidate, id: 'retired', readiness: 'retired' as const };
     expect(browseAssets('', '', [candidate, retired])).toEqual([]);

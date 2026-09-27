@@ -2,12 +2,14 @@ import { nativeParkLayouts, nativeParkProperties } from '@/features/parks/native
 import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { LegoPlanRequest } from '@/features/legoAssembly/legoAssemblyApi';
-import { CATALOGUE_ASSETS, LEGACY_VALIDATION_ASSETS, isPlaceable, type PlaceAsset, type PlaceAssetId } from './assetRegistry';
+import { CATALOGUE_ASSETS, LEGACY_OBJECT_ASSETS, LEGACY_VALIDATION_ASSETS, individualStarterHome, isPlaceable, type PlaceAsset, type PlaceAssetId } from './assetRegistry';
 import { canonicalParkById, canonicalParkForProperties } from './canonicalParkPlacement';
 import { canonicalBuildingById, canonicalBuildingForProperties } from './canonicalBuildingPlacement';
 import { reviewedEntranceForAsset } from './reviewedEntrances';
 export type { PlaceAsset, PlaceAssetId } from './assetRegistry';
 const OBJECT_ASSETS = CATALOGUE_ASSETS.filter((asset): asset is PlaceAsset => asset.kind === 'object');
+// Resolve older saved IDs without returning those versions to student discovery.
+const LEGACY_OBJECT_LOOKUP = LEGACY_OBJECT_ASSETS.map(asset => individualStarterHome(asset) as PlaceAsset);
 export const PLACE_ASSETS = OBJECT_ASSETS.filter(isPlaceable);
 
 /** Preview and saved compilation share the exact variant and native plot policy. */
@@ -24,13 +26,15 @@ export function placementPlanRequest(asset: PlaceAsset, width: number, depth: nu
 export function placeAsset(id: PlaceAssetId): PlaceAsset {
   const asset = OBJECT_ASSETS.find(asset => asset.id === id)
     ?? LEGACY_VALIDATION_ASSETS.find((asset):asset is PlaceAsset=>asset.kind==='object' && asset.id===id)
+    ?? LEGACY_OBJECT_LOOKUP.find(asset => asset.id === id)
     ?? canonicalBuildingById(id) ?? canonicalParkById(id);
   if (!asset) throw new Error(`Unknown placeable asset: ${id}`);
   return asset;
 }
 export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | undefined {
   const properties = zone.properties ?? {};
-  const native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset) ?? LEGACY_VALIDATION_ASSETS.find((asset): asset is PlaceAsset => asset.kind === 'object' && asset.id === properties.pick_place_asset);
+  const native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset) ?? LEGACY_VALIDATION_ASSETS.find((asset): asset is PlaceAsset => asset.kind === 'object' && asset.id === properties.pick_place_asset)
+    ?? LEGACY_OBJECT_LOOKUP.find(asset => asset.id === properties.pick_place_asset);
   if (native?.reshapeMode === 'fixed_native' && properties.native_home_plot === true
     && ['infill_home', 'trial_postwar_bungalow'].includes(native.id)
     && properties.development_selected_variant_id === native.model.variantId && properties.development_height_override_m == null) {

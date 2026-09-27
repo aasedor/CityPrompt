@@ -361,6 +361,126 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 40,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "clay_side_by_side_duplex",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Side-by-side duplex",
+    "description": "Two homes with separate recessed entrances and flat roofs.",
+    "thumbnail": "/archetypes/buildings/calgary-modern-infill-house/variant_2.png",
+    "model": {
+      "variantId": "infill_duplex",
+      "revision": "calgary-side-by-side-duplex-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "two_home",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 17.0,
+    "depth": 25.0,
+    "minWidth": 17.0,
+    "minDepth": 25.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      13.34000015258789,
+      21.472000122070312,
+      9.0
+    ],
+    "reshapeDescription": "One complete two-home building at its native size. Resize the surrounding plot; the homes do not stretch or repeat.",
+    "properties": {
+      "building_archetype_id": "calgary_modern_infill_house",
+      "development_archetype_id": "calgary_modern_infill_house",
+      "development_selected_variant_id": "infill_duplex",
+      "development_archetype_label": "Side-by-side duplex",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_montreal_plateau_duplex",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Plateau stacked duplex",
+    "description": "Two stacked homes with bay windows and a curved outdoor stair.",
+    "thumbnail": "/archetypes/buildings/montreal-duplex/variant_0.png",
+    "model": {
+      "variantId": "montreal_duplex_plateau",
+      "revision": "montreal-plateau-duplex-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "two_home",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 16.0,
+    "depth": 23.0,
+    "minWidth": 16.0,
+    "minDepth": 23.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      12.64909839630127,
+      19.320000171661377,
+      8.104999542236328
+    ],
+    "reshapeDescription": "One complete stacked duplex at native size, including its curved stair. Resize the surrounding plot without stretching the building.",
+    "properties": {
+      "building_archetype_id": "montreal_duplex",
+      "development_archetype_id": "montreal_duplex",
+      "development_selected_variant_id": "montreal_duplex_plateau",
+      "development_archetype_label": "Plateau stacked duplex",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_courtyard_brick_modern",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Brick courtyard entrance building",
+    "description": "One three-storey brick entrance building with two homes-access vestibules and two open passages. The surrounding courtyard is designed separately.",
+    "thumbnail": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+    "model": {
+      "variantId": "courtyard_family_brick_modern",
+      "revision": "courtyard-brick-modern-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "apartments",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 30.0,
+    "depth": 17.0,
+    "minWidth": 30.0,
+    "minDepth": 17.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      25.582000732421875,
+      13.381999969482422,
+      12.27500057220459
+    ],
+    "reshapeDescription": "One complete entrance building at native scale. Resize its plot without stretching the arches, passages or roof.",
+    "properties": {
+      "building_archetype_id": "courtyard_family_housing",
+      "development_archetype_id": "courtyard_family_housing",
+      "development_selected_variant_id": "courtyard_family_brick_modern",
+      "development_archetype_label": "Brick courtyard entrance building",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
   }
 ];
 

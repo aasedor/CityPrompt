@@ -83,6 +83,102 @@
       "asset_review": "agent_native_visual_and_geometry_pass",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Side-by-side duplex",
+      "archetype_id": "calgary_modern_infill_house",
+      "variant_id": "infill_duplex",
+      "version": "calgary-side-by-side-duplex-clay-v004",
+      "placement_id": "clay_side_by_side_duplex",
+      "sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Plateau stacked duplex",
+      "archetype_id": "montreal_duplex",
+      "variant_id": "montreal_duplex_plateau",
+      "version": "montreal-plateau-duplex-clay-v004",
+      "placement_id": "clay_montreal_plateau_duplex",
+      "sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Brick courtyard entrance building",
+      "archetype_id": "courtyard_family_housing",
+      "variant_id": "courtyard_family_brick_modern",
+      "version": "courtyard-brick-modern-clay-v004",
+      "placement_id": "clay_courtyard_brick_modern",
+      "sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Post-war bungalow",
+      "archetype_id": "calgary_inner_city_bungalow",
+      "variant_id": "bungalow_postwar_ranch",
+      "version": "calgary-inner-city-bungalow-clay-v005",
+      "placement_id": "trial_postwar_bungalow",
+      "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Edwardian Foursquare",
+      "archetype_id": "toronto_edwardian_foursquare",
+      "variant_id": "toronto_foursquare_red_brick",
+      "version": "toronto-edwardian-foursquare-clay-v004",
+      "placement_id": "trial_edwardian_foursquare",
+      "sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Rammed-earth timber infill",
+      "archetype_id": "detached_contemporary_infill",
+      "variant_id": "detached_infill_rammed_earth",
+      "version": "detached_contemporary_infill-clay-v003",
+      "placement_id": "clay_rammed_earth_infill",
+      "sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Blue glass office tower",
+      "archetype_id": "glass_tower_podium_modern",
+      "variant_id": "glass_tower_blue_reflective",
+      "version": "glass_tower_podium_modern-clay-v003",
+      "placement_id": "clay_blue_glass_office_tower",
+      "sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Vancouver balcony and podium tower",
+      "archetype_id": "vancouverism_tower_podium",
+      "variant_id": "vancouverism_classic",
+      "version": "vancouverism-tower-podium-clay-v004",
+      "placement_id": "clay_vancouver_balcony_podium_tower",
+      "sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -307,6 +403,342 @@
         "green_space_archetype_id": "inclusive_accessible_playground",
         "green_space_selected_variant_id": "inclusive_accessible_playground_v0",
         "green_space_native_layout_id": "inclusive_accessible_playground_v0--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_side_by_side_duplex",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Side-by-side duplex",
+      "description": "Two homes with separate recessed entrances and flat roofs.",
+      "thumbnail": "/archetypes/buildings/calgary-modern-infill-house/variant_2.png",
+      "model": {
+        "variantId": "infill_duplex",
+        "revision": "calgary-side-by-side-duplex-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "two_home",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 17.0,
+      "depth": 25.0,
+      "minWidth": 17.0,
+      "minDepth": 25.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        13.34000015258789,
+        21.472000122070312,
+        9.0
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_duplex",
+        "development_archetype_label": "Side-by-side duplex",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_montreal_plateau_duplex",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Plateau stacked duplex",
+      "description": "Two stacked homes with bay windows and a curved outdoor stair.",
+      "thumbnail": "/archetypes/buildings/montreal-duplex/variant_0.png",
+      "model": {
+        "variantId": "montreal_duplex_plateau",
+        "revision": "montreal-plateau-duplex-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "two_home",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 16.0,
+      "depth": 23.0,
+      "minWidth": 16.0,
+      "minDepth": 23.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        12.64909839630127,
+        19.320000171661377,
+        8.104999542236328
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "montreal_duplex",
+        "development_archetype_id": "montreal_duplex",
+        "development_selected_variant_id": "montreal_duplex_plateau",
+        "development_archetype_label": "Plateau stacked duplex",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_courtyard_brick_modern",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Brick courtyard entrance building",
+      "description": "One three-storey brick entrance building with two homes-access vestibules and two open passages. The surrounding courtyard is designed separately.",
+      "thumbnail": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+      "model": {
+        "variantId": "courtyard_family_brick_modern",
+        "revision": "courtyard-brick-modern-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "apartments",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 30.0,
+      "depth": 17.0,
+      "minWidth": 30.0,
+      "minDepth": 17.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        25.582000732421875,
+        13.381999969482422,
+        12.27500057220459
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "courtyard_family_housing",
+        "development_archetype_id": "courtyard_family_housing",
+        "development_selected_variant_id": "courtyard_family_brick_modern",
+        "development_archetype_label": "Brick courtyard entrance building",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "trial_postwar_bungalow",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Post-war bungalow",
+      "description": "One-storey brick home with a sheltered porch.",
+      "thumbnail": "/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
+      "model": {
+        "variantId": "bungalow_postwar_ranch",
+        "revision": "calgary-inner-city-bungalow-clay-v005",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "detached",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 15.0,
+      "depth": 20.0,
+      "minWidth": 15.0,
+      "minDepth": 20.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        10.898324012756348,
+        16.050000190734863,
+        6.360000133514404
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "calgary_inner_city_bungalow",
+        "development_archetype_id": "calgary_inner_city_bungalow",
+        "development_selected_variant_id": "bungalow_postwar_ranch",
+        "development_archetype_label": "Post-war bungalow",
+        "floors": 1,
+        "floor_count": 1,
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "trial_edwardian_foursquare",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Edwardian Foursquare",
+      "description": "Two-storey brick home with a porch and dormer.",
+      "thumbnail": "/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png",
+      "model": {
+        "variantId": "toronto_foursquare_red_brick",
+        "revision": "toronto-edwardian-foursquare-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "detached",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 15.0,
+      "depth": 22.0,
+      "minWidth": 15.0,
+      "minDepth": 22.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        11.069999694824219,
+        17.93000030517578,
+        10.8100004196167
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "toronto_edwardian_foursquare",
+        "development_archetype_id": "toronto_edwardian_foursquare",
+        "development_selected_variant_id": "toronto_foursquare_red_brick",
+        "development_archetype_label": "Edwardian Foursquare",
+        "floors": 2,
+        "floor_count": 2,
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_rammed_earth_infill",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Rammed-earth timber infill",
+      "description": "Three-storey rammed-earth home with shaded loggias and timber screens.",
+      "thumbnail": "/archetypes/buildings/detached_contemporary_infill/variant_3.png",
+      "model": {
+        "variantId": "detached_infill_rammed_earth",
+        "revision": "detached_contemporary_infill-clay-v003",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "detached",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 18.0,
+      "depth": 24.0,
+      "minWidth": 18.0,
+      "minDepth": 24.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        13.375,
+        19.600000381469727,
+        10.149999618530273
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "detached_contemporary_infill",
+        "development_archetype_id": "detached_contemporary_infill",
+        "development_selected_variant_id": "detached_infill_rammed_earth",
+        "development_archetype_label": "Rammed-earth timber infill",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_blue_glass_office_tower",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Blue glass office tower",
+      "description": "A 25-storey blue glass office tower with a glazed lobby, entrance canopy and rooftop crown.",
+      "thumbnail": "/archetypes/buildings/glass_tower_podium_modern/variant_0.png",
+      "model": {
+        "variantId": "glass_tower_blue_reflective",
+        "revision": "glass_tower_podium_modern-clay-v003",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "offices",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 36.0,
+      "depth": 34.0,
+      "minWidth": 36.0,
+      "minDepth": 34.0,
+      "maxSize": 160.0,
+      "nativeDimensions": [
+        32.1200008392334,
+        30.074999809265137,
+        99.0
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "glass_tower_podium_modern",
+        "development_archetype_id": "glass_tower_podium_modern",
+        "development_selected_variant_id": "glass_tower_blue_reflective",
+        "development_archetype_label": "Blue glass office tower",
+        "floors": 25,
+        "floor_count": 25,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_vancouver_balcony_podium_tower",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Vancouver balcony and podium tower",
+      "description": "A 16-storey residential tower with rounded balconies, a landscaped podium and a lower shop wing.",
+      "thumbnail": "/archetypes/buildings/vancouverism-tower-podium/variant_0.png",
+      "model": {
+        "variantId": "vancouverism_classic",
+        "revision": "vancouverism-tower-podium-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "towers",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 52.0,
+      "depth": 44.0,
+      "minWidth": 52.0,
+      "minDepth": 44.0,
+      "maxSize": 180.0,
+      "nativeDimensions": [
+        48.05500030517578,
+        40.05500030517578,
+        58.79999923706055
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "vancouverism_tower_podium",
+        "development_archetype_id": "vancouverism_tower_podium",
+        "development_selected_variant_id": "vancouverism_classic",
+        "development_archetype_label": "Vancouver balcony and podium tower",
+        "floors": 16,
+        "floor_count": 16,
+        "native_plot_axes": true,
+        "native_home_plot": false,
         "pick_place_automatic_3d": true
       }
     }
