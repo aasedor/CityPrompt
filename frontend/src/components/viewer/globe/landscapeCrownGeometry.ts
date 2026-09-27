@@ -25,7 +25,7 @@ export function createLandscapeCrownGeometry(): {
     const fork = tip.clone().multiplyScalar(0.55); fork.z -= 0.14;
     branch(new THREE.Vector3(0, 0, -0.40 + limb * 0.035), fork, 0.014);
     branch(fork, tip, 0.008);
-    for (let leaf = 0; leaf < 64; leaf += 1) {
+    for (let leaf = 0; leaf < 144; leaf += 1) {
       const azimuth = random() * Math.PI * 2;
       const z = random() * 2 - 1;
       const radius = Math.cbrt(random());
@@ -35,7 +35,9 @@ export function createLandscapeCrownGeometry(): {
         Math.sin(azimuth) * radial * radius * 0.19,
         z * radius * 0.18,
       ));
-      const size = 0.055 + random() * 0.035;
+      // Smaller, denser tufts hold the same crown envelope while avoiding
+      // conspicuous plate-sized facets at walking distance.
+      const size = 0.035 + random() * 0.015;
       // Six-point folded leaf tuft: four triangles, no alpha overdraw or atlas.
       const geometry = new THREE.BufferGeometry();
       geometry.setAttribute('position', new THREE.Float32BufferAttribute([
