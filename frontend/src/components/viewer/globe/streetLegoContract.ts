@@ -184,8 +184,8 @@ export function validatePublicRealmStreetRecipe(
     }
     const lengthM = target?.length_m;
     if (Math.abs(targetRowM - selection.rowWidthM!) > 0.05
-      || typeof lengthM !== 'number' || !Number.isFinite(lengthM) || lengthM < 8 || lengthM > 2000) {
-      return invalid('target_incompatible', 'Native street width is fixed and its route must be 8–2000 metres long.');
+      || typeof lengthM !== 'number' || !Number.isFinite(lengthM) || lengthM < (selection.minLengthM??8) || lengthM > (selection.maxLengthM??2000)) {
+      return invalid('target_incompatible', `Native street width is fixed and its route must be ${selection.minLengthM??8}–${selection.maxLengthM??2000} metres long.`);
     }
   }
   const armCount = selection.targetType === 'street_node' && typeof target?.arm_count === 'number'

@@ -1,6 +1,8 @@
 import pilots from '@/data/nativeStreetPilots.json';
 import bounds from '@/data/nativeStreetModuleBounds.json';
+import type { NativeStreetProgram } from './nativeStreetProgram';
 import type { SiteZone } from '@/types';
+import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { validateStreetRecipeProperties } from './streetLegoContract';
 import {
   PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS,
@@ -8,7 +10,7 @@ import {
   PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
 } from './publicRealmDepthPolicy';
 
-export type NativeStreetPilot = typeof pilots[number];
+export type NativeStreetPilot = typeof pilots[number] & {program?:NativeStreetProgram;programSha256?:string};
 export interface StreetRouteStation { x: number; y: number; z?: number }
 export interface NativeStreetPose {
   kind: string;
@@ -29,10 +31,23 @@ export function nativeStreetPilot(variantId: string): NativeStreetPilot | undefi
   return pilots.find(pilot => pilot.id === variantId);
 }
 
+export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'properties'>,boundary?:SiteZone|null):string|null {
+  if(zone.properties?.validation_fixed_fixture)return null;
+  const pilot=nativeStreetPilot(String(zone.properties?.road_selected_variant_id)),program=pilot?.program;
+  if(!program)return null;
+  if(program.preparedLevelOnly && (!boundary || boundary.properties?.terrain_strategy==='landscape'
+    || boundary.properties?.community_3d_mask_existing_tiles!==true))return 'Prepare a level site and clear existing site surfaces before drawing this native street.';
+  const points=extractZoneCenterline(zone),scale=111320*Math.cos((points[0]?.[1]??0)*Math.PI/180);
+  const length=points.slice(1).reduce((sum,p,i)=>sum+Math.hypot((p[0]-points[i][0])*scale,(p[1]-points[i][1])*111320),0);
+  return length<program.minLengthM-.01 || length>program.maxLengthM+.01
+    ? `${pilot.title} needs a route ${program.minLengthM}–${program.maxLengthM} m long so its complete garden and access program fits.` : null;
+}
+
 /** Saved production zones require the same module locks as the server compiler.
  * Section cards may request a draft profile before there is a saved recipe. */
 export function nativeStreetPilotForZone(zone: Pick<SiteZone, 'zone_type' | 'properties'>, preview = false): NativeStreetPilot | undefined {
   if (zone.zone_type !== 'road') return undefined;
+  if (zone.properties?.validation_fixed_fixture) return undefined;
   const selected = pilots.find(pilot => pilot.id === zone.properties?.road_selected_variant_id);
   if (selected) {
     if (zone.properties?.road_archetype_id !== selected.sourceArchetypeId || zone.properties?.width !== selected.widthM) return undefined;
@@ -131,7 +146,7 @@ export function placeNativeStreetModules(
     const well = item.kind === 'tree_well_grate' ? pilot.treeWells.find(candidate =>
       Math.abs(candidate.x - item.x) < 1e-5 && Math.abs(candidate.y - item.y) < 1e-5) : undefined;
     const sourceBand = pilot.sections.find(band => Math.abs(item.x - band.x) <= band.width / 2 + 1e-5);
-    const surfaceLiftM = pilot.id === 'student_market_street_v1'
+    const surfaceLiftM = pilot.program ? pilot.program.baseLiftM : pilot.id === 'student_market_street_v1'
       ? PUBLIC_REALM_STREET_SHARED_SURFACE_LIFT_METERS
       : sourceBand?.material === 'asphalt'
         ? PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS

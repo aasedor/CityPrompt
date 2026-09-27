@@ -10,7 +10,7 @@
 import nativeStreets from '@/data/nativeStreetPilots.json';
 
 export const PUBLIC_REALM_STREET_FAMILY_VERSION = 1 as const;
-type NativeStreetFamilyId = 'street_native_student_main_street_v1' | 'street_native_student_market_street_v1';
+type NativeStreetFamilyId = 'street_native_student_main_street_v1' | 'street_native_student_market_street_v1' | 'street_native_student_quiet_residential_street_v1';
 
 export type PublicRealmStreetFamilyId =
   | NativeStreetFamilyId
@@ -87,6 +87,8 @@ export interface PublicRealmStreetSelectionDefinition {
   targetType: 'street_segment' | 'street_node';
   profileId?: string;
   rowWidthM?: number;
+  minLengthM?: number;
+  maxLengthM?: number;
   componentSetIds?: readonly string[];
 }
 
@@ -267,6 +269,7 @@ function nativeFamily(id: NativeStreetFamilyId): PublicRealmStreetFamilyDefiniti
 export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFamilyId, PublicRealmStreetFamilyDefinition>> = Object.freeze({
   street_native_student_main_street_v1: nativeFamily('street_native_student_main_street_v1'),
   street_native_student_market_street_v1: nativeFamily('street_native_student_market_street_v1'),
+    street_native_student_quiet_residential_street_v1: nativeFamily('street_native_student_quiet_residential_street_v1'),
   street_local_public_realm: {
     id: 'street_local_public_realm',
     familyVersion: 1,
@@ -358,9 +361,11 @@ export const PUBLIC_REALM_STREET_SELECTIONS: readonly PublicRealmStreetSelection
     archetypeId: street.sourceArchetypeId, variantId: street.id,
     appearanceKitId: (street.junctionSurface === 'cobble' ? 'european_cobblestone_v1' : 'heritage_brick_stone') as StreetAppearanceKitId,
     targetType: 'street_segment' as const, rowWidthM: street.widthM,
+      minLengthM: street.program?.minLengthM ?? 8, maxLengthM: street.program?.maxLengthM ?? 2000,
     profileId: `native-${street.id.replace(/_/g, '-')}-v1`,
     componentSetIds: [
       `source_recipe:${street.sourceRecipeSha256}`, `source_assembly:${street.sourceAssemblySha256}`, `reference:${street.referenceSha256}`,
+        ...('programSha256' in street && street.programSha256 ? [`program:${street.programSha256}`] : []),
       ...Object.entries(street.modules).sort(([a], [b]) => a.localeCompare(b)).map(([kind, module]) => `module_${kind}:${module.sha256}`),
     ],
   })),

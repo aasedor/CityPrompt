@@ -50,13 +50,6 @@ def public_realm_catalog_variants() -> dict[PublicRealmCatalogKind, dict[str, tu
                 raise RuntimeError(f"{path.name} has duplicate variants for '{archetype_id}'")
             values[archetype_id] = tuple(variants)
         normalized[kind] = values
-    # Native module streets have their own versioned delivery manifest. Keep
-    # legacy visual-reference variants intact while trusting these exact IDs.
-    for row in json.loads((_DATA_DIR / "nativeStreetPilots.json").read_text(encoding="utf-8")):
-        parent, variant = row["sourceArchetypeId"], row["id"]
-        if parent not in normalized["street"]:
-            raise RuntimeError(f"Native street parent is absent from catalogue: {parent}")
-        normalized["street"][parent] = tuple(sorted(set((*normalized["street"][parent], variant))))
     # The local validation roster also contains four exact student variants
     # absent from the published reference catalogues. Trust only these locked
     # identities for source-fitted fallback; this does not grant release approval.
@@ -64,6 +57,12 @@ def public_realm_catalog_variants() -> dict[PublicRealmCatalogKind, dict[str, tu
     for kind in ("park", "street"):
         for parent, variants in validation[kind].items():
             normalized[kind][parent] = tuple(sorted(set((*normalized[kind].get(parent, ()), *variants))))
+    # Native identities may originate in the explicit validation cohort above.
+    for row in json.loads((_DATA_DIR / "nativeStreetPilots.json").read_text(encoding="utf-8")):
+        parent, variant = row["sourceArchetypeId"], row["id"]
+        if parent not in normalized["street"]:
+            raise RuntimeError(f"Native street parent is absent from catalogue: {parent}")
+        normalized["street"][parent] = tuple(sorted(set((*normalized["street"][parent], variant))))
     return normalized
 
 

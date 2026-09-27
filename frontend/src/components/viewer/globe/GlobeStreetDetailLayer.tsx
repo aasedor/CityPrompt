@@ -92,6 +92,7 @@ import { validateStreetRecipeProperties } from './streetLegoContract';
 import { nativeStreetPilotForZone, placeNativeStreetModules } from './nativeStreetPilot';
 import { publicRealmTrialAsset } from './publicRealmTrial';
 import { GlobeNativeStreetPilotModules } from './GlobeNativeStreetPilotModules';
+import { buildNativeStreetProgram, nativeStreetHasPreparedGround } from './nativeStreetProgram';
 import { readCrossings, crossingStation } from '@/features/pickPlace/pedestrianConnections';
 import {
   buildStreetFamilyFixturePlacements,
@@ -613,6 +614,7 @@ function StreetRibbonDetail({
       )
       : null;
     const result = {
+      nativeProgram: nativePilot?.program ? buildNativeStreetProgram(nativePilot.program,nativePilot.widthM,nativePilot.fixtureLengthM,centerLngLat.local) : [],
       curbs: sectionProfile
         ? (sectionProfile.renderCurbs
           ? buildOffsetCurbGeometry(
@@ -647,11 +649,12 @@ function StreetRibbonDetail({
       result.curbs = trim(result.curbs); result.dashes = trim(result.dashes);
       result.sharrows = trim(result.sharrows);
       result.bands.forEach((item) => { item.geometry = trim(item.geometry)!; });
+      result.nativeProgram.forEach((item) => { item.geometry = trim(item.geometry)!; });
       result.markings.forEach((item) => { item.geometry = trim(item.geometry)!; });
       result.parkingMarkings = result.parkingMarkings.map((item) => trim(item)!);
     }
     if (sharedGround.offsetAt) {
-      const items = [result.curbs, result.dashes, result.sharrows, ...result.bands.map((item) => item.geometry),
+      const items = [result.curbs, result.dashes, result.sharrows, ...result.bands.map((item) => item.geometry), ...result.nativeProgram.map(item=>item.geometry),
         ...result.markings.map((item) => item.geometry), ...result.parkingMarkings].filter((item): item is THREE.BufferGeometry => item !== null);
       if (items.some((item) => !applySharedStreetGround(item, sharedGround.offsetAt!, 0, 0, sharedGround.grid))) {
         items.forEach((item) => item.dispose()); return null;
@@ -759,6 +762,7 @@ function StreetRibbonDetail({
       ownedGeometries.curbs?.dispose();
       ownedGeometries.dashes?.dispose();
       ownedGeometries.bands.forEach((item) => item.geometry.dispose());
+      ownedGeometries.nativeProgram.forEach((item) => item.geometry?.dispose());
       ownedGeometries.markings.forEach((item) => item.geometry.dispose());
       ownedGeometries.parkingMarkings.forEach((geometry) => geometry.dispose());
       ownedGeometries.sharrows?.dispose();
@@ -781,6 +785,10 @@ function StreetRibbonDetail({
 
   if (!centerLngLat || !centroid || !geometries) return requiresPreparedAlignment
     ? <group userData={{...alignmentData, streetGroundStatus: 'unavailable'}} /> : null;
+  // Interior routes use the prepared parcel's resolved elevation. preparedSite
+  // is only passed for routes that continue outside to an existing public road.
+  if(nativePilot?.program?.preparedLevelOnly && !nativeStreetHasPreparedGround(preparedTerrain, Boolean(preparedSite), sharedGround.active))
+    return <group userData={{...alignmentData,streetGroundStatus:'unavailable',nativeStreetStatus:'error'}}/>;
   const seat = <T extends { x: number; y: number; z: number }>(poses: T[]) => sharedGround.offsetAt
     ? poses.flatMap((pose) => { const seated = seatStreetFixture(pose, sharedGround.offsetAt!); return seated ? [seated] : []; }) : poses;
 
@@ -791,7 +799,7 @@ function StreetRibbonDetail({
       height={frameElevation}
     >
       <group userData={alignmentData} />
-      {!hasAuthoredNetworkGround && geometries.bands.map(({ band, geometry }, index) => (
+      {!hasAuthoredNetworkGround && !nativePilot?.program && geometries.bands.map(({ band, geometry }, index) => (
         <mesh
           key={`${band.sourceType}-${band.startM}`}
           geometry={geometry}
@@ -801,6 +809,9 @@ function StreetRibbonDetail({
           <primitive object={bandMaterials[index].material} attach="material" />
         </mesh>
       ))}
+      {geometries.nativeProgram.map(({material,geometry})=>geometry && <mesh key={`native-${material}`} geometry={geometry} receiveShadow renderOrder={RENDER_ORDER_FLATWORK}>
+        <meshStandardMaterial color={new THREE.Color().setRGB(...(nativePilot!.program!.palette[material] as [number,number,number]))} roughness={.86} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-3} polygonOffsetUnits={-6}/>
+      </mesh>)}
       {geometries.markings.map(({ marking, geometry }, index) => (
         <mesh
           key={`${marking.offsetM}-${index}`}

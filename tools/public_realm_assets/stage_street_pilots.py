@@ -41,6 +41,11 @@ def inspect_pilot(package: Path) -> tuple[dict, dict[str, bytes]]:
     recipe_path = package / "recipe.json"
     recipe_bytes = recipe_path.read_bytes()
     recipe = json.loads(recipe_bytes)
+    try:
+        from .original_street_adapter import adapt_original
+    except ImportError:
+        from original_street_adapter import adapt_original
+    recipe, program = adapt_original(package, recipe, recipe_bytes)
     street_id = recipe.get("id")
     if not isinstance(street_id, str) or not PILOT_ID.fullmatch(street_id) or recipe.get("runtime_approved") is not False:
         raise ValueError("Only explicitly staged, unapproved student street pilot packages are accepted")
@@ -128,6 +133,9 @@ def inspect_pilot(package: Path) -> tuple[dict, dict[str, bytes]]:
                     for name, data in modules.items()},
         "thumbnailUrl": f"/street-kits/pilots/{street_id}/reference.png",
     }
+    if program is not None:
+        manifest['program'] = program
+        manifest['programSha256'] = _sha256(json.dumps(program, sort_keys=True, separators=(',', ':')).encode())
     return manifest, {**{f"{name}.glb": data for name, data in modules.items()}, "reference.png": reference_data}
 
 

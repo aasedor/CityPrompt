@@ -130,7 +130,7 @@ export function additionalStreet(archetypeId: string, label: string, description
 
 const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
   id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
-  label: street.title, description: `${street.widthM} m wide · curved routes with native-size furniture`,
+    label: street.title, description: street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${street.program.maxLengthM} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
   calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
   model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },
@@ -157,6 +157,10 @@ export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
 
 export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
 export const CATALOGUE_ASSETS: CatalogueAsset[] = LEGACY_VALIDATION_ASSETS.map(asset => {
+  if (asset.kind==='object' && asset.zoneType==='road') {
+    const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
+    if(native)return {...native,calgaryGuide:asset.calgaryGuide};
+  }
   if (asset.kind !== 'object' || asset.zoneType !== 'green_space') return asset;
   const layout = nativeParkLayouts.find(p => p.variantId === asset.model.variantId && p.mode === 'native_assembly' && p.status === 'pilot');
   if (!layout) return asset;

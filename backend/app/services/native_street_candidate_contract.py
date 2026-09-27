@@ -88,6 +88,12 @@ def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCap
             ("source_assembly", row["sourceAssemblySha256"]),
             ("reference", row["referenceSha256"]),
         ]
+        program = row.get('program')
+        if program is not None:
+            digest = hashlib.sha256(json.dumps(program, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+            if row.get('programSha256') != digest:
+                raise ValueError(f'{pilot_id} has a changed executable program')
+            locks.append(('program', digest))
         modules = row["modules"]
         if not isinstance(modules, dict) or not modules:
             raise ValueError(f"{pilot_id} has no native modules")
@@ -109,8 +115,8 @@ def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCap
                 nominal_row_width_m=width,
                 min_row_width_m=round(width - 0.05, 3),
                 max_row_width_m=round(width + 0.05, 3),
-                min_length_m=8,
-                max_length_m=2_000,
+                min_length_m=program['minLengthM'] if program else 8,
+                max_length_m=program['maxLengthM'] if program else 2_000,
             ),
             is_default=True,
         )

@@ -2,6 +2,7 @@ import type { Object3D } from 'three';
 import type { SiteZone } from '@/types';
 import { nativeStreetPilot } from './nativeStreetPilot';
 export const expectsNativeStreet = (zone: SiteZone) => zone.zone_type==='road'
+  && !zone.properties?.validation_fixed_fixture
   && !!nativeStreetPilot(String(zone.properties?.road_selected_variant_id));
 export const nativeStreetRevision = (zone: SiteZone) => JSON.stringify([
   zone.coordinates, zone.properties?.plan_centerline, zone.properties?.road_selected_variant_id,

@@ -18,7 +18,11 @@ it('lets a student choose a supported width and see the resulting type before sa
   expect(Array.from(types.options, option => option.value).sort()).toEqual(
     STREET_ASSETS.map(a => String(a.properties.road_archetype_id)).sort());
   fireEvent.change(screen.getByLabelText('Street width'), { target: { value: String(target.sectionWidth) } });
-  expect(types.value).toBe(target.properties.road_archetype_id);
+  const selected = STREET_ASSETS.find(asset => asset.properties.road_archetype_id === types.value)!;
+  expect(selected.sectionWidth).toBe(target.sectionWidth);
+  // Several faithful designs can share a width. Selecting the specific type
+  // still chooses Market without changing the authored centreline.
+  fireEvent.change(types, { target: { value: String(target.properties.road_archetype_id) } });
   fireEvent.click(screen.getByRole('button', { name: 'Apply street' }));
   expect(save.mock.calls[0][0].properties).toMatchObject({ road_archetype_id: target.properties.road_archetype_id,
     road_selected_variant_id: target.model.variantId, width: target.sectionWidth, plan_centerline: line });

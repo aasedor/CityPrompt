@@ -11,26 +11,43 @@ from app.services.public_realm_lego import (
     StreetSegmentTarget,
     build_public_realm_capability_catalog,
     plan_public_realm_recipe,
+    public_realm_recipe_identity,
 )
 
 
 MANIFEST = Path(__file__).resolve().parents[2] / "frontend/src/data/nativeStreetPilots.json"
 
 
-def test_frontend_runtime_fixture_is_an_actual_current_server_recipe():
+def test_new_route_capabilities_do_not_convert_saved_fixed_rectangles():
+    from shapely.geometry import Polygon
+    from app.services.public_realm_lego import plan_public_realm_zone_recipe, PublicRealmPlanningError
+    geometry = Polygon([(-114, 51), (-113.9999, 51), (-113.9999, 51.0001), (-114, 51.0001)])
+    props = dict(validation_fixed_fixture=True, road_archetype_id='student_quiet_residential_street_v1',
+                 road_selected_variant_id='student_quiet_residential_street_v1', width=18)
+    assert plan_public_realm_zone_recipe('road', geometry, props, strict=False) is None
+    with pytest.raises(PublicRealmPlanningError):
+        plan_public_realm_zone_recipe('road', geometry, {**props, 'road_archetype_id':'unknown'}, strict=True)
+
+
+def test_native_street_generated_mirrors_and_rosters_are_identical():
+    backend_data = Path(__file__).resolve().parents[1] / 'app/data'
+    assert json.loads(MANIFEST.read_text()) == json.loads((backend_data/'nativeStreetPilots.json').read_text())
+    native = lambda path: [row for row in json.loads(path.read_text())['entries'] if row['representation']=='native-modules']
+    assert native(MANIFEST.with_name('classroomStarter.json')) == native(backend_data/'classroomStarter.json')
+
+
+def test_frontend_runtime_fixtures_keep_their_trusted_saved_identity():
     fixtures = MANIFEST.parents[1] / "components/viewer/globe/__fixtures__/classroomStreetRecipes.json"
     for recipe in json.loads(fixtures.read_text(encoding="utf-8")):
-        compiled = plan_public_realm_recipe(PublicRealmPlanRequest(
-            archetype_id=recipe["archetype_id"], variant_id=recipe["variant_id"],
-            target=StreetSegmentTarget(**recipe["target"]),
-        ))
-        assert compiled.model_dump(mode="json") == recipe
+        identity = public_realm_recipe_identity(recipe)
+        assert identity is not None
+        assert identity['recipe'] == recipe
 
 
 def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review():
     catalog = build_native_street_candidate_catalog(MANIFEST)
     rows = {row["id"]: row for row in json.loads(MANIFEST.read_text(encoding="utf-8"))}
-    assert len(catalog.capabilities) == 2
+    assert len(catalog.capabilities) == 3
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()
     for capability in catalog.capabilities:
@@ -47,7 +64,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         ), catalog=catalog)
         assert recipe.component_set_ids == selection.component_set_ids
         assert f"source_recipe:{pilot['sourceRecipeSha256']}" in recipe.component_set_ids
-        assert len(recipe.component_set_ids) == len(pilot["modules"]) + 3
+        assert len(recipe.component_set_ids) == len(pilot["modules"]) + 3 + bool(pilot.get('program'))
         live_recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=selection.archetype_id, variant_id=selection.variant_id,
             target=StreetSegmentTarget(row_width_m=pilot["widthM"], length_m=96),

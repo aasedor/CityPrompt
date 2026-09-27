@@ -12,17 +12,17 @@
     "appearance_kit_id": "heritage_brick_stone",
     "planting_structure": null,
     "component_set_ids": [
-      "source_recipe:01b88587a564e94f0dfe62062529993096833f4846765ba304917cb3e4430d59",
-      "source_assembly:e0e34bfde671aee925a2199d2845cdd3a49e2935cac587f9d7c2b845e36e2177",
+      "source_recipe:7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531",
+      "source_assembly:5d4d7133dc53864029a91efc09ffc0b89d7ee5a831ac34d3485df3856c8eb179",
       "reference:af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392",
-      "module_bench:996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
-      "module_bike_rack:0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
-      "module_bin:a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1",
-      "module_grove_tree:6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
-      "module_heritage_lantern:3128c76ab7eff91eefa2421aef13d01a947408dcb3dc828a0f35146841cbebdc",
-      "module_planter:86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232",
-      "module_timber_seat_wall:921b92412fc7ad93a7910004109ab751d1d02bd476ab889b3408cd291f89b6c8",
-      "module_tree_well_grate:861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+      "module_bench:2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+      "module_bike_rack:bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76",
+      "module_bin:31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c",
+      "module_grove_tree:6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278",
+      "module_heritage_lantern:cee3838e334ba6e37a0a20707dec80d9173cce79f7f40e783dcc67acd951c4de",
+      "module_planter:c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b",
+      "module_timber_seat_wall:100ee7db5a4c6889be5a355260bda4670117d7241b1cb7f9ddcebd6e3047dcfd",
+      "module_tree_well_grate:1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618"
     ],
     "terrain_policy": "terrain_drape_and_metric_assemblies",
     "target": {
@@ -30,9 +30,9 @@
       "row_width_m": 23.0,
       "length_m": 96.0
     },
-    "catalog_fingerprint": "194077d3d52056f1b363b373db8eb806132a37d0fe07b54901813d870e5b31b0",
-    "capability_fingerprint": "76f897718d8b7183658120e19fb0ccf924979fae780d87333ef3ed11365305ed",
-    "recipe_hash": "d36488b775820f79f503ea5613dcaa1bab32c7e0bb0d30e585d96171068fe71a"
+    "catalog_fingerprint": "34bfcb6f8782858cc5c2d45bd5a33c075e4de8f4e86025e0c9ee84c032c80c7e",
+    "capability_fingerprint": "cb64ed5384fc6df7eba3d857d4af37f928a691aaca6924a0d34e4079032065be",
+    "recipe_hash": "ec408f72b6c81773007e07a726470a20a47cf08d53f3dcd0f16ea2d4bf327da7"
   },
   {
     "schema_version": 1,
@@ -47,15 +47,15 @@
     "appearance_kit_id": "european_cobblestone_v1",
     "planting_structure": null,
     "component_set_ids": [
-      "source_recipe:c7670fd29bafdcb6acf7ef095cfe78aa28a0678b47595ae958bad1c52fbb11fe",
-      "source_assembly:81f6715283b740536795300e0a7860c9757dcab77b8c4044b1ed3d99b507b88a",
+      "source_recipe:38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345",
+      "source_assembly:a74074b02282f71e486b24e88ce732f9d669f3a195e7c3cb045f004af83d8831",
       "reference:32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee",
-      "module_bench:996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
-      "module_cafe_parasol:c33eb363972b2679a0173c02628cd876c31016bc39df34be6bf345933bf4c065",
-      "module_heritage_lantern:a107d4d6c76e8f1980363eb05f369b7d258120fe6bec5c7f0832c7b33d5bd322",
-      "module_market_stall:571d1debbc930e350fd6018bb6f0d52a3e7350848b25ec4f2c04c6fb1503f33f",
-      "module_planter:86d98db9b14d250aa2c3e89e9dbff7f86240430564978ab64faeb9ae7b9ed232",
-      "module_stone_fountain:71c58dc39bbd919a77e765a84f0d60a50526dbf62000dda124ca052c12c27da3"
+      "module_bench:2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+      "module_cafe_parasol:60d58e1acfb57d9cde82ea33f60b368d9d95bc3446b6b48f8ae97b194af6a38e",
+      "module_heritage_lantern:cee3838e334ba6e37a0a20707dec80d9173cce79f7f40e783dcc67acd951c4de",
+      "module_market_stall:5d7c588fbb89704d7b1199432b17bd257a837f5df9f8b8bc45a8694cad80c2b3",
+      "module_planter:c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b",
+      "module_stone_fountain:263b17b8a091f076e8e5f784c3315eff9270f3c5516124b02e162877e6de12aa"
     ],
     "terrain_policy": "terrain_drape_and_metric_assemblies",
     "target": {
@@ -63,8 +63,44 @@
       "row_width_m": 18.0,
       "length_m": 96.0
     },
-    "catalog_fingerprint": "194077d3d52056f1b363b373db8eb806132a37d0fe07b54901813d870e5b31b0",
-    "capability_fingerprint": "4f6fee28dee6e4ddf5bb288e0f89bc22646acea6646d0fb86f1062644f464bdf",
-    "recipe_hash": "4e6d64510fb33adda8056db1855cfd71051a76cc881e2518c355dcdc6906e8a3"
+    "catalog_fingerprint": "34bfcb6f8782858cc5c2d45bd5a33c075e4de8f4e86025e0c9ee84c032c80c7e",
+    "capability_fingerprint": "c595ede716f823c9d5914f515e2f3a0895bdad8736be39b8b6ad3ea6008ebe2d",
+    "recipe_hash": "e2a18e93778248c5dbd658d9c3f081ddc2f560adb291219f62a50d812e3f8887"
+  },
+  {
+    "schema_version": 1,
+    "family_id": "street_native_student_quiet_residential_street_v1",
+    "family_version": 1,
+    "kind": "street",
+    "generator": "street_section",
+    "archetype_id": "student_quiet_residential_street_v1",
+    "variant_id": "student_quiet_residential_street_v1",
+    "profile_id": "native-student-quiet-residential-street-v1-v1",
+    "profile_version": 1,
+    "appearance_kit_id": "heritage_brick_stone",
+    "planting_structure": null,
+    "component_set_ids": [
+      "source_recipe:b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+      "source_assembly:52305899464101def9199c861f1dabe3ae083fef56b87984fbd27bf9cf765bdd",
+      "reference:cf86132edc3221c08f8f99ed1b2daf46c59590c2684e1eb055b4ae94b3c26ca3",
+      "program:c2b41d298030c25d05f2e2525d5f271a23fa1690a85f4986d972546ce1b38cc0",
+      "module_bench:2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+      "module_bike_rack:bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76",
+      "module_bin:31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c",
+      "module_flowering_perennial:0fea864a84d1951033430f3e36454e013640a2e2cd02d0b8c260b908e8c4dc4e",
+      "module_grove_tree:6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278",
+      "module_light:010d21cd89f16db18aa6b5c467dcb77c37f7822539a9a3df9708fb7726e069a9",
+      "module_meadow_grass:2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06",
+      "module_silver_shrub:b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
+    ],
+    "terrain_policy": "terrain_drape_and_metric_assemblies",
+    "target": {
+      "target_type": "street_segment",
+      "row_width_m": 18.0,
+      "length_m": 96.0
+    },
+    "catalog_fingerprint": "34bfcb6f8782858cc5c2d45bd5a33c075e4de8f4e86025e0c9ee84c032c80c7e",
+    "capability_fingerprint": "228b69c9a50580e4a8663dd14956db848b41cb5faedd7a83801ebcd8675a0573",
+    "recipe_hash": "478084f846ef9495bd0aa5d420e55ecd4f3fc87dff86bb67c86ed98ec41b35a7"
   }
 ]

@@ -63,6 +63,12 @@ def public_realm_fallback_marker(
     """
 
     props = properties or {}
+    # Saved validation rectangles retain their separate native assembly binding.
+    # Adding a route capability with the same parent must not convert them on
+    # the next automatic compile. Strict planner requests cannot use this flag
+    # to bypass executable-family validation.
+    if props.get('validation_fixed_fixture') is True and not strict:
+        return None
     if props.get('green_space_native_layout') is not None:
         # A missing native layout must never turn into a generic park.
         return None

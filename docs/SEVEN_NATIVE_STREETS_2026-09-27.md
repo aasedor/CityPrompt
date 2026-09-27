@@ -54,5 +54,26 @@ errors, only the ordinary elevation log. Evidence: `shared-baseline-top.png` and
 `shared-baseline-export.png`. This is a bounded Market regression smoke, not a
 pass for the five new streets or every Main/Market workflow. No paid calls.
 
-Next: recover Residential's complete native composition through an explicit source
-adapter. Remaining five-street runtime integration and browser checks are pending.
+## Residential integration checkpoint
+
+Recovered Residential's complete source composition through a hash-locked adapter:
+138 rigid placements per 48 m cycle, authored ground ownership, seating pads,
+cross-link, physical bed edging, paving joints and drainage details. Route editing
+preserves native sizes, accepts 48–480 m on prepared level ground, and rejects
+short edits before changing saved geometry. Existing fixed rectangles keep their
+assembly bindings. Registry/roster mirrors have a reproducible checked sync tool:
+`tools/public_realm_assets/sync_native_street_registry.py`.
+
+Production browser at 4181 verified catalogue drawing, automatic compilation,
+reopening, Walk, moving, Undo/Redo, extension and short-edit recovery. It exposed
+and resolved an incorrect prepared-ground gate on interior streets. Exact preview
+capture passed; the browser cancelled the download click, so file export remains
+an open check. Browser errors: none. No paid calls. Full matched-view comparison,
+curve/junction matrix and fault injection remain pending; this is not a completed
+street approval. Evidence: `residential-browser-checkpoint.json` in the external
+evidence directory. Latest source tests also cover legacy rectangle preservation
+and registry/roster parity.
+
+Next: Shared Lane through the same adapter, then the three specialist streets.
+Only the three implemented route candidates appear in route controls; the other
+four scoped choices remain fixed review fixtures until their integration exists.

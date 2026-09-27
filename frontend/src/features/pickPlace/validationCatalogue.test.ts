@@ -28,7 +28,7 @@ describe('exact local validation catalogue', () => {
     const fixed=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.properties.validation_fixed_fixture);
     expect(fixed.map(a=>a.model.variantId).sort()).toEqual([
       'amsterdam_gracht_v1','brt_bus_rapid_transit_corridor_v0','student_planted_shared_lane_v1',
-      'student_quiet_residential_street_v1','landmark_signature_bridge_v2',
+      'landmark_signature_bridge_v2',
     ].sort());
     for(const a of fixed) {
       if(a.kind!=='object')continue;
@@ -57,7 +57,7 @@ describe('exact local validation catalogue', () => {
     }
   });
   it('preserves the remaining adaptive public-realm candidates to their native runtimes',()=>{
-    expect(CATALOGUE_ASSETS.filter(a=>a.kind==='street').map(a=>a.model.variantId).sort()).toEqual(['student_main_street_v1','student_market_street_v1']);
+    expect(CATALOGUE_ASSETS.filter(a=>a.kind==='street').map(a=>a.model.variantId).sort()).toEqual(['student_main_street_v1','student_market_street_v1','student_quiet_residential_street_v1']);
     expect(CATALOGUE_ASSETS.filter(a=>a.reshapeMode==='adaptive_layout').map(a=>a.model.variantId).sort()).toEqual([]);
   });
 });

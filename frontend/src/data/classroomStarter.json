@@ -109,68 +109,6 @@
       ]
     },
     {
-      "domain": "street",
-      "archetypeId": "neighborhood_main_street",
-      "variantId": "student_main_street_v1",
-      "placementId": "student_main_street_v1",
-      "revision": "01b88587a564e94f0dfe62062529993096833f4846765ba304917cb3e4430d59",
-      "representation": "native-modules",
-      "capabilities": [
-        "fixed-width-23m",
-        "curve",
-        "T",
-        "X",
-        "rigid-furniture"
-      ],
-      "review": {
-        "asset": "candidate",
-        "runtime": "passed",
-        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
-      },
-      "dependencies": [
-        "public:street-kits/pilots/student_main_street_v1/bench.glb",
-        "public:street-kits/pilots/student_main_street_v1/bike_rack.glb",
-        "public:street-kits/pilots/student_main_street_v1/bin.glb",
-        "public:street-kits/pilots/student_main_street_v1/grove_tree.glb",
-        "public:street-kits/pilots/student_main_street_v1/heritage_lantern.glb",
-        "public:street-kits/pilots/student_main_street_v1/planter.glb",
-        "public:street-kits/pilots/student_main_street_v1/reference.png",
-        "public:street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
-        "public:street-kits/pilots/student_main_street_v1/tree_well_grate.glb",
-        "repository:frontend/src/data/nativeStreetPilots.json"
-      ]
-    },
-    {
-      "domain": "street",
-      "archetypeId": "pedestrian_only_street",
-      "variantId": "student_market_street_v1",
-      "placementId": "student_market_street_v1",
-      "revision": "c7670fd29bafdcb6acf7ef095cfe78aa28a0678b47595ae958bad1c52fbb11fe",
-      "representation": "native-modules",
-      "capabilities": [
-        "fixed-width-18m",
-        "curve",
-        "T",
-        "X",
-        "rigid-furniture"
-      ],
-      "review": {
-        "asset": "candidate",
-        "runtime": "passed",
-        "evidence": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md"
-      },
-      "dependencies": [
-        "public:street-kits/pilots/student_market_street_v1/bench.glb",
-        "public:street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
-        "public:street-kits/pilots/student_market_street_v1/heritage_lantern.glb",
-        "public:street-kits/pilots/student_market_street_v1/market_stall.glb",
-        "public:street-kits/pilots/student_market_street_v1/planter.glb",
-        "public:street-kits/pilots/student_market_street_v1/reference.png",
-        "public:street-kits/pilots/student_market_street_v1/stone_fountain.glb",
-        "repository:frontend/src/data/nativeStreetPilots.json"
-      ]
-    },
-    {
       "domain": "park",
       "archetypeId": "neighborhood_park",
       "variantId": "neighborhood_park_v0",
@@ -276,6 +214,28 @@
         "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/albedo.jpg",
         "public:park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/albedo.jpg"
       ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "neighborhood_main_street",
+      "variantId": "student_main_street_v1",
+      "revision": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "pedestrian_only_street",
+      "variantId": "student_market_street_v1",
+      "revision": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "student_quiet_residential_street_v1",
+      "variantId": "student_quiet_residential_street_v1",
+      "revision": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+      "status": "local-pilot-runtime-pending"
     }
   ],
   "dependencies": [

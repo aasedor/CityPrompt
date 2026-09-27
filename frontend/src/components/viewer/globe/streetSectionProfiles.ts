@@ -592,10 +592,11 @@ export function resolvePilotStreetSectionProfile(
   }, true);
   const contract = resolveStreetLegoContract(zoneOrId);
   const normalized = contract.sourceArchetypeId;
-  const entry = CATALOG.find((candidate) => normalized === candidate.id)
+  const entry: CatalogEntry | undefined = CATALOG.find((candidate) => normalized === candidate.id)
     ?? CATALOG
       .filter((candidate) => normalized.startsWith(`${candidate.id}_`))
-      .sort((left, right) => right.id.length - left.id.length)[0];
+      .sort((left, right) => right.id.length - left.id.length)[0]
+    ?? (nativePilot ? {id:nativePilot.sourceArchetypeId,title:nativePilot.title,typicalWidth_m:nativePilot.widthM} : undefined);
   if (!entry) return null;
   const pilotId = entry.id;
   const selectedVariantId = contract.requestedVariantId;
@@ -691,10 +692,13 @@ export function resolvePilotStreetSectionProfile(
     zones: nativePilot.sections.map(section => ({
       type: section.name.includes('walk') || section.name.includes('furniture') ? 'sidewalk'
         : section.name.includes('parking') ? 'parking'
-        : section.name === 'road' ? 'travel_lane' : 'multi_use_pathway',
+          : section.material === 'asphalt' ? 'travel_lane'
+          : ['grass','soil'].includes(section.material) ? 'boulevard' : 'multi_use_pathway',
       width_m: section.width,
       label: section.name.replace(/_/g, ' '),
       surface: section.material === 'asphalt' ? 'fine asphalt'
+          : ['grass','soil'].includes(section.material) ? 'planting'
+          : nativePilot.junctionSurface === 'brick' ? 'brick paving'
         : nativePilot.junctionSurface === 'cobble' ? 'stone cobble paving' : 'architectural stone paving',
     })),
   };
@@ -758,7 +762,7 @@ export function resolvePilotStreetSectionProfile(
     title: entry.title ?? pilotId.replace(/_/g, ' '),
     rowM,
     bands,
-    markings: nativePilot?.id === 'student_main_street_v1'
+    markings: nativePilot?.program ? [] : nativePilot?.id === 'student_main_street_v1'
       ? [{ offsetM: 0, color: '#eae8e1', widthM: 0.1, dashed: true }]
       : addMarkings(pilotId, bands),
     treeOffsetsM,

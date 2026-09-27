@@ -14,6 +14,14 @@
       "archetypeId": "pedestrian_only_street",
       "variantId": "student_market_street_v1",
       "revision": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "student_quiet_residential_street_v1",
+      "variantId": "student_quiet_residential_street_v1",
+      "revision": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+      "status": "local-pilot-runtime-pending"
     }
   ]
 }

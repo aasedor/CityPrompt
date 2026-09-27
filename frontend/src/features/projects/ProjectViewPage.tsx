@@ -30,6 +30,7 @@ import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
+import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 import { snapConnectedStreetEdit, streetEditConnectionCheck } from '@/features/pickPlace/streetEditConnections';
 import { isAxiosError } from 'axios';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
@@ -312,7 +313,8 @@ export function ProjectViewPage() {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
       const streetUpdate = isFixedSectionStreet(zone) ? streetCoordinateUpdate(zone, coordinates) : null;
       const footprint = streetUpdate?.coordinates ?? coordinates;
-      const problem = nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
+      const problem = nativeStreetRouteProblem({...zone,...(streetUpdate??{coordinates})},getActiveSiteBoundary(siteZones))
+        ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
           parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
@@ -1135,7 +1137,8 @@ export function ProjectViewPage() {
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (isFixedSectionStreet({zone_type:type, properties})) {
-                const problem = streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
+                const problem = nativeStreetRouteProblem({coordinates,properties},getActiveSiteBoundary(siteZones))
+                  ?? streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
                   parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
                   ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true });
                 if (problem) { toast.error(problem, {position:'top-center'}); return false; }
@@ -1279,6 +1282,7 @@ export function ProjectViewPage() {
             onUpdateDesign={data => {
               const problem = (!streetEditConnectionCheck(selectedZone, siteZones)({ ...selectedZone, ...data })
                 ? 'This section needs more room at an existing junction. Keep this street type or move the junction first.' : null)
+                ?? nativeStreetRouteProblem({...selectedZone,...data},getActiveSiteBoundary(siteZones))
                 ?? streetRouteProblem(data.coordinates, Number(data.properties.width),
                 parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)
                 ?? placementProblem(data.coordinates, siteZones,
