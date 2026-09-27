@@ -1,4 +1,4 @@
-import { NativeParkLayer, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
+import { NativeParkLayer, assertNativeParksReady, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
 import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
 import { assertSiteLandscapeReady } from '@/features/siteLandscape/landscapeCapture';
@@ -2899,7 +2899,7 @@ export function GlobeSitePlannerMap({
           }
           assertSiteLandscapeReady(scene);
           assertPublicRealmTrialsReady(scene);
-          await waitForNativeParksReady(scene, siteZones);
+          await waitForNativeParksReady(scene, terrainZonesRef.current);
           const captured = await captureDirect3DScene(renderer, scene, camera, {
             includeGeometryPasses: options.includeGeometryPasses,
             maxLongEdge: options.maxLongEdge,
@@ -2911,6 +2911,7 @@ export function GlobeSitePlannerMap({
           if (accessSnapshot.sourceSignature !== parkAccessSnapshotRef.current.sourceSignature) {
             throw new Direct3DCaptureError('capture_failed', 'The plan changed during capture. Let the scene settle and try again.');
           }
+          assertNativeParksReady(scene, terrainZonesRef.current);
           assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
           assertStreetGroundReady(scene);
           return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
@@ -2944,7 +2945,10 @@ export function GlobeSitePlannerMap({
     const renderer = rendererRef.current;
     const scene = sceneRef.current;
     const camera = cameraRef.current;
-    if (!renderer || !scene || !camera || renderer.getContext().isContextLost()) return null;
+    if (!renderer || !scene || !camera || renderer.getContext().isContextLost()) {
+      if (terrainZonesRef.current.some(hasNativePark)) throw new Direct3DCaptureError('capture_failed', 'The 3D view is recovering. Wait for your park models to return, then retry.');
+      return null;
+    }
     if (hasLocalDraftsRef.current) {
       throw new Direct3DCaptureError('capture_failed', 'Save or discard local drawings before capturing your plan.');
     }
@@ -2952,7 +2956,7 @@ export function GlobeSitePlannerMap({
     try {
       const accessSnapshot = parkAccessSnapshotRef.current;
       assertPublicRealmTrialsReady(scene);
-      await waitForNativeParksReady(scene, siteZones);
+      await waitForNativeParksReady(scene, terrainZonesRef.current);
       const captured = await captureDirect3DScene(renderer, scene, camera, {
         ...options,
         // Direct 3D v2 requires the same registered geometry controls at
@@ -2963,12 +2967,17 @@ export function GlobeSitePlannerMap({
         minMaskCoverage: 0,
         maxMaskCoverage: 1,
       });
-      if (accessSnapshot.sourceSignature !== parkAccessSnapshotRef.current.sourceSignature) return null;
+      if (accessSnapshot.sourceSignature !== parkAccessSnapshotRef.current.sourceSignature) {
+        throw new Direct3DCaptureError('capture_failed', 'The plan changed during capture. Let the scene settle and try again.');
+      }
+      assertNativeParksReady(scene, terrainZonesRef.current);
       assertSharedGroundUnchanged(sharedGroundSnapshot, sharedGroundRef.current);
       assertStreetGroundReady(scene);
       return { ...captured, sharedGroundSnapshot, ...(accessSnapshot.parks.length && accessSnapshot.sources.length <= 256
         ? { parkAccessSnapshot: structuredClone(accessSnapshot) } : {}) };
     } catch (err) {
+      // A screenshot must never bypass an expected native model or capture revision.
+      if (terrainZonesRef.current.some(hasNativePark)) throw err;
       // A screenshot fallback must not bypass an unfinished road alignment.
       assertStreetGroundReady(scene);
       console.warn('[GlobeSitePlannerMap] Street Direct 3D capture failed — falling back to screenshot:', err);

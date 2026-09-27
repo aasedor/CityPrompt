@@ -39,4 +39,15 @@ describe('park layout editing',()=>{
     expect(screen.getByText('Upgrade to the complete park')).toBeInTheDocument();
     expect(save).not.toHaveBeenCalled();
   });
+  it('follows Undo when the saved layout changes inside the same larger parcel',()=>{
+    const p=zone();p.coordinates=rectangleAt([-114.05,51.04],120,70);
+    const long=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--long-v1')!;
+    const after={...p,properties:nativeParkProperties(p.properties!,long,p.coordinates)};
+    const save=vi.fn();
+    const {rerender}=render(<ParkLayoutControls zone={after} zones={[after]} disabled={false} onSave={save}/>);
+    expect(screen.getByRole('combobox',{name:'Park layout'})).toHaveValue(long.id);
+    rerender(<ParkLayoutControls zone={p} zones={[p]} disabled={false} onSave={save}/>);
+    expect(screen.getByRole('combobox',{name:'Park layout'})).toHaveValue(original.id);
+    expect(save).not.toHaveBeenCalled();
+  });
 });

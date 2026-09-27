@@ -4,7 +4,7 @@ import type { SiteZone } from '@/types';
 import { rectangleAt } from '@/features/pickPlace/geometry';
 import { nativeParkLayouts,nativeParkProperties,nativeParkFitProblem,nativeParkEditProperties,readNativePark } from './nativeParkRegistry';
 import { parkLayoutProposal } from './ParkLayoutControls';
-import { assertNativeParksReady } from './NativeParkLayer';
+import { assertNativeParksReady, waitForNativeParksReady } from './NativeParkLayer';
 import { hasExecutablePublicRealmRecipe } from '@/features/community3d/community3d';
 
 const native=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--native-v1')!;
@@ -65,6 +65,15 @@ describe('native parks',()=>{
     expect(nativeParkFitProblem({...p,coordinates:rectangleAt([-114.05,51.04],30,30)})).toContain('complete');
     expect(nativeParkFitProblem({...p,properties:{...p.properties,park_exclusion_rings:[rectangleAt([-114.05,51.04],2,2)]}})).toContain('complete');
   });
+  it('accepts an irregular parcel only while its actual notch clears the intact park',()=>{
+    const p=zone(),east=111320*Math.cos(51.04*Math.PI/180);
+    const outline=(inset:number)=>[[-60,-40],[60,-40],[60,40],[inset,40],[inset,10],[-60,10],[-60,-40]]
+      .map(([x,y])=>[-114.05+x/east,51.04+y/111320]);
+    // Use an L whose upper-left removal is beyond the complete native footprint.
+    const good=outline(-30),bad=outline(0);
+    expect(nativeParkFitProblem({...p,coordinates:good})).toBeNull();
+    expect(nativeParkFitProblem({...p,coordinates:bad})).toContain('complete');
+  });
   it('requires expected instances and the current saved revision for capture',()=>{
     const p=zone(),scene=new THREE.Scene();
     expect(()=>assertNativeParksReady(scene,[p])).toThrow('updating');
@@ -74,5 +83,14 @@ describe('native parks',()=>{
     expect(()=>assertNativeParksReady(scene,[p])).not.toThrow();
     const edited={...p,properties:nativeParkProperties(p.properties!,long,rectangleAt([-114.05,51.04],92,39))};
     expect(()=>assertNativeParksReady(scene,[edited])).toThrow('updating');
+  });
+  it('rejects an unavailable expected model without a successful partial capture',async()=>{
+    const p=zone(),scene=new THREE.Scene(),instance=new THREE.Group(),failed=new THREE.Group();
+    instance.userData={nativeParkZone:p.id,nativeParkRevision:JSON.stringify(p.properties?.green_space_native_layout)};
+    failed.userData={nativeParkStatus:'error',nativeParkError:'Model verification failed. Retry 3D update.'};
+    instance.add(failed);scene.add(instance);
+    await expect(waitForNativeParksReady(scene,[p])).rejects.toThrow('verification failed');
+    expect(()=>assertNativeParksReady(scene,[])).not.toThrow();
+    await expect(waitForNativeParksReady(new THREE.Scene(),[p],0)).rejects.toThrow('updating');
   });
 });

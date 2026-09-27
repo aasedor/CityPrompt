@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import { nativeParkLayouts, nativeParkProperties, nativeParkFitProblem, readNativePark, type NativeParkLayout } from './nativeParkRegistry';
 import { rectangleAt } from '@/features/pickPlace/geometry';
@@ -31,6 +31,9 @@ export function ParkLayoutControls({zone,zones,disabled,onSave}:{zone:SiteZone;z
   const choices=nativeParkLayouts.filter(p=>p.variantId===zone.properties?.green_space_selected_variant_id && p.status==='pilot');
   const [selected,setSelected]=useState(current?.layout.id??choices[0]?.id??'');
   const [preview,setPreview]=useState(false),[saving,setSaving]=useState(false),[error,setError]=useState('');
+  useEffect(()=>{
+    setSelected(current?.layout.id??choices[0]?.id??'');setPreview(false);setError('');
+  },[zone.id,current?.layout.id]);
   const layout=choices.find(p=>p.id===selected);
   const proposal=useMemo(()=>layout?parkLayoutProposal(zone,layout,zones):null,[zone,zones,layout]);
   if(!choices.length)return null;
