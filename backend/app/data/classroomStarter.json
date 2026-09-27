@@ -30,6 +30,14 @@
       "variantId": "student_planted_shared_lane_v1",
       "revision": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "brt_bus_rapid_transit_corridor",
+      "variantId": "brt_bus_rapid_transit_corridor_v0",
+      "revision": "c18cdf29bc7474a90b1bbbc5531650faefb388e0366f6ce2d1ba98c75bbecb1c",
+      "status": "local-pilot-runtime-pending"
     }
   ]
 }

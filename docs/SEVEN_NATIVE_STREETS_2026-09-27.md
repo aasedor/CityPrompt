@@ -89,9 +89,52 @@ Undo/Redo and reopening. No page errors or paid calls. Matched-view fidelity,
 curve/junction matrix, asset failure injection and file download remain open.
 Evidence: `shared-browser-checkpoint.json`. Candidate status remains pending.
 
-Four route candidates are now implemented locally. BRT, Canal and Bridge remain
+At the Shared Lane checkpoint four route candidates were implemented. BRT, Canal and Bridge remained
 fixed review fixtures while their specialist programs are implemented. Original
 editable Blender files for all three match their recipe authoring hashes and
 retain semantic components, recorded in `specialist-authoring-inventory.json`.
 Next: BRT's complete explicit station and crossing program, separate from ordinary
 repeatable transit segments. Do not count the five-street initiative complete.
+
+## BRT integration checkpoint
+
+The brt-v004 original is preserved. `extract_brt_runtime.py` recovers the complete
+152-object station/crossing program and the original lettering/arrow module from
+its hash-verified editable file. `verify_brt_extraction.py` checks both directions
+of the mesh round-trip by material: maximum station vertex error 0.000003313 m,
+ten materials retained; bus symbol error zero. Source and reconstructed aerial
+and walking-height views were rendered from identical cameras and inspected in
+`brt-matched-v1/`. Equipment, planting, paving, ramps, median and markings match.
+`stage_brt_runtime.py` uses the shared immutable delivery workflow; staged bytes
+stay outside tracked source and the original files are unchanged.
+
+The local BRT candidate supports straight, prepared-level routes 100–480 m long,
+40 m wide. Students add, move and remove stops explicitly; right-click selects
+a distance for the Add station / stop control. Stop envelopes require 21 m before
+and 33.5 m after the anchor, with 56.5 m between anchors. Invalid edits retain the
+saved corridor. Draft roads and junctions must stay clear of the full station
+reservation; the initial capability does not join another road through a stop.
+Stations never appear automatically when extending a corridor. Rigid modules
+remain unscaled; source-authored surfaces and openings follow the chosen stops.
+
+Stop positions participate in automatic compilation, server source hashes and
+mounted-scene capture identity. Existing fixed BRT fixtures remain bound to their
+original assembly. This checkpoint also repairs a misplaced legacy-fixture guard
+that referenced `strict` inside the fallback helper; dedicated regressions now
+exercise both fixed-fixture paths.
+
+Verification: 43 focused frontend tests, 116 backend tests, five staging/adapter
+tests, TypeScript and the production build pass. In the disposable production
+project, ordinary catalogue drawing (118 m), empty corridor, add stop, right-click,
+overlap rejection, stop move, Undo/Redo, reopening, whole-route move, Walk and exact
+street/aerial preview pass. No page errors or paid calls. The file download again
+reports `Download was canceled` in the automation; file delivery is unresolved.
+Endpoint joins, extended BRT routes, multi-stop browser checks and fault injection
+remain open. See `brt-browser-checkpoint.json`; this is a candidate, not final
+runtime approval or publication.
+
+Current local selection: five route candidates and two fixed review fixtures
+(Canal and Bridge). The seven-usable-street objective remains incomplete. Next:
+Canal's water, banks, original arch crossing and basin termination; then the
+Bridge's fixed structural span and correctly graded approaches. Preserve the
+separate parked buildings/parks work and use no paid street generations.

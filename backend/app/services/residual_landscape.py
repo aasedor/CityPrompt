@@ -399,6 +399,7 @@ def community_3d_source_properties(
                             "road_subcategory",
                             "road_archetype_id",
                             "road_selected_variant_id",
+                            "road_native_stops",
                             "street_role",
                             "width",
                             "lane_count",

@@ -50,6 +50,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
     assert {cap.selections[0].variant_id for cap in catalog.capabilities} == {
         'student_main_street_v1', 'student_market_street_v1',
         'student_quiet_residential_street_v1', 'student_planted_shared_lane_v1',
+        'brt_bus_rapid_transit_corridor_v0',
     }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()
@@ -63,14 +64,14 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
             archetype_id=selection.archetype_id,
             variant_id=selection.variant_id,
             preferred_family_id=capability.family_id,
-            target=StreetSegmentTarget(row_width_m=pilot["widthM"], length_m=96),
+            target=StreetSegmentTarget(row_width_m=pilot["widthM"], length_m=120),
         ), catalog=catalog)
         assert recipe.component_set_ids == selection.component_set_ids
         assert f"source_recipe:{pilot['sourceRecipeSha256']}" in recipe.component_set_ids
         assert len(recipe.component_set_ids) == len(pilot["modules"]) + 3 + bool(pilot.get('program'))
         live_recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=selection.archetype_id, variant_id=selection.variant_id,
-            target=StreetSegmentTarget(row_width_m=pilot["widthM"], length_m=96),
+            target=StreetSegmentTarget(row_width_m=pilot["widthM"], length_m=120),
         ))
         assert live_recipe.component_set_ids == recipe.component_set_ids
         assert live_recipe.profile_id == recipe.profile_id
@@ -78,7 +79,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
             archetype_id=selection.archetype_id,
             variant_id=selection.variant_id,
             preferred_family_id=capability.family_id,
-            target=StreetSegmentTarget(row_width_m=pilot["widthM"], length_m=96),
+            target=StreetSegmentTarget(row_width_m=pilot["widthM"], length_m=120),
         ), catalog=catalog).recipe_hash
 
 

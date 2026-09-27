@@ -5,6 +5,15 @@ import { assertNativeStreetsReady, nativeStreetRevision } from './nativeStreetRe
 
 const zone:SiteZone={id:'street',project_id:'test',color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',zone_type:'road',coordinates:[[0,0],[0,1]],properties:{road_selected_variant_id:'student_main_street_v1'}};
 describe('native street capture inventory',()=>{
+  it('invalidates a mounted scene when only the manual BRT stop moves',()=>{
+    const brt={...zone,properties:{road_selected_variant_id:'brt_bus_rapid_transit_corridor_v0',road_native_stops:[{id:'one',stationM:32}]}};
+    const moved={...brt,properties:{...brt.properties,road_native_stops:[{id:'one',stationM:50}]}};
+    const scene=new Group(),batch=new Group();scene.add(batch);
+    scene.userData={nativeStreetZone:brt.id,nativeStreetRevision:nativeStreetRevision(brt),nativeStreetExpectedCount:1};
+    batch.userData={nativeStreetStatus:'ready',nativeStreetMountedCount:1};
+    expect(()=>assertNativeStreetsReady(scene,[brt])).not.toThrow();
+    expect(()=>assertNativeStreetsReady(scene,[moved])).toThrow();
+  });
   it('rejects an entirely absent model, a stale revision and a missing component',()=>{
     const scene=new Group();
     expect(()=>assertNativeStreetsReady(scene,[zone])).toThrow('street');

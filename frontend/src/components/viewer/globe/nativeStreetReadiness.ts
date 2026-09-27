@@ -6,6 +6,7 @@ export const expectsNativeStreet = (zone: SiteZone) => zone.zone_type==='road'
   && !!nativeStreetPilot(String(zone.properties?.road_selected_variant_id));
 export const nativeStreetRevision = (zone: SiteZone) => JSON.stringify([
   zone.coordinates, zone.properties?.plan_centerline, zone.properties?.road_selected_variant_id,
+  zone.properties?.road_native_stops,
   zone.properties?.public_realm_lego, zone.properties?.community_3d,
 ]);
 export function assertNativeStreetsReady(scene: Object3D|null, zones: SiteZone[]) {

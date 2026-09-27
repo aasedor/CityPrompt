@@ -20,6 +20,7 @@ from app.services.public_realm_lego import (
     public_realm_recipe_hash,
     public_realm_recipe_identity,
     public_realm_representation_hash,
+    public_realm_fallback_marker,
 )
 from app.services.site_engine import build_transformer, project_geometry
 
@@ -988,6 +989,21 @@ def test_manual_compile_and_direct_replan_share_one_canonical_street_target():
 
     assert manual_recipe is not None
     assert manual_recipe == direct_recipe
+
+
+def test_existing_fixed_street_is_neither_recompiled_nor_fallback():
+    street = _to_wgs84(box(700_000, 5_650_000, 700_048, 5_650_018))
+    properties = dict(validation_fixed_fixture=True, road_archetype_id='quiet_residential_street',
+                      road_selected_variant_id='student_quiet_residential_street_v1', width=18)
+    assert plan_public_realm_zone_recipe('road', street, properties, strict=False) is None
+    assert public_realm_fallback_marker('road', properties) is None
+
+
+def test_fixed_fixture_flag_does_not_bypass_strict_planning():
+    street = _to_wgs84(box(700_000, 5_650_000, 700_048, 5_650_018))
+    with pytest.raises(PublicRealmPlanningError):
+        plan_public_realm_zone_recipe('road', street, dict(validation_fixed_fixture=True,
+                                     road_archetype_id='unknown_fixture'), strict=True)
 
 
 def test_zone_planner_preserves_legacy_fallback_but_ai_fails_closed():

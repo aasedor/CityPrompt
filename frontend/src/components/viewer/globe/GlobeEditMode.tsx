@@ -23,6 +23,8 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { isFixedSectionStreet, reshapeStreetPoint, streetCoordinateUpdate, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { extractCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
+import { extractZoneCenterline } from '@/utils/roadGeometry';
+import { BRT_VARIANT } from './brtStreetProgram';
 import { snapStreetEndpoint } from '@/features/pickPlace/streetSnapping';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
@@ -742,6 +744,17 @@ export function GlobeEditMode({
             renderOrder={99}
             frustumCulled={false}
             onPointerDown={handleBodyPointerDown}
+            onContextMenu={event=>{
+              if(zone.properties?.road_selected_variant_id!==BRT_VARIANT || zone.properties?.validation_fixed_fixture)return;
+              event.stopPropagation();event.nativeEvent.preventDefault();
+              const point=pointerToLatLng(event.nativeEvent as unknown as PointerEvent);
+              const route=extractZoneCenterline(zone);if(!point || route.length<2)return;
+              const a=route[0],b=route[route.length-1],sx=metersPerDegLon(a[1]);
+              const dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*METERS_PER_DEG_LAT,length=Math.hypot(dx,dy);
+              if(length<1)return;
+              const stationM=((point[0]-a[0])*sx*dx+(point[1]-a[1])*METERS_PER_DEG_LAT*dy)/length;
+              window.dispatchEvent(new CustomEvent('cityprompt:brt-stop-position',{detail:{zoneId:zone.id,stationM}}));
+            }}
             onPointerEnter={() => { if (!isDraggingBody) gl.domElement.style.cursor = 'grab'; }}
             onPointerLeave={() => { if (!isDraggingBody) gl.domElement.style.cursor = ''; }}
           >

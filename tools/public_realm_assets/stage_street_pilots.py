@@ -142,6 +142,12 @@ def inspect_pilot(package: Path) -> tuple[dict, dict[str, bytes]]:
 def stage(pilots: list[Path], public_root: Path, manifest_path: Path, *, dry_run: bool,
           replace: bool = False) -> list[dict]:
     inspected = [inspect_pilot(package) for package in pilots]
+    return stage_inspected(inspected, public_root, manifest_path, dry_run=dry_run, replace=replace)
+
+
+def stage_inspected(inspected: list[tuple[dict, dict[str, bytes]]], public_root: Path,
+                    manifest_path: Path, *, dry_run: bool, replace: bool = False) -> list[dict]:
+    """Shared immutable-byte staging after a finite source adapter has verified inputs."""
     ids = [manifest["id"] for manifest, _ in inspected]
     if len(ids) != len(set(ids)):
         raise ValueError("Duplicate pilot identity")

@@ -614,7 +614,7 @@ function StreetRibbonDetail({
       )
       : null;
     const result = {
-      nativeProgram: nativePilot?.program ? buildNativeStreetProgram(nativePilot.program,nativePilot.widthM,nativePilot.fixtureLengthM,centerLngLat.local) : [],
+      nativeProgram: nativePilot?.program ? buildNativeStreetProgram(nativePilot.program,nativePilot.widthM,nativePilot.fixtureLengthM,centerLngLat.local,zone.properties?.road_native_stops) : [],
       curbs: sectionProfile
         ? (sectionProfile.renderCurbs
           ? buildOffsetCurbGeometry(
@@ -661,7 +661,7 @@ function StreetRibbonDetail({
       }
     }
     return result;
-  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, nativePilot?.id, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
+  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, zone.properties?.road_native_stops, nativePilot?.id, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
 
   const clearOfJunction = useMemo(() => (point: {x: number; y: number}) => !centroid || !intersectionNodes.some(node =>
     node.zoneIds.includes(zone.id) && node.surfaceLayout && streetJunctionContainsPoint(node.surfaceLayout,
@@ -780,8 +780,9 @@ function StreetRibbonDetail({
         y: (node.latitude - centroid.lat) * METERS_PER_DEG_LAT,
         clearanceM: Math.max(node.axisAHalfWidthM, node.axisBHalfWidthM) + 4,
       })),
+      zone.properties?.road_native_stops,
     );
-  }, [nativePilot, centerLngLat, centroid, placementTerrain, intersectionNodes, zone.id]);
+  }, [nativePilot, centerLngLat, centroid, placementTerrain, intersectionNodes, zone.id, zone.properties?.road_native_stops]);
 
   if (!centerLngLat || !centroid || !geometries) return requiresPreparedAlignment
     ? <group userData={{...alignmentData, streetGroundStatus: 'unavailable'}} /> : null;

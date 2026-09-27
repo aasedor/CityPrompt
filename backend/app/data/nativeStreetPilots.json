@@ -4355,5 +4355,172 @@
       }
     },
     "programSha256": "704acf3ec2b0712fe420ec1366b005f4ea5b00efc8a268effd786e812e1c5ba0"
+  },
+  {
+    "id": "brt_bus_rapid_transit_corridor_v0",
+    "sourceArchetypeId": "brt_bus_rapid_transit_corridor",
+    "title": "BRT Bus Rapid Transit Corridor",
+    "status": "candidate",
+    "sourceRecipeSha256": "c18cdf29bc7474a90b1bbbc5531650faefb388e0366f6ce2d1ba98c75bbecb1c",
+    "sourceAssemblySha256": "a83e47527c56fe19fc846d657017c422c045d3a5ef1669b82920402de3eeda69",
+    "referenceSha256": "896d376aa35b3164b57d7aa4b220d4b4b892e07340431a3d55af63736ba730aa",
+    "widthM": 40,
+    "fixtureLengthM": 100,
+    "routeAxis": "local_y",
+    "junctionSurface": "pavers",
+    "sections": [
+      {
+        "name": "west_walk",
+        "x": -18.55,
+        "width": 2.9,
+        "material": "paving"
+      },
+      {
+        "name": "west_furniture",
+        "x": -16,
+        "width": 2.2,
+        "material": "paving"
+      },
+      {
+        "name": "west_general_traffic",
+        "x": -9.5,
+        "width": 10.8,
+        "material": "asphalt"
+      },
+      {
+        "name": "west_bus_lane",
+        "x": -2.4,
+        "width": 3.4,
+        "material": "asphalt"
+      },
+      {
+        "name": "refuge_median",
+        "x": 0,
+        "width": 1.4,
+        "material": "paving"
+      },
+      {
+        "name": "east_bus_lane",
+        "x": 2.4,
+        "width": 3.4,
+        "material": "asphalt"
+      },
+      {
+        "name": "east_general_traffic",
+        "x": 9.5,
+        "width": 10.8,
+        "material": "asphalt"
+      },
+      {
+        "name": "east_furniture",
+        "x": 16,
+        "width": 2.2,
+        "material": "paving"
+      },
+      {
+        "name": "east_walk",
+        "x": 18.55,
+        "width": 2.9,
+        "material": "paving"
+      }
+    ],
+    "placements": [],
+    "treeWells": [],
+    "program": {
+      "schemaVersion": 1,
+      "adapter": "brt-v004-v1",
+      "surfaceRegions": [],
+      "details": [],
+      "paving": "source-stone",
+      "pavingModuleM": [
+        0.65,
+        0.45
+      ],
+      "minLengthM": 100,
+      "maxLengthM": 480,
+      "preparedLevelOnly": true,
+      "baseLiftM": 0.025,
+      "straightOnly": true,
+      "manualStops": true,
+      "stopEnvelopeM": [
+        21,
+        33.5
+      ],
+      "minimumStopSpacingM": 56.5,
+      "sourceFiles": {
+        "brt.py": "56e932ad913dfdeee14e73e634e20b134107871cc765b04090cfc0653b908f38",
+        "build.py": "19a4d81b0224ead51ff4df1c741a90fc702294fd261f0cc3a96e3f86c5048b5b",
+        "delivery.py": "ba31b4103ef8dad694987e9c751523a4448189fad69a2606b38d696db03f8e35",
+        "details.py": "591fdfc38e8489c632b316031e840d0774ceaec70b0eadadccaf24ab4931676f",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a"
+      },
+      "sourceAuthoringSha256": "60f1652d7d5c4257ee9aeca5ffc2ba4bb259e37c3fe0aeae684648c8902547a7",
+      "palette": {
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ],
+        "edge": [
+          0.35,
+          0.34,
+          0.29
+        ],
+        "soil": [
+          0.105,
+          0.073,
+          0.045
+        ],
+        "asphalt": [
+          0.1,
+          0.115,
+          0.11
+        ],
+        "bus_red": [
+          0.36,
+          0.095,
+          0.065
+        ],
+        "paint": [
+          0.86,
+          0.86,
+          0.77
+        ],
+        "curb": [
+          0.48,
+          0.48,
+          0.42
+        ]
+      }
+    },
+    "programSha256": "e6dc2b03fa39b59681cf27df7ddc0102d55fb03819675db37b1bdeb39fc64d83",
+    "modules": {
+      "light": {
+        "sha256": "b480a69a4bcc2f8523e85804c8780a7df491233e9acdd20d58369c811096e166",
+        "bytes": 37676,
+        "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/light.glb"
+      },
+      "shade_tree": {
+        "sha256": "16478d194648e0e51d361f2ceb64b88274fa079c9d58d6f7f35437b7aedbec55",
+        "bytes": 1279432,
+        "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/shade_tree.glb"
+      },
+      "tree_well_grate": {
+        "sha256": "f51ce084fa6ed1cda5e5fed3b0c3d678b8e762e6fc4f45f201292c40ecdbf60a",
+        "bytes": 95612,
+        "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/tree_well_grate.glb"
+      },
+      "station_program": {
+        "sha256": "22722b1515ca5cc0c34fabc7f32deb07733ba571c97a2a996fad7e347cbe65d3",
+        "bytes": 879628,
+        "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/station_program.glb"
+      },
+      "bus_symbol": {
+        "sha256": "ca2492e046c1102d61c59702315ae08c1609ca3f3106f304f208137c4e5a3347",
+        "bytes": 48544,
+        "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/bus_symbol.glb"
+      }
+    },
+    "thumbnailUrl": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/reference.png"
   }
 ]

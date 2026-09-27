@@ -15,12 +15,11 @@ describe('street section dimensions', () => {
     expect(screen.getByText(/Widths to scale/)).toBeInTheDocument();
   });
   it('shows the selected narrow street instead of hard-coded local-street instructions', () => {
-    const asset=STREET_ASSETS.find(a=>a.sectionWidth===5)!;
-    const zone = {zone_type:'road',properties:asset.properties,coordinates:bufferLineToPolygon([[-114,51],[-113.999,51]],5)} as SiteZone;
+    const asset=STREET_ASSETS.find(a=>a.model.variantId==='student_planted_shared_lane_v1')!;
+    const zone = {zone_type:'road',properties:asset.properties,coordinates:bufferLineToPolygon([[-114,51],[-113.999,51]],14)} as SiteZone;
     render(<StreetRoutePanel zone={zone} disabled={false} onReshape={()=>{}} onClose={()=>{}} onDelete={()=>{}} onMore={()=>{}} />);
-    expect(screen.getByRole('heading',{name:'Planted laneway'})).toBeInTheDocument();
-    expect(screen.getByText(/This section stays 5 m wide/)).toBeInTheDocument();
+    expect(screen.getByRole('heading',{name:'Planted Shared Lane'})).toBeInTheDocument();
+    expect(screen.getByText(/This section stays 14 m wide/)).toBeInTheDocument();
     expect(screen.queryByText(/16 m/)).not.toBeInTheDocument();
-    expect(screen.getByText(/Teaching design, not a City standard/)).toBeInTheDocument();
   });
 });

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { StreetRouteStation } from './nativeStreetPilot';
 import { stationNormals } from './streetMesh3D';
+import { buildBrtStreetProgram, type BrtStop } from './brtStreetProgram';
 
 export function nativeStreetHasPreparedGround(preparedElevation: number | null, hasPreparedApproach: boolean, hasSharedGround: boolean) {
   return Number.isFinite(preparedElevation) || hasPreparedApproach || hasSharedGround;
@@ -28,7 +29,8 @@ export function nativeStreetGroundCells(width:number,length:number,regions:Nativ
   return cells;
 }
 
-export function buildNativeStreetProgram(program:NativeStreetProgram,width:number,fixtureLength:number,route:StreetRouteStation[]) {
+export function buildNativeStreetProgram(program:NativeStreetProgram,width:number,fixtureLength:number,route:StreetRouteStation[],stops:BrtStop[]=[]) {
+  if(program.adapter==='brt-v004-v1')return buildBrtStreetProgram(route,stops,program.baseLiftM);
   const segments=route.slice(1).map((point,i)=>({from:route[i],to:point,length:Math.hypot(point.x-route[i].x,point.y-route[i].y),start:0})).filter(s=>s.length>1e-6);
   let total=0;for(const segment of segments){segment.start=total;total+=segment.length;}
   const groups=new Map<string,{positions:number[];indices:number[]}>();
