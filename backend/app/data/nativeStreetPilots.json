@@ -4685,5 +4685,149 @@
       }
     },
     "thumbnailUrl": "/street-kits/pilots/amsterdam_gracht_v1/reference.png"
+  },
+  {
+    "id": "landmark_signature_bridge_v2",
+    "sourceArchetypeId": "landmark_signature_bridge",
+    "title": "Landmark Signature Bridge",
+    "status": "candidate",
+    "sourceRecipeSha256": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c",
+    "sourceAssemblySha256": "bdb700b0967dbdaf8a7deb1bdb9d9ebe410736057edc7bdc88e69bf2af05d4aa",
+    "referenceSha256": "3a68ae18809b45c35a44bb252251dda3beb8da1a3ca7d95fc30079d7d7cb7443",
+    "widthM": 36,
+    "fixtureLengthM": 100,
+    "routeAxis": "local_y",
+    "junctionSurface": "pavers",
+    "sections": [
+      {
+        "name": "west_support_reservation",
+        "x": -15,
+        "width": 6,
+        "material": "grass"
+      },
+      {
+        "name": "west_walk",
+        "x": -10.625,
+        "width": 2.75,
+        "material": "paving"
+      },
+      {
+        "name": "vehicle_deck",
+        "x": 0,
+        "width": 18.5,
+        "material": "asphalt"
+      },
+      {
+        "name": "east_walk",
+        "x": 10.625,
+        "width": 2.75,
+        "material": "paving"
+      },
+      {
+        "name": "east_support_reservation",
+        "x": 15,
+        "width": 6,
+        "material": "grass"
+      }
+    ],
+    "placements": [],
+    "treeWells": [],
+    "program": {
+      "schemaVersion": 1,
+      "adapter": "bridge-v003-v1",
+      "surfaceRegions": [],
+      "details": [],
+      "paving": "source-native",
+      "pavingModuleM": [
+        0.65,
+        0.45
+      ],
+      "minLengthM": 260,
+      "maxLengthM": 480,
+      "preparedLevelOnly": true,
+      "baseLiftM": 0,
+      "straightOnly": true,
+      "groundOwnership": "elevated-span-with-two-grounded-approaches",
+      "topology": "ground-endpoints-no-at-grade-span-intersections",
+      "sourceAuthoringSha256": "e61008b07ffaf5451f5079d2fc4422504a72c03f6fc3b8e10f73069214af424d",
+      "sourceFiles": {
+        "bridge.py": "5f8badaeb7edfa598da6923aaa0d6e23bfcc4b39118983e21e7198dfb5980f53",
+        "build.py": "19a4d81b0224ead51ff4df1c741a90fc702294fd261f0cc3a96e3f86c5048b5b",
+        "delivery.py": "7ea02006d778e7e96dc104c07163c02c60e362d67efcabafddbdde1efaff359e",
+        "details.py": "cc4e71da1f243fd0e0738173dc51d41e406c1599ace9adfc904a5b5f115c8d1b",
+        "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a"
+      },
+      "palette": {
+        "water": [
+          0.055,
+          0.13,
+          0.12
+        ],
+        "brick": [
+          0.26,
+          0.13,
+          0.085
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ],
+        "roadbrick": [
+          0.22,
+          0.125,
+          0.08
+        ],
+        "coping": [
+          0.45,
+          0.45,
+          0.38
+        ],
+        "mortar": [
+          0.3,
+          0.265,
+          0.22
+        ],
+        "soil": [
+          0.105,
+          0.073,
+          0.045
+        ],
+        "concrete": [
+          0.49,
+          0.47,
+          0.42
+        ],
+        "asphalt": [
+          0.1,
+          0.115,
+          0.11
+        ],
+        "steel": [
+          0.49,
+          0.52,
+          0.5
+        ],
+        "paint": [
+          0.86,
+          0.86,
+          0.77
+        ]
+      },
+      "structuralSpanM": 84,
+      "fixedDeckLengthM": 100,
+      "deckHeightM": 4.3,
+      "endpointSectionM": 24,
+      "minimumApproachM": 80
+    },
+    "programSha256": "329433961b8ba03ebfd77f82fb3c3d8f9443e878bd18b0ee8a963e3c68f9345a",
+    "modules": {
+      "bridge_structure": {
+        "sha256": "164db94c2990d603d03ca7a8fb064deb2110ddb88c452d567c4a8aa5978bef2d",
+        "bytes": 1917428,
+        "url": "/street-kits/pilots/landmark_signature_bridge_v2/bridge_structure.glb"
+      }
+    },
+    "thumbnailUrl": "/street-kits/pilots/landmark_signature_bridge_v2/reference.png"
   }
 ]

@@ -92,6 +92,7 @@ import { validateStreetRecipeProperties } from './streetLegoContract';
 import { nativeStreetPilotForZone, placeNativeStreetModules } from './nativeStreetPilot';
 import { publicRealmTrialAsset } from './publicRealmTrial';
 import { GlobeNativeStreetPilotModules } from './GlobeNativeStreetPilotModules';
+import { clearBridgeOverhead, bridgeClearanceKey } from './bridgeStreetClearance';
 import { buildNativeStreetProgram, nativeStreetHasPreparedGround } from './nativeStreetProgram';
 import { readCrossings, crossingStation } from '@/features/pickPlace/pedestrianConnections';
 import {
@@ -198,6 +199,7 @@ function StreetGroundReadiness({children}: {children: ReactNode}) {
 /** One road zone's curbs + dashes, draped station-by-station. */
 function StreetRibbonDetail({
   zone,
+  sceneZones,
   fallbackTerrainHeight,
   preparedTerrain = null,
   preparedSite,
@@ -206,6 +208,7 @@ function StreetRibbonDetail({
   renderFamilyTrees,
 }: {
   zone: SiteZone;
+  sceneZones: SiteZone[];
   fallbackTerrainHeight: number;
   intersectionNodes: RenderStreetIntersection[];
   renderFamilyFurniture: boolean;
@@ -772,7 +775,7 @@ function StreetRibbonDetail({
   const nativePilotModules = useMemo(() => {
     if (!nativePilot || !centerLngLat || !centroid) return [];
     const longitudeScale = metersPerDegLon(centroid.lat);
-    return placeNativeStreetModules(
+    return clearBridgeOverhead(placeNativeStreetModules(
       nativePilot,
       centerLngLat.local.map((point, index) => ({ ...point, z: placementTerrain?.[index]?.centerZ ?? 0 })),
       intersectionNodes.filter(node => node.zoneIds.includes(zone.id)).map(node => ({
@@ -781,8 +784,8 @@ function StreetRibbonDetail({
         clearanceM: Math.max(node.axisAHalfWidthM, node.axisBHalfWidthM) + 4,
       })),
       zone.properties?.road_native_stops,
-    );
-  }, [nativePilot, centerLngLat, centroid, placementTerrain, intersectionNodes, zone.id, zone.properties?.road_native_stops]);
+    ), centroid, sceneZones, zone.id);
+  }, [nativePilot, centerLngLat, centroid, placementTerrain, intersectionNodes, zone.id, zone.properties?.road_native_stops, sceneZones]);
 
   if (!centerLngLat || !centroid || !geometries) return requiresPreparedAlignment
     ? <group userData={{...alignmentData, streetGroundStatus: 'unavailable'}} /> : null;
@@ -907,7 +910,7 @@ function StreetRibbonDetail({
         }))}
         renderOrder={RENDER_ORDER_FURNITURE + 3}
       />
-      {nativePilot && <GlobeNativeStreetPilotModules zone={zone} poses={seat(nativePilotModules)} expectedCount={nativePilotModules.length} />}
+      {nativePilot && <GlobeNativeStreetPilotModules zone={zone} poses={seat(nativePilotModules)} expectedCount={nativePilotModules.length} clearanceKey={bridgeClearanceKey(sceneZones)} />}
       {seat(yieldStreetSigns).map((placement, index) => (
         <group
           key={`yield-street-entry-sign-${index}`}
@@ -1660,6 +1663,7 @@ export function GlobeStreetDetailLayer({
             <StreetGroundCoverage zone={zone}><StreetRibbonDetail
               key={JSON.stringify([zone.id, zone.updated_at, zone.coordinates, resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight), preparedSite])}
               zone={zone}
+              sceneZones={roadZones}
               fallbackTerrainHeight={terrainHeight}
               preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}
               preparedSite={zone.properties?.connect_to_public_road === true ? preparedSite : undefined}

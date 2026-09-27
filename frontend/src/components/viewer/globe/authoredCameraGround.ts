@@ -12,7 +12,7 @@ import { isSpecialistStreet, specialistWalkingHeight, BRIDGE_VARIANT } from './s
 
 /** Camera feet belong on the authored ground, not the Google mesh hidden
  * underneath it. Unprepared landscape and off-site context keep their hit. */
-export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number, measured: number): number {
+export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number, measured: number, entrySurfaceHeight?: number): number {
   const contains = (zone: SiteZone) => sharedSiteGroundContains(zone.coordinates as [number, number][], lng, lat);
   for (const zone of zones.filter(contains)) {
     const variant=String(zone.properties?.road_selected_variant_id);
@@ -27,8 +27,12 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
           const station=(x*dx+y*dy)/length,deckStart=(length-100)/2;
           // Retain the lower route when walking through the opening. Entering
           // a ramp or clicking the deck keeps the upper continuous surface.
+          // Map picking resolves the underlying terrain, not every instanced
+          // deck mesh. A new entry on the bridge chooses its upper walkable
+          // plane; arriving from outside underneath retains the lower level.
+          const enteredDeck = entrySurfaceHeight !== undefined;
           if(variant===BRIDGE_VARIANT && station>deckStart+8 && station<length-deckStart-8
-            && measured<level+height-2)return level;
+            && measured<level+height-2 && !enteredDeck)return level;
           return level+height;
         }
       }

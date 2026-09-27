@@ -1,6 +1,7 @@
 import type { Object3D } from 'three';
 import type { SiteZone } from '@/types';
 import { nativeStreetPilot } from './nativeStreetPilot';
+import { bridgeClearanceKey } from './bridgeStreetClearance';
 export const expectsNativeStreet = (zone: SiteZone) => zone.zone_type==='road'
   && !zone.properties?.validation_fixed_fixture
   && !!nativeStreetPilot(String(zone.properties?.road_selected_variant_id));
@@ -20,7 +21,7 @@ export function assertNativeStreetsReady(scene: Object3D|null, zones: SiteZone[]
         if(['loading','error'].includes(child.userData.nativeStreetStatus))failed=true;
         count+=child.userData.nativeStreetMountedCount ?? 0;
       });
-      ready=verified && !failed && Number.isInteger(object.userData.nativeStreetExpectedCount)
+      ready=verified && !failed && (object.userData.nativeStreetClearanceKey??'[]')===bridgeClearanceKey(zones) && Number.isInteger(object.userData.nativeStreetExpectedCount)
         && count===object.userData.nativeStreetExpectedCount;
     });
     if(!ready)throw new Error('Your street is still updating or a required component is missing. Wait for loading, or choose Retry 3D update.');

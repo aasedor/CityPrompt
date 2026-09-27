@@ -43,9 +43,9 @@ function LoadedModules({poses}:{poses:NativeStreetPose[]}) {
   </group>;
 }
 
-export function GlobeNativeStreetPilotModules({zone,poses,expectedCount}:{zone:SiteZone;poses:NativeStreetPose[];expectedCount:number}) {
+export function GlobeNativeStreetPilotModules({zone,poses,expectedCount,clearanceKey='[]'}:{zone:SiteZone;poses:NativeStreetPose[];expectedCount:number;clearanceKey?:string}) {
   const revision=nativeStreetRevision(zone);
-  return <group userData={{nativeStreetZone:zone.id,nativeStreetRevision:revision,nativeStreetExpectedCount:expectedCount}}>
+  return <group userData={{nativeStreetZone:zone.id,nativeStreetRevision:revision,nativeStreetExpectedCount:expectedCount,nativeStreetClearanceKey:clearanceKey}}>
     <ModuleBoundary key={revision} zone={zone}><Suspense fallback={<group userData={{nativeStreetStatus:'loading'}}/>}>
       <LoadedModules poses={poses}/>
     </Suspense></ModuleBoundary>

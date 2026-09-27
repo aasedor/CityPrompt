@@ -21,6 +21,10 @@ describe('camera ground for authored communities',()=>{
     const large={...boundary,coordinates:rectangleAt([-114,51],100,300)};
     expect(authoredCameraGround([large,bridge],-114,51,1103)).toBe(1103);
     expect(authoredCameraGround([large,bridge],-114,51,1107.3)).toBeCloseTo(1107.3);
+    expect(authoredCameraGround([large,bridge],-114,51,1103,1107.3)).toBeCloseTo(1107.3);
+    expect(authoredCameraGround([large,bridge],-114,51,1103,1103)).toBeCloseTo(1107.3);
+    // The caller still rejects an actual arch hit over three metres above this plane.
+    expect(authoredCameraGround([large,bridge],-114,51,1103,1126)).toBeCloseTo(1107.3);
     expect(authoredCameraGround([large,bridge],-114,51-90/111320,1105)).toBeCloseTo(1105.15,2);
   });
   it('uses verified native steps and lawn heights in the saved placement frame',()=>{

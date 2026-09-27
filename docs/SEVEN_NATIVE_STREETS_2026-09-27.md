@@ -175,3 +175,46 @@ Evidence lives outside source in `streets-runtime-2026-09-26`, including
 Current local selection is six route candidates plus the fixed Bridge review
 fixture. Full acceptance, fault injection and the seven-usable-street goal remain
 open; candidate activation is not completion approval.
+
+## Fixed bridge integration checkpoint
+
+Bridge v003 now uses the normal route catalogue and saved native contract. Its
+1,672 structural meshes retain their exact source transforms/materials; only the
+inspection water plane is excluded. The extracted GLB round-trip has zero vertex
+error. The original 84 m arch and 100 m deck stay rigid, with 24 m deck width,
+36 m support reservation and two minimum 80 m approaches. Routes support
+260–480 m on prepared level ground. Matched original/reconstructed aerial and
+walking views were inspected. Approaches use matching asphalt, marking, paving
+and open railing programs, joining the 4.30/4.482 m source deck/walk elevations.
+
+The production browser passed ordinary catalogue drawing, ground-endpoint Market
+connection, a Market underpass with no at-grade junction, walking up the approach
+onto the deck, walking under the span, direct deck entry, short-edit rejection,
+extension, Undo/Redo, reopening and exact capture. Tall modules below the bridge
+yield as whole occupied components to the source girder clearance; low market
+stalls remain. A neighbouring bridge edit changes the capture clearance identity.
+Native programs are no longer dropped by the historical 160-road detail budget.
+
+The recurring PNG failure was traced to agent-browser's escaped Windows download
+path. The same visible Download render control succeeds through Chromium with a
+normal native path; no export-code workaround was required. Actual PNG:
+`downloads-verified/cityprompt-3d-view-1790503133245.png`, 1,289,863 bytes,
+SHA-256 `38f2671791faa92546d9a2b92c8b22dcfcadc8f8ef2f1ef369fcbdaaea65f3bc`.
+The earlier automation failures remain recorded, superseded by this file receipt.
+
+63 targeted frontend tests, 109 backend tests, registry parity, type-check and
+production build pass. No paid street calls. Seven route candidates are locally
+available; this is not final completion: the full finite matrix, including asset
+fault recovery, duplicate/delete and ordinary-street joins/curves, remains open.
+Bridge evidence: `bridge-first-ready.png`, `bridge-walk-forward.png`,
+`bridge-walk-below.png`, `bridge-deck-entry-fixed.png`, `bridge-endpoint-connection.png`,
+`bridge-short-edit-rejected.png`, `bridge-extended.png`, `bridge-redo.png`.
+
+### Native source comparisons completed
+
+`render_native_program_comparison.py` compares actual frontend output and original
+source GLBs from matched top, oblique and pedestrian cameras. All twelve images
+in `residential-matched-v1/` and `shared-matched-v1/` were inspected. The complete
+native compositions agree, including beds, paving, arbors, planting and furniture.
+The intentional runtime ground lift is 0.025 m. These close earlier source-fidelity
+checks; they do not replace the remaining browser matrix or human visual approval.

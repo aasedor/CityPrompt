@@ -46,6 +46,14 @@
       "variantId": "amsterdam_gracht_v1",
       "revision": "db99c735b29e2d9c9131d89f787fd137fb1f41523cbae55d8a15322e35535ef9",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "landmark_signature_bridge",
+      "variantId": "landmark_signature_bridge_v2",
+      "revision": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c",
+      "status": "local-pilot-runtime-pending"
     }
   ]
 }

@@ -2322,7 +2322,7 @@ export function GlobeSitePlannerMap({
     const sampledGround = tiles?.children.length
       ? raycastObjectFilteredTerrainHeightAtLngLat(hit.lngLat[0], hit.lngLat[1], tiles, new THREE.Raycaster(), hit.height)
       : hit.height;
-    const expectedGround = authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], sampledGround ?? hit.height);
+    const expectedGround = authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], sampledGround ?? hit.height, hit.height);
     if (hit.height > expectedGround + 3) {
       setWalkPickError('That point is above the ground. Choose a sidewalk, path, or open lawn.');
       return;
