@@ -13,7 +13,9 @@ export const PUBLIC_REALM_STREET_FAMILY_VERSION = 1 as const;
 type NativeStreetFamilyId = 'street_native_student_main_street_v1' | 'street_native_student_market_street_v1'
   | 'street_native_student_quiet_residential_street_v1' | 'street_native_student_planted_shared_lane_v1'
   | 'street_native_brt_bus_rapid_transit_corridor_v0' | 'street_native_amsterdam_gracht_v1'
-  | 'street_native_landmark_signature_bridge_v2';
+  | 'street_native_landmark_signature_bridge_v2'
+  | 'street_native_student_cycle_avenue_v1' | 'street_native_student_green_alley_v1'
+  | 'street_native_student_school_street_v1';
 
 export type PublicRealmStreetFamilyId =
   | NativeStreetFamilyId
@@ -281,6 +283,9 @@ export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFami
   street_native_brt_bus_rapid_transit_corridor_v0: nativeFamily('street_native_brt_bus_rapid_transit_corridor_v0'),
   street_native_amsterdam_gracht_v1: nativeFamily('street_native_amsterdam_gracht_v1'),
   street_native_landmark_signature_bridge_v2: nativeFamily('street_native_landmark_signature_bridge_v2'),
+  street_native_student_cycle_avenue_v1: nativeFamily('street_native_student_cycle_avenue_v1'),
+  street_native_student_green_alley_v1: nativeFamily('street_native_student_green_alley_v1'),
+  street_native_student_school_street_v1: nativeFamily('street_native_student_school_street_v1'),
   street_local_public_realm: {
     id: 'street_local_public_realm',
     familyVersion: 1,

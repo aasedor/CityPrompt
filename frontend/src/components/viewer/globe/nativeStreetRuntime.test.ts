@@ -4,8 +4,22 @@ import { nativeStreetPilotForZone } from './nativeStreetPilot';
 import { validateStreetRecipeProperties } from './streetLegoContract';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
 import { CLASSROOM_CHOICES } from '@/features/pickPlace/canonicalCatalogue';
+import pilots from '@/data/nativeStreetPilots.json';
+import { PUBLIC_REALM_STREET_FAMILIES, PUBLIC_REALM_STREET_SELECTIONS } from './streetFamilyCatalog';
 
 describe('saved classroom native streets in a production build', () => {
+  it('registers an executable family and exact selection for every packaged native street', () => {
+    expect(pilots).toHaveLength(10);
+    for (const pilot of pilots) {
+      const familyId = `street_native_${pilot.id}`;
+      const family = PUBLIC_REALM_STREET_FAMILIES[familyId as keyof typeof PUBLIC_REALM_STREET_FAMILIES];
+      const selection = PUBLIC_REALM_STREET_SELECTIONS.find(candidate => candidate.variantId === pilot.id);
+      expect(family?.sourceArchetypeIds).toContain(pilot.sourceArchetypeId);
+      expect(family?.nativeRowM).toBe(pilot.widthM);
+      expect(selection?.familyId).toBe(familyId);
+      expect(selection?.archetypeId).toBe(pilot.sourceArchetypeId);
+    }
+  });
   it.each(recipes)('loads $variant_id with server-compiled ownership and exact module locks', recipe => {
     vi.stubEnv('DEV', false);
     try {
