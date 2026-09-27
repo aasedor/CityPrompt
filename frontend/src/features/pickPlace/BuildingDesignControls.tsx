@@ -14,37 +14,40 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
 }) {
   const savedProperties = zone.properties ?? {};
   const initialParent = String(savedProperties.development_subcategory ?? savedProperties.development_archetype_id ?? '');
-  const [parent, setParent] = useState(initialParent);
+  const initialVariant = String(savedProperties.development_selected_variant_id ?? '');
+  const initialChoice = choices.find(c => c.option.id === initialParent && c.option.variants?.some(v => v.id === initialVariant))
+    ?? choices.find(c => c.option.id === initialParent);
+  const [choiceId, setChoiceId] = useState(initialChoice?.id ?? '');
   const [variantId, setVariantId] = useState(String(savedProperties.development_selected_variant_id ?? ''));
   const [query, setQuery] = useState('');
   const [floors, setFloors] = useState(String(savedProperties.floor_count ?? savedProperties.floors ?? 2));
   const [height, setHeight] = useState(heightText(savedProperties.height_m ?? savedProperties.height ?? assetForZone(zone)?.nativeDimensions?.[2] ?? Number(floors) * 3.2));
   const [heightEdited, setHeightEdited] = useState(false);
-  const choice = choices.find(c => c.option.id === parent);
+  const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
-  const filtered = choices.filter(c => c.option.id === parent || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase()));
+  const filtered = choices.filter(c => c.id === choiceId || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase()));
   const valid = choice && Number.isInteger(Number(floors)) && Number(floors) >= 1 && Number(floors) <= 100
     && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000;
-  const choose = (nextParent: string, nextVariantId?: string) => {
-    const next = choices.find(c => c.option.id === nextParent)!;
+  const choose = (nextChoiceId: string, nextVariantId?: string) => {
+    const next = choices.find(c => c.id === nextChoiceId)!;
     const selectedVariant = next.option.variants?.find(v => v.id === nextVariantId)
       ?? next.option.variants?.find(v => v.id === next.placements[0]?.model.variantId) ?? next.option.variants?.[0];
     const native = next.placements.find(a => a.model.variantId === selectedVariant?.id && a.kind === 'object');
     const props = native?.properties ?? canonicalDrawing({ choice: next, variant: selectedVariant }).properties;
-    setParent(nextParent); setVariantId(selectedVariant?.id ?? '');
+    setChoiceId(nextChoiceId); setVariantId(selectedVariant?.id ?? '');
     setFloors(String(props.floor_count ?? props.floors ?? 2));
     setHeight(heightText(native?.kind === 'object' && native.nativeDimensions ? native.nativeDimensions[2] : props.height ?? Number(props.floors) * 3.2));
     setHeightEdited(false);
   };
   return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={event => {
     event.preventDefault(); if (!valid || !choice) return;
-    const changedType = parent !== initialParent || variantId !== savedProperties.development_selected_variant_id;
+    const changedType = choiceId !== initialChoice?.id || variantId !== savedProperties.development_selected_variant_id;
     const selection = { choice, variant };
     const native = choice.placements.find(a => a.kind === 'object' && a.model.variantId === variantId);
     const properties = changedType ? { ...savedProperties, native_home_plot: undefined,
       ...canonicalDrawing(selection).properties, ...(native?.properties ?? {}),
       pick_place_asset: native?.id ?? canonicalBuildingAsset(selection).id,
-      building_archetype_id: parent, development_height_override_m: undefined,
+      building_archetype_id: choice.option.id, development_height_override_m: undefined,
     } : { ...savedProperties };
     onSave({ ...properties, pick_place_automatic_3d: true, native_plot_axes: true,
       floors: Number(floors), floor_count: Number(floors), height: Number(height), height_m: Number(height),
@@ -53,11 +56,11 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     });
   }}>
     <label className="block text-xs font-semibold">Find building type<input type="search" value={query} onChange={e => setQuery(e.target.value)} className={field} /></label>
-    <label className="block text-xs font-semibold">Building type<select value={parent} onChange={e => choose(e.target.value)} className={field}>
-      {!choice && <option value={parent}>Current building</option>}
-      {filtered.map(c => <option value={c.option.id} key={c.id}>{c.option.label}</option>)}
+    <label className="block text-xs font-semibold">Building type<select value={choiceId} onChange={e => choose(e.target.value)} className={field}>
+      {!choice && <option value="">Current building</option>}
+      {filtered.map(c => <option value={c.id} key={c.id}>{c.option.label}</option>)}
     </select></label>
-    {Boolean(choice?.option.variants?.length) && <label className="block text-xs font-semibold">Building variant<select value={variantId} onChange={e => choose(parent, e.target.value)} className={field}>
+    {Boolean(choice?.option.variants?.length) && <label className="block text-xs font-semibold">Building variant<select value={variantId} onChange={e => choose(choiceId, e.target.value)} className={field}>
       {choice?.option.variants?.map(v => <option value={v.id} key={v.id}>{v.label}</option>)}
     </select></label>}
     <div className="grid grid-cols-2 gap-2">

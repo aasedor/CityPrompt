@@ -15,7 +15,7 @@ import type { SiteZoneProperties } from '@/types';
 export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace, onUpdateDesign, zones = [], onUpdateParkLayout }: {
   zones?: SiteZone[]; onUpdateParkLayout?: (data:{coordinates:number[][];properties:SiteZoneProperties})=>Promise<unknown>;
   zone: SiteZone; disabled: boolean;
-  onReshape: (coordinates: number[][]) => void; onClose: () => void; onDelete: () => void;
+  onReshape: (coordinates: number[][]) => boolean | void; onClose: () => void; onDelete: () => void;
   onDuplicate: (asset: PlaceAssetId, width: number, depth: number, degrees: number) => void;
   onMore: () => void;
   onConnections?: () => void;
@@ -35,6 +35,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   const [depth,setDepth] = useState(dimensions.depth.toFixed(1));
   const [degrees,setDegrees] = useState(dimensions.degrees.toFixed(0));
   const [outline,setOutline] = useState<ParkOutlineShape | ''>('');
+  const [reshapeRejected,setReshapeRejected] = useState(false);
   const valid = Number.isFinite(Number(width)) && Number.isFinite(Number(depth)) && Number.isFinite(Number(degrees))
     && Number(width)>=asset.minWidth && Number(depth)>=asset.minDepth && Number(width)<=asset.maxSize && Number(depth)<=asset.maxSize;
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
@@ -51,9 +52,10 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     {structuredPark && structuredPark.notes.length > 0 && <div role="status" className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">
       {structuredPark.notes.map(note=><p className="mt-1" key={note}>{note}</p>)}
     </div>}
-    <form onSubmit={event => { event.preventDefault(); if(valid) onReshape(keepOutline
+    <form onSubmit={event => { event.preventDefault(); if(valid) { const problem = onReshape(keepOutline
       ? reshapeParkOutline(zone.coordinates,Number(width),Number(depth),Number(degrees),isPark ? outline || undefined : undefined)
-      : rectangleAt(dimensions.center,Number(width),Number(depth),Number(degrees))); }}>
+      : rectangleAt(dimensions.center,Number(width),Number(depth),Number(degrees)));
+      setReshapeRejected(problem === false); } }}>
       {isPark && <div className="mb-3">
         <label className="text-xs font-semibold text-slate-800">Park outline<select aria-label="Park outline" value={outline} onChange={e=>setOutline(e.target.value as ParkOutlineShape | '')} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900">
           <option value="">Keep current outline</option><option value="rectangle">Rectangle</option><option value="triangle">Triangle</option><option value="l_shape">L shape</option>
@@ -67,6 +69,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
       </div>
       <label className="mt-2 block text-xs font-semibold text-slate-800">Rotation (°)<input aria-label="Rotation (degrees)" type="number" step="1" value={degrees} onChange={e=>setDegrees(e.target.value)} className="ml-2 min-h-11 w-20 rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
       <p className="my-3 text-xs text-slate-600">{asset.reshapeDescription}</p>
+      {reshapeRejected && <p role="alert" className="mb-2 text-xs font-semibold text-red-700">Shape not saved. The existing plot is unchanged; check the placement message, then move the plot or try another size or angle.</p>}
       {!valid && <p role="alert" className="mb-2 text-xs text-red-700">Use a width of {asset.minWidth}–{asset.maxSize} m and depth of {asset.minDepth}–{asset.maxSize} m.</p>}
       <button disabled={disabled||!valid} className={`${button} w-full !bg-[#c9ff3d]`}>{disabled?'Saving…':'Apply shape'}</button>
     </form>

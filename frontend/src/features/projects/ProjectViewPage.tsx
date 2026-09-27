@@ -310,7 +310,7 @@ export function ProjectViewPage() {
     if (zone && isFixedSectionStreet(zone)) coordinates = snapConnectedStreetEdit(zone, coordinates, siteZones);
     if (zone && ['building', 'residential', 'green_space'].includes(zone.zone_type)) {
       const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId,zone.properties);
-      if (snapped.problem) return false; // Keep the previous valid location.
+      if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
       coordinates = snapped.coordinates;
     }
     if (zone && (assetForZone(zone) || isFixedSectionStreet(zone))) {
