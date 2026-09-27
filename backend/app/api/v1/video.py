@@ -52,6 +52,7 @@ from app.services.internal_video import (
 )
 from app.services.omni_video import (
     MAX_ROUTE_IMAGE_BYTES,
+    GuideImage,
     PreviewVideo,
     build_cinematic_prompt,
     build_omni_payload,
@@ -234,6 +235,10 @@ class VideoPilotRequest(BaseModel):
     geometry_checkpoints: list[VideoGeometryCheckpoint] = Field(default_factory=list, max_length=6)
     capture_profile: VideoCaptureProfile | None = None
     control_videos: list[VideoControlVideo] = Field(default_factory=list, max_length=2)
+    # Optional appearance authority: frame 0 of this route, finished by the
+    # Direct 3D image pipeline in the same look. Engines that accept a
+    # reference image (Omni, Structure Lock) match its materials and light.
+    anchor_image_base64: str | None = Field(default=None, max_length=20_000_000)
     route_points: list[RoutePoint] = Field(..., min_length=2, max_length=24)
     camera_motion: CameraMotion = "path_follow"
     duration_seconds: Literal[8] = 8
@@ -280,6 +285,7 @@ class VideoPreflightResponse(BaseModel):
     look_style: str | None = None
     prompt_profile: PromptProfile = "look_sheet"
     control_video_roles: list[str] = Field(default_factory=list)
+    anchor_attached: bool = False
 
 
 class VideoAttemptResponse(BaseModel):
@@ -337,6 +343,8 @@ class VideoAttemptResponse(BaseModel):
     geometry_source: str | None = None
     grok_reference_mode: str | None = None
     provider_cost_usd: float | None = None
+    anchor_attached: bool | None = None
+    anchor_image_url: str | None = None
 
 
 class VideoGenerateResponse(BaseModel):
@@ -796,7 +804,31 @@ def _effective_prompt_profile(req: VideoPilotRequest) -> PromptProfile:
     return req.prompt_profile
 
 
-def _build_provider_prompt(req: VideoPilotRequest, *, keyframe_count: int) -> tuple[str, str | None]:
+ANCHOR_PROVIDERS: frozenset[str] = frozenset({"omni", "vace_depth"})
+
+
+def _decode_anchor_image(req: VideoPilotRequest) -> GuideImage | None:
+    """Validate the optional anchor frame; only the preview edit of a look-sheet engine can use one."""
+    if not req.anchor_image_base64:
+        return None
+    if req.control_mode != "preview_video":
+        raise ValueError("An anchor frame only applies when finishing the route preview.")
+    if req.provider not in ANCHOR_PROVIDERS or _effective_prompt_profile(req) != "look_sheet":
+        raise ValueError(
+            f"{_provider_label(req.provider)} does not take an anchor frame; remove it or choose Omni or Structure Lock."
+        )
+    try:
+        return decode_guide_image(req.anchor_image_base64)
+    except ValueError as exc:
+        raise ValueError(f"Anchor frame: {exc}") from exc
+
+
+def _build_provider_prompt(
+    req: VideoPilotRequest,
+    *,
+    keyframe_count: int,
+    anchor_attached: bool = False,
+) -> tuple[str, str | None]:
     """Return (prompt, negative_prompt) for the provider and prompt profile."""
     if req.provider == "internal_enhance":
         return build_internal_video_contract(req.scene_brief or INTERNAL_ENHANCE_DEFAULT_BRIEF), None
@@ -820,6 +852,7 @@ def _build_provider_prompt(req: VideoPilotRequest, *, keyframe_count: int) -> tu
         add_people=req.add_people,
         add_vehicles=req.add_vehicles,
         student_note=req.student_note,
+        anchor_attached=anchor_attached,
     )
     if req.provider == "vace_depth":
         return build_vace_depth_prompt(sheet)
@@ -841,6 +874,7 @@ def _preflight_values(req: VideoPilotRequest):
         )
         geometry_checkpoints = _decode_geometry_checkpoints(req)
         control_videos = _decode_control_videos(req, preview)
+        anchor = _decode_anchor_image(req)
         if req.control_mode == "single_frame" and (keyframes or preview):
             raise ValueError("Single-frame mode cannot include route keyframes or a preview video.")
         if req.control_mode == "multi_keyframe":
@@ -873,12 +907,16 @@ def _preflight_values(req: VideoPilotRequest):
                 f"{spec.label} needs the {', '.join(missing_roles)} control track. "
                 "Prepare the preview in a browser with WebCodecs (Chrome or Edge), then check again."
             )
-        prompt, negative_prompt = _build_provider_prompt(req, keyframe_count=len(keyframes))
+        prompt, negative_prompt = _build_provider_prompt(
+            req,
+            keyframe_count=len(keyframes),
+            anchor_attached=anchor is not None,
+        )
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except RuntimeError as exc:  # Missing OpenCV/ffmpeg on the Video Render server.
         raise HTTPException(status_code=503, detail=str(exc)) from exc
-    return guide, keyframes, preview, geometry_checkpoints, control_videos, prompt, negative_prompt
+    return guide, keyframes, preview, geometry_checkpoints, control_videos, anchor, prompt, negative_prompt
 
 
 @router.post("/preflight", response_model=VideoPreflightResponse)
@@ -891,7 +929,9 @@ async def preflight_video(
     await check_project_permission(req.project_id, user, db, required="editor")
     settings = get_settings()
     _require_provider_setting(req.provider, settings)
-    guide, keyframes, preview, geometry_checkpoints, control_videos, prompt, negative_prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, control_videos, anchor, prompt, negative_prompt = _preflight_values(
+        req
+    )
     runtime_error = _provider_runtime_error(req, preview)
     if runtime_error:
         raise HTTPException(status_code=503, detail=runtime_error)
@@ -931,6 +971,7 @@ async def preflight_video(
         look_style=req.look_style if _effective_prompt_profile(req) == "look_sheet" else None,
         prompt_profile=_effective_prompt_profile(req),
         control_video_roles=[control.role for control in control_videos],
+        anchor_attached=anchor is not None,
     )
 
 
@@ -953,6 +994,7 @@ async def list_video_attempts(
                 "prompt": None,
                 "error": None,
                 "guide_image_url": None,
+                "anchor_image_url": None,
                 "interaction_id": None,
                 "request_id": "",
             }
@@ -1053,7 +1095,9 @@ async def generate_video(
     await check_project_permission(req.project_id, user, db, required="editor")
     settings = get_settings()
     _require_provider_setting(req.provider, settings)
-    guide, keyframes, preview, geometry_checkpoints, control_videos, prompt, negative_prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, control_videos, anchor, prompt, negative_prompt = _preflight_values(
+        req
+    )
     prompt_profile = _effective_prompt_profile(req)
     depth_control = next((control for control in control_videos if control.role == "depth"), None)
     runtime_error = _provider_runtime_error(req, preview)
@@ -1102,6 +1146,8 @@ async def generate_video(
         control_hash.update(preview.data)
     for control in control_videos:
         control_hash.update(control.data)
+    if anchor:
+        control_hash.update(anchor.data)
     for checkpoint in geometry_checkpoints:
         for image in checkpoint["images"].values():
             control_hash.update(image.data)
@@ -1160,6 +1206,8 @@ async def generate_video(
         "reference_image_count": len(keyframes),
         "geometry_checkpoint_count": len(geometry_checkpoints),
         "control_video_roles": [control.role for control in control_videos],
+        "anchor_attached": anchor is not None,
+        "anchor_image_url": None,
         "fidelity_status": "pending" if preview or len(keyframes) >= 2 else None,
         **resource_updates,
     }
@@ -1191,6 +1239,12 @@ async def generate_video(
             )
             await _upload_to_storage(preview_key, preview.data, preview.mime_type)
             preview_video_url = f"/api/v1/files/{preview_key}"
+        anchor_image_url = None
+        if anchor:
+            anchor_extension = "png" if anchor.mime_type == "image/png" else "jpg"
+            anchor_key = f"projects/{req.project_id}/video-render/{attempt_id}/controls/anchor.{anchor_extension}"
+            await _upload_to_storage(anchor_key, anchor.data, anchor.mime_type)
+            anchor_image_url = f"/api/v1/files/{anchor_key}"
         control_video_urls: dict[str, str] = {}
         control_video_profile: list[dict[str, Any]] = []
         for control in control_videos:
@@ -1253,6 +1307,7 @@ async def generate_video(
             guide_image_url=guide_url,
             route_keyframe_urls=route_keyframe_urls,
             preview_video_url=preview_video_url,
+            anchor_image_url=anchor_image_url,
             control_video_urls=control_video_urls,
             control_video_profile=control_video_profile,
             geometry_checkpoint_controls=geometry_checkpoint_controls,
@@ -1335,8 +1390,10 @@ async def generate_video(
                 api_key=settings.fal_key,
                 endpoint=settings.vace_depth_endpoint,
                 control_video_mp4=control_mp4,
-                references=[],
-                first_frame=None,
+                # The anchor is frame 0 from the same camera, so it is both
+                # the identity reference and the literal first frame.
+                references=[anchor] if anchor else [],
+                first_frame=anchor,
                 prompt=prompt,
                 negative_prompt=negative_prompt or "",
                 timeout_seconds=settings.vace_video_timeout_seconds,
@@ -1376,6 +1433,7 @@ async def generate_video(
                 ],
                 preview_video_base64=req.preview_video_base64,
                 preview_video_mime_type=preview.mime_type if preview else None,
+                anchor_image=(req.anchor_image_base64, anchor.mime_type) if anchor and req.anchor_image_base64 else None,
             )
             result = await request_omni_video_once(
                 api_key=settings.gemini_api_key,

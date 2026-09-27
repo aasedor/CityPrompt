@@ -37,10 +37,12 @@ import { buildVideoSceneContract } from './videoSceneContract';
 import { VideoLookControls } from './VideoLookControls';
 import {
   DEFAULT_VIDEO_LOOK,
+  VIDEO_LOOK_STYLES,
   sanitizeStudentNote,
   videoLookLabel,
   type VideoLookStyle,
 } from './videoLookSheet';
+import { useDirect3DRender } from './globe/useDirect3DRender';
 import { useVideoRoutePreview } from './useVideoRoutePreview';
 import {
   type VideoControlMode,
@@ -171,6 +173,20 @@ export interface VideoAttempt {
   geometry_status?: 'stable' | 'review' | 'drift' | null;
   geometry_samples?: Array<{ time_seconds: number; score: number }>;
   geometry_source?: 'depth_video' | 'instance_maps' | null;
+  anchor_attached?: boolean | null;
+  anchor_image_url?: string | null;
+}
+
+/** Frame 0 finished by the Direct 3D image pipeline; the video engines match its materials and light. */
+interface AnchorFrame {
+  id: string;
+  imageBase64: string;
+  look: VideoLookStyle;
+  addPeople: boolean;
+  addVehicles: boolean;
+  model: string;
+  outcome: 'accepted' | 'review_required';
+  warnings: string[];
 }
 
 function fidelityTone(status: VideoAttempt['fidelity_status']): string {
@@ -193,7 +209,8 @@ function videoAttemptLabel(attempt: VideoAttempt): string {
         ? 'Preview-video edit'
         : 'Single frame';
   const look = attempt.look_style ? ` · ${videoLookLabel(attempt.look_style)}` : '';
-  if (attempt.style === 'source_fidelity') return `${provider} · ${control} · ${motion}${look}`;
+  const anchored = attempt.anchor_attached ? ' · anchored' : '';
+  if (attempt.style === 'source_fidelity') return `${provider} · ${control} · ${motion}${look}${anchored}`;
   return `${provider} · ${attempt.style.split(/[_-]/).join(' ')} · ${motion}`;
 }
 
@@ -230,6 +247,7 @@ interface PreflightResult {
   negative_prompt_preview?: string | null;
   look_style?: string | null;
   prompt_profile?: 'look_sheet' | 'legacy';
+  anchor_attached?: boolean;
 }
 
 interface VideoCaptureProfile {
@@ -291,6 +309,7 @@ interface PreparedVideoRequest {
   }>;
   capture_profile?: VideoCaptureProfile;
   control_videos?: PreparedControlVideo[];
+  anchor_image_base64?: string;
   route_points: VideoRoutePoint[];
   camera_motion: MotionId;
   duration_seconds: 8;
@@ -424,6 +443,12 @@ export function VideoGeneratePanel({
   const [addPeople, setAddPeople] = useState(false);
   const [addVehicles, setAddVehicles] = useState(false);
   const [studentNote, setStudentNote] = useState('');
+  // Optional appearance authority: frame 0 rendered by the same image engine
+  // as the stills. Rendered on demand (image credits), never automatically.
+  const [anchor, setAnchor] = useState<AnchorFrame | null>(null);
+  const [isRenderingAnchor, setIsRenderingAnchor] = useState(false);
+  const [preparedAnchorId, setPreparedAnchorId] = useState<string | null>(null);
+  const { renderDirect3D } = useDirect3DRender();
   const [showAdvancedModes, setShowAdvancedModes] = useState(false);
   const [showPromptPreview, setShowPromptPreview] = useState(false);
   const [sourceCaptureVersion, setSourceCaptureVersion] = useState(0);
@@ -476,7 +501,7 @@ export function VideoGeneratePanel({
   );
 
   const { routeControls, setRouteControls, isPreparingControls, prepare: prepareRoutePreview } = useVideoRoutePreview(routeCaptureSignature);
-  useEffect(() => { setAcknowledgedSourceWarnings(false); }, [routeCaptureSignature]);
+  useEffect(() => { setAcknowledgedSourceWarnings(false); setAnchor(null); }, [routeCaptureSignature]);
   const sourceFrameWarnings = routeControls?.signature === routeCaptureSignature
     ? (routeControls.sourceFrameWarnings ?? [])
     : [];
@@ -484,14 +509,19 @@ export function VideoGeneratePanel({
   const depthTrack = routeControls?.signature === routeCaptureSignature
     ? routeControls.controlVideos?.find((track) => track.role === 'depth') ?? null
     : null;
+  // Only engines that take a reference image use the anchor; Grok edits the
+  // route video alone. A frame rendered for another look is never sent.
+  const anchorSupported = controlMode === 'preview_video' && (provider === 'omni' || provider === 'vace_depth');
+  const anchorStale = Boolean(anchor) && (anchor?.look !== lookStyle || anchor?.addPeople !== addPeople || anchor?.addVehicles !== addVehicles);
+  const activeAnchor = anchor && anchorSupported && !anchorStale ? anchor : null;
 
-  const lookSignature = `${lookStyle}:${addPeople ? 'people' : 'no-people'}:${addVehicles ? 'vehicles' : 'no-vehicles'}:${sanitizeStudentNote(studentNote)}`;
+  const lookSignature = `${lookStyle}:${addPeople ? 'people' : 'no-people'}:${addVehicles ? 'vehicles' : 'no-vehicles'}:${sanitizeStudentNote(studentNote)}:${activeAnchor ? activeAnchor.id : 'no-anchor'}`;
   const currentSignature = useMemo(
     () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}:${lookSignature}`,
     [controlMode, currentSceneRevisionSignature, internalEnhanceQuality, lookSignature, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${preparedSceneSignature === sceneContract.signature ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}:${prepared.look_style}:${prepared.add_people ? 'people' : 'no-people'}:${prepared.add_vehicles ? 'vehicles' : 'no-vehicles'}:${prepared.student_note}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${preparedSceneSignature === sceneContract.signature ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}:${prepared.look_style}:${prepared.add_people ? 'people' : 'no-people'}:${prepared.add_vehicles ? 'vehicles' : 'no-vehicles'}:${prepared.student_note}:${prepared.anchor_image_base64 ? preparedAnchorId ?? 'anchor' : 'no-anchor'}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -711,6 +741,7 @@ export function VideoGeneratePanel({
             : [],
         },
       } : {}),
+      ...(activeAnchor ? { anchor_image_base64: activeAnchor.imageBase64 } : {}),
       route_points: routePoints,
       camera_motion: motion,
       duration_seconds: 8,
@@ -725,7 +756,49 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [addPeople, addVehicles, prepareLocalPreview, community3DClaims, controlMode, internalEnhanceQuality, lookStyle, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, studentNote, usesLegacyBrief]);
+  }, [activeAnchor, addPeople, addVehicles, prepareLocalPreview, community3DClaims, controlMode, internalEnhanceQuality, lookStyle, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, studentNote, usesLegacyBrief]);
+
+  const renderAnchorFrame = useCallback(async () => {
+    setError(null);
+    setIsRenderingAnchor(true);
+    try {
+      if (!community3DClaims || community3DClaims.length === 0) {
+        throw new Error('The 3D scene changed. Close Video Render and update the 3D scene before rendering an anchor frame.');
+      }
+      const controls = await prepareLocalPreview();
+      const bundle = controls.anchorCapture;
+      if (!bundle) {
+        throw new Error('This route has no complete frame-0 geometry capture, so an anchor frame cannot be rendered. Prepare the preview again with the scene fully loaded.');
+      }
+      const imageStyle = VIDEO_LOOK_STYLES.find((option) => option.id === lookStyle)?.imageStyle ?? 'photorealistic';
+      const note = sanitizeStudentNote(studentNote);
+      const result = await renderDirect3D(bundle, {
+        style: imageStyle,
+        addPeople,
+        addVehicles,
+        customPrompt: note || undefined,
+        projectId,
+        community3DClaims,
+        residualLandscapeClaim,
+        viewMode: motion === 'path_follow' ? 'aerial' : 'street',
+      });
+      setAnchor({
+        id: crypto.randomUUID(),
+        imageBase64: result.render.imageUrl,
+        look: lookStyle,
+        addPeople,
+        addVehicles,
+        model: result.render.model ?? 'direct-3d',
+        outcome: result.outcome,
+        warnings: result.warnings,
+      });
+      toast.success(result.outcome === 'accepted' ? 'Anchor frame rendered' : 'Anchor frame rendered · check it against the 3D view');
+    } catch (anchorError) {
+      setError(getApiErrorMessage(anchorError, 'The anchor frame could not be rendered.'));
+    } finally {
+      setIsRenderingAnchor(false);
+    }
+  }, [addPeople, addVehicles, community3DClaims, lookStyle, motion, prepareLocalPreview, projectId, renderDirect3D, residualLandscapeClaim, studentNote]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -734,6 +807,7 @@ export function VideoGeneratePanel({
       const body = await requestBody();
       const result = await videoRenderApi.preflight(body) as PreflightResult;
       setPrepared(body);
+      setPreparedAnchorId(body.anchor_image_base64 ? activeAnchor?.id ?? 'anchor' : 'no-anchor');
       setPreparedSceneSignature(sceneContract.signature);
       setPreflight(result);
       setPilot((current) => ({
@@ -755,7 +829,7 @@ export function VideoGeneratePanel({
     } finally {
       setIsPreflighting(false);
     }
-  }, [requestBody, sceneContract.signature]);
+  }, [activeAnchor, requestBody, sceneContract.signature]);
 
   const generate = useCallback(async () => {
     if (!prepared || !hasValidPreflight || !providerCanRun) return;
@@ -1202,6 +1276,45 @@ export function VideoGeneratePanel({
                       onNoteChange={setStudentNote}
                     />
                   )}
+                  {anchorSupported && (
+                    <div className="mt-2 rounded-lg border border-[#151515]/10 bg-white/70 p-2" data-testid="anchor-frame">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-[9px] font-black uppercase tracking-[0.12em] text-[#151515]/55">Anchor frame</p>
+                        {activeAnchor && (
+                          <span className="rounded-full bg-[#c9ff3d] px-2 py-0.5 text-[9px] font-black uppercase text-[#151515]">Attached</span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-[10px] leading-relaxed text-[#151515]/55">
+                        Renders the first frame with the same image engine as your stills; {providerName(provider)} then matches its materials and light across the whole shot. Uses the usual image credits.
+                      </p>
+                      {anchor && (
+                        <img src={anchor.imageBase64} alt={`Anchor frame · ${videoLookLabel(anchor.look)}`} className="mt-2 aspect-video w-full rounded-lg bg-[#151515] object-cover" />
+                      )}
+                      {anchor && anchorStale && (
+                        <p className="mt-1 rounded-lg bg-[#ffd76a] px-2 py-1 text-[9px] font-bold text-[#151515]">
+                          Rendered as {videoLookLabel(anchor.look)}{anchor.addPeople ? ' with people' : ''}{anchor.addVehicles ? ' with vehicles' : ''}. Re-render it for the current look or it will not be sent.
+                        </p>
+                      )}
+                      {anchor && !anchorStale && anchor.outcome === 'review_required' && (
+                        <p className="mt-1 rounded-lg bg-[#ffd76a] px-2 py-1 text-[9px] font-bold text-[#151515]">
+                          The image check flagged this frame; compare it with the 3D view before you rely on it.
+                        </p>
+                      )}
+                      <div className="mt-2 flex gap-2">
+                        <button type="button" onClick={() => void renderAnchorFrame()}
+                          disabled={isRenderingAnchor || isGenerating || isPreflighting || isCapturing || isPreparingControls || !sourceFrame || routePoints.length < 2}
+                          className="min-h-9 flex-1 rounded-full border-2 border-[#151515] bg-[#f7f2e8] px-3 text-[10px] font-black uppercase transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40">
+                          {isRenderingAnchor ? 'Rendering frame 0…' : anchor ? 'Re-render anchor frame' : 'Render anchor frame'}
+                        </button>
+                        {anchor && (
+                          <button type="button" onClick={() => setAnchor(null)} disabled={isRenderingAnchor || isGenerating}
+                            className="min-h-9 rounded-full border border-[#151515]/30 px-3 text-[10px] font-black uppercase text-[#151515]/60 transition hover:bg-white disabled:opacity-40">
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
                     {provider === 'internal_enhance'
                       ? 'No scene generation: this pass only denoises, sharpens, stabilizes tone, and optionally super-resolves detail already present. The fidelity gate still checks every saved result.'
@@ -1236,7 +1349,7 @@ export function VideoGeneratePanel({
                 </button>
                 {hasValidPreflight && preflight && (
                   <div className="mt-2 flex items-center gap-2 rounded-lg bg-[#edf8e7] px-2.5 py-2 text-[10px] font-bold text-[#285b22]">
-                    <Check size={12} /> Ready · {preflight.width}×{preflight.height} · {controlMode === 'multi_keyframe' ? `${preflight.reference_image_count} route images` : controlMode === 'preview_video' ? 'route-video edit' : 'single frame'} · {preflight.model}
+                    <Check size={12} /> Ready · {preflight.width}×{preflight.height} · {controlMode === 'multi_keyframe' ? `${preflight.reference_image_count} route images` : controlMode === 'preview_video' ? 'route-video edit' : 'single frame'}{preflight.anchor_attached ? ' · anchor frame' : ''} · {preflight.model}
                   </div>
                 )}
               </div>

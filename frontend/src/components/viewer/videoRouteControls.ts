@@ -3,6 +3,7 @@ import type { VideoRenderQuality } from './videoRenderQuality';
 import type { VideoDepthWindow } from './videoDepthWindow';
 import type {
   Direct3DCameraManifest,
+  Direct3DCaptureBundle,
   Direct3DInstanceDescriptor,
   Direct3DMaterialDescriptor,
   Direct3DProposalRole,
@@ -45,6 +46,10 @@ export interface VideoRouteCaptureResult {
   previewVideoBase64: string;
   previewVideoMimeType: string;
   controlVideos?: VideoControlVideoTrack[];
+  /** Complete Direct 3D capture of frame 0 (same camera as the first video
+   * frame). The image pipeline can finish it in the chosen look and hand the
+   * result to the video engines as their appearance reference. */
+  anchorCapture?: Direct3DCaptureBundle;
   geometryCheckpoints?: Array<{
     progress: number;
     beautyImageBase64: string;

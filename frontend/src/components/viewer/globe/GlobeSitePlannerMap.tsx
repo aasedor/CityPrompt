@@ -2991,6 +2991,12 @@ export function GlobeSitePlannerMap({
       const routeGroundSnapshot = await waitForSharedGround();
       const keyframesBase64: string[] = [];
       const geometryCheckpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']> = [];
+      let anchorCapture: Direct3DCaptureBundle | null = null;
+      const completeAnchor = (bundle: Direct3DCaptureBundle | null): Direct3DCaptureBundle | null => (
+        bundle?.depthImageBase64 && bundle.normalImageBase64 && bundle.materialIdImageBase64 && bundle.materialIdManifest
+          ? bundle
+          : null
+      );
       for (let index = 0; index < sampledRoute.length; index += 1) {
         request.onProgress?.('checking', index, sampledRoute.length);
         applyRoutePose(cinematicRouteProgress(index / (sampledRoute.length - 1)));
@@ -3011,6 +3017,20 @@ export function GlobeSitePlannerMap({
               skipTileWait: true,
               includeGeometryPasses: request.renderQuality === 'high',
             });
+        if (index === 0) {
+          // Frame 0 doubles as the anchor frame: the still the image pipeline
+          // can finish in the chosen look so the video engines inherit its
+          // materials and light. Draft and near-field routes take one extra
+          // complete capture here; if it fails, the route video still renders.
+          anchorCapture = completeAnchor(capture);
+          if (!anchorCapture) {
+            try {
+              anchorCapture = completeAnchor(await captureDirect3D({ skipTileWait: true, includeGeometryPasses: true }));
+            } catch (anchorError) {
+              console.warn('[Video Render] No anchor frame for this route:', anchorError);
+            }
+          }
+        }
         if (capture) {
           keyframesBase64.push(capture.beautyImageBase64);
           if (
@@ -3125,6 +3145,7 @@ export function GlobeSitePlannerMap({
         previewVideoBase64,
         previewVideoMimeType: previewBlob.type,
         controlVideos,
+        ...(anchorCapture ? { anchorCapture } : {}),
         geometryCheckpoints,
         previewCaptureProfile: {
           encoder: previewCapture.encoder,

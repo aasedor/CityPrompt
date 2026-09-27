@@ -222,6 +222,7 @@ def build_vace_depth_prompt(sheet: LookSheet) -> tuple[str, str]:
             [
                 f"{look}.",
                 VACE_SCENE_SENTENCE,
+                ANCHOR_SENTENCE if sheet.anchor_attached else "",
                 sheet.entourage,
                 sheet.note_sentence,
                 CONTROL_CAMERA_SENTENCE,

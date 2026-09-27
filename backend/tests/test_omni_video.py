@@ -572,3 +572,77 @@ def test_fidelity_storage_keys_are_scoped_to_the_authorized_project():
 
     assert _storage_key_from_file_url(own_url, project_id) == own_url.split("/api/v1/files/", 1)[1]
     assert _storage_key_from_file_url(other_url, project_id) is None
+
+
+def test_anchor_frame_is_only_for_the_preview_edit_of_an_anchor_engine():
+    from fastapi import HTTPException
+
+    from app.api.v1.video import _decode_anchor_image, _preflight_values
+
+    assert _decode_anchor_image(_look_sheet_request()) is None
+    with pytest.raises(ValueError, match="only applies when finishing the route preview"):
+        _decode_anchor_image(_look_sheet_request(anchor_image_base64=_jpeg_data_url()))
+    with pytest.raises(ValueError, match="does not take an anchor frame"):
+        _decode_anchor_image(
+            _look_sheet_request(provider="grok_video", control_mode="preview_video", anchor_image_base64=_jpeg_data_url())
+        )
+    with pytest.raises(ValueError, match="does not take an anchor frame"):
+        _decode_anchor_image(
+            _look_sheet_request(
+                provider="seedance_mini",
+                control_mode="preview_video",
+                scene_brief="Two buildings and one park.",
+                anchor_image_base64=_jpeg_data_url(),
+            )
+        )
+    anchor = _decode_anchor_image(
+        _look_sheet_request(provider="vace_depth", control_mode="preview_video", anchor_image_base64=_jpeg_data_url())
+    )
+    assert anchor is not None and (anchor.width, anchor.height) == (1280, 720)
+    # The endpoint reports the same rule as a 400, never a 500.
+    with pytest.raises(HTTPException) as excinfo:
+        _preflight_values(_look_sheet_request(anchor_image_base64=_jpeg_data_url()))
+    assert excinfo.value.status_code == 400
+
+
+def test_anchor_frame_adds_the_reference_sentence_for_omni_and_structure_lock():
+    from app.api.v1.video import _build_provider_prompt
+
+    omni_prompt, _ = _build_provider_prompt(_look_sheet_request(), keyframe_count=0, anchor_attached=True)
+    assert "Match the materials, light and colour of the reference image." in omni_prompt
+    assert len(omni_prompt) <= 900
+    vace_prompt, negative = _build_provider_prompt(
+        _look_sheet_request(provider="vace_depth", control_mode="preview_video"),
+        keyframe_count=0,
+        anchor_attached=True,
+    )
+    assert "Match the materials, light and colour of the reference image." in vace_prompt
+    assert negative
+    plain, _ = _build_provider_prompt(_look_sheet_request(), keyframe_count=0)
+    assert "reference image" not in plain
+
+
+def test_omni_payload_places_the_anchor_after_the_preview_video():
+    preview = "data:video/webm;base64," + base64.b64encode(b"preview").decode()
+    payload = build_omni_payload(
+        model="gemini-omni-1.1-flash",
+        guide_base64=_jpeg_data_url(),
+        guide_mime_type="image/jpeg",
+        prompt="Change only the look of this video.",
+        duration_seconds=8,
+        control_mode="preview_video",
+        preview_video_base64=preview,
+        preview_video_mime_type="video/webm",
+        anchor_image=(_jpeg_data_url(), "image/jpeg"),
+    )
+    assert [item["type"] for item in payload["input"]] == ["video", "image", "text"]
+    assert "," not in payload["input"][1]["data"]
+    with pytest.raises(ValueError, match="only applies to the preview-video edit"):
+        build_omni_payload(
+            model="gemini-omni-1.1-flash",
+            guide_base64=_jpeg_data_url(),
+            guide_mime_type="image/jpeg",
+            prompt="x",
+            duration_seconds=8,
+            anchor_image=(_jpeg_data_url(), "image/jpeg"),
+        )

@@ -92,3 +92,11 @@ def test_grok_prompt_has_no_reference_sentence():
 def test_unknown_look_is_rejected():
     with pytest.raises(ValueError, match="Unknown video look"):
         build_look_sheet(look_style="neon")
+
+
+def test_vace_prompt_mentions_the_anchor_only_when_attached():
+    plain, _ = build_vace_depth_prompt(build_look_sheet(look_style="atmospheric"))
+    anchored, _ = build_vace_depth_prompt(build_look_sheet(look_style="atmospheric", anchor_attached=True))
+    assert "reference image" not in plain
+    assert "Match the materials, light and colour of the reference image." in anchored
+    assert anchored.index("depth video") < anchored.index("reference image")

@@ -26,6 +26,7 @@ vi.mock('@/features/community3d/community3d', () => ({
 }));
 vi.mock('./globe/residualLandscape', () => ({ getCurrentResidualLandscapeClaim: () => null }));
 vi.mock('@/features/pickPlace/catalogue', () => ({ isCatalogueOnlyScene: () => false, CATALOGUE_UPDATE_GUIDANCE: 'update' }));
+vi.mock('./globe/useDirect3DRender', () => ({ useDirect3DRender: () => ({ renderDirect3D: vi.fn() }) }));
 
 import { VideoGeneratePanel } from './VideoGeneratePanel';
 
@@ -92,5 +93,22 @@ describe('VideoGeneratePanel look sheet', () => {
     fireEvent.click(screen.getByRole('button', { name: /Seedance Mini/ }));
     expect(screen.getByText('Scene lock')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Photo Realistic/ })).not.toBeInTheDocument();
+  });
+
+  it('offers the anchor frame only to engines that take a reference image', async () => {
+    renderPanel();
+    await waitFor(() => expect(mocks.list).toHaveBeenCalled());
+    expect(screen.getByText('Anchor frame')).toBeInTheDocument();
+    const renderAnchor = screen.getByRole('button', { name: 'Render anchor frame' });
+    expect(renderAnchor).toBeDisabled(); // no captured source frame or route yet
+    expect(screen.getByText(/same image engine as your stills/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Grok Video/ }));
+    expect(screen.queryByText('Anchor frame')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Structure Lock/ }));
+    expect(screen.getByText('Anchor frame')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Gemini Omni/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Advanced modes' }));
+    fireEvent.click(screen.getByRole('button', { name: /Single frame/ }));
+    expect(screen.queryByText('Anchor frame')).not.toBeInTheDocument();
   });
 });

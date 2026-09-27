@@ -32,13 +32,27 @@ The video pipeline now works the way the image pipeline already does:
    depth-silhouette recall and explained-edge precision after a contrast stretch
    and CLAHE, so a night finish keeps geometry 100 while image similarity drops.
    It is advisory until the evaluation harness calibrates its bands.
+4. **Appearance comes from a verified still (the anchor frame).** The route
+   capture keeps a complete Direct 3D bundle of frame 0. One click in the panel
+   renders it through the existing image endpoint (same GPT Image model, same
+   look vocabulary, people/vehicle toggles and note, fused and edge-checked
+   server-side, normal image credits). The result travels as
+   `anchor_image_base64`: Structure Lock uses it as `ref_image_urls[0]` and
+   `first_frame_url` (it is literally the first frame from the same camera),
+   Omni receives it as a second input beside the route video, and the prompt
+   gains one sentence: "Match the materials, light and colour of the reference
+   image." Grok's edit endpoint takes video only, so it never gets one. A frame
+   rendered for another look, or with different entourage, is never sent.
+   This is how the video reaches the quality bar of the image renders: the
+   still is the target and the engine's job shrinks to carrying it across 192
+   frames along a camera it did not have to invent.
 
 ## Engines
 
 | Engine | Input it obeys | Prompt | Credits / cap | Output |
 |---|---|---|---|---|
-| Gemini Omni (`gemini-omni-1.1-flash`, task `edit`) | the beauty preview (camera, timing) | Omni look sheet: "Change only the look of this video: … Keep everything else the same …" | 50 / 49 | 1080p URI delivery |
-| Structure Lock (fal `fal-ai/wan-22-vace-fun-a14b/depth`) | **the depth track** (`preprocess: false`), normalised to 720p grey H.264 | positive end-state + fixed negative prompt; prompt expansion off | 50 / 12 | 720p |
+| Gemini Omni (`gemini-omni-1.1-flash`, task `edit`) | the beauty preview (camera, timing) + optional anchor frame | Omni look sheet: "Change only the look of this video: … Keep everything else the same …" | 50 / 49 | 1080p URI delivery |
+| Structure Lock (fal `fal-ai/wan-22-vace-fun-a14b/depth`) | **the depth track** (`preprocess: false`), normalised to 720p grey H.264, + optional anchor frame as reference and first frame | positive end-state + fixed negative prompt; prompt expansion off | 50 / 12 | 720p |
 | Grok Video (xAI `/videos/edits` on `grok-imagine-video`; image modes on `grok-imagine-video-1.5`) | the beauty preview; falls back to the guide frame if xAI rejects the video (`grok_reference_mode`) | Grok look sheet (edit) or lock + camera + look (image modes) | 75 / 20 | 720p, silent |
 | Seedance Mini, Internal Enhance | unchanged | legacy prose / local contract | 125 / 4, 0 / ∞ | unchanged |
 
@@ -78,11 +92,23 @@ Registry: `backend/app/services/video_providers.py`. Prompts:
 - Paid smoke runs and the evaluation matrix (`docs/video-pilots/eval-<date>/`)
   are recorded here once they have been run.
 
+## The anchor frame
+
+- Captured by `captureVideoRouteControls` at route pose 0 as a complete
+  Direct 3D bundle (`VideoRouteCaptureResult.anchorCapture`). High aerial
+  routes reuse the checkpoint capture; Draft and near-field routes take one
+  extra capture, and a failure there only disables the anchor.
+- Rendered on demand from the Video Render panel ("Render anchor frame") with
+  `useDirect3DRender` — the same call the image panel makes — using the look's
+  `imageStyle`, the people/vehicle toggles and the student note. Review-flagged
+  results are shown with a warning, not blocked.
+- Sent as `anchor_image_base64` (PNG/JPEG, decoded like the guide frame);
+  stored at `controls/anchor.{png|jpg}`; `anchor_attached` / `anchor_image_url`
+  in the attempt ledger; hashed into `guide_sha256`. Only the preview edit of
+  Omni or Structure Lock accepts it (400 otherwise).
+
 ## Open items
 
-- Anchor frame: render frame 0 through the Direct 3D image endpoint in the same
-  look and pass it to Structure Lock (`first_frame_url`, `ref_image_urls`) and
-  Omni. The request contract is designed; the panel step is not built yet.
 - VACE `preprocess: false` input format is confirmed by the first paid run; the
   fallback is `preprocess: true` on the beauty preview.
 - Geometry bands (stable ≥ 68 / 55, review ≥ 48 / 32) are provisional.

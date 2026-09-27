@@ -396,7 +396,10 @@ def build_omni_payload(
     route_keyframes: Sequence[tuple[str, str]] | None = None,
     preview_video_base64: str | None = None,
     preview_video_mime_type: str | None = None,
+    anchor_image: tuple[str, str] | None = None,
 ) -> dict[str, Any]:
+    if anchor_image and control_mode != "preview_video":
+        raise ValueError("An anchor frame only applies to the preview-video edit.")
     if control_mode == "multi_keyframe":
         if not route_keyframes:
             raise ValueError("Multi-keyframe video generation requires route keyframes.")
@@ -419,6 +422,17 @@ def build_omni_payload(
                 "mime_type": preview_video_mime_type,
             }
         ]
+        if anchor_image:
+            # Frame 0 finished by the image pipeline: the appearance authority
+            # the prompt's reference sentence points at.
+            anchor_base64, anchor_mime_type = anchor_image
+            input_items.append(
+                {
+                    "type": "image",
+                    "data": anchor_base64.split(",", 1)[1] if "," in anchor_base64 else anchor_base64,
+                    "mime_type": anchor_mime_type,
+                }
+            )
         task = "edit"
     else:
         encoded = guide_base64.split(",", 1)[1] if "," in guide_base64 else guide_base64
