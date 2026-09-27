@@ -62,7 +62,7 @@ export function nativeParkFitProblem(zone: Pick<SiteZone,'coordinates'|'properti
   const local = (ring: number[][]) => ring.map(p=>({x:(p[0]-f.longitude)*metersPerDegLon(f.latitude), y:(p[1]-f.latitude)*METERS_PER_DEG_LAT}));
   // Shrink only the numerical fit envelope by 2 cm, never the model.
   const footprint = local(nativeParkFootprint(selection,{...layout,widthM:layout.occupiedWidthM-.04,depthM:layout.occupiedDepthM-.04}));
-  const holes = zone.properties?.park_exclusion_rings ?? [];
+  const holes = zone.properties?.park_exclusion_rings === undefined ? [] : zone.properties.park_exclusion_rings;
   if (!Array.isArray(holes) || holes.some(ring => !Array.isArray(ring) || ring.length < 3
     || ring.some(point => !Array.isArray(point) || point.length !== 2 || !point.every(Number.isFinite))))
     return 'The park exclusion areas are invalid. Repair their outlines before changing the layout.';

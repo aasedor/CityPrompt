@@ -18,10 +18,25 @@ const advance=()=>act(async()=>{await vi.advanceTimersByTimeAsync(750)});
 describe('automatic placement compilation',()=>{
   beforeEach(()=>{vi.useFakeTimers();vi.clearAllMocks();vi.mocked(siteZonesApi.list).mockResolvedValue([zone(0,true)]);vi.mocked(compileMixedCommunity3D).mockResolvedValue({plannedMasses:0} as never)});
   afterEach(()=>{vi.useRealTimers()});
+  it('rejects late asset errors after a native layout change or deletion',()=>{
+    const native=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--native-v1')!;
+    const long=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--long-v1')!;
+    const coordinates=rectangleAt([-114,51],100,50);
+    const park={...zone(),zone_type:'green_space',coordinates,properties:{...nativeParkProperties({},native,coordinates),pick_place_asset:'native-park:basketball_court_v1--native-v1'}} as SiteZone;
+    const changed={...park,properties:nativeParkProperties(park.properties!,long,coordinates)};
+    const error=(source:SiteZone)=>act(()=>window.dispatchEvent(new CustomEvent('cityprompt:native-park-error',{detail:{zoneId:source.id,revision:JSON.stringify(source.properties?.green_space_native_layout),message:'Failed model'}})));
+    const {result,rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,true),{initialProps:{zones:[park]},wrapper});
+    error(park);expect(result.current.status).toBe('error');
+    rerender({zones:[changed]});expect(result.current.status).not.toBe('error');
+    error(park);expect(result.current.status).not.toBe('error');
+    error(changed);expect(result.current.status).toBe('error');
+    rerender({zones:[]});error(changed);expect(result.current.status).not.toBe('error');
+    unmount();
+  });
   it('offers asset recovery even when compilation is already saved',async()=>{
     const {result,unmount}=renderHook(()=>useAutomatic3D('p',[zone(0,true)],false),{wrapper});
     await advance();expect(result.current.status).toBe('ready');
-    act(()=>window.dispatchEvent(new CustomEvent('cityprompt:native-park-error',{detail:{zoneId:'zone',message:'The park model could not be verified. Retry 3D update.'}})));
+    act(()=>window.dispatchEvent(new CustomEvent('cityprompt:native-park-error',{detail:{zoneId:'zone',revision:'null',message:'The park model could not be verified. Retry 3D update.'}})));
     expect(result.current.status).toBe('error');expect(result.current.message).toContain('Retry 3D update');
     act(()=>result.current.retry());await advance();expect(result.current.status).toBe('ready');
     unmount();
@@ -31,7 +46,7 @@ describe('automatic placement compilation',()=>{
     vi.mocked(compileMixedCommunity3D).mockImplementationOnce(()=>new Promise(resolve=>{finish=()=>resolve({plannedMasses:0} as never)}));
     const {result,rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{initialProps:{zones:[zone()]},wrapper});
     await advance();
-    act(()=>window.dispatchEvent(new CustomEvent('cityprompt:native-park-error',{detail:{zoneId:'zone',message:'Retry 3D update'}})));
+    act(()=>window.dispatchEvent(new CustomEvent('cityprompt:native-park-error',{detail:{zoneId:'zone',revision:'null',message:'Retry 3D update'}})));
     await act(async()=>{finish()});await advance();
     expect(result.current.status).toBe('error');
     rerender({zones:[]});expect(result.current.status).not.toBe('error');

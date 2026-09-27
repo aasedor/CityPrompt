@@ -5,8 +5,68 @@
   "evidenceDirectory": "C:/dev-artifacts/CityPrompt/native-parks-2026-09-26",
   "paidSunburst": {
     "limit": 5,
-    "submitted": 0,
-    "requests": []
+    "submitted": 3,
+    "requests": [
+      {
+        "number": 1,
+        "label": "one-court Basketball aerial",
+        "project_id": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f",
+        "engine": "sunburst",
+        "images": 1,
+        "status": "succeeded",
+        "reserved_at_utc": "2026-09-27 04:16:35 UTC",
+        "source_file": "paid1-source.png",
+        "source_sha256": "60FBA85D99FA1780ABE29875CC0E96F96CADA7C758B5377259F8C722FD25856D",
+        "prompt": "Aerial photo finish of this exact scene. Keep one basketball court with two hoops and its fence, the pedestrian plaza south, and the separate conservatory garden east. Preserve positions, dimensions, object counts and this camera; refine only daylight and material realism.",
+        "result_file": "paid1-result.png",
+        "result_sha256": "6BD24359F6C06D36BF580B11AE82FF3324AD92603A84D64F2F94A000E04200FF",
+        "ui_evidence": "paid1-result-lightbox.png",
+        "tokens_before": 2498,
+        "tokens_after": 2404,
+        "visual_review": "Broad geometry and layout preserved at aerial scale. Individual hoop/furniture counts are too small to verify definitively."
+      },
+      {
+        "number": 2,
+        "label": "two-court Long Basketball street",
+        "project_id": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f",
+        "engine": "sunburst",
+        "images": 1,
+        "status": "succeeded",
+        "reserved_at_utc": "2026-09-27 04:45:29 UTC",
+        "source_file": "paid2-source.png",
+        "source_sha256": "227B198A99F57DDC87FEF8E957D592C3B4F8DE3DDC767A6834A22A099982B9FB",
+        "prompt": "Street-height photo finish of this exact scene. Preserve the two separate fenced basketball courts, four hoops, central access path, and pedestrian plaza in front. Keep camera, dimensions, positions and planting; refine only daylight and materials.",
+        "source_limit": "Two courts are visible behind fencing and partly occluded by plaza stalls and lamps.",
+        "paired_source_file": "paid2-paired-source.png",
+        "paired_source_sha256": "227B198A99F57DDC87FEF8E957D592C3B4F8DE3DDC767A6834A22A099982B9FB",
+        "result_file": "paid2-result.png",
+        "result_sha256": "F660301EF9269F501C7130E8D190B52BA9F806A36C1B16C0017D424F5C9E1DD5",
+        "ui_evidence": "paid2-result-ui.png",
+        "tokens_before": 2404,
+        "tokens_after": 2310,
+        "visual_review": "Both fenced courts and plaza/stalls remain in the same arrangement; exact hoop and small furnishing counts are partly occluded at street level."
+      },
+      {
+        "number": 3,
+        "label": "Botanical garden walking height",
+        "project_id": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f",
+        "engine": "sunburst",
+        "images": 1,
+        "status": "succeeded",
+        "reserved_at_utc": "2026-09-27 04:56:58 UTC",
+        "source_file": "paid3-source.png",
+        "source_sha256": "75500AA7D5424371ABD84A9043A64AEB5080FD0FD9FDDEE8CCB16CCD6E300178",
+        "prompt": "Walking-height photo finish of this exact botanical garden. Preserve the curving paved path, dense flowering beds, central fountain and domed conservatory in their current positions. Keep this camera, planting layout and structure; refine only natural light and materials.",
+        "paired_source_file": "paid3-paired-source.png",
+        "paired_source_sha256": "75500AA7D5424371ABD84A9043A64AEB5080FD0FD9FDDEE8CCB16CCD6E300178",
+        "result_file": "paid3-result.png",
+        "result_sha256": "2E3EE48E3FFF7EC5553734AF6B39F6F3788C1AC5ECB5DA030E2B0B54ABEE6E4D",
+        "ui_evidence": "paid3-result-ui.png",
+        "tokens_before": 2310,
+        "tokens_after": 2216,
+        "visual_review": "Conservatory, split curving path, flower beds and fountain remain in the same arrangement; material and lighting realism improve."
+      }
+    ]
   },
   "layouts": [
     {
@@ -17,38 +77,58 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "APPROVED PILOT 2026-09-26",
-      "runtime": "IN PROGRESS",
+      "runtime": "PILOT APP CHECKS PASS; SUNBURST WALK BROAD GEOMETRY PASS; PLANT-BY-PLANT FIDELITY NOT ASSERTED",
       "publication": "NOT PUBLISHED",
-      "evidence": [],
+      "evidence": [
+        "botanical-rotated.png",
+        "botanical-undo-restored.png",
+        "botanical-moved-reloaded.png",
+        "app-both-walk-active.png",
+        "paid3-source.png",
+        "paid3-paired-source.png",
+        "paid3-result.png"
+      ],
       "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
     },
     {
       "layoutId": "sculpture_garden_v0--native-v1",
-      "contentRevision": "3ee12006e3df5abca1b1d19df0dcdea7312676620a16ac77ffd582a4f61a08e5",
+      "contentRevision": "5ea667d78cf619fd919494c852c1fe5751f3e951fdc8deccba3904d52500af62",
       "variantId": "sculpture_garden_v0",
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
-      "visualApproval": "SOURCE BASELINE ONLY",
-      "runtime": "NOT TESTED",
+      "visualApproval": "AGENT WALK REVIEW PASS AFTER FIX; NO NEW HUMAN APPROVAL",
+      "runtime": "EDIT/RELOAD/WALK/EXACT CAPTURE PASS AFTER DEPTH FIX; STREET CONNECTION PENDING",
       "publication": "NOT PUBLISHED",
-      "evidence": []
+      "evidence": [
+        "pair1-runtime-results.json",
+        "pair1-reopen-top.png",
+        "pair1-depthfix2-sculpture-walk-turn.png",
+        "pair1-depthfix2-sculpture-exact-source.png"
+      ],
+      "activation": "LOCAL PAIR 1 REVIEW",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
     },
     {
       "layoutId": "student_neighbourhood_orchard_v1--native-v1",
-      "contentRevision": "51eb19d47e9667453b6a35637c8e8e8b967814556c5c831d87d4dfc6c9dde2ba",
+      "contentRevision": "746f5c3037bef70511e1529b7c7ca536697ea9931798231ca4a2c68306bf80ff",
       "variantId": "student_neighbourhood_orchard_v1",
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
-      "visualApproval": "SOURCE BASELINE ONLY",
-      "runtime": "NOT TESTED",
+      "visualApproval": "AGENT WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
+      "runtime": "EDIT/RELOAD/WALK/EXACT CAPTURE PASS; STREET CONNECTION PENDING",
       "publication": "NOT PUBLISHED",
-      "evidence": []
+      "evidence": [
+        "pair1-runtime-results.json",
+        "pair1-reopen-top.png"
+      ],
+      "activation": "LOCAL PAIR 1 REVIEW",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
     },
     {
       "layoutId": "amphitheater_lawn_v0--native-v1",
-      "contentRevision": "435e67a190d930c71b7d51d8c288cd2c30ccf848d94c3ab5a09b6b6a216a94a4",
+      "contentRevision": "e5bbe20222fe6af93f05c33a8ef4688f57b51b8636d0d5dee5672d1c2840d1ee",
       "variantId": "amphitheater_lawn_v0",
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
@@ -60,7 +140,7 @@
     },
     {
       "layoutId": "student_garden_square_v1--native-v1",
-      "contentRevision": "cf689bdefdd0b9da3fef5437b6fd9d304399295aa51f071b6fb7f5d043dfd46c",
+      "contentRevision": "b0310f14be314d41a61167a5d62627fbadbf65ce37f1d3dc2e3feaef2f8c7400",
       "variantId": "student_garden_square_v1",
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
@@ -72,7 +152,7 @@
     },
     {
       "layoutId": "wetland_rain_garden_v0--native-v1",
-      "contentRevision": "951555610b3568b5f261e0b393693a589e647b3bf9ea00f258f4f84ee9a58453",
+      "contentRevision": "95c8676b5de15a86550f632d994a1bebe65efb51ea73ee3ad5acabbac6ba1c54",
       "variantId": "wetland_rain_garden_v0",
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
@@ -84,7 +164,7 @@
     },
     {
       "layoutId": "research_garden_teaching_arboretum_variant_3--native-v1",
-      "contentRevision": "00a2997139e8c17cf7c40d4f8b8aa6c2152da12cac84e1695fd262beb854cc37",
+      "contentRevision": "d76573a0a2a7281b71018a9f75dcee148fb8e401ad547e3053eba4f8a475c38e",
       "variantId": "research_garden_teaching_arboretum_variant_3",
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
@@ -102,9 +182,15 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "APPROVED PILOT 2026-09-26",
-      "runtime": "IN PROGRESS",
+      "runtime": "PILOT APP CHECKS PASS; SUNBURST AERIAL BROAD GEOMETRY PASS; COMPONENT DETAIL LIMITED BY SCALE",
       "publication": "NOT PUBLISHED",
-      "evidence": [],
+      "evidence": [
+        "app-basketball-reloaded.png",
+        "paid1-onecourt-top.png",
+        "paid1-source.png",
+        "paid1-result.png",
+        "street-connector-walk.png"
+      ],
       "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
     },
     {
@@ -115,9 +201,17 @@
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
       "visualApproval": "APPROVED PILOT 2026-09-26",
-      "runtime": "IN PROGRESS",
+      "runtime": "PILOT APP CHECKS PASS; SUNBURST STREET BROAD GEOMETRY PASS; HOOP COUNT PARTLY OCCLUDED",
       "publication": "NOT PUBLISHED",
-      "evidence": [],
+      "evidence": [
+        "app-long-preview.png",
+        "app-long-applied.png",
+        "app-long-top-check.png",
+        "both-reloaded.png",
+        "paid2-source.png",
+        "paid2-paired-source.png",
+        "paid2-result.png"
+      ],
       "projectId": "eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f"
     }
   ],
@@ -126,5 +220,23 @@
       "commit": "4c5c4e31c",
       "scope": "Native registry, server recipes, source freshness and reproducible staging"
     }
-  ]
+  ],
+  "sharedVerification": {
+    "scope": "Prepared-level native parks; registry SHA 061b2f18ad4de9da7889dd36fc790119a99a99067121e503d111300af30d2569",
+    "assetSurfaceProbe": {
+      "status": "PASS",
+      "evidence": "actual-native-surface-probe.json",
+      "detail": "All nine layouts sampled using production SHA-verifying loader and native surface/entrance probe functions."
+    },
+    "productionBuild": {
+      "status": "PASS",
+      "evidence": "production-build-checkpoint.json",
+      "limit": "Current shared fixes plus pair-one activation. Final activations require rebuild; browser smoke pending."
+    },
+    "productionAssetResponses": {
+      "status": "PASS",
+      "evidence": "production-http-checkpoint.json",
+      "detail": "11 of 11 native asset HTTP responses match SHA-256."
+    }
+  }
 }

@@ -73,20 +73,42 @@ pilot passes in a disposable project and its visual review is recorded.
 Next pairs: Sculpture/Orchard; Performance/Square; Wetland/Teaching.
 
 Paid authorization: **at most five single-image Sunburst submissions**, failed
-requests included. Current submitted count: **0**. The required sequence is
+requests included. Current submitted count: **2** (native Basketball aerial and Long street succeeded). The required sequence is
 native Basketball aerial, Long Basketball street, Botanical walk, mixed eight
 parks aerial, Teaching street after movement/reload. No comparison batches,
 automatic paid retries or provider substitution. Record request IDs and source
 captures in the external evidence ledger before proceeding to another request.
 
-Unfinished acceptance: authenticated placement/edit/save/reload and shared-ground
-checks, genuine production-preview browser verification, five paid image checks,
-and the six-park rollout (human pilot visual approval is already recorded). Do not infer completion from unit
-tests or the isolated visual fixture.
+Authenticated pilot checks now pass for native Basketball placement/reload,
+Long preview/cancel/apply, Botanical placement, move/rotate/undo/redo, reopening,
+walking-height inspection, overlap rejection and exact 3D image export.
+The exported source is `exact-source-current-view.png` in the evidence directory;
+its SHA-256 is `f91275684f1bc0f2c867a8c7f3e06e4046ab4b7c4d8eb5cb58b84d397f2afa6f`.
+Entrance connection verification passed on an 86 m Pedestrian Market Street:
+the Basketball approach meets the street, stays clear of the courts, is grounded
+in Walk and survives reload (`street-connector-walk.png`, `street-reloaded.png`).
+An earlier 166 m route near Botanical did not finish; its rejection reason was
+not captured and remains unconfirmed. No street implementation was changed.
+
+Unfinished acceptance: the next pairs' entrance/shared-ground checks, genuine production-preview
+browser verification, five paid image checks and the six-park rollout. Human pilot
+visual approval is recorded separately. Do not infer completion from unit tests
+or the isolated visual fixture.
 
 ## Verified local checkpoint
 
 `4c5c4e31c`: native registry, server recipes, source freshness and asset staging.
+`3dcaa1ae9`: native pilot editing, rendering and capture integration.
+`48cc42468`: capture checks use the current scene; layout controls follow undo.
+`81a434558`: unsupported custom terrain and invalid exclusions receive recoverable
+validation errors; native parks do not expose unsupported terrace controls.
+
+After the approved pilot passed its app gate, Sculpture Court and Neighbourhood
+Orchard were enabled for local pair-one review. Their measured entrances are
+recorded in the registry, with Orchard capped at its 1.8 m clear width. Their
+native GLB bytes are unchanged. Existing native approaches now reserve space
+against new placements and residual trees. Pair-one browser acceptance is pending;
+Performance/Square and Wetland/Teaching remain withheld.
 No push or publication. The frontend pilot is being verified in disposable
 project `eb222ee2-61ab-4f8f-a4ea-d2ac9f36148f`.
 
@@ -112,3 +134,59 @@ reattaches on effect restart; its browser regression remains pending. Treat
 hot-refresh evidence separately from saved-project reload. Native asset errors
 now keep Retry 3D update visible even if background compilation finishes.
 Unit checks cover that race and recovery after a failed asset download.
+
+The exact-layout runtime review records are initialized under the external
+`runtime-reviews/` directory. Unrun gates remain NOT TESTED. The source GLBs
+contain about 3.27 million triangles across all eight native assemblies;
+`model-budgets.json` records per-layout triangle counts and dependency bytes.
+This is a measured source budget, not a performance pass. The mixed-scene browser
+check must still establish usable visual performance without altering the originals.
+
+The first paid Sunburst result preserved the one-court park, its entrance and
+plaza relationship, and the separate conservatory garden in the aerial source.
+Source/result are `paid1-source.png` and `paid1-result.png`; individual hoop and
+furniture counts are too small at this scale for a definitive component audit.
+The external paid ledger records the hashes and the one submitted request.
+
+Shared regression checkpoint: six added cases reproduced stale native-layout load
+errors, missing side entrances (including 90-degree rotation), a lost approach
+inside an asymmetrically enlarged parcel, flat Walk height on native steps and
+paving-only probing of a timber deck. They now pass. Entrance protection follows
+the measured entry-to-arrival axis; the solver considers its projection onto the
+actual parcel edge. Walk samples verified native paving, boardwalk and lawn
+surfaces in the saved placement frame. Asset errors are scoped to that selection
+and cannot leak from superseded edits or deleted parks. Null exclusions now match
+the server's recoverable validation policy.
+
+Measured entrance metadata is prepared for all remaining layouts, but only
+Sculpture/Orchard are active for the current pair review. Performance/Square and
+Wetland/Teaching remain withheld. All original pilot registry entries and all
+asset identities are unchanged. The shared registries are byte-identical and the
+hash-verified staging check passes for all 11 files. Paid request two succeeded after this code checkpoint; its paired source matches
+the pre-submit source SHA exactly. Botanical comparison and pair-one app review
+are continuing on the frozen runtime.
+
+The production surface-probe functions were also bundled outside the repository
+and run against all nine layouts loaded through the real SHA-verifying asset
+loader on port 5180. All nine measured full-width entrance arrivals were found.
+Performance stair samples returned 0.1333, 0.4, 0.6667 and 1.2 m; Wetland returned
+0.22 m. The probe correctly retained missing approaches at Basketball, Sculpture
+and Teaching rather than covering their original paving. Results and script are
+in `actual-native-surface-probe.json` and `probe-native-surfaces.mts` under the
+external evidence directory. This is actual-asset verification, not a substitute
+for the pending in-app Walk and connection checks.
+
+The second Sunburst result preserved the two fenced court areas and the plaza
+stalls, lamps and benches. Four hoops are partly occluded, so complete visible
+hoop-count fidelity is not asserted. The paired original and pre-submit source
+both have SHA-256 `227b198a99f57ddc87fef8e957d592c3b4f8de3ddc767a6834a22a099982b9fb`.
+
+The latest shared fixes and pair-one activation also passed a fresh production build. The external production-build-checkpoint.json locks its manifest and registry SHA. It remains a bounded bundle/asset check; production browser acceptance and the final all-eight rebuild are still pending.
+
+The third and final pilot Sunburst comparison succeeded at Botanical walking height. Its paired original matches the pre-submit source SHA `75500aa7d5424371abd84a9043a64aeb5080fd0fd9fddee8ccb16ccd6e300178`. The split curving paths, conservatory, fountain and broad flower-bed layout remain recognizable in place. Added foliage/flower detail is not proof of plant-by-plant fidelity. Three of five authorized submissions have been used; mixed-scene and moved/reopened Teaching checks remain pending.
+
+Pair-one browser checks passed placement, rotation, move, Undo/Redo, reopening and overlap rejection for both exact parks in disposable project `5d79af7a-f92b-406b-b52d-f05083b48743` (361 x 224 m prepared site). Orchard Walk and exact source passed. Sculpture exhibited speckled paving in Walk and exact capture. An actual-GLB ray probe found its zero-height paving/soil coplanar with its original edge/base cap at all 25 sampled ground positions. A runtime-only depth policy now prioritizes planar datum finishes using cloned materials; original geometry, material colours and model bytes remain unchanged. Focused tests and type-check pass; browser recheck is pending and the pair remains unaccepted.
+
+The first conventional polygon-offset fix failed its browser recheck. The active globe uses logarithmic fragment depth; the finish policy now adds an explicit small conditional depth bias after Three's log-depth calculation as well. A real-asset probe confirms only Sculpture's planar paving and soil receive the policy, while originals remain untouched. The focused shader/material tests and type-check pass; the second browser recheck is pending.
+
+The second depth fix passed Walk before/after a small camera turn and the exact captured source (`pair1-depthfix2-sculpture-exact-source.png`): the broad moving patch is gone, with paving/soil still present and no new shader/compile errors observed. The remaining small triangular flecks are the original native gravel aggregate (source builder lines 127–138, heights 6–14 mm), not the previous overlap artifact. Fine close-range gravel/shadow aliasing is recorded as a visual follow-up. Old development-HMR page errors remain historical session evidence; fresh-page logging and pair-one street connections are still being checked.

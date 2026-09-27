@@ -71,6 +71,7 @@ describe('native parks',()=>{
     expect(parkLayoutProposal(p,long,[p]).problem).toContain('prepared level ground');
     expect(JSON.stringify(p)).toBe(before);
     expect(nativeParkFitProblem({...p,properties:{...zone().properties,park_exclusion_rings:[null]}})).toContain('exclusion areas are invalid');
+    expect(nativeParkFitProblem({...p,properties:{...zone().properties,park_exclusion_rings:null}})).toContain('exclusion areas are invalid');
   });
   it('accepts an irregular parcel only while its actual notch clears the intact park',()=>{
     const p=zone(),east=111320*Math.cos(51.04*Math.PI/180);

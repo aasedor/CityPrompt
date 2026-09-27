@@ -4,28 +4,34 @@ import { verifiedScene } from './nativeParkAssets';
 
 type Point = [number, number];
 type PavingProbe = (point: Point) => number | null;
-const pavingMeshes = new WeakMap<THREE.Group, THREE.Mesh[]>();
+type SurfaceLayout = Pick<NativeParkLayout, 'mode' | 'surfaceRegions' | 'assets'> & { walkSurfaceMaterials?: readonly string[] };
+const pavingMeshes = new WeakMap<THREE.Group, Map<string, THREE.Mesh[]>>();
 
 /** Read the verified assembly's actual paving; never infer a path from its bbox. */
-export function nativePavingProbe(layout: NativeParkLayout): PavingProbe {
+export function nativePavingProbe(layout: SurfaceLayout, includeLawn = false): PavingProbe {
+  const materials = new Set(layout.walkSurfaceMaterials ?? ['paving']);
+  if (includeLawn) materials.add('grass');
+  const materialKey = [...materials].sort().join('|');
   if (layout.mode === 'module_assembly') return ([x, y]) => {
     let material: string | null = 'grass';
     for (const region of layout.surfaceRegions) {
       if (Math.abs(x - region.x) <= region.width / 2 && Math.abs(y - region.y) <= region.depth / 2) material = region.material;
     }
-    return material === 'paving' ? 0 : null;
+    return material && materials.has(material) ? 0 : null;
   };
   const scene = verifiedScene(layout.assets.assembly!);
-  let meshes = pavingMeshes.get(scene);
+  let cached = pavingMeshes.get(scene);
+  if (!cached) { cached = new Map(); pavingMeshes.set(scene, cached); }
+  let meshes = cached.get(materialKey);
   if (!meshes) {
     scene.updateMatrixWorld(true);
     meshes = [];
     scene.traverse(object => {
       if (!(object instanceof THREE.Mesh)) return;
-      const materials = Array.isArray(object.material) ? object.material : [object.material];
-      if (materials.some(material => material.name === 'paving')) meshes!.push(object);
+      const objectMaterials = Array.isArray(object.material) ? object.material : [object.material];
+      if (objectMaterials.some(material => materials.has(material.name))) meshes!.push(object);
     });
-    pavingMeshes.set(scene, meshes);
+    cached.set(materialKey, meshes);
   }
   const ray = new THREE.Raycaster();
   return ([x, y]) => {
@@ -34,7 +40,7 @@ export function nativePavingProbe(layout: NativeParkLayout): PavingProbe {
     const hit = ray.intersectObjects(meshes!, false).find(candidate => {
       const mesh = candidate.object as THREE.Mesh;
       const material = Array.isArray(mesh.material) ? mesh.material[candidate.face?.materialIndex ?? 0] : mesh.material;
-      return material.name === 'paving';
+      return materials.has(material.name);
     });
     return hit ? hit.point.y : null;
   };

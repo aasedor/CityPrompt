@@ -130,11 +130,18 @@
           "z": 0
         }
       ],
-      "entrances": [],
-      "status": "withheld",
+      "entrances": [
+        {
+          "x": 0,
+          "y": -22,
+          "widthM": 2.4,
+          "arrivalY": -19
+        }
+      ],
+      "status": "pilot",
       "visualStatus": "source_baseline",
       "runtimeStatus": "NOT TESTED",
-      "contentRevision": "3ee12006e3df5abca1b1d19df0dcdea7312676620a16ac77ffd582a4f61a08e5",
+      "contentRevision": "5ea667d78cf619fd919494c852c1fe5751f3e951fdc8deccba3904d52500af62",
       "surfacePalette": {
         "grass": [
           0.21,
@@ -229,11 +236,18 @@
           "width": 1.8
         }
       ],
-      "entrances": [],
-      "status": "withheld",
+      "entrances": [
+        {
+          "x": 0,
+          "y": -15,
+          "widthM": 1.8,
+          "arrivalY": -12
+        }
+      ],
+      "status": "pilot",
       "visualStatus": "source_baseline",
       "runtimeStatus": "NOT TESTED",
-      "contentRevision": "51eb19d47e9667453b6a35637c8e8e8b967814556c5c831d87d4dfc6c9dde2ba",
+      "contentRevision": "746f5c3037bef70511e1529b7c7ca536697ea9931798231ca4a2c68306bf80ff",
       "surfacePalette": {
         "grass": [
           0.21,
@@ -306,11 +320,19 @@
           "z": 0.4
         }
       ],
-      "entrances": [],
+      "entrances": [
+        {
+          "x": -32,
+          "y": 0,
+          "widthM": 2.4,
+          "arrivalX": -28.5,
+          "arrivalY": 0
+        }
+      ],
       "status": "withheld",
       "visualStatus": "source_baseline",
       "runtimeStatus": "NOT TESTED",
-      "contentRevision": "435e67a190d930c71b7d51d8c288cd2c30ccf848d94c3ab5a09b6b6a216a94a4",
+      "contentRevision": "e5bbe20222fe6af93f05c33a8ef4688f57b51b8636d0d5dee5672d1c2840d1ee",
       "surfacePalette": {
         "grass": [
           0.21,
@@ -394,11 +416,18 @@
           "width": 2.4
         }
       ],
-      "entrances": [],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -14,
+          "widthM": 2.4,
+          "arrivalY": -11
+        }
+      ],
       "status": "withheld",
       "visualStatus": "source_baseline",
       "runtimeStatus": "NOT TESTED",
-      "contentRevision": "cf689bdefdd0b9da3fef5437b6fd9d304399295aa51f071b6fb7f5d043dfd46c",
+      "contentRevision": "b0310f14be314d41a61167a5d62627fbadbf65ce37f1d3dc2e3feaef2f8c7400",
       "surfacePalette": {
         "grass": [
           0.21,
@@ -482,11 +511,18 @@
           "z": 0.22
         }
       ],
-      "entrances": [],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -32,
+          "widthM": 2,
+          "arrivalY": -29
+        }
+      ],
       "status": "withheld",
       "visualStatus": "source_baseline",
       "runtimeStatus": "NOT TESTED",
-      "contentRevision": "951555610b3568b5f261e0b393693a589e647b3bf9ea00f258f4f84ee9a58453",
+      "contentRevision": "95c8676b5de15a86550f632d994a1bebe65efb51ea73ee3ad5acabbac6ba1c54",
       "surfacePalette": {
         "grass": [
           0.21,
@@ -512,6 +548,9 @@
           32.0,
           4.753912448883057
         ]
+      ],
+      "walkSurfaceMaterials": [
+        "timber"
       ]
     },
     {
@@ -549,11 +588,18 @@
           "width": 2.2
         }
       ],
-      "entrances": [],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -25,
+          "widthM": 2.2,
+          "arrivalY": -19
+        }
+      ],
       "status": "withheld",
       "visualStatus": "source_baseline",
       "runtimeStatus": "NOT TESTED",
-      "contentRevision": "00a2997139e8c17cf7c40d4f8b8aa6c2152da12cac84e1695fd262beb854cc37",
+      "contentRevision": "d76573a0a2a7281b71018a9f75dcee148fb8e401ad547e3053eba4f8a475c38e",
       "surfacePalette": {
         "grass": [
           0.21,

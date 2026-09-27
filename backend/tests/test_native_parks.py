@@ -27,6 +27,27 @@ def test_shared_registry_is_byte_identical():
     assert (root/'backend/app/data/nativeParks.json').read_bytes()==(root/'frontend/src/data/nativeParks.json').read_bytes()
 
 
+@pytest.mark.parametrize('layout', registry()['layouts'], ids=lambda p: p['id'])
+def test_every_registered_layout_keeps_identity_when_rotated_in_a_larger_parcel(layout):
+    lon, lat, yaw = -114.05, 51.04, 1.2
+    east = 111320 * math.cos(math.radians(lat))
+    frame = {'longitude': lon, 'latitude': lat, 'yaw': yaw}
+    props = {'green_space_archetype_id': layout['archetypeId'],
+             'green_space_selected_variant_id': layout['variantId'],
+             'green_space_native_layout': {'layout_id': layout['id'], 'content_revision': layout['contentRevision'], 'frame': frame}}
+    parcel = Polygon([(lon+x/east, lat+y/111320) for x,y in [(-80,-80),(80,-80),(80,80),(-80,80)]])
+    before = copy.deepcopy(props)
+    recipe = plan_native_park(parcel, props)
+    assert recipe.frame.model_dump() == frame
+    assert recipe.asset_hashes == {key: asset['sha256'] for key, asset in layout['assets'].items()}
+    assert public_realm_recipe_identity(recipe.model_dump(mode='json')) is not None
+    assert props == before
+    # The larger surrounding parcel cannot excuse an exclusion through the model.
+    props['park_exclusion_rings'] = [[(lon-.00001,lat-.00001),(lon+.00001,lat-.00001),(lon+.00001,lat+.00001),(lon-.00001,lat+.00001)]]
+    with pytest.raises(ValueError, match='complete'):
+        plan_native_park(parcel, props)
+
+
 def test_native_layout_rejects_custom_terrain_without_replacing_it():
     polygon,props=fixture()
     props['park_terrain']={'version':1,'mode':'terraced'}

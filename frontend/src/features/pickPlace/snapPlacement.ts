@@ -6,6 +6,7 @@ import { streetFacingDegrees } from './streetFacing';
 import { bufferLineToPolygon, effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/roadGeometry';
 import { readBuildingEntrance, resolvePedestrianConnections } from './pedestrianConnections';
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
+import { nativeParkApproaches } from '@/features/parks/nativeParkReservations';
 
 type Point = { x: number; y: number };
 export function snapBuildingMove(zone: SiteZone, coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null) {
@@ -42,6 +43,10 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
     if (plan.ownerId===ignoreId || plan.status!=='connected') continue;
     const owner=zones.find(z=>z.id===plan.ownerId)!;
     for (const strip of plan.strips) reserves.push({...owner,id:`snap-path:${strip.id}`,zone_type:'parking',coordinates:bufferLineToPolygon([strip.start,strip.end],strip.widthM+.3)});
+  }
+  for (const [index, approach] of nativeParkApproaches(context, true).entries()) {
+    reserves.push({...approach.owner, id:`snap-park-path:${approach.owner.id}:${index}`, zone_type:'parking',
+      name:'the park entrance path', coordinates:bufferLineToPolygon(approach.points, approach.widthM + .3)});
   }
   zones=[...zones,...reserves];
   const problem = placementProblem(coordinates, zones, boundary, ignoreId) ?? (connectionFits(coordinates) ? null : 'Leave room for the entrance path.');

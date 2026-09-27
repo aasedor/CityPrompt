@@ -13,10 +13,11 @@ import { useOwnParkAssemblyGround } from '@/components/viewer/globe/ParkAssembly
 import { direct3DInstanceUserData, direct3DProposalUserData, direct3DZoneInstanceDescriptor } from '@/components/viewer/globe/direct3dCapture';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { nativePavingProbe, trimAccessAtNativePaving } from './nativeParkAccess';
+import { cloneNativeParkScene } from './nativeParkSurfaceDepth';
 
 function Module({asset}:{asset:Asset}) {
   const scene=verifiedScene(asset);
-  const clone=useMemo(()=>{const copy=scene.clone(true);copy.traverse(o=>{if ((o as THREE.Mesh).isMesh) {o.castShadow=true;o.receiveShadow=true;}});return copy;},[scene]);
+  const clone=useMemo(()=>cloneNativeParkScene(scene),[scene]);
   return <primitive object={clone} dispose={null}/>;
 }
 /** Whole native modules retain authored transforms, including source vegetation scale. */
@@ -38,13 +39,13 @@ export function NativeParkModel({layout}:{layout:NativeParkLayout}) {
     <group rotation={[Math.PI/2,0,0]}><Module asset={layout.assets[p.asset as keyof typeof layout.assets]!}/></group>
   </group>)}</>;
 }
-class ParkBoundary extends Component<{children:ReactNode;zoneId:string},{failed:boolean;message:string}> {
+class ParkBoundary extends Component<{children:ReactNode;zoneId:string;revision:string},{failed:boolean;message:string}> {
   state={failed:false,message:''};
   retry=()=>this.setState({failed:false,message:''});
   componentDidMount(){window.addEventListener('cityprompt:retry-native-parks',this.retry);}
   componentWillUnmount(){window.removeEventListener('cityprompt:retry-native-parks',this.retry);}
   static getDerivedStateFromError(){return {failed:true,message:'The park model could not be loaded or verified. Choose Retry 3D update to load it again.'};}
-  componentDidCatch(){window.dispatchEvent(new CustomEvent('cityprompt:native-park-error',{detail:{zoneId:this.props.zoneId,message:this.state.message}}));}
+  componentDidCatch(){window.dispatchEvent(new CustomEvent('cityprompt:native-park-error',{detail:{zoneId:this.props.zoneId,revision:this.props.revision,message:this.state.message}}));}
   render(){return this.state.failed?<group userData={{nativeParkStatus:'error',nativeParkError:this.state.message}}/>:this.props.children;}
 }
 function LoadedPark({zone,layout}:{zone:SiteZone;layout:NativeParkLayout}) {
@@ -78,7 +79,7 @@ export function NativeParkLayer({zones,terrainHeight}:{zones:SiteZone[];terrainH
       && boundary?.properties?.community_3d_mask_existing_tiles===true && height!==null && Number.isFinite(height);
     return <group key={`${zone.id}:${zone.updated_at}`} userData={{...direct3DProposalUserData('park'),...direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id,'park')),
       nativeParkZone:zone.id,nativeParkRevision:JSON.stringify(zone.properties?.green_space_native_layout)}}>
-      <ParkBoundary zoneId={zone.id}><Suspense fallback={<group userData={{nativeParkStatus:'loading'}}/>}>
+      <ParkBoundary zoneId={zone.id} revision={JSON.stringify(zone.properties?.green_space_native_layout ?? null)}><Suspense fallback={<group userData={{nativeParkStatus:'loading'}}/>}>
         {supported && frame?<EastNorthUpFrame lat={frame.latitude*Math.PI/180} lon={frame.longitude*Math.PI/180} height={height}>
           <group rotation={[0,0,frame.yaw]}><LoadedPark zone={zone} layout={resolved.layout}/></group>
         </EastNorthUpFrame>:<group userData={{nativeParkStatus:'unsupported',nativeParkError:'Keep the complete park on a prepared level site. Review ground or enlarge the park parcel.'}}/>}

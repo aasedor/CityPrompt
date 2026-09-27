@@ -156,6 +156,9 @@ function supported(zone: SiteZone): boolean {
 }
 
 function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAccessSettings, eligibleStreetZoneIds: ReadonlySet<string>, transport: ExistingTransport): ParkAccessPlan {
+  const native = readNativePark(park);
+  const entryWidth = native?.layout.entrances[0]?.widthM;
+  if (entryWidth) settings = {...settings, pathWidthM: Math.min(settings.pathWidthM, entryWidth)};
   const empty = (status: ParkAccessPlan['status'], reason: string): ParkAccessPlan => ({ parkZoneId: park.id, status, reason, connections: [], paths: [] });
   if (park.properties?.park_terrain) return empty('unresolved', 'The park follows measured hillside ground. Its street connection needs a measured sidewalk landing and graded approach; the old flat connector is not shown.');
   // Even an explicitly empty list is authored intent, not permission to invent gates.
@@ -191,7 +194,6 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
       : [[-rx, -ry], [rx, -ry], [rx, ry], [-rx, ry]];
     return points.map(([x, y]) => add(center, [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)]));
   };
-  const native = readNativePark(park);
   const fixed = (native ? [] : fit.guides).filter((g) => !['line', 'axis', 'polyline', 'path_loop'].includes(g.kind)).map((g) => guidePolygon(g));
   for (const placement of (native || isNeighborhoodParkPilot(park) || isParkTrio(park)) ? [] : computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
     if (placement.propId !== 'playground' && placement.propId !== 'pavilion') continue;
@@ -210,6 +212,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     && [...fixed, ...obstacles].every((obstacle) => !hitsObstacle(a, b, obstacle, half + settings.obstacleClearanceM))
     && roadPolygons.every((road) => !corridorOverlaps(a, b, road.ring, half));
   let network: P[][] = fit.guides.filter((g) => g.kind === 'polyline' && g.closed && g.points).map((g) => g.points!.map(guidePoint));
+  let nativeGate: P | null = null;
   if (native) {
     const {layout,selection:{frame:f}}=native;
     const entry=layout.entrances[0];
@@ -217,15 +220,27 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     const nativeLocal=(x:number,y:number):P=>local([
       f.longitude+(x*Math.cos(f.yaw)-y*Math.sin(f.yaw))/metersPerDegLon(f.latitude),
       f.latitude+(x*Math.sin(f.yaw)+y*Math.cos(f.yaw))/METERS_PER_DEG_LAT]);
-    const rectangle=(x0:number,y0:number,x1:number,y1:number):P[]=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]].map(([x,y])=>nativeLocal(x,y));
-    // Protect the authored park everywhere except the measured entrance approach.
-    // The shared solver may add a connector, never a path through planting/courts.
-    const clearance=settings.pathWidthM/2+settings.obstacleClearanceM;
-    const corridor=entry.widthM/2+clearance;
-    fixed.push(rectangle(-layout.widthM/2,-layout.depthM/2,entry.x-corridor,layout.depthM/2),
-      rectangle(entry.x+corridor,-layout.depthM/2,layout.widthM/2,layout.depthM/2),
-      rectangle(entry.x-corridor,entry.arrivalY+clearance+.05,entry.x+corridor,layout.depthM/2));
-    network=[[nativeLocal(entry.x,entry.arrivalY-.02),nativeLocal(entry.x,entry.arrivalY)]];
+    const arrivalX = 'arrivalX' in entry && typeof entry.arrivalX === 'number' ? entry.arrivalX : entry.x;
+    const dx = arrivalX - entry.x, dy = entry.arrivalY - entry.y, length = Math.hypot(dx, dy);
+    if (length < .02) return empty('unresolved', 'This native park entrance needs a measured arrival inside the park.');
+    const inward: P = [dx / length, dy / length], across: P = [inward[1], -inward[0]];
+    const corridorPoint = (u: number, v: number): P => nativeLocal(entry.x + across[0] * u + inward[0] * v, entry.y + across[1] * u + inward[1] * v);
+    const corners: P[] = [[-layout.widthM/2,-layout.depthM/2],[layout.widthM/2,-layout.depthM/2],[layout.widthM/2,layout.depthM/2],[-layout.widthM/2,layout.depthM/2]];
+    const projected = corners.map(p => { const d = sub(p, [entry.x, entry.y]); return [dot(d, across), dot(d, inward)]; });
+    const uMin = Math.min(...projected.map(p => p[0])), uMax = Math.max(...projected.map(p => p[0]));
+    const vMin = Math.min(...projected.map(p => p[1])), vMax = Math.max(...projected.map(p => p[1]));
+    const protect = (u0: number, v0: number, u1: number, v1: number) => {
+      if (u1 > u0 && v1 > v0) fixed.push([[u0,v0],[u1,v0],[u1,v1],[u0,v1]].map(([u,v]) => corridorPoint(u,v)));
+    };
+    // Protect the authored composition on both sides of its measured approach.
+    // The entry-to-arrival axis also handles side stairs and rotated layouts.
+    const clearance = settings.pathWidthM / 2 + settings.obstacleClearanceM;
+    const corridor = entry.widthM / 2 + clearance;
+    protect(uMin, vMin, -corridor, vMax);
+    protect(corridor, vMin, uMax, vMax);
+    protect(-corridor, length + clearance + .05, corridor, vMax);
+    nativeGate = nativeLocal(entry.x, entry.y);
+    network = [[corridorPoint(0, length - .02), corridorPoint(0, length)]];
   }
   let extraLoop: P[] | null = null;
   if (profile.archetypeId.startsWith('urban_pocket_park')) {
@@ -292,7 +307,9 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
       if (edgeLength < settings.pathWidthM * 2) continue;
       let inward: P = [-delta[1] / edgeLength, delta[0] / edgeLength];
       if (!pointInside(add(lerp(edgeA, edgeB, 0.5), mul(inward, 0.05)), ring)) inward = mul(inward, -1);
-      for (const t of entrance ? [entrance.position!] : [0.5, 0.25, 0.75]) {
+      const nativePosition = nativeGate ? dot(sub(project(nativeGate, edgeA, edgeB), edgeA), delta) / (edgeLength * edgeLength) : null;
+      const positions = entrance ? [entrance.position!] : [...new Set([...(nativePosition === null ? [] : [nativePosition]), 0.5, 0.25, 0.75])];
+      for (const t of positions) {
         const gateway = lerp(edgeA, edgeB, t); const ingress = add(gateway, mul(inward, settings.pathWidthM + 0.5));
         if (!internalSafe(gateway, ingress, true)) continue;
         for (let i = 1; i < center.length; i += 1) {
@@ -358,7 +375,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
   const level=resolvePreparedSiteTerrainForZone(park,[...zones],0),base=resolvePreparedSiteTerrainForZone(boundary,[...zones],0);
   if(level!==null&&base!==null&&Math.abs(level-base)>.02)return empty('unresolved','This park has a separate terrace level. Its sidewalk entrance needs a graded approach and retaining-edge opening; the terrace pilot currently connects building and park plots only.');
   const connections: ParkAccessConnection[] = [];
-  for (const candidate of candidates.sort((a, b) => a.gap - b.gap || a.street.id.localeCompare(b.street.id) || a.gateway[0] - b.gateway[0] || a.gateway[1] - b.gateway[1]).slice(0, 32)) {
+  for (const candidate of candidates.sort((a, b) => (a.gap + (nativeGate ? distance(a.gateway, nativeGate) : 0)) - (b.gap + (nativeGate ? distance(b.gateway, nativeGate) : 0)) || a.street.id.localeCompare(b.street.id) || a.gateway[0] - b.gateway[0] || a.gateway[1] - b.gateway[1]).slice(0, 32)) {
     if (connections.some((c) => c.streetZoneId === candidate.street.id || distance(local(c.gateway), candidate.gateway) < settings.pathWidthM * 3)) continue;
     const route = findRoute(candidate.ingress);
     if (!route) continue;

@@ -23,7 +23,39 @@ function fixture() {
 }
 
 describe('manual park access planning', () => {
-  it.each(['basketball_court_v1--native-v1','basketball_court_v1--long-v1','botanical_garden_v3--native-v1'])('connects %s only through its authored entrance',id=>{
+  it.each([0, Math.PI / 2])('joins the Performance side entrance at yaw %s without crossing its amphitheatre', yaw => {
+    const layout = nativeParkLayouts.find(p => p.id === 'amphitheater_lawn_v0--native-v1')!;
+    const rotate = ([x,y]: number[]) => [x*Math.cos(yaw)-y*Math.sin(yaw), x*Math.sin(yaw)+y*Math.cos(yaw)];
+    const park = zone('performance','green_space',[[-32,-32],[32,-32],[32,32],[-32,32]].map(rotate));
+    park.properties = nativeParkProperties({},layout,park.coordinates);
+    const line = [[-38,-45],[-38,45]].map(rotate).map(ll);
+    const street = {...zone('street','road',[],{road_archetype_id:'narrow_residential_street',width:10,plan_centerline:line}),coordinates:bufferLineToPolygon(line,10)};
+    const boundary = {...zone('site','site_boundary',[[-120,-120],[120,-120],[120,120],[-120,120]],{terrain_elevation_m:1000}),is_active_boundary:true};
+    const plan = resolveManualParkAccess([park,street,boundary]).parks[0];
+    expect(plan.status).toBe('connected');
+    const points = plan.connections[0].path.map(xy).map(([x,y]) => [x*Math.cos(yaw)+y*Math.sin(yaw),-x*Math.sin(yaw)+y*Math.cos(yaw)]);
+    expect(points[points.length-1][0]).toBeCloseTo(-28.5,1);
+    expect(points.every(([x,y])=>x<=-28.45 && Math.abs(y)<1.3)).toBe(true);
+  });
+  it('keeps an offset native entrance attached when its parcel grows asymmetrically',()=>{
+    const layout=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--native-v1')!;
+    const park=zone('native','green_space',[[-15,-10],[85,-10],[85,75],[-15,75]]);
+    park.properties=nativeParkProperties({},layout,park.coordinates);
+    const selection=park.properties.green_space_native_layout as {frame:{longitude:number;latitude:number;yaw:number}};
+    [selection.frame.longitude,selection.frame.latitude]=ll([20,25]);
+    const line=[[-30,-16],[100,-16]].map(ll);
+    const street={...zone('street','road',[],{road_archetype_id:'narrow_residential_street',width:10,plan_centerline:line}),coordinates:bufferLineToPolygon(line,10)};
+    const {boundary}=fixture();
+    const plan=resolveManualParkAccess([park,street,boundary]).parks[0];
+    expect(plan.status).toBe('connected');
+    expect(xy(plan.connections[0].gateway)[0]).toBeCloseTo(20,1);
+    const points=plan.connections[0].path.map(xy);
+    expect(points[points.length-1][0]).toBeCloseTo(20,1);
+    expect(points[points.length-1][1]).toBeCloseTo(11.5,1);
+    expect(points.every(([x])=>Math.abs(x-20)<.1)).toBe(true);
+  });
+
+  it.each(['basketball_court_v1--native-v1','basketball_court_v1--long-v1','botanical_garden_v3--native-v1','sculpture_garden_v0--native-v1','student_neighbourhood_orchard_v1--native-v1'])('connects %s only through its authored entrance',id=>{
     const layout=nativeParkLayouts.find(p=>p.id===id)!;
     const park=zone('native','green_space',[[-layout.occupiedWidthM/2,0],[layout.occupiedWidthM/2,0],[layout.occupiedWidthM/2,layout.occupiedDepthM],[-layout.occupiedWidthM/2,layout.occupiedDepthM]]);
     park.properties=nativeParkProperties({},layout,park.coordinates);
@@ -31,6 +63,7 @@ describe('manual park access planning', () => {
     const plan=resolveManualParkAccess([park,street,boundary]).parks[0];
     expect(plan.status).toBe('connected');
     expect(plan.connections).toHaveLength(1);
+    expect(plan.connections[0].widthM).toBeLessThanOrEqual(layout.entrances[0].widthM);
     const path=plan.connections[0].path;
     const end=xy(path[path.length-1]);
     expect(end[0]).toBeCloseTo(0,1);

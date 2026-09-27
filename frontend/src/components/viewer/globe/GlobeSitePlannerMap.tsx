@@ -4414,6 +4414,7 @@ export function GlobeSitePlannerMap({
                 >
                   <GlobeResidualLandscapeLayer
                     zones={[zone]}
+                    accessZones={connectedSceneZones}
                     terrainHeight={terrainElevation}
                   />
                 </group>
