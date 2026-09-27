@@ -27,7 +27,7 @@ describe('exact local validation catalogue', () => {
   it('never stretches or substitutes a fixed review fixture', () => {
     const fixed=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.properties.validation_fixed_fixture);
     expect(fixed.map(a=>a.model.variantId).sort()).toEqual([
-      'amphitheater_lawn_v0','student_garden_square_v1','wetland_rain_garden_v0',
+      'wetland_rain_garden_v0',
       'amsterdam_gracht_v1','brt_bus_rapid_transit_corridor_v0','student_planted_shared_lane_v1',
       'student_quiet_residential_street_v1','landmark_signature_bridge_v2',
     ].sort());

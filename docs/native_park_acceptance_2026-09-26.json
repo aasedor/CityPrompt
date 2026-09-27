@@ -97,17 +97,19 @@
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
-      "visualApproval": "AGENT WALK REVIEW PASS AFTER FIX; NO NEW HUMAN APPROVAL",
-      "runtime": "EDIT/RELOAD/WALK/EXACT CAPTURE PASS AFTER DEPTH FIX; STREET CONNECTION PENDING",
+      "visualApproval": "AGENT NATIVE AERIAL/WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
+      "runtime": "PAIR APP CHECKS PASS; MIXED SCENE AND FINAL PRODUCTION CHECK PENDING",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "pair1-runtime-results.json",
-        "pair1-reopen-top.png",
-        "pair1-depthfix2-sculpture-walk-turn.png",
-        "pair1-depthfix2-sculpture-exact-source.png"
+        "pair1-both-connections-reloaded-top.png",
+        "pair1-access-probe.json"
       ],
       "activation": "LOCAL PAIR 1 REVIEW",
-      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743",
+      "limitations": [
+        "Sculpture connector partly occluded by Market stalls in walking view; visible from above. Fine native gravel shadow aliasing remains a visual follow-up."
+      ]
     },
     {
       "layoutId": "student_neighbourhood_orchard_v1--native-v1",
@@ -116,15 +118,17 @@
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
-      "visualApproval": "AGENT WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
-      "runtime": "EDIT/RELOAD/WALK/EXACT CAPTURE PASS; STREET CONNECTION PENDING",
+      "visualApproval": "AGENT NATIVE AERIAL/WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
+      "runtime": "PAIR APP CHECKS PASS; MIXED SCENE AND FINAL PRODUCTION CHECK PENDING",
       "publication": "NOT PUBLISHED",
       "evidence": [
         "pair1-runtime-results.json",
-        "pair1-reopen-top.png"
+        "pair1-both-connections-reloaded-top.png",
+        "pair1-access-probe.json"
       ],
       "activation": "LOCAL PAIR 1 REVIEW",
-      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743",
+      "limitations": []
     },
     {
       "layoutId": "amphitheater_lawn_v0--native-v1",
@@ -133,10 +137,15 @@
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
-      "visualApproval": "SOURCE BASELINE ONLY",
-      "runtime": "NOT TESTED",
+      "visualApproval": "AGENT NATIVE WALK/EXACT REVIEW PASS; NO NEW HUMAN APPROVAL",
+      "runtime": "BOUNDED PAIR APP CHECKS PASS; EXTERNAL CONNECTION AND FINAL MIXED/PRODUCTION CHECKS NOT TESTED",
       "publication": "NOT PUBLISHED",
-      "evidence": []
+      "evidence": [
+        "pair2-runtime-results.json",
+        "pair2-performance-exact-source.png"
+      ],
+      "activation": "LOCAL PAIR 2 REVIEW",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
     },
     {
       "layoutId": "student_garden_square_v1--native-v1",
@@ -145,10 +154,15 @@
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
-      "visualApproval": "SOURCE BASELINE ONLY",
-      "runtime": "NOT TESTED",
+      "visualApproval": "AGENT NATIVE WALK/EXACT REVIEW PASS; NO NEW HUMAN APPROVAL",
+      "runtime": "BOUNDED PAIR APP CHECKS PASS; EXTERNAL CONNECTION AND FINAL MIXED/PRODUCTION CHECKS NOT TESTED",
       "publication": "NOT PUBLISHED",
-      "evidence": []
+      "evidence": [
+        "pair2-runtime-results.json",
+        "pair2-square-exact-source.png"
+      ],
+      "activation": "LOCAL PAIR 2 REVIEW",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
     },
     {
       "layoutId": "wetland_rain_garden_v0--native-v1",

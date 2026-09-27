@@ -190,3 +190,34 @@ Pair-one browser checks passed placement, rotation, move, Undo/Redo, reopening a
 The first conventional polygon-offset fix failed its browser recheck. The active globe uses logarithmic fragment depth; the finish policy now adds an explicit small conditional depth bias after Three's log-depth calculation as well. A real-asset probe confirms only Sculpture's planar paving and soil receive the policy, while originals remain untouched. The focused shader/material tests and type-check pass; the second browser recheck is pending.
 
 The second depth fix passed Walk before/after a small camera turn and the exact captured source (`pair1-depthfix2-sculpture-exact-source.png`): the broad moving patch is gone, with paving/soil still present and no new shader/compile errors observed. The remaining small triangular flecks are the original native gravel aggregate (source builder lines 127–138, heights 6–14 mm), not the previous overlap artifact. Fine close-range gravel/shadow aliasing is recorded as a visual follow-up. Old development-HMR page errors remain historical session evidence; fresh-page logging and pair-one street connections are still being checked.
+
+
+## Pair-one checkpoint and pair-two activation
+
+Pair one passed ordinary placement, movement, rotation, Undo/Redo, save/reopen,
+overlap rejection and native aerial/Walk/exact capture checks. The Sculpture
+floor fix passed its second browser recheck. Both saved entrance connections
+survive reopening: Sculpture 2.2 m wide across a 7.23 m sidewalk-centre gap;
+Orchard 1.8 m across 4.27 m after an ordinary move closer to the street. The
+Orchard path is clearly continuous from Walk; Sculpture is visible from above
+but partly obscured by Market stalls at walking height. This visibility limit
+and fine native gravel shadow aliasing remain recorded. Original asset bytes
+are unchanged. Evidence: external pair1-runtime-results.json and
+pair1-access-probe.json. Protected Basketball/Botanical smoke checks passed.
+
+Performance Lawn and Timber & Stone Square are now enabled for bounded local
+pair-two review. Only activation status changed; immutable content and asset
+identities did not. Wetland and Teaching remain withheld. The transition passed
+23 focused frontend tests, 24 backend native tests, TypeScript checking and all
+11 staged asset checks. Three paid requests have succeeded; the final two remain
+unsubmitted. No push or publication.
+
+Pair two passed bounded student-control checks: original placement, rotation,
+movement, Undo/Redo, reopening, and refusal of a 240 × 240 m parcel without
+disturbing the four saved parks. Exact native captures show Performance's
+curving path, stage and rising tiers grounded, and Square's paving, benches,
+lamps, planting and trees intact. Numeric stair/gate dimensions are actual-asset
+and test evidence, not browser measurements. An overlap click found adjacent
+free space; the extra disposable Square was removed through normal controls.
+External street connections for this pair remain NOT TESTED until the final
+mixed-scene check. Evidence: pair2-runtime-results.json. Paid total remains three.
