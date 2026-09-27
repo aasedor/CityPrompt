@@ -54,4 +54,17 @@ describe('verified park loading', () => {
     expect(verifiedScene(first)).toBeInstanceOf(Group);
     expect(fetch).toHaveBeenCalledTimes(4);
   });
+  it('explains an interrupted download and recovers on retry', async () => {
+    const bytes = payload({ asset: { version: '2.0' } });
+    const asset = await assetFor(bytes);
+    const interrupted = Object.assign(new Error('The user aborted a request.'), { name: 'AbortError' });
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValueOnce(interrupted).mockResolvedValue({ ok: true, arrayBuffer: async () => bytes }));
+    vi.spyOn(GLTFLoader.prototype, 'parseAsync').mockResolvedValue({ scene: new Group() } as never);
+    const { verifiedScene, clearFailedNativeParkLoads } = await import('./nativeParkAssets');
+    await suspension(() => verifiedScene(asset));
+    expect(() => verifiedScene(asset)).toThrow('download was interrupted');
+    clearFailedNativeParkLoads();
+    await suspension(() => verifiedScene(asset));
+    expect(verifiedScene(asset)).toBeInstanceOf(Group);
+  });
 });

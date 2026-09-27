@@ -5,9 +5,18 @@ type Resource = {promise:Promise<void>;scene?:THREE.Group;error?:Error};
 const resources = new Map<string,Resource>();
 export function clearFailedNativeParkLoads() { for (const [key,value] of resources) if (value.error) resources.delete(key); window.dispatchEvent(new Event('cityprompt:retry-native-parks')); }
 async function loadVerified(asset: Asset): Promise<THREE.Group> {
-  const response=await fetch(asset.url,{signal:AbortSignal.timeout(10000)});
-  if (!response.ok) throw new Error('The park model could not be loaded. Retry the 3D update.');
-  const bytes=await response.arrayBuffer();
+  let bytes: ArrayBuffer;
+  try {
+    // Large native parks may download alongside several other models in a mixed scene.
+    const response=await fetch(asset.url,{signal:AbortSignal.timeout(45000)});
+    if (!response.ok) throw new Error('The park model could not be loaded. Retry the 3D update.');
+    bytes=await response.arrayBuffer();
+  } catch (error) {
+    if (error instanceof Error && (error.name==='AbortError' || error.name==='TimeoutError')) {
+      throw new Error('The park model download was interrupted. Choose Retry 3D update.');
+    }
+    throw error;
+  }
   const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');
   if (digest!==asset.sha256 || bytes.byteLength<20 || new DataView(bytes).getUint32(0,true)!==0x46546c67) throw new Error('The park model does not match its saved revision.');
   const jsonSize=new DataView(bytes).getUint32(12,true);
