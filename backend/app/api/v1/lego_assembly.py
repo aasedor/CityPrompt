@@ -2087,6 +2087,7 @@ async def place_community_3d(
                 source_zones.append(
                     ResidualSourceZone(
                         zone_id=str(zone.id),
+                        native_selection=properties.get('green_space_native_layout'),
                         kind=_community_3d_kind(zone) or str(zone.zone_type),
                         role=str(role) if role is not None else None,
                         geometry=to_shape(zone.geometry),

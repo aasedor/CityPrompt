@@ -39,6 +39,14 @@ class ResidualSourceZone:
     kind: str
     geometry: BaseGeometry
     role: str | None = None
+    native_selection: dict | None = None
+
+
+def residual_occupied_geometry(zone: ResidualSourceZone) -> BaseGeometry:
+    if zone.native_selection is not None:
+        from app.services.native_parks import native_park_ground
+        return native_park_ground(zone.native_selection)
+    return zone.geometry
 
 
 _REGION_ORDER = {
@@ -329,6 +337,7 @@ def community_3d_source_properties(
                     {
                         key.removeprefix("green_space_"): _canonical_semantic_value(props.get(key))
                         for key in (
+                            "green_space_native_layout",
                             "green_space_aesthetic",
                             "green_space_aesthetic_category",
                             "green_space_subcategory",
@@ -800,6 +809,7 @@ def residual_landscape_source_hash(
                     "kind": zone.kind,
                     "role": zone.role,
                     "geometry": _normalized_wkb(_repair_polygonal(zone.geometry)),
+                    **({"native_park": zone.native_selection} if zone.native_selection is not None else {}),
                 }
                 for zone in zones
                 if zone.role != "framework_height"
@@ -1002,7 +1012,7 @@ def build_residual_landscape_recipe(
     occupied_by_kind: dict[str, list[BaseGeometry]] = {}
     occupied: list[BaseGeometry] = []
     for zone in zones:
-        geometry = _repair_polygonal(project_geometry(_repair_polygonal(zone.geometry), to_metric))
+        geometry = _repair_polygonal(project_geometry(_repair_polygonal(residual_occupied_geometry(zone)), to_metric))
         if geometry.is_empty:
             continue
         clipped = _repair_polygonal(geometry.intersection(boundary_metric))

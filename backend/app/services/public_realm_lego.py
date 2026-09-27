@@ -61,6 +61,9 @@ def public_realm_fallback_marker(
     """
 
     props = properties or {}
+    if props.get('green_space_native_layout') is not None:
+        # A missing native layout must never turn into a generic park.
+        return None
     is_street = props.get("_plan_role") == "street" or zone_type in {"road", "street", "path"}
     if is_street:
         archetype_id = str(props.get("road_archetype_id") or "").strip()
@@ -2620,6 +2623,9 @@ def plan_public_realm_zone_recipe(
     """
 
     props = properties or {}
+    if props.get('green_space_native_layout') is not None:
+        from app.services.native_parks import plan_native_park
+        return plan_native_park(geometry_wgs84, props)
     is_street = props.get("_plan_role") == "street" or zone_type in {"road", "street", "path"}
     if is_street:
         archetype_id = str(props.get("road_archetype_id") or "").strip()
@@ -2739,6 +2745,9 @@ def public_realm_recipe_identity(
 
     if value is None:
         return None
+    if (isinstance(value, dict) and value.get('schema_version') == 2) or getattr(value, 'schema_version', None) == 2:
+        from app.services.native_parks import native_park_identity
+        return native_park_identity(value.model_dump(mode='json') if hasattr(value, 'model_dump') else value)
     try:
         recipe = (
             value if isinstance(value, PublicRealmRecipePayload) else PublicRealmRecipePayload.model_validate(value)

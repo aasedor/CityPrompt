@@ -1,0 +1,1010 @@
+{
+  "schemaVersion": 1,
+  "layouts": [
+    {
+      "id": "botanical_garden_v3--native-v1",
+      "archetypeId": "botanical_garden",
+      "variantId": "botanical_garden_v3",
+      "title": "Conservatory botanical garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 48,
+      "depthM": 62,
+      "sourceRecipeSha256": "b5cd5c25d1ce2c2cba3c2e6674ccfb89b61f660ed1c17a284c36b53c0958044d",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "464f2968e652c84136c1858d3d0d1a1fe7d6bd956824dfc7f785752f3ec551d2",
+          "archivePath": "public/validation-assets/conservatory-v013/assembly-preview.glb",
+          "url": "/native-park-assets/464f2968e652c84136c1858d3d0d1a1fe7d6bd956824dfc7f785752f3ec551d2.glb"
+        }
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -30.5
+          ],
+          "b": [
+            0,
+            -27.8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -0.6728971962616832,
+            7.814732142857146
+          ],
+          "b": [
+            -0.6728971962616832,
+            21.814732142857146
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -31,
+          "widthM": 2.4,
+          "arrivalY": -27.8
+        }
+      ],
+      "status": "pilot",
+      "visualStatus": "source_baseline",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "8e5447c3b253c3f5842c049948620c67eebe4679f73b72ca84145718f58e4a84",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 48.2,
+      "occupiedDepthM": 62.2,
+      "measuredBoundsM": [
+        [
+          -24.06999969482422,
+          -31.095732808113098,
+          -0.06062178686261177
+        ],
+        [
+          24.06999969482422,
+          31.098862051963806,
+          9.767862319946289
+        ]
+      ]
+    },
+    {
+      "id": "sculpture_garden_v0--native-v1",
+      "archetypeId": "sculpture_garden",
+      "variantId": "sculpture_garden_v0",
+      "title": "Museum sculpture court",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 30,
+      "depthM": 44,
+      "sourceRecipeSha256": "a708028ec79e4a765d7b8dbb08ff81e17dab8190a4b123e3f0660afcfefaefab",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "c84cc3b8a0ff727175ffd6ffe2aa457e35c30bbd64545ee99c94f36c41ec0717",
+          "archivePath": "public/validation-assets/sculpture-v006/assembly-preview.glb",
+          "url": "/native-park-assets/c84cc3b8a0ff727175ffd6ffe2aa457e35c30bbd64545ee99c94f36c41ec0717.glb"
+        }
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -21.5
+          ],
+          "b": [
+            0,
+            16.3
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -8.8,
+            -20
+          ],
+          "b": [
+            -8.8,
+            11.3
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [],
+      "status": "withheld",
+      "visualStatus": "source_baseline",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "3ee12006e3df5abca1b1d19df0dcdea7312676620a16ac77ffd582a4f61a08e5",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 30,
+      "occupiedDepthM": 44,
+      "measuredBoundsM": [
+        [
+          -15.0,
+          -22.0,
+          -0.20000000298023224
+        ],
+        [
+          15.0,
+          22.0,
+          6.699999809265137
+        ]
+      ]
+    },
+    {
+      "id": "student_neighbourhood_orchard_v1--native-v1",
+      "archetypeId": "student_neighbourhood_orchard_v1",
+      "variantId": "student_neighbourhood_orchard_v1",
+      "title": "Neighbourhood orchard",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 36,
+      "depthM": 30,
+      "sourceRecipeSha256": "b92bd29095d7fdb179f3dd6cc71d2f98c6b3edf6f80127365a544a93aececd88",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "ce8d1198b654d8bb8ba3e050d3a540fd48077fe5d635b39377de58fff3f06220",
+          "archivePath": "public/validation-assets/orchard-v002/assembly-preview.glb",
+          "url": "/native-park-assets/ce8d1198b654d8bb8ba3e050d3a540fd48077fe5d635b39377de58fff3f06220.glb"
+        }
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -14.8
+          ],
+          "b": [
+            0,
+            14.8
+          ],
+          "width": 1.8
+        },
+        {
+          "a": [
+            -17.8,
+            0
+          ],
+          "b": [
+            17.8,
+            0
+          ],
+          "width": 1.8
+        },
+        {
+          "a": [
+            -17.8,
+            -11
+          ],
+          "b": [
+            17.8,
+            -11
+          ],
+          "width": 1.8
+        },
+        {
+          "a": [
+            -17.8,
+            13
+          ],
+          "b": [
+            17.8,
+            13
+          ],
+          "width": 1.8
+        }
+      ],
+      "entrances": [],
+      "status": "withheld",
+      "visualStatus": "source_baseline",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "51eb19d47e9667453b6a35637c8e8e8b967814556c5c831d87d4dfc6c9dde2ba",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 36,
+      "occupiedDepthM": 30,
+      "measuredBoundsM": [
+        [
+          -18.0,
+          -15.0,
+          -0.11999999731779099
+        ],
+        [
+          18.0,
+          15.0,
+          4.040825694892703
+        ]
+      ]
+    },
+    {
+      "id": "amphitheater_lawn_v0--native-v1",
+      "archetypeId": "amphitheater_lawn",
+      "variantId": "amphitheater_lawn_v0",
+      "title": "Terraced performance lawn",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 64,
+      "depthM": 64,
+      "sourceRecipeSha256": "a5875b156b19d7ae5ef7afca0f0917832760deebea1c124179997edc198e81d1",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "ea80cb09b3effdec7a7c041d46dd4adf94998cf081751a80f243be1674d78338",
+          "archivePath": "public/validation-assets/performance-v003/assembly-preview.glb",
+          "url": "/native-park-assets/ea80cb09b3effdec7a7c041d46dd4adf94998cf081751a80f243be1674d78338.glb"
+        }
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            -5,
+            0
+          ],
+          "b": [
+            5,
+            0
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -5,
+            8
+          ],
+          "b": [
+            5,
+            8
+          ],
+          "z": 0.4
+        }
+      ],
+      "entrances": [],
+      "status": "withheld",
+      "visualStatus": "source_baseline",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "435e67a190d930c71b7d51d8c288cd2c30ccf848d94c3ab5a09b6b6a216a94a4",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 64,
+      "occupiedDepthM": 64,
+      "measuredBoundsM": [
+        [
+          -32.0,
+          -32.0,
+          0.0
+        ],
+        [
+          32.0,
+          32.0,
+          9.275861740112305
+        ]
+      ]
+    },
+    {
+      "id": "student_garden_square_v1--native-v1",
+      "archetypeId": "student_garden_square_v1",
+      "variantId": "student_garden_square_v1",
+      "title": "Timber and stone square",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 32,
+      "depthM": 28,
+      "sourceRecipeSha256": "eed679911e52e66e9a761fb36ddcdd49b873656dd3306f3149cd1d2b707db282",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "fab4a16d62e10ff56bd0a48ed78d13059ecb37b2e2f0a60d192cbeddd92a2018",
+          "archivePath": "public/validation-assets/square-v003/assembly-preview.glb",
+          "url": "/native-park-assets/fab4a16d62e10ff56bd0a48ed78d13059ecb37b2e2f0a60d192cbeddd92a2018.glb"
+        }
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -13.8
+          ],
+          "b": [
+            0,
+            13.8
+          ],
+          "width": 2.4
+        },
+        {
+          "a": [
+            -15.8,
+            -3
+          ],
+          "b": [
+            15.8,
+            -3
+          ],
+          "width": 2.4
+        },
+        {
+          "a": [
+            -15.8,
+            3
+          ],
+          "b": [
+            15.8,
+            3
+          ],
+          "width": 2.4
+        }
+      ],
+      "entrances": [],
+      "status": "withheld",
+      "visualStatus": "source_baseline",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "cf689bdefdd0b9da3fef5437b6fd9d304399295aa51f071b6fb7f5d043dfd46c",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 32,
+      "occupiedDepthM": 28,
+      "measuredBoundsM": [
+        [
+          -16.0,
+          -14.0,
+          -0.11999999731779099
+        ],
+        [
+          16.0,
+          14.0,
+          7.646396588696973
+        ]
+      ]
+    },
+    {
+      "id": "wetland_rain_garden_v0--native-v1",
+      "archetypeId": "wetland_rain_garden",
+      "variantId": "wetland_rain_garden_v0",
+      "title": "Wetland boardwalk",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 64,
+      "depthM": 64,
+      "sourceRecipeSha256": "9aeb61ea7d53db8c872652a589d08aa3b7a73cc08a2f14d08db3cb6bad164e0f",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "597aa18495bccb0dade8f3539aa3a28f0e46202e99629e34ebb30d9cb13c8490",
+          "archivePath": "public/validation-assets/wetland-v005/assembly-preview.glb",
+          "url": "/native-park-assets/597aa18495bccb0dade8f3539aa3a28f0e46202e99629e34ebb30d9cb13c8490.glb"
+        }
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -30
+          ],
+          "b": [
+            0,
+            -25
+          ],
+          "z": 0.22
+        },
+        {
+          "a": [
+            -31,
+            4
+          ],
+          "b": [
+            -24,
+            4
+          ],
+          "z": 0.22
+        },
+        {
+          "a": [
+            27,
+            6
+          ],
+          "b": [
+            31,
+            6
+          ],
+          "z": 0.22
+        }
+      ],
+      "entrances": [],
+      "status": "withheld",
+      "visualStatus": "source_baseline",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "951555610b3568b5f261e0b393693a589e647b3bf9ea00f258f4f84ee9a58453",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 64,
+      "occupiedDepthM": 64,
+      "measuredBoundsM": [
+        [
+          -32.0,
+          -32.0,
+          -0.5
+        ],
+        [
+          32.0,
+          32.0,
+          4.753912448883057
+        ]
+      ]
+    },
+    {
+      "id": "research_garden_teaching_arboretum_variant_3--native-v1",
+      "archetypeId": "research_garden_teaching_arboretum",
+      "variantId": "research_garden_teaching_arboretum_variant_3",
+      "title": "Teaching demonstration garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 42,
+      "depthM": 50,
+      "sourceRecipeSha256": "40c50511ac1ad97e498d26fc926c139bdee28b0a26600b24fa51df6054300545",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "bb6646faf8375fa684173c259b69dee6db7c75768a4122db1ba2e2281b71d286",
+          "archivePath": "public/validation-assets/teaching-garden-v5-review-connected/assembly-preview.glb",
+          "url": "/native-park-assets/bb6646faf8375fa684173c259b69dee6db7c75768a4122db1ba2e2281b71d286.glb"
+        }
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "name": "garden approach",
+          "a": [
+            0,
+            -19.0
+          ],
+          "b": [
+            0,
+            -17.5
+          ],
+          "width": 2.2
+        }
+      ],
+      "entrances": [],
+      "status": "withheld",
+      "visualStatus": "source_baseline",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "00a2997139e8c17cf7c40d4f8b8aa6c2152da12cac84e1695fd262beb854cc37",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 42,
+      "occupiedDepthM": 50,
+      "measuredBoundsM": [
+        [
+          -21.0,
+          -25.0,
+          -0.11999999731779099
+        ],
+        [
+          21.0,
+          25.0,
+          5.795164033379706
+        ]
+      ]
+    },
+    {
+      "id": "basketball_court_v1--native-v1",
+      "archetypeId": "basketball_court",
+      "variantId": "basketball_court_v1",
+      "title": "Basketball park",
+      "label": "One court",
+      "mode": "native_assembly",
+      "widthM": 52,
+      "depthM": 39,
+      "sourceRecipeSha256": "8908c7162682881b65448f9934f0ca3e46fc83d7b69860f38fade8a2cfb51ae3",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "a3c219f333b46938d85499e0b2b41e0ed77a108d2d2996084225b0ced3c55fdd",
+          "archivePath": "public/validation-assets/basketball-v4-review/assembly-preview.glb",
+          "url": "/native-park-assets/a3c219f333b46938d85499e0b2b41e0ed77a108d2d2996084225b0ced3c55fdd.glb"
+        },
+        "basketball": {
+          "sha256": "da289955236460873f401b7c8f4db85c5101a3670a8c56efe14176946cc7d1e2",
+          "archivePath": "public/validation-assets/basketball-v4-review/modules/basketball.glb",
+          "url": "/native-park-assets/da289955236460873f401b7c8f4db85c5101a3670a8c56efe14176946cc7d1e2.glb"
+        },
+        "bench": {
+          "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+          "archivePath": "public/validation-assets/basketball-v4-review/modules/bench.glb",
+          "url": "/native-park-assets/2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73.glb"
+        },
+        "grove_tree": {
+          "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278",
+          "archivePath": "public/validation-assets/basketball-v4-review/modules/grove_tree.glb",
+          "url": "/native-park-assets/6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278.glb"
+        }
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "name": "court gate approach",
+          "a": [
+            0,
+            -13.5
+          ],
+          "b": [
+            0,
+            -11.6
+          ],
+          "width": 1.8
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -19.5,
+          "widthM": 2.4,
+          "arrivalY": -13.5
+        }
+      ],
+      "status": "pilot",
+      "visualStatus": "source_baseline",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "4682d83edf8fee509fbe4f4edae8cd524849743fa613046c358a4a6615a36fa3",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 52,
+      "occupiedDepthM": 39,
+      "measuredBoundsM": [
+        [
+          -26.0,
+          -19.5,
+          -0.11999999731779099
+        ],
+        [
+          26.0,
+          19.5,
+          5.795164033379706
+        ]
+      ]
+    },
+    {
+      "id": "basketball_court_v1--long-v1",
+      "archetypeId": "basketball_court",
+      "variantId": "basketball_court_v1",
+      "title": "Basketball park",
+      "label": "Two courts \u00b7 Long",
+      "mode": "module_assembly",
+      "widthM": 92,
+      "depthM": 39,
+      "sourceRecipeSha256": "8908c7162682881b65448f9934f0ca3e46fc83d7b69860f38fade8a2cfb51ae3",
+      "groundOwner": "composition",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "basketball": {
+          "sha256": "da289955236460873f401b7c8f4db85c5101a3670a8c56efe14176946cc7d1e2",
+          "archivePath": "public/validation-assets/basketball-v4-review/modules/basketball.glb",
+          "url": "/native-park-assets/da289955236460873f401b7c8f4db85c5101a3670a8c56efe14176946cc7d1e2.glb"
+        },
+        "bench": {
+          "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+          "archivePath": "public/validation-assets/basketball-v4-review/modules/bench.glb",
+          "url": "/native-park-assets/2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73.glb"
+        },
+        "grove_tree": {
+          "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278",
+          "archivePath": "public/validation-assets/basketball-v4-review/modules/grove_tree.glb",
+          "url": "/native-park-assets/6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278.glb"
+        }
+      },
+      "placements": [
+        {
+          "asset": "basketball",
+          "x": -20,
+          "y": 0,
+          "z": 0,
+          "yaw": 0,
+          "scale": 1
+        },
+        {
+          "asset": "basketball",
+          "x": 20,
+          "y": 0,
+          "z": 0,
+          "yaw": 0,
+          "scale": 1
+        },
+        {
+          "asset": "bench",
+          "x": -32,
+          "y": -17.5,
+          "z": 0,
+          "yaw": 3.141592653589793,
+          "scale": 1
+        },
+        {
+          "asset": "bench",
+          "x": -32,
+          "y": 17.5,
+          "z": 0,
+          "yaw": 0,
+          "scale": 1
+        },
+        {
+          "asset": "bench",
+          "x": -12,
+          "y": -17.5,
+          "z": 0,
+          "yaw": 3.141592653589793,
+          "scale": 1
+        },
+        {
+          "asset": "bench",
+          "x": -12,
+          "y": 17.5,
+          "z": 0,
+          "yaw": 0,
+          "scale": 1
+        },
+        {
+          "asset": "bench",
+          "x": 12,
+          "y": -17.5,
+          "z": 0,
+          "yaw": 3.141592653589793,
+          "scale": 1
+        },
+        {
+          "asset": "bench",
+          "x": 12,
+          "y": 17.5,
+          "z": 0,
+          "yaw": 0,
+          "scale": 1
+        },
+        {
+          "asset": "bench",
+          "x": 32,
+          "y": -17.5,
+          "z": 0,
+          "yaw": 3.141592653589793,
+          "scale": 1
+        },
+        {
+          "asset": "bench",
+          "x": 32,
+          "y": 17.5,
+          "z": 0,
+          "yaw": 0,
+          "scale": 1
+        },
+        {
+          "asset": "grove_tree",
+          "x": -43,
+          "y": -12.87,
+          "z": 0,
+          "yaw": -1.9304999999999999,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": -43,
+          "y": 0,
+          "z": 0,
+          "yaw": 0.0,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": -43,
+          "y": 12.87,
+          "z": 0,
+          "yaw": 1.9304999999999999,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": 43,
+          "y": -12.87,
+          "z": 0,
+          "yaw": -1.9304999999999999,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": 43,
+          "y": 0,
+          "z": 0,
+          "yaw": 0.0,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": 43,
+          "y": 12.87,
+          "z": 0,
+          "yaw": 1.9304999999999999,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": -36,
+          "y": -16.5,
+          "z": 0,
+          "yaw": -2.475,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": -4,
+          "y": -16.5,
+          "z": 0,
+          "yaw": -2.475,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": 4,
+          "y": 16.5,
+          "z": 0,
+          "yaw": 2.475,
+          "scale": 0.72
+        },
+        {
+          "asset": "grove_tree",
+          "x": 36,
+          "y": 16.5,
+          "z": 0,
+          "yaw": 2.475,
+          "scale": 0.72
+        }
+      ],
+      "surfaceRegions": [
+        {
+          "x": -40,
+          "y": 0,
+          "width": 2.4,
+          "depth": 29.4,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 2.4,
+          "depth": 29.4,
+          "material": "paving"
+        },
+        {
+          "x": 40,
+          "y": 0,
+          "width": 2.4,
+          "depth": 29.4,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": -13.5,
+          "width": 80,
+          "depth": 2.4,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": 13.5,
+          "width": 80,
+          "depth": 2.4,
+          "material": "paving"
+        },
+        {
+          "x": -20,
+          "y": 0,
+          "width": 36,
+          "depth": 23,
+          "material": null
+        },
+        {
+          "x": 20,
+          "y": 0,
+          "width": 36,
+          "depth": 23,
+          "material": null
+        },
+        {
+          "x": -20,
+          "y": -12.2,
+          "width": 3,
+          "depth": 2.2,
+          "material": "paving"
+        },
+        {
+          "x": 20,
+          "y": -12.2,
+          "width": 3,
+          "depth": 2.2,
+          "material": "paving"
+        },
+        {
+          "x": 0,
+          "y": -16.5,
+          "width": 2.4,
+          "depth": 6,
+          "material": "paving"
+        }
+      ],
+      "routes": [
+        {
+          "a": [
+            0,
+            -19.5
+          ],
+          "b": [
+            0,
+            -13.5
+          ],
+          "width": 2.4
+        },
+        {
+          "a": [
+            -40,
+            -13.5
+          ],
+          "b": [
+            40,
+            -13.5
+          ],
+          "width": 2.4
+        },
+        {
+          "a": [
+            -20,
+            -13.5
+          ],
+          "b": [
+            -20,
+            -11.6
+          ],
+          "width": 1.8
+        },
+        {
+          "a": [
+            20,
+            -13.5
+          ],
+          "b": [
+            20,
+            -11.6
+          ],
+          "width": 1.8
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -19.5,
+          "widthM": 2.4,
+          "arrivalY": -13.5
+        }
+      ],
+      "status": "pilot",
+      "visualStatus": "NEEDS REVIEW",
+      "runtimeStatus": "NOT TESTED",
+      "contentRevision": "a8ff885863e5e2e7736f118e296af90f8a8d2df22b5493ea957470281ecd7379",
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "occupiedWidthM": 92,
+      "occupiedDepthM": 39
+    }
+  ]
+}

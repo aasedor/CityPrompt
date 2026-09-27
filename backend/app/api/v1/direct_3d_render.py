@@ -334,6 +334,7 @@ def _validate_direct_3d_project_zones(
             [
                 ResidualSourceZone(
                     zone_id=str(zone.id),
+                    native_selection=(zone.properties or {}).get('green_space_native_layout'),
                     kind=(community_3d_kind_for_source(zone.zone_type, zone.properties) or str(zone.zone_type)),
                     role=(
                         str((zone.properties or {}).get("_plan_role"))

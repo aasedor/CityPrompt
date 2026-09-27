@@ -20,6 +20,7 @@ from geoalchemy2.shape import to_shape
 from pydantic import BaseModel
 from shapely.geometry import Polygon
 from shapely.validation import explain_validity
+from app.services.native_parks import plan_native_park
 from app.services.public_road_connection import public_road_connection_fits
 from sqlalchemy import desc, func as sa_func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -1082,6 +1083,13 @@ async def create_zone(
             properties=zone_in.properties,
         )
 
+    if (zone_in.properties or {}).get('green_space_native_layout') is not None:
+        try:
+            plan_native_park(candidate_polygon, zone_in.properties)
+            if active_boundary is None or (active_boundary.properties or {}).get('terrain_strategy') == 'landscape' or (active_boundary.properties or {}).get('community_3d_mask_existing_tiles') is not True:
+                raise ValueError('Place this native park on a prepared level site.')
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
     coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
 
     zone = SiteZone(
@@ -1354,6 +1362,15 @@ async def update_zone(
             zone_type=requested_zone_type,
             properties=connection_properties,
         )
+    native_properties = update_data.get('properties', zone.properties) or {}
+    if native_properties.get('green_space_native_layout') is not None:
+        try:
+            plan_native_park(Polygon(updated_coordinates or before_snapshot['coordinates']), native_properties)
+            native_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
+            if native_boundary is None or (native_boundary.properties or {}).get('terrain_strategy') == 'landscape' or (native_boundary.properties or {}).get('community_3d_mask_existing_tiles') is not True:
+                raise ValueError('Keep this native park on a prepared level site.')
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
     for field, value in update_data.items():
         setattr(zone, field, value)
     zone.updated_at = datetime.now(timezone.utc)
