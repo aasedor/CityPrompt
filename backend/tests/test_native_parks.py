@@ -27,6 +27,15 @@ def test_shared_registry_is_byte_identical():
     assert (root/'backend/app/data/nativeParks.json').read_bytes()==(root/'frontend/src/data/nativeParks.json').read_bytes()
 
 
+def test_native_layout_rejects_custom_terrain_without_replacing_it():
+    polygon,props=fixture()
+    props['park_terrain']={'version':1,'mode':'terraced'}
+    before=copy.deepcopy(props)
+    with pytest.raises(ValueError,match='prepared level ground'):
+        plan_native_park(polygon,props)
+    assert props==before
+
+
 def test_native_recipe_round_trip_and_compiler_dispatch():
     polygon,props=fixture()
     recipe=plan_public_realm_zone_recipe('green_space',polygon,props,strict=True)
@@ -72,6 +81,14 @@ def test_unknown_layout_never_falls_back_to_generic_park():
     with pytest.raises(ValueError,match='unavailable'):
         plan_public_realm_zone_recipe('green_space',polygon,props,strict=False)
     assert public_realm_fallback_marker('green_space',props) is None
+
+
+@pytest.mark.parametrize('rings', [None, {}, [None], [[[0, 0], [1, 1]]], [[[0, 0], [1, 1], [float('nan'), 0]]]])
+def test_invalid_exclusions_have_a_recoverable_validation_error(rings):
+    polygon, props = fixture()
+    props['park_exclusion_rings'] = rings
+    with pytest.raises(ValueError, match='exclusion areas are invalid'):
+        plan_native_park(polygon, props)
 
 
 def test_larger_native_parcel_keeps_surroundings_in_shared_landscape():

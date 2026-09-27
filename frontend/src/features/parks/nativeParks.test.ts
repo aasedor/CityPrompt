@@ -65,6 +65,13 @@ describe('native parks',()=>{
     expect(nativeParkFitProblem({...p,coordinates:rectangleAt([-114.05,51.04],30,30)})).toContain('complete');
     expect(nativeParkFitProblem({...p,properties:{...p.properties,park_exclusion_rings:[rectangleAt([-114.05,51.04],2,2)]}})).toContain('complete');
   });
+  it('withholds native upgrades on custom terrain without changing the original park',()=>{
+    const p=zone();p.properties={...p.properties,park_terrain:{version:1,mode:'terraced'}};
+    const before=JSON.stringify(p);
+    expect(parkLayoutProposal(p,long,[p]).problem).toContain('prepared level ground');
+    expect(JSON.stringify(p)).toBe(before);
+    expect(nativeParkFitProblem({...p,properties:{...zone().properties,park_exclusion_rings:[null]}})).toContain('exclusion areas are invalid');
+  });
   it('accepts an irregular parcel only while its actual notch clears the intact park',()=>{
     const p=zone(),east=111320*Math.cos(51.04*Math.PI/180);
     const outline=(inset:number)=>[[-60,-40],[60,-40],[60,40],[inset,40],[inset,10],[-60,10],[-60,-40]]

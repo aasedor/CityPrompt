@@ -81,6 +81,8 @@ def native_park_ground(selection_value: dict) -> Polygon:
 
 
 def plan_native_park(geometry, properties: dict) -> NativeParkRecipe:
+    if properties.get('park_terrain') is not None:
+        raise ValueError('This native layout needs prepared level ground. Clear the custom park terrain before upgrading.')
     selection = ParkSelection.model_validate(properties['green_space_native_layout'])
     layout = layout_for(selection.layout_id, selection.content_revision)
     if properties.get('green_space_archetype_id') != layout['archetypeId'] or properties.get('green_space_selected_variant_id') != layout['variantId']:
@@ -91,7 +93,20 @@ def plan_native_park(geometry, properties: dict) -> NativeParkRecipe:
     c, s = math.cos(f.yaw), math.sin(f.yaw)
     w, d = layout['occupiedWidthM'] / 2, layout['occupiedDepthM'] / 2
     footprint = Polygon([(x*c-y*s, x*s+y*c) for x,y in [(-w,-d),(w,-d),(w,d),(-w,d)]])
-    excluded = [transform(lambda x, y, z=None: ((x-f.longitude)*east,(y-f.latitude)*111320), Polygon(ring)) for ring in properties.get('park_exclusion_rings', [])]
+    excluded = []
+    rings = properties.get('park_exclusion_rings', [])
+    if not isinstance(rings, list):
+        raise ValueError('The park exclusion areas are invalid. Repair their outlines before changing the layout.')
+    for ring in rings:
+        if (not isinstance(ring, list) or len(ring) < 3
+                or any(not isinstance(point, (list, tuple)) or len(point) != 2
+                       or any(not isinstance(n, (int, float)) or not math.isfinite(n) for n in point)
+                       for point in ring)):
+            raise ValueError('The park exclusion areas are invalid. Repair their outlines before changing the layout.')
+        hole = Polygon(ring)
+        if not hole.is_valid or hole.is_empty or hole.area == 0:
+            raise ValueError('The park exclusion areas are invalid. Repair their outlines before changing the layout.')
+        excluded.append(transform(lambda x, y, z=None: ((x-f.longitude)*east,(y-f.latitude)*111320), hole))
     if not local.is_valid or not local.buffer(.025).covers(footprint) or any(footprint.intersects(hole) for hole in excluded):
         raise ValueError(f"Keep the complete {layout['widthM']} × {layout['depthM']} m {layout['label']} layout inside the park. Its objects cannot be stretched.")
     return recipe_for(selection)

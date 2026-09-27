@@ -55,13 +55,17 @@ export function nativeParkFootprint(selection: NativeParkSelection, layout: Nati
 /** Reuse the polygon predicate, never infer fit from an axis-aligned box. */
 export function nativeParkFitProblem(zone: Pick<SiteZone,'coordinates'|'properties'>): string | null {
   if (!hasNativePark(zone)) return null;
+  if (zone.properties?.park_terrain != null) return 'This native layout needs prepared level ground. Clear the custom park terrain before upgrading.';
   const resolved = readNativePark(zone);
   if (!resolved) return 'This park layout revision is unavailable. Keep the previous layout.';
   const { layout, selection } = resolved, f = selection.frame;
   const local = (ring: number[][]) => ring.map(p=>({x:(p[0]-f.longitude)*metersPerDegLon(f.latitude), y:(p[1]-f.latitude)*METERS_PER_DEG_LAT}));
   // Shrink only the numerical fit envelope by 2 cm, never the model.
   const footprint = local(nativeParkFootprint(selection,{...layout,widthM:layout.occupiedWidthM-.04,depthM:layout.occupiedDepthM-.04}));
-  const holes = zone.properties?.park_exclusion_rings as number[][][] | undefined;
+  const holes = zone.properties?.park_exclusion_rings ?? [];
+  if (!Array.isArray(holes) || holes.some(ring => !Array.isArray(ring) || ring.length < 3
+    || ring.some(point => !Array.isArray(point) || point.length !== 2 || !point.every(Number.isFinite))))
+    return 'The park exclusion areas are invalid. Repair their outlines before changing the layout.';
   if (!envelopeFits(footprint,local(zone.coordinates)) || (holes ?? []).some(ring=>envelopesOverlap(footprint,local(ring))))
     return `Keep the complete ${layout.widthM} × ${layout.depthM} m ${layout.label} layout inside the park. Enlarge the parcel or keep the previous layout.`;
   return null;
