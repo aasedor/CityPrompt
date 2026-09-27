@@ -11,7 +11,7 @@ export interface NativeStreetProgram {
   schemaVersion:number;adapter:string;surfaceRegions:NativeStreetRegion[];
   details:Array<NativeStreetRegion & {z:number;height:number}>;
   paving:string;pavingModuleM:number[];minLengthM:number;maxLengthM:number;preparedLevelOnly:boolean;
-  baseLiftM:number;palette:Record<string,number[]>;
+  baseLiftM:number;palette:Record<string,number[]|undefined>;
 }
 
 /** The same ordered ownership partition used by the original Blender builder. */

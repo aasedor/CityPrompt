@@ -26,6 +26,7 @@ _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 _ID = re.compile(r"[a-z][a-z0-9_]*\Z")
 _APPEARANCE_BY_FINISH = {
     "pavers": "heritage_brick_stone",
+    "brick": "heritage_brick_stone",
     "cobble": "european_cobblestone_v1",
 }
 

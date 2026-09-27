@@ -236,6 +236,14 @@
       "variantId": "student_quiet_residential_street_v1",
       "revision": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "student_planted_shared_lane_v1",
+      "variantId": "student_planted_shared_lane_v1",
+      "revision": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520",
+      "status": "local-pilot-runtime-pending"
     }
   ],
   "dependencies": [

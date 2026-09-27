@@ -74,6 +74,24 @@ street approval. Evidence: `residential-browser-checkpoint.json` in the external
 evidence directory. Latest source tests also cover legacy rectangle preservation
 and registry/roster parity.
 
-Next: Shared Lane through the same adapter, then the three specialist streets.
-Only the three implemented route candidates appear in route controls; the other
-four scoped choices remain fixed review fixtures until their integration exists.
+## Shared Lane integration checkpoint
+
+The exact shared-v001 delivery is now reconstructed through the same adapter,
+with its own 14 m section, 118 placements, four walkway arbors, 0.48 × 0.24 m
+brick units and complete ground program. The original 12 m service lane is not
+substituted. The registry sync retains the pre-addition capability catalogue so
+saved Residential/Main/Market recipes continue to validate.
+
+44 focused frontend and 103 backend tests passed, along with TypeScript and a
+production build. Fresh production browser checks passed catalogue drawing,
+automatic compilation, Walk, exact street-view preview, reversal with extension,
+Undo/Redo and reopening. No page errors or paid calls. Matched-view fidelity,
+curve/junction matrix, asset failure injection and file download remain open.
+Evidence: `shared-browser-checkpoint.json`. Candidate status remains pending.
+
+Four route candidates are now implemented locally. BRT, Canal and Bridge remain
+fixed review fixtures while their specialist programs are implemented. Original
+editable Blender files for all three match their recipe authoring hashes and
+retain semantic components, recorded in `specialist-authoring-inventory.json`.
+Next: BRT's complete explicit station and crossing program, separate from ordinary
+repeatable transit segments. Do not count the five-street initiative complete.

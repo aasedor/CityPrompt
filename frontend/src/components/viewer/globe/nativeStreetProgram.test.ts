@@ -6,6 +6,38 @@ import { expectsNativeStreet } from './nativeStreetReadiness';
 import type { SiteZone } from '@/types';
 
 const residential=nativeStreetPilot('student_quiet_residential_street_v1')!;
+const shared=nativeStreetPilot('student_planted_shared_lane_v1')!;
+
+describe('original Shared Lane executable program',()=>{
+  it('retains the 14 m shared brick section, four walking arbors and 118 rigid source placements',()=>{
+    expect(shared.widthM).toBe(14);
+    expect(shared.fixtureLengthM).toBe(40);
+    const poses=placeNativeStreetModules(shared,[{x:0,y:0},{x:0,y:40}]);
+    expect(poses).toHaveLength(118);
+    expect(poses.filter(p=>p.kind==='walkway_arbor')).toHaveLength(4);
+    expect(poses.filter(p=>p.kind==='walkway_arbor').every(p=>Math.abs(p.x)>4.5)).toBe(true);
+    const cells=nativeStreetGroundCells(14,40,shared.program!.surfaceRegions);
+    expect(cells.reduce((sum,c)=>sum+c.width*c.depth,0)).toBeCloseTo(560);
+    expect(cells.some(c=>c.material==='asphalt')).toBe(false);
+    expect(shared.program!.pavingModuleM).toEqual([.48,.24]);
+  });
+  it('repeats complete source programs and keeps brick dimensions in a longer, reversed route',()=>{
+    for(const route of [[{x:0,y:0},{x:0,y:80}],[{x:0,y:80},{x:0,y:0}]]){
+      expect(placeNativeStreetModules(shared,route)).toHaveLength(236);
+      const meshes=buildNativeStreetProgram(shared.program!,14,40,route);
+      expect(meshes.filter(m=>m.material.startsWith('paving.tile'))).toHaveLength(4);
+      expect(meshes.some(m=>m.material==='asphalt')).toBe(false);
+      for(const {geometry} of meshes){
+        geometry.computeBoundingBox();
+        expect(geometry.boundingBox!.min.y).toBeGreaterThanOrEqual(-.0001);
+        expect(geometry.boundingBox!.max.y).toBeLessThanOrEqual(80.0001);
+        expect(geometry.boundingBox!.min.x).toBeGreaterThanOrEqual(-7.0001);
+        expect(geometry.boundingBox!.max.x).toBeLessThanOrEqual(7.0001);
+        geometry.dispose();
+      }
+    }
+  });
+});
 describe('original Residential executable program',()=>{
   it('accepts interior prepared ground without requiring an external-road approach',()=>{
     expect(nativeStreetHasPreparedGround(1200,false,false)).toBe(true);

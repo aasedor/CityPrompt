@@ -10,7 +10,8 @@
 import nativeStreets from '@/data/nativeStreetPilots.json';
 
 export const PUBLIC_REALM_STREET_FAMILY_VERSION = 1 as const;
-type NativeStreetFamilyId = 'street_native_student_main_street_v1' | 'street_native_student_market_street_v1' | 'street_native_student_quiet_residential_street_v1';
+type NativeStreetFamilyId = 'street_native_student_main_street_v1' | 'street_native_student_market_street_v1'
+  | 'street_native_student_quiet_residential_street_v1' | 'street_native_student_planted_shared_lane_v1';
 
 export type PublicRealmStreetFamilyId =
   | NativeStreetFamilyId
@@ -269,7 +270,8 @@ function nativeFamily(id: NativeStreetFamilyId): PublicRealmStreetFamilyDefiniti
 export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFamilyId, PublicRealmStreetFamilyDefinition>> = Object.freeze({
   street_native_student_main_street_v1: nativeFamily('street_native_student_main_street_v1'),
   street_native_student_market_street_v1: nativeFamily('street_native_student_market_street_v1'),
-    street_native_student_quiet_residential_street_v1: nativeFamily('street_native_student_quiet_residential_street_v1'),
+  street_native_student_quiet_residential_street_v1: nativeFamily('street_native_student_quiet_residential_street_v1'),
+  street_native_student_planted_shared_lane_v1: nativeFamily('street_native_student_planted_shared_lane_v1'),
   street_local_public_realm: {
     id: 'street_local_public_realm',
     familyVersion: 1,

@@ -47,7 +47,10 @@ def test_frontend_runtime_fixtures_keep_their_trusted_saved_identity():
 def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review():
     catalog = build_native_street_candidate_catalog(MANIFEST)
     rows = {row["id"]: row for row in json.loads(MANIFEST.read_text(encoding="utf-8"))}
-    assert len(catalog.capabilities) == 3
+    assert {cap.selections[0].variant_id for cap in catalog.capabilities} == {
+        'student_main_street_v1', 'student_market_street_v1',
+        'student_quiet_residential_street_v1', 'student_planted_shared_lane_v1',
+    }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()
     for capability in catalog.capabilities:
