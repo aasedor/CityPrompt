@@ -221,3 +221,23 @@ and test evidence, not browser measurements. An overlap click found adjacent
 free space; the extra disposable Square was removed through normal controls.
 External street connections for this pair remain NOT TESTED until the final
 mixed-scene check. Evidence: pair2-runtime-results.json. Paid total remains three.
+
+
+## Final pair in local verification
+
+Wetland Boardwalk and Teaching Demonstration Garden are now enabled through the
+same native contract. All eight park catalogue entries use authored footprints
+and native_park_v2, with no legacy fixture/trio flags; only Basketball has the
+additional Long layout. Activation does not imply final acceptance.
+
+Walk entry now uses displayed map-up near exact overhead, where camera forward
+has no meaningful horizontal bearing; oblique entry retains forward heading.
+Two focused regressions cover numerical noise, rotated map-up and oblique entry.
+Boundary fit guidance no longer calls a park a building. The narrow geometry
+suite exposed old tests referring to retired infill_home/neighbourhood_park IDs;
+the shape-limit test now uses an explicit geometric fixture, and the label test
+uses the current native Square binding. All 41 focused frontend cases, 24 native
+backend cases, TypeScript check and 11 asset checks pass. Pair3 browser review
+and final production/mixed-scene acceptance remain in progress.
+
+Pair3 bounded application checks passed for both native layouts: placement, rotation, movement, Undo/Redo, reopening, aerial/Walk and free exact captures. The overhead Walk-heading fix passed at both south entrances. Wetland held-forward movement onto its raised timber is NOT TESTED (CLI keypress too brief); the separate actual-asset probe verifies0.22m deck support. External street connections and final mixed/production acceptance remain pending. Root inspected both exact source images. Three paid submissions remain used. Evidence: pair3-runtime-results.json.

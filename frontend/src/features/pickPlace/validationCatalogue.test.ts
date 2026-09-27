@@ -27,7 +27,6 @@ describe('exact local validation catalogue', () => {
   it('never stretches or substitutes a fixed review fixture', () => {
     const fixed=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.properties.validation_fixed_fixture);
     expect(fixed.map(a=>a.model.variantId).sort()).toEqual([
-      'wetland_rain_garden_v0',
       'amsterdam_gracht_v1','brt_bus_rapid_transit_corridor_v0','student_planted_shared_lane_v1',
       'student_quiet_residential_street_v1','landmark_signature_bridge_v2',
     ].sort());
@@ -45,8 +44,20 @@ describe('exact local validation catalogue', () => {
       expect(result.clone.children).toHaveLength(1);
     }
   });
+  it('offers all eight parks through the same native contract without legacy fixture flags', () => {
+    const parks=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.zoneType==='green_space');
+    expect(parks).toHaveLength(8);
+    for(const park of parks) {
+      expect(park.model.method).toBe('native_park_v2');
+      expect(park.reshapeMode).toBe('authored_footprint');
+      expect(park.properties.green_space_native_layout_id).toBeTruthy();
+      expect(park.properties.validation_fixed_fixture).toBeUndefined();
+      expect(park.properties.public_realm_trial_asset).toBeUndefined();
+      expect(park.properties.park_trio_layout).toBeUndefined();
+    }
+  });
   it('preserves the remaining adaptive public-realm candidates to their native runtimes',()=>{
     expect(CATALOGUE_ASSETS.filter(a=>a.kind==='street').map(a=>a.model.variantId).sort()).toEqual(['student_main_street_v1','student_market_street_v1']);
-    expect(CATALOGUE_ASSETS.filter(a=>a.reshapeMode==='adaptive_layout').map(a=>a.model.variantId).sort()).toEqual(['research_garden_teaching_arboretum_variant_3']);
+    expect(CATALOGUE_ASSETS.filter(a=>a.reshapeMode==='adaptive_layout').map(a=>a.model.variantId).sort()).toEqual([]);
   });
 });

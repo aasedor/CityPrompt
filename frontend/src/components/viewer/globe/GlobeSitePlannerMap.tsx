@@ -93,7 +93,7 @@ import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
-import { advanceWalkPose, lookWalkPose, type WalkPose } from './walkNavigation';
+import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { isPlausibleTerrainAnchor } from './globeTerrainUtils';
@@ -2333,7 +2333,11 @@ export function GlobeSitePlannerMap({
     const north = new THREE.Vector3();
     WGS84_ELLIPSOID.getEastNorthUpAxes(lat, lng, east, north, new THREE.Vector3());
     const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
-    const heading = (Math.atan2(forward.dot(east), forward.dot(north)) * RAD_TO_DEG + 360) % 360;
+    const mapUp = new THREE.Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
+    const heading = walkEntryHeading(
+      { east: forward.dot(east), north: forward.dot(north) },
+      { east: mapUp.dot(east), north: mapUp.dot(north) },
+    );
     walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
       up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
     if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;

@@ -171,10 +171,17 @@
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
-      "visualApproval": "SOURCE BASELINE ONLY",
-      "runtime": "NOT TESTED",
+      "visualApproval": "AGENT NATIVE AERIAL/WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
+      "runtime": "PAIR3 NATIVE APP CHECKS PASS; EXTERNAL CONNECTION AND FINAL MIXED/PRODUCTION CHECKS PENDING; HELD-FORWARD DECK NAVIGATION NOT TESTED",
       "publication": "NOT PUBLISHED",
-      "evidence": []
+      "evidence": [
+        "pair3-runtime-results.json",
+        "pair3-wetland-south-walk.png",
+        "pair3-wetland-exact-source.png",
+        "pair3-reload-six-parks-top.png"
+      ],
+      "activation": "LOCAL PAIR 3 REVIEW",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
     },
     {
       "layoutId": "research_garden_teaching_arboretum_variant_3--native-v1",
@@ -183,10 +190,17 @@
       "assetVerification": "PASS",
       "dependencyClosure": "PASS",
       "measuredBounds": "PASS",
-      "visualApproval": "SOURCE BASELINE ONLY",
-      "runtime": "NOT TESTED",
+      "visualApproval": "AGENT NATIVE AERIAL/WALK REVIEW PASS; NO NEW HUMAN APPROVAL",
+      "runtime": "PAIR3 NATIVE APP CHECKS PASS; EXTERNAL CONNECTION AND FINAL MIXED/PRODUCTION CHECKS PENDING",
       "publication": "NOT PUBLISHED",
-      "evidence": []
+      "evidence": [
+        "pair3-runtime-results.json",
+        "pair3-teaching-south-walk.png",
+        "pair3-teaching-exact-source.png",
+        "pair3-reload-six-parks-top.png"
+      ],
+      "activation": "LOCAL PAIR 3 REVIEW",
+      "projectId": "5d79af7a-f92b-406b-b52d-f05083b48743"
     },
     {
       "layoutId": "basketball_court_v1--native-v1",
@@ -236,7 +250,7 @@
     }
   ],
   "sharedVerification": {
-    "scope": "Prepared-level native parks; registry SHA 061b2f18ad4de9da7889dd36fc790119a99a99067121e503d111300af30d2569",
+    "scope": "Prepared-level native parks; registry SHA a11a6d3e8d99f01eb0fc8e6dc8ac2a86362d731be87f4b3b741aa6bee994765f",
     "assetSurfaceProbe": {
       "status": "PASS",
       "evidence": "actual-native-surface-probe.json",
@@ -244,13 +258,13 @@
     },
     "productionBuild": {
       "status": "PASS",
-      "evidence": "production-build-checkpoint.json",
-      "limit": "Current shared fixes plus pair-one activation. Final activations require rebuild; browser smoke pending."
+      "evidence": "production-http-checkpoint.json",
+      "limit": "All nine active layouts and current Walk-entry fix built successfully. Fresh production browser smoke remains pending."
     },
     "productionAssetResponses": {
       "status": "PASS",
       "evidence": "production-http-checkpoint.json",
-      "detail": "11 of 11 native asset HTTP responses match SHA-256."
+      "detail": "53 production HTTP responses match local content, including all11 native park GLBs, protected Main/Market assets, catalogue thumbnails and entry document."
     }
   }
 }

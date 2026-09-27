@@ -9,6 +9,15 @@ const METERS_PER_DEG_LAT = 111_320;
 const WALK_SPEED_METERS_PER_SECOND = 2.2;
 const TURN_DEGREES_PER_SECOND = 100;
 
+/** At nadir the viewing direction has no meaningful compass bearing. Start
+ * toward the top of the displayed map instead of amplifying numerical noise. */
+export function walkEntryHeading(forward: { east: number; north: number }, mapUp: { east: number; north: number }): number {
+  const direction = Math.hypot(forward.east, forward.north) < 0.15 ? mapUp : forward;
+  if (!Number.isFinite(direction.east) || !Number.isFinite(direction.north)
+    || Math.hypot(direction.east, direction.north) < 1e-6) return 0;
+  return (Math.atan2(direction.east, direction.north) * 180 / Math.PI + 360) % 360;
+}
+
 /** Keep the walk camera at pedestrian speed and on a level ground plane. */
 export function advanceWalkPose(pose: WalkPose, keys: ReadonlySet<string>, elapsedSeconds: number): WalkPose {
   const dt = Math.min(Math.max(elapsedSeconds, 0), 0.05);

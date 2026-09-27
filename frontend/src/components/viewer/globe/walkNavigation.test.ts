@@ -1,9 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { advanceWalkPose, lookWalkPose, type WalkPose } from './walkNavigation';
+import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 
 const start: WalkPose = { lng: -114, lat: 51, groundHeight: 1045, heading: 0 };
 
 describe('walking camera controls', () => {
+  it('starts overhead Walk toward map-up despite tiny forward-direction noise', () => {
+    expect(walkEntryHeading({ east: 1e-10, north: 0 }, { east: 0, north: 1 })).toBe(0);
+    expect(walkEntryHeading({ east: -1e-10, north: 0 }, { east: 1, north: 0 })).toBe(90);
+  });
+
+  it('preserves the visible forward bearing when entering from an oblique view', () => {
+    expect(walkEntryHeading({ east: -0.7, north: 0 }, { east: 0, north: 1 })).toBe(270);
+    expect(walkEntryHeading({ east: 0, north: 0 }, { east: 0, north: 0 })).toBe(0);
+  });
+
   it('moves north at pedestrian speed and keeps eye-level ground fixed', () => {
     const next = advanceWalkPose(start, new Set(['w']), 0.05);
     expect((next.lat - start.lat) * 111_320).toBeCloseTo(0.11, 3);

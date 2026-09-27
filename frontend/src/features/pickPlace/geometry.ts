@@ -42,7 +42,7 @@ export function placementProblem(
     const origin=coords[0];
     const local=(ring:number[][])=>ring.map(p=>({x:(p[0]-origin[0])*metersPerDegLon(origin[1]),y:(p[1]-origin[1])*METERS_PER_DEG_LAT}));
     const footprint = local(coords);
-    if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return 'Keep the whole plot inside your site boundary, including the space around the building. Move it inward or resize the plot.';
+    if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return 'Keep the whole plot and its surrounding space inside your site boundary. Move it inward or resize the plot.';
     for (const zone of zones) {
       if (zone.id===ignoreId || !['building','residential','green_space','parking','road'].includes(zone.zone_type)) continue;
       if (zone.zone_type === 'road' && allowStreetIntersections) continue;

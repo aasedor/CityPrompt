@@ -519,7 +519,7 @@
           "arrivalY": -29
         }
       ],
-      "status": "withheld",
+      "status": "pilot",
       "visualStatus": "source_baseline",
       "runtimeStatus": "NOT TESTED",
       "contentRevision": "95c8676b5de15a86550f632d994a1bebe65efb51ea73ee3ad5acabbac6ba1c54",
@@ -596,7 +596,7 @@
           "arrivalY": -19
         }
       ],
-      "status": "withheld",
+      "status": "pilot",
       "visualStatus": "source_baseline",
       "runtimeStatus": "NOT TESTED",
       "contentRevision": "d76573a0a2a7281b71018a9f75dcee148fb8e401ad547e3053eba4f8a475c38e",
