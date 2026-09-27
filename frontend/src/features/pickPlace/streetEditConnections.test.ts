@@ -1,13 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import saved from '@/components/viewer/globe/__fixtures__/currieRehearsalStreetEdit.json';
+import currentRecipes from '@/components/viewer/globe/__fixtures__/classroomStreetRecipes.json';
 import { detectConnectedStreetIntersections } from '@/components/viewer/globe/streetGraphIntersections';
 import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJunctionGeometry';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { streetCoordinateUpdate } from './streetPlacement';
 import { snapConnectedStreetEdit, streetEditConnectionCheck } from './streetEditConnections';
 
-const zones = saved.zones as unknown as SiteZone[];
+// Replay the recorded gesture against current module bindings. The historical
+// fixture stays unchanged; its pre-upgrade locks cannot approve today's models.
+const zones = (saved.zones as unknown as SiteZone[]).map(zone => {
+  const recipe=currentRecipes.find(r=>r.variant_id===zone.properties?.road_selected_variant_id);
+  return recipe ? {...zone,properties:{...zone.properties,public_realm_lego:recipe}} : zone;
+});
 const main = zones.find(zone => zone.id === 'main')!;
 const patches = (items: SiteZone[]) => detectConnectedStreetIntersections(items)
   .filter(node => resolveStreetJunctionLayout(node, items));

@@ -63,9 +63,9 @@ export function detectFourWayStreetIntersections(zones: SiteZone[]): FourWayStre
 
 /** Keep actual approach bearings. Surface eligibility is checked independently;
  * a skew T must never acquire a fictitious perpendicular or fourth arm. */
-export function detectConnectedStreetIntersections(zones: SiteZone[]): ConnectedStreetIntersection[] {
-  const legacy = detectStreetIntersections(zones, false);
-  const tees = detectStreetIntersections(zones, true).filter((node) => node.armCount === 3
+export function detectConnectedStreetIntersections(zones: SiteZone[], preview = false): ConnectedStreetIntersection[] {
+  const legacy = detectStreetIntersections(zones, false, preview);
+  const tees = detectStreetIntersections(zones, true, preview).filter((node) => node.armCount === 3
     && !legacy.some((existing) => Math.hypot((existing.longitude - node.longitude) * metersPerDegLon(node.latitude),
       (existing.latitude - node.latitude) * METERS_PER_DEG_LAT) < 4));
   return [...legacy, ...tees].sort((a, b) => a.id.localeCompare(b.id));
@@ -147,6 +147,7 @@ function stableNodeId(longitude: number, latitude: number): string {
 function detectStreetIntersections(
   zones: SiteZone[],
   includeThreeArm: boolean,
+  preview = false,
 ): ConnectedStreetIntersection[] {
   const eligibleZones = [...zones].sort((a, b) => a.id.localeCompare(b.id)).filter((zone) => {
     // Callers can pass a whole site (e.g. during edits). Buildings and the
@@ -176,7 +177,7 @@ function detectStreetIntersections(
   const mPerLon = metersPerDegLon(originLat);
   const axes: StreetAxis[] = eligibleZones.flatMap((zone) => {
     const native = publicRealmTrialAsset(zone);
-    const nativePilot = nativeStreetPilotForZone(zone);
+    const nativePilot = nativeStreetPilotForZone(zone, preview);
     // Review-native rectangles use local X for section width and local Y for
     // the route. Generic buffered-road ring pairing follows the opposite
     // edge order and would make a long street's *width* its graph axis.

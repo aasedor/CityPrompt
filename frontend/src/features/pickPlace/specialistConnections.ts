@@ -34,6 +34,9 @@ export function specialistConnectionProblem(candidate:Pick<SiteZone,'coordinates
           return 'Connect at the canal’s outer bank edge. Use its original arch to cross the water; ordinary roads cannot cross the basin or channel.';
       }else if(variant===BRIDGE_VARIANT){
         const start=(length-100)/2,end=start+100;
+        if(other.properties?.road_selected_variant_id===BRIDGE_VARIANT
+          && points.slice(1).some((p,i)=>enters(points[i],p,-18-half,18+half,1,length-1)))
+          return 'Keep fixed bridge structures separate. Bridge-to-bridge crossings are not supported; connect their ground-level endpoints instead.';
         // The clear opening is between the two 8 m abutments. At-grade roads
         // may pass below, but no generic intersection is created there.
         const clashes=points.slice(1).some((p,i)=>enters(points[i],p,-15-half,15+half,1,start+8+half)

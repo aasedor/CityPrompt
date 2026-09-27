@@ -21,4 +21,9 @@ describe('rigid bridge overhead reservations',()=>{
     const native=Array.from({length:165},(_,i)=>({...bridge,id:String(i)}));
     expect(selectDetailedStreetZones(native)).toHaveLength(165);
   });
+  it('never drops an entire rigid structure as overhead furniture',()=>{
+    const source=placeNativeStreetModules(nativeStreetPilot('landmark_signature_bridge_v2')!,[{x:-130,y:130},{x:130,y:130}]);
+    expect(source.some(p=>p.kind==='bridge_structure')).toBe(true);
+    expect(clearBridgeOverhead(source,{lng:0,lat:0},[bridge],'other')).toEqual(source);
+  });
 });

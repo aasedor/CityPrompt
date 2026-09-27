@@ -21,6 +21,8 @@ import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { parkOutlineProblem } from '@/features/pickPlace/parkOutline';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
+import { duplicateStreet } from '@/features/pickPlace/duplicateStreet';
+import { streetConnectionProblem } from '@/features/pickPlace/streetConnectionProblem';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
 import type { EntrancePickRequest } from '@/features/pickPlace/pickBuildingEntrance';
@@ -317,6 +319,7 @@ export function ProjectViewPage() {
       const footprint = streetUpdate?.coordinates ?? coordinates;
       const problem = specialistConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
         ?? brtConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
+        ?? streetConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
         ?? nativeStreetRouteProblem({...zone,...(streetUpdate??{coordinates})},getActiveSiteBoundary(siteZones))
         ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
@@ -1143,6 +1146,7 @@ export function ProjectViewPage() {
               if (isFixedSectionStreet({zone_type:type, properties})) {
                 const problem = specialistConnectionProblem({coordinates,properties},siteZones)
                   ?? brtConnectionProblem({coordinates,properties},siteZones)
+                  ?? streetConnectionProblem({coordinates,properties},siteZones)
                   ?? nativeStreetRouteProblem({coordinates,properties},getActiveSiteBoundary(siteZones))
                   ?? streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
                   parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
@@ -1285,12 +1289,26 @@ export function ProjectViewPage() {
         )}
         {selectedZone && !entrancePick && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
+            onDuplicate={async (eastM, northM) => {
+              if (pendingDrafts.length > 0) throw new Error('Resolve the pending save with Retry or Discard before creating another copy.');
+              const copy = duplicateStreet(selectedZone, eastM, northM);
+              const boundary = getActiveSiteBoundary(siteZones);
+              const problem = specialistConnectionProblem(copy, siteZones) ?? brtConnectionProblem(copy, siteZones)
+                ?? streetConnectionProblem(copy, siteZones)
+                ?? nativeStreetRouteProblem(copy, boundary)
+                ?? streetRouteProblem(copy.coordinates, Number(copy.properties.width), parsePersistedCenterline(copy.properties.plan_route_controls) ?? undefined)
+                ?? placementProblem(copy.coordinates, siteZones, boundary, undefined, { allowStreetIntersections: true });
+              if (problem) throw new Error(problem);
+              const created = await createZone.mutateAsync(copy);
+              selectZone(created.id);
+            }}
             onUpdateDesign={data => {
               const problem = (!streetEditConnectionCheck(selectedZone, siteZones)({ ...selectedZone, ...data })
                 ? 'This section needs more room at an existing junction. Keep this street type or move the junction first.' : null)
                 ?? nativeStreetRouteProblem({...selectedZone,...data},getActiveSiteBoundary(siteZones))
                 ?? specialistConnectionProblem({...selectedZone,...data},siteZones)
                 ?? brtConnectionProblem({...selectedZone,...data},siteZones)
+                ?? streetConnectionProblem({...selectedZone,...data},siteZones)
                 ?? streetRouteProblem(data.coordinates, Number(data.properties.width),
                 parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)
                 ?? placementProblem(data.coordinates, siteZones,

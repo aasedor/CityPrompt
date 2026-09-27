@@ -760,7 +760,7 @@ export function GlobeEditMode({
           >
             <meshBasicMaterial transparent opacity={0} side={THREE.DoubleSide} depthTest={false} />
           </mesh>
-          <Html center position={[0, 0, 2]} zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}>
+          {!routeEditing && <Html center position={[0, 0, 2]} zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}>
             <button
               type="button"
               aria-label="Move selected object"
@@ -772,7 +772,7 @@ export function GlobeEditMode({
             >
               ↔ Move
             </button>
-          </Html>
+          </Html>}
         </EastNorthUpFrame>
       )}
 

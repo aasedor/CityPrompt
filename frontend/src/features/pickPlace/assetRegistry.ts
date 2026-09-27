@@ -141,6 +141,9 @@ const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
 }));
 
 export const STREET_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS;
+// Saved metric streets stay editable without adding them to the seven candidates.
+export const LEGACY_SECTION_STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET,
+  additionalStreet('calgary_collector', 'Calgary collector street', 'Existing metric section', {groupId:'local',basis:'draft_manual'})];
 
 /** New starter houses place one native model. Existing saved home plots keep
  * their explicit repeat flag and are resolved by assetForZone as legacy plots. */

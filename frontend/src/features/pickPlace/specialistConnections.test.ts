@@ -21,4 +21,10 @@ describe('specialist topology',()=>{
     expect(specialistConnectionProblem(street('r',[[-60,85],[60,85]],'local',18),[bridge])).toMatch(/abutments/);
     expect(specialistConnectionProblem(street('r',[[0,-70],[0,0]],'local',18),[bridge])).toBeNull();
   });
+  it('rejects two intersecting rigid bridges instead of removing either structure',()=>{
+    const crossing=street('b2',[[-130,130],[130,130]],BRIDGE_VARIANT);
+    expect(specialistConnectionProblem(crossing,[bridge])).toMatch(/Bridge-to-bridge/);
+    expect(specialistConnectionProblem(bridge,[crossing])).toMatch(/Bridge-to-bridge/);
+    expect(specialistConnectionProblem(street('end',[[0,-260],[0,0]],BRIDGE_VARIANT),[bridge])).toBeNull();
+  });
 });

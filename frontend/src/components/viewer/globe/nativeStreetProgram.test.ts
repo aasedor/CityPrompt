@@ -8,6 +8,29 @@ import type { SiteZone } from '@/types';
 const residential=nativeStreetPilot('student_quiet_residential_street_v1')!;
 const shared=nativeStreetPilot('student_planted_shared_lane_v1')!;
 
+describe('finite native street placement limits',()=>{
+  it.each([
+    ['student_quiet_residential_street_v1',48,480],
+    ['student_planted_shared_lane_v1',40,480],
+    ['brt_bus_rapid_transit_corridor_v0',100,480],
+    ['amsterdam_gracht_v1',80,320],
+    ['landmark_signature_bridge_v2',260,480],
+  ] as const)('%s accepts both limits and rejects undersize, oversize or missing prepared ground',(variant,min,max)=>{
+    const pilot=nativeStreetPilot(variant)!;
+    const boundary:SiteZone={id:'site',project_id:'test',zone_type:'site_boundary',coordinates:[],color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',properties:{terrain_strategy:'level',community_3d_mask_existing_tiles:true}};
+    const zone=(length:number)=>{
+      const line=[[0,0],[0,length/111320]];
+      return {coordinates:bufferLineToPolygon(line,pilot.widthM),properties:{plan_centerline:line,road_selected_variant_id:variant}};
+    };
+    expect(nativeStreetRouteProblem(zone(min),boundary)).toBeNull();
+    expect(nativeStreetRouteProblem(zone(max),boundary)).toBeNull();
+    expect(nativeStreetRouteProblem(zone(min-.1),boundary)).not.toBeNull();
+    expect(nativeStreetRouteProblem(zone(max+.1),boundary)).not.toBeNull();
+    expect(nativeStreetRouteProblem(zone(min),null)).toMatch(/level/);
+    expect(nativeStreetRouteProblem(zone(min),{...boundary,properties:{terrain_strategy:'landscape'}})).toMatch(/level/);
+  });
+});
+
 describe('original Shared Lane executable program',()=>{
   it('retains the 14 m shared brick section, four walking arbors and 118 rigid source placements',()=>{
     expect(shared.widthM).toBe(14);

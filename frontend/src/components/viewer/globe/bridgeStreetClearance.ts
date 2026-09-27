@@ -24,6 +24,9 @@ export function clearBridgeOverhead(poses: NativeStreetPose[], origin: {lng:numb
   });
   if(!reservations.length)return poses;
   const blocked=poses.filter(pose => {
+    // Complete structures are never disposable overhead furniture. Their
+    // compatibility is decided before saving by specialist/station fit checks.
+    if (['bridge_structure', 'canal_ground', 'canal_crossing', 'canal_furnishings', 'station_program'].includes(pose.kind)) return false;
     const box=bounds[pose.sha256 as keyof typeof bounds];
     if(!box)throw new Error('The street component has no verified occupied bounds.');
     // Original tie girders reach 3.17 m; keep 7 cm tolerance to their underside.

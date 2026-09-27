@@ -1,4 +1,4 @@
-import { LOCAL_STREET_ASSET, STREET_ASSETS } from './assetRegistry';
+import { LOCAL_STREET_ASSET, STREET_ASSETS, LEGACY_SECTION_STREET_ASSETS } from './assetRegistry';
 import type { SiteZone } from '@/types';
 import { bufferLineToPolygon, extractCenterline, extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
@@ -17,7 +17,7 @@ export function streetAssetForZone(zone: Pick<SiteZone, 'zone_type' | 'propertie
   if (zone.zone_type !== 'road') return undefined;
   // A finite classroom picker must not remove editing support from an existing
   // Calgary Local route saved before the candidate-only catalogue was enabled.
-  return [...STREET_ASSETS, LOCAL_STREET_ASSET].find(asset => zone.properties?.pick_place_street_section === asset.model.variantId
+  return [...STREET_ASSETS, ...LEGACY_SECTION_STREET_ASSETS].find(asset => zone.properties?.pick_place_street_section === asset.model.variantId
     && zone.properties.road_archetype_id === asset.properties.road_archetype_id
     && zone.properties.road_selected_variant_id === asset.model.variantId) ?? canonicalStreetForZone(zone);
 }

@@ -6,12 +6,14 @@ import { CalgaryGuideDetails } from '@/features/calgaryCatalogue/CatalogueBrowse
 import { nativeStreetPilot } from '@/components/viewer/globe/nativeStreetPilot';
 import { BRT_VARIANT } from '@/components/viewer/globe/brtStreetProgram';
 import { BrtStopControls } from './BrtStopControls';
+import { StreetDuplicateControls } from './StreetDuplicateControls';
 import { isSpecialistStreet, CANAL_VARIANT } from '@/components/viewer/globe/specialistStreetProgram';
 
-export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete, onMore, onConnections, onPublicConnection, connectionLeavesSite = false, onUpdateDesign }: {
+export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete, onMore, onConnections, onPublicConnection, connectionLeavesSite = false, onUpdateDesign, onDuplicate }: {
   zone: SiteZone; disabled: boolean; onReshape: (coordinates: number[][]) => void;
   onClose: () => void; onDelete: () => void; onMore: () => void;
   onConnections?: () => void;
+  onDuplicate?: (eastM: number, northM: number) => Promise<void>;
   onPublicConnection?: (enabled: boolean) => void;
   connectionLeavesSite?: boolean;
   onUpdateDesign?: (data: { coordinates: number[][]; properties: SiteZoneProperties }) => void;
@@ -40,6 +42,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
     </div>}
     {asset && <StreetCrossSection asset={asset} expanded />}
     <div className="grid grid-cols-2 gap-2"><button className={button} disabled={disabled || !bend} onClick={()=>bend && onReshape(bend)}>Add bend point</button><button className={button} disabled={disabled} onClick={onDelete}>Delete street</button></div>
+    {onDuplicate && !zone.properties?.validation_fixed_fixture && <StreetDuplicateControls key={zone.id} disabled={disabled} width={width} onDuplicate={onDuplicate} />}
     {!bend && !isBrt && !specialist && <p className="mt-2 text-xs text-slate-600">Extend a segment to {2 * width} m before adding another point.</p>}
     {asset && <CalgaryGuideDetails classification={asset.calgaryGuide} />}
     {onConnections && <button className={`${button} mt-3 w-full`} onClick={onConnections}>Connections</button>}

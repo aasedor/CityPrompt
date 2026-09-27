@@ -23,8 +23,8 @@ const street = (asset: (typeof assets)[number], yaw: number, id = asset.id): Sit
 const market = assets.find((asset) => asset.id === 'student_market_street_v1')!;
 
 describe('native street junction ownership', () => {
-  it('connects every authored native street through the shared graph', () => {
-    const streets = assets.filter((asset) => asset.kind === 'street');
+  it('connects legacy native rectangles that delegate their ground to this renderer', () => {
+    const streets = assets.filter((asset) => asset.kind === 'street' && !('preserveNativeGround' in asset && asset.preserveNativeGround));
     expect(streets).toHaveLength(12);
     for (const asset of streets) {
       expect(['pavers', 'brick', 'cobble', 'timber']).toContain('junctionSurface' in asset ? asset.junctionSurface : undefined);

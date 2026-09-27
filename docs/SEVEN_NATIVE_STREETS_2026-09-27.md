@@ -4,6 +4,81 @@ Branch: `codex/seven-native-streets`, starting at park checkpoint `d34a9b9da`.
 The eight native parks and Basketball Long remain on `codex/custom-render-prompts`.
 No push, merge, publication or paid street render is authorized.
 
+## Latest checkpoint: all five integrated, acceptance still partial
+
+All seven exact street types now use ordinary route controls in the local
+production build at `http://127.0.0.1:4181`. This includes the five requested
+designs, without substitutions. The current exact-variant record is
+[`native_street_acceptance_2026-09-27.json`](native_street_acceptance_2026-09-27.json).
+It separates source verification, agent visual review, bounded runtime results
+and publication. Seven available candidates is **not seven fully accepted
+classroom releases**. The older milestone notes below are historical.
+
+The final disposable scene has eight routes, seven types, two manually placed
+BRT stops and four valid shared junctions. Residential and Shared Lane curves,
+the elevated bridge/ground underpass, and the canal's single arch/basin retain
+their own native appearance. Existing park work and original assets remain
+unchanged. Generated models, images and receipts stay outside source control.
+
+Latest fixes and checks:
+
+- Added `Duplicate street` with metric offsets, fit checks, one history entry
+  and fresh compiled ownership. Invalid copies preserve their source. Pending
+  failed saves must be resolved before another copy; existing retry/idempotency
+  remains authoritative. Browser: Canal copy, Undo/Redo, reopen and delete;
+  Residential overlap rejection and cancellation. Keyboard copying is not
+  claimed by this new control.
+- Shared Lane now participates in paved pedestrian junctions. Preflight rejects
+  incomplete overlaps, short arms and incompatible opposing sections in the
+  whole node. Browser rejected a 71 m Residential crossing too near Main's end;
+  the existing scene remained intact. T/X, shallow, parallel and multi-section
+  cases have focused automated coverage.
+- Protected rigid bridge, canal and station assemblies from the under-bridge
+  furniture clearance filter. Intersecting bridge structures are rejected.
+- Preserved legacy Calgary Collector section editing without adding it to the
+  finite seven-choice catalogue. Historical Main/Market fixtures remain
+  untouched; regression tests replay their geometry with current locked recipes.
+- Removed the floating Move button on street routes because it covered bend
+  handles. Streets still move by dragging their body. All three handles remain
+  exposed in `shared-final-handles.png`.
+- Shared curve: add point, drag, Undo/Redo, reopen and exact export passed.
+  BRT: two stops at 65/130 m on a 208 m corridor and a valid Shared connection.
+  Whole station reversal orientation has a new automated regression.
+- Bridge corruption: missing structural model blocked capture; visible Retry
+  restored the complete hash-verified bridge. Other classes use the same tested
+  loader, but separate browser fault injections remain open.
+
+Latest checks: **151 focused street Vitest tests, 68 save/history tests**, type
+check and production build pass. The unchanged backend previously passed 120
+focused tests and staging/adapter tools passed five tests. Build warnings concern
+existing large chunks. `git diff --check` passes. Fresh browser has no page errors.
+
+Actual final exported PNG, inspected after reopening the curved-lane scene:
+`downloads-verified/cityprompt-3d-view-1790505486073.png`, 1,297,281 bytes,
+SHA-256 `1a5ff19e3bc58fbdf8acb7c95264613ba45cc77dd17b6687e35aa6c4199521ce`.
+The visible Download render control was used with Chromium's native Windows
+download path. Prior escaped-path cancellations and one browser crash/partial
+download are retained; the crash's cause is unproven. No paid street calls.
+
+### Exact next acceptance work
+
+Continue on this branch/check-out. Do not re-extract assets or rebuild the five
+designs from scratch. Start the existing API at 8006 and production preview at
+4181 if needed; runtime/staging commands are in the external progress log.
+
+1. Complete a mapped public-road endpoint and inspect the low-view grade and
+   reopen. Current mixed fixture validates interior connections only.
+2. Finish per-class browser X/acute/limit/reversal cases and interruption,
+   unavailable-ground and failed-save recovery. Keep existing automated passes
+   distinct from browser results. BRT reversal-facing and Canal's outer-bank
+   1.9 m apron edge case are specifically open.
+3. Review the final seven-type evidence and update each exact revision's status.
+   Touch and independent novice trials remain separate usability checks.
+
+This checkpoint fulfills implementation through all five designs, but the full
+required acceptance matrix remains partial. Do not label every family completed,
+publish the candidates or spend paid render credits on that basis.
+
 ## Scope and milestones
 
 Preserve Main Street (23 m), Market Street (18 m), Calgary Local and saved
