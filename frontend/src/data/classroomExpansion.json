@@ -881,7 +881,7 @@
         "nativeStoreys": 16,
         "minStoreys": 16,
         "maxStoreys": 40,
-        "recommendedMinStoreys": 25,
+        "recommendedMinStoreys": 16,
         "recommendedMaxStoreys": 40,
         "podiumStoreys": 3,
         "podiumHeightM": 13.0,

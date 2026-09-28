@@ -11,8 +11,7 @@ For taller choices, the runtime assembles three exact source bands:
 - one complete 3.2 m residential storey, repeated as a discrete module; and
 - the complete 4.2 m roof terrace, penthouse and plant level.
 
-The accepted range is 16–40 storeys, with 25–40 presented as the recommended
-Vancouverism range. The derived height is
+The accepted and recommended range is 16–40 storeys. The derived height is
 `13 + (storeys - 3) × 3.2 + 4.2` metres. This produces 58.8 m at 16 storeys,
 87.6 m at 25 storeys and 135.6 m at 40 storeys. Arbitrary height edits and
 storeys outside the finite range remain unsupported rather than deforming the

@@ -13,7 +13,7 @@
   "supported_storeys": {
     "minimum": 16,
     "maximum": 40,
-    "recommended_minimum": 25,
+    "recommended_minimum": 16,
     "recommended_maximum": 40
   },
   "height_contract": {
