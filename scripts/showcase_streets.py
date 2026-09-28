@@ -13,6 +13,29 @@ def digest(data):return hashlib.sha256(data).hexdigest()
 def read(p):return json.loads(p.read_text(encoding='utf-8'))
 def write(p,data):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 
+def inspect_seed(root=ROOT):
+    seed=root/'seed/classroom-streets/showcase';rows=read(seed/'manifest.json');result=[]
+    if len(rows)!=3 or {r['id'] for r in rows}!=IDS:raise ValueError('Expected three exact showcase streets')
+    for row in rows:
+        package=seed/row['id'];raw=(package/'source-recipe.json').read_bytes();recipe=json.loads(raw)
+        if digest(raw)!=row['sourceRecipeSha256'] or recipe['assembly']['sha256']!=row['sourceAssemblySha256']:raise ValueError('Source recipe changed')
+        if digest(json.dumps(row['program'],sort_keys=True,separators=(',',':')).encode())!=row['programSha256']:raise ValueError('Executable program changed')
+        review=read(package/'visual-review.json')
+        if review['model_sha256']!=row['sourceAssemblySha256'] or review['status']!='PASS_OFFLINE_NATIVE_REVIEW':raise ValueError('Review does not match assembly')
+        files={}
+        for kind,lock in row['modules'].items():
+            data=(package/(kind+'.glb')).read_bytes()
+            if digest(data)!=lock['sha256'] or len(data)!=lock['bytes'] or lock['sha256']!=recipe['modules'][kind]['sha256']:raise ValueError('Native module changed')
+            if data[:4]!=b'glTF':raise ValueError('Unhydrated or invalid GLB')
+            document=json.loads(data[20:20+int.from_bytes(data[12:16],'little')])
+            if any('uri' in item for key in ('buffers','images') for item in document.get(key,[])):raise ValueError('External GLB dependency')
+            files[kind+'.glb']=data
+        photo=(package/'reference.png').read_bytes()
+        front=next(r for r in recipe['image_references'] if r['path']=='reference.png')
+        if digest(photo)!=front['sha256']:raise ValueError('Photographic hero changed')
+        files['reference.png']=photo;result.append((row,files))
+    return result
+
 def inspect(package):
     row,files=inspect_pilot(package);recipe=read(package/'recipe.json')
     if row['id'] not in IDS:raise ValueError('Outside the finite showcase street batch')
@@ -76,5 +99,11 @@ def install(packages,public_root):
     print('STAGED',len(inspected),'local pilots; browser acceptance NOT TESTED')
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--package',type=Path,action='append',required=True);p.add_argument('--public-root',type=Path,required=True)
-    a=p.parse_args();install(a.package,a.public_root)
+    p=argparse.ArgumentParser();p.add_argument('--package',type=Path,action='append');p.add_argument('--from-seed',action='store_true');p.add_argument('--public-root',type=Path,required=True)
+    a=p.parse_args()
+    if a.from_seed:
+        if a.package:p.error('Choose delivery registration or seed staging')
+        stage_inspected(inspect_seed(),a.public_root,ROOT/'frontend/src/data/nativeStreetPilots.json',dry_run=False)
+        print('Verified and staged all three seed deliveries')
+    elif a.package:install(a.package,a.public_root)
+    else:p.error('Choose --from-seed or --package')

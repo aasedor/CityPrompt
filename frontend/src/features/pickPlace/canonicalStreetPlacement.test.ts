@@ -6,6 +6,7 @@ import { streetAssetForZone, streetCoordinateUpdate } from './streetPlacement';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
+import { LEGACY_SECTION_STREET_ASSETS } from './assetRegistry';
 
 it('uses the rendered section width for every current eligible street variant', () => {
   for (const choice of CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway')) {
@@ -21,8 +22,7 @@ it('uses the rendered section width for every current eligible street variant', 
 it('changes width and identity atomically, retaining the exact authored route', () => {
   const line = [[-114, 51], [-113.998, 51]];
   const zone = { id: 'street', project_id: 'project', color: '#777', sort_order: 0, created_at: '', updated_at: '', zone_type: 'road', coordinates: bufferLineToPolygon(line, 16), properties: { plan_centerline: line, terrain_elevation_m: 1100, public_realm_lego: { stale: true } } } as SiteZone;
-  const choice = CANONICAL_CHOICES.find(c => c.option.id === 'calgary_collector')!;
-  const asset = canonicalStreetAsset({ choice, variant: choice.option.variants![0] });
+  const asset = LEGACY_SECTION_STREET_ASSETS.find(a => a.id === 'calgary_collector_street')!;
   const update = streetDesignUpdate(zone, asset);
   expect(update.properties.plan_centerline).toEqual(line);
   expect(update.properties.terrain_elevation_m).toBe(1100);
@@ -37,8 +37,7 @@ it('changes width and identity atomically, retaining the exact authored route', 
 it('refits a curved route when a different fixed street section is selected', () => {
   const controls = [[-114, 51], [-113.999, 51], [-113.999, 51.001]];
   const oldLine = roundAuthoredStreetRoute(controls, 16);
-  const choice = CANONICAL_CHOICES.find(c => c.option.id === 'calgary_collector')!;
-  const asset = canonicalStreetAsset({ choice, variant: choice.option.variants![0] });
+  const asset = LEGACY_SECTION_STREET_ASSETS.find(a => a.id === 'calgary_collector_street')!;
   const zone = { id: 'street', project_id: 'project', color: '#777', sort_order: 0,
     created_at: '', updated_at: '', zone_type: 'road', coordinates: bufferLineToPolygon(oldLine, 16),
     properties: { plan_centerline: oldLine, plan_route_controls: controls } } as SiteZone;
