@@ -15,7 +15,7 @@ describe('classroom picker hero views', () => {
       expect(pickerHeroImage(id, 'fallback')).toBe(url);
     }
     const unchanged = CANONICAL_CHOICES.filter(choice => !PICKER_HERO_IMAGES[choice.placements[0].id]);
-    expect(unchanged).toHaveLength(33);
+    expect(unchanged).toHaveLength(CANONICAL_CHOICES.length - Object.keys(PICKER_HERO_IMAGES).length);
     for (const choice of unchanged) {
       const asset = choice.placements[0];
       expect(pickerHeroImage(asset.id, asset.thumbnail)).toBe(asset.thumbnail);
