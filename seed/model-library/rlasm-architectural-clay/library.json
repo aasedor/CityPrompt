@@ -1078,6 +1078,216 @@
         "unresolved_p0": 0,
         "unresolved_p1": 0
       }
+    },
+    {
+      "candidate": "showcase-market-clay-v006",
+      "family": "rlasm-showcase-market",
+      "archetype_id": "food_hall_market_hall",
+      "variant_id": "market_historic_iron_glass",
+      "archetype_label": "Grand Iron & Glass Market",
+      "variant_label": "Grand Iron & Glass Market",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 34,
+        "depth": 48,
+        "height": 20
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+          "bytes": 3270166,
+          "sha256": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-oblique.jpg",
+          "bytes": 975284,
+          "sha256": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-top.jpg",
+          "bytes": 913131,
+          "sha256": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\showcase-nine-2026-09-27\\buildings\\market-v006",
+      "picker": {
+        "id": "showcase_market",
+        "description": "Two occupied market galleries, an iron barrel vault and complete vendor stalls.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 39,
+        "depth": 52,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/showcase-market-clay-v006.glb",
+        "bytes": 5900052,
+        "sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+        "native_dimensions_m": {
+          "width": 35.25,
+          "height": 19.09000015258789,
+          "depth": 48.47999954223633
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-market-clay-v006.json",
+        "sha256": "6e8ac57694913bcc5b42864df204274da1ab7cf03294efa3c26923c182e5ff76",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "showcase-aquatic-clay-v004",
+      "family": "rlasm-showcase-aquatic",
+      "archetype_id": "aquatic_natatorium_complex",
+      "variant_id": "biophilic_mass_timber_pool",
+      "archetype_label": "Living-Roof Aquatic Centre",
+      "variant_label": "Living-Roof Aquatic Centre",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 38,
+        "depth": 56,
+        "height": 17
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+          "bytes": 1292097,
+          "sha256": "06810b6ee8ed0f3a58588be35c41cb9945eadfa49efe62a1cc3b4e9f8892882c"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-oblique.jpg",
+          "bytes": 925963,
+          "sha256": "8a18d105da76d96e3548f04f5cea66130111845365079d4bf7817fa50344e67e"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-top.jpg",
+          "bytes": 916068,
+          "sha256": "77e193aa06682532fe8aa654224810f4e944bd1b91c8336487aba69e8b619dcf"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\showcase-nine-2026-09-27\\buildings\\aquatic-v004",
+      "picker": {
+        "id": "showcase_aquatic",
+        "description": "A planted glulam vault, glazed entrance arch and complete eight-lane swimming hall.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 42,
+        "depth": 60,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/showcase-aquatic-clay-v004.glb",
+        "bytes": 8005836,
+        "sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+        "native_dimensions_m": {
+          "width": 38.36000061035156,
+          "height": 16.597248077392578,
+          "depth": 56.73500061035156
+        },
+        "mesh_count": 15,
+        "material_count": 15,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-aquatic-clay-v004.json",
+        "sha256": "a7527b0e4a5f94f184e67bfec3f5f21e551371b9aa1475d62008551e64679f63",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "showcase-tower-clay-v005",
+      "family": "rlasm-showcase-tower",
+      "archetype_id": "art_deco_setback_tower",
+      "variant_id": "art_deco_cream_terracotta",
+      "archetype_label": "Gilded Terracotta Tower",
+      "variant_label": "Gilded Terracotta Tower",
+      "native_floors": 17,
+      "design_dimensions_m": {
+        "width": 32,
+        "depth": 28,
+        "height": 68
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+          "bytes": 1120425,
+          "sha256": "cbfa6ffaf90e040b2ef9f631f438cc1184993ceec74de95be8943dd85804e40b"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-oblique.jpg",
+          "bytes": 969798,
+          "sha256": "82d0cd1caf3cb7141de20e91e6960263745010d017ec971db623eff8fa64a9e9"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-top.jpg",
+          "bytes": 824804,
+          "sha256": "05e11751364bfa854b7ea4d9da46a70f262c3424ea15498395e0bb4fe9e109cb"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\showcase-nine-2026-09-27\\buildings\\tower-v005",
+      "picker": {
+        "id": "showcase_tower",
+        "description": "A cream terracotta setback tower with recessed windows, sunburst relief and a gilded lantern.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 36,
+        "depth": 33,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/showcase-tower-clay-v005.glb",
+        "bytes": 13166820,
+        "sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+        "native_dimensions_m": {
+          "width": 32.779998779296875,
+          "height": 68.5999984741211,
+          "depth": 29.31721782684326
+        },
+        "mesh_count": 9,
+        "material_count": 9,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-tower-clay-v005.json",
+        "sha256": "95198fa5d0744dc68c9f26810314e6f5388206853caf68636916db6c2bbf8f54",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
     }
   ],
   "review_only_archive": []

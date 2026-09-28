@@ -1,0 +1,23 @@
+{
+  "schema": "cityprompt.showcase-buildings@1",
+  "buildings": [
+    {
+      "candidate": "showcase-market-clay-v006",
+      "sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "runtime": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "candidate": "showcase-aquatic-clay-v004",
+      "sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "runtime": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "candidate": "showcase-tower-clay-v005",
+      "sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "runtime": "NOT TESTED",
+      "completed": false
+    }
+  ]
+}

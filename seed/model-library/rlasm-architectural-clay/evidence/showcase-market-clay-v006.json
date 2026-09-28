@@ -1,0 +1,375 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "showcase-market-clay-v006",
+  "candidate_directory": "C:/dev-artifacts/CityPrompt/showcase-nine-2026-09-27/buildings/market-v006",
+  "reviewer": {
+    "agent": "/root/showcase_market_review",
+    "role": "Independent architectural-clay reviewer; did not author or edit builder source"
+  },
+  "reviewed_at_utc": "2026-09-28T06:24:40.024592+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Offline holistic architectural-clay visual review of texture-free colored native geometry and exact-source fidelity",
+  "model_path": "showcase-market-clay-v006.glb",
+  "model_sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+  "source_hashes": [
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659"
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "sha256": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a"
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "sha256": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0"
+    }
+  ],
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "findings": [],
+  "inspection_coverage": {
+    "exact_sources": 3,
+    "individual_reimported_glb_renders": 15,
+    "phone_board": 1,
+    "all_images_opened_individually_at_full_resolution": true,
+    "counts_used_as_visual_approval": false
+  },
+  "holistic_assessment": [
+    {
+      "area": "Exact-source architectural identity",
+      "result": "PASS within architectural-clay scope",
+      "observation": "The open front nave, brick aisle masses, barrel roof and raised monitor, central gabled side portals, green ironwork, paired galleries and market occupancy retain the locked reference identity. Fine ornament and surface finish remain simplified native geometry."
+    },
+    {
+      "area": "Roof hierarchy and contact",
+      "result": "PASS",
+      "observation": "Fresh front_corner, aerial, top and architecture_close show fine curved transverse barrel framing between the larger primary ribs. Secondary curves stop on each side of the monitor; thin longitudinal divisions remain legible. Opaque aisle fields contain four discrete skylight groups per side. Portal roof outer seating and inboard triangle closures remain intact; no visible free rods, outward knee-brace prongs or glaring contact gaps."
+    },
+    {
+      "area": "Complete enclosure",
+      "result": "PASS for depicted design",
+      "observation": "Rear clerestory band, aisle end glazing, monitor and masonry elevations close the building; the front nave is intentionally open as in the source. No new exterior holes apparent in rear, rear_side, side elevations or roof views."
+    },
+    {
+      "area": "Entries and gallery access",
+      "result": "PASS visually",
+      "observation": "Side doorway base courses stay split and corresponding ground stalls stay removed, preserving passages. gallery_stair and gallery_landing frame the last tread, flat landing, guard termination and lateral gallery connection clearly. This is visual access evidence, not runtime collision/navigation testing."
+    },
+    {
+      "area": "Interior and glazing depth",
+      "result": "PASS",
+      "observation": "glass_close, program_interior and walk reveal physical galleries, supports, shelves, stocked counters, table seating and open axial circulation. The new framing does not conceal the inhabited market program."
+    },
+    {
+      "area": "Evidence cameras and phone board",
+      "result": "PASS",
+      "observation": "All eight whole-building views retain complete footprint/roof margins; detail views expose the relevant physical features. Fresh comparison-phone board supports the exact source/model comparison and states browser NOT TESTED. Individual images, not the reduced board alone, determined this review."
+    }
+  ],
+  "prior_findings_rechecked": [
+    {
+      "id": "MKT5-01",
+      "status": "CLOSED in v006",
+      "evidence": [
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/architecture_close.png"
+      ],
+      "observation": "Fine transverse curved barrel seams are now visible at the intended 0.8 m cadence between 4 m primary ribs, split at the monitor, restoring the missing source roof rhythm."
+    },
+    {
+      "id": "MKT3-01",
+      "status": "Remains closed",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/facade_close.png",
+        "renders/program_interior.png"
+      ],
+      "observation": "Side entrance low stone courses and central ground-stall obstructions remain cleared."
+    },
+    {
+      "id": "MKT3-02",
+      "status": "Remains closed",
+      "evidence": [
+        "renders/aerial.png",
+        "renders/rear_side.png",
+        "renders/architecture_close.png"
+      ],
+      "observation": "Extended gabled portal roof seating and inboard triangular closures remain present."
+    },
+    {
+      "id": "MKT-01 / MKT-04 / MKT-05",
+      "status": "Remain closed",
+      "evidence": [
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/front.png",
+        "renders/gallery_stair.png",
+        "renders/gallery_landing.png"
+      ],
+      "observation": "Rear enclosure, bounded braces and front girder, and unobstructed stair/gallery landings retain their corrections."
+    }
+  ],
+  "checks": {
+    "actual_model_hash_matches_build_report": true,
+    "source_hashes_match_source_entry": true,
+    "glb_images": 0,
+    "glb_textures": 0,
+    "all_render_dimensions_px": [
+      1440,
+      1080
+    ],
+    "render_provenance": "actual optimized GLB reimport; no geometry/material replacement",
+    "render_provenance_basis": "Builder report and authoring evidence; reviewer independently inspected the delivered render pixels and exact GLB bytes, did not rerender."
+  },
+  "approval_boundaries": {
+    "textured_keeper_approved": false,
+    "browser_tested": false,
+    "runtime_placement_scaling_grounding_tested": false,
+    "engineering_or_code_compliance_verified": false,
+    "human_activation_approved": false,
+    "publication_approved": false
+  },
+  "limitations": [
+    "Rear and concealed interior details are inferred where the three exact sources do not expose them.",
+    "Clay review accepts simplified native materials and ornament; it does not claim finished texture fidelity.",
+    "Native-scale offline review only. Browser import, terrain placement, scaling, editing and capture remain NOT TESTED by explicit user direction.",
+    "build-report.json still records builder_visual_review and independent_review as pending. This separate signed review records the independent decision without modifying builder metadata."
+  ],
+  "finite_required_changes": [],
+  "next_checkpoint": "No further architectural-clay correction required by this review. This exact candidate can serve as the reviewed market pilot checkpoint; separate browser/runtime and human activation gates remain outstanding.",
+  "inspected_files": [
+    {
+      "path": "prework-manifest.json",
+      "bytes": 6941,
+      "sha256": "404c50afb77726678e8441802c6149011ced8ec87ad52d12c6a6d48b7ed40712",
+      "inspection": "Read supporting metadata or source; GLB header and JSON independently parsed for image/texture counts and file hash."
+    },
+    {
+      "path": "source-entry.json",
+      "bytes": 1564,
+      "sha256": "1703028219ee94521ef5d14c8b28b5d84f2f6ab15a090c4375b05a79f8fd04f7",
+      "inspection": "Read supporting metadata or source; GLB header and JSON independently parsed for image/texture counts and file hash."
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 241668,
+      "sha256": "cadd73e53fa4674a3b7618c3ca62a90f98af1073ea8caa9342f6a58d67988f23",
+      "inspection": "Read supporting metadata or source; GLB header and JSON independently parsed for image/texture counts and file hash."
+    },
+    {
+      "path": "evidence/carrier-aperture-audit.json",
+      "bytes": 3422,
+      "sha256": "386ce1d813b79b37feb0d937e6ba5bc0988f982de7a9d768238f5c368c49aa9f",
+      "inspection": "Read supporting metadata or source; GLB header and JSON independently parsed for image/texture counts and file hash."
+    },
+    {
+      "path": "scripts/market.py",
+      "bytes": 11097,
+      "sha256": "e81226ad0877f9bae11b08e10d1c85e44a8e4934ac2e76a3e47302b82f70cb17",
+      "inspection": "Read supporting metadata or source; GLB header and JSON independently parsed for image/texture counts and file hash."
+    },
+    {
+      "path": "showcase-market-clay-v006.glb",
+      "bytes": 5900052,
+      "sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "inspection": "Read supporting metadata or source; GLB header and JSON independently parsed for image/texture counts and file hash."
+    },
+    {
+      "path": "sources/variant_0.png",
+      "bytes": 3270166,
+      "sha256": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659",
+      "dimensions_px": [
+        2752,
+        1536
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "bytes": 975284,
+      "sha256": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a",
+      "dimensions_px": [
+        1376,
+        768
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "bytes": 913131,
+      "sha256": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0",
+      "dimensions_px": [
+        1376,
+        768
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1322102,
+      "sha256": "34518083c84967ad23c66aa46b67012fb9506f9b891b37b0ed96748f3db28ddd",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1414724,
+      "sha256": "7d394e937e3a4afef0ff874a87fe18598dbefae3c4c68eb80cb53c97b32c18e0",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1404217,
+      "sha256": "6d6875c2f8449babf83d4c225e22f8e33daa0be3cd620b8654b1f506675cfbe3",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1291813,
+      "sha256": "beb38a7a66b881487c72f8022a60f08900eb786503951e69f4ef905d17de71b9",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1648000,
+      "sha256": "9dd92e60336c06cb136b96a680435fc9e61b2fcfb66327fdeb8662ee009c1919",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1728301,
+      "sha256": "68b8a639dfbd519ec01d92b818212a0c5c1996fae8f9b929f825c53c9dd3a62c",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1543989,
+      "sha256": "8b884b4e030bc9de01a00886218092b26d8422fecd3733d284b0b7024f1777b9",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1583054,
+      "sha256": "2c252e3427d963de3eeec4daf1d6c466f5477941f4db15fd665d008f703a8b7c",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1712339,
+      "sha256": "a67b7a000ada2a1fc3c6f4c5d803ba4c6803eb09f053ea06cc94611d3cc4c400",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 2187573,
+      "sha256": "c9ccfe8782b9a06c40391d4a42246640aee0f162e344b65f5bf14657de40dd46",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1662408,
+      "sha256": "f171d170f71c8fb2da7ba3052aad6716b4b6cee5ddfc0d9ffc73022cd035d5b2",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/program_interior.png",
+      "bytes": 1874471,
+      "sha256": "b1e7ea6664160cc79d9bc7840aeccef43d684f4888180d396e6a4d5ba28d3d16",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/walk.png",
+      "bytes": 1978967,
+      "sha256": "bcddfe45248970bdd392756769056256e0f93e29583a71235673c7600228ece5",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/gallery_stair.png",
+      "bytes": 1710031,
+      "sha256": "7359c126c53166039b53f7828a9b8fe4c732bcb254d0ee7d48c0b0ca532aa1db",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "renders/gallery_landing.png",
+      "bytes": 1630574,
+      "sha256": "518b639c116584af805b4931b99c14b99ad9538e6cb616fd754062edeaa2d0ba",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    },
+    {
+      "path": "boards/comparison-phone.png",
+      "bytes": 1999588,
+      "sha256": "8c3106725401cd3d8bce85b84d8f82cacfcb19eb3912a2424886aad2dddd921c",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "Visually inspected individually at original full resolution; not inferred from the board or metadata."
+    }
+  ]
+}

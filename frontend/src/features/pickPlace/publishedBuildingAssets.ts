@@ -481,6 +481,126 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 3,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "showcase_market",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Grand Iron & Glass Market",
+    "description": "Two occupied market galleries, an iron barrel vault and complete vendor stalls.",
+    "thumbnail": "/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+    "model": {
+      "variantId": "market_historic_iron_glass",
+      "revision": "showcase-market-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 39.0,
+    "depth": 52.0,
+    "minWidth": 39.0,
+    "minDepth": 52.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      35.25,
+      48.47999954223633,
+      19.09000015258789
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "food_hall_market_hall",
+      "development_archetype_id": "food_hall_market_hall",
+      "development_selected_variant_id": "market_historic_iron_glass",
+      "development_archetype_label": "Grand Iron & Glass Market",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "showcase_aquatic",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Living-Roof Aquatic Centre",
+    "description": "A planted glulam vault, glazed entrance arch and complete eight-lane swimming hall.",
+    "thumbnail": "/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+    "model": {
+      "variantId": "biophilic_mass_timber_pool",
+      "revision": "showcase-aquatic-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 42.0,
+    "depth": 60.0,
+    "minWidth": 42.0,
+    "minDepth": 60.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      38.36000061035156,
+      56.73500061035156,
+      16.597248077392578
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "aquatic_natatorium_complex",
+      "development_archetype_id": "aquatic_natatorium_complex",
+      "development_selected_variant_id": "biophilic_mass_timber_pool",
+      "development_archetype_label": "Living-Roof Aquatic Centre",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "showcase_tower",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Gilded Terracotta Tower",
+    "description": "A cream terracotta setback tower with recessed windows, sunburst relief and a gilded lantern.",
+    "thumbnail": "/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+    "model": {
+      "variantId": "art_deco_cream_terracotta",
+      "revision": "showcase-tower-clay-v005",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 36.0,
+    "depth": 33.0,
+    "minWidth": 36.0,
+    "minDepth": 33.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      32.779998779296875,
+      29.31721782684326,
+      68.5999984741211
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "art_deco_setback_tower",
+      "development_archetype_id": "art_deco_setback_tower",
+      "development_selected_variant_id": "art_deco_cream_terracotta",
+      "development_archetype_label": "Gilded Terracotta Tower",
+      "floors": 17,
+      "floor_count": 17,
+      "native_plot_axes": true
+    }
   }
 ];
 

@@ -242,7 +242,7 @@
     },
     {
       "domain": "park",
-      "title": "Terraced Café & Fountain Court",
+      "title": "Terraced CafÃ© & Fountain Court",
       "archetype_id": "sunken_plaza",
       "variant_id": "student_terraced_cafe_court_v1",
       "version": "showcase-court-v002",
@@ -285,6 +285,42 @@
       "placement_id": "student_grand_haussmann_boulevard_v1",
       "sha256": "2184816a560792cdee4b8eebced15b6fba833aa8e641fb41b2c8e1ab9776f079",
       "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Grand Iron & Glass Market",
+      "archetype_id": "food_hall_market_hall",
+      "variant_id": "market_historic_iron_glass",
+      "version": "showcase-market-clay-v006",
+      "placement_id": "showcase_market",
+      "sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Living-Roof Aquatic Centre",
+      "archetype_id": "aquatic_natatorium_complex",
+      "variant_id": "biophilic_mass_timber_pool",
+      "version": "showcase-aquatic-clay-v004",
+      "placement_id": "showcase_aquatic",
+      "sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Gilded Terracotta Tower",
+      "archetype_id": "art_deco_setback_tower",
+      "variant_id": "art_deco_cream_terracotta",
+      "version": "showcase-tower-clay-v005",
+      "placement_id": "showcase_tower",
+      "sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
       "runtime_status": "NOT TESTED",
       "completed": false
     }
@@ -1009,8 +1045,8 @@
       "kind": "object",
       "definitionVersion": 2,
       "readiness": "pilot",
-      "label": "Terraced Café & Fountain Court",
-      "description": "A limestone gathering court with seven seat steps, café umbrellas and a bronze fountain.",
+      "label": "Terraced CafÃ© & Fountain Court",
+      "description": "A limestone gathering court with seven seat steps, cafÃ© umbrellas and a bronze fountain.",
       "thumbnail": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -1124,6 +1160,132 @@
         "pick_place_definition_version": 1,
         "community_3d_mask_existing_tiles": true,
         "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "showcase_market",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Grand Iron & Glass Market",
+      "description": "Two occupied market galleries, an iron barrel vault and complete vendor stalls.",
+      "thumbnail": "/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+      "model": {
+        "variantId": "market_historic_iron_glass",
+        "revision": "showcase-market-clay-v006",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "shops",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 39.0,
+      "depth": 52.0,
+      "minWidth": 39.0,
+      "minDepth": 52.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        35.25,
+        48.47999954223633,
+        19.09000015258789
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "food_hall_market_hall",
+        "development_archetype_id": "food_hall_market_hall",
+        "development_selected_variant_id": "market_historic_iron_glass",
+        "development_archetype_label": "Grand Iron & Glass Market",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "showcase_aquatic",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Living-Roof Aquatic Centre",
+      "description": "A planted glulam vault, glazed entrance arch and complete eight-lane swimming hall.",
+      "thumbnail": "/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+      "model": {
+        "variantId": "biophilic_mass_timber_pool",
+        "revision": "showcase-aquatic-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 42.0,
+      "depth": 60.0,
+      "minWidth": 42.0,
+      "minDepth": 60.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        38.36000061035156,
+        56.73500061035156,
+        16.597248077392578
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "aquatic_natatorium_complex",
+        "development_archetype_id": "aquatic_natatorium_complex",
+        "development_selected_variant_id": "biophilic_mass_timber_pool",
+        "development_archetype_label": "Living-Roof Aquatic Centre",
+        "floors": 1,
+        "floor_count": 1,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "showcase_tower",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Gilded Terracotta Tower",
+      "description": "A cream terracotta setback tower with recessed windows, sunburst relief and a gilded lantern.",
+      "thumbnail": "/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+      "model": {
+        "variantId": "art_deco_cream_terracotta",
+        "revision": "showcase-tower-clay-v005",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "offices",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 36.0,
+      "depth": 33.0,
+      "minWidth": 36.0,
+      "minDepth": 33.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        32.779998779296875,
+        29.31721782684326,
+        68.5999984741211
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "art_deco_setback_tower",
+        "development_archetype_id": "art_deco_setback_tower",
+        "development_selected_variant_id": "art_deco_cream_terracotta",
+        "development_archetype_label": "Gilded Terracotta Tower",
+        "floors": 17,
+        "floor_count": 17,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
       }
     }
   ]
