@@ -31,4 +31,9 @@ describe('showcase source programs',()=>{
     expect(pilot.junctionSurface).toBe('brick');
     expect(pilot.program!.details.filter(d=>d.material==='metal' && d.height===.05)).toHaveLength(4);
   });
+  it('does not silently discard a deliberately placed tram platform as ordinary roadside furniture',()=>{
+    const pilot=nativeStreetPilot('student_grass_tram_avenue_v1')!;
+    const poses=placeNativeStreetModules(pilot,[{x:0,y:0},{x:0,y:144}],[{x:0,y:72,clearanceM:10}],[{id:'stop',stationM:72}]);
+    expect(poses.filter(p=>p.kind===TRAM_STOP_MODULE)).toHaveLength(2);
+  });
 });

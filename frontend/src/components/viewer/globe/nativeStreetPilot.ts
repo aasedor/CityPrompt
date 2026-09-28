@@ -150,7 +150,7 @@ export function placeNativeStreetModules(
     const minX=Math.min(...corners.map(p=>p.x)), maxX=Math.max(...corners.map(p=>p.x));
     const minY=Math.min(...corners.map(p=>p.y)), maxY=Math.max(...corners.map(p=>p.y));
     const rotation=segment.angle-Math.PI/2, c=Math.cos(rotation), s=Math.sin(rotation);
-    if (!specialist && item.kind!=='station_program' && clearances.some(node => {
+    if (!specialist && item.kind!=='station_program' && item.kind!=='showcase_tram_stop' && clearances.some(node => {
       const dx=node.x-x,dy=node.y-y,nx=dx*c+dy*s,ny=-dx*s+dy*c;
       const distance=Math.hypot(nx-Math.max(minX,Math.min(maxX,nx)),ny-Math.max(minY,Math.min(maxY,ny)));
       return distance<Math.max(node.clearanceM,pilot.widthM/2+4);
