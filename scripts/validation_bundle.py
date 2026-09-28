@@ -11,6 +11,8 @@ from pathlib import Path, PurePosixPath
 ROOT = Path(__file__).resolve().parents[1]
 PACKET = ROOT / 'seed/validation'
 DEST = ROOT / '.validation'
+PICKER_HERO_DOMAINS = ('buildings', 'openspaces', 'streets')
+PICKER_HERO_COUNT = 12
 
 def digest(data): return hashlib.sha256(data).hexdigest()
 
@@ -32,7 +34,32 @@ def unpack(destination=DEST):
         for name in expected:
             target=destination/name;target.parent.mkdir(parents=True,exist_ok=True)
             if not target.exists():target.write_bytes(z.read(name))
+    sync_picker_heroes(destination)
     print(f'Verified {len(expected)} exact files; extracted to {destination}')
+
+def sync_picker_heroes(destination=DEST, source_root=ROOT / 'frontend/public'):
+    """Stage the small, curated picker views beside the locked runtime packet.
+
+    Never overwrite a locally changed staged image; the source and destination
+    must agree byte-for-byte on repeated runs.
+    """
+    source_root=Path(source_root)
+    files=sorted(path for domain in PICKER_HERO_DOMAINS
+                 for path in (source_root/'archetypes'/domain/'classroom-heroes').glob('*.webp'))
+    if len(files)!=PICKER_HERO_COUNT:
+        raise ValueError(f'Expected {PICKER_HERO_COUNT} picker heroes; found {len(files)}')
+    for source in files:
+        data=source.read_bytes()
+        if data[:4]!=b'RIFF' or data[8:12]!=b'WEBP':
+            raise ValueError(f'Unhydrated picker hero: {source}; pull its Git LFS object')
+        target=destination/'public'/source.relative_to(source_root)
+        if target.exists() and digest(target.read_bytes())!=digest(data):
+            raise ValueError(f'Preserved changed picker hero: {target}')
+    for source in files:
+        target=destination/'public'/source.relative_to(source_root)
+        target.parent.mkdir(parents=True,exist_ok=True)
+        if not target.exists():target.write_bytes(source.read_bytes())
+    print(f'Staged {len(files)} picker heroes in {destination / "public"}')
 
 def init_env():
     env_dir=DEST/'env';env_dir.mkdir(parents=True,exist_ok=True)
@@ -59,6 +86,8 @@ def init_env():
     print('Local-only password: '+password)
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['unpack','init-env']);p.add_argument('--destination',type=Path,default=DEST)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['unpack','init-env','sync-picker-heroes']);p.add_argument('--destination',type=Path,default=DEST)
     args=p.parse_args()
-    unpack(args.destination) if args.command=='unpack' else init_env()
+    if args.command=='unpack':unpack(args.destination)
+    elif args.command=='sync-picker-heroes':sync_picker_heroes(args.destination)
+    else:init_env()

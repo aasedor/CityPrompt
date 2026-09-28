@@ -14,15 +14,20 @@ Preserve any existing work before changing checkouts. Prefer a separate clone:
 GIT_LFS_SKIP_SMUDGE=1 git clone --single-branch --branch codex/approved-catalogue-validation https://github.com/aasedor/CityPrompt.git CityPrompt-validation
 cd CityPrompt-validation
 git lfs install --local
-git lfs pull --include="seed/validation/runtime-assets.zip" --exclude=""
+git lfs pull --include="seed/validation/runtime-assets.zip,frontend/public/archetypes/streets/classroom-heroes/*.webp" --exclude=""
 python3 scripts/validation_bundle.py unpack
 python3 scripts/validation_bundle.py init-env
 ```
 
 The approximately 239 MB LFS packet is `seed/validation/runtime-assets.zip`.
+The two small street hero WebPs are also in LFS.
 `manifest.json` beside it pins every file hash; unpack checks the complete
 inventory, rejects wrong bytes and preserves changed existing files. It
 extracts into ignored `.validation/`; it does not regenerate any model.
+Unpack also stages the small, source-controlled classroom picker hero images.
+For an existing `.validation/` installation, run
+`python3 scripts/validation_bundle.py sync-picker-heroes` after pulling this
+branch. This does not replace or alter the locked model packet.
 Model Library bindings are in `seed/validation/model-bindings.json`.
 All 27 roster entries remain in `frontend/src/data/validationCatalogue.json`.
 Windows paths in that roster are historical provenance, not setup dependencies.

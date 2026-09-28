@@ -4,6 +4,7 @@ import { classifyCalgaryVariant } from '@/features/calgaryCatalogue/guide';
 import { StreetCrossSection } from './StreetCrossSection';
 import type { CatalogueAsset } from './assetRegistry';
 import type { CanonicalChoice, CanonicalSelection } from './canonicalCatalogue';
+import { pickerHeroImage } from './pickerHeroImages';
 
 export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, onPlacement, onDraw, initialVariantId }: {
   choice: CanonicalChoice; selected: string | null; activeStreetVariant?: string;
@@ -15,13 +16,14 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
   const variant = option.variants?.find(v => v.id === variantId);
   const placement = placements.find(a => a.model.variantId === variantId);
   const variantGuide = classifyCalgaryVariant(option.id, variantId);
-  const thumbnail = placement?.thumbnail ?? variant?.thumbnailUrl ?? option.catalogCardImageUrl ?? option.photoUrl;
+  const thumbnail = pickerHeroImage(placement?.id,
+    placement?.thumbnail ?? variant?.thumbnailUrl ?? option.catalogCardImageUrl ?? option.photoUrl);
   const label = placement?.label ?? option.label;
   return <article className="overflow-hidden rounded-xl border border-slate-300 bg-white">
     <button type="button" aria-pressed={placement ? (placement.kind === 'street' ? activeStreetVariant === variantId : selected === placement.id) : false}
       onClick={() => placement ? onPlacement(placement) : onDraw({ choice, variant })}
       className="group w-full text-left hover:bg-lime-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px]">
-      <img loading="lazy" src={thumbnail} alt="" className="h-36 w-full bg-slate-100 object-contain" />
+      <img loading="lazy" src={thumbnail} alt="" className="h-36 w-full bg-slate-100 object-cover" />
       <span className="block space-y-1 p-3">
         <span className="block text-sm font-bold">{label}</span>
         <span className="block text-xs text-slate-600 line-clamp-3">{placement?.description ?? variant?.description ?? option.description}</span>
