@@ -873,7 +873,20 @@
         40.05500030517578,
         58.79999923706055
       ],
-      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "storeyProgram": {
+        "id": "vancouverism-classic-storey-program-v001",
+        "mode": "repeat_authored_floor",
+        "nativeStoreys": 16,
+        "minStoreys": 16,
+        "maxStoreys": 40,
+        "recommendedMinStoreys": 25,
+        "recommendedMaxStoreys": 40,
+        "podiumStoreys": 3,
+        "podiumHeightM": 13.0,
+        "repeatedStoreyHeightM": 3.2,
+        "roofHeightM": 4.2
+      },
+      "reshapeDescription": "Keep the complete podium and roof, then choose 16–40 storeys. Authored residential floors repeat without stretching balconies or windows.",
       "properties": {
         "building_archetype_id": "vancouverism_tower_podium",
         "development_archetype_id": "vancouverism_tower_podium",

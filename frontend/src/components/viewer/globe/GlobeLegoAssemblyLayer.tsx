@@ -38,7 +38,7 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
-import { centreNativeClayClone, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
 import { authoredHomePlotFrame, preservesAuthoredPlotAxes } from '@/features/legoAssembly/detachedPlot';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
@@ -451,6 +451,7 @@ function LegoStackInstance({
   const gltfs = useGLTF(urls, true, true, extendLoader);
   const tiles = useContext(TilesRendererContext);
   const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
+  const preserveSourceMaterials = isArchitecturalClayPlan(recipe);
 
   const sceneByUrl = useMemo(
     () => indexRenderableLegoScenes(urls, gltfs),
@@ -472,6 +473,8 @@ function LegoStackInstance({
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
           ambientOcclusion: 'disable',
+          preserveSourcePbr: preserveSourceMaterials,
+          restyleUntextured: !preserveSourceMaterials,
         });
         const cloned = isNativeClayPlan(recipe) ? centreNativeClayClone(prepared) : prepared;
         return {
@@ -484,7 +487,7 @@ function LegoStackInstance({
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
-  }, [maxAnisotropy, recipe, sceneByUrl, urls]);
+  }, [maxAnisotropy, preserveSourceMaterials, recipe, sceneByUrl, urls]);
   const detailedReady = isCompleteLegoModuleStack(recipe.instances.length, modules.length);
   const authoredPlot = preservesAuthoredPlotAxes(zone?.properties) ? authoredHomePlotFrame(ring) : undefined;
   const yawRad = authoredPlot ? authoredPlot.yawRad + (building.rotation_degrees ?? 0) * DEG_TO_RAD
@@ -560,10 +563,12 @@ function LegoStackInstance({
     if (stackRef.current) {
       stackRef.current.getWorldPosition(stackWorldPositionRef.current);
       const distance = camera.position.distanceTo(stackWorldPositionRef.current);
-      const nextLod = resolveArchitecturalGlazingLod(distance, glazingLodRef.current);
-      if (nextLod !== glazingLodRef.current) {
-        modules.forEach(({ cloned }) => setArchitecturalGlazingLod(cloned, nextLod));
-        glazingLodRef.current = nextLod;
+      if (!preserveSourceMaterials) {
+        const nextLod = resolveArchitecturalGlazingLod(distance, glazingLodRef.current);
+        if (nextLod !== glazingLodRef.current) {
+          modules.forEach(({ cloned }) => setArchitecturalGlazingLod(cloned, nextLod));
+          glazingLodRef.current = nextLod;
+        }
       }
     }
     if (foundation.contact.status !== 'outside' || preparedSiteTerrainHeight != null || frozenRef.current || !frame) return;

@@ -167,6 +167,14 @@
         "height": 58.79999923706055,
         "depth": 40.05500030517578
       },
+      "storey_program": {
+        "id": "vancouverism-classic-storey-program-v001",
+        "storeys": [16, 40],
+        "recommended_storeys": [25, 40],
+        "manifest": "seed/model-library/rlasm-architectural-clay/vancouverism-classic-storey-program-v001.json",
+        "assembly": "fixed three-storey podium + repeated 3.2 m authored floor + fixed roof/penthouse",
+        "runtime_status": "IMPLEMENTED_NOT_BROWSER_TESTED"
+      },
       "independent_clay_review": {
         "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/vancouverism-tower-podium-clay-v004.json",
         "sha256": "4a7e7a536028a1b9ebc20c9e07c5f18db2d226df411217381cd0d8e9945dc6e1",

@@ -3,6 +3,7 @@ import type { SiteZone, SiteZoneProperties } from '@/types';
 import { CANONICAL_CHOICES, canonicalDrawing } from './canonicalCatalogue';
 import { canonicalBuildingAsset } from './canonicalBuildingPlacement';
 import { assetForZone } from './catalogue';
+import { storeyProgramHeight, storeyProgramSupports } from './buildingStoreyProgram';
 
 const choices = CANONICAL_CHOICES.filter(choice => choice.domain === 'building');
 const field = 'mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-sm text-slate-900';
@@ -25,9 +26,15 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const [heightEdited, setHeightEdited] = useState(false);
   const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
+  const selectedAsset = choice?.placements.find(asset => asset.kind === 'object' && asset.model.variantId === variantId);
+  const storeyProgram = selectedAsset?.kind === 'object' ? selectedAsset.storeyProgram : undefined;
   const filtered = choices.filter(c => c.id === choiceId || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase()));
-  const valid = choice && Number.isInteger(Number(floors)) && Number(floors) >= 1 && Number(floors) <= 100
-    && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000;
+  const floorCountValid = Number.isInteger(Number(floors))
+    && Number(floors) >= (storeyProgram?.minStoreys ?? 1)
+    && Number(floors) <= (storeyProgram?.maxStoreys ?? 100);
+  const valid = choice && floorCountValid
+    && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000
+    && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height));
   const choose = (nextChoiceId: string, nextVariantId?: string) => {
     const next = choices.find(c => c.id === nextChoiceId)!;
     const selectedVariant = next.option.variants?.find(v => v.id === nextVariantId)
@@ -64,12 +71,21 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
       {choice?.option.variants?.map(v => <option value={v.id} key={v.id}>{v.label}</option>)}
     </select></label>}
     <div className="grid grid-cols-2 gap-2">
-      <label className="text-xs font-semibold">Storeys<input type="number" min="1" max="100" value={floors} onChange={e => {
-        setFloors(e.target.value); setHeight(String(Number(e.target.value) * (variant?.suggestedFloorHeight ?? choice?.option.suggestedFloorHeight ?? 3.2))); setHeightEdited(true);
+      <label className="text-xs font-semibold">Storeys<input type="number" min={storeyProgram?.minStoreys ?? 1} max={storeyProgram?.maxStoreys ?? 100} value={floors} onChange={e => {
+        const nextStoreys = Number(e.target.value);
+        setFloors(e.target.value);
+        setHeight(String(storeyProgram
+          ? storeyProgramHeight(storeyProgram, nextStoreys)
+          : nextStoreys * (variant?.suggestedFloorHeight ?? choice?.option.suggestedFloorHeight ?? 3.2)));
+        setHeightEdited(true);
       }} className={field} /></label>
-      <label className="text-xs font-semibold">Height (m)<input type="number" min="0.1" max="1000" step="any" value={height} onChange={e => { setHeight(e.target.value); setHeightEdited(true); }} className={field} /></label>
+      <label className="text-xs font-semibold">Height (m)<input type="number" min="0.1" max="1000" step="any" value={height}
+        readOnly={Boolean(storeyProgram)} aria-readonly={Boolean(storeyProgram)}
+        onChange={e => { setHeight(e.target.value); setHeightEdited(true); }} className={`${field} ${storeyProgram ? 'bg-slate-100' : ''}`} /></label>
     </div>
-    <p className="text-xs text-slate-600">Your footprint stays in place. Unsupported sizes use design massing.</p>
+    <p className="text-xs text-slate-600">{storeyProgram
+      ? `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. The podium and roof stay complete while authored floors repeat at full proportions.`
+      : 'Your footprint stays in place. Unsupported sizes use design massing.'}</p>
     <button disabled={disabled || !valid} className="min-h-11 w-full rounded-lg border border-slate-700 bg-lime-200 text-sm font-semibold disabled:opacity-40">Apply building</button>
   </form>;
 }

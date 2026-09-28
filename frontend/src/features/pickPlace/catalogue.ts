@@ -6,6 +6,7 @@ import { CATALOGUE_ASSETS, LEGACY_OBJECT_ASSETS, LEGACY_VALIDATION_ASSETS, indiv
 import { canonicalParkById, canonicalParkForProperties } from './canonicalParkPlacement';
 import { canonicalBuildingById, canonicalBuildingForProperties } from './canonicalBuildingPlacement';
 import { reviewedEntranceForAsset } from './reviewedEntrances';
+import { storeyProgramSupports } from './buildingStoreyProgram';
 export type { PlaceAsset, PlaceAssetId } from './assetRegistry';
 const OBJECT_ASSETS = CATALOGUE_ASSETS.filter((asset): asset is PlaceAsset => asset.kind === 'object');
 // Resolve older saved IDs without returning those versions to student discovery.
@@ -42,7 +43,14 @@ export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | u
       ...(native.id === 'infill_home' ? { minDepth: 15 } : {}),
       reshapeDescription: 'This saved plot repeats complete homes at their native size.' };
   }
-  if (native && properties.development_height_override_m == null && (!properties.development_selected_variant_id || native.model.variantId === properties.development_selected_variant_id)) return native;
+  const exactVariant = native && (!properties.development_selected_variant_id
+    || native.model.variantId === properties.development_selected_variant_id);
+  const supportedStoreyEdit = native?.storeyProgram && storeyProgramSupports(
+    native.storeyProgram,
+    properties.floor_count ?? properties.floors,
+    properties.development_height_override_m ?? properties.height_m ?? properties.height,
+  );
+  if (native && exactVariant && (properties.development_height_override_m == null || supportedStoreyEdit)) return native;
   if (native || properties.pick_place_automatic_3d === true || String(properties.pick_place_asset).startsWith('canonical-building:') || String(properties.pick_place_asset).startsWith('canonical-park:')) {
     return canonicalBuildingForProperties(properties) ?? canonicalParkForProperties(properties);
   }

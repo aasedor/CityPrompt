@@ -5,6 +5,11 @@ export function isNativeClayPlan(plan: { fit?: LegoAssemblyPlan['fit'] | null })
   return plan.fit?.native_scale_locked === true && plan.fit.delivery_format === 'architectural_clay';
 }
 
+export function isArchitecturalClayPlan(plan: { fit?: LegoAssemblyPlan['fit'] | null }): boolean {
+  return plan.fit?.delivery_format === 'architectural_clay'
+    || plan.fit?.delivery_format === 'architectural_clay_module_v1';
+}
+
 /** Seat an owned clone using its measured geometry. The wrapper takes the
  * planned transform; the cached GLB, its vertices and its native scale remain
  * untouched. Clay sources need not have a centred modelling origin. */

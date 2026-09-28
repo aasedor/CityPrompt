@@ -30,6 +30,21 @@ export interface PlaceAsset extends AssetRecord {
   minDepth: number;
   maxSize: number;
   nativeDimensions?: [number, number, number];
+  /** Finite authored vertical assembly.  Fixed podium/roof modules keep their
+   * geometry while a reviewed typical-storey module repeats between them. */
+  storeyProgram?: {
+    id: string;
+    mode: 'repeat_authored_floor';
+    nativeStoreys: number;
+    minStoreys: number;
+    maxStoreys: number;
+    recommendedMinStoreys?: number;
+    recommendedMaxStoreys?: number;
+    podiumStoreys: number;
+    podiumHeightM: number;
+    repeatedStoreyHeightM: number;
+    roofHeightM: number;
+  };
   /** Reviewed native step foot, in the plot frame. Register per exact variant,
    * never infer a doorway from a generic bounding box. */
   entranceSnap?: { xM: number; yM: number; plotWidthM: number; plotDepthM: number; widthM: number };

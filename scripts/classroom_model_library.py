@@ -99,7 +99,8 @@ def synchronize(db, client, bucket, roster, rows, *, apply=False, owner_id=None,
             metadata = other.metadata_ or {}
             if (str(other.id) != row["id"] and other.is_public
                 and metadata.get("rlasm", {}).get("runtime_enabled")
-                and metadata.get("lego", {}).get("source_variant_id") == row["variantId"]):
+                and metadata.get("lego", {}).get("source_variant_id") == row["variantId"]
+                and metadata.get("lego", {}).get("role") == row["metadata"]["lego"].get("role")):
                 raise ValueError("Another active model claims this starter; resolve its ownership before seeding")
         status = object_matches(client, bucket, row)
         if status == "conflict":

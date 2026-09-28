@@ -40,3 +40,32 @@ it('keeps the exact side-by-side duplex identity under a shared parent archetype
     pick_place_asset: 'clay_side_by_side_duplex',
   }));
 });
+
+it('repeats authored Vancouver floors through the reviewed 16–40 storey programme', () => {
+  const tower = placeAsset('clay_vancouver_balcony_podium_tower');
+  const onSave = vi.fn();
+  render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(tower) }} disabled={false} onSave={onSave} />);
+  screen.getByText(/Choose 16–40 storeys/);
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).readOnly).toBe(true);
+  fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '25' } });
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('87.6');
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+    floors: 25,
+    floor_count: 25,
+    height: 87.6,
+    height_m: 87.6,
+    development_height_override_m: 87.6,
+    pick_place_asset: 'clay_vancouver_balcony_podium_tower',
+  }));
+});
+
+it('does not save a Vancouver height beyond the reviewed storey programme', () => {
+  const tower = placeAsset('clay_vancouver_balcony_podium_tower');
+  const onSave = vi.fn();
+  render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(tower) }} disabled={false} onSave={onSave} />);
+  fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '41' } });
+  expect((screen.getByRole('button', { name: 'Apply building' }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  expect(onSave).not.toHaveBeenCalled();
+});

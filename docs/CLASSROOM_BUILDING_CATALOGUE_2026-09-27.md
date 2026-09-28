@@ -17,6 +17,13 @@ instruction is Astra construction first and Sol browser testing afterwards.
 | Blue-glass office tower | glass_tower_podium_modern-clay-v003 | 32.12 × 30.075 × 99 |
 | Vancouver balcony podium tower | vancouverism-tower-podium-clay-v004 | 48.055 × 40.055 × 58.80 |
 
+The Vancouver tower also has a finite authored-storey programme. Its unchanged
+16-storey reviewed GLB remains the default. Students may choose 16–40 storeys;
+the three-storey podium and roof/penthouse remain intact while a 3.2 m source
+floor band repeats between them. The programme is recorded in
+`seed/model-library/rlasm-architectural-clay/vancouverism-classic-storey-program-v001.json`.
+It is implemented locally and remains browser-review pending.
+
 Exact measured values, hashes, existing independent review identities and pending
 runtime status are in `classroom_building_build_ledger_2026-09-27.json`.
 The courtyard model is the source's entrance building, not a fabricated complete
