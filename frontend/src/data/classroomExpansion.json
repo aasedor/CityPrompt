@@ -215,6 +215,42 @@
       "asset_review": "source_reconstruction_verified",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Woodland Stream & Bridge Garden",
+      "archetype_id": "japanese_garden",
+      "variant_id": "student_woodland_stream_garden_v1",
+      "version": "showcase-woodland-v004",
+      "placement_id": "native-park:student_woodland_stream_garden_v1--native-v1",
+      "sha256": "b4280c800244f05b035aea3a01ed954ec87740001b91130792f01a0bb19316b3",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Reflecting Fountain Garden",
+      "archetype_id": "fountain_water_feature",
+      "variant_id": "student_reflecting_fountain_garden_v1",
+      "version": "showcase-reflecting-v002",
+      "placement_id": "native-park:student_reflecting_fountain_garden_v1--native-v1",
+      "sha256": "2eb802caefceb5e591a12ea7393ac84f79dfbf82cb471d152acae6d04b691179",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Terraced Café & Fountain Court",
+      "archetype_id": "sunken_plaza",
+      "variant_id": "student_terraced_cafe_court_v1",
+      "version": "showcase-court-v002",
+      "placement_id": "native-park:student_terraced_cafe_court_v1--native-v1",
+      "sha256": "d4c6735bf653130f28ce81c87fcf228e31410e992b28a6ae8bf0b9263afbd477",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -866,6 +902,102 @@
         "pick_place_definition_version": 1,
         "community_3d_mask_existing_tiles": true,
         "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "native-park:student_woodland_stream_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Woodland Stream & Bridge Garden",
+      "description": "A winding stream, arched timber bridge, raked gravel room and layered woodland planting.",
+      "thumbnail": "/native-park-assets/28f48edec3db15c108b3ec4dac265f74dbd453b75cbd4d8efb58fbaa64ef5934.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 46.0,
+      "depth": 58.0,
+      "minWidth": 46.0,
+      "minDepth": 58.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_woodland_stream_garden_v1",
+        "revision": "e3fff90f005da1a2bb19b49c4cfeaa69a8ec32dca68a4a1a74f0179bc2c81461",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "japanese_garden",
+        "green_space_selected_variant_id": "student_woodland_stream_garden_v1",
+        "green_space_native_layout_id": "student_woodland_stream_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_reflecting_fountain_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Reflecting Fountain Garden",
+      "description": "A formal two-lobed pool with four jets, clipped hedges and shaded promenade seating.",
+      "thumbnail": "/native-park-assets/af2874114c8c9b673d449e00db6c1c9f1e1e3bffdfc4307f09d2fa24dd480edb.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 34.0,
+      "depth": 48.0,
+      "minWidth": 34.0,
+      "minDepth": 48.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_reflecting_fountain_garden_v1",
+        "revision": "eda91f3a08b13efd331753078900f080612d971d3acc14b994f3fea9d2f78b96",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "fountain_water_feature",
+        "green_space_selected_variant_id": "student_reflecting_fountain_garden_v1",
+        "green_space_native_layout_id": "student_reflecting_fountain_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_terraced_cafe_court_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Terraced Café & Fountain Court",
+      "description": "A limestone gathering court with seven seat steps, café umbrellas and a bronze fountain.",
+      "thumbnail": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 40.0,
+      "depth": 48.0,
+      "minWidth": 40.0,
+      "minDepth": 48.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_terraced_cafe_court_v1",
+        "revision": "6f8c9e3f3d67e18da2aef8c65719f5ba0eee9afe7a9613261e36705e8b9a166f",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "sunken_plaza",
+        "green_space_selected_variant_id": "student_terraced_cafe_court_v1",
+        "green_space_native_layout_id": "student_terraced_cafe_court_v1--native-v1",
+        "pick_place_automatic_3d": true
       }
     }
   ]

@@ -2503,6 +2503,576 @@
       "visualStatus": "agent_native_visual_review_pass",
       "runtimeStatus": "not_tested",
       "contentRevision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888"
+    },
+    {
+      "id": "student_woodland_stream_garden_v1--native-v1",
+      "archetypeId": "japanese_garden",
+      "variantId": "student_woodland_stream_garden_v1",
+      "title": "Woodland Stream & Bridge Garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 46,
+      "depthM": 58,
+      "occupiedWidthM": 46.0,
+      "occupiedDepthM": 58.0,
+      "measuredBoundsM": [
+        [
+          -23.0,
+          -29.0,
+          -0.4774114489555359
+        ],
+        [
+          23.0,
+          29.0,
+          8.45128059387207
+        ]
+      ],
+      "sourceRecipeSha256": "68ddcdd21eabcdc99e8e9600a24bcfab03013f635910c96d4cd75c8bfcf35592",
+      "sourceRecipePath": "seed/classroom-parks/showcase-woodland-v004/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "b4280c800244f05b035aea3a01ed954ec87740001b91130792f01a0bb19316b3",
+          "archivePath": "seed/classroom-parks/showcase-woodland-v004/assembly-preview.glb",
+          "url": "/native-park-assets/b4280c800244f05b035aea3a01ed954ec87740001b91130792f01a0bb19316b3.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "28f48edec3db15c108b3ec4dac265f74dbd453b75cbd4d8efb58fbaa64ef5934",
+        "archivePath": "seed/classroom-parks/showcase-woodland-v004/preview.png",
+        "url": "/native-park-assets/28f48edec3db15c108b3ec4dac265f74dbd453b75cbd4d8efb58fbaa64ef5934.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            -7.245909243660032,
+            -27.0
+          ],
+          "b": [
+            -8.316578795199053,
+            -21.6
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -8.316578795199053,
+            -21.6
+          ],
+          "b": [
+            -9.554929206730769,
+            -16.2
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -9.554929206730769,
+            -16.2
+          ],
+          "b": [
+            -10.758339107630105,
+            -10.8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -10.758339107630105,
+            -10.8
+          ],
+          "b": [
+            -10.190718891261959,
+            -5.399999999999999
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -10.190718891261959,
+            -5.399999999999999
+          ],
+          "b": [
+            -7.4,
+            0.0
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -7.4,
+            0.0
+          ],
+          "b": [
+            -4.609281108738041,
+            5.399999999999999
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -4.609281108738041,
+            5.399999999999999
+          ],
+          "b": [
+            -4.0416608923698965,
+            10.800000000000004
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -4.0416608923698965,
+            10.800000000000004
+          ],
+          "b": [
+            -5.2450707932692335,
+            16.200000000000003
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -5.2450707932692335,
+            16.200000000000003
+          ],
+          "b": [
+            -6.483421204800948,
+            21.6
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -6.483421204800948,
+            21.6
+          ],
+          "b": [
+            -7.554090756339969,
+            27.0
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            7.554090756339969,
+            -27.0
+          ],
+          "b": [
+            6.483421204800948,
+            -21.6
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            6.483421204800948,
+            -21.6
+          ],
+          "b": [
+            5.245070793269233,
+            -16.2
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            5.245070793269233,
+            -16.2
+          ],
+          "b": [
+            4.041660892369896,
+            -10.8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            4.041660892369896,
+            -10.8
+          ],
+          "b": [
+            4.609281108738041,
+            -5.399999999999999
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            4.609281108738041,
+            -5.399999999999999
+          ],
+          "b": [
+            7.4,
+            0.0
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            7.4,
+            0.0
+          ],
+          "b": [
+            10.190718891261959,
+            5.399999999999999
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            10.190718891261959,
+            5.399999999999999
+          ],
+          "b": [
+            10.758339107630103,
+            10.800000000000004
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            10.758339107630103,
+            10.800000000000004
+          ],
+          "b": [
+            9.554929206730767,
+            16.200000000000003
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            9.554929206730767,
+            16.200000000000003
+          ],
+          "b": [
+            8.316578795199053,
+            21.6
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            8.316578795199053,
+            21.6
+          ],
+          "b": [
+            7.245909243660032,
+            27.0
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -29
+          ],
+          "b": [
+            0,
+            -27.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -27.5
+          ],
+          "b": [
+            -5.5,
+            -27.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -5.5,
+            -27.5
+          ],
+          "b": [
+            -7.877662738006004,
+            -24
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -29,
+          "widthM": 2.7,
+          "arrivalY": -27.5
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "e3fff90f005da1a2bb19b49c4cfeaa69a8ec32dca68a4a1a74f0179bc2c81461"
+    },
+    {
+      "id": "student_reflecting_fountain_garden_v1--native-v1",
+      "archetypeId": "fountain_water_feature",
+      "variantId": "student_reflecting_fountain_garden_v1",
+      "title": "Reflecting Fountain Garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 34,
+      "depthM": 48,
+      "occupiedWidthM": 34.0,
+      "occupiedDepthM": 48.0,
+      "measuredBoundsM": [
+        [
+          -17.0,
+          -24.0,
+          -0.11999999731779099
+        ],
+        [
+          17.0,
+          24.0,
+          6.600047588348389
+        ]
+      ],
+      "sourceRecipeSha256": "af10a309c4dc2d96a721da15d4f5cc3a4b8d3db7de89b426fc083b8814e729f4",
+      "sourceRecipePath": "seed/classroom-parks/showcase-reflecting-v002/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "2eb802caefceb5e591a12ea7393ac84f79dfbf82cb471d152acae6d04b691179",
+          "archivePath": "seed/classroom-parks/showcase-reflecting-v002/assembly-preview.glb",
+          "url": "/native-park-assets/2eb802caefceb5e591a12ea7393ac84f79dfbf82cb471d152acae6d04b691179.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "af2874114c8c9b673d449e00db6c1c9f1e1e3bffdfc4307f09d2fa24dd480edb",
+        "archivePath": "seed/classroom-parks/showcase-reflecting-v002/preview.png",
+        "url": "/native-park-assets/af2874114c8c9b673d449e00db6c1c9f1e1e3bffdfc4307f09d2fa24dd480edb.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -24
+          ],
+          "b": [
+            0,
+            -22
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -22
+          ],
+          "b": [
+            -12.5,
+            -22
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -12.5,
+            -22
+          ],
+          "b": [
+            -12.5,
+            21
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -22
+          ],
+          "b": [
+            12.5,
+            -22
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            12.5,
+            -22
+          ],
+          "b": [
+            12.5,
+            21
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -24,
+          "widthM": 2.7,
+          "arrivalY": -22
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "eda91f3a08b13efd331753078900f080612d971d3acc14b994f3fea9d2f78b96"
+    },
+    {
+      "id": "student_terraced_cafe_court_v1--native-v1",
+      "archetypeId": "sunken_plaza",
+      "variantId": "student_terraced_cafe_court_v1",
+      "title": "Terraced Café & Fountain Court",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 40,
+      "depthM": 48,
+      "occupiedWidthM": 40.0,
+      "occupiedDepthM": 48.0,
+      "measuredBoundsM": [
+        [
+          -20.0,
+          -24.0,
+          -0.11999999731779099
+        ],
+        [
+          20.0,
+          24.0,
+          5.231744766235352
+        ]
+      ],
+      "sourceRecipeSha256": "aa480b006558b95282f22aa912d1cbc88d3f167b4ed5db450592f4f7340cea06",
+      "sourceRecipePath": "seed/classroom-parks/showcase-court-v002/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "d4c6735bf653130f28ce81c87fcf228e31410e992b28a6ae8bf0b9263afbd477",
+          "archivePath": "seed/classroom-parks/showcase-court-v002/assembly-preview.glb",
+          "url": "/native-park-assets/d4c6735bf653130f28ce81c87fcf228e31410e992b28a6ae8bf0b9263afbd477.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945",
+        "archivePath": "seed/classroom-parks/showcase-court-v002/preview.png",
+        "url": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -24
+          ],
+          "b": [
+            0,
+            -8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -8
+          ],
+          "b": [
+            -5,
+            -8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -5,
+            -8
+          ],
+          "b": [
+            -5,
+            12
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -8
+          ],
+          "b": [
+            5,
+            -8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            5,
+            -8
+          ],
+          "b": [
+            5,
+            12
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -24,
+          "widthM": 2.7,
+          "arrivalY": -22
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "6f8c9e3f3d67e18da2aef8c65719f5ba0eee9afe7a9613261e36705e8b9a166f"
     }
   ]
 }

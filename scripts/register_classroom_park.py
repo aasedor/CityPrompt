@@ -53,10 +53,10 @@ def write_json(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 
 
-def register(package):
+def register(package, *, specs=None, thumbnail_name='renders/aerial.png'):
     recipe_bytes = (package / 'recipe.json').read_bytes()
     recipe = json.loads(recipe_bytes)
-    spec = SPECS.get(recipe['id'])
+    spec = (SPECS if specs is None else specs).get(recipe['id'])
     if not spec:
         raise ValueError('This park is outside the reviewed finite batch.')
     report = json.loads((package / 'geometry-verification.json').read_text())
@@ -65,7 +65,7 @@ def register(package):
     model = (package / 'assembly-preview.glb').read_bytes()
     if digest(model) != recipe['assembly']['sha256'] or digest(model) != spec['sha256']:
         raise ValueError('Model differs from the reviewed recipe.')
-    image = (package / 'renders/aerial.png').read_bytes()
+    image = (package / thumbnail_name).read_bytes()
     key = spec['key']
     seed = ROOT / 'seed/classroom-parks' / key
     source_recipe = f'seed/classroom-parks/{key}/recipe.json'

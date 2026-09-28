@@ -12,6 +12,18 @@ const long=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--long-v1')!;
 const coords=rectangleAt([-114.05,51.04],52,39);
 const zone=()=>({id:'park',updated_at:'one',zone_type:'green_space',coordinates:coords,properties:nativeParkProperties({},native,coords)} as SiteZone);
 describe('native parks',()=>{
+  it.each(['student_woodland_stream_garden_v1','student_reflecting_fountain_garden_v1','student_terraced_cafe_court_v1'])('%s preserves the exact native assembly through movement and reload',variant=>{
+    const layout=nativeParkLayouts.find(p=>p.variantId===variant)!;
+    expect(layout).toBeDefined();
+    const coordinates=rectangleAt([-114.05,51.04],layout.occupiedWidthM!,layout.occupiedDepthM!);
+    const p={...zone(),coordinates,properties:nativeParkProperties({},layout,coordinates)};
+    expect(nativeParkFitProblem(p)).toBeNull();
+    const moved=rectangleAt([-114.049,51.04],layout.occupiedWidthM!,layout.occupiedDepthM!,35);
+    const saved=JSON.parse(JSON.stringify({...p,coordinates:moved,properties:nativeParkEditProperties(p,moved)}));
+    expect(nativeParkFitProblem(saved)).toBeNull();
+    expect(readNativePark(saved)?.layout.contentRevision).toBe(layout.contentRevision);
+    expect(readNativePark(saved)?.layout.assets.assembly?.sha256).toBe(layout.assets.assembly?.sha256);
+  });
   it('accepts the server v2 recipe and rejects stale or mixed capture contracts',()=>{
     const p=zone(),selection=readNativePark(p)!.selection;
     const recipe={schema_version:2,kind:'park',generator:'park_kit',family_id:'native_park',family_version:1,
