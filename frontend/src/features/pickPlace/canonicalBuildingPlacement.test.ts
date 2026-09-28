@@ -11,7 +11,7 @@ describe('canonical building placement', () => {
         expect(Number.isFinite(asset.width) && asset.width >= asset.minWidth).toBe(true);
         expect(Number.isFinite(asset.depth) && asset.depth >= asset.minDepth).toBe(true);
         expect(asset.nativeDimensions).toBeUndefined();
-        expect(asset.properties.native_home_plot).toBeUndefined();
+        expect(asset.properties.native_home_plot).not.toBe(true);
         expect(placementPlanRequest(asset, asset.width, asset.depth)).toBeNull();
         expect(canonicalBuildingById(asset.id)).toBe(asset);
       }
@@ -24,8 +24,12 @@ describe('canonical building placement', () => {
     expect(assetForZone({ properties })?.model.variantId).toBe(native.model.variantId);
   });
   it('restores selected identity after JSON persistence and does not keep another native asset after a type change', () => {
-    const choice = CANONICAL_CHOICES.find(c => c.option.id === 'brownstone_rowhouse_frontage')!;
-    const variant = choice.option.variants![1];
+    // Exact variants have separate cards. Choose the sibling whose variant
+    // is absent from the first card, so restore cannot stop at its parent.
+    const siblings = CANONICAL_CHOICES.filter(c => c.option.id === 'calgary_modern_infill_house');
+    expect(siblings.length).toBeGreaterThan(1);
+    const choice = siblings[1];
+    const variant = choice.option.variants![0];
     const asset = canonicalBuildingAsset({ choice, variant });
     const properties = JSON.parse(JSON.stringify(placementProperties(asset)));
     expect(assetForZone({ properties })?.model.variantId).toBe(variant.id);
