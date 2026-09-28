@@ -37,7 +37,7 @@ export interface PlaceAsset extends AssetRecord {
    * geometry while a reviewed typical-storey module repeats between them. */
   storeyProgram?: {
     id: string;
-    mode: 'repeat_authored_floor' | 'select_authored_assembly';
+    mode: 'fixed_authored_assembly' | 'repeat_authored_floor' | 'select_authored_assembly';
     nativeStoreys: number;
     minStoreys: number;
     maxStoreys: number;
@@ -59,6 +59,9 @@ export interface PlaceAsset extends AssetRecord {
     maxScale: number;
     defaultScale: number;
     step: number;
+    /** False keeps the native-size targeting contract active without exposing
+     * the deferred footprint experiment in student controls. */
+    editable?: boolean;
   };
   /** Reviewed native step foot, in the plot frame. Register per exact variant,
    * never infer a doorway from a generic bounding box. */
@@ -190,12 +193,37 @@ export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
 }
 
 export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
+function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
+  if (asset.kind !== 'object' || asset.zoneType !== 'building' || asset.storeyProgram) return asset;
+  const nativeStoreys = Number(asset.properties.floor_count ?? asset.properties.floors);
+  const nativeHeightM = Number(asset.nativeDimensions?.[2]);
+  if (!Number.isInteger(nativeStoreys) || nativeStoreys < 1 || !Number.isFinite(nativeHeightM) || nativeHeightM <= 0) {
+    return asset;
+  }
+  return {
+    ...asset,
+    storeyProgram: {
+      id: `${asset.model.variantId}-fixed-storeys-v001`,
+      mode: 'fixed_authored_assembly',
+      nativeStoreys,
+      minStoreys: nativeStoreys,
+      maxStoreys: nativeStoreys,
+      recommendedMinStoreys: nativeStoreys,
+      recommendedMaxStoreys: nativeStoreys,
+      podiumStoreys: nativeStoreys,
+      podiumHeightM: nativeHeightM,
+      repeatedStoreyHeightM: 0,
+      roofHeightM: 0,
+    },
+  };
+}
+
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[]].map(asset => {
   if (asset.kind==='object' && asset.zoneType==='road') {
     const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
     if(native)return {...native,calgaryGuide:asset.calgaryGuide};
   }
-  if (asset.kind !== 'object' || asset.zoneType !== 'green_space') return asset;
+  if (asset.kind !== 'object' || asset.zoneType !== 'green_space') return withStoreyMetadata(asset);
   const layout = nativeParkLayouts.find(p => p.variantId === asset.model.variantId && p.mode === 'native_assembly' && p.status === 'pilot');
   if (!layout) return asset;
   const properties = {...asset.properties};
@@ -244,6 +272,28 @@ export function validateRegistry(assets: CatalogueAsset[]): string[] {
       const variant = asset.zoneType === 'building' ? asset.properties.development_selected_variant_id : asset.zoneType === 'road' ? asset.properties.road_selected_variant_id : asset.properties.green_space_selected_variant_id;
       if (variant !== asset.model.variantId) errors.push(`Variant mismatch: ${asset.id}`);
       if (asset.reshapeMode === 'repeat_native' && (!asset.nativeDimensions || asset.properties.native_home_plot !== true)) errors.push(`Missing native repeat contract: ${asset.id}`);
+      if (asset.zoneType === 'building') {
+        const program = asset.storeyProgram;
+        if (program) {
+          const nativeHeight = Number(asset.nativeDimensions?.[2]);
+          const programmeHeight = program.podiumHeightM
+            + (program.nativeStoreys - program.podiumStoreys) * program.repeatedStoreyHeightM
+            + program.roofHeightM;
+          if (!Number.isInteger(program.nativeStoreys)
+            || !Number.isInteger(program.minStoreys)
+            || !Number.isInteger(program.maxStoreys)
+            || program.minStoreys < 1
+            || program.minStoreys > program.nativeStoreys
+            || program.nativeStoreys > program.maxStoreys
+            || !Number.isFinite(programmeHeight)
+            || !Number.isFinite(nativeHeight)
+            || Math.abs(programmeHeight - nativeHeight) > 0.05
+            || (program.mode === 'fixed_authored_assembly'
+              && (program.minStoreys !== program.nativeStoreys || program.maxStoreys !== program.nativeStoreys))) {
+            errors.push(`Invalid storey metadata: ${asset.id}`);
+          }
+        }
+      }
     } else if (!Number.isFinite(asset.sectionWidth) || asset.sectionWidth <= 0 || asset.properties.width !== asset.sectionWidth || asset.properties.road_selected_variant_id !== asset.model.variantId) errors.push(`Invalid street section: ${asset.id}`);
   }
   return errors;

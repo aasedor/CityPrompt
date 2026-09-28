@@ -8,13 +8,11 @@ import { CANONICAL_CHOICES } from './canonicalCatalogue';
 const zone = { id: 'home', zone_type: 'building', coordinates: [[0, 0], [1, 0], [1, 1], [0, 1]],
   properties: placementProperties(placeAsset('infill_home')) } as SiteZone;
 
-it('saves an explicit height contract and synchronizes both floor fields', () => {
+it('does not allow arbitrary storeys or heights for a fixed authored building', () => {
   const onSave = vi.fn(); render(<BuildingDesignControls zone={zone} disabled={false} onSave={onSave} />);
-  fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '4' } });
-  fireEvent.change(screen.getByLabelText('Height (m)'), { target: { value: '14' } });
-  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
-  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ floors: 4, floor_count: 4, height: 14, height_m: 14,
-    floor_height: 3.5, development_height_override_m: 14 }));
+  expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(true);
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).readOnly).toBe(true);
+  expect((screen.getByLabelText('Storeys') as HTMLInputElement).value).toBe('2');
 });
 
 it('changes exact catalogue identity while retaining independent object data', () => {
@@ -70,21 +68,58 @@ it('does not save a Vancouver height beyond the reviewed storey programme', () =
   expect(onSave).not.toHaveBeenCalled();
 });
 
-it('switches a bungalow to its complete two-storey assembly and gently enlarges its footprint', () => {
+it('switches a bungalow to its complete two-storey assembly without exposing footprint scaling', () => {
   const bungalow = placeAsset('trial_postwar_bungalow');
   const onSave = vi.fn();
   render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(bungalow) }} disabled={false} onSave={onSave} />);
   screen.getByText(/Each choice uses a complete authored house/);
+  expect(screen.queryByLabelText('Building size (%)')).toBeNull();
   fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '2' } });
-  fireEvent.change(screen.getByLabelText('Building size (%)'), { target: { value: '115' } });
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
   expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
     floors: 2,
     floor_count: 2,
     height: 9.29,
     height_m: 9.29,
-    building_footprint_scale: 1.15,
+    building_footprint_scale: 1,
     building_footprint_program_id: 'house-flex-pilot-v001',
+  }));
+});
+
+it('preserves a legacy house scale while the deferred control stays hidden', () => {
+  const bungalow = placeAsset('trial_postwar_bungalow');
+  const onSave = vi.fn();
+  const properties = {
+    ...placementProperties(bungalow),
+    building_footprint_scale: 1.15,
+  };
+  render(<BuildingDesignControls zone={{ ...zone, properties }} disabled={false} onSave={onSave} />);
+  expect(screen.queryByLabelText('Building size (%)')).toBeNull();
+  fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '2' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+    floors: 2,
+    building_footprint_scale: 1.15,
+  }));
+});
+
+it('locks buildings without alternate assemblies to their metadata storey count', () => {
+  const building = placeAsset('validation_brewery_crystal_brewhouse');
+  const onSave = vi.fn();
+  render(<BuildingDesignControls zone={{ ...zone, properties: {
+    ...placementProperties(building), floors: 4, floor_count: 4,
+    height: 16, height_m: 16, development_height_override_m: 16,
+  } }} disabled={false} onSave={onSave} />);
+  expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(true);
+  expect((screen.getByLabelText('Storeys') as HTMLInputElement).value).toBe('1');
+  screen.getByText('This exact model is currently available at 1 storey.');
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+    floors: 1,
+    floor_count: 1,
+    height: Number(building.nativeDimensions![2].toFixed(2)),
+    height_m: Number(building.nativeDimensions![2].toFixed(2)),
+    development_height_override_m: undefined,
   }));
 });
 

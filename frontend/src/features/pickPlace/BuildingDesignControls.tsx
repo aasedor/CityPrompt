@@ -19,12 +19,23 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const initialVariant = String(savedProperties.development_selected_variant_id ?? '');
   const initialChoice = choices.find(c => c.option.id === initialParent && c.option.variants?.some(v => v.id === initialVariant))
     ?? choices.find(c => c.option.id === initialParent);
+  const initialAsset = initialChoice?.placements.find(asset => asset.kind === 'object' && asset.model.variantId === initialVariant);
+  const initialStoreyProgram = initialAsset?.kind === 'object' ? initialAsset.storeyProgram : undefined;
+  const savedFloors = savedProperties.floor_count ?? savedProperties.floors ?? 2;
+  const initialFloors = initialStoreyProgram?.mode === 'fixed_authored_assembly'
+    ? initialStoreyProgram.nativeStoreys
+    : savedFloors;
+  const savedHeight = savedProperties.height_m ?? savedProperties.height
+    ?? (initialAsset?.kind === 'object' ? initialAsset.nativeDimensions?.[2] : undefined)
+    ?? Number(initialFloors) * 3.2;
+  const initialHeight = initialStoreyProgram?.mode === 'fixed_authored_assembly'
+    ? storeyProgramHeight(initialStoreyProgram, initialStoreyProgram.nativeStoreys)
+    : savedHeight;
   const [choiceId, setChoiceId] = useState(initialChoice?.id ?? '');
   const [variantId, setVariantId] = useState(String(savedProperties.development_selected_variant_id ?? ''));
   const [query, setQuery] = useState('');
-  const [floors, setFloors] = useState(String(savedProperties.floor_count ?? savedProperties.floors ?? 2));
-  const [height, setHeight] = useState(heightText(savedProperties.height_m ?? savedProperties.height ?? assetForZone(zone)?.nativeDimensions?.[2] ?? Number(floors) * 3.2));
-  const [footprintScale, setFootprintScale] = useState(String(savedProperties.building_footprint_scale ?? 1));
+  const [floors, setFloors] = useState(String(initialFloors));
+  const [height, setHeight] = useState(heightText(initialHeight ?? assetForZone(zone)?.nativeDimensions?.[2]));
   const [heightEdited, setHeightEdited] = useState(false);
   const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
@@ -37,8 +48,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     && Number(floors) <= (storeyProgram?.maxStoreys ?? 100);
   const valid = choice && floorCountValid
     && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000
-    && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height))
-    && (!footprintProgram || footprintProgramSupports(footprintProgram, footprintScale));
+    && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height));
   const choose = (nextChoiceId: string, nextVariantId?: string) => {
     const next = choices.find(c => c.id === nextChoiceId)!;
     const selectedVariant = next.option.variants?.find(v => v.id === nextVariantId)
@@ -48,7 +58,6 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     setChoiceId(nextChoiceId); setVariantId(selectedVariant?.id ?? '');
     setFloors(String(props.floor_count ?? props.floors ?? 2));
     setHeight(heightText(native?.kind === 'object' && native.nativeDimensions ? native.nativeDimensions[2] : props.height ?? Number(props.floors) * 3.2));
-    setFootprintScale(String(native?.kind === 'object' && native.footprintProgram ? native.footprintProgram.defaultScale : 1));
     setHeightEdited(false);
   };
   return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={event => {
@@ -63,16 +72,22 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
       pick_place_asset: native?.id ?? canonicalBuildingAsset(selection).id,
       building_archetype_id: choice.option.id, development_height_override_m: undefined,
     } : { ...savedProperties };
+    const savedScale = Number(savedProperties.building_footprint_scale);
+    const footprintScale = !changedType && footprintProgram && footprintProgramSupports(footprintProgram, savedScale)
+      ? savedScale
+      : footprintProgram?.defaultScale;
     onSave({ ...properties, pick_place_automatic_3d: true, native_plot_axes: true,
       floors: Number(floors), floor_count: Number(floors), height: Number(height), height_m: Number(height),
       floor_height: Number(height) / Number(floors),
-      ...(footprintProgram ? {
-        building_footprint_scale: Number(footprintScale),
+      ...(footprintProgram && footprintScale != null ? {
+        building_footprint_scale: footprintScale,
         building_footprint_program_id: footprintProgram.id,
         building_footprint_native_width_m: footprintProgram.nativeWidthM,
         building_footprint_native_depth_m: footprintProgram.nativeDepthM,
       } : {}),
-      ...(heightEdited ? { development_height_override_m: Number(height) } : {}),
+      ...(storeyProgram
+        ? { development_height_override_m: storeyProgram.mode === 'fixed_authored_assembly' ? undefined : Number(height) }
+        : heightEdited ? { development_height_override_m: Number(height) } : {}),
     });
   }}>
     <label className="block text-xs font-semibold">Find building type<input type="search" value={query} onChange={e => setQuery(e.target.value)} className={field} /></label>
@@ -84,27 +99,23 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
       {choice?.option.variants?.map(v => <option value={v.id} key={v.id}>{v.label}</option>)}
     </select></label>}
     <div className="grid grid-cols-2 gap-2">
-      <label className="text-xs font-semibold">Storeys<input type="number" min={storeyProgram?.minStoreys ?? 1} max={storeyProgram?.maxStoreys ?? 100} value={floors} onChange={e => {
+      <label className="text-xs font-semibold">Storeys<input type="number" min={storeyProgram?.minStoreys ?? 1} max={storeyProgram?.maxStoreys ?? 100} value={floors}
+        readOnly={storeyProgram?.mode === 'fixed_authored_assembly'} aria-readonly={storeyProgram?.mode === 'fixed_authored_assembly'} onChange={e => {
         const nextStoreys = Number(e.target.value);
         setFloors(e.target.value);
         setHeight(String(storeyProgram
           ? storeyProgramHeight(storeyProgram, nextStoreys)
           : nextStoreys * (variant?.suggestedFloorHeight ?? choice?.option.suggestedFloorHeight ?? 3.2)));
         setHeightEdited(true);
-      }} className={field} /></label>
+      }} className={`${field} ${storeyProgram?.mode === 'fixed_authored_assembly' ? 'bg-slate-100' : ''}`} /></label>
       <label className="text-xs font-semibold">Height (m)<input type="number" min="0.1" max="1000" step="any" value={height}
         readOnly={Boolean(storeyProgram)} aria-readonly={Boolean(storeyProgram)}
         onChange={e => { setHeight(e.target.value); setHeightEdited(true); }} className={`${field} ${storeyProgram ? 'bg-slate-100' : ''}`} /></label>
     </div>
-    {footprintProgram && <label className="block text-xs font-semibold">Building size ({Math.round(Number(footprintScale) * 100)}%)
-      <input aria-label="Building size (%)" type="range"
-        min={Math.round(footprintProgram.minScale * 100)} max={Math.round(footprintProgram.maxScale * 100)}
-        step={Math.round(footprintProgram.step * 100)} value={Math.round(Number(footprintScale) * 100)}
-        onChange={e => setFootprintScale(String(Number(e.target.value) / 100))}
-        className="mt-1 min-h-11 w-full accent-lime-500" />
-    </label>}
     <p className="text-xs text-slate-600">{storeyProgram
-      ? storeyProgram.mode === 'select_authored_assembly'
+      ? storeyProgram.mode === 'fixed_authored_assembly'
+        ? `This exact model is currently available at ${storeyProgram.nativeStoreys} ${storeyProgram.nativeStoreys === 1 ? 'storey' : 'storeys'}.`
+        : storeyProgram.mode === 'select_authored_assembly'
         ? `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. Each choice uses a complete authored house with its walls, openings and roof intact.`
         : `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. The podium and roof stay complete while authored floors repeat at full proportions.`
       : 'Your footprint stays in place. Unsupported sizes use design massing.'}</p>

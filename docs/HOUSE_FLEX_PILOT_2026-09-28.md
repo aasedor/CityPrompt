@@ -17,9 +17,11 @@ roof, chimney and entrance resolved as one composition. The runtime selects the
 whole assembly for the requested storey count; it does not repeat or scale
 geometry vertically.
 
-Each family also exposes one uniform horizontal scale control from 85% to 115%
-in 5% steps. The scale applies to the selected complete assembly, leaves Z at
-1.0, and does not reshape the surrounding placement parcel.
+The student release exposes storey selection only. New placements retain the
+native 100% building footprint while the complete assembly changes. The earlier
+85–115% uniform horizontal-scale experiment remains in the compatibility
+contract solely so already-saved pilot projects keep their geometry; it is not
+shown in student controls.
 
 ## Authorities and reproducibility
 
@@ -51,9 +53,9 @@ different states, then reloaded the project and checked the saved server rows:
 
 | Family | Tested choice | Footprint | Result after reload |
 | --- | --- | --- | --- |
-| Halifax clapboard house | 1 storey / 7.34 m | 85% | compiled |
-| Post-war bungalow | 2 storeys / 9.29 m | 115% | compiled |
-| Edwardian Foursquare | 1 storey / 7.66 m | 90% | compiled |
+| Halifax clapboard house | 1 storey / 7.34 m | legacy 85% | compiled |
+| Post-war bungalow | 2 storeys / 9.29 m | legacy 115% | compiled |
+| Edwardian Foursquare | 1 storey / 7.66 m | legacy 90% | compiled |
 
 The final run returned no failed HTTP responses. Screenshots and the persisted
 result record are under
@@ -66,3 +68,12 @@ The browser run also found and fixed two integration faults before acceptance:
   and an obsolete in-flight failure yields to the queued newer edit;
 - trusted native dimensions retain full manifest precision, preventing a 115%
   boundary target from changing fit classification between planning and save.
+
+## Storey-only release decision
+
+The catalogue now gives every student building an explicit storey capability.
+The three pilot houses expose their two complete authored assemblies, and the
+Vancouver tower retains its reviewed 16–40-storey programme. Buildings without
+a reviewed alternate assembly publish a fixed programme whose minimum, maximum
+and native storeys are identical. This prevents an arbitrary storey entry from
+silently replacing an exact model with generic massing.

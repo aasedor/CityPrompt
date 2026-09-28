@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-08-02-clean-3d-no-prisms-runtime-v118`.
+Current executable memory: `2026-09-28-storey-only-catalogue-v119`.
 
 Local runtime pilot, 2026-09-05: `native_home_plot` explicitly arranges whole,
 unscaled copies of an exact detached-home variant. Its first footprint edge owns
@@ -19,6 +19,14 @@ are not enabled by this plot option. The matching `runtime_placement_pilot`
 record in both machine companions describes this limited experiment. It does
 not change asset approval or promotion status. See
 `docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md` for evidence and limits.
+
+Storey-only classroom release, 2026-09-28: every effective building catalogue
+record publishes an explicit storey programme. Reviewed modular families may
+select complete authored assemblies or repeat complete authored floors inside
+their finite range. All other exact models publish `fixed_authored_assembly`
+with equal minimum, native and maximum storeys. Student footprint scaling is
+deferred; its bounded pilot contract remains compatibility-only for previously
+saved projects.
 
 ## The quality target
 

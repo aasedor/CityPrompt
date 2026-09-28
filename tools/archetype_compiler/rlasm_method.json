@@ -28,7 +28,18 @@
     "asset_promotion": false,
     "evidence": "docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md"
   },
-  "revision_date": "2026-09-03",
+  "runtime_storey_contract": {
+    "id": "storey-only-classroom-release-2026-09-28",
+    "metadata_required_for_every_building": true,
+    "variable_modes": ["select_authored_assembly", "repeat_authored_floor"],
+    "fixed_mode": "fixed_authored_assembly",
+    "fixed_mode_requires_equal_min_native_max": true,
+    "vertical_mesh_stretching_allowed": false,
+    "student_footprint_scaling": "deferred",
+    "legacy_saved_footprint_scales_preserved": true,
+    "evidence": "docs/HOUSE_FLEX_PILOT_2026-09-28.md"
+  },
+  "revision_date": "2026-09-28",
   "canonical_human_method": "docs/RLASM_LATEST_METHOD.md",
   "reference_keeper_examples": [
     "07-barcelona-modernist-printing-house-rlasm-v7",

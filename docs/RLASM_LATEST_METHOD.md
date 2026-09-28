@@ -1,7 +1,7 @@
 # RLASM v6.1 — integrated proven methodology
 
 **Method name:** Reference-Locked Atomic Sticker-and-Massing (RLASM)
-**Revision:** v6.1, 2026-09-03
+**Revision:** v6.1, 2026-09-28
 **Purpose:** build source-specific, physically credible, reviewable 3D building
 families without hiding generic construction behind a good hero image.
 
@@ -15,6 +15,17 @@ Active-tree storage and retirement rules are defined by
 but belongs in content-addressed artifact storage rather than the active Git
 tree. Only reviewed keeper packages or explicitly approved architectural-clay
 runtime deliveries are promoted into Git.
+
+## Runtime storey contract
+
+Every classroom catalogue building declares a finite storey programme. A
+variable programme is allowed only when each count selects a complete authored
+assembly or repeats a complete authored floor between fixed podium and roof
+assemblies. Mesh stretching in Z is prohibited. Exact models without reviewed
+alternate geometry use `fixed_authored_assembly`, with identical minimum,
+native and maximum storeys. Student footprint scaling is deferred; previously
+saved bounded pilot scales remain readable for compatibility, while new
+placements use the native building footprint.
 
 ## Authority and review boundaries
 

@@ -12,7 +12,7 @@
     "evidence": "docs/BUILDING_TRIO_PUBLICATION_2026-09-06.md"
   },
 "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-08-02-clean-3d-no-prisms-runtime-v118",
+  "memory_version": "2026-09-28-storey-only-catalogue-v119",
   "runtime_placement_pilot": {
     "id": "pick-place-reshape-2026-09-05",
     "status": "local_pilot",
@@ -25,6 +25,17 @@
     "default_clay_instance_count": 1,
     "asset_promotion": false,
     "evidence": "docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md"
+  },
+  "runtime_storey_contract": {
+    "id": "storey-only-classroom-release-2026-09-28",
+    "metadata_required_for_every_building": true,
+    "variable_modes": ["select_authored_assembly", "repeat_authored_floor"],
+    "fixed_mode": "fixed_authored_assembly",
+    "fixed_mode_requires_equal_min_native_max": true,
+    "vertical_mesh_stretching_allowed": false,
+    "student_footprint_scaling": "deferred",
+    "legacy_saved_footprint_scales_preserved": true,
+    "evidence": "docs/HOUSE_FLEX_PILOT_2026-09-28.md"
   },
   "quality_target": "At least the user-approved Classic Haussmann level of archetype-shaped geometry, real construction depth, photoreal material response and resilient LEGO scaling in a real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
@@ -171,7 +182,7 @@
     },
     {
       "id": "lowrise_storey_choices_are_complete_assemblies",
-      "rule": "A low-rise house may expose a finite one-to-two-storey choice only when each count resolves to a complete authored assembly. Preserve the source roof, threshold, openings and family-specific details; never obtain a new count by stretching the source in Z. Optional footprint adjustment applies one bounded uniform horizontal scale to the whole assembly while vertical scale remains exactly one."
+      "rule": "A low-rise house may expose a finite one-to-two-storey choice only when each count resolves to a complete authored assembly. Preserve the source roof, threshold, openings and family-specific details; never obtain a new count by stretching the source in Z. Student footprint scaling is deferred; preserve prior bounded pilot scales only for saved-project compatibility while new placements use the native footprint."
     },
     {
       "id": "details_wrap",

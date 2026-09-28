@@ -682,7 +682,7 @@
       "definitionVersion": 3,
       "readiness": "pilot",
       "label": "Post-war bungalow",
-      "description": "One- or two-storey brick home with a sheltered porch and gently adjustable footprint.",
+      "description": "One- or two-storey brick home with a sheltered porch.",
       "thumbnail": "/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
       "model": {
         "variantId": "bungalow_postwar_ranch",
@@ -726,9 +726,10 @@
         "minScale": 0.85,
         "maxScale": 1.15,
         "defaultScale": 1.0,
-        "step": 0.05
+        "step": 0.05,
+        "editable": false
       },
-      "reshapeDescription": "The complete house scales gently from 85–115% while keeping its proportions. Choose one or two authored storeys.",
+      "reshapeDescription": "Choose one or two authored storeys. The complete house keeps its reviewed footprint and proportions.",
       "properties": {
         "building_archetype_id": "calgary_inner_city_bungalow",
         "development_archetype_id": "calgary_inner_city_bungalow",
@@ -747,7 +748,7 @@
       "definitionVersion": 3,
       "readiness": "pilot",
       "label": "Edwardian Foursquare",
-      "description": "One- or two-storey brick home with a porch, dormer and gently adjustable footprint.",
+      "description": "One- or two-storey brick home with a porch and dormer.",
       "thumbnail": "/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png",
       "model": {
         "variantId": "toronto_foursquare_red_brick",
@@ -791,9 +792,10 @@
         "minScale": 0.85,
         "maxScale": 1.15,
         "defaultScale": 1.0,
-        "step": 0.05
+        "step": 0.05,
+        "editable": false
       },
-      "reshapeDescription": "The complete house scales gently from 85–115% while keeping its proportions. Choose one or two authored storeys.",
+      "reshapeDescription": "Choose one or two authored storeys. The complete house keeps its reviewed footprint and proportions.",
       "properties": {
         "building_archetype_id": "toronto_edwardian_foursquare",
         "development_archetype_id": "toronto_edwardian_foursquare",
