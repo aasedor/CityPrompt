@@ -29,6 +29,9 @@ export interface PlaceAsset extends AssetRecord {
   minWidth: number;
   minDepth: number;
   maxSize: number;
+  /** Optional reviewed per-axis limits. Legacy assets use maxSize for both. */
+  maxWidth?: number;
+  maxDepth?: number;
   nativeDimensions?: [number, number, number];
   /** Finite authored vertical assembly.  Fixed podium/roof modules keep their
    * geometry while a reviewed typical-storey module repeats between them. */
@@ -220,8 +223,12 @@ export function validateRegistry(assets: CatalogueAsset[]): string[] {
     const domain = asset.kind === 'street' || asset.zoneType === 'road' ? 'street_pathway' : asset.zoneType === 'building' ? 'building' : 'park_plaza';
     if (!group || group.domain !== domain) errors.push(`Invalid Calgary group: ${asset.id}`);
     if (asset.kind === 'object') {
-      if (![asset.width, asset.depth, asset.minWidth, asset.minDepth, asset.maxSize].every(n => Number.isFinite(n) && n > 0)
-        || asset.width < asset.minWidth || asset.depth < asset.minDepth || asset.width > asset.maxSize || asset.depth > asset.maxSize) errors.push(`Invalid dimensions: ${asset.id}`);
+      const maxWidth = asset.maxWidth ?? asset.maxSize;
+      const maxDepth = asset.maxDepth ?? asset.maxSize;
+      if (![asset.width, asset.depth, asset.minWidth, asset.minDepth, asset.maxSize, maxWidth, maxDepth].every(n => Number.isFinite(n) && n > 0)
+        || asset.width < asset.minWidth || asset.depth < asset.minDepth
+        || asset.width > maxWidth || asset.depth > maxDepth
+        || maxWidth > asset.maxSize || maxDepth > asset.maxSize) errors.push(`Invalid dimensions: ${asset.id}`);
       const variant = asset.zoneType === 'building' ? asset.properties.development_selected_variant_id : asset.zoneType === 'road' ? asset.properties.road_selected_variant_id : asset.properties.green_space_selected_variant_id;
       if (variant !== asset.model.variantId) errors.push(`Variant mismatch: ${asset.id}`);
       if (asset.reshapeMode === 'repeat_native' && (!asset.nativeDimensions || asset.properties.native_home_plot !== true)) errors.push(`Missing native repeat contract: ${asset.id}`);

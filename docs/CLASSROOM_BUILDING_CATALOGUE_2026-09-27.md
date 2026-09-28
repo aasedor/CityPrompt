@@ -22,7 +22,9 @@ The Vancouver tower also has a finite authored-storey programme. Its unchanged
 the three-storey podium and roof/penthouse remain intact while a 3.2 m source
 floor band repeats between them. The programme is recorded in
 `seed/model-library/rlasm-architectural-clay/vancouverism-classic-storey-program-v001.json`.
-It is implemented locally and remains browser-review pending.
+Its reviewed footprint band is 51.1 × 43.1 m through 57.5 × 47.5 m. Local
+student-controls browser checks passed at 25 storeys on the minimum footprint
+and 40 storeys on the maximum footprint, including save and reopen.
 
 Exact measured values, hashes, existing independent review identities and pending
 runtime status are in `classroom_building_build_ledger_2026-09-27.json`.

@@ -23,6 +23,12 @@
     "roof_height_m": 4.2,
     "formula": "podium_height_m + (storeys - podium_storeys) * repeatable_storey_height_m + roof_height_m"
   },
+  "footprint_contract": {
+    "default_m": [52.0, 44.0],
+    "minimum_m": [51.1, 43.1],
+    "maximum_m": [57.5, 47.5],
+    "uniform_horizontal_scale_range": [1.06336, 1.18587]
+  },
   "modules": [
     {
       "role": "podium",
@@ -53,12 +59,12 @@
     }
   ],
   "review": {
-    "status": "IMPLEMENTED_NOT_BROWSER_TESTED",
+    "status": "PASS_LOCAL_BROWSER",
     "notes": [
       "The native 16-storey source remains unchanged and remains the default exact model.",
       "Each module is a clipped band of the reviewed source GLB; no facade material or horizontal geometry was regenerated.",
       "The podium and roof remain single authored modules while the residential band repeats at 3.2 m.",
-      "Browser visual acceptance is still required before this storey programme is marked completed."
+      "Local student-controls browser checks passed at 25 storeys on the minimum footprint and 40 storeys on the maximum footprint, including save and reopen."
     ]
   }
 }

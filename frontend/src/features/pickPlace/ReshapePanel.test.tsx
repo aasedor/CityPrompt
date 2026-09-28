@@ -16,6 +16,21 @@ it('points native-house students to the working Move handle', () => {
   expect(screen.queryByText(/Drag the object to move it/)).toBeNull();
 });
 
+it('keeps Vancouver tower reshaping inside its reviewed gentle footprint band', () => {
+  const asset = placeAsset('clay_vancouver_balcony_podium_tower');
+  const zone = { id: 'vancouver', zone_type: 'building', properties: placementProperties(asset),
+    coordinates: rectangleAt([-114, 51], asset.width, asset.depth) } as SiteZone;
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={vi.fn()}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
+  expect(screen.getByText(/move this building/)).toBeTruthy();
+  expect(screen.queryByText(/move this house/)).toBeNull();
+  expect(screen.getByLabelText('Plot width (m)')).toMatchObject({ min: '51.1', max: '57.5' });
+  expect(screen.getByLabelText('Plot depth (m)')).toMatchObject({ min: '43.1', max: '47.5' });
+  fireEvent.change(screen.getByLabelText('Plot width (m)'), { target: { value: '58' } });
+  expect((screen.getByRole('button', { name: 'Apply shape' }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.getByRole('alert').textContent).toContain('51.1–57.5');
+});
+
 it('preserves an irregular authored park footprint when resizing', () => {
   const asset = placeAsset('native-park:urban_pocket_park_v0--native-v1');
   const onReshape = vi.fn();

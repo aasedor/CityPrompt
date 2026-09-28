@@ -18,6 +18,12 @@ Vancouverism range. The derived height is
 storeys outside the finite range remain unsupported rather than deforming the
 model.
 
+The plot can also change within a reviewed gentle footprint band. Its default
+is 52 × 44 m, its minimum is 51.1 × 43.1 m, and its maximum is 57.5 × 47.5 m.
+The complete modular assembly scales uniformly in plan from approximately
+1.06× to 1.19×; balconies, windows, setbacks, podium and roof keep their
+relative proportions.
+
 `tools/archetype_compiler/blender_extract_vertical_module.py` performs the
 reproducible GLB clipping. The machine-readable source planes, dimensions,
 file sizes and SHA-256 locks are in
@@ -32,7 +38,10 @@ assembled heights were 58.8 m, 87.6 m and 135.6 m respectively; 41 storeys was
 rejected. Offline Blender QA also inspected the 25- and 40-storey assemblies
 from aerial and walking-height angles.
 
-Source/runtime implementation and automated checks are complete. In-app
-browser visual acceptance remains deliberately open; this checkpoint does not
-approve the scaled tower for publication or imply that other fixed buildings
-can be scaled.
+Source/runtime implementation and automated checks are complete. A disposable
+student project then placed the tower, changed it to 25 storeys at the minimum
+footprint, changed it to 40 storeys at the maximum footprint, and reopened the
+saved project. Both detailed models mounted without console or page errors and
+retained the authored podium, roof, balconies and window rhythm. This local
+browser acceptance does not publish the tower or imply that other fixed
+buildings can be scaled.

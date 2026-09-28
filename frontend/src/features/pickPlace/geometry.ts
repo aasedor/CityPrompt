@@ -26,8 +26,8 @@ export function resizeRectangleCorner(coords: number[][], corner: number, pointe
   const fixed = coords[(corner+2)%4], yaw = degrees*Math.PI/180, c=Math.cos(yaw), s=Math.sin(yaw);
   const east=(pointer[0]-fixed[0])*metersPerDegLon(fixed[1]), north=(pointer[1]-fixed[1])*METERS_PER_DEG_LAT;
   const sx = corner===0 || corner===3 ? -1 : 1, sy=corner<2 ? -1 : 1;
-  const width=Math.min(asset.maxSize,Math.max(asset.minWidth,sx*(east*c+north*s)));
-  const depth=Math.min(asset.maxSize,Math.max(asset.minDepth,sy*(-east*s+north*c)));
+  const width=Math.min(asset.maxWidth ?? asset.maxSize,Math.max(asset.minWidth,sx*(east*c+north*s)));
+  const depth=Math.min(asset.maxDepth ?? asset.maxSize,Math.max(asset.minDepth,sy*(-east*s+north*c)));
   return rectangleAt([
     fixed[0]+(sx*width*c-sy*depth*s)/2/metersPerDegLon(fixed[1]),
     fixed[1]+(sx*width*s+sy*depth*c)/2/METERS_PER_DEG_LAT,

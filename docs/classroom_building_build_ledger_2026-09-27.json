@@ -173,7 +173,12 @@
         "recommended_storeys": [25, 40],
         "manifest": "seed/model-library/rlasm-architectural-clay/vancouverism-classic-storey-program-v001.json",
         "assembly": "fixed three-storey podium + repeated 3.2 m authored floor + fixed roof/penthouse",
-        "runtime_status": "IMPLEMENTED_NOT_BROWSER_TESTED"
+        "footprint_m": {
+          "default": [52.0, 44.0],
+          "minimum": [51.1, 43.1],
+          "maximum": [57.5, 47.5]
+        },
+        "runtime_status": "PASS_LOCAL_BROWSER_25_MIN_40_MAX_SAVE_REOPEN"
       },
       "independent_clay_review": {
         "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/vancouverism-tower-podium-clay-v004.json",

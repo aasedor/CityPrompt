@@ -865,8 +865,10 @@
       "reshapeMode": "fixed_native",
       "width": 52.0,
       "depth": 44.0,
-      "minWidth": 52.0,
-      "minDepth": 44.0,
+      "minWidth": 51.1,
+      "minDepth": 43.1,
+      "maxWidth": 57.5,
+      "maxDepth": 47.5,
       "maxSize": 180.0,
       "nativeDimensions": [
         48.05500030517578,

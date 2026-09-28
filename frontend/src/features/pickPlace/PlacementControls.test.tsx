@@ -6,8 +6,13 @@ import type { PlacementDraft } from './GlobePlacementPreview';
 import { PLACE_ASSETS } from './catalogue';
 
 const asset = PLACE_ASSETS[0];
+const vancouver = PLACE_ASSETS.find(candidate => candidate.id === 'clay_vancouver_balcony_podium_tower')!;
 function Harness() {
   const [draft, setDraft] = useState<PlacementDraft>({ assetId: asset.id, width: asset.width, depth: asset.depth, degrees: 0 });
+  return <><PlacementControls draft={draft} onChange={setDraft} /><pre data-testid="draft">{JSON.stringify(draft)}</pre></>;
+}
+function VancouverHarness() {
+  const [draft, setDraft] = useState<PlacementDraft>({ assetId: vancouver.id, width: vancouver.width, depth: vancouver.depth, degrees: 0 });
   return <><PlacementControls draft={draft} onChange={setDraft} /><pre data-testid="draft">{JSON.stringify(draft)}</pre></>;
 }
 const current = () => JSON.parse(screen.getByTestId('draft').textContent!) as PlacementDraft;
@@ -56,5 +61,12 @@ describe('pre-placement reshaping', () => {
     render(<PlacementControls draft={draft} onChange={() => {}} />);
     expect((screen.getByLabelText('Placement width') as HTMLInputElement).value).toBe('');
     expect(screen.getByRole('status').textContent).toContain('Enter dimensions');
+  });
+  it('uses Vancouver’s reviewed per-axis footprint limits before placement', () => {
+    render(<VancouverHarness />);
+    expect(screen.getByLabelText('Placement width')).toMatchObject({ min: '51.1', max: '57.5' });
+    expect(screen.getByLabelText('Placement depth')).toMatchObject({ min: '43.1', max: '47.5' });
+    fireEvent.change(screen.getByLabelText('Placement width'), { target: { value: '58' } });
+    expect(current().inputError).toBeTruthy();
   });
 });
