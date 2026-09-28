@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import type { SiteZone } from '@/types';
 import { compileMixedCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { siteZonesApi } from '@/services/api';
-import { useAutomatic3D } from './useAutomatic3D';
+import { authoredPlacementKey, useAutomatic3D } from './useAutomatic3D';
 import { nativeParkLayouts, nativeParkProperties } from '@/features/parks/nativeParkRegistry';
 import { rectangleAt } from './geometry';
 vi.mock('@/features/legoAssembly/communityCompiler',()=>({compileMixedCommunity3D:vi.fn()}));
@@ -102,6 +102,25 @@ describe('automatic placement compilation',()=>{
     await act(async()=>{finish()});await advance();
     expect(compileMixedCommunity3D).toHaveBeenCalledTimes(2);
     expect(vi.mocked(compileMixedCommunity3D).mock.calls[1][0][0].coordinates[0][0]).toBe(3);unmount();
+  });
+  it('silently supersedes a failed in-flight request when a newer authored edit is waiting',async()=>{
+    let fail!:()=>void;
+    vi.mocked(compileMixedCommunity3D).mockImplementationOnce(()=>new Promise((_resolve,reject)=>{fail=()=>reject(new Error('stale source'));}));
+    const {result,rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{initialProps:{zones:[zone()]},wrapper});
+    await advance();
+    rerender({zones:[zone(2)]});
+    await act(async()=>{fail()});
+    expect(result.current.status).toBe('updating');
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledTimes(2);
+    expect(vi.mocked(compileMixedCommunity3D).mock.calls[1][0][0].coordinates[0][0]).toBe(2);
+    expect(result.current.status).not.toBe('error');
+    unmount();
+  });
+  it('treats a footprint-only scale change as an authored 3D change',()=>{
+    const original={...zone(),properties:{...zone().properties,building_footprint_scale:1}};
+    const scaled={...original,properties:{...original.properties,building_footprint_scale:1.15}};
+    expect(authoredPlacementKey([scaled])).not.toBe(authoredPlacementKey([original]));
   });
   it('stops after an error and retries only on request',async()=>{
     vi.mocked(compileMixedCommunity3D).mockRejectedValue(new Error('Offline'));

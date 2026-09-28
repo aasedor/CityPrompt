@@ -679,10 +679,10 @@
     {
       "id": "trial_postwar_bungalow",
       "kind": "object",
-      "definitionVersion": 2,
+      "definitionVersion": 3,
       "readiness": "pilot",
       "label": "Post-war bungalow",
-      "description": "One-storey brick home with a sheltered porch.",
+      "description": "One- or two-storey brick home with a sheltered porch and gently adjustable footprint.",
       "thumbnail": "/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
       "model": {
         "variantId": "bungalow_postwar_ranch",
@@ -705,7 +705,30 @@
         16.050000190734863,
         6.360000133514404
       ],
-      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "storeyProgram": {
+        "id": "house-flex-bungalow-v001",
+        "mode": "select_authored_assembly",
+        "nativeStoreys": 1,
+        "minStoreys": 1,
+        "maxStoreys": 2,
+        "recommendedMinStoreys": 1,
+        "recommendedMaxStoreys": 2,
+        "podiumStoreys": 1,
+        "podiumHeightM": 6.36,
+        "repeatedStoreyHeightM": 2.93,
+        "roofHeightM": 0.0
+      },
+      "footprintProgram": {
+        "id": "house-flex-pilot-v001",
+        "mode": "uniform_horizontal_scale",
+        "nativeWidthM": 10.898324012756348,
+        "nativeDepthM": 16.050000190734863,
+        "minScale": 0.85,
+        "maxScale": 1.15,
+        "defaultScale": 1.0,
+        "step": 0.05
+      },
+      "reshapeDescription": "The complete house scales gently from 85–115% while keeping its proportions. Choose one or two authored storeys.",
       "properties": {
         "building_archetype_id": "calgary_inner_city_bungalow",
         "development_archetype_id": "calgary_inner_city_bungalow",
@@ -721,10 +744,10 @@
     {
       "id": "trial_edwardian_foursquare",
       "kind": "object",
-      "definitionVersion": 2,
+      "definitionVersion": 3,
       "readiness": "pilot",
       "label": "Edwardian Foursquare",
-      "description": "Two-storey brick home with a porch and dormer.",
+      "description": "One- or two-storey brick home with a porch, dormer and gently adjustable footprint.",
       "thumbnail": "/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png",
       "model": {
         "variantId": "toronto_foursquare_red_brick",
@@ -747,7 +770,30 @@
         17.93000030517578,
         10.8100004196167
       ],
-      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "storeyProgram": {
+        "id": "house-flex-foursquare-v001",
+        "mode": "select_authored_assembly",
+        "nativeStoreys": 2,
+        "minStoreys": 1,
+        "maxStoreys": 2,
+        "recommendedMinStoreys": 1,
+        "recommendedMaxStoreys": 2,
+        "podiumStoreys": 1,
+        "podiumHeightM": 7.66,
+        "repeatedStoreyHeightM": 3.15,
+        "roofHeightM": 0.0
+      },
+      "footprintProgram": {
+        "id": "house-flex-pilot-v001",
+        "mode": "uniform_horizontal_scale",
+        "nativeWidthM": 11.069999694824219,
+        "nativeDepthM": 17.93000030517578,
+        "minScale": 0.85,
+        "maxScale": 1.15,
+        "defaultScale": 1.0,
+        "step": 0.05
+      },
+      "reshapeDescription": "The complete house scales gently from 85–115% while keeping its proportions. Choose one or two authored storeys.",
       "properties": {
         "building_archetype_id": "toronto_edwardian_foursquare",
         "development_archetype_id": "toronto_edwardian_foursquare",

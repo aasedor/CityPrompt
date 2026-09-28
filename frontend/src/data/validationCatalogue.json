@@ -1583,10 +1583,10 @@
     {
       "id": "validation_clapboard_north_end",
       "kind": "object",
-      "definitionVersion": 1,
+      "definitionVersion": 2,
       "readiness": "pilot",
       "label": "Halifax clapboard house",
-      "description": "Visual baseline approved; app validation pending",
+      "description": "One- or two-storey painted clapboard house with a gently adjustable footprint; app validation pending.",
       "thumbnail": "/validation-assets/clapboard-v003/reference.png",
       "model": {
         "variantId": "clapboard_north_end",
@@ -1604,7 +1604,7 @@
       "minWidth": 15,
       "minDepth": 17,
       "maxSize": 240,
-      "reshapeDescription": "Fixed native model; enlarge its surrounding plot without stretching the building.",
+      "reshapeDescription": "The complete house scales gently from 85–115% while keeping its proportions. Choose one or two authored storeys.",
       "properties": {
         "building_archetype_id": "halifax_painted_clapboard_row",
         "development_archetype_id": "halifax_painted_clapboard_row",
@@ -1619,7 +1619,30 @@
         11.0,
         12.275000095367432,
         10.479999542236328
-      ]
+      ],
+      "storeyProgram": {
+        "id": "house-flex-clapboard-v001",
+        "mode": "select_authored_assembly",
+        "nativeStoreys": 2,
+        "minStoreys": 1,
+        "maxStoreys": 2,
+        "recommendedMinStoreys": 1,
+        "recommendedMaxStoreys": 2,
+        "podiumStoreys": 1,
+        "podiumHeightM": 7.34,
+        "repeatedStoreyHeightM": 3.14,
+        "roofHeightM": 0.0
+      },
+      "footprintProgram": {
+        "id": "house-flex-pilot-v001",
+        "mode": "uniform_horizontal_scale",
+        "nativeWidthM": 11.0,
+        "nativeDepthM": 12.275000095367432,
+        "minScale": 0.85,
+        "maxScale": 1.15,
+        "defaultScale": 1.0,
+        "step": 0.05
+      }
     },
     {
       "id": "validation_machiya_cafe_gallery",

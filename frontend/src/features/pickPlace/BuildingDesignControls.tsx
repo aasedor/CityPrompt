@@ -4,6 +4,7 @@ import { CANONICAL_CHOICES, canonicalDrawing } from './canonicalCatalogue';
 import { canonicalBuildingAsset } from './canonicalBuildingPlacement';
 import { assetForZone } from './catalogue';
 import { storeyProgramHeight, storeyProgramSupports } from './buildingStoreyProgram';
+import { footprintProgramSupports } from './buildingFootprintProgram';
 
 const choices = CANONICAL_CHOICES.filter(choice => choice.domain === 'building');
 const field = 'mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-sm text-slate-900';
@@ -23,18 +24,21 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const [query, setQuery] = useState('');
   const [floors, setFloors] = useState(String(savedProperties.floor_count ?? savedProperties.floors ?? 2));
   const [height, setHeight] = useState(heightText(savedProperties.height_m ?? savedProperties.height ?? assetForZone(zone)?.nativeDimensions?.[2] ?? Number(floors) * 3.2));
+  const [footprintScale, setFootprintScale] = useState(String(savedProperties.building_footprint_scale ?? 1));
   const [heightEdited, setHeightEdited] = useState(false);
   const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
   const selectedAsset = choice?.placements.find(asset => asset.kind === 'object' && asset.model.variantId === variantId);
   const storeyProgram = selectedAsset?.kind === 'object' ? selectedAsset.storeyProgram : undefined;
+  const footprintProgram = selectedAsset?.kind === 'object' ? selectedAsset.footprintProgram : undefined;
   const filtered = choices.filter(c => c.id === choiceId || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase()));
   const floorCountValid = Number.isInteger(Number(floors))
     && Number(floors) >= (storeyProgram?.minStoreys ?? 1)
     && Number(floors) <= (storeyProgram?.maxStoreys ?? 100);
   const valid = choice && floorCountValid
     && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000
-    && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height));
+    && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height))
+    && (!footprintProgram || footprintProgramSupports(footprintProgram, footprintScale));
   const choose = (nextChoiceId: string, nextVariantId?: string) => {
     const next = choices.find(c => c.id === nextChoiceId)!;
     const selectedVariant = next.option.variants?.find(v => v.id === nextVariantId)
@@ -44,6 +48,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     setChoiceId(nextChoiceId); setVariantId(selectedVariant?.id ?? '');
     setFloors(String(props.floor_count ?? props.floors ?? 2));
     setHeight(heightText(native?.kind === 'object' && native.nativeDimensions ? native.nativeDimensions[2] : props.height ?? Number(props.floors) * 3.2));
+    setFootprintScale(String(native?.kind === 'object' && native.footprintProgram ? native.footprintProgram.defaultScale : 1));
     setHeightEdited(false);
   };
   return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={event => {
@@ -52,6 +57,8 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     const selection = { choice, variant };
     const native = choice.placements.find(a => a.kind === 'object' && a.model.variantId === variantId);
     const properties = changedType ? { ...savedProperties, native_home_plot: undefined,
+      building_footprint_scale: undefined, building_footprint_program_id: undefined,
+      building_footprint_native_width_m: undefined, building_footprint_native_depth_m: undefined,
       ...canonicalDrawing(selection).properties, ...(native?.properties ?? {}),
       pick_place_asset: native?.id ?? canonicalBuildingAsset(selection).id,
       building_archetype_id: choice.option.id, development_height_override_m: undefined,
@@ -59,6 +66,12 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     onSave({ ...properties, pick_place_automatic_3d: true, native_plot_axes: true,
       floors: Number(floors), floor_count: Number(floors), height: Number(height), height_m: Number(height),
       floor_height: Number(height) / Number(floors),
+      ...(footprintProgram ? {
+        building_footprint_scale: Number(footprintScale),
+        building_footprint_program_id: footprintProgram.id,
+        building_footprint_native_width_m: footprintProgram.nativeWidthM,
+        building_footprint_native_depth_m: footprintProgram.nativeDepthM,
+      } : {}),
       ...(heightEdited ? { development_height_override_m: Number(height) } : {}),
     });
   }}>
@@ -83,8 +96,17 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
         readOnly={Boolean(storeyProgram)} aria-readonly={Boolean(storeyProgram)}
         onChange={e => { setHeight(e.target.value); setHeightEdited(true); }} className={`${field} ${storeyProgram ? 'bg-slate-100' : ''}`} /></label>
     </div>
+    {footprintProgram && <label className="block text-xs font-semibold">Building size ({Math.round(Number(footprintScale) * 100)}%)
+      <input aria-label="Building size (%)" type="range"
+        min={Math.round(footprintProgram.minScale * 100)} max={Math.round(footprintProgram.maxScale * 100)}
+        step={Math.round(footprintProgram.step * 100)} value={Math.round(Number(footprintScale) * 100)}
+        onChange={e => setFootprintScale(String(Number(e.target.value) / 100))}
+        className="mt-1 min-h-11 w-full accent-lime-500" />
+    </label>}
     <p className="text-xs text-slate-600">{storeyProgram
-      ? `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. The podium and roof stay complete while authored floors repeat at full proportions.`
+      ? storeyProgram.mode === 'select_authored_assembly'
+        ? `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. Each choice uses a complete authored house with its walls, openings and roof intact.`
+        : `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. The podium and roof stay complete while authored floors repeat at full proportions.`
       : 'Your footprint stays in place. Unsupported sizes use design massing.'}</p>
     <button disabled={disabled || !valid} className="min-h-11 w-full rounded-lg border border-slate-700 bg-lime-200 text-sm font-semibold disabled:opacity-40">Apply building</button>
   </form>;

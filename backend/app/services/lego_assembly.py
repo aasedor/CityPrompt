@@ -215,11 +215,21 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         and lego.get("generation_archetype_id") == rlasm["variant_id"]
     ):
         return None
+    module_role = lego.get("role")
+    module_is_complete_assembly = (
+        module_role == "assembled"
+        and lego.get("repeatable_z") is False
+        and isinstance(lego.get("native_floors"), int)
+        and lego["native_floors"] >= 1
+        and lego.get("min_floors") == lego["native_floors"]
+        and lego.get("max_floors") == lego["native_floors"]
+        and (lego.get("placement_contract") or {}).get("mode") == "authored_storey_program"
+    )
     if is_clay_module and not (
         rlasm.get("method_version") == "6.1"
         and rlasm.get("runtime_enabled") is True
         and rlasm.get("continuous_resize_allowed") is False
-        and lego.get("role") in {"podium", "floor", "roof"}
+        and (module_role in {"podium", "floor", "roof"} or module_is_complete_assembly)
         and bool(rlasm.get("variant_id"))
         and lego.get("source_variant_id") == rlasm["variant_id"]
         and lego.get("generation_archetype_id") == rlasm["variant_id"]
@@ -744,12 +754,21 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     re-imports share the same runtime behavior.
     """
 
-    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT:
-        return True
     placement = module.placement_contract or {}
     footprint = module.footprint_compatibility or {}
     placement_mode = _semantic_id(str(placement.get("mode") or ""))
     footprint_mode = _semantic_id(str(footprint.get("placementMode") or ""))
+    # An exact source GLB may participate in a finite, authored storey
+    # programme without changing its bytes.  Only that explicit programme can
+    # opt an architectural-clay source into the bounded uniform scale band;
+    # all other reviewed sources retain select-and-place behavior.
+    authored_storey_program = (
+        placement_mode == "authored_storey_program"
+        and placement.get("uniform_horizontal_scale_only") is True
+        and placement.get("vertical_scale") == 1.0
+    )
+    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT and not authored_storey_program:
+        return True
     fixed_non_resizable = placement_mode == "fixed_landmark" and placement.get("continuous_resize_allowed") is False
     return bool(fixed_non_resizable or footprint_mode == "select_and_place" or footprint.get("polygonFit") is False)
 

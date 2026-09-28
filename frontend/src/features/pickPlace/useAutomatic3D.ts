@@ -22,7 +22,7 @@ export function authoredPlacementKey(zones: SiteZone[], includeRuntimeEntrance =
   return JSON.stringify(zones.map(zone => ({ id: zone.id, coordinates: zone.coordinates,
     design: Object.fromEntries(Object.entries(zone.properties ?? {})
       .filter(([name]) => (includeRuntimeEntrance || name !== 'pedestrian_building_entrance')
-        && /^(pick_place|native_home|development_|green_space_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$|park_trio_layout$|pedestrian_|park_access_points$|community_3d_landscape_mode$)/.test(name))
+        && /^(pick_place|native_home|building_footprint_|development_|green_space_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$|park_trio_layout$|pedestrian_|park_access_points$|community_3d_landscape_mode$)/.test(name))
       .sort(([a],[b]) => a.localeCompare(b))) })).sort((a,b) => a.id.localeCompare(b.id)));
 }
 
@@ -104,8 +104,22 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           setMessage(result.plannedMasses ? 'Some detailed models are unavailable. Simple building volumes are shown.' : 'Your 3D scene updates automatically.');
         }
       } catch (error) {
-        run.failed = key;
-        if (state.current === run) { setStatus('error'); setMessage(getApiErrorMessage(error)); }
+        const newestZones = latest.current;
+        const newestBoundary = deriveCityPromptWorkflow(newestZones).activeBoundary;
+        const newestKey = authoredPlacementKey([
+          ...newestZones.filter(physicalScopeZone),
+          ...(newestBoundary ? [newestBoundary] : []),
+        ], false);
+        // An obsolete request may correctly fail the backend's source-revision
+        // guard after a student makes another edit. Keep the newer edit queued;
+        // only surface an error when the failed request still represents the
+        // current authored scene.
+        if (newestKey !== key) {
+          if (state.current === run) { setStatus('updating'); setMessage(''); }
+        } else {
+          run.failed = key;
+          if (state.current === run) { setStatus('error'); setMessage(getApiErrorMessage(error)); }
+        }
       } finally {
         run.busy = false;
         if (state.current === run) setAttempt(value => value + 1);

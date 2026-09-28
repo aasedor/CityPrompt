@@ -979,6 +979,21 @@ The polychrome collegiate family added four rules for resizable hero facades:
   pilot passes. The pilot can reuse stale generic modules; the promoted family
   must regenerate every LEGO role with the reviewed PBR source and materials.
 
+### Low-rise storey and footprint flexibility
+
+- A one- or two-storey house choice uses two complete authored assemblies.
+  Do not stretch a one-storey source upward, slice an approved house at runtime,
+  or repeat its entrance, porch, chimney or roof as a generic floor module.
+- Preserve the approved native assembly byte-for-byte at its native count. The
+  alternate count receives its own immutable model hash, measured envelope and
+  visual-review state.
+- Gentle footprint adjustment uses one bounded uniform horizontal scale for the
+  entire selected assembly. Keep vertical scale at exactly one so roofs,
+  thresholds, window proportions and storey heights remain authored.
+- Keep the finite storey and footprint contract in both catalogue metadata and
+  trusted server metadata. Unknown counts, revisions or out-of-band scales fail
+  closed instead of falling back to a generic house.
+
 ### Wave 3 civic-family identity, alias and footprint lessons
 
 - Native width and depth are a placement envelope, not an instruction to fill

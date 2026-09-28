@@ -170,6 +170,10 @@
       "rule": "A detached house is a complete roof, threshold, privacy and occupation composition rather than a small generic stack. Its fixed whole-house assembly owns roof silhouette, entrance or porch, balconies or screens, chimneys or towers and residential-scale window construction; its repeatable fallback varies complete ordinary bays without duplicating those identity anchors."
     },
     {
+      "id": "lowrise_storey_choices_are_complete_assemblies",
+      "rule": "A low-rise house may expose a finite one-to-two-storey choice only when each count resolves to a complete authored assembly. Preserve the source roof, threshold, openings and family-specific details; never obtain a new count by stretching the source in Z. Optional footprint adjustment applies one bounded uniform horizontal scale to the whole assembly while vertical scale remains exactly one."
+    },
+    {
       "id": "details_wrap",
       "rule": "Author front, left, right and rear elevations for every asset, including courtyard walls. Material courses, cornices, balconies, window returns and roof logic continue around exposed sides and corners; secondary elevations remain stylistically related but use a believable different opening and service hierarchy. Detail may be occluded only when site geometry confirms a true party wall."
     },

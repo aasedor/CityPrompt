@@ -7,6 +7,7 @@ import { canonicalParkById, canonicalParkForProperties } from './canonicalParkPl
 import { canonicalBuildingById, canonicalBuildingForProperties } from './canonicalBuildingPlacement';
 import { reviewedEntranceForAsset } from './reviewedEntrances';
 import { storeyProgramSupports } from './buildingStoreyProgram';
+import { footprintProgramTarget } from './buildingFootprintProgram';
 export type { PlaceAsset, PlaceAssetId } from './assetRegistry';
 const OBJECT_ASSETS = CATALOGUE_ASSETS.filter((asset): asset is PlaceAsset => asset.kind === 'object');
 // Resolve older saved IDs without returning those versions to student discovery.
@@ -16,7 +17,8 @@ export const PLACE_ASSETS = OBJECT_ASSETS.filter(isPlaceable);
 /** Preview and saved compilation share the exact variant and native plot policy. */
 export function placementPlanRequest(asset: PlaceAsset, width: number, depth: number, projectId?: string): LegoPlanRequest | null {
   if (asset.zoneType !== 'building' || asset.model.method === 'canonical_design') return null;
-  return { target_width_m: width, target_depth_m: depth,
+  const footprint = asset.footprintProgram ? footprintProgramTarget(asset.footprintProgram) : null;
+  return { target_width_m: footprint?.widthM ?? width, target_depth_m: footprint?.depthM ?? depth,
     target_floors: Number(asset.properties.floor_count),
     archetype_id: typeof asset.properties.development_selected_variant_id === 'string'
       ? asset.properties.development_selected_variant_id : undefined,
@@ -64,6 +66,12 @@ export function placementProperties(asset: PlaceAsset, elevation?: number, coord
   return { ...asset.properties, pick_place_asset: asset.id,
     pick_place_definition_version: asset.definitionVersion,
     ...(asset.model.revision ? { pick_place_model_revision: asset.model.revision } : {}),
+    ...(asset.footprintProgram ? {
+      building_footprint_scale: asset.footprintProgram.defaultScale,
+      building_footprint_program_id: asset.footprintProgram.id,
+      building_footprint_native_width_m: asset.footprintProgram.nativeWidthM,
+      building_footprint_native_depth_m: asset.footprintProgram.nativeDepthM,
+    } : {}),
     ...(entrance ? { pedestrian_building_entrance: {
       version: 1, automatic: true, sourceVariantId: asset.model.variantId,
       ...(asset.model.revision ? { sourceRevision: asset.model.revision } : {}), xM: entrance.xM, yM: entrance.yM,

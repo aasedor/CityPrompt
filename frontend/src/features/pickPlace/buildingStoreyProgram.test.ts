@@ -12,6 +12,19 @@ describe('authored building storey programs', () => {
     expect(storeyProgramHeight(program, 40)).toBe(135.6);
   });
 
+  it.each([
+    ['trial_postwar_bungalow', 6.36, 9.29],
+    ['trial_edwardian_foursquare', 7.66, 10.81],
+    ['validation_clapboard_north_end', 7.34, 10.48],
+  ] as const)('selects complete one- and two-storey assemblies for %s', (assetId, oneStorey, twoStoreys) => {
+    const houseProgram = placeAsset(assetId).storeyProgram!;
+    expect(houseProgram.mode).toBe('select_authored_assembly');
+    expect(storeyProgramHeight(houseProgram, 1)).toBe(oneStorey);
+    expect(storeyProgramHeight(houseProgram, 2)).toBe(twoStoreys);
+    expect(storeyProgramSupports(houseProgram, 0, oneStorey)).toBe(false);
+    expect(storeyProgramSupports(houseProgram, 3, twoStoreys)).toBe(false);
+  });
+
   it('accepts only the finite storey range and its authored height', () => {
     expect(storeyProgramSupports(program, 25, 87.6)).toBe(true);
     expect(storeyProgramSupports(program, 40, 135.6)).toBe(true);

@@ -1,0 +1,134 @@
+{
+  "schema": "cityprompt.authored-lowrise-storey-program@1",
+  "id": "house-flex-pilot-v001",
+  "method": "RLASM 6.1",
+  "generator": "tools/archetype_compiler/blender_house_storey_variant.py",
+  "supported_storeys": {
+    "minimum": 1,
+    "maximum": 2
+  },
+  "footprint_contract": {
+    "mode": "uniform_horizontal_scale",
+    "minimum_scale": 0.85,
+    "maximum_scale": 1.15,
+    "default_scale": 1.0,
+    "vertical_scale": 1.0,
+    "max_axis_ratio": 1.0
+  },
+  "families": [
+    {
+      "family": "rlasm-clay-bungalow-postwar-ranch",
+      "archetype_id": "calgary_inner_city_bungalow",
+      "variant_id": "bungalow_postwar_ranch",
+      "source_authoring": {
+        "evidence_path": "C:/dev-artifacts/CityPrompt/building-trio-2026-09-06/ranch-v005/calgary-inner-city-bungalow-clay-v005-authoring.blend",
+        "bytes": 704764,
+        "sha256": "ef68b20669508be912fd213cea630176a0445108249e86e1dfdd75ee89c90c24"
+      },
+      "height_contract": {
+        "base_storeys": 1,
+        "base_height_m": 6.36,
+        "additional_storey_height_m": 2.93
+      },
+      "assemblies": [
+        {
+          "storeys": 1,
+          "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "path": "models/calgary-inner-city-bungalow-clay-v005.glb",
+          "native_dimensions_m": [10.898324012756348, 16.050000190734863, 6.360000133514404],
+          "mesh_count": 12,
+          "bytes": 1168176,
+          "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153"
+        },
+        {
+          "storeys": 2,
+          "status": "BUILDER_PASS_VISUAL_REVIEW_PENDING",
+          "path": "models/calgary-inner-city-bungalow-two-storey-v001.glb",
+          "native_dimensions_m": [10.898324012756348, 16.050000190734863, 9.29],
+          "mesh_count": 12,
+          "bytes": 2581044,
+          "sha256": "5b85fb9a49c31a6f8b5f1e0f591157383bf7fccaa05b191970c50d477cdd8f6f"
+        }
+      ]
+    },
+    {
+      "family": "rlasm-clay-toronto-foursquare-red-brick",
+      "archetype_id": "toronto_edwardian_foursquare",
+      "variant_id": "toronto_foursquare_red_brick",
+      "source_authoring": {
+        "evidence_path": "C:/dev-artifacts/CityPrompt/building-trio-2026-09-06/foursquare-v004/toronto-edwardian-foursquare-clay-v004-authoring.blend",
+        "bytes": 3248987,
+        "sha256": "46167f24747f8a0d86e49ce96cb807fe801d0690fb63406e41a4f17f06914c15"
+      },
+      "height_contract": {
+        "base_storeys": 1,
+        "base_height_m": 7.66,
+        "additional_storey_height_m": 3.15
+      },
+      "assemblies": [
+        {
+          "storeys": 1,
+          "status": "BUILDER_PASS_VISUAL_REVIEW_PENDING",
+          "path": "models/toronto-edwardian-foursquare-one-storey-v001.glb",
+          "native_dimensions_m": [11.069999694824219, 17.93000030517578, 7.66],
+          "mesh_count": 12,
+          "bytes": 5859332,
+          "sha256": "1209130039947a5975ded9090d65646b41f095073412ff784094473589760ff6"
+        },
+        {
+          "storeys": 2,
+          "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "path": "models/toronto-edwardian-foursquare-clay-v004.glb",
+          "native_dimensions_m": [11.069999694824219, 17.93000030517578, 10.8100004196167],
+          "mesh_count": 12,
+          "bytes": 10282872,
+          "sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7"
+        }
+      ]
+    },
+    {
+      "family": "rlasm-clay-halifax-clapboard-north-end",
+      "archetype_id": "halifax_painted_clapboard_row",
+      "variant_id": "clapboard_north_end",
+      "source_authoring": {
+        "evidence_path": "C:/dev-artifacts/CityPrompt/untried-nine-2026-09-24/buildings/clapboard-v003/untried-clapboard-clay-v003-authoring.blend",
+        "bytes": 881625,
+        "sha256": "a2074d3eb06ab59515a3d992df4d742d52a02b5d4892306602f3c37bdd601676"
+      },
+      "height_contract": {
+        "base_storeys": 1,
+        "base_height_m": 7.34,
+        "additional_storey_height_m": 3.14
+      },
+      "assemblies": [
+        {
+          "storeys": 1,
+          "status": "BUILDER_PASS_VISUAL_REVIEW_PENDING",
+          "path": "models/halifax-clapboard-north-end-one-storey-v001.glb",
+          "native_dimensions_m": [11.0, 12.275000095367432, 7.34],
+          "mesh_count": 13,
+          "bytes": 1895548,
+          "sha256": "5b5807f23590a4b0cadc115d0faeac1f54ae6c709450c76e65b7c312a7df200a"
+        },
+        {
+          "storeys": 2,
+          "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "path": "models/halifax-clapboard-north-end-clay-v003.glb",
+          "native_dimensions_m": [11.0, 12.275000095367432, 10.479999542236328],
+          "mesh_count": 13,
+          "bytes": 2457580,
+          "sha256": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6"
+        }
+      ]
+    }
+  ],
+  "review": {
+    "status": "BUILDER_PASS_ONLY",
+    "notes": [
+      "The three original approved assemblies remain byte-for-byte unchanged.",
+      "Alternate storey counts are complete authored assemblies; runtime never stretches a floor or roof in Z.",
+      "Uniform horizontal scaling is bounded to 0.85-1.15 and leaves Z at 1.0.",
+      "Neutral front, front-corner and aerial evidence passed builder review; the isolated in-app pilot passed and independent holistic review remains open."
+    ]
+  }
+}

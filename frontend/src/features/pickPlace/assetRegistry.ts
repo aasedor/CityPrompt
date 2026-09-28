@@ -37,7 +37,7 @@ export interface PlaceAsset extends AssetRecord {
    * geometry while a reviewed typical-storey module repeats between them. */
   storeyProgram?: {
     id: string;
-    mode: 'repeat_authored_floor';
+    mode: 'repeat_authored_floor' | 'select_authored_assembly';
     nativeStoreys: number;
     minStoreys: number;
     maxStoreys: number;
@@ -47,6 +47,18 @@ export interface PlaceAsset extends AssetRecord {
     podiumHeightM: number;
     repeatedStoreyHeightM: number;
     roofHeightM: number;
+  };
+  /** A reviewed, uniform horizontal scale band for the complete authored
+   * assembly.  The parcel remains unchanged and Z is never scaled. */
+  footprintProgram?: {
+    id: string;
+    mode: 'uniform_horizontal_scale';
+    nativeWidthM: number;
+    nativeDepthM: number;
+    minScale: number;
+    maxScale: number;
+    defaultScale: number;
+    step: number;
   };
   /** Reviewed native step foot, in the plot frame. Register per exact variant,
    * never infer a doorway from a generic bounding box. */

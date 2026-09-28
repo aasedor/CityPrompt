@@ -237,6 +237,16 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       ? persistedWingDepth
       : undefined;
     const communityMeta = getCommunity3DMeta(zone);
+    const footprintScale = Number(zone.properties?.building_footprint_scale);
+    const footprintNativeWidth = Number(zone.properties?.building_footprint_native_width_m);
+    const footprintNativeDepth = Number(zone.properties?.building_footprint_native_depth_m);
+    const usesAuthoredFootprintScale = (
+      typeof zone.properties?.building_footprint_program_id === 'string'
+      && zone.properties.building_footprint_program_id.length > 0
+      && Number.isFinite(footprintScale) && footprintScale > 0
+      && Number.isFinite(footprintNativeWidth) && footprintNativeWidth > 0
+      && Number.isFinite(footprintNativeDepth) && footprintNativeDepth > 0
+    );
     const sourceLockedRlasm = Boolean(
       zone.building_id
       && communityMeta?.generator === 'meshy'
@@ -256,8 +266,12 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       archetypeId: context.archetype_id,
       targets: {
         ...defaults,
-        width_m: authoredPlot?.width_m ?? footprint?.width_m ?? defaults.width_m,
-        depth_m: authoredPlot?.depth_m ?? footprint?.depth_m ?? defaults.depth_m,
+        width_m: usesAuthoredFootprintScale
+          ? footprintNativeWidth * footprintScale
+          : authoredPlot?.width_m ?? footprint?.width_m ?? defaults.width_m,
+        depth_m: usesAuthoredFootprintScale
+          ? footprintNativeDepth * footprintScale
+          : authoredPlot?.depth_m ?? footprint?.depth_m ?? defaults.depth_m,
         footprint_profile: footprint?.profile ?? 'rectangle',
         // AI binding persists the exact shaped-family thickness returned by
         // its strict plan. A catalogue compatibility midpoint is guidance,
