@@ -242,13 +242,49 @@
     },
     {
       "domain": "park",
-      "title": "Terraced CafÃ© & Fountain Court",
+      "title": "Terraced Café & Fountain Court",
       "archetype_id": "sunken_plaza",
       "variant_id": "student_terraced_cafe_court_v1",
       "version": "showcase-court-v002",
       "placement_id": "native-park:student_terraced_cafe_court_v1--native-v1",
       "sha256": "d4c6735bf653130f28ce81c87fcf228e31410e992b28a6ae8bf0b9263afbd477",
       "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Garden Tram Avenue",
+      "archetype_id": "light_rail_tram_avenue",
+      "variant_id": "student_grass_tram_avenue_v1",
+      "version": "student_grass_tram_avenue_v1",
+      "placement_id": "student_grass_tram_avenue_v1",
+      "sha256": "db4d34616a99281938ad0d0852868fa624e3c2d491c7fe26fd891652b2bb65cb",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Vine Pergola Promenade",
+      "archetype_id": "riverfront_promenade",
+      "variant_id": "student_vine_pergola_promenade_v1",
+      "version": "student_vine_pergola_promenade_v1",
+      "placement_id": "student_vine_pergola_promenade_v1",
+      "sha256": "79f8d74d3720b895acd752d4d40853e7d48588dc6bb022715b7327165aa08a4b",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Grand Haussmann Boulevard",
+      "archetype_id": "haussmann_boulevard",
+      "variant_id": "student_grand_haussmann_boulevard_v1",
+      "version": "student_grand_haussmann_boulevard_v1",
+      "placement_id": "student_grand_haussmann_boulevard_v1",
+      "sha256": "2184816a560792cdee4b8eebced15b6fba833aa8e641fb41b2c8e1ab9776f079",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
       "runtime_status": "NOT TESTED",
       "completed": false
     }
@@ -973,8 +1009,8 @@
       "kind": "object",
       "definitionVersion": 2,
       "readiness": "pilot",
-      "label": "Terraced CafÃ© & Fountain Court",
-      "description": "A limestone gathering court with seven seat steps, cafÃ© umbrellas and a bronze fountain.",
+      "label": "Terraced Café & Fountain Court",
+      "description": "A limestone gathering court with seven seat steps, café umbrellas and a bronze fountain.",
       "thumbnail": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -998,6 +1034,96 @@
         "green_space_selected_variant_id": "student_terraced_cafe_court_v1",
         "green_space_native_layout_id": "student_terraced_cafe_court_v1--native-v1",
         "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_grass_tram_avenue_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Garden Tram Avenue",
+      "description": "22 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_grass_tram_avenue_v1/reference.png",
+      "model": {
+        "variantId": "student_grass_tram_avenue_v1",
+        "revision": "3562b794641d753ee9710233052adfc08931ca5bfc0ccece6c3853ae1a75f9bd",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 22,
+      "properties": {
+        "road_archetype_id": "light_rail_tram_avenue",
+        "road_selected_variant_id": "student_grass_tram_avenue_v1",
+        "width": 22,
+        "pick_place_street_section": "student_grass_tram_avenue_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_vine_pergola_promenade_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Vine Pergola Promenade",
+      "description": "13 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_vine_pergola_promenade_v1/reference.png",
+      "model": {
+        "variantId": "student_vine_pergola_promenade_v1",
+        "revision": "428b632b3202f7324cc0bb538bc7fe387c839c6074d5c148fc122574d5d43b46",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "active",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 13,
+      "properties": {
+        "road_archetype_id": "riverfront_promenade",
+        "road_selected_variant_id": "student_vine_pergola_promenade_v1",
+        "width": 13,
+        "pick_place_street_section": "student_vine_pergola_promenade_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_grand_haussmann_boulevard_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Grand Haussmann Boulevard",
+      "description": "32 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/reference.png",
+      "model": {
+        "variantId": "student_grand_haussmann_boulevard_v1",
+        "revision": "ad63425c5e2c4de12f1d961df5d5f61ff514aad9cae299eaf1e64a71d7f9df3c",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "arterial",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 32,
+      "properties": {
+        "road_archetype_id": "haussmann_boulevard",
+        "road_selected_variant_id": "student_grand_haussmann_boulevard_v1",
+        "width": 32,
+        "pick_place_street_section": "student_grand_haussmann_boulevard_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
       }
     }
   ]

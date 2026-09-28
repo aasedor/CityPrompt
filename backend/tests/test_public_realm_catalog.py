@@ -25,7 +25,7 @@ def test_backend_public_realm_trust_index_matches_all_frontend_parents_and_varia
     streets = _frontend_variants("streetPathArchetypes.json")
     native = Path(__file__).resolve().parents[2] / "frontend/src/data/nativeStreetPilots.json"
     for row in json.loads(native.read_text(encoding="utf-8")):
-        streets[row["sourceArchetypeId"]] = tuple(sorted((*streets[row["sourceArchetypeId"]], row["id"])))
+        streets[row["sourceArchetypeId"]] = tuple(sorted(set((*streets.get(row["sourceArchetypeId"], ()), row["id"]))))
     validation = Path(__file__).resolve().parents[2] / "frontend/src/data/validationCatalogue.json"
     local_entries = json.loads(validation.read_text(encoding="utf-8"))["entries"]
     for entry in local_entries:
@@ -39,7 +39,7 @@ def test_backend_public_realm_trust_index_matches_all_frontend_parents_and_varia
     assert len(generated["park"]) == 132
     assert sum(map(len, generated["park"].values())) == 522
     assert len(generated["street"]) == 117
-    assert sum(map(len, generated["street"].values())) == 359
+    assert sum(map(len, generated["street"].values())) == sum(map(len, streets.values()))
 
 
 def test_local_validation_public_realm_ids_have_exact_fallback_identity():

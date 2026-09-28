@@ -25,6 +25,7 @@ import { extractCenterline, parsePersistedCenterline } from '@/utils/roadGeometr
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { BRT_VARIANT } from './brtStreetProgram';
+import { TRAM_VARIANT } from './tramStreetProgram';
 import { snapStreetEndpoint } from '@/features/pickPlace/streetSnapping';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
@@ -745,7 +746,7 @@ export function GlobeEditMode({
             frustumCulled={false}
             onPointerDown={handleBodyPointerDown}
             onContextMenu={event=>{
-              if(zone.properties?.road_selected_variant_id!==BRT_VARIANT || zone.properties?.validation_fixed_fixture)return;
+              if(![BRT_VARIANT,TRAM_VARIANT].includes(String(zone.properties?.road_selected_variant_id)) || zone.properties?.validation_fixed_fixture)return;
               event.stopPropagation();event.nativeEvent.preventDefault();
               const point=pointerToLatLng(event.nativeEvent as unknown as PointerEvent);
               const route=extractZoneCenterline(zone);if(!point || route.length<2)return;

@@ -2,6 +2,7 @@ import {useEffect,useState} from 'react';
 import type {SiteZone,SiteZoneProperties} from '@/types';
 import {extractZoneCenterline} from '@/utils/roadGeometry';
 import {brtRouteProblem,type BrtStop} from '@/components/viewer/globe/brtStreetProgram';
+import {TRAM_VARIANT,tramRouteProblem} from '@/components/viewer/globe/tramStreetProgram';
 
 export function BrtStopControls({zone,disabled,onSave}:{zone:SiteZone;disabled:boolean;
   onSave:(data:{coordinates:number[][];properties:SiteZoneProperties})=>void}) {
@@ -9,6 +10,7 @@ export function BrtStopControls({zone,disabled,onSave}:{zone:SiteZone;disabled:b
   const [editing,setEditing]=useState<string|null>(null);
   const [problem,setProblem]=useState<string|null>(null);
   const stops=zone.properties?.road_native_stops??[];
+  const isTram=zone.properties?.road_selected_variant_id===TRAM_VARIANT;
   useEffect(()=>{
     const pick=(event:Event)=>{
       const detail=(event as CustomEvent<{zoneId:string;stationM:number}>).detail;
@@ -20,14 +22,14 @@ export function BrtStopControls({zone,disabled,onSave}:{zone:SiteZone;disabled:b
   },[zone.id]);
   const save=(next:BrtStop[])=>{
     const points=extractZoneCenterline(zone),origin=points[0],sx=111320*Math.cos((origin?.[1]??0)*Math.PI/180);
-    const error=brtRouteProblem(points.map(p=>({x:(p[0]-origin[0])*sx,y:(p[1]-origin[1])*111320})),next);
+    const error=(isTram?tramRouteProblem:brtRouteProblem)(points.map(p=>({x:(p[0]-origin[0])*sx,y:(p[1]-origin[1])*111320})),next);
     setProblem(error);if(error)return;
     onSave({coordinates:zone.coordinates,properties:{...zone.properties,road_native_stops:next}});
     setEditing(null);
   };
-  return <section aria-label="BRT stops" className="mb-3 rounded-lg border border-slate-300 p-2 text-sm text-slate-900">
+  return <section aria-label={isTram?'Tram stops':'BRT stops'} className="mb-3 rounded-lg border border-slate-300 p-2 text-sm text-slate-900">
     <h3 className="font-bold">Stations / stops</h3>
-    <p className="my-2 text-xs">Right-click the selected route to choose a stop position, then add it here. Stops include the full platform, shelter, ramps and crossing.</p>
+    <p className="my-2 text-xs">Right-click the selected route to choose a stop position, then add it here. {isTram?'Each stop includes two boarding platforms, shelters and end ramps.':'Stops include the full platform, shelter, ramps and crossing.'}</p>
     <label className="block text-xs">Metres from the first route point
       <input aria-label="Stop distance from route start" type="number" step="0.1" value={distance} disabled={disabled}
         className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2" onChange={e=>setDistance(e.target.value)}/>

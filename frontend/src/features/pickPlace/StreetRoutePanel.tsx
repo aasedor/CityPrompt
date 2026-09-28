@@ -5,6 +5,7 @@ import { StreetCrossSection } from './StreetCrossSection';
 import { CalgaryGuideDetails } from '@/features/calgaryCatalogue/CatalogueBrowser';
 import { nativeStreetPilot } from '@/components/viewer/globe/nativeStreetPilot';
 import { BRT_VARIANT } from '@/components/viewer/globe/brtStreetProgram';
+import { TRAM_VARIANT } from '@/components/viewer/globe/tramStreetProgram';
 import { BrtStopControls } from './BrtStopControls';
 import { StreetDuplicateControls } from './StreetDuplicateControls';
 import { isSpecialistStreet, CANAL_VARIANT } from '@/components/viewer/globe/specialistStreetProgram';
@@ -18,7 +19,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
   connectionLeavesSite?: boolean;
   onUpdateDesign?: (data: { coordinates: number[][]; properties: SiteZoneProperties }) => void;
 }) {
-  const isBrt=zone.properties?.road_selected_variant_id===BRT_VARIANT;
+  const isBrt=[BRT_VARIANT,TRAM_VARIANT].includes(String(zone.properties?.road_selected_variant_id));
   const specialist=isSpecialistStreet(zone.properties?.road_selected_variant_id);
   const bend = isBrt||specialist?null:addStreetBend(zone);
   const asset = streetAssetForZone(zone);
@@ -32,7 +33,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
     <p className="mb-3 text-xs text-slate-600">This section stays {width} m wide. Keep route points at least {width} m apart. Choose another street type for a different width.</p>
     {program && <p className="mb-3 text-xs text-slate-600">Keep the complete route between {program.minLengthM} and {program.maxLengthM} m on a prepared level site. The original structures and furniture retain their sizes as you extend it.</p>}
     {onUpdateDesign && <StreetDesignControls key={`${zone.id}:${zone.properties?.road_archetype_id}:${zone.properties?.road_selected_variant_id}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
-    {onUpdateDesign && zone.properties?.road_selected_variant_id===BRT_VARIANT && <BrtStopControls zone={zone} disabled={disabled} onSave={onUpdateDesign}/>}
+    {onUpdateDesign && isBrt && <BrtStopControls zone={zone} disabled={disabled} onSave={onUpdateDesign}/>}
     {onPublicConnection && <div className="mb-3 rounded-lg border border-slate-300 p-2 text-sm text-slate-800">
       <label className="flex min-h-11 items-center gap-2"><input type="checkbox" disabled={disabled || connectionLeavesSite}
         checked={zone.properties?.connect_to_public_road === true} onChange={event => onPublicConnection(event.target.checked)} />

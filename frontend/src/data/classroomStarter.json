@@ -292,6 +292,30 @@
       "variantId": "student_school_street_v1",
       "revision": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "light_rail_tram_avenue",
+      "variantId": "student_grass_tram_avenue_v1",
+      "revision": "3562b794641d753ee9710233052adfc08931ca5bfc0ccece6c3853ae1a75f9bd",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "riverfront_promenade",
+      "variantId": "student_vine_pergola_promenade_v1",
+      "revision": "428b632b3202f7324cc0bb538bc7fe387c839c6074d5c148fc122574d5d43b46",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "haussmann_boulevard",
+      "variantId": "student_grand_haussmann_boulevard_v1",
+      "revision": "ad63425c5e2c4de12f1d961df5d5f61ff514aad9cae299eaf1e64a71d7f9df3c",
+      "status": "local-pilot-runtime-pending"
     }
   ],
   "dependencies": [

@@ -9,7 +9,7 @@ import { PUBLIC_REALM_STREET_FAMILIES, PUBLIC_REALM_STREET_SELECTIONS } from './
 
 describe('saved classroom native streets in a production build', () => {
   it('registers an executable family and exact selection for every packaged native street', () => {
-    expect(pilots).toHaveLength(10);
+    expect(pilots).toHaveLength(13);
     for (const pilot of pilots) {
       const familyId = `street_native_${pilot.id}`;
       const family = PUBLIC_REALM_STREET_FAMILIES[familyId as keyof typeof PUBLIC_REALM_STREET_FAMILIES];
