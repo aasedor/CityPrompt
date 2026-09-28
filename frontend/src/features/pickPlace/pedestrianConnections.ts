@@ -31,6 +31,13 @@ export interface ConnectionResult {
   ownerId: string; kind: 'building' | 'crossing'; id: string;
   status: 'connected' | 'unresolved'; reason: string; strips: PedestrianStrip[];
 }
+/** Both legacy repeated-home plots and revision-locked fixed native models can
+ * report a hit on their real mesh. A drawn canonical plot has no such hit. */
+export function supportsNativeEntranceStepPick(zone: Pick<SiteZone, 'properties'>): boolean {
+  const properties = zone.properties;
+  return properties?.native_home_plot === true
+    || (properties?.native_plot_axes === true && typeof properties.pick_place_model_revision === 'string');
+}
 const finite = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x);
 const validRing = (z: SiteZone) => z.coordinates.length >= 3 && z.coordinates.length <= 512
   && z.coordinates.every(p => p.length >= 2 && finite(p[0]) && finite(p[1]) && Math.abs(p[0]) <= 180 && Math.abs(p[1]) <= 85);

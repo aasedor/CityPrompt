@@ -158,7 +158,21 @@ function supported(zone: SiteZone): boolean {
 function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAccessSettings, eligibleStreetZoneIds: ReadonlySet<string>, transport: ExistingTransport): ParkAccessPlan {
   const native = readNativePark(park);
   const entryWidth = native?.layout.entrances[0]?.widthM;
-  if (entryWidth) settings = {...settings, pathWidthM: Math.min(settings.pathWidthM, entryWidth)};
+  if (entryWidth) {
+    // A connector must meet the actual near-side footway without covering an
+    // adjacent planted or vehicle band. Wider authored park gateways remain
+    // intact; only the short approach is narrowed to its street target.
+    const selectedStreetId = (park.properties?.pedestrian_park_entrance as {streetId?:string}|undefined)?.streetId;
+    const sidewalkWidths = zones.filter(z => z.zone_type === 'road' && eligibleStreetZoneIds.has(z.id)
+      && (!selectedStreetId || selectedStreetId === z.id)).flatMap(street => {
+      const section = resolvePilotStreetSectionProfile(street);
+      if (!section) return [];
+      const scale = section.metricWidthLocked ? (section.targetRowM ?? section.rowM) / section.rowM
+        : effectiveRoadWidth(street.properties) / section.rowM;
+      return pedestrianAccessBands(section).map(band => band.widthM * scale).filter(width => width >= 1.2);
+    });
+    settings = {...settings, pathWidthM: Math.min(settings.pathWidthM, entryWidth, ...sidewalkWidths)};
+  }
   const empty = (status: ParkAccessPlan['status'], reason: string): ParkAccessPlan => ({ parkZoneId: park.id, status, reason, connections: [], paths: [] });
   if (park.properties?.park_terrain) return empty('unresolved', 'The park follows measured hillside ground. Its street connection needs a measured sidewalk landing and graded approach; the old flat connector is not shown.');
   // Even an explicitly empty list is authored intent, not permission to invent gates.
@@ -238,7 +252,10 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     const corridor = entry.widthM / 2 + clearance;
     protect(uMin, vMin, -corridor, vMax);
     protect(corridor, vMin, uMax, vMax);
-    protect(-corridor, length + clearance + .05, corridor, vMax);
+    // The first ingress point sits pathWidth + 0.5 m inside the parcel. Short
+    // authored arrivals (for example Reading Garden's 2 m) still need that
+    // whole point and its clearance before the protected park composition.
+    protect(-corridor, Math.max(length, settings.pathWidthM + 0.5) + clearance + .05, corridor, vMax);
     nativeGate = nativeLocal(entry.x, entry.y);
     network = [[corridorPoint(0, length - .02), corridorPoint(0, length)]];
   }

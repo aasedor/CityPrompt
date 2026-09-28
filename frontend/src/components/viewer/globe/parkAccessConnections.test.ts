@@ -32,7 +32,7 @@ describe('manual park access planning', () => {
     const street = {...zone('street','road',[],{road_archetype_id:'narrow_residential_street',width:10,plan_centerline:line}),coordinates:bufferLineToPolygon(line,10)};
     const boundary = {...zone('site','site_boundary',[[-120,-120],[120,-120],[120,120],[-120,120]],{terrain_elevation_m:1000}),is_active_boundary:true};
     const plan = resolveManualParkAccess([park,street,boundary]).parks[0];
-    expect(plan.status).toBe('connected');
+    expect(plan.status, plan.reason).toBe('connected');
     const points = plan.connections[0].path.map(xy).map(([x,y]) => [x*Math.cos(yaw)+y*Math.sin(yaw),-x*Math.sin(yaw)+y*Math.cos(yaw)]);
     expect(points[points.length-1][0]).toBeCloseTo(-28.5,1);
     expect(points.every(([x,y])=>x<=-28.45 && Math.abs(y)<1.3)).toBe(true);
@@ -55,20 +55,36 @@ describe('manual park access planning', () => {
     expect(points.every(([x])=>Math.abs(x-20)<.1)).toBe(true);
   });
 
-  it.each(['basketball_court_v1--native-v1','basketball_court_v1--long-v1','botanical_garden_v3--native-v1','sculpture_garden_v0--native-v1','student_neighbourhood_orchard_v1--native-v1'])('connects %s only through its authored entrance',id=>{
+  it.each(['basketball_court_v1--native-v1','basketball_court_v1--long-v1','botanical_garden_v3--native-v1','sculpture_garden_v0--native-v1','student_neighbourhood_orchard_v1--native-v1','student_reading_garden_v2--native-v1'])('connects %s only through its authored entrance',id=>{
     const layout=nativeParkLayouts.find(p=>p.id===id)!;
     const park=zone('native','green_space',[[-layout.occupiedWidthM/2,0],[layout.occupiedWidthM/2,0],[layout.occupiedWidthM/2,layout.occupiedDepthM],[-layout.occupiedWidthM/2,layout.occupiedDepthM]]);
     park.properties=nativeParkProperties({},layout,park.coordinates);
     const {street,boundary}=fixture();
     const plan=resolveManualParkAccess([park,street,boundary]).parks[0];
-    expect(plan.status).toBe('connected');
+    expect(plan.status, plan.reason).toBe('connected');
     expect(plan.connections).toHaveLength(1);
     expect(plan.connections[0].widthM).toBeLessThanOrEqual(layout.entrances[0].widthM);
+    if(id==='student_reading_garden_v2--native-v1') expect(plan.connections[0].widthM).toBeCloseTo(1.2,2);
     const path=plan.connections[0].path;
     const end=xy(path[path.length-1]);
     expect(end[0]).toBeCloseTo(0,1);
     expect(end[1]).toBeCloseTo(layout.occupiedDepthM/2+layout.entrances[0].arrivalY,1);
     expect(plan.connections[0].path.slice(1).map(xy).every(([x])=>Math.abs(x)<1.3)).toBe(true);
+  });
+  it('joins a north-facing Reading Garden to the near sidewalk of Quiet Residential Street',()=>{
+    const layout=nativeParkLayouts.find(p=>p.id==='student_reading_garden_v2--native-v1')!;
+    const park=zone('reading','green_space',[[-15,0],[15,0],[15,26],[-15,26]]);
+    park.properties=nativeParkProperties({},layout,park.coordinates);
+    (park.properties.green_space_native_layout as {frame:{yaw:number}}).frame.yaw=Math.PI;
+    const line=[[-100,38],[100,38]].map(ll);
+    const street={...zone('quiet','road',[],{road_archetype_id:'student_quiet_residential_street_v1',
+      road_selected_variant_id:'student_quiet_residential_street_v1',width:18,plan_centerline:line}),
+      coordinates:bufferLineToPolygon(line,18)};
+    const boundary={...zone('site','site_boundary',[[-150,-100],[150,-100],[150,150],[-150,150]],
+      {terrain_elevation_m:1000}),is_active_boundary:true};
+    const plan=resolveManualParkAccess([park,street,boundary]).parks[0];
+    expect(plan.status,plan.reason).toBe('connected');
+    expect(plan.connections[0].streetZoneId).toBe('quiet');
   });
   it('keeps park access inside the site when its street continues to the public road',()=>{
     const {park,street,boundary}=fixture();

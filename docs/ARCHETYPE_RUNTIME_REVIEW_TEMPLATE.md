@@ -76,6 +76,8 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Angled join and short-arm recovery | NOT TESTED | Width-aware snapping, sampled-curve node identity, owned pavement/sidewalk surface, no crossing-only fallback on unsupported joins. |
 | Sloped site; contacts and route continuity | NOT TESTED | |
 | Prepared level: actual native step pick, current review and route; unresolved export guard | NOT TESTED | |
+| Revision-locked fixed-native step pick | NOT TESTED | Confirm the button and real mesh hit are available when `native_plot_axes` is true and `native_home_plot` is false; plan reach alone cannot pass the foundation-edge review. |
+| Native park short arrival and sidewalk width | NOT TESTED | On a level site, aim the authored gateway at both a narrow and a wider pedestrian band; preserve its full width, fit the short approach to the band, and keep the whole ingress clear of protected park equipment. |
 | Multiple low steps: choose street-facing step; opposite-side rejection and Cancel preserve saved link | NOT TESTED | |
 | Edge/unsupported case and inward recovery | NOT TESTED | |
 | Local ground hole: unaffected object works; affected object rejects; recovery/reload/export guard | NOT TESTED | |

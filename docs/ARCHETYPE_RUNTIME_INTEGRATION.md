@@ -487,6 +487,14 @@ an enabled street-facing control or a prior house's rotation is insufficient.
 An entrance should be authorable from visible geometry without trial-and-error
 developer coordinates. Preserve failed pick/gap evidence, count manual adjustments,
 and distinguish an assisted functional pass from independent novice usability.
+For a revision-locked fixed native building, expose the same real-mesh step picker
+as for a repeated native home; a `native_plot_axes` placement is not a
+`native_home_plot` repeat. The plan-only route preview cannot establish contact
+with the model's actual foundation edge. For a native park, fit the short
+street approach to the usable pedestrian band without shrinking its authored
+gateway, and reserve the full ingress length plus clearance before protecting
+the fixed programme. Test a short authored arrival and a rotated, street-facing
+gateway against a narrow and a wider street section.
 The [Currie seven-home student exercise](CURRIE_STUDENT_NEIGHBOURHOOD_2026-09-20.md)
 passed save/reload/exact export but exposed this remaining entrance-placement
 friction. Its measured anchors must not become defaults for other variants.

@@ -36,6 +36,7 @@ import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
+import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
 import { authoredHomePlotFrame, preservesAuthoredPlotAxes } from '@/features/legoAssembly/detachedPlot';
@@ -615,7 +616,7 @@ function LegoStackInstance({
           // Capture the surface before globe controls adjust the camera on release.
           // The map accepts this candidate only after a click, never after a drag.
           const local = event.eventObject.parent?.worldToLocal(event.point.clone());
-          onBuildingClick?.(building.id, local && isNativeClayPlan(recipe) && zone?.properties?.native_home_plot === true
+          onBuildingClick?.(building.id, local && isNativeClayPlan(recipe) && zone && supportsNativeEntranceStepPick(zone)
             ? {point:[local.x,local.y,local.z],footprints:groundFootprints,lng:frame.centroidLng,lat:frame.centroidLat,contact:foundation.contact,
               ray:{origin:event.ray.origin.toArray(),direction:event.ray.direction.toArray(),distance:event.distance}}
             : undefined, 'pointerdown');
