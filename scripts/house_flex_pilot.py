@@ -191,35 +191,56 @@ def synchronize(*, apply: bool, owner_id: uuid.UUID | None) -> list[dict]:
                     and (entry.metadata_ or {}).get("lego", {}).get("native_floors") == row["storeys"]
                     and entry.is_public
                 )]
-                if len(matches) > 1:
-                    raise ValueError(f"Multiple active assemblies claim {row['variantId']} at {row['storeys']} storeys")
-                existing = matches[0] if matches else None
-                if existing is not None:
-                    existing_sha = (existing.metadata_ or {}).get("rlasm", {}).get("model_sha256")
-                    if existing_sha != row["metadata"]["rlasm"]["model_sha256"]:
+                if matches:
+                    expected_sha = row["metadata"]["rlasm"]["model_sha256"]
+                    if any(
+                        (existing.metadata_ or {}).get("rlasm", {}).get("model_sha256") != expected_sha
+                        for existing in matches
+                    ):
                         raise ValueError(f"Existing assembly bytes differ for {row['variantId']} at {row['storeys']} storeys")
-                    object_state = _object_status(client, bucket, {
-                        **row,
-                        "model_url": existing.model_url,
-                    })
-                    if object_state != "verified":
-                        raise ValueError(f"Existing object is unavailable or changed for {row['variantId']}")
-                    binding_state = "verified" if all(
+                    object_states = [
+                        _object_status(client, bucket, {**row, "model_url": existing.model_url})
+                        for existing in matches
+                    ]
+                    if any(state == "conflict" for state in object_states):
+                        raise ValueError(f"Existing object bytes changed for {row['variantId']}")
+                    object_state = "verified" if all(state == "verified" for state in object_states) else "missing"
+                    binding_state = "verified" if all(all(
                         (existing.metadata_ or {}).get("lego", {}).get(key) == row["metadata"]["lego"][key]
                         for key in ("family", "placement_contract", "footprint_compatibility")
-                    ) else "needs_overlay"
+                    ) for existing in matches) else "needs_overlay"
+                    if apply and object_state == "missing":
+                        for existing, state in zip(matches, object_states, strict=True):
+                            if state == "verified":
+                                continue
+                            key = existing.model_url.removeprefix("/api/v1/files/")
+                            with Path(row["path"]).open("rb") as body:
+                                client.put_object(
+                                    Bucket=bucket, Key=key, Body=body,
+                                    ContentType="model/gltf-binary", IfNoneMatch="*",
+                                )
+                            if _object_status(client, bucket, {**row, "model_url": existing.model_url}) != "verified":
+                                raise ValueError(f"Restored object failed readback for {row['variantId']}")
+                        object_state = "installed"
                     if apply and binding_state == "needs_overlay":
-                        metadata = dict(existing.metadata_ or {})
-                        metadata["rlasm"] = {**metadata.get("rlasm", {}), **row["metadata"]["rlasm"]}
-                        # Preserve the exact-source delivery type for native rows.
-                        if row["native"]:
-                            metadata["rlasm"]["delivery_format"] = EXACT_FORMAT
-                        metadata["lego"] = {**metadata.get("lego", {}), **row["metadata"]["lego"]}
-                        existing.metadata_ = metadata
+                        # Historical local seed waves may contain several public
+                        # aliases for the same immutable source bytes. Keep those
+                        # identities intact, but synchronize every exact alias to
+                        # the one finite runtime contract so planner selection is
+                        # deterministic regardless of database row order.
+                        for existing in matches:
+                            metadata = dict(existing.metadata_ or {})
+                            metadata["rlasm"] = {**metadata.get("rlasm", {}), **row["metadata"]["rlasm"]}
+                            # Preserve the exact-source delivery type for native rows.
+                            if row["native"]:
+                                metadata["rlasm"]["delivery_format"] = EXACT_FORMAT
+                            metadata["lego"] = {**metadata.get("lego", {}), **row["metadata"]["lego"]}
+                            existing.metadata_ = metadata
                         binding_state = "installed"
                     report.append({
                         "variant": row["variantId"], "storeys": row["storeys"],
                         "binding": binding_state, "object": object_state,
+                        "matching_rows": len(matches),
                     })
                     continue
 

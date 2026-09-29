@@ -106,7 +106,7 @@ def synchronize(*, apply: bool, owner_id: uuid.UUID | None) -> list[dict]:
     sys.path.insert(0, str(ROOT / "backend"))
     from app.core.config import get_settings
     from app.services.render_attempt_storage import _client
-    from scripts.classroom_model_library import synchronize as sync_rows, validate_target
+    from scripts.classroom_model_library import object_matches, synchronize as sync_rows, validate_target
     from sqlalchemy import create_engine
     from sqlalchemy.orm import Session
 
@@ -122,16 +122,67 @@ def synchronize(*, apply: bool, owner_id: uuid.UUID | None) -> list[dict]:
     engine = create_engine(settings.database_url_sync)
     try:
         with Session(engine) as database:
-            return sync_rows(
+            # The picker and the native 16-storey layout still load the reviewed
+            # source assembly directly. Verify and restore those immutable bytes
+            # alongside the three authored modules so a successful install cannot
+            # leave placement previews or the native layout invisible.
+            source = manifest["source"]
+            source_path = MANIFEST.parent / source["path"]
+            source_row = {
+                "model_url": f"/api/v1/files/library/rlasm-architectural-clay/{source_path.name}",
+                "metadata": {"rlasm": {"model_sha256": source["sha256"]}},
+            }
+            source_status = object_matches(client, bucket, source_row)
+            if source_status == "conflict":
+                raise ValueError("Stored Vancouver source has different bytes; it was not overwritten")
+
+            preflight = sync_rows(
                 database,
                 client,
                 bucket,
                 {"dependencies": dependencies},
                 rows,
-                apply=apply,
+                apply=False,
                 owner_id=owner_id,
                 root=ROOT,
             )
+            if not apply:
+                return [{
+                    "variant": VARIANT,
+                    "role": "source",
+                    "binding": "verified",
+                    "object": source_status,
+                }, *preflight]
+
+            if source_status == "missing":
+                key = source_row["model_url"].removeprefix("/api/v1/files/")
+                with source_path.open("rb") as body:
+                    client.put_object(
+                        Bucket=bucket,
+                        Key=key,
+                        Body=body,
+                        ContentType="model/gltf-binary",
+                        IfNoneMatch="*",
+                    )
+                if object_matches(client, bucket, source_row) != "verified":
+                    raise ValueError("Installed Vancouver source failed exact byte readback")
+
+            installed = sync_rows(
+                database,
+                client,
+                bucket,
+                {"dependencies": dependencies},
+                rows,
+                apply=True,
+                owner_id=owner_id,
+                root=ROOT,
+            )
+            return [{
+                "variant": VARIANT,
+                "role": "source",
+                "binding": "verified",
+                "object": object_matches(client, bucket, source_row),
+            }, *installed]
     finally:
         engine.dispose()
 
