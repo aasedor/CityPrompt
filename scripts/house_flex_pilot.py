@@ -42,7 +42,7 @@ def load_program(root: Path = ROOT) -> tuple[dict, list[dict]]:
     footprint = manifest["footprint_contract"]
     if footprint != {
         "mode": "uniform_horizontal_scale",
-        "student_control": "deferred",
+        "student_control": "enabled_bounded_pilot",
         "minimum_scale": 0.85,
         "maximum_scale": 1.15,
         "default_scale": 1.0,

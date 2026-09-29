@@ -68,25 +68,49 @@ it('does not save a Vancouver height beyond the reviewed storey programme', () =
   expect(onSave).not.toHaveBeenCalled();
 });
 
-it('switches a bungalow to its complete two-storey assembly without exposing footprint scaling', () => {
+it('changes a bungalow footprint without changing its selected two-storey height', () => {
   const bungalow = placeAsset('trial_postwar_bungalow');
   const onSave = vi.fn();
   render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(bungalow) }} disabled={false} onSave={onSave} />);
   screen.getByText(/Each choice uses a complete authored house/);
-  expect(screen.queryByLabelText('Building size (%)')).toBeNull();
   fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '2' } });
+  fireEvent.change(screen.getByLabelText('Building footprint (%)'), { target: { value: '115' } });
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('9.29');
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
   expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
     floors: 2,
     floor_count: 2,
     height: 9.29,
     height_m: 9.29,
-    building_footprint_scale: 1,
+    building_footprint_scale: 1.15,
     building_footprint_program_id: 'house-flex-pilot-v001',
   }));
 });
 
-it('preserves a legacy house scale while the deferred control stays hidden', () => {
+it.each([
+  ['trial_postwar_bungalow', 1, 6.36],
+  ['trial_edwardian_foursquare', 2, 10.81],
+  ['validation_clapboard_north_end', 2, 10.48],
+])('exposes the reviewed footprint band for %s and preserves the native height', (assetId, storeys, expectedHeight) => {
+  const asset = placeAsset(assetId);
+  const onSave = vi.fn();
+  render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(asset) }} disabled={false} onSave={onSave} />);
+  const control = screen.getByLabelText('Building footprint (%)') as HTMLInputElement;
+  expect(control).toMatchObject({ min: '85', max: '115', step: '5' });
+  fireEvent.change(control, { target: { value: '85' } });
+  expect((screen.getByLabelText('Storeys') as HTMLInputElement).value).toBe(String(storeys));
+  expect(Number((screen.getByLabelText('Height (m)') as HTMLInputElement).value)).toBeCloseTo(expectedHeight, 2);
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+    floors: storeys,
+    floor_count: storeys,
+    height: expectedHeight,
+    height_m: expectedHeight,
+    building_footprint_scale: 0.85,
+  }));
+});
+
+it('preserves an existing house scale while changing only its storeys', () => {
   const bungalow = placeAsset('trial_postwar_bungalow');
   const onSave = vi.fn();
   const properties = {
@@ -94,7 +118,7 @@ it('preserves a legacy house scale while the deferred control stays hidden', () 
     building_footprint_scale: 1.15,
   };
   render(<BuildingDesignControls zone={{ ...zone, properties }} disabled={false} onSave={onSave} />);
-  expect(screen.queryByLabelText('Building size (%)')).toBeNull();
+  expect((screen.getByLabelText('Building footprint (%)') as HTMLInputElement).value).toBe('115');
   fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '2' } });
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
   expect(onSave).toHaveBeenCalledWith(expect.objectContaining({

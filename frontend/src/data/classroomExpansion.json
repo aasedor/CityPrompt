@@ -727,9 +727,9 @@
         "maxScale": 1.15,
         "defaultScale": 1.0,
         "step": 0.05,
-        "editable": false
+        "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys. The complete house keeps its reviewed footprint and proportions.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "calgary_inner_city_bungalow",
         "development_archetype_id": "calgary_inner_city_bungalow",
@@ -793,9 +793,9 @@
         "maxScale": 1.15,
         "defaultScale": 1.0,
         "step": 0.05,
-        "editable": false
+        "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys. The complete house keeps its reviewed footprint and proportions.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "toronto_edwardian_foursquare",
         "development_archetype_id": "toronto_edwardian_foursquare",
@@ -936,7 +936,7 @@
         "repeatedStoreyHeightM": 3.2,
         "roofHeightM": 4.2
       },
-      "reshapeDescription": "Keep the complete podium and roof, then choose 16–40 storeys. Authored residential floors repeat without stretching balconies or windows.",
+      "reshapeDescription": "Adjust the footprint within 51.1–57.5 m by 43.1–47.5 m and choose 16–40 storeys. Horizontal fit never changes the authored storey height.",
       "properties": {
         "building_archetype_id": "vancouverism_tower_podium",
         "development_archetype_id": "vancouverism_tower_podium",

@@ -36,6 +36,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const [query, setQuery] = useState('');
   const [floors, setFloors] = useState(String(initialFloors));
   const [height, setHeight] = useState(heightText(initialHeight ?? assetForZone(zone)?.nativeDimensions?.[2]));
+  const [footprintScale, setFootprintScale] = useState(String(savedProperties.building_footprint_scale ?? 1));
   const [heightEdited, setHeightEdited] = useState(false);
   const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
@@ -48,7 +49,8 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     && Number(floors) <= (storeyProgram?.maxStoreys ?? 100);
   const valid = choice && floorCountValid
     && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000
-    && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height));
+    && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height))
+    && (!footprintProgram || footprintProgram.editable === false || footprintProgramSupports(footprintProgram, footprintScale));
   const choose = (nextChoiceId: string, nextVariantId?: string) => {
     const next = choices.find(c => c.id === nextChoiceId)!;
     const selectedVariant = next.option.variants?.find(v => v.id === nextVariantId)
@@ -58,6 +60,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     setChoiceId(nextChoiceId); setVariantId(selectedVariant?.id ?? '');
     setFloors(String(props.floor_count ?? props.floors ?? 2));
     setHeight(heightText(native?.kind === 'object' && native.nativeDimensions ? native.nativeDimensions[2] : props.height ?? Number(props.floors) * 3.2));
+    setFootprintScale(String(native?.kind === 'object' && native.footprintProgram ? native.footprintProgram.defaultScale : 1));
     setHeightEdited(false);
   };
   return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={event => {
@@ -73,14 +76,16 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
       building_archetype_id: choice.option.id, development_height_override_m: undefined,
     } : { ...savedProperties };
     const savedScale = Number(savedProperties.building_footprint_scale);
-    const footprintScale = !changedType && footprintProgram && footprintProgramSupports(footprintProgram, savedScale)
-      ? savedScale
-      : footprintProgram?.defaultScale;
+    const selectedFootprintScale = footprintProgram?.editable !== false
+      ? Number(footprintScale)
+      : !changedType && footprintProgram && footprintProgramSupports(footprintProgram, savedScale)
+        ? savedScale
+        : footprintProgram?.defaultScale;
     onSave({ ...properties, pick_place_automatic_3d: true, native_plot_axes: true,
       floors: Number(floors), floor_count: Number(floors), height: Number(height), height_m: Number(height),
       floor_height: Number(height) / Number(floors),
-      ...(footprintProgram && footprintScale != null ? {
-        building_footprint_scale: footprintScale,
+      ...(footprintProgram && selectedFootprintScale != null ? {
+        building_footprint_scale: selectedFootprintScale,
         building_footprint_program_id: footprintProgram.id,
         building_footprint_native_width_m: footprintProgram.nativeWidthM,
         building_footprint_native_depth_m: footprintProgram.nativeDepthM,
@@ -112,6 +117,14 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
         readOnly={Boolean(storeyProgram)} aria-readonly={Boolean(storeyProgram)}
         onChange={e => { setHeight(e.target.value); setHeightEdited(true); }} className={`${field} ${storeyProgram ? 'bg-slate-100' : ''}`} /></label>
     </div>
+    {footprintProgram && footprintProgram.editable !== false && <label className="block text-xs font-semibold">Building footprint ({Math.round(Number(footprintScale) * 100)}%)
+      <input aria-label="Building footprint (%)" type="range"
+        min={Math.round(footprintProgram.minScale * 100)} max={Math.round(footprintProgram.maxScale * 100)}
+        step={Math.round(footprintProgram.step * 100)} value={Math.round(Number(footprintScale) * 100)}
+        onChange={e => setFootprintScale(String(Number(e.target.value) / 100))}
+        className="mt-1 min-h-11 w-full accent-lime-500" />
+      <span className="block font-normal text-slate-600">Changes width and depth together. Storeys and height stay unchanged.</span>
+    </label>}
     <p className="text-xs text-slate-600">{storeyProgram
       ? storeyProgram.mode === 'fixed_authored_assembly'
         ? `This exact model is currently available at ${storeyProgram.nativeStoreys} ${storeyProgram.nativeStoreys === 1 ? 'storey' : 'storeys'}.`

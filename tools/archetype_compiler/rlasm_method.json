@@ -29,13 +29,16 @@
     "evidence": "docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md"
   },
   "runtime_storey_contract": {
-    "id": "storey-only-classroom-release-2026-09-28",
+    "id": "bounded-footprint-and-storey-release-2026-09-28",
     "metadata_required_for_every_building": true,
     "variable_modes": ["select_authored_assembly", "repeat_authored_floor"],
     "fixed_mode": "fixed_authored_assembly",
     "fixed_mode_requires_equal_min_native_max": true,
     "vertical_mesh_stretching_allowed": false,
-    "student_footprint_scaling": "deferred",
+    "student_footprint_scaling": "trusted_bounded_programmes_only",
+    "footprint_scale_axes": ["x", "y"],
+    "footprint_vertical_scale": 1.0,
+    "footprint_and_storeys_persist_independently": true,
     "legacy_saved_footprint_scales_preserved": true,
     "evidence": "docs/HOUSE_FLEX_PILOT_2026-09-28.md"
   },

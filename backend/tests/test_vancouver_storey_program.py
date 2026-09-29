@@ -92,6 +92,16 @@ def test_native_vancouver_remains_the_unchanged_reviewed_assembly():
     assert plan["assembled_height_m"] == 58.8
 
 
+def test_maximum_footprint_does_not_change_the_40_storey_height():
+    plan = plan_vertical_assembly(
+        family(),
+        AssemblyRequest(57.5, 47.5, 40, archetype_id=VARIANT),
+    )
+    assert plan["assembled_height_m"] == 135.6
+    assert all(instance["scale"][2] == 1 for instance in plan["instances"])
+    assert plan["fit"]["scale_x"] == plan["fit"]["scale_y"]
+
+
 def test_storeys_outside_the_reviewed_program_are_rejected():
     with pytest.raises(AssemblyPlanningError, match="fixed at its native size and floor count"):
         plan_vertical_assembly(

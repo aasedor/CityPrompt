@@ -31,6 +31,24 @@ it('keeps Vancouver tower reshaping inside its reviewed gentle footprint band', 
   expect(screen.getByRole('alert').textContent).toContain('51.1–57.5');
 });
 
+it('reshapes a 40-storey Vancouver footprint without rewriting its height contract', () => {
+  const asset = placeAsset('clay_vancouver_balcony_podium_tower');
+  const properties = { ...placementProperties(asset), floors: 40, floor_count: 40,
+    height: 135.6, height_m: 135.6, development_height_override_m: 135.6 };
+  const zone = { id: 'vancouver', project_id: 'project', zone_type: 'building', properties,
+    coordinates: rectangleAt([-114, 51], asset.width, asset.depth), name: 'Vancouver tower',
+    color: '#fff', sort_order: 0, created_at: 'now', updated_at: 'now' } as SiteZone;
+  const onReshape = vi.fn();
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
+  fireEvent.change(screen.getByLabelText('Plot width (m)'), { target: { value: '57.5' } });
+  fireEvent.change(screen.getByLabelText('Plot depth (m)'), { target: { value: '47.5' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
+  expect(onReshape).toHaveBeenCalledOnce();
+  expect(properties).toMatchObject({ floors: 40, floor_count: 40, height_m: 135.6,
+    development_height_override_m: 135.6 });
+});
+
 it('preserves an irregular authored park footprint when resizing', () => {
   const asset = placeAsset('native-park:urban_pocket_park_v0--native-v1');
   const onReshape = vi.fn();

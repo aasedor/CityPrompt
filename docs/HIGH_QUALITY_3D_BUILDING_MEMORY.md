@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-09-28-storey-only-catalogue-v119`.
+Current executable memory: `2026-09-28-bounded-footprint-storeys-v120`.
 
 Local runtime pilot, 2026-09-05: `native_home_plot` explicitly arranges whole,
 unscaled copies of an exact detached-home variant. Its first footprint edge owns
@@ -20,13 +20,13 @@ record in both machine companions describes this limited experiment. It does
 not change asset approval or promotion status. See
 `docs/PICK_PLACE_RESHAPE_PILOT_2026-09-05.md` for evidence and limits.
 
-Storey-only classroom release, 2026-09-28: every effective building catalogue
-record publishes an explicit storey programme. Reviewed modular families may
-select complete authored assemblies or repeat complete authored floors inside
-their finite range. All other exact models publish `fixed_authored_assembly`
-with equal minimum, native and maximum storeys. Student footprint scaling is
-deferred; its bounded pilot contract remains compatibility-only for previously
-saved projects.
+Bounded footprint and storey classroom release, 2026-09-28: every effective
+building catalogue record publishes an explicit storey programme. Reviewed
+modular families may select complete authored assemblies or repeat complete
+authored floors inside their finite range. All other exact models publish
+`fixed_authored_assembly` with equal minimum, native and maximum storeys.
+Footprint controls appear only for exact variants with a trusted reviewed band;
+their horizontal transform remains independent from the authored height.
 
 ## The quality target
 
@@ -997,7 +997,9 @@ The polychrome collegiate family added four rules for resizable hero facades:
   visual-review state.
 - Gentle footprint adjustment uses one bounded uniform horizontal scale for the
   entire selected assembly. Keep vertical scale at exactly one so roofs,
-  thresholds, window proportions and storey heights remain authored.
+  thresholds, window proportions and storey heights remain authored. Footprint
+  and storey controls persist separately; changing either one must preserve the
+  other selected value.
 - Keep the finite storey and footprint contract in both catalogue metadata and
   trusted server metadata. Unknown counts, revisions or out-of-band scales fail
   closed instead of falling back to a generic house.

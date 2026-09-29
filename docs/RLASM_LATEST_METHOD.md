@@ -23,9 +23,10 @@ variable programme is allowed only when each count selects a complete authored
 assembly or repeats a complete authored floor between fixed podium and roof
 assemblies. Mesh stretching in Z is prohibited. Exact models without reviewed
 alternate geometry use `fixed_authored_assembly`, with identical minimum,
-native and maximum storeys. Student footprint scaling is deferred; previously
-saved bounded pilot scales remain readable for compatibility, while new
-placements use the native building footprint.
+native and maximum storeys. Student footprint scaling is allowed only for an
+exact variant with a trusted bounded programme. Apply one uniform horizontal
+scale to the complete selected assembly, keep vertical scale at exactly one,
+and preserve the selected storey count and authored height independently.
 
 ## Authority and review boundaries
 

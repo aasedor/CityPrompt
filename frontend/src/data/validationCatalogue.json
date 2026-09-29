@@ -1604,7 +1604,7 @@
       "minWidth": 15,
       "minDepth": 17,
       "maxSize": 240,
-      "reshapeDescription": "Choose one or two authored storeys. The complete house keeps its reviewed footprint and proportions.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "halifax_painted_clapboard_row",
         "development_archetype_id": "halifax_painted_clapboard_row",
@@ -1642,7 +1642,7 @@
         "maxScale": 1.15,
         "defaultScale": 1.0,
         "step": 0.05,
-        "editable": false
+        "editable": true
       }
     },
     {

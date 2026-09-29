@@ -9,7 +9,7 @@
   },
   "footprint_contract": {
     "mode": "uniform_horizontal_scale",
-    "student_control": "deferred",
+    "student_control": "enabled_bounded_pilot",
     "minimum_scale": 0.85,
     "maximum_scale": 1.15,
     "default_scale": 1.0,
@@ -128,7 +128,7 @@
     "notes": [
       "The three original approved assemblies remain byte-for-byte unchanged.",
       "Alternate storey counts are complete authored assemblies; runtime never stretches a floor or roof in Z.",
-      "New placements use the native 100% footprint and the student footprint control is deferred. The bounded 0.85-1.15 contract remains available only to preserve previously saved pilot instances.",
+      "Students may select a bounded 0.85-1.15 uniform horizontal scale in 0.05 steps. Vertical scale remains exactly 1.0, so footprint changes do not alter authored storey heights.",
       "Neutral front, front-corner and aerial evidence passed builder review; the isolated in-app pilot passed and independent holistic review remains open."
     ]
   }

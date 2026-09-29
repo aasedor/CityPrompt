@@ -59,8 +59,7 @@ export interface PlaceAsset extends AssetRecord {
     maxScale: number;
     defaultScale: number;
     step: number;
-    /** False keeps the native-size targeting contract active without exposing
-     * the deferred footprint experiment in student controls. */
+    /** False keeps the targeting contract active without exposing its control. */
     editable?: boolean;
   };
   /** Reviewed native step foot, in the plot frame. Register per exact variant,
