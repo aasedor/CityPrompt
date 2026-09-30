@@ -16,7 +16,7 @@ const street=(id:string,x:number)=>{
   return zone(id,'road',bufferLineToPolygon(line,16),{road_archetype_id:'calgary_local',road_selected_variant_id:'calgary_local_v0',width:16,plan_centerline:line});
 };
 const site={...zone('site','site_boundary',rectangleAt(ll(0,0),160,160)),is_active_boundary:true};
-const home=(x:number,streets:SiteZone[])=>zone('home','building',rectangleAt(ll(x,0),12,16,streetFacingDegrees(ll(x,0),streets)),placementProperties(placeAsset('infill_home')));
+const home=(x:number,streets:SiteZone[])=>zone('home','building',rectangleAt(ll(x,0),15,20,streetFacingDegrees(ll(x,0),streets)),placementProperties(placeAsset('trial_postwar_bungalow')));
 describe('automatic native entrance connections',()=>{
   it.each([-20,20])('connects a freshly placed home on side %s without opening Connections',x=>{
     const road=street('road',0), house=home(x,[road]), zones=[site,road,house];
@@ -28,14 +28,14 @@ describe('automatic native entrance connections',()=>{
     const a=street('a',-35),b=street('b',35),house=home(-15,[a,b]);
     const zones=[site,a,b,house];
     expect(readBuildingEntrance(house,zones)?.streetId).toBe('a');
-    const moved={...house,coordinates:rectangleAt(ll(15,0),12,16,90)};
+    const moved={...house,coordinates:rectangleAt(ll(15,0),15,20,90)};
     expect(readBuildingEntrance(moved,[site,a,b,moved])?.streetId).toBe('b');
     expect(readBuildingEntrance(house,zones)?.streetId).toBe('a');
   });
   it('snaps away from the carriageway and preserves a neighbour’s existing walkway',()=>{
     const road=street('road',0),house=home(-20,[road]),zones=[site,road,house];
     const moved=home(-19,[road]);moved.id='moving';
-    const result=snapBuildingMove(moved,rectangleAt(ll(-18,0),12,16),[...zones,moved],site);
+    const result=snapBuildingMove(moved,rectangleAt(ll(-18,0),15,20),[...zones,moved],site);
     expect(result.problem).toBeNull();
     const plans=resolvePedestrianConnections([...zones,{...moved,coordinates:result.coordinates}]);
     expect(plans.every(plan=>plan.status==='connected')).toBe(true);

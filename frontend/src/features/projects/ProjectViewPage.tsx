@@ -1293,7 +1293,12 @@ export function ProjectViewPage() {
         {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
             zones={siteZones} onUpdateParkLayout={data => updateZone.mutateAsync({zoneId:selectedZone.id,data,previousData:{coordinates:selectedZone.coordinates,properties:selectedZone.properties}})}
-            onUpdateDesign={properties => updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } })}
+            onUpdateDesign={properties => {
+              const footprintChanged=properties.building_footprint_scale!==selectedZone.properties?.building_footprint_scale;
+              const problem=footprintChanged ? placementProblem(selectedZone.coordinates,siteZones,getActiveSiteBoundary(siteZones),selectedZone.id,{properties}) : null;
+              if(problem){toast.error(problem,{position:'top-center'});return;}
+              updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } });
+            }}
             onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
             onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}

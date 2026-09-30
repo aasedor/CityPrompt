@@ -15,6 +15,7 @@ from typing import Any
 
 from geoalchemy2.shape import to_shape
 from shapely.geometry.base import BaseGeometry
+from app.services.building_placement_edges import building_contact_geometry
 
 from app.services.site_engine import (
     WGS84_CRS,
@@ -87,7 +88,7 @@ def community_3d_building_overlaps(
 
     Alternative Master Planner scenarios may legitimately cover the same land,
     but only one scenario is passed here. Within that physical community, two
-    building source polygons cannot occupy the same ground: otherwise exact
+    building occupied envelopes cannot occupy the same ground: otherwise exact
     footprint LEGO placement produces the stacked buildings seen in the globe.
     Shared party-wall edges have zero area and remain valid.
     """
@@ -95,7 +96,7 @@ def community_3d_building_overlaps(
     zones = list(building_zones)
     if len(zones) < 2:
         return []
-    wgs84_geometries = [_zone_geometry(zone) for zone in zones]
+    wgs84_geometries = [building_contact_geometry(zone, _zone_geometry(zone)) for zone in zones]
     extent = wgs84_geometries[0]
     for geometry in wgs84_geometries[1:]:
         extent = extent.union(geometry)

@@ -108,7 +108,8 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
       <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
       <PreviewFallback key={asset.id} fallback={fallback}><Suspense fallback={fallback}>
         {asset.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
-          position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}>
+          position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}
+          scale={instance.scale ?? [1,1,1]}>
           <Home url={instance.model_url}/></group>) : fallback
           : nativePark ? <NativeParkModel layout={nativePark}/>
           : typeof asset.properties.validation_native_url === 'string'

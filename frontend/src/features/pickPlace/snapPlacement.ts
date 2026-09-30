@@ -7,6 +7,8 @@ import { bufferLineToPolygon, effectiveRoadWidth, extractRenderableStreetCenterl
 import { readBuildingEntrance, resolvePedestrianConnections } from './pedestrianConnections';
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { nativeParkApproaches } from '@/features/parks/nativeParkReservations';
+import { buildingEdgeContract, buildingEdgeSnapCandidates, buildingPlacementEnvelope } from './buildingPlacementEdges';
+import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
 
 type Point = { x: number; y: number };
 export function snapBuildingMove(zone: SiteZone, coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null) {
@@ -21,7 +23,11 @@ export function snapBuildingMove(zone: SiteZone, coordinates: number[][], zones:
  * Search is bounded for live dragging. Every candidate passes the same polygon
  * checks as a save, including concave boundaries and all neighbouring plots. */
 export function snapPlacement(coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string, properties?: SiteZone['properties']) {
+  properties ??= zones.find(z=>z.id===ignoreId)?.properties;
   const context=zones.filter(z=>z.id!==ignoreId);
+  const contract=buildingEdgeContract({coordinates,properties});
+  const occupied=(coords:number[][])=>buildingPlacementEnvelope({coordinates:coords,properties});
+  const check=(coords:number[][])=>placementProblem(coords,zones,boundary,ignoreId,{properties});
   const connectionFits = (coords:number[][]) => {
     if (!(properties?.pedestrian_building_entrance as {automatic?:boolean}|undefined)?.automatic) return true;
     const owner={id:ignoreId??'placement-preview',zone_type:'building',coordinates:coords,properties} as SiteZone;
@@ -29,11 +35,12 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
     const plan=resolvePedestrianConnections([...context,owner]).find(p=>p.ownerId===owner.id);
     return plan?.status==='connected' && plan.strips.every(strip=>Math.hypot(
       (strip.end[0]-strip.start[0])*metersPerDegLon(strip.start[1]),
-      (strip.end[1]-strip.start[1])*METERS_PER_DEG_LAT) >= 2.5);
+      (strip.end[1]-strip.start[1])*METERS_PER_DEG_LAT) >= (contract ? .05 : 2.5));
   };
   // Protect the street and already-working approaches as part of the usable
   // neighbourhood, rather than solving one plot overlap by blocking a route.
   const reserves: SiteZone[] = zones.filter(z=>z.zone_type==='road').flatMap(road=>{
+    if (contract) return [{...streetSurfaceMaskZone(road),id:`snap-road:${road.id}`,zone_type:'parking' as const}];
     const line=extractRenderableStreetCenterline(road);
     const section=resolvePilotStreetSectionProfile(road);
     const width=section?.metricWidthLocked ? section.targetRowM ?? section.rowM : effectiveRoadWidth(road.properties);
@@ -49,32 +56,46 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
       name:'the park entrance path', coordinates:bufferLineToPolygon(approach.points, approach.widthM + .3)});
   }
   zones=[...zones,...reserves];
-  const problem = placementProblem(coordinates, zones, boundary, ignoreId) ?? (connectionFits(coordinates) ? null : 'Leave room for the entrance path.');
+  // Magnetism applies even when the original position is valid, so a small
+  // visible gap can close. A candidate must preserve all approach reservations.
+  const neighbours=context.map(z=>z.zone_type==='road'?streetSurfaceMaskZone(z):z);
+  let magnetCoordinates=coordinates;
+  // A corner can meet both a neighbour and a sidewalk. Resolve the two axes
+  // together instead of requiring the student to place and drag a second time.
+  for(let pass=0;pass<2;pass++) {
+    const candidate=buildingEdgeSnapCandidates({coordinates:magnetCoordinates,properties},neighbours)
+      .find(item=>!check(item.coordinates) && connectionFits(item.coordinates));
+    if(!candidate)break;
+    magnetCoordinates=candidate.coordinates;
+  }
+  if(magnetCoordinates!==coordinates)return {coordinates:magnetCoordinates,snapped:true,problem:null};
+  const problem = check(coordinates) ?? (connectionFits(coordinates) ? null : 'Leave room for the entrance path.');
   if (!problem) return { coordinates, snapped: false, problem: null };
   if (coordinates.length < 3 || coordinates.some(p => !Number.isFinite(p[0] + p[1])))
     return { coordinates, snapped: false, problem };
   const origin = coordinates[0], east = metersPerDegLon(origin[1]);
   const local = (ring: number[][]): Point[] => ring.map(p => ({ x: (p[0] - origin[0]) * east, y: (p[1] - origin[1]) * METERS_PER_DEG_LAT }));
-  const footprint = local(coordinates), border = boundary && local(boundary.coordinates);
-  const obstacles = zones.filter(z => z.id !== ignoreId && ['building', 'residential', 'green_space', 'parking'].includes(z.zone_type)).map(z => local(z.coordinates));
+  const footprint = local(occupied(coordinates)), plot=local(coordinates), border = boundary && local(boundary.coordinates);
+  const obstacles = zones.filter(z => z.id !== ignoreId && ['building', 'residential', 'green_space', 'parking'].includes(z.zone_type)).map(z => local(buildingPlacementEnvelope(z)));
   const axes = (ring: Point[]) => ring.map((p, i) => {
     const q = ring[(i + 1) % ring.length], size = Math.hypot(q.x - p.x, q.y - p.y);
     return size > .001 ? { x: -(q.y - p.y) / size, y: (q.x - p.x) / size } : null;
   }).filter((p): p is Point => p !== null);
   const project = (ring: Point[], axis: Point) => ring.map(p => p.x * axis.x + p.y * axis.y);
   const pending: Point[] = [{ x: 0, y: 0 }], seen = new Set<string>();
-  // Plots already include separation around native models. A 2 cm numerical
-  // margin keeps touching polygons from oscillating between valid/overlapping.
+  // Reviewed envelopes include only the side/access space they need. A 2 cm
+  // numerical margin prevents touching faces oscillating valid/overlapping.
   const gap = .02, maxDistance = 30;
   for (let attempt = 0; pending.length && attempt < 64; attempt++) {
     pending.sort((a, b) => Math.hypot(a.x, a.y) - Math.hypot(b.x, b.y) || a.x - b.x || a.y - b.y);
     const offset = pending.shift()!;
     const ring = footprint.map(p => ({ x: p.x + offset.x, y: p.y + offset.y }));
     const hits = obstacles.filter(other => envelopesOverlap(ring, other));
-    const outside = border && !envelopeFits(ring, border);
+    const plotRing=plot.map(p=>({x:p.x+offset.x,y:p.y+offset.y}));
+    const outside = border && !envelopeFits(plotRing, border);
     if (!hits.length && !outside) {
       const result = coordinates.map(p => [p[0] + offset.x / east, p[1] + offset.y / METERS_PER_DEG_LAT]);
-      if (!placementProblem(result, zones, boundary, ignoreId) && connectionFits(result)) return { coordinates: result, snapped: true, problem: null };
+      if (!check(result) && connectionFits(result)) return { coordinates: result, snapped: true, problem: null };
     }
     const add = (axis: Point, distance: number) => {
       const next = { x: offset.x + axis.x * distance, y: offset.y + axis.y * distance };
@@ -87,7 +108,7 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
       add(axis, Math.min(...b) - Math.max(...a) - gap);
     }
     if (outside && border) for (const [i, axis] of axes(border).entries()) {
-      const edge = border[i], plane = edge.x * axis.x + edge.y * axis.y, a = project(ring, axis);
+      const edge = border[i], plane = edge.x * axis.x + edge.y * axis.y, a = project(plotRing, axis);
       add(axis, plane - Math.min(...a) + gap);
       add(axis, plane - Math.max(...a) - gap);
     }
@@ -96,12 +117,12 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
     // candidates and starve an already available clear edge position.
     const clear = pending.filter(candidate => {
       const candidateRing = footprint.map(p => ({ x:p.x+candidate.x, y:p.y+candidate.y }));
-      return (!border || envelopeFits(candidateRing,border)) && !obstacles.some(other=>envelopesOverlap(candidateRing,other))
+      return (!border || envelopeFits(plot.map(p=>({x:p.x+candidate.x,y:p.y+candidate.y})),border)) && !obstacles.some(other=>envelopesOverlap(candidateRing,other))
         && connectionFits(coordinates.map(p=>[p[0]+candidate.x/east,p[1]+candidate.y/METERS_PER_DEG_LAT]));
     }).sort((a,b)=>Math.hypot(a.x,a.y)-Math.hypot(b.x,b.y))[0];
     if (clear) {
       const result=coordinates.map(p=>[p[0]+clear.x/east,p[1]+clear.y/METERS_PER_DEG_LAT]);
-      if (!placementProblem(result,zones,boundary,ignoreId)) return {coordinates:result,snapped:true,problem:null};
+      if (!check(result)) return {coordinates:result,snapped:true,problem:null};
     }
     // Retain nearest candidates only; crowded scenes cannot grow an open loop.
     if (pending.length > 256) {

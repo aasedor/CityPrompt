@@ -7,6 +7,7 @@ import { corridorInside, corridorOverlaps, pointInside } from '@/components/view
 import { rectangleDimensions } from './geometry';
 import { CATALOGUE_ASSETS } from './assetRegistry';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
+import { buildingPlacementEnvelope } from './buildingPlacementEdges';
 
 export type Point = [number, number];
 /** Door coordinates are in the plot's rotating local metre frame. Native houses
@@ -150,7 +151,7 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
       const obstacles = zones.filter(z => z.id !== owner.id && ['building','residential','green_space','parking','water'].includes(z.zone_type));
       const safe = (a: Point, b: Point, width: number, ignoredRoad: string) => corridorInside(a, b, border, width / 2)
         && ![...obstacles, ...zones.filter(z => z.zone_type === 'road' && z.id !== ignoredRoad)]
-          .some(z => corridorOverlaps(a, b, z.coordinates.map(f.local), width / 2 + 0.15));
+          .some(z => corridorOverlaps(a, b, buildingPlacementEnvelope(z).map(f.local), width / 2 + 0.15));
       if (crossing) {
         const section = resolvePilotStreetSectionProfile(owner), station = crossingStation(owner, crossing.position);
         result.reason = 'Choose a straight section with sidewalks on both sides, away from bends and intersections.';
