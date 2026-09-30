@@ -7,17 +7,17 @@ import * as catalogue from './canonicalCatalogue';
 describe('student asset browsing', () => {
   it('shows the current exact catalogue counts and pages the building and park choices', () => {
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
-    expect(catalogue.CLASSROOM_CHOICES).toHaveLength(45);
+    expect(catalogue.CLASSROOM_CHOICES).toHaveLength(54);
     fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
     expect(screen.getByLabelText('Catalogue collection')).toHaveValue('starter');
-    expect(screen.getByText(/45 exact choices: 20 buildings, 15 parks, 10 streets/)).toBeInTheDocument();
+    expect(screen.getByText(/54 exact choices: 23 buildings, 18 parks, 13 streets/)).toBeInTheDocument();
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
-    expect(screen.getAllByRole('article')).toHaveLength(20);
+    expect(screen.getAllByRole('article')).toHaveLength(23);
     fireEvent.click(screen.getAllByRole('button', { name: 'Parks' })[1]);
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
-    expect(screen.getAllByRole('article')).toHaveLength(15);
+    expect(screen.getAllByRole('article')).toHaveLength(18);
     expect(catalogue.CLASSROOM_CHOICES.every(choice => choice.placements.length === 1 && choice.option.variants?.length === 1)).toBe(true);
   });
   it('shows the active native street width and marks only the selected street card', () => {
@@ -26,7 +26,8 @@ describe('student asset browsing', () => {
       activeStreetVariant="student_green_alley_v1" onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
     expect(screen.getByText('Ruelle Verte Community Alley · 11 m wide')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
-    expect(screen.getAllByRole('article')).toHaveLength(10);
+    expect(screen.getAllByRole('article')).toHaveLength(12);
+    fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
     expect(screen.getByRole('button', { name: /Ruelle Verte Community Alley.*Choose & draw route/ })).toHaveAttribute('aria-pressed','true');
     expect(screen.getByRole('button', { name: /Playful School Street.*Choose & draw route/ })).toHaveAttribute('aria-pressed','false');
     fireEvent.click(screen.getByRole('button', { name: /Playful School Street.*Choose & draw route/ }));

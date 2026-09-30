@@ -6216,6 +6216,34 @@ async def test_place_community_certifies_source_locked_rlasm_glb_as_current_mode
     mock_db.add.assert_not_called()
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize('valid_binding', [True, False])
+async def test_place_community_preserves_user_generated_model_or_rejects_missing_binding(
+    client, mock_db, test_user, auth_headers, valid_binding
+):
+    project = FakeProject(owner_id=test_user.id)
+    model_url = '/api/v1/files/projects/p/models/user.glb'
+    building = Building(id=uuid.uuid4(), project_id=project.id, name='My generated house',
+        footprint='SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))', height_meters=7.5,
+        floor_count=2, model_url=model_url, generation_engine='meshy', generation_status='completed',
+        specifications={'user_generated_model': {'source_building_id': 'source-house',
+            'model_url': model_url if valid_binding else 'different.glb'}})
+    zone = _make_zone(project, building_id=building.id, building_ids=[str(building.id)],
+        properties={'user_generated_source_id': 'source-house', 'height': 7.5, 'floors': 2})
+    mock_db.execute = AsyncMock(side_effect=[_scalar_result(test_user), _scalar_result(zone),
+        _scalar_result(project), _scalar_result(project.id), _scalars_result([zone]), _scalars_result([building])])
+    response = await client.post('/api/v1/lego-assembly/place-community', headers=auth_headers,
+        json={'items': [_community_item(zone)]})
+    assert response.status_code == (200 if valid_binding else 422), response.text
+    if valid_binding:
+        assert response.json()['items'][0]['source_locked_user_generated'] is True
+        assert response.json()['items'][0]['source_locked_rlasm'] is False
+        assert building.model_url == model_url
+        assert building.footprint == zone.geometry
+        assert zone.properties['community_3d']['generator'] == 'meshy'
+    mock_db.add.assert_not_called()
+
+
 @pytest.mark.anyio
 async def test_place_community_rebuild_upgrades_massing_without_losing_public_realm(
     client, mock_db, test_user, auth_headers

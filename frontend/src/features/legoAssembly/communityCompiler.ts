@@ -405,7 +405,7 @@ export function assertCommunityCompileResponse(
       ? typeof result.building_id === 'string' && result.building_id.trim().length > 0
       : result?.building_id === null;
     const hasExpectedSourceLock = result?.generator !== 'meshy'
-      || result.source_locked_rlasm === true;
+      || result.source_locked_rlasm === true || result.source_locked_user_generated === true;
     if (
       matches.length === 1
       && result.kind === item.kind
@@ -507,6 +507,7 @@ export async function compileMixedCommunity3D(
   const indicesByArchetype = new Map<string, number[]>();
   const ungroupedIndices: number[] = [];
   buildingItems.forEach((item, index) => {
+    if (item.zone.properties?.user_generated_source_id) { markCompleted(); return; }
     if (!item.archetypeId) {
       ungroupedIndices.push(index);
       return;
@@ -568,7 +569,7 @@ export async function compileMixedCommunity3D(
   });
 
   const unexpectedFailure = planResults.find((result) => (
-    result.status === 'rejected' && getLegoPlanningFailure(result.reason) === null
+    result?.status === 'rejected' && getLegoPlanningFailure(result.reason) === null
   ));
   if (unexpectedFailure?.status === 'rejected') {
     throw new Error(getApiErrorMessage(
@@ -592,7 +593,7 @@ export async function compileMixedCommunity3D(
       label: item.label,
       kind: 'building',
       generators: new Set<CommunityCompileGenerator>(
-        planResults[index]?.status === 'fulfilled'
+        item.zone.properties?.user_generated_source_id ? ['meshy'] : planResults[index]?.status === 'fulfilled'
           ? ['lego_assembly']
           : ['planned_massing', 'meshy'],
       ),
@@ -651,6 +652,7 @@ export async function compileMixedCommunity3D(
   assertCommunityCompileResponse(expectedItems, response);
   announceCommunity3DPresentationReady(scopeZoneIds);
   const resolvedBuildings = buildingItems.map((item, index) => {
+    if (item.zone.properties?.user_generated_source_id) return item;
     const result = planResults[index];
     if (result?.status === 'fulfilled') return { ...item, plan: result.value };
     const planningFailure = result?.status === 'rejected'

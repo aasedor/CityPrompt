@@ -1133,6 +1133,12 @@ async def create_zone(
     await db.flush()
     await db.refresh(zone)
 
+    if (zone.properties or {}).get('user_generated_source_id'):
+        from app.services.user_generated_models import attach_generated_model
+        from app.api.v1.lego_assembly import _stamp_community_3d
+        generated = await attach_generated_model(db, zone, user, zone.properties['user_generated_source_id'])
+        _stamp_community_3d(zone, 'building', datetime.now(timezone.utc).isoformat(), 'meshy', building=generated)
+
     # Keep boundary creation atomic and fast. Surrounding OSM context is useful
     # enrichment, but Overpass can take tens of seconds or be unavailable. The
     # client starts that independent request after this authoritative boundary
@@ -1147,6 +1153,12 @@ async def create_zone(
             else "Authored zone created; rebuild Community 3D landscaping."
         ),
     )
+
+    if (zone.properties or {}).get('user_generated_source_id'):
+        # Attaching the model updates the row after its initial refresh. Load
+        # database-generated timestamps explicitly before synchronous history serialization.
+        await db.flush()
+        await db.refresh(zone)
 
     # Record history (skip during undo/redo)
     if not request.headers.get("x-skip-history"):

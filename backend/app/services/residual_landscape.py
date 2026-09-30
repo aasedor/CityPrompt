@@ -303,6 +303,7 @@ def community_3d_source_properties(
                             "development_subcategory",
                             "development_archetype_id",
                             "development_selected_variant_id",
+                            "user_generated_source_id",
                         )
                     }
                 ),

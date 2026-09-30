@@ -22,7 +22,7 @@ export function authoredPlacementKey(zones: SiteZone[], includeRuntimeEntrance =
   return JSON.stringify(zones.map(zone => ({ id: zone.id, coordinates: zone.coordinates,
     design: Object.fromEntries(Object.entries(zone.properties ?? {})
       .filter(([name]) => (includeRuntimeEntrance || name !== 'pedestrian_building_entrance')
-        && /^(pick_place|native_home|building_footprint_|development_|green_space_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$|park_trio_layout$|pedestrian_|park_access_points$|community_3d_landscape_mode$)/.test(name))
+        && /^(pick_place|user_generated_|native_home|building_footprint_|development_|green_space_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$|park_trio_layout$|pedestrian_|park_access_points$|community_3d_landscape_mode$)/.test(name))
       .sort(([a],[b]) => a.localeCompare(b))) })).sort((a,b) => a.id.localeCompare(b.id)));
 }
 

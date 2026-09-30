@@ -1193,6 +1193,13 @@ export function ProjectViewPage() {
               placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
                 onBrowseChange={setShowCatalogue}
+                onPickGenerated={model => {
+                  cancelPlacement(); selectZone(null); setMeasureActive(false);
+                  useViewerStore.getState().setStreetViewActive(false);
+                  setActiveSitePlannerTool('building', { user_generated_source_id: model.id,
+                    height: model.height_meters, floor_count: model.floor_count ?? 2, floors: model.floor_count ?? 2 });
+                  toast('Draw a footprint to place your saved model. No generation credits are used.');
+                }}
                 onPickCanonical={selection => {
                   if (selection.choice.domain !== 'street_pathway') {
                     pickObject((selection.choice.domain === 'building' ? canonicalBuildingAsset(selection) : canonicalParkAsset(selection)).id);

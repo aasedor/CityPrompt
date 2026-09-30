@@ -233,6 +233,7 @@ export interface Community3DCompileResponse {
     /** Backend certification that a Meshy-shaped response is actually the
      * linked, source-locked RLASM keeper rather than an arbitrary stale model. */
     source_locked_rlasm?: boolean;
+    source_locked_user_generated?: boolean;
   }>;
 }
 

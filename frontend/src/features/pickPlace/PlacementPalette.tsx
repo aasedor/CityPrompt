@@ -6,6 +6,8 @@ import { CANONICAL_CHOICES, CLASSROOM_CHOICES, choiceMatchesGroup, filterCanonic
 import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
+import { UserGeneratedBuildings } from './UserGeneratedBuildings';
+import type { UserGeneratedBuilding } from '@/services/api';
 
 const sections = [
   { id: 'building', label: 'Buildings', icon: Building2 },
@@ -18,12 +20,13 @@ const classroomSummary = `${CLASSROOM_CHOICES.length} exact choices: ${classroom
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
-export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical }: {
+export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated }: {
   selected: PlaceAssetId | null; onPick: (id: PlaceAssetId) => void; onCancel: () => void;
   status: string; message: string; onRetry: () => void;
   onPickStreet?: (asset: StreetAsset) => void; activeStreetVariant?: string;
   onBrowseChange?: (open: boolean) => void;
   onPickCanonical: (selection: CanonicalSelection) => void;
+  onPickGenerated?: (model: UserGeneratedBuilding) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState<Section>('building');
@@ -43,6 +46,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
     ? matchingAssets.filter(choice => choice.placements[0]?.kind === 'street') : matchingAssets;
   const visibleSections = sections.filter(item => onPickStreet || item.id !== 'street_pathway');
   const activeStreet = STREET_ASSETS.find(asset => asset.model.variantId === activeStreetVariant);
+  const userGenerated = section === 'building' && groupId === 'user-generated' && Boolean(onPickGenerated);
   return <section aria-label="Place 3D objects" className="space-y-2">
     <p className="text-sm font-bold text-slate-900">Add to your community</p>
     <div className="grid grid-cols-3 gap-1">
@@ -75,7 +79,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
               <option value="starter">Approved & validation candidates</option>
             </select>
           </label>
-          <p className="text-xs text-slate-600">{collection === 'starter'
+          <p className="text-xs text-slate-600">{userGenerated ? 'Your private creations, separate from the reviewed catalogue.' : collection === 'starter'
             ? classroomSummary
             : 'Local validation catalogue.'}</p>
           <nav aria-label="Catalogue sections" className="flex gap-2">
@@ -89,9 +93,10 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             <select id="placement-group" value={groupId} onChange={event => { setGroupId(event.target.value); setLimit(12); }} className={filterStyle}>
               <option value="">All {sections.find(item => item.id === section)?.label.toLowerCase()}</option>
               {groups.map(group => <option key={group.id} value={group.id}>{group.label}</option>)}
+              {section === 'building' && onPickGenerated && <option value="user-generated">User generated</option>}
             </select>
           </div>
-          <p className="text-xs text-slate-600" role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Choose a design, then place it or draw its outline.</p>
+          {!userGenerated && <p className="text-xs text-slate-600" role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Choose a design, then place it or draw its outline.</p>}
           {section === 'street_pathway' && fixedStreetCount > 0 && <button type="button"
             aria-expanded={showFixedStreetSegments} onClick={() => setShowFixedStreetSegments(value => !value)}
             className="min-h-11 text-left text-xs font-semibold underline">
@@ -99,6 +104,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
           </button>}
         </div>
         <div aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
+          {userGenerated && onPickGenerated ? <UserGeneratedBuildings query={query} onPick={model => { close(); onPickGenerated(model); }} /> : <>
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}`} choice={choice}
               initialVariantId={preferredCatalogueVariant(choice, query, groupId)}
@@ -108,6 +114,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
           </div>
           {!assets.length && <div className="p-4 text-sm">No available objects match.<button onClick={() => { setQuery(''); setGroupId(''); setLimit(12); }} className="block min-h-11 underline">Clear filters</button></div>}
           {assets.length > limit && <button onClick={() => setLimit(value => value + 12)} className="mt-3 min-h-11 w-full rounded-lg border border-slate-400 font-semibold">Show more choices</button>}
+          </>}
         </div>
       </div>
     </StudioDialog>}

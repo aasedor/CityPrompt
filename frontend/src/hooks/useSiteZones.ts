@@ -133,6 +133,7 @@ export function useSiteZones(projectId: string | undefined) {
       return { draft, optimisticId: `temp-${vars.requestId}` };
     },
     onSuccess: (createdZone, _vars, context) => {
+      if (createdZone.building_id) void queryClient.invalidateQueries({ queryKey: ['project', projectId] });
       if (context?.draft) removeDraft(context.draft.requestId);
       // Replace the exact optimistic polygon with the authoritative response
       // before refetching. This removes the temp-id gap so selection-dependent

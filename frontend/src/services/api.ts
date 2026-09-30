@@ -1333,7 +1333,16 @@ export const settingsApi = {
 // Model Library
 // =============================================================================
 
+export interface UserGeneratedBuilding {
+  id: string; project_id: string; name: string; preview_url: string | null;
+  floor_count: number | null; height_meters: number;
+}
+
 export const modelLibraryApi = {
+  userGenerated: async (): Promise<UserGeneratedBuilding[]> => {
+    const { data } = await api.get('/api/v1/model-library/user-generated');
+    return data;
+  },
   list: async (params?: {
     category?: string;
     search?: string;

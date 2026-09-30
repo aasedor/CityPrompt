@@ -34,6 +34,16 @@ router = APIRouter()
 settings = get_settings()
 
 
+@router.get('/user-generated')
+async def list_user_generated(user: User = Depends(require_auth), db: AsyncSession = Depends(get_db)):
+    from app.services.user_generated_models import generated_entry, is_user_generated
+    result = await db.execute(select(Building).join(Project, Building.project_id == Project.id).where(
+        Project.owner_id == user.id, Building.generation_status == 'completed', Building.model_url.isnot(None)
+    ).order_by(Building.created_at.desc()))
+    return [generated_entry(building) for building in result.scalars().all()
+            if building.model_url and is_user_generated(building)]
+
+
 def _get_s3_client():
     return boto3.client(
         "s3",

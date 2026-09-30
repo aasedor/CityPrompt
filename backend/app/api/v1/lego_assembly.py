@@ -2129,8 +2129,18 @@ async def place_community_3d(
         building_created = False
         building_generator: Literal["lego_assembly", "planned_massing", "meshy"] = "lego_assembly"
         source_locked_rlasm = False
+        source_locked_user_generated = False
         if kind == "building":
-            if item.recipe is not None:
+            if (zone.properties or {}).get('user_generated_source_id'):
+                from app.services.user_generated_models import has_user_generated_binding
+                linked_building = project_buildings_by_id.get(str(zone.building_id))
+                if item.recipe is not None or not has_user_generated_binding(zone, linked_building):
+                    raise HTTPException(status_code=422, detail='The selected user generated model is unavailable. Choose it again from the building picker.')
+                building = linked_building
+                building.footprint = zone.geometry
+                building_generator = 'meshy'
+                source_locked_user_generated = True
+            elif item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
                 linked_building = project_buildings_by_id.get(str(zone.building_id))
@@ -2164,6 +2174,7 @@ async def place_community_3d(
                     building_generator if kind == "building" else "park_kit" if kind == "park" else "street_section"
                 ),
                 "source_locked_rlasm": source_locked_rlasm if kind == "building" else False,
+                "source_locked_user_generated": source_locked_user_generated if kind == "building" else False,
             }
         )
 
