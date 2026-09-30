@@ -803,15 +803,18 @@ export function buildStreetFamilyFixturePlacements({
 }: StreetFamilyFixtureOptions): StreetFamilyFixturePlacements {
   if (
     !enabled
-    || !profile?.familyId
+    || !(profile?.familyId || profile?.manualSection)
     || points.length < 3
     || !(sectionScale > 0)
     || ['woonerf_shared_street', 'multi_use_trail', 'toronto_laneway']
       .includes(profile.archetypeId)
   ) return EMPTY_FIXTURES;
 
+  if (!profile) return EMPTY_FIXTURES;
+  const manual = profile.manualSection === true;
+  const manualHighActivity = manual && profile.archetypeId.includes('high_activity');
   const bands = profile.bands.map((band) => scaleBand(band, sectionScale));
-  const plantingBands = bands.filter((band) => band.kind === 'planting');
+  const plantingBands = bands.filter((band) => band.kind === 'planting' && !(manual && profile.archetypeId.includes('industrial')));
   const parkingBands = bands.filter((band) => band.kind === 'parking');
   const sidewalkBands = bands.filter((band) => band.kind === 'sidewalk');
   const cycleBands = bands.filter((band) => band.kind === 'cycle');
@@ -819,8 +822,8 @@ export function buildStreetFamilyFixturePlacements({
   const isMain = [
     'street_complete_main_18m',
     'street_complete_main_22m',
-  ].includes(profile.familyId);
-  const isNarrowResidential = profile.archetypeId === 'narrow_residential_street';
+  ].includes(profile.familyId ?? '') || manualHighActivity;
+  const isNarrowResidential = (manual && !manualHighActivity) || profile.archetypeId === 'narrow_residential_street';
   const sidePlantingBands = plantingBands.filter((band) => !(
     Math.min(band.startM, band.endM) < 0
     && Math.max(band.startM, band.endM) > 0
@@ -1011,7 +1014,7 @@ export function buildStreetFamilyFixturePlacements({
     });
   });
 
-  const cycleProtectionOffsets = bufferBands.length > 0
+  const cycleProtectionOffsets = manual ? [] : bufferBands.length > 0
     ? bufferBands.map((band) => band.centerM)
     : cycleBands.map((band) => (
       Math.abs(band.startM) < Math.abs(band.endM) ? band.startM : band.endM
@@ -1052,7 +1055,7 @@ export function buildStreetFamilyFixturePlacements({
       default:
         return {
           canopyClass: 'mature_deciduous' as const,
-          lightStyle: 'traditional' as const,
+          lightStyle: manual ? 'contemporary' as const : 'traditional' as const,
           treeScaleFactor: 1,
         };
     }
@@ -1095,7 +1098,7 @@ export function buildStreetFamilyFixturePlacements({
   }
 
   const transitShelters: StreetTransitShelterPlacement[] = [];
-  if (isMain && furnishingBands.length > 0 && lengthM >= 60) {
+  if (!manual && isMain && furnishingBands.length > 0 && lengthM >= 60) {
     const band = furnishingBands[0];
     const availableDepthM = Math.max(
       0,
@@ -1137,7 +1140,8 @@ export function buildStreetFamilyFixturePlacements({
     bikeRacks,
     bollards,
     plantingCells,
-    parkedVehicles: streetSignature?.parkedVehicles ?? [],
+    // The manual describes space allocation, not a fleet of proxy cars.
+    parkedVehicles: manual ? [] : streetSignature?.parkedVehicles ?? [],
     transitShelters,
     stationCount: selectedIndices.length,
   };

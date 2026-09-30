@@ -9,7 +9,7 @@ import { GlobeTreeWells } from './GlobeTreeWells';
  * stations are then drape-sampled in per-frame batches (drape-and-freeze,
  * same budget pattern as GlobeBuildingModelsLayer) so curbs follow slopes.
  *
- * Render order: road fill 120 < dashes 122 < ring/apron 123 < curbs/island
+ * Render order: road fill 120 < ring/apron 123 < dashes 124 < curbs/island
  * 130 (depth-tested) < placed GLBs 150 < prisms 200.
  */
 
@@ -139,7 +139,8 @@ const MAX_SAMPLE_PASSES = 3;
 
 const CURB_COLOR = '#9aa0a6';
 const DASH_COLOR = '#e0e2e4';
-const RENDER_ORDER_DASHES = 122;
+// Paint does not write depth: draw it AFTER the opaque asphalt bands.
+const RENDER_ORDER_DASHES = 124;
 const RENDER_ORDER_FLATWORK = 123;
 const RENDER_ORDER_RAISED = 130;
 const RENDER_ORDER_FURNITURE = 135;
@@ -595,7 +596,7 @@ function StreetRibbonDetail({
         .filter((item): item is typeof item & { geometry: THREE.BufferGeometry } => Boolean(item.geometry))
       : [];
     const isCompleteMainStreet = sectionProfile?.archetypeId === 'main_street_complete';
-    const parkingMarkings = sectionProfile && (isCompleteMainStreet || nativePilot?.id === 'student_main_street_v1')
+    const parkingMarkings = sectionProfile && (sectionProfile.manualSection || isCompleteMainStreet || nativePilot?.id === 'student_main_street_v1')
       ? sectionProfile.bands
         .filter((band) => band.kind === 'parking')
         .map((band) => buildParkingStallMarkingGeometry(

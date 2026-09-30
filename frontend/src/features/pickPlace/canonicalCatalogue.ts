@@ -5,7 +5,7 @@ import {
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, MANUAL_STREET_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
@@ -66,6 +66,15 @@ export function classroomChoices(choices = CANONICAL_CHOICES): CanonicalChoice[]
     return [{ ...choice, placements: [placement], option: { ...choice.option, variants: [variant] } }];
   });
 }
+CANONICAL_CHOICES.push(...MANUAL_STREET_ASSETS.map(asset => ({
+  id: `street_pathway:${asset.properties.road_archetype_id}:${asset.model.variantId}`,
+  domain: 'street_pathway' as const, placements: [asset], option: {
+    ...CANONICAL_DOMAINS.street_pathway.find(o => o.id === asset.properties.road_archetype_id),
+    id: String(asset.properties.road_archetype_id), label: asset.label, description: asset.description,
+    photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+    variants: [{ id: asset.model.variantId, label: 'Street Manual | metric 3D', thumbnailUrl: asset.thumbnail }],
+  },
+})));
 export const CLASSROOM_CHOICES = CANONICAL_CHOICES;
 const normalizeSearch = (v: string) => v.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
 export function choiceMatchesGroup(choice: CanonicalChoice, groupId: string) {

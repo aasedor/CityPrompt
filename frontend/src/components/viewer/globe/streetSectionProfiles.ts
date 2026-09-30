@@ -1,3 +1,4 @@
+import manualStreets from '@/data/streetManual.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
 import type { SiteZone } from '@/types';
 import {
@@ -92,6 +93,7 @@ export interface StreetSectionProfile {
   targetRowM?: number;
   metricWidthLocked?: boolean;
   appearance?: StreetAppearanceKit;
+  manualSection?: boolean;
   isPilot: true;
 }
 
@@ -100,7 +102,7 @@ export interface StreetSectionProfile {
 export function buildStreetRenderGroundTruthInstruction(
   profile: StreetSectionProfile,
 ): string {
-  const landscape = profile.treeOffsetsM.length > 0
+  const landscape = profile.manualSection ? 'Preserve the visible metric street trees, fixtures and clear walking/cycling bands; do not invent additional traffic lanes or parking.' : profile.treeOffsetsM.length > 0
     ? 'Street trees are render-stage elements: add varied mature trees only inside the designated planting bands, with clear crossings, driveways, sight triangles, cycle tracks and sidewalks; never place them in a travel or circulation surface.'
     : 'This section has no designated street-tree band: do not invent trees inside its carriageway, cycle facility, path, shoulder or sidewalk.';
   return (
@@ -600,6 +602,7 @@ export function resolvePilotStreetSectionProfile(
   if (!entry) return null;
   const pilotId = entry.id;
   const selectedVariantId = contract.requestedVariantId;
+  const manual = manualStreets.find(row => row.archetypeId === pilotId && row.variantId === selectedVariantId);
   const variant = entry.variants?.find((candidate) => (
     normalizeId(candidate.id) === selectedVariantId
     || (selectedVariantId.startsWith('v') && normalizeId(candidate.id).endsWith(`_${selectedVariantId}`))
@@ -613,7 +616,7 @@ export function resolvePilotStreetSectionProfile(
     : undefined;
   const withVariant = <T extends StreetSectionProfile>(profile: T): T => ({
     ...profile,
-    bands: applyFamilyAppearance(profile.bands, appearance),
+    bands: manual ? profile.bands : applyFamilyAppearance(profile.bands, appearance),
     ...(appearance?.id === 'modern_minimalist_v1' ? {
       curbOffsetsM: [],
       renderCurbs: false,
@@ -630,6 +633,10 @@ export function resolvePilotStreetSectionProfile(
       metricWidthLocked: true,
       title: `${contract.family.label} - ${appearance?.label ?? contract.family.defaultAppearanceKitId}`,
     } : {}),
+    // Manual bands own their material colours; a decorative kit must not tint the cycle asphalt red.
+    ...(manual ? { manualSection: true, appearance: undefined, metricWidthLocked: true, variantId: manual.variantId,
+      variantLabel: 'Street Manual metric 3D', rendererFingerprint: manual.sourceSectionSha256,
+      title: manual.title } : {}),
     ...(variant ? {
       variantId: variant.id,
       variantLabel: variant.label,
@@ -702,7 +709,15 @@ export function resolvePilotStreetSectionProfile(
         : nativePilot.junctionSurface === 'cobble' ? 'stone cobble paving' : 'architectural stone paving',
     })),
   };
-  const baseCompiledSection = nativeSection ?? familySection ?? (entry.section?.zones?.length
+  const manualSection: SyntheticSection | undefined = manual ? {
+    rowM: manual.widthM, renderCurbs: manual.curbed,
+    zones: manual.section.zones.map(zone => ({...zone,
+      type: zone.type === 'flex' ? 'parking' : zone.type,
+      surface: zone.type === 'sidewalk' || zone.type === 'buffer' ? 'concrete'
+        : ['boulevard','median','ditch'].includes(zone.type) ? 'grass' : 'asphalt',
+    })),
+  } : undefined;
+  const baseCompiledSection = manualSection ?? nativeSection ?? familySection ?? (entry.section?.zones?.length
     ? { rowM: Number(entry.section.row_m) || Number(entry.typicalWidth_m) || 1, zones: entry.section.zones }
     : (synthetic ?? inferCatalogSection(entry)));
   const compiledSection = appearance?.id === 'tropical_boulevard_v1'
@@ -739,6 +754,11 @@ export function resolvePilotStreetSectionProfile(
       centerM: (startM + endM) / 2,
       widthM,
       ...bandStyle(kind, zone.surface ?? ''),
+      ...(manual && sourceType === 'ditch' ? { color: '#73845e', liftM: PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + .01 } : {}),
+      ...(manual && (kind === 'path' || kind === 'cycle') ? {
+        color: kind === 'cycle' ? '#606768' : '#666a67', liftM: PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
+      } : {}),
+      ...(manual && !manual.curbed ? { liftM: PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS } : {}),
     };
   });
   const treeOffsetsM = bands
@@ -749,7 +769,7 @@ export function resolvePilotStreetSectionProfile(
     ? []
     : bands.slice(0, -1).flatMap((band, index) => {
       const next = bands[index + 1];
-      return drivableKinds.has(band.kind) !== drivableKinds.has(next.kind)
+      return (manual ? Math.abs(band.liftM - next.liftM) > .04 : drivableKinds.has(band.kind) !== drivableKinds.has(next.kind))
         ? [band.endM]
         : [];
     });
@@ -762,7 +782,7 @@ export function resolvePilotStreetSectionProfile(
     title: entry.title ?? pilotId.replace(/_/g, ' '),
     rowM,
     bands,
-    markings: nativePilot?.program ? [] : nativePilot?.id === 'student_main_street_v1'
+    markings: manual ? manualMarkings(pilotId, bands) : nativePilot?.program ? [] : nativePilot?.id === 'student_main_street_v1'
       ? [{ offsetM: 0, color: '#eae8e1', widthM: 0.1, dashed: true }]
       : addMarkings(pilotId, bands),
     treeOffsetsM,
@@ -774,3 +794,24 @@ export function resolvePilotStreetSectionProfile(
 }
 
 export const CATALOG_STREET_ARCHETYPE_IDS = Object.freeze(CATALOG.map((entry) => entry.id));
+
+/** Metric draft sections: yellow separates opposing traffic; white separates
+ * same-direction lanes. Local streets and alleys remain unmarked. */
+function manualMarkings(id: string, bands: StreetSectionBand[]): StreetSectionMarking[] {
+  if (id === 'calgary_alley' || id.startsWith('calgary_local') && id !== 'calgary_local_rural') return [];
+  const result: StreetSectionMarking[] = [];
+  const divided = bands.some(b => b.kind === 'median');
+  bands.slice(0,-1).forEach((left,i) => {
+    const right = bands[i+1];
+    if (left.kind === 'motor' && right.kind === 'motor') {
+      const turn = left.sourceType === 'turn' || right.sourceType === 'turn';
+      result.push({offsetM:left.endM,color:divided ? '#eee9dc' : '#dfb846',widthM:.12,dashed:!turn});
+    }
+    if ((left.kind === 'motor' && ['parking','shoulder','median'].includes(right.kind))
+      || (right.kind === 'motor' && ['parking','shoulder','median'].includes(left.kind))) {
+      const median = left.kind === 'median' || right.kind === 'median';
+      result.push({offsetM:left.endM + (left.kind === 'motor' ? -.12 : .12),color:median ? '#dfb846' : '#eee9dc',widthM:.1,dashed:false});
+    }
+  });
+  return result;
+}

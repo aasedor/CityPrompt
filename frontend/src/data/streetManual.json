@@ -1,0 +1,908 @@
+[
+  {
+    "archetypeId": "calgary_alley",
+    "variantId": "calgary_alley_manual_v1",
+    "familyId": "street_manual_calgary_alley",
+    "title": "Calgary Alley",
+    "widthM": 6.5,
+    "figure": "1",
+    "sourceSectionSha256": "b9ba4ffa9a4404a55cb75102a35be39c6ea52a07cd309b6134d53465af2a866c",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-alley/variant_0.png",
+    "curbed": false,
+    "section": {
+      "row_m": 6.5,
+      "figure": "1",
+      "targetSpeed_kmh": "—",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 0.6,
+      "zones": [
+        {
+          "type": "alley",
+          "width_m": 6.5,
+          "label": "TRAVELLED SURFACE"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_local",
+    "variantId": "calgary_local_manual_v1",
+    "familyId": "street_manual_calgary_local",
+    "title": "Calgary Local",
+    "widthM": 16,
+    "figure": "2",
+    "sourceSectionSha256": "b0abfce707b2a88dfc5f0eb2caeea6732b3905e3b1db7cca8ac0f60c5521a7a9",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-local/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 16,
+      "figure": "2",
+      "targetSpeed_kmh": "30 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 2.7,
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.8,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.65,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.25,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.25,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.65,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.8,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_local_industrial",
+    "variantId": "calgary_local_industrial_manual_v1",
+    "familyId": "street_manual_calgary_local_industrial",
+    "title": "Calgary Local – Industrial",
+    "widthM": 18,
+    "figure": "3",
+    "sourceSectionSha256": "f2b2bfe285e88ae00949b1423c3bf2975748bd05edaacd2fa5aaac544c523e1e",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-local-industrial/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 18,
+      "figure": "3",
+      "targetSpeed_kmh": "30 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 2,
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.6,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.6,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 4.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 4.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.6,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.6,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_local_high_activity",
+    "variantId": "calgary_local_high_activity_manual_v1",
+    "familyId": "street_manual_calgary_local_high_activity",
+    "title": "Calgary Local – High Activity",
+    "widthM": 21,
+    "figure": "4",
+    "sourceSectionSha256": "d6a13c2d905ad1ebd5f3fa21fc0a473140f4a771c13ece2ab1ccb11e9217729b",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-local-high-activity/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 21,
+      "figure": "4",
+      "targetSpeed_kmh": "30 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 2,
+      "zones": [
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.65,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "flex",
+          "width_m": 2.1,
+          "label": "FLEX ZONE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.25,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.25,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "flex",
+          "width_m": 2.1,
+          "label": "FLEX ZONE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.65,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_local_rural",
+    "variantId": "calgary_local_rural_manual_v1",
+    "familyId": "street_manual_calgary_local_rural",
+    "title": "Calgary Local – Rural",
+    "widthM": 20,
+    "figure": "5",
+    "sourceSectionSha256": "0ae68a8f0a56b4733d38f091787e1a304b922f69f5d8cdffc7367768a9149970",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-local-rural/variant_0.png",
+    "curbed": false,
+    "section": {
+      "row_m": 20,
+      "figure": "5",
+      "targetSpeed_kmh": "60 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 0,
+      "zones": [
+        {
+          "type": "ditch",
+          "width_m": 5.5,
+          "label": "DITCH / VARIES"
+        },
+        {
+          "type": "shoulder",
+          "width_m": 1,
+          "label": "SHOULDER"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "shoulder",
+          "width_m": 1,
+          "label": "SHOULDER"
+        },
+        {
+          "type": "ditch",
+          "width_m": 5.5,
+          "label": "DITCH / VARIES"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_collector",
+    "variantId": "calgary_collector_manual_v1",
+    "familyId": "street_manual_calgary_collector",
+    "title": "Calgary Collector",
+    "widthM": 20,
+    "figure": "6",
+    "sourceSectionSha256": "919f0755d0130664133751d29fdd56152a8f3c6325f4b2ac4ff191e96967842a",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-collector/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 20,
+      "carriageway_m": 6.6,
+      "targetSpeed_kmh": 40,
+      "figure": "6",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "symmetric": false,
+      "easement_m": 2.7,
+      "curbAndGutter_m": 0.25,
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "Setback"
+        },
+        {
+          "type": "multi_use_pathway",
+          "width_m": 3,
+          "label": "Multi-Use Pathway",
+          "surface": "asphalt",
+          "modes": [
+            "walking",
+            "bicycle"
+          ]
+        },
+        {
+          "type": "boulevard",
+          "width_m": 3.4,
+          "label": "Boulevard",
+          "planting": "large canopy tree",
+          "furniture": [
+            "street light"
+          ],
+          "growingMedium_m3": 20
+        },
+        {
+          "type": "travel_lane",
+          "width_m": 3.3,
+          "label": "Travel Lane"
+        },
+        {
+          "type": "travel_lane",
+          "width_m": 3.3,
+          "label": "Travel Lane"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 4.6,
+          "label": "Boulevard",
+          "planting": "large canopy tree",
+          "furniture": [
+            "street light"
+          ],
+          "growingMedium_m3": 20
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.8,
+          "label": "Sidewalk",
+          "surface": "concrete"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "Setback"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_collector_industrial",
+    "variantId": "calgary_collector_industrial_manual_v1",
+    "familyId": "street_manual_calgary_collector_industrial",
+    "title": "Calgary Collector – Industrial",
+    "widthM": 26,
+    "figure": "7",
+    "sourceSectionSha256": "7690bc27b2e0ad1f5c956ffb63373c24892f979e6bee8a1095cc7b2b7409d2ff",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-collector-industrial/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 26,
+      "figure": "7",
+      "targetSpeed_kmh": "40 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 2,
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MULTI-USE PATHWAY"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 4.2,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "turn",
+          "width_m": 4,
+          "label": "TWO-WAY TURN LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 3.7,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.8,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "setback",
+          "width_m": 2,
+          "label": "UTILITY STRIP"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_collector_high_activity",
+    "variantId": "calgary_collector_high_activity_manual_v1",
+    "familyId": "street_manual_calgary_collector_high_activity",
+    "title": "Calgary Collector – High Activity",
+    "widthM": 27,
+    "figure": "8",
+    "sourceSectionSha256": "1bbcdae89b8cb0b57c919c1cb42c9d7eb956e7dde5d43872f7fab5742b1f02c0",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-collector-high-activity/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 27,
+      "figure": "8",
+      "targetSpeed_kmh": "40 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 2,
+      "zones": [
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.45,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "cycle",
+          "width_m": 2.2,
+          "label": "RAISED CYCLE TRACK"
+        },
+        {
+          "type": "buffer",
+          "width_m": 0.75,
+          "label": "DOOR ZONE"
+        },
+        {
+          "type": "flex",
+          "width_m": 2.3,
+          "label": "FLEX ZONE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "flex",
+          "width_m": 2.3,
+          "label": "FLEX ZONE"
+        },
+        {
+          "type": "buffer",
+          "width_m": 0.75,
+          "label": "DOOR ZONE"
+        },
+        {
+          "type": "cycle",
+          "width_m": 2.2,
+          "label": "RAISED CYCLE TRACK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.45,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_arterial_4lane_50",
+    "variantId": "calgary_arterial_4lane_50_manual_v1",
+    "familyId": "street_manual_calgary_arterial_4lane_50",
+    "title": "Calgary Arterial – 4 Lanes Divided (50)",
+    "widthM": 33,
+    "figure": "9",
+    "sourceSectionSha256": "7c602e23c238da548a661baffdc3dee04d63322c408c733536a10b6dd3a939c6",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-arterial-4lane-50/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 33,
+      "figure": "9",
+      "targetSpeed_kmh": "50 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 0,
+      "zones": [
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MULTI-USE PATHWAY"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 3.7,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 6,
+          "label": "PLANTED MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 3.7,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MULTI-USE PATHWAY"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_arterial_4lane_70",
+    "variantId": "calgary_arterial_4lane_70_manual_v1",
+    "familyId": "street_manual_calgary_arterial_4lane_70",
+    "title": "Calgary Arterial – 4 Lanes Divided (70)",
+    "widthM": 36,
+    "figure": "10",
+    "sourceSectionSha256": "9af7e7efa496a3b27685c898f00b9361bd7bd8f01013d0c3e378ca599988de10",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-arterial-4lane-70/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 36,
+      "figure": "10",
+      "targetSpeed_kmh": "70 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 0,
+      "zones": [
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MULTI-USE PATHWAY"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 5,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 6,
+          "label": "PLANTED MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 5,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MULTI-USE PATHWAY"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_arterial_high_activity",
+    "variantId": "calgary_arterial_high_activity_manual_v1",
+    "familyId": "street_manual_calgary_arterial_high_activity",
+    "title": "Calgary Arterial – High Activity",
+    "widthM": 36,
+    "figure": "11",
+    "sourceSectionSha256": "ddd1666fedc7d409b40090dfb294f0ef231a90bf5e71df7b9021d31514bf966e",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-arterial-high-activity/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 36,
+      "figure": "11",
+      "targetSpeed_kmh": "50 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 0,
+      "zones": [
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.4,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "cycle",
+          "width_m": 2.2,
+          "label": "RAISED CYCLE TRACK"
+        },
+        {
+          "type": "buffer",
+          "width_m": 0.75,
+          "label": "DOOR ZONE"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.3,
+          "label": "PARKING"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 2.5,
+          "label": "MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.3,
+          "label": "PARKING"
+        },
+        {
+          "type": "buffer",
+          "width_m": 0.75,
+          "label": "DOOR ZONE"
+        },
+        {
+          "type": "cycle",
+          "width_m": 2.2,
+          "label": "RAISED CYCLE TRACK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.4,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_arterial_6lane",
+    "variantId": "calgary_arterial_6lane_manual_v1",
+    "familyId": "street_manual_calgary_arterial_6lane",
+    "title": "Calgary Arterial – 6 Lanes",
+    "widthM": 46,
+    "figure": "12",
+    "sourceSectionSha256": "908e94131535c2aa91dc145f52f9f133413c32c7f446d9c9dd29394aabbf9cf5",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-arterial-6lane/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 46,
+      "figure": "12",
+      "targetSpeed_kmh": "70 km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 0,
+      "zones": [
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MULTI-USE PATHWAY"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 5,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRANSIT / HOV"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 9,
+          "label": "PLANTED MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "TRANSIT / HOV"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 5,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MULTI-USE PATHWAY"
+        }
+      ]
+    }
+  },
+  {
+    "archetypeId": "calgary_skeletal",
+    "variantId": "calgary_skeletal_manual_v1",
+    "familyId": "street_manual_calgary_skeletal",
+    "title": "Calgary Skeletal",
+    "widthM": 60,
+    "figure": "13",
+    "sourceSectionSha256": "d494d8a6f5642ba94a675fe52fde5d1be72571d6d40eb98bf3c00d63ffd4bfa6",
+    "revision": "manual-section-v1",
+    "sourceStatus": "Recorded Draft 4.0 dimensions; separate cross-section drawing verification pending",
+    "manualSha256": "3d0e3e57431100a5dd487ed43522b6d8e67da354d43fb346c7cc013965943087",
+    "thumbnailUrl": "/archetypes/streets/calgary-skeletal/variant_0.png",
+    "curbed": false,
+    "section": {
+      "row_m": 60,
+      "figure": "13",
+      "targetSpeed_kmh": "80+ km/h",
+      "draftStatus": "Street Manual Draft 4.0",
+      "confidence": "exact",
+      "easement_m": 0,
+      "zones": [
+        {
+          "type": "ditch",
+          "width_m": 12.9,
+          "label": "CLEARZONE / NOISE ATTEN."
+        },
+        {
+          "type": "shoulder",
+          "width_m": 3,
+          "label": "SHOULDER"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "TRANSIT LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 6,
+          "label": "DEPRESSED MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "TRANSIT LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "TRAVEL LANE"
+        },
+        {
+          "type": "shoulder",
+          "width_m": 3,
+          "label": "SHOULDER"
+        },
+        {
+          "type": "ditch",
+          "width_m": 12.9,
+          "label": "CLEARZONE / NOISE ATTEN."
+        }
+      ]
+    }
+  }
+]

@@ -4,6 +4,7 @@ import expansion from '@/data/classroomExpansion.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
+import manualStreets from '@/data/streetManual.json';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
 export type PlaceAssetId = string;
@@ -173,7 +174,19 @@ const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
     road_standard_citation: 'City Prompt native-module teaching section' },
 }));
 
-export const STREET_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS;
+export const MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street => ({
+  id: street.variantId, kind: 'street', definitionVersion: 1, readiness: 'pilot',
+  reshapeMode: 'fixed_section_route', label: street.title,
+  description: `${street.widthM} m right of way | Street Manual draft | fixed lane and sidewalk widths`,
+  thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
+  calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.archetypeId }),
+  model: { variantId: street.variantId, revision: street.sourceSectionSha256, method: 'manual_metric_section_v1' },
+  properties: { road_archetype_id: street.archetypeId, road_selected_variant_id: street.variantId,
+    width: street.widthM, pick_place_street_section: street.variantId, pick_place_automatic_3d: true,
+    pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
+    road_standard_citation: `Recorded Street Manual Draft 4.0, Figure ${street.figure}` },
+}));
+export const STREET_ASSETS: StreetAsset[] = [...NATIVE_STREET_ASSETS, ...MANUAL_STREET_ASSETS];
 // Saved metric streets stay editable without adding them to the seven candidates.
 export const LEGACY_SECTION_STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET,
   additionalStreet('calgary_collector', 'Calgary collector street', 'Existing metric section', {groupId:'local',basis:'draft_manual'})];
@@ -217,7 +230,7 @@ function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
   };
 }
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[]].map(asset => {
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS].map(asset => {
   if (asset.kind==='object' && asset.zoneType==='road') {
     const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
     if(native)return {...native,calgaryGuide:asset.calgaryGuide};

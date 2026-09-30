@@ -13,7 +13,7 @@ it('lets a student choose a supported width and see the resulting type before sa
   const zone = { id: 'street', project_id: 'project', color: '#777', sort_order: 0, created_at: '', updated_at: '', zone_type: 'road', coordinates: bufferLineToPolygon(line, initial.sectionWidth), properties: { ...initial.properties, plan_centerline: line } } as SiteZone;
   const save = vi.fn(); render(<StreetDesignControls zone={zone} disabled={false} onSave={save} />);
   // Import and render the actual mixed roster: fixed fixtures must not crash route controls.
-  expect(CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway')).toHaveLength(7);
+  expect(CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway')).toHaveLength(STREET_ASSETS.length);
   const types = screen.getByLabelText('Street type') as HTMLSelectElement;
   expect(Array.from(types.options, option => option.value).sort()).toEqual(
     STREET_ASSETS.map(a => String(a.properties.road_archetype_id)).sort());

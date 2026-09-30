@@ -63,6 +63,11 @@ def public_realm_catalog_variants() -> dict[PublicRealmCatalogKind, dict[str, tu
         if parent not in normalized["street"]:
             raise RuntimeError(f"Native street parent is absent from catalogue: {parent}")
         normalized["street"][parent] = tuple(sorted(set((*normalized["street"][parent], variant))))
+    for row in json.loads((_DATA_DIR / "streetManual.json").read_text(encoding="utf-8")):
+        parent = row["archetypeId"]
+        if parent not in normalized["street"]:
+            raise RuntimeError(f"Unknown manual street parent: {parent}")
+        normalized["street"][parent] = tuple(sorted(set((*normalized["street"][parent], row["variantId"]))))
     return normalized
 
 

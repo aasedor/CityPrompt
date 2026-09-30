@@ -15,6 +15,7 @@ export const PICKER_CATEGORIES = [
   { id: 'community-parks', domain: 'park_plaza', label: 'Community parks', groups: ['small_park', 'neighbourhood', 'regional', 'space_other'] },
   { id: 'nature-trails', domain: 'park_plaza', label: 'Nature & trails', groups: ['nature', 'linear'] },
   { id: 'plazas-water', domain: 'park_plaza', label: 'Plazas & water', groups: ['plazas', 'water'] },
+  { id: 'street-manual', domain: 'street_pathway', label: 'Street Manual', groups: [] },
   { id: 'neighbourhood-streets', domain: 'street_pathway', label: 'Neighbourhood streets', groups: ['local', 'calming'] },
   { id: 'boulevards', domain: 'street_pathway', label: 'Boulevards & bridges', groups: ['collector', 'arterial', 'intersection', 'street_other'] },
   { id: 'walking-cycling', domain: 'street_pathway', label: 'Walking & cycling', groups: ['active'] },
@@ -56,6 +57,7 @@ const VARIANT_CATEGORY: Record<string, string> = {
 
 export function pickerCategory(choice: CanonicalChoice): string {
   const asset = choice.placements[0];
+  if (asset?.model.method === 'manual_metric_section_v1') return 'street-manual';
   const override = VARIANT_CATEGORY[asset?.model.variantId ?? ''];
   if (override) return override;
   const guideGroup = asset?.calgaryGuide.groupId ?? choice.option.calgaryGuide?.groupId ?? '';

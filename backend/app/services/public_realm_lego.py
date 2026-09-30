@@ -2038,6 +2038,29 @@ _CAPABILITIES: tuple[PublicRealmFamilyCapability, ...] = (
 )
 
 
+@lru_cache(maxsize=1)
+def manual_street_capabilities() -> tuple[PublicRealmFamilyCapability, ...]:
+    rows = json.loads((Path(__file__).resolve().parents[1] / "data" / "streetManual.json").read_text(encoding="utf-8"))
+    capabilities = []
+    for row in rows:
+        section = row["section"]
+        digest = hashlib.sha256(json.dumps(section, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest()
+        width = row["widthM"]
+        if digest != row["sourceSectionSha256"] or abs(sum(z["width_m"] for z in section["zones"]) - width) > 1e-6:
+            raise ValueError(f"Manual street source/width mismatch: {row['variantId']}")
+        capabilities.append(PublicRealmFamilyCapability(
+            family_id=row["familyId"], kind="street", title=row["title"], generator="street_section",
+            selections=(PublicRealmSelectionCapability(
+                archetype_id=row["archetypeId"], variant_id=row["variantId"], profile_id=row["variantId"],
+                profile_version=1, appearance_kit_id="calgary_contemporary_native", is_default=True,
+                component_set_ids=(f"manual_section:{digest}", "manual_streets_v1"),
+                compatibility=PublicRealmCompatibility(target_type="street_segment", nominal_row_width_m=width,
+                    min_row_width_m=width-.05, max_row_width_m=width+.05, min_length_m=width, max_length_m=2000),
+            ),),
+        ))
+    return tuple(capabilities)
+
+
 def public_realm_capability_fingerprint(
     capability: PublicRealmFamilyCapability,
 ) -> str:
@@ -2077,7 +2100,7 @@ def build_public_realm_capability_catalog(
         sorted(
             (
                 capability
-                for capability in (*_CAPABILITIES, *native_street_runtime_capabilities())
+                for capability in (*_CAPABILITIES, *native_street_runtime_capabilities(), *manual_street_capabilities())
                 if (allowed_kinds is None or capability.kind in allowed_kinds)
                 and (allowed_families is None or capability.family_id in allowed_families)
             ),

@@ -8,19 +8,13 @@
  */
 
 import nativeStreets from '@/data/nativeStreetPilots.json';
+import manualStreets from '@/data/streetManual.json';
 
 export const PUBLIC_REALM_STREET_FAMILY_VERSION = 1 as const;
-type NativeStreetFamilyId = 'street_native_student_main_street_v1' | 'street_native_student_market_street_v1'
-  | 'street_native_student_quiet_residential_street_v1' | 'street_native_student_planted_shared_lane_v1'
-  | 'street_native_brt_bus_rapid_transit_corridor_v0' | 'street_native_amsterdam_gracht_v1'
-  | 'street_native_landmark_signature_bridge_v2'
-  | 'street_native_student_cycle_avenue_v1' | 'street_native_student_green_alley_v1'
-  | 'street_native_student_school_street_v1'
-  | 'street_native_student_grass_tram_avenue_v1'
-  | 'street_native_student_vine_pergola_promenade_v1'
-  | 'street_native_student_grand_haussmann_boulevard_v1';
+type NativeStreetFamilyId = `street_native_${string}`;
 
 export type PublicRealmStreetFamilyId =
+  | `street_manual_${string}`
   | NativeStreetFamilyId
   | 'street_local_public_realm'
   | 'street_complete_main_18m'
@@ -279,19 +273,18 @@ function nativeFamily(id: NativeStreetFamilyId): PublicRealmStreetFamilyDefiniti
 }
 
 export const PUBLIC_REALM_STREET_FAMILIES: Readonly<Record<PublicRealmStreetFamilyId, PublicRealmStreetFamilyDefinition>> = Object.freeze({
-  street_native_student_main_street_v1: nativeFamily('street_native_student_main_street_v1'),
-  street_native_student_market_street_v1: nativeFamily('street_native_student_market_street_v1'),
-  street_native_student_quiet_residential_street_v1: nativeFamily('street_native_student_quiet_residential_street_v1'),
-  street_native_student_planted_shared_lane_v1: nativeFamily('street_native_student_planted_shared_lane_v1'),
-  street_native_brt_bus_rapid_transit_corridor_v0: nativeFamily('street_native_brt_bus_rapid_transit_corridor_v0'),
-  street_native_amsterdam_gracht_v1: nativeFamily('street_native_amsterdam_gracht_v1'),
-  street_native_landmark_signature_bridge_v2: nativeFamily('street_native_landmark_signature_bridge_v2'),
-  street_native_student_cycle_avenue_v1: nativeFamily('street_native_student_cycle_avenue_v1'),
-  street_native_student_green_alley_v1: nativeFamily('street_native_student_green_alley_v1'),
-  street_native_student_school_street_v1: nativeFamily('street_native_student_school_street_v1'),
-  street_native_student_grass_tram_avenue_v1: nativeFamily('street_native_student_grass_tram_avenue_v1'),
-  street_native_student_vine_pergola_promenade_v1: nativeFamily('street_native_student_vine_pergola_promenade_v1'),
-  street_native_student_grand_haussmann_boulevard_v1: nativeFamily('street_native_student_grand_haussmann_boulevard_v1'),
+  ...Object.fromEntries(manualStreets.map(street => [street.familyId, {
+    id: street.familyId as PublicRealmStreetFamilyId, familyVersion: 1 as const,
+    label: street.title, description: 'Recorded Calgary Street Manual draft section. Fixed metric widths.',
+    sourceArchetypeIds: [street.archetypeId], nativeRowM: street.widthM,
+    crossSection: [], defaultAppearanceKitId: 'calgary_contemporary_native' as const,
+    appearanceKitIds: ['calgary_contemporary_native' as const],
+    capabilities: ['metric_section', 'curved_route', 'shared_junctions', `section:${street.sourceSectionSha256}`],
+  }])),
+  ...Object.fromEntries(nativeStreets.map(street => {
+    const id: NativeStreetFamilyId = `street_native_${street.id}`;
+    return [id, nativeFamily(id)];
+  })),
   street_local_public_realm: {
     id: 'street_local_public_realm',
     familyVersion: 1,
@@ -378,6 +371,13 @@ const explicitSelections = (
 }));
 
 export const PUBLIC_REALM_STREET_SELECTIONS: readonly PublicRealmStreetSelectionDefinition[] = Object.freeze([
+  ...manualStreets.map(street => ({
+    familyId: street.familyId as PublicRealmStreetFamilyId, archetypeId: street.archetypeId,
+    variantId: street.variantId, appearanceKitId: 'calgary_contemporary_native' as const,
+    targetType: 'street_segment' as const, profileId: street.variantId,
+    rowWidthM: street.widthM, minLengthM: street.widthM, maxLengthM: 2000,
+    componentSetIds: [`manual_section:${street.sourceSectionSha256}`, 'manual_streets_v1'],
+  })),
   ...nativeStreets.map(street => ({
     familyId: `street_native_${street.id}` as NativeStreetFamilyId,
     archetypeId: street.sourceArchetypeId, variantId: street.id,
