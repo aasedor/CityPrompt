@@ -5,7 +5,7 @@ Building management API endpoints.
 import asyncio
 import uuid
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Body, Depends, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import Response
 from geoalchemy2.shape import to_shape
 from sqlalchemy import select
@@ -845,6 +845,7 @@ async def generate_photo_model(
     building_id: uuid.UUID,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
+    selected_reference_indices: list[int] | None = Body(default=None, embed=True),
 ):
     """Turn reviewed reference views into a private AI mesh preview."""
     building = await _editable_building(building_id, user, db)
@@ -855,6 +856,10 @@ async def generate_photo_model(
         isinstance(key, str) and key.startswith(expected_prefix + "reference-") for key in keys
     ):
         raise HTTPException(status_code=409, detail="Review the prepared views before generating a model.")
+    selected = list(range(len(keys))) if selected_reference_indices is None else selected_reference_indices
+    if not selected or len(set(selected)) != len(selected) or any(index < 0 or index >= len(keys) for index in selected):
+        raise HTTPException(status_code=422, detail="Select at least one valid reference view.")
+    selected_keys = [keys[index] for index in selected]
     if building.generation_status == "generating":
         raise HTTPException(status_code=409, detail="A 3D generation is already in progress.")
     _check_engine_available("meshy")
@@ -868,7 +873,8 @@ async def generate_photo_model(
         db, user, building.project_id, cost=PHOTO_MODEL_TOKEN_COST,
         stage="model", brief=prompt,
     )
-    state = {**state, "status": "model_generating", "error": None, "model_audit_id": str(audit_id)}
+    state = {**state, "status": "model_generating", "error": None,
+             "selected_reference_indices": selected, "model_audit_id": str(audit_id)}
     building.specifications = {**(building.specifications or {}), "photo_generation": state}
     building.generation_status = "generating"
     building.generation_prompt = f"[student photos] {str(state.get('brief', ''))[:500]}"
@@ -876,7 +882,7 @@ async def generate_photo_model(
     try:
         await queue_ai_generation_task(
             db, building, prompt, mode="multi_image", engine="meshy",
-            photo_reference_keys=keys, photo_batch_id=state["batch_id"],
+            photo_reference_keys=selected_keys, photo_batch_id=state["batch_id"],
             photo_audit_id=str(audit_id),
         )
     except Exception as exc:

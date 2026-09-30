@@ -1041,17 +1041,27 @@ def generate_3d_model_ai(
         if photo_reference_keys is not None:
             state = photo_state(building.specifications)
             prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/{photo_batch_id}/reference-"
+            all_keys = state.get("reference_keys") or []
+            all_hashes = state.get("reference_hashes") or []
+            selected_indices = state.get("selected_reference_indices", list(range(len(all_keys))))
+            selected_valid = (
+                isinstance(selected_indices, list) and 1 <= len(selected_indices) <= MAX_REFERENCE_VIEWS
+                and all(isinstance(index, int) and 0 <= index < len(all_keys) for index in selected_indices)
+                and len(set(selected_indices)) == len(selected_indices)
+            )
+            expected_selected_keys = [all_keys[index] for index in selected_indices] if selected_valid else []
             if (
                 mode != "multi_image" or state.get("batch_id") != photo_batch_id
                 or state.get("status") != "model_generating"
-                or photo_reference_keys != state.get("reference_keys")
-                or not MIN_REFERENCE_VIEWS <= len(photo_reference_keys) <= MAX_REFERENCE_VIEWS
+                or len(all_keys) != len(all_hashes) or not selected_valid
+                or photo_reference_keys != expected_selected_keys
                 or not all(isinstance(key, str) and key.startswith(prefix) for key in photo_reference_keys)
             ):
                 raise ValueError("Photo reference set was changed or is not ready")
             s3 = _get_s3_client()
             photo_image_urls = []
-            for key, expected_hash in zip(photo_reference_keys, state.get("reference_hashes") or []):
+            for index in selected_indices:
+                key, expected_hash = all_keys[index], all_hashes[index]
                 data = s3.get_object(Bucket=settings.s3_bucket_name, Key=key)["Body"].read()
                 if hashlib.sha256(data).hexdigest() != expected_hash:
                     raise ValueError("A reviewed reference view changed after preparation")

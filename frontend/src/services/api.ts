@@ -431,8 +431,10 @@ export const buildingsApi = {
     await api.post(`/api/v1/buildings/${id}/photo-references/resume`);
   },
 
-  generatePhotoModel: async (id: string): Promise<GenerationStatus> => {
-    const { data } = await api.post(`/api/v1/buildings/${id}/photo-model`);
+  generatePhotoModel: async (id: string, selectedReferenceIndices: number[]): Promise<GenerationStatus> => {
+    const { data } = await api.post(`/api/v1/buildings/${id}/photo-model`, {
+      selected_reference_indices: selectedReferenceIndices,
+    });
     return data;
   },
 

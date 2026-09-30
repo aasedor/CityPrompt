@@ -10,10 +10,12 @@ const mock = vi.hoisted(() => ({
   getTemplates: vi.fn(),
   getEngines: vi.fn(),
   getRenderPreviews: vi.fn(),
+  me: vi.fn(),
 }));
 
 vi.mock('@/services/api', () => ({
   buildingsApi: mock,
+  authApi: { me: mock.me },
   resolveApiFileUrl: (url: string) => url,
   subscribeAssetTicketChanges: () => () => {},
   getAssetTicketRevision: () => 0,
@@ -29,6 +31,7 @@ test('student reviews generated views before starting the paid model stage', asy
   mock.getTemplates.mockResolvedValue([]);
   mock.getEngines.mockResolvedValue([{ id: 'meshy', name: 'Meshy', available: true }]);
   mock.getRenderPreviews.mockResolvedValue([]);
+  mock.me.mockResolvedValue({ id: 'student-1', role: 'editor', render_credits: 950 });
   const idle = { status: 'idle', brief: '', reference_urls: [], source_count: 0, error: null,
     reference_token_cost: 50, model_token_cost: 150 };
   const ready = { ...idle, status: 'references_ready', reference_urls: ['/api/v1/files/a', '/api/v1/files/b', '/api/v1/files/c'] };
@@ -54,6 +57,8 @@ test('student reviews generated views before starting the paid model stage', asy
   await waitFor(() => expect(screen.getAllByAltText(/Generated building reference/)).toHaveLength(3));
   expect(mock.generatePhotoModel).not.toHaveBeenCalled();
   expect(screen.getByText(/Costs 150 City Prompt tokens/i)).toBeTruthy();
+  fireEvent.click(screen.getByLabelText('Use view 1'));
+  fireEvent.click(screen.getByLabelText('Use view 3'));
   fireEvent.click(screen.getByRole('button', { name: /Step 2 · Generate 3D model preview/i }));
-  await waitFor(() => expect(mock.generatePhotoModel).toHaveBeenCalledWith('building-1'));
+  await waitFor(() => expect(mock.generatePhotoModel).toHaveBeenCalledWith('building-1', [1]));
 });

@@ -1731,6 +1731,23 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
           && onAIGenerate && (
           <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
         )}
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area')
+          && zone.building_id && onAIGenerate
+          && (() => {
+            const linkedBuilding = buildings?.find((building) => building.id === zone.building_id);
+            const specs = linkedBuilding?.specifications as Record<string, unknown> | undefined;
+            const hasPhotoWorkflow = !!specs?.photo_generation;
+            const isUnmodelledCustomBuilding = !linkedBuilding?.model_url
+              && !props.development_archetype_id && !specs?.archetype_id;
+            return hasPhotoWorkflow || isUnmodelledCustomBuilding;
+          })() && (
+          <button
+            onClick={() => onAIGenerate(zone.building_id!, undefined, 'image')}
+            className="flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-primary-950 bg-white px-3 py-1.5 text-xs font-bold text-primary-950 hover:bg-primary-950/[0.04]"
+          >
+            <Upload size={12} /> Build from photos
+          </button>
+        )}
 
         {/* Build with LEGO modules ? modular assembly composer */}
         {onOpenBlockEditor
@@ -3812,10 +3829,9 @@ function AIGenerateZoneButton({ zone, onAIGenerate }: { zone: SiteZone; onAIGene
     setLoading(true);
     try {
       const building = await siteZonesApi.createBuildingFromZone(zone.id);
-      const prompt = composeZonePrompt(zone);
-      onAIGenerate(building.id, initialTab ? undefined : prompt, initialTab);
+      onAIGenerate(building.id, initialTab ? undefined : composeZonePrompt(zone), initialTab);
     } catch {
-      // Error will be shown in the AI modal
+      toast.error('Could not open building generation. Please try again.');
     } finally {
       setLoading(false);
     }

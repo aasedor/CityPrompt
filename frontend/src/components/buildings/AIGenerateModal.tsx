@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react';
 import { X, Sparkles, Image, LayoutGrid, Type, Loader2, CheckCircle, AlertCircle, Eye, Cpu } from 'lucide-react';
-import { buildingsApi, getAssetTicketRevision, resolveApiFileUrl, subscribeAssetTicketChanges, type PhotoReferenceStatus } from '@/services/api';
+import { authApi, buildingsApi, getAssetTicketRevision, resolveApiFileUrl, subscribeAssetTicketChanges, type PhotoReferenceStatus } from '@/services/api';
+import { useAuthStore } from '@/store';
 import { StyleSelector } from './StyleSelector';
 import type { AITemplate, GenerationStatus, GenerationEngine, RenderPreview } from '@/types';
 
@@ -49,9 +50,14 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
   const [photoBrief, setPhotoBrief] = useState('');
   const [photoStatus, setPhotoStatus] = useState<PhotoReferenceStatus | null>(null);
+  const [selectedPhotoReferences, setSelectedPhotoReferences] = useState<number[]>([]);
   const [photoBusy, setPhotoBusy] = useState(false);
   const resumedModelRef = useRef(false);
   useSyncExternalStore(subscribeAssetTicketChanges, getAssetTicketRevision);
+
+  const refreshTokenBalance = useCallback(() => {
+    authApi.me().then((user) => useAuthStore.getState().setUser(user)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const urls = photoFiles.map((file) => URL.createObjectURL(file));
@@ -85,6 +91,16 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
       onComplete();
     }
   }, [photoStatus?.status, onComplete]);
+
+  useEffect(() => {
+    if (photoStatus?.status && photoStatus.status !== 'idle') refreshTokenBalance();
+  }, [photoStatus?.status, refreshTokenBalance]);
+
+  useEffect(() => {
+    if (photoStatus?.status === 'references_ready' || photoStatus?.status === 'failed') {
+      setSelectedPhotoReferences(photoStatus.reference_urls.map((_, index) => index));
+    }
+  }, [photoStatus?.status, photoStatus?.reference_urls]);
 
   // Preview tab state
   const [previewPrompt, setPreviewPrompt] = useState('');
@@ -177,7 +193,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
     setGenerating(true);
     setGenStatus({ status: 'generating', progress: 0 });
     try {
-      await buildingsApi.generatePhotoModel(buildingId);
+      await buildingsApi.generatePhotoModel(buildingId, selectedPhotoReferences);
       setPhotoStatus(await buildingsApi.getPhotoReferences(buildingId));
       startPolling();
     } catch (err: unknown) {
@@ -185,7 +201,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
       const apiError = err as { response?: { data?: { detail?: string } }; message?: string };
       setError(apiError.response?.data?.detail || apiError.message || 'Could not start the 3D model');
     }
-  }, [buildingId, startPolling]);
+  }, [buildingId, selectedPhotoReferences, startPolling]);
 
   const handleResumePhotos = useCallback(async () => {
     setError(null);
@@ -605,15 +621,27 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
               {photoStatus && photoStatus.reference_urls.length >= 2 && (
                 <div className="rounded-xl border border-primary-950/[0.1] p-4">
                   <h3 className="text-sm font-bold text-primary-950">Review the generated views</h3>
-                  <p className="mt-1 text-xs text-primary-950/65">Check the roof, entrances, window pattern and materials. If they are wrong, upload different photos or revise your description before making a model.</p>
+                  <p className="mt-1 text-xs text-primary-950/65">Check the roof, entrances, window pattern and materials. Deselect any damaged or misleading view before making a model, or upload better photos to prepare a new set.</p>
                   <div className="mt-3 grid grid-cols-3 gap-2">
                     {photoStatus.reference_urls.map((url, index) => (
-                      <img key={url} src={resolveApiFileUrl(url)} alt={`Generated building reference ${index + 1}`} className="aspect-square w-full rounded border border-primary-950/[0.1] object-contain" />
+                      <label key={url} className="block text-xs text-primary-950/70">
+                        <img src={resolveApiFileUrl(url)} alt={`Generated building reference ${index + 1}`} className="aspect-square w-full rounded border border-primary-950/[0.1] object-contain" />
+                        <span className="mt-1 flex items-center gap-1">
+                          <input
+                            type="checkbox"
+                            checked={selectedPhotoReferences.includes(index)}
+                            onChange={() => setSelectedPhotoReferences((current) => current.includes(index)
+                              ? current.filter((item) => item !== index)
+                              : [...current, index].sort((a, b) => a - b))}
+                          />
+                          Use view {index + 1}
+                        </span>
+                      </label>
                     ))}
                   </div>
                   <button
                     onClick={handleGeneratePhotoModel}
-                    disabled={photoProviderUnavailable || generating || !['references_ready', 'failed'].includes(photoStatus.status)}
+                    disabled={photoProviderUnavailable || generating || selectedPhotoReferences.length === 0 || !['references_ready', 'failed'].includes(photoStatus.status)}
                     className="mt-3 w-full rounded-lg bg-primary-950 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
                   >
                     {photoStatus.status === 'model_generating' ? '3D model generating…' : photoStatus.status === 'completed' ? '3D model ready' : 'Step 2 · Generate 3D model preview'}

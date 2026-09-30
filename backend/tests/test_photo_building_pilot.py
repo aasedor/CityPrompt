@@ -126,7 +126,7 @@ async def test_photo_upload_saves_private_sources_then_queues_one_preparation(mo
 
 
 @pytest.mark.anyio
-async def test_photo_model_requires_server_issued_three_view_set(monkeypatch):
+async def test_photo_model_requires_server_issued_views_and_accepts_selected_subset(monkeypatch):
     building = SimpleNamespace(
         id=uuid.uuid4(), project_id=uuid.uuid4(), specifications={}, generation_status="idle"
     )
@@ -134,7 +134,7 @@ async def test_photo_model_requires_server_issued_three_view_set(monkeypatch):
     db = AsyncMock()
     monkeypatch.setattr(buildings_api, "_editable_building", AsyncMock(return_value=building))
     with pytest.raises(HTTPException) as exc:
-        await buildings_api.generate_photo_model(building.id, user, db)
+        await buildings_api.generate_photo_model(building.id, user, db, selected_reference_indices=None)
     assert exc.value.status_code == 409
 
     prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/abc/"
@@ -150,7 +150,7 @@ async def test_photo_model_requires_server_issued_three_view_set(monkeypatch):
         buildings_api, "queue_ai_generation_task",
         AsyncMock(side_effect=lambda *args, **kwargs: queued.append(kwargs)),
     )
-    result = await buildings_api.generate_photo_model(building.id, user, db)
+    result = await buildings_api.generate_photo_model(building.id, user, db, selected_reference_indices=None)
     assert result.status == "generating"
     assert queued[0]["mode"] == "multi_image"
     assert queued[0]["photo_batch_id"] == "abc"
@@ -158,9 +158,24 @@ async def test_photo_model_requires_server_issued_three_view_set(monkeypatch):
     assert building.specifications["photo_generation"]["status"] == "model_generating"
 
     building.generation_status = "idle"
+    building.specifications["photo_generation"]["status"] = "references_ready"
+    queued.clear()
+    await buildings_api.generate_photo_model(building.id, user, db, selected_reference_indices=[1])
+    assert queued[0]["photo_reference_keys"] == [f"{prefix}reference-1.jpg"]
+    assert building.specifications["photo_generation"]["selected_reference_indices"] == [1]
+
+    building.generation_status = "idle"
+    building.specifications["photo_generation"]["status"] = "references_ready"
+    for invalid_indices in ([], [3], [1, 1]):
+        with pytest.raises(HTTPException) as exc:
+            await buildings_api.generate_photo_model(
+                building.id, user, db, selected_reference_indices=invalid_indices,
+            )
+        assert exc.value.status_code == 422
+
     building.specifications["photo_generation"]["reference_keys"][0] = "projects/other/private.jpg"
     with pytest.raises(HTTPException) as exc:
-        await buildings_api.generate_photo_model(building.id, user, db)
+        await buildings_api.generate_photo_model(building.id, user, db, selected_reference_indices=None)
     assert exc.value.status_code == 409
 
 
@@ -323,6 +338,22 @@ def test_photo_model_worker_keeps_old_model_until_private_result_commits(monkeyp
     assert result["status"] == "completed"
     assert building.model_url.endswith("_photo_batch-1.glb")
     assert photo_state(building.specifications)["status"] == "completed"
+
+
+def test_photo_model_worker_uses_only_reviewed_selected_view(monkeypatch):
+    from app.generation.engine import GenerationResult
+
+    async def generate(**kwargs):
+        assert len(kwargs["image_urls"]) == 1
+        return GenerationResult(glb_data=b"selected-view-glb", engine="meshy", task_id="selected-task")
+
+    building, keys = _photo_worker(monkeypatch, generate)
+    building.specifications["photo_generation"]["selected_reference_indices"] = [1]
+    result = processing.generate_3d_model_ai.run(
+        str(building.id), "materials", mode="multi_image", engine="meshy",
+        photo_reference_keys=[keys[1]], photo_batch_id="batch-1",
+    )
+    assert result["status"] == "completed"
 
 
 def test_photo_model_worker_rejects_changed_reference_without_spending(monkeypatch):

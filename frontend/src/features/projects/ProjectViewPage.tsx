@@ -1583,6 +1583,20 @@ export function ProjectViewPage() {
           />
         )}
 
+        {aiGenerateBuildingId && (
+          <AIGenerateModal
+            buildingId={aiGenerateBuildingId}
+            buildingName={project.buildings?.find((building) => building.id === aiGenerateBuildingId)?.name}
+            initialPrompt={aiGenerateInitialPrompt}
+            initialTab={aiGenerateInitialTab}
+            onClose={() => setAiGenerateBuildingId(null)}
+            onComplete={() => {
+              queryClient.invalidateQueries({ queryKey: ['project', id] });
+              setAiGenerateBuildingId(null);
+            }}
+          />
+        )}
+
         {/* LEGO assembly composer — modular building preview + saved recipes */}
         {legoZone && (
           <LegoAssemblyPreview
