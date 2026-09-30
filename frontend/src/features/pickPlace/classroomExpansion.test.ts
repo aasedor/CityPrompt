@@ -6,9 +6,9 @@ import expansion from '@/data/classroomExpansion.json';
 
 describe('classroom park additions', () => {
   const parks = expansion.entries.filter(e => e.domain === 'park');
-  it('adds ten distinct park types without counting alternate layouts twice', () => {
-    expect(parks).toHaveLength(10);
-    expect(new Set(parks.map(e => e.archetype_id)).size).toBe(10);
+  it('adds thirteen distinct park types without counting alternate layouts twice', () => {
+    expect(parks).toHaveLength(13);
+    expect(new Set(parks.map(e => e.archetype_id)).size).toBe(13);
     expect(parks.every(e => e.completed === false && e.runtime_status === 'NOT TESTED')).toBe(true);
   });
   it('offers each added park through ordinary search with its exact native layout', () => {

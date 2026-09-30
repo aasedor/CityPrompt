@@ -101,7 +101,7 @@ def register(package, *, specs=None, thumbnail_name='renders/aerial.png'):
                  asset_review='agent_native_visual_and_geometry_pass', runtime_status='NOT TESTED', completed=False)
     catalogue_asset = dict(id=entry['placement_id'], kind='object', definitionVersion=2, readiness='pilot',
                           label=recipe['title'], description=spec['description'],
-                          thumbnail=thumbnail['url'], calgaryGuide={'groupId':'gardens','basis':'park_function'},
+                          thumbnail=thumbnail['url'], calgaryGuide={'groupId':spec.get('group','gardens'),'basis':'park_function'},
                           zoneType='green_space', reshapeMode='authored_footprint', width=ow, depth=od,
                           minWidth=ow, minDepth=od, maxSize=250,
                           model={'variantId':layout['variantId'],'revision':layout['contentRevision'],'method':'native_park_v2'},

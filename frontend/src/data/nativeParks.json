@@ -3073,6 +3073,279 @@
       "visualStatus": "agent_native_visual_review_pass",
       "runtimeStatus": "not_tested",
       "contentRevision": "6f8c9e3f3d67e18da2aef8c65719f5ba0eee9afe7a9613261e36705e8b9a166f"
+    },
+    {
+      "id": "student_urban_splash_plaza_v1--native-v1",
+      "archetypeId": "splash_pad_area",
+      "variantId": "student_urban_splash_plaza_v1",
+      "title": "Urban Splash-Play Plaza",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 32,
+      "depthM": 36,
+      "occupiedWidthM": 32.0,
+      "occupiedDepthM": 36.0,
+      "measuredBoundsM": [
+        [
+          -16.0,
+          -18.0,
+          -0.11999999731779099
+        ],
+        [
+          16.0,
+          18.0,
+          4.974999904632568
+        ]
+      ],
+      "sourceRecipeSha256": "5df6fa9c35be20048137c8c868745d3c74f9f6ece2c8c9ee3386001254480bd8",
+      "sourceRecipePath": "seed/classroom-parks/autumn-splash-v002/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "3222433e6a629bc5d3328901c96d270619623cb8b758ecda78cda57b5e6e9e6d",
+          "archivePath": "seed/classroom-parks/autumn-splash-v002/assembly-preview.glb",
+          "url": "/native-park-assets/3222433e6a629bc5d3328901c96d270619623cb8b758ecda78cda57b5e6e9e6d.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87",
+        "archivePath": "seed/classroom-parks/autumn-splash-v002/preview.png",
+        "url": "/native-park-assets/6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -18
+          ],
+          "b": [
+            0,
+            -11
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -11
+          ],
+          "b": [
+            9,
+            -11
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            9,
+            -11
+          ],
+          "b": [
+            9,
+            11
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -18.0,
+          "widthM": 2.7,
+          "arrivalY": -15
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "274f6fb01e74ae32a5c6764508f50b917866e8bf98b617a7e94aeb5ce2fe6838"
+    },
+    {
+      "id": "student_stone_labyrinth_garden_v1--native-v1",
+      "archetypeId": "labyrinth_meditation",
+      "variantId": "student_stone_labyrinth_garden_v1",
+      "title": "Stone Labyrinth Garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 34,
+      "depthM": 40,
+      "occupiedWidthM": 34.0,
+      "occupiedDepthM": 40.1,
+      "measuredBoundsM": [
+        [
+          -17.0,
+          -20.01261329650879,
+          -0.11999999731779099
+        ],
+        [
+          17.0,
+          20.0,
+          2.3769562244415283
+        ]
+      ],
+      "sourceRecipeSha256": "caace620b7741f95f85c28ea7e399a26b0d0e4cb9160b6a2985bcfd1c1500cc2",
+      "sourceRecipePath": "seed/classroom-parks/autumn-labyrinth-v005/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "af81f58831b58430d0e23608782bc3d62086a34b5335c303a03eccc0e54e8018",
+          "archivePath": "seed/classroom-parks/autumn-labyrinth-v005/assembly-preview.glb",
+          "url": "/native-park-assets/af81f58831b58430d0e23608782bc3d62086a34b5335c303a03eccc0e54e8018.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "50435ea553ca02f70e4ebba59c55cd918d79477ca385361714d0fe458337ddcb",
+        "archivePath": "seed/classroom-parks/autumn-labyrinth-v005/preview.png",
+        "url": "/native-park-assets/50435ea553ca02f70e4ebba59c55cd918d79477ca385361714d0fe458337ddcb.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            1.6,
+            -20
+          ],
+          "b": [
+            1.6,
+            -13
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 1.6,
+          "y": -20,
+          "widthM": 1.15,
+          "arrivalY": -17
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "c00bd66703707245b469c8c3d120470fc3d8b65aeb34e7918d45ca7e15145f07"
+    },
+    {
+      "id": "student_sheltered_dog_park_v1--native-v1",
+      "archetypeId": "dog_park",
+      "variantId": "student_sheltered_dog_park_v1",
+      "title": "Sheltered Dog Park",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 36,
+      "depthM": 42,
+      "occupiedWidthM": 36.1,
+      "occupiedDepthM": 42.0,
+      "measuredBoundsM": [
+        [
+          -18.044830322265625,
+          -21.0,
+          -0.15000000596046448
+        ],
+        [
+          18.0,
+          21.0,
+          3.5296030044555664
+        ]
+      ],
+      "sourceRecipeSha256": "5b84c4abe6c39a239ea8c0d475c4fa2b9a8a61cd00ec786618686ef0f3da8294",
+      "sourceRecipePath": "seed/classroom-parks/autumn-dog-v001/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "d164bee7af12da298a0e507122bd080143a73346dd0521955715e41a6063515e",
+          "archivePath": "seed/classroom-parks/autumn-dog-v001/assembly-preview.glb",
+          "url": "/native-park-assets/d164bee7af12da298a0e507122bd080143a73346dd0521955715e41a6063515e.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "bbdf27c4d00e171e6ff704417ac8861067dd831dc9862ffeb68bae0aeea93b61",
+        "archivePath": "seed/classroom-parks/autumn-dog-v001/preview.png",
+        "url": "/native-park-assets/bbdf27c4d00e171e6ff704417ac8861067dd831dc9862ffeb68bae0aeea93b61.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -21
+          ],
+          "b": [
+            0,
+            14
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -12,
+            0
+          ],
+          "b": [
+            12,
+            0
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -21.0,
+          "widthM": 2.7,
+          "arrivalY": -17
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "2e4db53b86fef7e6451cbfcb77b8b169f4b788fe0e53a974e259ad7b84e54f0c"
     }
   ]
 }

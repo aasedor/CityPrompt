@@ -359,6 +359,42 @@
       "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Urban Splash-Play Plaza",
+      "archetype_id": "splash_pad_area",
+      "variant_id": "student_urban_splash_plaza_v1",
+      "version": "autumn-splash-v002",
+      "placement_id": "native-park:student_urban_splash_plaza_v1--native-v1",
+      "sha256": "3222433e6a629bc5d3328901c96d270619623cb8b758ecda78cda57b5e6e9e6d",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Stone Labyrinth Garden",
+      "archetype_id": "labyrinth_meditation",
+      "variant_id": "student_stone_labyrinth_garden_v1",
+      "version": "autumn-labyrinth-v005",
+      "placement_id": "native-park:student_stone_labyrinth_garden_v1--native-v1",
+      "sha256": "af81f58831b58430d0e23608782bc3d62086a34b5335c303a03eccc0e54e8018",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Sheltered Dog Park",
+      "archetype_id": "dog_park",
+      "variant_id": "student_sheltered_dog_park_v1",
+      "version": "autumn-dog-v001",
+      "placement_id": "native-park:student_sheltered_dog_park_v1--native-v1",
+      "sha256": "d164bee7af12da298a0e507122bd080143a73346dd0521955715e41a6063515e",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -1510,6 +1546,102 @@
         "floor_count": 3,
         "native_plot_axes": true,
         "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_urban_splash_plaza_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Urban Splash-Play Plaza",
+      "description": "Colourful flowing paving, flush jets, supported tipping bucket and planted seating edges",
+      "thumbnail": "/native-park-assets/6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 32.0,
+      "depth": 36.0,
+      "minWidth": 32.0,
+      "minDepth": 36.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_urban_splash_plaza_v1",
+        "revision": "274f6fb01e74ae32a5c6764508f50b917866e8bf98b617a7e94aeb5ce2fe6838",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "splash_pad_area",
+        "green_space_selected_variant_id": "student_urban_splash_plaza_v1",
+        "green_space_native_layout_id": "student_urban_splash_plaza_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_stone_labyrinth_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Stone Labyrinth Garden",
+      "description": "Concentric connected limestone walk, quiet central stone seat, clipped hedges and layered enclosed garden",
+      "thumbnail": "/native-park-assets/50435ea553ca02f70e4ebba59c55cd918d79477ca385361714d0fe458337ddcb.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 34.0,
+      "depth": 40.1,
+      "minWidth": 34.0,
+      "minDepth": 40.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_stone_labyrinth_garden_v1",
+        "revision": "c00bd66703707245b469c8c3d120470fc3d8b65aeb34e7918d45ca7e15145f07",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "labyrinth_meditation",
+        "green_space_selected_variant_id": "student_stone_labyrinth_garden_v1",
+        "green_space_native_layout_id": "student_stone_labyrinth_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_sheltered_dog_park_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Sheltered Dog Park",
+      "description": "Four turf rooms, three timber shade shelters, gravel circulation, timber rails, meadow edges and double-gate entry",
+      "thumbnail": "/native-park-assets/bbdf27c4d00e171e6ff704417ac8861067dd831dc9862ffeb68bae0aeea93b61.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 36.1,
+      "depth": 42.0,
+      "minWidth": 36.1,
+      "minDepth": 42.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_sheltered_dog_park_v1",
+        "revision": "2e4db53b86fef7e6451cbfcb77b8b169f4b788fe0e53a974e259ad7b84e54f0c",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "dog_park",
+        "green_space_selected_variant_id": "student_sheltered_dog_park_v1",
+        "green_space_native_layout_id": "student_sheltered_dog_park_v1--native-v1",
         "pick_place_automatic_3d": true
       }
     }

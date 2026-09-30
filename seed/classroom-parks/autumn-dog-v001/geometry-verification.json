@@ -1,0 +1,24 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "assembly_sha256": "d164bee7af12da298a0e507122bd080143a73346dd0521955715e41a6063515e",
+  "bounds_m": [
+    [
+      -18.044830322265625,
+      -21.0,
+      -0.15000000596046448
+    ],
+    [
+      18.0,
+      21.0,
+      3.5296030044555664
+    ]
+  ],
+  "triangles": 536030,
+  "dependency_closure": "embedded GLB",
+  "runtime_status": "NOT TESTED",
+  "visual_review": "pending",
+  "not_claimed": [
+    "browser behaviour",
+    "human approval"
+  ]
+}

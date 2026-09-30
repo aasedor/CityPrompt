@@ -1,0 +1,48 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "model_sha256": "d164bee7af12da298a0e507122bd080143a73346dd0521955715e41a6063515e",
+  "runtime_status": "NOT TESTED",
+  "completed": false,
+  "notes": [
+    "Four turf rooms, three supported timber shelters, gravel circulation, grounded rocks, native planting, benches and entry vestibule. Gate leaves shown open; no animal simulation.",
+    "Compared source front/oblique/top; inspected actual exported GLB aerial, top, detail and 1.65m walking views. Native metric park; no browser acceptance implied."
+  ],
+  "inspected_files": [
+    {
+      "path": "renders\\aerial.png",
+      "sha256": "6c14fad941a7ff2d1f92d81a55d008142916073261971547355a95765442a196"
+    },
+    {
+      "path": "renders\\detail.png",
+      "sha256": "2294b7f715363056925917b13e9deab1a4170fae7754d13226daea5dc551fe23"
+    },
+    {
+      "path": "renders\\top.png",
+      "sha256": "c8e4e6959fd1cb118174968393a5de80fc285f85f0f93b549228491bcb64722f"
+    },
+    {
+      "path": "renders\\walk.png",
+      "sha256": "8cc396746899c5d095540fc74263adb48214d573a78170f93d236201bbda53ae"
+    }
+  ],
+  "source_references": [
+    {
+      "role": "front",
+      "path": "frontend\\public\\archetypes\\openspaces\\dog-park\\variant_0.png",
+      "bytes": 1361434,
+      "sha256": "bbdf27c4d00e171e6ff704417ac8861067dd831dc9862ffeb68bae0aeea93b61"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend\\public\\archetypes\\openspaces\\dog-park\\variant_0_angle_60.jpg",
+      "bytes": 912317,
+      "sha256": "d9a22c97c95219f855358e55e2fa5a3248e5ef7a2e1aaa4966400bbbad83acf1"
+    },
+    {
+      "role": "top",
+      "path": "frontend\\public\\archetypes\\openspaces\\dog-park\\variant_0_angle_90.jpg",
+      "bytes": 931393,
+      "sha256": "c1070336a7555afdc65576fbe9a5a80272be56c4c624a140d027abf2a5123d4d"
+    }
+  ]
+}
