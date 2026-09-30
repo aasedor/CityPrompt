@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
 import { CATALOGUE_ASSETS, STREET_ASSETS, type StreetAsset } from './assetRegistry';
-import { CANONICAL_CHOICES, CLASSROOM_CHOICES, choiceMatchesGroup, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
-import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
+import { CANONICAL_CHOICES, CLASSROOM_CHOICES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
+import { availablePickerCategories, pickerCategory } from './pickerCategories';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
 import { UserGeneratedBuildings } from './UserGeneratedBuildings';
@@ -38,8 +38,9 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
   const chooseSection = (id: Section) => { setSection(id); setGroupId(''); setQuery(''); setLimit(12); };
   const choices = collection === 'starter' ? CLASSROOM_CHOICES : CANONICAL_CHOICES;
-  const groups = CALGARY_GROUPS.filter(group => group.domain === section && choices.some(c => c.domain === section && choiceMatchesGroup(c, group.id)));
-  const matchingAssets = filterCanonicalChoices(section, query, groupId, choices);
+  const groups = availablePickerCategories(section, choices);
+  const matchingAssets = filterCanonicalChoices(section, query, '', choices)
+    .filter(choice => !groupId || pickerCategory(choice) === groupId);
   const fixedStreetCount = section === 'street_pathway'
     ? matchingAssets.filter(choice => choice.placements[0]?.kind !== 'street').length : 0;
   const assets = section === 'street_pathway' && !showFixedStreetSegments
@@ -107,7 +108,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
           {userGenerated && onPickGenerated ? <UserGeneratedBuildings query={query} onPick={model => { close(); onPickGenerated(model); }} /> : <>
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}`} choice={choice}
-              initialVariantId={preferredCatalogueVariant(choice, query, groupId)}
+              initialVariantId={preferredCatalogueVariant(choice, query)}
               selected={selected} activeStreetVariant={activeStreetVariant}
               onPlacement={asset => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}
               onDraw={selection => { close(); onPickCanonical(selection); }} />)}

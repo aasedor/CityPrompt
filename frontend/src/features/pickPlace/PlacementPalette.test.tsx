@@ -5,6 +5,21 @@ import { PlacementPalette } from './PlacementPalette';
 import * as catalogue from './canonicalCatalogue';
 
 describe('student asset browsing', () => {
+  it('filters towers and transit independently, and resets categories on a section change', () => {
+    const onPick=vi.fn();
+    render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={onPick} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', {name:'Buildings'}));
+    expect(screen.getByRole('option',{name:'Low density'})).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Object category'),{target:{value:'towers'}});
+    expect(screen.getByRole('button',{name:/Blue glass office tower.*Choose & place/})).toBeInTheDocument();
+    expect(screen.queryByRole('button',{name:/Side-by-side duplex.*Choose & place/})).not.toBeInTheDocument();
+    expect(onPick).not.toHaveBeenCalled();
+    fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
+    expect(screen.getByLabelText('Object category')).toHaveValue('');
+    fireEvent.change(screen.getByLabelText('Object category'),{target:{value:'transit'}});
+    expect(screen.getByRole('button',{name:/Garden Tram Avenue.*Choose & draw route/})).toBeInTheDocument();
+    expect(screen.queryByRole('button',{name:/London Cobbled Mews.*Choose & draw route/})).not.toBeInTheDocument();
+  });
   it('shows the current exact catalogue counts and pages the building and park choices', () => {
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
     expect(catalogue.CLASSROOM_CHOICES).toHaveLength(63);
