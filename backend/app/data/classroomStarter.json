@@ -102,6 +102,30 @@
       "variantId": "student_grand_haussmann_boulevard_v1",
       "revision": "ad63425c5e2c4de12f1d961df5d5f61ff514aad9cae299eaf1e64a71d7f9df3c",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "london_mews_lane",
+      "variantId": "student_london_cobbled_mews_v1",
+      "revision": "143c3856c4008aa41439d50cf59b332178a97b36635f85453b1f1f13a94d1bc8",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "vancouver_cherry_blossom_street",
+      "variantId": "student_cherry_blossom_street_v1",
+      "revision": "f66b0d19aefdcdf9607c68dd73574fd9d7e78896f6aa53dfe17d83ecd5427384",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "barcelona_passeig",
+      "variantId": "student_barcelona_shaded_promenade_v1",
+      "revision": "33a5ba4c660e85527e85d60527088407fab69c67d5b774ce17f8f4d20446f1ec",
+      "status": "local-pilot-runtime-pending"
     }
   ]
 }

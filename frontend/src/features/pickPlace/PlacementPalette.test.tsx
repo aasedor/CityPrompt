@@ -7,10 +7,10 @@ import * as catalogue from './canonicalCatalogue';
 describe('student asset browsing', () => {
   it('shows the current exact catalogue counts and pages the building and park choices', () => {
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
-    expect(catalogue.CLASSROOM_CHOICES).toHaveLength(60);
+    expect(catalogue.CLASSROOM_CHOICES).toHaveLength(63);
     fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
     expect(screen.getByLabelText('Catalogue collection')).toHaveValue('starter');
-    expect(screen.getByText(/60 exact choices: 26 buildings, 21 parks, 13 streets/)).toBeInTheDocument();
+    expect(screen.getByText(/63 exact choices: 26 buildings, 21 parks, 16 streets/)).toBeInTheDocument();
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
     expect(screen.getAllByRole('article')).toHaveLength(24);

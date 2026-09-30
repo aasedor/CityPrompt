@@ -100,3 +100,23 @@ def test_staging_requires_explicit_replacement_for_changed_candidate_metadata(tm
         stage([package], public, manifest, dry_run=True)
     stage([package], public, manifest, dry_run=False, replace=True)
     assert json.loads(manifest.read_text())[0]["title"] == "Revised candidate"
+
+
+def test_shade_tree_retains_its_own_exact_well_pair(tmp_path):
+    package = _package(tmp_path / 'package')
+    path = package / 'recipe.json'
+    recipe = json.loads(path.read_text())
+    for kind in ('shade_tree', 'tree_well_grate'):
+        data = kind.encode()
+        (package / 'modules' / (kind + '.glb')).write_bytes(data)
+        recipe['modules'][kind] = dict(path=kind+'.glb', bytes=len(data), sha256=_sha(data))
+        recipe['placements'].append(dict(kind=kind, x=-3, y=0))
+    recipe['tree_wells'] = [dict(x=-3,y=0,width=1,depth=1,style='grate',tree_kind='shade_tree')]
+    path.write_text(json.dumps(recipe))
+    row, files = inspect_pilot(package)
+    assert row['treeWells'][0]['tree_kind'] == 'shade_tree'
+    assert 'shade_tree.glb' in files and 'grove_tree.glb' not in files
+    recipe['placements'].pop()
+    path.write_text(json.dumps(recipe))
+    with pytest.raises(ValueError, match='exact tree/well pair'):
+        inspect_pilot(package)

@@ -1,0 +1,20 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "model_sha256": "793881f227523f99179fbbd339ed9c44fe994eddbef043d4392b4723ea313ab3",
+  "reviewer": "Astra",
+  "views": [
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/detail.png",
+    "renders/walk.png"
+  ],
+  "scope": "Actual exported GLB reimported into Blender, four views inspected. Source photographs inspected. Runtime acceptance NOT TESTED.",
+  "findings": [
+    "No visible floating furniture, blocked central circulation or duplicate ground. Native materials and metric dimensions retained."
+  ],
+  "limitations": [
+    "Prepared level terrain only. Browser route performance and bends pending."
+  ],
+  "completed": false,
+  "runtime_status": "NOT TESTED"
+}

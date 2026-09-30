@@ -73,7 +73,8 @@ def inspect_pilot(package: Path) -> tuple[dict, dict[str, bytes]]:
     module_names = {item["kind"] for item in recipe["placements"]}
     wells = recipe["tree_wells"]
     if wells:
-        module_names.update({"grove_tree", "tree_well_grate"})
+        module_names.update({item['tree_kind'] for item in wells})
+        module_names.add('tree_well_grate')
     if module_names - set(recipe["modules"]):
         raise ValueError("A placed component has no native module")
     modules = {
@@ -91,13 +92,13 @@ def inspect_pilot(package: Path) -> tuple[dict, dict[str, bytes]]:
         placements.append(pose)
     tree_wells = []
     for item in wells:
-        if item.get("style") != "grate" or item.get("tree_kind") != "grove_tree":
+        if item.get("style") != "grate" or item.get("tree_kind") not in ('grove_tree', 'shade_tree', 'ornamental_tree'):
             raise ValueError("Unrecognized hardscape tree/well pair")
         if not _finite(*(item.get(key) for key in ("x", "y", "width", "depth"))):
             raise ValueError("Invalid tree well")
         if item["width"] <= 0 or item["depth"] <= 0 or abs(item["x"]) + item["width"] / 2 > width / 2:
             raise ValueError("A tree well leaves the section")
-        for kind in ("grove_tree", "tree_well_grate"):
+        for kind in (item['tree_kind'], "tree_well_grate"):
             if not any(pose["kind"] == kind and abs(pose["x"] - item["x"]) < 1e-5
                        and abs(pose["y"] - item["y"]) < 1e-5 for pose in placements):
                 raise ValueError("Every hardscape tree needs its exact tree/well pair")

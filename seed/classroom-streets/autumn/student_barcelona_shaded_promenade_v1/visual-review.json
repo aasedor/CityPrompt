@@ -1,0 +1,21 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "model_sha256": "b62da7c2954673a45891069b44e1395087ea53db64677fb4e37c9c7a05c4a360",
+  "reviewer": "Astra",
+  "views": [
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/detail.png",
+    "renders/walk.png"
+  ],
+  "scope": "Actual exported GLB reimported into Blender, four views inspected. Source photographs inspected. Runtime acceptance NOT TESTED.",
+  "findings": [
+    "No visible floating furniture, blocked central circulation or duplicate ground. Native materials and metric dimensions retained."
+  ],
+  "limitations": [
+    "Prepared level terrain only. Browser route performance and bends pending.",
+    "Barcelona stone joints are rectangular rather than source hexagons; reference-informed interpretation, not an exact paving replica."
+  ],
+  "completed": false,
+  "runtime_status": "NOT TESTED"
+}

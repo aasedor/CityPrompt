@@ -24043,5 +24043,1419 @@
       }
     },
     "programSha256": "aab4d77284e45e773a03240c3d756bc0b084967f23773fe84e016c1803fbde45"
+  },
+  {
+    "id": "student_london_cobbled_mews_v1",
+    "sourceArchetypeId": "london_mews_lane",
+    "title": "London Cobbled Mews",
+    "status": "candidate",
+    "sourceRecipeSha256": "143c3856c4008aa41439d50cf59b332178a97b36635f85453b1f1f13a94d1bc8",
+    "sourceAssemblySha256": "793881f227523f99179fbbd339ed9c44fe994eddbef043d4392b4723ea313ab3",
+    "referenceSha256": "04c3f1daa1f434fb2057548c9c5d3dd018572b9a0d5878d6dfc93399cdcdd24e",
+    "widthM": 8,
+    "fixtureLengthM": 30,
+    "routeAxis": "local_y",
+    "junctionSurface": "cobble",
+    "sections": [
+      {
+        "name": "shared_cobbled_lane",
+        "x": 0,
+        "width": 8,
+        "material": "paving"
+      }
+    ],
+    "placements": [
+      {
+        "kind": "autumn_flower_planter",
+        "x": -3.25,
+        "y": -11,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_flower_planter",
+        "x": -3.25,
+        "y": 0,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_flower_planter",
+        "x": -3.25,
+        "y": 11,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_planted_trellis",
+        "x": -3.3,
+        "y": -6,
+        "z": 0,
+        "yaw": -1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_planted_trellis",
+        "x": -3.3,
+        "y": 6,
+        "z": 0,
+        "yaw": -1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -3.3,
+        "y": -13,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_flower_planter",
+        "x": 3.25,
+        "y": -11,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_flower_planter",
+        "x": 3.25,
+        "y": 0,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_flower_planter",
+        "x": 3.25,
+        "y": 11,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_planted_trellis",
+        "x": 3.3,
+        "y": -6,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_planted_trellis",
+        "x": 3.3,
+        "y": 6,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 3.3,
+        "y": 13,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "bench",
+        "x": 3.15,
+        "y": 2.5,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      }
+    ],
+    "treeWells": [],
+    "modules": {
+      "autumn_flower_planter": {
+        "sha256": "2706b4ca3aa5aea161aef750c203ba7d3ae10dc9942821b7e1ec7a2ed480ad5c",
+        "bytes": 560228,
+        "url": "/street-kits/pilots/student_london_cobbled_mews_v1/autumn_flower_planter.glb"
+      },
+      "autumn_planted_trellis": {
+        "sha256": "31079c9ab86bd7828e76a3b8d8cedb1f22cca2d4d2c4636f835b894d4fd0317d",
+        "bytes": 1861788,
+        "url": "/street-kits/pilots/student_london_cobbled_mews_v1/autumn_planted_trellis.glb"
+      },
+      "bench": {
+        "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+        "bytes": 34024,
+        "url": "/street-kits/pilots/student_london_cobbled_mews_v1/bench.glb"
+      },
+      "heritage_lantern": {
+        "sha256": "4c5e47e738b993fc0bb0f0d24083d7940e7fc4e1a50e4951e1b9ee380ef315ee",
+        "bytes": 17100,
+        "url": "/street-kits/pilots/student_london_cobbled_mews_v1/heritage_lantern.glb"
+      }
+    },
+    "thumbnailUrl": "/street-kits/pilots/student_london_cobbled_mews_v1/reference.png",
+    "program": {
+      "schemaVersion": 1,
+      "adapter": "showcase-street-v1",
+      "surfaceRegions": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 8,
+          "depth": 30,
+          "material": "paving"
+        }
+      ],
+      "details": [
+        {
+          "x": -2.15,
+          "y": 0,
+          "width": 0.12,
+          "depth": 30,
+          "z": 0.007,
+          "height": 0.014,
+          "material": "edge"
+        },
+        {
+          "x": 2.15,
+          "y": 0,
+          "width": 0.12,
+          "depth": 30,
+          "z": 0.007,
+          "height": 0.014,
+          "material": "edge"
+        }
+      ],
+      "paving": "brick",
+      "pavingModuleM": [
+        0.3,
+        0.18
+      ],
+      "minLengthM": 30,
+      "maxLengthM": 480,
+      "preparedLevelOnly": true,
+      "baseLiftM": 0.025,
+      "palette": {
+        "paving": [
+          0.5299999713897705,
+          0.5,
+          0.4300000071525574
+        ],
+        "edge": [
+          0.3499999940395355,
+          0.3400000035762787,
+          0.28999999165534973
+        ],
+        "grass": [
+          0.20999999344348907,
+          0.2800000011920929,
+          0.10499999672174454
+        ],
+        "soil": [
+          0.10499999672174454,
+          0.0729999989271164,
+          0.04500000178813934
+        ],
+        "metal": [
+          0.03500000014901161,
+          0.04899999871850014,
+          0.04500000178813934
+        ],
+        "timber": [
+          0.3199999928474426,
+          0.23499999940395355,
+          0.15000000596046448
+        ],
+        "court": [
+          0.08500000089406967,
+          0.23499999940395355,
+          0.24500000476837158
+        ],
+        "runoff": [
+          0.1899999976158142,
+          0.2800000011920929,
+          0.2549999952316284
+        ],
+        "kitchen": [
+          0.2800000011920929,
+          0.38999998569488525,
+          0.3400000035762787
+        ],
+        "paint": [
+          0.8600000143051147,
+          0.8600000143051147,
+          0.7699999809265137
+        ],
+        "net": [
+          0.07500000298023224,
+          0.09000000357627869,
+          0.07999999821186066
+        ],
+        "cycle": [
+          0.33000001311302185,
+          0.14499999582767487,
+          0.08500000089406967
+        ],
+        "asphalt": [
+          0.10000000149011612,
+          0.11500000208616257,
+          0.10999999940395355
+        ],
+        "flower": [
+          0.3499999940395355,
+          0.23000000417232513,
+          0.3799999952316284
+        ],
+        "cream": [
+          0.7900000214576721,
+          0.7400000095367432,
+          0.6200000047683716
+        ],
+        "lamp_lens": [
+          0.8999999761581421,
+          0.8700000047683716,
+          0.6600000262260437
+        ],
+        "sage": [
+          0.10000000149011612,
+          0.20000000298023224,
+          0.1599999964237213
+        ],
+        "canvas": [
+          0.7400000095367432,
+          0.6800000071525574,
+          0.5400000214576721
+        ],
+        "canvas_shade": [
+          0.6200000047683716,
+          0.5699999928474426,
+          0.4399999976158142
+        ],
+        "warm_concrete": [
+          0.5199999809265137,
+          0.49000000953674316,
+          0.4000000059604645
+        ],
+        "water": [
+          0.10000000149011612,
+          0.3199999928474426,
+          0.3400000035762787
+        ],
+        "glass": [
+          0.49000000953674316,
+          0.6800000071525574,
+          0.6800000071525574
+        ],
+        "terracotta": [
+          0.49000000953674316,
+          0.20999999344348907,
+          0.10000000149011612
+        ],
+        "vine": [
+          0.12999999523162842,
+          0.23999999463558197,
+          0.06499999761581421
+        ],
+        "produce": [
+          0.41999998688697815,
+          0.18000000715255737,
+          0.05999999865889549
+        ],
+        "paving.tile0": [
+          0.311599999666214,
+          0.295199990272522,
+          0.2542000114917755
+        ],
+        "paving.tile1": [
+          0.3571999967098236,
+          0.3384000062942505,
+          0.2913999855518341
+        ],
+        "paving.tile2": [
+          0.3952000141143799,
+          0.37439998984336853,
+          0.3224000036716461
+        ],
+        "paving.tile3": [
+          0.4293999969959259,
+          0.4068000018596649,
+          0.35030001401901245
+        ]
+      }
+    },
+    "programSha256": "9cbf7b25a344d7212191e0f9b0dec1adb8d1931db7b9776dc75240f4c9a7343a"
+  },
+  {
+    "id": "student_cherry_blossom_street_v1",
+    "sourceArchetypeId": "vancouver_cherry_blossom_street",
+    "title": "Cherry Blossom Neighbourhood Street",
+    "status": "candidate",
+    "sourceRecipeSha256": "f66b0d19aefdcdf9607c68dd73574fd9d7e78896f6aa53dfe17d83ecd5427384",
+    "sourceAssemblySha256": "e81a9428bbfb00a002a25fe9d3a6eaf1b6a339e3344d928d23583cf41dee237e",
+    "referenceSha256": "90b8d7e405db85e1de8ccfa535fc251e4b5cb0488843be28c45ddae297fc0dac",
+    "widthM": 20,
+    "fixtureLengthM": 40,
+    "routeAxis": "local_y",
+    "junctionSurface": "pavers",
+    "sections": [
+      {
+        "name": "west_walk",
+        "x": -8.5,
+        "width": 3,
+        "material": "paving"
+      },
+      {
+        "name": "west_verge",
+        "x": -6,
+        "width": 2,
+        "material": "grass"
+      },
+      {
+        "name": "road",
+        "x": 0,
+        "width": 10,
+        "material": "asphalt"
+      },
+      {
+        "name": "east_verge",
+        "x": 6,
+        "width": 2,
+        "material": "grass"
+      },
+      {
+        "name": "east_walk",
+        "x": 8.5,
+        "width": 3,
+        "material": "paving"
+      }
+    ],
+    "placements": [
+      {
+        "kind": "autumn_cherry_tree",
+        "x": -6,
+        "y": -15,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_cherry_tree",
+        "x": -6,
+        "y": -5,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_cherry_tree",
+        "x": -6,
+        "y": 5,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_cherry_tree",
+        "x": -6,
+        "y": 15,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -6,
+        "y": 0,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_cherry_tree",
+        "x": 6,
+        "y": -15,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_cherry_tree",
+        "x": 6,
+        "y": -5,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_cherry_tree",
+        "x": 6,
+        "y": 5,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_cherry_tree",
+        "x": 6,
+        "y": 15,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 6,
+        "y": 0,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      }
+    ],
+    "treeWells": [],
+    "modules": {
+      "autumn_cherry_tree": {
+        "sha256": "1b18700be0bff2f4b778149dfa1dcb338fb1545f0889af8fe7be883047fdbdf6",
+        "bytes": 1287648,
+        "url": "/street-kits/pilots/student_cherry_blossom_street_v1/autumn_cherry_tree.glb"
+      },
+      "heritage_lantern": {
+        "sha256": "4c5e47e738b993fc0bb0f0d24083d7940e7fc4e1a50e4951e1b9ee380ef315ee",
+        "bytes": 17100,
+        "url": "/street-kits/pilots/student_cherry_blossom_street_v1/heritage_lantern.glb"
+      }
+    },
+    "thumbnailUrl": "/street-kits/pilots/student_cherry_blossom_street_v1/reference.png",
+    "program": {
+      "schemaVersion": 1,
+      "adapter": "showcase-street-v1",
+      "surfaceRegions": [
+        {
+          "x": -8.5,
+          "y": 0,
+          "width": 3,
+          "depth": 40,
+          "material": "paving"
+        },
+        {
+          "x": -6,
+          "y": 0,
+          "width": 2,
+          "depth": 40,
+          "material": "grass"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "depth": 40,
+          "material": "asphalt"
+        },
+        {
+          "x": 6,
+          "y": 0,
+          "width": 2,
+          "depth": 40,
+          "material": "grass"
+        },
+        {
+          "x": 8.5,
+          "y": 0,
+          "width": 3,
+          "depth": 40,
+          "material": "paving"
+        },
+        {
+          "x": -6,
+          "y": -10,
+          "width": 2,
+          "depth": 1.8,
+          "material": "paving"
+        },
+        {
+          "x": -6,
+          "y": 10,
+          "width": 2,
+          "depth": 1.8,
+          "material": "paving"
+        },
+        {
+          "x": 6,
+          "y": -10,
+          "width": 2,
+          "depth": 1.8,
+          "material": "paving"
+        },
+        {
+          "x": 6,
+          "y": 10,
+          "width": 2,
+          "depth": 1.8,
+          "material": "paving"
+        }
+      ],
+      "details": [
+        {
+          "x": -5,
+          "y": 0,
+          "width": 0.14,
+          "depth": 40,
+          "z": 0.05,
+          "height": 0.1,
+          "material": "warm_concrete"
+        },
+        {
+          "x": -7,
+          "y": 0,
+          "width": 0.14,
+          "depth": 40,
+          "z": 0.05,
+          "height": 0.1,
+          "material": "warm_concrete"
+        },
+        {
+          "x": 5,
+          "y": 0,
+          "width": 0.14,
+          "depth": 40,
+          "z": 0.05,
+          "height": 0.1,
+          "material": "warm_concrete"
+        },
+        {
+          "x": 7,
+          "y": 0,
+          "width": 0.14,
+          "depth": 40,
+          "z": 0.05,
+          "height": 0.1,
+          "material": "warm_concrete"
+        }
+      ],
+      "paving": "stone",
+      "pavingModuleM": [
+        1.2,
+        0.8
+      ],
+      "minLengthM": 40,
+      "maxLengthM": 480,
+      "preparedLevelOnly": true,
+      "baseLiftM": 0.025,
+      "palette": {
+        "paving": [
+          0.5299999713897705,
+          0.5,
+          0.4300000071525574
+        ],
+        "edge": [
+          0.3499999940395355,
+          0.3400000035762787,
+          0.28999999165534973
+        ],
+        "grass": [
+          0.20999999344348907,
+          0.2800000011920929,
+          0.10499999672174454
+        ],
+        "soil": [
+          0.10499999672174454,
+          0.0729999989271164,
+          0.04500000178813934
+        ],
+        "metal": [
+          0.03500000014901161,
+          0.04899999871850014,
+          0.04500000178813934
+        ],
+        "timber": [
+          0.3199999928474426,
+          0.23499999940395355,
+          0.15000000596046448
+        ],
+        "court": [
+          0.08500000089406967,
+          0.23499999940395355,
+          0.24500000476837158
+        ],
+        "runoff": [
+          0.1899999976158142,
+          0.2800000011920929,
+          0.2549999952316284
+        ],
+        "kitchen": [
+          0.2800000011920929,
+          0.38999998569488525,
+          0.3400000035762787
+        ],
+        "paint": [
+          0.8600000143051147,
+          0.8600000143051147,
+          0.7699999809265137
+        ],
+        "net": [
+          0.07500000298023224,
+          0.09000000357627869,
+          0.07999999821186066
+        ],
+        "cycle": [
+          0.33000001311302185,
+          0.14499999582767487,
+          0.08500000089406967
+        ],
+        "asphalt": [
+          0.10000000149011612,
+          0.11500000208616257,
+          0.10999999940395355
+        ],
+        "flower": [
+          0.3499999940395355,
+          0.23000000417232513,
+          0.3799999952316284
+        ],
+        "cream": [
+          0.7900000214576721,
+          0.7400000095367432,
+          0.6200000047683716
+        ],
+        "lamp_lens": [
+          0.8999999761581421,
+          0.8700000047683716,
+          0.6600000262260437
+        ],
+        "sage": [
+          0.10000000149011612,
+          0.20000000298023224,
+          0.1599999964237213
+        ],
+        "canvas": [
+          0.7400000095367432,
+          0.6800000071525574,
+          0.5400000214576721
+        ],
+        "canvas_shade": [
+          0.6200000047683716,
+          0.5699999928474426,
+          0.4399999976158142
+        ],
+        "warm_concrete": [
+          0.5199999809265137,
+          0.49000000953674316,
+          0.4000000059604645
+        ],
+        "water": [
+          0.10000000149011612,
+          0.3199999928474426,
+          0.3400000035762787
+        ],
+        "glass": [
+          0.49000000953674316,
+          0.6800000071525574,
+          0.6800000071525574
+        ],
+        "terracotta": [
+          0.49000000953674316,
+          0.20999999344348907,
+          0.10000000149011612
+        ],
+        "vine": [
+          0.12999999523162842,
+          0.23999999463558197,
+          0.06499999761581421
+        ],
+        "produce": [
+          0.41999998688697815,
+          0.18000000715255737,
+          0.05999999865889549
+        ]
+      }
+    },
+    "programSha256": "ae8c40ef1f04eb6fd267899215fbab8a13de5321661bfe971fdac3984146a497"
+  },
+  {
+    "id": "student_barcelona_shaded_promenade_v1",
+    "sourceArchetypeId": "barcelona_passeig",
+    "title": "Barcelona Shaded Promenade",
+    "status": "candidate",
+    "sourceRecipeSha256": "33a5ba4c660e85527e85d60527088407fab69c67d5b774ce17f8f4d20446f1ec",
+    "sourceAssemblySha256": "b62da7c2954673a45891069b44e1395087ea53db64677fb4e37c9c7a05c4a360",
+    "referenceSha256": "cd86bc60d87ffb5199410c960a9c01b19eebe14736d538573ab0110c85be0b55",
+    "widthM": 36,
+    "fixtureLengthM": 48,
+    "routeAxis": "local_y",
+    "junctionSurface": "pavers",
+    "sections": [
+      {
+        "name": "west_walk",
+        "x": -16,
+        "width": 4,
+        "material": "paving"
+      },
+      {
+        "name": "west_lane",
+        "x": -12,
+        "width": 4,
+        "material": "asphalt"
+      },
+      {
+        "name": "central_promenade",
+        "x": 0,
+        "width": 20,
+        "material": "paving"
+      },
+      {
+        "name": "east_lane",
+        "x": 12,
+        "width": 4,
+        "material": "asphalt"
+      },
+      {
+        "name": "east_walk",
+        "x": 16,
+        "width": 4,
+        "material": "paving"
+      }
+    ],
+    "placements": [
+      {
+        "kind": "shade_tree",
+        "x": -6.7,
+        "y": -18,
+        "z": 0,
+        "yaw": -2.6999999999999997,
+        "scale": 1.15
+      },
+      {
+        "kind": "shade_tree",
+        "x": -6.7,
+        "y": -6,
+        "z": 0,
+        "yaw": -0.8999999999999999,
+        "scale": 1.15
+      },
+      {
+        "kind": "shade_tree",
+        "x": -6.7,
+        "y": 6,
+        "z": 0,
+        "yaw": 0.8999999999999999,
+        "scale": 1.15
+      },
+      {
+        "kind": "shade_tree",
+        "x": -6.7,
+        "y": 18,
+        "z": 0,
+        "yaw": 2.6999999999999997,
+        "scale": 1.15
+      },
+      {
+        "kind": "bench",
+        "x": -8.5,
+        "y": -12,
+        "z": 0,
+        "yaw": -1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "bench",
+        "x": -8.5,
+        "y": 12,
+        "z": 0,
+        "yaw": -1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -15.1,
+        "y": -18,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -15.1,
+        "y": 0,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": -15.1,
+        "y": 18,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_florist_kiosk",
+        "x": -4.8,
+        "y": 0,
+        "z": 0,
+        "yaw": -1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "street_bollard",
+        "x": -9.65,
+        "y": -21,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "street_bollard",
+        "x": -9.65,
+        "y": -9,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "street_bollard",
+        "x": -9.65,
+        "y": 3,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "street_bollard",
+        "x": -9.65,
+        "y": 15,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "shade_tree",
+        "x": 6.7,
+        "y": -18,
+        "z": 0,
+        "yaw": -2.6999999999999997,
+        "scale": 1.15
+      },
+      {
+        "kind": "shade_tree",
+        "x": 6.7,
+        "y": -6,
+        "z": 0,
+        "yaw": -0.8999999999999999,
+        "scale": 1.15
+      },
+      {
+        "kind": "shade_tree",
+        "x": 6.7,
+        "y": 6,
+        "z": 0,
+        "yaw": 0.8999999999999999,
+        "scale": 1.15
+      },
+      {
+        "kind": "shade_tree",
+        "x": 6.7,
+        "y": 18,
+        "z": 0,
+        "yaw": 2.6999999999999997,
+        "scale": 1.15
+      },
+      {
+        "kind": "bench",
+        "x": 8.5,
+        "y": -12,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "bench",
+        "x": 8.5,
+        "y": 12,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 15.1,
+        "y": -18,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 15.1,
+        "y": 0,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "heritage_lantern",
+        "x": 15.1,
+        "y": 18,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "autumn_florist_kiosk",
+        "x": 4.8,
+        "y": 0,
+        "z": 0,
+        "yaw": 1.5707963267948966,
+        "scale": 1
+      },
+      {
+        "kind": "street_bollard",
+        "x": 9.65,
+        "y": -21,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "street_bollard",
+        "x": 9.65,
+        "y": -9,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "street_bollard",
+        "x": 9.65,
+        "y": 3,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "street_bollard",
+        "x": 9.65,
+        "y": 15,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": -6.7,
+        "y": -18,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": -6.7,
+        "y": -6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": -6.7,
+        "y": 6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": -6.7,
+        "y": 18,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": 6.7,
+        "y": -18,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": 6.7,
+        "y": -6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": 6.7,
+        "y": 6,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      },
+      {
+        "kind": "tree_well_grate",
+        "x": 6.7,
+        "y": 18,
+        "z": 0,
+        "yaw": 0,
+        "scale": 1
+      }
+    ],
+    "treeWells": [
+      {
+        "x": -6.7,
+        "y": -18,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "shade_tree"
+      },
+      {
+        "x": -6.7,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "shade_tree"
+      },
+      {
+        "x": -6.7,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "shade_tree"
+      },
+      {
+        "x": -6.7,
+        "y": 18,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "shade_tree"
+      },
+      {
+        "x": 6.7,
+        "y": -18,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "shade_tree"
+      },
+      {
+        "x": 6.7,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "shade_tree"
+      },
+      {
+        "x": 6.7,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "shade_tree"
+      },
+      {
+        "x": 6.7,
+        "y": 18,
+        "width": 1.8,
+        "depth": 1.8,
+        "style": "grate",
+        "tree_kind": "shade_tree"
+      }
+    ],
+    "modules": {
+      "autumn_florist_kiosk": {
+        "sha256": "95a928d8629ddcef1fb3c4983f1dd368bfe95be9cb6a0569d56d35952ebd18bf",
+        "bytes": 2615768,
+        "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/autumn_florist_kiosk.glb"
+      },
+      "bench": {
+        "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+        "bytes": 34024,
+        "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/bench.glb"
+      },
+      "heritage_lantern": {
+        "sha256": "8cf8de3045ec460b90470d94da117e4dafd229fa06e498c61482ab8e86a2e6d9",
+        "bytes": 17100,
+        "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/heritage_lantern.glb"
+      },
+      "shade_tree": {
+        "sha256": "d70a69200018fb9760bd6294874b4730ecebca4997b561cc4c58f6930f50704d",
+        "bytes": 1279420,
+        "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/shade_tree.glb"
+      },
+      "street_bollard": {
+        "sha256": "e4e20e97cef64814adea44546142c1f123c5ce275bcdefaad46f6e4a8f50808f",
+        "bytes": 9892,
+        "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/street_bollard.glb"
+      },
+      "tree_well_grate": {
+        "sha256": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618",
+        "bytes": 95608,
+        "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/tree_well_grate.glb"
+      }
+    },
+    "thumbnailUrl": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/reference.png",
+    "program": {
+      "schemaVersion": 1,
+      "adapter": "showcase-street-v1",
+      "surfaceRegions": [
+        {
+          "x": -16,
+          "y": 0,
+          "width": 4,
+          "depth": 48,
+          "material": "paving"
+        },
+        {
+          "x": -12,
+          "y": 0,
+          "width": 4,
+          "depth": 48,
+          "material": "asphalt"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 20,
+          "depth": 48,
+          "material": "paving"
+        },
+        {
+          "x": 12,
+          "y": 0,
+          "width": 4,
+          "depth": 48,
+          "material": "asphalt"
+        },
+        {
+          "x": 16,
+          "y": 0,
+          "width": 4,
+          "depth": 48,
+          "material": "paving"
+        },
+        {
+          "x": -6.7,
+          "y": -18,
+          "width": 1.8,
+          "depth": 1.8,
+          "material": "soil"
+        },
+        {
+          "x": -6.7,
+          "y": -6,
+          "width": 1.8,
+          "depth": 1.8,
+          "material": "soil"
+        },
+        {
+          "x": -6.7,
+          "y": 6,
+          "width": 1.8,
+          "depth": 1.8,
+          "material": "soil"
+        },
+        {
+          "x": -6.7,
+          "y": 18,
+          "width": 1.8,
+          "depth": 1.8,
+          "material": "soil"
+        },
+        {
+          "x": 6.7,
+          "y": -18,
+          "width": 1.8,
+          "depth": 1.8,
+          "material": "soil"
+        },
+        {
+          "x": 6.7,
+          "y": -6,
+          "width": 1.8,
+          "depth": 1.8,
+          "material": "soil"
+        },
+        {
+          "x": 6.7,
+          "y": 6,
+          "width": 1.8,
+          "depth": 1.8,
+          "material": "soil"
+        },
+        {
+          "x": 6.7,
+          "y": 18,
+          "width": 1.8,
+          "depth": 1.8,
+          "material": "soil"
+        }
+      ],
+      "details": [
+        {
+          "x": -10,
+          "y": 0,
+          "width": 0.18,
+          "depth": 48,
+          "z": 0.07,
+          "height": 0.14,
+          "material": "warm_concrete"
+        },
+        {
+          "x": 10,
+          "y": 0,
+          "width": 0.18,
+          "depth": 48,
+          "z": 0.07,
+          "height": 0.14,
+          "material": "warm_concrete"
+        }
+      ],
+      "paving": "stone",
+      "pavingModuleM": [
+        1.2,
+        0.8
+      ],
+      "minLengthM": 48,
+      "maxLengthM": 480,
+      "preparedLevelOnly": true,
+      "baseLiftM": 0.025,
+      "palette": {
+        "paving": [
+          0.5299999713897705,
+          0.5,
+          0.4300000071525574
+        ],
+        "edge": [
+          0.3499999940395355,
+          0.3400000035762787,
+          0.28999999165534973
+        ],
+        "grass": [
+          0.20999999344348907,
+          0.2800000011920929,
+          0.10499999672174454
+        ],
+        "soil": [
+          0.10499999672174454,
+          0.0729999989271164,
+          0.04500000178813934
+        ],
+        "metal": [
+          0.03500000014901161,
+          0.04899999871850014,
+          0.04500000178813934
+        ],
+        "timber": [
+          0.3199999928474426,
+          0.23499999940395355,
+          0.15000000596046448
+        ],
+        "court": [
+          0.08500000089406967,
+          0.23499999940395355,
+          0.24500000476837158
+        ],
+        "runoff": [
+          0.1899999976158142,
+          0.2800000011920929,
+          0.2549999952316284
+        ],
+        "kitchen": [
+          0.2800000011920929,
+          0.38999998569488525,
+          0.3400000035762787
+        ],
+        "paint": [
+          0.8600000143051147,
+          0.8600000143051147,
+          0.7699999809265137
+        ],
+        "net": [
+          0.07500000298023224,
+          0.09000000357627869,
+          0.07999999821186066
+        ],
+        "cycle": [
+          0.33000001311302185,
+          0.14499999582767487,
+          0.08500000089406967
+        ],
+        "asphalt": [
+          0.10000000149011612,
+          0.11500000208616257,
+          0.10999999940395355
+        ],
+        "flower": [
+          0.3499999940395355,
+          0.23000000417232513,
+          0.3799999952316284
+        ],
+        "cream": [
+          0.7900000214576721,
+          0.7400000095367432,
+          0.6200000047683716
+        ],
+        "lamp_lens": [
+          0.8999999761581421,
+          0.8700000047683716,
+          0.6600000262260437
+        ],
+        "sage": [
+          0.10000000149011612,
+          0.20000000298023224,
+          0.1599999964237213
+        ],
+        "canvas": [
+          0.7400000095367432,
+          0.6800000071525574,
+          0.5400000214576721
+        ],
+        "canvas_shade": [
+          0.6200000047683716,
+          0.5699999928474426,
+          0.4399999976158142
+        ],
+        "warm_concrete": [
+          0.5199999809265137,
+          0.49000000953674316,
+          0.4000000059604645
+        ],
+        "water": [
+          0.10000000149011612,
+          0.3199999928474426,
+          0.3400000035762787
+        ],
+        "glass": [
+          0.49000000953674316,
+          0.6800000071525574,
+          0.6800000071525574
+        ],
+        "terracotta": [
+          0.49000000953674316,
+          0.20999999344348907,
+          0.10000000149011612
+        ],
+        "vine": [
+          0.12999999523162842,
+          0.23999999463558197,
+          0.06499999761581421
+        ],
+        "produce": [
+          0.41999998688697815,
+          0.18000000715255737,
+          0.05999999865889549
+        ]
+      }
+    },
+    "programSha256": "50eaddd5bbe902bcad7ff5c0b6e3e1cfb145ec7f308885298fc82a3bbe898e01"
   }
 ]

@@ -59,6 +59,9 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         'student_grass_tram_avenue_v1',
         'student_vine_pergola_promenade_v1',
         'student_grand_haussmann_boulevard_v1',
+        'student_london_cobbled_mews_v1',
+        'student_cherry_blossom_street_v1',
+        'student_barcelona_shaded_promenade_v1',
     }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()

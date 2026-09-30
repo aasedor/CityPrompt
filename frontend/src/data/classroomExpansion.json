@@ -395,6 +395,42 @@
       "asset_review": "agent_native_visual_and_geometry_pass",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "London Cobbled Mews",
+      "archetype_id": "london_mews_lane",
+      "variant_id": "student_london_cobbled_mews_v1",
+      "version": "student_london_cobbled_mews_v1",
+      "placement_id": "student_london_cobbled_mews_v1",
+      "sha256": "793881f227523f99179fbbd339ed9c44fe994eddbef043d4392b4723ea313ab3",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Cherry Blossom Neighbourhood Street",
+      "archetype_id": "vancouver_cherry_blossom_street",
+      "variant_id": "student_cherry_blossom_street_v1",
+      "version": "student_cherry_blossom_street_v1",
+      "placement_id": "student_cherry_blossom_street_v1",
+      "sha256": "e81a9428bbfb00a002a25fe9d3a6eaf1b6a339e3344d928d23583cf41dee237e",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Barcelona Shaded Promenade",
+      "archetype_id": "barcelona_passeig",
+      "variant_id": "student_barcelona_shaded_promenade_v1",
+      "version": "student_barcelona_shaded_promenade_v1",
+      "placement_id": "student_barcelona_shaded_promenade_v1",
+      "sha256": "b62da7c2954673a45891069b44e1395087ea53db64677fb4e37c9c7a05c4a360",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -1643,6 +1679,96 @@
         "green_space_selected_variant_id": "student_sheltered_dog_park_v1",
         "green_space_native_layout_id": "student_sheltered_dog_park_v1--native-v1",
         "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_london_cobbled_mews_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "London Cobbled Mews",
+      "description": "8 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_london_cobbled_mews_v1/reference.png",
+      "model": {
+        "variantId": "student_london_cobbled_mews_v1",
+        "revision": "143c3856c4008aa41439d50cf59b332178a97b36635f85453b1f1f13a94d1bc8",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "alley",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 8,
+      "properties": {
+        "road_archetype_id": "london_mews_lane",
+        "road_selected_variant_id": "student_london_cobbled_mews_v1",
+        "width": 8,
+        "pick_place_street_section": "student_london_cobbled_mews_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_cherry_blossom_street_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Cherry Blossom Neighbourhood Street",
+      "description": "20 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_cherry_blossom_street_v1/reference.png",
+      "model": {
+        "variantId": "student_cherry_blossom_street_v1",
+        "revision": "f66b0d19aefdcdf9607c68dd73574fd9d7e78896f6aa53dfe17d83ecd5427384",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "local",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 20,
+      "properties": {
+        "road_archetype_id": "vancouver_cherry_blossom_street",
+        "road_selected_variant_id": "student_cherry_blossom_street_v1",
+        "width": 20,
+        "pick_place_street_section": "student_cherry_blossom_street_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_barcelona_shaded_promenade_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Barcelona Shaded Promenade",
+      "description": "36 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/reference.png",
+      "model": {
+        "variantId": "student_barcelona_shaded_promenade_v1",
+        "revision": "33a5ba4c660e85527e85d60527088407fab69c67d5b774ce17f8f4d20446f1ec",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "active",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 36,
+      "properties": {
+        "road_archetype_id": "barcelona_passeig",
+        "road_selected_variant_id": "student_barcelona_shaded_promenade_v1",
+        "width": 36,
+        "pick_place_street_section": "student_barcelona_shaded_promenade_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
       }
     }
   ]
