@@ -601,6 +601,126 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 17,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "autumn_timber",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Nordic Roof-Garden Apartments",
+    "description": "A six-storey timber frame with recessed balconies, planted roof terrace and shaded pavilion.",
+    "thumbnail": "/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
+    "model": {
+      "variantId": "nordic_timber_mass_timber",
+      "revision": "autumn-timber-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "apartments",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 24.0,
+    "depth": 23.0,
+    "minWidth": 24.0,
+    "minDepth": 23.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      20.350000381469727,
+      19.475000381469727,
+      22.760000228881836
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "nordic_timber_midrise",
+      "development_archetype_id": "nordic_timber_midrise",
+      "development_selected_variant_id": "nordic_timber_mass_timber",
+      "development_archetype_label": "Nordic Roof-Garden Apartments",
+      "floors": 6,
+      "floor_count": 6,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "autumn_villa",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Tuscan Arcade Villa",
+    "description": "A three-level Tuscan home with a covered stone arcade, green shutters and a canal-tile roof.",
+    "thumbnail": "/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
+    "model": {
+      "variantId": "med_villa_tuscan",
+      "revision": "autumn-villa-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 23.0,
+    "depth": 18.0,
+    "minWidth": 23.0,
+    "minDepth": 18.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      19.299999237060547,
+      14.130000114440918,
+      11.779999732971191
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "mediterranean_villa_estate",
+      "development_archetype_id": "mediterranean_villa_estate",
+      "development_selected_variant_id": "med_villa_tuscan",
+      "development_archetype_label": "Tuscan Arcade Villa",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "autumn_cinema",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Grand Deco Cinema",
+    "description": "An Art Deco movie palace with arched gallery windows, a gold marquee and a double-sided blade sign.",
+    "thumbnail": "/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+    "model": {
+      "variantId": "deco_theater_movie_palace",
+      "revision": "autumn-cinema-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 28.0,
+    "depth": 46.0,
+    "minWidth": 28.0,
+    "minDepth": 46.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      24.639999389648438,
+      42.290000915527344,
+      21.420000076293945
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "deco_theater_mainstreet",
+      "development_archetype_id": "deco_theater_mainstreet",
+      "development_selected_variant_id": "deco_theater_movie_palace",
+      "development_archetype_label": "Grand Deco Cinema",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
   }
 ];
 

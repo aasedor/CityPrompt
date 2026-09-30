@@ -1,0 +1,125 @@
+{
+  "candidate": "autumn-villa-clay-v004",
+  "model_sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+  "reviewer": "independent RLASM architectural-clay reviewer /root/autumn_timber_review",
+  "date": "2026-09-30",
+  "scope": "Holistic exact-source architectural-clay review of all 13 actual GLB reimport renders, 3 locked source images and 1080x1920 phoneboard, opened directly at original resolution. Identity, ratios, roof, all elevations, openings, optics, contacts, access, programme and cameras inspected. Texture-free clay scope.",
+  "holistic_review_performed": true,
+  "architectural_clay_pass": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "architectural_clay_pass",
+  "keeper_approved": false,
+  "runtime_activation_authorized": false,
+  "inspected_files": [
+    {
+      "path": "source-entry.json",
+      "sha256": "fbda94c4220d9117584a69d1aaf497b9421535073eec05a48a6ac9a69651ab50"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "f7666227a1c2bdf7f0fc32251307b148b9713a36d7c1c077bc66c327e007d433"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "7e268ffeb4a325468ff929cea07baa620e8012acde3ea8746e2c958d341d71d0"
+    },
+    {
+      "path": "autumn-villa-clay-v004.glb",
+      "sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c"
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "sha256": "479cba141aaee286d33fc1e48a05483c2871db299a59833db8e86ce89c4aa03b"
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "sha256": "93a8889f117f37693d8d97c69d9b0740f5ece304b18ae7f692c5dc1f704abe25"
+    },
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "a69fed88b5478ee2902ef21fffcc3c643f114f70ae9bdccf4f93da1a8863507d"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "fd2a5e6980016341ffa2ff9c8a6643bf92e399594fde8f70e69235ecd5fdf9d1"
+    },
+    {
+      "path": "renders/arcade_access.png",
+      "sha256": "7e8f18ee0ae4f0c1cd758d43227cbb01f21b0210dd4948e9f241f2795d64030b"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "c2ad0df092c26ba884a66ad18cba82ac61a5cdd3016615ed356a71effd742cdb"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "14c5195e400427f5db7be8b706b3f33e74f5f52f14f3988ad9658ac1766b4066"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "0da1303c2fd4d19a599b74b74690f62a146bdddfc3ec560a9f9b0f7335be9258"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "76fc039d7608598222580fc21ffdce9df8366afea64127aa35fcecc5f8f7cafa"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "885f9133aca63ea72fed4eaa061a6113ab913882ceb3c5df406fb6fdffd9222e"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "e331242aaee9f485a7b55f5ff4e101dab0671a087002829453f620824984b4a9"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "fb636320889171b08533de8027ceda652db43d5e7a2d42f80a1f5334c40e4208"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "a7ad5244bb56e41355ef4e78f1adfa872c0b11ea4cd114cc488fbc32d0691679"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "d9b0251384a3464d6fc067577cde636e6c129e8487104a6ffe845c488396252d"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "1df905f319d0134dc77ad5e7643037df31e6b201f9afbdc9f5ca11e6ec5b1359"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "92d17cd4f382c4b8ec1ea9186a0807935d63a5dd77240e9dc69a058714827469"
+    },
+    {
+      "path": "boards/comparison-phone.png",
+      "sha256": "079960fa99fd887585b25ed7abb6238b800bf485ecf7e17c7a2a6d10a2a153a2"
+    }
+  ],
+  "pixel_findings": [
+    "Fresh direct original-resolution inspection of all 13 v004 GLB renders, three exact references and 1080x1920 phoneboard completed; no result was inherited from a prior candidate.",
+    "The exact Tuscan identity remains recognizable: three occupied levels including the low attic, three front bays, three open arcade arches, pale yellow clay walls, green shutters, corner quoins and a shallow canal-tile gable.",
+    "The former entrance blocker is closed. The green double entry now occupies the left recessed arcade bay with arched fanlight, stone surround and handles. The middle bay is a window. arcade_access shows the unobstructed porch approach and threshold, with the left table removed.",
+    "All four elevations are complete, with real recessed frame/pane sections and visibly separated room depth. Unseen portions are declared inferred. No corner blockage, floating assembly or envelope hole was found.",
+    "The two roof slopes, ridge, curved tile courses, eave and gable closure are coherent and seated. Roof silhouette and rectangular plan retain the source programme without invented plant or rooftop additions.",
+    "Arcade piers contact the base, arches have visible soffit depth, and the continuous porch has a clear route to the entry. The remaining right-bay table does not obstruct the entry route.",
+    "Glass close shows physical jambs, head, sill, shutter blades, frame and optical pane with interior depth. The arched entry detail separately proves fanlight/frame registration.",
+    "No vegetation is delivered; the source street/cypress setting is context rather than a building-mounted landscape programme. Restrained clay colours were evaluated without requiring textured PBR.",
+    "Neutral full-view framing preserves margins. Detail cameras expose openings, roof/eave contacts and access. The phoneboard is legible and consistent with the inspected individual views."
+  ],
+  "blockers": [],
+  "runtime_caveat": {
+    "status": "NOT TESTED",
+    "bytes": 2401440,
+    "triangles": 44328,
+    "textures": 0,
+    "images": 0,
+    "finding": "No browser placement, terrain contact, loading, memory, frame time or sizing contract tested."
+  },
+  "limitations": [
+    "Exact native-scale clay only; hidden interiors and unseen rear inferred.",
+    "No textured keeper, engineering or human runtime activation."
+  ],
+  "finite_next_step": "Architectural-clay review passed. Runtime placement, loading, terrain contact and sizing acceptance remain a separate unperformed gate; no runtime activation is authorized by this record."
+}

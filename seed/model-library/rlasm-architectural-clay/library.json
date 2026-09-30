@@ -1288,6 +1288,216 @@
         "unresolved_p0": 0,
         "unresolved_p1": 0
       }
+    },
+    {
+      "candidate": "autumn-timber-clay-v004",
+      "family": "rlasm-autumn-timber",
+      "archetype_id": "nordic_timber_midrise",
+      "variant_id": "nordic_timber_mass_timber",
+      "archetype_label": "Nordic Roof-Garden Apartments",
+      "variant_label": "Nordic Roof-Garden Apartments",
+      "native_floors": 6,
+      "design_dimensions_m": {
+        "width": 20,
+        "depth": 18,
+        "height": 22.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
+          "bytes": 1227190,
+          "sha256": "646f3e4d0a5ce0bc4f0d37c1a380d6e1d8ee9139e457cdbb12addc1a0e09eed1"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-oblique.jpg",
+          "bytes": 931773,
+          "sha256": "e96cee6e9555300b794e2f31e6db1f88489a983892f6437219f804760d6f95f7"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-top.jpg",
+          "bytes": 852807,
+          "sha256": "34f7dc172e5900615b6a32da2d450767154ffc13e29a19e0a122f02b02bf992b"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\timber-v004",
+      "picker": {
+        "id": "autumn_timber",
+        "description": "A six-storey timber frame with recessed balconies, planted roof terrace and shaded pavilion.",
+        "group_id": "apartments",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 24,
+        "depth": 23,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/autumn-timber-clay-v004.glb",
+        "bytes": 48163508,
+        "sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+        "native_dimensions_m": {
+          "width": 20.350000381469727,
+          "height": 22.760000228881836,
+          "depth": 19.475000381469727
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-timber-clay-v004.json",
+        "sha256": "7441406609d1b179bb35a732c793fae955153750fa24c70d7adaf8e69c0773b2",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "autumn-villa-clay-v004",
+      "family": "rlasm-autumn-villa",
+      "archetype_id": "mediterranean_villa_estate",
+      "variant_id": "med_villa_tuscan",
+      "archetype_label": "Tuscan Arcade Villa",
+      "variant_label": "Tuscan Arcade Villa",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 18,
+        "depth": 13,
+        "height": 11.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
+          "bytes": 1182591,
+          "sha256": "a69fed88b5478ee2902ef21fffcc3c643f114f70ae9bdccf4f93da1a8863507d"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-oblique.jpg",
+          "bytes": 938165,
+          "sha256": "479cba141aaee286d33fc1e48a05483c2871db299a59833db8e86ce89c4aa03b"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-top.jpg",
+          "bytes": 886977,
+          "sha256": "93a8889f117f37693d8d97c69d9b0740f5ece304b18ae7f692c5dc1f704abe25"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\villa-v004",
+      "picker": {
+        "id": "autumn_villa",
+        "description": "A three-level Tuscan home with a covered stone arcade, green shutters and a canal-tile roof.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 23,
+        "depth": 18,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/autumn-villa-clay-v004.glb",
+        "bytes": 2401440,
+        "sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+        "native_dimensions_m": {
+          "width": 19.299999237060547,
+          "height": 11.779999732971191,
+          "depth": 14.130000114440918
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-villa-clay-v004.json",
+        "sha256": "d6f07fb315213822c4a8ead5efc7195da6c7d94aa697c65163a80d80b28b323e",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "autumn-cinema-clay-v004",
+      "family": "rlasm-autumn-cinema",
+      "archetype_id": "deco_theater_mainstreet",
+      "variant_id": "deco_theater_movie_palace",
+      "archetype_label": "Grand Deco Cinema",
+      "variant_label": "Grand Deco Cinema",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 24,
+        "depth": 38,
+        "height": 22
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+          "bytes": 1209103,
+          "sha256": "7d4c6e549afade74d08aad286d72e47dbbfbdf7508d4b4f7442fc3548a10f5a8"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-oblique.jpg",
+          "bytes": 913204,
+          "sha256": "172b54afc20efc454225cb5c6ecdda80293200668496f3f0cf58c8c7202aed40"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-top.jpg",
+          "bytes": 828028,
+          "sha256": "91743f99beceeaf2b275a162039513e7ff33d4732f3eb8929e67cd026c014239"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\cinema-v004",
+      "picker": {
+        "id": "autumn_cinema",
+        "description": "An Art Deco movie palace with arched gallery windows, a gold marquee and a double-sided blade sign.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 28,
+        "depth": 46,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/autumn-cinema-clay-v004.glb",
+        "bytes": 994708,
+        "sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+        "native_dimensions_m": {
+          "width": 24.639999389648438,
+          "height": 21.420000076293945,
+          "depth": 42.290000915527344
+        },
+        "mesh_count": 13,
+        "material_count": 13,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-cinema-clay-v004.json",
+        "sha256": "0322fbc1407417d16d9c9ba5ae2711db8699a6b42633b0059d7040ac921eff1d",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
     }
   ],
   "review_only_archive": []

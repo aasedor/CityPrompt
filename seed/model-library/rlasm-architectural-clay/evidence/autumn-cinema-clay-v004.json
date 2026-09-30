@@ -1,0 +1,130 @@
+{
+  "candidate": "autumn-cinema-clay-v004",
+  "model_sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+  "reviewer": "independent RLASM architectural-clay reviewer /root/autumn_timber_review",
+  "date": "2026-09-30",
+  "scope": "Holistic exact-source architectural-clay review of all 14 actual GLB reimport renders, 3 locked sources and 1080x1920 phone comparison. Full original-resolution direct pixel inspection. Identity, silhouette, elevations, roof programme, openings, optics, contact/load paths, access, landscape and cameras.",
+  "holistic_review_performed": true,
+  "architectural_clay_pass": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "architectural_clay_pass",
+  "keeper_approved": false,
+  "runtime_activation_authorized": false,
+  "inspected_files": [
+    {
+      "path": "source-entry.json",
+      "sha256": "aa6866d2880ef7d9279067972f3fc55dfee107ea9f5acb391fd0c7640f28a584"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "9e66d1af00546994fa6aebccb88828332e3a7de2bb10d320fc6abfb4bca6a51a"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "502866f4a86fdb19504430b597e410f826b3910f7f835b7f69da01c02eb5a251"
+    },
+    {
+      "path": "autumn-cinema-clay-v004.glb",
+      "sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1"
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "sha256": "172b54afc20efc454225cb5c6ecdda80293200668496f3f0cf58c8c7202aed40"
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "sha256": "91743f99beceeaf2b275a162039513e7ff33d4732f3eb8929e67cd026c014239"
+    },
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "7d4c6e549afade74d08aad286d72e47dbbfbdf7508d4b4f7442fc3548a10f5a8"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "8b11c98bd4ac04758d370a250ebb6dc0d6e7b3eb73b674c221f55423c43e15d5"
+    },
+    {
+      "path": "renders/arched_glazing.png",
+      "sha256": "96624adeb4ac3550fb1161ab20d2a5292f7893462b08673207a7bc04ea01a1aa"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "2b91057a02926ed903a23b5a6738c9ad00a64fde715caa3e2b8a13ac913e4fb7"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "fa5305cc6dc0ab779fae57888985aa9297c566509024d6fbba589d32c6937391"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "dd2d454ad05c2166b5c7518b13ff4f5640ee1b32fcd292170479cf822fd0e6a8"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "99c8085324bd0f9dc7a61f9db9075fa08b68daad161ed4ec203d7729f9ea291a"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "7b6ece18c4e1c8069034b97425990a82e7c7bcad23cace27207d18a2350abc0b"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "de72cd05dfc55db32bf6cab287818f703c11a6b70838dcb600bbdc440aa71f31"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "7660029c2115bee778787b27e359dd5f30c38f0e0242a39ca6ed5cbfb7650f66"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "acf30b30fea78d0e3c2bc976759f047c866b61471d5666ad3beef0335177a6a1"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "89051b8b0b75329c0f0ed2c34854a134dd9d7c524126a1804961984af5e7aef2"
+    },
+    {
+      "path": "renders/roof_lantern.png",
+      "sha256": "1d3d3debceea4b24d376fdee3967133be8aef0244cd9a0cf643b6d28c43f6efc"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "521e17092af212bfd257e2c87876c43ec8d0d22fd23bc22f9a0b8c159fd279bb"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "09dec8ae04571b703fde1cda7854be725dccb59b9323794324a0fa6714503d69"
+    },
+    {
+      "path": "boards/comparison-phone.png",
+      "sha256": "b668313772c37e5bf7250f0297579ddf4041d0e193874356ac4bca0c936704d6"
+    }
+  ],
+  "pixel_findings": [
+    "Fresh direct original-resolution pixel inspection completed for all 14 actual-GLB v004 renders, three locked reference images and the 1080x1920 comparison-phone board. No pass was assumed from builder notes or the prior review.",
+    "Source identity is retained: red terracotta Deco frontage, paired large arched windows, two-level narrow central slots, stepped crown, dominant vertical blade, projecting gold/red marquee, illuminated soffit and grouped lobby doors.",
+    "C3-P0-01 is closed. Both marquee stay upper ends now meet visible dark mounting plates on solid masonry outside the arched openings. facade_close and front_corner show their lower ends meeting the canopy side structure; the pane fields remain uninterrupted.",
+    "C3-P1-01 is closed. top and aerial show the left roof outline stepping inward near the rear portion. rear_side proves the corresponding full-height envelope return and ground contact, rather than a roof-only cosmetic notch.",
+    "All elevations are completed with opaque auditorium walls, regular side pilasters, two doors per side and a rear service door. The setback does not create an exposed interior or dangling corner.",
+    "The pitched roof lantern has framed panes, closed gables and a seated curb. Four roof-service units have visible pads and duct contacts. The raised rear volume closes cleanly. No triangular lighting patches recur.",
+    "Blade lettering and crown are separated; GRAND and CINEMA occupy marquee fields clear of the central and end finials. Sign support relationships remain visible in architecture_close. The blade is correctly edge-on in true front view and readable from side/oblique views.",
+    "Lobby glass_close proves handles, frame/pane depth, interior counter and floor, with seated entry steps. arched_glazing shows mullions and interior depth; no stay pierces the glazing.",
+    "No building vegetation programme is delivered or implied. Source street context is excluded. Restrained colour clay is coherent without invoking textured PBR keeper criteria.",
+    "Whole-building cameras retain neutral margins. Detail cameras make entrance optics, arches, sign, marquee and roof contacts inspectable. The phoneboard matches the individual v004 evidence."
+  ],
+  "blockers": [],
+  "runtime_caveat": {
+    "status": "NOT TESTED",
+    "bytes": 994708,
+    "triangles": 19272,
+    "textures": 0,
+    "images": 0,
+    "finding": "No browser placement, terrain contact, load time, memory, frame time or runtime sizing contract tested."
+  },
+  "limitations": [
+    "Architectural-clay review only; hidden interiors and unseen rear are inferred.",
+    "No textured keeper, engineering validation or runtime activation."
+  ],
+  "finite_next_step": "Architectural-clay gate passed. Runtime loading, placement, terrain contact, performance and sizing acceptance remain separate unperformed checks; this record does not authorize activation."
+}

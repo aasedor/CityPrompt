@@ -6,10 +6,10 @@ import { CANONICAL_CHOICES, filterCanonicalChoices } from './canonicalCatalogue'
 describe('classroom building additions', () => {
   it('offers twenty-three distinct exact models with eleven additional native placements', () => {
     const buildings = CATALOGUE_ASSETS.filter((a): a is PlaceAsset => a.kind === 'object' && a.zoneType === 'building');
-    expect(buildings).toHaveLength(23);
-    expect(new Set(buildings.map(a => a.model.variantId)).size).toBe(23);
+    expect(buildings).toHaveLength(26);
+    expect(new Set(buildings.map(a => a.model.variantId)).size).toBe(26);
     const additions = expansion.entries.filter(e => e.domain === 'building');
-    expect(additions).toHaveLength(11);
+    expect(additions).toHaveLength(14);
     for (const entry of additions) {
       const asset = buildings.find(a => a.id === entry.placement_id)!;
       expect(asset.model.variantId).toBe(entry.variant_id);

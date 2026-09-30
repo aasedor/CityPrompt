@@ -7,13 +7,15 @@ import * as catalogue from './canonicalCatalogue';
 describe('student asset browsing', () => {
   it('shows the current exact catalogue counts and pages the building and park choices', () => {
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
-    expect(catalogue.CLASSROOM_CHOICES).toHaveLength(54);
+    expect(catalogue.CLASSROOM_CHOICES).toHaveLength(57);
     fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
     expect(screen.getByLabelText('Catalogue collection')).toHaveValue('starter');
-    expect(screen.getByText(/54 exact choices: 23 buildings, 18 parks, 13 streets/)).toBeInTheDocument();
+    expect(screen.getByText(/57 exact choices: 26 buildings, 18 parks, 13 streets/)).toBeInTheDocument();
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
-    expect(screen.getAllByRole('article')).toHaveLength(23);
+    expect(screen.getAllByRole('article')).toHaveLength(24);
+    fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
+    expect(screen.getAllByRole('article')).toHaveLength(26);
     fireEvent.click(screen.getAllByRole('button', { name: 'Parks' })[1]);
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
