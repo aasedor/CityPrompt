@@ -2,9 +2,10 @@
 Building management API endpoints.
 """
 
+import asyncio
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import Response
 from geoalchemy2.shape import to_shape
 from sqlalchemy import select
@@ -23,6 +24,11 @@ from app.tasks.worker import celery_app
 from app.generation.styles import ARCHITECTURAL_STYLES, get_style
 from app.models.models import Building, Project, ProjectShare, RenderPreview, User
 from app.services.generation_queue import queue_ai_generation_task
+from app.services.photo_building import (
+    MAX_PHOTOS, MIN_REFERENCE_VIEWS, MAX_REFERENCE_VIEWS,
+    PHOTO_MODEL_TOKEN_COST, PHOTO_REFERENCE_TOKEN_COST,
+    photo_state, prepare_photo, refund_photo_tokens, reserve_photo_tokens,
+)
 from app.services.residual_landscape import (
     lock_residual_landscape_project,
     mark_linked_community_3d_stale,
@@ -673,7 +679,9 @@ async def generate_from_image(
     _check_engine_available(engine)
 
     building.generation_status = "generating"
-    building.generation_prompt = f"[image] {req.image_url}"
+    # The source can be a multi-megabyte data URI or a signed private URL.
+    # Keep it out of the DB, activity surfaces, and admin search results.
+    building.generation_prompt = "[single-image reference]"
     building.generation_engine = engine
     await db.flush()
 
@@ -691,6 +699,190 @@ async def generate_from_image(
         progress=0,
         meshy_task_id=building.meshy_task_id,
     )
+
+
+async def _editable_building(building_id: uuid.UUID, user: User, db: AsyncSession) -> Building:
+    building = await db.get(Building, building_id, with_for_update=True, populate_existing=True)
+    if building is None:
+        raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_permission(building.project_id, user, db, required="editor")
+    return building
+
+
+@router.get("/{building_id}/photo-references")
+async def get_photo_references(
+    building_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Return the current private reference-view preparation status."""
+    building = await db.get(Building, building_id)
+    if building is None:
+        raise HTTPException(status_code=404, detail="Building not found")
+    await check_project_permission(building.project_id, user, db)
+    state = photo_state(building.specifications)
+    return {
+        "status": state.get("status", "idle"),
+        "brief": state.get("brief", ""),
+        "reference_urls": [f"/api/v1/files/{key}" for key in state.get("reference_keys", [])],
+        "error": state.get("error"),
+        "source_count": len(state.get("source_keys", [])),
+        "resume_available": bool(
+            state.get("status") == "failed" and state.get("provider_task_id")
+            and not state.get("reference_keys")
+        ),
+        "reference_token_cost": PHOTO_REFERENCE_TOKEN_COST,
+        "model_token_cost": PHOTO_MODEL_TOKEN_COST,
+    }
+
+
+@router.post("/{building_id}/photo-references")
+async def create_photo_references(
+    building_id: uuid.UUID,
+    photos: list[UploadFile] = File(...),
+    brief: str = Form(""),
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Store bounded source photos and queue paid, reviewable reference views."""
+    building = await _editable_building(building_id, user, db)
+    if building.generation_status == "generating":
+        raise HTTPException(status_code=409, detail="Wait for the current 3D generation to finish first.")
+    if photo_state(building.specifications).get("status") == "synthesizing":
+        raise HTTPException(status_code=409, detail="Reference views are already being prepared.")
+    if not 1 <= len(photos) <= MAX_PHOTOS:
+        raise HTTPException(status_code=422, detail="Upload 1 to 4 photos of the same building.")
+    if len(brief) > 500:
+        raise HTTPException(status_code=422, detail="Description must be 500 characters or fewer.")
+    _check_engine_available("meshy")
+
+    prepared: list[tuple[bytes, str]] = []
+    for photo in photos:
+        try:
+            prepared.append(prepare_photo(await photo.read(5 * 1024 * 1024 + 1)))
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    from app.tasks.processing import _upload_to_storage, synthesize_building_photo_references
+
+    batch_id = uuid.uuid4().hex
+    source_keys: list[str] = []
+    for index, (image_data, image_hash) in enumerate(prepared):
+        key = f"projects/{building.project_id}/photo-buildings/{building.id}/{batch_id}/source-{index}-{image_hash[:12]}.jpg"
+        await asyncio.to_thread(_upload_to_storage, key, image_data, "image/jpeg")
+        source_keys.append(key)
+
+    audit_id = await reserve_photo_tokens(
+        db, user, building.project_id, cost=PHOTO_REFERENCE_TOKEN_COST,
+        stage="references", brief=brief.strip(),
+    )
+    specs = dict(building.specifications or {})
+    specs["photo_generation"] = {
+        "version": 1,
+        "batch_id": batch_id,
+        "status": "synthesizing",
+        "brief": brief.strip(),
+        "source_keys": source_keys,
+        "source_hashes": [digest for _, digest in prepared],
+        "reference_keys": [],
+        "engine": "meshy",
+        "quality_tier": "student_preview",
+        "catalogue_eligible": False,
+        "method": "photo_references_to_ai_mesh_v1",
+        "reference_audit_id": str(audit_id),
+    }
+    building.specifications = specs
+    await db.commit()
+    try:
+        task = await asyncio.to_thread(
+            synthesize_building_photo_references.apply_async,
+            args=[str(building.id), batch_id, str(audit_id)],
+        )
+    except Exception as exc:
+        state = dict(photo_state(building.specifications))
+        state.update(status="failed", error="Could not start reference preparation. Please try again.")
+        building.specifications = {**(building.specifications or {}), "photo_generation": state}
+        await db.commit()
+        await refund_photo_tokens(db, str(audit_id))
+        raise HTTPException(status_code=503, detail=state["error"]) from exc
+    return {"status": "synthesizing", "task_id": getattr(task, "id", None)}
+
+
+@router.post("/{building_id}/photo-references/resume")
+async def resume_photo_references(
+    building_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Reuse an existing provider task after a transient storage/contract error."""
+    building = await _editable_building(building_id, user, db)
+    state = photo_state(building.specifications)
+    if (
+        state.get("status") != "failed" or not state.get("provider_task_id")
+        or state.get("reference_keys") or not state.get("batch_id")
+    ):
+        raise HTTPException(status_code=409, detail="No prepared provider task is available to resume.")
+    state = {**state, "status": "synthesizing", "error": None}
+    building.specifications = {**(building.specifications or {}), "photo_generation": state}
+    await db.commit()
+    from app.tasks.processing import synthesize_building_photo_references
+
+    try:
+        task = await asyncio.to_thread(
+            synthesize_building_photo_references.apply_async,
+            args=[str(building.id), state["batch_id"], state.get("reference_audit_id")],
+        )
+    except Exception as exc:
+        state = {**state, "status": "failed", "error": "Could not resume reference preparation."}
+        building.specifications = {**(building.specifications or {}), "photo_generation": state}
+        await db.commit()
+        raise HTTPException(status_code=503, detail=state["error"]) from exc
+    return {"status": "synthesizing", "task_id": getattr(task, "id", None)}
+
+
+@router.post("/{building_id}/photo-model", response_model=GenerationStatusResponse)
+async def generate_photo_model(
+    building_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Turn reviewed reference views into a private AI mesh preview."""
+    building = await _editable_building(building_id, user, db)
+    state = photo_state(building.specifications)
+    keys = state.get("reference_keys") or []
+    expected_prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/{state.get('batch_id', '')}/"
+    if state.get("status") not in {"references_ready", "failed"} or not MIN_REFERENCE_VIEWS <= len(keys) <= MAX_REFERENCE_VIEWS or not all(
+        isinstance(key, str) and key.startswith(expected_prefix + "reference-") for key in keys
+    ):
+        raise HTTPException(status_code=409, detail="Review the prepared views before generating a model.")
+    if building.generation_status == "generating":
+        raise HTTPException(status_code=409, detail="A 3D generation is already in progress.")
+    _check_engine_available("meshy")
+
+    # These are server-issued keys under this building, never client URLs.
+    prompt = (
+        "Architectural materials and colors exactly as shown in the reviewed reference views. "
+        + str(state.get("brief", ""))[:500]
+    )
+    audit_id = await reserve_photo_tokens(
+        db, user, building.project_id, cost=PHOTO_MODEL_TOKEN_COST,
+        stage="model", brief=prompt,
+    )
+    state = {**state, "status": "model_generating", "error": None, "model_audit_id": str(audit_id)}
+    building.specifications = {**(building.specifications or {}), "photo_generation": state}
+    building.generation_status = "generating"
+    building.generation_prompt = f"[student photos] {str(state.get('brief', ''))[:500]}"
+    await db.flush()
+    try:
+        await queue_ai_generation_task(
+            db, building, prompt, mode="multi_image", engine="meshy",
+            photo_reference_keys=keys, photo_batch_id=state["batch_id"],
+            photo_audit_id=str(audit_id),
+        )
+    except Exception as exc:
+        await refund_photo_tokens(db, str(audit_id))
+        raise HTTPException(status_code=503, detail="Could not start 3D generation. Your tokens were restored.") from exc
+    return GenerationStatusResponse(status="generating", progress=0)
 
 
 @router.get("/{building_id}/generation-status", response_model=GenerationStatusResponse)

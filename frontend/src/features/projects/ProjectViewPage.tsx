@@ -122,6 +122,8 @@ export function ProjectViewPage() {
   const references = useReferenceLayers(id);
   const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
+  const [aiGenerateInitialPrompt, setAiGenerateInitialPrompt] = useState<string | undefined>();
+  const [aiGenerateInitialTab, setAiGenerateInitialTab] = useState<'image' | undefined>();
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
   const [showLegoBuilder, setShowLegoBuilder] = useState(false);
   const [isPreparingGenerate3D, setIsPreparingGenerate3D] = useState(false);
@@ -1348,7 +1350,11 @@ export function ProjectViewPage() {
             }}
             onDelete={(zoneId) => deleteZone.mutate(zoneId)}
             onClose={() => selectZone(null)}
-            onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+            onAIGenerate={(buildingId, prompt, tab) => {
+              setAiGenerateInitialPrompt(prompt);
+              setAiGenerateInitialTab(tab);
+              setAiGenerateBuildingId(buildingId);
+            }}
             onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
             buildings={project.buildings}
             allZones={siteZones}
@@ -1695,7 +1701,11 @@ export function ProjectViewPage() {
               }}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
-              onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+              onAIGenerate={(buildingId, prompt, tab) => {
+                setAiGenerateInitialPrompt(prompt);
+                setAiGenerateInitialTab(tab);
+                setAiGenerateBuildingId(buildingId);
+              }}
               onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
               buildings={project.buildings}
               allZones={siteZones}
@@ -1858,6 +1868,8 @@ export function ProjectViewPage() {
             <AIGenerateModal
               buildingId={aiGenerateBuildingId}
               buildingName={project.buildings?.find((b) => b.id === aiGenerateBuildingId)?.name}
+              initialPrompt={aiGenerateInitialPrompt}
+              initialTab={aiGenerateInitialTab}
               onClose={() => setAiGenerateBuildingId(null)}
               onComplete={() => {
                 queryClient.invalidateQueries({ queryKey: ['project', id] });

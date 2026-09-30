@@ -3,6 +3,8 @@ Async tasks for document processing pipeline.
 """
 
 import asyncio
+import base64
+import hashlib
 import logging
 import tempfile
 import time
@@ -23,6 +25,10 @@ from app.services.residual_landscape import (
     mark_linked_community_3d_stale_sync,
 )
 from app.tasks.worker import celery_app
+from app.services.photo_building import (
+    MIN_REFERENCE_VIEWS, MAX_REFERENCE_VIEWS, photo_state, prepare_photo,
+    reference_prompt, refund_photo_tokens_sync,
+)
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -816,6 +822,125 @@ def _apply_library_model(
 
 
 @celery_app.task(
+    name="synthesize_building_photo_references",
+    soft_time_limit=900,
+    time_limit=960,
+)
+def synthesize_building_photo_references(building_id: str, batch_id: str, audit_id: str | None):
+    """Prepare reviewable views, without starting the paid 3D leg."""
+    from app.generation.meshy_client import MeshyClient
+    from app.models.models import Building
+
+    session = _get_sync_session()
+    try:
+        building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
+        if building is None:
+            refund_photo_tokens_sync(session, audit_id)
+            return {"status": "source_removed"}
+        state = photo_state(building.specifications)
+        if state.get("batch_id") != batch_id or state.get("status") != "synthesizing":
+            refund_photo_tokens_sync(session, audit_id)
+            return {"status": "superseded"}
+        source_keys = state.get("source_keys") or []
+        source_hashes = state.get("source_hashes") or []
+        if not 1 <= len(source_keys) <= 4 or len(source_keys) != len(source_hashes):
+            raise ValueError("Invalid photo source set")
+        prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/{batch_id}/"
+        s3 = _get_s3_client()
+        inputs: list[str] = []
+        for key, expected_hash in zip(source_keys, source_hashes):
+            if not isinstance(key, str) or not key.startswith(prefix + "source-"):
+                raise ValueError("Untrusted photo source key")
+            data = s3.get_object(Bucket=settings.s3_bucket_name, Key=key)["Body"].read()
+            if hashlib.sha256(data).hexdigest() != expected_hash:
+                raise ValueError("A source photo changed after upload")
+            inputs.append("data:image/jpeg;base64," + base64.b64encode(data).decode("ascii"))
+
+        async def _prepare():
+            import httpx
+
+            client = MeshyClient()
+            task_id = state.get("provider_task_id")
+            if not task_id:
+                task_id = await client.image_to_image_multiview(inputs, reference_prompt(state.get("brief", "")))
+            # Persist the provider id before waiting, for cost and failure tracing.
+            current = photo_state(building.specifications)
+            if current.get("batch_id") == batch_id:
+                building.specifications = {
+                    **(building.specifications or {}),
+                    "photo_generation": {**current, "provider_task_id": task_id},
+                }
+                session.commit()
+            result = await client.poll_until_done(task_id, timeout=600, task_type="image_to_image")
+            urls = result.get("image_urls") or []
+            if isinstance(urls, dict):
+                urls = list(urls.values())
+            if not isinstance(urls, list) or not MIN_REFERENCE_VIEWS <= len(urls) <= MAX_REFERENCE_VIEWS or not all(isinstance(url, str) for url in urls):
+                raise RuntimeError("The provider did not return enough reference views")
+            images: list[bytes] = []
+            async with httpx.AsyncClient(timeout=60, follow_redirects=True) as http:
+                for url in urls:
+                    response = await http.get(url)
+                    response.raise_for_status()
+                    if len(response.content) > 12 * 1024 * 1024:
+                        raise RuntimeError("A generated reference view was too large")
+                    image, _ = prepare_photo(response.content, max_bytes=12 * 1024 * 1024)
+                    images.append(image)
+            return task_id, images
+
+        provider_task_id, images = asyncio.run(_prepare())
+        log_api_usage_sync(
+            provider="meshy", operation="image_to_image_multiview", credits_used=9,
+            task_id=provider_task_id, building_id=building_id,
+        )
+        reference_keys = []
+        for index, image_data in enumerate(images):
+            digest = hashlib.sha256(image_data).hexdigest()
+            key = f"{prefix}reference-{index}-{digest[:12]}.jpg"
+            _upload_to_storage(key, image_data, "image/jpeg")
+            reference_keys.append(key)
+        session.refresh(building)
+        current = photo_state(building.specifications)
+        if current.get("batch_id") != batch_id or current.get("status") != "synthesizing":
+            refund_photo_tokens_sync(session, audit_id)
+            return {"status": "superseded"}
+        building.specifications = {
+            **(building.specifications or {}),
+            "photo_generation": {
+                **current, "status": "references_ready", "reference_keys": reference_keys,
+                "reference_hashes": [hashlib.sha256(data).hexdigest() for data in images],
+                "error": None,
+            },
+        }
+        session.commit()
+        return {"status": "references_ready", "reference_count": len(reference_keys)}
+    except Exception as exc:
+        logger.exception("Photo reference preparation failed for building %s", building_id)
+        session.rollback()
+        try:
+            building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
+            if building is not None:
+                current = photo_state(building.specifications)
+                if current.get("batch_id") == batch_id and current.get("status") == "synthesizing":
+                    building.specifications = {
+                        **(building.specifications or {}),
+                        "photo_generation": {**current, "status": "failed", "error": str(exc)[:300]},
+                    }
+                    session.commit()
+        except Exception:
+            session.rollback()
+            logger.exception("Could not persist photo reference failure")
+        try:
+            refund_photo_tokens_sync(session, audit_id)
+        except Exception:
+            session.rollback()
+            logger.exception("Could not refund photo reference tokens")
+        return {"status": "failed", "error": str(exc)[:300]}
+    finally:
+        session.close()
+
+
+@celery_app.task(
     bind=True,
     name="generate_3d_model_ai",
     max_retries=3,
@@ -835,6 +960,9 @@ def generate_3d_model_ai(
     engine: str = "meshy",
     style_id: str = None,
     negative_prompt: str = None,
+    photo_reference_keys: list[str] = None,
+    photo_batch_id: str = None,
+    photo_audit_id: str = None,
 ):
     """
     Generate a 3D model via an AI provider adapter.
@@ -858,6 +986,8 @@ def generate_3d_model_ai(
 
         building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
         if not building:
+            if photo_audit_id:
+                refund_photo_tokens_sync(session, photo_audit_id)
             logger.info(
                 "Skipping AI 3D generation because source building %s was removed before execution",
                 building_id,
@@ -906,6 +1036,28 @@ def generate_3d_model_ai(
             session.commit()
             logger.info(f"Preview model saved for building {building_id}: {preview_url}")
             _progress_callback(0.5, "preview_ready")
+
+        photo_image_urls = None
+        if photo_reference_keys is not None:
+            state = photo_state(building.specifications)
+            prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/{photo_batch_id}/reference-"
+            if (
+                mode != "multi_image" or state.get("batch_id") != photo_batch_id
+                or state.get("status") != "model_generating"
+                or photo_reference_keys != state.get("reference_keys")
+                or not MIN_REFERENCE_VIEWS <= len(photo_reference_keys) <= MAX_REFERENCE_VIEWS
+                or not all(isinstance(key, str) and key.startswith(prefix) for key in photo_reference_keys)
+            ):
+                raise ValueError("Photo reference set was changed or is not ready")
+            s3 = _get_s3_client()
+            photo_image_urls = []
+            for key, expected_hash in zip(photo_reference_keys, state.get("reference_hashes") or []):
+                data = s3.get_object(Bucket=settings.s3_bucket_name, Key=key)["Body"].read()
+                if hashlib.sha256(data).hexdigest() != expected_hash:
+                    raise ValueError("A reviewed reference view changed after preparation")
+                photo_image_urls.append("data:image/jpeg;base64," + base64.b64encode(data).decode("ascii"))
+            if len(photo_image_urls) != len(photo_reference_keys):
+                raise ValueError("Incomplete reviewed reference set")
 
         # --- Archetype model cache: never pay twice for the same key ------
         # Hit → apply instantly (0 credits). Miss → claim the key and
@@ -986,12 +1138,15 @@ def generate_3d_model_ai(
                 prompt=prompt,
                 mode=mode,
                 image_url=image_url,
+                image_urls=photo_image_urls,
                 refine=refine,
                 negative_prompt=architectural_negative_prompt,
                 building_id=building_id,
                 progress_callback=_progress_callback,
                 task_callback=_task_callback,
-                preview_callback=_preview_callback,
+                # Keep the old model visible until this custom paid result is
+                # durably uploaded and committed.
+                preview_callback=None if photo_batch_id else _preview_callback,
             )
         )
 
@@ -1012,6 +1167,8 @@ def generate_3d_model_ai(
             from app.services.archetype_model_cache import cache_storage_key
 
             model_key = cache_storage_key(cache_claim)
+        elif photo_batch_id:
+            model_key = f"projects/{project_id}/models/{building_id}_photo_{photo_batch_id}.glb"
         else:
             model_suffix = "tripo" if provider.engine_id == "tripo" else "ai"
             model_key = f"projects/{project_id}/models/{building_id}_{model_suffix}.glb"
@@ -1027,7 +1184,8 @@ def generate_3d_model_ai(
                     f"{provider.engine_id}/{cache_claim.id}_lod{level}.glb"
                 )
             else:
-                lod_key = f"projects/{project_id}/models/{building_id}_{provider.engine_id}_lod{level}.glb"
+                suffix = f"photo_{photo_batch_id}" if photo_batch_id else provider.engine_id
+                lod_key = f"projects/{project_id}/models/{building_id}_{suffix}_lod{level}.glb"
             _upload_to_storage(lod_key, lod_glb_data, "model/gltf-binary")
             lod_urls[str(level)] = _file_proxy_url(lod_key)
             lod_keys_for_cache[str(level)] = lod_key
@@ -1038,6 +1196,13 @@ def generate_3d_model_ai(
         building.model_url = model_url
         building.lod_urls = lod_urls
         building.generation_status = "completed"
+        if photo_batch_id:
+            current = photo_state(building.specifications)
+            if current.get("batch_id") == photo_batch_id:
+                building.specifications = {
+                    **(building.specifications or {}),
+                    "photo_generation": {**current, "status": "completed", "error": None},
+                }
         building.meshy_task_id = result.task_id
         _mark_building_representation_stale(session, building)
         # Commit the paid result IMMEDIATELY. Everything below is optional
@@ -1115,10 +1280,11 @@ def generate_3d_model_ai(
                 session.rollback()
                 logger.warning(f"Failed to save thumbnail (non-fatal): {thumb_err}")
 
-        try:
-            _propagate_model_to_siblings(session, building_id, model_url, lod_urls, building.preview_url)
-        except Exception as prop_err:
-            logger.warning(f"Model propagation to siblings failed (non-fatal): {prop_err}")
+        if not photo_batch_id:
+            try:
+                _propagate_model_to_siblings(session, building_id, model_url, lod_urls, building.preview_url)
+            except Exception as prop_err:
+                logger.warning(f"Model propagation to siblings failed (non-fatal): {prop_err}")
 
         logger.info(f"AI 3D model generated for building {building_id}: {model_url}")
         return {
@@ -1160,6 +1326,14 @@ def generate_3d_model_ai(
             logger.warning("Building %s already completed; ignoring post-success error: %s", building_id, exc)
             return {"status": "completed", "building_id": building_id, "model_url": completed_model_url}
 
+        if photo_audit_id:
+            try:
+                session.rollback()
+                refund_photo_tokens_sync(session, photo_audit_id)
+            except Exception:
+                session.rollback()
+                logger.exception("Could not refund failed photo model tokens")
+
         try:
             if building is not None:
                 building.generation_status = "failed"
@@ -1167,6 +1341,10 @@ def generate_3d_model_ai(
                 # with an empty error field are invisible to the user.
                 specs = dict(building.specifications or {})
                 specs["generation_error"] = str(exc)[:400]
+                if photo_batch_id:
+                    current = photo_state(specs)
+                    if current.get("batch_id") == photo_batch_id:
+                        specs["photo_generation"] = {**current, "status": "failed", "error": str(exc)[:300]}
                 building.specifications = specs
                 session.commit()
         except Exception as inner_exc:
@@ -1187,6 +1365,10 @@ def generate_3d_model_ai(
         # these limits, would almost certainly hit the same wall — the old
         # behaviour silently burned 4x credits per stuck building.
         if isinstance(exc, (TimeoutError, SoftTimeLimitExceeded)):
+            return {"status": "failed", "error": str(exc)[:200]}
+        # A student explicitly approved one paid 3D leg. Automatic retries
+        # could submit another charged generation without their approval.
+        if photo_batch_id:
             return {"status": "failed", "error": str(exc)[:200]}
         # Exponential backoff for genuinely TRANSIENT failures (network, 5xx).
         raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))

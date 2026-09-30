@@ -74,6 +74,17 @@ export function resolveApiFileUrl(url: string, context?: AssetContext): string {
   return assetAccess.resolve(url, context);
 }
 
+export interface PhotoReferenceStatus {
+  status: 'idle' | 'synthesizing' | 'references_ready' | 'model_generating' | 'completed' | 'failed';
+  brief: string;
+  reference_urls: string[];
+  source_count: number;
+  resume_available: boolean;
+  error: string | null;
+  reference_token_cost: number;
+  model_token_cost: number;
+}
+
 export const subscribeAssetTicketChanges = assetAccess.subscribe;
 export const getAssetTicketRevision = assetAccess.getRevision;
 export const refreshAssetTickets = assetAccess.refresh;
@@ -398,6 +409,30 @@ export const buildingsApi = {
     const { data } = await api.post(`/api/v1/buildings/${id}/generate-from-image`, {
       image_url: imageUrl,
     });
+    return data;
+  },
+
+  getPhotoReferences: async (id: string): Promise<PhotoReferenceStatus> => {
+    const { data } = await api.get(`/api/v1/buildings/${id}/photo-references`);
+    return data;
+  },
+
+  createPhotoReferences: async (id: string, photos: File[], brief: string): Promise<void> => {
+    const body = new FormData();
+    photos.forEach((photo) => body.append('photos', photo));
+    body.append('brief', brief);
+    await api.post(`/api/v1/buildings/${id}/photo-references`, body, {
+      headers: { 'Content-Type': undefined },
+      timeout: 60_000,
+    });
+  },
+
+  resumePhotoReferences: async (id: string): Promise<void> => {
+    await api.post(`/api/v1/buildings/${id}/photo-references/resume`);
+  },
+
+  generatePhotoModel: async (id: string): Promise<GenerationStatus> => {
+    const { data } = await api.post(`/api/v1/buildings/${id}/photo-model`);
     return data;
   },
 

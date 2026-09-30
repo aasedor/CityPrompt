@@ -27,6 +27,9 @@ async def queue_ai_generation_task(
     style_id: str | None = None,
     negative_prompt: str | None = None,
     countdown: int = 0,
+    photo_reference_keys: list[str] | None = None,
+    photo_batch_id: str | None = None,
+    photo_audit_id: str | None = None,
 ) -> str | None:
     """Commit the current DB state before queueing AI generation work.
 
@@ -50,15 +53,24 @@ async def queue_ai_generation_task(
                 engine,
                 style_id,
                 negative_prompt,
+                photo_reference_keys,
+                photo_batch_id,
+                photo_audit_id,
             ],
             countdown=countdown,
         )
     except Exception as exc:
         building.generation_status = "failed"
-        _merge_building_specifications(
-            building,
-            {"generation_error": f"Failed to queue AI generation: {exc}"},
-        )
+        updates = {"generation_error": f"Failed to queue AI generation: {exc}"}
+        if photo_batch_id:
+            from app.services.photo_building import photo_state
+
+            state = photo_state(building.specifications)
+            if state.get("batch_id") == photo_batch_id:
+                updates["photo_generation"] = {
+                    **state, "status": "failed", "error": "Could not start 3D generation. Please try again.",
+                }
+        _merge_building_specifications(building, updates)
         try:
             await db.commit()
         except Exception as commit_exc:
