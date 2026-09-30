@@ -3,7 +3,9 @@ Building management API endpoints.
 """
 
 import asyncio
+import json
 import uuid
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Body, Depends, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import Response
@@ -28,6 +30,9 @@ from app.services.photo_building import (
     MAX_PHOTOS, MIN_REFERENCE_VIEWS, MAX_REFERENCE_VIEWS,
     PHOTO_MODEL_TOKEN_COST, PHOTO_REFERENCE_TOKEN_COST,
     photo_state, prepare_photo, refund_photo_tokens, reserve_photo_tokens,
+)
+from app.services.building_reference_search import (
+    VIEW_TERMS, download_building_view, search_building_views, sign_candidate, verified_candidate,
 )
 from app.services.residual_landscape import (
     lock_residual_landscape_project,
@@ -733,16 +738,47 @@ async def get_photo_references(
         ),
         "reference_token_cost": PHOTO_REFERENCE_TOKEN_COST,
         "model_token_cost": PHOTO_MODEL_TOKEN_COST,
+        "source_provenance": state.get("source_provenance", []),
+        "selected_reference_indices": state.get("selected_reference_indices", []),
     }
+
+
+@router.post("/{building_id}/photo-reference-search")
+async def find_photo_references(
+    building_id: uuid.UUID,
+    query: str = Body(..., min_length=3, max_length=160),
+    view: str = Body("all"),
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Find public landmark views and retain trusted candidates for this building."""
+    building = await _editable_building(building_id, user, db)
+    if view not in VIEW_TERMS or len(query.strip()) < 3:
+        raise HTTPException(status_code=422, detail="Enter a building name and choose a viewing angle.")
+    try:
+        candidates = [sign_candidate(item, str(building_id)) for item in await search_building_views(query, view)]
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail="Image search is temporarily unavailable. Try again or upload your own photos.") from exc
+    specs = dict(building.specifications or {})
+    previous = specs.get("photo_reference_search", {}).get("candidates", [])
+    current_ids = {item["id"] for item in candidates}
+    specs["photo_reference_search"] = {
+        "query": query.strip(), "searched_at": datetime.now(timezone.utc).isoformat(),
+        "candidates": (candidates + [item for item in previous if item.get("id") not in current_ids])[:48],
+    }
+    building.specifications = specs
+    await db.commit()
+    return {"candidates": candidates, "query": query.strip(), "provider": "wikimedia_commons"}
 
 
 @router.post("/{building_id}/photo-references")
 async def create_photo_references(
     building_id: uuid.UUID,
-    photos: list[UploadFile] = File(...),
+    photos: list[UploadFile] = File(default=[]),
     brief: str = Form(""),
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
+    web_reference_ids: str = Form("[]"),
 ):
     """Store bounded source photos and queue paid, reviewable reference views."""
     building = await _editable_building(building_id, user, db)
@@ -750,18 +786,38 @@ async def create_photo_references(
         raise HTTPException(status_code=409, detail="Wait for the current 3D generation to finish first.")
     if photo_state(building.specifications).get("status") == "synthesizing":
         raise HTTPException(status_code=409, detail="Reference views are already being prepared.")
-    if not 1 <= len(photos) <= MAX_PHOTOS:
-        raise HTTPException(status_code=422, detail="Upload 1 to 4 photos of the same building.")
+    try:
+        selected_ids = json.loads(web_reference_ids if isinstance(web_reference_ids, str) else "[]")
+        if (not isinstance(selected_ids, list) or not all(isinstance(item, str) for item in selected_ids)
+                or len(set(selected_ids)) != len(selected_ids)):
+            raise ValueError("invalid selection")
+    except (ValueError, TypeError) as exc:
+        raise HTTPException(status_code=422, detail="Choose valid reference photos from your search results.") from exc
+    if not 1 <= len(photos) + len(selected_ids) <= MAX_PHOTOS:
+        raise HTTPException(status_code=422, detail="Choose 1 to 4 photos total, including uploads and search results.")
+    candidates = {item["id"]: item for item in (building.specifications or {}).get("photo_reference_search", {}).get("candidates", [])}
+    if any(item not in candidates or not verified_candidate(candidates[item], str(building_id)) for item in selected_ids):
+        raise HTTPException(status_code=409, detail="A selected web photo is no longer available. Search again before preparing views.")
     if len(brief) > 500:
         raise HTTPException(status_code=422, detail="Description must be 500 characters or fewer.")
     _check_engine_available("meshy")
 
     prepared: list[tuple[bytes, str]] = []
+    provenance: list[dict] = []
     for photo in photos:
         try:
             prepared.append(prepare_photo(await photo.read(5 * 1024 * 1024 + 1)))
+            provenance.append({"provider": "student_upload", "sha256": prepared[-1][1]})
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    for reference_id in selected_ids:
+        candidate = candidates[reference_id]
+        try:
+            prepared.append(await download_building_view(candidate))
+        except Exception as exc:
+            raise HTTPException(status_code=422, detail="A selected web photo could not be loaded. Choose another view; no tokens were charged.") from exc
+        provenance.append({**candidate, "sha256": prepared[-1][1], "confirmed_same_building": True})
 
     from app.tasks.processing import _upload_to_storage, synthesize_building_photo_references
 
@@ -784,6 +840,7 @@ async def create_photo_references(
         "brief": brief.strip(),
         "source_keys": source_keys,
         "source_hashes": [digest for _, digest in prepared],
+        "source_provenance": provenance,
         "reference_keys": [],
         "engine": "meshy",
         "quality_tier": "student_preview",

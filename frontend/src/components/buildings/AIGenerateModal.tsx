@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react';
 import { X, Sparkles, Image, LayoutGrid, Type, Loader2, CheckCircle, AlertCircle, Eye, Cpu } from 'lucide-react';
-import { authApi, buildingsApi, getAssetTicketRevision, resolveApiFileUrl, subscribeAssetTicketChanges, type PhotoReferenceStatus } from '@/services/api';
+import { authApi, buildingsApi, getAssetTicketRevision, resolveApiFileUrl, subscribeAssetTicketChanges, type PhotoReferenceStatus, type BuildingReferenceCandidate } from '@/services/api';
 import { useAuthStore } from '@/store';
 import { StyleSelector } from './StyleSelector';
+import { BuildingReferenceSearch } from './BuildingReferenceSearch';
 import type { AITemplate, GenerationStatus, GenerationEngine, RenderPreview } from '@/types';
 
 interface AIGenerateModalProps {
@@ -47,6 +48,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
 
   // Student photo workflow state
   const [photoFiles, setPhotoFiles] = useState<File[]>([]);
+  const [webReferences, setWebReferences] = useState<BuildingReferenceCandidate[]>([]);
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
   const [photoBrief, setPhotoBrief] = useState('');
   const [photoStatus, setPhotoStatus] = useState<PhotoReferenceStatus | null>(null);
@@ -99,8 +101,10 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
   useEffect(() => {
     if (photoStatus?.status === 'references_ready' || photoStatus?.status === 'failed') {
       setSelectedPhotoReferences(photoStatus.reference_urls.map((_, index) => index));
+    } else if (photoStatus?.status === 'completed' || photoStatus?.status === 'model_generating') {
+      setSelectedPhotoReferences(photoStatus.selected_reference_indices ?? []);
     }
-  }, [photoStatus?.status, photoStatus?.reference_urls]);
+  }, [photoStatus?.status, photoStatus?.reference_urls, photoStatus?.selected_reference_indices]);
 
   // Preview tab state
   const [previewPrompt, setPreviewPrompt] = useState('');
@@ -174,11 +178,11 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
   }, [buildingId, artStyle, negativePrompt, selectedStyle, selectedEngine, startPolling]);
 
   const handlePreparePhotos = useCallback(async () => {
-    if (photoFiles.length === 0) return;
+    if (photoFiles.length + webReferences.length === 0) return;
     setError(null);
     setPhotoBusy(true);
     try {
-      await buildingsApi.createPhotoReferences(buildingId, photoFiles, photoBrief.trim());
+      await buildingsApi.createPhotoReferences(buildingId, photoFiles, photoBrief.trim(), webReferences.map((item) => item.id));
       setPhotoStatus(await buildingsApi.getPhotoReferences(buildingId));
     } catch (err: unknown) {
       const apiError = err as { response?: { data?: { detail?: string } }; message?: string };
@@ -186,7 +190,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
     } finally {
       setPhotoBusy(false);
     }
-  }, [buildingId, photoFiles, photoBrief]);
+  }, [buildingId, photoFiles, photoBrief, webReferences]);
 
   const handleGeneratePhotoModel = useCallback(async () => {
     setError(null);
@@ -264,6 +268,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
 
   const availableEngines = engines.filter((e) => e.available && e.id !== 'procedural');
   const photoProviderUnavailable = engines.some((engine) => engine.id === 'meshy' && !engine.available);
+  const photoWorkInProgress = photoBusy || generating || photoStatus?.status === 'synthesizing' || photoStatus?.status === 'model_generating';
 
   const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
     { id: 'templates', label: 'Templates', icon: <LayoutGrid size={14} /> },
@@ -316,6 +321,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
             )}
             <button
               onClick={onClose}
+              aria-label="Close AI generation"
               className="rounded-md p-1.5 text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/60"
             >
               <X size={20} />
@@ -567,7 +573,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
               <div className="rounded-xl border border-primary-950/[0.1] bg-primary-950/[0.02] p-4">
                 <h3 className="text-sm font-bold text-primary-950">Build from your photos</h3>
                 <p className="mt-1 text-xs text-primary-950/65">
-                  Upload 1–4 views of the same building, front view first. We prepare consistent reference views for you to review, then create a private 3D model preview. This is an AI mesh, not a reviewed catalogue building.
+                  Choose 1–4 views of the same building: upload photos or find more views online below. Put your clearest front photo first. We prepare reference views for you to review, then create a private 3D model preview. This is an AI mesh, not a reviewed catalogue building.
                 </p>
                 {photoProviderUnavailable && <p role="status" className="mt-2 text-xs text-amber-800">Photo modeling is temporarily unavailable. An administrator needs to connect the 3D provider.</p>}
                 <label className="mt-3 block text-xs font-semibold text-primary-950/70">Building photos (JPG or PNG, 5 MB each)</label>
@@ -575,11 +581,12 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
                   type="file"
                   accept="image/jpeg,image/png"
                   multiple
+                  disabled={photoWorkInProgress}
                   onChange={(event) => {
                     const files = Array.from(event.target.files || []);
-                    if (files.length > 4 || files.some((file) => file.size > 5 * 1024 * 1024)) {
-                      setError('Choose 1–4 JPG or PNG photos, each 5 MB or smaller.');
-                      setPhotoFiles([]);
+                    if (files.length + webReferences.length > 4 || files.some((file) => file.size > 5 * 1024 * 1024)) {
+                      setError('Choose up to 4 photos total, including web photos. Uploads must be 5 MB or smaller.');
+                      event.target.value = '';
                       return;
                     }
                     setError(null);
@@ -592,9 +599,12 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
                     {photoPreviews.map((url, index) => <img key={url} src={url} alt={`Uploaded view ${index + 1}`} className="h-20 w-full rounded object-cover" />)}
                   </div>
                 )}
+                <BuildingReferenceSearch buildingId={buildingId} selected={webReferences} onChange={setWebReferences}
+                  capacity={4 - photoFiles.length} disabled={photoWorkInProgress} />
                 <label className="mt-3 block text-xs font-semibold text-primary-950/70" htmlFor="photo-building-brief">Describe anything the photos do not show</label>
                 <textarea
                   id="photo-building-brief"
+                  disabled={photoWorkInProgress}
                   value={photoBrief}
                   onChange={(event) => setPhotoBrief(event.target.value.slice(0, 500))}
                   rows={2}
@@ -603,7 +613,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
                 />
                 <button
                   onClick={handlePreparePhotos}
-                  disabled={photoProviderUnavailable || photoBusy || generating || photoStatus?.status === 'synthesizing' || photoFiles.length === 0}
+                  disabled={photoProviderUnavailable || photoWorkInProgress || photoFiles.length + webReferences.length === 0}
                   className="mt-2 w-full rounded-lg bg-purple-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
                 >
                   {photoBusy || photoStatus?.status === 'synthesizing' ? 'Preparing reference views…' : 'Step 1 · Prepare reference views'}
@@ -621,6 +631,16 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
               {photoStatus && photoStatus.reference_urls.length >= 2 && (
                 <div className="rounded-xl border border-primary-950/[0.1] p-4">
                   <h3 className="text-sm font-bold text-primary-950">Review the generated views</h3>
+                  {photoStatus.source_provenance?.some((source) => source.provider === 'wikimedia_commons') && (
+                    <details className="mt-2 text-xs text-primary-950/65">
+                      <summary className="cursor-pointer">Web photo sources used for these views</summary>
+                      <ul className="mt-1 space-y-1">
+                        {photoStatus.source_provenance.filter((source) => source.provider === 'wikimedia_commons').map((source) => (
+                          <li key={source.sha256}><a href={source.source_url} target="_blank" rel="noopener noreferrer" className="underline">{source.title}</a> · {source.author} · {source.license}</li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
                   <p className="mt-1 text-xs text-primary-950/65">Check the roof, entrances, window pattern and materials. Deselect any damaged or misleading view before making a model, or upload better photos to prepare a new set.</p>
                   <div className="mt-3 grid grid-cols-3 gap-2">
                     {photoStatus.reference_urls.map((url, index) => (
@@ -629,6 +649,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initi
                         <span className="mt-1 flex items-center gap-1">
                           <input
                             type="checkbox"
+                            disabled={photoWorkInProgress || photoStatus.status === 'completed'}
                             checked={selectedPhotoReferences.includes(index)}
                             onChange={() => setSelectedPhotoReferences((current) => current.includes(index)
                               ? current.filter((item) => item !== index)

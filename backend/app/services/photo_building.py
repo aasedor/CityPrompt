@@ -121,16 +121,15 @@ def prepare_photo(data: bytes, *, max_bytes: int = MAX_SOURCE_BYTES) -> tuple[by
 
 def reference_prompt(brief: str) -> str:
     """Ask for consistent architectural reference views, not presentation art."""
-    description = brief.strip()[:500]
-    return (
-        "Create three mutually consistent views of the SAME building shown in the "
-        "uploaded photos: front, rear, and side three-quarter. Preserve the roof "
-        "form, storey count, facade rhythm, doors, windows, materials, and colors. "
-        "Show the whole building at human scale on a neutral plain background. "
-        "Remove people, cars, neighbouring buildings, signs, text, and logos. "
-        "Do not invent extra wings or floors. "
-        + (f"Student notes: {description}" if description else "")
+    base = (
+        "Show the SAME building in three consistent whole views: front, elevated rear, "
+        "side oblique. Use all source photos to resolve the roof and hidden sides. "
+        "Preserve storey count, openings, materials and solid surfaces. Plain background; "
+        "exclude neighbours, people and cars. No added wings or floors. "
     )
+    # Our Meshy client caps this prompt at 600; reserve space for student notes
+    # rather than silently losing the whole brief at the provider boundary.
+    return base + ("Student notes: " + brief.strip())[:600 - len(base)]
 
 
 def photo_state(specifications: dict[str, Any] | None) -> dict[str, Any]:

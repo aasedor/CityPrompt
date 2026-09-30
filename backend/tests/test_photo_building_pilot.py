@@ -46,6 +46,8 @@ def test_reference_prompt_preserves_architecture_and_bounds_student_text():
     assert "roof" in prompt and "storey count" in prompt
     assert "two mirrored homes" in prompt
     assert len(reference_prompt("x" * 1000)) < len(prompt) + 600
+    assert len(reference_prompt("x" * 1000)) <= 600
+    assert "Student notes: " in reference_prompt("x" * 1000)
 
 
 @pytest.mark.anyio

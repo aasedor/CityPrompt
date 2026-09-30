@@ -74,6 +74,17 @@ export function resolveApiFileUrl(url: string, context?: AssetContext): string {
   return assetAccess.resolve(url, context);
 }
 
+export interface BuildingReferenceCandidate {
+  id: string;
+  title: string;
+  image_url: string;
+  source_url: string;
+  license: string;
+  license_url: string;
+  author: string;
+  description: string;
+}
+
 export interface PhotoReferenceStatus {
   status: 'idle' | 'synthesizing' | 'references_ready' | 'model_generating' | 'completed' | 'failed';
   brief: string;
@@ -83,6 +94,8 @@ export interface PhotoReferenceStatus {
   error: string | null;
   reference_token_cost: number;
   model_token_cost: number;
+  selected_reference_indices?: number[];
+  source_provenance?: Array<Partial<BuildingReferenceCandidate> & { provider: string; sha256: string }>;
 }
 
 export const subscribeAssetTicketChanges = assetAccess.subscribe;
@@ -417,13 +430,19 @@ export const buildingsApi = {
     return data;
   },
 
-  createPhotoReferences: async (id: string, photos: File[], brief: string): Promise<void> => {
+  searchPhotoReferences: async (id: string, query: string, view: string): Promise<{ candidates: BuildingReferenceCandidate[] }> => {
+    const { data } = await api.post(`/api/v1/buildings/${id}/photo-reference-search`, { query, view }, { timeout: 35_000 });
+    return data;
+  },
+
+  createPhotoReferences: async (id: string, photos: File[], brief: string, webReferenceIds: string[] = []): Promise<void> => {
     const body = new FormData();
     photos.forEach((photo) => body.append('photos', photo));
     body.append('brief', brief);
+    body.append('web_reference_ids', JSON.stringify(webReferenceIds));
     await api.post(`/api/v1/buildings/${id}/photo-references`, body, {
       headers: { 'Content-Type': undefined },
-      timeout: 60_000,
+      timeout: 150_000,
     });
   },
 
