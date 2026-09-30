@@ -1,7 +1,7 @@
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
-import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
-import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
+import { roadDisplayZones } from '@/utils/proceduralRoadNetwork';
+import { streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
 import { useEffect, useRef, useCallback, useState, useMemo } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -390,16 +390,16 @@ export function SitePlannerMap({
       if (pts.length >= 2) {
         const width = (activeToolPropertiesRef.current?.width as number)
           ?? ZONE_TYPE_CONFIG[tool!]?.defaultProperties?.width ?? 10;
-        const smooth = tool === 'road'
-          ? roundAuthoredStreetRoute(pts, width, activeToolPropertiesRef.current ?? {})
-          : smoothPolyline(pts);
+        const road = tool === 'road' ? streetDrawingGeometry(pts,
+          { ...activeToolPropertiesRef.current, width }, siteZonesRef.current) : null;
+        const smooth = road ? road.properties.plan_centerline as number[][] : smoothPolyline(pts);
         features.push({
           type: 'Feature',
           properties: {},
           geometry: { type: 'LineString', coordinates: smooth },
         });
         // Show buffered polygon preview using smoothed line
-        const buffered = bufferLineToPolygon(smooth, width);
+        const buffered = road?.coordinates ?? bufferLineToPolygon(smooth, width);
         features.push({
           type: 'Feature',
           properties: {},
@@ -557,19 +557,13 @@ export function SitePlannerMap({
   const finishDrawing = useCallback((tool: SiteZoneType, pts: number[][], properties?: SiteZoneProperties | null) => {
     const props = { ...(properties ?? activeToolPropertiesRef.current) };
     let coords: number[][];
-    if (isLinearTool(tool)) {
+    if (tool === 'road') {
+      const road = streetDrawingGeometry(pts, { ...ZONE_TYPE_CONFIG.road.defaultProperties, ...props }, siteZonesRef.current);
+      coords = road.coordinates;
+      Object.assign(props, road.properties);
+    } else if (isLinearTool(tool)) {
       const width = (props?.width as number) ?? ZONE_TYPE_CONFIG[tool]?.defaultProperties?.width ?? 10;
-      const proceduralRoad = tool === 'road' && !props.pick_place_street_section;
-      const authored = proceduralRoad ? snapRoadEndpoints(pts, siteZonesRef.current, props.road_level) : pts;
-      const smooth = tool === 'road' ? roundAuthoredStreetRoute(authored, width, props) : smoothPolyline(authored);
-      coords = bufferLineToPolygon(smooth, width);
-      if (tool === 'road') {
-        props.plan_centerline = smooth;
-        if (props.pick_place_street_section) props.plan_route_controls = authored;
-      }
-      if (proceduralRoad) {
-        props.procedural_road = 1;
-      }
+      coords = bufferLineToPolygon(smoothPolyline(pts), width);
     } else {
       coords = [...pts];
     }

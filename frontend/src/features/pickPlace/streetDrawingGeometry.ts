@@ -3,13 +3,16 @@ import { bufferLineToPolygon, haversineDistance } from '@/components/viewer/mapE
 import { snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { snapStreetEnds } from './streetSnapping';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { snapStreetToBoundary } from './streetBoundarySnapping';
 
 /** One geometry path for the unsaved preview and the final authored road. */
 export function streetDrawingGeometry(points: number[][], properties: SiteZoneProperties, zones: SiteZone[]): { coordinates: number[][]; properties: SiteZoneProperties } {
   const width = Number(properties.width) || 10;
+  const bounded = snapStreetToBoundary(points, width, getActiveSiteBoundary(zones), properties);
   const authored = properties.pick_place_street_section
-    ? snapStreetEnds(points, zones, undefined, width)
-    : snapRoadEndpoints(points, zones, properties.road_level);
+    ? snapStreetEnds(bounded, zones, undefined, width)
+    : snapRoadEndpoints(bounded, zones, properties.road_level);
   const centerline = roundAuthoredStreetRoute(authored, width, properties);
   return { coordinates: bufferLineToPolygon(centerline, width), properties: {
     ...properties, plan_centerline: centerline,
