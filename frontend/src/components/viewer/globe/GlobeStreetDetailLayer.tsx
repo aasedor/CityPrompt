@@ -58,6 +58,7 @@ import {
 import { ROUNDABOUT_PARAMS, STREET_DETAIL_3D } from '@/data/streetGeometryParams';
 import {
   resolvePilotStreetSectionProfile,
+  type StreetSectionProfile,
 } from './streetSectionProfiles';
 import {
   selectDetailedStreetZones,
@@ -206,6 +207,8 @@ function StreetRibbonDetail({
   intersectionNodes,
   renderFamilyFurniture,
   renderFamilyTrees,
+  preview = false,
+  previewProfile,
 }: {
   zone: SiteZone;
   sceneZones: SiteZone[];
@@ -213,6 +216,8 @@ function StreetRibbonDetail({
   intersectionNodes: RenderStreetIntersection[];
   renderFamilyFurniture: boolean;
   renderFamilyTrees: boolean;
+  preview?: boolean;
+  previewProfile?: StreetSectionProfile | null;
   preparedTerrain?: number | null;
   preparedSite?: PreparedStreetSite;
 }) {
@@ -236,8 +241,8 @@ function StreetRibbonDetail({
   const groundRetryRef = useRef(createStreetGroundRetry());
   const [alignmentRetry, setAlignmentRetry] = useState(0);
   const sectionProfile = useMemo(
-    () => resolvePilotStreetSectionProfile(zone),
-    [zone],
+    () => previewProfile !== undefined ? previewProfile : resolvePilotStreetSectionProfile(zone),
+    [zone, previewProfile],
   );
   const hasAuthoredNetworkGround = Boolean(getStreetNetworkGroundMeta(zone));
   const bandMaterials = useMemo(() => {
@@ -322,7 +327,7 @@ function StreetRibbonDetail({
     ? preparedStreetPreview(preparedSite, centerLngLat.local, centerLngLat.normals, centroid, halfWidth, frameElevation) : null,
   [preparedSite, centerLngLat, centroid, halfWidth, frameElevation]);
   const placementTerrain = sharedGround.active ? undefined : stationTerrain ?? preparedPreview;
-  const nativePilot = nativeStreetPilotForZone(zone);
+  const nativePilot = nativeStreetPilotForZone(zone, preview);
   const requiresPreparedAlignment = Boolean(preparedSite) && preparedTerrain === null && !sharedGround.active;
   const alignmentStatus = !requiresPreparedAlignment ? 'ready' : alignmentUnavailable ? 'unavailable' : stationTerrain ? 'ready' : 'sampling';
   const alignmentData = {streetGroundStatus: alignmentStatus, streetGroundZoneId: zone.id,
@@ -910,7 +915,7 @@ function StreetRibbonDetail({
         }))}
         renderOrder={RENDER_ORDER_FURNITURE + 3}
       />
-      {nativePilot && <GlobeNativeStreetPilotModules zone={zone} poses={seat(nativePilotModules)} expectedCount={nativePilotModules.length} clearanceKey={bridgeClearanceKey(sceneZones)} />}
+      {nativePilot && <GlobeNativeStreetPilotModules zone={zone} poses={seat(nativePilotModules)} expectedCount={nativePilotModules.length} clearanceKey={bridgeClearanceKey(sceneZones)} preview={preview} />}
       {seat(yieldStreetSigns).map((placement, index) => (
         <group
           key={`yield-street-entry-sign-${index}`}
@@ -1606,6 +1611,15 @@ function AccessibleFourWayIntersectionDetail({
       ) : null}
     </EastNorthUpFrame>
   );
+}
+
+/** Editor-only draft: same surfaces/modules, without publishing saved-scene readiness. */
+export function GlobeStreetDraft({ zone, zones, terrainHeight, profile }: { zone: SiteZone; zones: SiteZone[]; terrainHeight: number; profile: StreetSectionProfile | null }) {
+  const native = nativeStreetPilotForZone(zone, true);
+  const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight) ?? terrainHeight;
+  return <StreetRibbonDetail zone={zone} sceneZones={zones} fallbackTerrainHeight={height}
+    preparedTerrain={height} intersectionNodes={[]} renderFamilyFurniture={!native}
+    renderFamilyTrees={!native} preview previewProfile={profile} />;
 }
 
 export function GlobeStreetDetailLayer({

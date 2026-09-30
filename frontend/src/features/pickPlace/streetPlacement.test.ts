@@ -37,7 +37,7 @@ describe('fixed sections across street types', () => {
     expect(updated.properties?.plan_route_controls).toEqual(extractCenterline(reshaped));
     expect(updated.properties?.plan_centerline).toEqual(extractCenterline(updated.coordinates));
     expect((updated.properties?.plan_centerline as number[][]).length).toBeGreaterThan(3);
-    expect(streetRouteProblem(updated.coordinates, width)).toBeNull();
+    expect(streetRouteProblem(updated.coordinates, width, updated.properties?.plan_route_controls as number[][])).toBeNull();
     const a = xy(reshaped[0]), b = xy(reshaped[reshaped.length - 1]);
     expect(Math.hypot(a[0]-b[0], a[1]-b[1])).toBeCloseTo(width, 2);
     const moved = streetCoordinateUpdate({ ...saved, ...updated }, updated.coordinates.map(([x,y]) => [x, y + 2/111320]));

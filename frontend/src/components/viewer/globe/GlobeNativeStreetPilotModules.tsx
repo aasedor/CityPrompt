@@ -6,13 +6,13 @@ import { disposeStreetInstances, instanceStreetModule } from './nativeStreetInst
 import { nativeStreetRevision } from './nativeStreetReadiness';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 
-class ModuleBoundary extends Component<{ children: ReactNode; zone: SiteZone }, { failed: boolean }> {
+class ModuleBoundary extends Component<{ children: ReactNode; zone: SiteZone; preview?: boolean }, { failed: boolean }> {
   state = { failed: false };
   retry=()=>this.setState({failed:false});
   componentDidMount(){window.addEventListener('cityprompt:retry-native-streets',this.retry);}
   componentWillUnmount(){window.removeEventListener('cityprompt:retry-native-streets',this.retry);}
   static getDerivedStateFromError() { return { failed: true }; }
-  componentDidCatch(){window.dispatchEvent(new CustomEvent('cityprompt:native-street-error',{detail:{
+  componentDidCatch(){if (this.props.preview) return; window.dispatchEvent(new CustomEvent('cityprompt:native-street-error',{detail:{
     zoneId:this.props.zone.id,revision:nativeStreetRevision(this.props.zone),
     message:'A street component could not be loaded or verified. Choose Retry 3D update.',
   }}));}
@@ -43,10 +43,10 @@ function LoadedModules({poses}:{poses:NativeStreetPose[]}) {
   </group>;
 }
 
-export function GlobeNativeStreetPilotModules({zone,poses,expectedCount,clearanceKey='[]'}:{zone:SiteZone;poses:NativeStreetPose[];expectedCount:number;clearanceKey?:string}) {
+export function GlobeNativeStreetPilotModules({zone,poses,expectedCount,clearanceKey='[]',preview=false}:{zone:SiteZone;poses:NativeStreetPose[];expectedCount:number;clearanceKey?:string;preview?:boolean}) {
   const revision=nativeStreetRevision(zone);
   return <group userData={{nativeStreetZone:zone.id,nativeStreetRevision:revision,nativeStreetExpectedCount:expectedCount,nativeStreetClearanceKey:clearanceKey}}>
-    <ModuleBoundary key={revision} zone={zone}><Suspense fallback={<group userData={{nativeStreetStatus:'loading'}}/>}>
+    <ModuleBoundary key={revision} zone={zone} preview={preview}><Suspense fallback={<group userData={{nativeStreetStatus:'loading'}}/>}>
       <LoadedModules poses={poses}/>
     </Suspense></ModuleBoundary>
   </group>;

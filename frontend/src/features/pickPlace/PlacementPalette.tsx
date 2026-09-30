@@ -62,7 +62,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
       Draw a road route
     </button>}
     {activeStreet && <p className="rounded-lg border border-lime-400 bg-lime-50 px-2 py-2 text-xs text-slate-900">
-      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />Draw its route; the width stays fixed.
+      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />Place the first point, then move to preview the street in 3D. Enter finishes the route.
     </p>}
     {selected && <button onClick={onCancel} className="min-h-11 w-full rounded-lg border border-slate-500 bg-white text-sm text-slate-900">Cancel placement · Esc</button>}
     <div role="status" aria-live="polite" className={`rounded-lg px-2 py-1 text-xs ${status === 'error' ? 'bg-amber-50 text-amber-950' : 'bg-emerald-50 text-emerald-950'}`}>

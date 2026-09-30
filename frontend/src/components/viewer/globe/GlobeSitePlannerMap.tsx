@@ -25,6 +25,8 @@ import { projectedFrameFraction } from './projectFrameHeight';
 import { useContext, useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
 import { GlobePlacementPreview } from '@/features/pickPlace/GlobePlacementPreview';
+import { GlobeStreetDrawingPreview } from '@/features/pickPlace/GlobeStreetDrawingPreview';
+import { streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
 import { Canvas, useThree } from '@react-three/fiber';
 import {
   TilesRenderer,
@@ -52,8 +54,7 @@ import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLa
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
-import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
-import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
+import { roadDisplayZones } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
@@ -3561,21 +3562,21 @@ export function GlobeSitePlannerMap({
     );
 
     let finalCoords: number[][];
-    if (linear) {
-      const procedural = activeSitePlannerTool === 'road' && !zoneProperties.pick_place_street_section;
+    if (activeSitePlannerTool === 'road') {
+      const road = streetDrawingGeometry(pts, zoneProperties, siteZones);
+      finalCoords = sanitizeCoords(road.coordinates);
+      Object.assign(zoneProperties, road.properties);
+    } else if (linear) {
       const width = (zoneProperties.width as number) || 10;
       const authored = zoneProperties.pick_place_street_section
         ? snapStreetEnds(pts, siteZones, undefined, width)
-        : procedural ? snapRoadEndpoints(pts, siteZones, zoneProperties.road_level) : pts;
-      const smoothed = activeSitePlannerTool === 'road'
-        ? roundAuthoredStreetRoute(authored, width, zoneProperties)
-        : smoothPolyline(authored);
+        : pts;
+      const smoothed = smoothPolyline(authored);
       finalCoords = sanitizeCoords(bufferLineToPolygon(smoothed, width));
-      if (zoneProperties.pick_place_street_section || procedural) {
+      if (zoneProperties.pick_place_street_section) {
         zoneProperties.plan_centerline = smoothed;
-        if (zoneProperties.pick_place_street_section) zoneProperties.plan_route_controls = authored;
+        zoneProperties.plan_route_controls = authored;
       }
-      if (procedural) zoneProperties.procedural_road = 1;
     } else {
       finalCoords = [...pts];
     }
@@ -4491,6 +4492,11 @@ export function GlobeSitePlannerMap({
           <group name="siteforge-direct3d-editor-ui" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
             {placementDraft && !placementDraft.inputError && !interactionPaused && !captureOverlaysHidden && <GlobePlacementPreview draft={placementDraft} zones={allSiteZones} onStatusChange={setPlacementProblemMessage} />}
             {/* Drawing preview dots */}
+            {activeSitePlannerTool === 'road' && !interactionPaused && !captureOverlaysHidden && (
+              <GlobeStreetDrawingPreview points={drawingPoints} pointHeights={drawingPointHeights}
+                properties={activeToolProperties} zones={siteZones} terrainHeight={terrainElevation}
+                raycastSurface={raycastSurfacePoint} />
+            )}
             <DrawingDots
               points={drawingPoints}
               pointHeights={drawingPointHeights}
