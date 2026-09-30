@@ -6,6 +6,7 @@ explicitly public library models are anonymous downloads.
 """
 
 import logging
+from io import BytesIO
 import re
 import uuid
 from pathlib import PurePosixPath
@@ -15,6 +16,8 @@ import boto3
 from botocore.config import Config
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
+from PIL import Image, ImageOps
+from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 from sqlalchemy import Text, cast, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -246,6 +249,29 @@ async def head_file(
     )
 
 
+def _render_thumbnail(file_path: str) -> bytes:
+    """Produce a small gallery preview without changing the saved original."""
+    if not re.fullmatch(r"projects/[^/]+/renders/[^/]+\.(?:png|jpe?g|webp)", file_path, re.IGNORECASE):
+        raise HTTPException(status_code=400, detail="Previews are available for saved render images only")
+    try:
+        obj = _s3_client().get_object(Bucket=settings.s3_bucket_name, Key=file_path)
+        try:
+            data = obj["Body"].read()
+        finally:
+            obj["Body"].close()
+    except Exception as exc:
+        raise HTTPException(status_code=404, detail="File not found in storage") from exc
+    try:
+        with Image.open(BytesIO(data)) as source:
+            source.thumbnail((384, 384), Image.Resampling.LANCZOS)
+            preview = ImageOps.exif_transpose(source).convert("RGB")
+            output = BytesIO()
+            preview.save(output, format="WEBP", quality=82)
+            return output.getvalue()
+    except Exception as exc:
+        raise HTTPException(status_code=422, detail="The saved image preview could not be read") from exc
+
+
 @router.get("/{file_path:path}")
 async def get_file(
     file_path: str,
@@ -256,6 +282,7 @@ async def get_file(
     share_token: str | None = None,
     asset_ticket: str | None = None,
     file_ticket: str | None = None,
+    thumbnail: bool = False,
 ):
     """Serve a file from S3-compatible storage by its key."""
     if not file_path:
@@ -263,6 +290,10 @@ async def get_file(
     if file_ticket:
         user = await _file_ticket_user(file_path, file_ticket, db)
     public = await _authorize_file(file_path, user, db, share_token, asset_ticket)
+
+    if thumbnail and not download:
+        preview = await run_in_threadpool(_render_thumbnail, file_path)
+        return Response(content=preview, media_type="image/webp", headers=_cache_headers(public))
 
     try:
         obj = _s3_client().get_object(Bucket=settings.s3_bucket_name, Key=file_path)

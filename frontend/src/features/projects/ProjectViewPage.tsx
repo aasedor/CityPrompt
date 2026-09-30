@@ -76,7 +76,8 @@ import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { parsePersistedCenterline, rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
-import { savedRenderIsSource, savedRenderNeedsReview, savedRenderNotice } from '@/utils/renderPresentation';
+import { savedRenderNotice } from '@/utils/renderPresentation';
+import { SavedRenderCard } from './SavedRenderCard';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
@@ -2163,16 +2164,7 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
         ) : (
           <div className="grid grid-cols-2 gap-2">
             {items.map((item) => item.kind === 'image' ? (
-              <button key={`image-${item.render.id}`} type="button" onClick={() => onSelect(item.render)} className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] text-left transition hover:border-amber-400/80">
-                <img src={resolveApiFileUrl(item.render.image_url)} alt={item.render.prompt || 'Saved render'} className="aspect-square w-full object-cover" />
-                {savedRenderNeedsReview(item.render) && <span className="absolute left-1 top-1 rounded bg-amber-100 px-1.5 py-1 text-[10px] font-bold text-amber-950">
-                  {item.render.variant === 'provider_original' ? 'AI render' : savedRenderIsSource(item.render) ? '3D source' : 'Compare with plan'}
-                </span>}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
-                  <p className="truncate text-[10px] font-semibold text-white">{item.render.style || 'render'}</p>
-                  <p className="text-[10px] text-white/65">{new Date(item.render.created_at).toLocaleDateString()}</p>
-                </div>
-              </button>
+              <SavedRenderCard key={`image-${item.render.id}`} render={item.render} onSelect={onSelect} />
             ) : (
               <button key={`video-${item.video.id}`} type="button" onClick={() => onSelectVideo(item.video)} className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-black text-left transition hover:border-[#28c7e8]">
                 {item.video.guide_image_url ? (
