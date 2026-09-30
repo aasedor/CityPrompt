@@ -25,6 +25,7 @@ from app.services.native_brt import validate_brt_properties, validate_brt_ground
 from app.services.native_tram import validate_tram_properties, validate_tram_ground, is_native_tram
 from app.services.native_specialist_streets import validate_specialist_properties, validate_specialist_ground, is_native_specialist
 from app.services.public_road_connection import public_road_connection_fits
+from app.services.public_road_context import fetch_public_road_context
 from sqlalchemy import desc, func as sa_func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
@@ -1175,6 +1176,24 @@ async def create_zone(
 # =============================================================================
 # OSM Context Endpoints
 # =============================================================================
+
+
+@router.get("/{zone_id}/public-road-context")
+async def public_road_context(zone_id: uuid.UUID, user: User = Depends(require_auth), db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = result.scalar_one_or_none()
+    if not zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+    await _ensure_project_access(db, zone.project_id, user)
+    if zone.zone_type != "site_boundary":
+        raise HTTPException(status_code=400, detail="Choose a site boundary for nearby road suggestions.")
+    try:
+        return await fetch_public_road_context(to_shape(zone.geometry),
+            clear_inside=(zone.properties or {}).get("community_3d_mask_existing_tiles") is True)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except httpx.HTTPError as exc:
+        raise HTTPException(status_code=503, detail="Nearby roads could not load. You can keep drawing or retry the lookup.") from exc
 
 
 @router.post("/{zone_id}/fetch-context", response_model=OSMContextResponse)

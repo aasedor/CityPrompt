@@ -5,12 +5,18 @@ import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { snapStreetEnds } from './streetSnapping';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { snapStreetToBoundary } from './streetBoundarySnapping';
+import { suggestPublicRoad, type PublicRoadContext, type PublicRoadSuggestion } from './publicRoadSuggestions';
 
 /** One geometry path for the unsaved preview and the final authored road. */
-export function streetDrawingGeometry(points: number[][], properties: SiteZoneProperties, zones: SiteZone[]): { coordinates: number[][]; properties: SiteZoneProperties } {
+export function streetDrawingGeometry(points: number[][], properties: SiteZoneProperties, zones: SiteZone[], options: {
+  publicRoads?: PublicRoadContext; skipSnapping?: boolean;
+} = {}): { coordinates: number[][]; properties: SiteZoneProperties; suggestion?: PublicRoadSuggestion } {
   const width = Number(properties.width) || 10;
-  const bounded = snapStreetToBoundary(points, width, getActiveSiteBoundary(zones), properties);
-  const authored = properties.pick_place_street_section
+  const boundary = getActiveSiteBoundary(zones);
+  const connection = !options.skipSnapping && suggestPublicRoad(points, properties, zones, boundary, options.publicRoads);
+  if (connection) return connection;
+  const bounded = options.skipSnapping ? points : snapStreetToBoundary(points, width, boundary, properties);
+  const authored = options.skipSnapping ? points : properties.pick_place_street_section
     ? snapStreetEnds(bounded, zones, undefined, width)
     : snapRoadEndpoints(bounded, zones, properties.road_level);
   const centerline = roundAuthoredStreetRoute(authored, width, properties);

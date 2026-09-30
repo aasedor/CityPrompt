@@ -1153,7 +1153,9 @@ export function ProjectViewPage() {
                   ?? nativeStreetRouteProblem({coordinates,properties},getActiveSiteBoundary(siteZones))
                   ?? streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
                   parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
-                  ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true });
+                  ?? placementProblem(coordinates, siteZones,
+                    publicRoadConnectionFits({ zone_type: type, properties }, coordinates, getActiveSiteBoundary(siteZones))
+                      ? null : getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true });
                 if (problem) { toast.error(problem, {position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);

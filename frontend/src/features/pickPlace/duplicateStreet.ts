@@ -16,7 +16,7 @@ export function duplicateStreet(zone: SiteZone, eastM: number, northM: number) {
   const move = (points: number[][]) => points.map(([lng, lat]) => [lng + lngDelta, lat + latDelta]);
   const properties: SiteZoneProperties = structuredClone(zone.properties ?? {});
   for (const key of ['community_3d', 'public_realm_lego', '_client_request_id', '_client_request_hash',
-    'street_network_ground_texture', 'connect_to_public_road']) delete properties[key];
+    'street_network_ground_texture', 'connect_to_public_road', 'road_public_target']) delete properties[key];
   properties.plan_centerline = move(line);
   const controls = parsePersistedCenterline(zone.properties?.plan_route_controls);
   if (controls) properties.plan_route_controls = move(controls);

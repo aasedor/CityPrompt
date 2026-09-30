@@ -39,6 +39,8 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
         checked={zone.properties?.connect_to_public_road === true} onChange={event => onPublicConnection(event.target.checked)} />
         Connect to a public road</label>
       {zone.properties?.connect_to_public_road === true && <p className="text-xs">Drag one end to the existing road edge, up to 30 m outside your site. Check the map or an imported streets layer for its position. This draws a proposed connection.</p>}
+      {zone.properties?.connect_to_public_road === true && zone.properties?.road_public_target && typeof zone.properties.road_public_target === 'object'
+        ? <p className="mt-1 text-xs">Originally snapped to {String((zone.properties.road_public_target as Record<string, unknown>).label ?? 'a mapped street')}. The mapped edge is estimated; you can adjust the endpoint.</p> : null}
       {connectionLeavesSite && <p className="mt-2 text-xs">Move the end back inside your site to turn this off.</p>}
     </div>}
     {asset && <StreetCrossSection asset={asset} expanded />}

@@ -7,6 +7,7 @@ const source = { id:'source', zone_type:'road', coordinates:bufferLineToPolygon(
   width:40, plan_centerline:line, plan_route_controls:line,
   road_selected_variant_id:'brt_bus_rapid_transit_corridor_v0', road_native_stops:[{id:'stop',stationM:32}],
   community_3d:{state:'compiled'}, _client_request_id:'old', connect_to_public_road:true,
+  road_public_target:{id:'osm:way:1',label:'Original street'},
 } } as unknown as SiteZone;
 describe('street copy',()=>{
   it('moves route, control points and footprint together, preserves stops and cannot mutate the original',()=>{
@@ -20,6 +21,7 @@ describe('street copy',()=>{
     expect(copy.properties.community_3d).toBeUndefined();
     expect(copy.properties._client_request_id).toBeUndefined();
     expect(copy.properties.connect_to_public_road).toBeUndefined();
+    expect(copy.properties.road_public_target).toBeUndefined();
     copy.properties.road_native_stops![0].stationM=45;
     expect(source.properties?.road_native_stops?.[0].stationM).toBe(32);
     expect(source.properties?.plan_centerline).toEqual(line);

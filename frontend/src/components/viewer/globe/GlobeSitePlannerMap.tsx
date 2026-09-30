@@ -27,6 +27,8 @@ import * as THREE from 'three';
 import { GlobePlacementPreview } from '@/features/pickPlace/GlobePlacementPreview';
 import { GlobeStreetDrawingPreview } from '@/features/pickPlace/GlobeStreetDrawingPreview';
 import { streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
+import { usePublicRoadContext } from '@/features/pickPlace/usePublicRoadContext';
+import { supportsPublicRoadSuggestions } from '@/features/pickPlace/publicRoadSuggestions';
 import { Canvas, useThree } from '@react-three/fiber';
 import {
   TilesRenderer,
@@ -2643,6 +2645,20 @@ export function GlobeSitePlannerMap({
 
   // Drawing state â€” managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
+  const [publicRoadSnapEnabled, setPublicRoadSnapEnabled] = useState(true);
+  const [skipStreetSnapping, setSkipStreetSnapping] = useState(false);
+  const skipStreetSnappingRef = useRef(false);
+  const publicRoadSnapSupported = supportsPublicRoadSuggestions(activeToolProperties ?? {});
+  const publicRoadContext = usePublicRoadContext(getActiveSiteBoundary(allSiteZones),
+    activeSitePlannerTool === 'road' && publicRoadSnapEnabled && publicRoadSnapSupported);
+  useEffect(() => {
+    if (activeSitePlannerTool !== 'road') { skipStreetSnappingRef.current = false; setSkipStreetSnapping(false); return; }
+    const update = (event: KeyboardEvent) => { skipStreetSnappingRef.current = event.altKey; setSkipStreetSnapping(event.altKey); };
+    const clear = () => { skipStreetSnappingRef.current = false; setSkipStreetSnapping(false); };
+    window.addEventListener('keydown', update, true); window.addEventListener('keyup', update, true);
+    window.addEventListener('blur', clear);
+    return () => { window.removeEventListener('keydown', update, true); window.removeEventListener('keyup', update, true); window.removeEventListener('blur', clear); };
+  }, [activeSitePlannerTool]);
   const [drawingPointHeights, setDrawingPointHeights] = useState<number[]>([]);
   const [centerNearStartVertex, setCenterNearStartVertex] = useState(false);
   const [measurePoints, setMeasurePoints] = useState<number[][]>([]);
@@ -3563,7 +3579,9 @@ export function GlobeSitePlannerMap({
 
     let finalCoords: number[][];
     if (activeSitePlannerTool === 'road') {
-      const road = streetDrawingGeometry(pts, zoneProperties, siteZones);
+      const road = streetDrawingGeometry(pts, zoneProperties, siteZones, {
+        publicRoads: publicRoadSnapEnabled ? publicRoadContext.data : undefined, skipSnapping: skipStreetSnappingRef.current,
+      });
       finalCoords = sanitizeCoords(road.coordinates);
       Object.assign(zoneProperties, road.properties);
     } else if (linear) {
@@ -3595,7 +3613,7 @@ export function GlobeSitePlannerMap({
     if (isMobileDrawingViewport() || zoneProperties.pick_place_street_section) {
       setActiveSitePlannerTool(null);
     }
-  }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, setActiveSitePlannerTool, terrainElevation, siteZones]);
+  }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, setActiveSitePlannerTool, terrainElevation, siteZones, publicRoadSnapEnabled, publicRoadContext.data]);
   finishDrawingRef.current = finishDrawing;
 
   // Keyboard handler for drawing
@@ -4495,6 +4513,7 @@ export function GlobeSitePlannerMap({
             {activeSitePlannerTool === 'road' && !interactionPaused && !captureOverlaysHidden && (
               <GlobeStreetDrawingPreview points={drawingPoints} pointHeights={drawingPointHeights}
                 properties={activeToolProperties} zones={siteZones} terrainHeight={terrainElevation}
+                publicRoads={publicRoadSnapEnabled ? publicRoadContext.data : undefined} skipSnapping={skipStreetSnapping}
                 raycastSurface={raycastSurfacePoint} />
             )}
             <DrawingDots
@@ -4687,6 +4706,22 @@ export function GlobeSitePlannerMap({
           </div>
         </div>
       )}
+
+      {activeSitePlannerTool === 'road' && !interactionPaused && !captureOverlaysHidden && <aside aria-label="Public road suggestions"
+        className="absolute right-3 top-28 z-40 max-w-64 rounded-lg border border-cyan-500 bg-white p-3 text-xs text-slate-900 shadow-lg">
+        <label className="flex min-h-8 items-center gap-2 font-semibold"><input type="checkbox" checked={publicRoadSnapEnabled}
+          onChange={event => setPublicRoadSnapEnabled(event.target.checked)} />Snap to nearby public roads</label>
+        {!publicRoadSnapSupported ? <p>This street needs a specialist connection. Automatic public-road snapping is unavailable.</p>
+          : !publicRoadSnapEnabled ? <p>Public-road snapping off. Site-edge snapping remains available.</p>
+          : publicRoadContext.isFetching ? <p role="status">Loading nearby roads… You can keep drawing.</p>
+          : publicRoadContext.isError ? <><p>Nearby roads could not load. Keep drawing or try again.</p><button className="min-h-9 underline"
+            onClick={() => void publicRoadContext.refetch()}>Retry nearby roads</button></>
+          : <p>{publicRoadContext.data?.roads.length ? 'Draw within 10 m of a mapped road edge. A cyan preview shows the suggested connection; finish to accept. Hold Alt while finishing to skip.'
+            : 'No eligible nearby roads mapped. You can still draw and connect manually.'}</p>}
+        {publicRoadSnapSupported && publicRoadSnapEnabled && publicRoadContext.data && <p className="mt-1 text-slate-600">
+          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" className="underline">© OpenStreetMap contributors</a>
+          {' · Estimated road edges. Check imagery before accepting.'}</p>}
+      </aside>}
 
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;

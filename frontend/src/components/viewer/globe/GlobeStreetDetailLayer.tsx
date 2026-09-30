@@ -1616,10 +1616,11 @@ function AccessibleFourWayIntersectionDetail({
 /** Editor-only draft: same surfaces/modules, without publishing saved-scene readiness. */
 export function GlobeStreetDraft({ zone, zones, terrainHeight, profile }: { zone: SiteZone; zones: SiteZone[]; terrainHeight: number; profile: StreetSectionProfile | null }) {
   const native = nativeStreetPilotForZone(zone, true);
-  const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight) ?? terrainHeight;
-  return <StreetRibbonDetail zone={zone} sceneZones={zones} fallbackTerrainHeight={height}
+  const anchor = zone.properties?.connect_to_public_road === true ? getActiveSiteBoundary(zones) ?? zone : zone;
+  const height = resolvePreparedSiteTerrainForZone(anchor, zones, terrainHeight) ?? terrainHeight;
+  return <StreetGroundCoverage zone={zone}><StreetRibbonDetail zone={zone} sceneZones={zones} fallbackTerrainHeight={height}
     preparedTerrain={height} intersectionNodes={[]} renderFamilyFurniture={!native}
-    renderFamilyTrees={!native} preview previewProfile={profile} />;
+    renderFamilyTrees={!native} preview previewProfile={profile} /></StreetGroundCoverage>;
 }
 
 export function GlobeStreetDetailLayer({
