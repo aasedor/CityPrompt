@@ -34,7 +34,7 @@ it.each(MANUAL_STREET_ASSETS)('$label retains metric geometry, identity and clea
   }
   expect(profile.renderCurbs).toBe(row.curbed);
   const fixtures=buildStreetFamilyFixturePlacements({points,profile,sectionScale:1,enabled:true});
-  for(const tree of fixtures.trees) expect(profile.bands.some(b=>b.kind==='planting' && tree.offsetM>b.startM && tree.offsetM<b.endM)).toBe(true);
+  for(const tree of fixtures.trees) expect(profile.bands.some(b=>(b.kind==='planting' || (profile.manualLandscape?.medianTrees && b.kind==='median')) && tree.offsetM>b.startM && tree.offsetM<b.endM)).toBe(true);
   expect(fixtures.transitShelters).toHaveLength(0);
   expect(fixtures.parkedVehicles).toHaveLength(0);
   expect(fixtures.bollards).toHaveLength(0); // raised cycle tracks do not need an invented bollard system
@@ -68,20 +68,48 @@ it('locks the three sourced sections and retains the original bindings outside t
   expect(collector.bands.filter(b => b.kind === 'parking').map(b => b.widthM)).toEqual([2.2,2.2]);
 });
 it('industrial utility strip is retained outside its asymmetric constructed mask',()=>{
-  const asset=MANUAL_STREET_ASSETS.find(a=>a.properties.road_archetype_id==='calgary_collector_industrial')!;
+  const asset=ALL_MANUAL_STREET_ASSETS.find(a=>a.model.variantId==='calgary_collector_industrial_manual_v1')!;
   const zone={id:'test',project_id:'qa',color:'#888',sort_order:0,created_at:'',updated_at:'',zone_type:'road',properties:{...asset.properties,plan_centerline:line},coordinates:bufferLineToPolygon(line,26)} as SiteZone;
   const ys=streetSurfaceMaskZone(zone).coordinates.map(p=>p[1]*111320);
   expect(Math.min(...ys)).toBeCloseTo(-12.7,4);
   expect(Math.max(...ys)).toBeCloseTo(11,4);
+});
+it('matches the arterial drawing envelopes and adds median trees only where illustrated', () => {
+  for (const [id,width,lanes,median] of [
+    ['calgary_arterial_4lane_50',30,4,4], ['calgary_arterial_4lane_70',36,4,6], ['calgary_arterial_6lane',46,6,9],
+  ] as const) {
+    const asset=MANUAL_STREET_ASSETS.find(a=>a.properties.road_archetype_id===id)!;
+    const profile=resolvePilotStreetSectionProfile({properties:asset.properties})!;
+    expect(profile.rowM).toBe(width);
+    expect(profile.bands.filter(b=>b.kind==='motor')).toHaveLength(lanes);
+    expect(profile.bands.filter(b=>b.kind==='median').map(b=>b.widthM)).toEqual([median]);
+    expect(profile.bands.filter(b=>b.kind==='path').map(b=>b.widthM)).toEqual([3,3]);
+    const fixtures=buildStreetFamilyFixturePlacements({points,profile,sectionScale:1,enabled:true});
+    expect(fixtures.trees.some(tree=>Math.abs(tree.offsetM)<.01)).toBe(id!=='calgary_arterial_4lane_50');
+    expect(fixtures.benches.every(b=>Math.abs(b.offsetM)>median/2)).toBe(true);
+  }
 });
 it('preserves raised cycling, grass verges and opposing turn-lane markings',()=>{
   const profile=(id:string)=>resolvePilotStreetSectionProfile({properties:MANUAL_STREET_ASSETS.find(a=>a.properties.road_archetype_id===id)!.properties})!;
   const urban=profile('calgary_collector_high_activity');
   expect(urban.bands.filter(b=>b.kind==='parking').map(b=>b.widthM)).toEqual([2.3,2.3]);
   expect(urban.bands.find(b=>b.kind==='cycle')!.liftM).toBeGreaterThan(urban.bands.find(b=>b.kind==='motor')!.liftM+.04);
-  const rural=profile('calgary_local_rural');
+  const rural=resolvePilotStreetSectionProfile({properties:ALL_MANUAL_STREET_ASSETS.find(a=>a.properties.road_archetype_id==='calgary_local_rural')!.properties})!;
   for(const band of rural.bands.filter(b=>b.sourceType==='ditch')) expect(resolveStreetBandMaterial(rural,band).kind).toBe('planting_grass');
   const turn=profile('calgary_collector_industrial');
   expect(turn.markings.filter(m=>m.color==='#dfb846' && !m.dashed)).toHaveLength(2);
   expect(profile('calgary_alley').markings).toHaveLength(0);
+});
+it('offers twelve sourced types, preserves rural saves and clearly scopes the skeletal surface model', () => {
+  expect(MANUAL_STREET_ASSETS).toHaveLength(12);
+  expect(new Set(MANUAL_STREET_ASSETS.map(a=>a.properties.road_archetype_id)).size).toBe(12);
+  expect(MANUAL_STREET_ASSETS.every(a=>String(a.properties.road_standard_citation).includes('Draft 3'))).toBe(true);
+  const rural=ALL_MANUAL_STREET_ASSETS.find(a=>a.properties.road_archetype_id==='calgary_local_rural')!;
+  expect(MANUAL_STREET_ASSETS).not.toContain(rural);
+  expect(streetAssetForZone({zone_type:'road',properties:rural.properties})).toBe(rural);
+  const skeletal=MANUAL_STREET_ASSETS.find(a=>a.properties.road_archetype_id==='calgary_skeletal')!;
+  expect(skeletal.description).toContain('ditch slopes');
+  const profile=resolvePilotStreetSectionProfile({properties:skeletal.properties})!;
+  expect(profile.bands.filter(b=>b.kind==='shoulder' && b.sourceType==='shoulder').map(b=>b.widthM)).toEqual([3,2.5,2.5,3]);
+  expect(profile.bands.find(b=>b.kind==='median')?.widthM).toBe(1);
 });

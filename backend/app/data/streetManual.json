@@ -1127,5 +1127,761 @@
     "sourcePdfPage": 11,
     "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
     "supersedesVariantId": "calgary_collector_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_arterial_4lane_50",
+    "variantId": "calgary_arterial_4lane_50_draft3_v1",
+    "familyId": "street_manual_calgary_arterial_4lane_50_draft3_v1",
+    "title": "Four-lane arterial - 50 km/h",
+    "widthM": 30,
+    "figure": "11",
+    "sourceSectionSha256": "6b19e46f5cf47fc31fa1f95baa33611fba2af3c90c4987a709b1d6951f6a19e4",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-arterial-4lane-50/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 30,
+      "figure": "11",
+      "targetSpeed_kmh": "50 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MUP"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.9,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 4,
+          "label": "MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.9,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MUP"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": false,
+        "medianTrees": false
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 14,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_arterial_4lane_50_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_arterial_4lane_70",
+    "variantId": "calgary_arterial_4lane_70_draft3_v1",
+    "familyId": "street_manual_calgary_arterial_4lane_70_draft3_v1",
+    "title": "Four-lane arterial - 70 km/h",
+    "widthM": 36,
+    "figure": "12",
+    "sourceSectionSha256": "42de737a2b5c36f2ea1d750f66df583a91eb02e9b470b2072a7ac0700efd80b5",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-arterial-4lane-70/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 36,
+      "figure": "12",
+      "targetSpeed_kmh": "70 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MUP"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 4.7,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 6,
+          "label": "MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 4.7,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MUP"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": false,
+        "medianTrees": true
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 15,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_arterial_4lane_70_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_arterial_6lane",
+    "variantId": "calgary_arterial_6lane_draft3_v1",
+    "familyId": "street_manual_calgary_arterial_6lane_draft3_v1",
+    "title": "Six-lane arterial",
+    "widthM": 46,
+    "figure": "13",
+    "sourceSectionSha256": "0f09c562cb495caf7556b627a193ce6a850997c29de51b6c6d3996429e1c7a37",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-arterial-6lane/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 46,
+      "figure": "13",
+      "targetSpeed_kmh": "70 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MUP"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 4.7,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 9,
+          "label": "MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 4.7,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MUP"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": false,
+        "medianTrees": true
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 16,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_arterial_6lane_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_alley",
+    "variantId": "calgary_alley_draft3_v1",
+    "familyId": "street_manual_calgary_alley_draft3_v1",
+    "title": "Alley - no deep utilities",
+    "widthM": 6,
+    "figure": "1",
+    "sourceSectionSha256": "f4ef87d7ad02ee0db524704d92d9c7d5cb3118d2c80c06cdd376c61c197ca7b3",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-alley/variant_0.png",
+    "curbed": false,
+    "section": {
+      "row_m": 6,
+      "figure": "1",
+      "targetSpeed_kmh": "—",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "alley",
+          "width_m": 6,
+          "label": "ALLEY"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true,
+        "medianTrees": false
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 4,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_alley_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_local_high_activity",
+    "variantId": "calgary_local_high_activity_draft3_v1",
+    "familyId": "street_manual_calgary_local_high_activity_draft3_v1",
+    "title": "High-activity local",
+    "widthM": 21,
+    "figure": "6",
+    "sourceSectionSha256": "2c80ed5688f89dd0a277662aed610706de5d566653bc72b91fa1b4d181056ca9",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-local-high-activity/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 21,
+      "figure": "6",
+      "targetSpeed_kmh": "30 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.55,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.2,
+          "label": "PARKING"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.25,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.25,
+          "label": "LANE"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.2,
+          "label": "PARKING"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.55,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true,
+        "medianTrees": false
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 9,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_local_high_activity_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_collector_industrial",
+    "variantId": "calgary_collector_industrial_draft3_v1",
+    "familyId": "street_manual_calgary_collector_industrial_draft3_v1",
+    "title": "Industrial collector",
+    "widthM": 26,
+    "figure": "9",
+    "sourceSectionSha256": "c6efe487d089ae116324999d760f0816c2b33d773dbdf28ba1140e3be50b0e43",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-collector-industrial/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 26,
+      "figure": "9",
+      "targetSpeed_kmh": "40 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MUP"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 4.2,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "turn",
+          "width_m": 4,
+          "label": "TURN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.5,
+          "label": "LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 5.4,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.8,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true,
+        "medianTrees": false
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 12,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_collector_industrial_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_collector_high_activity",
+    "variantId": "calgary_collector_high_activity_draft3_v1",
+    "familyId": "street_manual_calgary_collector_high_activity_draft3_v1",
+    "title": "High-activity collector",
+    "widthM": 27,
+    "figure": "10",
+    "sourceSectionSha256": "4e4b30180d352e8dac6cd7602781743abcba558152973a65b99d514cd7b55671",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-collector-high-activity/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 27,
+      "figure": "10",
+      "targetSpeed_kmh": "40 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.45,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "cycle",
+          "width_m": 2.2,
+          "label": "CYCLE"
+        },
+        {
+          "type": "buffer",
+          "width_m": 0.75,
+          "label": "BUFFER"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.3,
+          "label": "PARKING"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.3,
+          "label": "PARKING"
+        },
+        {
+          "type": "buffer",
+          "width_m": 0.75,
+          "label": "BUFFER"
+        },
+        {
+          "type": "cycle",
+          "width_m": 2.2,
+          "label": "CYCLE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.45,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true,
+        "medianTrees": false
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 13,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_collector_high_activity_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_arterial_high_activity",
+    "variantId": "calgary_arterial_high_activity_draft3_v1",
+    "familyId": "street_manual_calgary_arterial_high_activity_draft3_v1",
+    "title": "High-activity arterial",
+    "widthM": 36,
+    "figure": "14",
+    "sourceSectionSha256": "b4b73cbe659aafb11e7e6f00c0a604855702cfab042d25c45120e198f2a7b973",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-arterial-high-activity/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 36,
+      "figure": "14",
+      "targetSpeed_kmh": "50 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.4,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "cycle",
+          "width_m": 2.2,
+          "label": "CYCLE"
+        },
+        {
+          "type": "buffer",
+          "width_m": 0.75,
+          "label": "BUFFER"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.3,
+          "label": "PARKING"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "median",
+          "width_m": 2.5,
+          "label": "MEDIAN"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.3,
+          "label": "PARKING"
+        },
+        {
+          "type": "buffer",
+          "width_m": 0.75,
+          "label": "BUFFER"
+        },
+        {
+          "type": "cycle",
+          "width_m": 2.2,
+          "label": "CYCLE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.4,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 2.5,
+          "label": "SIDEWALK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true,
+        "medianTrees": false
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 17,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_arterial_high_activity_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_skeletal",
+    "variantId": "calgary_skeletal_draft3_v1",
+    "familyId": "street_manual_calgary_skeletal_draft3_v1",
+    "title": "Skeletal road - surface layout",
+    "widthM": 60,
+    "figure": "15",
+    "sourceSectionSha256": "16c216c3eb070ad04345d763ed36744de82ea92344853b97616ab179bd75686f",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Draft 3 horizontal dimensions checked. Flat surface-layout teaching model; ditch grading, road crown and median drainage are not modelled.",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-skeletal/variant_0.png",
+    "curbed": false,
+    "section": {
+      "row_m": 60,
+      "figure": "15",
+      "targetSpeed_kmh": "80+ km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "ditch",
+          "width_m": 12.9,
+          "label": "DITCH"
+        },
+        {
+          "type": "shoulder",
+          "width_m": 3,
+          "label": "SHOULDER"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "LANE"
+        },
+        {
+          "type": "shoulder",
+          "width_m": 2.5,
+          "label": "SHOULDER"
+        },
+        {
+          "type": "median",
+          "width_m": 1,
+          "label": "MEDIAN"
+        },
+        {
+          "type": "shoulder",
+          "width_m": 2.5,
+          "label": "SHOULDER"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.7,
+          "label": "LANE"
+        },
+        {
+          "type": "shoulder",
+          "width_m": 3,
+          "label": "SHOULDER"
+        },
+        {
+          "type": "ditch",
+          "width_m": 12.9,
+          "label": "DITCH"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true,
+        "medianTrees": false
+      },
+      "limitations": [
+        "Flat surface-layout model; ditch slopes, road crown and interim ditch median are not modelled."
+      ]
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 18,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_skeletal_manual_v1"
   }
 ]

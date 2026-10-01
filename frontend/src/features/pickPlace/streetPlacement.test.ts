@@ -17,6 +17,10 @@ const zone:SiteZone = {id:'street',project_id:'pilot',color:'#777777',sort_order
 describe('fixed sections across street types', () => {
   it.each(STREET_ASSETS.map(asset => [asset.label, asset] as const))('%s retains its section through route edits and reopening', (_, asset) => {
     const width = asset.sectionWidth;
+    // A bend requires two full-width arms. The old 70 m fixture cannot
+    // contain a bend in a 36–60 m arterial; rejection is correct there.
+    const routeLength = Math.max(70, width * 3);
+    const line = [[0,0],[routeLength,0]].map(ll);
     const saved: SiteZone = JSON.parse(JSON.stringify({ ...zone, coordinates: bufferLineToPolygon(line, width), properties: { ...asset.properties, plan_centerline: line } }));
     expect(streetAssetForZone(saved)).toBe(asset);
     const profile = resolvePilotStreetSectionProfile(saved)!;
@@ -31,7 +35,7 @@ describe('fixed sections across street types', () => {
       return;
     }
     const bend = addStreetBend(saved)!;
-    const reshaped = reshapeStreetPoint(bend, 1, ll([35, 8]), width);
+    const reshaped = reshapeStreetPoint(bend, 1, ll([routeLength / 2, 8]), width);
     const updated = streetCoordinateUpdate(saved, reshaped);
     expect(updated.properties?.width).toBe(width);
     expect(updated.properties?.plan_route_controls).toEqual(extractCenterline(reshaped));
@@ -49,7 +53,7 @@ describe('fixed sections across street types', () => {
     }));
     const rotatedBend = xy((rotated.properties?.plan_route_controls as number[][])[1]);
     expect(rotatedBend[0]).toBeCloseTo(-8, 3);
-    expect(rotatedBend[1]).toBeCloseTo(35, 3);
+    expect(rotatedBend[1]).toBeCloseTo(routeLength / 2, 3);
     expect(streetAssetForZone({ ...saved, ...moved })).toBe(asset);
     expect(streetRouteProblem(bufferLineToPolygon([[0,0],[width-1,0]].map(ll),width),width)).toContain(`${width} m`);
     expect(streetRouteProblem(bufferLineToPolygon([[0,0],[width+1,0]].map(ll),width),width)).toBeNull();

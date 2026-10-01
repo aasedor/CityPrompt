@@ -814,7 +814,7 @@ export function buildStreetFamilyFixturePlacements({
   const manual = profile.manualSection === true;
   const manualHighActivity = manual && profile.archetypeId.includes('high_activity');
   const bands = profile.bands.map((band) => scaleBand(band, sectionScale));
-  const plantingBands = bands.filter((band) => band.kind === 'planting'
+  const plantingBands = bands.filter((band) => (band.kind === 'planting' || (profile.manualLandscape?.medianTrees && band.kind === 'median'))
     && !(manual && profile.archetypeId.includes('industrial') && !profile.manualLandscape?.allowIndustrialTrees));
   const parkingBands = bands.filter((band) => band.kind === 'parking');
   const sidewalkBands = bands.filter((band) => band.kind === 'sidewalk');

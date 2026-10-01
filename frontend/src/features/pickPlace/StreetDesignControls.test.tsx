@@ -43,7 +43,8 @@ it.each(['student_main_street_v1', 'student_market_street_v1'])('retains %s and 
 it('keeps a saved superseded collector intact until the student explicitly selects its replacement', () => {
   const old = ALL_MANUAL_STREET_ASSETS.find(a => a.model.variantId === 'calgary_collector_manual_v1')!;
   const line = [[-114,51],[-113.998,51]];
-  const zone = {id:'old',zone_type:'road',coordinates:bufferLineToPolygon(line,20),properties:{...old.properties,plan_centerline:line}} as SiteZone;
+  const zone = {id:'old',project_id:'pilot',color:'#777777',sort_order:0,created_at:'',updated_at:'',
+    zone_type:'road',coordinates:bufferLineToPolygon(line,20),properties:{...old.properties,plan_centerline:line}} as SiteZone;
   const save = vi.fn();
   render(<StreetDesignControls zone={zone} disabled={false} onSave={save} />);
   expect((screen.getByLabelText('Street variant') as HTMLSelectElement).value).toBe(old.model.variantId);

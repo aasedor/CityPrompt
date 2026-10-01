@@ -94,7 +94,7 @@ export interface StreetSectionProfile {
   metricWidthLocked?: boolean;
   appearance?: StreetAppearanceKit;
   manualSection?: boolean;
-  manualLandscape?: { treeSpacingM: number; allowIndustrialTrees: boolean };
+  manualLandscape?: { treeSpacingM: number; allowIndustrialTrees: boolean; medianTrees?: boolean };
   isPilot: true;
 }
 

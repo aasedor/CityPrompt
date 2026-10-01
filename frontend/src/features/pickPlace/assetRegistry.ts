@@ -177,7 +177,7 @@ const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
 export const ALL_MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street => ({
   id: street.variantId, kind: 'street', definitionVersion: 1, readiness: 'pilot',
   reshapeMode: 'fixed_section_route', label: street.title,
-  description: `${street.widthM} m right of way | ${street.sourceEdition ?? 'Street Manual draft · source check pending'} | fixed lane and sidewalk widths`,
+  description: `${street.widthM} m right of way | ${street.sourceEdition ?? 'Street Manual draft · source check pending'} | ${street.section.limitations?.join(' ') ?? 'fixed lane and sidewalk widths'}`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
   calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.archetypeId }),
   model: { variantId: street.variantId, revision: street.sourceSectionSha256, method: 'manual_metric_section_v1' },
@@ -185,10 +185,10 @@ export const ALL_MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street 
     width: street.widthM, pick_place_street_section: street.variantId, pick_place_automatic_3d: true,
     pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
     road_standard_citation: street.sourceEdition
-      ? `Calgary Street Manual ${street.sourceEdition}, PDF page ${street.sourcePdfPage}`
+      ? `Calgary Street Manual ${street.sourceEdition}, PDF page ${street.sourcePdfPage}. ${street.section.limitations?.join(' ') ?? ''}`.trim()
       : `Recorded Street Manual Draft 4.0, Figure ${street.figure}; source check pending` },
 }));
-const supersededManualVariants = new Set(manualStreets.map(street => street.supersedesVariantId).filter(Boolean));
+const supersededManualVariants = new Set(manualStreets.filter(street => !street.sourceEdition).map(street => street.variantId));
 export const MANUAL_STREET_ASSETS = ALL_MANUAL_STREET_ASSETS.filter(asset => !supersededManualVariants.has(asset.model.variantId));
 export const STREET_ASSETS: StreetAsset[] = [...NATIVE_STREET_ASSETS, ...MANUAL_STREET_ASSETS];
 // Saved metric streets stay editable without adding them to the seven candidates.
