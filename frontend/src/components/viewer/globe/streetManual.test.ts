@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import manual from '@/data/streetManual.json';
-import { MANUAL_STREET_ASSETS } from '@/features/pickPlace/assetRegistry';
+import { MANUAL_STREET_ASSETS, ALL_MANUAL_STREET_ASSETS } from '@/features/pickPlace/assetRegistry';
 import { CANONICAL_CHOICES } from '@/features/pickPlace/canonicalCatalogue';
 import { pickerCategory } from '@/features/pickPlace/pickerCategories';
 import { streetDesignUpdate } from '@/features/pickPlace/canonicalStreetPlacement';
@@ -20,7 +20,7 @@ const line=[[0,0],[180/111320,0]];
 const points=densifyPolyline([{x:0,y:0},{x:180,y:0}],2);
 it.each(MANUAL_STREET_ASSETS)('$label retains metric geometry, identity and clearance', async (asset) => {
   const row=manual.find(r=>r.variantId===asset.model.variantId)!;
-  expect(row.widthM).toBe(widths[Number(row.figure)-1]);
+  if (!row.sourceEdition) expect(row.widthM).toBe(widths[Number(row.figure)-1]);
   expect(Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(stable(row.section)))),b=>b.toString(16).padStart(2,'0')).join('')).toBe(row.sourceSectionSha256);
   const profile=resolvePilotStreetSectionProfile({properties:asset.properties})!;
   expect(profile.manualSection).toBe(true);
@@ -44,6 +44,28 @@ it.each(MANUAL_STREET_ASSETS)('$label retains metric geometry, identity and clea
   expect(saved.properties.width).toBe(row.widthM);
   const choice=CANONICAL_CHOICES.find(c=>c.placements.includes(asset))!;
   expect(pickerCategory(choice)).toBe('street-manual');
+});
+it('locks the three sourced sections and retains the original bindings outside the picker', () => {
+  const expected = {
+    calgary_local: [.3,1.8,2.65,3.25,3.25,2.65,1.8,.3],
+    calgary_local_industrial: [.3,1.6,2.6,4.5,4.5,2.6,1.6,.3],
+    calgary_collector: [.3,3,2.7,2.2,3.3,3.3,2.2,3.9,1.8,.3],
+  };
+  for (const [id, widths] of Object.entries(expected)) {
+    const current = MANUAL_STREET_ASSETS.find(a => a.properties.road_archetype_id === id)!;
+    expect(current.model.variantId).toBe(`${id}_draft3_v1`);
+    const profile = resolvePilotStreetSectionProfile({properties: current.properties})!;
+    expect(profile.bands.map(b => b.widthM)).toEqual(widths);
+    expect(profile.manualLandscape?.treeSpacingM).toBe(10);
+    const fixtures = buildStreetFamilyFixturePlacements({points,profile,sectionScale:1,enabled:true});
+    expect(fixtures.trees.length).toBeGreaterThan(10);
+    const legacy = ALL_MANUAL_STREET_ASSETS.find(a => a.model.variantId === `${id}_manual_v1`)!;
+    expect(streetAssetForZone({zone_type:'road',properties:legacy.properties})?.model.variantId).toBe(legacy.model.variantId);
+    expect(MANUAL_STREET_ASSETS).not.toContain(legacy);
+  }
+  const collector = resolvePilotStreetSectionProfile({properties:MANUAL_STREET_ASSETS.find(a => a.properties.road_archetype_id === 'calgary_collector')!.properties})!;
+  expect(collector.bands.filter(b => b.kind === 'path').map(b => b.widthM)).toEqual([3]);
+  expect(collector.bands.filter(b => b.kind === 'parking').map(b => b.widthM)).toEqual([2.2,2.2]);
 });
 it('industrial utility strip is retained outside its asymmetric constructed mask',()=>{
   const asset=MANUAL_STREET_ASSETS.find(a=>a.properties.road_archetype_id==='calgary_collector_industrial')!;

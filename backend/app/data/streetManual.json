@@ -904,5 +904,228 @@
         }
       ]
     }
+  },
+  {
+    "archetypeId": "calgary_local",
+    "variantId": "calgary_local_draft3_v1",
+    "familyId": "street_manual_calgary_local_draft3_v1",
+    "title": "Local residential · no parking",
+    "widthM": 16,
+    "figure": "2",
+    "sourceSectionSha256": "75c9605ef7bc294eb4722192b311fb7a1888882e353fc9830dd090b1ebdabf31",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-local/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 16,
+      "figure": "2",
+      "targetSpeed_kmh": "30 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.8,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.65,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.25,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.25,
+          "label": "LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.65,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.8,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 5,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_local_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_local_industrial",
+    "variantId": "calgary_local_industrial_draft3_v1",
+    "familyId": "street_manual_calgary_local_industrial_draft3_v1",
+    "title": "Local industrial · no parking",
+    "widthM": 18,
+    "figure": "4",
+    "sourceSectionSha256": "3c5580fa115a268b479e820781594ca567fa9b1c24cc30fc8ef7a82285b2d742",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-local-industrial/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 18,
+      "figure": "4",
+      "targetSpeed_kmh": "30 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.6,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.6,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "lane",
+          "width_m": 4.5,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 4.5,
+          "label": "LANE"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.6,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.6,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 7,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_local_industrial_manual_v1"
+  },
+  {
+    "archetypeId": "calgary_collector",
+    "variantId": "calgary_collector_draft3_v1",
+    "familyId": "street_manual_calgary_collector_draft3_v1",
+    "title": "Collector · parking both sides",
+    "widthM": 23,
+    "figure": "8",
+    "sourceSectionSha256": "d9707a946e24410cda68294ceb66f63988c9a6344ba83dcc152e2a136fec572b",
+    "revision": "draft3-section-v1",
+    "sourceStatus": "Surface dimensions checked against November 2024 Draft 3 annotated section; classroom concept, not engineering approval",
+    "manualSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+    "thumbnailUrl": "/archetypes/streets/calgary-collector/variant_0.png",
+    "curbed": true,
+    "section": {
+      "row_m": 23,
+      "figure": "8",
+      "targetSpeed_kmh": "40 km/h",
+      "draftStatus": "Street Manual Draft 3, November 2024",
+      "confidence": "source-dimensioned surface section",
+      "zones": [
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        },
+        {
+          "type": "mup",
+          "width_m": 3,
+          "label": "MULTI USE PATH"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 2.7,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.2,
+          "label": "PARKING"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "lane",
+          "width_m": 3.3,
+          "label": "LANE"
+        },
+        {
+          "type": "parking",
+          "width_m": 2.2,
+          "label": "PARKING"
+        },
+        {
+          "type": "boulevard",
+          "width_m": 3.9,
+          "label": "BOULEVARD"
+        },
+        {
+          "type": "sidewalk",
+          "width_m": 1.8,
+          "label": "SIDEWALK"
+        },
+        {
+          "type": "setback",
+          "width_m": 0.3,
+          "label": "SETBACK"
+        }
+      ],
+      "landscape": {
+        "treeSpacingM": 10,
+        "allowIndustrialTrees": true
+      }
+    },
+    "sourceEdition": "Draft 3 · November 2024",
+    "sourcePdfPage": 11,
+    "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+    "supersedesVariantId": "calgary_collector_manual_v1"
   }
 ]

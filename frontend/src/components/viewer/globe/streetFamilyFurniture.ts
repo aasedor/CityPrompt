@@ -814,7 +814,8 @@ export function buildStreetFamilyFixturePlacements({
   const manual = profile.manualSection === true;
   const manualHighActivity = manual && profile.archetypeId.includes('high_activity');
   const bands = profile.bands.map((band) => scaleBand(band, sectionScale));
-  const plantingBands = bands.filter((band) => band.kind === 'planting' && !(manual && profile.archetypeId.includes('industrial')));
+  const plantingBands = bands.filter((band) => band.kind === 'planting'
+    && !(manual && profile.archetypeId.includes('industrial') && !profile.manualLandscape?.allowIndustrialTrees));
   const parkingBands = bands.filter((band) => band.kind === 'parking');
   const sidewalkBands = bands.filter((band) => band.kind === 'sidewalk');
   const cycleBands = bands.filter((band) => band.kind === 'cycle');
@@ -1069,7 +1070,7 @@ export function buildStreetFamilyFixturePlacements({
       lightBands: furnishingBands,
       parkingBands,
       clearancePoints,
-      treeSpacingM: isMain ? MAIN_STREET_TREE_SPACING_M : NARROW_RESIDENTIAL_TREE_SPACING_M,
+      treeSpacingM: profile.manualLandscape?.treeSpacingM ?? (isMain ? MAIN_STREET_TREE_SPACING_M : NARROW_RESIDENTIAL_TREE_SPACING_M),
       lightSpacingM: isMain ? MAIN_STREET_LIGHT_SPACING_M : NARROW_RESIDENTIAL_LIGHT_SPACING_M,
       vehicleSpacingM: isMain ? MAIN_STREET_VEHICLE_SPACING_M : NARROW_RESIDENTIAL_VEHICLE_SPACING_M,
       maxTrees: isMain ? MAX_MAIN_STREET_TREES_PER_ZONE : MAX_NARROW_RESIDENTIAL_TREES_PER_ZONE,

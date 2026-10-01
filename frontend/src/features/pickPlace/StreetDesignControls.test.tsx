@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
 import type { SiteZone } from '@/types';
 import { StreetDesignControls } from './StreetDesignControls';
-import { STREET_ASSETS } from './assetRegistry';
+import { STREET_ASSETS, ALL_MANUAL_STREET_ASSETS } from './assetRegistry';
 import { CANONICAL_CHOICES } from './canonicalCatalogue';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 
@@ -38,4 +38,19 @@ it.each(['student_main_street_v1', 'student_market_street_v1'])('retains %s and 
   expect((screen.getByLabelText('Street width') as HTMLSelectElement).value).toBe(String(asset.sectionWidth));
   fireEvent.click(screen.getByRole('button', {name: 'Apply street'}));
   expect(save.mock.calls[0][0].properties).toMatchObject({road_selected_variant_id: variantId, width:asset.sectionWidth, plan_centerline:line});
+});
+
+it('keeps a saved superseded collector intact until the student explicitly selects its replacement', () => {
+  const old = ALL_MANUAL_STREET_ASSETS.find(a => a.model.variantId === 'calgary_collector_manual_v1')!;
+  const line = [[-114,51],[-113.998,51]];
+  const zone = {id:'old',zone_type:'road',coordinates:bufferLineToPolygon(line,20),properties:{...old.properties,plan_centerline:line}} as SiteZone;
+  const save = vi.fn();
+  render(<StreetDesignControls zone={zone} disabled={false} onSave={save} />);
+  expect((screen.getByLabelText('Street variant') as HTMLSelectElement).value).toBe(old.model.variantId);
+  fireEvent.click(screen.getByRole('button',{name:'Apply street'}));
+  expect(save.mock.calls[0][0].properties).toMatchObject({road_selected_variant_id:old.model.variantId,width:20});
+  fireEvent.change(screen.getByLabelText('Street variant'), {target:{value:'calgary_collector_draft3_v1'}});
+  expect(save).toHaveBeenCalledTimes(1);
+  fireEvent.click(screen.getByRole('button',{name:'Apply street'}));
+  expect(save.mock.calls[1][0].properties).toMatchObject({road_selected_variant_id:'calgary_collector_draft3_v1',width:23,plan_centerline:line});
 });

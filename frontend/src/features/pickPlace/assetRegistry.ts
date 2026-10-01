@@ -174,21 +174,26 @@ const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
     road_standard_citation: 'City Prompt native-module teaching section' },
 }));
 
-export const MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street => ({
+export const ALL_MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street => ({
   id: street.variantId, kind: 'street', definitionVersion: 1, readiness: 'pilot',
   reshapeMode: 'fixed_section_route', label: street.title,
-  description: `${street.widthM} m right of way | Street Manual draft | fixed lane and sidewalk widths`,
+  description: `${street.widthM} m right of way | ${street.sourceEdition ?? 'Street Manual draft · source check pending'} | fixed lane and sidewalk widths`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
   calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.archetypeId }),
   model: { variantId: street.variantId, revision: street.sourceSectionSha256, method: 'manual_metric_section_v1' },
   properties: { road_archetype_id: street.archetypeId, road_selected_variant_id: street.variantId,
     width: street.widthM, pick_place_street_section: street.variantId, pick_place_automatic_3d: true,
     pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
-    road_standard_citation: `Recorded Street Manual Draft 4.0, Figure ${street.figure}` },
+    road_standard_citation: street.sourceEdition
+      ? `Calgary Street Manual ${street.sourceEdition}, PDF page ${street.sourcePdfPage}`
+      : `Recorded Street Manual Draft 4.0, Figure ${street.figure}; source check pending` },
 }));
+const supersededManualVariants = new Set(manualStreets.map(street => street.supersedesVariantId).filter(Boolean));
+export const MANUAL_STREET_ASSETS = ALL_MANUAL_STREET_ASSETS.filter(asset => !supersededManualVariants.has(asset.model.variantId));
 export const STREET_ASSETS: StreetAsset[] = [...NATIVE_STREET_ASSETS, ...MANUAL_STREET_ASSETS];
 // Saved metric streets stay editable without adding them to the seven candidates.
-export const LEGACY_SECTION_STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET,
+export const LEGACY_SECTION_STREET_ASSETS: StreetAsset[] = [
+  ...ALL_MANUAL_STREET_ASSETS.filter(asset => supersededManualVariants.has(asset.model.variantId)), LOCAL_STREET_ASSET,
   additionalStreet('calgary_collector', 'Calgary collector street', 'Existing metric section', {groupId:'local',basis:'draft_manual'})];
 
 /** New starter houses place one native model. Existing saved home plots keep

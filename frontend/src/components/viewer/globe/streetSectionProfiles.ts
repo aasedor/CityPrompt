@@ -94,6 +94,7 @@ export interface StreetSectionProfile {
   metricWidthLocked?: boolean;
   appearance?: StreetAppearanceKit;
   manualSection?: boolean;
+  manualLandscape?: { treeSpacingM: number; allowIndustrialTrees: boolean };
   isPilot: true;
 }
 
@@ -635,7 +636,8 @@ export function resolvePilotStreetSectionProfile(
     } : {}),
     // Manual bands own their material colours; a decorative kit must not tint the cycle asphalt red.
     ...(manual ? { manualSection: true, appearance: undefined, metricWidthLocked: true, variantId: manual.variantId,
-      variantLabel: 'Street Manual metric 3D', rendererFingerprint: manual.sourceSectionSha256,
+      variantLabel: manual.sourceEdition ?? 'Street Manual metric 3D', rendererFingerprint: manual.sourceSectionSha256,
+      manualLandscape: manual.section.landscape,
       title: manual.title } : {}),
     ...(variant ? {
       variantId: variant.id,

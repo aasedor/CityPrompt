@@ -10,8 +10,11 @@ ROWS = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
 def test_manual_mirror_and_thirteen_distinct_sections():
     assert MANIFEST.read_bytes() == (MANIFEST.parents[3] / 'frontend/src/data/streetManual.json').read_bytes()
-    assert len(ROWS) == 13
-    assert {int(r['figure']) for r in ROWS} == set(range(1, 14))
+    legacy = [r for r in ROWS if r['revision'] == 'manual-section-v1']
+    assert len(legacy) == 13
+    assert {int(r['figure']) for r in legacy} == set(range(1, 14))
+    assert len({r['variantId'] for r in ROWS}) == len(ROWS)
+    assert len({r['familyId'] for r in ROWS}) == len(ROWS)
 
 
 @pytest.mark.parametrize('row', ROWS, ids=lambda r:r['archetypeId'])
