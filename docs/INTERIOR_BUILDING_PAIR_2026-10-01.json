@@ -1,0 +1,444 @@
+{
+  "schema": "cityprompt.interior-building-pair@1",
+  "date": "2026-10-01",
+  "method": "RLASM v6.1 architectural clay",
+  "branch": "codex/interior-building-pair",
+  "shared_runtime_base": "f36ae2d37",
+  "project_url": "http://localhost:5186/projects/aff432a5-63cf-4027-86f4-4841b6203b39",
+  "scope": "Local desktop prepared-level-site interior pilots",
+  "published": false,
+  "human_visual_activation": false,
+  "checks": {
+    "frontend_vitest": {
+      "passed": 25,
+      "files": 5
+    },
+    "frontend_type_check": "PASS",
+    "backend_clay_runtime": {
+      "passed": 38
+    },
+    "catalogue_promotion_and_workflow": {
+      "passed": 24
+    },
+    "historical_clay_fixture": {
+      "skipped": 7,
+      "reason": "Separate historical ten-activated-variant fixture is not configured; exact delivered assets have their own model, walking, promotion and byte-readback checks."
+    },
+    "python_compile": "PASS",
+    "model_storage": {
+      "present": 37,
+      "total": 37,
+      "bucket": "cityprompt-validation-20260924"
+    },
+    "catalogue_status_update_retest": {
+      "passed": 14,
+      "files": 3
+    },
+    "mounted_final_network_hashes": [
+      {
+        "kind": "school",
+        "network_sha256": "a4a9a1d8c2638dbc915b3e765cb4beb2273c29c445034782d34eca0888751e3d"
+      },
+      {
+        "kind": "hotel",
+        "network_sha256": "95d98e7eeb89921244e120b7a77666a360e978cc24c43c7a53a39c27e77abccf"
+      }
+    ]
+  },
+  "buildings": [
+    {
+      "title": "Timber Art & Design School",
+      "archetype_id": "university_academic_complex",
+      "variant_id": "biophilic_mass_timber_campus",
+      "candidate": "interior-school-clay-v003",
+      "native_dimensions_m": {
+        "width": 36.0,
+        "depth": 30.0,
+        "height": 16.309999465942383
+      },
+      "plot_dimensions_m": [
+        40,
+        34
+      ],
+      "occupied_levels": 4,
+      "maximum_walk_rise_m": 10.8,
+      "runtime_model": {
+        "path": "interior-school-clay-v003.glb",
+        "bytes": 10306868,
+        "sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+        "meshes": 18,
+        "materials": 18,
+        "textures": 0,
+        "images": 0,
+        "mesh_objects": 18,
+        "vertices": 184512,
+        "polygons": 156329,
+        "triangles": 308816
+      },
+      "review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "sha256": "28c7ddfb97fa9dd3699ac470ea53dd31e54a2e9bcbc42ffff5c839f5fcb4a53c",
+        "inspected_views": 19,
+        "phone_boards": 3,
+        "locked_sources": 3
+      },
+      "apertures": {
+        "status": "PASS_CARRIER_APERTURES",
+        "openings": 84,
+        "rays": 756
+      },
+      "walking": {
+        "status": "PASS",
+        "model_sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+        "samples": 2850,
+        "max_step_m": 0.1636363636363658,
+        "max_surface_error_m": 4.438920448990302e-07,
+        "body_clearance_width_m": 0.44,
+        "results": [
+          {
+            "route": "all studio levels and roof terrace",
+            "direction": "forward",
+            "end": [
+              -11.969962593925374,
+              -7.999924906484813,
+              10.92
+            ]
+          },
+          {
+            "route": "all studio levels and roof terrace",
+            "direction": "reverse",
+            "end": [
+              0,
+              -13.969999999999995,
+              0.12
+            ]
+          },
+          {
+            "route": "ground exhibition gallery",
+            "direction": "forward",
+            "end": [
+              -9.999924983376182,
+              7.999999749910639,
+              0.12000000000000001
+            ]
+          },
+          {
+            "route": "ground exhibition gallery",
+            "direction": "reverse",
+            "end": [
+              0,
+              -14,
+              0.12
+            ]
+          }
+        ],
+        "failures": [],
+        "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+      },
+      "browser": {
+        "errors": [],
+        "grounding": [],
+        "walk": {
+          "distance": 0.1349383659708878,
+          "elapsedS": 89.04029999995231,
+          "index": 65,
+          "maxHeight": 1108.2099171652458,
+          "maxTargetHeightError": 0.16363640164263415,
+          "minHeight": 1097.4099022754922,
+          "pose": {
+            "groundHeight": 1097.409916039256,
+            "heading": 85.88953599374838,
+            "lat": 51.018461273185096,
+            "lng": -114.12045248280776
+          },
+          "reason": "all occupied floors walked in both directions through normal keyboard handlers",
+          "samples": 2226,
+          "status": "PASS",
+          "total": 66
+        }
+      },
+      "browser_after_reload": {
+        "errors": [],
+        "grounding": [],
+        "walk": {
+          "distance": 0.15939633520678168,
+          "elapsedS": 20.843200000047684,
+          "index": 13,
+          "maxHeight": 1101.0099108682268,
+          "maxTargetHeightError": 2.953995590360137e-07,
+          "minHeight": 1097.409902313966,
+          "pose": {
+            "groundHeight": 1101.0099070734843,
+            "heading": 174.8996000064618,
+            "lat": 51.01842603304482,
+            "lng": -114.12049881075392
+          },
+          "reason": "furnished first-floor room reached after project reload through normal keyboard handlers",
+          "samples": 521,
+          "status": "PASS",
+          "total": 14
+        }
+      },
+      "move_undo_redo": "PASS; exact saved coordinates compared",
+      "local_trial_only": true,
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false,
+      "evidence_directory": "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school\\v003",
+      "browser_evidence": [
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school-saved-zone.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school-moved-zone.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school-undo-zone.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school-redo-zone.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school-browser-walk-pass.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school-after-reload-pass.json"
+      ]
+    },
+    {
+      "title": "Mediterranean Courtyard Hotel",
+      "archetype_id": "boutique_hotel",
+      "variant_id": "mediterranean_resort_courtyard",
+      "candidate": "interior-hotel-clay-v006",
+      "native_dimensions_m": {
+        "width": 40.0,
+        "depth": 36.0,
+        "height": 13.588971138000488
+      },
+      "plot_dimensions_m": [
+        44,
+        40
+      ],
+      "occupied_levels": 3,
+      "maximum_walk_rise_m": 7.2,
+      "runtime_model": {
+        "path": "interior-hotel-clay-v006.glb",
+        "bytes": 31885072,
+        "sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+        "meshes": 20,
+        "materials": 20,
+        "textures": 0,
+        "images": 0,
+        "mesh_objects": 20,
+        "vertices": 507648,
+        "polygons": 419402,
+        "triangles": 830616
+      },
+      "review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "sha256": "7ff2ccb8bfca64bc3b83fa23f822287a4251d457f94fa391cac22d787806b190",
+        "inspected_views": 19,
+        "phone_boards": 3,
+        "locked_sources": 3
+      },
+      "apertures": {
+        "status": "PASS_CARRIER_APERTURES",
+        "openings": 84,
+        "rays": 756
+      },
+      "walking": {
+        "status": "PASS",
+        "model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+        "samples": 3302,
+        "max_step_m": 0.1636363636363649,
+        "max_surface_error_m": 2.0113858312242883e-07,
+        "body_clearance_width_m": 0.44,
+        "results": [
+          {
+            "route": "hotel stairs and courtyard galleries",
+            "direction": "forward",
+            "end": [
+              0,
+              -3.3,
+              7.32
+            ]
+          },
+          {
+            "route": "hotel stairs and courtyard galleries",
+            "direction": "reverse",
+            "end": [
+              0,
+              -17,
+              0.12
+            ]
+          },
+          {
+            "route": "courtyard and lobby",
+            "direction": "forward",
+            "end": [
+              -4.4,
+              10.5,
+              0.12
+            ]
+          },
+          {
+            "route": "courtyard and lobby",
+            "direction": "reverse",
+            "end": [
+              0,
+              -16.980000000000018,
+              0.12
+            ]
+          },
+          {
+            "route": "furnished guest suite",
+            "direction": "forward",
+            "end": [
+              -10,
+              -2,
+              3.72
+            ]
+          },
+          {
+            "route": "furnished guest suite",
+            "direction": "reverse",
+            "end": [
+              -10.199999999999996,
+              2,
+              3.7200000000000006
+            ]
+          }
+        ],
+        "failures": [],
+        "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+      },
+      "browser": {
+        "errors": [],
+        "grounding": [],
+        "walk": {
+          "distance": 0.17219620223888182,
+          "elapsedS": 95.76760000002383,
+          "index": 59,
+          "maxHeight": 1104.6099134264764,
+          "maxTargetHeightError": 0.16363644595571714,
+          "minHeight": 1097.4099020721278,
+          "pose": {
+            "groundHeight": 1097.4099232118615,
+            "heading": 177.23064542692873,
+            "lat": 51.018390563584006,
+            "lng": -114.11927476919278
+          },
+          "reason": "all occupied floors walked in both directions through normal keyboard handlers",
+          "samples": 2394,
+          "status": "PASS",
+          "total": 60
+        }
+      },
+      "browser_after_reload": {
+        "errors": [],
+        "grounding": [],
+        "walk": {
+          "distance": 0.13026337019862166,
+          "elapsedS": 21.04939999997616,
+          "index": 14,
+          "maxHeight": 1101.0099099430583,
+          "maxTargetHeightError": 3.345564891787945e-07,
+          "minHeight": 1097.409902118177,
+          "pose": {
+            "groundHeight": 1101.0099089317412,
+            "heading": 264.6305946642276,
+            "lat": 51.018523944065656,
+            "lng": -114.11941538876113
+          },
+          "reason": "furnished first-floor room reached after project reload through normal keyboard handlers",
+          "samples": 526,
+          "status": "PASS",
+          "total": 15
+        }
+      },
+      "move_undo_redo": "PASS; exact saved coordinates compared",
+      "local_trial_only": true,
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false,
+      "evidence_directory": "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel\\v006",
+      "corrected_portal_verification": {
+        "status": "PASS",
+        "model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+        "samples": 194,
+        "max_step_m": 1.7763568394002505e-15,
+        "max_surface_error_m": 1.7166137755708633e-07,
+        "body_clearance_width_m": 0.44,
+        "results": [
+          {
+            "route": "corrected upper loggia portal",
+            "direction": "forward",
+            "end": [
+              -4,
+              -12,
+              7.320000000000001
+            ]
+          },
+          {
+            "route": "corrected upper loggia portal",
+            "direction": "reverse",
+            "end": [
+              -4,
+              -3.3200000000000074,
+              7.32
+            ]
+          }
+        ],
+        "failures": [],
+        "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+      },
+      "supersedes": "interior-hotel-clay-v005",
+      "supersession_reason": "Final aperture audit found an upper portal overlapping a perpendicular partition; v006 moves the whole opening clear.",
+      "browser_evidence": [
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel-saved-zone.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel-moved-zone.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel-undo-zone.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel-redo-zone.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel-browser-walk-pass.json",
+        "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel-after-reload-pass.json"
+      ],
+      "collision_recovery": {
+        "collision": {
+          "backAway": {
+            "groundHeight": 1101.009912131599,
+            "heading": 264.6305946642276,
+            "lat": 51.01851413096468,
+            "lng": -114.11943894744758
+          },
+          "firstHold": {
+            "groundHeight": 1101.0099174219558,
+            "heading": 264.6305946642276,
+            "lat": 51.01851469641176,
+            "lng": -114.11947666579084
+          },
+          "secondHold": {
+            "groundHeight": 1101.009917576932,
+            "heading": 264.6305946642276,
+            "lat": 51.01851190084355,
+            "lng": -114.11947666577912
+          },
+          "start": {
+            "groundHeight": 1101.0099089317412,
+            "heading": 264.6305946642276,
+            "lat": 51.018523944065656,
+            "lng": -114.11941538876113
+          }
+        },
+        "errors": [],
+        "grounding": []
+      }
+    }
+  ],
+  "untested": [
+    "natural terrain and slopes",
+    "external street approaches and full entrance-authoring matrix",
+    "accessibility design",
+    "touch devices",
+    "failed/conflicting network saves",
+    "exact export file delivery",
+    "full landscape and mixed street/park matrix"
+  ],
+  "generated_output": "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01",
+  "limitations": [
+    "Interiors and hidden rear programme are authored interpretations of exact exterior references.",
+    "Art, pottery, fountain and pool are static geometry.",
+    "Route sweeps and browser paths are bounded evidence, not an exhaustive no-stuck guarantee.",
+    "Hotel uses about 32 MB of geometry; dense multi-hotel scenes and low-end devices were not benchmarked."
+  ]
+}

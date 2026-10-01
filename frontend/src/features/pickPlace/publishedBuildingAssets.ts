@@ -841,6 +841,86 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 2,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "clay_biophilic_mass_timber_campus",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Timber Art & Design School",
+    "description": "Exhibition gallery, painting and ceramics studios, roof lounge and planted terrace connected by walkable stairs.",
+    "thumbnail": "/archetypes/buildings/university-academic-complex/variant_2.png",
+    "model": {
+      "variantId": "biophilic_mass_timber_campus",
+      "revision": "interior-school-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 40.0,
+    "depth": 34.0,
+    "minWidth": 40.0,
+    "minDepth": 34.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      36.0,
+      30.0,
+      16.309999465942383
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "university_academic_complex",
+      "development_archetype_id": "university_academic_complex",
+      "development_selected_variant_id": "biophilic_mass_timber_campus",
+      "development_archetype_label": "Timber Art & Design School",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_mediterranean_resort_courtyard",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Mediterranean Courtyard Hotel",
+    "description": "Furnished guest suites, concierge lounge, open courtyard, upper galleries and a poolside loggia with walkable stairs.",
+    "thumbnail": "/archetypes/buildings/boutique-hotel/variant_1.png",
+    "model": {
+      "variantId": "mediterranean_resort_courtyard",
+      "revision": "interior-hotel-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "hotels",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 44.0,
+    "depth": 40.0,
+    "minWidth": 44.0,
+    "minDepth": 40.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      40.0,
+      36.0,
+      13.588971138000488
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "boutique_hotel",
+      "development_archetype_id": "boutique_hotel",
+      "development_selected_variant_id": "mediterranean_resort_courtyard",
+      "development_archetype_label": "Mediterranean Courtyard Hotel",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
   }
 ];
 

@@ -1708,6 +1708,146 @@
         "unresolved_p0": 0,
         "unresolved_p1": 0
       }
+    },
+    {
+      "candidate": "interior-school-clay-v003",
+      "family": "rlasm-clay-biophilic-mass-timber-campus",
+      "archetype_id": "university_academic_complex",
+      "variant_id": "biophilic_mass_timber_campus",
+      "archetype_label": "University Academic Complex",
+      "variant_label": "Timber Art & Design School",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 36,
+        "depth": 30,
+        "height": 17
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2.png",
+          "bytes": 1243908,
+          "sha256": "1d66a10b13ffc137e6cec7ce6c4f31a23c5d8e1f64bffa015729059d9398eab3"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2_angle_60.jpg",
+          "bytes": 900471,
+          "sha256": "e42a6950bd166377be73ac393fbff42604dcf5742ff9d8f2ac4fbbc2693d5400"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2_angle_90.jpg",
+          "bytes": 906336,
+          "sha256": "2bcb1121c2703848c0de19c6b0017c1cdc753decd554c64ebc6b7e3bc1caec6a"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school\\v003",
+      "picker": {
+        "id": "clay_biophilic_mass_timber_campus",
+        "description": "Exhibition gallery, painting and ceramics studios, roof lounge and planted terrace connected by walkable stairs.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 40,
+        "depth": 34,
+        "max_size": 100
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/interior-school-clay-v003.glb",
+        "bytes": 10306868,
+        "sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+        "native_dimensions_m": {
+          "width": 36.0,
+          "height": 16.309999465942383,
+          "depth": 30.0
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/interior-school-clay-v003.json",
+        "sha256": "28c7ddfb97fa9dd3699ac470ea53dd31e54a2e9bcbc42ffff5c839f5fcb4a53c",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "interior-hotel-clay-v006",
+      "family": "rlasm-clay-mediterranean-resort-courtyard",
+      "archetype_id": "boutique_hotel",
+      "variant_id": "mediterranean_resort_courtyard",
+      "archetype_label": "Boutique Hotel",
+      "variant_label": "Mediterranean Courtyard Hotel",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 40,
+        "depth": 36,
+        "height": 14
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1.png",
+          "bytes": 1256950,
+          "sha256": "1f126e400d9312467d5fc7febe0eb29a7a9471b001e424472814b4acfe08eee4"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1_angle_60.jpg",
+          "bytes": 937828,
+          "sha256": "b611dfd6dec268171bdd8f7c3f9493712f3d7a4dea349105fcbb6fbaf1532c82"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1_angle_90.jpg",
+          "bytes": 889403,
+          "sha256": "46610892dfcc44d36f036ba84709abcb8f81b06945f1a8bd439fa15076180de7"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel\\v006",
+      "picker": {
+        "id": "clay_mediterranean_resort_courtyard",
+        "description": "Furnished guest suites, concierge lounge, open courtyard, upper galleries and a poolside loggia with walkable stairs.",
+        "group_id": "hotels",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 44,
+        "depth": 40,
+        "max_size": 100
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/interior-hotel-clay-v006.glb",
+        "bytes": 31885072,
+        "sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+        "native_dimensions_m": {
+          "width": 40.0,
+          "height": 13.588971138000488,
+          "depth": 36.0
+        },
+        "mesh_count": 20,
+        "material_count": 20,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/interior-hotel-clay-v006.json",
+        "sha256": "7ff2ccb8bfca64bc3b83fa23f822287a4251d457f94fa391cac22d787806b190",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
     }
   ],
   "review_only_archive": []

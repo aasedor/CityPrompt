@@ -1,0 +1,173 @@
+{
+  "schema": "cityprompt.rlasm.independent_clay_review@1",
+  "candidate": "interior-school-clay-v003",
+  "reviewer": "/root/station_review",
+  "date": "2026-10-01",
+  "scope": "Holistic architectural-clay source identity, massing, envelope, programme, contacts and visual circulation. Runtime movement is verified separately; no textured keeper approval.",
+  "review_kind": "holistic_architectural_clay",
+  "decision": "architectural_clay_reviewed",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "pixel_findings": [
+    "The four occupied levels, glazed timber base, projecting paired-floor upper glazing, planted facade strips and dark ribbed side walls retain the source hierarchy.",
+    "The offset roof pavilion, long lower planted strip and straight promenade, two planted roof levels and two capped stacks retain the source roof topology.",
+    "The wider lower bed and varied overlapping vegetation resolve the prior biophilic identity blocker within architectural-clay scope. Facade planted panels read as continuous surfaces.",
+    "Gallery frames now have two physical posts and stabilizing floor feet; they no longer appear suspended in front of glazing.",
+    "Gallery, painting and ceramics programmes remain legible through physical glazing. Easels, brush cups, work tables, ceramics wheels, display plinths, benches and lounge furniture leave clear visible circulation.",
+    "Stair flights have physical treads and guards around drop edges. The earlier intermediate flight-mouth closure is absent in the reviewed views.",
+    "No visible P0/P1 wall, roof, timber, glazing, stair, furnishing or artwork contact defects remain across the full view set."
+  ],
+  "resolved_findings": [
+    {
+      "id": "SC1-BIOPHILIC-IDENTITY",
+      "status": "closed",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/roof_contact.png",
+        "renders/roof_terrace.png",
+        "boards/phone-oblique.png"
+      ]
+    },
+    {
+      "id": "SC1-STAIR-GUARD",
+      "status": "closed_visually",
+      "evidence": [
+        "renders/gallery_stair.png",
+        "renders/walk.png"
+      ],
+      "note": "Parent separately reports 2850 exact-model walking samples passing; image review alone does not prove collision behavior."
+    },
+    {
+      "id": "SC2-GALLERY-ART-SUPPORT",
+      "status": "closed",
+      "evidence": [
+        "renders/program_interior.png",
+        "renders/walk.png"
+      ],
+      "note": "Physical paired posts and floor feet are now visible."
+    }
+  ],
+  "blockers": [],
+  "nonblocking_notes": [
+    {
+      "severity": "P2",
+      "evidence": [
+        "renders/top.png",
+        "renders/roof_terrace.png"
+      ],
+      "note": "Low vegetation remains stylized with some row regularity. Further organic variation can improve polish, but the broad planted-roof and continuous living-wall identity now reads in clay scope."
+    }
+  ],
+  "limitations": [
+    "Architectural clay review only; no photographic texture keeper approval.",
+    "The arts interior programme and hidden rear continuation are authored inference.",
+    "Visual review does not establish engineering, accessibility, terrain grounding or runtime collision correctness. Separate walking and runtime checks remain authoritative for movement."
+  ],
+  "inspection_method": "Inspected all 19 delivered exact-GLB reimport renders, all three phone boards, and all three locked source images at original resolution. Verified source and script hashes against prework and the delivered model hash. Metadata supports provenance and is not a substitute for visual review.",
+  "inspected_files": [
+    {
+      "sha256": "6fcec9e87a52e6d7dcc712e56292bf04c56d3466b1b5ad7597c605c0da6e1daf",
+      "path": "renders/aerial.png"
+    },
+    {
+      "sha256": "ec44910b83995a8d33db659d665e68ebe2a4621aff335a3be992060524f24783",
+      "path": "renders/architecture_close.png"
+    },
+    {
+      "sha256": "7c94131e79e90a66e39ba430f66607e5c2211dcfddd0b26fbcd673c5c7625e87",
+      "path": "renders/ceramics_studio.png"
+    },
+    {
+      "sha256": "155fd8fcf5543a7458178daa4beab53fa78382868f30b4fcf6545be5f15942b3",
+      "path": "renders/facade_close.png"
+    },
+    {
+      "sha256": "ffc27d1fbeda1376741dbbf080bd001e3a92510a2b730fe75b2dc5e5595b7e98",
+      "path": "renders/front_corner.png"
+    },
+    {
+      "sha256": "01d629241a95e76927b9991c006c0364054e267e22b4f44d3f8a734b23b7a386",
+      "path": "renders/front.png"
+    },
+    {
+      "sha256": "26549cfc6435a5d2b8d4f2814863bbf1e9b4acfa598ca1cd54c5d376e09cdc31",
+      "path": "renders/gallery_stair.png"
+    },
+    {
+      "sha256": "fb3d122f7e27c9352fae2737c9b2f7c2c27f9ff11ac70132659197fceadad5bf",
+      "path": "renders/glass_close.png"
+    },
+    {
+      "sha256": "66b48713df87faa4003011e55414aae86de0d10aab3a0a00f09e5b13c995c51b",
+      "path": "renders/left_side.png"
+    },
+    {
+      "sha256": "53505b1ba291a61ff9ef5b55ef825caf8207c81d3687ce55f7f86a799f883b42",
+      "path": "renders/painting_studio.png"
+    },
+    {
+      "sha256": "8472b782de9c40c693ee7aa426b3c4594c61a36fd3db773c9622da6304a58f41",
+      "path": "renders/program_interior.png"
+    },
+    {
+      "sha256": "8d1a23cafcd8a9e308d9d8cf6880a899f693a4b4468a262fd2ff240643a120d2",
+      "path": "renders/rear_side.png"
+    },
+    {
+      "sha256": "8599b000c640a6568b761ab0035061c81c80d43d9d3b6e0d76134a574dda9558",
+      "path": "renders/rear.png"
+    },
+    {
+      "sha256": "abed068d6b384eac40713b8a7a022e1967f8960fc8686e8817cf295992f98ddb",
+      "path": "renders/right_side.png"
+    },
+    {
+      "sha256": "726e028590797f6be17f7b043636eec5a04558d746b060b3d831e46b97f2264f",
+      "path": "renders/roof_contact.png"
+    },
+    {
+      "sha256": "8bc30485396b38996aacff245ed9c5d9f1863fd6805558d00fc0e0136e65cc3e",
+      "path": "renders/roof_lounge.png"
+    },
+    {
+      "sha256": "4d33fd41361f4cc472bf42a84e2fe570599f5c7512413f19d3a0c61427b72eb7",
+      "path": "renders/roof_terrace.png"
+    },
+    {
+      "sha256": "532f2d46d92c5b2acb50391974a42e16c87ca1ef081a30e62617f6cd32b56240",
+      "path": "renders/top.png"
+    },
+    {
+      "sha256": "7dfb1a4a3dd91408bc4ccec8392ca453f953e8c30004d6f2e2781d0c79bf2436",
+      "path": "renders/walk.png"
+    },
+    {
+      "sha256": "42e7a0a2a831cca0c6850d44f003c9153d64a27262890575a46be7e2308cccb6",
+      "path": "boards/phone-front.png"
+    },
+    {
+      "sha256": "8b9c8839327d980cfa3cc4ed87fa7378bab538a31da3e5f44782539e35d6bd01",
+      "path": "boards/phone-oblique.png"
+    },
+    {
+      "sha256": "927d8b73c47218f8fab08f5befa6cce45b5dc92694d4c349d1739945e396d14a",
+      "path": "boards/phone-top.png"
+    },
+    {
+      "sha256": "e42a6950bd166377be73ac393fbff42604dcf5742ff9d8f2ac4fbbc2693d5400",
+      "path": "sources/variant_2_angle_60.jpg"
+    },
+    {
+      "sha256": "2bcb1121c2703848c0de19c6b0017c1cdc753decd554c64ebc6b7e3bc1caec6a",
+      "path": "sources/variant_2_angle_90.jpg"
+    },
+    {
+      "sha256": "1d66a10b13ffc137e6cec7ce6c4f31a23c5d8e1f64bffa015729059d9398eab3",
+      "path": "sources/variant_2.png"
+    }
+  ],
+  "model_sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add"
+}
