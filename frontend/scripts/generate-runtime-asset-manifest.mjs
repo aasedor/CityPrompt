@@ -27,6 +27,7 @@ const runtimePrefixes = Object.freeze([
   '/landscape-pilots/',
   '/park-skins/',
   '/street-kits/',
+  '/native-park-assets/',
 ]);
 const sourceExtensions = new Set(['.html', '.js', '.json', '.ts', '.tsx']);
 // License text ships beside models; normalize it too for Windows/Linux parity.
@@ -240,7 +241,7 @@ const starter = JSON.parse(readFileSync(starterPath, 'utf8'));
 for (const dependency of starter.dependencies) {
   if (dependency.location === 'public') references.set(`/${dependency.path}`, new Set([sourcePath(starterPath)]));
 }
-const urlPattern = /\/(?:archetypes|assets|entourage|families|images|park-kits|park-skins|landscape-pilots|street-kits)\/[^\s"'`<>)\]}]+/g;
+const urlPattern = /\/(?:archetypes|assets|entourage|families|images|park-kits|park-skins|landscape-pilots|street-kits|native-park-assets)\/[^\s"'`<>)\]}]+/g;
 for (const filePath of sourceFiles) {
   if (catalogPaths.has(filePath)) continue;
   const text = sourceText(filePath);
