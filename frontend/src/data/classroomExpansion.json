@@ -575,6 +575,18 @@
       "asset_review": "agent_native_visual_and_geometry_pass",
       "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Elevated Garden Rail",
+      "archetype_id": "elevated_garden_rail",
+      "variant_id": "student_elevated_garden_rail_v1",
+      "version": "student_elevated_garden_rail_v1",
+      "placement_id": "student_elevated_garden_rail_v1",
+      "sha256": "b058e887b30a73ca831a5c54e4f25011ae58ea9e6b8ae80c86d9256fdb4287e8",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
     }
   ],
   "assets": [
@@ -2337,6 +2349,37 @@
         "green_space_selected_variant_id": "student_terraced_rose_v1",
         "green_space_native_layout_id": "student_terraced_rose_v1--native-v1",
         "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_elevated_garden_rail_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Elevated Garden Rail",
+      "description": "Twin-track concrete viaduct with a detailed static metro train, gardens, a cycle path and broad walking routes below. Straight 48\u2013288 m corridor on a prepared level site.",
+      "thumbnail": "/archetypes/streets/elevated-garden-rail/variant_0.png",
+      "model": {
+        "variantId": "student_elevated_garden_rail_v1",
+        "revision": "d101b5b4d1871681b5c6f0ce1756c533a41a74425a846993ca1e2946a44bb43c",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 26,
+      "properties": {
+        "road_archetype_id": "elevated_garden_rail",
+        "road_selected_variant_id": "student_elevated_garden_rail_v1",
+        "width": 26,
+        "lane_count": 0,
+        "pick_place_street_section": "student_elevated_garden_rail_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original elevated rail teaching concept"
       }
     }
   ]

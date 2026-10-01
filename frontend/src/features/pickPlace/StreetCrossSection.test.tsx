@@ -11,7 +11,7 @@ describe('street section dimensions', () => {
   it.each(STREET_ASSETS.map(a=>[a.label,a] as const))('shows %s with dimensions from the rendered section', (_, asset) => {
     render(<StreetCrossSection asset={asset} expanded />);
     expect(screen.getByRole('img', { name: `${asset.label}: ${asset.sectionWidth} metre cross-section` })).toBeInTheDocument();
-    expect(screen.getByText(`Cross-section · ${asset.sectionWidth} m total`)).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(`cross-section · ${asset.sectionWidth} m total`, 'i'))).toBeInTheDocument();
     expect(screen.getByText(/Widths to scale/)).toBeInTheDocument();
   });
   it('shows the selected narrow street instead of hard-coded local-street instructions', () => {

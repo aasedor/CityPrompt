@@ -1,0 +1,177 @@
+{
+  "schema": "cityprompt.elevated-rail.local-runtime@1",
+  "date": "2026-10-01",
+  "source_base": "a3a6c4114",
+  "branch": "codex/elevated-rail-street",
+  "project": "http://localhost:5186/projects/d52ba95f-f099-4e8e-a4b3-26142f28bdcd",
+  "evidence_root": "C:\\dev-artifacts\\CityPrompt\\elevated-rail-street-2026-10-01",
+  "reviewer": "Codex author visual review and ordinary-control browser verification",
+  "publication": "local_only_pending_human_activation",
+  "human_visual_approval": false,
+  "variant": "student_elevated_garden_rail_v1",
+  "archetype": "elevated_garden_rail",
+  "source_recipe_sha256": "d101b5b4d1871681b5c6f0ce1756c533a41a74425a846993ca1e2946a44bb43c",
+  "source_assembly_sha256": "b058e887b30a73ca831a5c54e4f25011ae58ea9e6b8ae80c86d9256fdb4287e8",
+  "program_sha256": "fbca91dd021cba3868e8722dbaa8d986a3cf8e0cb112f8d9f101f44c9740c00b",
+  "module_sha256": {
+    "bench": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+    "flowering_perennial": "0fea864a84d1951033430f3e36454e013640a2e2cd02d0b8c260b908e8c4dc4e",
+    "meadow_grass": "2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06",
+    "rail_buffer": "e1f83a3e0991c9139541c622b3f0661819fdc2a954a02321cff649c3fe5b3e2e",
+    "rail_end": "ad48acdad35eca0b2c878d4bd1a8855c8dce3012ca11e645b386f7cc2ecdc838",
+    "rail_lamp": "2edb1e87caf5c3dd17aabef5776b7337fd42c9a0db39fc6220ece7cea7073f16",
+    "rail_pier": "59337c1dc753631711b65e64e09d0eab034465982c19094a706b042fa3dd3a5d",
+    "rail_train": "2efb7ef72e505b67db7bf1bcdf17199ce8e67a8caace077d65f6469fdc71926d",
+    "shade_tree": "d70a69200018fb9760bd6294874b4730ecebca4997b561cc4c58f6930f50704d",
+    "silver_shrub": "b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
+  },
+  "fixture_dimensions_m": [
+    26,
+    48
+  ],
+  "triangles": 294073,
+  "occupied_bounds_m": [
+    [
+      -13.0,
+      -24.0,
+      -0.11999999731779099
+    ],
+    [
+      13.0,
+      24.0,
+      11.156499862670898
+    ]
+  ],
+  "supported": {
+    "width_m": 26,
+    "length_m": [
+      48,
+      288
+    ],
+    "terrain": "prepared_level",
+    "route": "straight",
+    "train": "static two-car architectural display",
+    "walking": "ground paths beneath and beside the tracks",
+    "junctions": "unsupported; overlapping roads rejected in either edit direction"
+  },
+  "tests": {
+    "frontend": 130,
+    "backend": 59,
+    "packaging": 2,
+    "type_check": "PASS",
+    "runtime_asset_manifest": "PASS (4660 records; full release hydration not claimed)"
+  },
+  "runtime": {
+    "first": {
+      "status": "PASS",
+      "zone_id": "2be437a6-ae69-41e5-b7a1-9b2da84a4aa5",
+      "length_m": 125.079,
+      "expected_modules": 356,
+      "grounding_issues": []
+    },
+    "extended": {
+      "status": "PASS",
+      "zone_id": "2be437a6-ae69-41e5-b7a1-9b2da84a4aa5",
+      "length_m": 148.242,
+      "expected_modules": 412,
+      "grounding_issues": []
+    },
+    "undo": {
+      "status": "PASS",
+      "zone_id": "2be437a6-ae69-41e5-b7a1-9b2da84a4aa5",
+      "length_m": 125.079,
+      "expected_modules": 356,
+      "grounding_issues": []
+    },
+    "redo": {
+      "status": "PASS",
+      "zone_id": "2be437a6-ae69-41e5-b7a1-9b2da84a4aa5",
+      "length_m": 148.242,
+      "expected_modules": 412,
+      "grounding_issues": []
+    },
+    "reload": {
+      "status": "PASS",
+      "zone_id": "2be437a6-ae69-41e5-b7a1-9b2da84a4aa5",
+      "length_m": 148.242,
+      "expected_modules": 412,
+      "grounding_issues": []
+    },
+    "moved": {
+      "status": "PASS",
+      "zone_id": "2be437a6-ae69-41e5-b7a1-9b2da84a4aa5",
+      "length_m": 148.242,
+      "expected_modules": 412,
+      "grounding_issues": []
+    }
+  },
+  "walking": {
+    "distance": 0.14770429088012457,
+    "elapsedS": 202.4145,
+    "errors": [],
+    "index": 7,
+    "length": 147.92727399571092,
+    "maxHeight": 1097.0451589066438,
+    "minHeight": 1097.0451589066438,
+    "pose": {
+      "groundHeight": 1097.0451589066438,
+      "heading": 180.4093293645425,
+      "lat": 51.01839754504475,
+      "lng": -114.12096263652572
+    },
+    "reason": "Both under-deck paths traversed in both directions using keyboard input",
+    "route": [
+      [
+        3.25,
+        6
+      ],
+      [
+        3.25,
+        141.92727399571092
+      ],
+      [
+        -3.25,
+        141.92727399571092
+      ],
+      [
+        -3.25,
+        6
+      ],
+      [
+        -3.25,
+        141.92727399571092
+      ],
+      [
+        3.25,
+        141.92727399571092
+      ],
+      [
+        3.25,
+        6
+      ],
+      [
+        11,
+        6
+      ]
+    ],
+    "samples": 5060,
+    "status": "PASS",
+    "total": 8,
+    "zone": "2be437a6-ae69-41e5-b7a1-9b2da84a4aa5"
+  },
+  "capture": {
+    "status": "PASS",
+    "method": "Ordinary Export current 3D view control; original PNG bytes from the render preview image",
+    "width": 1264,
+    "height": 561,
+    "sha256": "47f01f9485aa796cec4e63ce7b52f046b94bed8bd253ca62b7d3cf6ace261b8e",
+    "file": "C:\\dev-artifacts\\CityPrompt\\elevated-rail-street-2026-10-01\\exact-live-capture.png",
+    "download_automation": "Direct download handler canceled; exact data URL retained from the preview."
+  },
+  "not_tested": [
+    "Mixed building and park connections",
+    "Sloped or natural terrain (unsupported)",
+    "Paid AI image rendering",
+    "Human visual approval"
+  ]
+}

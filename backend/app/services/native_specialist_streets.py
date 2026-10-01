@@ -3,6 +3,7 @@ import json
 import math
 
 CONTRACTS = {
+    'student_elevated_garden_rail_v1': ('elevated_garden_rail', 26, 48, 288),
     'amsterdam_gracht_v1': ('amsterdam_gracht', 36, 80, 320),
     'landmark_signature_bridge_v2': ('landmark_signature_bridge', 36, 260, 480),
 }
@@ -18,7 +19,7 @@ def validate_specialist_ground(properties, boundary_properties):
         return
     boundary = boundary_properties or {}
     if boundary.get('terrain_strategy') == 'landscape' or boundary.get('community_3d_mask_existing_tiles') is not True:
-        raise ValueError('Keep the canal or bridge on a prepared level site with existing surfaces cleared.')
+        raise ValueError('Keep this specialist street on a prepared level site with existing surfaces cleared.')
 
 
 def validate_specialist_properties(properties):
@@ -26,6 +27,8 @@ def validate_specialist_properties(properties):
     if not is_native_specialist(props):
         return
     parent, width, minimum, maximum = CONTRACTS[props['road_selected_variant_id']]
+    if props['road_selected_variant_id']=='student_elevated_garden_rail_v1' and props.get('connect_to_public_road'):
+        raise ValueError('Elevated rail cannot connect directly to an ordinary public road.')
     if props.get('road_archetype_id') != parent or props.get('width') != width:
         raise ValueError('Keep this specialist street’s original section and catalogue identity.')
     route = props.get('plan_centerline')

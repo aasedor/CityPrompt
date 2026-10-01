@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import type { StreetRouteStation } from './nativeStreetPilot';
 import { stationNormals } from './streetMesh3D';
 import { buildBrtStreetProgram, type BrtStop } from './brtStreetProgram';
-import { buildSpecialistStreetProgram, CANAL_VARIANT, BRIDGE_VARIANT } from './specialistStreetProgram';
+import { buildSpecialistStreetProgram, CANAL_VARIANT, BRIDGE_VARIANT, specialistRouteProblem } from './specialistStreetProgram';
+import { ELEVATED_RAIL_VARIANT } from './elevatedRailProgram';
 
 export function nativeStreetHasPreparedGround(preparedElevation: number | null, hasPreparedApproach: boolean, hasSharedGround: boolean) {
   return Number.isFinite(preparedElevation) || hasPreparedApproach || hasSharedGround;
@@ -33,6 +34,10 @@ export function nativeStreetGroundCells(width:number,length:number,regions:Nativ
 }
 
 export function buildNativeStreetProgram(program:NativeStreetProgram,width:number,fixtureLength:number,route:StreetRouteStation[],stops:BrtStop[]=[]) {
+  if(program.adapter==='elevated-rail-v1'){
+    const problem=specialistRouteProblem(ELEVATED_RAIL_VARIANT,route);
+    if(problem)throw new Error(problem);
+  }
   if(program.adapter==='brt-v004-v1')return buildBrtStreetProgram(route,stops,program.baseLiftM);
   if(program.adapter==='canal-v005-v1')return buildSpecialistStreetProgram(CANAL_VARIANT,route);
   if(program.adapter==='bridge-v003-v1')return buildSpecialistStreetProgram(BRIDGE_VARIANT,route);

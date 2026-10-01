@@ -1,18 +1,19 @@
 import * as THREE from 'three';
 import type {StreetRouteStation} from './nativeStreetPilot';
+import { ELEVATED_RAIL_VARIANT } from './elevatedRailProgram';
 
 export const CANAL_VARIANT='amsterdam_gracht_v1';
 export const BRIDGE_VARIANT='landmark_signature_bridge_v2';
-export const isSpecialistStreet=(variant:unknown)=>variant===CANAL_VARIANT || variant===BRIDGE_VARIANT;
+export const isSpecialistStreet=(variant:unknown)=>variant===CANAL_VARIANT || variant===BRIDGE_VARIANT || variant===ELEVATED_RAIL_VARIANT;
 export interface SpecialistFixture {kind:string;x:number;y:number;z:number;yaw:number;scale:number}
 
 export function specialistRouteProblem(variant:string,route:StreetRouteStation[]):string|null {
   if(!isSpecialistStreet(variant))return null;
-  const min=variant===CANAL_VARIANT?80:260,max=variant===CANAL_VARIANT?320:480;
+  const min=variant===ELEVATED_RAIL_VARIANT?48:variant===CANAL_VARIANT?80:260,max=variant===ELEVATED_RAIL_VARIANT?288:variant===CANAL_VARIANT?320:480;
   if(route.length<2)return 'Draw two endpoints for this straight specialist street.';
   const a=route[0],b=route[route.length-1],dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy);
   if(!Number.isFinite(length)||length<min-.01||length>max+.01)
-    return variant===CANAL_VARIANT?'Keep the canal 80–320 m long so its basin and original crossing fit.':'Keep the bridge route 260–480 m long for its rigid span and two gradual approaches.';
+    return variant===ELEVATED_RAIL_VARIANT?'Keep the elevated rail route 48–288 m long.':variant===CANAL_VARIANT?'Keep the canal 80–320 m long so its basin and original crossing fit.':'Keep the bridge route 260–480 m long for its rigid span and two gradual approaches.';
   let previous=-1;
   for(const p of route){
     const x=p.x-a.x,y=p.y-a.y,station=(x*dx+y*dy)/length;
@@ -24,6 +25,7 @@ export function specialistRouteProblem(variant:string,route:StreetRouteStation[]
 }
 
 export function specialistFixtures(variant:string,length:number):SpecialistFixture[] {
+  if(variant===ELEVATED_RAIL_VARIANT)throw new Error('Elevated rail fixtures require their locked source placements.');
   const fixtures:SpecialistFixture[]=[];
   const add=(kind:string,x:number,y:number,z=0,yaw=0)=>fixtures.push({kind,x,y,z,yaw,scale:1});
   if(variant===BRIDGE_VARIANT){add('bridge_structure',0,length/2);return fixtures;}
@@ -42,6 +44,9 @@ export function specialistFixtures(variant:string,length:number):SpecialistFixtu
 /** Source-height camera support, in metres above the prepared site. */
 export function specialistWalkingHeight(variant:string,x:number,station:number,length:number):number|null {
   if(station<0||station>length)return null;
+  // The public route stays below the protected tracks, including when a map
+  // click initially hits the deck or train roof.
+  if(variant===ELEVATED_RAIL_VARIANT)return Math.abs(x)<=13?.025:null;
   if(variant===BRIDGE_VARIANT){
     if(Math.abs(x)>12)return null;
     const approach=(length-100)/2;

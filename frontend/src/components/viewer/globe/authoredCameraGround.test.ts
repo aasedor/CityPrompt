@@ -13,6 +13,12 @@ const boundary: SiteZone = { id:'site', project_id:'test', zone_type:'site_bound
   properties:{terrain_elevation_m:1103,community_3d_mask_existing_tiles:true},
   color:'#aaa',sort_order:0,created_at:'now',updated_at:'now' };
 describe('camera ground for authored communities',()=>{
+  it('keeps the elevated railway paths at ground level even when the picked deck is above them',()=>{
+    const line=[[-114,51-40/111320],[-114,51+40/111320]];
+    const rail={...boundary,id:'rail',zone_type:'road' as const,is_active_boundary:false,coordinates:bufferLineToPolygon(line,26),
+      properties:{width:26,road_selected_variant_id:'student_elevated_garden_rail_v1',plan_centerline:line}};
+    for(const measured of [1103,1111,1115])expect(authoredCameraGround([boundary,rail],-114,51,measured,1111)).toBeCloseTo(1103.025);
+  });
   beforeEach(()=>vi.resetAllMocks());
   it('keeps a pedestrian below the bridge while deck and ramp users follow their upper surface',()=>{
     const line=[[-114,51-130/111320],[-114,51+130/111320]];

@@ -97,6 +97,7 @@ import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
+import { constrainElevatedRailWalk } from './elevatedRailWalking';
 import { constrainNativeParkWalk, nativeParkWalkEntry, nativeParkWalkEntrance } from '@/features/parks/nativeParkWalking';
 import { buildingWalkEntry, buildingWalkEntrance, constrainBuildingWalk } from '@/features/legoAssembly/buildingWalking';
 import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
@@ -2380,7 +2381,7 @@ export function GlobeSitePlannerMap({
         if (next !== current) {
           // A building zone is a planning plot, not a solid collision mesh.
           // It can contain open courts, arcades and paved passages.
-          applyWalkPose(constrainBuildingWalk(terrainZonesRef.current, current, constrainNativeParkWalk(terrainZonesRef.current, current, next)));
+          applyWalkPose(constrainBuildingWalk(terrainZonesRef.current, current, constrainNativeParkWalk(terrainZonesRef.current, current, constrainElevatedRailWalk(terrainZonesRef.current, current, next))));
         }
       }
       lastTime = time;

@@ -24,6 +24,7 @@ from app.services.native_parks import plan_native_park
 from app.services.native_brt import validate_brt_properties, validate_brt_ground, is_native_brt
 from app.services.native_tram import validate_tram_properties, validate_tram_ground, is_native_tram
 from app.services.native_specialist_streets import validate_specialist_properties, validate_specialist_ground, is_native_specialist
+from app.services.elevated_rail import validate_rail_overlap
 from app.services.public_road_connection import public_road_connection_fits
 from app.services.public_road_context import fetch_public_road_context
 from sqlalchemy import desc, func as sa_func, select
@@ -928,6 +929,13 @@ async def _ensure_project_access(
     return project
 
 
+async def _validate_elevated_rail_neighbours(db, project_id, coordinates, properties, exclude_id=None):
+    result = await db.execute(select(SiteZone).where(SiteZone.project_id == project_id, SiteZone.zone_type == 'road'))
+    neighbours = [(list(to_shape(z.geometry).exterior.coords), z.properties or {})
+                  for z in result.scalars().all() if z.id != exclude_id]
+    validate_rail_overlap(coordinates, properties or {}, neighbours)
+
+
 @router.get("/projects/{project_id}/road-network")
 async def get_road_network(
     project_id: uuid.UUID,
@@ -1094,6 +1102,8 @@ async def create_zone(
         validate_brt_ground(zone_in.properties, active_boundary.properties if active_boundary else None)
         validate_specialist_properties(zone_in.properties)
         validate_specialist_ground(zone_in.properties, active_boundary.properties if active_boundary else None)
+        if zone_in.zone_type == 'road':
+            await _validate_elevated_rail_neighbours(db, project_id, coords, zone_in.properties)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     if (zone_in.properties or {}).get('green_space_native_layout') is not None:
@@ -1413,6 +1423,8 @@ async def update_zone(
             tram_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
             validate_tram_ground(native_properties, tram_boundary.properties if tram_boundary else None)
         validate_specialist_properties(native_properties)
+        if requested_zone_type == 'road':
+            await _validate_elevated_rail_neighbours(db, zone.project_id, updated_coordinates or before_snapshot['coordinates'], native_properties, zone.id)
         if is_native_specialist(native_properties):
             specialist_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
             validate_specialist_ground(native_properties, specialist_boundary.properties if specialist_boundary else None)

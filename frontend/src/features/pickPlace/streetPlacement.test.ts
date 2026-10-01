@@ -7,6 +7,7 @@ import { addStreetBend, CALGARY_LOCAL_PLACEMENT, reshapeStreetPoint, streetCoord
 import { STREET_ASSETS } from './assetRegistry';
 import { isFixedSectionStreet, streetAssetForZone } from './streetPlacement';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
+import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetProgram';
 
 const mLon = 111320*Math.cos(51*Math.PI/180);
 const ll = ([x,y]:number[])=>[-114+x/mLon,51+y/111320];
@@ -26,7 +27,7 @@ describe('fixed sections across street types', () => {
     const profile = resolvePilotStreetSectionProfile(saved)!;
     expect(profile.rowM).toBe(width);
     expect(profile.bands.reduce((sum, band) => sum + band.widthM, 0)).toBeCloseTo(width, 8);
-    if(['brt_bus_rapid_transit_corridor_v0','amsterdam_gracht_v1','landmark_signature_bridge_v2'].includes(asset.model.variantId)){
+    if(asset.model.variantId==='brt_bus_rapid_transit_corridor_v0'||isSpecialistStreet(asset.model.variantId)){
       expect(addStreetBend(saved)).toBeNull();
       const moved=streetCoordinateUpdate(saved,saved.coordinates.map(([x,y])=>[x,y+2/111320]));
       expect(moved.properties?.width).toBe(width);

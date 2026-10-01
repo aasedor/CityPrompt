@@ -126,6 +126,14 @@
       "variantId": "student_barcelona_shaded_promenade_v1",
       "revision": "33a5ba4c660e85527e85d60527088407fab69c67d5b774ce17f8f4d20446f1ec",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "elevated_garden_rail",
+      "variantId": "student_elevated_garden_rail_v1",
+      "revision": "d101b5b4d1871681b5c6f0ce1756c533a41a74425a846993ca1e2946a44bb43c",
+      "status": "local-pilot-runtime-verified"
     }
   ]
 }

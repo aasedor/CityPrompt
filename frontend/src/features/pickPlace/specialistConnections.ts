@@ -1,6 +1,7 @@
 import type {SiteZone} from '@/types';
 import {extractZoneCenterline,effectiveRoadWidth} from '@/utils/roadGeometry';
 import {CANAL_VARIANT,BRIDGE_VARIANT,isSpecialistStreet} from '@/components/viewer/globe/specialistStreetProgram';
+import { ELEVATED_RAIL_VARIANT } from '@/components/viewer/globe/elevatedRailProgram';
 
 function enters(a:number[],b:number[],left:number,right:number,lo:number,hi:number){
   let first=0,last=1;
@@ -25,7 +26,10 @@ export function specialistConnectionProblem(candidate:Pick<SiteZone,'coordinates
     for(const other of next.filter(z=>z.zone_type==='road'&&z.id!==zone.id)){
       const points=extractZoneCenterline(other).map(p=>{const x=(p[0]-a[0])*sx,y=(p[1]-a[1])*111320;return [(x*dy-y*dx)/length,(x*dx+y*dy)/length];});
       const half=effectiveRoadWidth(other.properties)/2;
-      if(variant===CANAL_VARIANT){
+      if(variant===ELEVATED_RAIL_VARIANT){
+        if(points.slice(1).some((p,i)=>enters(points[i],p,-13-half,13+half,.1,length-.1)))
+          return 'Keep other streets outside the elevated rail corridor. Its ground paths and supports need the full width; street crossings and rail junctions are not supported.';
+      }else if(variant===CANAL_VARIANT){
         // Ends may touch the outer bank edge. An ordinary road cannot cut
         // through the protected crossing, basin, or lower open channel.
         // The 1.9 m outer walk is a dry connection apron. Small endpoint

@@ -1,0 +1,20 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "model_sha256": "b058e887b30a73ca831a5c54e4f25011ae58ea9e6b8ae80c86d9256fdb4287e8",
+  "date": "2026-10-01",
+  "reviewer": "Codex visual inspection",
+  "views": [
+    "aerial.png",
+    "detail.png",
+    "walk.png"
+  ],
+  "findings": [
+    "Complete twin-track structure with visible rail heads, sleepers, bearings, drainage and parapets",
+    "Two native metro cars with doors, glazing, roof equipment, bogies and end buffers",
+    "Three continuous longitudinal walking routes stay clear of structural piers",
+    "Exact reimported GLB remains inside the 26 by 48 metre section"
+  ],
+  "triangles": 294073,
+  "runtime_status": "NOT TESTED",
+  "human_visual_approval": false
+}

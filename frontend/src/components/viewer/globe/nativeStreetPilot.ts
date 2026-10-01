@@ -4,6 +4,7 @@ import type { NativeStreetProgram } from './nativeStreetProgram';
 import { BRT_VARIANT, brtRouteProblem, brtStreetLayout, type BrtStop } from './brtStreetProgram';
 import { isSpecialistStreet, specialistFixtures, specialistRouteProblem } from './specialistStreetProgram';
 import { TRAM_VARIANT, tramRouteProblem, tramFixtures } from './tramStreetProgram';
+import { ELEVATED_RAIL_VARIANT, elevatedRailFixtures } from './elevatedRailProgram';
 import type { SiteZone } from '@/types';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { validateStreetRecipeProperties } from './streetLegoContract';
@@ -109,7 +110,8 @@ export function placeNativeStreetModules(
   const isBrt = pilot.id===BRT_VARIANT;
   const isTram = pilot.id===TRAM_VARIANT;
   const specialist = isSpecialistStreet(pilot.id);
-  const source = isTram ? tramFixtures(pilot.placements,pilot.fixtureLengthM,totalM,stops) : specialist ? specialistFixtures(pilot.id,totalM).map(p=>({...p,y:p.y-totalM/2}))
+  const source = pilot.id===ELEVATED_RAIL_VARIANT ? elevatedRailFixtures(pilot.placements,totalM).map(p=>({...p,y:p.y-totalM/2}))
+    : isTram ? tramFixtures(pilot.placements,pilot.fixtureLengthM,totalM,stops) : specialist ? specialistFixtures(pilot.id,totalM).map(p=>({...p,y:p.y-totalM/2}))
     : isBrt ? brtStreetLayout(totalM,stops).fixtures.map(p=>({...p,y:p.y-totalM/2})) : pilot.placements;
   const modules:Record<string,{url:string;sha256:string}|undefined>=pilot.modules;
   const centers = specialist || isBrt || isTram || totalM <= pilot.fixtureLengthM
