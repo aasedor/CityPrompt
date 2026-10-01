@@ -23,6 +23,24 @@ function setup() {
   };
 }
 describe('scoped media downloads', () => {
+  it('discards private tickets and keeps public media usable when session storage becomes inaccessible', async () => {
+    const session = vi.fn<() => string | null>().mockReturnValue('account-a');
+    const projectTicket = vi.fn().mockResolvedValue({ asset_ticket: 'private-ticket', expires_in: 900 });
+    const access = createAssetAccess({ baseUrl: '', origin: () => 'https://cityprompt.ca', session,
+      projectTicket, fileTicket: vi.fn() });
+    const url = '/api/v1/files/projects/p/renders/a.png';
+    const saved = await access.prepare({ image_url: url });
+    expect(saved.image_url).toContain('asset_ticket=private-ticket');
+    const listener = vi.fn();
+    access.subscribe(listener);
+    session.mockImplementation(() => { throw new DOMException('Blocked', 'SecurityError'); });
+    await expect(access.refresh()).resolves.toBeUndefined();
+    expect(listener).toHaveBeenCalledOnce();
+    expect(access.resolve(saved.image_url)).toBe(url);
+    expect(access.resolve(url, { shareToken: 'public-share' })).toContain('share_token=public-share');
+    expect(await access.prepare({ image_url: url })).toEqual({ image_url: url });
+    expect(projectTicket).toHaveBeenCalledOnce();
+  });
   it('prepares one ticket for multiple project assets without putting the login token in URLs', async () => {
     const { access, projectTicket, getToken } = setup();
     const result = await access.prepare({ images: ['/api/v1/files/projects/p/renders/a.png', '/api/v1/files/projects/p/renders/b.png'] });

@@ -840,7 +840,8 @@ for (const [domain, options] of [
   const selected = options.flatMap(option => {
     const entry = allowed.find(row => row.archetype_id === option.id);
     if (!entry) return [];
-    const asset = validationRoster.assets.find(row => row.id === entry.placement_id)!;
+    const asset = validationRoster.assets.find(row => row.id === entry.placement_id && row.model.variantId === entry.variant_id);
+    if (!asset) return [];
     return [{ ...option, variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }] }];
   });
   options.splice(0, options.length, ...selected);

@@ -421,6 +421,7 @@
     "src/store/undoActions.ts",
     "src/store/undoRedo.ts",
     "src/types/index.ts",
+    "src/utils/browserPreferences.ts",
     "src/utils/coordTransform.ts",
     "src/utils/domEvents.ts",
     "src/utils/downloadDataImage.ts",

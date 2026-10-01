@@ -50,7 +50,12 @@ export default function App() {
 
   // On mount, check if we have a valid token and load user
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
+    let token: string | null = null;
+    try { token = localStorage.getItem('access_token'); } catch {
+      // Storage restrictions must still allow the public/sign-in pages to load.
+      setUser(null);
+      return;
+    }
     if (token) {
       // Safety timeout: if the API never responds, stop loading after 10s
       const safetyTimeout = setTimeout(() => setUser(null), 10000);

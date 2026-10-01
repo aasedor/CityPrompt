@@ -1,4 +1,5 @@
 import { nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
+import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
 import { canonicalParkAsset } from '@/features/pickPlace/canonicalParkPlacement';
 import { canonicalBuildingAsset } from '@/features/pickPlace/canonicalBuildingPlacement';
 import { canonicalStreetAsset } from '@/features/pickPlace/canonicalStreetPlacement';
@@ -381,7 +382,7 @@ export function ProjectViewPage() {
       initializedPlanVisibilityProjectRef.current = id;
       return;
     }
-    const stored = window.localStorage.getItem(planLayerStorageKey(id));
+    const stored = readBrowserPreference(planLayerStorageKey(id));
     const active = stored && grouped.has(stored)
       ? stored
       : [...grouped.entries()].sort(([, left], [, right]) => {
@@ -391,7 +392,7 @@ export function ProjectViewPage() {
         return newest(right) - newest(left);
       })[0][0];
     initializedPlanVisibilityProjectRef.current = id;
-    window.localStorage.setItem(planLayerStorageKey(id), active);
+    writeBrowserPreference(planLayerStorageKey(id), active);
     setHiddenLayers((previous) => {
       const next = new Set(previous);
       for (const layer of grouped.keys()) {
@@ -404,7 +405,7 @@ export function ProjectViewPage() {
 
   useEffect(() => {
     if (!id || initializedPlanVisibilityProjectRef.current !== id || visiblePlanLayers.length !== 1) return;
-    window.localStorage.setItem(planLayerStorageKey(id), visiblePlanLayers[0]);
+    writeBrowserPreference(planLayerStorageKey(id), visiblePlanLayers[0]);
   }, [id, visiblePlanLayers]);
 
   // Height-framework layers are reference overlays (LAP-style storey bands
@@ -440,8 +441,7 @@ export function ProjectViewPage() {
     const onSolo = (event: Event) => {
       const label = (event as CustomEvent<{ label?: string | null }>).detail?.label;
       if (id) {
-        if (label) window.localStorage.setItem(planLayerStorageKey(id), `${PLAN_LAYER_PREFIX}${label}`);
-        else window.localStorage.removeItem(planLayerStorageKey(id));
+        writeBrowserPreference(planLayerStorageKey(id), label ? `${PLAN_LAYER_PREFIX}${label}` : null);
       }
       setHiddenLayers((prev) => {
         const next = new Set([...prev].filter((n) => !isPlanLayer(n)));
