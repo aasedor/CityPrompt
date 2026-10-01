@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "model_sha256": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6",
+  "samples": 7828,
+  "max_step_m": 0.1500000000000008,
+  "max_surface_error_m": 1.907348643470641e-7,
+  "body_clearance_width_m": 0.44,
+  "results": [
+    {
+      "route": "Rim to lower garden and return",
+      "direction": "forward",
+      "end": [
+        -5,
+        11,
+        -4.5
+      ]
+    },
+    {
+      "route": "Rim to lower garden and return",
+      "direction": "reverse",
+      "end": [
+        0,
+        -34,
+        0
+      ]
+    },
+    {
+      "route": "Terrace 1.5 m loop",
+      "direction": "forward",
+      "end": [
+        0,
+        -20.7,
+        -1.5
+      ]
+    },
+    {
+      "route": "Terrace 1.5 m loop",
+      "direction": "reverse",
+      "end": [
+        0,
+        -20.7,
+        -1.5
+      ]
+    },
+    {
+      "route": "Terrace 3 m loop",
+      "direction": "forward",
+      "end": [
+        -0.010000000000018619,
+        -14.7,
+        -3.0000000000000004
+      ]
+    },
+    {
+      "route": "Terrace 3 m loop",
+      "direction": "reverse",
+      "end": [
+        0.010000000000018619,
+        -14.7,
+        -3
+      ]
+    }
+  ],
+  "failures": [],
+  "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+}

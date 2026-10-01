@@ -1,5 +1,6 @@
 import { readNativePark, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import { nativePavingProbe } from '@/features/parks/nativeParkAccess';
+import { parkWalkHeight, type ParkWalkingNetwork } from '@/features/parks/parkWalking';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import type { SiteZone } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
@@ -46,7 +47,8 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
         const local: [number,number] = [x*c + y*s, -x*s + y*c];
         if (Math.abs(local[0]) <= native.layout.widthM/2 && Math.abs(local[1]) <= native.layout.depthM/2) {
           try {
-            const height = nativePavingProbe(native.layout, true)(local);
+            const walking = (native.layout as typeof native.layout & { walking?: ParkWalkingNetwork }).walking;
+            const height = walking ? parkWalkHeight(walking, local[0], local[1]) : nativePavingProbe(native.layout, true)(local);
             if (height !== null) return level + height;
           } catch {
             // Loading/errors remain owned by NativeParkLayer and its capture guard.

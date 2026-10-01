@@ -318,6 +318,8 @@
     "src/features/parks/nativeParkRegistry.ts",
     "src/features/parks/nativeParkReservations.ts",
     "src/features/parks/nativeParkSurfaceDepth.ts",
+    "src/features/parks/nativeParkWalking.ts",
+    "src/features/parks/parkWalking.ts",
     "src/features/pickPlace/BrtStopControls.tsx",
     "src/features/pickPlace/BuildingDesignControls.tsx",
     "src/features/pickPlace/CanonicalCatalogueCard.tsx",
@@ -437,10 +439,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2801,
+    "explicitReferenceCount": 2807,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 4638,
-    "requiredLogicalBytes": 11544757955,
+    "requiredFileCount": 4644,
+    "requiredLogicalBytes": 11561008404,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -10816,6 +10818,15 @@
       "logicalBytes": 1283579
     },
     {
+      "url": "/archetypes/openspaces/cascade-water-garden/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1975036,
+      "lfsOid": "9867ddfe224b8ea86cea81a7a19b564243a31c20bf353e7e0fbef28bcdece87d"
+    },
+    {
       "url": "/archetypes/openspaces/cathedral-religious-forecourt/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -13865,6 +13876,15 @@
       "lfsOid": "a317637354ae8d8f6c9cfd0a702095c941a17e890636254bd784089443b1ab18"
     },
     {
+      "url": "/archetypes/openspaces/quarry-garden/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1995696,
+      "lfsOid": "33efe8066b59b1e238dbd4243a52ba187725e36cd236a47a2088d90581e0cbb4"
+    },
+    {
       "url": "/archetypes/openspaces/quarry-sunken-garden-park/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -14367,6 +14387,15 @@
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1038919
+    },
+    {
+      "url": "/archetypes/openspaces/spiral-lookout-park/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1735969,
+      "lfsOid": "e48803d31077234543581bef98315ff051e53e631bbca816a33097613e1cb956"
     },
     {
       "url": "/archetypes/openspaces/splash-pad-water-play/hero.png",
@@ -23639,6 +23668,14 @@
       "logicalBytes": 22524492
     },
     {
+      "url": "/native-park-assets/0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 3308656,
+      "lfsOid": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8"
+    },
+    {
       "url": "/native-park-assets/1991a23fdb78085178a14e145132115f1f223824bd551db7e025ed8319308372.png",
       "sources": [
         "src/data/classroomExpansion.json",
@@ -23685,6 +23722,14 @@
       ],
       "logicalBytes": 2595944,
       "lfsOid": "2eb802caefceb5e591a12ea7393ac84f79dfbf82cb471d152acae6d04b691179"
+    },
+    {
+      "url": "/native-park-assets/2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 2727328,
+      "lfsOid": "2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb"
     },
     {
       "url": "/native-park-assets/3222433e6a629bc5d3328901c96d270619623cb8b758ecda78cda57b5e6e9e6d.glb",
@@ -23916,6 +23961,14 @@
       ],
       "logicalBytes": 2610684,
       "lfsOid": "d4c6735bf653130f28ce81c87fcf228e31410e992b28a6ae8bf0b9263afbd477"
+    },
+    {
+      "url": "/native-park-assets/d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 4507764,
+      "lfsOid": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6"
     },
     {
       "url": "/native-park-assets/da289955236460873f401b7c8f4db85c5101a3670a8c56efe14176946cc7d1e2.glb",

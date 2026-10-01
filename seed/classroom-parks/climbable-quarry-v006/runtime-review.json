@@ -1,0 +1,126 @@
+{
+  "title": "Quarry Garden",
+  "variant": "student_quarry_garden_v1",
+  "layout": "student_quarry_garden_v1--native-v1",
+  "content_revision": "bae24fb0fc5fb032dfb74a8301789633b0d45f76a04da6971e4d9548eaf38312",
+  "model_sha256": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6",
+  "triangles": 745529,
+  "dimensions_m": [
+    60,
+    68
+  ],
+  "offline": {
+    "status": "PASS",
+    "model_sha256": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6",
+    "samples": 7828,
+    "max_step_m": 0.1500000000000008,
+    "max_surface_error_m": 1.907348643470641e-07,
+    "body_clearance_width_m": 0.44,
+    "results": [
+      {
+        "route": "Rim to lower garden and return",
+        "direction": "forward",
+        "end": [
+          -5,
+          11,
+          -4.5
+        ]
+      },
+      {
+        "route": "Rim to lower garden and return",
+        "direction": "reverse",
+        "end": [
+          0,
+          -34,
+          0
+        ]
+      },
+      {
+        "route": "Terrace 1.5 m loop",
+        "direction": "forward",
+        "end": [
+          0,
+          -20.7,
+          -1.5
+        ]
+      },
+      {
+        "route": "Terrace 1.5 m loop",
+        "direction": "reverse",
+        "end": [
+          0,
+          -20.7,
+          -1.5
+        ]
+      },
+      {
+        "route": "Terrace 3 m loop",
+        "direction": "forward",
+        "end": [
+          -0.010000000000018619,
+          -14.7,
+          -3.0000000000000004
+        ]
+      },
+      {
+        "route": "Terrace 3 m loop",
+        "direction": "reverse",
+        "end": [
+          0.010000000000018619,
+          -14.7,
+          -3
+        ]
+      }
+    ],
+    "failures": [],
+    "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+  },
+  "browser_walk": {
+    "distance": 0.19788898465589544,
+    "elapsedS": 31.60130000001192,
+    "index": 19,
+    "maxHeight": 1103.362898077914,
+    "minHeight": 1098.862898077914,
+    "model": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6",
+    "pose": {
+      "groundHeight": 1103.362898077914,
+      "heading": 185.4199198993308,
+      "lat": 51.017131098749566,
+      "lng": -114.1253194107738
+    },
+    "reason": "route traversed with keyboard input in both directions",
+    "samples": 790,
+    "status": "PASS",
+    "total": 20,
+    "variant": "student_quarry_garden_v1"
+  },
+  "saved_selection": {
+    "content_revision": "bae24fb0fc5fb032dfb74a8301789633b0d45f76a04da6971e4d9548eaf38312",
+    "frame": {
+      "latitude": 51.01743474791758,
+      "longitude": -114.12531950683169,
+      "yaw": 3.141592653589793
+    },
+    "layout_id": "student_quarry_garden_v1--native-v1"
+  },
+  "status": "PASS_LOCAL_PREPARED_SITE",
+  "browser_terrace_exits": {
+    "distance": 0.15758800560925135,
+    "elapsedS": 49.52290000003576,
+    "index": 19,
+    "maxHeight": 1103.362898077914,
+    "minHeight": 1100.362898077914,
+    "model": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6",
+    "pose": {
+      "groundHeight": 1103.362898077914,
+      "heading": 179.26991989930275,
+      "lat": 51.01713522185716,
+      "lng": -114.12531973735436
+    },
+    "reason": "route traversed with keyboard input in both directions",
+    "samples": 1238,
+    "status": "PASS",
+    "total": 20,
+    "variant": "student_quarry_garden_v1"
+  }
+}

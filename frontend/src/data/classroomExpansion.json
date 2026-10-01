@@ -479,6 +479,42 @@
       "asset_review": "agent_native_visual_and_geometry_pass",
       "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Spiral Lookout Park",
+      "archetype_id": "student_spiral_lookout",
+      "variant_id": "student_spiral_lookout_v1",
+      "version": "climbable-spiral-v003",
+      "placement_id": "native-park:student_spiral_lookout_v1--native-v1",
+      "sha256": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Quarry Garden",
+      "archetype_id": "student_quarry_garden",
+      "variant_id": "student_quarry_garden_v1",
+      "version": "climbable-quarry-v006",
+      "placement_id": "native-park:student_quarry_garden_v1--native-v1",
+      "sha256": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Cascade Water Garden",
+      "archetype_id": "student_cascade_water_garden",
+      "variant_id": "student_cascade_water_garden_v1",
+      "version": "climbable-cascade-v004",
+      "placement_id": "native-park:student_cascade_water_garden_v1--native-v1",
+      "sha256": "2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
     }
   ],
   "assets": [
@@ -1960,6 +1996,102 @@
         "green_space_archetype_id": "nature_play_area",
         "green_space_selected_variant_id": "student_forest_adventure_v1",
         "green_space_native_layout_id": "student_forest_adventure_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_spiral_lookout_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Spiral Lookout Park",
+      "description": "Climb a continuous spiral promenade to a landscaped lookout. Follow the same generous path back down or return to the entrance.",
+      "thumbnail": "/archetypes/openspaces/spiral-lookout-park/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 64.0,
+      "depth": 68.1,
+      "minWidth": 64.0,
+      "minDepth": 68.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_spiral_lookout_v1",
+        "revision": "ba9ecbaafe0f56dd5206faa936951504675f05b4d5640adc25ca5d5aa98c773b",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_spiral_lookout",
+        "green_space_selected_variant_id": "student_spiral_lookout_v1",
+        "green_space_native_layout_id": "student_spiral_lookout_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_quarry_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Quarry Garden",
+      "description": "Descend three stone stair flights into a planted quarry garden. Connected terraces, a reflecting pool and a return-to-entrance control.",
+      "thumbnail": "/archetypes/openspaces/quarry-garden/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 60.1,
+      "depth": 68.1,
+      "minWidth": 60.1,
+      "minDepth": 68.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_quarry_garden_v1",
+        "revision": "bae24fb0fc5fb032dfb74a8301789633b0d45f76a04da6971e4d9548eaf38312",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_quarry_garden",
+        "green_space_selected_variant_id": "student_quarry_garden_v1",
+        "green_space_native_layout_id": "student_quarry_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_cascade_water_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Cascade Water Garden",
+      "description": "Walk up either side of three cascading pools, cross the upper garden and descend the opposite stairway.",
+      "thumbnail": "/archetypes/openspaces/cascade-water-garden/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 54.0,
+      "depth": 68.1,
+      "minWidth": 54.0,
+      "minDepth": 68.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_cascade_water_garden_v1",
+        "revision": "6b0f4391a5dfad1e21c0e1ca0a53dcd36fc609cf9eb541ac354f09e2ebd3ac4c",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_cascade_water_garden",
+        "green_space_selected_variant_id": "student_cascade_water_garden_v1",
+        "green_space_native_layout_id": "student_cascade_water_garden_v1--native-v1",
         "pick_place_automatic_3d": true
       }
     }

@@ -97,6 +97,7 @@ import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
+import { constrainNativeParkWalk, nativeParkWalkEntry, nativeParkWalkEntrance } from '@/features/parks/nativeParkWalking';
 import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
@@ -1598,6 +1599,7 @@ export function GlobeSitePlannerMap({
   const [walkMode, setWalkMode] = useState<'pick' | 'active' | null>(null);
   const [walkPickError, setWalkPickError] = useState('');
   const walkPoseRef = useRef<WalkPose | null>(null);
+  const [walkHasParkEntrance, setWalkHasParkEntrance] = useState(false);
   const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
   const interactionPaused = externalInteractionPaused || Boolean(entrancePick) || walkMode !== null;
@@ -2282,6 +2284,7 @@ export function GlobeSitePlannerMap({
     const groundHeight = authoredCameraGround(terrainZonesRef.current, next.lng, next.lat, next.groundHeight);
     const pose = { ...next, groundHeight };
     walkPoseRef.current = pose;
+    setWalkHasParkEntrance(Boolean(nativeParkWalkEntrance(terrainZonesRef.current, pose)));
     const lat = pose.lat * DEG_TO_RAD;
     const lng = pose.lng * DEG_TO_RAD;
     const surface = new THREE.Vector3();
@@ -2347,7 +2350,7 @@ export function GlobeSitePlannerMap({
     if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
     if (globeControlsRef.current) globeControlsRef.current.enabled = false;
     markUserInteracted();
-    applyWalkPose({ lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading });
+    applyWalkPose(nativeParkWalkEntry(terrainZonesRef.current, { lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading }));
     setWalkMode('active');
   }, [applyWalkPose, markUserInteracted]);
 
@@ -2373,7 +2376,7 @@ export function GlobeSitePlannerMap({
         if (next !== current) {
           // A building zone is a planning plot, not a solid collision mesh.
           // It can contain open courts, arcades and paved passages.
-          applyWalkPose(next);
+          applyWalkPose(constrainNativeParkWalk(terrainZonesRef.current, current, next));
         }
       }
       lastTime = time;
@@ -3482,6 +3485,7 @@ export function GlobeSitePlannerMap({
       Object.assign(dbg as object, {
         canvas,
         camera,
+        walkPose: () => walkPoseRef.current ? { ...walkPoseRef.current } : null,
         terrainHeight: terrainElevation,
         isSceneSettled,
         waitForTilesSettled: waitForCurrentTiles,
@@ -4611,6 +4615,12 @@ export function GlobeSitePlannerMap({
           onPointerCancel={() => { walkPointerRef.current = null; }} />
         <div className="absolute bottom-20 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-xl border border-slate-950 bg-white/95 p-2 text-xs font-semibold text-slate-950 shadow-xl">
           <span className="px-2">WASD move · Drag to turn · Shift faster · Esc exit</span>
+          {walkHasParkEntrance &&
+            <button type="button" onClick={() => {
+              const pose = walkPoseRef.current;
+              const entrance = pose && nativeParkWalkEntrance(terrainZonesRef.current, pose);
+              if (entrance) applyWalkPose(entrance);
+            }} className="min-h-11 rounded-lg border border-slate-700 px-3">Return to park entrance</button>}
           <button type="button" onClick={renderWalkView} className="min-h-11 rounded-lg bg-lime-300 px-3 font-bold">Street view render…</button>
           <button type="button" onClick={leaveWalk} className="min-h-11 rounded-lg border border-slate-700 px-3">Exit walk</button>
         </div>

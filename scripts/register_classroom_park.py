@@ -73,6 +73,8 @@ def register(package, *, specs=None, thumbnail_name='renders/aerial.png'):
                  url=f'/native-park-assets/{digest(model)}.glb')
     thumbnail = dict(sha256=digest(image), archivePath=f'seed/classroom-parks/{key}/preview.png',
                      url=f'/native-park-assets/{digest(image)}.png')
+    if spec.get('thumbnail_slug'):
+        thumbnail['url'] = f"/archetypes/openspaces/{spec['thumbnail_slug']}/variant_0.png"
     w, d = recipe['dimensions_m']
     lo, hi = recipe['bounds_m']
     ow = math.ceil(max(w, 2 * max(abs(lo[0]), abs(hi[0]))) * 10) / 10
@@ -87,6 +89,12 @@ def register(package, *, specs=None, thumbnail_name='renders/aerial.png'):
                   entrances=[spec['entrance']],
                   surfacePalette={'grass': [.21,.28,.105], 'paving': [.53,.50,.43]},
                   status='pilot', visualStatus='agent_native_visual_review_pass', runtimeStatus='not_tested')
+    if 'walking' in recipe:
+        walking_report = json.loads((package / 'walking-verification.json').read_text())
+        if walking_report.get('status') != 'PASS' or walking_report.get('model_sha256') != asset['sha256']:
+            raise ValueError('New walking surfaces require exact-model route verification.')
+        layout['walking'] = recipe['walking']
+        layout['walkSurfaceMaterials'] = ['walk_surface']
     geometry = {k:v for k,v in layout.items() if k not in ('status','visualStatus','runtimeStatus','contentRevision')}
     layout['contentRevision'] = digest(json.dumps(geometry, sort_keys=True, separators=(',', ':')).encode())
     registry_path = ROOT / 'frontend/src/data/nativeParks.json'
