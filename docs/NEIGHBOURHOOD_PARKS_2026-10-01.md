@@ -2,7 +2,8 @@
 
 Two exact-reference native assemblies extend the local validation catalogue.
 Both passed independent source, geometry and visual review. Publication and
-human activation remain pending; registration is not a classroom runtime pass.
+human activation remain pending. Both also pass the local prepared-site runtime
+matrix described below.
 
 | Asset | Reviewed version | Native plot | Triangles |
 | --- | --- | --- | --- |
@@ -40,7 +41,20 @@ certification are outside this asset review.
 - Frontend native park and asset registry tests: 24 passed.
 - Backend native park tests: 39 passed.
 - Independent visual review: both pass, zero P0 and zero P1 findings.
-- Runtime placement/edit/reopen matrix: pending the combined local scene.
+- Local runtime: catalogue search/card selection, placement, moving, parcel
+  resize/rotation, undo/redo and reload passed for both parks. Allotment saved
+  at 48 × 56 m / 12 degrees; nature play at 42 × 54 m / 8 degrees.
+- Complete assembly world scale remains 1:1 in all axes. Authored component
+  scales are preserved. All 473 allotment and 662 nature-play meshes are visible.
+- The prepared-site scene settles with no grounding issues and no browser
+  errors. Exact assembly SHA-256 and content revisions survive reload.
+- An undersized rotated allotment parcel was correctly rejected without
+  changing the saved garden. Native layout geometry must fit inside the parcel.
+- Runtime evidence: `parks-runtime-final.json`, `nature-runtime-framed.png`
+  and browser screenshots in the external evidence root. The disposable
+  project is `888a5b24-0ec2-4458-915d-757b6395d495` on localhost:5185.
+- Public street connections, paid render generation and public deployment
+  were not exercised. This is a static concept-model and local runtime pass.
 - No public deployment, push or paid image generation.
 
 Public files staged for the dev server are generated copies; only the

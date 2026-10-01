@@ -465,7 +465,7 @@
       "placement_id": "native-park:student_community_allotment_v1--native-v1",
       "sha256": "02ce66e57b40653d578aa41389040b9925d1f0c38944a87807176882b3388b6f",
       "asset_review": "agent_native_visual_and_geometry_pass",
-      "runtime_status": "NOT TESTED",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "completed": false
     },
     {
@@ -477,7 +477,7 @@
       "placement_id": "native-park:student_forest_adventure_v1--native-v1",
       "sha256": "5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327",
       "asset_review": "agent_native_visual_and_geometry_pass",
-      "runtime_status": "NOT TESTED",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "completed": false
     }
   ],
