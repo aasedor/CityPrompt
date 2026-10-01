@@ -455,6 +455,30 @@
       "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
       "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Community Allotment Garden",
+      "archetype_id": "community_garden_enhanced",
+      "variant_id": "student_community_allotment_v1",
+      "version": "neighbourhood-allotment-v006",
+      "placement_id": "native-park:student_community_allotment_v1--native-v1",
+      "sha256": "02ce66e57b40653d578aa41389040b9925d1f0c38944a87807176882b3388b6f",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Forest Adventure Nature Play",
+      "archetype_id": "nature_play_area",
+      "variant_id": "student_forest_adventure_v1",
+      "version": "neighbourhood-nature-v006",
+      "placement_id": "native-park:student_forest_adventure_v1--native-v1",
+      "sha256": "5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -1873,6 +1897,70 @@
         "floors": 6,
         "floor_count": 6,
         "native_plot_axes": true
+      }
+    },
+    {
+      "id": "native-park:student_community_allotment_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Community Allotment Garden",
+      "description": "Four productive garden rooms, eight coloured sheds, trellises and a shared orchard.",
+      "thumbnail": "/native-park-assets/2356bc5f9178f600cbf512ddafda7e740c5a172adee6f1282caf171034a42ee9.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 36.0,
+      "depth": 46.0,
+      "minWidth": 36.0,
+      "minDepth": 46.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_community_allotment_v1",
+        "revision": "6b9d56fcc2d84088633503e9cc219ccef60fe79349b4fbc8d2138ce5d345af5a",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "community_garden_enhanced",
+        "green_space_selected_variant_id": "student_community_allotment_v1",
+        "green_space_native_layout_id": "student_community_allotment_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_forest_adventure_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Forest Adventure Nature Play",
+      "description": "Woodland stream, flat stepping stones, log crossings, tree deck and leafy willow tunnel.",
+      "thumbnail": "/native-park-assets/59fe473e5c81769c0bbae532851d162a335f0522c887f70183b3de3301f70212.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 34.0,
+      "depth": 46.0,
+      "minWidth": 34.0,
+      "minDepth": 46.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_forest_adventure_v1",
+        "revision": "84ce02e0cba75ce3faf810e571048d39141a14462184b112e87a144f63de86dd",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "nature_play_area",
+        "green_space_selected_variant_id": "student_forest_adventure_v1",
+        "green_space_native_layout_id": "student_forest_adventure_v1--native-v1",
+        "pick_place_automatic_3d": true
       }
     }
   ]

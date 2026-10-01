@@ -3346,6 +3346,276 @@
       "visualStatus": "agent_native_visual_review_pass",
       "runtimeStatus": "not_tested",
       "contentRevision": "2e4db53b86fef7e6451cbfcb77b8b169f4b788fe0e53a974e259ad7b84e54f0c"
+    },
+    {
+      "id": "student_community_allotment_v1--native-v1",
+      "archetypeId": "community_garden_enhanced",
+      "variantId": "student_community_allotment_v1",
+      "title": "Community Allotment Garden",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 36,
+      "depthM": 46,
+      "occupiedWidthM": 36.0,
+      "occupiedDepthM": 46.0,
+      "measuredBoundsM": [
+        [
+          -18.0,
+          -23.0,
+          -0.11999999731779099
+        ],
+        [
+          18.0,
+          23.0,
+          4.2785210609436035
+        ]
+      ],
+      "sourceRecipeSha256": "d5e1f8782ec83e9b1004440f69b77a7e85b5310734c96ff3b349224a04fb8d57",
+      "sourceRecipePath": "seed/classroom-parks/neighbourhood-allotment-v006/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "02ce66e57b40653d578aa41389040b9925d1f0c38944a87807176882b3388b6f",
+          "archivePath": "seed/classroom-parks/neighbourhood-allotment-v006/assembly-preview.glb",
+          "url": "/native-park-assets/02ce66e57b40653d578aa41389040b9925d1f0c38944a87807176882b3388b6f.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "2356bc5f9178f600cbf512ddafda7e740c5a172adee6f1282caf171034a42ee9",
+        "archivePath": "seed/classroom-parks/neighbourhood-allotment-v006/preview.png",
+        "url": "/native-park-assets/2356bc5f9178f600cbf512ddafda7e740c5a172adee6f1282caf171034a42ee9.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -23
+          ],
+          "b": [
+            0,
+            22
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -15,
+            8
+          ],
+          "b": [
+            15,
+            8
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -23,
+          "widthM": 3.2,
+          "arrivalY": -20
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "6b9d56fcc2d84088633503e9cc219ccef60fe79349b4fbc8d2138ce5d345af5a"
+    },
+    {
+      "id": "student_forest_adventure_v1--native-v1",
+      "archetypeId": "nature_play_area",
+      "variantId": "student_forest_adventure_v1",
+      "title": "Forest Adventure Nature Play",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 34,
+      "depthM": 46,
+      "occupiedWidthM": 34.0,
+      "occupiedDepthM": 46.0,
+      "measuredBoundsM": [
+        [
+          -17.0,
+          -23.0,
+          -0.22018963098526
+        ],
+        [
+          17.0,
+          23.0,
+          10.079055786132812
+        ]
+      ],
+      "sourceRecipeSha256": "304b09dccf1ed9572b6812087aea049e62d335cd451129da0cfbcae0a7e8dec8",
+      "sourceRecipePath": "seed/classroom-parks/neighbourhood-nature-v006/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327",
+          "archivePath": "seed/classroom-parks/neighbourhood-nature-v006/assembly-preview.glb",
+          "url": "/native-park-assets/5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "59fe473e5c81769c0bbae532851d162a335f0522c887f70183b3de3301f70212",
+        "archivePath": "seed/classroom-parks/neighbourhood-nature-v006/preview.png",
+        "url": "/native-park-assets/59fe473e5c81769c0bbae532851d162a335f0522c887f70183b3de3301f70212.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -23
+          ],
+          "b": [
+            0,
+            -21.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            -21.5
+          ],
+          "b": [
+            5,
+            -20
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            5,
+            -20
+          ],
+          "b": [
+            10,
+            -18
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            10,
+            -18
+          ],
+          "b": [
+            10.5,
+            -10
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            10.5,
+            -10
+          ],
+          "b": [
+            10.8,
+            -2
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            10.8,
+            -2
+          ],
+          "b": [
+            10.6,
+            8
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            10.6,
+            8
+          ],
+          "b": [
+            9.3,
+            17
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            9.3,
+            17
+          ],
+          "b": [
+            5,
+            20
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            5,
+            20
+          ],
+          "b": [
+            0,
+            21.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            0,
+            21.5
+          ],
+          "b": [
+            0,
+            23
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -23,
+          "widthM": 2.6,
+          "arrivalY": -20.5
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "84ce02e0cba75ce3faf810e571048d39141a14462184b112e87a144f63de86dd"
     }
   ]
 }

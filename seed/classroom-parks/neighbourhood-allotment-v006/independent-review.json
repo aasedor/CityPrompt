@@ -1,0 +1,121 @@
+{
+  "candidate": "allotment-v006",
+  "reviewer": "independent_review",
+  "date": "2026-10-01",
+  "scope": "Holistic source-specific native clay park visual review of complete supplied evidence, compared at aerial and pedestrian scale against conservatory-v013",
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "decision": "offline_native_visual_pass",
+  "model_sha256": "02ce66e57b40653d578aa41389040b9925d1f0c38944a87807176882b3388b6f",
+  "native_park_visual_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "path": "variant_0.png",
+      "sha256": "2356bc5f9178f600cbf512ddafda7e740c5a172adee6f1282caf171034a42ee9",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "variant_0_angle_60.jpg",
+      "sha256": "cd8262b5f6015848fc02b19bfefdaef9718c1918d7226c6cd4ab80b9056d5215",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "variant_0_angle_90.jpg",
+      "sha256": "974f389b0b4ce322c9237e2072d5a77c5caed38be7d359e99b20d8483cddbba3",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "aa5457d2d1c6cfce3966714c73af9c43ba5b54732250b8001f2efccc4bce4835",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "69b606cc0b5dea2457a1998328389632031afc2574a360e70a7d5806bf009e24",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "renders/plot_walk.png",
+      "sha256": "e34040dad23482f51128ad55268fecd062f6aaa770e08eece4bff0c0c8b8b17d",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "f3bc88af2dd1a2e23af74b8a0af8b6c01bfb54a4c8c082ea874aa4fec0f159a1",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "b908a4dd35ad9d1279cdec50ee901f2c25c0210273a62c7932bfa40b7956afe8",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "aa52a8d8ab6674576db0192075f7d874d6cdc4b244b842d7edf69e51c11043a0",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "boards/phone-front.png",
+      "sha256": "7434a96791d4762e9eaa5a21c1a3f21d15117da78167824c5fb29472a90aa80f",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "boards/phone-oblique.png",
+      "sha256": "13982d20d3cce6aa540a7be09795f5f7df7fc13499565718e5e70f751edeeee5",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    },
+    {
+      "path": "boards/phone-top.png",
+      "sha256": "7fbc9eb982579ceb43203192a7640919bf41a3732c396347b53bf4cb793963eb",
+      "inspection": "direct full-resolution inspection; sources byte-matched to previously inspected lock"
+    }
+  ],
+  "benchmark_inspected": [
+    {
+      "path": "C:/dev-artifacts/CityPrompt/showcase-six-2026-09-24/parks/conservatory-v013/renders/aerial.png",
+      "sha256": "054a72160158536e9ab69dc51dfee07650297a3e8e59f69a9a73aaa573f562a8"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/showcase-six-2026-09-24/parks/conservatory-v013/renders/garden_gate.png",
+      "sha256": "49d7d55cc272690043e230dd6760006a650231224ae35a3326f02a81601971b5"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/showcase-six-2026-09-24/parks/conservatory-v013/renders/glass_detail.png",
+      "sha256": "dd61f6fad82e6c5e39baab31345b30dbc31ada1d70b4bdc94dfe312b995017aa"
+    }
+  ],
+  "blockers": [],
+  "pixel_findings": [
+    "The exact allotment identity remains legible: straight shared route, individually fenced garden plots, coloured timber sheds, planted crop beds and rear orchard lawns.",
+    "Eight mixed beds now combine low rosettes, narrow upright crop leaves and supported vines; walking and detail views show distinct plant heights and silhouettes instead of identical dome canopies.",
+    "Planting remains inside beds and plots; crop supports contact soil and do not intrude into central or plot-entry routes.",
+    "Sheds, benches, trellises, fence posts, beds and hedge foliage are grounded and coherent in the native clay material tier.",
+    "Both end openings remain unobstructed through fence and hedge; plot entrances remain visible and reachable.",
+    "Stone path edges, shed pavers, soil beds and gravel marks provide readable ground ownership and pedestrian detail.",
+    "Whole-scene views retain complete boundary and safety margin. Phone comparisons preserve source programme at site scale.",
+    "Conservatory benchmark comparison supports the composed-plan and pedestrian-finish native clay gate: authored crop programme, readable routes, detailed borders and complete grounded geometry. This is not a claim of photographic equivalence."
+  ],
+  "previous_blockers_closed": [
+    "v004 crop spikes",
+    "v004 bare box hedge sides",
+    "v004 uniform ground ownership",
+    "v004 rear hedge route obstruction",
+    "v005 repeated single-species bed composition"
+  ],
+  "p2_followups": [
+    "Additional botanical species and less regular maturation could enrich future garden versions without changing this usable native programme.",
+    "A future phone-front board could pair the reference with walk.png for a closer pedestrian camera match; current walk and plot_walk files were directly reviewed."
+  ],
+  "limitations": [
+    "Native clay geometric/material tier; no photoreal texture or botanical simulation approval.",
+    "No browser, terrain, fit, resizing, editing, persistence, capture or runtime performance claim.",
+    "No human visual activation or publication approval."
+  ],
+  "runtime_approved": false,
+  "user_approved": false,
+  "publication_approved": false,
+  "scale_up_cleared": true,
+  "scale_up_scope": "Visual pilot supports one bounded next park candidate; every new candidate requires its own review."
+}
