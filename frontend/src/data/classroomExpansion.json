@@ -453,7 +453,7 @@
       "placement_id": "clay_parisian_corner_cafe_culture",
       "sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
       "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
-      "runtime_status": "NOT TESTED",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "completed": false
     }
   ],

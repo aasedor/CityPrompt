@@ -28,7 +28,67 @@
       },
       "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "local_storage_hash_verified": true,
-      "evidence_directory": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\library-v003"
+      "evidence_directory": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\library-v003",
+      "runtime": {
+        "coordinates": [
+          [
+            -114.12087455246576,
+            51.01828944103143
+          ],
+          [
+            -114.1202124676812,
+            51.01840104105087
+          ],
+          [
+            -114.12037139306835,
+            51.018774152895375
+          ],
+          [
+            -114.12103347785292,
+            51.01866255287593
+          ]
+        ],
+        "dimensions": {
+          "center": [
+            -114.12062297276704,
+            51.0185317969634
+          ],
+          "degrees": 14.999997630182133,
+          "depth": 43.00000047623516,
+          "width": 48.00000740790491
+        },
+        "id": "9a958263-a4aa-4f70-abaf-b56ba52a0f60",
+        "properties": {
+          "_client_request_hash": "1343337990fe237e1ac72840513f18beaff4856c5c20cacff257bf9fd448369d",
+          "_client_request_id": "ac5280e1-fcef-4da6-8ad7-25fc06869102",
+          "_lego_actual_footprint_profile": "rectangle",
+          "_lego_catalog_fingerprint": "699263761eb2f038153745e60a363595ffd903390de3ad2f1314fc67752e5c89",
+          "_lego_runtime_selection_id": "mass_timber_biophilic_barn",
+          "building_archetype_id": "university_library",
+          "community_3d": {
+            "compiled_at": "2026-10-01T15:10:07.034635+00:00",
+            "generator": "lego_assembly",
+            "kind": "building",
+            "representation_hash": "1fd80e60f8ba18f3d992a0531c2deb3345bd7d1e97e5486207df4ff3261bf0b9",
+            "schema_version": 1,
+            "source_hash": "6a916d6c05f210ec0db3d178da0d4217b3659b320675dff1569aec6e4cbacc81",
+            "state": "compiled"
+          },
+          "development_archetype_id": "university_library",
+          "development_archetype_label": "Mass-timber Library",
+          "development_selected_variant_id": "mass_timber_biophilic_barn",
+          "floor_count": 2,
+          "floors": 2,
+          "native_plot_axes": true,
+          "pick_place_asset": "clay_mass_timber_biophilic_barn",
+          "pick_place_definition_version": 1,
+          "pick_place_model_revision": "neighbourhood-library-clay-v003",
+          "target_d_m": 43,
+          "target_w_m": 48,
+          "terrain_elevation_m": 1098.5357256219722
+        },
+        "type": "building"
+      }
     },
     {
       "candidate": "neighbourhood-corner-cafe-clay-v010",
@@ -52,9 +112,109 @@
         "p0": 0,
         "p1": 0
       },
-      "runtime_status": "PENDING",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "local_storage_hash_verified": true,
-      "evidence_directory": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\cafe-v010"
+      "evidence_directory": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\cafe-v010",
+      "runtime": {
+        "coordinates": [
+          [
+            -114.11957246519027,
+            51.01783685637534
+          ],
+          [
+            -114.11882993388896,
+            51.01784040798474
+          ],
+          [
+            -114.11883557965464,
+            51.0183075162918
+          ],
+          [
+            -114.11957811095591,
+            51.0183039646824
+          ]
+        ],
+        "dimensions": {
+          "center": [
+            -114.11920402242244,
+            51.01807218633357
+          ],
+          "degrees": 0.4356343406854234,
+          "depth": 51.9999997803377,
+          "width": 51.999971319195865
+        },
+        "id": "dd4cd829-213c-4f96-82e9-859a7e75d5a6",
+        "properties": {
+          "_client_request_hash": "701acef34f28e4f929d74ab1f49cd0a81fc8159d64034825daa6536a85880220",
+          "_client_request_id": "b1c681f6-c83b-429c-bfbf-58674fd05175",
+          "_lego_actual_footprint_profile": "rectangle",
+          "_lego_catalog_fingerprint": "699263761eb2f038153745e60a363595ffd903390de3ad2f1314fc67752e5c89",
+          "_lego_runtime_selection_id": "parisian_corner_cafe_culture",
+          "building_archetype_id": "parisian_boulevard_corner",
+          "community_3d": {
+            "compiled_at": "2026-10-01T15:10:07.034635+00:00",
+            "generator": "lego_assembly",
+            "kind": "building",
+            "representation_hash": "0ef7dc57861576e883f870823a8b4f5b90cf38acb4b1d2fec63e1552df091838",
+            "schema_version": 1,
+            "source_hash": "f6d0434233dcc23d068ed1b1ad022cf0cacdc5d65c86593d894e58c2b76f0403",
+            "state": "compiled"
+          },
+          "development_archetype_id": "parisian_boulevard_corner",
+          "development_archetype_label": "Corner Café & Apartments",
+          "development_selected_variant_id": "parisian_corner_cafe_culture",
+          "floor_count": 6,
+          "floors": 6,
+          "native_plot_axes": true,
+          "pedestrian_building_entrance": {
+            "automatic": true,
+            "fixedNative": true,
+            "heightAboveBaseM": 0,
+            "referenceDepthM": 48,
+            "referenceWidthM": 49,
+            "scaleWithPlot": false,
+            "sourceRevision": "neighbourhood-corner-cafe-clay-v010",
+            "sourceVariantId": "parisian_corner_cafe_culture",
+            "streetId": "",
+            "version": 1,
+            "widthM": 2.4,
+            "xM": -1.976301193,
+            "yM": -19.448032379
+          },
+          "pick_place_asset": "clay_parisian_corner_cafe_culture",
+          "pick_place_definition_version": 1,
+          "pick_place_model_revision": "neighbourhood-corner-cafe-clay-v010",
+          "target_d_m": 52,
+          "target_w_m": 52,
+          "terrain_elevation_m": 1094.591515764471
+        },
+        "type": "building"
+      }
     }
-  ]
+  ],
+  "scene_settled": true,
+  "grounding_issues": [],
+  "browser_errors": [],
+  "evidence_file": "combined-runtime-final.json",
+  "checks": [
+    "catalogue_search",
+    "placement",
+    "parcel_resize_rotation",
+    "move",
+    "undo_redo",
+    "reload",
+    "exact_variant_revision",
+    "native_world_scale"
+  ],
+  "limitations": [
+    "prepared_level_site",
+    "static_concept_models",
+    "public_street_connections_not_exercised",
+    "paid_render_not_exercised"
+  ],
+  "validation": {
+    "focused_frontend_tests": 35,
+    "building_typecheck": "PASS",
+    "legacy_reviewed_entrance_fixture": "baseline missing beltline asset"
+  }
 }
