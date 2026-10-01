@@ -801,6 +801,46 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 6,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "clay_station_victorian_iron_glass",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Victorian Grand Station",
+    "description": "Victorian iron-and-glass train hall, ticket booths, café, platforms and two walkable gallery stairs.",
+    "thumbnail": "/archetypes/buildings/historic_grand_station/variant_1.png",
+    "model": {
+      "variantId": "station_victorian_iron_glass",
+      "revision": "victorian-station-interior-clay-v007",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "infrastructure",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 64.0,
+    "depth": 100.0,
+    "minWidth": 64.0,
+    "minDepth": 100.0,
+    "maxSize": 140.0,
+    "nativeDimensions": [
+      60.0,
+      96.0,
+      32.560001373291016
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "historic_grand_station",
+      "development_archetype_id": "historic_grand_station",
+      "development_selected_variant_id": "station_victorian_iron_glass",
+      "development_archetype_label": "Victorian Grand Station",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
   }
 ];
 

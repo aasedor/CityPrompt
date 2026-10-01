@@ -98,6 +98,7 @@ import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
 import { constrainNativeParkWalk, nativeParkWalkEntry, nativeParkWalkEntrance } from '@/features/parks/nativeParkWalking';
+import { buildingWalkEntry, buildingWalkEntrance, constrainBuildingWalk } from '@/features/legoAssembly/buildingWalking';
 import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
@@ -1600,6 +1601,7 @@ export function GlobeSitePlannerMap({
   const [walkPickError, setWalkPickError] = useState('');
   const walkPoseRef = useRef<WalkPose | null>(null);
   const [walkHasParkEntrance, setWalkHasParkEntrance] = useState(false);
+  const [walkHasBuildingEntrance, setWalkHasBuildingEntrance] = useState(false);
   const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
   const interactionPaused = externalInteractionPaused || Boolean(entrancePick) || walkMode !== null;
@@ -2285,6 +2287,7 @@ export function GlobeSitePlannerMap({
     const pose = { ...next, groundHeight };
     walkPoseRef.current = pose;
     setWalkHasParkEntrance(Boolean(nativeParkWalkEntrance(terrainZonesRef.current, pose)));
+    setWalkHasBuildingEntrance(Boolean(buildingWalkEntrance(terrainZonesRef.current, pose)));
     const lat = pose.lat * DEG_TO_RAD;
     const lng = pose.lng * DEG_TO_RAD;
     const surface = new THREE.Vector3();
@@ -2329,7 +2332,8 @@ export function GlobeSitePlannerMap({
       ? raycastObjectFilteredTerrainHeightAtLngLat(hit.lngLat[0], hit.lngLat[1], tiles, new THREE.Raycaster(), hit.height)
       : hit.height;
     const expectedGround = authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], sampledGround ?? hit.height, hit.height);
-    if (hit.height > expectedGround + 3) {
+    const buildingEntrance = buildingWalkEntrance(terrainZonesRef.current, { lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading: 0 });
+    if (!buildingEntrance && hit.height > expectedGround + 3) {
       setWalkPickError('That point is above the ground. Choose a sidewalk, path, or open lawn.');
       return;
     }
@@ -2350,7 +2354,7 @@ export function GlobeSitePlannerMap({
     if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
     if (globeControlsRef.current) globeControlsRef.current.enabled = false;
     markUserInteracted();
-    applyWalkPose(nativeParkWalkEntry(terrainZonesRef.current, { lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading }));
+    applyWalkPose(buildingWalkEntry(terrainZonesRef.current, nativeParkWalkEntry(terrainZonesRef.current, { lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading })));
     setWalkMode('active');
   }, [applyWalkPose, markUserInteracted]);
 
@@ -2376,7 +2380,7 @@ export function GlobeSitePlannerMap({
         if (next !== current) {
           // A building zone is a planning plot, not a solid collision mesh.
           // It can contain open courts, arcades and paved passages.
-          applyWalkPose(constrainNativeParkWalk(terrainZonesRef.current, current, next));
+          applyWalkPose(constrainBuildingWalk(terrainZonesRef.current, current, constrainNativeParkWalk(terrainZonesRef.current, current, next)));
         }
       }
       lastTime = time;
@@ -4621,6 +4625,12 @@ export function GlobeSitePlannerMap({
               const entrance = pose && nativeParkWalkEntrance(terrainZonesRef.current, pose);
               if (entrance) applyWalkPose(entrance);
             }} className="min-h-11 rounded-lg border border-slate-700 px-3">Return to park entrance</button>}
+          {walkHasBuildingEntrance &&
+            <button type="button" onClick={() => {
+              const pose = walkPoseRef.current;
+              const entrance = pose && buildingWalkEntrance(terrainZonesRef.current, pose);
+              if (entrance) applyWalkPose(entrance);
+            }} className="min-h-11 rounded-lg border border-slate-700 px-3">Return to building entrance</button>}
           <button type="button" onClick={renderWalkView} className="min-h-11 rounded-lg bg-lime-300 px-3 font-bold">Street view render…</button>
           <button type="button" onClick={leaveWalk} className="min-h-11 rounded-lg border border-slate-700 px-3">Exit walk</button>
         </div>

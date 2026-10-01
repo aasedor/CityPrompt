@@ -1638,6 +1638,76 @@
         "unresolved_p0": 0,
         "unresolved_p1": 0
       }
+    },
+    {
+      "candidate": "victorian-station-interior-clay-v007",
+      "family": "rlasm-clay-station-victorian-iron-glass",
+      "archetype_id": "historic_grand_station",
+      "variant_id": "station_victorian_iron_glass",
+      "archetype_label": "Historic Grand Station",
+      "variant_label": "Victorian Grand Station",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 60,
+        "depth": 96,
+        "height": 33
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1.png",
+          "bytes": 1345064,
+          "sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1_angle_60.jpg",
+          "bytes": 967228,
+          "sha256": "995b11e41e157ce95cce34c91a9b23b633f4f7058efad6c7a59d16d06e42c784"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1_angle_90.jpg",
+          "bytes": 944707,
+          "sha256": "a31e8f92c8c0d20881a765642e489bd782238880a8fbe9c8bdf75739dcd7608e"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\station-interior-2026-10-01\\v007",
+      "picker": {
+        "id": "clay_station_victorian_iron_glass",
+        "description": "Victorian iron-and-glass train hall, ticket booths, café, platforms and two walkable gallery stairs.",
+        "group_id": "infrastructure",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 64,
+        "depth": 100,
+        "max_size": 140
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/victorian-station-interior-clay-v007.glb",
+        "bytes": 12906244,
+        "sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+        "native_dimensions_m": {
+          "width": 60.0,
+          "height": 32.560001373291016,
+          "depth": 96.0
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/victorian-station-interior-clay-v007.json",
+        "sha256": "e0b39dbc4db094696d799b7c35c166035b92dbd1d3477165dfe7b3045b1ff06b",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
     }
   ],
   "review_only_archive": []

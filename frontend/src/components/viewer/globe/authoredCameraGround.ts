@@ -3,6 +3,7 @@ import { nativePavingProbe } from '@/features/parks/nativeParkAccess';
 import { parkWalkHeight, type ParkWalkingNetwork } from '@/features/parks/parkWalking';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import type { SiteZone } from '@/types';
+import { buildingWalkGround } from '@/features/legoAssembly/buildingWalking';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { readParkTerrain } from './parkTerrain';
 import { sampleSharedSiteGround, sharedSiteGroundContains } from './sharedSiteGround';
@@ -14,6 +15,8 @@ import { isSpecialistStreet, specialistWalkingHeight, BRIDGE_VARIANT } from './s
 /** Camera feet belong on the authored ground, not the Google mesh hidden
  * underneath it. Unprepared landscape and off-site context keep their hit. */
 export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number, measured: number, entrySurfaceHeight?: number): number {
+  const buildingHeight = buildingWalkGround(zones, { lng, lat, groundHeight: measured, heading: 0 });
+  if (buildingHeight !== null) return buildingHeight;
   const contains = (zone: SiteZone) => sharedSiteGroundContains(zone.coordinates as [number, number][], lng, lat);
   for (const zone of zones.filter(contains)) {
     const variant=String(zone.properties?.road_selected_variant_id);

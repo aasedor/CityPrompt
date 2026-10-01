@@ -11,12 +11,15 @@ export interface ParkWalkingNetwork {
   routes: { name: string; points: number[][] }[];
 }
 
-function blocked(network: ParkWalkingNetwork, x: number, y: number) {
-  return network.obstacles.some(([left, right, bottom, top]) => x > left - .12 && x < right + .12 && y > bottom - .12 && y < top + .12);
+function blocked(network: ParkWalkingNetwork, x: number, y: number, z?: number) {
+  const clearance = network.version === 2 ? .22 : .12;
+  return network.obstacles.some(([left, right, bottom, top, low, high]) =>
+    (low === undefined || z === undefined || (z + 1.8 > low && z < high - .01))
+    && x > left - clearance && x < right + clearance && y > bottom - clearance && y < top + clearance);
 }
 
-export function parkWalkHeight(network: ParkWalkingNetwork, x: number, y: number): number | null {
-  if (!Number.isFinite(x) || !Number.isFinite(y) || blocked(network, x, y)) return null;
+export function parkWalkHeight(network: ParkWalkingNetwork, x: number, y: number, fromHeight?: number): number | null {
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
   let height: number | null = null;
   for (const [a, b, c] of network.triangles) {
     if (x < Math.min(a[0], b[0], c[0]) - 1e-7 || x > Math.max(a[0], b[0], c[0]) + 1e-7
@@ -28,7 +31,10 @@ export function parkWalkHeight(network: ParkWalkingNetwork, x: number, y: number
     const w = 1 - u - v;
     if (Math.min(u, v, w) < -1e-7) continue;
     const z = u * a[2] + v * b[2] + w * c[2];
-    if (Number.isFinite(z)) height = height === null ? z : Math.max(height, z);
+    if (Number.isFinite(z) && !blocked(network, x, y, z)) {
+      const layered = network.version === 2 && fromHeight !== undefined;
+      if (height === null || (layered ? Math.abs(z - fromHeight) < Math.abs(height - fromHeight) : z > height)) height = z;
+    }
   }
   return height;
 }
@@ -40,7 +46,7 @@ export function nearestParkWalkPoint(network: ParkWalkingNetwork, x: number, y: 
   const consider = (px: number, py: number) => {
     const d = Math.hypot(px - x, py - y);
     if (d > distance + 1e-8) return;
-    const z = parkWalkHeight(network, px, py);
+    const z = parkWalkHeight(network, px, py, fromHeight);
     if (z === null || (fromHeight !== undefined && Math.abs(z - fromHeight) > network.maxStepM + maxDistance * .5)) return;
     best = [px, py, z]; distance = d;
   };
@@ -75,7 +81,7 @@ export function advanceParkWalk(network: ParkWalkingNetwork, from: WalkPoint, ta
     const x = current[0] + dx, y = current[1] + dy;
     const stepLength = Math.hypot(dx, dy);
     const safe = (px: number, py: number): WalkPoint | null => {
-      const z = parkWalkHeight(network, px, py);
+      const z = parkWalkHeight(network, px, py, current[2]);
       return z !== null && Math.abs(z - current[2]) <= network.maxStepM + stepLength * .5 ? [px, py, z] : null;
     };
     let next = safe(x, y);

@@ -39,6 +39,7 @@ import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntranc
 import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { buildingWalkRevision, mountBuildingWalking, readBuildingWalking } from '@/features/legoAssembly/buildingWalking';
 import { authoredHomePlotFrame, preservesAuthoredPlotAxes } from '@/features/legoAssembly/detachedPlot';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
@@ -558,6 +559,18 @@ function LegoStackInstance({
   const stackRef = useRef<THREE.Group>(null);
   const stackWorldPositionRef = useRef(new THREE.Vector3());
   const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
+
+  const walkingZoneRevision = zone ? buildingWalkRevision(zone) : '';
+  useEffect(() => {
+    if (!zone || !detailedReady || foundation.contact.status !== 'ready' || preparedSiteTerrainHeight == null
+      || !isNativeClayPlan(recipe) || modules.length !== 1) return;
+    const { cloned, transform } = modules[0];
+    if (transform.scale.some(s => Math.abs(s - 1) > 1e-6)) return;
+    const source = cloned.children[0];
+    if (!source) return;
+    const walking = readBuildingWalking(source);
+    if (walking) return mountBuildingWalking(building.id, zone, source, walking);
+  }, [building.id, walkingZoneRevision, detailedReady, foundation.contact.status, preparedSiteTerrainHeight, modules, recipe, zone]);
 
   useFrame(({ camera }) => {
     if (stackRef.current) {
