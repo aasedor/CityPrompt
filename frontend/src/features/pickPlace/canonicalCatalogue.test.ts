@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { CANONICAL_CHOICES, CANONICAL_DOMAINS, catalogueChoices, canonicalDrawing, filterCanonicalChoices, preferredCatalogueVariant } from './canonicalCatalogue';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
-import { CATALOGUE_ASSETS } from './assetRegistry';
+import { CATALOGUE_ASSETS, MANUAL_STREET_ASSETS } from './assetRegistry';
 
 describe('canonical discovery and identity', () => {
   it('finds a duplex inside an infill parent and opens the matching detailed variant', () => {
@@ -15,7 +15,7 @@ describe('canonical discovery and identity', () => {
   });
   it('discovers exactly the current eligible parents in each domain', () => {
     const roster = [...validation.entries, ...expansion.entries];
-    expect(CANONICAL_CHOICES).toHaveLength(roster.length);
+    expect(CANONICAL_CHOICES).toHaveLength(roster.length + MANUAL_STREET_ASSETS.length);
     for (const entry of roster) {
       const choice = CANONICAL_CHOICES.find(c => c.option.id === entry.archetype_id && c.placements[0]?.model.variantId === entry.variant_id);
       expect(choice, entry.variant_id).toBeDefined();

@@ -721,6 +721,86 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 3,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "clay_mass_timber_biophilic_barn",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Mass-timber Library",
+    "description": "Planted roof terraces, branching timber supports and a glazed reading hall.",
+    "thumbnail": "/archetypes/buildings/university-library/variant_2.png",
+    "model": {
+      "variantId": "mass_timber_biophilic_barn",
+      "revision": "neighbourhood-library-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 40.0,
+    "depth": 37.0,
+    "minWidth": 40.0,
+    "minDepth": 37.0,
+    "maxSize": 140.0,
+    "nativeDimensions": [
+      35.36000061035156,
+      32.599998474121094,
+      15.5018310546875
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "university_library",
+      "development_archetype_id": "university_library",
+      "development_selected_variant_id": "mass_timber_biophilic_barn",
+      "development_archetype_label": "Mass-timber Library",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_parisian_corner_cafe_culture",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Corner Café & Apartments",
+    "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
+    "thumbnail": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+    "model": {
+      "variantId": "parisian_corner_cafe_culture",
+      "revision": "neighbourhood-corner-cafe-clay-v010",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "mixed",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 49.0,
+    "depth": 48.0,
+    "minWidth": 49.0,
+    "minDepth": 48.0,
+    "maxSize": 140.0,
+    "nativeDimensions": [
+      44.06293869018555,
+      43.16806359868497,
+      20.64999961555004
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "parisian_boulevard_corner",
+      "development_archetype_id": "parisian_boulevard_corner",
+      "development_selected_variant_id": "parisian_corner_cafe_culture",
+      "development_archetype_label": "Corner Café & Apartments",
+      "floors": 6,
+      "floor_count": 6,
+      "native_plot_axes": true
+    }
   }
 ];
 

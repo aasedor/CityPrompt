@@ -1498,6 +1498,146 @@
         "unresolved_p0": 0,
         "unresolved_p1": 0
       }
+    },
+    {
+      "candidate": "neighbourhood-library-clay-v003",
+      "family": "rlasm-clay-mass-timber-biophilic-barn",
+      "archetype_id": "university_library",
+      "variant_id": "mass_timber_biophilic_barn",
+      "archetype_label": "University Library",
+      "variant_label": "Mass-timber Library",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 34,
+        "depth": 30,
+        "height": 15.6
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/university-library/variant_2.png",
+          "bytes": 1119221,
+          "sha256": "dbff795881507ed296a2ca190bf6b6c7218544a98dcdbeef39da25ee19f7ec9b"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/university-library/variant_2_angle_60.jpg",
+          "bytes": 932069,
+          "sha256": "04b65811fdb3a5472214351a7018405711f13c8f3c89c20947c81e2d1bc5d702"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/university-library/variant_2_angle_90.jpg",
+          "bytes": 911188,
+          "sha256": "5037ce4f6c67f9d06892e64ae8b53be3e85b09875493a083b1039f24f6385969"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\library-v003",
+      "picker": {
+        "id": "clay_mass_timber_biophilic_barn",
+        "description": "Planted roof terraces, branching timber supports and a glazed reading hall.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 40,
+        "depth": 37,
+        "max_size": 140
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/neighbourhood-library-clay-v003.glb",
+        "bytes": 11996768,
+        "sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+        "native_dimensions_m": {
+          "width": 35.36000061035156,
+          "height": 15.5018310546875,
+          "depth": 32.599998474121094
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/neighbourhood-library-clay-v003.json",
+        "sha256": "5daca8e47e64fef3e6506f574a7835b3e8b60bc760b055d51fa02b3c42ae762c",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "neighbourhood-corner-cafe-clay-v010",
+      "family": "rlasm-clay-parisian-corner-cafe-culture",
+      "archetype_id": "parisian_boulevard_corner",
+      "variant_id": "parisian_corner_cafe_culture",
+      "archetype_label": "Parisian Boulevard Corner",
+      "variant_label": "Corner Café & Apartments",
+      "native_floors": 6,
+      "design_dimensions_m": {
+        "width": 44,
+        "depth": 44,
+        "height": 20.65
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+          "bytes": 1447547,
+          "sha256": "44a33ec2b53dd2e4eab9cbf9f14dd2f24db938a31fcd2d58cd14206501378fde"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1_angle_60.jpg",
+          "bytes": 948681,
+          "sha256": "52376c0bbf60f5fd01c3628debf642318ee9fd4390202c44f81b97088145917c"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1_angle_90.jpg",
+          "bytes": 907237,
+          "sha256": "fcdb62bcf9d787a973279e4b3beaa495e07f700e3aa75cdaf0b3a21d0ba023ab"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\cafe-v010",
+      "picker": {
+        "id": "clay_parisian_corner_cafe_culture",
+        "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
+        "group_id": "mixed",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 49,
+        "depth": 48,
+        "max_size": 140
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/neighbourhood-corner-cafe-clay-v010.glb",
+        "bytes": 16430728,
+        "sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+        "native_dimensions_m": {
+          "width": 44.06293869018555,
+          "height": 20.64999961555004,
+          "depth": 43.16806359868497
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/neighbourhood-corner-cafe-clay-v010.json",
+        "sha256": "b6980f2240b1a9996aabce5369f71a645290c191488fbc1aad76846d569904e0",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
     }
   ],
   "review_only_archive": []

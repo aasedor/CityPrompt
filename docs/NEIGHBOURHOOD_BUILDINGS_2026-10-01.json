@@ -1,0 +1,60 @@
+{
+  "schema": "cityprompt.catalogue.local-runtime@1",
+  "method": "RLASM v6.1",
+  "representation": "architectural_clay",
+  "publication": "pending_human_activation",
+  "entries": [
+    {
+      "candidate": "neighbourhood-library-clay-v003",
+      "archetype": "university_library",
+      "variant": "mass_timber_biophilic_barn",
+      "model": {
+        "path": "neighbourhood-library-clay-v003.glb",
+        "bytes": 11996768,
+        "sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+        "meshes": 14,
+        "materials": 14,
+        "textures": 0,
+        "images": 0,
+        "mesh_objects": 14,
+        "vertices": 231824,
+        "polygons": 131124,
+        "triangles": 175848
+      },
+      "review": {
+        "decision": "architectural_clay_reviewed",
+        "p0": 0,
+        "p1": 0
+      },
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "local_storage_hash_verified": true,
+      "evidence_directory": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\library-v003"
+    },
+    {
+      "candidate": "neighbourhood-corner-cafe-clay-v010",
+      "archetype": "parisian_boulevard_corner",
+      "variant": "parisian_corner_cafe_culture",
+      "model": {
+        "path": "neighbourhood-corner-cafe-clay-v010.glb",
+        "bytes": 16430728,
+        "sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+        "meshes": 14,
+        "materials": 14,
+        "textures": 0,
+        "images": 0,
+        "mesh_objects": 14,
+        "vertices": 177546,
+        "polygons": 151437,
+        "triangles": 292176
+      },
+      "review": {
+        "decision": "architectural_clay_reviewed",
+        "p0": 0,
+        "p1": 0
+      },
+      "runtime_status": "PENDING",
+      "local_storage_hash_verified": true,
+      "evidence_directory": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\cafe-v010"
+    }
+  ]
+}

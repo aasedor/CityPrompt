@@ -242,7 +242,7 @@
     },
     {
       "domain": "park",
-      "title": "Terraced Café & Fountain Court",
+      "title": "Terraced CafÃƒÂ© & Fountain Court",
       "archetype_id": "sunken_plaza",
       "variant_id": "student_terraced_cafe_court_v1",
       "version": "showcase-court-v002",
@@ -429,6 +429,30 @@
       "placement_id": "student_barcelona_shaded_promenade_v1",
       "sha256": "b62da7c2954673a45891069b44e1395087ea53db64677fb4e37c9c7a05c4a360",
       "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Mass-timber Library",
+      "archetype_id": "university_library",
+      "variant_id": "mass_timber_biophilic_barn",
+      "version": "neighbourhood-library-clay-v003",
+      "placement_id": "clay_mass_timber_biophilic_barn",
+      "sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Corner Café & Apartments",
+      "archetype_id": "parisian_boulevard_corner",
+      "variant_id": "parisian_corner_cafe_culture",
+      "version": "neighbourhood-corner-cafe-clay-v010",
+      "placement_id": "clay_parisian_corner_cafe_culture",
+      "sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
       "runtime_status": "NOT TESTED",
       "completed": false
     }
@@ -837,7 +861,7 @@
         "step": 0.05,
         "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85Ã¢â‚¬â€œ115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "calgary_inner_city_bungalow",
         "development_archetype_id": "calgary_inner_city_bungalow",
@@ -903,7 +927,7 @@
         "step": 0.05,
         "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85Ã¢â‚¬â€œ115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "toronto_edwardian_foursquare",
         "development_archetype_id": "toronto_edwardian_foursquare",
@@ -1044,7 +1068,7 @@
         "repeatedStoreyHeightM": 3.2,
         "roofHeightM": 4.2
       },
-      "reshapeDescription": "Adjust the footprint within 51.1–57.5 m by 43.1–47.5 m and choose 16–40 storeys. Horizontal fit never changes the authored storey height.",
+      "reshapeDescription": "Adjust the footprint within 51.1Ã¢â‚¬â€œ57.5 m by 43.1Ã¢â‚¬â€œ47.5 m and choose 16Ã¢â‚¬â€œ40 storeys. Horizontal fit never changes the authored storey height.",
       "properties": {
         "building_archetype_id": "vancouverism_tower_podium",
         "development_archetype_id": "vancouverism_tower_podium",
@@ -1216,8 +1240,8 @@
       "kind": "object",
       "definitionVersion": 2,
       "readiness": "pilot",
-      "label": "Terraced Café & Fountain Court",
-      "description": "A limestone gathering court with seven seat steps, café umbrellas and a bronze fountain.",
+      "label": "Terraced CafÃƒÂ© & Fountain Court",
+      "description": "A limestone gathering court with seven seat steps, cafÃƒÂ© umbrellas and a bronze fountain.",
       "thumbnail": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -1769,6 +1793,86 @@
         "pick_place_definition_version": 1,
         "community_3d_mask_existing_tiles": true,
         "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "clay_mass_timber_biophilic_barn",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Mass-timber Library",
+      "description": "Planted roof terraces, branching timber supports and a glazed reading hall.",
+      "thumbnail": "/archetypes/buildings/university-library/variant_2.png",
+      "model": {
+        "variantId": "mass_timber_biophilic_barn",
+        "revision": "neighbourhood-library-clay-v003",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 40.0,
+      "depth": 37.0,
+      "minWidth": 40.0,
+      "minDepth": 37.0,
+      "maxSize": 140.0,
+      "nativeDimensions": [
+        35.36000061035156,
+        32.599998474121094,
+        15.5018310546875
+      ],
+      "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+      "properties": {
+        "building_archetype_id": "university_library",
+        "development_archetype_id": "university_library",
+        "development_selected_variant_id": "mass_timber_biophilic_barn",
+        "development_archetype_label": "Mass-timber Library",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true
+      }
+    },
+    {
+      "id": "clay_parisian_corner_cafe_culture",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Corner CafÃ© & Apartments",
+      "description": "Ochre brick and cream stone apartments over a green-awning corner cafÃ©.",
+      "thumbnail": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+      "model": {
+        "variantId": "parisian_corner_cafe_culture",
+        "revision": "neighbourhood-corner-cafe-clay-v010",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "mixed",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 49.0,
+      "depth": 48.0,
+      "minWidth": 49.0,
+      "minDepth": 48.0,
+      "maxSize": 140.0,
+      "nativeDimensions": [
+        44.06293869018555,
+        43.16806359868497,
+        20.64999961555004
+      ],
+      "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+      "properties": {
+        "building_archetype_id": "parisian_boulevard_corner",
+        "development_archetype_id": "parisian_boulevard_corner",
+        "development_selected_variant_id": "parisian_corner_cafe_culture",
+        "development_archetype_label": "Corner CafÃ© & Apartments",
+        "floors": 6,
+        "floor_count": 6,
+        "native_plot_axes": true
       }
     }
   ]

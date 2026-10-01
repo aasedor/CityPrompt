@@ -25,5 +25,21 @@ export function reviewedEntranceForAsset(asset: PlaceAsset): ReviewedEntrance | 
     // support apron at y=-17.08, beyond the entrance canopy columns.
     return { xM: -.3, yM: -17.08, widthM: 1.8, plotWidthM: 39, plotDepthM: 39, fixedNative: true };
   }
+  if (asset.id === 'clay_mass_timber_biophilic_barn'
+    && asset.model.variantId === 'mass_timber_biophilic_barn'
+    && asset.model.revision === 'neighbourhood-library-clay-v003'
+    && asset.reshapeMode === 'fixed_native') {
+    // Exact v003 is centred at (0,0). The 8.8 m threshold ends at y=-16.3;
+    // this approach anchor is its ground-level toe, ahead of the recessed doors.
+    return { xM: 0, yM: -16.3, widthM: 2.4, plotWidthM: 40, plotDepthM: 37, fixedNative: true };
+  }
+  if (asset.id === 'clay_parisian_corner_cafe_culture'
+    && asset.model.variantId === 'parisian_corner_cafe_culture'
+    && asset.model.revision === 'neighbourhood-corner-cafe-clay-v010'
+    && asset.reshapeMode === 'fixed_native') {
+    // Central chamfer threshold (0,-18), measured relative to the full GLB
+    // horizontal centre (1.976301193,1.448032379), including its canopy.
+    return { xM: -1.976301193, yM: -19.448032379, widthM: 2.4, plotWidthM: 49, plotDepthM: 48, fixedNative: true };
+  }
   return undefined;
 }
