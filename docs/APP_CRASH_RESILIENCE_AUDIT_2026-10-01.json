@@ -52,6 +52,20 @@
     "Native park, native street, LEGO building, generic model and park-kit loading paths have local React error boundaries.",
     "Zone draft, reference-layer and recent compile persistence already guards storage or JSON decoding."
   ],
+  "functionality_followup": {
+    "request": "Confirm the crash fixes preserve program functionality.",
+    "additional_production_changes_needed": false,
+    "vitest": { "files": 9, "tests": 96, "result": "passed" },
+    "coverage": [
+      "Successful OAuth credential persistence and saved-project redirect.",
+      "Successful OAuth sign-in when only the optional return preference is inaccessible.",
+      "Private media access recovers with a fresh ticket after credential storage becomes accessible again.",
+      "Existing asset identities and JSON persistence, building and park placement, street placement, native park undo, undo revision and project scope."
+    ],
+    "typescript": "npm run type-check passed after the additional test changes",
+    "browser": "Authenticated QA project: building catalogue opens, choosing Buff-brick infill enters placement with dimensions and rotation controls, and Escape cancels. No new page-error records; the same two historical empty records remain.",
+    "limits": "No paid render or external OAuth-provider login was performed; successful authentication behavior was verified with component tests."
+  },
   "limits": [
     "This is a bounded crash investigation, not exhaustive fuzzing of all saved geometry or every backend feature.",
     "Legacy street registry initialization still assumes the checked-in Calgary local/collector definitions exist; both exist in this checkout.",

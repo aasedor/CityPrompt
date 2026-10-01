@@ -40,6 +40,12 @@ describe('scoped media downloads', () => {
     expect(access.resolve(url, { shareToken: 'public-share' })).toContain('share_token=public-share');
     expect(await access.prepare({ image_url: url })).toEqual({ image_url: url });
     expect(projectTicket).toHaveBeenCalledOnce();
+    session.mockReturnValue('account-a');
+    projectTicket.mockResolvedValue({ asset_ticket: 'fresh-ticket', expires_in: 900 });
+    const recovered = await access.prepare({ image_url: url });
+    expect(recovered.image_url).toContain('asset_ticket=fresh-ticket');
+    expect(recovered.image_url).not.toContain('private-ticket');
+    expect(projectTicket).toHaveBeenCalledTimes(2);
   });
   it('prepares one ticket for multiple project assets without putting the login token in URLs', async () => {
     const { access, projectTicket, getToken } = setup();

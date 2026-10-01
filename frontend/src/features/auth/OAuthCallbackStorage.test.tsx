@@ -23,6 +23,8 @@ function renderCallback() {
       <Routes>
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/login" element={<h1>Sign in</h1>} />
+        <Route path="/projects" element={<h1>Projects</h1>} />
+        <Route path="/projects/saved-project" element={<h1>Saved project</h1>} />
       </Routes>
     </MemoryRouter>
   </QueryClientProvider>);
@@ -40,6 +42,29 @@ it.each(['SecurityError', 'QuotaExceededError'])('returns to sign in when OAuth 
   expect(localStorage.getItem('access_token')).toBeNull();
   expect(useAuthStore.getState().isAuthenticated).toBe(false);
   expect(toast.error).toHaveBeenCalledWith(expect.stringContaining('browser storage'));
+});
+
+it.each([false, true])('completes valid sign-in when return preference access is blocked: %s', async blocked => {
+  const user = { id: 'user-a', email: 'student@example.test', full_name: 'Student',
+    role: 'editor', is_active: true, render_credits: 10, created_at: '2026-10-01T00:00:00Z' };
+  vi.mocked(authApi.me).mockResolvedValue(user);
+  localStorage.setItem('oauth_return_to', '/projects/saved-project');
+  if (blocked) {
+    const getItem = Storage.prototype.getItem;
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(function (this: Storage, key) {
+      if (key === 'oauth_return_to') throw new DOMException('Blocked', 'SecurityError');
+      return getItem.call(this, key);
+    });
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => { throw new DOMException('Blocked', 'SecurityError'); });
+  }
+  renderCallback();
+  expect(await screen.findByRole('heading', { name: blocked ? 'Projects' : 'Saved project' })).toBeDefined();
+  expect(useAuthStore.getState().user).toEqual(user);
+  expect(useAuthStore.getState().isAuthenticated).toBe(true);
+  expect(localStorage.getItem('access_token')).toBe('test-access');
+  expect(localStorage.getItem('refresh_token')).toBe('test-refresh');
+  expect(toast.error).not.toHaveBeenCalled();
+  if (!blocked) expect(localStorage.getItem('oauth_return_to')).toBeNull();
 });
 
 it('returns to sign in if storage is blocked during profile-error cleanup', async () => {
