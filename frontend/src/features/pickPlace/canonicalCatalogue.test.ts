@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CANONICAL_CHOICES, CANONICAL_DOMAINS, catalogueChoices, canonicalDrawing, filterCanonicalChoices, preferredCatalogueVariant } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, CANONICAL_DOMAINS, UNAVAILABLE_CATALOGUE_ENTRIES, resolveCatalogueRoster, catalogueChoices, canonicalDrawing, filterCanonicalChoices, preferredCatalogueVariant } from './canonicalCatalogue';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
 import { CATALOGUE_ASSETS, MANUAL_STREET_ASSETS } from './assetRegistry';
@@ -14,6 +14,7 @@ describe('canonical discovery and identity', () => {
     expect(preferredCatalogueVariant(choice)).toBe(choice.placements[0].model.variantId);
   });
   it('discovers exactly the current eligible parents in each domain', () => {
+    expect(UNAVAILABLE_CATALOGUE_ENTRIES).toEqual([]);
     const roster = [...validation.entries, ...expansion.entries];
     expect(CANONICAL_CHOICES).toHaveLength(roster.length + MANUAL_STREET_ASSETS.length);
     for (const entry of roster) {
@@ -24,6 +25,24 @@ describe('canonical discovery and identity', () => {
     for (const choice of CANONICAL_CHOICES) for (const asset of choice.placements) {
       expect(CATALOGUE_ASSETS).toContain(asset);
     }
+  });
+  it('accepts renamed native placements but never substitutes another variant for a stale ID', () => {
+    const entry = validation.entries.find(row => row.variant_id === 'student_main_street_v1')!;
+    const asset = CATALOGUE_ASSETS.find(item => item.model.variantId === entry.variant_id)!;
+    const wrongVariant = { ...asset, id: entry.placement_id, model: { ...asset.model, variantId: 'other-variant' } };
+    const renamed = { ...asset, id: 'native:renamed-road' };
+    expect(resolveCatalogueRoster([entry], [wrongVariant]).unavailable).toEqual([entry]);
+    expect(resolveCatalogueRoster([entry], [wrongVariant, renamed]).choices[0].placements).toEqual([renamed]);
+    const exact = { ...asset, id: entry.placement_id };
+    expect(resolveCatalogueRoster([entry], [renamed, exact]).choices[0].placements).toEqual([exact]);
+  });
+  it('excludes unready assets, wrong parents, wrong domains and unsupported roster domains', () => {
+    const entry = validation.entries.find(row => row.variant_id === 'student_main_street_v1')!;
+    const asset = CATALOGUE_ASSETS.find(item => item.model.variantId === entry.variant_id)!;
+    expect(resolveCatalogueRoster([entry], [{ ...asset, readiness: 'retired' }]).choices).toEqual([]);
+    expect(resolveCatalogueRoster([entry], [{ ...asset, properties: { ...asset.properties, road_archetype_id: 'other' } }]).choices).toEqual([]);
+    expect(resolveCatalogueRoster([{ ...entry, domain: 'building' }], [asset]).choices).toEqual([]);
+    expect(resolveCatalogueRoster([{ ...entry, domain: 'unknown' }], [asset]).choices).toEqual([]);
   });
   it('rejects duplicate parents and malformed entries before browsing', () => {
     const option = CANONICAL_DOMAINS.building[0];

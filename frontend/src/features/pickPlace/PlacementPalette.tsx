@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
 import { CATALOGUE_ASSETS, STREET_ASSETS, type StreetAsset } from './assetRegistry';
-import { CANONICAL_CHOICES, CLASSROOM_CHOICES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, CLASSROOM_CHOICES, UNAVAILABLE_CATALOGUE_ENTRIES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
 import { availablePickerCategories, pickerCategory } from './pickerCategories';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
@@ -83,6 +83,9 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
           <p className="text-xs text-slate-600">{userGenerated ? 'Your private creations, separate from the reviewed catalogue.' : collection === 'starter'
             ? classroomSummary
             : 'Local validation catalogue.'}</p>
+          {UNAVAILABLE_CATALOGUE_ENTRIES.length > 0 && <p role="status" className="text-xs text-amber-900">
+            {UNAVAILABLE_CATALOGUE_ENTRIES.length} {UNAVAILABLE_CATALOGUE_ENTRIES.length === 1 ? 'design is' : 'designs are'} temporarily unavailable. You can still use the other designs.
+          </p>}
           <nav aria-label="Catalogue sections" className="flex gap-2">
             {visibleSections.map(({ id, label, icon: Icon }) => <button key={id} aria-pressed={section === id} onClick={() => chooseSection(id)}
               className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-lg border px-2 text-sm font-semibold ${section === id ? 'border-slate-900 bg-[#c9ff3d]' : 'border-slate-300 bg-white hover:bg-lime-50'}`}><Icon size={18} />{label}</button>)}

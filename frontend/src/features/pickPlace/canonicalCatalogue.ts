@@ -42,17 +42,41 @@ export function catalogueChoices(domains = CANONICAL_DOMAINS, assets = CATALOGUE
   }
   return choices.sort((a, b) => Number(b.placements.length > 0) - Number(a.placements.length > 0));
 }
+interface CatalogueRosterEntry {
+  domain: string; archetype_id: string; variant_id: string; placement_id: string;
+}
+
+/** A missing registration must not prevent the other designs from loading.
+ * Native upgrades may rename placement IDs, but must retain the exact design. */
+export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets = CATALOGUE_ASSETS) {
+  const choices: CanonicalChoice[] = [];
+  const unavailable: CatalogueRosterEntry[] = [];
+  for (const entry of entries) {
+    const domain = entry.domain === 'building' ? 'building' : entry.domain === 'park' ? 'park_plaza'
+      : entry.domain === 'street' ? 'street_pathway' : undefined;
+    if (!domain) { unavailable.push(entry); continue; }
+    const parentKey = domain === 'building' ? 'development_archetype_id'
+      : domain === 'park_plaza' ? 'green_space_archetype_id' : 'road_archetype_id';
+    const zoneType = domain === 'building' ? 'building' : domain === 'park_plaza' ? 'green_space' : 'road';
+    const matches = assets.filter(asset => isPlaceable(asset)
+      && (asset.kind === 'street' ? zoneType === 'road' : asset.zoneType === zoneType)
+      && asset.properties[parentKey] === entry.archetype_id && asset.model.variantId === entry.variant_id);
+    const asset = matches.find(candidate => candidate.id === entry.placement_id) ?? matches[0];
+    if (!asset) { unavailable.push(entry); continue; }
+    const source = CANONICAL_DOMAINS[domain].find(option => option.id === entry.archetype_id);
+    choices.push({ id: `${domain}:${entry.archetype_id}:${entry.variant_id}`, domain, placements: [asset], option: {
+      ...source, id: entry.archetype_id, label: asset.label, description: asset.description,
+      photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+      variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }],
+    } });
+  }
+  return { choices, unavailable };
+}
+
 // Local validation roster: no legacy variants or generic massing fallbacks in discovery.
-export const CANONICAL_CHOICES: CanonicalChoice[] = [...validation.entries, ...expansion.entries].map(entry => {
-  const domain = entry.domain === 'building' ? 'building' : entry.domain === 'park' ? 'park_plaza' : 'street_pathway';
-  const asset = CATALOGUE_ASSETS.find(a => a.id === entry.placement_id || a.model.variantId === entry.variant_id)!;
-  const source = CANONICAL_DOMAINS[domain].find(o => o.id === entry.archetype_id);
-  return { id: `${domain}:${entry.archetype_id}:${entry.variant_id}`, domain, placements: [asset], option: {
-    ...source, id: entry.archetype_id, label: asset.label, description: asset.description,
-    photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
-    variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }],
-  } };
-});
+const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries]);
+export const CANONICAL_CHOICES = resolvedRoster.choices;
+export const UNAVAILABLE_CATALOGUE_ENTRIES = resolvedRoster.unavailable;
 /** Exact starter variants only. Parent cards must not quietly expose their other
  * variants under the classroom promise. The full catalogue remains separate. */
 export function classroomChoices(choices = CANONICAL_CHOICES): CanonicalChoice[] {
