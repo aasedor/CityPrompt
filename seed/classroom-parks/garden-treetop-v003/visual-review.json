@@ -1,0 +1,49 @@
+{
+  "status": "PASS_AUTHOR_VISUAL_REVIEW",
+  "model_sha256": "8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a",
+  "reviewer": "Codex author visual review",
+  "human_approval": false,
+  "benchmark": "botanical_garden_v3 / conservatory-v013",
+  "inspected_files": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "08942f290356ebcd49e6f994a6eebd230dfa5d58dd39e0cab04c3b274eb4a3d8"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "7491ad488911fafcdfd8bcbb7b24a87fb5a53312ccf673bc3968617e4d94cd2e"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "9cd9a523c1fdf69090ec1bb2fca94ed8f7ea6c89b2a8146dc4ad7d84ca434517"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "28f21c3cda65b0224d212c50b711caad4d45b0850c5f7b1abdaab250fadaa485"
+    },
+    {
+      "path": "renders/entrance.png",
+      "sha256": "389ef2bd45eff199314727cf51ae28b0c2bbbcea0af672d7b918c0fc2e16b0e8"
+    },
+    {
+      "path": "renders/canopy.png",
+      "sha256": "e68380ec37e8411ec63d0a9c3837b5a0069f6eed9aff41b3a5750a0e96263154"
+    },
+    {
+      "path": "renders/lookout.png",
+      "sha256": "a82839928e707fbb3a18aefa287a30fe7876a75a598b89cebe132952342e69cf"
+    }
+  ],
+  "findings": [
+    "Coherent twin stair promenade and resting glade; clear circulation at all deck junctions.",
+    "Grounded supports, board joints, dense guard balusters and detailed layered planting visible at pedestrian height.",
+    "All seven reimported model views inspected. No visible floating furniture, disconnected stairs or blocked route.",
+    "Original authored woodland concept; not an exact photographic reconstruction."
+  ],
+  "open_blockers": [],
+  "supersedes": [
+    "treetop-v001: sparse planting and insufficient second-flight ground support",
+    "treetop-v002: incomplete east woodland band and sparse stair guards"
+  ],
+  "runtime_status": "NOT TESTED"
+}

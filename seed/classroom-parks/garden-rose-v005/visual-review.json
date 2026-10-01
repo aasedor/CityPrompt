@@ -1,0 +1,50 @@
+{
+  "status": "PASS_AUTHOR_VISUAL_REVIEW",
+  "model_sha256": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+  "reviewer": "Codex author visual review",
+  "human_approval": false,
+  "benchmark": "botanical_garden_v3 / conservatory-v013; aerial and garden_gate compared",
+  "inspected_files": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "b91b674dfff0406cad6799fa1964e4dfd96f663df0e5a8adc29708b6abd99d5a"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "98ed00f7c73106289c93c9701a09123917a792217a623a68636d26e05d6e4e8b"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "fb36afba1fc5e3da728765640ee8c3510b68b2b636fdc17f18bd55e3d486732c"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "223b562d069ea28b5f6abf8d23130393b16e2b62cfa561fb46d99f1232114193"
+    },
+    {
+      "path": "renders/entrance.png",
+      "sha256": "d628e89d10de5decaefb55a69b800620452387169523c37a839c4b072e56d45c"
+    },
+    {
+      "path": "renders/roses.png",
+      "sha256": "a5aa806ab398a372b1e0eae1c7ab113c5c601b62ace4342a3918717969042086"
+    },
+    {
+      "path": "renders/pergola.png",
+      "sha256": "da80f4105ce5207e86d02661101b621ac2dc5d8baae987b0278ad73107b1a003"
+    }
+  ],
+  "findings": [
+    "Clear formal composition with three terraces, paired stairs, nine rose beds, upper fountain and pergola.",
+    "Layered flowers, foliage, limestone courses, paving joints and tree wells hold up in pedestrian views.",
+    "Paired stairways and full landing openings remain unobstructed; upper outside edges guarded.",
+    "Original authored concept follows the benchmark finish and circulation discipline, with a formal rose-garden identity."
+  ],
+  "open_blockers": [],
+  "supersedes": [
+    "rose-v001: incomplete slow export; consolidate shrub geometry by material",
+    "rose-v002 and v003: guard shoe extends 0.055 m beyond footprint",
+    "rose-v004: reduce flower heads, enrich foliage, add tree soil openings"
+  ],
+  "runtime_status": "NOT TESTED"
+}

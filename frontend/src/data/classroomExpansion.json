@@ -242,7 +242,7 @@
     },
     {
       "domain": "park",
-      "title": "Terraced Café & Fountain Court",
+      "title": "Terraced Caf\u00e9 & Fountain Court",
       "archetype_id": "sunken_plaza",
       "variant_id": "student_terraced_cafe_court_v1",
       "version": "showcase-court-v002",
@@ -446,7 +446,7 @@
     },
     {
       "domain": "building",
-      "title": "Corner Café & Apartments",
+      "title": "Corner Caf\u00e9 & Apartments",
       "archetype_id": "parisian_boulevard_corner",
       "variant_id": "parisian_corner_cafe_culture",
       "version": "neighbourhood-corner-cafe-clay-v010",
@@ -549,6 +549,30 @@
       "placement_id": "clay_mediterranean_resort_courtyard",
       "sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
       "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Treetop Walk Park",
+      "archetype_id": "student_treetop_walk",
+      "variant_id": "student_treetop_walk_v1",
+      "version": "garden-treetop-v003",
+      "placement_id": "native-park:student_treetop_walk_v1--native-v1",
+      "sha256": "8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Terraced Rose Garden",
+      "archetype_id": "student_terraced_rose",
+      "variant_id": "student_terraced_rose_v1",
+      "version": "garden-rose-v005",
+      "placement_id": "native-park:student_terraced_rose_v1--native-v1",
+      "sha256": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+      "asset_review": "agent_native_visual_and_geometry_pass",
       "runtime_status": "PASS_LOCAL_PREPARED_SITE",
       "completed": false
     }
@@ -957,7 +981,7 @@
         "step": 0.05,
         "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85\u2013115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "calgary_inner_city_bungalow",
         "development_archetype_id": "calgary_inner_city_bungalow",
@@ -1023,7 +1047,7 @@
         "step": 0.05,
         "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85\u2013115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "toronto_edwardian_foursquare",
         "development_archetype_id": "toronto_edwardian_foursquare",
@@ -1164,7 +1188,7 @@
         "repeatedStoreyHeightM": 3.2,
         "roofHeightM": 4.2
       },
-      "reshapeDescription": "Adjust the footprint within 51.1–57.5 m by 43.1–47.5 m and choose 16–40 storeys. Horizontal fit never changes the authored storey height.",
+      "reshapeDescription": "Adjust the footprint within 51.1\u201357.5 m by 43.1\u201347.5 m and choose 16\u201340 storeys. Horizontal fit never changes the authored storey height.",
       "properties": {
         "building_archetype_id": "vancouverism_tower_podium",
         "development_archetype_id": "vancouverism_tower_podium",
@@ -1336,8 +1360,8 @@
       "kind": "object",
       "definitionVersion": 2,
       "readiness": "pilot",
-      "label": "Terraced Café & Fountain Court",
-      "description": "A limestone gathering court with seven seat steps, café umbrellas and a bronze fountain.",
+      "label": "Terraced Caf\u00e9 & Fountain Court",
+      "description": "A limestone gathering court with seven seat steps, caf\u00e9 umbrellas and a bronze fountain.",
       "thumbnail": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -1936,8 +1960,8 @@
       "kind": "object",
       "definitionVersion": 1,
       "readiness": "pilot",
-      "label": "Corner Café & Apartments",
-      "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
+      "label": "Corner Caf\u00e9 & Apartments",
+      "description": "Ochre brick and cream stone apartments over a green-awning corner caf\u00e9.",
       "thumbnail": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
       "model": {
         "variantId": "parisian_corner_cafe_culture",
@@ -1965,7 +1989,7 @@
         "building_archetype_id": "parisian_boulevard_corner",
         "development_archetype_id": "parisian_boulevard_corner",
         "development_selected_variant_id": "parisian_corner_cafe_culture",
-        "development_archetype_label": "Corner Café & Apartments",
+        "development_archetype_label": "Corner Caf\u00e9 & Apartments",
         "floors": 6,
         "floor_count": 6,
         "native_plot_axes": true
@@ -2137,7 +2161,7 @@
       "definitionVersion": 1,
       "readiness": "pilot",
       "label": "Victorian Grand Station",
-      "description": "Victorian iron-and-glass train hall, ticket booths, café, platforms and two walkable gallery stairs.",
+      "description": "Victorian iron-and-glass train hall, ticket booths, caf\u00e9, platforms and two walkable gallery stairs.",
       "thumbnail": "/archetypes/buildings/historic_grand_station/variant_1.png",
       "model": {
         "variantId": "station_victorian_iron_glass",
@@ -2249,6 +2273,70 @@
         "floors": 3,
         "floor_count": 3,
         "native_plot_axes": true
+      }
+    },
+    {
+      "id": "native-park:student_treetop_walk_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Treetop Walk Park",
+      "description": "Climb two broad stair flights to a woodland promenade and shaded lookout. A separate ground path leads to a quiet resting glade.",
+      "thumbnail": "/archetypes/openspaces/treetop-walk-park/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 56.0,
+      "depth": 64.0,
+      "minWidth": 56.0,
+      "minDepth": 64.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_treetop_walk_v1",
+        "revision": "aef679e13148ddede9c39e73dbea57d74c23b41400d0363f3a132f93b6e72366",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_treetop_walk",
+        "green_space_selected_variant_id": "student_treetop_walk_v1",
+        "green_space_native_layout_id": "student_treetop_walk_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_terraced_rose_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Terraced Rose Garden",
+      "description": "Explore three richly planted rose terraces, paired stairways, a fountain and flowering pergolas.",
+      "thumbnail": "/archetypes/openspaces/terraced-rose-garden/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 50.1,
+      "depth": 64.0,
+      "minWidth": 50.1,
+      "minDepth": 64.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_terraced_rose_v1",
+        "revision": "bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_terraced_rose",
+        "green_space_selected_variant_id": "student_terraced_rose_v1",
+        "green_space_native_layout_id": "student_terraced_rose_v1--native-v1",
+        "pick_place_automatic_3d": true
       }
     }
   ]

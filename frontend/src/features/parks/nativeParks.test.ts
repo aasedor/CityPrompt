@@ -12,7 +12,7 @@ const long=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--long-v1')!;
 const coords=rectangleAt([-114.05,51.04],52,39);
 const zone=()=>({id:'park',updated_at:'one',zone_type:'green_space',coordinates:coords,properties:nativeParkProperties({},native,coords)} as SiteZone);
 describe('native parks',()=>{
-  it.each(['student_woodland_stream_garden_v1','student_reflecting_fountain_garden_v1','student_terraced_cafe_court_v1','student_urban_splash_plaza_v1','student_stone_labyrinth_garden_v1','student_sheltered_dog_park_v1'])('%s preserves the exact native assembly through movement and reload',variant=>{
+  it.each(['student_woodland_stream_garden_v1','student_reflecting_fountain_garden_v1','student_terraced_cafe_court_v1','student_urban_splash_plaza_v1','student_stone_labyrinth_garden_v1','student_sheltered_dog_park_v1','student_treetop_walk_v1','student_terraced_rose_v1'])('%s preserves the exact native assembly through movement and reload',variant=>{
     const layout=nativeParkLayouts.find(p=>p.variantId===variant)!;
     expect(layout).toBeDefined();
     const coordinates=rectangleAt([-114.05,51.04],layout.occupiedWidthM!,layout.occupiedDepthM!);

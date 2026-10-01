@@ -63,3 +63,5 @@ seed/classroom-parks/**/*.json -text whitespace=cr-at-eol
 seed/classroom-streets/**/*.glb filter=lfs diff=lfs merge=lfs -text
 seed/classroom-streets/**/*.png filter=lfs diff=lfs merge=lfs -text
 seed/classroom-streets/**/source-recipe.json -text whitespace=cr-at-eol
+seed/classroom-parks/garden-treetop-v003/*.py -text whitespace=cr-at-eol
+seed/classroom-parks/garden-rose-v005/*.py -text whitespace=cr-at-eol
