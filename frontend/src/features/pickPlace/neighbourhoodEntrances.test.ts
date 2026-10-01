@@ -21,6 +21,7 @@ describe('neighbourhood building entrance measurements', () => {
   });
   it('locks the clear café threshold to the measured complete-assembly centre', () => {
     const cafe = placeAsset('clay_parisian_corner_cafe_culture');
+    expect(cafe.label).toBe('Corner Café & Apartments');
     const original = {id:'cafe',zone_type:'building',coordinates:rectangleAt([-114,51],49,48,20),
       properties:placementProperties(cafe)} as SiteZone;
     const larger = {...original,coordinates:rectangleAt([-114,51],58,56,20)};

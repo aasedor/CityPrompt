@@ -242,7 +242,7 @@
     },
     {
       "domain": "park",
-      "title": "Terraced CafÃƒÂ© & Fountain Court",
+      "title": "Terraced Café & Fountain Court",
       "archetype_id": "sunken_plaza",
       "variant_id": "student_terraced_cafe_court_v1",
       "version": "showcase-court-v002",
@@ -861,7 +861,7 @@
         "step": 0.05,
         "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85Ã¢â‚¬â€œ115%. Height remains controlled by the selected authored storey assembly.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "calgary_inner_city_bungalow",
         "development_archetype_id": "calgary_inner_city_bungalow",
@@ -927,7 +927,7 @@
         "step": 0.05,
         "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85Ã¢â‚¬â€œ115%. Height remains controlled by the selected authored storey assembly.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "toronto_edwardian_foursquare",
         "development_archetype_id": "toronto_edwardian_foursquare",
@@ -1068,7 +1068,7 @@
         "repeatedStoreyHeightM": 3.2,
         "roofHeightM": 4.2
       },
-      "reshapeDescription": "Adjust the footprint within 51.1Ã¢â‚¬â€œ57.5 m by 43.1Ã¢â‚¬â€œ47.5 m and choose 16Ã¢â‚¬â€œ40 storeys. Horizontal fit never changes the authored storey height.",
+      "reshapeDescription": "Adjust the footprint within 51.1–57.5 m by 43.1–47.5 m and choose 16–40 storeys. Horizontal fit never changes the authored storey height.",
       "properties": {
         "building_archetype_id": "vancouverism_tower_podium",
         "development_archetype_id": "vancouverism_tower_podium",
@@ -1240,8 +1240,8 @@
       "kind": "object",
       "definitionVersion": 2,
       "readiness": "pilot",
-      "label": "Terraced CafÃƒÂ© & Fountain Court",
-      "description": "A limestone gathering court with seven seat steps, cafÃƒÂ© umbrellas and a bronze fountain.",
+      "label": "Terraced Café & Fountain Court",
+      "description": "A limestone gathering court with seven seat steps, café umbrellas and a bronze fountain.",
       "thumbnail": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -1840,8 +1840,8 @@
       "kind": "object",
       "definitionVersion": 1,
       "readiness": "pilot",
-      "label": "Corner CafÃ© & Apartments",
-      "description": "Ochre brick and cream stone apartments over a green-awning corner cafÃ©.",
+      "label": "Corner Café & Apartments",
+      "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
       "thumbnail": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
       "model": {
         "variantId": "parisian_corner_cafe_culture",
@@ -1869,7 +1869,7 @@
         "building_archetype_id": "parisian_boulevard_corner",
         "development_archetype_id": "parisian_boulevard_corner",
         "development_selected_variant_id": "parisian_corner_cafe_culture",
-        "development_archetype_label": "Corner CafÃ© & Apartments",
+        "development_archetype_label": "Corner Café & Apartments",
         "floors": 6,
         "floor_count": 6,
         "native_plot_axes": true
