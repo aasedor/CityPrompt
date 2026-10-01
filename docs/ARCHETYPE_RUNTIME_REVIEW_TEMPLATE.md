@@ -73,6 +73,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Proposed off-site public-road endpoint; Undo/Redo/reload and low junction grade | NOT TESTED | Confirm the mapped road visually; marker or stored height alone is insufficient. |
 | Fixed street bend through ordinary controls | NOT TESTED | Add bend point, drag the route handle, then reload and compare centreline, compiler identity and handle count. |
 | Native street production recipe and unchanged Apply | NOT TESTED | Backend catalogue, exact profile/revision/module locks, editor variant/width, reload without DEV marker; no fallback to a sibling. |
+| Finite street draft and connected section replacement | NOT TESTED | Exact variant/archetype/width before recipe creation, real existing zone ID, unchanged neighbours, no persisted preview flag; invalid saved recipes and lost junctions reject. |
 | Angled join and short-arm recovery | NOT TESTED | Width-aware snapping, sampled-curve node identity, owned pavement/sidewalk surface, no crossing-only fallback on unsupported joins. |
 | Sloped site; contacts and route continuity | NOT TESTED | |
 | Prepared level: actual native step pick, current review and route; unresolved export guard | NOT TESTED | |

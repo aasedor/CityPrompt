@@ -2,6 +2,11 @@
 
 Branch: `codex/street-manual-completion`. Local implementation; not published.
 
+Follow-up: the [October 1 intersection trial](STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md)
+records all twelve choices at a four-way crossing, an alley T, final-scene reopen
+and the shared admission fix. The broader acceptance and human-review gaps below
+remain open outside that bounded evidence.
+
 Twelve separately versioned street choices now use dimensions from the City of Calgary's [Detailed Cross-Sections](https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf), whose cover identifies **Draft 3, November 2024**. These are not represented as verified Draft 4 cross-sections. Source PDF SHA-256: `818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2`.
 
 | New selection | Width | PDF page |

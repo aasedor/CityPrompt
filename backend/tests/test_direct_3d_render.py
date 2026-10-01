@@ -57,6 +57,7 @@ from app.services.public_realm_lego import (
     plan_public_realm_recipe,
     plan_public_realm_zone_recipe,
     public_realm_fallback_marker,
+    manual_street_capabilities,
 )
 from app.services.residual_landscape import (
     ResidualSourceZone,
@@ -4689,6 +4690,41 @@ def test_fixed_collector_and_five_metre_alley_support_verified_junctions():
         properties=_supported_street_properties(5, [[-114.08, 51.039], [-114.08, 51.041]], archetype_id="green_alley"),
     )
     assert direct_api._street_supports_v1_four_way_junction(alley)
+
+
+@pytest.mark.parametrize("arms", [3, 4])
+def test_all_source_backed_manual_streets_have_verified_junction_identity(arms):
+    tested = []
+    for capability in manual_street_capabilities():
+        selection = capability.selections[0]
+        if not selection.variant_id.endswith("_draft3_v1"):
+            continue
+        width = selection.compatibility.nominal_row_width_m
+        recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+            archetype_id=selection.archetype_id,
+            variant_id=selection.variant_id,
+            target=StreetSegmentTarget(row_width_m=width, length_m=200),
+        ))
+        streets = _tee_street_zones()
+        if arms == 4:
+            streets[1].properties["plan_centerline"][0] = [-114.08, 51.039]
+        zone = streets[0]
+        zone.properties.update(
+            width=width,
+            road_archetype_id=selection.archetype_id,
+            road_selected_variant_id=selection.variant_id,
+            public_realm_lego=recipe.model_dump(mode="json"),
+        )
+        assert direct_api._street_supports_v1_four_way_junction(zone), selection.variant_id
+        topology = _junction_topology(streets, arms=arms)
+        assert direct_api._validate_junction_topology(streets, streets, topology), selection.variant_id
+        request = _connected_junction_request(streets, topology)
+        assert direct_api._bind_instance_manifest_to_server_zones(request, streets, streets)
+        zone.properties["public_realm_lego"]["component_set_ids"] = ["invented"]
+        assert not direct_api._street_supports_v1_four_way_junction(zone), selection.variant_id
+        assert not direct_api._validate_junction_topology(streets, streets, topology), selection.variant_id
+        tested.append(selection.variant_id)
+    assert len(tested) == 12
 
 
 def _junction_topology(streets, *, arms=3, longitude=-114.08, latitude=51.04):

@@ -61,6 +61,7 @@ from app.services.public_realm_lego import (
     plan_public_realm_zone_recipe,
     public_realm_fallback_marker,
     public_realm_recipe_identity,
+    manual_street_capabilities,
 )
 from app.services.render_audit_images import put_image_with_thumbnail
 from app.services.render_provenance import build_render_source_snapshot
@@ -624,6 +625,7 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     junction_families = {
         "street_local_public_realm", "street_complete_main_18m", "street_complete_main_22m",
         *(capability.family_id for capability in native_street_runtime_capabilities()),
+        *(capability.family_id for capability in manual_street_capabilities()),
     }
     if (
         properties.get("road_archetype_id") == "calgary_collector"
@@ -671,7 +673,10 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
             recipe.get("family_id"),
         )
     )
-    alley = properties.get("road_archetype_id") == "green_alley" and _effective_street_width(zone) == 5
+    alley = (properties.get("road_archetype_id") == "green_alley" and _effective_street_width(zone) == 5) or (
+        recipe.get("family_id") in {capability.family_id for capability in manual_street_capabilities()}
+        and recipe_archetype_id == "calgary_alley"
+    )
     return _effective_street_width(zone) >= (5 if alley else 6) and not any(
         token in semantic for token in ("trail", "path", "roundabout", *(("laneway", "alley") if not alley else ()))
     )
@@ -1092,7 +1097,10 @@ def _validate_junction_topology(
                 recipe.get("family_id"),
             )
         )
-        alley = properties.get("road_archetype_id") == "green_alley" and _effective_street_width(zone) == 5
+        alley = (properties.get("road_archetype_id") == "green_alley" and _effective_street_width(zone) == 5) or (
+            recipe.get("family_id") in {capability.family_id for capability in manual_street_capabilities()}
+            and recipe.get("archetype_id") == "calgary_alley"
+        )
         if _effective_street_width(zone) < (5 if alley else 6) or any(
             token in semantic for token in ("trail", "path", "roundabout", *(("laneway", "alley") if not alley else ()))
         ):

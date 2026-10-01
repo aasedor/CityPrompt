@@ -11,8 +11,9 @@ export function streetEditConnectionCheck(zone: SiteZone, zones: SiteZone[]) {
     node.zoneIds.includes(zone.id) && resolveStreetJunctionLayout(node, zones));
   return (candidate: SiteZone) => {
     if (!required.length) return true;
-    const next = zones.map(item => item.id === zone.id ? candidate : item);
-    const available = detectConnectedStreetIntersections(next).filter(node =>
+    const preview = { ...candidate, properties: { ...candidate.properties, junction_preview_candidate: true } };
+    const next = zones.map(item => item.id === zone.id ? preview : item);
+    const available = detectConnectedStreetIntersections(next, true).filter(node =>
       node.zoneIds.includes(zone.id) && resolveStreetJunctionLayout(node, next));
     // Consume matches: two crossings of the same streets need two patches.
     return required.every(before => {

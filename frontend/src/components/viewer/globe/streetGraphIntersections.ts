@@ -6,6 +6,7 @@ import {
   PUBLIC_REALM_STREET_FAMILY_VERSION,
 } from './streetFamilyCatalog';
 import { validateStreetRecipeProperties } from './streetLegoContract';
+import manualStreets from '@/data/streetManual.json';
 import { publicRealmTrialAsset } from './publicRealmTrial';
 import { nativeStreetPilotForZone } from './nativeStreetPilot';
 import { isSpecialistStreet } from './specialistStreetProgram';
@@ -137,6 +138,17 @@ function stableNodeId(longitude: number, latitude: number): string {
   return `street-four-way-${(hash >>> 0).toString(16).padStart(8, '0')}`;
 }
 
+/** A finite picker draft may preview a junction before the server locks its recipe. */
+function isManualStreetDraft(zone: SiteZone, preview: boolean): boolean {
+  const props = zone.properties;
+  return preview && (zone.id === 'draft-street' || props?.junction_preview_candidate === true)
+    && !props?.public_realm_lego
+    && manualStreets.some(row => row.variantId === props?.road_selected_variant_id
+      && row.variantId === props?.pick_place_street_section
+      && row.archetypeId === props?.road_archetype_id
+      && row.widthM === effectiveRoadWidth(props));
+}
+
 /**
  * Derive graph-owned four-way nodes from the street polygons currently
  * available to the globe. The plan payload does not yet persist graph node
@@ -165,7 +177,12 @@ function detectStreetIntersections(
     const semantic = [props?.street_role, props?.road_archetype_id, lego?.archetype_id, lego?.family_id]
       .map((value) => String(value ?? '').toLowerCase().replace(/-/g, '_'))
       .join(' ');
-    const alley = props?.road_archetype_id === 'green_alley' && effectiveRoadWidth(zone.properties) === 5;
+    const manual = validateStreetRecipeProperties(zone.properties);
+    const manualDraft = isManualStreetDraft(zone, preview);
+    const manualSection = (manual.valid && manual.recipe.selection.componentSetIds?.includes('manual_streets_v1') === true)
+      || manualDraft;
+    const alley = (props?.road_archetype_id === 'green_alley' && effectiveRoadWidth(zone.properties) === 5)
+      || (manualSection && props?.road_archetype_id === 'calgary_alley');
     return effectiveRoadWidth(zone.properties) >= (alley ? 5 : 6)
       && !['trail', 'path', 'roundabout', ...(alley ? [] : ['laneway', 'alley'])].some((token) => semantic.includes(token));
   });
@@ -191,6 +208,9 @@ function detectStreetIntersections(
       : extractZoneCenterline(zone));
     if (centerline.length < 2) return [];
     const validation = validateStreetRecipeProperties(zone.properties);
+    // The placement preflight runs before the server creates the hash-locked
+    // recipe. Only its finite picker selection may anchor a draft junction.
+    const manualDraft = isManualStreetDraft(zone, preview);
     // Junction anchoring requires a centerline BOTH sides derive identically.
     // Without a valid persisted plan_centerline this detector walks polygon
     // vertices while the server proof takes the minimum-rotated-rectangle
@@ -212,16 +232,17 @@ function detectStreetIntersections(
     return [{
       zoneId: zone.id,
       widthM: native?.dimensions[0] ?? effectiveRoadWidth(zone.properties),
-      supportedV1: centerlineAnchorsJunction && (native?.kind === 'street' || nativePilot !== undefined || ((props?.road_archetype_id === 'calgary_collector'
+      supportedV1: centerlineAnchorsJunction && (native?.kind === 'street' || nativePilot !== undefined || manualDraft || ((props?.road_archetype_id === 'calgary_collector'
         && props.road_selected_variant_id === 'calgary_collector_v0'
         && effectiveRoadWidth(zone.properties) === 20
         && (props.public_realm_fallback as Record<string, unknown> | undefined)?.state === 'family_pending') || (validation.valid
         && validation.recipe.targetType === 'street_segment'
-        && [
+        && ([
           'street_local_public_realm',
           'street_complete_main_18m',
           'street_complete_main_22m',
-        ].includes(validation.recipe.familyId)))),
+        ].includes(validation.recipe.familyId)
+        || validation.recipe.selection.componentSetIds?.includes('manual_streets_v1') === true)))),
       points: centerline.map((point) => ({
         x: (point[0] - originLng) * mPerLon,
         y: (point[1] - originLat) * METERS_PER_DEG_LAT,

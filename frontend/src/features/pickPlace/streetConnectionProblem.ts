@@ -9,7 +9,8 @@ import { isFixedSectionStreet } from './streetPlacement';
 
 /** Only accept overlaps that the shared junction renderer can actually join. */
 export function streetConnectionProblem(candidate: Pick<SiteZone, 'coordinates'|'properties'> & Partial<SiteZone>, zones: SiteZone[]): string | null {
-  const draft = {...candidate, id:candidate.id ?? 'draft-street', zone_type:candidate.zone_type ?? 'road'} as SiteZone;
+  const draft = {...candidate, id:candidate.id ?? 'draft-street', zone_type:candidate.zone_type ?? 'road',
+    properties: {...candidate.properties, junction_preview_candidate: true}} as SiteZone;
   if (!isFixedSectionStreet(draft) || isSpecialistStreet(draft.properties?.road_selected_variant_id) || draft.properties?.validation_fixed_fixture) return null;
   const origin=draft.coordinates[0]; if(!origin)return null;
   const sx=metersPerDegLon(origin[1]);

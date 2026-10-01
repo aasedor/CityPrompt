@@ -659,6 +659,14 @@ An old capture-only family allowlist can reject a valid visible junction. Add a
 mixed-family capture-manifest regression for each newly supported street family,
 and verify the complete scene's capture admission before any paid render.
 
+For a finite street picker, placement and section replacement can run before
+the server issues the locked recipe. Admit only the exact variant/archetype/width
+tuple for that candidate's preview; never let an invalid saved recipe borrow the
+draft path. Preserve neighbours and keep preview flags out of persisted state.
+Test replacement with a real zone ID as well as new placement, reject lost
+junctions and verify runtime still requires the recipe. See the
+[Street Manual T/X trial](STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md).
+
 Public-road ground measurements must survive asynchronous tile refinement. A
 failed measurement can retry twice after different visible geometry settles;
 unchanged or missing coverage must not trigger an unbounded loop. Keep the exact
