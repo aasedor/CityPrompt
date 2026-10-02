@@ -14,6 +14,65 @@ import { direct3DInstanceUserData, direct3DProposalUserData, direct3DZoneInstanc
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { nativePavingProbe, trimAccessAtNativePaving } from './nativeParkAccess';
 import { cloneNativeParkScene } from './nativeParkSurfaceDepth';
+import { STEP_FREE_PARK_LIFTS, type ParkLiftPlan } from './stepFreeParkAccess';
+
+function StepFreeParkStructure({plan}:{plan:ParkLiftPlan}) {
+  const span=Math.abs(plan.bridgeEndY-plan.bridgeStartY);
+  const middle=(plan.bridgeEndY+plan.bridgeStartY)/2;
+  const width=plan.widthM??2.48,half=width/2;
+  const cabinDepth=plan.cabinDepthM??2.6,cabinHalfDepth=cabinDepth/2;
+  const height=plan.upperZ-plan.lowerZ;
+  const metal='#425255';
+  return <group userData={{stepFreeParkAccess:true}}>
+    <mesh position={[plan.x,middle,plan.bridgeZ-.105]} castShadow receiveShadow>
+      <boxGeometry args={[width,span+.12,.21]}/><meshStandardMaterial color={plan.color} roughness={.88}/>
+    </mesh>
+    {[-1,1].map(side=><group key={side}>
+      <mesh position={[plan.x+side*(half+.04),middle-(plan.connectX!==undefined&&side>0?1.2:0),plan.bridgeZ+.56]} castShadow>
+        <boxGeometry args={[.045,span-(plan.connectX!==undefined&&side>0?2.4:0),1.12]}/><meshStandardMaterial color={metal} metalness={.43} roughness={.35} transparent opacity={.65}/>
+      </mesh>
+      <mesh position={[plan.x+side*(half+.04),middle-(plan.connectX!==undefined&&side>0?1.2:0),plan.bridgeZ+1.12]} castShadow>
+        <boxGeometry args={[.085,span-(plan.connectX!==undefined&&side>0?2.4:0),.085]}/><meshStandardMaterial color={metal} metalness={.48} roughness={.34}/>
+      </mesh>
+    </group>)}
+    {plan.connectX!==undefined&&<group>
+      <mesh position={[(plan.x+plan.connectX)/2,plan.bridgeEndY,plan.bridgeZ-.105]} castShadow receiveShadow>
+        <boxGeometry args={[Math.abs(plan.connectX-plan.x)+.12,width,.21]}/><meshStandardMaterial color={plan.color} roughness={.88}/>
+      </mesh>
+      <mesh position={[(plan.x+plan.connectX)/2,plan.bridgeEndY-half-.04,plan.bridgeZ+.56]} castShadow>
+        <boxGeometry args={[Math.abs(plan.connectX-plan.x),.045,1.12]}/><meshStandardMaterial color={metal} metalness={.43} roughness={.35} transparent opacity={.65}/>
+      </mesh>
+      <mesh position={[(plan.x+plan.connectX-2.3)/2,plan.bridgeEndY+half+.04,plan.bridgeZ+.56]} castShadow>
+        <boxGeometry args={[Math.abs(plan.connectX-2.3-plan.x),.045,1.12]}/><meshStandardMaterial color={metal} metalness={.43} roughness={.35} transparent opacity={.65}/>
+      </mesh>
+    </group>}
+    {Array.from({length:Math.max(1,Math.floor(span/7))},(_,i)=>{
+      const y=Math.min(plan.bridgeStartY,plan.bridgeEndY)+(i+1)*span/(Math.floor(span/7)+1);
+      const base=plan.lowerZ<0?plan.lowerZ:0;
+      return <group key={`support-${i}`}>
+        {[-1,1].map(side=><mesh key={side} position={[plan.x+side*(half-.23),y,(plan.bridgeZ+base)/2-.08]} castShadow>
+          <boxGeometry args={[.16,.16,Math.max(.16,plan.bridgeZ-base-.16)]}/>
+          <meshStandardMaterial color={metal} metalness={.35} roughness={.45}/>
+        </mesh>)}
+      </group>;
+    })}
+    {[plan.lowerZ,plan.upperZ].map((z,i)=><mesh key={`landing-${i}`} position={[plan.x,plan.y,z-.055]} receiveShadow>
+      <boxGeometry args={[2.5,cabinDepth,.11]}/><meshStandardMaterial color={plan.color} roughness={.88}/>
+    </mesh>)}
+    {[-1,1].flatMap(dx=>[-1,1].map(dy=><mesh key={`tower-${dx}:${dy}`} position={[plan.x+dx*1.25,plan.y+dy*cabinHalfDepth,plan.lowerZ+height/2+.12]} castShadow>
+      <boxGeometry args={[.09,.09,height+.24]}/><meshStandardMaterial color={metal} metalness={.45} roughness={.34}/>
+    </mesh>))}
+    {[-1,1].map(side=><mesh key={`glass-${side}`} position={[plan.x+side*1.25,plan.y,plan.lowerZ+height/2+.12]} castShadow>
+      <boxGeometry args={[.03,cabinDepth-.1,height]}/><meshStandardMaterial color="#84b5b7" transparent opacity={.32} roughness={.2} depthWrite={false}/>
+    </mesh>)}
+    <mesh position={[plan.x,plan.y,plan.upperZ+.27]} castShadow>
+      <boxGeometry args={[2.67,cabinDepth+.16,.2]}/><meshStandardMaterial color={metal} metalness={.43} roughness={.38}/>
+    </mesh>
+    {[plan.lowerZ+.9,plan.upperZ+1.02].map((z,i)=><mesh key={`sign-${i}`} position={[plan.x,plan.y-cabinHalfDepth-.04,z]}>
+      <boxGeometry args={[.68,.04,.28]}/><meshStandardMaterial color="#f6d77e" emissive="#68501d" emissiveIntensity={.4}/>
+    </mesh>)}
+  </group>;
+}
 
 function Module({asset}:{asset:Asset}) {
   const scene=verifiedScene(asset);
@@ -51,7 +110,9 @@ class ParkBoundary extends Component<{children:ReactNode;zoneId:string;revision:
 function LoadedPark({zone,layout}:{zone:SiteZone;layout:NativeParkLayout}) {
   verifyParkAssets(Object.values(layout.assets));
   useOwnParkAssemblyGround(zone);
-  return <group userData={{nativeParkStatus:'ready'}}><NativeParkModel layout={layout}/><NativeParkConnections zone={zone}/></group>;
+  return <group userData={{nativeParkStatus:'ready'}}><NativeParkModel layout={layout}/>
+    {STEP_FREE_PARK_LIFTS[layout.variantId] && <StepFreeParkStructure plan={STEP_FREE_PARK_LIFTS[layout.variantId]}/>}
+    <NativeParkConnections zone={zone}/></group>;
 }
 function NativeParkConnections({zone}:{zone:SiteZone}) {
   const access=getDerivedParkAccess(zone),resolved=readNativePark(zone)!;

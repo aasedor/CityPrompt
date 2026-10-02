@@ -1,5 +1,10 @@
 # Two elevated rail stations — local runtime review
 
+**2026-10-02 update:** City Prompt now adds visible glass lift towers and
+walkable upper landings on both sides of each placed station. See
+`STEP_FREE_STATION_PARK_ACCESS_2026-10-02.md`. The review below records the
+original 2026-10-01 native module delivery.
+
 This initiative adds two exact Streets → Transit catalogue variants:
 
 | Variant | Parent archetype | Station design |

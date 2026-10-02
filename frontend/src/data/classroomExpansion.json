@@ -2101,7 +2101,7 @@
       "definitionVersion": 2,
       "readiness": "pilot",
       "label": "Spiral Lookout Park",
-      "description": "Climb a continuous spiral promenade to a landscaped lookout. Follow the same generous path back down or return to the entrance.",
+      "description": "Follow a continuous step-free spiral promenade to the landscaped lookout, then return along the same path.",
       "thumbnail": "/archetypes/openspaces/spiral-lookout-park/variant_0.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -2133,7 +2133,7 @@
       "definitionVersion": 2,
       "readiness": "pilot",
       "label": "Quarry Garden",
-      "description": "Descend three stone stair flights into a planted quarry garden. Connected terraces, a reflecting pool and a return-to-entrance control.",
+      "description": "Explore the planted quarry by stairs or take the step-free bridge and lift to the lower garden. Intermediate terraces retain stair access.",
       "thumbnail": "/archetypes/openspaces/quarry-garden/variant_0.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -2165,7 +2165,7 @@
       "definitionVersion": 2,
       "readiness": "pilot",
       "label": "Cascade Water Garden",
-      "description": "Walk up either side of three cascading pools, cross the upper garden and descend the opposite stairway.",
+      "description": "Follow the cascading pools by stairs, or use the step-free edge bridge and lift to reach the upper garden.",
       "thumbnail": "/archetypes/openspaces/cascade-water-garden/variant_0.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -2317,7 +2317,7 @@
       "definitionVersion": 2,
       "readiness": "pilot",
       "label": "Treetop Walk Park",
-      "description": "Climb two broad stair flights to a woodland promenade and shaded lookout. A separate ground path leads to a quiet resting glade.",
+      "description": "Reach the woodland canopy walk by stairs or a separate step-free lift and bridge. A ground path leads to a resting glade.",
       "thumbnail": "/archetypes/openspaces/treetop-walk-park/variant_0.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -2349,7 +2349,7 @@
       "definitionVersion": 2,
       "readiness": "pilot",
       "label": "Terraced Rose Garden",
-      "description": "Explore three richly planted rose terraces, paired stairways, a fountain and flowering pergolas.",
+      "description": "Explore planted rose terraces by stairs or take the step-free lift and bridge to the upper garden and pergola.",
       "thumbnail": "/archetypes/openspaces/terraced-rose-garden/variant_0.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -2412,7 +2412,7 @@
       "definitionVersion": 1,
       "readiness": "pilot",
       "label": "SkyTrain Elevated Corridor · Modern Station Hub",
-      "description": "Elevated twin-track corridor with a movable full station, two platforms, stair access and a static train. Straight 48–288 m on a prepared level site.",
+      "description": "Elevated twin-track corridor with movable stations, two platforms, stairs and step-free lifts. Straight 48–288 m on a prepared level site; trains are static.",
       "thumbnail": "/archetypes/streets/skytrain-elevated-station-native/variant_0.png",
       "model": {
         "variantId": "skytrain_elevated_corridor_v0",
@@ -2443,7 +2443,7 @@
       "definitionVersion": 1,
       "readiness": "pilot",
       "label": "Elevated Rail Transit · Parametric Flow Station",
-      "description": "Elevated twin-track corridor with a movable full station, two platforms, stair access and a static train. Straight 48–288 m on a prepared level site.",
+      "description": "Elevated twin-track corridor with movable stations, two platforms, stairs and step-free lifts. Straight 48–288 m on a prepared level site; trains are static.",
       "thumbnail": "/archetypes/streets/elevated-rail-transit-station-native/variant_0.png",
       "model": {
         "variantId": "elevated_rail_transit_corridor_v0",

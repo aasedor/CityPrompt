@@ -98,8 +98,8 @@ import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
-import { constrainElevatedRailWalk } from './elevatedRailWalking';
-import { constrainNativeParkWalk, nativeParkWalkEntry, nativeParkWalkEntrance } from '@/features/parks/nativeParkWalking';
+import { constrainElevatedRailWalk, elevatedRailLiftDestination } from './elevatedRailWalking';
+import { constrainNativeParkWalk, nativeParkLiftDestination, nativeParkWalkEntry, nativeParkWalkEntrance } from '@/features/parks/nativeParkWalking';
 import { buildingWalkEntry, buildingWalkEntrance, constrainBuildingWalk } from '@/features/legoAssembly/buildingWalking';
 import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
@@ -1603,6 +1603,7 @@ export function GlobeSitePlannerMap({
   const [walkPickError, setWalkPickError] = useState('');
   const walkPoseRef = useRef<WalkPose | null>(null);
   const [walkHasParkEntrance, setWalkHasParkEntrance] = useState(false);
+  const [walkLiftLabel, setWalkLiftLabel] = useState<string|null>(null);
   const [walkHasBuildingEntrance, setWalkHasBuildingEntrance] = useState(false);
   const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
@@ -2296,6 +2297,9 @@ export function GlobeSitePlannerMap({
     const pose = { ...next, groundHeight };
     walkPoseRef.current = pose;
     setWalkHasParkEntrance(Boolean(nativeParkWalkEntrance(terrainZonesRef.current, pose)));
+    const railLift=elevatedRailLiftDestination(terrainZonesRef.current,pose);
+    const parkLift=nativeParkLiftDestination(terrainZonesRef.current,pose);
+    setWalkLiftLabel(parkLift?.label ?? (railLift ? `Take lift to ${railLift.groundHeight>pose.groundHeight?'platform':'street'}` : null));
     setWalkHasBuildingEntrance(Boolean(buildingWalkEntrance(terrainZonesRef.current, pose)));
     const lat = pose.lat * DEG_TO_RAD;
     const lng = pose.lng * DEG_TO_RAD;
@@ -4636,6 +4640,13 @@ export function GlobeSitePlannerMap({
               const entrance = pose && nativeParkWalkEntrance(terrainZonesRef.current, pose);
               if (entrance) applyWalkPose(entrance);
             }} className="min-h-11 rounded-lg border border-slate-700 px-3">Return to park entrance</button>}
+          {walkLiftLabel &&
+            <button type="button" onClick={() => {
+              const pose=walkPoseRef.current;
+              const destination=pose&&(nativeParkLiftDestination(terrainZonesRef.current,pose)?.pose
+                ??elevatedRailLiftDestination(terrainZonesRef.current,pose));
+              if(destination)applyWalkPose(destination);
+            }} className="min-h-11 rounded-lg border border-teal-800 bg-teal-50 px-3">{walkLiftLabel}</button>}
           {walkHasBuildingEntrance &&
             <button type="button" onClick={() => {
               const pose = walkPoseRef.current;

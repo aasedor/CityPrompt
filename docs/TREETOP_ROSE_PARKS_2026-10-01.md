@@ -1,5 +1,10 @@
 # Treetop and rose parks — local catalogue pair
 
+**2026-10-02 update:** City Prompt now adds visible lift-and-bridge routes to
+the Treetop canopy walk and the Rose Garden's upper terrace. See
+`STEP_FREE_STATION_PARK_ACCESS_2026-10-02.md`. The review below records the
+original 2026-10-01 model delivery.
+
 Two new parks are available in the local validation catalogue. Both have
 authored planting, actual 3D stairs and walking surfaces tied to their exported
 models. They reuse the existing native-park placement and walking systems.

@@ -4,6 +4,8 @@ import { buildNativeStreetProgram } from './nativeStreetProgram';
 import { CIVIC_RAIL_VARIANT, SKYTRAIN_RAIL_VARIANT, elevatedRailStationProblem } from './elevatedRailProgram';
 import { specialistWalkingHeight } from './specialistStreetProgram';
 import { authoredCameraGround } from './authoredCameraGround';
+import { elevatedRailLiftDestination } from './elevatedRailWalking';
+import { RAIL_LIFT_X_M, RAIL_LIFT_Y_M, RAIL_PLATFORM_HEIGHT_M } from './elevatedRailProgram';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import type { SiteZone } from '@/types';
 
@@ -83,5 +85,18 @@ describe('elevated stations',()=>{
     const rail=zone(variant,120,stops),site={...boundary,coordinates:bufferLineToPolygon([[0,0],[0,120/111320]],120)};
     const lng=8.7/(111320*Math.cos(0));
     expect(authoredCameraGround([site,rail],lng,60/111320,1103)).toBeCloseTo(1106.885);
+  });
+  it.each(variants)('serves both platform sides with a step-free lift for %s',variant=>{
+    const rail=zone(variant,120,[stop(60)]),site={...boundary,coordinates:bufferLineToPolygon([[0,0],[0,120/111320]],120)};
+    for(const side of [-1,1]){
+      const pose={lng:side*RAIL_LIFT_X_M/111320,lat:(60+RAIL_LIFT_Y_M)/111320,groundHeight:1103.025,heading:0};
+      const upper=elevatedRailLiftDestination([site,rail],pose);
+      expect(upper?.groundHeight).toBeCloseTo(1103+RAIL_PLATFORM_HEIGHT_M);
+      expect(authoredCameraGround([site,rail],pose.lng,pose.lat,upper!.groundHeight)).toBeCloseTo(upper!.groundHeight);
+      expect(elevatedRailLiftDestination([site,rail],upper!)?.groundHeight).toBeCloseTo(pose.groundHeight);
+      expect(elevatedRailLiftDestination([site,rail],{...pose,lat:pose.lat+5/111320})).toBeNull();
+      const invalid={...rail,properties:{...rail.properties,road_native_stops:[null]}} as unknown as SiteZone;
+      expect(elevatedRailLiftDestination([site,invalid],pose)).toBeNull();
+    }
   });
 });

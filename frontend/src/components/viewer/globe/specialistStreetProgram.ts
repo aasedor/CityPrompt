@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import type {StreetRouteStation} from './nativeStreetPilot';
-import { hasElevatedStation, isElevatedRail, type RailStation } from './elevatedRailProgram';
+import { hasElevatedStation, isElevatedRail, RAIL_LIFT_X_M, RAIL_LIFT_Y_M, RAIL_PLATFORM_HEIGHT_M, type RailStation } from './elevatedRailProgram';
 
 export const CANAL_VARIANT='amsterdam_gracht_v1';
 export const BRIDGE_VARIANT='landmark_signature_bridge_v2';
@@ -50,6 +50,10 @@ export function specialistWalkingHeight(variant:string,x:number,station:number,l
     if(Math.abs(x)>13)return null;
     if(hasElevatedStation(variant))for(const stop of stops){
       const y=station-stop.stationM,ax=Math.abs(x);
+      // The lift cabin and its short bridge share the upper platform datum.
+      // At ground level the same footprint remains on the public concourse.
+      if(onUpperLevel&&ax>=7.8&&ax<=RAIL_LIFT_X_M+1.1&&Math.abs(y-RAIL_LIFT_Y_M)<=1.15)
+        return RAIL_PLATFORM_HEIGHT_M;
       // Two broad, shallow stair flights lead from each ground entrance to
       // the platform. The camera follows their authored rise continuously.
       if(ax>=7.8&&ax<=9.6&&y>=-14&&y<=14)return .025+(y+14)/28*7.72;

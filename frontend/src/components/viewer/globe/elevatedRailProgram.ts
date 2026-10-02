@@ -8,6 +8,10 @@ export const isElevatedRail = (variant: unknown): boolean =>
   variant === ELEVATED_RAIL_VARIANT || STATION_RAIL_VARIANTS.some(id => id === variant);
 export const hasElevatedStation = (variant: unknown): boolean => STATION_RAIL_VARIANTS.some(id => id === variant);
 export interface RailStation { id: string; stationM: number }
+/** The lift landings sit beside the two platform entries, clear of the stairs. */
+export const RAIL_LIFT_X_M = 10.8;
+export const RAIL_LIFT_Y_M = 15.5;
+export const RAIL_PLATFORM_HEIGHT_M = 7.998;
 const STRUCTURAL = new Set(['rail_pier', 'rail_train', 'rail_buffer', 'rail_end']);
 
 /** A complete 48 m platform, canopy and stair envelope remains inside the route. */

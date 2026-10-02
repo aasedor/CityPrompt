@@ -5,6 +5,36 @@ import { verifyStreetAssets, verifiedStreetScene } from './nativeStreetAssets';
 import { disposeStreetInstances, instanceStreetModule } from './nativeStreetInstances';
 import { nativeStreetRevision } from './nativeStreetReadiness';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
+import { RAIL_LIFT_X_M, RAIL_LIFT_Y_M, RAIL_PLATFORM_HEIGHT_M } from './elevatedRailProgram';
+
+function RailStationLifts({poses}:{poses:NativeStreetPose[]}) {
+  return <>{poses.filter(p=>p.kind==='rail_station').flatMap((pose,i)=>[-1,1].map(side=>{
+    const x=side*RAIL_LIFT_X_M, y=RAIL_LIFT_Y_M;
+    const metal='#394c52',glass='#78b5c2',paving='#bcb8a9';
+    return <group key={`${i}:${side}`} position={[pose.x,pose.y,pose.z+pose.surfaceLiftM]} rotation={[0,0,pose.yaw]} userData={{stepFreeStationLift:true}}>
+      {/* The bridge meets the protected platform through its existing glazing gap. */}
+      <mesh position={[side*9.32,y,RAIL_PLATFORM_HEIGHT_M-.09]} receiveShadow castShadow>
+        <boxGeometry args={[3.55,2.25,.18]}/><meshStandardMaterial color={paving} roughness={.87}/>
+      </mesh>
+      {[y-1.13,y+1.13].map((edge,j)=><mesh key={`bridge-rail-${j}`} position={[side*9.45,edge,RAIL_PLATFORM_HEIGHT_M+.55]} castShadow>
+        <boxGeometry args={[2.45,.045,1.1]}/><meshStandardMaterial color={metal} metalness={.48} roughness={.34} transparent opacity={.7}/>
+      </mesh>)}
+      {[.025,RAIL_PLATFORM_HEIGHT_M].map((z,j)=><mesh key={`landing-${j}`} position={[x,y,z-.055]} receiveShadow>
+        <boxGeometry args={[2.35,2.45,.11]}/><meshStandardMaterial color={paving} roughness={.9}/>
+      </mesh>)}
+      {[-1,1].flatMap(dx=>[-1,1].map(dy=><mesh key={`post-${dx}:${dy}`} position={[x+dx*1.17,y+dy*1.23,4.03]} castShadow>
+        <boxGeometry args={[.08,.08,8.08]}/><meshStandardMaterial color={metal} metalness={.5} roughness={.35}/>
+      </mesh>))}
+      {[-1,1].map(dx=><mesh key={`glass-${dx}`} position={[x+dx*1.17,y,4.02]} castShadow>
+        <boxGeometry args={[.028,2.32,7.7]}/><meshStandardMaterial color={glass} transparent opacity={.32} metalness={.1} roughness={.18} depthWrite={false}/>
+      </mesh>)}
+      <mesh position={[x,y,8.14]} castShadow><boxGeometry args={[2.55,2.55,.16]}/><meshStandardMaterial color={metal} metalness={.43} roughness={.38}/></mesh>
+      {[.95,8.92].map((z,j)=><mesh key={`lift-sign-${j}`} position={[x,y-1.27,z]}>
+        <boxGeometry args={[.72,.035,.36]}/><meshStandardMaterial color="#f2d065" emissive="#806321" emissiveIntensity={.35}/>
+      </mesh>)}
+    </group>;
+  }))}</>;
+}
 
 class ModuleBoundary extends Component<{ children: ReactNode; zone: SiteZone; preview?: boolean }, { failed: boolean }> {
   state = { failed: false };
@@ -36,6 +66,7 @@ function LoadedModules({poses}:{poses:NativeStreetPose[]}) {
   verifyStreetAssets(batches.map(([,items])=>items[0]));
   return <group userData={{nativeStreetStatus:'ready'}}>
     {batches.map(([key,items])=><ModuleBatch key={key} poses={items}/>)}
+    <RailStationLifts poses={poses}/>
     {poses.filter(p=>p.wellWidthM && p.wellDepthM).map((pose,index)=><mesh key={`soil-${index}`} position={[pose.x,pose.y,pose.z+pose.surfaceLiftM-.015]} rotation={[0,0,pose.yaw]} receiveShadow renderOrder={149}>
       <planeGeometry args={[pose.wellWidthM!-.08,pose.wellDepthM!-.08]}/>
       <meshStandardMaterial color="#392e25" roughness={1} side={2}/>

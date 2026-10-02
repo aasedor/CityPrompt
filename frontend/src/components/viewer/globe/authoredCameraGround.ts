@@ -12,6 +12,7 @@ import { terraceOffset } from './terraceDefinition';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { isSpecialistStreet, specialistWalkingHeight, BRIDGE_VARIANT } from './specialistStreetProgram';
 import { hasElevatedStation } from './elevatedRailProgram';
+import { stepFreeParkWalkingNetwork } from '@/features/parks/stepFreeParkAccess';
 
 /** Camera feet belong on the authored ground, not the Google mesh hidden
  * underneath it. Unprepared landscape and off-site context keep their hit. */
@@ -53,8 +54,9 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
         const local: [number,number] = [x*c + y*s, -x*s + y*c];
         if (Math.abs(local[0]) <= native.layout.widthM/2 && Math.abs(local[1]) <= native.layout.depthM/2) {
           try {
-            const walking = (native.layout as typeof native.layout & { walking?: ParkWalkingNetwork }).walking;
-            const height = walking ? parkWalkHeight(walking, local[0], local[1]) : nativePavingProbe(native.layout, true)(local);
+            const source = (native.layout as typeof native.layout & { walking?: ParkWalkingNetwork }).walking;
+            const walking = source && stepFreeParkWalkingNetwork(native.layout.variantId, source);
+            const height = walking ? parkWalkHeight(walking, local[0], local[1], walking.version===2?measured-level:undefined) : nativePavingProbe(native.layout, true)(local);
             if (height !== null) return level + height;
           } catch {
             // Loading/errors remain owned by NativeParkLayer and its capture guard.

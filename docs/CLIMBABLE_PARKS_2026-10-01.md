@@ -1,5 +1,11 @@
 # Three climbable parks — local catalogue delivery
 
+**2026-10-02 update:** Spiral Lookout's original graded promenade is step-free;
+City Prompt now also adds visible lift-and-bridge routes to the Quarry Garden's
+lower court and Cascade Water Garden's upper terrace. See
+`STEP_FREE_STATION_PARK_ACCESS_2026-10-02.md`. The review below records the
+original 2026-10-01 model delivery.
+
 Date: 2026-10-01. Initiative: `codex/climbable-park-trio`.
 
 The user approved Quarry Garden, Spiral Lookout Park and Cascade Water Garden,
