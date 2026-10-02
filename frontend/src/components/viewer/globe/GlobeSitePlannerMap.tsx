@@ -52,6 +52,8 @@ import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/typ
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
+import { GlobeParcelZoning } from '@/features/referenceLayers/GlobeParcelZoning';
+import type { ParcelZoningState } from '@/features/referenceLayers/useParcelZoning';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
@@ -1474,6 +1476,7 @@ interface GlobeSitePlannerMapProps {
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
+  parcelZoning?: Pick<ParcelZoningState, 'data' | 'lines' | 'labels'>;
   transportContext?: ExistingTransport;
   latitude?: number;
   longitude?: number;
@@ -1576,6 +1579,7 @@ export function GlobeSitePlannerMap({
   onPlaceAsset,
   onCancelPlacement,
   referenceLayers = [],
+  parcelZoning,
   transportContext = EMPTY_TRANSPORT,
   latitude,
   longitude,
@@ -4423,7 +4427,9 @@ export function GlobeSitePlannerMap({
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
-          <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} /></group>
+          <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} />
+            {parcelZoning && <GlobeParcelZoning {...parcelZoning} terrainHeight={terrainElevation} />}
+          </group>
           <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
           {/* Camera starts at project location via Canvas camera prop */}
