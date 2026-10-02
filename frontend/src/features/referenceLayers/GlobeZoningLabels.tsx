@@ -4,29 +4,27 @@ import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/direct3dCapture';
 import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
-import { GlobeReferenceLayer } from './GlobeReferenceLayer';
-import { parcelReferenceLayer, type ParcelOverlay } from './parcelZoning';
+import type { ZoningOverlay } from './zoningLabels';
 
 const NO_HIT = () => {};
 const RAD = Math.PI / 180;
 
 /** Display-only cartography: excluded from captures, raycasting and terrain masks. */
-export function GlobeParcelZoning({ data, lines, labels, terrainHeight }: {
-  data?: ParcelOverlay; lines: boolean; labels: boolean; terrainHeight: number;
+export function GlobeZoningLabels({ data, labels, terrainHeight }: {
+  data?: ZoningOverlay; labels: boolean; terrainHeight: number;
 }) {
-  const layers = useMemo(() => data ? [parcelReferenceLayer(data)] : [], [data]);
   const sprites = useMemo(() => {
     const group = new THREE.Group();
-    group.name = 'parcel-zoning-labels';
+    group.name = 'zoning-labels';
     group.userData = DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA;
     if (!data || !labels) return group;
-    for (const parcel of data.parcels) {
+    for (const district of data.districts) {
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       if (!context) continue;
       context.font = 'bold 24px sans-serif';
       const labelLines: string[] = [];
-      for (const code of parcel.label.split(' / ')) {
+      for (const code of district.label.split(' / ')) {
         const last = labelLines.length - 1;
         const combined = last >= 0 ? `${labelLines[last]} / ${code}` : code;
         if (last >= 0 && context.measureText(combined).width <= 340) labelLines[last] = combined;
@@ -43,11 +41,11 @@ export function GlobeParcelZoning({ data, lines, labels, terrainHeight }: {
       texture.colorSpace = THREE.SRGBColorSpace;
       const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, depthWrite: false, toneMapped: false });
       const sprite = new THREE.Sprite(material);
-      sprite.name = `parcel-label:${parcel.id}:${parcel.label}`;
+      sprite.name = `district-label:${district.id}:${district.label}`;
       sprite.userData = { widthPx: canvas.width / 2, heightPx: canvas.height / 2 };
       sprite.raycast = NO_HIT;
       sprite.renderOrder = 995;
-      WGS84_ELLIPSOID.getCartographicToPosition(parcel.anchor[1] * RAD, parcel.anchor[0] * RAD, (Number.isFinite(terrainHeight) ? terrainHeight : 0) + 2, sprite.position);
+      WGS84_ELLIPSOID.getCartographicToPosition(district.anchor[1] * RAD, district.anchor[0] * RAD, (Number.isFinite(terrainHeight) ? terrainHeight : 0) + 2, sprite.position);
       group.add(sprite);
     }
     return group;
@@ -82,8 +80,7 @@ export function GlobeParcelZoning({ data, lines, labels, terrainHeight }: {
       child.scale.set(widthPx * unitsPerPixel, heightPx * unitsPerPixel, 1);
     }
   });
-  return <group name="parcel-zoning-overlay" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-    {lines && <GlobeReferenceLayer layers={layers} terrainHeight={terrainHeight} />}
+  return <group name="zoning-label-overlay" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
     <primitive object={sprites} />
   </group>;
 }

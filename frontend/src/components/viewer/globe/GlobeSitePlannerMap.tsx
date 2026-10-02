@@ -52,8 +52,8 @@ import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/typ
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
-import { GlobeParcelZoning } from '@/features/referenceLayers/GlobeParcelZoning';
-import type { ParcelZoningState } from '@/features/referenceLayers/useParcelZoning';
+import { GlobeZoningLabels } from '@/features/referenceLayers/GlobeZoningLabels';
+import type { ZoningLabelsState } from '@/features/referenceLayers/useZoningLabels';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
 import type { ReferenceLayer } from '@/features/referenceLayers/api';
@@ -1476,7 +1476,7 @@ interface GlobeSitePlannerMapProps {
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
-  parcelZoning?: Pick<ParcelZoningState, 'data' | 'lines' | 'labels'>;
+  zoningLabels?: Pick<ZoningLabelsState, 'data' | 'labels'>;
   transportContext?: ExistingTransport;
   latitude?: number;
   longitude?: number;
@@ -1579,7 +1579,7 @@ export function GlobeSitePlannerMap({
   onPlaceAsset,
   onCancelPlacement,
   referenceLayers = [],
-  parcelZoning,
+  zoningLabels,
   transportContext = EMPTY_TRANSPORT,
   latitude,
   longitude,
@@ -4428,7 +4428,7 @@ export function GlobeSitePlannerMap({
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} />
-            {parcelZoning && <GlobeParcelZoning {...parcelZoning} terrainHeight={terrainElevation} />}
+            {zoningLabels && <GlobeZoningLabels {...zoningLabels} terrainHeight={terrainElevation} />}
           </group>
           <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
