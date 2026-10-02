@@ -4,6 +4,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from fastapi import HTTPException
+from geoalchemy2.elements import WKTElement
 
 from app.models.models import Building
 from app.services import user_generated_models as models
@@ -26,6 +27,22 @@ def test_discovery_excludes_reviewed_catalogue_and_repeated_placements():
 def test_private_reference_list_never_returns_original_upload_keys():
     entry = models.generated_entry(source())
     assert 'private-photo' not in str(entry)
+
+
+def test_generated_entry_provides_model_and_original_plot_size():
+    # Roughly 12 m east-west by 16 m north-south near Calgary.
+    footprint = WKTElement('POLYGON((-114 51, -113.9998287 51, -113.9998287 51.0001437, -114 51.0001437, -114 51))', srid=4326)
+    original = source(footprint=footprint)
+    entry = models.generated_entry(original)
+    assert entry['model_url'] == original.model_url
+    assert entry['size_estimated'] is False
+    assert entry['width_m'] == pytest.approx(12, abs=0.2)
+    assert entry['depth_m'] == pytest.approx(16, abs=0.2)
+
+
+def test_generated_entry_falls_back_when_original_plot_is_unavailable():
+    entry = models.generated_entry(source(footprint=None))
+    assert (entry['width_m'], entry['depth_m'], entry['size_estimated']) == (12, 16, True)
 
 
 @pytest.mark.asyncio

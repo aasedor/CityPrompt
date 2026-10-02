@@ -32,7 +32,7 @@ export function UserGeneratedBuildings({ query, onPick }: { query: string; onPic
             <div className="space-y-2 p-3">
               <h3 className="font-bold">{model.name}</h3>
               <p className="text-xs text-slate-600">User generated · AI concept model{model.floor_count ? ` · ${model.floor_count} storeys` : ''}</p>
-              <p className="min-h-11 rounded-lg bg-[#c9ff3d] px-3 py-3 text-center text-sm font-bold">Choose & draw footprint</p>
+              <p className="min-h-11 rounded-lg bg-[#c9ff3d] px-3 py-3 text-center text-sm font-bold">Choose & place</p>
             </div>
           </button>
           <a className="block px-3 pb-3 text-xs underline" href={`/projects/${model.project_id}`}>Open original project</a>

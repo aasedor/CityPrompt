@@ -31,7 +31,7 @@ import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
 import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
-import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
+import { assetForZone, placeAsset, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
 import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 import { brtConnectionProblem } from '@/features/pickPlace/brtConnections';
@@ -41,6 +41,7 @@ import { isAxiosError } from 'axios';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
 import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
 import type { PlacementDraft } from '@/features/pickPlace/GlobePlacementPreview';
+import { generatedPlacementDraft, placementDraftProperties } from '@/features/pickPlace/generatedPlacement';
 import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { VideoGeneratePanel, type VideoAttempt } from '@/components/viewer/VideoGeneratePanel';
@@ -291,17 +292,18 @@ export function ProjectViewPage() {
   useEffect(() => { setPlacementDraft(null); setAdvancedZoneId(null); setEntrancePick(null); setConnectionZoneId(null); }, [id]);
   const placeObject = async (point: [number, number], height: number) => {
     if (!placementDraft || placementDraft.inputError || placementPending.current || isSaving) return;
+    const asset=placementDraft.generatedModel?null:placeAsset(placementDraft.assetId);
     const degrees = placementDraft.faceStreet ? streetFacingDegrees(point, siteZones, placementDraft.degrees) : placementDraft.degrees;
     const proposed = rectangleAt(point, placementDraft.width, placementDraft.depth, degrees);
     const { coordinates, problem } = snapPlacement(
       proposed, siteZones, getActiveSiteBoundary(siteZones), undefined,
-      placementProperties(placeAsset(placementDraft.assetId)),
+      placementDraftProperties(placementDraft),
     );
     if(problem) { toast.error(problem, { position: 'top-center' }); return; }
     placementPending.current = true;
     try {
-      const zone = await createZone.mutateAsync({ coordinates, zone_type: placeAsset(placementDraft.assetId).zoneType,
-        properties: placementProperties(placeAsset(placementDraft.assetId), height, coordinates) });
+      const zone = await createZone.mutateAsync({ coordinates, zone_type: asset?.zoneType??'building',
+        properties: placementDraftProperties(placementDraft, height, coordinates) });
       setPlacementDraft(null); setAdvancedZoneId(null); selectZone(zone.id);
     } catch {
       // Retrying uses the saved draft's idempotency key, not a second placement.
@@ -1196,11 +1198,10 @@ export function ProjectViewPage() {
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
                 onBrowseChange={setShowCatalogue}
                 onPickGenerated={model => {
-                  cancelPlacement(); selectZone(null); setMeasureActive(false);
+                  setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
                   useViewerStore.getState().setStreetViewActive(false);
-                  setActiveSitePlannerTool('building', { user_generated_source_id: model.id,
-                    height: model.height_meters, floor_count: model.floor_count ?? 2, floors: model.floor_count ?? 2 });
-                  toast('Draw a footprint to place your saved model. No generation credits are used.');
+                  setPlacementDraft(generatedPlacementDraft(model));
+                  toast('Click to place your saved model. No generation credits are used.');
                 }}
                 onPickCanonical={selection => {
                   if (selection.choice.domain !== 'street_pathway') {

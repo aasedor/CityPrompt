@@ -11,20 +11,23 @@ import type { SiteZone } from '@/types';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
-import { resolveApiFileUrl } from '@/services/api';
+import { resolveApiFileUrl, type UserGeneratedBuilding } from '@/services/api';
+import { computeFootprintFrame, computeModelPlacement } from '@/components/viewer/globe/buildingPlacement';
 import { GlobeNeighborhoodParkPilot } from '@/components/viewer/globe/GlobeNeighborhoodParkPilot';
 import { GlobeParkTrioPilot } from '@/components/viewer/globe/GlobeParkTrioPilot';
 import { isParkTrio } from '@/components/viewer/globe/parkTrioLayout';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundProvider';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
-import { placeAsset, placementPlanRequest, placementProperties, type PlaceAssetId } from './catalogue';
+import { placeAsset, placementPlanRequest, type PlaceAssetId } from './catalogue';
+import { placementDraftProperties } from './generatedPlacement';
 import { rectangleAt, rectangleDimensions } from './geometry';
 import { snapPlacement } from './snapPlacement';
 import { streetFacingDegrees } from './streetFacing';
 
 export interface PlacementDraft {
   assetId: PlaceAssetId; width: number; depth: number; degrees: number;
+  generatedModel?: UserGeneratedBuilding;
   faceStreet?: boolean;
   inputError?: string;
   inputValues?: { width: string; depth: string; degrees: string };
@@ -49,6 +52,24 @@ function ReviewFixture({url}: {url: string}) {
 const ORIGIN = {lng:-114.04677,lat:51.04542};
 const flatGround=()=>0;
 
+function GeneratedModelPreview({ model, width, depth }: { model: UserGeneratedBuilding; width: number; depth: number }) {
+  const gl=useThree(state=>state.gl);
+  const extension=useMemo(()=>createKtx2LoaderExtension(gl),[gl]);
+  const {scene}=useGLTF(resolveApiFileUrl(model.model_url),true,true,extension);
+  const clone=useMemo(()=>scene.clone(true),[scene]);
+  const bbox=useMemo(()=>new THREE.Box3().setFromObject(scene),[scene]);
+  const size=useMemo(()=>bbox.getSize(new THREE.Vector3()),[bbox]);
+  const center=useMemo(()=>bbox.getCenter(new THREE.Vector3()),[bbox]);
+  const frame=useMemo(()=>computeFootprintFrame(rectangleAt([ORIGIN.lng,ORIGIN.lat],width,depth)),[width,depth]);
+  const placement=frame && computeModelPlacement(frame,size,model.height_meters,0);
+  if(!placement)return null;
+  return <group rotation={[0,0,placement.yawRad]}>
+    <group rotation={[Math.PI/2,0,0]} scale={placement.scale}>
+      <group position={[-center.x,-bbox.min.y,-center.z]}><primitive object={clone}/></group>
+    </group>
+  </group>;
+}
+
 /** Local preview state avoids rerendering the full globe on every pointer move. */
 export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: PlacementDraft; zones: SiteZone[]; onStatusChange?: (problem: string | null) => void}) {
   const {gl,camera,invalidate}=useThree();
@@ -58,10 +79,10 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
   const dirty=useRef(true), last=useRef(0);
   const lastCamera=useRef(new THREE.Matrix4());
   const [surface,setSurface]=useState<{lng:number;lat:number;height:number}|null>(null);
-  const asset=placeAsset(draft.assetId);
-  const nativePark=nativeParkLayouts.find(p=>p.id===asset.properties.green_space_native_layout_id);
+  const asset=draft.generatedModel?null:placeAsset(draft.assetId);
+  const nativePark=nativeParkLayouts.find(p=>p.id===asset?.properties.green_space_native_layout_id);
   const projectId=zones[0]?.project_id;
-  const request=placementPlanRequest(asset,draft.width,draft.depth,projectId);
+  const request=asset?placementPlanRequest(asset,draft.width,draft.depth,projectId):null;
   const {data:plan}=useQuery({queryKey:['placement-home-plan',request],
     queryFn:()=>legoAssemblyApi.plan(request!),
     retry:false,staleTime:300000,enabled:request!==null});
@@ -84,9 +105,9 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
     setSurface({lng:geo.lon*180/Math.PI,lat:geo.lat*180/Math.PI,height:WGS84_ELLIPSOID.getPositionElevation(hit)});
   });
   // Composition is fixed in local metres; cursor movement only translates its frame.
-  const previewZone=useMemo(()=>({id:'placement-preview',zone_type:asset.zoneType,
+  const previewZone=useMemo(()=>({id:'placement-preview',zone_type:asset?.zoneType??'building',
     coordinates:rectangleAt([ORIGIN.lng,ORIGIN.lat],draft.width,draft.depth),
-    properties:placementProperties(asset)} as SiteZone),[asset,draft.width,draft.depth]);
+    properties:placementDraftProperties(draft)} as SiteZone),[asset,draft]);
   const degrees = surface && draft.faceStreet ? streetFacingDegrees([surface.lng,surface.lat], zones, draft.degrees) : draft.degrees;
   const proposed = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,degrees) : null;
   const snapped = proposed
@@ -101,22 +122,23 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
   const { center } = rectangleDimensions(footprint);
   const previewHeight = resolvePreparedSiteTerrainForZone({ ...previewZone, coordinates: footprint }, zones, surface.height)
     ?? ground.heightAt(center[0], center[1]) ?? surface.height;
-  const envelope=asset.nativeDimensions ?? [draft.width,draft.depth,Number(asset.properties.height) || .1];
+  const envelope=asset?.nativeDimensions ?? [draft.width,draft.depth,draft.generatedModel?.height_meters ?? (Number(asset?.properties.height) || .1)];
   const fallback=<mesh position={[0,0,envelope[2]/2]}><boxGeometry args={[envelope[0],envelope[1],envelope[2]]}/><meshBasicMaterial color="#64748b" wireframe/></mesh>;
   return <EastNorthUpFrame lat={center[1]*Math.PI/180} lon={center[0]*Math.PI/180} height={previewHeight+.12}>
     <group rotation={[0,0,degrees*Math.PI/180]} name="placement-preview" raycast={()=>null}>
       <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
-      <PreviewFallback key={asset.id} fallback={fallback}><Suspense fallback={fallback}>
-        {asset.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
+      <PreviewFallback key={draft.assetId} fallback={fallback}><Suspense fallback={fallback}>
+        {draft.generatedModel ? <GeneratedModelPreview model={draft.generatedModel} width={draft.width} depth={draft.depth}/>
+          : asset?.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
           position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}
           scale={instance.scale ?? [1,1,1]}>
           <Home url={instance.model_url}/></group>) : fallback
           : nativePark ? <NativeParkModel layout={nativePark}/>
-          : typeof asset.properties.validation_native_url === 'string'
+          : asset && typeof asset.properties.validation_native_url === 'string'
             ? <ReviewFixture url={asset.properties.validation_native_url}/>
           : isParkTrio(previewZone)
             ? <GlobeParkTrioPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>
-            : asset.id === 'neighbourhood_park'
+            : asset?.id === 'neighbourhood_park'
               ? <GlobeNeighborhoodParkPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>
               : fallback}
       </Suspense></PreviewFallback>

@@ -1,10 +1,14 @@
 """Private discovery and explicit reuse of completed student-generated models."""
+import math
 import uuid
 from urllib.parse import unquote, urlsplit
 
 import boto3
 from botocore.config import Config
 from fastapi import HTTPException
+from geoalchemy2.shape import to_shape
+from shapely.errors import GEOSException
+from shapely.geometry import Polygon
 from sqlalchemy import select
 from starlette.concurrency import run_in_threadpool
 
@@ -20,14 +24,40 @@ def is_user_generated(building: Building) -> bool:
     return bool(specs.get('photo_generation') or building.generation_engine in ('meshy', 'tripo'))
 
 
+def source_footprint_dimensions(building: Building) -> tuple[float, float] | None:
+    """Use the original plot's oriented envelope as the first placement size."""
+    if building.footprint is None:
+        return None
+    try:
+        footprint = to_shape(building.footprint).convex_hull
+        if footprint.is_empty or not hasattr(footprint, 'exterior'):
+            return None
+        center = footprint.centroid
+        east = 111320 * math.cos(math.radians(center.y))
+        local = Polygon([((lon - center.x) * east, (lat - center.y) * 111320)
+                         for lon, lat in footprint.exterior.coords])
+        corners = list(local.minimum_rotated_rectangle.exterior.coords)
+        dimensions = sorted(math.hypot(corners[i + 1][0] - corners[i][0],
+                                       corners[i + 1][1] - corners[i][1]) for i in range(2))
+        if dimensions[0] < 2 or dimensions[1] > 100 or not all(map(math.isfinite, dimensions)):
+            return None
+        return round(dimensions[0], 2), round(dimensions[1], 2)
+    except (TypeError, ValueError, AttributeError, GEOSException):
+        return None
+
+
 def generated_entry(building: Building) -> dict:
     specs = building.specifications or {}
     references = (specs.get('photo_generation') or {}).get('reference_keys') or []
     preview = (specs.get('user_generated_model') or {}).get('preview_url')
+    dimensions = source_footprint_dimensions(building)
     return {'id': str(building.id), 'project_id': str(building.project_id),
             'name': building.name or 'My generated building',
             'preview_url': preview or (f'/api/v1/files/{references[0]}' if references else building.preview_url),
-            'floor_count': building.floor_count, 'height_meters': float(building.height_meters or 6)}
+            'model_url': building.model_url,
+            'floor_count': building.floor_count, 'height_meters': float(building.height_meters or 6),
+            'width_m': dimensions[0] if dimensions else 12, 'depth_m': dimensions[1] if dimensions else 16,
+            'size_estimated': dimensions is None}
 
 
 def copy_generated_file(source: str, destination: str) -> str:

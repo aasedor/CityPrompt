@@ -1335,7 +1335,8 @@ export const settingsApi = {
 
 export interface UserGeneratedBuilding {
   id: string; project_id: string; name: string; preview_url: string | null;
-  floor_count: number | null; height_meters: number;
+  model_url: string; floor_count: number | null; height_meters: number;
+  width_m: number; depth_m: number; size_estimated: boolean;
 }
 
 export const modelLibraryApi = {
