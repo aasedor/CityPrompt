@@ -5,6 +5,7 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { fitRoadTerrainEdges, type CorridorProbe } from './roadTerrainTransition';
 import { createRoadRetainingEdge, constrainRoadEdgeWalk, type RoadEdgeBlocker } from './roadRetainingEdge';
 import { TerrainTilesChangedError } from './roadTerrainTrialController';
+import { raiseRoadAboveGround } from './raisedRoadGrade';
 import { createTransitionRoadGeometry, createTransitionTileGeometry } from './roadTerrainTransitionMesh';
 import { patchMaterialForSpatialMask, unpatchMaterialSpatialMask, type TileSpatialMaskConfig } from './TileSpatialMaskPlugin';
 import { createStreetSurfaceMaterialResources, type StreetSurfaceMaterialResources, type StreetSurfaceMaterialKind } from './streetSurfaceMaterials';
@@ -91,10 +92,6 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
       if(!hit)throw new Error('Road-end ground is incomplete.');result.push({y,z:hit.point.clone().applyMatrix4(inverse).z});}
     return result;
   };
-  const {field,validation}=fitRoadTerrainEdges({profile:input.profile.map(p=>({x:p.x,z:p.z+contextOffset+designRaise})),halfWidth:input.halfWidth,shoulderWidth:.6,
-    blendWidth:input.blendWidth,endBlend:input.endBlend,tieLength:input.length/2,
-    startHeight:controls[0].z!,endHeight:controls[4].z!,
-    startCrossSection:endSection(0),endCrossSection:endSection(input.length)},probes,(x,y)=>(ground.get(`${x},${y}`)??NaN)+contextOffset);
   const expectedGround=(x:number,y:number)=>{
     const ix=Math.floor(x),iy=Math.floor(y),u=x-ix,v=y-iy;
     let z=0;
@@ -104,6 +101,20 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
     }
     return z+contextOffset;
   };
+  const roadGround:CorridorProbe[]=[],coreWidth=input.halfWidth+.5,columns=Math.ceil(coreWidth*2/.5);
+  for(let x=0;x<=input.length;x+=.5)for(let j=0;j<=columns;j++) {
+    const y=-coreWidth+2*coreWidth*j/columns,hit=hitAt(x,y);
+    roadGround.push({x,y,z:hit?hit.point.clone().applyMatrix4(inverse).z:null});
+    if(roadGround.length%100===0){await new Promise(requestAnimationFrame);checkCancelled();}
+  }
+  const denseScenes=visibleScenes();
+  if(denseScenes.size!==scenes.size||[...scenes].some(s=>!denseScenes.has(s)))
+    throw new TerrainTilesChangedError('Visible tiles changed during measurement; rebuild the transition.');
+  const {field,validation}=fitRoadTerrainEdges({profile:input.profile.map(p=>({x:p.x,z:p.z+contextOffset})),halfWidth:input.halfWidth,shoulderWidth:.6,
+    blendWidth:input.blendWidth,endBlend:input.endBlend,tieLength:input.length/2,
+    startHeight:controls[0].z!,endHeight:controls[4].z!,
+    startCrossSection:endSection(0),endCrossSection:endSection(input.length)},probes,expectedGround,
+    candidate=>raiseRoadAboveGround(candidate,roadGround,expectedGround,.12,designRaise));
   const controlChecks:{x:number;y:number;z:number}[]=[];
   for(const x of [.0001,input.length-.0001])for(let y=-input.halfWidth+.0001;y<input.halfWidth;y+=.25){
     const hit=hitAt(x,y);if(!hit)throw new Error('Road-end ground is incomplete.');
@@ -126,8 +137,9 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
   surface(-input.halfWidth,input.halfWidth,'asphalt');
   // Narrow aggregate shoulders soften the asphalt boundary without laying a
   // large generic grass texture over the surrounding aerial photography.
-  surface(-input.halfWidth-.5,-input.halfWidth,'buffer_stone',-.003);
-  surface(input.halfWidth,input.halfWidth+.5,'buffer_stone',-.003);
+  const shoulderLift=field.raisedGrade?0:-.003;
+  surface(-input.halfWidth-.5,-input.halfWidth,'buffer_stone',shoulderLift);
+  surface(input.halfWidth,input.halfWidth+.5,'buffer_stone',shoulderLift);
   const markings=new THREE.MeshBasicMaterial({color:'#e2dfce',side:THREE.DoubleSide});materials.push(markings);
   for(const y of [-input.halfWidth+.16,input.halfWidth-.16]) {
     const geometry=createTransitionRoadGeometry(field,y-.045,y+.045,.006);owned.push(geometry);road.add(new THREE.Mesh(geometry,markings));
@@ -171,6 +183,7 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
   }catch(e){replacements.forEach(r=>r.geometry.dispose());owned.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());surfaceResources.forEach(r=>r.dispose());throw e;}
   let active=false,disposed=false,stale=false;
   const summary={label:input.label,probes:probes.length,maxPassDelta,contextOffset,
+    grading:'raised',roadGroundProbes:roadGround.length,minimumRoadClearanceM:Infinity,minimumInteriorClearanceM:Infinity,maximumRoadRaiseM:0,
     leftEdge:field.edgeAt(1),rightEdge:field.edgeAt(-1),retainingMaximumHeightM,
     maxGroundChangeM:validation.maxChangeM,visualAlignmentOffsetM:contextOffset,designRaiseM:designRaise,
     profileRetention:field.profileRetention,changedMeshes:replacements.length,
@@ -192,7 +205,7 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
     const local=world.clone().applyMatrix4(inverse);
     if(local.x< -input.endBlend||local.x>input.length+input.endBlend||Math.abs(local.y)>outer)return null;
     if(local.x>=0&&local.x<=input.length&&Math.abs(local.y)<=core)
-      local.z=field.roadHeight(local.x,local.y)+(Math.abs(local.y)>input.halfWidth?-.003:0);
+      local.z=field.roadHeight(local.x,local.y)+(Math.abs(local.y)>input.halfWidth?shoulderLift:0);
     else {const hit=hitAt(local.x,local.y);if(!hit)return null;local.z=hit.point.clone().applyMatrix4(inverse).z;}
     return WGS84_ELLIPSOID.getPositionElevation(local.applyMatrix4(frame));
   }};
@@ -220,6 +233,17 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
   tiles.addEventListener('tile-visibility-change',invalidate);
   setVisible(true);
   scene.updateMatrixWorld(true);
+  for(const p of roadGround) {
+    // Stay inside the rasterized boundary; exact edge rays are numerically
+    // ambiguous after the geocentric transform. The inset is one tenth of a mm.
+    const x=Math.max(.0001,Math.min(input.length-.0001,p.x)),y=Math.max(-core+.0001,Math.min(core-.0001,p.y));
+    ray.set(new THREE.Vector3(x,y,400).applyMatrix4(frame),up.clone().negate());
+    const hit=ray.intersectObject(road,true)[0];
+    const clearance=hit?hit.point.clone().applyMatrix4(inverse).z-p.z!:-Infinity;
+    summary.minimumRoadClearanceM=Math.min(summary.minimumRoadClearanceM,clearance);
+    if(p.x>=4&&p.x<=input.length-4)summary.minimumInteriorClearanceM=Math.min(summary.minimumInteriorClearanceM,clearance);
+    summary.maximumRoadRaiseM=Math.max(summary.maximumRoadRaiseM,clearance);
+  }
   for(const p of controlChecks){
     ray.set(new THREE.Vector3(p.x,p.y,400).applyMatrix4(frame),up.clone().negate());
     const hit=ray.intersectObject(road,true)[0];
@@ -232,7 +256,8 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
   const dispose=()=>{if(disposed)return;setVisible(false);disposed=true;tiles.removeEventListener('load-model',invalidate);tiles.removeEventListener('dispose-model',invalidate);
     tiles.removeEventListener('tile-visibility-change',invalidate);
     replacements.forEach(r=>r.geometry.dispose());owned.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());surfaceResources.forEach(r=>r.dispose());};
-  if(summary.endpointMaxGapM>.025||summary.outerSeamMaxGapM>.015||summary.roadMaximumGrade>.12){
+  if(summary.minimumRoadClearanceM<-.001||summary.minimumInteriorClearanceM<.10
+    ||summary.endpointMaxGapM>.025||summary.outerSeamMaxGapM>.015||summary.roadMaximumGrade>.12){
     dispose();throw new Error(`The physical road join did not pass: ${JSON.stringify(summary)}`);
   }
   return {field,frame,road,summary,

@@ -1,5 +1,10 @@
 # Road transitions: constrained edges and automatic recovery
 
+The subsequent [raised-road pilot](RAISED_ROAD_TERRAIN_PILOT_2026-10-02.md)
+replaces the below-ground result described here with above-ground grading and
+safe refusal when fixed endpoints cannot be reached. This report records the
+earlier checkpoint.
+
 Follow-up to [the first terrain pilot](NATURAL_ROAD_TRANSITION_PILOT_2026-10-02.md).
 This checkpoint addresses constrained edges and tile-refinement recovery. It
 remains a local development trial, excluded from the production bundle.

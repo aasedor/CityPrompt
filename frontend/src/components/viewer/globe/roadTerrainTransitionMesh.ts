@@ -63,6 +63,9 @@ export function createTransitionTileGeometry(source:THREE.BufferGeometry, meshTo
         const expected=expectedGround(p.x,p.y);
         if(expected===null || !Number.isFinite(expected) || Math.abs(p.z-expected)>1)
           throw new Error('A narrow object or unsupported terrain triangle intersects the transition. Move the route to clear ground.');
+        if(field.raisedGrade&&p.x>=0&&p.x<=field.length&&Math.abs(p.y)<=field.options.halfWidth+.5
+          &&field.roadHeight(p.x,p.y)<p.z-.001)
+          throw new Error('A ground rise between samples would pierce the road. Move the route or use a longer approach.');
       }
       let normal:number[]|undefined;
       if(intersects&&normalIndex>=0&&field.weight(p.x,p.y)>0){

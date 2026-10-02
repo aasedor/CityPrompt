@@ -26,6 +26,8 @@ it.each(['load-model','dispose-model','tile-visibility-change'])('restores origi
     expect(trial.summary.visualAlignmentOffsetM).toBeCloseTo(-1.3,6);
     expect(trial.summary.endpointMaxGapM).toBeLessThan(.001);
     expect(trial.summary.outerSeamMaxGapM).toBeLessThan(.001);
+    expect(trial.summary.minimumRoadClearanceM).toBeGreaterThan(-.001);
+    expect(trial.summary.minimumInteriorClearanceM).toBeGreaterThan(.119);
     expect(JSON.stringify(input)).toBe(before);
     expect(mesh.geometry).not.toBe(original);
     expect(()=>assertStreetGroundReady(scene)).toThrow(/local preview/);

@@ -29,6 +29,7 @@ export interface RoadTerrainTransition {
   edgeAt: (y: number) => 'slope' | 'retaining';
   blendWidthAt: (y: number) => number;
   outerWidthAt: (y: number) => number;
+  raisedGrade?: boolean;
 }
 const clamp = (v: number, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 /** Quintic falloff: height, slope and curvature vanish at the existing ground. */
@@ -152,10 +153,11 @@ export function validateCorridorContext(field:RoadTerrainTransition, probes:Corr
  * two. Every candidate still passes the same independent ground/object checks.
  * A caller must build and validate the physical walls before installation. */
 export function fitRoadTerrainEdges(options:RoadTerrainTransitionOptions,probes:CorridorProbe[],
-  expectedGround:(x:number,y:number)=>number|null) {
+  expectedGround:(x:number,y:number)=>number|null,
+  grade:(field:RoadTerrainTransition)=>RoadTerrainTransition=field=>field) {
   let last:ReturnType<typeof validateCorridorContext>|undefined;
   for(const [leftEdge,rightEdge] of [['slope','slope'],['retaining','slope'],['slope','retaining'],['retaining','retaining']] as const) {
-    const field=createRoadTerrainTransition({...options,leftEdge,rightEdge});
+    const field=grade(createRoadTerrainTransition({...options,leftEdge,rightEdge}));
     const validation=validateCorridorContext(field,probes,expectedGround);
     if(validation.ok)return {field,validation};
     last=validation;

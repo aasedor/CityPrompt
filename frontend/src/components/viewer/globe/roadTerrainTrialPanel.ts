@@ -19,11 +19,15 @@ export function mountRoadTerrainTrialPanel(getScene:()=>THREE.Scene|null,
   width.style.cssText='border:1px solid #252832;border-radius:6px;padding:5px;background:white';
   for(const [value,label] of [['6','6 m'],['5','5 m · compact']]){const option=document.createElement('option');option.value=value;option.textContent=label;width.append(option);}
   widthLabel.append(width);
+  const lengthLabel=document.createElement('label');lengthLabel.textContent='Trial route ';lengthLabel.style.cssText='display:block;margin-top:8px';
+  const extent=document.createElement('select');extent.setAttribute('aria-label','Trial route extent');extent.style.cssText=width.style.cssText;
+  for(const [value,label] of [['0','Full length'],['4','End 4 m earlier']]){const option=document.createElement('option');option.value=value;option.textContent=label;extent.append(option);}
+  lengthLabel.append(extent);
   const status=document.createElement('p');status.setAttribute('role','status');status.textContent='Build a measured road and compare it with the original ground.';
   const actions=document.createElement('div');actions.style.cssText='display:flex;gap:8px;flex-wrap:wrap';
   const button=(label:string)=>{const b=document.createElement('button');b.textContent=label;b.style.cssText='border:1px solid #252832;border-radius:9px;padding:8px 12px;background:#eeffbf;font-weight:650;cursor:pointer';actions.append(b);return b;};
   const build=button('Build transition'),toggle=button('Show original'),walk=button('Walk road');toggle.disabled=true;walk.disabled=true;
-  panel.append(styles,title,widthLabel,status,actions);document.body.append(panel);
+  panel.append(styles,title,widthLabel,lengthLabel,status,actions);document.body.append(panel);
   let input:RoadRehearsalInput|undefined,wanted=false,pendingScene:THREE.Scene|null=null;
   const owner={};
   const pending=(value:boolean)=>{
@@ -31,12 +35,14 @@ export function mountRoadTerrainTrialPanel(getScene:()=>THREE.Scene|null,
     pendingScene=value?getScene():null;if(pendingScene)pendingScene.userData.roadTerrainRebuilding=owner;
   };
   const controller=new RoadTerrainTrialController(async signal=>{
-    const selectedWidth=Number(width.value);
+    const selectedWidth=Number(width.value),shorten=Number(extent.value);
     const response=await fetch(`/__terrain_trial/${name}.json`,{signal});
     if(!response.ok)throw new Error('The local trial data is unavailable.');
     const source=await response.json() as RoadRehearsalInput;
     if(signal.aborted)throw new DOMException('Cancelled','AbortError');
-    input={...source,halfWidth:selectedWidth/2};
+    const length=source.length-shorten;
+    input={...source,length,halfWidth:selectedWidth/2,profile:source.profile.filter(p=>p.x<=length),
+      ground:source.ground.filter(p=>p.x<=length+source.endBlend)};
     const scene=getScene(),tiles=getTiles() as Parameters<typeof rehearseRoadTerrain>[1]|null;
     if(!scene||!tiles)throw new Error('Wait for the map to load, then try again.');
     if(!(tiles.group instanceof THREE.Object3D)||!(tiles.visibleTiles instanceof Set)||typeof tiles.forEachLoadedModel!=='function')
@@ -51,13 +57,14 @@ export function mountRoadTerrainTrialPanel(getScene:()=>THREE.Scene|null,
     if(state==='original')status.textContent='Original ground shown. Show the proposal to resume the trial.';
     if(state==='ready'&&trial){
       const count=Number(trial.summary.leftEdge==='retaining')+Number(trial.summary.rightEdge==='retaining');
-      status.textContent=`Transition ready · ${width.value} m road · ${count?`${count} retaining ${count===1?'edge':'edges'}`:'natural slopes'}. ${trial.summary.probes.toLocaleString()} ground checks.`;
+      status.textContent=`Transition ready · ${trial.field.length} m raised road, ${width.value} m wide · ${count?`${count} retaining ${count===1?'edge':'edges'}`:'natural slopes'}.`;
     }
     if(state==='error')status.textContent=error?.message.replace(/\s+[\[{][\s\S]*$/,'').replace(/:$/,'')??'The trial could not be built.';
     if(!measuring)onSurfaceChanged();
   });
   build.onclick=()=>{wanted=true;controller.build();};
   width.onchange=()=>{wanted=true;controller.build();};
+  extent.onchange=()=>{wanted=true;controller.build();};
   toggle.onclick=()=>{wanted=!wanted;controller.show(wanted);};
   walk.onclick=()=>{
     const trial=controller.trial;if(!trial||!input||!trial.status().active)return;
