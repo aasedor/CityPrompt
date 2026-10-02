@@ -1649,6 +1649,7 @@ export function GlobeSitePlannerMap({
   const contextPresentationRef = useRef(contextPresentation);
   contextPresentationRef.current = contextPresentation;
   const [placementProblemMessage, setPlacementProblemMessage] = useState<string | null>(null);
+  const [streetDrawingProblem, setStreetDrawingProblem] = useState<string | null>(null);
   const sharedGroundRef = useRef(sharedGroundState);
   const [legoGroundingIssues, setLegoGroundingIssues] = useState<LegoGroundingIssue[]>([]);
   const [modelGroundingIssues, setModelGroundingIssues] = useState<LegoGroundingIssue[]>([]);
@@ -4523,7 +4524,7 @@ export function GlobeSitePlannerMap({
               <GlobeStreetDrawingPreview points={drawingPoints} pointHeights={drawingPointHeights}
                 properties={activeToolProperties} zones={siteZones} terrainHeight={terrainElevation}
                 publicRoads={publicRoadSnapEnabled ? publicRoadContext.data : undefined} skipSnapping={skipStreetSnapping}
-                raycastSurface={raycastSurfacePoint} />
+                raycastSurface={raycastSurfacePoint} onStatusChange={setStreetDrawingProblem} />
             )}
             <DrawingDots
               points={drawingPoints}
@@ -4743,6 +4744,11 @@ export function GlobeSitePlannerMap({
           <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" className="underline">© OpenStreetMap contributors</a>
           {' · Estimated road edges. Check imagery before accepting.'}</p>}
       </aside>}
+
+      {activeSitePlannerTool === 'road' && streetDrawingProblem && !interactionPaused && !captureOverlaysHidden &&
+        <p role="status" className="pointer-events-none absolute left-1/2 bottom-44 z-40 max-w-[min(34rem,90vw)] -translate-x-1/2 rounded-lg border border-amber-500 bg-amber-50 px-4 py-2 text-center text-sm text-amber-950 sm:bottom-40">
+          {streetDrawingProblem}
+        </p>}
 
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;

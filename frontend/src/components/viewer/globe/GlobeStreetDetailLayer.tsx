@@ -90,7 +90,8 @@ import {
   direct3DZoneInstanceDescriptor,
 } from './direct3dCapture';
 import { validateStreetRecipeProperties } from './streetLegoContract';
-import { nativeStreetPilotForZone, placeNativeStreetModules } from './nativeStreetPilot';
+import { nativeStreetLocalRouteProblem, nativeStreetPilotForZone, nativeStreetRouteProblem, placeNativeStreetModules } from './nativeStreetPilot';
+import { StreetRenderBoundary, StreetRenderProblem } from './StreetRenderBoundary';
 import { publicRealmTrialAsset } from './publicRealmTrial';
 import { GlobeNativeStreetPilotModules } from './GlobeNativeStreetPilotModules';
 import { clearBridgeOverhead, bridgeClearanceKey } from './bridgeStreetClearance';
@@ -329,6 +330,8 @@ function StreetRibbonDetail({
   [preparedSite, centerLngLat, centroid, halfWidth, frameElevation]);
   const placementTerrain = sharedGround.active ? undefined : stationTerrain ?? preparedPreview;
   const nativePilot = nativeStreetPilotForZone(zone, preview);
+  const nativeProblem = nativePilot && centerLngLat
+    ? nativeStreetLocalRouteProblem(nativePilot, centerLngLat.local, zone.properties?.road_native_stops) : null;
   const requiresPreparedAlignment = Boolean(preparedSite) && preparedTerrain === null && !sharedGround.active;
   const alignmentStatus = !requiresPreparedAlignment ? 'ready' : alignmentUnavailable ? 'unavailable' : stationTerrain ? 'ready' : 'sampling';
   const alignmentData = {streetGroundStatus: alignmentStatus, streetGroundZoneId: zone.id,
@@ -541,7 +544,7 @@ function StreetRibbonDetail({
     ? retainResourceForDeferredDisposal(preparedEdgeGeometry, geometry => geometry.dispose()) : undefined, [preparedEdgeGeometry]);
 
   const geometries = useMemo(() => {
-    if (!centerLngLat || sharedBlocked) return null;
+    if (!centerLngLat || sharedBlocked || nativeProblem) return null;
     const zs = placementTerrain ?? undefined;
     const mPerLon = centroid ? metersPerDegLon(centroid.lat) : 1;
     const connectedIntersectionNodes = intersectionNodes.filter((node) => node.zoneIds.includes(zone.id));
@@ -670,7 +673,7 @@ function StreetRibbonDetail({
       }
     }
     return result;
-  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, zone.properties?.road_native_stops, nativePilot?.id, sharedGround.offsetAt, sharedGround.grid, sharedBlocked]);
+  }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, zone.properties?.road_native_stops, nativePilot, sharedGround.offsetAt, sharedGround.grid, sharedBlocked, nativeProblem]);
 
   const clearOfJunction = useMemo(() => (point: {x: number; y: number}) => !centroid || !intersectionNodes.some(node =>
     node.zoneIds.includes(zone.id) && node.surfaceLayout && streetJunctionContainsPoint(node.surfaceLayout,
@@ -779,7 +782,7 @@ function StreetRibbonDetail({
   }, [geometries]);
 
   const nativePilotModules = useMemo(() => {
-    if (!nativePilot || !centerLngLat || !centroid) return [];
+    if (!nativePilot || !centerLngLat || !centroid || nativeProblem) return [];
     const longitudeScale = metersPerDegLon(centroid.lat);
     return clearBridgeOverhead(placeNativeStreetModules(
       nativePilot,
@@ -791,8 +794,9 @@ function StreetRibbonDetail({
       })),
       zone.properties?.road_native_stops,
     ), centroid, sceneZones, zone.id);
-  }, [nativePilot, centerLngLat, centroid, placementTerrain, intersectionNodes, zone.id, zone.properties?.road_native_stops, sceneZones]);
+  }, [nativePilot, centerLngLat, centroid, placementTerrain, intersectionNodes, zone.id, zone.properties?.road_native_stops, sceneZones, nativeProblem]);
 
+  if (nativeProblem) return <StreetRenderProblem zone={zone} message={nativeProblem} preview={preview} />;
   if (!centerLngLat || !centroid || !geometries) return requiresPreparedAlignment
     ? <group userData={{...alignmentData, streetGroundStatus: 'unavailable'}} /> : null;
   // Interior routes use the prepared parcel's resolved elevation. preparedSite
@@ -1617,11 +1621,12 @@ function AccessibleFourWayIntersectionDetail({
 /** Editor-only draft: same surfaces/modules, without publishing saved-scene readiness. */
 export function GlobeStreetDraft({ zone, zones, terrainHeight, profile }: { zone: SiteZone; zones: SiteZone[]; terrainHeight: number; profile: StreetSectionProfile | null }) {
   const native = nativeStreetPilotForZone(zone, true);
+  if (nativeStreetRouteProblem(zone, getActiveSiteBoundary(zones))) return null;
   const anchor = zone.properties?.connect_to_public_road === true ? getActiveSiteBoundary(zones) ?? zone : zone;
   const height = resolvePreparedSiteTerrainForZone(anchor, zones, terrainHeight) ?? terrainHeight;
-  return <StreetGroundCoverage zone={zone}><StreetRibbonDetail zone={zone} sceneZones={zones} fallbackTerrainHeight={height}
+  return <StreetRenderBoundary zone={zone} preview><StreetGroundCoverage zone={zone}><StreetRibbonDetail zone={zone} sceneZones={zones} fallbackTerrainHeight={height}
     preparedTerrain={height} intersectionNodes={[]} renderFamilyFurniture={!native}
-    renderFamilyTrees={!native} preview previewProfile={profile} /></StreetGroundCoverage>;
+    renderFamilyTrees={!native} preview previewProfile={profile} /></StreetGroundCoverage></StreetRenderBoundary>;
 }
 
 export function GlobeStreetDetailLayer({
@@ -1673,7 +1678,7 @@ export function GlobeStreetDetailLayer({
           name={`siteforge-direct3d-street-${zone.id}`}
           userData={direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'street'))}
         >
-          {isRoundaboutZone(zone) ? (
+          <StreetRenderBoundary zone={zone}>{isRoundaboutZone(zone) ? (
             <RoundaboutDetail key={`${zone.id}:${resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)}`} zone={zone} fallbackTerrainHeight={terrainHeight} preparedTerrain={resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)} />
           ) : (
             <StreetGroundCoverage zone={zone}><StreetRibbonDetail
@@ -1687,7 +1692,7 @@ export function GlobeStreetDetailLayer({
               renderFamilyFurniture={!nativeStreetPilotForZone(zone) && furnitureStreetIds.has(zone.id)}
               renderFamilyTrees={!nativeStreetPilotForZone(zone) && treeStreetIds.has(zone.id)}
             /></StreetGroundCoverage>
-          )}
+          )}</StreetRenderBoundary>
         </group>
       ))}
       {intersectionNodes.map((node) => (

@@ -11,13 +11,15 @@ import type { PublicRoadContext } from './publicRoadSuggestions';
 import { PublicRoadSuggestionMarker } from './PublicRoadSuggestionMarker';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 
 type Surface = { lngLat: [number, number]; height: number };
 /** Cursor updates stay inside this small subtree instead of rerendering the globe. */
-export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zones, terrainHeight, raycastSurface, publicRoads, skipSnapping = false }: {
+export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zones, terrainHeight, raycastSurface, publicRoads, skipSnapping = false, onStatusChange }: {
   points: number[][]; pointHeights: number[]; properties: SiteZoneProperties | null;
   zones: SiteZone[]; terrainHeight: number; raycastSurface: (x: number, y: number) => Surface | null;
   publicRoads?: PublicRoadContext; skipSnapping?: boolean;
+  onStatusChange?: (problem: string | null) => void;
 }) {
   const { gl, camera, invalidate } = useThree();
   const pointer = useRef<[number, number] | null>(null);
@@ -56,8 +58,11 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
     return { id: 'street-drawing-preview', project_id: zones[0]?.project_id ?? '', zone_type: 'road',
       color: '#c9ff3d', sort_order: 0, created_at: '', updated_at: '', ...geometry } satisfies SiteZone;
   }, [points, surface, properties, zones, height, publicRoads, skipSnapping]);
+  const problem = zone ? nativeStreetRouteProblem(zone, getActiveSiteBoundary(zones)) : null;
+  useEffect(() => { onStatusChange?.(problem); }, [problem, onStatusChange]);
+  useEffect(() => () => onStatusChange?.(null), [onStatusChange]);
   return zone ? <group name="street-drawing-preview" userData={{ editorPreview: true }}>
-    <GlobeStreetDraft zone={zone} zones={zones} terrainHeight={height} profile={profile} />
+    {!problem && <GlobeStreetDraft zone={zone} zones={zones} terrainHeight={height} profile={profile} />}
     {zone.suggestion && <PublicRoadSuggestionMarker suggestion={zone.suggestion}
       height={resolvePreparedSiteTerrainForZone(getActiveSiteBoundary(zones) ?? zone, zones, height) ?? height} />}
   </group> : null;

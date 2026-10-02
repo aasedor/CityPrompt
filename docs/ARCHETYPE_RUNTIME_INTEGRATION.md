@@ -118,6 +118,15 @@ context generation retains its protected footprint and access routes.
 | C8 Visibility | Inspect low views from several directions plus aerial and exact 3D capture. No persistent proxy, duplicate surface, floating base, buried path, hidden gap, or furniture obstructing a route. Preserve surrounding context and capture ownership. When AI imagery is used, compare it with the exact same-camera source for count, location, outline, scale, function, access and invented elements; record automatic pass, human review or fallback. A visually attractive image alone is not faithful evidence. |
 | C9 Student use | Complete the advertised placement/connection workflow through ordinary controls, without API-authored geometry or numeric offsets supplied by a developer. Check keyboard, pointer, and supported viewport behavior; report touch separately if not tested. |
 
+Street previews must validate unfinished routes before calling strict geometry
+builders. A short, bent or oversized draft must keep drawing controls available
+and explain the route requirement; detailed geometry resumes when it is valid.
+Isolate saved-street geometry failures to that street, preserve route editing,
+and keep incomplete geometry ineligible for capture. Verify short → valid →
+oversized → valid transitions and retry/edit recovery. The BRT crash reproduced
+and repaired on 1 October 2026 also applies to canal, bridge, tram and elevated
+rail previews; their authored length and station limits remain in force.
+
 For local natural-ground recovery, a ready interactive snapshot may include
 `excludedCells`. All variants must use shared `heightAt` and reject null throughout
 their footprint/face; never interpolate `snapshot.heights` directly, span an

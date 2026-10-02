@@ -35,6 +35,21 @@ export function nativeStreetPilot(variantId: string): NativeStreetPilot | undefi
   return pilots.find(pilot => pilot.id === variantId);
 }
 
+/** Validate the same local route that geometry and rigid modules consume. */
+export function nativeStreetLocalRouteProblem(pilot: NativeStreetPilot, route: StreetRouteStation[], stops: BrtStop[] = []): string | null {
+  const program = pilot.program;
+  if (!program) return null;
+  if (pilot.id === BRT_VARIANT) return brtRouteProblem(route, stops);
+  if (pilot.id === TRAM_VARIANT) return tramRouteProblem(route, stops);
+  const length = route.slice(1).reduce((sum, p, i) => sum + Math.hypot(p.x - route[i].x, p.y - route[i].y), 0);
+  if (isSpecialistStreet(pilot.id)) {
+    return specialistRouteProblem(pilot.id, route)
+      ?? (hasElevatedStation(pilot.id) ? elevatedRailStationProblem(length, stops) : null);
+  }
+  return !Number.isFinite(length) || length < program.minLengthM - .01 || length > program.maxLengthM + .01
+    ? `${pilot.title} needs a route ${program.minLengthM}–${program.maxLengthM} m long so its complete garden and access program fits.` : null;
+}
+
 export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'properties'>,boundary?:SiteZone|null):string|null {
   if(zone.properties?.validation_fixed_fixture)return null;
   const pilot=nativeStreetPilot(String(zone.properties?.road_selected_variant_id)),program=pilot?.program;
@@ -42,15 +57,9 @@ export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'prope
   if(program.preparedLevelOnly && (!boundary || boundary.properties?.terrain_strategy==='landscape'
     || boundary.properties?.community_3d_mask_existing_tiles!==true))return 'Prepare a level site and clear existing site surfaces before drawing this native street.';
   const points=extractZoneCenterline(zone),scale=111320*Math.cos((points[0]?.[1]??0)*Math.PI/180);
-  const length=points.slice(1).reduce((sum,p,i)=>sum+Math.hypot((p[0]-points[i][0])*scale,(p[1]-points[i][1])*111320),0);
-  if(pilot.id===BRT_VARIANT)return brtRouteProblem(points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})),zone.properties?.road_native_stops??[]);
-  if(pilot.id===TRAM_VARIANT)return tramRouteProblem(points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})),zone.properties?.road_native_stops??[]);
-  if(isSpecialistStreet(pilot.id)){
-    const problem=specialistRouteProblem(pilot.id,points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})));
-    return problem ?? (hasElevatedStation(pilot.id) ? elevatedRailStationProblem(length,zone.properties?.road_native_stops??[]) : null);
-  }
-  return length<program.minLengthM-.01 || length>program.maxLengthM+.01
-    ? `${pilot.title} needs a route ${program.minLengthM}–${program.maxLengthM} m long so its complete garden and access program fits.` : null;
+  return nativeStreetLocalRouteProblem(pilot, points.map(p => ({
+    x: (p[0] - points[0][0]) * scale, y: (p[1] - points[0][1]) * 111320,
+  })), zone.properties?.road_native_stops ?? []);
 }
 
 /** Saved production zones require the same module locks as the server compiler.
