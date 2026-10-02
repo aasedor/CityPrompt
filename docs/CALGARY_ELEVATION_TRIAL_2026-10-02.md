@@ -132,6 +132,9 @@ python -m pytest tools/elevation_trial/test_calgary_dem.py -q
 
 ## Next implementation gate
 
+The coordinate conversion portion of gate 1 was implemented in the follow-up
+below. Independent control and the Google surface mismatch remain unresolved.
+
 1. Resolve the source datum realization and choose a better justified horizontal
    and vertical operation, ideally checked against independent control points.
 2. Keep surveyed ground and visual-context alignment as separate, explicit
@@ -145,3 +148,98 @@ python -m pytest tools/elevation_trial/test_calgary_dem.py -q
 The data has not been redistributed or published. Calgary's portal licence and
 the attachment's restrictive wording still need reconciliation before a hosted
 data release; that did not prevent this small local evaluation.
+
+## Coordinate alignment follow-up — 2026-10-02
+
+### Implemented operation
+
+`tools/elevation_trial/calgary_alignment.py` now provides an explicit conversion
+for the recorded baseline. It preserves the same physical DEM sample positions
+and orthometric heights, replacing the baseline's identity datum assumption:
+
+1. Interpret the baseline's longitude/latitude as NAD83 Original (its EPSG:3776
+   inverse projection was followed by the identity NAD83-to-WGS84 operation).
+2. Apply Alberta's **ABCSRSV7** NTv2 grid to obtain NAD83(CSRS)v7 at **2010.0**.
+3. Apply **inverse EPSG:8265** at 2010.0 to obtain ITRF2014 coordinates.
+4. Query NRCan GPSH GSD95 in ITRF2014 at that same epoch, then use `h = H + N`.
+
+Alberta's [coordinate transformation fact sheet](https://open.alberta.ca/dataset/e953c4f5-4789-4b86-9459-a845f2314033/resource/d8591c1f-d387-4ea4-a069-5df019ab8826/download/c_localdataweb-docsgeodetic_control_unitweb-docs-publish-march-2021fact-sheetsfactsheet5-transfo.pdf)
+identifies ABCSRSV7 as the Original-to-CSRSv7/2010 grid and describes ABCSRSV4 as
+an older adjustment. The current grid comes from the
+[Alberta download catalogue](https://open.alberta.ca/opendata/national-transformation-analysis-data-tables-1-to-12).
+It is 1,307,520 bytes, with SHA-256
+`f5cf8cfa53e6922ebfa02d4b76400d02c84b840cf5a298b79b00bb82606cf2aa`.
+
+The helper requires that exact grid and frame operation. Missing or different
+grids, unsupported baseline shapes, invalid coordinates and already-converted
+input are rejected. There is no approximate fallback. Source and display heights
+stay separate: the Helmert height change is not added a second time after GPSH.
+Frame pipeline, coordinate epoch, versions, hashes and raw geoid responses are
+recorded. The output directory must differ from the baseline directory.
+
+This is still approximate alignment to Google's unspecified WGS84 realization
+and imagery epoch. We use the grid's documented 2010 epoch; we do not pretend to
+propagate it to 2024 by changing the Helmert timestamp alone. PROJ explains that
+[time-dependent transforms require the coordinate epoch](https://proj.org/en/stable/operations/transformations/helmert.html).
+Absolute accuracy remains unquantified. EPSG's zero accuracy for the defining
+frame operation does not mean the DEM, grid, or rendered scene has zero error.
+No independently surveyed control point was acquired in this trial.
+
+### Browser results
+
+Re-ran both 60 m sites (73 visible-tile probes each) and the 60 m corridor (31
+probes), three passes each. Measurements below are **Google height minus DEM
+height** except the road endpoint, which is explicitly DEM above Google.
+
+| Measurement | Original trial | Aligned trial |
+| --- | ---: | ---: |
+| Slope site, median of all surface probes | -1.402 m | -1.360 m |
+| Street site, median of all surface probes | -1.403 m | -1.379 m |
+| Slope open-field subset, median of same six source samples | -1.301 m | -1.306 m |
+| Road endpoint, DEM above visible pavement | 1.609 m | 1.525 m |
+
+Horizontal positions moved **1.429–1.433 m northwest**. Matching the geoid epoch
+lowered displayed heights by **19–20 mm**; source DEM heights did not change.
+All-surface medians include vegetation and other objects and are not ground
+control statistics. The open-field subset remains the six southern centre-line
+samples selected in the original trial, not a new selection fitted to results.
+
+All probes returned a hit. The final two passes agreed exactly, with zero browser
+page errors and zero design mutation requests during measurement. The corridor's
+saved site-zone JSON was identical before and after. Overhead and oblique images
+were inspected; the endpoint still reaches pavement. Existing ground warnings
+near vegetation remain visible. The corridor is still a diagnostic mesh, not a
+graded or walkable street archetype.
+
+**Conclusion:** the coordinate conversion is implemented and tested. It does not
+eliminate the vertical difference with Google's reconstructed surface. A fixed
+citywide downward adjustment is still unsupported. Production integration and a
+local road transition need a separate test; neither is enabled by this change.
+
+### Reproduction and checkpoint
+
+Download the exact grid linked above into the external alignment directory, then:
+
+```powershell
+python -m tools.elevation_trial.calgary_alignment --baseline C:/dev-artifacts/CityPrompt/calgary-elevation-2026-10-02/trial-data.json --grid C:/dev-artifacts/CityPrompt/calgary-alignment-2026-10-02/ABCSRSV7.DAC --out C:/dev-artifacts/CityPrompt/calgary-alignment-2026-10-02
+$env:CALGARY_ALIGNMENT_GRID='C:/dev-artifacts/CityPrompt/calgary-alignment-2026-10-02/ABCSRSV7.DAC'
+python -m pytest tools/elevation_trial/test_calgary_dem.py tools/elevation_trial/test_calgary_alignment.py -q
+```
+
+**14 tests passed**, including official-grid round trips, shift direction,
+fail-closed input checks, source preservation and single application of the geoid
+correction. Three grid integration cases require the environment variable above;
+they skip when the external grid is unavailable. No production TypeScript or
+backend runtime code changed.
+
+Alignment outputs are separate from the preserved baseline:
+`C:/dev-artifacts/CityPrompt/calgary-alignment-2026-10-02/`.
+This contains the grid, `trial-data.json`, GPSH responses, adapted browser scripts,
+`browser-comparison.json`, `street-connection.json`, and inspected screenshots.
+These data and generated files remain outside Git. Source changes are the new
+alignment helper, its tests, and this report; the checkpoint remains local.
+
+New QA projects: slope `e3d543e6-c8aa-48b5-bed9-84c8022465dc`; street
+`3ceef542-2cef-4370-8cb6-715a59cebcd7`. Debug overlays are session-only; rerun
+`browser_trial.cjs` and `street_connection.cjs` from the alignment output directory
+to display them. Saved projects contain only the trial boundaries.
