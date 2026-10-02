@@ -12,6 +12,10 @@ export interface RoadTerrainTransitionOptions {
   tieLength: number;
   startCrossSection?: {y:number;z:number}[];
   endCrossSection?: {y:number;z:number}[];
+  leftEdge?: 'slope' | 'retaining';
+  rightEdge?: 'slope' | 'retaining';
+  leftBlendWidth?: number;
+  rightBlendWidth?: number;
 }
 export interface CorridorProbe { x: number; y: number; z: number | null }
 export interface RoadTerrainTransition {
@@ -22,6 +26,9 @@ export interface RoadTerrainTransition {
   weight: (x: number, y: number) => number;
   groundHeight: (x: number, y: number, contextZ: number) => number;
   profileRetention: number;
+  edgeAt: (y: number) => 'slope' | 'retaining';
+  blendWidthAt: (y: number) => number;
+  outerWidthAt: (y: number) => number;
 }
 const clamp = (v: number, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 /** Quintic falloff: height, slope and curvature vanish at the existing ground. */
@@ -31,10 +38,13 @@ export function createRoadTerrainTransition(input: RoadTerrainTransitionOptions)
   const o = { ...input, profile: input.profile.map(p => ({...p})),
     startCrossSection:input.startCrossSection?.map(p=>({...p})),endCrossSection:input.endCrossSection?.map(p=>({...p})) };
   const values = [o.halfWidth, o.shoulderWidth, o.blendWidth, o.endBlend,
-    o.startHeight, o.endHeight, o.tieLength, ...o.profile.flatMap(p => [p.x,p.z])];
+    o.startHeight, o.endHeight, o.tieLength, o.leftBlendWidth??o.blendWidth,
+    o.rightBlendWidth??o.blendWidth, ...o.profile.flatMap(p => [p.x,p.z])];
   if (values.some(v => !Number.isFinite(v)) || o.profile.length < 3 || o.profile.length > 301
     || o.profile[0].x !== 0 || o.halfWidth < 1.5 || o.halfWidth > 8
     || o.shoulderWidth < .3 || o.shoulderWidth > 3 || o.blendWidth < 4 || o.blendWidth > 20
+    || [o.leftBlendWidth,o.rightBlendWidth].some(w=>w!==undefined&&(w<4||w>20))
+    || [o.leftEdge,o.rightEdge].some(e=>e!==undefined&&e!=='slope'&&e!=='retaining')
     || o.endBlend < 4 || o.endBlend > 20 || o.tieLength < 10
     || o.profile.some((p,i) => i > 0 && (p.x <= o.profile[i-1].x || p.x-o.profile[i-1].x > 5))) {
     throw new Error('Invalid road transition dimensions or ground profile.');
@@ -91,17 +101,25 @@ export function createRoadTerrainTransition(input: RoadTerrainTransitionOptions)
   };
   const roadHeight = (x:number,y:number) => {
     const crown=-Math.min(Math.abs(y),o.halfWidth)*.02;
-    return centreAt(x)+crown+(crossAt(o.startCrossSection,y,o.startHeight,crown)-crown)*(1-corridorEase(x/6))
-      +(crossAt(o.endCrossSection,y,o.endHeight,crown)-crown)*(1-corridorEase((length-x)/6));
+    const crossTieLength=Math.max(6,o.tieLength);
+    return centreAt(x)+crown+(crossAt(o.startCrossSection,y,o.startHeight,crown)-crown)*(1-corridorEase(x/crossTieLength))
+      +(crossAt(o.endCrossSection,y,o.endHeight,crown)-crown)*(1-corridorEase((length-x)/crossTieLength));
   };
-  const inner=o.halfWidth+o.shoulderWidth, outerWidth=inner+o.blendWidth;
-  const weight = (x:number,y:number) => (1-corridorEase((Math.abs(y)-inner)/o.blendWidth))
+  const inner=o.halfWidth+o.shoulderWidth;
+  const edgeAt=(y:number)=> (y>=0?o.leftEdge:o.rightEdge)??'slope';
+  // The short retaining transition is entirely enclosed by the physical wall.
+  // Never expose it as a steep grass slope or use it without the wall geometry.
+  const blendWidthAt=(y:number)=>edgeAt(y)==='retaining'?.2:(y>=0?o.leftBlendWidth:o.rightBlendWidth)??o.blendWidth;
+  const outerWidthAt=(y:number)=>inner+blendWidthAt(y);
+  const outerWidth=Math.max(outerWidthAt(-1),outerWidthAt(1));
+  const weight = (x:number,y:number) => Math.abs(y)>=outerWidthAt(y)-1e-9?0:
+    (1-corridorEase((Math.abs(y)-inner)/blendWidthAt(y)))
     * (x<0 ? corridorEase((x+o.endBlend)/o.endBlend) : x>length ? 1-corridorEase((x-length)/o.endBlend) : 1);
   const groundHeight = (x:number,y:number,contextZ:number) => {
     const w=weight(x,y);
     return contextZ + w*(roadHeight(x,y)-.01-contextZ);
   };
-  return {length,outerWidth,options:o,roadHeight,weight,groundHeight,profileRetention};
+  return {length,outerWidth,options:o,roadHeight,weight,groundHeight,profileRetention,edgeAt,blendWidthAt,outerWidthAt};
 }
 
 /** Check the complete transition footprint before any tile is changed. The
@@ -122,8 +140,25 @@ export function validateCorridorContext(field:RoadTerrainTransition, probes:Corr
     maxChangeM=Math.max(maxChangeM,change);
     // Quintic transition's maximum derivative is 1.875. Reject a short, steep
     // verge rather than concealing a large datum mismatch with a narrow skirt.
-    if(1.875*Math.abs(field.roadHeight(p.x,p.y)-.01-p.z)*field.weight(p.x,0)/field.options.blendWidth > .4)
+    if(field.edgeAt(p.y)==='retaining') {
+      if(change>2.5)return {ok:false,reason:'The retaining edge would exceed the supported height. Move or lengthen the route.',problem:p,maxChangeM};
+    } else if(1.875*Math.abs(field.roadHeight(p.x,p.y)-.01-p.z)*field.weight(p.x,0)/field.blendWidthAt(p.y) > .4)
       return {ok:false,reason:'The verge needs more room to meet the existing ground.',problem:p,maxChangeM};
   }
   return {ok:true,maxChangeM};
+}
+
+/** Finite choices: prefer both natural slopes, then one retaining edge, then
+ * two. Every candidate still passes the same independent ground/object checks.
+ * A caller must build and validate the physical walls before installation. */
+export function fitRoadTerrainEdges(options:RoadTerrainTransitionOptions,probes:CorridorProbe[],
+  expectedGround:(x:number,y:number)=>number|null) {
+  let last:ReturnType<typeof validateCorridorContext>|undefined;
+  for(const [leftEdge,rightEdge] of [['slope','slope'],['retaining','slope'],['slope','retaining'],['retaining','retaining']] as const) {
+    const field=createRoadTerrainTransition({...options,leftEdge,rightEdge});
+    const validation=validateCorridorContext(field,probes,expectedGround);
+    if(validation.ok)return {field,validation};
+    last=validation;
+  }
+  throw new Error(`${last!.reason} ${JSON.stringify({problem:last!.problem})}`);
 }

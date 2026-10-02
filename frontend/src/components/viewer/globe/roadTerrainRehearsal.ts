@@ -2,7 +2,9 @@
  * is changed. Promotion requires edit/reload/capture and multi-route integration. */
 import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
-import { createRoadTerrainTransition, validateCorridorContext, type CorridorProbe } from './roadTerrainTransition';
+import { fitRoadTerrainEdges, type CorridorProbe } from './roadTerrainTransition';
+import { createRoadRetainingEdge, constrainRoadEdgeWalk, type RoadEdgeBlocker } from './roadRetainingEdge';
+import { TerrainTilesChangedError } from './roadTerrainTrialController';
 import { createTransitionRoadGeometry, createTransitionTileGeometry } from './roadTerrainTransitionMesh';
 import { patchMaterialForSpatialMask, unpatchMaterialSpatialMask, type TileSpatialMaskConfig } from './TileSpatialMaskPlugin';
 import { createStreetSurfaceMaterialResources, type StreetSurfaceMaterialResources, type StreetSurfaceMaterialKind } from './streetSurfaceMaterials';
@@ -28,7 +30,9 @@ interface Tiles {
   addEventListener:(name:string,fn:(event:{scene?:THREE.Object3D})=>void)=>void;
   removeEventListener:(name:string,fn:(event:{scene?:THREE.Object3D})=>void)=>void;
 }
-export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:RoadRehearsalInput) {
+export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:RoadRehearsalInput,signal?:AbortSignal) {
+  const checkCancelled=()=>{if(signal?.aborted)throw new DOMException('Terrain build cancelled.','AbortError');};
+  checkCancelled();
   if(!import.meta.env.DEV) throw new Error('Road terrain rehearsal is development-only.');
   if(scene.userData.roadTerrainRehearsal)throw new Error('Close the previous road rehearsal first.');
   const enu=new THREE.Matrix4();
@@ -55,14 +59,16 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
     for(const p of input.ground) {
       const hit=hitAt(p.x,p.y);probes.push({x:p.x,y:p.y,z:hit?hit.point.clone().applyMatrix4(inverse).z:null});
       if(probes.length%30===0)await new Promise(requestAnimationFrame);
+      checkCancelled();
     }
     passes.push(probes);await new Promise(r=>setTimeout(r,700));
   }
+  checkCancelled();
   const measuredScenes=visibleScenes();
   if(measuredScenes.size!==scenes.size||[...scenes].some(s=>!measuredScenes.has(s)))
-    throw new Error('Visible tiles changed during measurement; rebuild the transition.');
+    throw new TerrainTilesChangedError('Visible tiles changed during measurement; rebuild the transition.');
   const maxPassDelta=Math.max(...passes[0].map((p,i)=>p.z===null||passes[1][i].z===null?Infinity:Math.abs(p.z-passes[1][i].z!)));
-  if(maxPassDelta>.08)throw new Error('Tiles are still refining; measure again before changing terrain.');
+  if(maxPassDelta>.08)throw new TerrainTilesChangedError('Tiles are still refining; measure again before changing terrain.');
   const probes=passes[1];
   // Five predetermined centreline stations estimate local visual registration.
   // The independent surrounding grid is held out for object detection.
@@ -85,17 +91,18 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
       if(!hit)throw new Error('Road-end ground is incomplete.');result.push({y,z:hit.point.clone().applyMatrix4(inverse).z});}
     return result;
   };
-  const field=createRoadTerrainTransition({profile:input.profile.map(p=>({x:p.x,z:p.z+contextOffset+designRaise})),halfWidth:input.halfWidth,shoulderWidth:.6,
+  const {field,validation}=fitRoadTerrainEdges({profile:input.profile.map(p=>({x:p.x,z:p.z+contextOffset+designRaise})),halfWidth:input.halfWidth,shoulderWidth:.6,
     blendWidth:input.blendWidth,endBlend:input.endBlend,tieLength:input.length/2,
     startHeight:controls[0].z!,endHeight:controls[4].z!,
-    startCrossSection:endSection(0),endCrossSection:endSection(input.length)});
-  const validation=validateCorridorContext(field,probes,(x,y)=>(ground.get(`${x},${y}`)??NaN)+contextOffset);
-  if(!validation.ok)throw new Error(`${validation.reason} ${JSON.stringify({problem:validation.problem,contextOffset})}`);
+    startCrossSection:endSection(0),endCrossSection:endSection(input.length)},probes,(x,y)=>(ground.get(`${x},${y}`)??NaN)+contextOffset);
   const expectedGround=(x:number,y:number)=>{
     const ix=Math.floor(x),iy=Math.floor(y),u=x-ix,v=y-iy;
-    const zs=[ground.get(`${ix},${iy}`),ground.get(`${ix+1},${iy}`),ground.get(`${ix},${iy+1}`),ground.get(`${ix+1},${iy+1}`)];
-    if(zs.some(z=>z===undefined))return null;
-    return (1-v)*((1-u)*zs[0]!+u*zs[1]!)+v*((1-u)*zs[2]!+u*zs[3]!)+contextOffset;
+    let z=0;
+    for(const [dx,dy,w] of [[0,0,(1-u)*(1-v)],[1,0,u*(1-v)],[0,1,(1-u)*v],[1,1,u*v]]) {
+      if(w<1e-10)continue;
+      const value=ground.get(`${ix+dx},${iy+dy}`);if(value===undefined)return null;z+=w*value;
+    }
+    return z+contextOffset;
   };
   const controlChecks:{x:number;y:number;z:number}[]=[];
   for(const x of [.0001,input.length-.0001])for(let y=-input.halfWidth+.0001;y<input.halfWidth;y+=.25){
@@ -103,7 +110,7 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
     controlChecks.push({x,y,z:hit.point.clone().applyMatrix4(inverse).z});
   }
   const seamChecks:{x:number;y:number;z:number}[]=[];
-  for(let x=-input.endBlend;x<=input.length+input.endBlend;x++)for(const y of [-outer,outer]){
+  for(let x=-input.endBlend;x<=input.length+input.endBlend;x++)for(const y of [-field.outerWidthAt(-1),field.outerWidthAt(1)]){
     const hit=hitAt(x,y);if(!hit)throw new Error('The outer terrain join is incomplete.');
     seamChecks.push({x,y,z:hit.point.clone().applyMatrix4(inverse).z});
   }
@@ -126,6 +133,8 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
     const geometry=createTransitionRoadGeometry(field,y-.045,y+.045,.006);owned.push(geometry);road.add(new THREE.Mesh(geometry,markings));
   }
   const replacements:{mesh:THREE.Mesh;original:THREE.BufferGeometry;geometry:THREE.BufferGeometry}[]=[];
+  const blockers:RoadEdgeBlocker[]=[];
+  let retainingMaximumHeightM=0;
   const patched=new Set<THREE.Material>();
   const core=input.halfWidth+.5;
   const mask:TileSpatialMaskConfig={worldToLocal:inverse,edges:[new THREE.Vector4(0,-core,input.length,-core),
@@ -135,6 +144,18 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
   // Prepare everything before installing any geometry or cut. A rejected
   // canopy, missing tile, budget overrun or unsupported material leaves context.
   try {
+    for(const side of [-1,1] as const)if(field.edgeAt(side)==='retaining') {
+      const edge=createRoadRetainingEdge(field,side,(x,y)=>{const hit=hitAt(x,y);return hit?hit.point.clone().applyMatrix4(inverse).z:null;},expectedGround);
+      owned.push(edge.face,edge.cap,edge.rail);blockers.push(...edge.blockers);
+      retainingMaximumHeightM=Math.max(retainingMaximumHeightM,edge.maximumHeight);
+      for(const [geometry,kind] of [[edge.face,'concrete'],[edge.cap,'buffer_stone']] as const) {
+        const resources=createStreetSurfaceMaterialResources(kind,{seed:'road-retaining-edge',relief:true,anisotropy:8});
+        surfaceResources.push(resources);resources.material.side=THREE.DoubleSide;
+        const mesh=new THREE.Mesh(geometry,resources.material);mesh.receiveShadow=true;road.add(mesh);
+      }
+      const guardMaterial=new THREE.MeshStandardMaterial({color:'#394449',roughness:.7,side:THREE.DoubleSide});materials.push(guardMaterial);
+      road.add(new THREE.Mesh(edge.rail,guardMaterial));
+    }
     for(const root of scenes)root.traverse(object=>{
       if(!(object instanceof THREE.Mesh)||!object.visible)return;
       const mesh=object as THREE.Mesh, transform=inverse.clone().multiply(mesh.matrixWorld);
@@ -150,11 +171,22 @@ export async function rehearseRoadTerrain(scene:THREE.Scene,tiles:Tiles,input:Ro
   }catch(e){replacements.forEach(r=>r.geometry.dispose());owned.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());surfaceResources.forEach(r=>r.dispose());throw e;}
   let active=false,disposed=false,stale=false;
   const summary={label:input.label,probes:probes.length,maxPassDelta,contextOffset,
+    leftEdge:field.edgeAt(1),rightEdge:field.edgeAt(-1),retainingMaximumHeightM,
     maxGroundChangeM:validation.maxChangeM,visualAlignmentOffsetM:contextOffset,designRaiseM:designRaise,
     profileRetention:field.profileRetention,changedMeshes:replacements.length,
     replacementVertices:replacements.reduce((n,r)=>n+r.geometry.getAttribute('position').count,0),
     endpointMaxGapM:0,outerSeamMaxGapM:0,roadMaximumGrade:0};
-  const registration={summary,heightAt:(lng:number,lat:number):number|null=>{
+  const localPoint=(lng:number,lat:number)=>{
+    const world=new THREE.Vector3();WGS84_ELLIPSOID.getCartographicToPosition(lat*Math.PI/180,lng*Math.PI/180,input.origin[2],world);
+    return world.applyMatrix4(inverse);
+  };
+  const registration={summary,constrainWalk:(from:{lng:number;lat:number},to:{lng:number;lat:number})=>{
+    if(!active||stale||!blockers.length)return to;
+    const a=localPoint(from.lng,from.lat),b=localPoint(to.lng,to.lat),allowed=constrainRoadEdgeWalk(a,b,blockers);
+    if(allowed===b)return to;
+    const world=new THREE.Vector3(allowed.x,allowed.y,b.z).applyMatrix4(frame),geo={lat:0,lon:0,height:0};
+    WGS84_ELLIPSOID.getPositionToCartographic(world,geo);return {lng:geo.lon*180/Math.PI,lat:geo.lat*180/Math.PI};
+  },heightAt:(lng:number,lat:number):number|null=>{
     if(!active||stale)return null;
     const world=new THREE.Vector3();WGS84_ELLIPSOID.getCartographicToPosition(lat*Math.PI/180,lng*Math.PI/180,input.origin[2],world);
     const local=world.clone().applyMatrix4(inverse);

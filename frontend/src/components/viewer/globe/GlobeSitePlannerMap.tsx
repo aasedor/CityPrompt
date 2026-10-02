@@ -2297,10 +2297,18 @@ export function GlobeSitePlannerMap({
   const applyWalkPose = useCallback((next: WalkPose) => {
     const camera = cameraRef.current;
     if (!camera) return;
+    if (import.meta.env.DEV && walkPoseRef.current) {
+      if(sceneRef.current?.userData.roadTerrainRebuilding)
+        next={...next,lng:walkPoseRef.current.lng,lat:walkPoseRef.current.lat};
+      const constrained=sceneRef.current?.userData.roadTerrainRehearsal?.constrainWalk?.(walkPoseRef.current,next);
+      if(constrained)next={...next,...constrained};
+    }
     let groundHeight = authoredCameraGround(terrainZonesRef.current, next.lng, next.lat, next.groundHeight);
     // The isolated terrain rehearsal uses the same physical surface for its
     // pedestrian camera. This development hook is absent from release builds.
     if (import.meta.env.DEV) {
+      if(sceneRef.current?.userData.roadTerrainRebuilding&&walkPoseRef.current)
+        groundHeight=walkPoseRef.current.groundHeight;
       const trialHeight = sceneRef.current?.userData.roadTerrainRehearsal?.heightAt(next.lng, next.lat);
       if (Number.isFinite(trialHeight)) groundHeight = trialHeight;
     }
@@ -2400,6 +2408,15 @@ export function GlobeSitePlannerMap({
         (lng, lat, height, heading) => {
           enterWalkAt({lngLat:[lng,lat],height});
           if (walkPoseRef.current) applyWalkPose({...walkPoseRef.current,heading});
+        }, () => {
+          // Restore the walker's ground too, including while stationary. A
+          // removed cut must not leave the camera underneath the original tile.
+          const pose=walkPoseRef.current,tiles=tilesRendererRef.current?.group;
+          if(!pose||!tiles)return;
+          const proposal=sceneRef.current?.userData.roadTerrainRehearsal?.heightAt(pose.lng,pose.lat);
+          const height=Number.isFinite(proposal)?proposal:
+            raycastObjectFilteredTerrainHeightAtLngLat(pose.lng,pose.lat,tiles,new THREE.Raycaster(),pose.groundHeight);
+          if(height!==null&&Number.isFinite(height))applyWalkPose({...pose,groundHeight:height});
         });
     });
     return () => { disposed = true; cleanup?.(); };

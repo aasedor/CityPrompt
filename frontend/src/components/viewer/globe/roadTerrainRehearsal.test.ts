@@ -40,7 +40,7 @@ it.each(['load-model','dispose-model','tile-visibility-change'])('restores origi
   }finally{trial?.dispose();original.dispose();material.dispose();vi.useRealTimers();}
 },15000);
 
-it('rejects a changed visible tile set before installing a proposal',async()=>{
+it.each(['changed tiles','cancelled build'])('does not install an obsolete proposal: %s',async(reason)=>{
   vi.useFakeTimers();
   const scene=new THREE.Scene(),group=new THREE.Group(),root=new THREE.Group();scene.add(group);group.add(root);
   const input:RoadRehearsalInput={origin:[-114,51,1100],headingDegrees:90,length:36,halfWidth:3,blendWidth:10,endBlend:4,
@@ -49,9 +49,11 @@ it('rejects a changed visible tile set before installing a proposal',async()=>{
   const tiles={group,visibleTiles:new Set<unknown>(['tile']),forEachLoadedModel:(fn:(s:THREE.Object3D,t:unknown)=>void)=>fn(root,'tile'),
     addEventListener:vi.fn(),removeEventListener:vi.fn()};
   try{
-    const result=rehearseRoadTerrain(scene,tiles,input).catch(e=>e);
-    tiles.visibleTiles.clear();await vi.runAllTimersAsync();
-    expect(await result).toMatchObject({message:expect.stringContaining('Visible tiles changed')});
+    const abort=new AbortController();
+    const result=rehearseRoadTerrain(scene,tiles,input,abort.signal).catch(e=>e);
+    if(reason==='cancelled build')abort.abort();else tiles.visibleTiles.clear();
+    await vi.runAllTimersAsync();
+    expect(await result).toMatchObject(reason==='cancelled build'?{name:'AbortError'}:{message:expect.stringContaining('Visible tiles changed')});
     expect(scene.userData.roadTerrainRehearsal).toBeUndefined();expect(tiles.addEventListener).not.toHaveBeenCalled();
   }finally{vi.useRealTimers();}
 });

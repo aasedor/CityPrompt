@@ -30,5 +30,8 @@ it('does not export a temporary terrain rehearsal as a saved road design', () =>
   const scene = new Group(); scene.userData.roadTerrainRehearsal = {};
   expect(() => assertStreetGroundReady(scene)).toThrow(/local preview/);
   delete scene.userData.roadTerrainRehearsal;
+  scene.userData.roadTerrainRebuilding = {};
+  expect(() => assertStreetGroundReady(scene)).toThrow(/local preview/);
+  delete scene.userData.roadTerrainRebuilding;
   expect(() => assertStreetGroundReady(scene)).not.toThrow();
 });

@@ -27,7 +27,7 @@ describe('natural road transition',()=>{
     const f=createRoadTerrainTransition(options());
     expect(validateCorridorContext(f,[{x:30,y:10,z:null}],()=>0).ok).toBe(false);
     expect(validateCorridorContext(f,[{x:30,y:10,z:8}],()=>0).reason).toMatch(/tree/);
-    expect(validateCorridorContext({...f,options:{...f.options,blendWidth:4}},[{x:30,y:10,z:0}],()=>0).reason).toMatch(/room/);
+    expect(validateCorridorContext(createRoadTerrainTransition({...options(),blendWidth:4}),[{x:30,y:6,z:0}],()=>0).reason).toMatch(/room/);
     expect(validateCorridorContext(f,[{x:30,y:10,z:0}],()=>0).ok).toBe(true);
   });
   it('preserves source imagery coordinates while refining and grading coarse ground',()=>{

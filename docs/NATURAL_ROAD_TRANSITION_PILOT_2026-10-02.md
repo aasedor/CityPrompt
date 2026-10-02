@@ -1,5 +1,8 @@
 # Natural road transitions: Calgary pilot
 
+Follow-up: [constrained edges and automatic recovery](ROAD_TRANSITION_RETAINING_FIXES_2026-10-02.md)
+records the next checkpoint. Results below describe the initial pilot.
+
 ## Result and release status
 
 The clear-ground pilot produces a road with smooth terrain joins on real Google

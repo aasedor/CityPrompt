@@ -1,7 +1,7 @@
 import type { Object3D } from 'three';
 
 export function assertStreetGroundReady(scene: Object3D | null): void {
-  if (scene?.userData.roadTerrainRehearsal) {
+  if (scene?.userData.roadTerrainRehearsal || scene?.userData.roadTerrainRebuilding) {
     throw new Error('The road edge study is a local preview. Show the original ground or close the study before exporting your saved design.');
   }
   const status = streetGroundCaptureStatus(scene);

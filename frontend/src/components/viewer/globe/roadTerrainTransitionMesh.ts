@@ -25,6 +25,25 @@ export function createTransitionTileGeometry(source:THREE.BufferGeometry, meshTo
     attributes:attributes.map(a=>Array.from({length:a.itemSize},(_,j)=>a.getComponent(i,j)))});
   const middle=(a:Vertex,b:Vertex):Vertex=>({p:a.p.clone().add(b.p).multiplyScalar(.5),
     attributes:a.attributes.map((values,i)=>values.map((v,j)=>(v+b.attributes[i][j])/2))});
+  // A short blend beneath a wall needs an exact shared outer edge. Refinement
+  // alone can leave a triangle spanning the edge and pull untouched ground down.
+  const split=(polygon:Vertex[],y:number)=>{
+    const pieces:Vertex[][]=[];
+    for(const sign of [-1,1]) {
+      const out:Vertex[]=[];
+      polygon.forEach((a,i)=>{
+        const b=polygon[(i+1)%polygon.length],insideA=sign*(a.p.y-y)>=0,insideB=sign*(b.p.y-y)>=0;
+        if(insideA)out.push(a);
+        if(insideA!==insideB) {
+          const t=(y-a.p.y)/(b.p.y-a.p.y);
+          const p=a.p.clone().lerp(b.p,t);p.y=y;
+          out.push({p,attributes:a.attributes.map((v,k)=>v.map((n,j)=>n+(b.attributes[k][j]-n)*t))});
+        }
+      });
+      if(out.length>=3)pieces.push(out);
+    }
+    return pieces;
+  };
   const emit=(triangle:Vertex[],materialIndex:number,depth=0)=>{
     const intersects=near(triangle);
     const distances=triangle.map((a,i)=>{const b=triangle[(i+1)%3];return (a.p.x-b.p.x)**2+(a.p.y-b.p.y)**2;});
@@ -64,7 +83,16 @@ export function createTransitionTileGeometry(source:THREE.BufferGeometry, meshTo
   };
   for(let i=0;i<count;i+=3) {
     const materialIndex=source.groups.find(g=>i>=g.start&&i<g.start+g.count)?.materialIndex??0;
-    emit([vertex(index?index.getX(i):i),vertex(index?index.getX(i+1):i+1),vertex(index?index.getX(i+2):i+2)],materialIndex);
+    let polygons=[[vertex(index?index.getX(i):i),vertex(index?index.getX(i+1):i+1),vertex(index?index.getX(i+2):i+2)]];
+    for(const side of [-1,1] as const)if(field.edgeAt(side)==='retaining') {
+      // Both limits matter: the inner split keeps steep hidden triangles from
+      // poking through the shoulder at the foot of the wall.
+      for(const width of [field.options.halfWidth+field.options.shoulderWidth,field.outerWidthAt(side)]) {
+        const boundary=side*width;
+        polygons=polygons.flatMap(p=>Math.min(...p.map(v=>v.p.y))<boundary&&Math.max(...p.map(v=>v.p.y))>boundary?split(p,boundary):[p]);
+      }
+    }
+    for(const polygon of polygons)for(let j=1;j<polygon.length-1;j++)emit([polygon[0],polygon[j],polygon[j+1]],materialIndex);
   }
   if(!changed)return null;
   const geometry=new THREE.BufferGeometry();
