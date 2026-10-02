@@ -46,7 +46,7 @@ function Home({url}: {url: string}) {
 }
 function ReviewFixture({url}: {url: string}) {
   const {scene}=useGLTF(url);
-  const clone=useMemo(()=>scene.clone(true),[scene]);
+  const clone=useMemo(()=>centreNativeClayClone(scene.clone(true)),[scene]);
   return <group rotation={[Math.PI/2,0,0]} dispose={null}><primitive object={clone}/></group>;
 }
 const ORIGIN = {lng:-114.04677,lat:51.04542};
@@ -82,7 +82,8 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
   const asset=draft.generatedModel?null:placeAsset(draft.assetId);
   const nativePark=nativeParkLayouts.find(p=>p.id===asset?.properties.green_space_native_layout_id);
   const projectId=zones[0]?.project_id;
-  const request=asset?placementPlanRequest(asset,draft.width,draft.depth,projectId):null;
+  const request=asset && !asset.properties.validation_native_url
+    ? placementPlanRequest(asset,draft.width,draft.depth,projectId) : null;
   const {data:plan}=useQuery({queryKey:['placement-home-plan',request],
     queryFn:()=>legoAssemblyApi.plan(request!),
     retry:false,staleTime:300000,enabled:request!==null});
@@ -129,6 +130,8 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
       <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
       <PreviewFallback key={draft.assetId} fallback={fallback}><Suspense fallback={fallback}>
         {draft.generatedModel ? <GeneratedModelPreview model={draft.generatedModel} width={draft.width} depth={draft.depth}/>
+          : asset?.zoneType==='building' && typeof asset.properties.validation_native_url === 'string'
+            ? <ReviewFixture url={asset.properties.validation_native_url}/>
           : asset?.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
           position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}
           scale={instance.scale ?? [1,1,1]}>

@@ -83,7 +83,7 @@ const BUILDING_OVERRIDES: Record<string, string> = {
   victorian_bay_window_terrace: 'ground_housing', halifax_painted_clapboard_row: 'ground_housing',
   toronto_brick_rowhouse: 'ground_housing', brick_rowhouse_terrace: 'ground_housing',
   london_townhouse: 'ground_housing', london_crescent_terrace: 'ground_housing', regency_stucco_terrace: 'ground_housing',
-  rndsqr_missing_middle_townhomes: 'ground_housing',
+  rndsqr_missing_middle_townhomes: 'ground_housing', reference_charcoal_gable_fourplex: 'ground_housing',
 };
 const BUILDING_VARIANT_OVERRIDES: Record<string, string> = {
   'calgary_modern_infill_house/infill_duplex': 'two_home',

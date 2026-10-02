@@ -58,6 +58,7 @@ import type { ReferenceLayer } from '@/features/referenceLayers/api';
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
+import { GlobeReviewBuilding } from './GlobeReviewBuilding';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
 import { preparedPublicRoadMasks } from './preparedPublicRoads';
@@ -1784,16 +1785,21 @@ export function GlobeSitePlannerMap({
   // stack — it is excluded from the Meshy model layer (the stack wins).
   // Buildings with a saved recipe or an honest planned-massing fallback mount
   // the LEGO layer, which itself skips + debug-counts footprint-less records.
+  const reviewBuildingZones = useMemo(() => siteZones.filter((zone) =>
+    zone.zone_type === 'building' && typeof zone.properties?.validation_native_url === 'string'
+    && zone.properties.validation_native_url.length > 0), [siteZones]);
+  const reviewBuildingIds = useMemo(() => new Set(reviewBuildingZones
+    .map((zone) => zone.building_id).filter((id): id is string => Boolean(id))), [reviewBuildingZones]);
   const meshyBuildings = useMemo(
-    () => excludeLegoStackBuildings(buildings ?? []),
-    [buildings],
+    () => excludeLegoStackBuildings(buildings ?? []).filter((building) => !reviewBuildingIds.has(building.id)),
+    [buildings, reviewBuildingIds],
   );
   const legoLayerBuildings = useMemo(
     () => (buildings ?? []).filter((building) => (
       hasLegoRecipe(building)
       || hasPlannedMassing(building)
-    )),
-    [buildings],
+    ) && !reviewBuildingIds.has(building.id)),
+    [buildings, reviewBuildingIds],
   );
   const direct3DProposalBuildingIds = useMemo(
     () => getCurrentCommunity3DBuildingIds(siteZones, buildings ?? []),
@@ -1809,7 +1815,7 @@ export function GlobeSitePlannerMap({
     [buildings],
   );
   const hasPlaceableModels = Boolean(buildings?.some((b) => b.lod_urls?.['0'] ?? b.model_url))
-    || legoLayerBuildings.length > 0;
+    || legoLayerBuildings.length > 0 || reviewBuildingZones.length > 0;
   const architecturalLighting = useMemo(
     () => getArchitecturalLightingProfile(buildings),
     [buildings],
@@ -1823,9 +1829,10 @@ export function GlobeSitePlannerMap({
     // handoff, but they must never resurrect an opaque box behind the GLB.
     if (buildingModelsVisible) {
       savedRenderableLegoBuildingIds.forEach((id) => merged.add(id));
+      reviewBuildingIds.forEach((id) => merged.add(id));
     }
     return merged;
-  }, [buildingModelsVisible, legoBuildingIds, modeledBuildingIds, savedRenderableLegoBuildingIds]);
+  }, [buildingModelsVisible, legoBuildingIds, modeledBuildingIds, reviewBuildingIds, savedRenderableLegoBuildingIds]);
   const preparedSiteBoundaryIds = useMemo(
     () => getPreparedSiteBoundaryIds(siteZones),
     [siteZones],
@@ -4483,6 +4490,8 @@ export function GlobeSitePlannerMap({
               captures. Conditional render (not `visible`) so toggling off
               unmounts the models and the prisms return automatically. */}
           <group name="siteforge-direct3d-building" userData={direct3DProposalUserData('building')}>
+            {buildingModelsVisible && reviewBuildingZones.map((zone) =>
+              <GlobeReviewBuilding key={zone.id} zone={zone} zones={siteZones} terrainHeight={terrainElevation}/>)}
             {buildingModelsVisible && meshyBuildings.length > 0 && (
               <GlobeBuildingModelsLayer
                 key={`meshy-models-${buildingLayerRecoveryGeneration}`}

@@ -37541,6 +37541,79 @@
       "maxFloors": 4,
       "suggestedAreaSqm": 1500,
       "developmentType": "hotel"
+    },
+    {
+      "id": "reference_charcoal_gable_fourplex",
+      "title": "Charcoal Gable Fourplex",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Four attached two-storey homes with individual front stoops, staggered steep gables, charcoal board-and-batten above cool white lap siding, a dark brick base, and planted street frontage.",
+      "buildingSubcategory": "Residential — Fourplex / Ground Housing",
+      "developmentType": "residential_multifamily",
+      "districtKit": "calgary",
+      "generationTags": ["fourplex", "ground_housing", "attached_homes", "contemporary", "front_gables", "board_and_batten", "brick_base"],
+      "suggestedWidth_m": 25,
+      "suggestedDepth_m": 19,
+      "minWidth_m": 25,
+      "maxWidth_m": 25,
+      "minDepth_m": 19,
+      "maxDepth_m": 19,
+      "suggestedFloorHeight": 3.1,
+      "minFloors": 2,
+      "maxFloors": 2,
+      "suggestedAreaSqm": 450,
+      "aspectRatio": "1.32:1",
+      "shadeId": "#30363A",
+      "thumbnailUrl": "/archetypes/buildings/reference-fourplex/hero.jpg",
+      "palette": {
+        "skyTop": "#7796BB",
+        "skyBottom": "#E8CDB2",
+        "facadePrimary": "#31363A",
+        "facadeSecondary": "#EEECE6",
+        "accent": "#55504A",
+        "window": "#BFA373",
+        "ground": "#617743",
+        "street": "#56575B",
+        "landscape": "#45603A"
+      },
+      "styleProfile": {
+        "materials": ["matte charcoal board-and-batten siding", "cool ivory horizontal lap siding", "charcoal running-bond brick base", "dark architectural asphalt shingles", "white painted gable fascia", "black metal windows and rails"],
+        "massing": "Four connected two-storey homes, each with a narrow independent front gable and entry; the street wall steps subtly between homes.",
+        "facadeRhythm": "Four steep gables and one prominent second-storey window per home; wide living-room windows and separate recessed doors below.",
+        "roofForm": "Four steep parallel front-facing gables, bounded white rakes and dark shingle slopes with closed valley troughs.",
+        "frontageType": "Four separate raised concrete stoops and narrow planted beds connect to a public sidewalk.",
+        "windowStyle": "Black framed recessed casements with vertical mullions and warm occupied depth.",
+        "streetRelationship": "Fine-grain attached housing behind a planted front setback.",
+        "articulation": "Staggered gable faces, deep sill returns, physical lap and batten relief, supported canopies, and black stair rails."
+      },
+      "facadeDetail": {
+        "primaryMaterial": "charcoal vertical board-and-batten upper cladding alternating with ivory painted lap siding",
+        "secondaryMaterial": "deep charcoal running-bond brick base and white gable fascia",
+        "groundFloor": "four recessed independent entries with concrete steps, slender black handrails, warm living-room glazing and narrow planted fronts",
+        "upperFloors": "repeated large black-framed bedroom windows below steep gable peaks",
+        "cornice": "white painted rake and eave boards framing dark shingle roofs",
+        "colorScheme": "near-black charcoal, cool ivory white, dark brick, warm lit windows and green planting"
+      },
+      "roofDetail": {
+        "form": "four parallel steep front-facing gables with continuous side slopes",
+        "material": "dark dimensional asphalt shingles with white fascia",
+        "features": "closed valleys, bounded ridge caps, subtle front-to-rear step and gutters",
+        "aerialAppearance": "four repeated charcoal shingle gables over a compact attached residential row"
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the building footprint with four attached two-storey homes matching the supplied reference: four steep front gables, charcoal board-and-batten and ivory horizontal lap, black framed windows, dark brick base, separate raised stoops, black rails and planted fronts. Keep the site and surrounding context unchanged.",
+        "roofView": "Show four parallel steep dark shingle gables and their closed valleys over an attached four-home plan. Keep the site and surrounding context unchanged.",
+        "negative": "flat roof, generic apartment block, single door, extra units, warped windows, floating steps, unbuilt rear, pasted facade"
+      },
+      "variants": [{
+        "id": "reference_charcoal_gable_fourplex_v1",
+        "label": "Reference charcoal gables",
+        "thumbnailUrl": "/archetypes/buildings/reference-fourplex/hero.jpg",
+        "description": "Four front-door homes with steep black gables, charcoal and ivory cladding, brick plinth, recessed glazing and planted concrete stoops.",
+        "minFloors": 2,
+        "maxFloors": 2,
+        "suggestedAreaSqm": 450,
+        "palette": {"primary": "#30363A"}
+      }]
     }
   ]
 }

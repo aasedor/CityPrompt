@@ -5,7 +5,8 @@ import { isNeighborhoodParkPilot } from '@/components/viewer/globe/neighborhoodP
 
 /** Read saved representations, including after reload; job success does not imply detail. */
 export function representationNotice(zones: SiteZone[]): string {
-  const masses = zones.filter(zone => getCommunity3DMeta(zone)?.generator === 'planned_massing').length;
+  const masses = zones.filter(zone => getCommunity3DMeta(zone)?.generator === 'planned_massing'
+    && !(zone.zone_type === 'building' && typeof zone.properties?.validation_native_url === 'string')).length;
   // These exact, explicitly selected layouts own their browser geometry even
   // when the server has no external asset family. Keep genuine fallbacks visible.
   const fallbackZones = zones.filter(zone => Boolean(zone.properties?.public_realm_fallback));

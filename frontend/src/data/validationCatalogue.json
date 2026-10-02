@@ -1,6 +1,28 @@
 {
   "entries": [
     {
+      "record_id": "building/reference_charcoal_gable_fourplex/reference_charcoal_gable_fourplex_v1@22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+      "domain": "building",
+      "title": "Charcoal Gable Fourplex",
+      "archetype_id": "reference_charcoal_gable_fourplex",
+      "variant_id": "reference_charcoal_gable_fourplex_v1",
+      "version": "reference-fourplex-v1",
+      "sha256": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+      "existing_reviews": ["PASS_INDEPENDENT_SOURCE_LIMITED_PILOT", "PASS_LOCAL_BROWSER_PLACEMENT"],
+      "completed": false,
+      "remaining": ["Additional source views and measured plans for keeper review", "Human visual approval before seed/runtime promotion"],
+      "quality_status": "builder_candidate",
+      "approval_scope": "Local review and browser pilot only",
+      "verified_model_path": "C:/dev-artifacts/CityPrompt/reference-fourplex-2026-10-01/full-v6/reference-fourplex-v1.glb",
+      "app_eligible": false,
+      "status": "Source-limited local pilot reviewed and browser-tested; keeper approval pending",
+      "local_url": "/validation-assets/reference-fourplex-v1/reference-fourplex-v1.glb",
+      "placement_id": "validation_reference_charcoal_gable_fourplex_v1",
+      "runtime_status": "PILOT_TESTING",
+      "binding": "fixed-native-review",
+      "native_dimensions_m": [23.4, 17.35, 9.64]
+    },
+    {
       "record_id": "building/minimalist_infill_townhouse/minimalist_infill_brick_monolith@97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
       "domain": "building",
       "title": "Buff-brick infill",
@@ -1457,6 +1479,39 @@
     }
   ],
   "assets": [
+    {
+      "id": "validation_reference_charcoal_gable_fourplex_v1",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Charcoal Gable Fourplex",
+      "description": "Four homes · front gables · four stoops · fixed native model",
+      "thumbnail": "/archetypes/buildings/reference-fourplex/hero.jpg",
+      "model": {"variantId": "reference_charcoal_gable_fourplex_v1", "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732", "method": "RLASM 6.1 candidate"},
+      "calgaryGuide": {"groupId": "ground_housing", "basis": "form_reference"},
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 25,
+      "depth": 19,
+      "minWidth": 25,
+      "minDepth": 19,
+      "maxSize": 60,
+      "reshapeDescription": "Keep all four homes, roofs and entries at their authored size; enlarge the surrounding plot only.",
+      "nativeDimensions": [23.4, 17.35, 9.64],
+      "properties": {
+        "validation_fixed_fixture": true,
+        "validation_native_url": "/validation-assets/reference-fourplex-v1/reference-fourplex-v1.glb",
+        "building_archetype_id": "reference_charcoal_gable_fourplex",
+        "development_archetype_id": "reference_charcoal_gable_fourplex",
+        "development_selected_variant_id": "reference_charcoal_gable_fourplex_v1",
+        "development_archetype_label": "Charcoal Gable Fourplex",
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "community_3d_mask_existing_tiles": true,
+        "floors": 2,
+        "floor_count": 2
+      }
+    },
     {
       "id": "validation_minimalist_infill_brick_monolith",
       "kind": "object",

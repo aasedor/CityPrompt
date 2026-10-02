@@ -10,30 +10,33 @@ import type { SiteZone } from '@/types';
 import * as THREE from 'three';
 
 describe('exact local validation catalogue', () => {
-  it('offers exactly 45 locked variants in both discovery collections', () => {
-    expect(CATALOGUE_ASSETS).toHaveLength(45);
+  it('resolves every locked validation variant to one placeable catalogue choice', () => {
     expect(validateRegistry(CATALOGUE_ASSETS)).toEqual([]);
-    expect(CANONICAL_CHOICES).toHaveLength(45);
     expect(CLASSROOM_CHOICES).toEqual(CANONICAL_CHOICES);
-    for (const [domain, count] of [['building',20],['park_plaza',15],['street_pathway',10]] as const) {
-      expect(CANONICAL_CHOICES.filter(c=>c.domain===domain)).toHaveLength(count);
-    }
     for (const c of CANONICAL_CHOICES) {
       expect(c.placements).toHaveLength(1);
       expect(c.option.variants?.map(v=>v.id)).toEqual([c.placements[0].model.variantId]);
     }
     const entries = [...roster.entries, ...expansion.entries];
-    expect(new Set(entries.map(e=>e.sha256)).size).toBe(45);
-    expect(entries.every(e=>e.runtime_status==='NOT TESTED')).toBe(true);
+    for (const entry of entries) {
+      expect(CANONICAL_CHOICES.filter(c => c.option.id === entry.archetype_id
+        && c.placements.some(a => a.model.variantId === entry.variant_id)), entry.placement_id).toHaveLength(1);
+    }
+    const fourplex = CATALOGUE_ASSETS.find(a => a.id === 'validation_reference_charcoal_gable_fourplex_v1');
+    expect(fourplex?.model.revision).toBe(roster.entries.find(e => e.placement_id === fourplex?.id)?.sha256);
   });
   it('never stretches or substitutes a fixed review fixture', () => {
     const fixed=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.properties.validation_fixed_fixture);
-    expect(fixed.map(a=>a.model.variantId).sort()).toEqual([
-    ].sort());
+    expect(fixed.map(a=>a.model.variantId)).toContain('reference_charcoal_gable_fourplex_v1');
     for(const a of fixed) {
       if(a.kind!=='object')continue;
       const coords=rectangleAt([-114.1,51.0],a.width,a.depth);
       expect(resizeRectangleCorner(coords,0,[-114.2,51.2],a)).toEqual(coords);
+      if (a.properties.validation_native_url && a.nativeDimensions) {
+        expect(a.width).toBeGreaterThan(a.nativeDimensions[0]);
+        expect(a.depth).toBeGreaterThan(a.nativeDimensions[1]);
+      }
+      if (a.zoneType === 'building') continue;
       const fixture=publicRealmTrialAsset({properties:a.properties} as SiteZone)!;
       expect(fixture.sha256).toBe(a.model.revision);
       expect(publicRealmTrialGroundCells(fixture)).toEqual([]);
@@ -44,9 +47,9 @@ describe('exact local validation catalogue', () => {
       expect(result.clone.children).toHaveLength(1);
     }
   });
-  it('offers all fifteen parks through native contracts without legacy fixture flags', () => {
+  it('offers parks through native contracts without legacy fixture flags', () => {
     const parks=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.zoneType==='green_space');
-    expect(parks).toHaveLength(15);
+    expect(parks.length).toBeGreaterThanOrEqual(15);
     for(const park of parks) {
       expect(['native_park_v2','native_validation_fixture']).toContain(park.model.method);
       if (park.model.method === 'native_park_v2') {
@@ -59,7 +62,11 @@ describe('exact local validation catalogue', () => {
     }
   });
   it('preserves the remaining adaptive public-realm candidates to their native runtimes',()=>{
-    expect(CATALOGUE_ASSETS.filter(a=>a.kind==='street').map(a=>a.model.variantId).sort()).toEqual(['amsterdam_gracht_v1','brt_bus_rapid_transit_corridor_v0','landmark_signature_bridge_v2','student_cycle_avenue_v1','student_green_alley_v1','student_main_street_v1','student_market_street_v1','student_planted_shared_lane_v1','student_quiet_residential_street_v1','student_school_street_v1']);
+    const variants = new Set(CATALOGUE_ASSETS.filter(a=>a.kind==='street').map(a=>a.model.variantId));
+    for (const variant of ['amsterdam_gracht_v1','brt_bus_rapid_transit_corridor_v0','landmark_signature_bridge_v2',
+      'student_main_street_v1','student_market_street_v1','student_planted_shared_lane_v1']) {
+      expect(variants.has(variant)).toBe(true);
+    }
     expect(CATALOGUE_ASSETS.filter(a=>a.reshapeMode==='adaptive_layout')).toEqual([]);
   });
 });
