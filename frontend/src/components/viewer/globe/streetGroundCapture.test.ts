@@ -25,3 +25,10 @@ it('blocks an early prepared-road export and rejects a new pending alignment dur
   road.userData.streetGroundStatus = 'unavailable';
   expect(() => assertStreetGroundReady(scene)).toThrow(/could not be measured completely/);
 });
+
+it('does not export a temporary terrain rehearsal as a saved road design', () => {
+  const scene = new Group(); scene.userData.roadTerrainRehearsal = {};
+  expect(() => assertStreetGroundReady(scene)).toThrow(/local preview/);
+  delete scene.userData.roadTerrainRehearsal;
+  expect(() => assertStreetGroundReady(scene)).not.toThrow();
+});

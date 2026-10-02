@@ -1,6 +1,9 @@
 import type { Object3D } from 'three';
 
 export function assertStreetGroundReady(scene: Object3D | null): void {
+  if (scene?.userData.roadTerrainRehearsal) {
+    throw new Error('The road edge study is a local preview. Show the original ground or close the study before exporting your saved design.');
+  }
   const status = streetGroundCaptureStatus(scene);
   if (status !== 'ready') throw new Error(status === 'sampling'
     ? 'The road connection is still aligning with the ground. Keep the site in view and try again once it finishes.'

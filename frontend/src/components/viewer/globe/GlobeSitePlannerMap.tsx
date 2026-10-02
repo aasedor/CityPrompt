@@ -2297,7 +2297,13 @@ export function GlobeSitePlannerMap({
   const applyWalkPose = useCallback((next: WalkPose) => {
     const camera = cameraRef.current;
     if (!camera) return;
-    const groundHeight = authoredCameraGround(terrainZonesRef.current, next.lng, next.lat, next.groundHeight);
+    let groundHeight = authoredCameraGround(terrainZonesRef.current, next.lng, next.lat, next.groundHeight);
+    // The isolated terrain rehearsal uses the same physical surface for its
+    // pedestrian camera. This development hook is absent from release builds.
+    if (import.meta.env.DEV) {
+      const trialHeight = sceneRef.current?.userData.roadTerrainRehearsal?.heightAt(next.lng, next.lat);
+      if (Number.isFinite(trialHeight)) groundHeight = trialHeight;
+    }
     const pose = { ...next, groundHeight };
     walkPoseRef.current = pose;
     setWalkHasParkEntrance(Boolean(nativeParkWalkEntrance(terrainZonesRef.current, pose)));
@@ -2383,6 +2389,21 @@ export function GlobeSitePlannerMap({
     setStreetViewPosition([pose.lng, pose.lat], pose.groundHeight);
     setStreetViewAngle(Math.round(pose.heading));
   }, [leaveWalk, setStreetViewActive, setStreetViewAngle, setStreetViewPosition]);
+
+  useEffect(() => {
+    if (!import.meta.env.DEV || !new URLSearchParams(location.search).has('terrainTrial')) return;
+    let disposed = false;
+    let cleanup: (() => void) | undefined;
+    void import('./roadTerrainTrialPanel').then(({ mountRoadTerrainTrialPanel }) => {
+      if (disposed) return;
+      cleanup = mountRoadTerrainTrialPanel(() => sceneRef.current, () => tilesRendererRef.current,
+        (lng, lat, height, heading) => {
+          enterWalkAt({lngLat:[lng,lat],height});
+          if (walkPoseRef.current) applyWalkPose({...walkPoseRef.current,heading});
+        });
+    });
+    return () => { disposed = true; cleanup?.(); };
+  }, [enterWalkAt, applyWalkPose]);
 
   useEffect(() => {
     if (walkMode !== 'active') return;
