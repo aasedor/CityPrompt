@@ -21,6 +21,13 @@ once, while different density/height modifiers and Direct Control identifiers
 remain distinct. Missing descriptions are explicitly marked. The guide supports
 keyboard access and scrolling, and is available through both Site and Layers.
 
+The visual finish follows City Prompt's cream, charcoal, and lime palette.
+Map labels use rounded charcoal badges with a fine light outline, subtle shadow,
+cream 13 px text drawn at double resolution, and a small lime accent. Badge size
+stays constant on screen; existing overlap suppression remains active. The guide
+uses matching badges, separated description rows, and a styled checkbox toggle
+with visible keyboard focus. No category meanings are implied by the accent color.
+
 The checkbox is remembered per project in this browser. Existing label
 preferences are retained; the old line preference is ignored. Calgary coverage,
 loading, retry, and unavailable-data messages remain. Requests are bounded to
@@ -50,6 +57,9 @@ paths. No rezoning, subdivision, or LiDAR integration is included.
   (`a59a05a7-f6b8-467e-94cb-8942933a19b5`) displayed those 32 pieces and 21 guide
   entries in overhead and oblique views, with zero browser errors and zero design
   writes while toggling/viewing the overlay. Screenshots were visually reviewed.
+- After the styling pass, the same 19 tests, type-check, mixed-site browser check,
+  and Currie show/hide/reload/retry/capture-exclusion checks passed again. Updated
+  overhead and 3D screenshots were visually reviewed for contrast and spacing.
 
 ### Separate existing-project issues found during QA
 

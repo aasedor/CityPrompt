@@ -22,7 +22,8 @@ export function GlobeZoningLabels({ data, labels, terrainHeight }: {
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       if (!context) continue;
-      context.font = 'bold 24px sans-serif';
+      // Draw at 2x resolution; keep the label's size stable as the camera moves.
+      context.font = '600 26px Inter, system-ui, sans-serif';
       const labelLines: string[] = [];
       for (const code of district.label.split(' / ')) {
         const last = labelLines.length - 1;
@@ -30,13 +31,21 @@ export function GlobeZoningLabels({ data, labels, terrainHeight }: {
         if (last >= 0 && context.measureText(combined).width <= 340) labelLines[last] = combined;
         else labelLines.push(code);
       }
-      canvas.width = Math.ceil(Math.max(...labelLines.map(line => context.measureText(line).width))) + 20;
-      canvas.height = labelLines.length * 30 + 8;
-      context.fillStyle = 'rgba(15,23,42,0.90)';
-      context.fillRect(0, 0, canvas.width, canvas.height);
-      context.font = 'bold 24px sans-serif';
-      context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillStyle = '#fef9c3';
-      labelLines.forEach((line, index) => context.fillText(line, canvas.width / 2, 19 + index * 30));
+      canvas.width = Math.ceil(Math.max(...labelLines.map(line => context.measureText(line).width))) + 64;
+      canvas.height = labelLines.length * 32 + 28;
+      context.beginPath();
+      context.roundRect(6, 5, canvas.width - 12, canvas.height - 14, 18);
+      context.shadowColor = 'rgba(0,0,0,0.30)';
+      context.shadowBlur = 6; context.shadowOffsetY = 3;
+      context.fillStyle = 'rgba(21,25,24,0.96)';
+      context.fill();
+      context.shadowBlur = 0; context.shadowOffsetY = 0;
+      context.strokeStyle = 'rgba(255,249,236,0.40)'; context.lineWidth = 2; context.stroke();
+      context.beginPath(); context.arc(24, canvas.height / 2 - 2, 4, 0, Math.PI * 2);
+      context.fillStyle = '#c9ff3d'; context.fill();
+      context.font = '600 26px Inter, system-ui, sans-serif';
+      context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillStyle = '#fff9ec';
+      labelLines.forEach((line, index) => context.fillText(line, canvas.width / 2 + 8, 28 + index * 32));
       const texture = new THREE.CanvasTexture(canvas);
       texture.colorSpace = THREE.SRGBColorSpace;
       const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, depthWrite: false, toneMapped: false });
