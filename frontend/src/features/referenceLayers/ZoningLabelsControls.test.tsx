@@ -20,6 +20,27 @@ function setup() {
 beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); });
 
 describe('zoning label controls', () => {
+  it('explains codes once per designation and keeps different modifiers distinct', async () => {
+    vi.mocked(fetchZoningLabels).mockResolvedValue({
+      districts: [
+        { id: 'a', label: 'R-CG', description: 'Residential - Grade-Oriented Infill', anchor: [-114.12, 51.01] },
+        { id: 'b', label: 'R-CG', description: 'Residential - Grade-Oriented Infill', anchor: [-114.12, 51.01] },
+        { id: 'c', label: 'M-C1 d75', description: 'Multi-Residential - Contextual Low Profile', anchor: [-114.12, 51.01] },
+        { id: 'd', label: 'M-C1 d100', description: 'Multi-Residential - Contextual Low Profile', anchor: [-114.12, 51.01] },
+        { id: 'e', label: 'DC48Z84', anchor: [-114.12, 51.01] },
+      ], bounds: [-114.12, 51.01, -114.119, 51.011], loadedAt: 'ready',
+    });
+    render(setup()());
+    fireEvent.click(screen.getByLabelText('Show zoning codes'));
+    const guide = await screen.findByText('Code guide (4)');
+    fireEvent.click(guide);
+    expect(screen.getAllByText('Residential - Grade-Oriented Infill')).toHaveLength(1);
+    expect(screen.getByText('M-C1 d75')).toBeInTheDocument();
+    expect(screen.getByText('M-C1 d100')).toBeInTheDocument();
+    expect(screen.getByText('Description not supplied by Calgary.')).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText('Show zoning codes'));
+    expect(screen.queryByText('Code guide (4)')).not.toBeInTheDocument();
+  });
   it('fetches only when requested and has no lot-line control', async () => {
     vi.mocked(fetchZoningLabels).mockResolvedValue({ districts: [], bounds: [-114.12, 51.01, -114.119, 51.011], loadedAt: 'ready' });
     render(setup()());

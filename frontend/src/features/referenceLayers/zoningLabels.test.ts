@@ -18,6 +18,18 @@ describe('district zoning labels without parcel data', () => {
     const polygon: [number, number][][] = [[[0, 0], [8, 0], [8, 8], [5, 8], [5, 3], [0, 3], [0, 0]], [[1, 1], [2, 1], [2, 2], [1, 2], [1, 1]]];
     expect(booleanPointInPolygon(zoningAnchor(polygon)!, { type: 'Polygon', coordinates: polygon })).toBe(true);
   });
+  it('preserves district modifiers and current descriptions without inventing missing names', async () => {
+    const result = await districtLabels([
+      { label: 'M-C1 d75', lu_code: 'M-C1', description: ' Multi-Residential - Contextual Low Profile ', multipolygon: geometry },
+      { label: 'DC48Z84', lu_code: 'DC', multipolygon: geometry },
+      { lu_code: 'H-GO', description: null, multipolygon: geometry },
+    ], site);
+    expect(result.map(({ label, description }) => ({ label, description }))).toEqual([
+      { label: 'M-C1 d75', description: 'Multi-Residential - Contextual Low Profile' },
+      { label: 'DC48Z84', description: undefined },
+      { label: 'H-GO', description: undefined },
+    ]);
+  });
   it('labels every disjoint district piece and ignores areas outside the actual boundary', async () => {
     const district = { type: 'MultiPolygon', coordinates: [[[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]], [[[2, 0], [3, 0], [3, 1], [2, 1], [2, 0]]]] };
     expect(await districtLabels([{ lu_code: 'S-SPR', multipolygon: district }], [[0, 0], [3, 0], [3, 2], [0, 2]])).toHaveLength(2);
@@ -42,6 +54,7 @@ describe('district zoning labels without parcel data', () => {
     expect(fetch).toHaveBeenCalledOnce();
     const url = new URL(fetch.mock.calls[0][0]);
     expect(url.pathname).toBe('/resource/qe6k-p9nh.json');
+    expect(url.searchParams.get('$select')).toContain('description');
     expect(url.searchParams.get('$where')).toContain('intersects(multipolygon');
     expect(url.searchParams.get('$limit')).toBe('1501');
   });

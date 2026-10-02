@@ -4,7 +4,7 @@ import type { MultiPolygon } from 'polygon-clipping';
 export const ZONING_SOURCE = 'https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh';
 export const ZONING_LIMIT = 1500;
 type Position = [number, number];
-export type ZoningLabel = { id: string; label: string; anchor: Position };
+export type ZoningLabel = { id: string; label: string; description?: string; anchor: Position };
 export type ZoningOverlay = { districts: ZoningLabel[]; bounds: [number, number, number, number]; loadedAt: string };
 
 export function zoningBounds(coordinates: number[][]): ZoningOverlay['bounds'] | null {
@@ -75,10 +75,11 @@ export async function districtLabels(rows: unknown[], coordinates: number[][], s
     if (!validDistrict(row.multipolygon)) throw new Error('Calgary returned district geometry that could not be displayed.');
     const label = [row.label, row.lu_code].find(value => typeof value === 'string' && value.trim()) as string | undefined;
     if (!label) throw new Error('Calgary returned a district without a zoning code.');
+    const description = typeof row.description === 'string' ? row.description.trim().slice(0, 300) || undefined : undefined;
     const pieces = clipping.intersection(row.multipolygon.coordinates, [site]);
     for (let j = 0; j < pieces.length; j++) {
       const anchor = zoningAnchor(pieces[j]);
-      if (anchor) result.push({ id: `district-${i}-${j}`, label: label.trim().slice(0, 120), anchor });
+      if (anchor) result.push({ id: `district-${i}-${j}`, label: label.trim().slice(0, 120), description, anchor });
       if (result.length > ZONING_LIMIT) throw new Error('This site contains too many zoning areas. Use a smaller boundary.');
     }
   }
@@ -90,7 +91,7 @@ export async function fetchZoningLabels(coordinates: number[][], signal: AbortSi
   const problem = zoningCoverageProblem(bounds);
   if (problem || !bounds) throw new Error(problem ?? 'Draw a valid site boundary.');
   const [w, s, e, n] = bounds;
-  const query = new URLSearchParams({ '$select': 'multipolygon,label,lu_code',
+  const query = new URLSearchParams({ '$select': 'multipolygon,label,lu_code,description',
     '$where': `intersects(multipolygon, 'POLYGON((${w} ${s},${e} ${s},${e} ${n},${w} ${n},${w} ${s}))')`, '$limit': String(ZONING_LIMIT + 1) });
   const response = await fetch(`https://data.calgary.ca/resource/qe6k-p9nh.json?${query}`, { signal });
   if (!response.ok) throw new Error('Calgary land-use districts could not load. Try again.');

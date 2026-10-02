@@ -17,7 +17,7 @@ export function useZoningLabels(projectId: string | undefined, zones: SiteZone[]
   const bounds = zoningBounds(boundary?.coordinates ?? []);
   const problem = zoningCoverageProblem(bounds);
   const query = useQuery({
-    queryKey: ['zoning-district-labels-v1', projectId, boundary?.coordinates],
+    queryKey: ['zoning-district-labels-v2', projectId, boundary?.coordinates],
     queryFn: ({ signal }) => fetchZoningLabels(boundary!.coordinates, AbortSignal.any([signal, AbortSignal.timeout(30_000)])),
     enabled: Boolean(projectId && bounds && !problem && visibility.labels),
     staleTime: 15 * 60_000, gcTime: 30 * 60_000, retry: false,
