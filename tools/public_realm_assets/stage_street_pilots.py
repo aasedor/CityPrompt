@@ -17,7 +17,7 @@ from pathlib import Path
 
 FINISHES = {"stone": "pavers", "brick": "brick", "cobble": "cobble", "deck": "timber"}
 MATERIALS = {"paving", "asphalt", "cycle", "soil", "grass"}
-PILOT_ID = re.compile(r"^student_[a-z0-9_]+_v[1-9][0-9]*$")
+PILOT_ID = re.compile(r"^(?:student_[a-z0-9_]+_v[1-9][0-9]*|skytrain_elevated_corridor_v0|elevated_rail_transit_corridor_v0)$")
 
 
 def _sha256(data: bytes) -> str:

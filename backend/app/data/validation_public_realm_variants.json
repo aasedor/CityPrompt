@@ -1,11 +1,27 @@
 {
   "park": {
-    "student_neighbourhood_orchard_v1": ["student_neighbourhood_orchard_v1"],
-    "student_garden_square_v1": ["student_garden_square_v1"]
+    "student_neighbourhood_orchard_v1": [
+      "student_neighbourhood_orchard_v1"
+    ],
+    "student_garden_square_v1": [
+      "student_garden_square_v1"
+    ]
   },
   "street": {
-    "student_planted_shared_lane_v1": ["student_planted_shared_lane_v1"],
-    "student_quiet_residential_street_v1": ["student_quiet_residential_street_v1"],
-    "elevated_garden_rail": ["student_elevated_garden_rail_v1"]
+    "student_planted_shared_lane_v1": [
+      "student_planted_shared_lane_v1"
+    ],
+    "student_quiet_residential_street_v1": [
+      "student_quiet_residential_street_v1"
+    ],
+    "elevated_garden_rail": [
+      "student_elevated_garden_rail_v1"
+    ],
+    "skytrain_elevated_corridor": [
+      "skytrain_elevated_corridor_v0"
+    ],
+    "elevated_rail_transit_corridor": [
+      "elevated_rail_transit_corridor_v0"
+    ]
   }
 }

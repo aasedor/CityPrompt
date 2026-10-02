@@ -4,7 +4,7 @@ import type { NativeStreetProgram } from './nativeStreetProgram';
 import { BRT_VARIANT, brtRouteProblem, brtStreetLayout, type BrtStop } from './brtStreetProgram';
 import { isSpecialistStreet, specialistFixtures, specialistRouteProblem } from './specialistStreetProgram';
 import { TRAM_VARIANT, tramRouteProblem, tramFixtures } from './tramStreetProgram';
-import { ELEVATED_RAIL_VARIANT, elevatedRailFixtures } from './elevatedRailProgram';
+import { elevatedRailFixtures, elevatedRailStationProblem, hasElevatedStation, isElevatedRail } from './elevatedRailProgram';
 import type { SiteZone } from '@/types';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { validateStreetRecipeProperties } from './streetLegoContract';
@@ -45,7 +45,10 @@ export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'prope
   const length=points.slice(1).reduce((sum,p,i)=>sum+Math.hypot((p[0]-points[i][0])*scale,(p[1]-points[i][1])*111320),0);
   if(pilot.id===BRT_VARIANT)return brtRouteProblem(points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})),zone.properties?.road_native_stops??[]);
   if(pilot.id===TRAM_VARIANT)return tramRouteProblem(points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})),zone.properties?.road_native_stops??[]);
-  if(isSpecialistStreet(pilot.id))return specialistRouteProblem(pilot.id,points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})));
+  if(isSpecialistStreet(pilot.id)){
+    const problem=specialistRouteProblem(pilot.id,points.map(p=>({x:(p[0]-points[0][0])*scale,y:(p[1]-points[0][1])*111320})));
+    return problem ?? (hasElevatedStation(pilot.id) ? elevatedRailStationProblem(length,zone.properties?.road_native_stops??[]) : null);
+  }
   return length<program.minLengthM-.01 || length>program.maxLengthM+.01
     ? `${pilot.title} needs a route ${program.minLengthM}–${program.maxLengthM} m long so its complete garden and access program fits.` : null;
 }
@@ -110,7 +113,7 @@ export function placeNativeStreetModules(
   const isBrt = pilot.id===BRT_VARIANT;
   const isTram = pilot.id===TRAM_VARIANT;
   const specialist = isSpecialistStreet(pilot.id);
-  const source = pilot.id===ELEVATED_RAIL_VARIANT ? elevatedRailFixtures(pilot.placements,totalM).map(p=>({...p,y:p.y-totalM/2}))
+  const source = isElevatedRail(pilot.id) ? elevatedRailFixtures(pilot.placements,totalM,hasElevatedStation(pilot.id)?stops:[]).map(p=>({...p,y:p.y-totalM/2}))
     : isTram ? tramFixtures(pilot.placements,pilot.fixtureLengthM,totalM,stops) : specialist ? specialistFixtures(pilot.id,totalM).map(p=>({...p,y:p.y-totalM/2}))
     : isBrt ? brtStreetLayout(totalM,stops).fixtures.map(p=>({...p,y:p.y-totalM/2})) : pilot.placements;
   const modules:Record<string,{url:string;sha256:string}|undefined>=pilot.modules;

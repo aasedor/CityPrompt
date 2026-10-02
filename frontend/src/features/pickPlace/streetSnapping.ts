@@ -3,7 +3,7 @@ import { collapseStraightStreetStations, extractZoneCenterline } from '@/utils/r
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { isFixedSectionStreet, streetSectionWidth } from './streetPlacement';
 import { CANAL_VARIANT, BRIDGE_VARIANT } from '@/components/viewer/globe/specialistStreetProgram';
-import { ELEVATED_RAIL_VARIANT } from '@/components/viewer/globe/elevatedRailProgram';
+import { isElevatedRail } from '@/components/viewer/globe/elevatedRailProgram';
 
 /** Snap an endpoint to a through street at a supported 45–135 degree angle.
  * Keep the adjacent point fixed and reserve enough straight approach for both
@@ -22,7 +22,7 @@ export function snapStreetEndpoint(line: number[][], index: number, zones: SiteZ
     if (street.id === ownerId || !isFixedSectionStreet(street) || street.properties?._imported_from) continue;
     const target = collapseStraightStreetStations(extractZoneCenterline(street));
     const variant=street.properties?.road_selected_variant_id;
-    if(variant===ELEVATED_RAIL_VARIANT)continue;
+    if(isElevatedRail(variant))continue;
     if(variant===CANAL_VARIANT || variant===BRIDGE_VARIANT){
       if(target.length!==2)continue;
       const [ax,ay]=local(target[0]),[bx,by]=local(target[1]);

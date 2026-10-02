@@ -66,3 +66,9 @@ seed/classroom-streets/**/source-recipe.json -text whitespace=cr-at-eol
 seed/classroom-parks/garden-treetop-v003/*.py -text whitespace=cr-at-eol
 seed/classroom-parks/garden-rose-v005/*.py -text whitespace=cr-at-eol
 seed/classroom-streets/elevated-rail-v001/*.py -text whitespace=cr-at-eol
+seed/classroom-streets/skytrain-modern-station-v001/*.py -text whitespace=cr-at-eol
+seed/classroom-streets/civic-flow-station-v001/*.py -text whitespace=cr-at-eol
+seed/classroom-streets/skytrain-modern-station-v001/*.glb filter=lfs diff=lfs merge=lfs -text
+seed/classroom-streets/civic-flow-station-v001/*.glb filter=lfs diff=lfs merge=lfs -text
+seed/classroom-streets/skytrain-modern-station-v001/*.png filter=lfs diff=lfs merge=lfs -text
+seed/classroom-streets/civic-flow-station-v001/*.png filter=lfs diff=lfs merge=lfs -text

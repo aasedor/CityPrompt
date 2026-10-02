@@ -442,10 +442,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2822,
+    "explicitReferenceCount": 2844,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 4660,
-    "requiredLogicalBytes": 11610460857,
+    "requiredFileCount": 4684,
+    "requiredLogicalBytes": 11628687497,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -18013,6 +18013,15 @@
       "lfsOid": "1012aa5229e74081680e2e51a9971eb1f863a2b09d86ff3e172a6d0eb53ebbc5"
     },
     {
+      "url": "/archetypes/streets/elevated-rail-transit-station-native/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1821763,
+      "lfsOid": "420a8fc6438b21016d5fea53e4e5539e7a6a30ac50f72ee58e78274fdb2a1f38"
+    },
+    {
       "url": "/archetypes/streets/elevated-rail-transit/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -21537,6 +21546,15 @@
       "lfsOid": "3579bfe37c4b2948b2b08c3fccf9b4697480ab3fa82f585c6e2b9e0b04d1b0ca"
     },
     {
+      "url": "/archetypes/streets/skytrain-elevated-station-native/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1830837,
+      "lfsOid": "20c544bb90c7890d1e71ae5d083e224400c4228b54cc2a1165babac86649a6e5"
+    },
+    {
       "url": "/archetypes/streets/soho-cobblestone-street/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -24232,6 +24250,86 @@
       "lfsOid": "f51ce084fa6ed1cda5e5fed3b0c3d678b8e762e6fc4f45f201292c40ecdbf60a"
     },
     {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/bench.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 34024,
+      "lfsOid": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/meadow_grass.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 68700,
+      "lfsOid": "2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/rail_buffer.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 8628,
+      "lfsOid": "0935a0f23d2f1653dd1e0ea075b99deaa0d195b7f10f6b57b9705ac822754188"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/rail_end.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 16376,
+      "lfsOid": "c6ff6c77de62f44e4d19c6f6b607f7f675635670e33727a4b0f4e8e70cc3d2b8"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/rail_lamp.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 4512,
+      "lfsOid": "bf97e3cba785ed7804a74288d2b2b1cb79c44282ab036de7bdac37909911c4d4"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/rail_pier.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 17036,
+      "lfsOid": "96e4dc175845f4eb5ca639526f974deb70decacaa908ce44612cd36a9c746295"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/rail_station.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1023876,
+      "lfsOid": "9b7df16fe2a8e06ed9a3b72404b2f7b9267cab53bbdca60c42dcdfa311dbbf5c"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/rail_train.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 216604,
+      "lfsOid": "214a24ee02d7b5f6dd723afdc87769c161b15a1336000af8d886af4145530077"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/shade_tree.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1279420,
+      "lfsOid": "d70a69200018fb9760bd6294874b4730ecebca4997b561cc4c58f6930f50704d"
+    },
+    {
+      "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/tree_well_grate.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 95608,
+      "lfsOid": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618"
+    },
+    {
       "url": "/street-kits/pilots/landmark_signature_bridge_v2/bridge_structure.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
@@ -24245,6 +24343,86 @@
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 1193686
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/bench.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 34024,
+      "lfsOid": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/meadow_grass.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 68700,
+      "lfsOid": "2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/rail_buffer.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 8628,
+      "lfsOid": "a03c55a3f9edd0885d0622766b63e6e05775fe4d1ea8263e9eaff403c6ca029b"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/rail_end.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 16368,
+      "lfsOid": "692fc02f12582a2c603b4d7c8bd9f4c2a7136d10d54667b12cf6e2f80d4856e2"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/rail_lamp.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 4512,
+      "lfsOid": "bf97e3cba785ed7804a74288d2b2b1cb79c44282ab036de7bdac37909911c4d4"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/rail_pier.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 17036,
+      "lfsOid": "96e4dc175845f4eb5ca639526f974deb70decacaa908ce44612cd36a9c746295"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/rail_station.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 955024,
+      "lfsOid": "33b6ba73e19a7220ceb51c3300e2dd37e24bf50675cd05541086d3d3ce95c626"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/rail_train.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 216616,
+      "lfsOid": "bb4477a0f32dd7134d5d45bb9f1eaa509a8d3caec1ae91ce0e49affac4318525"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/shade_tree.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1279420,
+      "lfsOid": "d70a69200018fb9760bd6294874b4730ecebca4997b561cc4c58f6930f50704d"
+    },
+    {
+      "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/tree_well_grate.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 95608,
+      "lfsOid": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618"
     },
     {
       "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/autumn_florist_kiosk.glb",
@@ -25330,9 +25508,9 @@
         "/street-kits/pilots/"
       ],
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
-      "fileCount": 126,
-      "logicalBytes": 78682493,
-      "pathDigest": "8d0c1ee6e7993e6252ef131a03e92fb098af34512a86748ad794b9e0c0ed743f"
+      "fileCount": 148,
+      "logicalBytes": 87795813,
+      "pathDigest": "4e13fee037cf65c4a5aa037449327613ff974a6e84363b99c17c263e874cc0ad"
     },
     {
       "name": "sports-park-modules",

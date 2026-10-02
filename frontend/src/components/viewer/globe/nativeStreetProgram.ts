@@ -3,7 +3,7 @@ import type { StreetRouteStation } from './nativeStreetPilot';
 import { stationNormals } from './streetMesh3D';
 import { buildBrtStreetProgram, type BrtStop } from './brtStreetProgram';
 import { buildSpecialistStreetProgram, CANAL_VARIANT, BRIDGE_VARIANT, specialistRouteProblem } from './specialistStreetProgram';
-import { ELEVATED_RAIL_VARIANT } from './elevatedRailProgram';
+import { ELEVATED_RAIL_VARIANT, CIVIC_RAIL_VARIANT, elevatedRailStationProblem } from './elevatedRailProgram';
 
 export function nativeStreetHasPreparedGround(preparedElevation: number | null, hasPreparedApproach: boolean, hasSharedGround: boolean) {
   return Number.isFinite(preparedElevation) || hasPreparedApproach || hasSharedGround;
@@ -12,7 +12,7 @@ export function nativeStreetHasPreparedGround(preparedElevation: number | null, 
 export interface NativeStreetRegion { x:number;y:number;width:number;depth:number;material:string|null }
 export interface NativeStreetProgram {
   schemaVersion:number;adapter:string;surfaceRegions:NativeStreetRegion[];
-  details:Array<NativeStreetRegion & {z:number;height:number}>;
+  details:Array<NativeStreetRegion & {z:number;height:number;stationCut?:boolean}>;
   /** Source-authored markings and low edging; rigid furniture stays in modules. */
   meshDetails?:Array<{material:string;positions:number[];indices:number[]}>;
   paving:string;pavingModuleM:number[];minLengthM:number;maxLengthM:number;preparedLevelOnly:boolean;
@@ -34,9 +34,14 @@ export function nativeStreetGroundCells(width:number,length:number,regions:Nativ
 }
 
 export function buildNativeStreetProgram(program:NativeStreetProgram,width:number,fixtureLength:number,route:StreetRouteStation[],stops:BrtStop[]=[]) {
-  if(program.adapter==='elevated-rail-v1'){
-    const problem=specialistRouteProblem(ELEVATED_RAIL_VARIANT,route);
+  if(program.adapter==='elevated-rail-v1'||program.adapter==='elevated-station-v1'){
+    const problem=specialistRouteProblem(program.adapter==='elevated-rail-v1'?ELEVATED_RAIL_VARIANT:CIVIC_RAIL_VARIANT,route);
     if(problem)throw new Error(problem);
+    if(program.adapter==='elevated-station-v1'){
+      const length=Math.hypot(route[route.length-1].x-route[0].x,route[route.length-1].y-route[0].y);
+      const stationProblem=elevatedRailStationProblem(length,stops);
+      if(stationProblem)throw new Error(stationProblem);
+    }
   }
   if(program.adapter==='brt-v004-v1')return buildBrtStreetProgram(route,stops,program.baseLiftM);
   if(program.adapter==='canal-v005-v1')return buildSpecialistStreetProgram(CANAL_VARIANT,route);
@@ -101,7 +106,15 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
         }
       }
     }
-    for(const detail of program.details)rect(detail.material!,detail.x-detail.width/2,detail.x+detail.width/2,center+detail.y-detail.depth/2,center+detail.y+detail.depth/2,detail.z,detail.height);
+    for(const detail of program.details){
+      const start=center+detail.y-detail.depth/2,end=center+detail.y+detail.depth/2;
+      let spans:[[number,number]]|number[][]=[[start,end]];
+      if(detail.stationCut)for(const stop of stops)spans=spans.flatMap(([a,b])=>{
+        const lo=stop.stationM-16,hi=stop.stationM+16;
+        return hi<=a||lo>=b?[[a,b]]:[[a,Math.min(b,lo)],[Math.max(a,hi),b]].filter(([x,y])=>y-x>1e-6);
+      });
+      for(const [a,b] of spans)rect(detail.material!,detail.x-detail.width/2,detail.x+detail.width/2,a,b,detail.z,detail.height);
+    }
     for(const detail of program.meshDetails??[])for(let i=0;i<detail.indices.length;i+=3){
       const triangle=detail.indices.slice(i,i+3).map(index=>[detail.positions[index*3],center+detail.positions[index*3+1],detail.positions[index*3+2]]);
       for(const segment of segments){

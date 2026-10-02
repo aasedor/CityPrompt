@@ -63,6 +63,8 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         'student_cherry_blossom_street_v1',
         'student_barcelona_shaded_promenade_v1',
         'student_elevated_garden_rail_v1',
+        'skytrain_elevated_corridor_v0',
+        'elevated_rail_transit_corridor_v0',
     }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()

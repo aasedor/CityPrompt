@@ -1,0 +1,72 @@
+{
+  "schema": "cityprompt.elevated-rail-stations.local-runtime@1",
+  "date": "2026-10-01",
+  "source_base": "a3ce81dbe",
+  "branch": "codex/elevated-rail-stations",
+  "publication": "local_only_pending_human_visual_approval",
+  "human_visual_approval": false,
+  "evidence_root": "C:/dev-artifacts/CityPrompt/elevated-rail-stations-2026-10-01",
+  "project": "http://localhost:5186/projects/d52ba95f-f099-4e8e-a4b3-26142f28bdcd",
+  "variants": [
+    {
+      "id": "skytrain_elevated_corridor_v0",
+      "parent": "skytrain_elevated_corridor",
+      "seed": "seed/classroom-streets/skytrain-modern-station-v001",
+      "source_recipe_sha256": "0d49f39625d445fd165cc050f25287fe1f38a4d0d235ac8000b411466a22cd89",
+      "source_assembly_sha256": "38b373e577f7146a14b2ab131603a0d7bdb62fc7267d67d00ff4adcc20fec825",
+      "program_sha256": "b66010c50fcd3ec0747a277457295ba0ce5705c1eafb29a55df785210b07d19c",
+      "station_module_sha256": "33b6ba73e19a7220ceb51c3300e2dd37e24bf50675cd05541086d3d3ce95c626",
+      "fixture_triangles": 109832,
+      "runtime_zone_id": "b760ae7a-685e-400e-84e6-2193314e896a",
+      "runtime_station_m": 104.5,
+      "runtime_expected_modules": 153,
+      "runtime_readiness": "PASS",
+      "runtime_grounding_issues": [],
+      "edit": "add at 74.5 m; move to 104.5 m; Undo, Redo and reload retained the same zone ID"
+    },
+    {
+      "id": "elevated_rail_transit_corridor_v0",
+      "parent": "elevated_rail_transit_corridor",
+      "seed": "seed/classroom-streets/civic-flow-station-v001",
+      "source_recipe_sha256": "4192e4b060c89bb0cd5b867321f0061cb4f594c880fc3e25c54d82a5fc3762a7",
+      "source_assembly_sha256": "c28f2998214b30f1cff48f95e33dd513456fb1f0fe498ed7ce83a0f347dfdef5",
+      "program_sha256": "43f8a8b9b207baef99bd1c63d6115c5d8a6488af5c24d8c6f7c487c4eca696d3",
+      "station_module_sha256": "9b7df16fe2a8e06ed9a3b72404b2f7b9267cab53bbdca60c42dcdfa311dbbf5c",
+      "fixture_triangles": 111128,
+      "runtime_zone_id": "d7c7137a-778d-4f2c-8359-0122abc36c6c",
+      "runtime_station_m": 75.1,
+      "runtime_expected_modules": 153,
+      "runtime_readiness": "PASS",
+      "runtime_grounding_issues": [],
+      "edit": "add at 75.1 m; reload retained station and zone ID"
+    }
+  ],
+  "supported": {
+    "width_m": 26,
+    "length_m": [48, 288],
+    "terrain": "prepared_level",
+    "route": "straight",
+    "max_stations": 4,
+    "minimum_station_end_clearance_m": 24,
+    "minimum_station_spacing_m": 52,
+    "train": "static architectural display",
+    "rail_junctions": "unsupported"
+  },
+  "civic_flow_walk": {
+    "status": "PASS",
+    "waypoints": 11,
+    "samples": 1603,
+    "elapsed_s": 64.3664,
+    "ground_height_m": 1097.0451589066438,
+    "platform_height_m": 1105.0181589066435,
+    "finish_height_m": 1097.0451589066438,
+    "browser_errors": []
+  },
+  "not_tested": [
+    "SkyTrain full browser stair loop",
+    "Forced network-failure recovery",
+    "Exact saved 3D export",
+    "Human visual approval",
+    "Publication"
+  ]
+}

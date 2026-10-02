@@ -9,7 +9,7 @@ import { TRAM_VARIANT } from '@/components/viewer/globe/tramStreetProgram';
 import { BrtStopControls } from './BrtStopControls';
 import { StreetDuplicateControls } from './StreetDuplicateControls';
 import { isSpecialistStreet, CANAL_VARIANT } from '@/components/viewer/globe/specialistStreetProgram';
-import { ELEVATED_RAIL_VARIANT } from '@/components/viewer/globe/elevatedRailProgram';
+import { isElevatedRail, hasElevatedStation } from '@/components/viewer/globe/elevatedRailProgram';
 
 export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete, onMore, onConnections, onPublicConnection, connectionLeavesSite = false, onUpdateDesign, onDuplicate }: {
   zone: SiteZone; disabled: boolean; onReshape: (coordinates: number[][]) => void;
@@ -21,8 +21,9 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
   onUpdateDesign?: (data: { coordinates: number[][]; properties: SiteZoneProperties }) => void;
 }) {
   const isBrt=[BRT_VARIANT,TRAM_VARIANT].includes(String(zone.properties?.road_selected_variant_id));
+  const stationRail=hasElevatedStation(zone.properties?.road_selected_variant_id);
   const specialist=isSpecialistStreet(zone.properties?.road_selected_variant_id);
-  const elevatedRail=zone.properties?.road_selected_variant_id===ELEVATED_RAIL_VARIANT;
+  const elevatedRail=isElevatedRail(zone.properties?.road_selected_variant_id);
   const bend = isBrt||specialist?null:addStreetBend(zone);
   const asset = streetAssetForZone(zone);
   const width = streetSectionWidth(zone);
@@ -31,11 +32,11 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
   return <aside aria-label="Reshape street" className="absolute bottom-4 inset-x-4 z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-4 sm:top-28 sm:max-h-none">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset?.label ?? 'Street'}</h2><button className={button} aria-label="Close street settings" onClick={onClose}>×</button></div>
     <p className="my-3 text-sm text-slate-800">{isBrt||specialist?'Drag a white endpoint to extend this straight corridor. Drag the street to move it.':'Drag a white route point to bend or extend the street. Drag the street to move it.'}</p>
-    <p className="mb-3 text-xs text-slate-600">{elevatedRail?'Walk along the landscaped paths below the tracks. The metro train is a static display. Keep other streets outside this corridor; rail junctions, stations and street crossings are not supported.':specialist?(zone.properties?.road_selected_variant_id===CANAL_VARIANT?'The first end holds the basin; extend the open-channel end. Connect paths at the outer bank edge. Use the original arch to cross the water.':'The 84 m arch span stays rigid. The route includes a 100 m deck and gradual approaches; connect other roads at the ground-level ends.'): 'Bring an end close to another street to snap a junction. Leave room away from bends and street ends for both sidewalks. Existing junctions stay connected as you edit. Hold Alt to skip endpoint snapping.'}</p>
+    <p className="mb-3 text-xs text-slate-600">{elevatedRail?stationRail?'Add a station at a chosen point along this straight route. Walk from ground level up its stairs to the platforms. The train is a static display; street crossings and rail junctions are unsupported.':'Walk along the landscaped paths below the tracks. The metro train is a static display. Keep other streets outside this corridor; rail junctions, stations and street crossings are not supported.':specialist?(zone.properties?.road_selected_variant_id===CANAL_VARIANT?'The first end holds the basin; extend the open-channel end. Connect paths at the outer bank edge. Use the original arch to cross the water.':'The 84 m arch span stays rigid. The route includes a 100 m deck and gradual approaches; connect other roads at the ground-level ends.'): 'Bring an end close to another street to snap a junction. Leave room away from bends and street ends for both sidewalks. Existing junctions stay connected as you edit. Hold Alt to skip endpoint snapping.'}</p>
     <p className="mb-3 text-xs text-slate-600">This section stays {width} m wide. Keep route points at least {width} m apart. Choose another street type for a different width.</p>
     {program && <p className="mb-3 text-xs text-slate-600">Keep the complete route between {program.minLengthM} and {program.maxLengthM} m on a prepared level site. The original structures and furniture retain their sizes as you extend it.</p>}
     {onUpdateDesign && <StreetDesignControls key={`${zone.id}:${zone.properties?.road_archetype_id}:${zone.properties?.road_selected_variant_id}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
-    {onUpdateDesign && isBrt && <BrtStopControls zone={zone} disabled={disabled} onSave={onUpdateDesign}/>}
+    {onUpdateDesign && (isBrt||stationRail) && <BrtStopControls zone={zone} disabled={disabled} onSave={onUpdateDesign}/>}
     {onPublicConnection && !elevatedRail && <div className="mb-3 rounded-lg border border-slate-300 p-2 text-sm text-slate-800">
       <label className="flex min-h-11 items-center gap-2"><input type="checkbox" disabled={disabled || connectionLeavesSite}
         checked={zone.properties?.connect_to_public_road === true} onChange={event => onPublicConnection(event.target.checked)} />

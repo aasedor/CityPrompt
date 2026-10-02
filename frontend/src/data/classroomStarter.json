@@ -348,6 +348,22 @@
       "variantId": "student_elevated_garden_rail_v1",
       "revision": "d101b5b4d1871681b5c6f0ce1756c533a41a74425a846993ca1e2946a44bb43c",
       "status": "local-pilot-runtime-verified"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "skytrain_elevated_corridor",
+      "variantId": "skytrain_elevated_corridor_v0",
+      "revision": "0d49f39625d445fd165cc050f25287fe1f38a4d0d235ac8000b411466a22cd89",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "elevated_rail_transit_corridor",
+      "variantId": "elevated_rail_transit_corridor_v0",
+      "revision": "4192e4b060c89bb0cd5b867321f0061cb4f594c880fc3e25c54d82a5fc3762a7",
+      "status": "local-pilot-runtime-pending"
     }
   ],
   "dependencies": [

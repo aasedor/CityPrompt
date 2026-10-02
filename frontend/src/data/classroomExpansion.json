@@ -242,7 +242,7 @@
     },
     {
       "domain": "park",
-      "title": "Terraced Caf\u00e9 & Fountain Court",
+      "title": "Terraced Café & Fountain Court",
       "archetype_id": "sunken_plaza",
       "variant_id": "student_terraced_cafe_court_v1",
       "version": "showcase-court-v002",
@@ -446,7 +446,7 @@
     },
     {
       "domain": "building",
-      "title": "Corner Caf\u00e9 & Apartments",
+      "title": "Corner Café & Apartments",
       "archetype_id": "parisian_boulevard_corner",
       "variant_id": "parisian_corner_cafe_culture",
       "version": "neighbourhood-corner-cafe-clay-v010",
@@ -586,6 +586,30 @@
       "sha256": "b058e887b30a73ca831a5c54e4f25011ae58ea9e6b8ae80c86d9256fdb4287e8",
       "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
       "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "SkyTrain Elevated Corridor · Modern Station Hub",
+      "archetype_id": "skytrain_elevated_corridor",
+      "variant_id": "skytrain_elevated_corridor_v0",
+      "version": "skytrain_elevated_corridor_v0",
+      "placement_id": "skytrain_elevated_corridor_v0",
+      "sha256": "38b373e577f7146a14b2ab131603a0d7bdb62fc7267d67d00ff4adcc20fec825",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Elevated Rail Transit · Parametric Flow Station",
+      "archetype_id": "elevated_rail_transit_corridor",
+      "variant_id": "elevated_rail_transit_corridor_v0",
+      "version": "elevated_rail_transit_corridor_v0",
+      "placement_id": "elevated_rail_transit_corridor_v0",
+      "sha256": "c28f2998214b30f1cff48f95e33dd513456fb1f0fe498ed7ce83a0f347dfdef5",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
       "completed": false
     }
   ],
@@ -993,7 +1017,7 @@
         "step": 0.05,
         "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85\u2013115%. Height remains controlled by the selected authored storey assembly.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "calgary_inner_city_bungalow",
         "development_archetype_id": "calgary_inner_city_bungalow",
@@ -1059,7 +1083,7 @@
         "step": 0.05,
         "editable": true
       },
-      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85\u2013115%. Height remains controlled by the selected authored storey assembly.",
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
       "properties": {
         "building_archetype_id": "toronto_edwardian_foursquare",
         "development_archetype_id": "toronto_edwardian_foursquare",
@@ -1200,7 +1224,7 @@
         "repeatedStoreyHeightM": 3.2,
         "roofHeightM": 4.2
       },
-      "reshapeDescription": "Adjust the footprint within 51.1\u201357.5 m by 43.1\u201347.5 m and choose 16\u201340 storeys. Horizontal fit never changes the authored storey height.",
+      "reshapeDescription": "Adjust the footprint within 51.1–57.5 m by 43.1–47.5 m and choose 16–40 storeys. Horizontal fit never changes the authored storey height.",
       "properties": {
         "building_archetype_id": "vancouverism_tower_podium",
         "development_archetype_id": "vancouverism_tower_podium",
@@ -1372,8 +1396,8 @@
       "kind": "object",
       "definitionVersion": 2,
       "readiness": "pilot",
-      "label": "Terraced Caf\u00e9 & Fountain Court",
-      "description": "A limestone gathering court with seven seat steps, caf\u00e9 umbrellas and a bronze fountain.",
+      "label": "Terraced Café & Fountain Court",
+      "description": "A limestone gathering court with seven seat steps, café umbrellas and a bronze fountain.",
       "thumbnail": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png",
       "calgaryGuide": {
         "groupId": "gardens",
@@ -1972,8 +1996,8 @@
       "kind": "object",
       "definitionVersion": 1,
       "readiness": "pilot",
-      "label": "Corner Caf\u00e9 & Apartments",
-      "description": "Ochre brick and cream stone apartments over a green-awning corner caf\u00e9.",
+      "label": "Corner Café & Apartments",
+      "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
       "thumbnail": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
       "model": {
         "variantId": "parisian_corner_cafe_culture",
@@ -2001,7 +2025,7 @@
         "building_archetype_id": "parisian_boulevard_corner",
         "development_archetype_id": "parisian_boulevard_corner",
         "development_selected_variant_id": "parisian_corner_cafe_culture",
-        "development_archetype_label": "Corner Caf\u00e9 & Apartments",
+        "development_archetype_label": "Corner Café & Apartments",
         "floors": 6,
         "floor_count": 6,
         "native_plot_axes": true
@@ -2173,7 +2197,7 @@
       "definitionVersion": 1,
       "readiness": "pilot",
       "label": "Victorian Grand Station",
-      "description": "Victorian iron-and-glass train hall, ticket booths, caf\u00e9, platforms and two walkable gallery stairs.",
+      "description": "Victorian iron-and-glass train hall, ticket booths, café, platforms and two walkable gallery stairs.",
       "thumbnail": "/archetypes/buildings/historic_grand_station/variant_1.png",
       "model": {
         "variantId": "station_victorian_iron_glass",
@@ -2357,7 +2381,7 @@
       "definitionVersion": 1,
       "readiness": "pilot",
       "label": "Elevated Garden Rail",
-      "description": "Twin-track concrete viaduct with a detailed static metro train, gardens, a cycle path and broad walking routes below. Straight 48\u2013288 m corridor on a prepared level site.",
+      "description": "Twin-track concrete viaduct with a detailed static metro train, gardens, a cycle path and broad walking routes below. Straight 48–288 m corridor on a prepared level site.",
       "thumbnail": "/archetypes/streets/elevated-garden-rail/variant_0.png",
       "model": {
         "variantId": "student_elevated_garden_rail_v1",
@@ -2380,6 +2404,68 @@
         "pick_place_definition_version": 1,
         "community_3d_mask_existing_tiles": true,
         "road_standard_citation": "City Prompt original elevated rail teaching concept"
+      }
+    },
+    {
+      "id": "skytrain_elevated_corridor_v0",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "SkyTrain Elevated Corridor · Modern Station Hub",
+      "description": "Elevated twin-track corridor with a movable full station, two platforms, stair access and a static train. Straight 48–288 m on a prepared level site.",
+      "thumbnail": "/archetypes/streets/skytrain-elevated-station-native/variant_0.png",
+      "model": {
+        "variantId": "skytrain_elevated_corridor_v0",
+        "revision": "0d49f39625d445fd165cc050f25287fe1f38a4d0d235ac8000b411466a22cd89",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 26,
+      "properties": {
+        "road_archetype_id": "skytrain_elevated_corridor",
+        "road_selected_variant_id": "skytrain_elevated_corridor_v0",
+        "width": 26,
+        "lane_count": 0,
+        "pick_place_street_section": "skytrain_elevated_corridor_v0",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original elevated rail station concept"
+      }
+    },
+    {
+      "id": "elevated_rail_transit_corridor_v0",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Elevated Rail Transit · Parametric Flow Station",
+      "description": "Elevated twin-track corridor with a movable full station, two platforms, stair access and a static train. Straight 48–288 m on a prepared level site.",
+      "thumbnail": "/archetypes/streets/elevated-rail-transit-station-native/variant_0.png",
+      "model": {
+        "variantId": "elevated_rail_transit_corridor_v0",
+        "revision": "4192e4b060c89bb0cd5b867321f0061cb4f594c880fc3e25c54d82a5fc3762a7",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 26,
+      "properties": {
+        "road_archetype_id": "elevated_rail_transit_corridor",
+        "road_selected_variant_id": "elevated_rail_transit_corridor_v0",
+        "width": 26,
+        "lane_count": 0,
+        "pick_place_street_section": "elevated_rail_transit_corridor_v0",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original elevated rail station concept"
       }
     }
   ]

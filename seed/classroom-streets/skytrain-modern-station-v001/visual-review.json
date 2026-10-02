@@ -1,0 +1,12 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "model_sha256": "38b373e577f7146a14b2ab131603a0d7bdb62fc7267d67d00ff4adcc20fec825",
+  "views": [
+    "aerial",
+    "top",
+    "detail",
+    "walk"
+  ],
+  "reviewer": "Codex author inspection of exported and reimported exact GLB",
+  "findings": []
+}

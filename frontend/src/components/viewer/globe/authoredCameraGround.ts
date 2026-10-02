@@ -11,6 +11,7 @@ import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { terraceOffset } from './terraceDefinition';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { isSpecialistStreet, specialistWalkingHeight, BRIDGE_VARIANT } from './specialistStreetProgram';
+import { hasElevatedStation } from './elevatedRailProgram';
 
 /** Camera feet belong on the authored ground, not the Google mesh hidden
  * underneath it. Unprepared landscape and off-site context keep their hit. */
@@ -25,8 +26,10 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
       if(a&&b){
         const sx=metersPerDegLon(a[1]),dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*METERS_PER_DEG_LAT,length=Math.hypot(dx,dy);
         const x=(lng-a[0])*sx,y=(lat-a[1])*METERS_PER_DEG_LAT;
-        const height=specialistWalkingHeight(variant,(x*dy-y*dx)/length,(x*dx+y*dy)/length,length);
         const level=resolvePreparedSiteTerrainForZone(zone,zones,measured);
+        const upper=level!==null && (measured>level+3 || (entrySurfaceHeight??-Infinity)>level+3);
+        const height=specialistWalkingHeight(variant,(x*dy-y*dx)/length,(x*dx+y*dy)/length,length,
+          hasElevatedStation(variant)?zone.properties?.road_native_stops??[]:[],upper);
         if(height!==null&&level!==null){
           const station=(x*dx+y*dy)/length,deckStart=(length-100)/2;
           // Retain the lower route when walking through the opening. Entering

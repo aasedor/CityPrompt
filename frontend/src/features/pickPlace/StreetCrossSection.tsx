@@ -1,13 +1,13 @@
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import type { StreetAsset } from './assetRegistry';
-import { ELEVATED_RAIL_VARIANT } from '@/components/viewer/globe/elevatedRailProgram';
+import { isElevatedRail } from '@/components/viewer/globe/elevatedRailProgram';
 
 /** Uses the rendered surface bands, never an AI diagram or a second width table. */
 export function StreetCrossSection({ asset, expanded = false }: { asset: StreetAsset; expanded?: boolean }) {
   const profile = resolvePilotStreetSectionProfile({ properties: asset.properties });
   if (!profile) return null;
   const scale = 280 / profile.rowM;
-  const elevated = asset.model.variantId === ELEVATED_RAIL_VARIANT;
+  const elevated = isElevatedRail(asset.model.variantId);
   const format = (n: number) => Number(n.toFixed(2));
   return <details open={expanded || undefined} className="my-2 rounded-lg border border-slate-300 bg-white text-slate-900">
     <summary className="min-h-11 cursor-pointer px-2 py-3 text-xs font-semibold">{elevated ? 'Ground cross-section' : 'Cross-section'} · {format(profile.rowM)} m total</summary>

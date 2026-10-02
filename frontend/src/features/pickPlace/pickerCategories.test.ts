@@ -20,6 +20,8 @@ describe('student picker categories', () => {
     ['student_grass_tram_avenue_v1','transit'], ['student_london_cobbled_mews_v1','alleys'],
     ['student_barcelona_shaded_promenade_v1','walking-cycling'],
     ['student_elevated_garden_rail_v1','transit'],
+    ['skytrain_elevated_corridor_v0','transit'],
+    ['elevated_rail_transit_corridor_v0','transit'],
   ])('places %s in %s without changing its binding', (variant,category) => {
     const choice=CLASSROOM_CHOICES.find(c=>c.placements[0]?.model.variantId===variant)!;
     const original=JSON.stringify(choice);

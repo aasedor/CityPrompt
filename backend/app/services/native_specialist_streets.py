@@ -1,9 +1,12 @@
 """Server placement contract for immutable canal and fixed-span bridge programs."""
 import json
 import math
+import re
 
 CONTRACTS = {
     'student_elevated_garden_rail_v1': ('elevated_garden_rail', 26, 48, 288),
+    'skytrain_elevated_corridor_v0': ('skytrain_elevated_corridor', 26, 48, 288),
+    'elevated_rail_transit_corridor_v0': ('elevated_rail_transit_corridor', 26, 48, 288),
     'amsterdam_gracht_v1': ('amsterdam_gracht', 36, 80, 320),
     'landmark_signature_bridge_v2': ('landmark_signature_bridge', 36, 260, 480),
 }
@@ -27,7 +30,7 @@ def validate_specialist_properties(properties):
     if not is_native_specialist(props):
         return
     parent, width, minimum, maximum = CONTRACTS[props['road_selected_variant_id']]
-    if props['road_selected_variant_id']=='student_elevated_garden_rail_v1' and props.get('connect_to_public_road'):
+    if props['road_selected_variant_id'] in ('student_elevated_garden_rail_v1','skytrain_elevated_corridor_v0','elevated_rail_transit_corridor_v0') and props.get('connect_to_public_road'):
         raise ValueError('Elevated rail cannot connect directly to an ordinary public road.')
     if props.get('road_archetype_id') != parent or props.get('width') != width:
         raise ValueError('Keep this specialist street’s original section and catalogue identity.')
@@ -53,3 +56,21 @@ def validate_specialist_properties(properties):
         if abs(x*dy-y*dx)/length > .05 or station < previous-.01:
             raise ValueError('Keep this specialist route straight; its structure cannot bend.')
         previous = station
+    if props['road_selected_variant_id'] in ('skytrain_elevated_corridor_v0','elevated_rail_transit_corridor_v0'):
+        stops = props.get('road_native_stops', [])
+        if not isinstance(stops,list) or len(stops)>4:
+            raise ValueError('Choose at most four elevated rail stations.')
+        ids,positions=set(),[]
+        for stop in stops:
+            if not isinstance(stop,dict) or set(stop)!={'id','stationM'}:
+                raise ValueError('A rail station must contain only its identity and position.')
+            identity,position=stop['id'],stop['stationM']
+            if not isinstance(identity,str) or not re.fullmatch(r'[a-zA-Z0-9_-]{1,80}',identity) or identity in ids:
+                raise ValueError('A rail station needs a unique identity.')
+            if isinstance(position,bool) or not isinstance(position,(int,float)) or not math.isfinite(position):
+                raise ValueError('A rail station needs a valid position.')
+            if position<24 or position>length-24+.001:
+                raise ValueError('Leave 24 m at each route end for the complete station and stairs.')
+            if any(abs(position-old)<52 for old in positions):
+                raise ValueError('Place rail stations at least 52 m apart.')
+            ids.add(identity);positions.append(position)
