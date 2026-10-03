@@ -18,6 +18,8 @@ html=html.replaceAll('Neighbourhood building trial','Neighbourhood expansion');
 fs.writeFileSync(path.join(root,'index.html'),html);
 let js=fs.readFileSync(path.join(ui,'review.js'),'utf8');
 js=js.replaceAll('neighborhood-review-model','neighborhood-expansion-model');
+// The inherited one-off camera belongs to the earlier central-entry prototype.
+js=js.replace("if(spec.archetype_id==='neighborhood_fourplex')spec.camera_roster.push", "if(name==='fourplex-v005')spec.camera_roster.push");
 const start=js.indexOf('const chosen=new URLSearchParams');
 if(start<0)throw new Error('Inspector initialization changed; review adaptation');
 js=js.slice(0,start)+`const candidates=${JSON.stringify(candidates)};

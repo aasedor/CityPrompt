@@ -1,0 +1,88 @@
+{
+  "variant_id": "fourplex_corner_entries",
+  "archetype_id": "neighborhood_fourplex",
+  "method": "RLASM v6.1 prototype",
+  "state": "source_locked",
+  "keeper_approved": false,
+  "generation_provenance": "corner-reference-generation.json",
+  "sources": [
+    {
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-fourplex/variant_1.png",
+      "role": "front",
+      "authority": "Primary original generated design, slightly angled front",
+      "bytes": 3091422,
+      "sha256": "a7ed062cb8c174e2335d4669892e051f45edacb99b78daf2b9c1d6f47eee3359"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-fourplex/variant_1_oblique.png",
+      "role": "oblique",
+      "authority": "Compatible generated continuation; unseen rear inferred",
+      "bytes": 3466203,
+      "sha256": "8baefd1b76e3ff2365de0245c5b6bf3e26bf47b680cf50a3f222527269114790"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-fourplex/variant_1_roof-study.png",
+      "role": "topology",
+      "authority": "Near overhead study, not strictly orthographic; topology only",
+      "bytes": 2709468,
+      "sha256": "dc7289330ece91ffd4b57c2b8dab7a825be1c8c0a5fa6e51f07c8a0fda13143a"
+    }
+  ],
+  "measurement_contract": {
+    "units": "metres, inferred design scale; not surveyed",
+    "dimensions_m": {
+      "width": 17,
+      "depth": 15,
+      "eave": 7,
+      "left_ridge": 9.6,
+      "right_ridge": 9.05
+    },
+    "storeys": 2,
+    "homes": 4,
+    "floors": [
+      0.14,
+      3.59
+    ],
+    "floor_rise": 3.45,
+    "source_ratios": "Front: approximately one half left gabled bay and one half cross-roof eave. Door+narrow stair light at left; two large living windows per floor. Cross ridge terminates below left main ridge in roof-study pixels. Approximate front height/width ratio0.56; eave/width0.41. Individual rear room dimensions inferred.",
+    "source_prose_discrepancy": "Original prompt asked parallel gables; actual coherent three-view family uses intersecting gables. Pixels override prompt. Roof-study requested equal ridges but depicts right ridge terminating below left ridge; model uses9.05m versus9.6m, with analytical intersections.",
+    "roof_graph": {
+      "left_ridge": "x=-4.25, y=-7.5..7.5, z=9.6",
+      "right_ridge": "y=0, x=-3.35096..8.5, z=9.05",
+      "left_plane": "z=9.6-abs(x+4.25)*(2.6/4.25)",
+      "right_plane": "z=9.05-abs(y)*(2.05/7.5)",
+      "overlap_rule": "Clip intersecting planes at equality; no stacked full roof boxes.",
+      "valleys": "Front/rear central eave to right-ridge termination on left slope"
+    }
+  },
+  "program_contract": {
+    "count": 4,
+    "left_core": "Front shared entrance to one lower and one upper home. U stair inx[-8.04,-5.36],y[-5.625,-1.75]. Exact slab edge meets first/last tread. Public doors open outward; bathroom leaves rest180degrees against corridor face.",
+    "right_core": "Separate east entrance near rear, reflected U stair inx[5.36,8.04],y[1.75,5.625].",
+    "every_home": [
+      "living room",
+      "kitchen with sink, hob, fridge and cabinets",
+      "separated bedroom",
+      "bathroom with shower, toilet and basin"
+    ],
+    "garden": "Shared rear seating, bike hoops on a dedicated clear2.2x2.5m northwest paved bay and low planting; street setbacks remain legible. Authored rear routes reach seating and bicycle parking.",
+    "scope": "Local architecture/circulation prototype. No building-code or full accessibility certification."
+  },
+  "material_contract": {
+    "brick": "New exact-source conditioned grey masonry, approximate8bricks by25courses mapped1.92x2.0m",
+    "other_finishes": "Source palette timber, roof and metal; full keeper surface detail not claimed",
+    "glass": "Clear physical panes with recessed frames. All nonarchitectural QA lamps suppress specular contribution."
+  },
+  "circulation_contract": {
+    "routes": "Both public entries, both stair ascents/descents, each flat entry, bedroom and bathroom on both storeys, rear bench and bicycle bay:20 routes. Inner flight guards and upper lower-flight lip guards protect the stair openings.",
+    "obstacles": "Partition intervals, open leaves, real furniture and site support extents",
+    "evidence": "Actual app movement solver, exact GLB floor/headroom samples, browser embedded routes, independent all-view review."
+  },
+  "camera_contract": "All33 cameras authored by cameras() and saved before any geometry; baseline10 + roof/side-entry/garden3 +12 apartment room cameras +4 shower fixture cameras +4 stair/landing cameras.",
+  "assumptions": [
+    "Rear and all interior layouts are design inference, not surveyed.",
+    "Side entrance placed near rear to preserve a separate stair core; right bedroom is separated from its entry corridor.",
+    "No common roof attic living space, retail, or extra home.",
+    "Source study has small perspective residuals; topology authority only."
+  ]
+}

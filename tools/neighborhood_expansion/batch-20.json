@@ -130,10 +130,69 @@
         "description": "A two-storey fourplex on a neighborhood corner, containing two flats per floor. Two sheltered shared entrances each serve one lower and one upper apartment, with one entrance facing each street. The building turns the corner with living-room glazing and a low planted setback. Keep the four-home scale legible; no retail unit or extra attic storey.",
         "siteNote": "Two street frontages allow distributed access while the building still contains exactly four homes."
       },
-      "state": "queued",
-      "attempts": [],
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "fourplex-corner-v001",
+          "state": "rework_required",
+          "walking_routes_passed": 16,
+          "walking_routes_total": 18,
+          "physical_samples_failed": 18,
+          "aperture_audit": "failed: bath perimeter liner blocked west windows",
+          "repairs": "Outward public doors; exact landing/tread edges; flat-open bath doors; perimeter bathroom windows clear"
+        },
+        {
+          "candidate": "fourplex-corner-v002",
+          "state": "independent_visual_rework_required",
+          "source_locked": true,
+          "planned_render_count": 29,
+          "log": "fourplex-corner-v002.log",
+          "review_findings": [
+            "Missing inner stair/lower-flight lip guards",
+            "Bike racks intersect rear bed",
+            "Left bedroom door occlusion and shower-head camera crop"
+          ]
+        },
+        {
+          "candidate": "fourplex-corner-v003",
+          "state": "walking_rework_required",
+          "source_locked": true,
+          "planned_render_count": 33,
+          "log": "fourplex-corner-v003.log",
+          "review_findings": [
+            "New inner guards require landing route at y+-2.4",
+            "Bike hardware must be explicitly included in obstacles",
+            "Revised room proof and upper lip guards visually confirmed"
+          ]
+        },
+        {
+          "candidate": "fourplex-corner-v004",
+          "state": "local_prototype_pass",
+          "source_locked": true,
+          "planned_render_count": 33,
+          "log": "fourplex-corner-v004.log",
+          "final_repair_in_pass": true
+        }
+      ],
       "keeper_approved": false,
-      "catalogue_activated": false
+      "catalogue_activated": false,
+      "source_manifest": "prework/fourplex_corner_entries.json",
+      "current_candidate": "fourplex-corner-v004",
+      "local_review": {
+        "candidate": "fourplex-corner-v004",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "fourplex-corner-v004/review/independent-visual-review.json",
+        "review_sha256": "8d0ece9bbb7e593a0bd2cff864faa62c3b633bb3cd5e6d80aa31d9c990c8c35a",
+        "glb_sha256": "5ceb78ae61cfa21aaa6ec88b321ac147620fbb628985e3d90cc043be2c79aed4",
+        "routes": 20,
+        "physical_samples": 840,
+        "garden_probes": 3,
+        "mandatory_views": 33,
+        "browser_verified": true
+      }
     },
     {
       "archetype_id": "neighborhood_sixplex",
@@ -154,10 +213,17 @@
         "description": "A modest three-storey sixplex with exactly two apartments per floor. Two generous window bays flank a recessed central entrance and vertically stacked stair windows. The ground floor meets a landscaped front walk with a low entrance canopy; a side path reaches bicycle storage and a shared rear garden. No commercial base, tower massing or fourth floor.",
         "siteNote": "Exactly six flats, two per floor; evaluate upper-floor accessibility separately from the exterior reference."
       },
-      "state": "queued",
+      "state": "front_source_attempt_pending",
       "attempts": [],
       "keeper_approved": false,
-      "catalogue_activated": false
+      "catalogue_activated": false,
+      "source_attempt": {
+        "path": "source-attempts/sixplex_brick_walk_up/front-001.png",
+        "sha256": "463d0faab14633398d881b9b33e2972bb538f6e400c50fc43fe4183072a9573e",
+        "provenance": "sixplex-reference-generation.json",
+        "locked": false,
+        "next": "Resolve narrower depicted frontage versus17m brief before compatible oblique/top views and material tile. Preserve original attempt."
+      }
     },
     {
       "archetype_id": "neighborhood_branch_library",
@@ -568,12 +634,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "pilot_complete_next_wave_ready",
+  "state": "wave1_in_progress",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
-  "completed_models": 1,
-  "next_action": "Start bounded wave1: fourplex_corner_entries, sixplex_brick_walk_up, library_neighborhood_pavilion, hall_prairie_community_league. Generate and lock each exact variant's3views; author dedicated composition and complete cameras, then build/check/independently review one at a time. Childcare pilot is locally complete; do not rebuild it for keeper finishes during this expansion. Other19 are unbuilt. Preserve existing5201/5202 apps; expansion inspector5203 session25332, refresh model list with preview.mjs --refresh. No active render jobs remain.",
-  "updated_utc": "2026-10-03 15:58:17 UTC",
+  "completed_models": 2,
+  "next_action": "Resume sixplex_brick_walk_up source lock. One front attempt and exact prompt are saved in sixplex-reference-generation.json; frontage is narrower than17m brief. Use a source-conditioned widening or explicitly justified source-derived dimensions, then generate compatible oblique/top and material tile, write dedicated prework/constructor. Do not reuse the fourplex envelope. Childcare-garden-v004 and fourplex-corner-v004 are locally complete, with2 keeper P1s each.18 models remain unbuilt. No active render jobs remain; inspector5203 remains available. Preserve all failed attempts; next model starts a fresh finite pilot/repair pass.",
+  "updated_utc": "2026-10-03 16:54:49 UTC",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

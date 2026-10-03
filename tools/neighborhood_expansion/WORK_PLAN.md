@@ -136,3 +136,39 @@ The tile's observed cadence was calibrated to1.25×2.2m; the requested2.4m squar
 was not produced by the image generator. Remaining palette finishes require a
 separate full keeper material pass. Route checks cover authored paths and cannot
 certify unrestricted collision or building-code compliance.
+
+## Corner-entry fourplex tooling
+
+`build_corner_fourplex.py` authors the separate corner-entry design; its three
+source locks and inferred dimensions live in `corner-prework.json`. It uses
+`delivery.py` only for source validation, export, script snapshots and exact-GLB
+rendering. The shared delivery module does not compose building geometry.
+Run it with the same `--output-root`, `--version` and `--resolution` arguments
+as the childcare builder. Its masonry cadence is1.92x2.0m, distinct from the
+childcare tile. The generalized boards tool selects the locked front source and
+an existing interior camera. The expansion viewer excludes the earlier
+central-entry fourplex's one-off shower camera.
+
+The finite corner repair pass ends at `fourplex-corner-v004`. Its33 views prove
+four furnished homes, two separate stairs, intersecting roofs, shower fixtures
+and a clear rear bicycle bay. The20 authored routes include both stairs in each
+direction and access to the rear bench/bikes. Run `check-garden.mjs` after the
+native walking check; three rear props have explicit collision probes.
+Do not begin another repair version in this pass. Consult its independent
+review and delivery manifest for the final scoped decision.
+
+Carry these concrete corrections into later constructors:
+
+- Guard the upper slab lip above a lower flight as well as both inner stair
+  edges. Cross the half landing beyond the guard ends and include guards in
+  navigation obstacles. Match navigation triangles to actual tread/slab edges.
+- Do not place an opaque bathroom liner behind an exterior window. Show complete
+  fixtures with dedicated cameras, and avoid open door leaves obscuring beds.
+- Reserve the bicycle parking footprint before placing shrubs. Include hardware
+  helpers explicitly in obstacles when their default module is not a site prop.
+
+The next sixplex has one generated front attempt saved outside the source tree
+in `source-attempts/sixplex_brick_walk_up/front-001.png`; prompt, hash and review
+notes are in `sixplex-reference-generation.json`. It is not source-locked or a
+completed building. Resolve its narrower frontage versus the17m brief before
+locking compatible oblique/top references. Preserve the attempt and prompt.
