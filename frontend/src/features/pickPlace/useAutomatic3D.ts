@@ -126,7 +126,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
       }
     }, 700);
     return () => window.clearTimeout(timer);
-  }, [projectId, key, compiled, eligible, saving, client, attempt]);
+  }, [projectId, key, compiled, eligible, saving, client, attempt, candidates.length]);
 
   const currentAssetError = assetError?.projectId === projectId && zones.some(zone=>zone.id===assetError?.zoneId && (assetError.kind==='street'?nativeStreetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===assetError.revision) ? assetError : null;
   const visibleStatus = currentAssetError ? 'error' : eligible && !compiled && candidates.length > 0 && status !== 'error' ? 'updating' : status;

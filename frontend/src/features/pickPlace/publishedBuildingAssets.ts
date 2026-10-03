@@ -27,9 +27,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 20.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      10.898324012756348,
-      16.050000190734863,
-      6.360000133514404
+      10.898324013,
+      16.050000191,
+      6.360000134
     ],
     "reshapeDescription": "Widen the plot to add complete houses. Each house keeps its authored proportions.",
     "properties": {
@@ -67,9 +67,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 22.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      11.069999694824219,
-      17.93000030517578,
-      10.8100004196167
+      11.069999695,
+      17.930000305,
+      10.81000042
     ],
     "reshapeDescription": "Widen the plot to add complete houses. The porch, dormer and two storeys keep their proportions.",
     "properties": {
@@ -107,8 +107,8 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 66.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      59.40999984741211,
-      60.010000228881836,
+      59.409999847,
+      60.010000229,
       44.0
     ],
     "reshapeDescription": "A complete landmark at its authored size. Move or rotate it; the courtyard and tower retain their proportions.",
@@ -148,8 +148,8 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "maxSize": 100.0,
     "nativeDimensions": [
       13.375,
-      19.600000381469727,
-      10.149999618530273
+      19.600000381,
+      10.149999619
     ],
     "reshapeDescription": "Resize the plot around one complete building. The building keeps its three storeys and authored proportions.",
     "properties": {
@@ -187,9 +187,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 42.0,
     "maxSize": 120.0,
     "nativeDimensions": [
-      24.8799991607666,
-      37.7400016784668,
-      7.21999979019165
+      24.879999161,
+      37.740001678,
+      7.21999979
     ],
     "reshapeDescription": "Resize the plot around the complete motel. Wings, guest rooms and sign keep their authored proportions.",
     "properties": {
@@ -227,9 +227,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 39.0,
     "maxSize": 120.0,
     "nativeDimensions": [
-      34.15999984741211,
-      34.15999984741211,
-      20.43000030517578
+      34.159999847,
+      34.159999847,
+      20.430000305
     ],
     "reshapeDescription": "Resize the plot around the complete building. Shops, balconies and roof retain their authored proportions.",
     "properties": {
@@ -267,8 +267,8 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 34.0,
     "maxSize": 160.0,
     "nativeDimensions": [
-      32.1200008392334,
-      30.074999809265137,
+      32.120000839,
+      30.074999809,
       99.0
     ],
     "reshapeDescription": "Resize the plot around the complete tower. Its floors, canopy and crown keep their original proportions.",
@@ -307,9 +307,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 44.0,
     "maxSize": 180.0,
     "nativeDimensions": [
-      48.05500030517578,
-      40.05500030517578,
-      58.79999923706055
+      48.055000305,
+      40.055000305,
+      58.799999237
     ],
     "reshapeDescription": "Resize the plot around this complete tower. Floors, terraces and structural details retain their authored proportions.",
     "properties": {
@@ -347,9 +347,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 49.0,
     "maxSize": 180.0,
     "nativeDimensions": [
-      43.4902229309082,
-      44.02606964111328,
-      147.6999969482422
+      43.490222931,
+      44.026069641,
+      147.699996948
     ],
     "reshapeDescription": "Resize the plot around this complete tower. Floors, terraces and structural details retain their authored proportions.",
     "properties": {
@@ -387,8 +387,8 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 25.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      13.34000015258789,
-      21.472000122070312,
+      13.340000153,
+      21.472000122,
       9.0
     ],
     "reshapeDescription": "One complete two-home building at its native size. Resize the surrounding plot; the homes do not stretch or repeat.",
@@ -427,9 +427,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 23.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      12.64909839630127,
-      19.320000171661377,
-      8.104999542236328
+      12.649098396,
+      19.320000172,
+      8.104999542
     ],
     "reshapeDescription": "One complete stacked duplex at native size, including its curved stair. Resize the surrounding plot without stretching the building.",
     "properties": {
@@ -467,9 +467,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 17.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      25.582000732421875,
-      13.381999969482422,
-      12.27500057220459
+      25.582000732,
+      13.381999969,
+      12.275000572
     ],
     "reshapeDescription": "One complete entrance building at native scale. Resize its plot without stretching the arches, passages or roof.",
     "properties": {
@@ -508,8 +508,8 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "maxSize": 150.0,
     "nativeDimensions": [
       35.25,
-      48.47999954223633,
-      19.09000015258789
+      48.479999542,
+      19.090000153
     ],
     "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
     "properties": {
@@ -547,9 +547,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 60.0,
     "maxSize": 150.0,
     "nativeDimensions": [
-      38.36000061035156,
-      56.73500061035156,
-      16.597248077392578
+      38.36000061,
+      56.73500061,
+      16.597248077
     ],
     "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
     "properties": {
@@ -587,9 +587,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 33.0,
     "maxSize": 150.0,
     "nativeDimensions": [
-      32.779998779296875,
-      29.31721782684326,
-      68.5999984741211
+      32.779998779,
+      29.317217827,
+      68.599998474
     ],
     "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
     "properties": {
@@ -627,9 +627,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 23.0,
     "maxSize": 150.0,
     "nativeDimensions": [
-      20.350000381469727,
-      19.475000381469727,
-      22.760000228881836
+      20.350000381,
+      19.475000381,
+      22.760000229
     ],
     "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
     "properties": {
@@ -667,9 +667,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 18.0,
     "maxSize": 150.0,
     "nativeDimensions": [
-      19.299999237060547,
-      14.130000114440918,
-      11.779999732971191
+      19.299999237,
+      14.130000114,
+      11.779999733
     ],
     "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
     "properties": {
@@ -707,9 +707,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 46.0,
     "maxSize": 150.0,
     "nativeDimensions": [
-      24.639999389648438,
-      42.290000915527344,
-      21.420000076293945
+      24.63999939,
+      42.290000916,
+      21.420000076
     ],
     "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
     "properties": {
@@ -747,9 +747,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 37.0,
     "maxSize": 140.0,
     "nativeDimensions": [
-      35.36000061035156,
-      32.599998474121094,
-      15.5018310546875
+      35.36000061,
+      32.599998474,
+      15.501831055
     ],
     "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
     "properties": {
@@ -787,9 +787,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 48.0,
     "maxSize": 140.0,
     "nativeDimensions": [
-      44.06293869018555,
-      43.16806359868497,
-      20.64999961555004
+      44.06293869,
+      43.168063599,
+      20.649999616
     ],
     "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
     "properties": {
@@ -829,7 +829,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "nativeDimensions": [
       60.0,
       96.0,
-      32.560001373291016
+      32.560001373
     ],
     "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
     "properties": {
@@ -869,7 +869,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "nativeDimensions": [
       36.0,
       30.0,
-      16.309999465942383
+      16.309999466
     ],
     "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
     "properties": {
@@ -909,7 +909,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "nativeDimensions": [
       40.0,
       36.0,
-      13.588971138000488
+      13.588971138
     ],
     "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
     "properties": {

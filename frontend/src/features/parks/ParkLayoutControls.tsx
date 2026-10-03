@@ -29,11 +29,12 @@ export function ParkLayoutControls({zone,zones,disabled,onSave}:{zone:SiteZone;z
   onSave:(data:{coordinates:number[][];properties:SiteZoneProperties})=>Promise<unknown>}) {
   const current=readNativePark(zone);
   const choices=nativeParkLayouts.filter(p=>p.variantId===zone.properties?.green_space_selected_variant_id && p.status==='pilot');
-  const [selected,setSelected]=useState(current?.layout.id??choices[0]?.id??'');
+  const defaultLayoutId=current?.layout.id??choices[0]?.id??'';
+  const [selected,setSelected]=useState(defaultLayoutId);
   const [preview,setPreview]=useState(false),[saving,setSaving]=useState(false),[error,setError]=useState('');
   useEffect(()=>{
-    setSelected(current?.layout.id??choices[0]?.id??'');setPreview(false);setError('');
-  },[zone.id,current?.layout.id]);
+    setSelected(defaultLayoutId);setPreview(false);setError('');
+  },[zone.id,defaultLayoutId]);
   const layout=choices.find(p=>p.id===selected);
   const proposal=useMemo(()=>layout?parkLayoutProposal(zone,layout,zones):null,[zone,zones,layout]);
   if(!choices.length)return null;

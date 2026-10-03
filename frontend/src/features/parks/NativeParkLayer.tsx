@@ -127,7 +127,7 @@ function NativeParkConnections({zone}:{zone:SiteZone}) {
         return piece?[piece]:[];
       });
     });
-  },[access,resolved.selection]);
+  },[access,resolved.selection,resolved.layout]);
   useEffect(()=>retainResourceForDeferredDisposal(geometry,items=>items.forEach(item=>item.dispose())),[geometry]);
   return <>{geometry.map((g,i)=><mesh key={i} geometry={g} receiveShadow><meshStandardMaterial color="#b4a58c" roughness={.95} side={THREE.DoubleSide}/></mesh>)}</>;
 }

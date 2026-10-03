@@ -123,7 +123,9 @@ def picker_assets(payload: dict) -> list[dict]:
                 "minWidth": width,
                 "minDepth": depth,
                 "maxSize": maximum,
-                "nativeDimensions": [dims["width"], dims["depth"], dims["height"]],
+                # Nanometre precision avoids Python/JS shortest-decimal differences
+                # while preserving the measured model envelope for placement.
+                "nativeDimensions": [round(dims[axis], 9) for axis in ("width", "depth", "height")],
                 "reshapeDescription": p["reshape_description"],
                 "properties": props,
             }

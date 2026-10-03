@@ -61,7 +61,7 @@ export function mountRoadTerrainTrialPanel(getScene:()=>THREE.Scene|null,
       const count=Number(trial.summary.leftEdge==='retaining')+Number(trial.summary.rightEdge==='retaining');
       status.textContent=`Transition ready · ${trial.field.length} m raised road, ${width.value} m wide · ${count?`${count} retaining ${count===1?'edge':'edges'}`:'natural slopes'}.`;
     }
-    if(state==='error')status.textContent=error?.message.replace(/\s+[\[{][\s\S]*$/,'').replace(/:$/,'')??'The trial could not be built.';
+    if(state==='error')status.textContent=error?.message.replace(/\s+[[{][\s\S]*$/,'').replace(/:$/,'')??'The trial could not be built.';
     if(!measuring)onSurfaceChanged();
   });
   build.onclick=()=>{wanted=true;controller.build();};

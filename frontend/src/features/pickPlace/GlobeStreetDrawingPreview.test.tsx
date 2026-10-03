@@ -36,8 +36,8 @@ describe('street drawing preview lifecycle', () => {
   });
   it.each(['brt_bus_rapid_transit_corridor_v0', 'amsterdam_gracht_v1', 'landmark_signature_bridge_v2',
     'student_elevated_garden_rail_v1', 'skytrain_elevated_corridor_v0', 'elevated_rail_transit_corridor_v0',
-    'student_grass_tram_avenue_v1', 'student_planted_shared_lane_v1'])
-  ('keeps an unfinished %s route editable and restores 3D at valid sizes', variant => {
+    'student_grass_tram_avenue_v1', 'student_planted_shared_lane_v1'])(
+  'keeps an unfinished %s route editable and restores 3D at valid sizes', variant => {
     harness.canvas = document.createElement('canvas');
     harness.camera = { matrixWorld: new Matrix4() };
     const pilot = nativeStreetPilot(variant)!;
