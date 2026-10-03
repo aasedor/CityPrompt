@@ -454,8 +454,63 @@
         "description": "A practical single-storey Canadian community association hall with a broad gabled multipurpose room and a lower kitchen-and-meeting-room wing. A sheltered entrance faces a modest planted forecourt with benches and bicycles. Large hall windows open toward a side lawn suitable for neighborhood gatherings. The building is welcoming, inexpensive-looking and well maintained.",
         "siteNote": "Reserve space for outdoor gatherings and a separate service door to the kitchen; parking can be shared with nearby uses."
       },
-      "state": "source_front_attempt",
-      "attempts": [],
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "hall-prairie-v001",
+          "state": "visual_rework_required",
+          "log": "hall-v001-build.log",
+          "session_id": 7879,
+          "walking_routes_passed": 13,
+          "walking_routes_total": 15,
+          "physical_samples_passed": 972,
+          "glb_sha256": "deb4a727adabe80f18196b0fb437ff2dd9784a2be894fec975a159f030219fdc",
+          "blockers": [
+            "2 blocked outdoor routes",
+            "Unclosed stepped roof eaves and partition attic gap",
+            "Rear noticeboard covers window",
+            "Wing lamp/duct supports",
+            "Canopy crosses transom",
+            "Coplanar grass/sidewalk",
+            "Service camera obscured by open leaf"
+          ],
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\hall-prairie-v001\\review\\independent-visual-review.json",
+          "review_sha256": "1fdb6b5131caf33a9889bbfb7857ba6f79a77e4f3b82212490164f3726a9f0c7"
+        },
+        {
+          "candidate": "hall-prairie-v002",
+          "state": "visual_rework_required",
+          "session_id": 45372,
+          "log": "hall-v002-build.log",
+          "walking_routes_passed": 14,
+          "walking_routes_total": 15,
+          "physical_samples_passed": 1086,
+          "glb_sha256": "b7533a2c2c9b555b728fc93997e5215812384cc3162b1e320c06489eb1d17eb8",
+          "blockers": [
+            "Lawnbenchrouteendpoint .12m short under CLIclearance; browser reports.10m, doesnot override fail",
+            "Stepped roof cheek needs front/rear end returns"
+          ],
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\hall-prairie-v002\\review\\independent-visual-review.json",
+          "review_sha256": "5bb7b8c51fa2c381f5bdd86999a0d506a2c1fe9f86fd935d02d5c0690adf86ff"
+        },
+        {
+          "candidate": "hall-prairie-v003",
+          "state": "local_prototype_pass",
+          "session_id": 86524,
+          "log": "hall-v003-build.log",
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\hall-prairie-v003\\review\\independent-visual-review.json",
+          "review_sha256": "fd35001ca07739e631b53a97f1d5967f60f450064956d7ec1d3fcef1625ea7ae",
+          "walking_routes_passed": 15,
+          "walking_routes_total": 15,
+          "physical_samples_passed": 1088,
+          "glb_sha256": "cfa3ea6aaec31aabe579afafa17978a2d9674ff133cbf026f992bc5d41c9b824",
+          "mandatory_views": 26,
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2,
+          "browser_checks": "15routes withzeroerror;manualpublicgroundtohall;model switch;interior/exterior;hide/show;reload;no consoleerrors"
+        }
+      ],
       "keeper_approved": false,
       "catalogue_activated": false,
       "source_attempt": {
@@ -476,6 +531,47 @@
         "sha256": "ae35830ec96589b11be3b3b101bb3aefa1de8fd364e03d58aaa5a67aff295d51",
         "provenance": "hall-top-generation.json",
         "locked": false
+      },
+      "sources": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0.png",
+          "role": "front",
+          "bytes": 2771603,
+          "sha256": "7fa69e7ba1e4ec07c7237089759bca75c732782ba5b7e5c799dc34e6b9de5ca4"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0_oblique.png",
+          "role": "oblique",
+          "bytes": 3047096,
+          "sha256": "6647b8876e31131720b1b3183cef18d15658d950c0c23760a7a81e0c97ba78ac"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0_roof-study.png",
+          "role": "topology",
+          "bytes": 2703371,
+          "sha256": "e988df8771437a22073888775dc97c803d8d00eacfe4fada8c7c66aaa70ecedd"
+        }
+      ],
+      "source_review": "prework/hall-source-review.json",
+      "source_attempts_preserved": "source-attempts/hall_prairie_community_league",
+      "current_candidate": "hall-prairie-v003",
+      "source_next_action": "Source lock complete; incompatible tops retained.",
+      "source_generation": "hall-locked-generation.json",
+      "source_manifest": "prework/hall_prairie_community_league.json",
+      "local_review": {
+        "candidate": "hall-prairie-v003",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "hall-prairie-v003/review/independent-visual-review.json",
+        "review_sha256": "fd35001ca07739e631b53a97f1d5967f60f450064956d7ec1d3fcef1625ea7ae",
+        "glb_sha256": "cfa3ea6aaec31aabe579afafa17978a2d9674ff133cbf026f992bc5d41c9b824",
+        "routes": 15,
+        "physical_samples": 1088,
+        "garden_probes": 4,
+        "mandatory_views": 26,
+        "browser_verified": true
       }
     },
     {
@@ -839,12 +935,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "wave1_in_progress",
+  "state": "wave1_complete_wave2_queued",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
-  "completed_models": 4,
-  "next_action": "Resume hall_prairie_community_league source lock. Front001 and oblique001 are broadly compatible; top001 alters wing proportions/junction and needs reconciliation. Use source pixels for a nearly flush lower hip-roof wing; original prompt shed/setback were design assumptions. Obtain independent source review, tile and detailed prework before building. Library v004 accepted local prototype; no building job running. It is final repair in this pass.16 models remain; prairie hall completes the first group of four after childcare pilot.",
-  "updated_utc": "2026-10-03T18:25:44.468144+00:00",
+  "completed_models": 5,
+  "next_action": "First group of four after childcare pilot is complete. Begin Wave2 with school_shared_community_campus: obtain original front, compatible oblique and top, independent source review, prework and source-conditioned materials before geometry. No building jobs running.15 models remain. Hallv003 is accepted local prototype, fullkeeper hold; preserve v001/v002.",
+  "updated_utc": "2026-10-03T19:00:55.263783+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

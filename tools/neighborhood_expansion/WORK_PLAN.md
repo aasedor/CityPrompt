@@ -228,9 +228,43 @@ repair in this pass. Consult live progress for final gates.
 All 27 final cameras include a dedicated approach view and an interior view from
 behind the clerestory glazing. The boards helper now accepts `reading_hall`.
 
-The next prairie hall has one front attempt in
+The prairie hall's initial front attempt remains in
 `source-attempts/hall_prairie_community_league/front-001.png`, with prompt and
 review notes in `hall-reference-generation.json`. Compatible front and oblique attempts show a nearly flush lower hip-roof
 wing, which fits the user brief. The top attempt changes its relative width and
 depth; reconcile that and its roof junction before source lock. Earlier prompt
-shed-roof/setback details were design assumptions. No hall geometry is built.
+shed-roof/setback details were design assumptions. The resolved lock and builder
+are documented below.
+
+## Prairie community hall tooling
+
+`build_prairie_hall.py` authors the distinct broad gable and lower hipped service
+wing. `hall-prework.json` locks front001, oblique001 and top003 in the external
+canonical community-hall reference folder. Top001 and top002 remain rejected
+attempts: the first changed wing proportions, and the second retained a conflicting
+ridge direction. Top003 establishes parallel longitudinal ridges only; front and
+oblique remain facade authority. The shorter 10 by16 m wing is a declared inference.
+
+The roof constructor partitions planar domains and retains their upper envelope.
+Valley nodes come from actual plane intersections. Two details still need explicit
+closure: the vertical step where a main eave ends above a lower hip, and the gap
+above a partition when the union roof rises above its original eave datum. Metal
+cheeks close the first; infill cut from the actual roof patches closes the second.
+
+V001 is retained with26 renders and13/15 native routes passing. Its blockers include
+those roof closures, a rear noticeboard over glazing, unsupported wing luminaires,
+canopy/transom overlap, an entry planter blocking the service door, and a lawn route
+too close to a porch post. The public sidewalk also shared a coplanar grass surface.
+V002 closed the partition gap and side cheek but retained open ends on that cheek.
+Its lawn route also ended too close to the bench. V003 adds front/rear cheek returns
+and approaches the bench from its front. All26 views were rerendered;15 native and
+browser routes,20 furniture probes,4 garden probes and1,088 physical samples pass.
+V003 passed independent local architecture/circulation review with zero P0/P1.
+Full keeper remains on hold for browser roof seams and source finish/landscape.
+This completes the pilot plus the first four-building group:5/20 local prototypes.
+Wave2 begins with `school_shared_community_campus`; no sources are locked for it yet.
+
+All sinks cut the cabinet as well as the worktop. Every light and extractor reaches
+a physical support. The public approach begins at ground z0.04 and rises to z0.14
+over a solid1.3 m ramp. These checks establish a local walking prototype, not code
+or accessibility certification. Do not activate this or any batch entry in runtime.
