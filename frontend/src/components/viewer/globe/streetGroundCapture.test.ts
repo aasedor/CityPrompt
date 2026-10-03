@@ -2,6 +2,13 @@ import { expect, it } from 'vitest';
 import { Group } from 'three';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 
+it('does not export an unsaved canal opening, including when editor previews are hidden', () => {
+  const scene=new Group(),draft=new Group();draft.userData.streetPreviewGround=true;scene.add(draft);
+  expect(()=>assertStreetGroundReady(scene)).toThrow(/Finish or cancel/);
+  draft.visible=false;expect(()=>assertStreetGroundReady(scene)).toThrow(/Finish or cancel/);
+  scene.remove(draft);expect(()=>assertStreetGroundReady(scene)).not.toThrow();
+});
+
 it('does not capture a missing road while its independent ground is sampling', () => {
   const scene = new Group(), road = new Group(); scene.add(road);
   road.userData.streetGroundStatus = 'sampling';

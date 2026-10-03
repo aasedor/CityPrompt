@@ -50,12 +50,24 @@ export function nativeStreetLocalRouteProblem(pilot: NativeStreetPilot, route: S
     ? `${pilot.title} needs a route ${program.minLengthM}–${program.maxLengthM} m long so its complete garden and access program fits.` : null;
 }
 
-export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'properties'>,boundary?:SiteZone|null):string|null {
+/** Available before the first route point so students can resolve ground first. */
+export function nativeStreetPreparationProblem(zone:Pick<SiteZone,'properties'>,boundary?:SiteZone|null):string|null {
   if(zone.properties?.validation_fixed_fixture)return null;
   const pilot=nativeStreetPilot(String(zone.properties?.road_selected_variant_id)),program=pilot?.program;
   if(!program)return null;
   if(program.preparedLevelOnly && (!boundary || boundary.properties?.terrain_strategy==='landscape'
-    || boundary.properties?.community_3d_mask_existing_tiles!==true))return 'Prepare a level site and clear existing site surfaces before drawing this native street.';
+    || boundary.properties?.community_3d_mask_existing_tiles!==true))return boundary
+      ? 'This street needs a prepared level site for its detailed 3D preview. Open Review ground to prepare the site, or choose another street. Your drawn points are kept.'
+      : 'This street needs a prepared level site for its detailed 3D preview. Create a site boundary, then use Review ground to prepare it.';
+  return null;
+}
+
+export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'properties'>,boundary?:SiteZone|null):string|null {
+  if(zone.properties?.validation_fixed_fixture)return null;
+  const pilot=nativeStreetPilot(String(zone.properties?.road_selected_variant_id)),program=pilot?.program;
+  if(!program)return null;
+  const preparation=nativeStreetPreparationProblem(zone,boundary);
+  if(preparation)return preparation;
   const points=extractZoneCenterline(zone),scale=111320*Math.cos((points[0]?.[1]??0)*Math.PI/180);
   return nativeStreetLocalRouteProblem(pilot, points.map(p => ({
     x: (p[0] - points[0][0]) * scale, y: (p[1] - points[0][1]) * 111320,

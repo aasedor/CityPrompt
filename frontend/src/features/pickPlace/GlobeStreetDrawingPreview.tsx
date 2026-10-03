@@ -12,6 +12,7 @@ import { PublicRoadSuggestionMarker } from './PublicRoadSuggestionMarker';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
+import { useSetStreetPreviewGround } from './StreetPreviewGround';
 
 type Surface = { lngLat: [number, number]; height: number };
 /** Cursor updates stay inside this small subtree instead of rerendering the globe. */
@@ -22,6 +23,7 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
   onStatusChange?: (problem: string | null) => void;
 }) {
   const { gl, camera, invalidate } = useThree();
+  const setGroundCutout = useSetStreetPreviewGround();
   const pointer = useRef<[number, number] | null>(null);
   const dirty = useRef(false), last = useRef(0), matrix = useRef(new Matrix4());
   const [surface, setSurface] = useState<Surface | null>(null);
@@ -59,6 +61,13 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
       color: '#c9ff3d', sort_order: 0, created_at: '', updated_at: '', ...geometry } satisfies SiteZone;
   }, [points, surface, properties, zones, height, publicRoads, skipSnapping]);
   const problem = zone ? nativeStreetRouteProblem(zone, getActiveSiteBoundary(zones)) : null;
+  useEffect(() => {
+    // Match the saved canal's prepared-site opening. Its water is below grade;
+    // a second site slab otherwise hides it until the student saves the route.
+    setGroundCutout(zone && !problem && zone.properties?.road_selected_variant_id === 'amsterdam_gracht_v1'
+      ? zone.coordinates : null);
+    return () => setGroundCutout(null);
+  }, [zone, problem, setGroundCutout]);
   useEffect(() => { onStatusChange?.(problem); }, [problem, onStatusChange]);
   useEffect(() => () => onStatusChange?.(null), [onStatusChange]);
   return zone ? <group name="street-drawing-preview" userData={{ editorPreview: true }}>

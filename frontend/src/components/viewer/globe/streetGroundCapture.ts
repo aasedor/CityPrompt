@@ -1,6 +1,9 @@
 import type { Object3D } from 'three';
 
 export function assertStreetGroundReady(scene: Object3D | null): void {
+  let previewCutout = false;
+  scene?.traverse(object => { if (object.userData.streetPreviewGround) previewCutout = true; });
+  if (previewCutout) throw new Error('Finish or cancel the canal route before exporting. Its ground opening is still a drawing preview.');
   if (scene?.userData.roadTerrainRehearsal || scene?.userData.roadTerrainRebuilding) {
     throw new Error('The road edge study is a local preview. Show the original ground or close the study before exporting your saved design.');
   }

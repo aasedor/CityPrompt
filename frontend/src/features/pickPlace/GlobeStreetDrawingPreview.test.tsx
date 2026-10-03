@@ -5,6 +5,7 @@ import { GlobeStreetDrawingPreview } from './GlobeStreetDrawingPreview';
 import { STREET_ASSETS } from './assetRegistry';
 import type { SiteZone } from '@/types';
 import { nativeStreetPilot } from '@/components/viewer/globe/nativeStreetPilot';
+import { StreetPreviewGroundProvider, useStreetPreviewGround } from './StreetPreviewGround';
 
 const harness = vi.hoisted(() => ({ frame: null as null | ((state: { clock: { elapsedTime: number } }) => void),
   canvas: null as HTMLCanvasElement | null, zone: null as SiteZone | null, camera: null as unknown }));
@@ -20,6 +21,19 @@ const points = [[-114, 51], [-113.998, 51]];
 afterEach(cleanup);
 
 describe('street drawing preview lifecycle', () => {
+  it('opens the prepared ground only for a valid canal draft and restores it on undo, ground change and cancel', () => {
+    harness.canvas=document.createElement('canvas');harness.camera={matrixWorld:new Matrix4()};
+    const boundary={id:'site',zone_type:'site_boundary',coordinates:[[-115,50],[-113,50],[-113,52],[-115,52]],properties:{community_3d_mask_existing_tiles:true}} as unknown as SiteZone;
+    const props={points:[[-114,51],[-114,51+100/111320]],pointHeights:[1000],zones:[boundary],terrainHeight:1000,raycastSurface:()=>null,
+      properties:{width:36,road_archetype_id:'amsterdam_gracht',road_selected_variant_id:'amsterdam_gracht_v1'}};
+    const Probe=()=> <span data-testid="opening">{useStreetPreviewGround() ? 'open' : 'closed'}</span>;
+    const body=(p=props,show=true)=><StreetPreviewGroundProvider>{show&&<GlobeStreetDrawingPreview {...p}/>}<Probe/></StreetPreviewGroundProvider>;
+    const view=render(body());expect(view.getByTestId('opening').textContent).toBe('open');
+    view.rerender(body({...props,points:props.points.slice(0,1)}));expect(view.getByTestId('opening').textContent).toBe('closed');
+    view.rerender(body());expect(view.getByTestId('opening').textContent).toBe('open');
+    view.rerender(body({...props,zones:[]}));expect(view.getByTestId('opening').textContent).toBe('closed');
+    view.rerender(body());view.rerender(body(props,false));expect(view.getByTestId('opening').textContent).toBe('closed');
+  });
   it.each(['brt_bus_rapid_transit_corridor_v0', 'amsterdam_gracht_v1', 'landmark_signature_bridge_v2',
     'student_elevated_garden_rail_v1', 'skytrain_elevated_corridor_v0', 'elevated_rail_transit_corridor_v0',
     'student_grass_tram_avenue_v1', 'student_planted_shared_lane_v1'])

@@ -1162,7 +1162,7 @@ export function ProjectViewPage() {
                   ?? placementProblem(coordinates, siteZones,
                     publicRoadConnectionFits({ zone_type: type, properties }, coordinates, getActiveSiteBoundary(siteZones))
                       ? null : getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true });
-                if (problem) { toast.error(problem, {position:'top-center'}); return false; }
+                if (problem) { toast.error(problem, {id:'street-route-validation',position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);
             }}

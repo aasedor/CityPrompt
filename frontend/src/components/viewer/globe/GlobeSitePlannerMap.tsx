@@ -26,6 +26,8 @@ import { useContext, useEffect, useRef, useState, useCallback, useMemo } from 'r
 import * as THREE from 'three';
 import { GlobePlacementPreview } from '@/features/pickPlace/GlobePlacementPreview';
 import { GlobeStreetDrawingPreview } from '@/features/pickPlace/GlobeStreetDrawingPreview';
+import { StreetPreviewGroundProvider } from '@/features/pickPlace/StreetPreviewGround';
+import { nativeStreetPreparationProblem } from './nativeStreetPilot';
 import { streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
 import { usePublicRoadContext } from '@/features/pickPlace/usePublicRoadContext';
 import { supportsPublicRoadSuggestions } from '@/features/pickPlace/publicRoadSuggestions';
@@ -1656,6 +1658,9 @@ export function GlobeSitePlannerMap({
   contextPresentationRef.current = contextPresentation;
   const [placementProblemMessage, setPlacementProblemMessage] = useState<string | null>(null);
   const [streetDrawingProblem, setStreetDrawingProblem] = useState<string | null>(null);
+  const streetPreparationProblem = activeSitePlannerTool === 'road'
+    ? nativeStreetPreparationProblem({properties: activeToolProperties ?? {}}, getActiveSiteBoundary(allSiteZones)) : null;
+  const streetDrawingNotice = streetPreparationProblem ?? streetDrawingProblem;
   const sharedGroundRef = useRef(sharedGroundState);
   const [legoGroundingIssues, setLegoGroundingIssues] = useState<LegoGroundingIssue[]>([]);
   const [modelGroundingIssues, setModelGroundingIssues] = useState<LegoGroundingIssue[]>([]);
@@ -3627,6 +3632,9 @@ export function GlobeSitePlannerMap({
 
   // Finish drawing
   const finishDrawing = useCallback(() => {
+    // Keep the draft intact. The visible recovery action opens ground review;
+    // repeated Enter/double-click attempts must not stack error toasts.
+    if (streetPreparationProblem || showGroundReview) return;
     const sanitized = sanitizeCoords(drawingPointsRef.current);
     const pts = linear ? sanitized : normalizePolygonDrawing(sanitized);
     if (!activeSitePlannerTool || pts.length < minPointsForTool(activeSitePlannerTool)) return;
@@ -3676,12 +3684,12 @@ export function GlobeSitePlannerMap({
     if (isMobileDrawingViewport() || zoneProperties.pick_place_street_section) {
       setActiveSitePlannerTool(null);
     }
-  }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, setActiveSitePlannerTool, terrainElevation, siteZones, publicRoadSnapEnabled, publicRoadContext.data]);
+  }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, setActiveSitePlannerTool, terrainElevation, siteZones, publicRoadSnapEnabled, publicRoadContext.data, streetPreparationProblem, showGroundReview]);
   finishDrawingRef.current = finishDrawing;
 
   // Keyboard handler for drawing
   useEffect(() => {
-    if (interactionPaused) return;
+    if (interactionPaused || showGroundReview) return;
     if (!hasDrawingTool) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -3724,7 +3732,7 @@ export function GlobeSitePlannerMap({
 
     window.addEventListener('keydown', handleKeyDown, true);
     return () => window.removeEventListener('keydown', handleKeyDown, true);
-  }, [finishDrawing, hasDrawingTool, interactionPaused, setActiveSitePlannerTool]);
+  }, [finishDrawing, hasDrawingTool, interactionPaused, setActiveSitePlannerTool, showGroundReview]);
 
   // Keyboard handler for quick measuring
   useEffect(() => {
@@ -4461,6 +4469,7 @@ export function GlobeSitePlannerMap({
             onDisplayReadyChange={setAreTilesDisplayReady}
           />
           <SharedSiteGroundProvider zones={allSiteZones} onChange={handleSharedGroundChange} inspectPrepared={showGroundReview}>
+          <StreetPreviewGroundProvider>
           <BuildingEntranceApproaches zones={connectedSceneZones} results={pedestrianConnections}>
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
           <ParkAssemblyGroundProvider>
@@ -4625,6 +4634,7 @@ export function GlobeSitePlannerMap({
           </AutomaticParkGround>
           </ParkAssemblyGroundProvider>
           </BuildingEntranceApproaches>
+          </StreetPreviewGroundProvider>
           </SharedSiteGroundProvider>
         </TilesRenderer>
 
@@ -4809,17 +4819,19 @@ export function GlobeSitePlannerMap({
           {' · Estimated road edges. Check imagery before accepting.'}</p>}
       </aside>}
 
-      {activeSitePlannerTool === 'road' && streetDrawingProblem && !interactionPaused && !captureOverlaysHidden &&
-        <p role="status" className="pointer-events-none absolute left-1/2 bottom-44 z-40 max-w-[min(34rem,90vw)] -translate-x-1/2 rounded-lg border border-amber-500 bg-amber-50 px-4 py-2 text-center text-sm text-amber-950 sm:bottom-40">
-          {streetDrawingProblem}
-        </p>}
+      {activeSitePlannerTool === 'road' && streetDrawingNotice && !interactionPaused && !captureOverlaysHidden && !showGroundReview &&
+        <div role="status" className="absolute left-1/2 bottom-44 z-40 max-w-[min(34rem,90vw)] -translate-x-1/2 rounded-lg border border-amber-500 bg-amber-50 px-4 py-2 text-center text-sm text-amber-950 sm:bottom-40">
+          <p>{streetDrawingNotice}</p>
+          {streetPreparationProblem && getActiveSiteBoundary(allSiteZones) && onPrepareGround &&
+            <button type="button" onClick={() => setShowGroundReview(true)} className="mt-2 min-h-11 rounded-lg border border-amber-800 bg-white px-3 font-semibold">Review ground for this street</button>}
+        </div>}
 
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;
         const tool = activeSitePlannerTool!;
         const min = minPointsForTool(tool);
         const isLineTool = isLinearTool(tool);
-        const canFinish = n >= min;
+        const canFinish = n >= min && !streetPreparationProblem;
         const canConnect = !isLineTool && canFinish && centerNearStartVertex;
         const placeLabel = canConnect
           ? 'Connect & Finish'
@@ -4917,6 +4929,10 @@ export function GlobeSitePlannerMap({
         } else {
           desktopHint = `${n} points${measurement ? ` - ${measurement}` : ''} - Drag to pan - Double-click or Enter to finish - Esc to cancel`;
         }
+        if (streetPreparationProblem) {
+          mobileHint = `${n} points kept · Review ground to enable the detailed street`;
+          desktopHint = `${n} points${measurement ? ` - ${measurement}` : ''} · Review ground to enable 3D and finish · Esc to cancel`;
+        }
 
         return (
           <>
@@ -4926,7 +4942,7 @@ export function GlobeSitePlannerMap({
             <div className="pointer-events-none absolute left-1/2 bottom-24 z-30 hidden -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:block">
               {desktopHint}
               {drawingPoints.length >= min && (
-                <button type="button" onClick={finishDrawing} className="pointer-events-auto ml-3 rounded bg-[#c9ff3d] px-3 py-1 font-bold text-black">
+                <button type="button" onClick={finishDrawing} disabled={Boolean(streetPreparationProblem)} className="pointer-events-auto ml-3 rounded bg-[#c9ff3d] px-3 py-1 font-bold text-black disabled:opacity-40">
                   Finish drawing
                 </button>
               )}

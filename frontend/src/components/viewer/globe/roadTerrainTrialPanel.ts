@@ -14,6 +14,8 @@ export function mountRoadTerrainTrialPanel(getScene:()=>THREE.Scene|null,
   panel.style.cssText='position:absolute;right:20px;bottom:85px;z-index:45;width:300px;padding:18px;border:2px solid #252832;border-radius:18px;background:#fff9ed;box-shadow:0 6px 22px #18242226;color:#252832;font:13px/1.5 system-ui';
   const styles=document.createElement('style');styles.textContent='[data-road-terrain-panel] button:disabled{opacity:.4;cursor:not-allowed!important}';
   const title=document.createElement('strong');title.textContent='Natural road edges · local trial';
+  const scope=document.createElement('p');scope.textContent='Temporary road preview. Catalogue street drawing still uses its existing ground requirements.';
+  scope.style.cssText='margin:6px 0;color:#475569;font-size:12px';
   const widthLabel=document.createElement('label');widthLabel.textContent='Road width ';widthLabel.style.cssText='display:block;margin-top:12px';
   const width=document.createElement('select');width.setAttribute('aria-label','Trial road width');
   width.style.cssText='border:1px solid #252832;border-radius:6px;padding:5px;background:white';
@@ -27,7 +29,7 @@ export function mountRoadTerrainTrialPanel(getScene:()=>THREE.Scene|null,
   const actions=document.createElement('div');actions.style.cssText='display:flex;gap:8px;flex-wrap:wrap';
   const button=(label:string)=>{const b=document.createElement('button');b.textContent=label;b.style.cssText='border:1px solid #252832;border-radius:9px;padding:8px 12px;background:#eeffbf;font-weight:650;cursor:pointer';actions.append(b);return b;};
   const build=button('Build transition'),toggle=button('Show original'),walk=button('Walk road');toggle.disabled=true;walk.disabled=true;
-  panel.append(styles,title,widthLabel,lengthLabel,status,actions);document.body.append(panel);
+  panel.append(styles,title,scope,widthLabel,lengthLabel,status,actions);document.body.append(panel);
   let input:RoadRehearsalInput|undefined,wanted=false,pendingScene:THREE.Scene|null=null;
   const owner={};
   const pending=(value:boolean)=>{

@@ -1,5 +1,5 @@
 import { describe,expect,it } from 'vitest';
-import { nativeStreetPilot,nativeStreetRouteProblem,placeNativeStreetModules } from './nativeStreetPilot';
+import { nativeStreetPilot,nativeStreetPreparationProblem,nativeStreetRouteProblem,placeNativeStreetModules } from './nativeStreetPilot';
 import { buildNativeStreetProgram,nativeStreetGroundCells,nativeStreetHasPreparedGround } from './nativeStreetProgram';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { expectsNativeStreet } from './nativeStreetReadiness';
@@ -9,6 +9,14 @@ const residential=nativeStreetPilot('student_quiet_residential_street_v1')!;
 const shared=nativeStreetPilot('student_planted_shared_lane_v1')!;
 
 describe('finite native street placement limits',()=>{
+  it('explains the ground requirement before any route points and clears it after preparation',()=>{
+    const zone={properties:{road_selected_variant_id:'brt_bus_rapid_transit_corridor_v0'}};
+    const boundary:SiteZone={id:'site',project_id:'test',zone_type:'site_boundary',coordinates:[],color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',properties:{community_3d_mask_existing_tiles:false}};
+    expect(nativeStreetPreparationProblem(zone,null)).toContain('Create a site boundary');
+    expect(nativeStreetPreparationProblem(zone,boundary)).toContain('Your drawn points are kept');
+    expect(nativeStreetPreparationProblem(zone,{...boundary,properties:{community_3d_mask_existing_tiles:true}})).toBeNull();
+    expect(nativeStreetPreparationProblem({properties:{road_selected_variant_id:'calgary_local_v0'}},null)).toBeNull();
+  });
   it.each([
     ['student_quiet_residential_street_v1',48,480],
     ['student_planted_shared_lane_v1',40,480],

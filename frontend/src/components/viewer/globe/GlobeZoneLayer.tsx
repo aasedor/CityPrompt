@@ -84,6 +84,7 @@ import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sh
 import { selectDetailedStreetZones } from './streetDetailLod';
 import { useParkAssemblyGroundOwners } from './ParkAssemblyGround';
 import { streetSectionOwnsGround } from './streetSurfaceMask';
+import { useStreetPreviewGround } from '@/features/pickPlace/StreetPreviewGround';
 import { preparedPublicRoadMasks } from './preparedPublicRoads';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -1405,10 +1406,11 @@ export function GlobeZoneLayer({
   }, []);
   const showPlanningOverlays = planningOverlaysVisible && !overlaysHidden;
   const parkGroundOwners = useParkAssemblyGroundOwners(zones);
+  const streetPreviewCutout = useStreetPreviewGround();
   const preparedRoadOpenings = useMemo(() => preparedPublicRoadMasks(zones).map(zone => zone.coordinates), [zones]);
-  const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...parkGroundOwners.map(zone => zone.coordinates),
+  const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...(streetPreviewCutout ? [streetPreviewCutout] : []), ...parkGroundOwners.map(zone => zone.coordinates),
     ...zones.filter(zone=>zone.zone_type==='road' && zone.properties?.road_selected_variant_id==='amsterdam_gracht_v1'
-      && !zone.properties?.validation_fixed_fixture).map(zone=>zone.coordinates)], [preparedGroundCutouts, parkGroundOwners,zones]);
+      && !zone.properties?.validation_fixed_fixture).map(zone=>zone.coordinates)], [preparedGroundCutouts, parkGroundOwners,zones,streetPreviewCutout]);
   const sectionGroundIds = useMemo(() => new Set(selectDetailedStreetZones(zones.filter(zone =>
     resolveCommunity3DKind(zone) === 'street' && zone.coordinates.length >= 4 && shouldRenderCommunityGround(zone)))
     .filter(streetSectionOwnsGround)
