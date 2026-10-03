@@ -2,8 +2,12 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "entry": [
     "public/sw.js",
+    "src/dev/NativeParkReview.tsx",
     "src/dev/NeighborhoodParkPilotReview.tsx",
     "src/dev/ParkTrioReview.tsx",
+    "src/review/nativeStreetMixedJunctionReview.tsx",
+    "src/review/nativeStreetPilotReview.tsx",
+    "test-fixtures/road-recovery/main.tsx",
     "e2e/**/*.ts"
   ]
 }
