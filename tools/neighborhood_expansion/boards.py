@@ -22,7 +22,7 @@ renders=[(n,root/'renders'/(n+'.png')) for n in spec['mandatory_review_views']]
 assert all(p.is_file() for _,p in renders),'Required render missing'
 board('source-board.png',sources,(1440,1800),1)
 front=next(s for s in spec['source_contract']['sources'] if s.get('role')=='front')
-interior=next(n for n in ('classroom_left','left_living_0','program_interior') if (root/'renders'/(n+'.png')).is_file())
+interior=next(n for n in ('classroom_left','left_living_0','reading_hall','program_interior') if (root/'renders'/(n+'.png')).is_file())
 board('phone-comparison.png',[
     ('Original generated design',root/front['path']),
     ('Exact exported GLB',root/'renders/front.png'),

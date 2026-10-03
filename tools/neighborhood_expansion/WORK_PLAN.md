@@ -199,11 +199,38 @@ For sinks, cut the supporting cabinet as well as the worktop and bowl. A real
 bowl can otherwise be filled by solid timber even when the countertop hole looks
 correct from a distance. Require a close kitchen view before accepting it.
 
-The following library has source attempts saved under
-`source-attempts/library_neighborhood_pavilion/`, with separate `library-*.json`
-generation records. Proposed sources are widened `front-002.png`, corrected
-`oblique-002.png` and `top-001.png`. The original oblique has a rejected rear roof
-notch. Reconcile the front's distant rear roof against the corrected oblique,
-then finish the independent compatibility check, material tile and detailed
-prework before geometry. The overhead study governs topology only. The library
-is unbuilt and not counted as complete.
+## Reading pavilion tooling
+
+`build_library_pavilion.py` builds the distinct vaulted reading pavilion.
+`library-prework.json` locks its harmonized front, corrected oblique and overhead
+roof study. Earlier narrow/notched attempts remain in
+`source-attempts/library_neighborhood_pavilion/`; full built-in generation
+records are collected in `library-locked-generation.json`. The overhead study
+governs topology only. Independent source review is in
+`prework/library-source-review.json` outside the repository.
+
+The single asymmetric roof has a real opening beneath its long clerestory.
+The initial proposed cap would have sloped backward. Its resolved cap rises
+from 6.61 m at y=-3 to 6.8205 m at y=2.8 and meets the main plane with flashing.
+Sources, roof planes, dormer cheeks, lining and support rods must agree on that
+opening. Do not terminate pendant rods against the main roof that was removed.
+Brick gables stop at the roof-lining underside with 5 mm overlap; coplanar gable
+tops previously broke through the zinc. Service partitions, refrigerator and
+display sit between the five side windows.
+
+The first three library versions remain preserved as failed review attempts.
+V003 also replaces the raised apron edge with a real sloped connection from
+site ground at z=0.04 to the floor at z=0.14 over 1.5 m. Navigation matches that surface and starts
+on public ground, so the route covers the transition. This is local programme
+proof, not accessibility certification. V004 uses a solid ramp prism embedded
+in the ground and trims the adjacent lawn clear of its edge. V004 is the last
+repair in this pass. Consult live progress for final gates.
+All 27 final cameras include a dedicated approach view and an interior view from
+behind the clerestory glazing. The boards helper now accepts `reading_hall`.
+
+The next prairie hall has one front attempt in
+`source-attempts/hall_prairie_community_league/front-001.png`, with prompt and
+review notes in `hall-reference-generation.json`. Compatible front and oblique attempts show a nearly flush lower hip-roof
+wing, which fits the user brief. The top attempt changes its relative width and
+depth; reconcile that and its roof junction before source lock. Earlier prompt
+shed-roof/setback details were design assumptions. No hall geometry is built.

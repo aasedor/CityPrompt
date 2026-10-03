@@ -1,0 +1,68 @@
+{
+  "variant_id": "library_neighborhood_pavilion",
+  "archetype_id": "neighborhood_branch_library",
+  "method": "RLASM v6.1 prototype",
+  "state": "source_locked",
+  "keeper_approved": false,
+  "generation_provenance": "library-locked-generation.json",
+  "sources": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-library\\variant_0.png",
+      "role": "front",
+      "bytes": 3046203,
+      "sha256": "d18257af0ca4c08208c1ea27341116bfcb2b8c75fed290f7a3ba88f04e186ad5"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-library\\variant_0_oblique.png",
+      "role": "oblique",
+      "bytes": 3093698,
+      "sha256": "d87c2aa1163cb6bede3fd317e2376a3270a480112604d785347e19ef4023efc6"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-library\\variant_0_roof-study.png",
+      "role": "topology",
+      "bytes": 2533597,
+      "sha256": "3ea1d4d4f8ac5c2e8caa4a36cdc12e9b4dbea92a04c6f74d560671f85c253edb"
+    }
+  ],
+  "measurement_contract": {
+    "units": "Inferred metres,not surveyed",
+    "width": 32,
+    "depth": 24,
+    "floor": 0.14,
+    "eave": 4.34,
+    "ridge": 7,
+    "ridge_y": 4,
+    "roof_graph": "One asymmetric gable,ridge parallel front. Fronty-12,rear12. Dormerx[-11.8,9.2],y[-3,2.8]. Main roof opening across entire dormer footprint. Front mainz5.83625,capfront6.61,rear main6.8005,caprear6.8205. Glazingz5.93..6.53. Positive cap rise0.2105 over5.8m; flashed rear joint. Top reference is topology only due perspective residuals.",
+    "gable_contact": "Brick gable crest follows roofz-.17m,overlapping timberliningbottomroofz-.175 by5mm."
+  },
+  "program_contract": {
+    "main": "Open vaulted reading hall with glulam rafters; adult reading tables,low children books/cushions and central double-sided stacks; rear quiet desks",
+    "entry": "Inset right front entryy-10.5,x12.4. Reading front glazingx[-15.1,8.8] atfronty-12",
+    "services": "Right side stripx8.6..15.7,WCy-5.5..1.7,staffy1.7..6.5,meetingy6.5..11.7. Independent west doors at y-2.8,3,8.4. Dividers sit between exterior windows, not across them.",
+    "site": "Forecourtbench,bicyclehoops,planting and clear stepfree path; no stairs"
+  },
+  "opening_schedule": {
+    "front": "One long14-bay reading window,entry sidelights/transom and open glazed entrance",
+    "right": "Five narrow tall windowsy[-7.5,-3.5,.5,4.5,8.5]; service partitions must not block them",
+    "left": "Four readingwindows",
+    "rear": "Three reading windows and one meeting window",
+    "clerestory": "Fourteen panes in one open dormer carrier"
+  },
+  "circulation_contract": {
+    "routes": "Entry,reception,children,adulttables,centralstackaisles,rearquietdesks,WC,staff,meeting and forecourt bench/bicycles",
+    "obstacles": "Actual wall intervals,open leaves,furniture and sitehardware",
+    "evidence": "Native app solver,exactGLB floor/headroom samples and browser",
+    "public_approach": "Siteground z.04 at y-18.8,slopedsegment y-18.5..-17 rises0.10m tofloorz.14;geometryandnavtrianglesmatch. No accessibility certification."
+  },
+  "material_contract": {
+    "brick": "Source-conditioned albedo observed8.2brick widths and25courses,map1.968x2m",
+    "other": "Declared source palette;timber rafters,seamedroof,dormerflashing and furniture are realgeometry; finish not fullkeeper"
+  },
+  "camera_contract": "27 cameras frozen beforev003:26original views with corrected clerestory-interior viewpoint,plus groundlevel public approach proof.",
+  "assumptions": [
+    "Rear,room layout and dimensions inferred from programme.",
+    "No accessibility,building-code or fullkeeper certification.",
+    "Front harmonized from corrected oblique; rejected roofnotch preserved in attempts."
+  ]
+}
