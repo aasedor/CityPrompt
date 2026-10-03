@@ -1,0 +1,108 @@
+{
+  "variant_id": "childcare_garden_pavilion",
+  "archetype_id": "neighborhood_childcare_centre",
+  "method": "RLASM v6.1",
+  "state": "prework",
+  "keeper_approved": false,
+  "sources": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-childcare-centre\\variant_0.png",
+      "role": "front",
+      "authority": "original generated front design; primary identity authority",
+      "bytes": 2591875,
+      "sha256": "d506578f99e9eb53551e6a24c28dfb6b76ca7ab5f66df9d7b6c02855ae383d1e"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-childcare-centre\\variant_0_oblique.png",
+      "role": "oblique",
+      "authority": "generated continuation; sides/rear inferred",
+      "bytes": 3272099,
+      "sha256": "2988e36bb1190e41e1e32a5efe7e2110ddf06aeef7d8fcfcfa5d792107295cf2"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-childcare-centre\\variant_0_roof-study.png",
+      "role": "topology",
+      "authority": "high roof study, not true nadir; topology only",
+      "bytes": 3141777,
+      "sha256": "7b94de4aab824d174e487b305967dfaa45f1a942e900cee9ce3278802ecce33c"
+    }
+  ],
+  "source_review": "Builder inspected all3 images. Front identity and twin gables retained. Oblique/top infer an open rear garden between long wings; preserve that void. Independent review pending after build.",
+  "design_assumptions": {
+    "units": "metres, inferred",
+    "width": 26,
+    "depth": 20,
+    "storeys": 1,
+    "tentative_eave_height": 4.5,
+    "tentative_ridge_height": 7.2,
+    "plan": "Two longitudinal gabled classroom wings connected by short recessed front lobby, open rear garden gap and separate secure side play garden. Calibrate wing/connector widths to front pixels before construction.",
+    "roof": "Two parallel front-to-rear ridges; lower front connector with supported porch. Derive and close connector/gable junctions instead of overlapping roof boxes.",
+    "program": [
+      "supervised lobby and reception",
+      "two distinct furnished early-learning rooms",
+      "reading/cubby areas",
+      "nap room",
+      "child-scale washroom",
+      "staff/kitchenette/storage rooms",
+      "stroller bay",
+      "controlled side play garden and rear learning garden"
+    ],
+    "circulation": [
+      "public approach to entrance",
+      "lobby to both wings",
+      "childroom to washroom",
+      "lobby to rear garden",
+      "right classroom to fenced play area"
+    ],
+    "landscape": [
+      "low mixed shrubs and grasses at frontage",
+      "supported shade/play equipment",
+      "fenced side garden with real gate gap",
+      "sand area",
+      "one or two shade trees outside facade sightlines"
+    ],
+    "materials": "Lock source-specific pale buff brick and cedar; use the same authority on openings and gable returns. Sage frames, standing seam roof, physical clear glass and occupied interiors.",
+    "front_pixel_calibration": {
+      "source_image_size": [
+        1448,
+        1086
+      ],
+      "facade_x_px": [
+        83,
+        1170
+      ],
+      "grade_y_px": 650,
+      "eave_y_px": 461,
+      "ridge_y_px": 351,
+      "width_m": 26,
+      "derived_eave_m": 4.52,
+      "derived_ridge_m": 7.15,
+      "note": "Approximate primary-front pixel landmarks; use4.5m eave/7.2m ridge. Supersedes uncalibrated3.6/5.2m v001."
+    }
+  },
+  "required_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "lobby",
+    "classroom_left",
+    "classroom_right",
+    "washroom",
+    "washroom_toilets",
+    "washroom_sinks",
+    "nap_room",
+    "garden_connection",
+    "play_garden",
+    "staff_room",
+    "stroller_bay"
+  ],
+  "next_action": "Implement dedicated pilot constructor and native walking network using prior low-level utilities, with geometry-first source calibration. Do not start the remaining19 before independent pilot local architecture/walking review."
+}

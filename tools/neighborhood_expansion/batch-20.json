@@ -1,0 +1,609 @@
+{
+  "schema": "cityprompt.neighborhood-expansion-20@1",
+  "requested_on": "2026-10-03",
+  "user_request": "Build 20 more normal buildings while I am away.",
+  "method": "RLASM v6.1",
+  "scope": "Exactly20 additional distinct original everyday-building variants at the prior local textured prototype standard, with furnished program, traversable circulation, landscaping and independent architecture/walking review. Full keeper approval is separately assessed.",
+  "worktree": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt",
+  "branch": "codex/neighborhood-refinement",
+  "artifact_root": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03",
+  "reference_root": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings",
+  "source_brief": {
+    "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-essentials\\CityPrompt\\tools\\catalogue\\neighborhood_essentials.json",
+    "sha256": "34ea11c195d30ca6a760f3c4f464d7bbecf136b287bfdaf4785a1c8d54669f39"
+  },
+  "prior_prototypes": [
+    "school-v006",
+    "fourplex-v005"
+  ],
+  "excluded_from_this_batch": [
+    "childcare_housing_integrated",
+    "library_housing_integrated"
+  ],
+  "pilot": "childcare_garden_pavilion",
+  "batch_size_after_pilot": 4,
+  "checkpoint_after_each_candidate": true,
+  "max_repair_versions_per_candidate_per_pass": 3,
+  "publication_authorized": false,
+  "external_paid_image_apis_authorized": false,
+  "items": [
+    {
+      "archetype_id": "neighborhood_childcare_centre",
+      "family": "Childcare / Early-Learning Centre",
+      "variant_id": "childcare_garden_pavilion",
+      "variant_index": 0,
+      "brief": {
+        "id": "childcare_garden_pavilion",
+        "label": "Garden Pavilion",
+        "width": 26,
+        "depth": 20,
+        "floors": 1,
+        "floorHeight": 3.6,
+        "primary": "warm pale brick",
+        "secondary": "cedar screens and muted sage-green door frames",
+        "roof": "two shallow gabled roofs with deep protective eaves",
+        "roofMaterial": "grey standing-seam metal",
+        "description": "A single-storey early-learning centre composed of two modest gabled classroom volumes joined by a recessed glazed entrance. Low windows overlook a secure side garden with timber play equipment, a sand area and a shade tree. A planted low fence and controlled gate separate the garden from the public sidewalk. Covered stroller parking sits beside the supervised entrance.",
+        "siteNote": "Reserve a secure contiguous outdoor play yard with clear staff sightlines; do not substitute an exposed public plaza."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "childcare-garden-v001",
+          "state": "visual_rework_required",
+          "walking_routes_passed": 8,
+          "physical_samples_passed": 515,
+          "blockers": [
+            "Primary front calibration: eave/ridge height too low. Corrected source constructor for v002; preserve v001."
+          ],
+          "renders_expected": 20
+        },
+        {
+          "candidate": "childcare-garden-v002",
+          "state": "visual_rework_required",
+          "walking_routes_passed": 8,
+          "physical_samples_passed": 515,
+          "browser_checks": "8 routes, entrance step, model switching, toggle, interior and reload passed",
+          "blockers": [
+            "Connector roof topology",
+            "Cedar stroller shelter and glazed entrance leaves",
+            "Washroom proof camera",
+            "Low climbing/slide equipment"
+          ],
+          "keeper_approved": false
+        },
+        {
+          "candidate": "childcare-garden-v003",
+          "state": "visual_rework_required",
+          "mandatory_views": 22,
+          "keeper_approved": false,
+          "blockers": [
+            "Garden props missing native navigation obstacles",
+            "Play steps stop85mm before platform"
+          ],
+          "walking_routes_passed": 8,
+          "physical_samples_passed": 515
+        },
+        {
+          "candidate": "childcare-garden-v004",
+          "state": "local_prototype_pass",
+          "mandatory_views": 22,
+          "keeper_approved": false,
+          "review": "childcare-garden-v004/review/independent-visual-review.json"
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_manifest": "prework/childcare_garden_pavilion.json",
+      "current_candidate": "childcare-garden-v004",
+      "local_review": {
+        "candidate": "childcare-garden-v004",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "childcare-garden-v004/review/independent-visual-review.json",
+        "glb_sha256": "f509d4a1c235cb3ea12d2ec7d4d72e0d32f567dbcba4a75fb7c116ef981174ca",
+        "routes": 8,
+        "physical_samples": 515,
+        "garden_probes": 4,
+        "mandatory_views": 22,
+        "browser_verified": true
+      }
+    },
+    {
+      "archetype_id": "neighborhood_fourplex",
+      "family": "Neighborhood Fourplex",
+      "variant_id": "fourplex_corner_entries",
+      "variant_index": 1,
+      "brief": {
+        "id": "fourplex_corner_entries",
+        "label": "Corner-Lot Fourplex",
+        "width": 17,
+        "depth": 15,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "warm grey brick",
+        "secondary": "cedar entrance recesses and dark metal window frames",
+        "roof": "two shallow pitched roof volumes meeting at a simple valley",
+        "roofMaterial": "charcoal standing seam",
+        "description": "A two-storey fourplex on a neighborhood corner, containing two flats per floor. Two sheltered shared entrances each serve one lower and one upper apartment, with one entrance facing each street. The building turns the corner with living-room glazing and a low planted setback. Keep the four-home scale legible; no retail unit or extra attic storey.",
+        "siteNote": "Two street frontages allow distributed access while the building still contains exactly four homes."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_sixplex",
+      "family": "Neighborhood Sixplex",
+      "variant_id": "sixplex_brick_walk_up",
+      "variant_index": 0,
+      "brief": {
+        "id": "sixplex_brick_walk_up",
+        "label": "Three-Storey Brick Walk-Up",
+        "width": 17,
+        "depth": 15,
+        "floors": 3,
+        "floorHeight": 3.1,
+        "primary": "warm red-brown brick",
+        "secondary": "pale stone sills and bronze metal window frames",
+        "roof": "flat parapet roof with a simple capped cornice",
+        "roofMaterial": "membrane",
+        "description": "A modest three-storey sixplex with exactly two apartments per floor. Two generous window bays flank a recessed central entrance and vertically stacked stair windows. The ground floor meets a landscaped front walk with a low entrance canopy; a side path reaches bicycle storage and a shared rear garden. No commercial base, tower massing or fourth floor.",
+        "siteNote": "Exactly six flats, two per floor; evaluate upper-floor accessibility separately from the exterior reference."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_branch_library",
+      "family": "Neighborhood Branch Library",
+      "variant_id": "library_neighborhood_pavilion",
+      "variant_index": 0,
+      "brief": {
+        "id": "library_neighborhood_pavilion",
+        "label": "Neighborhood Reading Pavilion",
+        "width": 32,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 4.2,
+        "primary": "warm brick",
+        "secondary": "glulam roof beams, timber soffit and clear glazing",
+        "roof": "one shallow asymmetrical pitched roof with a clerestory",
+        "roofMaterial": "standing-seam zinc",
+        "description": "A single-storey neighborhood branch library with a welcoming glazed reading room beneath one shallow pitched roof. Warm brick encloses the quieter book stacks and service rooms; timber beams and a narrow clerestory light the main hall. The entrance faces a small planted forecourt with benches and bicycle parking. Bookshelves and reading tables are visible through clear glass.",
+        "siteNote": "Pair with a walking route and a small public forecourt; keep the branch modest rather than a central-library landmark."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "community_association_hall",
+      "family": "Community Association Hall",
+      "variant_id": "hall_prairie_community_league",
+      "variant_index": 0,
+      "brief": {
+        "id": "hall_prairie_community_league",
+        "label": "Prairie Community Hall",
+        "width": 30,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 4.5,
+        "primary": "buff brick on a durable concrete base",
+        "secondary": "cedar entry canopy and dark metal windows",
+        "roof": "one broad low gable over the hall and a lower side service wing",
+        "roofMaterial": "grey standing-seam metal",
+        "description": "A practical single-storey Canadian community association hall with a broad gabled multipurpose room and a lower kitchen-and-meeting-room wing. A sheltered entrance faces a modest planted forecourt with benches and bicycles. Large hall windows open toward a side lawn suitable for neighborhood gatherings. The building is welcoming, inexpensive-looking and well maintained.",
+        "siteNote": "Reserve space for outdoor gatherings and a separate service door to the kitchen; parking can be shared with nearby uses."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_elementary_school",
+      "family": "Neighborhood Elementary School",
+      "variant_id": "school_shared_community_campus",
+      "variant_index": 1,
+      "brief": {
+        "id": "school_shared_community_campus",
+        "label": "Shared Community Campus",
+        "width": 64,
+        "depth": 42,
+        "floors": 2,
+        "floorHeight": 3.8,
+        "primary": "buff brick",
+        "secondary": "blue-grey fibre cement and exposed timber canopy",
+        "roof": "flat roofs over classroom bars and a slightly taller gym volume",
+        "roofMaterial": "membrane with a bounded solar panel array",
+        "description": "A two-storey Canadian suburban elementary school with two classroom wings and a central entrance commons. A gym wing has its own visible after-hours door for community use. Covered bicycle parking and a broad walking path lead to the entrance; grass playing fields extend behind the school. Vehicle access stays at the side, separated from the pedestrian forecourt.",
+        "siteNote": "Reserve shared playing fields outside the building polygon; model drop-off and service access separately."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_childcare_centre",
+      "family": "Childcare / Early-Learning Centre",
+      "variant_id": "childcare_sheltered_courtyard",
+      "variant_index": 1,
+      "brief": {
+        "id": "childcare_sheltered_courtyard",
+        "label": "Sheltered Play Courtyard",
+        "width": 30,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 3.6,
+        "primary": "terracotta brick",
+        "secondary": "warm timber porch structure and cream window reveals",
+        "roof": "low mono-pitch roofs enclosing three sides of a play court",
+        "roofMaterial": "dark grey standing seam",
+        "description": "A single-storey U-shaped childcare centre with three classroom wings around a secure garden courtyard. A low front gate and sheltered entrance reveal the courtyard without exposing it directly to traffic. Deep timber verandas provide shade and rain shelter; classroom doors open directly to the enclosed play area. Keep the scale domestic and the landscape low enough for supervision.",
+        "siteNote": "Outer dimensions include the courtyard envelope; the courtyard itself must remain open."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_sixplex",
+      "family": "Neighborhood Sixplex",
+      "variant_id": "sixplex_two_storey_garden",
+      "variant_index": 1,
+      "brief": {
+        "id": "sixplex_two_storey_garden",
+        "label": "Two-Storey Garden Sixplex",
+        "width": 25,
+        "depth": 15,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "buff brick",
+        "secondary": "cedar screens and cream balcony soffits",
+        "roof": "three linked shallow gable roofs",
+        "roofMaterial": "muted grey standing seam",
+        "description": "A wider two-storey sixplex with exactly three flats per floor. Three paired entrance bays each serve a lower and upper apartment. Upper-floor recessed balconies overlook a small shared front garden, with more generous common landscape behind. The three gables and three repeated apartment bays explain the wider footprint while keeping a quiet residential street edge.",
+        "siteNote": "Compare its larger footprint with the three-storey sixplex while holding the total at six homes."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "community_association_hall",
+      "family": "Community Association Hall",
+      "variant_id": "hall_timber_park_edge",
+      "variant_index": 1,
+      "brief": {
+        "id": "hall_timber_park_edge",
+        "label": "Timber Hall at the Park",
+        "width": 32,
+        "depth": 22,
+        "floors": 1,
+        "floorHeight": 4.8,
+        "primary": "natural timber cladding with a brick plinth",
+        "secondary": "exposed glulam portal frames and clear glazing",
+        "roof": "one simple pitched roof with a deep park-facing veranda",
+        "roofMaterial": "dark grey standing seam",
+        "description": "A single-storey timber community hall beside a neighborhood park. Repeated glulam frames support a simple pitched roof and a deep veranda facing the grass. A glazed multipurpose room shares a sheltered entry with smaller meeting rooms and a community kitchen. Movable tables are visible inside; low native planting and bicycle parking connect to the public path.",
+        "siteNote": "Keep the park a separate open-space use; the veranda provides a clear threshold between indoor activities and outdoor gathering."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_elementary_school",
+      "family": "Neighborhood Elementary School",
+      "variant_id": "school_timber_learning_courtyard",
+      "variant_index": 2,
+      "brief": {
+        "id": "school_timber_learning_courtyard",
+        "label": "Timber Learning Courtyard",
+        "width": 52,
+        "depth": 40,
+        "floors": 2,
+        "floorHeight": 3.8,
+        "primary": "vertical cedar cladding on a durable brick base",
+        "secondary": "exposed glulam porch posts and deep window shades",
+        "roof": "three shallow standing-seam gables around an open rear learning court",
+        "roofMaterial": "muted zinc standing seam",
+        "description": "A two-storey U-shaped elementary school framing a sheltered rear outdoor classroom. Modest timber classroom wings have generous windows, projecting sunshades and covered ground-floor walks. The street elevation has a clear central entrance, low planting and a roofed bike shelter. The architecture feels durable, warm and attainable rather than monumental.",
+        "siteNote": "Keep the learning courtyard unbuilt and connect it to a larger play area; footprint dimensions describe the outer envelope."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_fourplex",
+      "family": "Neighborhood Fourplex",
+      "variant_id": "fourplex_compact_maisonettes",
+      "variant_index": 2,
+      "brief": {
+        "id": "fourplex_compact_maisonettes",
+        "label": "Four Compact Maisonettes",
+        "width": 20,
+        "depth": 11,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "warm red brick with pale mortar",
+        "secondary": "natural timber doors and slender dark steel porch canopies",
+        "roof": "four modest aligned gables, one above each home",
+        "roofMaterial": "dark grey standing seam",
+        "description": "One compact row of exactly four two-storey maisonettes. Four equal-width bays each have a private front door, a sheltered threshold and upstairs windows. Four modest gables articulate the homes without making separate detached houses. Small planted front gardens and one shared rear garden replace a vehicle-dominated frontage. No basement flats or extra units.",
+        "siteNote": "Exactly four maisonettes; this variant compares private front doors with the shared entrances of stacked flats."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_branch_library",
+      "family": "Neighborhood Branch Library",
+      "variant_id": "library_main_street_branch",
+      "variant_index": 1,
+      "brief": {
+        "id": "library_main_street_branch",
+        "label": "Main Street Branch",
+        "width": 18,
+        "depth": 28,
+        "floors": 2,
+        "floorHeight": 3.8,
+        "primary": "red-brown brick",
+        "secondary": "bronze-framed shopfront glazing and pale stone lintels",
+        "roof": "flat parapet roof behind a restrained cornice",
+        "roofMaterial": "membrane",
+        "description": "A compact two-storey public branch library filling a main-street infill lot. A generous ground-floor shopfront reveals bookshelves, a children's reading alcove and the reception desk; upstairs meeting and quiet study rooms have tall regular windows. One prominent step-free entrance sits beneath a simple canopy. Adjoining low-rise shops establish the streetwall scale.",
+        "siteNote": "Use the existing main-street sidewalk; loading and staff access belong at the rear or side."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "community_association_hall",
+      "family": "Community Association Hall",
+      "variant_id": "hall_main_street_youth_hub",
+      "variant_index": 2,
+      "brief": {
+        "id": "hall_main_street_youth_hub",
+        "label": "Main Street Youth & Community Hub",
+        "width": 18,
+        "depth": 24,
+        "floors": 2,
+        "floorHeight": 3.6,
+        "primary": "warm red brick",
+        "secondary": "muted blue-green metal panels and timber shopfront frames",
+        "roof": "flat parapet roof",
+        "roofMaterial": "membrane",
+        "description": "A two-storey neighborhood community hub in a main-street infill building. A transparent ground floor contains a flexible youth activity room, shared kitchen and reception; quieter meeting rooms occupy the upper floor. One sheltered entrance opens directly to the sidewalk, with a bench and bicycle hoops beside it. The architecture is civic and approachable without looking like a shopping mall or school.",
+        "siteNote": "Plan active ground-floor use and quiet upstairs rooms; provide a separate rear servicing route."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_elementary_school",
+      "family": "Neighborhood Elementary School",
+      "variant_id": "school_adaptive_reuse",
+      "variant_index": 3,
+      "brief": {
+        "id": "school_adaptive_reuse",
+        "label": "Adapted Neighborhood School",
+        "width": 44,
+        "depth": 30,
+        "floors": 2,
+        "floorHeight": 3.8,
+        "primary": "retained red-brown brick",
+        "secondary": "pale timber-clad entrance addition and dark metal frames",
+        "roof": "existing low hip roof with a flat-roof entrance extension",
+        "roofMaterial": "dark standing-seam metal and membrane",
+        "description": "A modest two-storey mid-century brick civic building adapted into an elementary school. Retained regularly spaced classroom windows and a low hipped roof contrast with one contemporary timber entrance porch. A new step-free route reaches the main door and a planted fence defines a side learning garden. The reused building remains the dominant volume.",
+        "siteNote": "Test reuse of an existing neighborhood site; retain a separate outdoor play area and clear emergency access."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_childcare_centre",
+      "family": "Childcare / Early-Learning Centre",
+      "variant_id": "childcare_main_street_conversion",
+      "variant_index": 2,
+      "brief": {
+        "id": "childcare_main_street_conversion",
+        "label": "Main Street Conversion",
+        "width": 20,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 3.8,
+        "primary": "existing red brick shopfront surround",
+        "secondary": "natural timber storefront frames and a muted yellow entry recess",
+        "roof": "existing flat parapet roof",
+        "roofMaterial": "membrane",
+        "description": "A one-storey former neighborhood shop converted into a small early-learning centre. Deep display windows become child-height reading alcoves behind partial privacy screens. One controlled entrance has a stroller bay and sheltered threshold; a passage along the side reaches a secure rear play yard. Modest adjoining shops provide context but are visually subordinate.",
+        "siteNote": "The rear outdoor play yard and secure route to it are essential; avoid placing play equipment in the public sidewalk."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_sixplex",
+      "family": "Neighborhood Sixplex",
+      "variant_id": "sixplex_corner_infill",
+      "variant_index": 2,
+      "brief": {
+        "id": "sixplex_corner_infill",
+        "label": "Corner Infill Sixplex",
+        "width": 18,
+        "depth": 16,
+        "floors": 3,
+        "floorHeight": 3.1,
+        "primary": "dark textured brick",
+        "secondary": "warm timber entrance lining and pale concrete balcony edges",
+        "roof": "flat parapet roof with a recessed corner terrace within the third floor",
+        "roofMaterial": "membrane",
+        "description": "A compact three-storey sixplex occupying a neighborhood corner, with exactly two apartments per floor. A chamfered ground-floor corner marks the shared residential entrance; living-room windows turn onto both streets. Small recessed balconies and a modest third-floor corner terrace relieve the mass. There is no retail shop or additional penthouse.",
+        "siteNote": "Six homes total; corner glazing and entrance placement respond to two public frontages."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "community_association_hall",
+      "family": "Community Association Hall",
+      "variant_id": "hall_reused_local_workshop",
+      "variant_index": 3,
+      "brief": {
+        "id": "hall_reused_local_workshop",
+        "label": "Reused Local Workshop",
+        "width": 34,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 4.8,
+        "primary": "retained red-brown workshop brick",
+        "secondary": "dark steel industrial windows and a new pale timber vestibule",
+        "roof": "retained low sawtooth roof with north-facing clerestories",
+        "roofMaterial": "dark corrugated metal and clerestory glass",
+        "description": "A small former neighborhood workshop converted into a community hall with a shared kitchen, repair room and flexible gathering space. The retained sawtooth roof and industrial windows light occupied rooms with tables and chairs. One old loading opening becomes a glazed public entrance beneath a modest canopy; a side gate leads to a community garden. Keep the scale local and the conversion visibly legible.",
+        "siteNote": "Explore reuse and local repair activities; service and delivery space remains separate from the public entrance."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_fourplex",
+      "family": "Neighborhood Fourplex",
+      "variant_id": "fourplex_timber_garden",
+      "variant_index": 3,
+      "brief": {
+        "id": "fourplex_timber_garden",
+        "label": "Timber Garden Fourplex",
+        "width": 16,
+        "depth": 16,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "natural cedar cladding over a dark brick base",
+        "secondary": "deep pale window reveals and timber balcony screens",
+        "roof": "one broad shallow gable with sheltered eaves",
+        "roofMaterial": "grey standing seam",
+        "description": "A two-storey garden fourplex containing exactly two flats per floor. A central shared entrance is flanked by two ground-floor living-room bays; two shallow recessed balconies serve the upper flats. Timber screens give privacy without enclosing the balconies. A shared side path leads to a communal rear garden and secure bike store. Simple repeated structure and modest details keep the form attainable.",
+        "siteNote": "Maintain four homes and shared outdoor space; the material choice does not imply a certified construction system."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_sixplex",
+      "family": "Neighborhood Sixplex",
+      "variant_id": "sixplex_shared_garden",
+      "variant_index": 3,
+      "brief": {
+        "id": "sixplex_shared_garden",
+        "label": "Six Homes Around a Garden",
+        "width": 28,
+        "depth": 20,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "warm pale stucco on a brick base",
+        "secondary": "timber galleries and dark bronze railings",
+        "roof": "two shallow gabled residential wings linked by a low entrance canopy",
+        "roofMaterial": "grey standing seam",
+        "description": "A small two-storey U-shaped sixplex arranged around an open planted entrance garden. Exactly three flats occupy each floor across the linked wings. A sheltered shared stair and short upper gallery face the garden; bedrooms face the quieter outer edges. The front remains open through one low gate and bicycle parking sits by the entrance. No additional cottages or rear houses.",
+        "siteNote": "The 28 by 20 metre envelope includes the unbuilt garden; exactly six homes are distributed across the linked wings."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_branch_library",
+      "family": "Neighborhood Branch Library",
+      "variant_id": "library_reused_neighborhood_hall",
+      "variant_index": 2,
+      "brief": {
+        "id": "library_reused_neighborhood_hall",
+        "label": "Reused Neighborhood Hall",
+        "width": 28,
+        "depth": 22,
+        "floors": 1,
+        "floorHeight": 4.5,
+        "primary": "retained weathered red brick",
+        "secondary": "new timber entry porch and dark steel arched windows",
+        "roof": "retained broad pitched hall roof",
+        "roofMaterial": "dark slate-like standing seam",
+        "description": "A modest single-storey former civic hall converted into a local library. Tall retained arched windows reveal shelving and reading tables beneath exposed timber roof trusses. A small contemporary timber vestibule gives the old building an accessible public entrance without overwhelming the original brick hall. Low planting and benches create a neighborhood meeting edge.",
+        "siteNote": "Explore adaptive reuse while retaining the existing hall volume and a clear public entrance."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    }
+  ],
+  "state": "pilot_complete_next_wave_ready",
+  "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
+  "automation_id": "build-20-neighbourhood-buildings",
+  "completed_models": 1,
+  "next_action": "Start bounded wave1: fourplex_corner_entries, sixplex_brick_walk_up, library_neighborhood_pavilion, hall_prairie_community_league. Generate and lock each exact variant's3views; author dedicated composition and complete cameras, then build/check/independently review one at a time. Childcare pilot is locally complete; do not rebuild it for keeper finishes during this expansion. Other19 are unbuilt. Preserve existing5201/5202 apps; expansion inspector5203 session25332, refresh model list with preview.mjs --refresh. No active render jobs remain.",
+  "updated_utc": "2026-10-03 15:58:17 UTC",
+  "inspector_url": "http://127.0.0.1:5203/",
+  "bounded_waves": [
+    [
+      "fourplex_corner_entries",
+      "sixplex_brick_walk_up",
+      "library_neighborhood_pavilion",
+      "hall_prairie_community_league"
+    ],
+    [
+      "school_shared_community_campus",
+      "childcare_sheltered_courtyard",
+      "sixplex_two_storey_garden",
+      "hall_timber_park_edge"
+    ],
+    [
+      "school_timber_learning_courtyard",
+      "fourplex_compact_maisonettes",
+      "library_main_street_branch",
+      "hall_main_street_youth_hub"
+    ],
+    [
+      "school_adaptive_reuse",
+      "childcare_main_street_conversion",
+      "sixplex_corner_infill",
+      "hall_reused_local_workshop"
+    ],
+    [
+      "fourplex_timber_garden",
+      "sixplex_shared_garden",
+      "library_reused_neighborhood_hall"
+    ]
+  ]
+}
