@@ -4,17 +4,21 @@ import { CATALOGUE_ASSETS, validateRegistry } from './assetRegistry';
 import { placementPlanRequest } from './catalogue';
 
 describe('published building catalogue', () => {
-  it('includes all approved entries in the default catalogue', () => {
+  it('preserves approved entries in the release registry', () => {
     for (const asset of PUBLISHED_BUILDING_ASSETS) {
-      expect(CATALOGUE_ASSETS).toContain(asset);
+      expect(CATALOGUE_BUILDING_ASSETS.find(row => row.id === asset.id)).toMatchObject({ model: asset.model, readiness: 'ready' });
       expect(asset.readiness).toBe('ready');
       expect(asset.label).not.toContain('trial');
     }
   });
   it('keeps unpublished local pilots out of the release catalogue', () => {
-    expect(CATALOGUE_BUILDING_ASSETS.filter(asset => asset.readiness === 'pilot')).toEqual([]);
-    expect(PUBLISHED_BUILDING_ASSETS).toEqual(CATALOGUE_BUILDING_ASSETS);
-    expect(PUBLISHED_BUILDING_ASSETS.every(asset => CATALOGUE_ASSETS.includes(asset))).toBe(true);
+    const pilots = CATALOGUE_BUILDING_ASSETS.filter(asset => asset.readiness === 'pilot');
+    for (const pilot of pilots) expect(PUBLISHED_BUILDING_ASSETS.some(asset => asset.id === pilot.id)).toBe(false);
+    expect(PUBLISHED_BUILDING_ASSETS).toEqual(CATALOGUE_BUILDING_ASSETS.filter(asset => asset.readiness === 'ready'));
+    // Local trial discovery is tested separately from release approval.
+    for (const pilot of pilots.filter(asset => asset.id.startsWith('clay_mass_timber') || asset.id.startsWith('clay_parisian'))) {
+      expect(CATALOGUE_ASSETS.find(row => row.id === pilot.id)).toMatchObject({ model: pilot.model, readiness: 'pilot' });
+    }
   });
   it('uses valid categories, exact variants and plots larger than complete envelopes', () => {
     expect(validateRegistry(PUBLISHED_BUILDING_ASSETS)).toEqual([]);

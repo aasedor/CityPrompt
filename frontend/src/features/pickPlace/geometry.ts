@@ -2,6 +2,8 @@ import { envelopeFits, envelopesOverlap } from '@/components/viewer/globe/neighb
 import type { SiteZone } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { assetForZone, type PlaceAsset } from './catalogue';
+import { buildingPlacementEnvelope } from './buildingPlacementEdges';
+import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
 
 export function rectangleAt(center: number[], width: number, depth: number, degrees = 0): number[][] {
   const yaw = degrees * Math.PI / 180, c = Math.cos(yaw), s = Math.sin(yaw);
@@ -21,30 +23,39 @@ export function rectangleDimensions(coords: number[][]) {
 
 /** Keep the opposite corner fixed, preserve right angles and native-size limits. */
 export function resizeRectangleCorner(coords: number[][], corner: number, pointer: number[], asset: PlaceAsset) {
+  if (asset.properties.validation_fixed_fixture === true) return coords;
   const { degrees } = rectangleDimensions(coords);
   const fixed = coords[(corner+2)%4], yaw = degrees*Math.PI/180, c=Math.cos(yaw), s=Math.sin(yaw);
   const east=(pointer[0]-fixed[0])*metersPerDegLon(fixed[1]), north=(pointer[1]-fixed[1])*METERS_PER_DEG_LAT;
   const sx = corner===0 || corner===3 ? -1 : 1, sy=corner<2 ? -1 : 1;
-  const width=Math.min(asset.maxSize,Math.max(asset.minWidth,sx*(east*c+north*s)));
-  const depth=Math.min(asset.maxSize,Math.max(asset.minDepth,sy*(-east*s+north*c)));
+  const width=Math.min(asset.maxWidth ?? asset.maxSize,Math.max(asset.minWidth,sx*(east*c+north*s)));
+  const depth=Math.min(asset.maxDepth ?? asset.maxSize,Math.max(asset.minDepth,sy*(-east*s+north*c)));
   return rectangleAt([
     fixed[0]+(sx*width*c-sy*depth*s)/2/metersPerDegLon(fixed[1]),
     fixed[1]+(sx*width*s+sy*depth*c)/2/METERS_PER_DEG_LAT,
   ],width,depth,degrees);
 }
-export function placementProblem(coords: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string): string | null {
+export function placementProblem(
+  coords: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string,
+  { allowStreetIntersections = false, properties }: { allowStreetIntersections?: boolean; properties?: SiteZone['properties'] } = {},
+): string | null {
   try {
     if(coords.length<3 || coords.some(p=>!Number.isFinite(p[0]+p[1]))) return 'Choose a valid area.';
     const origin=coords[0];
     const local=(ring:number[][])=>ring.map(p=>({x:(p[0]-origin[0])*metersPerDegLon(origin[1]),y:(p[1]-origin[1])*METERS_PER_DEG_LAT}));
-    const footprint = local(coords);
-    if (boundary && !envelopeFits(footprint,local(boundary.coordinates))) return 'Keep the whole plot inside your site boundary, including the space around the building. Move it inward or resize the plot.';
+    const ownProperties=properties ?? zones.find(z=>z.id===ignoreId)?.properties;
+    const footprint = local(buildingPlacementEnvelope({coordinates:coords,properties:ownProperties}));
+    // Saved plots must remain inside the site, matching the server's contract.
+    if (boundary && !envelopeFits(local(coords),local(boundary.coordinates))) return 'Keep the whole plot and its surrounding space inside your site boundary. Move it inward or resize the plot.';
     for (const zone of zones) {
-      if (zone.id===ignoreId || !['building','residential','green_space','parking'].includes(zone.zone_type)) continue;
-      if (envelopesOverlap(footprint,local(zone.coordinates))) {
+      if (zone.id===ignoreId || !['building','residential','green_space','parking','road'].includes(zone.zone_type)) continue;
+      if (zone.zone_type === 'road' && allowStreetIntersections) continue;
+      const other=zone.zone_type==='road' ? streetSurfaceMaskZone(zone).coordinates : buildingPlacementEnvelope(zone);
+      if (envelopesOverlap(footprint,local(other))) {
         const label = zone.name?.trim() || assetForZone(zone)?.label
-          || (zone.zone_type === 'green_space' ? 'another park' : zone.zone_type === 'parking' ? 'a parking area' : 'another building plot');
-        return `This overlaps ${label}. Plots include the space around buildings. Move it or reduce its size to leave room.`;
+          || (zone.zone_type === 'road' ? 'a street' : zone.zone_type === 'green_space' ? 'another park' : zone.zone_type === 'parking' ? 'a parking area' : 'another building plot');
+        if (zone.zone_type === 'road') return `This overlaps ${label}. Leave the street and sidewalks clear.`;
+        return `This overlaps ${label}. Move it clear of the object and its reserved space.`;
       }
     }
     return null;

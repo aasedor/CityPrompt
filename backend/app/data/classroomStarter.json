@@ -1,0 +1,155 @@
+{
+  "schema": "cityprompt.classroom-starter@1",
+  "entries": [
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "neighborhood_main_street",
+      "variantId": "student_main_street_v1",
+      "revision": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "pedestrian_only_street",
+      "variantId": "student_market_street_v1",
+      "revision": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "student_quiet_residential_street_v1",
+      "variantId": "student_quiet_residential_street_v1",
+      "revision": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "student_planted_shared_lane_v1",
+      "variantId": "student_planted_shared_lane_v1",
+      "revision": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "brt_bus_rapid_transit_corridor",
+      "variantId": "brt_bus_rapid_transit_corridor_v0",
+      "revision": "c18cdf29bc7474a90b1bbbc5531650faefb388e0366f6ce2d1ba98c75bbecb1c",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "amsterdam_gracht",
+      "variantId": "amsterdam_gracht_v1",
+      "revision": "db99c735b29e2d9c9131d89f787fd137fb1f41523cbae55d8a15322e35535ef9",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "landmark_signature_bridge",
+      "variantId": "landmark_signature_bridge_v2",
+      "revision": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "protected_bike_lane_bidirectional",
+      "variantId": "student_cycle_avenue_v1",
+      "revision": "f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "montreal_ruelle_verte",
+      "variantId": "student_green_alley_v1",
+      "revision": "5fa64b56938f1adaaa5088b454d58e736fa23db3930d6f7a47345f95fb746c7b",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "school_street",
+      "variantId": "student_school_street_v1",
+      "revision": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "light_rail_tram_avenue",
+      "variantId": "student_grass_tram_avenue_v1",
+      "revision": "3562b794641d753ee9710233052adfc08931ca5bfc0ccece6c3853ae1a75f9bd",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "riverfront_promenade",
+      "variantId": "student_vine_pergola_promenade_v1",
+      "revision": "428b632b3202f7324cc0bb538bc7fe387c839c6074d5c148fc122574d5d43b46",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "haussmann_boulevard",
+      "variantId": "student_grand_haussmann_boulevard_v1",
+      "revision": "ad63425c5e2c4de12f1d961df5d5f61ff514aad9cae299eaf1e64a71d7f9df3c",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "london_mews_lane",
+      "variantId": "student_london_cobbled_mews_v1",
+      "revision": "143c3856c4008aa41439d50cf59b332178a97b36635f85453b1f1f13a94d1bc8",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "vancouver_cherry_blossom_street",
+      "variantId": "student_cherry_blossom_street_v1",
+      "revision": "f66b0d19aefdcdf9607c68dd73574fd9d7e78896f6aa53dfe17d83ecd5427384",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "barcelona_passeig",
+      "variantId": "student_barcelona_shaded_promenade_v1",
+      "revision": "33a5ba4c660e85527e85d60527088407fab69c67d5b774ce17f8f4d20446f1ec",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "elevated_garden_rail",
+      "variantId": "student_elevated_garden_rail_v1",
+      "revision": "d101b5b4d1871681b5c6f0ce1756c533a41a74425a846993ca1e2946a44bb43c",
+      "status": "local-pilot-runtime-verified"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "skytrain_elevated_corridor",
+      "variantId": "skytrain_elevated_corridor_v0",
+      "revision": "0d49f39625d445fd165cc050f25287fe1f38a4d0d235ac8000b411466a22cd89",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "elevated_rail_transit_corridor",
+      "variantId": "elevated_rail_transit_corridor_v0",
+      "revision": "4192e4b060c89bb0cd5b867321f0061cb4f594c880fc3e25c54d82a5fc3762a7",
+      "status": "local-pilot-runtime-pending"
+    }
+  ]
+}

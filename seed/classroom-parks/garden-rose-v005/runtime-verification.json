@@ -1,0 +1,82 @@
+{
+  "status": "PASS_LOCAL_PREPARED_SITE",
+  "variant": "student_terraced_rose_v1",
+  "model_sha256": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+  "content_revision": "bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83",
+  "project": "http://localhost:5186/projects/719fced3-0ea1-4e7d-8337-dc6a5a31cd65",
+  "browser_walk": {
+    "errors": [],
+    "grounding": [],
+    "walk": {
+      "distance": 0.07540555323234922,
+      "elapsedS": 102.6015,
+      "index": 43,
+      "maxHeight": 1099.522137275978,
+      "minHeight": 1097.1221372759778,
+      "model": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+      "pose": {
+        "groundHeight": 1097.1221372759778,
+        "heading": 179.3604177708787,
+        "lat": 51.0182058539251,
+        "lng": -114.1195794531798
+      },
+      "reason": "route traversed with keyboard input in both directions",
+      "samples": 2565,
+      "status": "PASS",
+      "total": 44,
+      "variant": "student_terraced_rose_v1"
+    }
+  },
+  "plot_m_rotation_deg": [
+    68,
+    80,
+    8
+  ],
+  "edits": "move, Undo, Redo, enlarged parcel rotated 8 degrees, reload; authored assembly retains its orientation and scale",
+  "return_to_entrance": "PASS",
+  "exit_walk": "PASS",
+  "scene": {
+    "errors": [],
+    "grounding": [],
+    "parks": [
+      {
+        "hidden": 0,
+        "meshCount": 1422,
+        "revision": "{\"frame\":{\"yaw\":1.764446921903584e-11,\"latitude\":51.018487903045205,\"longitude\":-114.12069793857106},\"layout_id\":\"student_treetop_walk_v1--native-v1\",\"content_revision\":\"aef679e13148ddede9c39e73dbea57d74c23b41400d0363f3a132f93b6e72366\"}",
+        "statuses": [
+          "ready"
+        ],
+        "worldScales": [
+          "1.38000,1.38000,1.38000",
+          "1.18000,1.18000,1.18000",
+          "1.00000,1.00000,1.00000",
+          "1.10000,1.10000,1.10000",
+          "1.03000,1.03000,1.03000",
+          "1.15000,1.15000,1.15000",
+          "1.35000,1.35000,1.35000"
+        ],
+        "zone": "60650c40-c7a3-429d-8a06-31ab8b5e4ee5"
+      },
+      {
+        "hidden": 0,
+        "meshCount": 291,
+        "revision": "{\"frame\":{\"yaw\":-1.0638434577714406e-12,\"latitude\":51.0184881460968,\"longitude\":-114.11957938089283},\"layout_id\":\"student_terraced_rose_v1--native-v1\",\"content_revision\":\"bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83\"}",
+        "statuses": [
+          "ready"
+        ],
+        "worldScales": [
+          "0.65000,0.65000,0.65000",
+          "0.58000,0.58000,0.58000",
+          "1.00000,1.00000,1.00000"
+        ],
+        "zone": "e5ae9a45-c6fa-468f-afae-b4b2ea1bba13"
+      }
+    ]
+  },
+  "limitations": [
+    "Prepared level sites only; natural/sloped terrain and public street connections not tested for these variants.",
+    "No paid image generation, export download, public deployment or human visual approval.",
+    "Routes checked in both directions; this is not an exhaustive guarantee for every possible input sequence.",
+    "Raised areas use stairs; no claim of step-free access or construction certification."
+  ]
+}

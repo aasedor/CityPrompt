@@ -121,6 +121,7 @@ async def landscape_options(user: User = Depends(require_auth)):
     return {
         "tokens": _MODEL_TOKEN_COST[SITE_LANDSCAPE_MODEL],
         "model": SITE_LANDSCAPE_MODEL,
+        "custom_enabled": not get_settings().classroom_release and get_settings().direct_3d_images_enabled,
     }
 
 
@@ -159,6 +160,7 @@ async def preview_landscape(
             community_3d_kind_for_source(z.zone_type, z.properties) or z.zone_type,
             to_shape(z.geometry),
             (z.properties or {}).get("_plan_role"),
+            native_selection=(z.properties or {}).get('green_space_native_layout'),
         )
         for z in zones
     ]

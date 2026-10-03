@@ -88,7 +88,7 @@ export function pickBuildingEntrance(hit: NativeEntranceHit, zone: SiteZone, zon
   if (ground.status !== 'ready' || ground.isCurrent?.() === false || ground.preview)
     return { error: 'Ground is still being checked. Wait for alignment, then choose the step again.' };
   if (zone.coordinates.length !== 4 || !hit.point.every(Number.isFinite))
-    return { error: 'Choose a rectangular catalogue-house plot.' };
+    return { error: 'Choose a rectangular native building plot.' };
   const fresh = resolveBuildingGroundContact(hit.footprints, hit.lng, hit.lat, ground);
   if (fresh.status !== 'ready' || hit.contact.status !== 'ready'
     || Math.abs(fresh.anchorHeight - hit.contact.anchorHeight) > .001)

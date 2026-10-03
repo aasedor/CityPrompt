@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-01",
+  "initiative": "app-crash-resilience",
+  "base_commit": "2ee0814dd",
+  "scope": "Current local validation catalogue and frontend startup, project preferences, authentication callback and media loading. No publication or paid generation.",
+  "fixed": [
+    {
+      "path": "frontend/src/components/viewer/aestheticCatalog.ts",
+      "trigger": "A validation entry exists but its placement metadata is missing.",
+      "before": "Module initialization throws TypeError reading asset.label; reproduced in a regression test.",
+      "after": "Inspector options require matching placement ID and variant ID. Unavailable entries are omitted; other options remain usable."
+    },
+    {
+      "paths": ["frontend/src/store/themeStore.ts", "frontend/src/App.tsx"],
+      "trigger": "Browser storage is inaccessible or writes exceed its quota.",
+      "before": "Theme module initialization or the authentication mount effect can interrupt startup.",
+      "after": "Theme choices work in memory, invalid saved values use light, and inaccessible credentials leave public pages usable and the app signed out."
+    },
+    {
+      "path": "frontend/src/features/projects/ProjectViewPage.tsx",
+      "trigger": "Saving or reading the optional active-plan-layer preference throws.",
+      "before": "An effect or layer-selection event can throw before finishing its UI update.",
+      "after": "Optional persistence is guarded; layer state can still update."
+    },
+    {
+      "path": "frontend/src/services/assetAccess.ts",
+      "trigger": "Credential storage becomes inaccessible during URL resolution or periodic/focus ticket renewal.",
+      "before": "An uncaught storage exception or rejected renewal promise; reproduced in the browser and a regression test.",
+      "after": "Treat inaccessible credentials as no session, discard private cached tickets, and preserve public/shared URL behavior."
+    },
+    {
+      "path": "frontend/src/features/auth/OAuthCallbackPage.tsx",
+      "trigger": "OAuth credential storage fails, or storage removal throws during failed-profile cleanup.",
+      "before": "An uncaught effect error or rejection; reproduced in component tests.",
+      "after": "Attempt credential cleanup, reset in-memory session state, and return to sign-in with an explanation. Credential write failure never reports successful sign-in."
+    }
+  ],
+  "verification": {
+    "vitest": { "files": 10, "tests": 48, "result": "passed" },
+    "typescript": "npm run type-check passed",
+    "browser": [
+      "Fresh session with localStorage getter throwing SecurityError: sign-in loads and focus renewal produces no uncaught page error after fix.",
+      "Theme control remains usable with storage blocked.",
+      "Fresh session with setItem throwing QuotaExceededError: OAuth callback using dummy test credentials returns to sign-in with no uncaught page error.",
+      "Existing authenticated QA project: blocked plan-layer preference removal does not trigger the app error screen.",
+      "Existing authenticated QA project: street catalogue opens with 79 total choices, including 28 streets; displayed thumbnails visually checked. Two pre-existing empty page-error records remained unchanged."
+    ],
+    "runtime_manifest": "Regenerated; only the new browserPreferences source dependency was added. No asset inventory changed.",
+    "external_evidence_directory": "C:/dev-artifacts/CityPrompt/crash-resilience-2026-10-01"
+  },
+  "reviewed_controls": [
+    "Native park, native street, LEGO building, generic model and park-kit loading paths have local React error boundaries.",
+    "Zone draft, reference-layer and recent compile persistence already guards storage or JSON decoding."
+  ],
+  "functionality_followup": {
+    "request": "Confirm the crash fixes preserve program functionality.",
+    "additional_production_changes_needed": false,
+    "vitest": { "files": 9, "tests": 96, "result": "passed" },
+    "coverage": [
+      "Successful OAuth credential persistence and saved-project redirect.",
+      "Successful OAuth sign-in when only the optional return preference is inaccessible.",
+      "Private media access recovers with a fresh ticket after credential storage becomes accessible again.",
+      "Existing asset identities and JSON persistence, building and park placement, street placement, native park undo, undo revision and project scope."
+    ],
+    "typescript": "npm run type-check passed after the additional test changes",
+    "browser": "Authenticated QA project: building catalogue opens, choosing Buff-brick infill enters placement with dimensions and rotation controls, and Escape cancels. No new page-error records; the same two historical empty records remain.",
+    "limits": "No paid render or external OAuth-provider login was performed; successful authentication behavior was verified with component tests."
+  },
+  "limits": [
+    "This is a bounded crash investigation, not exhaustive fuzzing of all saved geometry or every backend feature.",
+    "Legacy street registry initialization still assumes the checked-in Calgary local/collector definitions exist; both exist in this checkout.",
+    "Geometry calculations outside model error boundaries can still depend on valid saved coordinates. Arbitrarily corrupted server data was not certified safe.",
+    "No GPU context-loss, low-memory or prolonged network-failure stress test was performed.",
+    "Blocked storage still prevents persistent authenticated sign-in; the fix keeps the page usable and explains callback failure.",
+    "The broader runtime manifest still reports 3739 unhydrated or absent library files in this checkout. This predates this initiative and is separate from the 123 current-catalogue model files restored in the preceding commit.",
+    "No assets were generated or modified for this initiative. Browser evidence is outside the source tree. Pre-existing generated and hydrated files were preserved."
+  ]
+}

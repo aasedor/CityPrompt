@@ -1,0 +1,23 @@
+{
+  "status": "PASS_AUTHOR_VISUAL_REVIEW",
+  "model_sha256": "2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb",
+  "reviewer": "Codex author review",
+  "inspected_files": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "9867ddfe224b8ea86cea81a7a19b564243a31c20bf353e7e0fbef28bcdece87d"
+    },
+    {
+      "path": "renders/entrance.png",
+      "sha256": "3f810772dd147f165e03e23ccfb6fad3014482b9f1f972944d90cdb8d03060df"
+    }
+  ],
+  "findings": [
+    "Two continuous stair routes and upper crossover clear of pools and furniture.",
+    "Solid stair and landing supports, planted beds and separated ground surfaces."
+  ],
+  "limitations": [
+    "Author review; independent human approval is not claimed.",
+    "Browser verification pending."
+  ]
+}

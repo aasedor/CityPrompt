@@ -1,7 +1,10 @@
-import { PARK_TRIO_ASSETS } from './parkTrioAssets';
+import { nativeParkLayouts } from '@/features/parks/nativeParkRegistry';
+import validation from '@/data/validationCatalogue.json';
+import expansion from '@/data/classroomExpansion.json';
 import type { SiteZoneProperties } from '@/types';
-import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
+import nativeStreets from '@/data/nativeStreetPilots.json';
+import manualStreets from '@/data/streetManual.json';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
 export type PlaceAssetId = string;
@@ -20,14 +23,46 @@ interface AssetRecord {
 }
 export interface PlaceAsset extends AssetRecord {
   kind: 'object';
-  zoneType: 'building' | 'green_space';
+  zoneType: 'building' | 'green_space' | 'road';
   reshapeMode: 'repeat_native' | 'adaptive_layout' | 'fixed_native' | 'authored_footprint';
   width: number;
   depth: number;
   minWidth: number;
   minDepth: number;
   maxSize: number;
+  /** Optional reviewed per-axis limits. Legacy assets use maxSize for both. */
+  maxWidth?: number;
+  maxDepth?: number;
   nativeDimensions?: [number, number, number];
+  /** Finite authored vertical assembly.  Fixed podium/roof modules keep their
+   * geometry while a reviewed typical-storey module repeats between them. */
+  storeyProgram?: {
+    id: string;
+    mode: 'fixed_authored_assembly' | 'repeat_authored_floor' | 'select_authored_assembly';
+    nativeStoreys: number;
+    minStoreys: number;
+    maxStoreys: number;
+    recommendedMinStoreys?: number;
+    recommendedMaxStoreys?: number;
+    podiumStoreys: number;
+    podiumHeightM: number;
+    repeatedStoreyHeightM: number;
+    roofHeightM: number;
+  };
+  /** A reviewed, uniform horizontal scale band for the complete authored
+   * assembly.  The parcel remains unchanged and Z is never scaled. */
+  footprintProgram?: {
+    id: string;
+    mode: 'uniform_horizontal_scale';
+    nativeWidthM: number;
+    nativeDepthM: number;
+    minScale: number;
+    maxScale: number;
+    defaultScale: number;
+    step: number;
+    /** False keeps the targeting contract active without exposing its control. */
+    editable?: boolean;
+  };
   /** Reviewed native step foot, in the plot frame. Register per exact variant,
    * never infer a doorway from a generic bounding box. */
   entranceSnap?: { xM: number; yM: number; plotWidthM: number; plotDepthM: number; widthM: number };
@@ -40,9 +75,9 @@ export interface StreetAsset extends AssetRecord {
 }
 export type CatalogueAsset = PlaceAsset | StreetAsset;
 
-const OBJECT_ASSETS: PlaceAsset[] = [
+export const LEGACY_OBJECT_ASSETS: PlaceAsset[] = [
   {
-    id: 'infill_home', kind: 'object', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'repeat_native', model: { variantId: 'infill_flat_roof_minimal', revision: null, method: 'RLASM 6.1' }, label: 'Infill homes',
+    id: 'infill_home', kind: 'object', definitionVersion: 2, readiness: 'pilot', reshapeMode: 'repeat_native', model: { variantId: 'infill_flat_roof_minimal', revision: 'calgary-infill-flat-roof-minimal-clay-v006', method: 'RLASM 6.1' }, label: 'Infill homes',
     calgaryGuide: classifyCalgaryAsset('building', { id: 'calgary_modern_infill_house', developmentType: 'residential_single_family' }),
     description: 'Two-storey homes. Widen the plot to fit more.',
     thumbnail: '/archetypes/buildings/calgary-modern-infill-house/variant_0.png',
@@ -106,7 +141,7 @@ export const LOCAL_STREET_ASSET: StreetAsset = {
 
 /** Bounded placement release. Widths come from the existing metric catalogue;
  * the section viewer and 3D renderer resolve the same source profiles. */
-function additionalStreet(archetypeId: string, label: string, description: string,
+export function additionalStreet(archetypeId: string, label: string, description: string,
   calgaryGuide: CalgaryClassification): StreetAsset {
   const source = streetCatalogue.archetypes.find(entry => entry.id === archetypeId)!;
   const variantId = `${archetypeId}_v0`;
@@ -127,15 +162,96 @@ function additionalStreet(archetypeId: string, label: string, description: strin
   };
 }
 
-export const STREET_ASSETS: StreetAsset[] = [LOCAL_STREET_ASSET,
-  additionalStreet('green_alley', 'Planted laneway', '5 m wide · 3.5 m shared lane with planted edges', { groupId: 'alley', basis: 'form_reference' }),
-  additionalStreet('yield_street', 'Shared street', '6 m wide · 5.4 m shared surface with flush edges', { groupId: 'local', basis: 'form_reference' }),
-  additionalStreet('calgary_collector', 'Calgary collector', '20 m wide · two lanes, pathway, sidewalk and boulevards', { groupId: 'collector', basis: 'draft_manual' }),
-];
+const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
+  id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
+    label: street.title, description: street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${street.program.maxLengthM} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
+  thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
+  calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
+  model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },
+  properties: { road_archetype_id: street.sourceArchetypeId, road_selected_variant_id: street.id,
+    width: street.widthM, pick_place_street_section: street.id, pick_place_automatic_3d: true,
+    pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
+    road_standard_citation: 'City Prompt native-module teaching section' },
+}));
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...OBJECT_ASSETS, ...STREET_ASSETS,
-  ...CATALOGUE_BUILDING_ASSETS,
-  ...PARK_TRIO_ASSETS];
+export const ALL_MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street => ({
+  id: street.variantId, kind: 'street', definitionVersion: 1, readiness: 'pilot',
+  reshapeMode: 'fixed_section_route', label: street.title,
+  description: `${street.widthM} m right of way | ${street.sourceEdition ?? 'Street Manual draft · source check pending'} | ${street.section.limitations?.join(' ') ?? 'fixed lane and sidewalk widths'}`,
+  thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
+  calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.archetypeId }),
+  model: { variantId: street.variantId, revision: street.sourceSectionSha256, method: 'manual_metric_section_v1' },
+  properties: { road_archetype_id: street.archetypeId, road_selected_variant_id: street.variantId,
+    width: street.widthM, pick_place_street_section: street.variantId, pick_place_automatic_3d: true,
+    pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
+    road_standard_citation: street.sourceEdition
+      ? `Calgary Street Manual ${street.sourceEdition}, PDF page ${street.sourcePdfPage}. ${street.section.limitations?.join(' ') ?? ''}`.trim()
+      : `Recorded Street Manual Draft 4.0, Figure ${street.figure}; source check pending` },
+}));
+const supersededManualVariants = new Set(manualStreets.filter(street => !street.sourceEdition).map(street => street.variantId));
+export const MANUAL_STREET_ASSETS = ALL_MANUAL_STREET_ASSETS.filter(asset => !supersededManualVariants.has(asset.model.variantId));
+export const STREET_ASSETS: StreetAsset[] = [...NATIVE_STREET_ASSETS, ...MANUAL_STREET_ASSETS];
+// Saved metric streets stay editable without adding them to the seven candidates.
+export const LEGACY_SECTION_STREET_ASSETS: StreetAsset[] = [
+  ...ALL_MANUAL_STREET_ASSETS.filter(asset => supersededManualVariants.has(asset.model.variantId)), LOCAL_STREET_ASSET,
+  additionalStreet('calgary_collector', 'Calgary collector street', 'Existing metric section', {groupId:'local',basis:'draft_manual'})];
+
+/** New starter houses place one native model. Existing saved home plots keep
+ * their explicit repeat flag and are resolved by assetForZone as legacy plots. */
+export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
+  if (asset.kind !== 'object' || !['infill_home', 'trial_postwar_bungalow'].includes(asset.id)) return asset;
+  return { ...asset, reshapeMode: 'fixed_native', definitionVersion: Math.max(2, asset.definitionVersion),
+    minWidth: asset.width, minDepth: asset.depth,
+    label: asset.id === 'infill_home' ? 'Infill home' : asset.label,
+    description: asset.id === 'infill_home' ? 'A two-storey home. Place another to build your street.' : asset.description,
+    reshapeDescription: 'One home keeps its size and proportions. Resize the surrounding plot; use Place another for the next home.',
+    properties: { ...asset.properties, native_home_plot: false, native_plot_axes: true },
+  };
+}
+
+export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
+function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
+  if (asset.kind !== 'object' || asset.zoneType !== 'building' || asset.storeyProgram) return asset;
+  const nativeStoreys = Number(asset.properties.floor_count ?? asset.properties.floors);
+  const nativeHeightM = Number(asset.nativeDimensions?.[2]);
+  if (!Number.isInteger(nativeStoreys) || nativeStoreys < 1 || !Number.isFinite(nativeHeightM) || nativeHeightM <= 0) {
+    return asset;
+  }
+  return {
+    ...asset,
+    storeyProgram: {
+      id: `${asset.model.variantId}-fixed-storeys-v001`,
+      mode: 'fixed_authored_assembly',
+      nativeStoreys,
+      minStoreys: nativeStoreys,
+      maxStoreys: nativeStoreys,
+      recommendedMinStoreys: nativeStoreys,
+      recommendedMaxStoreys: nativeStoreys,
+      podiumStoreys: nativeStoreys,
+      podiumHeightM: nativeHeightM,
+      repeatedStoreyHeightM: 0,
+      roofHeightM: 0,
+    },
+  };
+}
+
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS].map(asset => {
+  if (asset.kind==='object' && asset.zoneType==='road') {
+    const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
+    if(native)return {...native,calgaryGuide:asset.calgaryGuide};
+  }
+  if (asset.kind !== 'object' || asset.zoneType !== 'green_space') return withStoreyMetadata(asset);
+  const layout = nativeParkLayouts.find(p => p.variantId === asset.model.variantId && p.mode === 'native_assembly' && p.status === 'pilot');
+  if (!layout) return asset;
+  const properties = {...asset.properties};
+  for (const key of ['public_realm_trial_asset','validation_fixed_fixture','validation_native_url','park_trio_layout']) delete properties[key];
+  return {...asset, id: `native-park:${layout.id}`, definitionVersion: 2, reshapeMode:'authored_footprint',
+    description:'Complete native park layout. Objects retain their real dimensions.',
+    reshapeDescription:'Choose a layout; its objects stay at native size when the surrounding parcel changes.',
+    model:{...asset.model,revision:layout.contentRevision,method:'native_park_v2'},
+    width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
+    properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
+});
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';
@@ -161,14 +277,40 @@ export function validateRegistry(assets: CatalogueAsset[]): string[] {
     ids.add(asset.id);
     if (!Number.isInteger(asset.definitionVersion) || asset.definitionVersion < 1 || !asset.model.variantId) errors.push(`Invalid version/variant: ${asset.id}`);
     const group = CALGARY_GROUPS.find(g => g.id === asset.calgaryGuide.groupId);
-    const domain = asset.kind === 'street' ? 'street_pathway' : asset.zoneType === 'building' ? 'building' : 'park_plaza';
+    const domain = asset.kind === 'street' || asset.zoneType === 'road' ? 'street_pathway' : asset.zoneType === 'building' ? 'building' : 'park_plaza';
     if (!group || group.domain !== domain) errors.push(`Invalid Calgary group: ${asset.id}`);
     if (asset.kind === 'object') {
-      if (![asset.width, asset.depth, asset.minWidth, asset.minDepth, asset.maxSize].every(n => Number.isFinite(n) && n > 0)
-        || asset.width < asset.minWidth || asset.depth < asset.minDepth || asset.width > asset.maxSize || asset.depth > asset.maxSize) errors.push(`Invalid dimensions: ${asset.id}`);
-      const variant = asset.zoneType === 'building' ? asset.properties.development_selected_variant_id : asset.properties.green_space_selected_variant_id;
+      const maxWidth = asset.maxWidth ?? asset.maxSize;
+      const maxDepth = asset.maxDepth ?? asset.maxSize;
+      if (![asset.width, asset.depth, asset.minWidth, asset.minDepth, asset.maxSize, maxWidth, maxDepth].every(n => Number.isFinite(n) && n > 0)
+        || asset.width < asset.minWidth || asset.depth < asset.minDepth
+        || asset.width > maxWidth || asset.depth > maxDepth
+        || maxWidth > asset.maxSize || maxDepth > asset.maxSize) errors.push(`Invalid dimensions: ${asset.id}`);
+      const variant = asset.zoneType === 'building' ? asset.properties.development_selected_variant_id : asset.zoneType === 'road' ? asset.properties.road_selected_variant_id : asset.properties.green_space_selected_variant_id;
       if (variant !== asset.model.variantId) errors.push(`Variant mismatch: ${asset.id}`);
       if (asset.reshapeMode === 'repeat_native' && (!asset.nativeDimensions || asset.properties.native_home_plot !== true)) errors.push(`Missing native repeat contract: ${asset.id}`);
+      if (asset.zoneType === 'building') {
+        const program = asset.storeyProgram;
+        if (program) {
+          const nativeHeight = Number(asset.nativeDimensions?.[2]);
+          const programmeHeight = program.podiumHeightM
+            + (program.nativeStoreys - program.podiumStoreys) * program.repeatedStoreyHeightM
+            + program.roofHeightM;
+          if (!Number.isInteger(program.nativeStoreys)
+            || !Number.isInteger(program.minStoreys)
+            || !Number.isInteger(program.maxStoreys)
+            || program.minStoreys < 1
+            || program.minStoreys > program.nativeStoreys
+            || program.nativeStoreys > program.maxStoreys
+            || !Number.isFinite(programmeHeight)
+            || !Number.isFinite(nativeHeight)
+            || Math.abs(programmeHeight - nativeHeight) > 0.05
+            || (program.mode === 'fixed_authored_assembly'
+              && (program.minStoreys !== program.nativeStoreys || program.maxStoreys !== program.nativeStoreys))) {
+            errors.push(`Invalid storey metadata: ${asset.id}`);
+          }
+        }
+      }
     } else if (!Number.isFinite(asset.sectionWidth) || asset.sectionWidth <= 0 || asset.properties.width !== asset.sectionWidth || asset.properties.road_selected_variant_id !== asset.model.variantId) errors.push(`Invalid street section: ${asset.id}`);
   }
   return errors;

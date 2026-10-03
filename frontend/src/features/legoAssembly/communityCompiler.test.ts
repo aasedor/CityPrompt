@@ -629,6 +629,21 @@ describe('mixed community compiler', () => {
     expect(result).toMatchObject({ detailedBuildings: 1, plannedMasses: 0 });
   });
 
+  it('reuses a user generated model without requesting a family or replacing its mesh', async () => {
+    const generated = zone('my-house', 'building', { user_generated_source_id: 'source-house', floors: 2 });
+    generated.building_id = 'copy-house';
+    const plan = vi.spyOn(legoAssemblyApi, 'plan');
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled', compiled_at: '2026-09-30T00:00:00Z', counts: { building: 1, park: 0, street: 0 },
+      items: [{ zone_id: generated.id, kind: 'building', building_id: 'copy-house', building_created: false,
+        generator: 'meshy', source_locked_user_generated: true }],
+    });
+    const result = await compileMixedCommunity3D([generated]);
+    expect(plan).not.toHaveBeenCalled();
+    expect(compile.mock.calls[0][0][0]).not.toHaveProperty('recipe');
+    expect(result).toMatchObject({ detailedBuildings: 1, plannedMasses: 0 });
+  });
+
   it('probes each explicitly missing family once instead of repeating hundreds of 422s', async () => {
     const archetypeIds = [
       'vernacular_courtyard_housing',

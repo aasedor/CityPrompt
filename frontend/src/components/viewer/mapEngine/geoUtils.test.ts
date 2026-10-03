@@ -1,12 +1,45 @@
 import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import {
+  bufferLineToPolygon,
   METERS_PER_DEG_LAT,
   metersPerDegLon,
   polygonAreaM2,
   polygonDimensionsMeters,
   resolveZoneColor,
 } from './geoUtils';
+import { bufferLineToPolygon as editRoadBuffer } from '@/utils/roadGeometry';
+
+describe('drawn street metric width', () => {
+  const route = [
+    [-114.10838321053419, 51.117357486642014],
+    [-114.10864208085879, 51.11709678113251],
+  ];
+
+  it.each([route, [...route].reverse()])('keeps an 18 m diagonal section perpendicular at both ends', (start, end) => {
+    const points = [start, end];
+    const polygon = bufferLineToPolygon(points, 18);
+    const lonScale = metersPerDegLon(start[1]);
+    const metric = (a: number[], b: number[]) => [
+      (a[0] - b[0]) * lonScale, (a[1] - b[1]) * METERS_PER_DEG_LAT,
+    ];
+    const delta = metric(end, start);
+    const length = Math.hypot(...delta);
+    for (let station = 0; station < 2; station += 1) {
+      const section = metric(polygon[station], polygon[3 - station]);
+      expect(Math.hypot(...section)).toBeCloseTo(18, 5);
+      expect((section[0] * delta[0] + section[1] * delta[1]) / length).toBeCloseTo(0, 5);
+    }
+    expect(polygon).toEqual(editRoadBuffer(points, 18));
+  });
+
+  it('uses the same bounded bend geometry for drawing and editing without mutating the route', () => {
+    const points = [...route, [-114.1089, 51.1170]];
+    const original = structuredClone(points);
+    expect(bufferLineToPolygon(points, 18)).toEqual(editRoadBuffer(points, 18));
+    expect(points).toEqual(original);
+  });
+});
 
 const CENTER_LNG = -114.0719;
 const CENTER_LAT = 51.0447;

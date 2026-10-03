@@ -1,0 +1,50 @@
+{
+  "candidate": "timber-sanctuary-church-clay-v002",
+  "reviewer": "independent RLASM verifier /root/church_review",
+  "date": "2026-10-03",
+  "review_type": "holistic architectural-clay review",
+  "scope": "Complete exact-GLB rendered evidence against the original generated source board, including whole envelope, visible contacts, openings, occupied interior, circulation appearance, cameras and phone comparison. Asset acceptance for a local runtime trial only.",
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "blockers": [],
+  "runtime_pilot_recommended": true,
+  "runtime_integration_verified": false,
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "broad_runtime_activation_approved": false,
+  "human_activation_required": true,
+  "exact_glb": {
+    "path": "timber-sanctuary-church-clay-v002.glb",
+    "sha256": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+    "textures": 0,
+    "images": 0
+  },
+  "source_provenance": "Original generated four-panel design board, not photographs of a real church. Front, oblique, high-oblique roof and interior panels are enrolled. Dimensions and hidden annex details remain conceptual interpretations.",
+  "inspected_files": [
+    "sources/reference-board-v1.png", "renders/front.png", "renders/front_corner.png",
+    "renders/aerial.png", "renders/top.png", "renders/left_side.png", "renders/right_side.png",
+    "renders/rear.png", "renders/rear_side.png", "renders/facade_close.png", "renders/architecture_close.png",
+    "renders/glass_close.png", "renders/program_interior.png", "renders/vault_interior.png",
+    "renders/walk.png", "renders/entrance_access.png", "renders/annex_interior.png", "boards/phone-comparison.png"
+  ],
+  "supporting_records": ["source-entry.json", "build-report.json", "evidence/carrier-aperture-audit.json"],
+  "resolved_previous_findings": [
+    {"id": "TIMBER-001-01", "closure": "Facade-close and architecture-close views now show a continuous sloped timber perimeter bounding the glazed gable and receiving the vertical mullion ends. The former clear unfinished strip is closed."},
+    {"id": "TIMBER-001-02", "closure": "Program and vault-interior views show extended pendant suspensions reaching the roof lining rather than ending below it. Lamp height and circulation remain unchanged."}
+  ],
+  "holistic_findings": [
+    "The gabled sanctuary, recessed glazed frontage, repeated timber frames, narrow side openings, rear slit and low rear-right annex remain a coherent complete building in all whole-envelope views.",
+    "Roof and wall contacts, aperture depth, glazing continuity and annex closure remain intact. The stray downpipe is removed from the annex interior.",
+    "Pews, altar and pendants establish the sanctuary program; tables and chairs occupy the annex. Clear central, side and cross routes are visible. Door leaves remain clear of the open entrance, and the shallow approach meets the indoor floor.",
+    "Neutral full-resolution views include complete whole-building silhouettes with margins. All sixteen renders and the phone board were inspected directly, rather than accepting metadata as visual proof.",
+    "The phone board clearly separates generated design reference from actual delivered clay exterior and interior. No textured or surveyed fidelity is claimed."
+  ],
+  "limitations": [
+    "Actual browser placement, collision, walking-network behavior, saved reload, terrain and landscape integration require separate runtime verification.",
+    "Architectural-clay material simplification remains intentional. Photoreal timber, fine joinery and construction-detail acceptance would require a separate textured-keeper review.",
+    "No seed publication, engineering, accessibility-code certification or broad student activation is authorized by this review."
+  ],
+  "prior_review_preserved": "../timber-v001/review/independent-review.json",
+  "builder_source_edited_by_reviewer": false
+}

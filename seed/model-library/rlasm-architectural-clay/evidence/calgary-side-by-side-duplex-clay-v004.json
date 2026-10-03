@@ -1,0 +1,347 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "calgary-side-by-side-duplex-clay-v004",
+  "candidate_directory": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004",
+  "archetype_id": "calgary_modern_infill_house",
+  "variant_id": "infill_duplex",
+  "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+  "reviewer": {
+    "id": "/root/duplex_review",
+    "role": "separate independent architectural-clay reviewer",
+    "authored_candidate": false,
+    "modified_geometry": false
+  },
+  "date_utc": "2026-09-22T19:52:59.278805+00:00",
+  "method": "RLASM v6.1",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "findings": [],
+  "status": "architectural_clay_reviewed",
+  "result": "PASS_ARCHITECTURAL_CLAY_ONLY",
+  "scope": "Fresh holistic source-locked review of identity, proportions, roof and plan topology, complete exterior envelope, all elevations, openings and optical depth, material/geometry ownership within texture-free clay, contacts, supports, circulation, inferred residential occupation, landscape exclusions, cameras, phone boards, and prior finite corrections. No candidate construction or editing performed.",
+  "decision": "The unchanged exact v004 model passes the architectural-clay visual gate. This is a newly performed review, not a relabeling of the September 5 decision. No runtime activation, placement acceptance, catalogue publication, textured keeper, engineering or survey approval is conferred.",
+  "pixel_findings": [
+    "The three locked sources describe the same paired two-storey infill composition. The model preserves outer tall glazing stacks, two central recessed timber entry strips, party-wall divider, slight front stagger and separate entrance stairs. Source prose claiming three storeys does not override these pixels.",
+    "Front, front-corner, facade close and architecture close show separate canopies, grounded stair flights, landings meeting recessed doors, and restored paired near-grade two-pane glazing. No protruding floor shelf or foundation stripe traverses the facade.",
+    "Aerial, top, rear-side and roof-contact show two bounded flat decks, continuous shared divider seated beneath its cap, perimeter parapets following side steps and three small seated pipe penetrations. No floating coping, open roof slot, pitched-roof substitution or extra storey is visible.",
+    "Both whole-side views show wall openings and enclosed upper side projections. Side-projection close demonstrates recessed frames with reveals and sills, bounded timber returns and an attached base/roof. Rear and rear-side maintain complete residential envelope grammar and separately grounded exits.",
+    "Glass close and oblique facade views distinguish recessed frames, optical panes, curtains and furniture/room depth. The tint is subdued but does not conceal the physical aperture behind a solid carrier. Near-grade bands are shallow enclosed above-grade representations; basement occupation is not established.",
+    "Neutral whole-building cameras include grade, highest coping, full footprint and visible margin. Both phone boards retain identity, roof hierarchy and entry readability. Detail views intentionally crop to their named relationships; full building coverage is supplied separately.",
+    "Semantic clay palette and geometric courses retain brick/timber/trim zoning. Photographic reflectivity, grain, weathering, planting and streetscape are outside this texture-free delivery. No textured-keeper quality claim is made."
+  ],
+  "regression_results": {
+    "D01": "Separate stairs/canopies/walks visually coherent.",
+    "D02": "Entry recesses free of floor shelves.",
+    "D03": "Exterior carrier faces free of slab/foundation overlay stripes.",
+    "D04": "Street-height corner evidence and three roof fittings retained.",
+    "D05": "Both near-grade glazing bands visibly present with frames and recesses.",
+    "D06": "Shared wall/coping connection visually closed in roof contact and aerial."
+  },
+  "limitations": [
+    "Rear fenestration and internal partitions are inferred consistently from two separate homes; not claimed as photographed.",
+    "Left upper side projection repeats the stepped outline visible in top view; its windows are inferred.",
+    "Two separate residential circulation routes and modest furniture are inferred behind visible glazing.",
+    "Only the above-grade basement glazing bands are visible; below-grade rooms and excavations are outside this asset. The bands open into the enclosed shallow volume below the ground-floor slab.",
+    "Neighbouring buildings, alley garages, public street and mature contextual trees are excluded from this building asset.",
+    "Conceptual native metres inferred from sources; no measured survey.",
+    "Rear fenestration, left-side windows and internal circulation are inferred; exterior images do not establish detailed code compliance or every hidden interior route.",
+    "Fixed native scale only. No terrain-fit, arbitrary resizing, repetition contract, runtime activation or publication approval.",
+    "Glass/material appearance is architectural clay, not photorealistic keeper quality."
+  ],
+  "source_hash_checks": [
+    {
+      "role": "front",
+      "sha256": "e5a2f4d6f6836643c65b5ee740c2b08f12e3ba9f8c52ac991eadf00d2a5447dc",
+      "catalogue_path": "C:\\dev\\CityPrompt-grounding-edit-race\\frontend\\public\\archetypes\\buildings\\calgary-modern-infill-house\\variant_2.png",
+      "matches_locked_source": true
+    },
+    {
+      "role": "oblique",
+      "sha256": "b9b67f5f53d507681994c506213a73986c8e55553576cf5da997ff7e6376b74f",
+      "catalogue_path": "C:\\dev\\CityPrompt-grounding-edit-race\\frontend\\public\\archetypes\\buildings\\calgary-modern-infill-house\\variant_2_angle_60.jpg",
+      "matches_locked_source": true
+    },
+    {
+      "role": "top",
+      "sha256": "747c1802087cf9ace4c2ded7aee7af91f11f3c0b94257d9c772117c612078002",
+      "catalogue_path": "C:\\dev\\CityPrompt-grounding-edit-race\\frontend\\public\\archetypes\\buildings\\calgary-modern-infill-house\\variant_2_angle_90.jpg",
+      "matches_locked_source": true
+    }
+  ],
+  "verification": {
+    "all_13_render_files_opened": true,
+    "three_exact_source_files_opened": true,
+    "both_1080x1920_phone_boards_opened": true,
+    "source_board_opened": true,
+    "model_matches_build_hash": true,
+    "images": 0,
+    "textures": 0,
+    "all_prior_inspected_hashes_unchanged": true,
+    "layout_input_hashes_match": true,
+    "source_script_hashes_match": true,
+    "render_provenance": "actual optimized GLB reimport; no geometry/material replacement",
+    "render_reexecution_performed": false
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2.png",
+      "sha256": "e5a2f4d6f6836643c65b5ee740c2b08f12e3ba9f8c52ac991eadf00d2a5447dc",
+      "bytes": 1403041,
+      "native_dimensions_px": [
+        1024,
+        768
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2_angle_60.jpg",
+      "sha256": "b9b67f5f53d507681994c506213a73986c8e55553576cf5da997ff7e6376b74f",
+      "bytes": 955606,
+      "native_dimensions_px": [
+        1195,
+        896
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2_angle_90.jpg",
+      "sha256": "747c1802087cf9ace4c2ded7aee7af91f11f3c0b94257d9c772117c612078002",
+      "bytes": 858902,
+      "native_dimensions_px": [
+        1195,
+        896
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\aerial.png",
+      "sha256": "f6030dbc8266f8bfc682504bbeaf62ab8bae00a46b887e10e2746b46a416d6f4",
+      "bytes": 1477773,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\architecture_close.png",
+      "sha256": "67dc805f6a951ddb8fb58d3431b2cf6ebf0419b99b63694c5e4afdbb181e75a7",
+      "bytes": 1492901,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\facade_close.png",
+      "sha256": "94846ff8d64eebb0b40417865b2f2d04f83bf8287870d729bb5661e3e9442d78",
+      "bytes": 1643718,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\front.png",
+      "sha256": "ceee14563626e331d4f728d3fdbeb27de0b9046d36f163dfc1aa5ae374f30465",
+      "bytes": 1339524,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\front_corner.png",
+      "sha256": "93e5bfd0b16bf77dca81929bc161f5f5f71a6f1a6656ca77d3f402df967333eb",
+      "bytes": 1428102,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\glass_close.png",
+      "sha256": "4ba568bf2d0845a749e9e5f692c4876a701170f851ef20e6e46be0dce58ee47d",
+      "bytes": 1481426,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\left_side.png",
+      "sha256": "84f60fefa6cfcbc6de32af400d57289d541570df95592c99fb3a3bd0842c7e8a",
+      "bytes": 1329872,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\rear.png",
+      "sha256": "fb99c82ea08528bc52711d0100425725ac500927551486584bc5091d3ea75a47",
+      "bytes": 1335224,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\rear_side.png",
+      "sha256": "2e96ca15cba0ae2ddcf19ac32304f7fcb3ab436ec39fb6b2ca7214098c3e5549",
+      "bytes": 1443978,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\right_side.png",
+      "sha256": "4ef9d6d0b0c876da1a6c998f01da4c7e0f663bfbe0f0ffd64a3cd32a97ffe39b",
+      "bytes": 1325562,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\roof_contact.png",
+      "sha256": "fd412033dd1e72ad4598969006285fe30318cd8f26442e8b65a9a99dc44aeb17",
+      "bytes": 1519320,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\side_projection.png",
+      "sha256": "5e645719ff69780492d151cf44dd1a493bd4439925ed50b69751020d6adb97e4",
+      "bytes": 1427106,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\top.png",
+      "sha256": "f063c6fe49dce513175a479664fcf867e2da88777545d5b65badf8a2c8bedbcf",
+      "bytes": 1257634,
+      "native_dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\all-views-contact.png",
+      "sha256": "287d7fb3110f9bafb55b28bbdf75726cb4ea6afc5d220d50b7605badb2f2753e",
+      "bytes": 1535127,
+      "native_dimensions_px": [
+        1920,
+        1690
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\locked-source-board.png",
+      "sha256": "d6bd0fa1395f46315f16a600c04d7128f041be68cd91f3b273becfe8feb4c08c",
+      "bytes": 1522209,
+      "native_dimensions_px": [
+        1800,
+        570
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\phone-construction.png",
+      "sha256": "18eba17161de5feba5ddac3a66143e258a9e04bfcf87cc88597a9950d78ca3b2",
+      "bytes": 1023699,
+      "native_dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\phone-source-comparison.png",
+      "sha256": "78ea74f8f06d6ab0bc5bf47f6696007106b3156e21ebcbbf9a24983b698d1032",
+      "bytes": 1630044,
+      "native_dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "Fresh direct visual inspection in this review using view_image detail=original. All 13 render files individually opened; contact sheet is supplementary."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\calgary-side-by-side-duplex-clay-v004.glb",
+      "sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "bytes": 3110128,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\prework-manifest.json",
+      "sha256": "03a0353adc0e6333bc9a98ff73b1d2ffd3339102f03f45aa26cb13973710bb4a",
+      "bytes": 9779,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\build-report.json",
+      "sha256": "64b039e334c7416c47bb11742252b494cac9edbc53c60fdb431d978862fbba40",
+      "bytes": 166025,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\evidence\\builder-evidence.json",
+      "sha256": "4a3925c153b4e3f8b22e93a07b1ec70c50be6475fc38d32db8a80abf8b617c37",
+      "bytes": 166193,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\evidence\\delivery-verification.json",
+      "sha256": "bafd96016aafd3f42e3830b2509c0f5807ba862d429a9918cdba72757093fe41",
+      "bytes": 1463,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\layout-provenance.json",
+      "sha256": "5493817e305d42d56dbe7fdc54c5cdaf5970b3b2cf98f391ea199033bdc7c452",
+      "bytes": 2392,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\review\\builder-visual-review.json",
+      "sha256": "ab989f97e3128e33c7d44e4f653ee9f490fe80f83b3779b5ac4eb87bedecd6ea",
+      "bytes": 962,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\scripts\\proof.py",
+      "sha256": "be4b85eaeba9196391533d0d16e14cac3b2f22eec696c88f48d802fdd8b5a055",
+      "bytes": 6588,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    },
+    {
+      "path": "C:\\dev\\CityPrompt-grounding-edit-race\\tools\\catalogue_duplex_pilot\\independent-review-v004.json",
+      "sha256": "fee1e07eae8bea1d7cd154d1f01a9572eebc3f624ffe12c4d02e02c8139d1577",
+      "bytes": 44134,
+      "inspection": "Structured supporting evidence and provenance review; model header, texture counts and hash checked directly; metadata not used as visual proof."
+    }
+  ],
+  "prior_review_preserved": "C:\\dev\\CityPrompt-grounding-edit-race\\tools\\catalogue_duplex_pilot\\independent-review-v004.json",
+  "keeper_approved": false,
+  "runtime_activation_approved": false,
+  "catalogue_publication_approved": false
+}

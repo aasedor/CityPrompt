@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -12,7 +13,7 @@ function getEffective(theme: Theme): 'light' | 'dark' {
 function apply(theme: Theme) {
   const effective = getEffective(theme);
   document.documentElement.classList.toggle('dark', effective === 'dark');
-  localStorage.setItem('siteforge-theme', theme);
+  writeBrowserPreference('siteforge-theme', theme);
 }
 
 interface ThemeState {
@@ -21,7 +22,8 @@ interface ThemeState {
   setTheme: (theme: Theme) => void;
 }
 
-const stored = (localStorage.getItem('siteforge-theme') as Theme) || 'light';
+const saved = readBrowserPreference('siteforge-theme');
+const stored: Theme = saved === 'dark' || saved === 'system' ? saved : 'light';
 
 export const useThemeStore = create<ThemeState>((set) => ({
   theme: stored,

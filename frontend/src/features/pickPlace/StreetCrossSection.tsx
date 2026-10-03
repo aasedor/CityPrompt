@@ -1,14 +1,16 @@
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import type { StreetAsset } from './assetRegistry';
+import { isElevatedRail } from '@/components/viewer/globe/elevatedRailProgram';
 
 /** Uses the rendered surface bands, never an AI diagram or a second width table. */
 export function StreetCrossSection({ asset, expanded = false }: { asset: StreetAsset; expanded?: boolean }) {
   const profile = resolvePilotStreetSectionProfile({ properties: asset.properties });
   if (!profile) return null;
   const scale = 280 / profile.rowM;
+  const elevated = isElevatedRail(asset.model.variantId);
   const format = (n: number) => Number(n.toFixed(2));
   return <details open={expanded || undefined} className="my-2 rounded-lg border border-slate-300 bg-white text-slate-900">
-    <summary className="min-h-11 cursor-pointer px-2 py-3 text-xs font-semibold">Cross-section · {format(profile.rowM)} m total</summary>
+    <summary className="min-h-11 cursor-pointer px-2 py-3 text-xs font-semibold">{elevated ? 'Ground cross-section' : 'Cross-section'} · {format(profile.rowM)} m total</summary>
     <div className="space-y-2 px-2 pb-3">
       <svg role="img" aria-label={`${asset.label}: ${format(profile.rowM)} metre cross-section`} viewBox="0 0 300 94" className="w-full">
         <title>{profile.bands.map(b => `${b.label} ${format(b.widthM)} m`).join(' · ')}</title>
@@ -29,6 +31,7 @@ export function StreetCrossSection({ asset, expanded = false }: { asset: StreetA
         </li>)}
       </ol>
       <p className="text-[11px] text-slate-600">Widths to scale; heights schematic. Section viewed toward the first route point.</p>
+      {elevated && <p className="text-[11px] text-slate-600">The 10.4 m wide rail deck sits above the central paths, with its underside 6.3 m above the prepared ground between supports.</p>}
       <p className="text-[11px] text-slate-600">{String(asset.properties.road_standard_citation)}. {asset.calgaryGuide.basis === 'draft_manual' ? 'Draft reference, not an approved construction standard.' : 'Teaching design, not a City standard.'}</p>
     </div>
   </details>;

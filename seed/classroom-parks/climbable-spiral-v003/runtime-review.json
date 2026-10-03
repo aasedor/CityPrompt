@@ -1,0 +1,71 @@
+{
+  "title": "Spiral Lookout Park",
+  "variant": "student_spiral_lookout_v1",
+  "layout": "student_spiral_lookout_v1--native-v1",
+  "content_revision": "ba9ecbaafe0f56dd5206faa936951504675f05b4d5640adc25ca5d5aa98c773b",
+  "model_sha256": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8",
+  "triangles": 587510,
+  "dimensions_m": [
+    64,
+    68
+  ],
+  "offline": {
+    "status": "PASS",
+    "model_sha256": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8",
+    "samples": 3660,
+    "max_step_m": 0.009473572213333448,
+    "max_surface_error_m": 8.177493846517336e-07,
+    "body_clearance_width_m": 0.44,
+    "results": [
+      {
+        "route": "Complete spiral ascent and descent",
+        "direction": "forward",
+        "end": [
+          0,
+          0.020000000000005083,
+          5.425000000000001
+        ]
+      },
+      {
+        "route": "Complete spiral ascent and descent",
+        "direction": "reverse",
+        "end": [
+          1.114579101060785e-05,
+          -33.97943928838592,
+          0
+        ]
+      }
+    ],
+    "failures": [],
+    "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+  },
+  "browser_walk": {
+    "distance": 0.23135530418405945,
+    "elapsedS": 110.77019999998808,
+    "index": 127,
+    "maxHeight": 1108.787898077914,
+    "minHeight": 1103.362898077914,
+    "model": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8",
+    "pose": {
+      "groundHeight": 1103.362898077914,
+      "heading": 177.13981721980394,
+      "lat": 51.01713072388554,
+      "lng": -114.12544588643904
+    },
+    "reason": "route traversed with keyboard input in both directions",
+    "samples": 2769,
+    "status": "PASS",
+    "total": 128,
+    "variant": "student_spiral_lookout_v1"
+  },
+  "saved_selection": {
+    "content_revision": "ba9ecbaafe0f56dd5206faa936951504675f05b4d5640adc25ca5d5aa98c773b",
+    "frame": {
+      "latitude": 51.01743407156165,
+      "longitude": -114.12544592834077,
+      "yaw": 3.141592653589793
+    },
+    "layout_id": "student_spiral_lookout_v1--native-v1"
+  },
+  "status": "PASS_LOCAL_PREPARED_SITE"
+}

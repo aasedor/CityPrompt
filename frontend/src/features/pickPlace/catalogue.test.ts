@@ -24,4 +24,13 @@ describe('native catalogue placement contracts', () => {
     expect(resized[2][0]).toBeCloseTo(fixed[0], 7);
     expect(resized[2][1]).toBeCloseTo(fixed[1], 7);
   });
+  it('caps Vancouver corner dragging at its reviewed gentle footprint maximum', () => {
+    const asset = placeAsset('clay_vancouver_balcony_podium_tower');
+    const coordinates = rectangleAt([-114.04677, 51.04542], asset.width, asset.depth);
+    const fixed = coordinates[2];
+    const resized = resizeRectangleCorner(coordinates, 0, [fixed[0] - 0.01, fixed[1] - 0.01], asset);
+    const dimensions = rectangleDimensions(resized);
+    expect(dimensions.width).toBeCloseTo(57.5, 2);
+    expect(dimensions.depth).toBeCloseTo(47.5, 2);
+  });
 });

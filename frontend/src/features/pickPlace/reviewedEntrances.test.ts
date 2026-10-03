@@ -13,6 +13,19 @@ const zone=(id:string,zone_type:SiteZone['zone_type'],coordinates:number[][],pro
   ({id,zone_type,coordinates,properties,project_id:'test',created_at:'now',updated_at:'now',color:'#aaa',sort_order:0});
 const asset=placeAsset('clay_beltline_brick_midrise');
 describe('reviewed native mixed-use entrance',()=>{
+  it.each(['infill_home', 'trial_postwar_bungalow'])('pins %s entrance to the exact single-home revision', id => {
+    const homeAsset = placeAsset(id);
+    expect(reviewedEntranceForAsset(homeAsset)?.fixedNative).toBe(true);
+    expect(reviewedEntranceForAsset({ ...homeAsset, model: { ...homeAsset.model, revision: 'new-model' } })).toBeUndefined();
+    const line = [ll(0,-60),ll(0,60)];
+    const road = zone('road','road',bufferLineToPolygon(line,16),{road_archetype_id:'calgary_local',road_selected_variant_id:'calgary_local_v0',width:16,plan_centerline:line});
+    const building = zone('home','building',rectangleAt(ll(25,0),homeAsset.width,homeAsset.depth,streetFacingDegrees(ll(25,0),[road])),placementProperties(homeAsset));
+    expect(readBuildingEntrance(building,[road,building])?.streetId).toBe('road');
+    const resized = {...building,coordinates:rectangleAt(ll(25,0),homeAsset.width+3,homeAsset.depth+3,streetFacingDegrees(ll(25,0),[road]))};
+    expect(readBuildingEntrance(resized,[road,resized])?.streetId).toBe('road');
+    const stale = {...building,properties:{...building.properties,pick_place_model_revision:'changed'}};
+    expect(readBuildingEntrance(stale,[road,stale])).toBeNull();
+  });
   it('requires the exact reviewed revision and keeps other buildings unconfigured',()=>{
     expect(reviewedEntranceForAsset(asset)?.fixedNative).toBe(true);
     expect(reviewedEntranceForAsset({...asset,model:{...asset.model,revision:'new-build'}})).toBeUndefined();

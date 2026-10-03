@@ -14,7 +14,7 @@ from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, ConfigDict, Field, model_validator
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
@@ -58,6 +58,8 @@ from app.services.seedance_video import (
     seedance_runtime_error,
 )
 from app.services.scene_revision import compiled_scene_revision_sha256
+from app.services.render_provenance import revision_sha256
+from app.services.render_trial import TRIAL_KEY, reserve_trial_slot, check_trial_available
 from app.services.video_fidelity import FidelityStatus, score_video_fidelity
 
 logger = logging.getLogger(__name__)
@@ -190,6 +192,7 @@ class VideoPreflightResponse(BaseModel):
     attempts_used: int
     attempts_remaining: int | None
     max_attempts: int | None
+    allowance_scope: Literal["provider", "trial"] = "provider"
     estimated_cost_usd: float
     model: str
     reference_image_count: int
@@ -250,6 +253,7 @@ class VideoProviderUsage(BaseModel):
     attempts_used: int
     attempts_remaining: int | None
     max_attempts: int | None
+    allowance_scope: Literal["provider", "trial"] = "provider"
 
 
 class VideoPilotStateResponse(BaseModel):
@@ -321,8 +325,33 @@ def _provider_usage(attempts: list[dict], provider: VideoProvider) -> VideoProvi
     )
 
 
+def _visible_usage(project: Project, attempts: list[dict], provider: VideoProvider) -> VideoProviderUsage:
+    usage = _provider_usage(attempts, provider)
+    trial = (project.metadata_ or {}).get(TRIAL_KEY)
+    if trial and provider != "internal_enhance":
+        used = len(trial.get("video_requests", {}))
+        maximum = trial["video_limit"]
+        return VideoProviderUsage(attempts_used=used, max_attempts=maximum,
+            attempts_remaining=min(usage.attempts_remaining, max(0, maximum - used)), allowance_scope="trial")
+    return usage
+
+
 def _public_attempt(entry: dict) -> VideoAttemptResponse:
     public = {key: entry[key] for key in VideoAttemptResponse.model_fields if key in entry}
+    # Retained pixels remain recoverable even if scoring or the response failed.
+    if entry.get("video_url") and entry.get("status") != "complete":
+        public.update(status="complete", fidelity_status="unavailable",
+                      error="The video was saved, but completion checks were interrupted. Compare it with the source preview.")
+    elif entry.get("status") in {"reserved", "generating"}:
+        started = entry.get("provider_call_started_at") or entry.get("local_run_started_at") or entry.get("created_at")
+        try:
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(started.replace("Z", "+00:00"))).total_seconds()
+            settings = get_settings()
+            timeout = max(settings.omni_video_timeout_seconds, settings.seedance_video_timeout_seconds) + 120
+            if age > timeout:
+                public.update(status="interrupted", error="This video attempt was interrupted. Its provider outcome may be unknown; it will not be submitted again automatically.")
+        except (AttributeError, TypeError, ValueError):
+            pass
     return VideoAttemptResponse(**public)
 
 
@@ -387,7 +416,8 @@ async def _project_internal_resources(db: AsyncSession, project_id: uuid.UUID) -
 
 
 async def _locked_project(db: AsyncSession, project_id: uuid.UUID) -> Project:
-    result = await db.execute(select(Project).where(Project.id == project_id).with_for_update())
+    result = await db.execute(select(Project).where(Project.id == project_id).with_for_update()
+                              .execution_options(populate_existing=True))
     project = result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -681,6 +711,8 @@ async def preflight_video(
             raise HTTPException(status_code=503, detail=runtime_error)
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
     project = await db.get(Project, req.project_id)
+    if req.provider != "internal_enhance":
+        check_trial_available(project, user.id, "video")
     attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
     usage = _provider_usage(attempts, req.provider)
     if usage.attempts_remaining is not None and usage.attempts_remaining <= 0:
@@ -703,6 +735,7 @@ async def preflight_video(
         estimated_cost = 0.0
     else:
         estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+    usage = _visible_usage(project, attempts, req.provider)
     return VideoPreflightResponse(
         ready=True,
         width=guide.width,
@@ -713,6 +746,7 @@ async def preflight_video(
         attempts_used=usage.attempts_used,
         attempts_remaining=usage.attempts_remaining,
         max_attempts=usage.max_attempts,
+        allowance_scope=usage.allowance_scope,
         estimated_cost_usd=estimated_cost,
         model=_provider_model(req.provider, settings, req.internal_enhance_quality),
         reference_image_count=len(keyframes),
@@ -731,30 +765,30 @@ async def list_video_attempts(
     await check_project_read_access(project_id, user, db, share_token)
     project = await db.get(Project, project_id)
     attempts = [dict(item) for item in (project.metadata_ or {}).get("video_pilot_attempts", [])] if project else []
-    if share_token:
-        # Public presentations contain completed videos, not failed attempts,
-        # provider prompts, capture inputs, or interaction identifiers.
-        attempts = [
-            {
-                **item,
-                "prompt": None,
-                "error": None,
-                "guide_image_url": None,
-                "interaction_id": None,
-                "request_id": "",
-            }
-            for item in attempts
-            if item.get("status") == "complete" and item.get("video_url")
-        ]
-    omni_usage = _provider_usage(attempts, "omni")
+    all_attempts = attempts
+    visible = []
+    for item in attempts:
+        requester = item.get("requested_by") or str(project.owner_id)
+        if not share_token and user and requester == str(user.id):
+            visible.append(item)
+        elif item.get("video_url"):
+            # Shared gallery access is distinct from requester-only recovery.
+            # Saved pixels survive an interrupted completion check too.
+            shared = _public_attempt(item).model_dump()
+            shared.update(prompt=None, error=None, guide_image_url=None,
+                          interaction_id=None, request_id="")
+            visible.append(shared)
+    attempts = visible
+    omni_usage = _visible_usage(project, all_attempts, "omni")
     return VideoPilotStateResponse(
         attempts=[_public_attempt(item) for item in reversed(attempts)],
         attempts_used=omni_usage.attempts_used,
         attempts_remaining=omni_usage.attempts_remaining,
+        max_attempts=omni_usage.max_attempts,
         provider_usage={
             "omni": omni_usage,
-            "seedance_mini": _provider_usage(attempts, "seedance_mini"),
-            "internal_enhance": _provider_usage(attempts, "internal_enhance"),
+            "seedance_mini": _visible_usage(project, all_attempts, "seedance_mini"),
+            "internal_enhance": _provider_usage(all_attempts, "internal_enhance"),
         },
     )
 
@@ -863,8 +897,13 @@ async def generate_video(
     attempts = [dict(item) for item in meta.get("video_pilot_attempts", [])]
     for existing in attempts:
         if existing.get("request_id") == str(req.request_id):
+            if existing.get("request_sha256") and (
+                existing["request_sha256"] != revision_sha256(req.model_dump(mode="json"))
+                or existing.get("requested_by") != str(user.id)
+            ):
+                raise HTTPException(409, "This request ID belongs to a different video. Recover the original attempt.")
             provider = _attempt_provider(existing)
-            usage = _provider_usage(attempts, provider)
+            usage = _visible_usage(project, attempts, provider)
             return VideoGenerateResponse(
                 attempt=_public_attempt(existing),
                 attempts_used=usage.attempts_used,
@@ -958,6 +997,11 @@ async def generate_video(
         "fidelity_status": "pending" if preview or len(keyframes) >= 2 else None,
         **resource_updates,
     }
+    entry["request_sha256"] = revision_sha256(req.model_dump(mode="json"))
+    entry["requested_by"] = str(user.id)
+    if req.provider != "internal_enhance":
+        reserve_trial_slot(project, user.id, "video", str(req.request_id), entry["request_sha256"])
+        meta = dict(project.metadata_ or {})
     attempts.append(entry)
     meta["video_pilot_attempts"] = attempts
     project.metadata_ = meta
@@ -1048,6 +1092,15 @@ async def generate_video(
     run_marker = (
         {"local_run_started_at": _now()} if req.provider == "internal_enhance" else {"provider_call_started_at": _now()}
     )
+    if credit_cost and not is_admin_or_above(user):
+        remaining = (await db.execute(update(User).where(
+            User.id == user.id, User.render_credits >= credit_cost,
+        ).values(render_credits=User.render_credits - credit_cost).returning(User.render_credits))).scalar_one_or_none()
+        if remaining is None:
+            await db.rollback()
+            await _update_attempt(db, req.project_id, attempt_id, status="failed",
+                                  error="Insufficient video credits. The provider was not called.")
+            raise HTTPException(402, "Insufficient Video Render credits.")
     entry = await _update_attempt(
         db,
         req.project_id,
@@ -1055,10 +1108,6 @@ async def generate_video(
         status="generating",
         **run_marker,
     )
-    if credit_cost and not is_admin_or_above(user):
-        user.render_credits = max(0, user.render_credits - credit_cost)
-        db.add(user)
-        await db.commit()
 
     provider_name = {
         "seedance_mini": "fal",
@@ -1124,6 +1173,13 @@ async def generate_video(
                 timeout_seconds=settings.omni_video_timeout_seconds,
             )
             interaction_id = result.interaction_id
+        # Keep paid pixels and their address before optional scoring. A later
+        # failure must not turn a usable saved result into another provider call.
+        from app.api.v1.documents import _upload_to_storage
+        await _upload_to_storage(video_key, result.video_bytes, result.mime_type)
+        video_url = f"/api/v1/files/{video_key}"
+        await _update_attempt(db, req.project_id, attempt_id, video_url=video_url,
+                              interaction_id=interaction_id, size_bytes=len(result.video_bytes))
         fidelity_updates: dict = {}
         if preview or len(keyframes) >= 2:
             try:
@@ -1143,10 +1199,6 @@ async def generate_video(
                     "fidelity_status": "unavailable",
                     "fidelity_error": str(fidelity_exc)[:300],
                 }
-        from app.api.v1.documents import _upload_to_storage
-
-        await _upload_to_storage(video_key, result.video_bytes, result.mime_type)
-        video_url = f"/api/v1/files/{video_key}"
         entry = await _update_attempt(
             db,
             req.project_id,
@@ -1230,7 +1282,8 @@ async def generate_video(
             )
         )
         await db.commit()
-        cap = _provider_cap(req.provider)
+        current_project = await db.get(Project, req.project_id, populate_existing=True)
+        cap = _visible_usage(current_project, [], req.provider).max_attempts
         provider_label = _provider_label(req.provider)
         failure_detail = (
             f"{provider_label} run failed: {message}"
@@ -1245,7 +1298,7 @@ async def generate_video(
     project = await db.get(Project, req.project_id, populate_existing=True)
     latest_attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
     entry = next((dict(item) for item in latest_attempts if item.get("id") == attempt_id), entry)
-    usage = _provider_usage(latest_attempts, req.provider)
+    usage = _visible_usage(project, latest_attempts, req.provider)
     return VideoGenerateResponse(
         attempt=_public_attempt(entry),
         attempts_used=usage.attempts_used,

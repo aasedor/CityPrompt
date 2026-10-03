@@ -31,13 +31,16 @@ import {
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import { BuildingFoundationSurface } from './BuildingFoundationSurface';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
+import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
-import { centreNativeClayClone, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { buildingWalkRevision, mountBuildingWalking, readBuildingWalking } from '@/features/legoAssembly/buildingWalking';
 import { authoredHomePlotFrame, preservesAuthoredPlotAxes } from '@/features/legoAssembly/detachedPlot';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
@@ -396,10 +399,8 @@ function LegoMassingStack({
           side={THREE.DoubleSide}
         />
       </mesh>
-      {foundation.geometry && <mesh geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
-        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
-        <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
-      </mesh>}
+      {foundation.geometry && <BuildingFoundationSurface frame={frame} zone={zone} geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
+        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA} />}
       <BuildingEntranceApproachMesh approach={foundation.approach} />
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
@@ -450,6 +451,7 @@ function LegoStackInstance({
   const gltfs = useGLTF(urls, true, true, extendLoader);
   const tiles = useContext(TilesRendererContext);
   const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
+  const preserveSourceMaterials = isArchitecturalClayPlan(recipe);
 
   const sceneByUrl = useMemo(
     () => indexRenderableLegoScenes(urls, gltfs),
@@ -471,6 +473,8 @@ function LegoStackInstance({
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
           ambientOcclusion: 'disable',
+          preserveSourcePbr: preserveSourceMaterials,
+          restyleUntextured: !preserveSourceMaterials,
         });
         const cloned = isNativeClayPlan(recipe) ? centreNativeClayClone(prepared) : prepared;
         return {
@@ -483,7 +487,7 @@ function LegoStackInstance({
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
-  }, [maxAnisotropy, recipe, sceneByUrl, urls]);
+  }, [maxAnisotropy, preserveSourceMaterials, recipe, sceneByUrl, urls]);
   const detailedReady = isCompleteLegoModuleStack(recipe.instances.length, modules.length);
   const authoredPlot = preservesAuthoredPlotAxes(zone?.properties) ? authoredHomePlotFrame(ring) : undefined;
   const yawRad = authoredPlot ? authoredPlot.yawRad + (building.rotation_degrees ?? 0) * DEG_TO_RAD
@@ -555,14 +559,28 @@ function LegoStackInstance({
   const stackWorldPositionRef = useRef(new THREE.Vector3());
   const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
 
+  const walkingZoneRevision = zone ? buildingWalkRevision(zone) : '';
+  useEffect(() => {
+    if (!zone || !detailedReady || foundation.contact.status !== 'ready' || preparedSiteTerrainHeight == null
+      || !isNativeClayPlan(recipe) || modules.length !== 1) return;
+    const { cloned, transform } = modules[0];
+    if (transform.scale.some(s => Math.abs(s - 1) > 1e-6)) return;
+    const source = cloned.children[0];
+    if (!source) return;
+    const walking = readBuildingWalking(source);
+    if (walking) return mountBuildingWalking(building.id, zone, source, walking);
+  }, [building.id, walkingZoneRevision, detailedReady, foundation.contact.status, preparedSiteTerrainHeight, modules, recipe, zone]);
+
   useFrame(({ camera }) => {
     if (stackRef.current) {
       stackRef.current.getWorldPosition(stackWorldPositionRef.current);
       const distance = camera.position.distanceTo(stackWorldPositionRef.current);
-      const nextLod = resolveArchitecturalGlazingLod(distance, glazingLodRef.current);
-      if (nextLod !== glazingLodRef.current) {
-        modules.forEach(({ cloned }) => setArchitecturalGlazingLod(cloned, nextLod));
-        glazingLodRef.current = nextLod;
+      if (!preserveSourceMaterials) {
+        const nextLod = resolveArchitecturalGlazingLod(distance, glazingLodRef.current);
+        if (nextLod !== glazingLodRef.current) {
+          modules.forEach(({ cloned }) => setArchitecturalGlazingLod(cloned, nextLod));
+          glazingLodRef.current = nextLod;
+        }
       }
     }
     if (foundation.contact.status !== 'outside' || preparedSiteTerrainHeight != null || frozenRef.current || !frame) return;
@@ -615,7 +633,7 @@ function LegoStackInstance({
           // Capture the surface before globe controls adjust the camera on release.
           // The map accepts this candidate only after a click, never after a drag.
           const local = event.eventObject.parent?.worldToLocal(event.point.clone());
-          onBuildingClick?.(building.id, local && isNativeClayPlan(recipe) && zone?.properties?.native_home_plot === true
+          onBuildingClick?.(building.id, local && isNativeClayPlan(recipe) && zone && supportsNativeEntranceStepPick(zone)
             ? {point:[local.x,local.y,local.z],footprints:groundFootprints,lng:frame.centroidLng,lat:frame.centroidLat,contact:foundation.contact,
               ray:{origin:event.ray.origin.toArray(),direction:event.ray.direction.toArray(),distance:event.distance}}
             : undefined, 'pointerdown');
@@ -644,10 +662,8 @@ function LegoStackInstance({
           </group>
         </group>
       </group>
-      {foundation.geometry && <mesh geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
-        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
-        <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
-      </mesh>}
+      {foundation.geometry && <BuildingFoundationSurface frame={frame} zone={zone} geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
+        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA} />}
       <BuildingEntranceApproachMesh approach={foundation.approach} />
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>

@@ -95,6 +95,8 @@ class Settings(BaseSettings):
     app_debug: bool = False
     app_name: str = "3D Development Platform"
     app_version: str = "0.1.0"
+    classroom_release: bool = False
+    classroom_asset_receipt: str = ""
 
     # --- Database ---
     database_url: str = "postgresql+asyncpg://devuser:devpassword@localhost:5432/dev_platform"
@@ -261,6 +263,35 @@ class Settings(BaseSettings):
     # --- Render Cost Controls ---
     # 0 disables the global cap. Set in staging/production to stop runaway provider spend.
     render_global_daily_token_cap: int = 0
+    # Roll out only with migration 030 and a direct3d worker + Celery beat.
+    direct_3d_jobs_enabled: bool = False
+    direct_3d_images_enabled: bool = True
+    direct_3d_queue_limit: int = 16
+    direct_3d_project_queue_limit: int = 2
+    direct_3d_queue_timeout_seconds: int = 900
+    # Longer than the worker's 600-second hard limit. Running jobs never retry.
+    direct_3d_recovery_seconds: int = 900
+
+    @model_validator(mode="after")
+    def _validate_render_queue(self) -> "Settings":
+        if self.classroom_release:
+            if not self.direct_3d_jobs_enabled:
+                raise ValueError("CLASSROOM_RELEASE requires DIRECT_3D_JOBS_ENABLED")
+            deferred_keys = (self.anthropic_api_key, self.gemini_api_key, self.meshy_api_key,
+                             self.tripo_api_key, self.stability_api_key, self.fal_key, self.vertex_ai_project)
+            if any(deferred_keys):
+                raise ValueError("Classroom services must not receive keys for deferred AI, mesh or video providers")
+            # Legacy saved layouts still have their deterministic fallback.
+            self.layout_ai_provider = "none"
+        if not 1 <= self.direct_3d_queue_limit <= 64:
+            raise ValueError("DIRECT_3D_QUEUE_LIMIT must be between 1 and 64")
+        if not 1 <= self.direct_3d_project_queue_limit <= self.direct_3d_queue_limit:
+            raise ValueError("DIRECT_3D_PROJECT_QUEUE_LIMIT exceeds the global queue")
+        if self.direct_3d_recovery_seconds < 660 or self.direct_3d_queue_timeout_seconds < 60:
+            raise ValueError("Image recovery must outlive the worker hard limit; queue expiry must be at least 60s")
+        if self.is_production and self.direct_3d_jobs_enabled and self.direct_3d_images_enabled and self.render_global_daily_token_cap <= 0:
+            raise ValueError("Durable production images require a positive RENDER_GLOBAL_DAILY_TOKEN_CAP")
+        return self
 
     # --- Upload Limits ---
     max_upload_size_mb: int = 100

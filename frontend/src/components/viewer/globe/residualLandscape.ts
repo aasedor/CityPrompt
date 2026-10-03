@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import type { SiteZone } from '@/types';
+import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 
 export type ResidualLandscapeKind =
@@ -520,17 +521,31 @@ export function createResidualLandscapeTexture(
   boundary: SiteZone,
   recipe: ResidualLandscapeRecipe,
   size?: number,
+  zones: SiteZone[] = [],
 ): THREE.DataTexture {
   const dimension = Math.max(16, Math.round(size ?? residualLandscapeTextureSize(boundary)));
   const bounds = residualLandscapeBounds(boundary.coordinates);
   const data = new Uint8Array(dimension * dimension * 4);
   const seed = hashText(recipe.source_hash);
-  const regionLabels = rasterizeResidualLandscapeRegions(recipe.regions, bounds, dimension);
+  const buildings = zones.filter(zone => resolveCommunity3DKind(zone) === 'building'
+    && zone.coordinates.length >= 3 && zone.coordinates.every(isFinitePosition));
+  const groundKind = recipe.regions.filter(region => ['lawn', 'low_groundcover', 'meadow'].includes(region.kind))
+    .reduce<ResidualLandscapeRegion | undefined>((largest, region) => !largest || region.area_sqm > largest.area_sqm ? region : largest, undefined)?.kind ?? 'lawn';
+  // Extend the same site lawn through building plots. The former neutral holes
+  // and dark foundation bands made every building look mounted on a rectangle.
+  // Only the display texture changes; ownership, access and saved regions stay intact.
+  const regions: ResidualLandscapeRegion[] = buildings.length ? [
+    ...recipe.regions.map(region => region.kind === 'foundation_planting' ? { ...region, kind: groundKind } : region),
+    ...buildings.map(zone => ({ id: `building-ground-${zone.id}`, kind: groundKind,
+      area_sqm: 0, minimum_width_m: 0, geometry: { type: 'Polygon' as const,
+        coordinates: [[...zone.coordinates, zone.coordinates[0]] as Position[]] } })),
+  ] : recipe.regions;
+  const regionLabels = rasterizeResidualLandscapeRegions(regions, bounds, dimension);
 
   for (let y = 0; y < dimension; y += 1) {
     for (let x = 0; x < dimension; x += 1) {
       const regionLabel = regionLabels[y * dimension + x];
-      const region = regionLabel >= 0 ? recipe.regions[regionLabel] : undefined;
+      const region = regionLabel >= 0 ? regions[regionLabel] : undefined;
       const base = region ? REGION_PALETTES[region.kind] : recipe.preset ? [105, 127, 74] : BASE_PREPARED_GROUND;
       const broad = Math.sin((x + (seed & 255)) * 0.18) * 3.2
         + Math.cos((y + ((seed >>> 8) & 255)) * 0.14) * 2.8;

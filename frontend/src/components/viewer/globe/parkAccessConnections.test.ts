@@ -7,6 +7,7 @@ import { parkGroundSourceSignature, resolveParkGroundProfile } from './parkGroun
 import { buildParkGroundPrompt } from './parkGroundTexture';
 import { computeParkPlacements, parkPlacementClearsExclusions, resolveParkRecipeForZone } from './parkScatter';
 import { resolveParkProgramAnchorLayout } from './parkLegoFamilies';
+import { nativeParkLayouts, nativeParkProperties } from '@/features/parks/nativeParkRegistry';
 
 const ll = ([x, y]: number[]): ParkAccessPoint => [-114 + x / metersPerDegLon(51), 51 + y / METERS_PER_DEG_LAT];
 const xy = ([lng, lat]: number[]): ParkAccessPoint => [(lng + 114) * metersPerDegLon(51), (lat - 51) * METERS_PER_DEG_LAT];
@@ -22,6 +23,69 @@ function fixture() {
 }
 
 describe('manual park access planning', () => {
+  it.each([0, Math.PI / 2])('joins the Performance side entrance at yaw %s without crossing its amphitheatre', yaw => {
+    const layout = nativeParkLayouts.find(p => p.id === 'amphitheater_lawn_v0--native-v1')!;
+    const rotate = ([x,y]: number[]) => [x*Math.cos(yaw)-y*Math.sin(yaw), x*Math.sin(yaw)+y*Math.cos(yaw)];
+    const park = zone('performance','green_space',[[-32,-32],[32,-32],[32,32],[-32,32]].map(rotate));
+    park.properties = nativeParkProperties({},layout,park.coordinates);
+    const line = [[-38,-45],[-38,45]].map(rotate).map(ll);
+    const street = {...zone('street','road',[],{road_archetype_id:'narrow_residential_street',width:10,plan_centerline:line}),coordinates:bufferLineToPolygon(line,10)};
+    const boundary = {...zone('site','site_boundary',[[-120,-120],[120,-120],[120,120],[-120,120]],{terrain_elevation_m:1000}),is_active_boundary:true};
+    const plan = resolveManualParkAccess([park,street,boundary]).parks[0];
+    expect(plan.status, plan.reason).toBe('connected');
+    const points = plan.connections[0].path.map(xy).map(([x,y]) => [x*Math.cos(yaw)+y*Math.sin(yaw),-x*Math.sin(yaw)+y*Math.cos(yaw)]);
+    expect(points[points.length-1][0]).toBeCloseTo(-28.5,1);
+    expect(points.every(([x,y])=>x<=-28.45 && Math.abs(y)<1.3)).toBe(true);
+  });
+  it('keeps an offset native entrance attached when its parcel grows asymmetrically',()=>{
+    const layout=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--native-v1')!;
+    const park=zone('native','green_space',[[-15,-10],[85,-10],[85,75],[-15,75]]);
+    park.properties=nativeParkProperties({},layout,park.coordinates);
+    const selection=park.properties.green_space_native_layout as {frame:{longitude:number;latitude:number;yaw:number}};
+    [selection.frame.longitude,selection.frame.latitude]=ll([20,25]);
+    const line=[[-30,-16],[100,-16]].map(ll);
+    const street={...zone('street','road',[],{road_archetype_id:'narrow_residential_street',width:10,plan_centerline:line}),coordinates:bufferLineToPolygon(line,10)};
+    const {boundary}=fixture();
+    const plan=resolveManualParkAccess([park,street,boundary]).parks[0];
+    expect(plan.status).toBe('connected');
+    expect(xy(plan.connections[0].gateway)[0]).toBeCloseTo(20,1);
+    const points=plan.connections[0].path.map(xy);
+    expect(points[points.length-1][0]).toBeCloseTo(20,1);
+    expect(points[points.length-1][1]).toBeCloseTo(11.5,1);
+    expect(points.every(([x])=>Math.abs(x-20)<.1)).toBe(true);
+  });
+
+  it.each(['basketball_court_v1--native-v1','basketball_court_v1--long-v1','botanical_garden_v3--native-v1','sculpture_garden_v0--native-v1','student_neighbourhood_orchard_v1--native-v1','student_reading_garden_v2--native-v1'])('connects %s only through its authored entrance',id=>{
+    const layout=nativeParkLayouts.find(p=>p.id===id)!;
+    const park=zone('native','green_space',[[-layout.occupiedWidthM/2,0],[layout.occupiedWidthM/2,0],[layout.occupiedWidthM/2,layout.occupiedDepthM],[-layout.occupiedWidthM/2,layout.occupiedDepthM]]);
+    park.properties=nativeParkProperties({},layout,park.coordinates);
+    const {street,boundary}=fixture();
+    const plan=resolveManualParkAccess([park,street,boundary]).parks[0];
+    expect(plan.status, plan.reason).toBe('connected');
+    expect(plan.connections).toHaveLength(1);
+    expect(plan.connections[0].widthM).toBeLessThanOrEqual(layout.entrances[0].widthM);
+    if(id==='student_reading_garden_v2--native-v1') expect(plan.connections[0].widthM).toBeCloseTo(1.2,2);
+    const path=plan.connections[0].path;
+    const end=xy(path[path.length-1]);
+    expect(end[0]).toBeCloseTo(0,1);
+    expect(end[1]).toBeCloseTo(layout.occupiedDepthM/2+layout.entrances[0].arrivalY,1);
+    expect(plan.connections[0].path.slice(1).map(xy).every(([x])=>Math.abs(x)<1.3)).toBe(true);
+  });
+  it('joins a north-facing Reading Garden to the near sidewalk of Quiet Residential Street',()=>{
+    const layout=nativeParkLayouts.find(p=>p.id==='student_reading_garden_v2--native-v1')!;
+    const park=zone('reading','green_space',[[-15,0],[15,0],[15,26],[-15,26]]);
+    park.properties=nativeParkProperties({},layout,park.coordinates);
+    (park.properties.green_space_native_layout as {frame:{yaw:number}}).frame.yaw=Math.PI;
+    const line=[[-100,38],[100,38]].map(ll);
+    const street={...zone('quiet','road',[],{road_archetype_id:'student_quiet_residential_street_v1',
+      road_selected_variant_id:'student_quiet_residential_street_v1',width:18,plan_centerline:line}),
+      coordinates:bufferLineToPolygon(line,18)};
+    const boundary={...zone('site','site_boundary',[[-150,-100],[150,-100],[150,150],[-150,150]],
+      {terrain_elevation_m:1000}),is_active_boundary:true};
+    const plan=resolveManualParkAccess([park,street,boundary]).parks[0];
+    expect(plan.status,plan.reason).toBe('connected');
+    expect(plan.connections[0].streetZoneId).toBe('quiet');
+  });
   it('keeps park access inside the site when its street continues to the public road',()=>{
     const {park,street,boundary}=fixture();
     const line=[[-60,-6],[55,-6]].map(ll);
@@ -103,7 +167,7 @@ describe('manual park access planning', () => {
     expect(snapshot.parks[0].status).toBe('explicit');
     expect(applyManualParkAccessSnapshot([explicit, street], snapshot)[0]).toBe(explicit);
   });
-  it.each(['building', 'water', 'road'] as const)('does not cross an intervening %s to reach the street', (type) => {
+  it.each(['building', 'green_space', 'water', 'road'] as const)('does not cross an intervening %s to reach the street', (type) => {
     const { zones } = fixture();
     const barrier = zone('barrier', type, [[-20, -0.9], [60, -0.9], [60, -0.1], [-20, -0.1]]);
     const snapshot = resolveManualParkAccess([...zones, barrier]);

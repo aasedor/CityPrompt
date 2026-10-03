@@ -1,0 +1,233 @@
+{
+  "schema": "cityprompt.rlasm.independent_clay_review@1",
+  "candidate": "interior-hotel-clay-v006",
+  "reviewer": "/root/station_review",
+  "date": "2026-10-01",
+  "scope": "Holistic architectural-clay source identity, massing, roof topology, envelope, programme, contacts and visible circulation. Movement and browser performance are verified separately.",
+  "review_kind": "holistic_architectural_clay",
+  "decision": "architectural_clay_reviewed",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "pixel_findings": [
+    "The three-storey stucco mass, continuous deep upper-front loggia, open ground corner, iron balcony guards and long right-side pool retain the Mediterranean hotel identity in architectural-clay scope.",
+    "Dressed stone courses, deep window surrounds, layered foliage and trailing flowers preserve the corrected facade identity. Physical glazing exposes furnished spaces behind it.",
+    "Guest-suite artwork faces the room on solid between-window carriers. Courtyard artwork is supported on solid wall without crossing window openings.",
+    "The long pool has a continuous basin edge and coping with the water recessed below it.",
+    "The corner roof apertures retain shaped closed reveals. The added physical wall-head returns now close the former see-through slots between offset room partitions and reveal bases. The central court underside is continuous and seated.",
+    "The three corner apertures and long central roof court remain open to the sky. The roof repair leaves the occupied loggia and gallery space visually clear.",
+    "Physical stair treads and landing guards, open gallery routes, room furnishings, lobby seating and reception remain intact. No new P0/P1 interference or contact defect appears in the complete view set.",
+    "The corrected upper-loggia portal is shifted clear of the guest-wing wall and preserves the facade opening rhythm. The supplied carrier audit reports 84 openings and 756 rays with no blocked samples; an independent supplemental movement report records 194 passing samples through the repaired doorway in both directions."
+  ],
+  "source_interpretation": "Front and oblique sources show a largely continuous hip roof; the exact top source shows three corner terrace cutouts and a long central roof court. The documented top-authoritative roof topology is accepted. Extending the central court to ground level and authoring interior rooms are explicit programme inferences.",
+  "resolved_findings": [
+    {
+      "id": "HT1-ARTWORK-CONTACT",
+      "status": "closed",
+      "evidence": [
+        "renders/guest_suite.png",
+        "renders/courtyard.png",
+        "renders/glass_close.png"
+      ]
+    },
+    {
+      "id": "HT1-MEDITERRANEAN-IDENTITY",
+      "status": "closed_in_clay_scope",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/glass_close.png",
+        "renders/pool_loggia.png"
+      ]
+    },
+    {
+      "id": "HT1-POOL-BASIN",
+      "status": "closed_visually",
+      "evidence": [
+        "renders/pool_loggia.png",
+        "renders/top.png"
+      ]
+    },
+    {
+      "status": "closed",
+      "id": "HT1-TERRACE-REVEALS",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/roof_contact.png",
+        "renders/top.png"
+      ]
+    },
+    {
+      "note": "Physical wall-head returns bridge the laterally offset partition heads and reveal bases; the former background-visible slot is absent.",
+      "status": "closed",
+      "id": "HT3-ROOF-REVEAL-BASE-CONTACT",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/roof_contact.png",
+        "renders/upper_gallery.png"
+      ]
+    },
+    {
+      "note": "Portal moved east to clear the crossing wall. Carrier and actual-mesh doorway sweep reports both pass.",
+      "status": "closed",
+      "evidence": [
+        "renders/front.png",
+        "renders/facade_close.png",
+        "evidence/carrier-aperture-audit.json",
+        "portal-verification-v1.json"
+      ],
+      "id": "HT6-LOGGIA-PORTAL-CARRIER"
+    }
+  ],
+  "blockers": [],
+  "nonblocking_notes": [
+    {
+      "severity": "P2",
+      "evidence": [
+        "renders/roof_contact.png",
+        "boards/phone-oblique.png"
+      ],
+      "note": "Terracotta geometry still reads as continuous longitudinal corrugation. Restrained transverse tile courses and hip caps could improve later polish."
+    },
+    {
+      "severity": "P2",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/program_interior.png"
+      ],
+      "note": "Foliage and furnishings remain stylized clay. Their present coverage and physical contacts are sufficient for this pilot scope."
+    }
+  ],
+  "limitations": [
+    "Architectural-clay approval only; no photographic texture keeper approval.",
+    "Interior programme, hidden rear continuation and ground-level court are authored inference.",
+    "Carrier audit is limited to opaque carriers; walking reports cover their defined movement samples. This visual review does not establish browser performance, engineering, accessibility or terrain grounding."
+  ],
+  "inspection_method": "Independently inspected all 19 v006 exact-GLB reimport renders, all three v006 phone boards and all three locked source images at original resolution. Repeated holistic identity, envelope, roof, contact, interior and circulation review. Inspected carrier-aperture audit and exact-hash walking/portal reports as supporting geometric evidence. Source/script and GLB hashes verified.",
+  "inspected_files": [
+    {
+      "sha256": "cb48866de2fb054b06250dc0a15ce62792e1d1c7a4b928bc26461e61776e017a",
+      "path": "renders/aerial.png"
+    },
+    {
+      "sha256": "91e87af69e0728083171aa859c3fd93e98d0262a977bd63de69e9b8b34edd9fe",
+      "path": "renders/architecture_close.png"
+    },
+    {
+      "sha256": "3e4b69604be4707ce18f6aeac07c062dc3b4cf842b5f7b221dd4d55cba858299",
+      "path": "renders/courtyard.png"
+    },
+    {
+      "sha256": "0f20aaad8074a03ae2b100222d0e24e6a404e0d8f04dd9d2572b725013cffe47",
+      "path": "renders/facade_close.png"
+    },
+    {
+      "sha256": "8ff0ca3725069ccaddbe42ce50df3cd4e59cd558f9c29af36d794099f7afb4d3",
+      "path": "renders/front_corner.png"
+    },
+    {
+      "sha256": "050ceb116c89a2619231a8ef43471c204d3de594a2472ba934b5b7490c2cc33d",
+      "path": "renders/front.png"
+    },
+    {
+      "sha256": "ef16783effd4eaf235abf952be64869305d58fc7cedb945b11bc154035d160d2",
+      "path": "renders/gallery_stair.png"
+    },
+    {
+      "sha256": "8ac926abebb402f169f9f78cd773fc749a98aff57470ac9fba12f156fa3bc117",
+      "path": "renders/glass_close.png"
+    },
+    {
+      "sha256": "a89d5266f69c0f7f4f7dcc19c9f902f1df169b216111d29bf19637408d785300",
+      "path": "renders/guest_suite.png"
+    },
+    {
+      "sha256": "ea912fffff7b7a1db49845a4548e779b6a80d97671317884efa73d3a240415ec",
+      "path": "renders/left_side.png"
+    },
+    {
+      "sha256": "8ca609193a9fb2d816671fc4dad6a770c704e4ade7aa05d42e44586b056871e7",
+      "path": "renders/pool_loggia.png"
+    },
+    {
+      "sha256": "59613ca124b0c6627ea5a5a054615cad6a79cdd29e8e8d2c5e9a702cfcad4449",
+      "path": "renders/program_interior.png"
+    },
+    {
+      "sha256": "aa49a6062eb99557d4f64f5537f298f3b9334de5c62292693ed23ee729f20405",
+      "path": "renders/rear_side.png"
+    },
+    {
+      "sha256": "01ea6db816b3982ac1e9ac27f8e192330e68d94713adde6c77a3c7f78001d808",
+      "path": "renders/rear.png"
+    },
+    {
+      "sha256": "b24fa950aeb79a45715c06609386ac8a25628acb5f094c3cfbe763c014ad75c9",
+      "path": "renders/right_side.png"
+    },
+    {
+      "sha256": "624176303be846a03f3b3520413902ba0cf670209fd8a4edc7407a82863cdc9b",
+      "path": "renders/roof_contact.png"
+    },
+    {
+      "sha256": "04effb621be9dc4cdb3a6321e5dc8e2d27294da31ecc0983ce3218edbd1ce4f3",
+      "path": "renders/top.png"
+    },
+    {
+      "sha256": "5d13c016b0d3dfc47d090f9fb590c8e24b26223e3b364d15fa29e5fec84b4c59",
+      "path": "renders/upper_gallery.png"
+    },
+    {
+      "sha256": "d9976ae8ea71101e9cf2fa3f4c78db588cc962d267fefd16568dbdb1342dba06",
+      "path": "renders/walk.png"
+    },
+    {
+      "sha256": "39cab262335385ff0db13dc34e70f932f3de83e7cc53a8be982e21155b9c48e8",
+      "path": "boards/phone-front.png"
+    },
+    {
+      "sha256": "8aedd7bc0ad47f5161620a41bc4736cf3cbdb718e59b779de39122936128176b",
+      "path": "boards/phone-oblique.png"
+    },
+    {
+      "sha256": "e032e3d9d848c96387cc070dbe35ec39e52c5621e29a7687ef1f151c918f407f",
+      "path": "boards/phone-top.png"
+    },
+    {
+      "sha256": "b611dfd6dec268171bdd8f7c3f9493712f3d7a4dea349105fcbb6fbaf1532c82",
+      "path": "sources/variant_1_angle_60.jpg"
+    },
+    {
+      "sha256": "46610892dfcc44d36f036ba84709abcb8f81b06945f1a8bd439fa15076180de7",
+      "path": "sources/variant_1_angle_90.jpg"
+    },
+    {
+      "sha256": "1f126e400d9312467d5fc7febe0eb29a7a9471b001e424472814b4acfe08eee4",
+      "path": "sources/variant_1.png"
+    }
+  ],
+  "model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+  "inspected_supporting_evidence": [
+    {
+      "sha256": "cb02aa58dbba8d473848e49d94fcbc02d41799f647d68f7c5a102d41fc440c41",
+      "path": "build-report.json"
+    },
+    {
+      "sha256": "a19b96c451141adb05a693c5ef51f99c7b43171030ae029e86f8e056dce15d0b",
+      "path": "evidence/carrier-aperture-audit.json"
+    },
+    {
+      "sha256": "a7fabd15cdcec36c4854305bd80d6a7bc05f99a3b5d5d78ab5879011a12e3a7b",
+      "path": "walking-verification-v1.json"
+    },
+    {
+      "sha256": "fb85f27ea35e0b311c0846ce92644bd3412ea125c190482577c2ad96c7666f3b",
+      "path": "portal-verification-v1.json"
+    },
+    {
+      "sha256": "4218f2c148af570b452489f7b1647cacf28aaf57da4bf6cbe682f5ce4af9d9a3",
+      "path": "prework-manifest.json"
+    }
+  ]
+}

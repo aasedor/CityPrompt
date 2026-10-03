@@ -1,0 +1,573 @@
+{
+  "date": "2026-09-30",
+  "sourcePdfSha256": "818106b3c318846db518375e3f1d92fe756a91489a64608fac3080492d37a2f2",
+  "sourceUrl": "https://www.calgary.ca/content/dam/www/planning/temporary-pdfs/SM_DetailedCrossSections_Annotation.pdf",
+  "sourceEdition": "Draft 3 November 2024",
+  "scope": "Surface widths and classroom visualisation; utility depths, detailed curb profiles, surveyed design and engineering compliance are not certified.",
+  "projectUrl": "http://127.0.0.1:5183/projects/60db592e-2d49-4cfb-8d53-fb8004c25784",
+  "evidenceRoot": "C:/dev-artifacts/CityPrompt/street-manual-2026-09-30/web-source",
+  "variants": [
+    {
+      "archetypeId": "calgary_local",
+      "variantId": "calgary_local_draft3_v1",
+      "sectionSha256": "75c9605ef7bc294eb4722192b311fb7a1888882e353fc9830dd090b1ebdabf31",
+      "widthM": 16,
+      "sourcePdfPage": 5,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "local-applied.png",
+      "walkingImage": "local-walk-final.png",
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "PASS: final mixed intersection scene",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "PASS",
+        "images": [
+          "intersections-calgary_local-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING",
+        "reopenedRoad": {
+          "controls": [
+            [
+              -114.12307181973344,
+              51.01985945328086
+            ],
+            [
+              -114.12307179396728,
+              51.017988466359135
+            ]
+          ],
+          "id": "849ec639-d813-49bc-9d6e-d55ad34a5c69",
+          "recipe": "calgary_local_draft3_v1",
+          "recipeHash": "01363682f1d03c69974f6d06b701a2eac4780ebab2f4845e17bf2c35f8d1daef",
+          "variant": "calgary_local_draft3_v1",
+          "width": 16
+        }
+      }
+    },
+    {
+      "archetypeId": "calgary_local_industrial",
+      "variantId": "calgary_local_industrial_draft3_v1",
+      "sectionSha256": "3c5580fa115a268b479e820781594ca567fa9b1c24cc30fc8ef7a82285b2d742",
+      "widthM": 18,
+      "sourcePdfPage": 7,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "industrial-applied.png",
+      "walkingImage": "industrial-walk.png",
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "NOT TESTED",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    },
+    {
+      "archetypeId": "calgary_collector",
+      "variantId": "calgary_collector_draft3_v1",
+      "sectionSha256": "d9707a946e24410cda68294ceb66f63988c9a6344ba83dcc152e2a136fec572b",
+      "widthM": 23,
+      "sourcePdfPage": 11,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "collector-applied.png",
+      "walkingImage": "collector-walk.png",
+      "exactPreview": "PASS",
+      "saveReopen": "PASS",
+      "undoRedo": "PARTIAL: buttons exercised; reopened final identity verified",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    },
+    {
+      "archetypeId": "calgary_arterial_4lane_50",
+      "variantId": "calgary_arterial_4lane_50_draft3_v1",
+      "sectionSha256": "6b19e46f5cf47fc31fa1f95baa33611fba2af3c90c4987a709b1d6951f6a19e4",
+      "widthM": 30,
+      "sourcePdfPage": 14,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_arterial_4lane_50-applied.png",
+      "walkingImage": null,
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "NOT TESTED",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [
+          "intersections-calgary_arterial_4lane_50-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    },
+    {
+      "archetypeId": "calgary_arterial_4lane_70",
+      "variantId": "calgary_arterial_4lane_70_draft3_v1",
+      "sectionSha256": "42de737a2b5c36f2ea1d750f66df583a91eb02e9b470b2072a7ac0700efd80b5",
+      "widthM": 36,
+      "sourcePdfPage": 15,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_arterial_4lane_70-applied.png",
+      "walkingImage": null,
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "NOT TESTED",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [
+          "intersections-calgary_arterial_4lane_70-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    },
+    {
+      "archetypeId": "calgary_arterial_6lane",
+      "variantId": "calgary_arterial_6lane_draft3_v1",
+      "sectionSha256": "0f09c562cb495caf7556b627a193ce6a850997c29de51b6c6d3996429e1c7a37",
+      "widthM": 46,
+      "sourcePdfPage": 16,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_arterial_6lane-applied.png",
+      "walkingImage": "six-lane-walk.png",
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "NOT TESTED",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [
+          "intersections-calgary_arterial_6lane-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    },
+    {
+      "archetypeId": "calgary_alley",
+      "variantId": "calgary_alley_draft3_v1",
+      "sectionSha256": "f4ef87d7ad02ee0db524704d92d9c7d5cb3118d2c80c06cdd376c61c197ca7b3",
+      "widthM": 6,
+      "sourcePdfPage": 4,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_alley-applied.png",
+      "walkingImage": null,
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "PASS: final mixed intersection scene",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "PASS",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "PASS",
+        "images": [
+          "intersections-calgary_alley-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING",
+        "reopenedRoad": {
+          "controls": [
+            [
+              -114.12211060084744,
+              51.01945421543067
+            ],
+            [
+              -114.12307181415268,
+              51.01945421019252
+            ]
+          ],
+          "id": "992ca00f-6ea0-4c36-9bec-7e8ca209ce09",
+          "recipe": "calgary_alley_draft3_v1",
+          "recipeHash": "95b57d5a8103d960a0c674393f9e42ff5a960e16eaa7349819344a355a15bb19",
+          "variant": "calgary_alley_draft3_v1",
+          "width": 6
+        }
+      }
+    },
+    {
+      "archetypeId": "calgary_local_high_activity",
+      "variantId": "calgary_local_high_activity_draft3_v1",
+      "sectionSha256": "2c80ed5688f89dd0a277662aed610706de5d566653bc72b91fa1b4d181056ca9",
+      "widthM": 21,
+      "sourcePdfPage": 9,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_local_high_activity-applied.png",
+      "walkingImage": null,
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "NOT TESTED",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [
+          "intersections-calgary_local_high_activity-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    },
+    {
+      "archetypeId": "calgary_collector_industrial",
+      "variantId": "calgary_collector_industrial_draft3_v1",
+      "sectionSha256": "c6efe487d089ae116324999d760f0816c2b33d773dbdf28ba1140e3be50b0e43",
+      "widthM": 26,
+      "sourcePdfPage": 12,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_collector_industrial-applied.png",
+      "walkingImage": null,
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "NOT TESTED",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [
+          "intersections-calgary_collector_industrial-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    },
+    {
+      "archetypeId": "calgary_collector_high_activity",
+      "variantId": "calgary_collector_high_activity_draft3_v1",
+      "sectionSha256": "4e4b30180d352e8dac6cd7602781743abcba558152973a65b99d514cd7b55671",
+      "widthM": 27,
+      "sourcePdfPage": 13,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_collector_high_activity-applied.png",
+      "walkingImage": "high-activity-walk.png",
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "PASS",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [
+          "intersections-calgary_collector_high_activity-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    },
+    {
+      "archetypeId": "calgary_arterial_high_activity",
+      "variantId": "calgary_arterial_high_activity_draft3_v1",
+      "sectionSha256": "b4b73cbe659aafb11e7e6f00c0a604855702cfab042d25c45120e198f2a7b973",
+      "widthM": 36,
+      "sourcePdfPage": 17,
+      "surfaceDimensionComparison": "PASS",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_arterial_high_activity-applied.png",
+      "walkingImage": null,
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "PASS: final mixed intersection scene",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "PASS",
+        "images": [
+          "intersections-calgary_arterial_high_activity-apply.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING",
+        "reopenedRoad": {
+          "controls": [
+            [
+              -114.1237899556127,
+              51.01894977524824
+            ],
+            [
+              -114.12235024334652,
+              51.01894881436707
+            ]
+          ],
+          "id": "c8a25549-8124-4836-b8fc-44512194f034",
+          "recipe": "calgary_arterial_high_activity_draft3_v1",
+          "recipeHash": "1ce81f1b29ecc452c9fec4cf846f59711e37c9d68102f9cdac0c614e6f7131a2",
+          "variant": "calgary_arterial_high_activity_draft3_v1",
+          "width": 36
+        }
+      }
+    },
+    {
+      "archetypeId": "calgary_skeletal",
+      "variantId": "calgary_skeletal_draft3_v1",
+      "sectionSha256": "16c216c3eb070ad04345d763ed36744de82ea92344853b97616ab179bd75686f",
+      "widthM": 60,
+      "sourcePdfPage": 18,
+      "surfaceDimensionComparison": "PASS: horizontal bands only",
+      "automaticTests": "PASS",
+      "applyAndSave": "PASS",
+      "aerialImage": "calgary_skeletal-applied.png",
+      "walkingImage": null,
+      "exactPreview": "NOT TESTED",
+      "saveReopen": "NOT TESTED",
+      "undoRedo": "NOT TESTED",
+      "slopedTerrain": "NOT TESTED",
+      "junctions": "PASS: bounded four-way apply/save; see intersectionTrial",
+      "paidRender": "NOT TESTED",
+      "humanVisualApproval": "PENDING",
+      "publication": "LOCAL PILOT",
+      "completed": false,
+      "intersectionTrial": {
+        "date": "2026-10-01",
+        "report": "STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+        "fourWayApplySave": "PASS",
+        "exactVariantWidthRecipeReadback": "PASS",
+        "browserTAuthoring": "NOT TESTED: as separately drawn stem",
+        "automatedTAndX": "PASS",
+        "connectedSectionReplacement": "PASS: automated candidate with existing zone ID",
+        "finalSceneReopen": "NOT TESTED",
+        "images": [
+          "intersections-skeletal-crossing4.png"
+        ],
+        "rawReadbacks": "intersections-inherited-readbacks.json",
+        "humanVisualApproval": "PENDING"
+      }
+    }
+  ],
+  "browserScope": "All twelve choices applied through student controls to one existing three-control curved route in a disposable prepared-level project; not twelve independent placement or full acceptance tests.",
+  "checks": {
+    "frontendTests": 155,
+    "backendTests": 30,
+    "typeCheck": "PASS",
+    "viteProductionBuild": "PASS: bundle generation; not a clean-install browser test",
+    "original13Bindings": "UNCHANGED",
+    "frontendBackendManifests": "IDENTICAL",
+    "paidSubmissions": 0
+  },
+  "limitations": [
+    "Draft 3 source dimensions remain separately versioned; missing Draft 4A standard cross-sections have not been verified.",
+    "Draft 4B collector parking and some path/cycle dimensions differ; no mixed-edition sections were created.",
+    "Rural local is withheld from new selection; existing saved versions remain resolvable.",
+    "Skeletal models horizontal surface bands only; ditch grades, crown and interim ditch geometry are not modelled.",
+    "Tree spacing and furniture composition are not surveyed engineering layouts; long routes retain the existing tree-count cap.",
+    "Browser login succeeded despite an existing backend bcrypt compatibility warning; no zero-error-console claim.",
+    "October 1 adds bounded X apply/save and one alley T; slopes, utility-depth, detailed curb profiles, full pedestrian continuity and exact junction export remain untested."
+  ],
+  "intersectionFollowUp": {
+    "date": "2026-10-01",
+    "sourceBaseCommit": "b778e50801f8c68626aa6fc30c20bb3b5dff0b17",
+    "sourceRevision": "Base plus the commit containing STREET_MANUAL_INTERSECTION_TRIAL_2026-10-01.md",
+    "scope": "12 exact sections applied sequentially to one X with 16 m local; independent 6 m alley T; prepared-level site; final three roads reopened.",
+    "reviewer": "Codex desktop agent simulation; human review pending",
+    "cameraIntervention": "DEV framing and camera translation only; ordinary UI geometry authoring; read-only API checks",
+    "frontendTests": 66,
+    "backendTests": 29,
+    "typeCheck": "PASS",
+    "diffCheck": "PASS",
+    "paidSubmissions": 0,
+    "uncaughtBrowserErrors": 0,
+    "browserConsoleWarningsAndErrors": 0,
+    "backendWarnings": [
+      "Existing trapped bcrypt version warning on successful login",
+      "Slow requests up to 13.44 seconds in retained log"
+    ],
+    "junctionsAfterReopen": [
+      {
+        "arms": 4,
+        "id": "street-four-way-20c51302",
+        "renderable": true,
+        "zones": [
+          "849ec639-d813-49bc-9d6e-d55ad34a5c69",
+          "c8a25549-8124-4836-b8fc-44512194f034"
+        ]
+      },
+      {
+        "arms": 3,
+        "id": "street-three-way-917234ad",
+        "renderable": true,
+        "zones": [
+          "849ec639-d813-49bc-9d6e-d55ad34a5c69",
+          "992ca00f-6ea0-4c36-9bec-7e8ca209ce09"
+        ]
+      }
+    ],
+    "evidenceSha256": {
+      "intersections-alley-t-close-review.png": "64f54ecf1823d47209b658ad9feb2a01ac6a8c4c75292d15e916714a6991b453",
+      "intersections-browser-console.json": "e920005720e073b221dff39e574015d3d0376b6258d6f1e8c3977ee6df1730bd",
+      "intersections-browser-errors.json": "df0faab0c341e0c8778abdffc7f7a59cc0299d7b02b8d1a3abf7874a6a88bf3a",
+      "intersections-calgary_alley-apply.png": "3ed016f8659c42dbe10d66bbcbc6630b08e5cbe9d7acc7320294f5f247d4eab9",
+      "intersections-calgary_arterial_4lane_50-apply.png": "3c324ce93ce8f6a1f02676ca5bd3bd4eb82c5542bf5228613830eabdaa1ce6be",
+      "intersections-calgary_arterial_4lane_70-apply.png": "c2d1eddd64408f2bc22fbb22c0ad36cafe67559b55f23b22fa01574230b3cb67",
+      "intersections-calgary_arterial_6lane-apply.png": "465632b14892b00f06129125944b9e585fa72ffbcde83dfdd2e8b199bbde2bda",
+      "intersections-calgary_arterial_high_activity-apply.png": "812735026d034aaf5775223c81a19016a14a6b168f4fe70adcf226781374a902",
+      "intersections-calgary_collector_high_activity-apply.png": "4c3c13ef8cb5219fd1323f4368be97b5813f8f6d58eeec3d1c37fecd8d9a4917",
+      "intersections-calgary_collector_industrial-apply.png": "edf418b1ae0e21fe40d3f50eaac989fb6eed595a63a979eb0d424a76ee19bacd",
+      "intersections-calgary_local-apply.png": "c06f0b16b5752eee03e1c27288bfae1bfec102893cfb614caaf2ae999407cbd7",
+      "intersections-calgary_local_high_activity-apply.png": "4d19fa66c4fabc04ff38894b20643e560c31aeef48076fe7b55f86e8b2fd5188",
+      "intersections-four-way-close-review.png": "0939367e90462791d9ca0fba12cfe39197b2608d36ba98d43825a5db84b48f03",
+      "intersections-inherited-readbacks.json": "f60a5b1a3f3b4cbcdebeb423df69ee191584def1c38f8982701335748d6db6bd",
+      "intersections-mixed-framed.png": "39c7bc13727403541924ae3de4b583e7307b2ffcff33634b3609ed41a996d7f2",
+      "intersections-reopened-close.png": "69f8cbdc06e25b72befd045801497983706e1042dda11d5fb7a6c8c774b1a8e1",
+      "intersections-reopened-state.json": "8bfe65716a564712e04dffb0da6833cf4f1b157ac0e412b4480c86d1f3b4b378",
+      "intersections-skeletal-crossing4.png": "53317765ccceb82ba10f3891a98f68ffdd7946de7eb7971846bc540e58c56fa6"
+    },
+    "evidenceAvailability": "Local only; not a shared backup",
+    "runtimeDecision": "Bounded trial recorded; full acceptance remains open",
+    "humanVisualApproval": "PENDING",
+    "publication": "LOCAL PILOT",
+    "completed": false
+  }
+}

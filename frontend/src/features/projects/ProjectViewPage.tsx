@@ -1,3 +1,5 @@
+import { nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
+import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
 import { canonicalParkAsset } from '@/features/pickPlace/canonicalParkPlacement';
 import { canonicalBuildingAsset } from '@/features/pickPlace/canonicalBuildingPlacement';
 import { canonicalStreetAsset } from '@/features/pickPlace/canonicalStreetPlacement';
@@ -20,18 +22,26 @@ import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { parkOutlineProblem } from '@/features/pickPlace/parkOutline';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
+import { duplicateStreet } from '@/features/pickPlace/duplicateStreet';
+import { streetConnectionProblem } from '@/features/pickPlace/streetConnectionProblem';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
 import type { EntrancePickRequest } from '@/features/pickPlace/pickBuildingEntrance';
 import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
 import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
-import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
-import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
+import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
+import { assetForZone, placeAsset, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
+import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
+import { brtConnectionProblem } from '@/features/pickPlace/brtConnections';
+import { specialistConnectionProblem } from '@/features/pickPlace/specialistConnections';
+import { snapConnectedStreetEdit, streetEditConnectionCheck } from '@/features/pickPlace/streetEditConnections';
+import { isAxiosError } from 'axios';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
 import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
 import type { PlacementDraft } from '@/features/pickPlace/GlobePlacementPreview';
+import { generatedPlacementDraft, placementDraftProperties } from '@/features/pickPlace/generatedPlacement';
 import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { VideoGeneratePanel, type VideoAttempt } from '@/components/viewer/VideoGeneratePanel';
@@ -49,10 +59,13 @@ import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
 import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls';
 import { ReadOnlyProject } from './ReadOnlyProject';
-import { StudentWorkflowNav, StudentStepPanel, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
+import { StudentWorkflowNav, StudentStepPanel, studentLandscapeNeedsRefresh, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
 import { defaultStudentStep } from './studentNavigation';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
+import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessConnections';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
+import { ZoningLabelsControls } from '@/features/referenceLayers/ZoningLabelsControls';
+import { useZoningLabels } from '@/features/referenceLayers/useZoningLabels';
 import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
 import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
@@ -64,10 +77,11 @@ import type { AIRenderResult } from '@/components/viewer/useAIRender';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
 import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
-import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
+import { parsePersistedCenterline, rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
-import { savedRenderIsSource, savedRenderNeedsReview, savedRenderNotice } from '@/utils/renderPresentation';
+import { savedRenderNotice } from '@/utils/renderPresentation';
+import { SavedRenderCard } from './SavedRenderCard';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
@@ -113,6 +127,8 @@ export function ProjectViewPage() {
   const references = useReferenceLayers(id);
   const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
+  const [aiGenerateInitialPrompt, setAiGenerateInitialPrompt] = useState<string | undefined>();
+  const [aiGenerateInitialTab, setAiGenerateInitialTab] = useState<'image' | undefined>();
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
   const [showLegoBuilder, setShowLegoBuilder] = useState(false);
   const [isPreparingGenerate3D, setIsPreparingGenerate3D] = useState(false);
@@ -251,6 +267,7 @@ export function ProjectViewPage() {
     handleZoneCreated,
     handleZoneUpdated,
   } = useSiteZones(id);
+  const zoningLabels = useZoningLabels(id, siteZones);
   const { savedVersionReload, reloadSavedVersion } = useZonePropertiesReload(id, selectedZoneId, reloadZones);
 
   const initializedSiteToolProjectRef = useRef<string | null>(null);
@@ -278,16 +295,18 @@ export function ProjectViewPage() {
   useEffect(() => { setPlacementDraft(null); setAdvancedZoneId(null); setEntrancePick(null); setConnectionZoneId(null); }, [id]);
   const placeObject = async (point: [number, number], height: number) => {
     if (!placementDraft || placementDraft.inputError || placementPending.current || isSaving) return;
+    const asset=placementDraft.generatedModel?null:placeAsset(placementDraft.assetId);
     const degrees = placementDraft.faceStreet ? streetFacingDegrees(point, siteZones, placementDraft.degrees) : placementDraft.degrees;
     const proposed = rectangleAt(point, placementDraft.width, placementDraft.depth, degrees);
-    const { coordinates, problem } = placeAsset(placementDraft.assetId).zoneType === 'building'
-      ? snapPlacement(proposed, siteZones, getActiveSiteBoundary(siteZones),undefined,placementProperties(placeAsset(placementDraft.assetId)))
-      : {coordinates:proposed,problem:placementProblem(proposed,siteZones,getActiveSiteBoundary(siteZones))};
+    const { coordinates, problem } = snapPlacement(
+      proposed, siteZones, getActiveSiteBoundary(siteZones), undefined,
+      placementDraftProperties(placementDraft),
+    );
     if(problem) { toast.error(problem, { position: 'top-center' }); return; }
     placementPending.current = true;
     try {
-      const zone = await createZone.mutateAsync({ coordinates, zone_type: placeAsset(placementDraft.assetId).zoneType,
-        properties: placementProperties(placeAsset(placementDraft.assetId), height) });
+      const zone = await createZone.mutateAsync({ coordinates, zone_type: asset?.zoneType??'building',
+        properties: placementDraftProperties(placementDraft, height, coordinates) });
       setPlacementDraft(null); setAdvancedZoneId(null); selectZone(zone.id);
     } catch {
       // Retrying uses the saved draft's idempotency key, not a second placement.
@@ -297,18 +316,27 @@ export function ProjectViewPage() {
   };
   const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
     const zone = siteZones.find(item => item.id === zoneId);
-    if (zone && ['building', 'residential'].includes(zone.zone_type)) {
+    if (zone && isFixedSectionStreet(zone)) coordinates = snapConnectedStreetEdit(zone, coordinates, siteZones);
+    if (zone && ['building', 'residential', 'green_space'].includes(zone.zone_type)) {
       const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId,zone.properties);
-      if (snapped.problem) return false; // Keep the previous valid location.
+      if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
       coordinates = snapped.coordinates;
     }
     if (zone && (assetForZone(zone) || isFixedSectionStreet(zone))) {
       if (isSaving) { toast.error('Wait for this edit to save.'); return false; }
-      const problem = (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
+      const streetUpdate = isFixedSectionStreet(zone) ? streetCoordinateUpdate(zone, coordinates) : null;
+      const footprint = streetUpdate?.coordinates ?? coordinates;
+      const problem = specialistConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
+        ?? brtConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
+        ?? streetConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
+        ?? nativeStreetRouteProblem({...zone,...(streetUpdate??{coordinates})},getActiveSiteBoundary(siteZones))
+        ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
-        ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone)) : null)
-        ?? placementProblem(coordinates, siteZones,
-          publicRoadConnectionFits(zone, coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId);
+        ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
+          parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
+        ?? placementProblem(footprint, siteZones,
+          publicRoadConnectionFits(zone, footprint, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId,
+          { allowStreetIntersections: isFixedSectionStreet(zone) });
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
     handleZoneUpdated(zoneId, coordinates);
@@ -359,7 +387,7 @@ export function ProjectViewPage() {
       initializedPlanVisibilityProjectRef.current = id;
       return;
     }
-    const stored = window.localStorage.getItem(planLayerStorageKey(id));
+    const stored = readBrowserPreference(planLayerStorageKey(id));
     const active = stored && grouped.has(stored)
       ? stored
       : [...grouped.entries()].sort(([, left], [, right]) => {
@@ -369,7 +397,7 @@ export function ProjectViewPage() {
         return newest(right) - newest(left);
       })[0][0];
     initializedPlanVisibilityProjectRef.current = id;
-    window.localStorage.setItem(planLayerStorageKey(id), active);
+    writeBrowserPreference(planLayerStorageKey(id), active);
     setHiddenLayers((previous) => {
       const next = new Set(previous);
       for (const layer of grouped.keys()) {
@@ -382,7 +410,7 @@ export function ProjectViewPage() {
 
   useEffect(() => {
     if (!id || initializedPlanVisibilityProjectRef.current !== id || visiblePlanLayers.length !== 1) return;
-    window.localStorage.setItem(planLayerStorageKey(id), visiblePlanLayers[0]);
+    writeBrowserPreference(planLayerStorageKey(id), visiblePlanLayers[0]);
   }, [id, visiblePlanLayers]);
 
   // Height-framework layers are reference overlays (LAP-style storey bands
@@ -418,8 +446,7 @@ export function ProjectViewPage() {
     const onSolo = (event: Event) => {
       const label = (event as CustomEvent<{ label?: string | null }>).detail?.label;
       if (id) {
-        if (label) window.localStorage.setItem(planLayerStorageKey(id), `${PLAN_LAYER_PREFIX}${label}`);
-        else window.localStorage.removeItem(planLayerStorageKey(id));
+        writeBrowserPreference(planLayerStorageKey(id), label ? `${PLAN_LAYER_PREFIX}${label}` : null);
       }
       setHiddenLayers((prev) => {
         const next = new Set([...prev].filter((n) => !isPlanLayer(n)));
@@ -1060,9 +1087,10 @@ export function ProjectViewPage() {
   }, [project?.documents]);
 
   if (isLoading) return <div className="text-center text-primary-950/50">Loading project...</div>;
+  const accessUnavailable = isAxiosError(projectError) && [403, 404].includes(projectError.response?.status ?? 0);
   if (!project) return <div role="alert" className="mx-auto max-w-lg space-y-4 rounded-xl bg-white p-6 text-slate-800">
-    <h1 className="text-xl font-semibold">{projectError ? 'Your project could not load' : 'Project not found'}</h1>
-    <p>{projectError ? 'Check your connection and try again. A loading problem does not mean your saved work has been deleted.' : 'The project may have been removed or your access may have changed.'}</p>
+    <h1 className="text-xl font-semibold">{accessUnavailable ? 'This project is not available to this account' : projectError ? 'Your project could not load' : 'Project not found'}</h1>
+    <p>{accessUnavailable ? 'Your access may have changed, or the project may have been removed. Ask the owner for a new invitation or sign in with the invited account.' : projectError ? 'Check your connection and try again. A loading problem does not mean your saved work has been deleted.' : 'The project may have been removed or your access may have changed.'}</p>
     <button onClick={() => { void reloadProject(); }} className="btn-primary min-h-11">Try again</button>
     <Link to="/projects" className="ml-4 underline">Your projects</Link>
   </div>;
@@ -1120,12 +1148,21 @@ export function ProjectViewPage() {
             siteZones={visibleZones}
             allSiteZones={siteZones}
             referenceLayers={references.visibleLayers}
+            zoningLabels={zoningLabels}
             transportContext={transportContext}
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (isFixedSectionStreet({zone_type:type, properties})) {
-                const problem = streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties})) ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones));
-                if (problem) { toast.error(problem, {position:'top-center'}); return false; }
+                const problem = specialistConnectionProblem({coordinates,properties},siteZones)
+                  ?? brtConnectionProblem({coordinates,properties},siteZones)
+                  ?? streetConnectionProblem({coordinates,properties},siteZones)
+                  ?? nativeStreetRouteProblem({coordinates,properties},getActiveSiteBoundary(siteZones))
+                  ?? streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
+                  parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
+                  ?? placementProblem(coordinates, siteZones,
+                    publicRoadConnectionFits({ zone_type: type, properties }, coordinates, getActiveSiteBoundary(siteZones))
+                      ? null : getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true });
+                if (problem) { toast.error(problem, {id:'street-route-validation',position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);
             }}
@@ -1153,8 +1190,11 @@ export function ProjectViewPage() {
               drawingSite={activeSitePlannerTool === 'site_boundary'} location={project.location?.address}
               canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}
               streetAccessNotice={streetAccessNotice}
+              landscapeNeedsRefresh={studentLandscapeNeedsRefresh(cityPromptWorkflow.activeBoundary)}
+              automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
-              onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} />}
+              onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={handleOpenGenerate3D} onRetry3D={automatic3D.retry} />}
+            {activeStudentStep === 'site' && <div className="mt-3"><ZoningLabelsControls state={zoningLabels} /></div>}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
@@ -1162,6 +1202,12 @@ export function ProjectViewPage() {
               placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
                 onBrowseChange={setShowCatalogue}
+                onPickGenerated={model => {
+                  setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
+                  useViewerStore.getState().setStreetViewActive(false);
+                  setPlacementDraft(generatedPlacementDraft(model));
+                  toast('Click to place your saved model. No generation credits are used.');
+                }}
                 onPickCanonical={selection => {
                   if (selection.choice.domain !== 'street_pathway') {
                     pickObject((selection.choice.domain === 'building' ? canonicalBuildingAsset(selection) : canonicalParkAsset(selection)).id);
@@ -1229,6 +1275,7 @@ export function ProjectViewPage() {
         </div>
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
           <div className="sticky -top-3 z-10 flex items-center justify-between bg-white py-1"><h2 className="font-semibold text-slate-900">Map layers</h2><button onClick={() => setShowReferenceLayers(false)} aria-label="Close layers" className="flex h-11 w-11 items-center justify-center"><X size={18} /></button></div>
+          <ZoningLabelsControls state={zoningLabels} />
           <ShapefileImportButton projectId={project.id} />
           <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers} />
           <ReferenceLayersPanel layers={references.layers} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer}
@@ -1240,6 +1287,9 @@ export function ProjectViewPage() {
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
           <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}
+            getParkAccessSnapshot={() => siteZones.every(zone => isPersistedZoneId(zone.id) && zone.updated_at)
+              ? resolveManualParkAccess(siteZones, {}, visibleZones.filter(zone => zone.zone_type === 'road').map(zone => zone.id), transportContext)
+              : undefined}
             planChangeToken={siteZones.map((zone) => `${zone.id}:${zone.updated_at}`).join('|')} canEdit
             onSelectZone={(zoneId) => { closePlanningReport(); selectZone(zoneId); }} />
         </StudioDialog>}
@@ -1249,7 +1299,13 @@ export function ProjectViewPage() {
         {/* Zone properties panel */}
         {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
-            onUpdateDesign={properties => updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } })}
+            zones={siteZones} onUpdateParkLayout={data => updateZone.mutateAsync({zoneId:selectedZone.id,data,previousData:{coordinates:selectedZone.coordinates,properties:selectedZone.properties}})}
+            onUpdateDesign={properties => {
+              const footprintChanged=properties.building_footprint_scale!==selectedZone.properties?.building_footprint_scale;
+              const problem=footprintChanged ? placementProblem(selectedZone.coordinates,siteZones,getActiveSiteBoundary(siteZones),selectedZone.id,{properties}) : null;
+              if(problem){toast.error(problem,{position:'top-center'});return;}
+              updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } });
+            }}
             onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
             onConnections={()=>setConnectionZoneId(selectedZone.id)}
             onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
@@ -1257,10 +1313,31 @@ export function ProjectViewPage() {
         )}
         {selectedZone && !entrancePick && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <StreetRoutePanel zone={selectedZone} disabled={isSaving} onReshape={coords=>reshapeObject(selectedZone.id, coords)}
+            onDuplicate={async (eastM, northM) => {
+              if (pendingDrafts.length > 0) throw new Error('Resolve the pending save with Retry or Discard before creating another copy.');
+              const copy = duplicateStreet(selectedZone, eastM, northM);
+              const boundary = getActiveSiteBoundary(siteZones);
+              const problem = specialistConnectionProblem(copy, siteZones) ?? brtConnectionProblem(copy, siteZones)
+                ?? streetConnectionProblem(copy, siteZones)
+                ?? nativeStreetRouteProblem(copy, boundary)
+                ?? streetRouteProblem(copy.coordinates, Number(copy.properties.width), parsePersistedCenterline(copy.properties.plan_route_controls) ?? undefined)
+                ?? placementProblem(copy.coordinates, siteZones, boundary, undefined, { allowStreetIntersections: true });
+              if (problem) throw new Error(problem);
+              const created = await createZone.mutateAsync(copy);
+              selectZone(created.id);
+            }}
             onUpdateDesign={data => {
-              const problem = streetRouteProblem(data.coordinates, Number(data.properties.width))
+              const problem = (!streetEditConnectionCheck(selectedZone, siteZones)({ ...selectedZone, ...data })
+                ? 'This section needs more room at an existing junction. Keep this street type or move the junction first.' : null)
+                ?? nativeStreetRouteProblem({...selectedZone,...data},getActiveSiteBoundary(siteZones))
+                ?? specialistConnectionProblem({...selectedZone,...data},siteZones)
+                ?? brtConnectionProblem({...selectedZone,...data},siteZones)
+                ?? streetConnectionProblem({...selectedZone,...data},siteZones)
+                ?? streetRouteProblem(data.coordinates, Number(data.properties.width),
+                parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)
                 ?? placementProblem(data.coordinates, siteZones,
-                  publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id);
+                  publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id,
+                  { allowStreetIntersections: true });
               if (problem) { toast.error(problem); return; }
               updateZone.mutate({ zoneId: selectedZone.id, data,
                 previousData: { coordinates: selectedZone.coordinates, properties: selectedZone.properties } });
@@ -1295,7 +1372,11 @@ export function ProjectViewPage() {
             }}
             onDelete={(zoneId) => deleteZone.mutate(zoneId)}
             onClose={() => selectZone(null)}
-            onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+            onAIGenerate={(buildingId, prompt, tab) => {
+              setAiGenerateInitialPrompt(prompt);
+              setAiGenerateInitialTab(tab);
+              setAiGenerateBuildingId(buildingId);
+            }}
             onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
             buildings={project.buildings}
             allZones={siteZones}
@@ -1401,6 +1482,7 @@ export function ProjectViewPage() {
           globeCapture={handleGlobeStreetCapture}
           buildings={visibleBuildings}
           onRenderSaved={rememberSavedRender}
+          onPrepareCommunity3D={handleOpenGenerate3D}
         />
 
         {renderLightbox && (
@@ -1523,6 +1605,20 @@ export function ProjectViewPage() {
           />
         )}
 
+        {aiGenerateBuildingId && (
+          <AIGenerateModal
+            buildingId={aiGenerateBuildingId}
+            buildingName={project.buildings?.find((building) => building.id === aiGenerateBuildingId)?.name}
+            initialPrompt={aiGenerateInitialPrompt}
+            initialTab={aiGenerateInitialTab}
+            onClose={() => setAiGenerateBuildingId(null)}
+            onComplete={() => {
+              queryClient.invalidateQueries({ queryKey: ['project', id] });
+              setAiGenerateBuildingId(null);
+            }}
+          />
+        )}
+
         {/* LEGO assembly composer — modular building preview + saved recipes */}
         {legoZone && (
           <LegoAssemblyPreview
@@ -1641,7 +1737,11 @@ export function ProjectViewPage() {
               }}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
-              onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+              onAIGenerate={(buildingId, prompt, tab) => {
+                setAiGenerateInitialPrompt(prompt);
+                setAiGenerateInitialTab(tab);
+                setAiGenerateBuildingId(buildingId);
+              }}
               onOpenBlockEditor={(draftZone) => setLegoZone(draftZone)}
               buildings={project.buildings}
               allZones={siteZones}
@@ -1804,6 +1904,8 @@ export function ProjectViewPage() {
             <AIGenerateModal
               buildingId={aiGenerateBuildingId}
               buildingName={project.buildings?.find((b) => b.id === aiGenerateBuildingId)?.name}
+              initialPrompt={aiGenerateInitialPrompt}
+              initialTab={aiGenerateInitialTab}
               onClose={() => setAiGenerateBuildingId(null)}
               onComplete={() => {
                 queryClient.invalidateQueries({ queryKey: ['project', id] });
@@ -1991,8 +2093,10 @@ interface ProjectRendersTrayProps {
 }
 
 function RenderSourceNote({ render }: { render: SavedRender }) {
+  const notice = savedRenderNotice(render);
+  if (!notice && !render.provenance_url) return null;
   return <p className="mt-2 text-xs text-white/90">
-    {savedRenderNotice(render)}
+    {notice}
     {render.provenance_url && <a href={resolveApiFileUrl(render.provenance_url)} target="_blank" rel="noreferrer"
       className="ml-2 inline-flex min-h-8 items-center underline">View source record</a>}
   </p>;
@@ -2033,11 +2137,8 @@ function videoRenderLabel(video: VideoAttempt): string {
 }
 
 function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect, onSelectVideo }: ProjectRendersTrayProps) {
-  const [showAiAttempts, setShowAiAttempts] = useState(true);
-  const attemptCount = renders.filter((render) => render.variant === 'provider_original').length;
   const items = [
-    ...renders.filter((render) => showAiAttempts || render.variant !== 'provider_original')
-      .map((render) => ({ kind: 'image' as const, created_at: render.created_at, render })),
+    ...renders.map((render) => ({ kind: 'image' as const, created_at: render.created_at, render })),
     ...videos.map((video) => ({ kind: 'video' as const, created_at: video.created_at, video })),
   ].sort((left, right) => new Date(right.created_at).getTime() - new Date(left.created_at).getTime());
 
@@ -2075,10 +2176,6 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
-        {attemptCount > 0 && <label className="mb-3 flex min-h-11 items-center gap-2 text-xs text-slate-700">
-          <input type="checkbox" checked={showAiAttempts} onChange={(event) => setShowAiAttempts(event.target.checked)} />
-          Show AI originals ({attemptCount})
-        </label>}
         {items.length === 0 ? (
           <div className="flex min-h-36 flex-col items-center justify-center rounded-lg border border-dashed border-primary-950/[0.12] px-4 py-6 text-center">
             <Sparkles size={22} className="text-primary-950/25" />
@@ -2088,16 +2185,7 @@ function ProjectRendersTray({ renders, videos, open, onToggle, onClose, onSelect
         ) : (
           <div className="grid grid-cols-2 gap-2">
             {items.map((item) => item.kind === 'image' ? (
-              <button key={`image-${item.render.id}`} type="button" onClick={() => onSelect(item.render)} className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] text-left transition hover:border-amber-400/80">
-                <img src={resolveApiFileUrl(item.render.image_url)} alt={item.render.prompt || 'Saved render'} className="aspect-square w-full object-cover" />
-                {savedRenderNeedsReview(item.render) && <span className="absolute left-1 top-1 rounded bg-amber-100 px-1.5 py-1 text-[10px] font-bold text-amber-950">
-                  {item.render.variant === 'provider_original' ? 'AI render' : savedRenderIsSource(item.render) ? '3D source' : 'Compare with plan'}
-                </span>}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
-                  <p className="truncate text-[10px] font-semibold text-white">{item.render.style || 'render'}</p>
-                  <p className="text-[10px] text-white/65">{new Date(item.render.created_at).toLocaleDateString()}</p>
-                </div>
-              </button>
+              <SavedRenderCard key={`image-${item.render.id}`} render={item.render} onSelect={onSelect} />
             ) : (
               <button key={`video-${item.video.id}`} type="button" onClick={() => onSelectVideo(item.video)} className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-black text-left transition hover:border-[#28c7e8]">
                 {item.video.guide_image_url ? (

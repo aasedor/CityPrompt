@@ -1,0 +1,39 @@
+{
+  "schema": "cityprompt.classroom-building-selection@1",
+  "date": "2026-09-27",
+  "scope": "Local classroom candidates; existing independent clay reviews retained. Current browser validation pending.",
+  "buildings": [
+    {
+      "candidate": "calgary-side-by-side-duplex-clay-v004",
+      "sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92"
+    },
+    {
+      "candidate": "montreal-plateau-duplex-clay-v004",
+      "sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3"
+    },
+    {
+      "candidate": "courtyard-brick-modern-clay-v004",
+      "sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a"
+    },
+    {
+      "candidate": "calgary-inner-city-bungalow-clay-v005",
+      "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153"
+    },
+    {
+      "candidate": "toronto-edwardian-foursquare-clay-v004",
+      "sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7"
+    },
+    {
+      "candidate": "detached_contemporary_infill-clay-v003",
+      "sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5"
+    },
+    {
+      "candidate": "glass_tower_podium_modern-clay-v003",
+      "sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43"
+    },
+    {
+      "candidate": "vancouverism-tower-podium-clay-v004",
+      "sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172"
+    }
+  ]
+}

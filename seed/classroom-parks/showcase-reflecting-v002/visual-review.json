@@ -1,0 +1,33 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "reviewer": "root builder: direct exported-GLB render inspection",
+  "independent": false,
+  "model_sha256": "2eb802caefceb5e591a12ea7393ac84f79dfbf82cb471d152acae6d04b691179",
+  "reviewed_views": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "2c8121bda4a5b0d7462b7cd9921df3cd9a63f06df44b082165413c285edd97b3"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "f750cf2ea96a810b5754ed91274a9c44faf8ee714a180e948d13e71503e85be3"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "a98e214f85762793933df96793dbe276f8426a952e0f3066ac9c1f4437dee685"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "33317a1092b854b17beb72127afaaad34371470d974335c8ae517c409fb2892f"
+    }
+  ],
+  "findings": [
+    "Two angular reflecting lobes and four jets are visible in top and ground views.",
+    "Mitered coping replaces overlapping corner slabs; hedges follow the pool outline.",
+    "Perimeter seating and eight rooted tree wells leave the outer walking routes clear."
+  ],
+  "scope": "Native composition, measured envelope, grounded furniture and source identity; no browser or user approval claimed.",
+  "runtime_status": "NOT TESTED",
+  "publication_status": "local pilot only",
+  "completed": false
+}

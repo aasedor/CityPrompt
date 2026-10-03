@@ -16,6 +16,15 @@ describe('saved representation notice', () => {
   it('does not imply a fallback for ordinary uncompiled or detailed zones', () => {
     expect(representationNotice([{ properties: {} }] as SiteZone[])).toBe('');
   });
+  it('counts a saved local review GLB as detailed even if the backend compiled a massing fallback', () => {
+    const zone: SiteZone = { id: 'fourplex', project_id: 'project', coordinates: [[0, 0], [0, 1], [1, 1]],
+      color: '#ccc', sort_order: 0, created_at: '', updated_at: '', zone_type: 'building', properties: {
+      validation_native_url: '/validation-assets/reference-fourplex-v1/reference-fourplex-v1.glb',
+      community_3d: { schema_version: 1, state: 'compiled', kind: 'building',
+        generator: 'planned_massing', compiled_at: '2026-10-01', source_hash: 'test', representation_hash: 'test' },
+    } };
+    expect(representationNotice([zone])).toBe('');
+  });
   it('distinguishes an exact adaptive garden from an unsupported sibling after reload', () => {
     const garden = PARK_TRIO_ASSETS.find(asset => asset.id === 'park_trio_garden')!;
     const saved = JSON.parse(JSON.stringify({ zone_type: 'green_space', properties: {

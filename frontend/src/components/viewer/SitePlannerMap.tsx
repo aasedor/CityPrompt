@@ -1,5 +1,7 @@
+import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { useRoadNetwork } from '@/hooks/useRoadNetwork';
-import { roadDisplayZones, snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
+import { roadDisplayZones } from '@/utils/proceduralRoadNetwork';
+import { streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
 import { useEffect, useRef, useCallback, useState, useMemo } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -233,46 +235,6 @@ function smoothPolyline(points: number[][], segmentsPerSpan = 8): number[][] {
  * Buffer a polyline into a polygon strip of given width in meters.
  * Coordinates are [lng, lat]. Width is in meters.
  */
-function bufferLineToPolygon(points: number[][], widthMeters: number): number[][] {
-  if (points.length < 2) return points;
-
-  const halfWidth = widthMeters / 2;
-  const lat = points[0][1];
-  const metersPerDegLat = 111320;
-  const metersPerDegLon = metersPerDegLat * Math.cos((lat * Math.PI) / 180);
-
-  const left: number[][] = [];
-  const right: number[][] = [];
-
-  for (let i = 0; i < points.length; i++) {
-    let dx: number, dy: number;
-
-    if (i === 0) {
-      dx = points[1][0] - points[0][0];
-      dy = points[1][1] - points[0][1];
-    } else if (i === points.length - 1) {
-      dx = points[i][0] - points[i - 1][0];
-      dy = points[i][1] - points[i - 1][1];
-    } else {
-      // Average of adjacent segment directions for smooth corners
-      dx = points[i + 1][0] - points[i - 1][0];
-      dy = points[i + 1][1] - points[i - 1][1];
-    }
-
-    const len = Math.sqrt(dx * dx + dy * dy);
-    if (len === 0) continue;
-
-    // Perpendicular offset in degrees
-    const perpLng = (-dy / len) * (halfWidth / metersPerDegLon);
-    const perpLat = (dx / len) * (halfWidth / metersPerDegLat);
-
-    left.push([points[i][0] + perpLng, points[i][1] + perpLat]);
-    right.push([points[i][0] - perpLng, points[i][1] - perpLat]);
-  }
-
-  // Polygon: left side forward, right side backward
-  return [...left, ...right.reverse()];
-}
 
 /** Minimum points needed to finish a shape */
 function minPointsForTool(tool: SiteZoneType | null): number {
@@ -426,15 +388,18 @@ export function SitePlannerMap({
     if (linear) {
       // Road: open polyline (no closing back to start) — smoothed
       if (pts.length >= 2) {
-        const smooth = smoothPolyline(pts);
+        const width = (activeToolPropertiesRef.current?.width as number)
+          ?? ZONE_TYPE_CONFIG[tool!]?.defaultProperties?.width ?? 10;
+        const road = tool === 'road' ? streetDrawingGeometry(pts,
+          { ...activeToolPropertiesRef.current, width }, siteZonesRef.current) : null;
+        const smooth = road ? road.properties.plan_centerline as number[][] : smoothPolyline(pts);
         features.push({
           type: 'Feature',
           properties: {},
           geometry: { type: 'LineString', coordinates: smooth },
         });
         // Show buffered polygon preview using smoothed line
-        const width = activeToolPropertiesRef.current?.width ?? ZONE_TYPE_CONFIG[tool!]?.defaultProperties?.width ?? 10;
-        const buffered = bufferLineToPolygon(smooth, width);
+        const buffered = road?.coordinates ?? bufferLineToPolygon(smooth, width);
         features.push({
           type: 'Feature',
           properties: {},
@@ -592,15 +557,13 @@ export function SitePlannerMap({
   const finishDrawing = useCallback((tool: SiteZoneType, pts: number[][], properties?: SiteZoneProperties | null) => {
     const props = { ...(properties ?? activeToolPropertiesRef.current) };
     let coords: number[][];
-    if (isLinearTool(tool)) {
+    if (tool === 'road') {
+      const road = streetDrawingGeometry(pts, { ...ZONE_TYPE_CONFIG.road.defaultProperties, ...props }, siteZonesRef.current);
+      coords = road.coordinates;
+      Object.assign(props, road.properties);
+    } else if (isLinearTool(tool)) {
       const width = (props?.width as number) ?? ZONE_TYPE_CONFIG[tool]?.defaultProperties?.width ?? 10;
-      const proceduralRoad = tool === 'road' && !props.pick_place_street_section;
-      const smooth = smoothPolyline(proceduralRoad ? snapRoadEndpoints(pts, siteZonesRef.current, props.road_level) : pts);
-      coords = bufferLineToPolygon(smooth, width);
-      if (proceduralRoad) {
-        props.plan_centerline = smooth;
-        props.procedural_road = 1;
-      }
+      coords = bufferLineToPolygon(smoothPolyline(pts), width);
     } else {
       coords = [...pts];
     }

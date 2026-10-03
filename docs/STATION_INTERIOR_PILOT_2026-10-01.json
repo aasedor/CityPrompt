@@ -1,0 +1,205 @@
+{
+  "schema": "cityprompt.station_interior_pilot@1",
+  "date": "2026-10-01",
+  "scope": "One Victorian railway station local pilot",
+  "method": "RLASM v6.1 architectural clay",
+  "candidate": "victorian-station-interior-clay-v007",
+  "model": {
+    "path": "victorian-station-interior-clay-v007.glb",
+    "bytes": 12906244,
+    "sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+    "meshes": 14,
+    "materials": 14,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 14,
+    "vertices": 159947,
+    "polygons": 122427,
+    "triangles": 234162
+  },
+  "native_dimensions_m": {
+    "width": 60.0,
+    "depth": 96.0,
+    "height": 32.560001373291016
+  },
+  "plot_m": [
+    64,
+    100
+  ],
+  "occupied_floors": 2,
+  "gallery_rise_m": 5.1,
+  "independent_review": {
+    "status": "PASS",
+    "unresolved_p0": 0,
+    "unresolved_p1": 0,
+    "renders": 21,
+    "phone_boards": 3,
+    "sha256": "e0b39dbc4db094696d799b7c35c166035b92dbd1d3477165dfe7b3045b1ff06b"
+  },
+  "walking_geometry": {
+    "status": "PASS",
+    "model_sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+    "samples": 7276,
+    "max_step_m": 0.17000000000000082,
+    "max_surface_error_m": 2.0980835113704188e-07,
+    "body_clearance_width_m": 0.44,
+    "results": [
+      {
+        "route": "concourse and platforms",
+        "direction": "forward",
+        "end": [
+          12,
+          40,
+          0.12
+        ]
+      },
+      {
+        "route": "concourse and platforms",
+        "direction": "reverse",
+        "end": [
+          0,
+          -45.970000000000795,
+          0.12
+        ]
+      },
+      {
+        "route": "paired stairs and gallery loop",
+        "direction": "forward",
+        "end": [
+          0,
+          -24,
+          0.12
+        ]
+      },
+      {
+        "route": "paired stairs and gallery loop",
+        "direction": "reverse",
+        "end": [
+          0,
+          -46,
+          0.12
+        ]
+      },
+      {
+        "route": "upper gallery promenade",
+        "direction": "forward",
+        "end": [
+          26,
+          -10.7,
+          5.220000000000001
+        ]
+      },
+      {
+        "route": "upper gallery promenade",
+        "direction": "reverse",
+        "end": [
+          19.996591732769872,
+          -10.66353154063762,
+          5.22
+        ]
+      }
+    ],
+    "failures": [],
+    "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+  },
+  "browser": {
+    "status": "PASS_LOCAL_PREPARED_SITE",
+    "project_url": "http://localhost:5186/projects/d7a93188-9802-4d04-89d5-436207ecc56f",
+    "zone_id": "043e402a-5e88-409a-b69b-a071d86b40a6",
+    "rotation_degrees": 90,
+    "stair_loop": {
+      "distance": 0.16556071241112622,
+      "elapsedS": 85.52039999997616,
+      "index": 25,
+      "maxHeight": 1102.2686006070562,
+      "maxTargetHeightError": 0.16999970074039084,
+      "minHeight": 1097.1685995426335,
+      "pose": {
+        "groundHeight": 1097.1687188360693,
+        "heading": 88.80384057751024,
+        "lat": 51.018386305968264,
+        "lng": -114.1191806408196
+      },
+      "reason": "both staircases and crossover walked in both directions through normal keyboard handlers",
+      "samples": 2138,
+      "status": "PASS",
+      "total": 26
+    },
+    "after_reload": {
+      "distance": 0.16107816670051645,
+      "elapsedS": 18.808,
+      "index": 6,
+      "maxHeight": 1102.2686004776713,
+      "maxTargetHeightError": 9.332563877251232e-07,
+      "minHeight": 1097.168600070983,
+      "pose": {
+        "groundHeight": 1102.2685951303097,
+        "heading": 267.49009905099035,
+        "lat": 51.01856611767164,
+        "lng": -114.1196789555517
+      },
+      "reason": "gallery reached after project reload",
+      "samples": 470,
+      "status": "PASS",
+      "total": 7
+    },
+    "rail_recovery": {
+      "atRail": {
+        "groundHeight": 1102.268618240815,
+        "heading": 267.49009905099035,
+        "lat": 51.01862497815168,
+        "lng": -114.11968584858108
+      },
+      "backedAway": {
+        "groundHeight": 1102.2686054252404,
+        "heading": 267.49009905099035,
+        "lat": 51.01859530506626,
+        "lng": -114.11968514410988
+      },
+      "before": {
+        "groundHeight": 1102.2685951303097,
+        "heading": 267.49009905099035,
+        "lat": 51.01856611767164,
+        "lng": -114.1196789555517
+      },
+      "errors": [],
+      "heldAtRail": {
+        "groundHeight": 1102.268618086639,
+        "heading": 267.49009905099035,
+        "lat": 51.01862497815333,
+        "lng": -114.11968721176004
+      }
+    },
+    "return_to_entrance": "PASS",
+    "exit_button": "PASS",
+    "escape": "PASS",
+    "saved_exact_revision": "victorian-station-interior-clay-v007",
+    "new_application_errors": [],
+    "grounding_issues": [],
+    "harness_notes": [
+      "An accidental call to a camera framing debug helper without arguments produced an isolated flatMap error; no product error was reproduced. The subsequent fresh reload and walking pass recorded zero errors.",
+      "An initial post-reload click used stale screen coordinates and started outside the building. The route driver timed out at its boundary. Picking inside the footprint from Top View reached the entrance and the subsequent gallery route passed."
+    ]
+  },
+  "checks": {
+    "frontend_tests": 48,
+    "backend_clay_tests": 38,
+    "compiler_workflow_tests": 24,
+    "type_check": "PASS",
+    "preflight": "PASS",
+    "carrier_apertures": "PASS",
+    "local_seed_dry_run": "PASS",
+    "local_seed_apply": "PASS: inserted one, replaced zero",
+    "local_seed_readback": "PASS"
+  },
+  "external_evidence": "C:\\dev-artifacts\\CityPrompt\\station-interior-2026-10-01",
+  "completed_catalogue": false,
+  "published": false,
+  "limitations": [
+    "Prepared level site pilot; not an exhaustive test of all terrain and movement sequences.",
+    "Clock tower and static coaches are not enterable; timetable is decorative.",
+    "Interior and unseen rear arrangements are authored inference.",
+    "Architectural-clay review only; human visual activation and publication remain separate.",
+    "Art school and courtyard hotel are not part of this checkpoint."
+  ]
+}

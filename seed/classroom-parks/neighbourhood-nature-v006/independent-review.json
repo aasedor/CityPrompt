@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "candidate": "nature-v006",
+  "reviewer": "independent_review",
+  "reviewed_at_utc": "2026-10-01T13:55:29.4551259Z",
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "decision": "offline_native_visual_pass",
+  "model": "assembly-preview.glb",
+  "model_sha256": "5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327",
+  "native_park_visual_pass": true,
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "scale_up_cleared": true,
+  "scope": "Independent holistic offline native park review of exact v006 bytes against all three photographic sources and conservatory-v013 native clay quality. All earlier failures are preserved. Pass is limited to native clay visual quality.",
+  "geometry": {
+    "reported_status": "PASS_OFFLINE_GEOMETRY",
+    "triangles": 899304,
+    "hash_verified": true,
+    "render_source": "reimported GLB",
+    "report_sha256": "1d95c0b4729215e312cc56ff4fcc5cc9eb66e7c62919d9471d89d8b1b6aea329",
+    "visual_pass_inferred_from_geometry": false
+  },
+  "closed_findings": [
+    {
+      "id": "N2",
+      "resolution": "Willow tunnel now has substantial physical leafy side and roof cover. Open portal and the play shelter identity are readable in plot_walk and walk."
+    },
+    {
+      "id": "N3",
+      "resolution": "Stepping faces are broad and flat; stone footprints and bank widths vary. Mixed perimeter clusters reduce the bead-row appearance. Octagonal simplification is compatible with this clay tier."
+    },
+    {
+      "id": "N1-ground-coverage",
+      "resolution": "Three overlapping leafy beds connect the deck/stream, tunnel flank and sand corner. They now read as planted masses at aerial and pedestrian scale, and visible hedge end faces have leaf cover. Broader right/rear crown hierarchy from v004 remains intact."
+    },
+    {
+      "id": "N1-willow-crown",
+      "resolution": "The sand-corner tree now has a coherent broad crown with irregular kit-quality foliage covering the exposed radial scaffold. Hanging outer branchlets remain visible in rear/detail and preserve a drooping silhouette. It fits the neighboring native trees."
+    }
+  ],
+  "blockers": [],
+  "positive_findings": [
+    "Whole-scene composition reads as a nature-play garden with stream, log play, sand, leafy tunnel and raised tree deck.",
+    "Widened right/rear crowns, low connected plant masses and a drooping sand-corner tree create distinct landscape layers.",
+    "Willow tunnel has leafy sides and roof while preserving open portals.",
+    "Flat stepping surfaces and mixed-size banks support the source-specific stream programme.",
+    "Bridge, rope structures, deck/stairs, benches and foliage have coherent visible contacts.",
+    "Side walking route and both end connections remain visibly clear.",
+    "All whole-scene images retain complete bounds and margins; pedestrian views show physical leaves, furnishings and ground detail consistent with the native catalogue tier."
+  ],
+  "nonblocking_notes": [
+    {
+      "priority": "P2",
+      "finding": "Stepping stones and woven tunnel remain stylized; more natural rock silhouettes and varied branchlet spacing would be optional polish within this native clay tier."
+    },
+    {
+      "priority": "P2",
+      "finding": "Phone-front pairs the pedestrian source with an aerial render. Full walk and plot_walk images were separately inspected."
+    }
+  ],
+  "benchmark": {
+    "candidate": "conservatory-v013",
+    "assessment": "At native clay tier, the park now has coherent authored ground planting, differentiated canopy, physical foreground detail and source-specific programme. The conservatory has a deliberately denser botanical programme; equal flower coverage is not required for nature play. No remaining P0/P1 visual deficit is identified.",
+    "inspected_files": [
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\parks\\conservatory-v013\\renders\\aerial.png",
+        "sha256": "054a72160158536e9ab69dc51dfee07650297a3e8e59f69a9a73aaa573f562a8",
+        "inspection": "Visual quality comparison"
+      },
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\parks\\conservatory-v013\\renders\\garden_gate.png",
+        "sha256": "49d7d55cc272690043e230dd6760006a650231224ae35a3326f02a81601971b5",
+        "inspection": "Visual quality comparison"
+      }
+    ]
+  },
+  "inspected_files": [
+    {
+      "path": "variant_0.png",
+      "sha256": "59fe473e5c81769c0bbae532851d162a335f0522c887f70183b3de3301f70212",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "variant_0_angle_60.jpg",
+      "sha256": "b0133a5684b0ca2e488e0b6ea51dbd7cec1d892a46fe6f7233b466cddcd895c4",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "variant_0_angle_90.jpg",
+      "sha256": "65aad6785530c2d24a11fd246f8219f3491e06d1140031c6d91f5003f0f75fec",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "0cb9d69d7b7cdae6a54e69793505ba88db938075754009aa43069fd9bf388dac",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "ecfd4359807ca016be0c85df0de8503484132a1d823f50f942c26b7ad4a72036",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "renders/plot_walk.png",
+      "sha256": "c533d886a2836ebd64f65d9e610e59c923d7d3b18a829652bbb74eb979a6e2e1",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "4715e1d3be1a7b353314269977cd8f11f857fbf73b6a1b9ad4735836b5d4634c",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "9b1649dbf6bb68678f98ed8cddc837663038e4508c9c122c28e6866a58ba2759",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "3bf7d8cf5dec946ea78c55bfc68720f7e91913bd8a690f65b3d9794f03c9f29d",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "boards/phone-front.png",
+      "sha256": "4dbbc189c12243fbed1bb39975cb5ff171ea41bd4c8d2af3aa3e4eaf0d50df81",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "boards/phone-oblique.png",
+      "sha256": "f68435cc9c960dff2c1c39f140914c73ee148b0765fa8f5725191369ae902a18",
+      "inspection": "Full image visually inspected for v006"
+    },
+    {
+      "path": "boards/phone-top.png",
+      "sha256": "c6989b1efc8861a8bd484f966dc0f96bc7b9a44e7b3a9fb4c082f82cc2cd6c0f",
+      "inspection": "Full image visually inspected for v006"
+    }
+  ],
+  "limitations": [
+    "No browser or runtime functionality tested.",
+    "No human visual, publication, runtime or playground safety approval.",
+    "No photoreal texture requirement is applied to this native clay review."
+  ],
+  "next_gate": "Runtime integration and browser functionality verification are separate work; this offline pass grants no human or publication approval."
+}

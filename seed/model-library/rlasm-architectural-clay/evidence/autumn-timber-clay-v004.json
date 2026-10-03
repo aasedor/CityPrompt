@@ -1,0 +1,182 @@
+{
+  "candidate": "autumn-timber-clay-v004",
+  "model_sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+  "reviewer": "independent RLASM architectural-clay reviewer /root/autumn_timber_review",
+  "date": "2026-09-30",
+  "scope": "Fresh holistic exact-source architectural-clay visual review under RLASM v6.1; all 13 actual-GLB reimport renders, three locked references and 1080x1920 phoneboard opened directly at original resolution. Identity, proportions, all elevations, openings, optics, contacts, access, roof programme, vegetation and camera evidence examined. No textured PBR requirement applied.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "architectural_clay_visual_pass",
+  "keeper_approved": false,
+  "runtime_activation_authorized": false,
+  "inspected_files": [
+    {
+      "path": "source-entry.json",
+      "sha256": "deb06480e201d820e2b7420f6d5b09ae2431c871f43239991dfe9dbb57bda03b"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "259f3b635c62906b744e7c2f408cdd781d73fa49713cd7ec90cd2e251d22bf3f"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "e1fefbdd078c25c41216c1cb1ac7df277958bb4ea1b75361d6655d0188db7299"
+    },
+    {
+      "path": "autumn-timber-clay-v004.glb",
+      "sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3"
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "sha256": "e96cee6e9555300b794e2f31e6db1f88489a983892f6437219f804760d6f95f7"
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "sha256": "34f7dc172e5900615b6a32da2d450767154ffc13e29a19e0a122f02b02bf992b"
+    },
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "646f3e4d0a5ce0bc4f0d37c1a380d6e1d8ee9139e457cdbb12addc1a0e09eed1"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "f3805c5afc7af120dc7646ab405d8c559a2937f76c3e4c068132de31f4c1604a"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "29db5e82a26682a97130eecdae7ac2b7e1bf4fd3b6d582b91c23af6de1c094b8"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "e0d4418675fed7482deea8ffd9d134b223d9a711fe113b5c256a1fe85dfa2256"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "bd0fdc3c154ef85b62f4185a07cf1804032e683e20427f62a0bbbe4c6ece22dd"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "11a0cfc92a5c0c62d5320288bffe9e723fa9b86a07758a5874350a19375f4dc1"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "43bc44ad3b6ff0b773c16034393b2918cb36f616a466d4f4be72063b5c7983f2"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "0fcd109d4761755f553ee4d480a151ece19e5ca6363d7f8e7600c7798bee4300"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "10c236e0b3037784d864a2daad4ecc7db4ee00aebe4dc19ee5c98783dbb4ff30"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "6f5db34f3ed29e645b7822667ec798d4e011de5e7f13b5a0f0e6745e8cc080b1"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "a48aa4ca6969e7ebc72b4b063c17822ac2f67ea6d00f442c2bc113a1610e0583"
+    },
+    {
+      "path": "renders/roof_garden.png",
+      "sha256": "038fd8d5012c7ad2adf33ebf521b93b659fabf8a39a41a426ae365caaacf9e8e"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "b66038ae5f13f71169b4ddf3347e765d7eccf2b972ed5e419f7b340e74c688c7"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "18ba9a933895eff2d7aa2f1ba68ceb6b0e91463524caf8ca5402d8618217b929"
+    },
+    {
+      "path": "boards/comparison-phone.png",
+      "sha256": "2426595008be56387763994ae862755a5858f044afbe51342784779b2c943997"
+    }
+  ],
+  "blockers": [],
+  "source_identity": {
+    "archetype_id": "nordic_timber_midrise",
+    "variant_id": "nordic_timber_mass_timber",
+    "finding": "The six-storey, five-bay front, narrow slots and asymmetric recessed loggias, timber frame, flat planted roof and offset canopy/core retain the exact source identity at clay detail level."
+  },
+  "pixel_findings": [
+    "Whole front and rear retain six occupied levels with consistent datums; both sides have complete four-bay envelopes. Flat roof and offset pavilion/core massing agree with the source programme; no generic blank secondary elevation remains.",
+    "Both previously opaque first side ground-floor bays now show recessed framed glazing and room depth. Front-left loggia and rear slot-window stacks stay repaired. All corner exposures read as open-plan glazed rooms rather than pale plates crossing apertures.",
+    "Loggia returns, recessed panes, narrow window sills, projecting frame and guardrails remain visibly distinct. Facade close shows cut-wall depth and occupied room planes behind the optical layer without opaque infill crossing the reviewed openings.",
+    "Central double glazed entry, handles, canopy and seated stoop remain legible; glass_close shows jambs, head, threshold, glazing and occupied depth. The lobby stair is visible from the left-side ground floor. This proves conceptual exterior access, not a complete internal egress or accessibility design.",
+    "Posts bear at grade, beams/roof caps remain seated, balcony floor/return/guard relationships are coherent, and roof canopy supports visibly meet its deck and cap. No floating roof structures or exposed envelope gaps found in the rendered roster.",
+    "Perimeter roof beds and inner longitudinal bed now carry continuous low groundcover below botanical shrubs and branching trees. This restores the planted-roof reading in aerial, top, roof_garden and phoneboard while keeping a clear circulation loop and core/pavilion access. More regular planting than the photograph is acceptable within this clay profile.",
+    "Whole-elevation and oblique cameras retain the footprint and crown with neutral margins. All named detail proofs are legible. Top framing is conservative but its topology remains readable and is supported by closer aerial/roof_garden images.",
+    "Restrained timber, dark glazing/metal, neutral roof and foliage colours remain coherent. Source material texture, weathering and fine grain are outside this architectural-clay review."
+  ],
+  "closed_prior_findings": [
+    {
+      "id": "T-P0-01 / T2-P0-01",
+      "status": "closed",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/front.png",
+        "renders/rear.png",
+        "renders/front_corner.png",
+        "renders/rear_side.png"
+      ],
+      "finding": "All previously blocked corner and first-bay aperture failures are absent in v004 pixels."
+    },
+    {
+      "id": "T-P0-02",
+      "status": "closed for conceptual exterior access",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/walk.png",
+        "renders/left_side.png"
+      ],
+      "finding": "Visible public doorway, threshold/stoop and lobby depth provided; complete interior routing is not claimed."
+    },
+    {
+      "id": "T-P0-03",
+      "status": "closed",
+      "evidence": [
+        "renders/glass_close.png"
+      ],
+      "finding": "Reframed detail proves actual entrance glazing and depth."
+    },
+    {
+      "id": "T-P1-01 / T2-P1-01",
+      "status": "closed",
+      "evidence": [
+        "renders/top.png",
+        "renders/roof_garden.png",
+        "renders/architecture_close.png",
+        "boards/comparison-phone.png"
+      ],
+      "finding": "Branch/leaf specimens replace primitive crowns; continuous groundcover repairs the bare-bed/sparse garden failure."
+    }
+  ],
+  "nonblocking_notes": [
+    {
+      "priority": "P2",
+      "finding": "A tighter top camera could improve phoneboard comparison while retaining neutral footprint margins. Existing aerial and roof-garden views provide sufficient topology proof."
+    }
+  ],
+  "runtime_caveat": {
+    "status": "unproven",
+    "bytes": 48163508,
+    "triangles": 446952,
+    "vertices": 1165680,
+    "textures": 0,
+    "images": 0,
+    "finding": "48.2 MB / 446,952 triangles is a substantial single-building payload. This visual pass does not prove browser loading, frame time, memory, scene repetition or runtime placement. Optimize and test separately before any runtime acceptance; any changed GLB needs its own hash and appropriate reimport evidence."
+  },
+  "limitations": [
+    "Architectural-clay visual pass only; no keeper_approved or textured-keeper claim.",
+    "Native-scale exact variant only; hidden rear/interior room arrangements remain explicitly inferred.",
+    "No engineering, complete internal egress/accessibility, terrain fit, browser runtime or arbitrary scaling approval.",
+    "Human runtime activation/publication remains separate; none performed."
+  ],
+  "finite_next_step": "Preserve this exact reviewed v004 and its hashes as the architectural-clay visual checkpoint. Runtime optimization/verification and human activation are separate gates."
+}

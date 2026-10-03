@@ -4,7 +4,7 @@ import { buildAestheticSelectionProps } from './aestheticSelection';
 import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library, Box } from 'lucide-react';
+import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library, Box, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, CustomStyleDomain } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -61,7 +61,7 @@ interface ZonePropertiesPanelProps {
   onUpdate: (zoneId: string, data: { name?: string; color?: string; properties?: SiteZoneProperties }) => void;
   onDelete: (zoneId: string) => void;
   onClose: () => void;
-  onAIGenerate?: (buildingId: string, initialPrompt?: string) => void;
+  onAIGenerate?: (buildingId: string, initialPrompt?: string, initialTab?: 'image') => void;
   buildings?: Building[];
   allZones?: SiteZone[];
   onOpenBlockEditor?: (draftZone: SiteZone) => void;
@@ -1730,6 +1730,23 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
           && !zone.building_id
           && onAIGenerate && (
           <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
+        )}
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area')
+          && zone.building_id && onAIGenerate
+          && (() => {
+            const linkedBuilding = buildings?.find((building) => building.id === zone.building_id);
+            const specs = linkedBuilding?.specifications as Record<string, unknown> | undefined;
+            const hasPhotoWorkflow = !!specs?.photo_generation;
+            const isUnmodelledCustomBuilding = !linkedBuilding?.model_url
+              && !props.development_archetype_id && !specs?.archetype_id;
+            return hasPhotoWorkflow || isUnmodelledCustomBuilding;
+          })() && (
+          <button
+            onClick={() => onAIGenerate(zone.building_id!, undefined, 'image')}
+            className="flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-primary-950 bg-white px-3 py-1.5 text-xs font-bold text-primary-950 hover:bg-primary-950/[0.04]"
+          >
+            <Upload size={12} /> Build from photos
+          </button>
         )}
 
         {/* Build with LEGO modules ? modular assembly composer */}
@@ -3805,31 +3822,39 @@ function QuickRegenerateSection({ building }: { building: Building }) {
 // AI Generate button
 // =============================================================================
 
-function AIGenerateZoneButton({ zone, onAIGenerate }: { zone: SiteZone; onAIGenerate: (buildingId: string, initialPrompt?: string) => void }) {
+function AIGenerateZoneButton({ zone, onAIGenerate }: { zone: SiteZone; onAIGenerate: (buildingId: string, initialPrompt?: string, initialTab?: 'image') => void }) {
   const [loading, setLoading] = useState(false);
 
-  const handleClick = async () => {
+  const handleClick = async (initialTab?: 'image') => {
     setLoading(true);
     try {
       const building = await siteZonesApi.createBuildingFromZone(zone.id);
-      const prompt = composeZonePrompt(zone);
-      onAIGenerate(building.id, prompt);
+      onAIGenerate(building.id, initialTab ? undefined : composeZonePrompt(zone), initialTab);
     } catch {
-      // Error will be shown in the AI modal
+      toast.error('Could not open building generation. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
+    <div className="flex flex-col gap-2">
     <button
-      onClick={handleClick}
+      onClick={() => handleClick()}
       disabled={loading}
       className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-medium text-primary-950 hover:bg-purple-700 disabled:opacity-50"
     >
       {loading ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
       {loading ? 'Creating...' : 'AI Generate 3D'}
     </button>
+    <button
+      onClick={() => handleClick('image')}
+      disabled={loading}
+      className="flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-primary-950 bg-white px-3 py-1.5 text-xs font-bold text-primary-950 hover:bg-primary-950/[0.04] disabled:opacity-50"
+    >
+      <Upload size={12} /> Build from photos
+    </button>
+    </div>
   );
 }
 

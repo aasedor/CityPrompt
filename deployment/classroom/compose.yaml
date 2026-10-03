@@ -1,0 +1,80 @@
+# Portable application services. Use a dedicated DB, Redis and private S3 bucket.
+# This file publishes only loopback HTTP for a separately configured HTTPS edge.
+name: cityprompt-classroom
+
+x-app: &app
+  image: ${CLASSROOM_API_IMAGE:?Set the reviewed API image tag or digest}
+  env_file:
+    - ${CLASSROOM_BACKEND_ENV:?Set an absolute path to the private backend environment file}
+  environment:
+    APP_ENV: production
+    APP_DEBUG: "false"
+    CLASSROOM_RELEASE: "true"
+    DIRECT_3D_JOBS_ENABLED: "true"
+    CLASSROOM_ASSET_RECEIPT: /release/starter-receipt.json
+  restart: unless-stopped
+
+services:
+  migrate:
+    <<: *app
+    command: ["python", "-m", "scripts.prepare_database"]
+    restart: "no"
+
+  api:
+    <<: *app
+    command: ["bash", "scripts/start.sh"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    volumes:
+      - type: bind
+        source: ${CLASSROOM_ASSET_RECEIPT:?Set the verified starter receipt path}
+        target: /release/starter-receipt.json
+        read_only: true
+        bind: {create_host_path: false}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=6)"]
+      interval: 30s
+      timeout: 8s
+      retries: 3
+      start_period: 60s
+
+  images:
+    <<: *app
+    command: ["celery", "-A", "app.tasks.worker:celery_app", "worker", "--pool=prefork", "--concurrency=2", "--queues=direct3d", "--hostname=images@%h", "--loglevel=warning"]
+    stop_grace_period: 620s
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+
+  maintenance:
+    <<: *app
+    command: ["celery", "-A", "app.tasks.worker:celery_app", "worker", "--pool=prefork", "--concurrency=1", "--queues=direct3d-maintenance", "--hostname=maintenance@%h", "--loglevel=warning"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+
+  references:
+    <<: *app
+    command: ["celery", "-A", "app.tasks.worker:celery_app", "worker", "--pool=prefork", "--concurrency=1", "--queues=classroom-documents", "--hostname=references@%h", "--loglevel=warning"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+
+  scheduler:
+    <<: *app
+    command: ["celery", "-A", "app.tasks.worker:celery_app", "beat", "--schedule=/schedule/celerybeat", "--loglevel=warning"]
+    volumes: ["schedule:/schedule"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+
+  web:
+    image: ${CLASSROOM_WEB_IMAGE:?Set the reviewed static web image tag or digest}
+    restart: unless-stopped
+    ports: ["127.0.0.1:${CLASSROOM_HTTP_PORT:-8088}:8080"]
+    depends_on:
+      api: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  schedule:

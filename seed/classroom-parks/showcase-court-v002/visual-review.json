@@ -1,0 +1,33 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "reviewer": "root builder: direct exported-GLB render inspection",
+  "independent": false,
+  "model_sha256": "d4c6735bf653130f28ce81c87fcf228e31410e992b28a6ae8bf0b9263afbd477",
+  "reviewed_views": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "7320b5309e85327441f0bb029f815e708ddaa0009293f50f87154f5b5dace70d"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "72225ed05ad70418b546db44d6e435c504e99bc6320e3bbf6b87b5d8ec2083bb"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "d20ebd9c2d804ba31433264bf5841b2ebcc8f0590b4238aaead6e92bf516f075"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "7d7b43c61151e546c1ffb500021e54c048ee7a54a4cef337a4150ea6e9818fcb"
+    }
+  ],
+  "findings": [
+    "Seven U-shaped limestone seat steps, four shaded caf\u00e9 sets and central bronze fountain are complete.",
+    "Flush open southern entry preserves access without requiring terrain excavation.",
+    "Surrounding reference buildings are omitted; bowl datum adaptation is documented."
+  ],
+  "scope": "Native composition, measured envelope, grounded furniture and source identity; no browser or user approval claimed.",
+  "runtime_status": "NOT TESTED",
+  "publication_status": "local pilot only",
+  "completed": false
+}

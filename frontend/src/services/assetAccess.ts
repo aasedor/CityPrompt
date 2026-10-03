@@ -42,7 +42,11 @@ export function createAssetAccess(options: Options) {
   };
   const clear = () => { discardSession(); session = null; changed(); };
   const refreshSession = () => {
-    const next = options.session();
+    let next: string | null = null;
+    try { next = options.session(); } catch {
+      // Treat inaccessible credential storage as signed out and discard private
+      // tickets. Public media and background renewal must remain usable.
+    }
     if (next === session) return false;
     discardSession(); session = next;
     return true;

@@ -1,0 +1,1506 @@
+{
+  "id": "inclusive_accessible_playground_v0",
+  "revision": "inclusive-native-v002",
+  "title": "Inclusive Woodland Playground",
+  "dimensions_m": [
+    38,
+    36
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0,
+        -17.8
+      ],
+      "b": [
+        0,
+        -10
+      ],
+      "width": 1.8
+    },
+    {
+      "a": [
+        0,
+        -10
+      ],
+      "b": [
+        3,
+        -10
+      ],
+      "width": 1.8
+    },
+    {
+      "a": [
+        3,
+        -10
+      ],
+      "b": [
+        3,
+        0
+      ],
+      "width": 1.8
+    },
+    {
+      "a": [
+        0,
+        -10
+      ],
+      "b": [
+        -3,
+        -10
+      ],
+      "width": 1.8
+    },
+    {
+      "a": [
+        -3,
+        -10
+      ],
+      "b": [
+        -3,
+        -7
+      ],
+      "width": 1.8
+    },
+    {
+      "a": [
+        -3,
+        -7
+      ],
+      "b": [
+        -5,
+        -7
+      ],
+      "width": 1.8
+    }
+  ],
+  "image_references": [
+    {
+      "path": "archetypes\\openspaces\\inclusive-accessible-playground\\variant_0.png",
+      "sha256": "3e24726e548f2a438f6efcc1e059315f1b05822e63ac6dfdf7b86400ea8ba2dc"
+    },
+    {
+      "path": "archetypes\\openspaces\\inclusive-accessible-playground\\variant_0_angle_60.jpg",
+      "sha256": "319a0658688592bbd00242a183a965f0e83db54d6b712b148b27d8f80138f01b"
+    },
+    {
+      "path": "archetypes\\openspaces\\inclusive-accessible-playground\\variant_0_angle_90.jpg",
+      "sha256": "9f1aa374d712b0c59d5b535aec32313294cf26089aabbe51f0bf324218234c91"
+    }
+  ],
+  "source_equipment": {
+    "inclusive-spinner": "cbf4eefafe64bc9cbb65a22cf9413c374e729ad8b4479aee6b4c308506e24a41"
+  },
+  "preparation_sha256": "c7e6d9be554b98efdca57089806cbeda632691ac94240d34a74d07742d9e7c67",
+  "kit_sha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+  "native_entrance": {
+    "x": 0,
+    "y": -18,
+    "widthM": 2.4,
+    "arrivalY": -16
+  },
+  "programme": "Two linked roofed timber play towers, ramp, swings, spinner, sensory panel, sheltered seating and layered planting.",
+  "limitations": [
+    "Prepared level concept only. Play equipment is conceptual; accessibility, fall zones and safety require specialist design review."
+  ],
+  "tree_wells": [],
+  "placements": [
+    {
+      "kind": "inclusive-spinner",
+      "x": 10,
+      "y": -10,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "timber_ramp_two_tower_play_v2",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "supported_swing_pair_v2",
+      "x": -10,
+      "y": -10,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "nine_disc_sensory_panel_v2",
+      "x": 0,
+      "y": -7,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "timber_seating_shelter_v2",
+      "x": -9.5,
+      "y": 11.2,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "backless_bench",
+      "x": -9.5,
+      "y": 10.75,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "backless_bench",
+      "x": -9.5,
+      "y": 11.649999999999999,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "timber_seating_shelter_v2",
+      "x": 9.5,
+      "y": 11.2,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "backless_bench",
+      "x": 9.5,
+      "y": 10.75,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "backless_bench",
+      "x": 9.5,
+      "y": 11.649999999999999,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "ornamental_tree",
+      "x": -14,
+      "y": 14.8,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "ornamental_tree",
+      "x": -5,
+      "y": 14.8,
+      "z": 0,
+      "yaw": 1.8,
+      "scale": 1
+    },
+    {
+      "kind": "ornamental_tree",
+      "x": 5,
+      "y": 14.8,
+      "z": 0,
+      "yaw": 3.6,
+      "scale": 1
+    },
+    {
+      "kind": "ornamental_tree",
+      "x": 14,
+      "y": 14.8,
+      "z": 0,
+      "yaw": 5.4,
+      "scale": 1
+    },
+    {
+      "kind": "ornamental_tree",
+      "x": -15.7,
+      "y": -2,
+      "z": 0,
+      "yaw": 7.2,
+      "scale": 1
+    },
+    {
+      "kind": "ornamental_tree",
+      "x": 15.7,
+      "y": -2,
+      "z": 0,
+      "yaw": 9.0,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -16.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -16.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -15.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -15.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -14.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 4.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -13.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 7.199999999999999,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -12.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 9.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -12.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 9.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -11.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 12.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -11.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 12.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -10.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 14.399999999999999,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -10.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 14.399999999999999,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -9.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 16.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -9.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 16.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -8.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 19.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -8.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 19.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -7.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 21.599999999999998,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -7.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 21.599999999999998,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -6.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 24.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -6.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 24.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -5.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 26.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -4.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 28.799999999999997,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -3.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 31.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -3.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 31.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -2.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 33.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -2.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 33.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -1.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 36.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -1.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 36.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -0.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 38.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -0.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 38.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 0.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 40.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 0.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 40.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 1.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 43.199999999999996,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 1.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 43.199999999999996,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 2.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 45.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 2.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 45.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 3.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 48.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 3.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 48.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 4.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 50.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 5.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 52.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 6.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 55.199999999999996,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 6.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 55.199999999999996,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 7.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 57.599999999999994,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 7.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 57.599999999999994,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 8.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 60.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 8.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 60.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 9.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 62.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 9.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 62.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 10.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 64.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 10.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 64.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 11.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 67.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 11.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 67.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 12.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 69.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 12.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 69.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 13.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 72.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 14.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 74.39999999999999,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 15.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 76.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 15.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 76.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 16.5,
+      "y": 14.6,
+      "z": 0,
+      "yaw": 79.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 16.5,
+      "y": 15.45,
+      "z": 0,
+      "yaw": 79.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": -14,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": -13,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": -12,
+      "z": 0,
+      "yaw": 4.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": -11,
+      "z": 0,
+      "yaw": 7.199999999999999,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": -10,
+      "z": 0,
+      "yaw": 9.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": -9,
+      "z": 0,
+      "yaw": 12.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": -8,
+      "z": 0,
+      "yaw": 14.399999999999999,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": -7,
+      "z": 0,
+      "yaw": 16.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": -6,
+      "z": 0,
+      "yaw": 19.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": -5,
+      "z": 0,
+      "yaw": 21.599999999999998,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": -4,
+      "z": 0,
+      "yaw": 24.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": -3,
+      "z": 0,
+      "yaw": 26.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": -2,
+      "z": 0,
+      "yaw": 28.799999999999997,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": -1,
+      "z": 0,
+      "yaw": 31.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": 0,
+      "z": 0,
+      "yaw": 33.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": 1,
+      "z": 0,
+      "yaw": 36.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": 2,
+      "z": 0,
+      "yaw": 38.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": 3,
+      "z": 0,
+      "yaw": 40.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": 4,
+      "z": 0,
+      "yaw": 43.199999999999996,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": 5,
+      "z": 0,
+      "yaw": 45.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": 6,
+      "z": 0,
+      "yaw": 48.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": 7,
+      "z": 0,
+      "yaw": 50.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": 8,
+      "z": 0,
+      "yaw": 52.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": 9,
+      "z": 0,
+      "yaw": 55.199999999999996,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": 10,
+      "z": 0,
+      "yaw": 57.599999999999994,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": 11,
+      "z": 0,
+      "yaw": 60.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": 12,
+      "z": 0,
+      "yaw": 62.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": 13,
+      "z": 0,
+      "yaw": 64.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -17,
+      "y": 14,
+      "z": 0,
+      "yaw": 67.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -17,
+      "y": 15,
+      "z": 0,
+      "yaw": 69.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": -14,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": -13,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": -12,
+      "z": 0,
+      "yaw": 4.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": -11,
+      "z": 0,
+      "yaw": 7.199999999999999,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": -10,
+      "z": 0,
+      "yaw": 9.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": -9,
+      "z": 0,
+      "yaw": 12.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": -8,
+      "z": 0,
+      "yaw": 14.399999999999999,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": -7,
+      "z": 0,
+      "yaw": 16.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": -6,
+      "z": 0,
+      "yaw": 19.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": -5,
+      "z": 0,
+      "yaw": 21.599999999999998,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": -4,
+      "z": 0,
+      "yaw": 24.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": -3,
+      "z": 0,
+      "yaw": 26.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": -2,
+      "z": 0,
+      "yaw": 28.799999999999997,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": -1,
+      "z": 0,
+      "yaw": 31.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": 0,
+      "z": 0,
+      "yaw": 33.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": 1,
+      "z": 0,
+      "yaw": 36.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": 2,
+      "z": 0,
+      "yaw": 38.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": 3,
+      "z": 0,
+      "yaw": 40.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": 4,
+      "z": 0,
+      "yaw": 43.199999999999996,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": 5,
+      "z": 0,
+      "yaw": 45.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": 6,
+      "z": 0,
+      "yaw": 48.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": 7,
+      "z": 0,
+      "yaw": 50.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": 8,
+      "z": 0,
+      "yaw": 52.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": 9,
+      "z": 0,
+      "yaw": 55.199999999999996,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": 10,
+      "z": 0,
+      "yaw": 57.599999999999994,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": 11,
+      "z": 0,
+      "yaw": 60.0,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": 12,
+      "z": 0,
+      "yaw": 62.4,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": 13,
+      "z": 0,
+      "yaw": 64.8,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 17,
+      "y": 14,
+      "z": 0,
+      "yaw": 67.2,
+      "scale": 1.05
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 17,
+      "y": 15,
+      "z": 0,
+      "yaw": 69.6,
+      "scale": 1.05
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -16,
+      "y": -16,
+      "z": 0,
+      "yaw": -38.4,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -15,
+      "y": -16,
+      "z": 0,
+      "yaw": -36.0,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -14,
+      "y": -16,
+      "z": 0,
+      "yaw": -33.6,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -13,
+      "y": -16,
+      "z": 0,
+      "yaw": -31.2,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -12,
+      "y": -16,
+      "z": 0,
+      "yaw": -28.799999999999997,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -11,
+      "y": -16,
+      "z": 0,
+      "yaw": -26.4,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -10,
+      "y": -16,
+      "z": 0,
+      "yaw": -24.0,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -9,
+      "y": -16,
+      "z": 0,
+      "yaw": -21.599999999999998,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -8,
+      "y": -16,
+      "z": 0,
+      "yaw": -19.2,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -7,
+      "y": -16,
+      "z": 0,
+      "yaw": -16.8,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -6,
+      "y": -16,
+      "z": 0,
+      "yaw": -14.399999999999999,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -5,
+      "y": -16,
+      "z": 0,
+      "yaw": -12.0,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -4,
+      "y": -16,
+      "z": 0,
+      "yaw": -9.6,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -3,
+      "y": -16,
+      "z": 0,
+      "yaw": -7.199999999999999,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 3,
+      "y": -16,
+      "z": 0,
+      "yaw": 7.199999999999999,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 4,
+      "y": -16,
+      "z": 0,
+      "yaw": 9.6,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 5,
+      "y": -16,
+      "z": 0,
+      "yaw": 12.0,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 6,
+      "y": -16,
+      "z": 0,
+      "yaw": 14.399999999999999,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 7,
+      "y": -16,
+      "z": 0,
+      "yaw": 16.8,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 8,
+      "y": -16,
+      "z": 0,
+      "yaw": 19.2,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 9,
+      "y": -16,
+      "z": 0,
+      "yaw": 21.599999999999998,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 10,
+      "y": -16,
+      "z": 0,
+      "yaw": 24.0,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 11,
+      "y": -16,
+      "z": 0,
+      "yaw": 26.4,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 12,
+      "y": -16,
+      "z": 0,
+      "yaw": 28.799999999999997,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 13,
+      "y": -16,
+      "z": 0,
+      "yaw": 31.2,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 14,
+      "y": -16,
+      "z": 0,
+      "yaw": 33.6,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 15,
+      "y": -16,
+      "z": 0,
+      "yaw": 36.0,
+      "scale": 1
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 16,
+      "y": -16,
+      "z": 0,
+      "yaw": 38.4,
+      "scale": 1
+    }
+  ],
+  "surface_regions": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 38,
+      "depth": 36,
+      "material": "soil"
+    }
+  ],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 2999560,
+    "sha256": "1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12"
+  },
+  "modules": {
+    "backless_bench": {
+      "path": "backless_bench.glb",
+      "bytes": 21728,
+      "sha256": "12d407b9518804d068c3b4132d3e4ea5eec9828bf1f098eff753be962c4a731a"
+    },
+    "flowering_perennial": {
+      "path": "flowering_perennial.glb",
+      "bytes": 162120,
+      "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+    },
+    "inclusive-spinner": {
+      "path": "inclusive-spinner.glb",
+      "bytes": 34116,
+      "sha256": "a0a39b1b7f69dc5d44f2205eb0f9997459223de6c9ffd0ff2cd74a93a6a85f7a"
+    },
+    "meadow_grass": {
+      "path": "meadow_grass.glb",
+      "bytes": 68700,
+      "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+    },
+    "nine_disc_sensory_panel_v2": {
+      "path": "nine_disc_sensory_panel_v2.glb",
+      "bytes": 53584,
+      "sha256": "2273b5e001835a7a69c96af95f7690496a20d1e2d725c2c3baf8e12c75a1b02f"
+    },
+    "ornamental_tree": {
+      "path": "ornamental_tree.glb",
+      "bytes": 1464120,
+      "sha256": "cfa294df10cb0b1bd482c4141f1ef2da8958d878271378fce846ffed48338b1b"
+    },
+    "silver_shrub": {
+      "path": "silver_shrub.glb",
+      "bytes": 367296,
+      "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+    },
+    "supported_swing_pair_v2": {
+      "path": "supported_swing_pair_v2.glb",
+      "bytes": 32116,
+      "sha256": "1799af9d15d7c4efad61be9d39188fb56aedbaec637baa4a42e62ee743ce312a"
+    },
+    "timber_ramp_two_tower_play_v2": {
+      "path": "timber_ramp_two_tower_play_v2.glb",
+      "bytes": 616164,
+      "sha256": "ec7fecb17689b0a95268b3d062d9e1c59be83c89d59a8cf8417b06f872e33e87"
+    },
+    "timber_seating_shelter_v2": {
+      "path": "timber_seating_shelter_v2.glb",
+      "bytes": 27032,
+      "sha256": "4f2f25fe568ff576d27859f6d7035f63fd90ef8d10ef3d054b87e0b995d2f370"
+    }
+  },
+  "bounds_m": [
+    [
+      -19.0,
+      -18.0,
+      -0.0637499988079071
+    ],
+    [
+      19.0,
+      18.0,
+      4.753912448883057
+    ]
+  ],
+  "triangles": 298676,
+  "mesh_instances": 324,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

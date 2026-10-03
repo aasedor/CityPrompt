@@ -21,6 +21,14 @@ describe('globe passive height correction policy', () => {
     })).toBe(false);
   });
 
+  it('keeps a newly geocoded site in view before its first boundary exists', () => {
+    expect(shouldUsePassiveGlobeHeightCorrection({
+      hasProjectFrameTargets: false,
+      hasPreferredCameraPose: false,
+      hasProjectLocation: true,
+    })).toBe(false);
+  });
+
   it('keeps passive collision correction for an unframed empty-city entry', () => {
     expect(shouldUsePassiveGlobeHeightCorrection({
       hasProjectFrameTargets: false,

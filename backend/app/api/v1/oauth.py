@@ -2,15 +2,12 @@
 OAuth2 social login endpoints for Google and Microsoft.
 """
 
-import base64
-import json
 import logging
-import secrets
 from datetime import datetime, timezone
 from urllib.parse import urlencode, urlparse
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -19,6 +16,7 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import create_access_token, create_refresh_token
 from app.models.models import User
+from app.services.oauth_state import issue_state, bind_browser, consume_state
 
 router = APIRouter()
 settings = get_settings()
@@ -69,32 +67,6 @@ def _is_allowed_frontend_origin(frontend_origin: str | None) -> bool:
     )
 
 
-def _build_oauth_state(frontend_origin: str | None) -> str:
-    payload = {"csrf": secrets.token_urlsafe(32)}
-    if _is_allowed_frontend_origin(frontend_origin):
-        payload["frontend_origin"] = frontend_origin.rstrip("/")
-    encoded = json.dumps(payload, separators=(",", ":")).encode("utf-8")
-    return base64.urlsafe_b64encode(encoded).decode("utf-8")
-
-
-def _resolve_frontend_redirect_origin(state: str | None) -> str:
-    fallback = settings.frontend_url.rstrip("/")
-    if not state:
-        return fallback
-
-    try:
-        padded = state + "=" * (-len(state) % 4)
-        decoded = base64.urlsafe_b64decode(padded.encode("utf-8")).decode("utf-8")
-        payload = json.loads(decoded)
-    except Exception:
-        return fallback
-
-    frontend_origin = payload.get("frontend_origin")
-    if isinstance(frontend_origin, str) and _is_allowed_frontend_origin(frontend_origin):
-        return frontend_origin.rstrip("/")
-    return fallback
-
-
 def _oauth_error_redirect(frontend_origin: str, message: str) -> RedirectResponse:
     params = urlencode({"oauth_error": message})
     return RedirectResponse(url=f"{frontend_origin}/oauth/callback?{params}", status_code=302)
@@ -109,6 +81,16 @@ async def google_login(frontend_origin: str | None = Query(default=None)):
             detail="Google OAuth is not configured",
         )
 
+    origin = frontend_origin if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url
+    return {"authorization_url": settings.google_redirect_uri.removesuffix('/callback') + '/start?' + urlencode({'frontend_origin': origin})}
+
+
+@router.get("/google/start")
+async def google_start(frontend_origin: str | None = Query(default=None)):
+    if not settings.google_client_id:
+        raise HTTPException(501, "Google OAuth is not configured")
+    origin = frontend_origin.rstrip('/') if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url.rstrip('/')
+    state, binding = await issue_state('google', origin)
     params = {
         "client_id": settings.google_client_id,
         "redirect_uri": settings.google_redirect_uri,
@@ -116,14 +98,15 @@ async def google_login(frontend_origin: str | None = Query(default=None)):
         "scope": "openid email profile",
         "access_type": "offline",
         "prompt": "select_account",
-        "state": _build_oauth_state(frontend_origin),
+        "state": state,
     }
     authorization_url = f"{GOOGLE_AUTH_URL}?{urlencode(params)}"
-    return {"authorization_url": authorization_url}
+    return bind_browser(RedirectResponse(authorization_url, status_code=302), 'google', binding)
 
 
 @router.get("/google/callback")
 async def google_callback(
+    request: Request,
     code: str | None = None,
     state: str | None = None,
     error: str | None = None,
@@ -131,7 +114,9 @@ async def google_callback(
     db: AsyncSession = Depends(get_db),
 ):
     """Handle the Google OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
-    frontend_origin = _resolve_frontend_redirect_origin(state)
+    # Verify before error handling, provider exchange or database lookup. The
+    # redirect origin comes from the issued record, never callback JSON.
+    frontend_origin = await consume_state(request, 'google', state)
 
     if error:
         reason = error_description or error
@@ -267,6 +252,16 @@ async def microsoft_login(frontend_origin: str | None = Query(default=None)):
             detail="Microsoft OAuth is not configured",
         )
 
+    origin = frontend_origin if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url
+    return {"authorization_url": settings.microsoft_redirect_uri.removesuffix('/callback') + '/start?' + urlencode({'frontend_origin': origin})}
+
+
+@router.get("/microsoft/start")
+async def microsoft_start(frontend_origin: str | None = Query(default=None)):
+    if not settings.microsoft_client_id:
+        raise HTTPException(501, "Microsoft OAuth is not configured")
+    origin = frontend_origin.rstrip('/') if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url.rstrip('/')
+    state, binding = await issue_state('microsoft', origin)
     params = {
         "client_id": settings.microsoft_client_id,
         "redirect_uri": settings.microsoft_redirect_uri,
@@ -274,19 +269,24 @@ async def microsoft_login(frontend_origin: str | None = Query(default=None)):
         "scope": "openid profile email User.Read",
         "response_mode": "query",
         "prompt": "select_account",
-        "state": _build_oauth_state(frontend_origin),
+        "state": state,
     }
     authorization_url = f"{MICROSOFT_AUTH_URL}?{urlencode(params)}"
-    return {"authorization_url": authorization_url}
+    return bind_browser(RedirectResponse(authorization_url, status_code=302), 'microsoft', binding)
 
 
 @router.get("/microsoft/callback")
 async def microsoft_callback(
-    code: str,
+    request: Request,
+    code: str | None = None,
     state: str | None = None,
+    error: str | None = None,
     db: AsyncSession = Depends(get_db),
 ):
     """Handle the Microsoft OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
+    frontend_origin = await consume_state(request, 'microsoft', state)
+    if error or not code:
+        return _oauth_error_redirect(frontend_origin, "Microsoft sign-in was cancelled or did not return a code. Start sign-in again.")
     if not settings.microsoft_client_id or not settings.microsoft_client_secret:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -381,7 +381,6 @@ async def microsoft_callback(
     refresh_token = create_refresh_token(str(user.id))
 
     # Redirect to frontend with tokens as query params
-    frontend_origin = _resolve_frontend_redirect_origin(state)
     redirect_params = urlencode(
         {
             "access_token": access_token,

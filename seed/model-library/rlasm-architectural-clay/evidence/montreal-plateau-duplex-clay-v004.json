@@ -1,0 +1,243 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "montreal-plateau-duplex-clay-v004",
+  "archetype_id": "montreal_duplex",
+  "variant_id": "montreal_duplex_plateau",
+  "reviewer": "Independent Astra reviewer /root/montreal_model_review; not original builder",
+  "reviewed_utc": "2026-09-22T20:18:32.584132+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Fresh holistic exact-source architectural-clay review of identity, plan, ratios, every elevation, roof, apertures, optical depth, residential program, supports, circulation, contact, semantic materials, cameras and regression evidence.",
+  "holistic_review_performed": true,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_pass",
+  "state": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "findings": [],
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "runtime_approved": false,
+  "runtime_activation_authorized": false,
+  "ready_for_sol_runtime_testing": true,
+  "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+  "model_bytes": 2148056,
+  "complete_delivered_bounds_authoring_xyz_m": [
+    [
+      -7.1490983963012695,
+      -12.420000076293945,
+      0.0
+    ],
+    [
+      5.5,
+      6.900000095367432,
+      8.104999542236328
+    ]
+  ],
+  "complete_delivered_dimensions_m": {
+    "width": 12.64909839630127,
+    "depth": 19.320000171661377,
+    "height": 8.104999542236328
+  },
+  "bounds_measurement": "Independent unpack of actual GLB POSITION binary values. All nodes lack transforms; glTF X/up/Y converted to authoring X/Y/Z as (x,-z,y).",
+  "meshes": 11,
+  "materials": 11,
+  "triangles": 37314,
+  "images": 0,
+  "textures": 0,
+  "native_floors": 2,
+  "homes": 2,
+  "source_hashes_verified": true,
+  "prior_review_sha256": "141faac8af03bbe0d11da99bd54347d2cd4398a188c43e036c1d7a82b84414b9",
+  "prior_review_all_enrolled_file_hashes_verified": true,
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\sources\\variant_0.png",
+      "bytes": 1390036,
+      "sha256": "ceb646a88b05e64efc00199e3e2cb07bd93c3d254a718db0f437b8ae26516671",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\sources\\variant_0_angle_60.jpg",
+      "bytes": 917288,
+      "sha256": "5b99389489aaff656b0d78d7fa67019b11f80f23c42da564578201aef56186ca",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\sources\\variant_0_angle_90.jpg",
+      "bytes": 900166,
+      "sha256": "8c08fa902611ecb027b7c5c6e67360d2624dcd10d5fcc4f44df80cdc240f4114",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\aerial.png",
+      "bytes": 1452554,
+      "sha256": "6ef30c573c8a0a1a4d9656a3f64a6132e0d8198bcfbaa0d7718f5d893502e8c2",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\architecture_close.png",
+      "bytes": 1572535,
+      "sha256": "3cb73a77373fe337ec46b85e7f3b8e90fe979b9e6ab726e517dfc9179a5505ad",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\facade_close.png",
+      "bytes": 1590349,
+      "sha256": "54fa878149cc508ef385d0f1b72ece7a100605a2211afe239c434c59b095586d",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\front.png",
+      "bytes": 1350152,
+      "sha256": "705ced883ba8013fdf2a65bf2b325bd4a7298eede7278935d9c003198046c8a9",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\front_corner.png",
+      "bytes": 1458300,
+      "sha256": "ab759781b2450dda4154d7da64c0218f90b440b766db54f033ffc1bdd42d0cb4",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\glass_close.png",
+      "bytes": 1521028,
+      "sha256": "3c899e78d213ddf050b2f5a5a53e6d7d6fd216ae50f11cb8aab0428434499207",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\left_side.png",
+      "bytes": 1319804,
+      "sha256": "c663f5479b0a2135c92130b68ad5e9638c759c7e94c853b00fec3388cf8dcc96",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\rear.png",
+      "bytes": 1303487,
+      "sha256": "30263b44a813cff57add1423cf60f1ed2a03a4a6f294f5a1464e06d29713a250",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\rear_side.png",
+      "bytes": 1420262,
+      "sha256": "fb3c34998f92172be098f27da131b3c9552f4c8e9445106fd9e8d7fd2c2c7c7e",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\right_side.png",
+      "bytes": 1322493,
+      "sha256": "f398ead9bb6dffa664f3839646f7be14fc2ee3dd71966f11ff2be9e404d483ec",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\roof_contact.png",
+      "bytes": 1508052,
+      "sha256": "446668723a16ca7676e07059da8f9778bb310460ebd1ef364d390c0c9db47ee8",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\side_projection.png",
+      "bytes": 1573598,
+      "sha256": "24e4ab566dd1778b052a9ee911cb3b62f228668a0fc1ba117107b899c9cb6260",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\stair_landing.png",
+      "bytes": 1630021,
+      "sha256": "fef5a048e812a2941e60b981d2be6ecd708c076b731a2c8fb58757c6b10a8bc3",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\top.png",
+      "bytes": 1272503,
+      "sha256": "2d25e1cab129fb3fb14f089706d3d5f1af049105a0c3ad09ed52ea913ebe4e82",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\all-views-contact.png",
+      "bytes": 1872420,
+      "sha256": "beea4d1b271273f561c18ffdf35a2d9425f2e3e0ff40b928b43e469593c0e56d",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\locked-source-board.png",
+      "bytes": 1533485,
+      "sha256": "c7013ecbab6008e30b00620d4f0f1a7acee31d42963f3ecee319d88d8dec6c5b",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\phone-construction.png",
+      "bytes": 1126776,
+      "sha256": "cd89f000e6bdb178d46dc550f682d2fc55fd8d93641d2a6c7277f0ee63ea8a50",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\phone-source-comparison.png",
+      "bytes": 1656162,
+      "sha256": "4b515ac4ca917c80fb7ea0b6cb48a32b61a2133a4c62bac59570e77a17794f19",
+      "inspection": "Fresh direct pixels via view_image original detail; individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\prework-manifest.json",
+      "bytes": 7724,
+      "sha256": "81d80a1e690e5f3e6782ff1482cf07cbe7f2f02a71bb9309ee837cd78e305aca",
+      "inspection": "Supporting metadata, binary or hash verification; not substituted for pixels"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\source-entry.json",
+      "bytes": 1177,
+      "sha256": "963d7ff44e7e77e1038749d18da7363942ff8b6f7abdc2b3bdc3d6a7761aa4e5",
+      "inspection": "Supporting metadata, binary or hash verification; not substituted for pixels"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\build-report.json",
+      "bytes": 95804,
+      "sha256": "9a467e3114b1e71055fcc74911cc8dbcbf81fb4348dc3d9af5bf5b9f94c4dafd",
+      "inspection": "Supporting metadata, binary or hash verification; not substituted for pixels"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\evidence\\builder-pixel-review.json",
+      "bytes": 3926,
+      "sha256": "67c3d62745d8abc0da86837283f429626d036aa7faf17c0f27d322cdcf23cb3e",
+      "inspection": "Supporting metadata, binary or hash verification; not substituted for pixels"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\evidence\\delivery-verification.json",
+      "bytes": 1498,
+      "sha256": "4f0c5cc003cf40833ef9bbe66e98b28eb291a8c7ec8e27e62eb162593642ccc8",
+      "inspection": "Supporting metadata, binary or hash verification; not substituted for pixels"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\review\\independent-architectural-clay-review.json",
+      "bytes": 12024,
+      "sha256": "141faac8af03bbe0d11da99bd54347d2cd4398a188c43e036c1d7a82b84414b9",
+      "inspection": "Supporting metadata, binary or hash verification; not substituted for pixels"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\montreal-plateau-duplex-clay-v004.glb",
+      "bytes": 2148056,
+      "sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "inspection": "Supporting metadata, binary or hash verification; not substituted for pixels"
+    }
+  ],
+  "full_resolution_individual_render_count": 14,
+  "boards_inspected": 4,
+  "phone_boards_inspected": 2,
+  "pixel_observations": [
+    "Source front, oblique and top agree on two occupied storeys, paired chamfered front bays, deep continuous cornice, flat parapet roof and source-defining curved external stair. Delivered front/front-corner/top/aerial preserve that identity.",
+    "Whole left/right/rear/rear-side elevations complete the envelope and its window grammar. No blank carrier, floating base or clipped roof termination is visible; complete base/stair footprint has neutral margins.",
+    "Roof contact shows a seated continuous roof, closed chamfered cornice corners, bounded cap tiers and connected roof fittings. No prior dangling corner tabs or open roof gaps are visible.",
+    "Glass, facade and side-projection close views show cut wall sections, narrow recessed frames, separate optical panes and interior furniture/room depth. Side and rear windows are visibly apertures rather than frames on solid walls.",
+    "Stair/architecture close views show separate upper/lower front door thresholds meeting platforms; stair joins upper landing with a closed return guard, continuous stringers and grade bearing. Landing columns reach grade. Side entry has its own short stepped approach.",
+    "All 14 individual 1440x1080 render files, three source images and four boards were opened fresh at original detail. Phone comparisons retain readable stacked-duplex identity and stair connections. Semantic clay materials are consistent; no textured material claim is made."
+  ],
+  "limitations": [
+    "Review reuses the exact existing v004 model; no new geometry or re-render was authored in this review.",
+    "Architectural-clay approval only. Not a textured keeper, surveyed scale, engineering, accessibility or code-compliance certification.",
+    "Right/rear elevations, partitions and furnishing are declared inference; surrounding neighbours, garden, public sidewalk and street are excluded context.",
+    "One complete stacked-duplex assembly at native size. No stretching, floor repetition or sibling substitution.",
+    "Entrances require runtime verification: front lower entry and curved stair upper entry share front approach space; an additional side lower-flat entry projects left. Reserve complete measured bounds, not 10.4x13.8 nominal wall dimensions.",
+    "No runtime entrance anchors were measured or approved by this task. Test connections at ground approach points, never at upper-floor door elevation; preserve side-step clearance.",
+    "Sol still must test Currie terrain contact, orientation, collision envelope, entry-to-sidewalk connections, edits, undo/reload and export. No browser check or seed was performed."
+  ],
+  "review_actions": "New external review JSON and reproducible verification script only; immutable candidate and repository untouched."
+}

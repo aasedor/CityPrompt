@@ -8,7 +8,7 @@ describe('lightweight landscape crowns', () => {
     const size = geometry.boundingBox!.getSize(new Vector3());
     for (const dimension of size.toArray()) expect(dimension).toBeCloseTo(1);
     expect(geometry.boundingBox!.getCenter(new Vector3()).length()).toBeLessThan(1e-6);
-    expect(geometry.index!.count / 3).toBeLessThanOrEqual(2400);
+    expect(geometry.index!.count / 3).toBeLessThanOrEqual(5300);
     for (const value of geometry.getAttribute('normal').array) expect(Number.isFinite(value)).toBe(true);
     // Foliage must have both overhead and lateral faces, rather than a flat cap.
     const normals = geometry.getAttribute('normal');

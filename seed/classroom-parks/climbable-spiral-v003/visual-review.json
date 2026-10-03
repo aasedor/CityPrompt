@@ -1,0 +1,24 @@
+{
+  "status": "PASS_AUTHOR_VISUAL_REVIEW",
+  "model_sha256": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8",
+  "reviewer": "Codex author review",
+  "inspected_files": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "e48803d31077234543581bef98315ff051e53e631bbca816a33097613e1cb956"
+    },
+    {
+      "path": "renders/entrance.png",
+      "sha256": "13b688a63d431fd6443a7e6224fa56b5aad9e9aa678e89e932a224268ae3e8cf"
+    }
+  ],
+  "findings": [
+    "Entrance and summit rail openings leave the walking route clear.",
+    "Continuous 3.5 m promenade with planting outside the path.",
+    "Ground plane separated from entry paving to avoid flicker."
+  ],
+  "limitations": [
+    "Author review; independent human approval is not claimed.",
+    "Browser verification pending."
+  ]
+}

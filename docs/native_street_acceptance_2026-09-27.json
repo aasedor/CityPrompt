@@ -1,0 +1,544 @@
+{
+  "schemaVersion": 1,
+  "initiative": "Seven native route streets",
+  "date": "2026-09-27",
+  "branch": "codex/seven-native-streets",
+  "startingCommit": "d34a9b9da",
+  "runtimeCheckpoint": "The commit containing this ledger; previous checkpoint 89f968a6b",
+  "status": "PARTIAL_LOCAL_RUNTIME",
+  "localRouteChoices": 7,
+  "newRoutesImplemented": 5,
+  "publication": "NOT AUTHORIZED",
+  "paidStreetCalls": 0,
+  "humanApproval": "NOT REQUESTED; agent visual evidence is separate from human approval",
+  "evidenceDirectory": "C:/dev-artifacts/CityPrompt/streets-runtime-2026-09-26",
+  "productionOrigin": "http://127.0.0.1:4181",
+  "projects": [
+    "5d79af7a-f92b-406b-b52d-f05083b48743",
+    "22e9cb59-5aad-497c-8d78-4df3568587d6"
+  ],
+  "inputZipSha256": "1234404b3738bf4c247d0d51968d36455503b12e4684e877712ab4cbfd7f63db",
+  "preservation": [
+    "original assemblies and recipes unchanged",
+    "legacy fixed fixtures retain bindings",
+    "Calgary Local and Collector retain editing resolution",
+    "park checkpoint preserved; no new park generation",
+    "user projects untouched"
+  ],
+  "sharedChecks": {
+    "mixedInventory": {
+      "status": "PASS",
+      "evidence": "seven-matrix-zones.json; eight ordinary-UI-authored routes, seven types, two manual BRT stops at 65 and 130 m"
+    },
+    "mixedJunctions": {
+      "status": "PASS",
+      "evidence": "seven-junction-preflight.json; all eight route checks valid and four complete T nodes after shared curved edit"
+    },
+    "exactPngDelivery": {
+      "status": "PASS",
+      "evidence": "downloads-verified/cityprompt-3d-view-1790505486073.png.receipt.json",
+      "sha256": "1a5ff19e3bc58fbdf8acb7c95264613ba45cc77dd17b6687e35aa6c4199521ce",
+      "bytes": 1297281,
+      "observation": "All seven types inspected after Shared curve, Undo/Redo, reopening and final production rebuild. Visible Download render action through Chromium native Windows path."
+    },
+    "duplicate": {
+      "status": "PASS",
+      "evidence": "canal-copy-created.png; seven-streets-reopened.png; duplicateStreet.test.ts; StreetDuplicateControls.test.tsx",
+      "limitation": "Canal created, Undo/Redo, reopened and deleted. Residential overlap rejected. Other types covered by shared code, not separate browser duplication trials."
+    },
+    "shortArmRejection": {
+      "status": "PASS",
+      "evidence": "ordinary-short-arm-rejection.png; streetConnectionProblem.test.ts",
+      "limitation": "71 m Residential crossing rejected near Main endpoint; existing scene retained."
+    },
+    "assetFailureRecovery": {
+      "status": "PASS",
+      "evidence": "bridge-corrupt-asset.png; bridge-corrupt-capture-blocked.png; bridge-asset-retry-recovered.png; nativeStreetAssets.test.ts",
+      "limitation": "Browser injection on Bridge only. Shared loader separately rejects missing bytes, wrong hashes and external dependencies."
+    },
+    "expectedMountedInventory": {
+      "status": "PASS",
+      "evidence": "nativeStreetReadiness.test.ts; actual mixed PNG",
+      "limitation": "Automated absent-model, stale source, missing instance and failed status checks; successful capture requires expected inventory."
+    },
+    "historyAndFailedSaves": {
+      "status": "PASS",
+      "evidence": "undoRevision.test.ts; undoProjectScope.test.ts; useSiteZones.test.ts; canal-fast-redo-reopened.png",
+      "limitation": "68 automated tests; no claim that every failure was separately injected for every street."
+    },
+    "performance": {
+      "status": "PASS",
+      "evidence": "performance-checkpoint.json",
+      "limitation": "Single bounded prepared-site Walk fixture; not a device matrix."
+    },
+    "naturalTerrain": {
+      "status": "N/A",
+      "evidence": "New five explicitly require prepared level ground; nativeStreetProgram.test.ts",
+      "limitation": "No natural-grade support advertised for these five."
+    },
+    "publicRoadEndpoint": {
+      "status": "NOT TESTED",
+      "evidence": "No mapped public-road endpoint in this mixed fixture",
+      "limitation": "Interior connections pass. Do not infer real-road continuity from a checkbox."
+    },
+    "touchAndNovice": {
+      "status": "NOT TESTED",
+      "evidence": "Agent simulation on desktop Chromium",
+      "limitation": "No independent student or touch-device acceptance."
+    },
+    "routeHandles": {
+      "status": "PASS",
+      "evidence": "shared-final-handles.png",
+      "observation": "Three exposed route handles; floating Move button removed for streets, body drag retained."
+    }
+  },
+  "variants": [
+    {
+      "variantId": "student_main_street_v1",
+      "parentId": "neighborhood_main_street",
+      "title": "Neighbourhood Main Street",
+      "sourceAssemblySha256": "5d4d7133dc53864029a91efc09ffc0b89d7ee5a831ac34d3485df3856c8eb179",
+      "sourceRecipeSha256": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531",
+      "programSha256": null,
+      "widthM": 23.0,
+      "nativeReferenceLengthM": 48,
+      "programLimits": {
+        "minLengthM": null,
+        "maxLengthM": null,
+        "preparedLevelOnly": null
+      },
+      "modules": {
+        "bench": {
+          "url": "/street-kits/pilots/student_main_street_v1/bench.glb",
+          "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+        },
+        "bike_rack": {
+          "url": "/street-kits/pilots/student_main_street_v1/bike_rack.glb",
+          "sha256": "bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76"
+        },
+        "bin": {
+          "url": "/street-kits/pilots/student_main_street_v1/bin.glb",
+          "sha256": "31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c"
+        },
+        "grove_tree": {
+          "url": "/street-kits/pilots/student_main_street_v1/grove_tree.glb",
+          "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278"
+        },
+        "heritage_lantern": {
+          "url": "/street-kits/pilots/student_main_street_v1/heritage_lantern.glb",
+          "sha256": "cee3838e334ba6e37a0a20707dec80d9173cce79f7f40e783dcc67acd951c4de"
+        },
+        "planter": {
+          "url": "/street-kits/pilots/student_main_street_v1/planter.glb",
+          "sha256": "c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b"
+        },
+        "timber_seat_wall": {
+          "url": "/street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
+          "sha256": "100ee7db5a4c6889be5a355260bda4670117d7241b1cb7f9ddcebd6e3047dcfd"
+        },
+        "tree_well_grate": {
+          "url": "/street-kits/pilots/student_main_street_v1/tree_well_grate.glb",
+          "sha256": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618"
+        }
+      },
+      "assetVerification": "PASS",
+      "agentVisualReview": "PASS_BOUNDED",
+      "runtimeAcceptance": "PARTIAL",
+      "publication": "NOT AUTHORIZED",
+      "evidence": [
+        "nativeStreetPilot.test.ts",
+        "shared-baseline-top.png",
+        "shared-main-junction-walk.png"
+      ],
+      "observations": [
+        "Current mixed scene includes reversed long Main with three valid T connections.",
+        "Historical source visual approval is not transferred to current runtime."
+      ],
+      "N_A": [
+        "Building and park gates",
+        "Paid AI comparison: not authorized for street initiative"
+      ],
+      "open": "See shared openRequiredChecks; no automatic whole-family approval."
+    },
+    {
+      "variantId": "student_market_street_v1",
+      "parentId": "pedestrian_only_street",
+      "title": "Pedestrian Market Street",
+      "sourceAssemblySha256": "a74074b02282f71e486b24e88ce732f9d669f3a195e7c3cb045f004af83d8831",
+      "sourceRecipeSha256": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345",
+      "programSha256": null,
+      "widthM": 18.0,
+      "nativeReferenceLengthM": 48,
+      "programLimits": {
+        "minLengthM": null,
+        "maxLengthM": null,
+        "preparedLevelOnly": null
+      },
+      "modules": {
+        "bench": {
+          "url": "/street-kits/pilots/student_market_street_v1/bench.glb",
+          "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+        },
+        "cafe_parasol": {
+          "url": "/street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
+          "sha256": "60d58e1acfb57d9cde82ea33f60b368d9d95bc3446b6b48f8ae97b194af6a38e"
+        },
+        "heritage_lantern": {
+          "url": "/street-kits/pilots/student_market_street_v1/heritage_lantern.glb",
+          "sha256": "cee3838e334ba6e37a0a20707dec80d9173cce79f7f40e783dcc67acd951c4de"
+        },
+        "market_stall": {
+          "url": "/street-kits/pilots/student_market_street_v1/market_stall.glb",
+          "sha256": "5d7c588fbb89704d7b1199432b17bd257a837f5df9f8b8bc45a8694cad80c2b3"
+        },
+        "planter": {
+          "url": "/street-kits/pilots/student_market_street_v1/planter.glb",
+          "sha256": "c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b"
+        },
+        "stone_fountain": {
+          "url": "/street-kits/pilots/student_market_street_v1/stone_fountain.glb",
+          "sha256": "263b17b8a091f076e8e5f784c3315eff9270f3c5516124b02e162877e6de12aa"
+        }
+      },
+      "assetVerification": "PASS",
+      "agentVisualReview": "PASS_BOUNDED",
+      "runtimeAcceptance": "PARTIAL",
+      "publication": "NOT AUTHORIZED",
+      "evidence": [
+        "nativeStreetPilot.test.ts",
+        "market-delete-undo.png",
+        "bridge-endpoint-connection.png",
+        "downloads-verified/cityprompt-3d-view-1790504800898.png"
+      ],
+      "observations": [
+        "Ground-end bridge connection and underpass with full stalls; delete/Undo/Redo."
+      ],
+      "N_A": [
+        "Building and park gates",
+        "Paid AI comparison: not authorized for street initiative"
+      ],
+      "open": "See shared openRequiredChecks; no automatic whole-family approval."
+    },
+    {
+      "variantId": "student_quiet_residential_street_v1",
+      "parentId": "student_quiet_residential_street_v1",
+      "title": "Quiet Residential Street",
+      "sourceAssemblySha256": "52305899464101def9199c861f1dabe3ae083fef56b87984fbd27bf9cf765bdd",
+      "sourceRecipeSha256": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+      "programSha256": "c2b41d298030c25d05f2e2525d5f271a23fa1690a85f4986d972546ce1b38cc0",
+      "widthM": 18,
+      "nativeReferenceLengthM": 48,
+      "programLimits": {
+        "minLengthM": 48,
+        "maxLengthM": 480,
+        "preparedLevelOnly": true
+      },
+      "modules": {
+        "bench": {
+          "url": "/street-kits/pilots/student_quiet_residential_street_v1/bench.glb",
+          "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+        },
+        "bike_rack": {
+          "url": "/street-kits/pilots/student_quiet_residential_street_v1/bike_rack.glb",
+          "sha256": "bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76"
+        },
+        "bin": {
+          "url": "/street-kits/pilots/student_quiet_residential_street_v1/bin.glb",
+          "sha256": "31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c"
+        },
+        "flowering_perennial": {
+          "url": "/street-kits/pilots/student_quiet_residential_street_v1/flowering_perennial.glb",
+          "sha256": "0fea864a84d1951033430f3e36454e013640a2e2cd02d0b8c260b908e8c4dc4e"
+        },
+        "grove_tree": {
+          "url": "/street-kits/pilots/student_quiet_residential_street_v1/grove_tree.glb",
+          "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278"
+        },
+        "light": {
+          "url": "/street-kits/pilots/student_quiet_residential_street_v1/light.glb",
+          "sha256": "010d21cd89f16db18aa6b5c467dcb77c37f7822539a9a3df9708fb7726e069a9"
+        },
+        "meadow_grass": {
+          "url": "/street-kits/pilots/student_quiet_residential_street_v1/meadow_grass.glb",
+          "sha256": "2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06"
+        },
+        "silver_shrub": {
+          "url": "/street-kits/pilots/student_quiet_residential_street_v1/silver_shrub.glb",
+          "sha256": "b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
+        }
+      },
+      "assetVerification": "PASS",
+      "agentVisualReview": "PASS_BOUNDED",
+      "runtimeAcceptance": "PARTIAL",
+      "publication": "NOT AUTHORIZED",
+      "evidence": [
+        "residential-browser-checkpoint.json",
+        "residential-matched-v1/",
+        "residential-curve-main-join.png",
+        "duplicate-no-fit-preserved.png"
+      ],
+      "observations": [
+        "Native 138 placements; draw, move, extend, too-short reject, history, reopen, Walk and exact preview.",
+        "Curved route and Main T inspected; Residential reverse direction browser case remains open."
+      ],
+      "N_A": [
+        "Building and park gates",
+        "Paid AI comparison: not authorized for street initiative"
+      ],
+      "open": "See shared openRequiredChecks; no automatic whole-family approval."
+    },
+    {
+      "variantId": "student_planted_shared_lane_v1",
+      "parentId": "student_planted_shared_lane_v1",
+      "title": "Planted Shared Lane",
+      "sourceAssemblySha256": "68fdd2f054c1ac324aac9f4bdf9782373e8bdf942c1fe82bd41a532f04263f1a",
+      "sourceRecipeSha256": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520",
+      "programSha256": "704acf3ec2b0712fe420ec1366b005f4ea5b00efc8a268effd786e812e1c5ba0",
+      "widthM": 14.0,
+      "nativeReferenceLengthM": 40,
+      "programLimits": {
+        "minLengthM": 40,
+        "maxLengthM": 480,
+        "preparedLevelOnly": true
+      },
+      "modules": {
+        "bench": {
+          "url": "/street-kits/pilots/student_planted_shared_lane_v1/bench.glb",
+          "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+        },
+        "bike_rack": {
+          "url": "/street-kits/pilots/student_planted_shared_lane_v1/bike_rack.glb",
+          "sha256": "bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76"
+        },
+        "bin": {
+          "url": "/street-kits/pilots/student_planted_shared_lane_v1/bin.glb",
+          "sha256": "31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c"
+        },
+        "flowering_perennial": {
+          "url": "/street-kits/pilots/student_planted_shared_lane_v1/flowering_perennial.glb",
+          "sha256": "0fea864a84d1951033430f3e36454e013640a2e2cd02d0b8c260b908e8c4dc4e"
+        },
+        "light": {
+          "url": "/street-kits/pilots/student_planted_shared_lane_v1/light.glb",
+          "sha256": "010d21cd89f16db18aa6b5c467dcb77c37f7822539a9a3df9708fb7726e069a9"
+        },
+        "meadow_grass": {
+          "url": "/street-kits/pilots/student_planted_shared_lane_v1/meadow_grass.glb",
+          "sha256": "2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06"
+        },
+        "ornamental_tree": {
+          "url": "/street-kits/pilots/student_planted_shared_lane_v1/ornamental_tree.glb",
+          "sha256": "437e6e87d362a0c3bffa1c2d84faf6bccfaf95750c660c5cfafee72de822af18"
+        },
+        "walkway_arbor": {
+          "url": "/street-kits/pilots/student_planted_shared_lane_v1/walkway_arbor.glb",
+          "sha256": "32bfc1b951adf0b644bb04d1977375b5c6d6c238c24b241c308a407c3a78e1da"
+        }
+      },
+      "assetVerification": "PASS",
+      "agentVisualReview": "PASS_BOUNDED",
+      "runtimeAcceptance": "PARTIAL",
+      "publication": "NOT AUTHORIZED",
+      "evidence": [
+        "shared-browser-checkpoint.json",
+        "shared-matched-v1/",
+        "shared-curve-reopened-top.png",
+        "shared-main-junction-walk.png"
+      ],
+      "observations": [
+        "Native 118 placements/four arbors;14 m source section.",
+        "Reverse/extend/reopen and gentle curve Undo/Redo/reopen; Main and BRT T nodes valid."
+      ],
+      "N_A": [
+        "Building and park gates",
+        "Paid AI comparison: not authorized for street initiative"
+      ],
+      "open": "See shared openRequiredChecks; no automatic whole-family approval."
+    },
+    {
+      "variantId": "brt_bus_rapid_transit_corridor_v0",
+      "parentId": "brt_bus_rapid_transit_corridor",
+      "title": "BRT Bus Rapid Transit Corridor",
+      "sourceAssemblySha256": "a83e47527c56fe19fc846d657017c422c045d3a5ef1669b82920402de3eeda69",
+      "sourceRecipeSha256": "c18cdf29bc7474a90b1bbbc5531650faefb388e0366f6ce2d1ba98c75bbecb1c",
+      "programSha256": "e6dc2b03fa39b59681cf27df7ddc0102d55fb03819675db37b1bdeb39fc64d83",
+      "widthM": 40,
+      "nativeReferenceLengthM": 100,
+      "programLimits": {
+        "minLengthM": 100,
+        "maxLengthM": 480,
+        "preparedLevelOnly": true
+      },
+      "modules": {
+        "light": {
+          "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/light.glb",
+          "sha256": "b480a69a4bcc2f8523e85804c8780a7df491233e9acdd20d58369c811096e166"
+        },
+        "shade_tree": {
+          "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/shade_tree.glb",
+          "sha256": "16478d194648e0e51d361f2ceb64b88274fa079c9d58d6f7f35437b7aedbec55"
+        },
+        "tree_well_grate": {
+          "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/tree_well_grate.glb",
+          "sha256": "f51ce084fa6ed1cda5e5fed3b0c3d678b8e762e6fc4f45f201292c40ecdbf60a"
+        },
+        "station_program": {
+          "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/station_program.glb",
+          "sha256": "22722b1515ca5cc0c34fabc7f32deb07733ba571c97a2a996fad7e347cbe65d3"
+        },
+        "bus_symbol": {
+          "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/bus_symbol.glb",
+          "sha256": "ca2492e046c1102d61c59702315ae08c1609ca3f3106f304f208137c4e5a3347"
+        }
+      },
+      "assetVerification": "PASS",
+      "agentVisualReview": "PASS_BOUNDED",
+      "runtimeAcceptance": "PARTIAL",
+      "publication": "NOT AUTHORIZED",
+      "evidence": [
+        "brt-browser-checkpoint.json",
+        "brt-matched-v1/",
+        "brt-roundtrip.json",
+        "brt-two-stops.png",
+        "shared-brt-valid-end.png",
+        "brtStreetProgram.test.ts"
+      ],
+      "observations": [
+        "Complete 152-object station assembly; manual stops only.",
+        "118 m and 208 m routes; zero/one/two stops, add/move/right-click/overlap rejection/history/reopen/Walk."
+      ],
+      "N_A": [
+        "Building and park gates",
+        "Paid AI comparison: not authorized for street initiative"
+      ],
+      "open": "See shared openRequiredChecks; no automatic whole-family approval."
+    },
+    {
+      "variantId": "amsterdam_gracht_v1",
+      "parentId": "amsterdam_gracht",
+      "title": "Amsterdam Gracht (Canal Street)",
+      "sourceAssemblySha256": "70398463c12c2a69acc148dd9795558cd7f567e23a65438522ac3ddfc772e9f8",
+      "sourceRecipeSha256": "db99c735b29e2d9c9131d89f787fd137fb1f41523cbae55d8a15322e35535ef9",
+      "programSha256": "f2ff8152c953fc4a0f5d9d8cde0d0e03bd5e39294c4e5cbb40836214bf2ad27e",
+      "widthM": 36,
+      "nativeReferenceLengthM": 80,
+      "programLimits": {
+        "minLengthM": 80,
+        "maxLengthM": 320,
+        "preparedLevelOnly": true
+      },
+      "modules": {
+        "canal_ground": {
+          "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_ground.glb",
+          "sha256": "08a85bab224aef14f3c720761d315d4ed76304527a065a6f6a3e89bf981d479b"
+        },
+        "canal_crossing": {
+          "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_crossing.glb",
+          "sha256": "098f436d0df567456ec5df3568b8b286a02ec0021cc78f331cf53829c2934839"
+        },
+        "canal_furnishings": {
+          "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_furnishings.glb",
+          "sha256": "99142cd4af5257fc2fddb20bbf389df50133fe835160720f7aa0a001c213315f"
+        },
+        "canal_tree": {
+          "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_tree.glb",
+          "sha256": "0d899baf64da60cdb6e40096a2eefdd15cc69eb5147ffd69f184ca1c99274c95"
+        },
+        "canal_bench": {
+          "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bench.glb",
+          "sha256": "a1765bfc10b83423d621479851523389fb06e9023b56cd41929c55be6f583411"
+        },
+        "canal_lamp": {
+          "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_lamp.glb",
+          "sha256": "5316049c31be3a2dd68c641bc272c6c4c11a4fbac3480d9884c0a609bc00a2ca"
+        },
+        "canal_bollard": {
+          "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bollard.glb",
+          "sha256": "6b5422458e529bed849406937d9b3f847013e8f7a4b132652245f2a57c30385d"
+        }
+      },
+      "assetVerification": "PASS",
+      "agentVisualReview": "PASS_BOUNDED",
+      "runtimeAcceptance": "PARTIAL",
+      "publication": "NOT AUTHORIZED",
+      "evidence": [
+        "canal-browser-checkpoint.json",
+        "canal-matched-v1/",
+        "canal-roundtrip.json",
+        "canal-copy-created.png",
+        "seven-streets-reopened.png"
+      ],
+      "observations": [
+        "Single original basin/arch; only open end extends; lower water and native bank ownership.",
+        "Draw243 m, resize123/153 m, short reject, bank connection, Walk, history, copy, reopen, exact capture."
+      ],
+      "N_A": [
+        "Building and park gates",
+        "Paid AI comparison: not authorized for street initiative"
+      ],
+      "open": "See shared openRequiredChecks; no automatic whole-family approval."
+    },
+    {
+      "variantId": "landmark_signature_bridge_v2",
+      "parentId": "landmark_signature_bridge",
+      "title": "Landmark Signature Bridge",
+      "sourceAssemblySha256": "bdb700b0967dbdaf8a7deb1bdb9d9ebe410736057edc7bdc88e69bf2af05d4aa",
+      "sourceRecipeSha256": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c",
+      "programSha256": "329433961b8ba03ebfd77f82fb3c3d8f9443e878bd18b0ee8a963e3c68f9345a",
+      "widthM": 36,
+      "nativeReferenceLengthM": 100,
+      "programLimits": {
+        "minLengthM": 260,
+        "maxLengthM": 480,
+        "preparedLevelOnly": true
+      },
+      "modules": {
+        "bridge_structure": {
+          "url": "/street-kits/pilots/landmark_signature_bridge_v2/bridge_structure.glb",
+          "sha256": "164db94c2990d603d03ca7a8fb064deb2110ddb88c452d567c4a8aa5978bef2d"
+        }
+      },
+      "assetVerification": "PASS",
+      "agentVisualReview": "PASS_BOUNDED",
+      "runtimeAcceptance": "PARTIAL",
+      "publication": "NOT AUTHORIZED",
+      "evidence": [
+        "bridge-browser-checkpoint.json",
+        "bridge-matched-v1/",
+        "bridge-roundtrip.json",
+        "bridge-deck-entry-fixed.png",
+        "bridge-asset-retry-recovered.png"
+      ],
+      "observations": [
+        "84 m arch and100 m deck stay rigid; deck4.30 m, walk4.482 m.",
+        "Draw308 m, extend331 m, short reject, endpoint/underpass, deck/below Walk, history/reopen, asset failure/retry."
+      ],
+      "N_A": [
+        "Building and park gates",
+        "Paid AI comparison: not authorized for street initiative"
+      ],
+      "open": "See shared openRequiredChecks; no automatic whole-family approval."
+    }
+  ],
+  "openRequiredChecks": [
+    "Mapped public-road endpoint and its low-view grade/reopen where the control is advertised.",
+    "Browser X joins, unsupported acute joins and just-below-minimum cases across applicable classes; current coverage is partly automated.",
+    "Per-class interrupted loading, unavailable ground and failed-save browser trials; current shared automated coverage and Bridge corruption injection are not every class.",
+    "BRT reverse-direction browser station-facing inspection; current two-stop reversal has automated coverage.",
+    "Canal latest 1.9 m outer-bank apron tolerance browser edge case; unit coverage passes."
+  ],
+  "knownAutomationIssues": [
+    "agent-browser over-escapes Windows download paths; native Chromium path successfully delivered two inspected PNG files.",
+    "One later export attempt crashed the old automation browser and left a .crdownload. Cause unproven; retained failure evidence, fresh session exported successfully.",
+    "An immediate post-navigation selector ran before TOP VIEW was ready; refreshed snapshot and ordinary control recovered."
+  ],
+  "checks": {
+    "frontendStreetTests": 151,
+    "frontendSaveHistoryTests": 68,
+    "backendTests": 120,
+    "stagingAdapterTests": 5,
+    "typecheck": "PASS",
+    "productionBuild": "PASS",
+    "gitDiffCheck": "PASS"
+  }
+}

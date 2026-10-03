@@ -1,0 +1,746 @@
+{
+  "id": "student_grass_tram_avenue_v1",
+  "title": "Garden Tram Avenue",
+  "dimensions_m": [
+    22,
+    48
+  ],
+  "fixed_width_m": 22,
+  "fixture_length_m": 48,
+  "pattern": "stone",
+  "runtime_approved": false,
+  "reference": "light-rail-tram-avenue/reference.png",
+  "sections": [
+    {
+      "name": "west_walk",
+      "x": -7.3,
+      "width": 7.4,
+      "material": "paving"
+    },
+    {
+      "name": "tracks",
+      "x": 0,
+      "width": 7.2,
+      "material": "grass"
+    },
+    {
+      "name": "east_walk",
+      "x": 7.3,
+      "width": 7.4,
+      "material": "paving"
+    }
+  ],
+  "clear_routes": [],
+  "image_references": [
+    {
+      "path": "reference.png",
+      "sha256": "5182b62fcf30d3289d9efe12827e582628db5d83379bfbb409993cedc0f21f58",
+      "bytes": 1478666
+    },
+    {
+      "path": "variant_2_angle_60.jpg",
+      "sha256": "fd832c16c56603134abc85898f17b94d9815c52ea5d8bfbbc2013060fa2db2fa",
+      "bytes": 1023566
+    },
+    {
+      "path": "variant_2_angle_90.jpg",
+      "sha256": "fc822be3ce7e04454f3d7c6bad420fa54a761d5632980d1eafe874d5c5063825",
+      "bytes": 1007176
+    }
+  ],
+  "source_notes": [
+    "Exact catalogue references; background buildings excluded. Metre-scale rigid furnishings and route bands.",
+    "Tram stop preview is illustrative; the saved user route starts with zero stops, added only by explicit selection."
+  ],
+  "kit_sha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "showcase-tram-v1",
+    "surfaceRegions": [
+      {
+        "x": -7.3,
+        "y": 0,
+        "width": 7.4,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 7.2,
+        "depth": 48,
+        "material": "grass"
+      },
+      {
+        "x": 7.3,
+        "y": 0,
+        "width": 7.4,
+        "depth": 48,
+        "material": "paving"
+      },
+      {
+        "x": -9.3,
+        "y": -18,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -9.3,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -9.3,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -9.3,
+        "y": 18,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 9.3,
+        "y": -18,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 9.3,
+        "y": -6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 9.3,
+        "y": 6,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 9.3,
+        "y": 18,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      }
+    ],
+    "details": [
+      {
+        "x": -2.7175000000000002,
+        "y": 0,
+        "width": 0.065,
+        "depth": 48,
+        "z": 0.025,
+        "height": 0.05,
+        "material": "metal"
+      },
+      {
+        "x": -1.2825,
+        "y": 0,
+        "width": 0.065,
+        "depth": 48,
+        "z": 0.025,
+        "height": 0.05,
+        "material": "metal"
+      },
+      {
+        "x": -2,
+        "y": 0,
+        "width": 0.015,
+        "depth": 48,
+        "z": 6.15,
+        "height": 0.015,
+        "material": "metal"
+      },
+      {
+        "x": 1.2825,
+        "y": 0,
+        "width": 0.065,
+        "depth": 48,
+        "z": 0.025,
+        "height": 0.05,
+        "material": "metal"
+      },
+      {
+        "x": 2.7175000000000002,
+        "y": 0,
+        "width": 0.065,
+        "depth": 48,
+        "z": 0.025,
+        "height": 0.05,
+        "material": "metal"
+      },
+      {
+        "x": 2,
+        "y": 0,
+        "width": 0.015,
+        "depth": 48,
+        "z": 6.15,
+        "height": 0.015,
+        "material": "metal"
+      },
+      {
+        "x": -3.6,
+        "y": 0,
+        "width": 0.16,
+        "depth": 48,
+        "z": 0.06,
+        "height": 0.12,
+        "material": "warm_concrete"
+      },
+      {
+        "x": 3.6,
+        "y": 0,
+        "width": 0.16,
+        "depth": 48,
+        "z": 0.06,
+        "height": 0.12,
+        "material": "warm_concrete"
+      }
+    ],
+    "paving": "stone",
+    "pavingModuleM": [
+      1.2,
+      0.8
+    ],
+    "minLengthM": 48,
+    "maxLengthM": 480,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "paving": [
+        0.5299999713897705,
+        0.5,
+        0.4300000071525574
+      ],
+      "edge": [
+        0.3499999940395355,
+        0.3400000035762787,
+        0.28999999165534973
+      ],
+      "grass": [
+        0.20999999344348907,
+        0.2800000011920929,
+        0.10499999672174454
+      ],
+      "soil": [
+        0.10499999672174454,
+        0.0729999989271164,
+        0.04500000178813934
+      ],
+      "metal": [
+        0.03500000014901161,
+        0.04899999871850014,
+        0.04500000178813934
+      ],
+      "timber": [
+        0.3199999928474426,
+        0.23499999940395355,
+        0.15000000596046448
+      ],
+      "court": [
+        0.08500000089406967,
+        0.23499999940395355,
+        0.24500000476837158
+      ],
+      "runoff": [
+        0.1899999976158142,
+        0.2800000011920929,
+        0.2549999952316284
+      ],
+      "kitchen": [
+        0.2800000011920929,
+        0.38999998569488525,
+        0.3400000035762787
+      ],
+      "paint": [
+        0.8600000143051147,
+        0.8600000143051147,
+        0.7699999809265137
+      ],
+      "net": [
+        0.07500000298023224,
+        0.09000000357627869,
+        0.07999999821186066
+      ],
+      "cycle": [
+        0.33000001311302185,
+        0.14499999582767487,
+        0.08500000089406967
+      ],
+      "asphalt": [
+        0.10000000149011612,
+        0.11500000208616257,
+        0.10999999940395355
+      ],
+      "flower": [
+        0.3499999940395355,
+        0.23000000417232513,
+        0.3799999952316284
+      ],
+      "cream": [
+        0.7900000214576721,
+        0.7400000095367432,
+        0.6200000047683716
+      ],
+      "lamp_lens": [
+        0.8999999761581421,
+        0.8700000047683716,
+        0.6600000262260437
+      ],
+      "sage": [
+        0.10000000149011612,
+        0.20000000298023224,
+        0.1599999964237213
+      ],
+      "canvas": [
+        0.7400000095367432,
+        0.6800000071525574,
+        0.5400000214576721
+      ],
+      "canvas_shade": [
+        0.6200000047683716,
+        0.5699999928474426,
+        0.4399999976158142
+      ],
+      "warm_concrete": [
+        0.5199999809265137,
+        0.49000000953674316,
+        0.4000000059604645
+      ],
+      "water": [
+        0.10000000149011612,
+        0.3199999928474426,
+        0.3400000035762787
+      ],
+      "glass": [
+        0.49000000953674316,
+        0.6800000071525574,
+        0.6800000071525574
+      ],
+      "terracotta": [
+        0.49000000953674316,
+        0.20999999344348907,
+        0.10000000149011612
+      ],
+      "vine": [
+        0.12999999523162842,
+        0.23999999463558197,
+        0.06499999761581421
+      ],
+      "produce": [
+        0.41999998688697815,
+        0.18000000715255737,
+        0.05999999865889549
+      ]
+    }
+  },
+  "tree_wells": [
+    {
+      "x": -9.3,
+      "y": -18,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -9.3,
+      "y": -6,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -9.3,
+      "y": 6,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -9.3,
+      "y": 18,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 9.3,
+      "y": -18,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 9.3,
+      "y": -6,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 9.3,
+      "y": 6,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 9.3,
+      "y": 18,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "showcase_catenary",
+      "x": 7.2,
+      "y": -18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "showcase_catenary",
+      "x": 7.2,
+      "y": 6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -9.3,
+      "y": -18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -9.3,
+      "y": -6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -9.3,
+      "y": 6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -9.3,
+      "y": 18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lantern",
+      "x": -9.3,
+      "y": -12,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lantern",
+      "x": -9.3,
+      "y": 12,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 9.3,
+      "y": -18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 9.3,
+      "y": -6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 9.3,
+      "y": 6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 9.3,
+      "y": 18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lantern",
+      "x": 9.3,
+      "y": -12,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lantern",
+      "x": 9.3,
+      "y": 12,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "showcase_tram_stop",
+      "x": -5.2,
+      "y": 0,
+      "z": 0,
+      "yaw": 3.141592653589793,
+      "scale": 1
+    },
+    {
+      "kind": "showcase_tram_stop",
+      "x": 5.2,
+      "y": 0,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -9.3,
+      "y": -18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -9.3,
+      "y": -6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -9.3,
+      "y": 6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -9.3,
+      "y": 18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 9.3,
+      "y": -18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 9.3,
+      "y": -6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 9.3,
+      "y": 6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 9.3,
+      "y": 18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    }
+  ],
+  "surface_regions": [
+    {
+      "x": -7.3,
+      "y": 0,
+      "width": 7.4,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 7.2,
+      "depth": 48,
+      "material": "grass"
+    },
+    {
+      "x": 7.3,
+      "y": 0,
+      "width": 7.4,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": -9.3,
+      "y": -18,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -9.3,
+      "y": -6,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -9.3,
+      "y": 6,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -9.3,
+      "y": 18,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 9.3,
+      "y": -18,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 9.3,
+      "y": -6,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 9.3,
+      "y": 6,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 9.3,
+      "y": 18,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    }
+  ],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 2058524,
+    "sha256": "db4d34616a99281938ad0d0852868fa624e3c2d491c7fe26fd891652b2bb65cb"
+  },
+  "modules": {
+    "grove_tree": {
+      "path": "grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278"
+    },
+    "heritage_lantern": {
+      "path": "heritage_lantern.glb",
+      "bytes": 17100,
+      "sha256": "297561e84c4e59ccde5c8f023cbae01b13330bc8477561890ff335d60d12191b"
+    },
+    "showcase_catenary": {
+      "path": "showcase_catenary.glb",
+      "bytes": 10016,
+      "sha256": "8aecc04e69bcde73d501d3dab02a2d5948f6678d40ae555879b07af2bddfa15f"
+    },
+    "showcase_tram_stop": {
+      "path": "showcase_tram_stop.glb",
+      "bytes": 254788,
+      "sha256": "7fa75afb6de3550d54b89d51cd94c36b28f74812cac9933fdfcc65ff72f339c3"
+    },
+    "tree_well_grate": {
+      "path": "tree_well_grate.glb",
+      "bytes": 95608,
+      "sha256": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618"
+    }
+  },
+  "bounds_m": [
+    [
+      -11.0,
+      -24.0,
+      -0.11999999731779099
+    ],
+    [
+      11.0,
+      24.0,
+      8.04883861541748
+    ]
+  ],
+  "triangles": 110204,
+  "mesh_instances": 35,
+  "render_source": "reimported GLB",
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

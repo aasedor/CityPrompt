@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createDirect3DAttemptClient } from './direct3DAttempts';
 import type { ImageModelAvailability, OpenAIImageModel } from '@/config/imageModels';
 import { isPublicReadRequest, shouldAttemptTokenRefresh } from './authRefreshPolicy';
 import { assetAccountIdentity, createAssetAccess, type AssetContext } from './assetAccess';
@@ -45,16 +46,15 @@ import type {
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
-// The provider read timeout is 300 seconds. Keep the browser request alive
-// through project validation, image upload, post-generation geometry gates,
-// encoding and billing/audit finalization so callers receive the endpoint's
-// structured outcome instead of retrying an ambiguously billed request.
-const DIRECT_3D_CLIENT_TIMEOUT_MS = 420_000;
-
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 15000,
+});
+
+export const direct3DAttempts = createDirect3DAttemptClient({
+  api, storage: () => localStorage,
+  account: () => assetAccountIdentity(localStorage.getItem('access_token')),
 });
 
 /**
@@ -72,6 +72,30 @@ const assetAccess = createAssetAccess({
 
 export function resolveApiFileUrl(url: string, context?: AssetContext): string {
   return assetAccess.resolve(url, context);
+}
+
+export interface BuildingReferenceCandidate {
+  id: string;
+  title: string;
+  image_url: string;
+  source_url: string;
+  license: string;
+  license_url: string;
+  author: string;
+  description: string;
+}
+
+export interface PhotoReferenceStatus {
+  status: 'idle' | 'synthesizing' | 'references_ready' | 'model_generating' | 'completed' | 'failed';
+  brief: string;
+  reference_urls: string[];
+  source_count: number;
+  resume_available: boolean;
+  error: string | null;
+  reference_token_cost: number;
+  model_token_cost: number;
+  selected_reference_indices?: number[];
+  source_provenance?: Array<Partial<BuildingReferenceCandidate> & { provider: string; sha256: string }>;
 }
 
 export const subscribeAssetTicketChanges = assetAccess.subscribe;
@@ -397,6 +421,38 @@ export const buildingsApi = {
   generateFromImage: async (id: string, imageUrl: string): Promise<GenerationStatus> => {
     const { data } = await api.post(`/api/v1/buildings/${id}/generate-from-image`, {
       image_url: imageUrl,
+    });
+    return data;
+  },
+
+  getPhotoReferences: async (id: string): Promise<PhotoReferenceStatus> => {
+    const { data } = await api.get(`/api/v1/buildings/${id}/photo-references`);
+    return data;
+  },
+
+  searchPhotoReferences: async (id: string, query: string, view: string): Promise<{ candidates: BuildingReferenceCandidate[] }> => {
+    const { data } = await api.post(`/api/v1/buildings/${id}/photo-reference-search`, { query, view }, { timeout: 35_000 });
+    return data;
+  },
+
+  createPhotoReferences: async (id: string, photos: File[], brief: string, webReferenceIds: string[] = []): Promise<void> => {
+    const body = new FormData();
+    photos.forEach((photo) => body.append('photos', photo));
+    body.append('brief', brief);
+    body.append('web_reference_ids', JSON.stringify(webReferenceIds));
+    await api.post(`/api/v1/buildings/${id}/photo-references`, body, {
+      headers: { 'Content-Type': undefined },
+      timeout: 150_000,
+    });
+  },
+
+  resumePhotoReferences: async (id: string): Promise<void> => {
+    await api.post(`/api/v1/buildings/${id}/photo-references/resume`);
+  },
+
+  generatePhotoModel: async (id: string, selectedReferenceIndices: number[]): Promise<GenerationStatus> => {
+    const { data } = await api.post(`/api/v1/buildings/${id}/photo-model`, {
+      selected_reference_indices: selectedReferenceIndices,
     });
     return data;
   },
@@ -1277,7 +1333,17 @@ export const settingsApi = {
 // Model Library
 // =============================================================================
 
+export interface UserGeneratedBuilding {
+  id: string; project_id: string; name: string; preview_url: string | null;
+  model_url: string; floor_count: number | null; height_meters: number;
+  width_m: number; depth_m: number; size_estimated: boolean;
+}
+
 export const modelLibraryApi = {
+  userGenerated: async (): Promise<UserGeneratedBuilding[]> => {
+    const { data } = await api.get('/api/v1/model-library/user-generated');
+    return data;
+  },
   list: async (params?: {
     category?: string;
     search?: string;
@@ -1444,6 +1510,7 @@ export const rendersApi = {
     };
   }): Promise<{
     image_base64: string;
+    provider_image_base64?: string | null;
     model: OpenAIImageModel;
     outcome: 'accepted' | 'review_required';
     warnings: string[];
@@ -1658,12 +1725,7 @@ export const rendersApi = {
       mask_retry_used: false;
     };
   }> => {
-    const { data } = await api.post(
-      '/api/v1/render/generate-direct-3d',
-      request,
-      { timeout: DIRECT_3D_CLIENT_TIMEOUT_MS },
-    );
-    return data;
+    return direct3DAttempts.generate(request);
   },
 
   save: async (projectId: string, render: {

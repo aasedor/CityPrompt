@@ -1,0 +1,196 @@
+{
+  "date": "2026-09-27",
+  "scope": "Offline Astra build and additive local installation; Sol browser review deferred by user.",
+  "completed": false,
+  "buildings": [
+    {
+      "title": "Side-by-side duplex",
+      "candidate": "calgary-side-by-side-duplex-clay-v004",
+      "variant_id": "infill_duplex",
+      "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "native_dimensions_m": {
+        "width": 13.34000015258789,
+        "height": 9.0,
+        "depth": 21.472000122070312
+      },
+      "independent_clay_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/calgary-side-by-side-duplex-clay-v004.json",
+        "sha256": "529c7634a7173473532418be47a163c4c081264856f598f57ee56684b73649e1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_status": "NOT TESTED",
+      "local_install": "exact_db_binding_and_object_hash_verified",
+      "publication": "local_only",
+      "completed": false
+    },
+    {
+      "title": "Plateau stacked duplex",
+      "candidate": "montreal-plateau-duplex-clay-v004",
+      "variant_id": "montreal_duplex_plateau",
+      "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "native_dimensions_m": {
+        "width": 12.64909839630127,
+        "height": 8.104999542236328,
+        "depth": 19.320000171661377
+      },
+      "independent_clay_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/montreal-plateau-duplex-clay-v004.json",
+        "sha256": "722075ca8076a2c3bd75641e3db42b7db5549da96fe1676c0719e0efbb357aa7",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_status": "NOT TESTED",
+      "local_install": "exact_db_binding_and_object_hash_verified",
+      "publication": "local_only",
+      "completed": false
+    },
+    {
+      "title": "Brick courtyard entrance building",
+      "candidate": "courtyard-brick-modern-clay-v004",
+      "variant_id": "courtyard_family_brick_modern",
+      "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "native_dimensions_m": {
+        "width": 25.582000732421875,
+        "height": 12.27500057220459,
+        "depth": 13.381999969482422
+      },
+      "independent_clay_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/courtyard-brick-modern-clay-v004.json",
+        "sha256": "d80f69e3bb72c567a72f419dfedf888ef42dc5d9f62d2fe7a524d8be9fa14d5a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_status": "NOT TESTED",
+      "local_install": "exact_db_binding_and_object_hash_verified",
+      "publication": "local_only",
+      "completed": false
+    },
+    {
+      "title": "Post-war bungalow",
+      "candidate": "calgary-inner-city-bungalow-clay-v005",
+      "variant_id": "bungalow_postwar_ranch",
+      "model_sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+      "native_dimensions_m": {
+        "width": 10.898324012756348,
+        "height": 6.360000133514404,
+        "depth": 16.050000190734863
+      },
+      "independent_clay_review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "sha256": "86f3a5579369f8bebf9486d38700358fad6348f3f3a45916de7dbc2b8627655b",
+        "repo_path": "tools/catalogue_ranch_pilot/evidence/independent-review.json"
+      },
+      "runtime_status": "NOT TESTED",
+      "local_install": "exact_db_binding_and_object_hash_verified",
+      "publication": "local_only",
+      "completed": false
+    },
+    {
+      "title": "Edwardian Foursquare",
+      "candidate": "toronto-edwardian-foursquare-clay-v004",
+      "variant_id": "toronto_foursquare_red_brick",
+      "model_sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+      "native_dimensions_m": {
+        "width": 11.069999694824219,
+        "height": 10.8100004196167,
+        "depth": 17.93000030517578
+      },
+      "independent_clay_review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "sha256": "6dff58ab4ef76b9e2cfa2feac390bd6e3297eae0effc1759d995343a2f8fd51d",
+        "repo_path": "tools/catalogue_foursquare_pilot/evidence/independent-review.json"
+      },
+      "runtime_status": "NOT TESTED",
+      "local_install": "exact_db_binding_and_object_hash_verified",
+      "publication": "local_only",
+      "completed": false
+    },
+    {
+      "title": "Rammed-earth timber infill",
+      "candidate": "detached_contemporary_infill-clay-v003",
+      "variant_id": "detached_infill_rammed_earth",
+      "model_sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+      "native_dimensions_m": {
+        "width": 13.375,
+        "height": 10.149999618530273,
+        "depth": 19.600000381469727
+      },
+      "independent_clay_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/detached_contemporary_infill-clay-v003.json",
+        "sha256": "9485d44ee29aedb22ca9653b6b5a40b2fee9e5f16152e7196333e4c1c4e11ea4",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_status": "NOT TESTED",
+      "local_install": "exact_db_binding_and_object_hash_verified",
+      "publication": "local_only",
+      "completed": false
+    },
+    {
+      "title": "Blue glass office tower",
+      "candidate": "glass_tower_podium_modern-clay-v003",
+      "variant_id": "glass_tower_blue_reflective",
+      "model_sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43",
+      "native_dimensions_m": {
+        "width": 32.1200008392334,
+        "height": 99.0,
+        "depth": 30.074999809265137
+      },
+      "independent_clay_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/glass_tower_podium_modern-clay-v003.json",
+        "sha256": "230740421d679916b9320dfc756045f735b9d30ee99e53a085b4f342d47ee28a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_status": "NOT TESTED",
+      "local_install": "exact_db_binding_and_object_hash_verified",
+      "publication": "local_only",
+      "completed": false
+    },
+    {
+      "title": "Vancouver balcony and podium tower",
+      "candidate": "vancouverism-tower-podium-clay-v004",
+      "variant_id": "vancouverism_classic",
+      "model_sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+      "native_dimensions_m": {
+        "width": 48.05500030517578,
+        "height": 58.79999923706055,
+        "depth": 40.05500030517578
+      },
+      "storey_program": {
+        "id": "vancouverism-classic-storey-program-v001",
+        "storeys": [16, 40],
+        "recommended_storeys": [25, 40],
+        "manifest": "seed/model-library/rlasm-architectural-clay/vancouverism-classic-storey-program-v001.json",
+        "assembly": "fixed three-storey podium + repeated 3.2 m authored floor + fixed roof/penthouse",
+        "footprint_m": {
+          "default": [52.0, 44.0],
+          "minimum": [51.1, 43.1],
+          "maximum": [57.5, 47.5]
+        },
+        "runtime_status": "PASS_LOCAL_BROWSER_25_MIN_40_MAX_SAVE_REOPEN"
+      },
+      "independent_clay_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/vancouverism-tower-podium-clay-v004.json",
+        "sha256": "4a7e7a536028a1b9ebc20c9e07c5f18db2d226df411217381cd0d8e9945dc6e1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_status": "NOT TESTED",
+      "local_install": "exact_db_binding_and_object_hash_verified",
+      "publication": "local_only",
+      "completed": false
+    }
+  ]
+}

@@ -33,7 +33,8 @@ export function canonicalBuildingAsset(selection: CanonicalSelection): PlaceAsse
 export function canonicalBuildingById(id: string): PlaceAsset | undefined {
   if (!id.startsWith(PREFIX)) return undefined;
   const [parent, variantId] = id.slice(PREFIX.length).split(':');
-  const choice = CANONICAL_CHOICES.find(c => c.domain === 'building' && c.option.id === parent);
+  const choice = CANONICAL_CHOICES.find(c => c.domain === 'building' && c.option.id === parent
+    && (!variantId || c.option.variants?.some(v => v.id === variantId)));
   if (!choice) return undefined;
   const variant = choice.option.variants?.find(v => v.id === variantId);
   if (variantId && !variant) return undefined;

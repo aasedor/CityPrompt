@@ -1,0 +1,920 @@
+{
+  "title": "Protected Cycle Avenue",
+  "reference": "protected-bike-lane-bi-directional/variant_0.png",
+  "length_m": 48,
+  "pattern": "stone",
+  "observed_features": [
+    "Two-way protected cycle track, planted divider and separate sidewalk"
+  ],
+  "adapted_features": [
+    "Warm red cycle surfacing and kit furniture; right-hand cycle arrows"
+  ],
+  "id": "student_cycle_avenue_v1",
+  "kind": "cycle_avenue",
+  "dimensions_m": [
+    24.0,
+    48
+  ],
+  "sections": [
+    {
+      "name": "west_walk",
+      "x": -10.5,
+      "width": 3,
+      "material": "paving"
+    },
+    {
+      "name": "west_furniture",
+      "x": -7.75,
+      "width": 2.5,
+      "material": "paving"
+    },
+    {
+      "name": "cycle",
+      "x": -4.5,
+      "width": 4,
+      "material": "cycle"
+    },
+    {
+      "name": "separator",
+      "x": -1.5,
+      "width": 2,
+      "material": "soil"
+    },
+    {
+      "name": "road",
+      "x": 2.5,
+      "width": 6,
+      "material": "asphalt"
+    },
+    {
+      "name": "east_furniture",
+      "x": 7.25,
+      "width": 3.5,
+      "material": "paving"
+    },
+    {
+      "name": "east_walk",
+      "x": 10.5,
+      "width": 3,
+      "material": "paving"
+    }
+  ],
+  "fixed_width_m": 24.0,
+  "fixture_length_m": 48,
+  "image_references": [
+    {
+      "path": "references/protected-bike-lane-bi-directional/variant_0.png",
+      "sha256": "633f0a4a02171263a705e6eee464c254cb6d7be752aa1c17cca544acb37daca9",
+      "bytes": 1397063,
+      "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\protected-bike-lane-bi-directional\\variant_0.png"
+    }
+  ],
+  "kit_source": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\shared-kit\\kit.json",
+    "sha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050"
+  },
+  "clear_routes": [
+    {
+      "name": "west_walk",
+      "a": [
+        -10.5,
+        -23.5
+      ],
+      "b": [
+        -10.5,
+        23.5
+      ],
+      "width": 2.6
+    },
+    {
+      "name": "cycle",
+      "a": [
+        -4.5,
+        -23.5
+      ],
+      "b": [
+        -4.5,
+        23.5
+      ],
+      "width": 3.6
+    },
+    {
+      "name": "road",
+      "a": [
+        2.5,
+        -23.5
+      ],
+      "b": [
+        2.5,
+        23.5
+      ],
+      "width": 5.6
+    },
+    {
+      "name": "east_walk",
+      "a": [
+        10.5,
+        -23.5
+      ],
+      "b": [
+        10.5,
+        23.5
+      ],
+      "width": 2.6
+    },
+    {
+      "name": "cross_link",
+      "a": [
+        -11.8,
+        0
+      ],
+      "b": [
+        11.8,
+        0
+      ],
+      "width": 2.6
+    }
+  ],
+  "reference_assets": [
+    {
+      "kind": "street_bollard",
+      "x": -1.5,
+      "y": -20,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          -1.6399999856948853,
+          -20.139999389648438,
+          0.0
+        ],
+        [
+          -1.3600000143051147,
+          -19.860000610351562,
+          0.9800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -0.14000000059604645,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.14000000059604645,
+          0.14000000059604645,
+          0.9800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "street_bollard",
+      "x": -1.5,
+      "y": -3.5,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          -1.6399999856948853,
+          -3.640000104904175,
+          0.0
+        ],
+        [
+          -1.3600000143051147,
+          -3.359999895095825,
+          0.9800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -0.14000000059604645,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.14000000059604645,
+          0.14000000059604645,
+          0.9800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "street_bollard",
+      "x": -1.5,
+      "y": 3.5,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          -1.6399999856948853,
+          3.359999895095825,
+          0.0
+        ],
+        [
+          -1.3600000143051147,
+          3.640000104904175,
+          0.9800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -0.14000000059604645,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.14000000059604645,
+          0.14000000059604645,
+          0.9800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "street_bollard",
+      "x": -1.5,
+      "y": 20,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          -1.6399999856948853,
+          19.860000610351562,
+          0.0
+        ],
+        [
+          -1.3600000143051147,
+          20.139999389648438,
+          0.9800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -0.14000000059604645,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.14000000059604645,
+          0.14000000059604645,
+          0.9800000190734863
+        ]
+      ]
+    }
+  ],
+  "cycle_directions": [
+    {
+      "x": -5.5,
+      "sign": -1
+    },
+    {
+      "x": -3.5,
+      "sign": 1
+    }
+  ],
+  "reference_profile": {
+    "observed": [
+      "Two-way protected cycle track, planted divider and separate sidewalk"
+    ],
+    "adapted": [
+      "Warm red cycle surfacing and kit furniture; right-hand cycle arrows"
+    ]
+  },
+  "terrain_policy": "Straight level concept fixture; reconstruct every band with shared runtime ground.",
+  "junction_policy": "Network owns all junctions, endpoints, crossings and ramps. Omit or move modules around connections.",
+  "limitations": [
+    "Original section for ideation, not measured from the image or certified for traffic/accessibility/drainage.",
+    "Ground-level street fixture; elevated kerbs, operational stop islands and sloped joins require runtime integration.",
+    "No buildings, people, vehicles, invented water body or surrounding context included.",
+    "Never repeat, bend or nonuniformly stretch assembly-preview.glb; place native amenity modules and rebuild bands.",
+    "Browser, Currie terrain, route edits, Undo/Redo, reload and export remain NOT TESTED."
+  ],
+  "tree_wells": [
+    {
+      "x": -7.75,
+      "y": -16,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -7.75,
+      "y": -6,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -7.75,
+      "y": 6,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -7.75,
+      "y": 16,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 7.25,
+      "y": -16,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 7.25,
+      "y": -6,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 7.25,
+      "y": 6,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 7.25,
+      "y": 16,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "grove_tree",
+      "x": -7.75,
+      "y": -16,
+      "z": 0,
+      "yaw": -1.12,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -7.75,
+      "y": -6,
+      "z": 0,
+      "yaw": -0.42000000000000004,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -7.75,
+      "y": 6,
+      "z": 0,
+      "yaw": 0.42000000000000004,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -7.75,
+      "y": 16,
+      "z": 0,
+      "yaw": 1.12,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": -7.75,
+      "y": -11,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": -7.75,
+      "y": 11,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 7.25,
+      "y": -16,
+      "z": 0,
+      "yaw": -1.12,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 7.25,
+      "y": -6,
+      "z": 0,
+      "yaw": -0.42000000000000004,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 7.25,
+      "y": 6,
+      "z": 0,
+      "yaw": 0.42000000000000004,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 7.25,
+      "y": 16,
+      "z": 0,
+      "yaw": 1.12,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": 7.25,
+      "y": -11,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": 7.25,
+      "y": 11,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -1.725,
+      "y": -17.85,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 0.65
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -1.725,
+      "y": -16.6,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.55
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -1.725,
+      "y": -15.350000000000001,
+      "z": 0,
+      "yaw": 4.8,
+      "scale": 0.65
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -1.725,
+      "y": -14.100000000000001,
+      "z": 0,
+      "yaw": 7.199999999999999,
+      "scale": 0.65
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -1.725,
+      "y": -8.85,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 0.65
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -1.725,
+      "y": -7.6,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.55
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -1.725,
+      "y": -6.35,
+      "z": 0,
+      "yaw": 4.8,
+      "scale": 0.65
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -1.725,
+      "y": -5.1,
+      "z": 0,
+      "yaw": 7.199999999999999,
+      "scale": 0.65
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -1.725,
+      "y": 5.15,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 0.65
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -1.725,
+      "y": 6.4,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.55
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -1.725,
+      "y": 7.65,
+      "z": 0,
+      "yaw": 4.8,
+      "scale": 0.65
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -1.725,
+      "y": 8.9,
+      "z": 0,
+      "yaw": 7.199999999999999,
+      "scale": 0.65
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -1.725,
+      "y": 14.15,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 0.65
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -1.725,
+      "y": 15.4,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.55
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -1.725,
+      "y": 16.65,
+      "z": 0,
+      "yaw": 4.8,
+      "scale": 0.65
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -1.725,
+      "y": 17.9,
+      "z": 0,
+      "yaw": 7.199999999999999,
+      "scale": 0.65
+    },
+    {
+      "kind": "street_bollard",
+      "x": -1.5,
+      "y": -20,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "street_bollard",
+      "x": -1.5,
+      "y": -3.5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "street_bollard",
+      "x": -1.5,
+      "y": 3.5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "street_bollard",
+      "x": -1.5,
+      "y": 20,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": 7.25,
+      "y": -3.5,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": 7.25,
+      "y": 3.5,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "bike_rack",
+      "x": -7.75,
+      "y": 21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -7.75,
+      "y": -16,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -7.75,
+      "y": -6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -7.75,
+      "y": 6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -7.75,
+      "y": 16,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 7.25,
+      "y": -16,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 7.25,
+      "y": -6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 7.25,
+      "y": 6,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 7.25,
+      "y": 16,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    }
+  ],
+  "surface_regions": [
+    {
+      "x": -10.5,
+      "y": 0,
+      "width": 3,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": -7.75,
+      "y": 0,
+      "width": 2.5,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": -4.5,
+      "y": 0,
+      "width": 4,
+      "depth": 48,
+      "material": "cycle"
+    },
+    {
+      "x": -1.5,
+      "y": 0,
+      "width": 2,
+      "depth": 48,
+      "material": "soil"
+    },
+    {
+      "x": 2.5,
+      "y": 0,
+      "width": 6,
+      "depth": 48,
+      "material": "asphalt"
+    },
+    {
+      "x": 7.25,
+      "y": 0,
+      "width": 3.5,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": 10.5,
+      "y": 0,
+      "width": 3,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 24.0,
+      "depth": 3,
+      "material": "paving"
+    },
+    {
+      "x": -1.5,
+      "y": -16,
+      "width": 1.65,
+      "depth": 5,
+      "material": "soil"
+    },
+    {
+      "x": -1.5,
+      "y": -7,
+      "width": 1.65,
+      "depth": 5,
+      "material": "soil"
+    },
+    {
+      "x": -1.5,
+      "y": 7,
+      "width": 1.65,
+      "depth": 5,
+      "material": "soil"
+    },
+    {
+      "x": -1.5,
+      "y": 16,
+      "width": 1.65,
+      "depth": 5,
+      "material": "soil"
+    },
+    {
+      "x": -7.75,
+      "y": -16,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -7.75,
+      "y": -6,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -7.75,
+      "y": 6,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -7.75,
+      "y": 16,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 7.25,
+      "y": -16,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 7.25,
+      "y": -6,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 7.25,
+      "y": 6,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 7.25,
+      "y": 16,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    }
+  ],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 2423592,
+    "sha256": "673c1618cd6002c7e03523e06faf87b9476d8f5ce3b0c29ba0f237c63e75a2ea"
+  },
+  "modules": {
+    "bench": {
+      "path": "bench.glb",
+      "bytes": 34024,
+      "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+    },
+    "bike_rack": {
+      "path": "bike_rack.glb",
+      "bytes": 96964,
+      "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+    },
+    "flowering_perennial": {
+      "path": "flowering_perennial.glb",
+      "bytes": 162120,
+      "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+    },
+    "grove_tree": {
+      "path": "grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    "light": {
+      "path": "light.glb",
+      "bytes": 37668,
+      "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+    },
+    "meadow_grass": {
+      "path": "meadow_grass.glb",
+      "bytes": 68700,
+      "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+    },
+    "silver_shrub": {
+      "path": "silver_shrub.glb",
+      "bytes": 367296,
+      "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+    },
+    "street_bollard": {
+      "path": "street_bollard.glb",
+      "bytes": 9892,
+      "sha256": "530a525ac72258b0ed6b48d4918dbd80a00a14a0c56724fcdd27cb8224e09217"
+    },
+    "tree_well_grate": {
+      "path": "tree_well_grate.glb",
+      "bytes": 95608,
+      "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+    }
+  },
+  "bounds_m": [
+    [
+      -12.0,
+      -24.0,
+      -0.11999999731779099
+    ],
+    [
+      12.0,
+      24.0,
+      8.04883861541748
+    ]
+  ],
+  "triangles": 127612,
+  "mesh_instances": 71,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

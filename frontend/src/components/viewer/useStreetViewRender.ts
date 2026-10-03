@@ -1,3 +1,4 @@
+import { bufferLineToPolygon } from '@/utils/roadGeometry';
 /**
  * useStreetViewRender — utilities and React hook for generating street-level
  * architectural renders from a pegman position and viewing angle.
@@ -426,53 +427,7 @@ export function getViewConePolygon(
  * Takes a line [[lng,lat], ...] and a width in meters, returns a polygon [[lng,lat], ...].
  * Uses a simple perpendicular offset approach — good enough for street widths.
  */
-export function bufferLineToPolygon(
-  lineCoords: number[][],
-  widthMeters: number,
-): number[][] {
-  if (lineCoords.length < 2) return lineCoords;
-
-  const halfWidth = widthMeters / 2;
-  const leftSide: number[][] = [];
-  const rightSide: number[][] = [];
-
-  for (let i = 0; i < lineCoords.length; i++) {
-    const [lng, lat] = lineCoords[i];
-
-    // Calculate the direction vector at this point
-    let dx = 0, dy = 0;
-    if (i < lineCoords.length - 1) {
-      dx += lineCoords[i + 1][0] - lng;
-      dy += lineCoords[i + 1][1] - lat;
-    }
-    if (i > 0) {
-      dx += lng - lineCoords[i - 1][0];
-      dy += lat - lineCoords[i - 1][1];
-    }
-
-    // Normalize
-    const len = Math.sqrt(dx * dx + dy * dy);
-    if (len < 1e-12) continue;
-    dx /= len;
-    dy /= len;
-
-    // Perpendicular vector (rotated 90°)
-    const px = -dy;
-    const py = dx;
-
-    // Convert meters to degrees (approximate)
-    const metersPerDegLat = 110540;
-    const metersPerDegLng = metersPerDegLat * Math.cos(lat * DEG_TO_RAD);
-    const offsetLng = (halfWidth / metersPerDegLng) * px;
-    const offsetLat = (halfWidth / metersPerDegLat) * py;
-
-    leftSide.push([lng + offsetLng, lat + offsetLat]);
-    rightSide.push([lng - offsetLng, lat - offsetLat]);
-  }
-
-  // Combine left side forward + right side reversed to form a closed polygon
-  return [...leftSide, ...rightSide.reverse()];
-}
+export { bufferLineToPolygon } from '@/utils/roadGeometry';
 
 /**
  * Pre-process site zones: convert street/path polylines into buffered polygons
@@ -2168,6 +2123,7 @@ export async function generateStreetView(
     fovDeg?: number;
     distanceMeters?: number;
     styleModifier?: string;
+    customPrompt?: string;
     model?: string;
     imageQuality?: OpenAIImageQuality;
     projectId?: string;
@@ -2305,6 +2261,8 @@ export async function generateStreetView(
         'exactly as painted. Never merge separate volumes, never float or stack them, and never let a ' +
         'rear building bleed over a nearer one. Do not copy the flat colors into the output.'
       : '';
+    const userDirection = options?.customPrompt?.trim();
+    const displayPrompt = prompt + (userDirection ? `\n\nADDITIONAL USER INSTRUCTIONS: ${userDirection}` : '');
     const enhancedPrompt =
       prompt + spatialRef + semanticRef +
       (archetypeImages.length > 0
@@ -2312,7 +2270,8 @@ export async function generateStreetView(
           'style and materials for specific zones. Use Image 1 strictly as the structural foundation. ' +
           'Extract material textures and architectural aesthetic from the style reference images. ' +
           `Apply each reference image's style to ${archetypeAnchorNoun}.`
-        : '');
+        : '') +
+      (userDirection ? `\n\nADDITIONAL USER INSTRUCTIONS: ${userDirection}` : '');
 
     const GUIDE_KIND_WIRE: Record<StreetViewGuideKind, string> = {
       clay: 'clay',
@@ -2382,7 +2341,7 @@ export async function generateStreetView(
           'texture sharpness on close elements, and natural landscape detail. ' +
           'Do NOT move, resize, add, or remove any structures. ' +
           'The clay model (Image 2) confirms the correct spatial arrangement.\n\n' +
-          prompt;
+          displayPrompt;
 
         const pass2Body: Record<string, unknown> = {
           prompt: refinementPrompt,
@@ -2412,7 +2371,7 @@ export async function generateStreetView(
     }
 
     const imageUrl = `data:image/png;base64,${resultBase64}`;
-    return { imageUrl, prompt, model: renderModel, imageQuality: options?.imageQuality };
+    return { imageUrl, prompt: displayPrompt, model: renderModel, imageQuality: options?.imageQuality };
   } catch (err) {
     // Surface the real backend/provider detail (e.g. "OpenAI image error (429):
     // …", "Not enough tokens…") instead of collapsing every failure into a
@@ -2445,6 +2404,7 @@ export function useStreetViewRender() {
         fovDeg?: number;
         distanceMeters?: number;
         styleModifier?: string;
+        customPrompt?: string;
         model?: string;
         imageQuality?: OpenAIImageQuality;
         projectId?: string;

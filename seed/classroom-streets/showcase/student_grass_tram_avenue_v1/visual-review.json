@@ -1,0 +1,33 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "reviewer": "root builder: direct exported-GLB render inspection",
+  "independent": false,
+  "model_sha256": "db4d34616a99281938ad0d0852868fa624e3c2d491c7fe26fd891652b2bb65cb",
+  "reviewed_views": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "745580e895b2b5dfd68053ccafabf91d589a0bb6b36c7fac8136ab63f2d63aae"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "bfcf39274fa1cb5f1437a4930d0b5e20f90c74dbc84ae66901f6729a801d3e1f"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "989f31658adb3c75bd35a5d23eaf962b4c0a0c0bc43c210a23c9ce72e28de54f"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "d2ab70166383abd57d8df9fa4232d9ae9e11c17d05f6f914fd0a5733fd790e0e"
+    }
+  ],
+  "findings": [
+    "Twin grass tracks, four rail heads, two contact wires and catenary arms remain aligned.",
+    "Two native-scale stop platforms in the review fixture include tactile margins, full ramps, shelters, seating and information displays.",
+    "The runtime has zero stops by default; this preview shows one explicitly positioned paired stop."
+  ],
+  "scope": "Native composition, measured envelope, grounded furniture and source identity; no browser or user approval claimed.",
+  "runtime_status": "NOT TESTED",
+  "publication_status": "local pilot only",
+  "completed": false
+}

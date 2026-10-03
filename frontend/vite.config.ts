@@ -69,7 +69,25 @@ export default defineConfig({
   // common directory. VITE_ENV_DIR and a worktree-root .env remain explicit
   // overrides for unusual local or CI setups.
   envDir: resolveEnvDir(),
-  plugins: [react()],
+  plugins: [react(), {
+    name: 'local-terrain-rehearsal-data',
+    apply: 'serve',
+    configureServer(server) {
+      // Opt-in local evidence only; never bundled, deployed or a general file server.
+      const directory = process.env.CITYPROMPT_TERRAIN_TRIAL_DIR;
+      if (!directory) return;
+      server.middlewares.use((req, res, next) => {
+        const match = /^\/__terrain_trial\/(field|connection)\.json$/.exec(req.url ?? '');
+        if (!match) { next(); return; }
+        try {
+          const bytes = fs.readFileSync(path.join(directory, `${match[1]}.json`));
+          res.setHeader('Content-Type', 'application/json');
+          res.setHeader('Cache-Control', 'no-store');
+          res.end(bytes);
+        } catch { res.statusCode = 404; res.end('Local terrain trial unavailable'); }
+      });
+    },
+  }],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

@@ -16,7 +16,10 @@ it('provides resolvable placement for every eligible park variant without certif
   }
 });
 it('receives the reviewed skate programme at its real size including edge clearance', () => {
-  const choice = CANONICAL_CHOICES.find(c => c.domain === 'park_plaza' && c.option.id === 'skate_park')!;
+  // This compatibility programme is intentionally absent from student discovery.
+  const option = {id:'skate_park',label:'Skate park',description:'Saved-project compatibility fixture',
+    photoUrl:'/archetypes/openspaces/skate-park/variant_0.png',variants:[{id:'skate_park_v0',label:'Professional grade'}]};
+  const choice = { id:'park_plaza:skate_park',domain:'park_plaza' as const,option,placements:[] };
   const asset = canonicalParkAsset({ choice, variant: choice.option.variants![0] });
   const { width: w, depth: d } = asset;
   expect(fitSkateParkV0Program([{ x: 0, y: 0 }, { x: w, y: 0 }, { x: w, y: d }, { x: 0, y: d }])?.scale).toBe(1);

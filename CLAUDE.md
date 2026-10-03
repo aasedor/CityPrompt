@@ -131,6 +131,15 @@ Before changing or batch-generating LEGO building families, read
 `tools/archetype_compiler/high_quality_building_memory.json`; keep the human
 runbook, machine memory, assessor tests, and memory version synchronized.
 
+### High-quality 3D parks
+
+Before building or reviewing a park family, read
+`docs/HIGH_QUALITY_3D_PARK_MEMORY.md`. The user selected the exact
+conservatory botanical garden `botanical_garden_v3` / `conservatory-v013` as
+the visual-quality benchmark for future parks. Match its level of authored
+landscape composition and close-up 3D finish while preserving each new park's
+own archetype identity and the separate runtime acceptance gates.
+
 ### AI planner — the Design Director
 
 The planning-agent panel (`backend/app/services/planning_agents/`) advises

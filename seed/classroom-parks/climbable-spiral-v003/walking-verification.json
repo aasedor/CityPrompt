@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "model_sha256": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8",
+  "samples": 3660,
+  "max_step_m": 0.009473572213333448,
+  "max_surface_error_m": 8.177493846517336e-7,
+  "body_clearance_width_m": 0.44,
+  "results": [
+    {
+      "route": "Complete spiral ascent and descent",
+      "direction": "forward",
+      "end": [
+        0,
+        0.020000000000005083,
+        5.425000000000001
+      ]
+    },
+    {
+      "route": "Complete spiral ascent and descent",
+      "direction": "reverse",
+      "end": [
+        0.00001114579101060785,
+        -33.97943928838592,
+        0
+      ]
+    }
+  ],
+  "failures": [],
+  "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+}

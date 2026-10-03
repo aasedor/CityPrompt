@@ -1,0 +1,350 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "showcase-aquatic-clay-v004",
+  "candidate_directory": "C:/dev-artifacts/CityPrompt/showcase-nine-2026-09-27/buildings/aquatic-v004",
+  "reviewer": {
+    "agent": "/root/showcase_market_review",
+    "role": "Independent architectural-clay reviewer; no builder source edits"
+  },
+  "reviewed_at_utc": "2026-09-28T07:08:07.655749+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Holistic offline architectural-clay review of exact source identity, massing, envelope, openings, roof contacts, program, material colors, circulation and evidence cameras",
+  "model_path": "showcase-aquatic-clay-v004.glb",
+  "model_sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+  "source_hashes": [
+    {
+      "path": "sources/variant_2.png",
+      "sha256": "06810b6ee8ed0f3a58588be35c41cb9945eadfa49efe62a1cc3b4e9f8892882c"
+    },
+    {
+      "path": "sources/variant_2_angle_60.jpg",
+      "sha256": "8a18d105da76d96e3548f04f5cea66130111845365079d4bf7817fa50344e67e"
+    },
+    {
+      "path": "sources/variant_2_angle_90.jpg",
+      "sha256": "77e193aa06682532fe8aa654224810f4e944bd1b91c8336487aba69e8b619dcf"
+    }
+  ],
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspection_coverage": {
+    "exact_sources": 3,
+    "individual_reimported_glb_renders": 14,
+    "phone_board": 1,
+    "all_images_opened_individually_at_full_resolution": true,
+    "counts_used_as_visual_approval": false
+  },
+  "approval_boundaries": {
+    "textured_keeper_approved": false,
+    "browser_tested": false,
+    "runtime_placement_scaling_grounding_tested": false,
+    "engineering_or_code_compliance_verified": false,
+    "human_activation_approved": false,
+    "publication_approved": false
+  },
+  "findings": [],
+  "finite_required_changes": [],
+  "prior_findings_rechecked": [
+    {
+      "id": "AQT2-01",
+      "status": "CLOSED",
+      "evidence": [
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/rear_side.png"
+      ],
+      "observation": "The widened9m service wing beside28m vault reads as a substantial distinct planted volume, with charcoal sides, real front openings and closed end/inner connections."
+    },
+    {
+      "id": "AQT2-02",
+      "status": "CLOSED",
+      "evidence": [
+        "renders/top.png",
+        "renders/aerial.png",
+        "renders/architecture_close.png",
+        "renders/roof_contact.png",
+        "renders/program_interior.png"
+      ],
+      "observation": "Fresh images show two rows of four vault rooflights and four wing lights, the long shoulder light, and one-slope PV divided into three groups. Volumetric curb sides seat into the curved carrier; glazing caps close them, and interior wells visibly open through the roof."
+    },
+    {
+      "id": "AQT2-03",
+      "status": "CLOSED",
+      "evidence": [
+        "renders/front_corner.png",
+        "renders/facade_close.png",
+        "renders/walk.png"
+      ],
+      "observation": "The glazing is recessed behind the grounded arch with a four-metre porch, deck, bench seats, bounded lower living-wall flanks and a small attached entrance canopy. The complete door/threshold approach is visible and clear."
+    },
+    {
+      "id": "AQT2-04",
+      "status": "CLOSED",
+      "evidence": [
+        "renders/right_side.png",
+        "renders/top.png",
+        "renders/front_corner.png"
+      ],
+      "observation": "Two louvred ventilation shafts now match the source-pair schedule and remain grounded and capped."
+    }
+  ],
+  "holistic_assessment": [
+    {
+      "area": "Source identity and proportions",
+      "result": "PASS within clay tier",
+      "observation": "Planted asymmetric two-volume plan, barrel hall, deep timber arch/porch, discrete skylights, solar groups and vent pair retain the locked source architecture. Fine texture, planting morphology and ornament are simplified native geometry."
+    },
+    {
+      "area": "Envelope and roof contacts",
+      "result": "PASS visually",
+      "observation": "Rear and rear-side show closed wing and vault ends. Roof cover bounds the ribs. Rooflight curbs visibly reach the roof surface, cap rails and glass close the tops, and no glaring new roof holes or floating roof objects are apparent."
+    },
+    {
+      "area": "Openings and inhabited program",
+      "result": "PASS visually",
+      "observation": "Glass and interior views expose physical glulam supports, ceiling openings, eight-lane basin, coping, floats, starting blocks, benches, tables and changing partitions with interior depth. Pedestrian view includes a clear doorway threshold and approach."
+    },
+    {
+      "area": "Evidence cameras",
+      "result": "PASS",
+      "observation": "All eight whole-building views retain complete roof/footprint margins; close views resolve facade/entrance, glass, rooflight contacts and pool interior. Phone board is fresh and marked Browser NOT TESTED."
+    }
+  ],
+  "positive_findings": [
+    "Earlier rear hole and projecting roof-rib defects remain corrected.",
+    "Source-specific architectural omissions fromv002 are corrected in fresh full-resolution pixels.",
+    "No unresolved P0/P1 architectural-clay defect identified after the full holistic regression."
+  ],
+  "checks": {
+    "actual_model_hash_matches_build_report": true,
+    "source_hashes_match_source_entry": true,
+    "glb_images": 0,
+    "glb_textures": 0,
+    "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+    "render_provenance_basis": "Builder report; reviewer individually inspected every render and parsed exact GLB bytes, did not rerender."
+  },
+  "limitations": [
+    "Native geometry and color tier accepts simplified fine surface texture and plant morphology. This is not textured keeper approval.",
+    "Rear and concealed interior details are inferred from building program where references do not expose them.",
+    "Native-scale offline review only; browser placement, scaling, ground contact interaction, navigation and editing remain NOT TESTED by explicit direction.",
+    "No engineering/code-compliance, human activation or publication approval.",
+    "Builder metadata pending fields remain untouched; this separate record is the independent decision."
+  ],
+  "next_checkpoint": "No further architectural-clay correction required by this review for these exact bytes. Candidate can serve as the reviewed aquatic local-pilot checkpoint; separate browser/runtime and human activation gates remain outstanding.",
+  "inspected_files": [
+    {
+      "path": "prework-manifest.json",
+      "bytes": 6711,
+      "sha256": "998625dcc1711f61d2c9092827e96a5dd6bdfb2b8cab97cff07297edd6953f30",
+      "inspection": "Supporting metadata/source read; actual GLB bytes hashed and JSON parsed."
+    },
+    {
+      "path": "source-entry.json",
+      "bytes": 1587,
+      "sha256": "83c6557025818f09e0edf190854285639f58c44631f63fe2b8dccb384c4e50af",
+      "inspection": "Supporting metadata/source read; actual GLB bytes hashed and JSON parsed."
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 162657,
+      "sha256": "cde20df89f385c9490f98ea39e37b3f48bf1dd5f9fa8dabf9290269c9eae142d",
+      "inspection": "Supporting metadata/source read; actual GLB bytes hashed and JSON parsed."
+    },
+    {
+      "path": "scripts/aquatic.py",
+      "bytes": 11750,
+      "sha256": "960fe79572f1fb4830b48babcc21e67352f7455b38b715ef40871ad89b61b9fd",
+      "inspection": "Supporting metadata/source read; actual GLB bytes hashed and JSON parsed."
+    },
+    {
+      "path": "showcase-aquatic-clay-v004.glb",
+      "bytes": 8005836,
+      "sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "inspection": "Supporting metadata/source read; actual GLB bytes hashed and JSON parsed."
+    },
+    {
+      "path": "sources/variant_2.png",
+      "bytes": 1292097,
+      "sha256": "06810b6ee8ed0f3a58588be35c41cb9945eadfa49efe62a1cc3b4e9f8892882c",
+      "dimensions_px": [
+        1024,
+        768
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "sources/variant_2_angle_60.jpg",
+      "bytes": 925963,
+      "sha256": "8a18d105da76d96e3548f04f5cea66130111845365079d4bf7817fa50344e67e",
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "sources/variant_2_angle_90.jpg",
+      "bytes": 916068,
+      "sha256": "77e193aa06682532fe8aa654224810f4e944bd1b91c8336487aba69e8b619dcf",
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1303303,
+      "sha256": "9aa04b3bf28ee8ce98393a489b84fa27906acc7a3c22c6ed87243e2aac1388f7",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1356018,
+      "sha256": "65f1a53fab6fa0ee9bdb14ea06cb240180bb09fd2f44a6b210bbf3543f4115f9",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1436605,
+      "sha256": "d9f0887bdb231b5e2b8b91293260a0d9a792b7ab1430daad0db4dfce20fe5e07",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1287455,
+      "sha256": "4b0aa187cbb0ec3da66e4432f14a78ce8fd8bc2179501ac9ad5eb1a0bbb1f503",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1491697,
+      "sha256": "44387684d547d8c230668e0e6b547041e93ee3135feb09d472ab06ea8658bcec",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1681049,
+      "sha256": "c2b89ce2315333cfe664514304659ef5ca22fbcb8866ba54e4f133dbde854383",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1816496,
+      "sha256": "4e5205b9d0896be25d97b505ba1679cde6f2089a8208850cb3a470936a15e866",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1430397,
+      "sha256": "e7ca542011deaec59f7c467e058c94b5a826c0707d4d0d313b26ed29b5a67dc5",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1712828,
+      "sha256": "af42778ee4bd9abbe31d1339094e230d2355f5bf31f044322518f28b3cde2e60",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 2024205,
+      "sha256": "5762bb047d9a54e997f76f89574276ae070cec8b938005662108a021a75ecf9d",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1547955,
+      "sha256": "9011f5f1ffd0475a065a715bc1c955ab9b51e3d31104ceb34ba1e492fec325d6",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/program_interior.png",
+      "bytes": 1696864,
+      "sha256": "cba40daee15dfaf21b4783e658a35b2944255370b5e006995b3f1f020b0756b2",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/walk.png",
+      "bytes": 1659254,
+      "sha256": "6caf8b4e77b87c105d82f52185362912abbbb879c13a424b661190c2542b73d7",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "bytes": 2154219,
+      "sha256": "08d832381612ef59baf3231774b6d8cd19cc3f812a987df0d3be73ecdc4aabd7",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "boards/comparison-phone.png",
+      "bytes": 1818375,
+      "sha256": "a1743224c126f5ff4bde257d7efc4144c83e0abab27657bd94cbb09fb947c959",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    }
+  ]
+}

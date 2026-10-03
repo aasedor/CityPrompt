@@ -5,8 +5,10 @@ import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngi
 
 /** Early editing feedback; the server independently validates the whole buffer,
  * outside length, width and parcel overlap before persisting a connection. */
-export function publicRoadConnectionFits(zone: SiteZone, coordinates: number[][], boundary?: SiteZone | null): boolean {
+export function publicRoadConnectionFits(zone: Pick<SiteZone, 'zone_type' | 'properties'>, coordinates: number[][], boundary?: SiteZone | null): boolean {
   if (zone.zone_type !== 'road' || zone.properties?.connect_to_public_road !== true || !boundary) return false;
+  const width = Number(zone.properties.width);
+  if (width && (width < 3 || width > 30)) return false;
   const ring = boundary.coordinates as [number, number][];
   const contains = (point: number[]) => sharedSiteGroundContains(ring, point[0], point[1]);
   const line = extractCenterline(coordinates);

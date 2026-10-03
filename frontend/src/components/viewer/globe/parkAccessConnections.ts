@@ -1,3 +1,4 @@
+import { readNativePark, hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { isParkTrio } from './parkTrioLayout';
 import type { SiteZone } from '@/types';
 import { effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/roadGeometry';
@@ -147,6 +148,7 @@ function validRing(zone: SiteZone): boolean {
 }
 function supported(zone: SiteZone): boolean {
   if (zone.zone_type !== 'green_space') return false;
+  if (hasNativePark(zone)) return true;
   if (isParkTrio(zone)) return true;
   const profile = resolveParkGroundProfile(zone);
   return (profile.archetypeId.startsWith('urban_pocket_park') || profile.archetypeId.startsWith('neighborhood_park'))
@@ -154,6 +156,23 @@ function supported(zone: SiteZone): boolean {
 }
 
 function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAccessSettings, eligibleStreetZoneIds: ReadonlySet<string>, transport: ExistingTransport): ParkAccessPlan {
+  const native = readNativePark(park);
+  const entryWidth = native?.layout.entrances[0]?.widthM;
+  if (entryWidth) {
+    // A connector must meet the actual near-side footway without covering an
+    // adjacent planted or vehicle band. Wider authored park gateways remain
+    // intact; only the short approach is narrowed to its street target.
+    const selectedStreetId = (park.properties?.pedestrian_park_entrance as {streetId?:string}|undefined)?.streetId;
+    const sidewalkWidths = zones.filter(z => z.zone_type === 'road' && eligibleStreetZoneIds.has(z.id)
+      && (!selectedStreetId || selectedStreetId === z.id)).flatMap(street => {
+      const section = resolvePilotStreetSectionProfile(street);
+      if (!section) return [];
+      const scale = section.metricWidthLocked ? (section.targetRowM ?? section.rowM) / section.rowM
+        : effectiveRoadWidth(street.properties) / section.rowM;
+      return pedestrianAccessBands(section).map(band => band.widthM * scale).filter(width => width >= 1.2);
+    });
+    settings = {...settings, pathWidthM: Math.min(settings.pathWidthM, entryWidth, ...sidewalkWidths)};
+  }
   const empty = (status: ParkAccessPlan['status'], reason: string): ParkAccessPlan => ({ parkZoneId: park.id, status, reason, connections: [], paths: [] });
   if (park.properties?.park_terrain) return empty('unresolved', 'The park follows measured hillside ground. Its street connection needs a measured sidewalk landing and graded approach; the old flat connector is not shown.');
   // Even an explicitly empty list is authored intent, not permission to invent gates.
@@ -189,15 +208,15 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
       : [[-rx, -ry], [rx, -ry], [rx, ry], [-rx, ry]];
     return points.map(([x, y]) => add(center, [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)]));
   };
-  const fixed = fit.guides.filter((g) => !['line', 'axis', 'polyline', 'path_loop'].includes(g.kind)).map((g) => guidePolygon(g));
-  for (const placement of (isNeighborhoodParkPilot(park) || isParkTrio(park)) ? [] : computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
+  const fixed = (native ? [] : fit.guides).filter((g) => !['line', 'axis', 'polyline', 'path_loop'].includes(g.kind)).map((g) => guidePolygon(g));
+  for (const placement of (native || isNeighborhoodParkPilot(park) || isParkTrio(park)) ? [] : computeParkPlacements(park, resolveParkRecipeForZone(park), profile.plantingStructure, resolveParkProgramAnchorLayout(park))) {
     if (placement.propId !== 'playground' && placement.propId !== 'pavilion') continue;
     const radius = placement.propId === 'playground' ? PARK_PROGRAM_MODULE_SPEC.playground.safetyDiameterM / 2
       : Math.hypot(PARK_PROGRAM_MODULE_SPEC.pavilion.widthM, PARK_PROGRAM_MODULE_SPEC.pavilion.depthM) / 2;
     const center = local([placement.lng, placement.lat]);
     fixed.push(Array.from({ length: 24 }, (_, i) => add(center, [Math.cos(i * Math.PI / 12) * radius * placement.scale / Math.cos(Math.PI / 24), Math.sin(i * Math.PI / 12) * radius * placement.scale / Math.cos(Math.PI / 24)])));
   }
-  const obstacles = zones.filter((z) => z.id !== park.id && ['building', 'residential', 'development_area', 'water', 'parking'].includes(z.zone_type)).map((z) => z.coordinates.map(local));
+  const obstacles = zones.filter((z) => z.id !== park.id && ['building', 'residential', 'green_space', 'development_area', 'water', 'parking'].includes(z.zone_type)).map((z) => z.coordinates.map(local));
   const roadPolygons = zones.filter((z) => z.zone_type === 'road').map((z) => ({ id: z.id, ring: z.coordinates.map(local) }));
   const boundaryRing = boundary.coordinates.map(local);
   const half = settings.pathWidthM / 2;
@@ -207,6 +226,39 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
     && [...fixed, ...obstacles].every((obstacle) => !hitsObstacle(a, b, obstacle, half + settings.obstacleClearanceM))
     && roadPolygons.every((road) => !corridorOverlaps(a, b, road.ring, half));
   let network: P[][] = fit.guides.filter((g) => g.kind === 'polyline' && g.closed && g.points).map((g) => g.points!.map(guidePoint));
+  let nativeGate: P | null = null;
+  if (native) {
+    const {layout,selection:{frame:f}}=native;
+    const entry=layout.entrances[0];
+    if (!entry) return empty('unresolved','This native park entrance is awaiting review.');
+    const nativeLocal=(x:number,y:number):P=>local([
+      f.longitude+(x*Math.cos(f.yaw)-y*Math.sin(f.yaw))/metersPerDegLon(f.latitude),
+      f.latitude+(x*Math.sin(f.yaw)+y*Math.cos(f.yaw))/METERS_PER_DEG_LAT]);
+    const arrivalX = 'arrivalX' in entry && typeof entry.arrivalX === 'number' ? entry.arrivalX : entry.x;
+    const dx = arrivalX - entry.x, dy = entry.arrivalY - entry.y, length = Math.hypot(dx, dy);
+    if (length < .02) return empty('unresolved', 'This native park entrance needs a measured arrival inside the park.');
+    const inward: P = [dx / length, dy / length], across: P = [inward[1], -inward[0]];
+    const corridorPoint = (u: number, v: number): P => nativeLocal(entry.x + across[0] * u + inward[0] * v, entry.y + across[1] * u + inward[1] * v);
+    const corners: P[] = [[-layout.widthM/2,-layout.depthM/2],[layout.widthM/2,-layout.depthM/2],[layout.widthM/2,layout.depthM/2],[-layout.widthM/2,layout.depthM/2]];
+    const projected = corners.map(p => { const d = sub(p, [entry.x, entry.y]); return [dot(d, across), dot(d, inward)]; });
+    const uMin = Math.min(...projected.map(p => p[0])), uMax = Math.max(...projected.map(p => p[0]));
+    const vMin = Math.min(...projected.map(p => p[1])), vMax = Math.max(...projected.map(p => p[1]));
+    const protect = (u0: number, v0: number, u1: number, v1: number) => {
+      if (u1 > u0 && v1 > v0) fixed.push([[u0,v0],[u1,v0],[u1,v1],[u0,v1]].map(([u,v]) => corridorPoint(u,v)));
+    };
+    // Protect the authored composition on both sides of its measured approach.
+    // The entry-to-arrival axis also handles side stairs and rotated layouts.
+    const clearance = settings.pathWidthM / 2 + settings.obstacleClearanceM;
+    const corridor = entry.widthM / 2 + clearance;
+    protect(uMin, vMin, -corridor, vMax);
+    protect(corridor, vMin, uMax, vMax);
+    // The first ingress point sits pathWidth + 0.5 m inside the parcel. Short
+    // authored arrivals (for example Reading Garden's 2 m) still need that
+    // whole point and its clearance before the protected park composition.
+    protect(-corridor, Math.max(length, settings.pathWidthM + 0.5) + clearance + .05, corridor, vMax);
+    nativeGate = nativeLocal(entry.x, entry.y);
+    network = [[corridorPoint(0, length - .02), corridorPoint(0, length)]];
+  }
   let extraLoop: P[] | null = null;
   if (profile.archetypeId.startsWith('urban_pocket_park')) {
     const lawn = fit.guides.find((g) => g.kind === 'ellipse');
@@ -272,7 +324,9 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
       if (edgeLength < settings.pathWidthM * 2) continue;
       let inward: P = [-delta[1] / edgeLength, delta[0] / edgeLength];
       if (!pointInside(add(lerp(edgeA, edgeB, 0.5), mul(inward, 0.05)), ring)) inward = mul(inward, -1);
-      for (const t of entrance ? [entrance.position!] : [0.5, 0.25, 0.75]) {
+      const nativePosition = nativeGate ? dot(sub(project(nativeGate, edgeA, edgeB), edgeA), delta) / (edgeLength * edgeLength) : null;
+      const positions = entrance ? [entrance.position!] : [...new Set([...(nativePosition === null ? [] : [nativePosition]), 0.5, 0.25, 0.75])];
+      for (const t of positions) {
         const gateway = lerp(edgeA, edgeB, t); const ingress = add(gateway, mul(inward, settings.pathWidthM + 0.5));
         if (!internalSafe(gateway, ingress, true)) continue;
         for (let i = 1; i < center.length; i += 1) {
@@ -338,7 +392,7 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
   const level=resolvePreparedSiteTerrainForZone(park,[...zones],0),base=resolvePreparedSiteTerrainForZone(boundary,[...zones],0);
   if(level!==null&&base!==null&&Math.abs(level-base)>.02)return empty('unresolved','This park has a separate terrace level. Its sidewalk entrance needs a graded approach and retaining-edge opening; the terrace pilot currently connects building and park plots only.');
   const connections: ParkAccessConnection[] = [];
-  for (const candidate of candidates.sort((a, b) => a.gap - b.gap || a.street.id.localeCompare(b.street.id) || a.gateway[0] - b.gateway[0] || a.gateway[1] - b.gateway[1]).slice(0, 32)) {
+  for (const candidate of candidates.sort((a, b) => (a.gap + (nativeGate ? distance(a.gateway, nativeGate) : 0)) - (b.gap + (nativeGate ? distance(b.gateway, nativeGate) : 0)) || a.street.id.localeCompare(b.street.id) || a.gateway[0] - b.gateway[0] || a.gateway[1] - b.gateway[1]).slice(0, 32)) {
     if (connections.some((c) => c.streetZoneId === candidate.street.id || distance(local(c.gateway), candidate.gateway) < settings.pathWidthM * 3)) continue;
     const route = findRoute(candidate.ingress);
     if (!route) continue;
@@ -346,7 +400,9 @@ function solvePark(park: SiteZone, zones: readonly SiteZone[], settings: ParkAcc
       streetPoint: world(candidate.point), gateway: world(candidate.gateway), path: [candidate.point, candidate.gateway, ...route].map(world), widthM: candidate.widthM, streetLiftM: candidate.lift });
     if (connections.length >= settings.maxConnections) break;
   }
-  if (!connections.length) return empty(candidates.length ? 'blocked' : 'unresolved', candidates.length ? 'No whole-width route reaches the fixed path network without crossing a barrier.' : 'No safe adjacent authored sidewalk or path was found.');
+  if (!connections.length) return empty(candidates.length ? 'blocked' : 'unresolved', candidates.length
+    ? 'The entrance cannot reach the park paths without crossing equipment or a barrier. Choose another entrance edge in Connections, or leave more space beside the park.'
+    : `No clear sidewalk approach fits within ${settings.maxGapM} m. Move the park closer to a sidewalk, choose an entrance facing it in Connections, or draw a connecting pedestrian path. Keep the whole path inside the site and clear of neighbouring plots.`);
   return { parkZoneId: park.id, status: 'connected', connections,
     paths: [...(extraLoop ? [{ points: extraLoop.map(world), widthM: settings.pathWidthM }] : []), ...connections.map((c) => ({ points: c.path.slice(1), widthM: c.widthM }))] };
 }

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { authApi, rendersApi } from '@/services/api';
+import { authApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { useAuthStore } from '@/store';
 import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
@@ -77,7 +77,7 @@ const EXPRESSIVE_DIRECT_3D_STYLES = new Set([
 
 export function resolveDirect3DFidelityPolicy(style: string): Direct3DFidelityPolicy {
   if (REPROJECTING_STYLES.has(style) || EXPRESSIVE_DIRECT_3D_STYLES.has(style)) return 'expressive';
-  return 'precise';
+  return 'balanced';
 }
 
 export interface Direct3DRenderDiagnostics {
@@ -308,7 +308,7 @@ export function buildDirect3DVisualPrompt(
   style: string,
   customPrompt: string | undefined,
   _capture: Pick<Direct3DCaptureBundle, 'classCoverage'>,
-  _fidelityPolicy: Direct3DFidelityPolicy = resolveDirect3DFidelityPolicy(style),
+  fidelityPolicy: Direct3DFidelityPolicy = resolveDirect3DFidelityPolicy(style),
   publicRealmContext?: string,
 ): string {
   const custom = customPrompt?.trim();
@@ -326,6 +326,9 @@ export function buildDirect3DVisualPrompt(
   const direction = publicRealmContext?.trim()
     ? `${artDirection}\n${publicRealmContext.trim()}`
     : artDirection;
+  if (resolveDirect3DPresentationMode(resolvedStyle) === 'scene' && fidelityPolicy === 'balanced') {
+    return `${direction}\nCONCEPT FIDELITY: Preserve every building's count, position, footprint, height and roof massing; retain street routes and junctions, pedestrian access and each park's playing areas and programme. Refine surface materials, lighting, foliage and small details within that design. Do not add, remove, relocate or join buildings, roads, paths or sports facilities. Keep the source camera. Keep cropped and occluded elements cropped and occluded; do not complete hidden structures elsewhere. Leave gaps as drawn: do not invent connecting sidewalks, driveways or sports facilities.`;
+  }
   return resolveDirect3DPresentationMode(resolvedStyle) === 'scene'
     ? `${direction}\nFinish only what is visible in the source camera. Keep cropped and occluded elements cropped and occluded; do not complete or relocate them elsewhere. Leave gaps between buildings, paths and parks as drawn: do not invent connecting sidewalks, driveways, planting beds or furniture. People, if requested, may use only already-visible walkable surfaces; never build a new surface for them. Preserve each building's own facade materials, openings and roof geometry. Style changes the finish, not the design.`
     : direction;
@@ -429,18 +432,26 @@ export function useDirect3DRender() {
     if (requestingUserId) void authApi.me().then(user => {
       if (user.id === requestingUserId && useAuthStore.getState().user?.id === requestingUserId) useAuthStore.getState().setUser(user);
     }).catch(() => { /* The next account refresh will reconcile the balance. */ });
-    // Respect the server's fidelity decision. The rejected provider image stays
-    // available separately for QA; it must never replace the returned source.
+    // The fidelity result is advisory for presentation. Show the image the user
+    // paid to produce even when the server also retained a clean 3D fallback.
+    // Raw bytes keep the result visible if optional gallery persistence fails.
+    const showProviderImage = response.outcome === 'review_required'
+      && Boolean(response.provider_image_base64 || response.provider_original_render);
+    const imageUrl = showProviderImage
+      ? response.provider_image_base64
+        ? `data:image/png;base64,${response.provider_image_base64}`
+        : resolveApiFileUrl(response.provider_original_render!.image_url)
+      : `data:image/png;base64,${response.image_base64}`;
     return {
       render: {
-        imageUrl: `data:image/png;base64,${response.image_base64}`,
+        imageUrl,
         prompt,
         model: response.model,
         imageQuality: 'high',
-        savedRender: response.saved_render ?? undefined,
-        providerLabel: response.diagnostics.returned_safety_strategy === 'authoritative_source'
-          ? 'Original 3D view · AI finish needs review'
-          : viewMode === 'street'
+        savedRender: showProviderImage
+          ? response.provider_original_render ?? undefined
+          : response.saved_render ?? undefined,
+        providerLabel: viewMode === 'street'
           ? `Direct 3D Street · ${imageModelLabel(response.model)}`
           : `Direct 3D · ${imageModelLabel(response.model)}`,
       },

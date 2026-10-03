@@ -1,0 +1,70 @@
+{
+  "schema": "cityprompt.authored-building-storey-program@1",
+  "id": "vancouverism-classic-storey-program-v001",
+  "method": "RLASM 6.1",
+  "source": {
+    "candidate": "vancouverism-tower-podium-clay-v004",
+    "variant_id": "vancouverism_classic",
+    "path": "models/vancouverism-tower-podium-clay-v004.glb",
+    "sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+    "native_storeys": 16,
+    "native_height_m": 58.8
+  },
+  "supported_storeys": {
+    "minimum": 16,
+    "maximum": 40,
+    "recommended_minimum": 16,
+    "recommended_maximum": 40
+  },
+  "height_contract": {
+    "podium_storeys": 3,
+    "podium_height_m": 13.0,
+    "repeatable_storey_height_m": 3.2,
+    "roof_height_m": 4.2,
+    "formula": "podium_height_m + (storeys - podium_storeys) * repeatable_storey_height_m + roof_height_m"
+  },
+  "footprint_contract": {
+    "default_m": [52.0, 44.0],
+    "minimum_m": [51.1, 43.1],
+    "maximum_m": [57.5, 47.5],
+    "uniform_horizontal_scale_range": [1.06336, 1.18587]
+  },
+  "modules": [
+    {
+      "role": "podium",
+      "path": "models/vancouverism-classic-podium-module-v001.glb",
+      "source_vertical_band_m": [0.0, 13.0],
+      "native_dimensions_m": [48.05500030517578, 40.05500030517578, 13.0],
+      "bytes": 1789412,
+      "sha256": "f539bedba4912b3d4a895cb457e3a500404ca9e2b8a561db7c5fd5c200efe22a",
+      "occupied_storeys": 3
+    },
+    {
+      "role": "floor",
+      "path": "models/vancouverism-classic-floor-module-v001.glb",
+      "source_vertical_band_m": [19.4, 22.6],
+      "native_dimensions_m": [34.73136901855469, 28.352499961853027, 3.200000762939453],
+      "bytes": 378048,
+      "sha256": "ca3f05944526259cdea71254a88ef529dd727cd0bb9a7ae05b96a098515f909c",
+      "occupied_storeys": 1
+    },
+    {
+      "role": "roof",
+      "path": "models/vancouverism-classic-roof-module-v001.glb",
+      "source_vertical_band_m": [54.6, 58.8],
+      "native_dimensions_m": [35.752498626708984, 29.05500030517578, 4.200000762939453],
+      "bytes": 146020,
+      "sha256": "016e0b1f2fff28bcf8cd33ec4b585992241d11ab5aebcf786bc43974cb7c8a32",
+      "occupied_storeys": 0
+    }
+  ],
+  "review": {
+    "status": "PASS_LOCAL_BROWSER",
+    "notes": [
+      "The native 16-storey source remains unchanged and remains the default exact model.",
+      "Each module is a clipped band of the reviewed source GLB; no facade material or horizontal geometry was regenerated.",
+      "The podium and roof remain single authored modules while the residential band repeats at 3.2 m.",
+      "Local student-controls browser checks passed at 25 storeys on the minimum footprint and 40 storeys on the maximum footprint, including save and reopen."
+    ]
+  }
+}

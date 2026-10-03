@@ -1,0 +1,891 @@
+{
+  "title": "Playful School Street",
+  "reference": "school-street/variant_0.png",
+  "length_m": 48,
+  "pattern": "stone",
+  "observed_features": [
+    "Painted play graphics, timber planters, bicycle parking, seats and bollards"
+  ],
+  "adapted_features": [
+    "Side bollards leave centre open for later network-controlled access; no school building or claimed traffic restriction"
+  ],
+  "id": "student_school_street_v1",
+  "kind": "school_street",
+  "dimensions_m": [
+    18.0,
+    48
+  ],
+  "sections": [
+    {
+      "name": "west_walk",
+      "x": -7.75,
+      "width": 2.5,
+      "material": "paving"
+    },
+    {
+      "name": "west_furniture",
+      "x": -4.75,
+      "width": 3.5,
+      "material": "paving"
+    },
+    {
+      "name": "play_lane",
+      "x": 0.0,
+      "width": 6,
+      "material": "asphalt"
+    },
+    {
+      "name": "east_furniture",
+      "x": 4.75,
+      "width": 3.5,
+      "material": "paving"
+    },
+    {
+      "name": "east_walk",
+      "x": 7.75,
+      "width": 2.5,
+      "material": "paving"
+    }
+  ],
+  "fixed_width_m": 18.0,
+  "fixture_length_m": 48,
+  "image_references": [
+    {
+      "path": "references/school-street/variant_0.png",
+      "sha256": "36eb4c62f554de603e7b3a82b1f7f688ecdd509ee99fbd459af06f6e40d3e17a",
+      "bytes": 1606131,
+      "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\school-street\\variant_0.png"
+    }
+  ],
+  "kit_source": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\shared-kit\\kit.json",
+    "sha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050"
+  },
+  "clear_routes": [
+    {
+      "name": "west_walk",
+      "a": [
+        -7.75,
+        -23.5
+      ],
+      "b": [
+        -7.75,
+        23.5
+      ],
+      "width": 2.1
+    },
+    {
+      "name": "play_lane",
+      "a": [
+        0.0,
+        -23.5
+      ],
+      "b": [
+        0.0,
+        23.5
+      ],
+      "width": 5.6
+    },
+    {
+      "name": "east_walk",
+      "a": [
+        7.75,
+        -23.5
+      ],
+      "b": [
+        7.75,
+        23.5
+      ],
+      "width": 2.1
+    },
+    {
+      "name": "cross_link",
+      "a": [
+        -8.8,
+        0
+      ],
+      "b": [
+        8.8,
+        0
+      ],
+      "width": 2.6
+    }
+  ],
+  "reference_assets": [
+    {
+      "kind": "timber_seat_wall",
+      "x": -4.75,
+      "y": -6,
+      "yaw": 1.5707963267948966,
+      "bounds_m": [
+        [
+          -5.095000267028809,
+          -7.800000190734863,
+          0.0
+        ],
+        [
+          -4.404999732971191,
+          -4.199999809265137,
+          0.47999998927116394
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.7999999523162842,
+          -0.3449999988079071,
+          0.0
+        ],
+        [
+          1.7999999523162842,
+          0.3449999988079071,
+          0.47999998927116394
+        ]
+      ]
+    },
+    {
+      "kind": "timber_seat_wall",
+      "x": -4.75,
+      "y": 6,
+      "yaw": 1.5707963267948966,
+      "bounds_m": [
+        [
+          -5.095000267028809,
+          4.199999809265137,
+          0.0
+        ],
+        [
+          -4.404999732971191,
+          7.800000190734863,
+          0.47999998927116394
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.7999999523162842,
+          -0.3449999988079071,
+          0.0
+        ],
+        [
+          1.7999999523162842,
+          0.3449999988079071,
+          0.47999998927116394
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.75,
+      "y": -21,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          -6.150000095367432,
+          -21.510000228881836,
+          0.0
+        ],
+        [
+          -3.3499999046325684,
+          -20.489999771118164,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.75,
+      "y": 21,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          -6.150000095367432,
+          20.489999771118164,
+          0.0
+        ],
+        [
+          -3.3499999046325684,
+          21.510000228881836,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "street_bollard",
+      "x": -4.75,
+      "y": -2.5,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          -4.889999866485596,
+          -2.640000104904175,
+          0.0
+        ],
+        [
+          -4.610000133514404,
+          -2.359999895095825,
+          0.9800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -0.14000000059604645,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.14000000059604645,
+          0.14000000059604645,
+          0.9800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "street_bollard",
+      "x": -4.75,
+      "y": 2.5,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          -4.889999866485596,
+          2.359999895095825,
+          0.0
+        ],
+        [
+          -4.610000133514404,
+          2.640000104904175,
+          0.9800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -0.14000000059604645,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.14000000059604645,
+          0.14000000059604645,
+          0.9800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "timber_seat_wall",
+      "x": 4.75,
+      "y": -6,
+      "yaw": 1.5707963267948966,
+      "bounds_m": [
+        [
+          4.404999732971191,
+          -7.800000190734863,
+          0.0
+        ],
+        [
+          5.095000267028809,
+          -4.199999809265137,
+          0.47999998927116394
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.7999999523162842,
+          -0.3449999988079071,
+          0.0
+        ],
+        [
+          1.7999999523162842,
+          0.3449999988079071,
+          0.47999998927116394
+        ]
+      ]
+    },
+    {
+      "kind": "timber_seat_wall",
+      "x": 4.75,
+      "y": 6,
+      "yaw": 1.5707963267948966,
+      "bounds_m": [
+        [
+          4.404999732971191,
+          4.199999809265137,
+          0.0
+        ],
+        [
+          5.095000267028809,
+          7.800000190734863,
+          0.47999998927116394
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.7999999523162842,
+          -0.3449999988079071,
+          0.0
+        ],
+        [
+          1.7999999523162842,
+          0.3449999988079071,
+          0.47999998927116394
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.75,
+      "y": -21,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          3.3499999046325684,
+          -21.510000228881836,
+          0.0
+        ],
+        [
+          6.150000095367432,
+          -20.489999771118164,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.75,
+      "y": 21,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          3.3499999046325684,
+          20.489999771118164,
+          0.0
+        ],
+        [
+          6.150000095367432,
+          21.510000228881836,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "street_bollard",
+      "x": 4.75,
+      "y": -2.5,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          4.610000133514404,
+          -2.640000104904175,
+          0.0
+        ],
+        [
+          4.889999866485596,
+          -2.359999895095825,
+          0.9800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -0.14000000059604645,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.14000000059604645,
+          0.14000000059604645,
+          0.9800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "street_bollard",
+      "x": 4.75,
+      "y": 2.5,
+      "yaw": 0,
+      "bounds_m": [
+        [
+          4.610000133514404,
+          2.359999895095825,
+          0.0
+        ],
+        [
+          4.889999866485596,
+          2.640000104904175,
+          0.9800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -0.14000000059604645,
+          -0.14000000059604645,
+          0.0
+        ],
+        [
+          0.14000000059604645,
+          0.14000000059604645,
+          0.9800000190734863
+        ]
+      ]
+    }
+  ],
+  "cycle_directions": [],
+  "reference_profile": {
+    "observed": [
+      "Painted play graphics, timber planters, bicycle parking, seats and bollards"
+    ],
+    "adapted": [
+      "Side bollards leave centre open for later network-controlled access; no school building or claimed traffic restriction"
+    ]
+  },
+  "terrain_policy": "Straight level concept fixture; reconstruct every band with shared runtime ground.",
+  "junction_policy": "Network owns all junctions, endpoints, crossings and ramps. Omit or move modules around connections.",
+  "limitations": [
+    "Original section for ideation, not measured from the image or certified for traffic/accessibility/drainage.",
+    "Ground-level street fixture; elevated kerbs, operational stop islands and sloped joins require runtime integration.",
+    "No buildings, people, vehicles, invented water body or surrounding context included.",
+    "Never repeat, bend or nonuniformly stretch assembly-preview.glb; place native amenity modules and rebuild bands.",
+    "Browser, Currie terrain, route edits, Undo/Redo, reload and export remain NOT TESTED."
+  ],
+  "tree_wells": [
+    {
+      "x": -4.75,
+      "y": -16,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -4.75,
+      "y": 16,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 4.75,
+      "y": -16,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 4.75,
+      "y": 16,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "grove_tree",
+      "x": -4.75,
+      "y": -16,
+      "z": 0,
+      "yaw": -1.12,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -4.75,
+      "y": 16,
+      "z": 0,
+      "yaw": 1.12,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": -4.75,
+      "y": -11,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": -4.75,
+      "y": 11,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 4.75,
+      "y": -16,
+      "z": 0,
+      "yaw": -1.12,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 4.75,
+      "y": 16,
+      "z": 0,
+      "yaw": 1.12,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": 4.75,
+      "y": -11,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": 4.75,
+      "y": 11,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "timber_seat_wall",
+      "x": -4.75,
+      "y": -6,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "timber_seat_wall",
+      "x": -4.75,
+      "y": 6,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.75,
+      "y": -21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.75,
+      "y": 21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "street_bollard",
+      "x": -4.75,
+      "y": -2.5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "street_bollard",
+      "x": -4.75,
+      "y": 2.5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "bike_rack",
+      "x": -4.75,
+      "y": -10,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "bike_rack",
+      "x": -4.75,
+      "y": 10,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "timber_seat_wall",
+      "x": 4.75,
+      "y": -6,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "timber_seat_wall",
+      "x": 4.75,
+      "y": 6,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.75,
+      "y": -21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.75,
+      "y": 21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "street_bollard",
+      "x": 4.75,
+      "y": -2.5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "street_bollard",
+      "x": 4.75,
+      "y": 2.5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "bike_rack",
+      "x": 4.75,
+      "y": -10,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "bike_rack",
+      "x": 4.75,
+      "y": 10,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -4.75,
+      "y": -16,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -4.75,
+      "y": 16,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 4.75,
+      "y": -16,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 4.75,
+      "y": 16,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    }
+  ],
+  "surface_regions": [
+    {
+      "x": -7.75,
+      "y": 0,
+      "width": 2.5,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": -4.75,
+      "y": 0,
+      "width": 3.5,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": 0.0,
+      "y": 0,
+      "width": 6,
+      "depth": 48,
+      "material": "asphalt"
+    },
+    {
+      "x": 4.75,
+      "y": 0,
+      "width": 3.5,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": 7.75,
+      "y": 0,
+      "width": 2.5,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 18.0,
+      "depth": 3,
+      "material": "paving"
+    },
+    {
+      "x": -4.75,
+      "y": -16,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -4.75,
+      "y": 16,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 4.75,
+      "y": -16,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 4.75,
+      "y": 16,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    }
+  ],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 1846172,
+    "sha256": "9606b8a34562784b1c5aeba0f108445c9e08cb2a83dfeb510fae1135b2ca8f3f"
+  },
+  "modules": {
+    "bike_rack": {
+      "path": "bike_rack.glb",
+      "bytes": 96964,
+      "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+    },
+    "grove_tree": {
+      "path": "grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    "light": {
+      "path": "light.glb",
+      "bytes": 37668,
+      "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+    },
+    "planted_trellis": {
+      "path": "planted_trellis.glb",
+      "bytes": 33656,
+      "sha256": "815e43e86d7c5d6622390acf36ba5bde84be054c1b2fcfebd6bc0e688b4886d0"
+    },
+    "street_bollard": {
+      "path": "street_bollard.glb",
+      "bytes": 9892,
+      "sha256": "6316b618afc54fecd980497cebcee3d49d6b930420cab8ad71819ffe9ac4783e"
+    },
+    "timber_seat_wall": {
+      "path": "timber_seat_wall.glb",
+      "bytes": 18172,
+      "sha256": "21064ded3591dc46184b9be308ab147ae3d3b2fcfc8993707f185fc3b6090248"
+    },
+    "tree_well_grate": {
+      "path": "tree_well_grate.glb",
+      "bytes": 95608,
+      "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+    }
+  },
+  "bounds_m": [
+    [
+      -9.0,
+      -24.0,
+      -0.11999999731779099
+    ],
+    [
+      9.0,
+      24.0,
+      8.04883861541748
+    ]
+  ],
+  "triangles": 59056,
+  "mesh_instances": 32,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

@@ -1,0 +1,101 @@
+{
+  "schema": "cityprompt.catalogue.local-runtime@1",
+  "date": "2026-10-01",
+  "publication": "pending_human_activation",
+  "scene_settled": true,
+  "grounding_issues": [],
+  "browser_errors": [],
+  "assembly_world_scale": [
+    1,
+    1,
+    1
+  ],
+  "checks": [
+    "catalogue_search",
+    "placement",
+    "move",
+    "parcel_resize_rotation",
+    "undo_redo",
+    "reload",
+    "exact_revision_and_hash"
+  ],
+  "limitations": [
+    "prepared_level_site",
+    "static_concept_models",
+    "public_street_connections_not_exercised",
+    "paid_render_not_exercised"
+  ],
+  "evidence_root": "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01",
+  "zones": [
+    {
+      "id": "90a5f868-ea60-4a11-b323-0065edc2e66d",
+      "dimensions": {
+        "center": [
+          -114.11954964208134,
+          51.01856874027507
+        ],
+        "degrees": 12.000051922112558,
+        "depth": 55.99998921331018,
+        "width": 47.99979535686178
+      },
+      "variant": "student_community_allotment_v1",
+      "asset": {
+        "archetype_id": "community_garden_enhanced",
+        "asset_hashes": {
+          "assembly": "02ce66e57b40653d578aa41389040b9925d1f0c38944a87807176882b3388b6f"
+        },
+        "content_revision": "6b9d56fcc2d84088633503e9cc219ccef60fe79349b4fbc8d2138ce5d345af5a",
+        "family_id": "native_park",
+        "family_version": 1,
+        "frame": {
+          "latitude": 51.01856874027507,
+          "longitude": -114.11954964208134,
+          "yaw": 0
+        },
+        "generator": "park_kit",
+        "kind": "park",
+        "layout_id": "student_community_allotment_v1--native-v1",
+        "mode": "native_assembly",
+        "recipe_hash": "8c5d72fbeb5903705a03fb98239e3483651aec7dad3fdc1696e786a7a8aeaeef",
+        "schema_version": 2,
+        "terrain_policy": "prepared_level",
+        "variant_id": "student_community_allotment_v1"
+      }
+    },
+    {
+      "id": "170f2116-0cd6-406e-b45c-20efb9f901a5",
+      "dimensions": {
+        "center": [
+          -114.12019488495297,
+          51.01808956344403
+        ],
+        "degrees": 8.000035866813636,
+        "depth": 53.99999524910811,
+        "width": 41.99981292958204
+      },
+      "variant": "student_forest_adventure_v1",
+      "asset": {
+        "archetype_id": "nature_play_area",
+        "asset_hashes": {
+          "assembly": "5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327"
+        },
+        "content_revision": "84ce02e0cba75ce3faf810e571048d39141a14462184b112e87a144f63de86dd",
+        "family_id": "native_park",
+        "family_version": 1,
+        "frame": {
+          "latitude": 51.01808557156507,
+          "longitude": -114.120194934846,
+          "yaw": 0
+        },
+        "generator": "park_kit",
+        "kind": "park",
+        "layout_id": "student_forest_adventure_v1--native-v1",
+        "mode": "native_assembly",
+        "recipe_hash": "a9ee6d5fdb128222c9cd76c2904ac20c2d03c812d4ed30d5944dc9d0955d3a8c",
+        "schema_version": 2,
+        "terrain_policy": "prepared_level",
+        "variant_id": "student_forest_adventure_v1"
+      }
+    }
+  ]
+}

@@ -237,6 +237,16 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       ? persistedWingDepth
       : undefined;
     const communityMeta = getCommunity3DMeta(zone);
+    const footprintScale = Number(zone.properties?.building_footprint_scale);
+    const footprintNativeWidth = Number(zone.properties?.building_footprint_native_width_m);
+    const footprintNativeDepth = Number(zone.properties?.building_footprint_native_depth_m);
+    const usesAuthoredFootprintScale = (
+      typeof zone.properties?.building_footprint_program_id === 'string'
+      && zone.properties.building_footprint_program_id.length > 0
+      && Number.isFinite(footprintScale) && footprintScale > 0
+      && Number.isFinite(footprintNativeWidth) && footprintNativeWidth > 0
+      && Number.isFinite(footprintNativeDepth) && footprintNativeDepth > 0
+    );
     const sourceLockedRlasm = Boolean(
       zone.building_id
       && communityMeta?.generator === 'meshy'
@@ -256,8 +266,12 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       archetypeId: context.archetype_id,
       targets: {
         ...defaults,
-        width_m: authoredPlot?.width_m ?? footprint?.width_m ?? defaults.width_m,
-        depth_m: authoredPlot?.depth_m ?? footprint?.depth_m ?? defaults.depth_m,
+        width_m: usesAuthoredFootprintScale
+          ? footprintNativeWidth * footprintScale
+          : authoredPlot?.width_m ?? footprint?.width_m ?? defaults.width_m,
+        depth_m: usesAuthoredFootprintScale
+          ? footprintNativeDepth * footprintScale
+          : authoredPlot?.depth_m ?? footprint?.depth_m ?? defaults.depth_m,
         footprint_profile: footprint?.profile ?? 'rectangle',
         // AI binding persists the exact shaped-family thickness returned by
         // its strict plan. A catalogue compatibility midpoint is guidance,
@@ -391,7 +405,7 @@ export function assertCommunityCompileResponse(
       ? typeof result.building_id === 'string' && result.building_id.trim().length > 0
       : result?.building_id === null;
     const hasExpectedSourceLock = result?.generator !== 'meshy'
-      || result.source_locked_rlasm === true;
+      || result.source_locked_rlasm === true || result.source_locked_user_generated === true;
     if (
       matches.length === 1
       && result.kind === item.kind
@@ -493,6 +507,7 @@ export async function compileMixedCommunity3D(
   const indicesByArchetype = new Map<string, number[]>();
   const ungroupedIndices: number[] = [];
   buildingItems.forEach((item, index) => {
+    if (item.zone.properties?.user_generated_source_id) { markCompleted(); return; }
     if (!item.archetypeId) {
       ungroupedIndices.push(index);
       return;
@@ -554,7 +569,7 @@ export async function compileMixedCommunity3D(
   });
 
   const unexpectedFailure = planResults.find((result) => (
-    result.status === 'rejected' && getLegoPlanningFailure(result.reason) === null
+    result?.status === 'rejected' && getLegoPlanningFailure(result.reason) === null
   ));
   if (unexpectedFailure?.status === 'rejected') {
     throw new Error(getApiErrorMessage(
@@ -578,7 +593,7 @@ export async function compileMixedCommunity3D(
       label: item.label,
       kind: 'building',
       generators: new Set<CommunityCompileGenerator>(
-        planResults[index]?.status === 'fulfilled'
+        item.zone.properties?.user_generated_source_id ? ['meshy'] : planResults[index]?.status === 'fulfilled'
           ? ['lego_assembly']
           : ['planned_massing', 'meshy'],
       ),
@@ -637,6 +652,7 @@ export async function compileMixedCommunity3D(
   assertCommunityCompileResponse(expectedItems, response);
   announceCommunity3DPresentationReady(scopeZoneIds);
   const resolvedBuildings = buildingItems.map((item, index) => {
+    if (item.zone.properties?.user_generated_source_id) return item;
     const result = planResults[index];
     if (result?.status === 'fulfilled') return { ...item, plan: result.value };
     const planningFailure = result?.status === 'rejected'

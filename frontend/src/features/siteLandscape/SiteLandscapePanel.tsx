@@ -61,6 +61,7 @@ export function SiteLandscapePanel({
   );
   const [prompt, setPrompt] = useState("");
   const [custom, setCustom] = useState(false);
+  const [customEnabled, setCustomEnabled] = useState(false);
   const [preview, setPreview] = useState<LandscapePreview | null>(null);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
@@ -70,9 +71,13 @@ export function SiteLandscapePanel({
     let active = true;
     const ref = generation;
     void api
-      .get<{ tokens: number }>("/api/v1/site-landscape/options")
+      .get<{ tokens: number; custom_enabled: boolean }>("/api/v1/site-landscape/options")
       .then((r) => {
-        if (active) setCost(r.data.tokens);
+        if (active) {
+          setCost(r.data.tokens);
+          setCustomEnabled(r.data.custom_enabled === true);
+          if (!r.data.custom_enabled) setCustom(false);
+        }
       })
       .catch(() => {});
     return () => {
@@ -262,7 +267,7 @@ export function SiteLandscapePanel({
             </span>
           </label>
         ))}
-        <label className="flex items-center gap-2 pt-2 text-sm">
+        {customEnabled && <label className="flex items-center gap-2 pt-2 text-sm">
           <input
             type="checkbox"
             checked={custom}
@@ -272,7 +277,7 @@ export function SiteLandscapePanel({
             }}
           />{" "}
           Custom ground treatment
-        </label>
+        </label>}
         {custom && (
           <>
             <textarea

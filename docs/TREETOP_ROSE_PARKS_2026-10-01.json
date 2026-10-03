@@ -1,0 +1,175 @@
+{
+  "schema": "cityprompt.treetop-rose-parks.local-runtime@1",
+  "date": "2026-10-01",
+  "source_base": "7855cd6cf",
+  "project": "http://localhost:5186/projects/719fced3-0ea1-4e7d-8337-dc6a5a31cd65",
+  "evidence_root": "C:\\dev-artifacts\\CityPrompt\\treetop-rose-parks-2026-10-01",
+  "reviewer": "Codex author review and ordinary-control browser simulation",
+  "publication": "local_only_pending_human_activation",
+  "tests": {
+    "frontend_focused": 48,
+    "backend_native_parks": 44,
+    "type_check": "PASS"
+  },
+  "unchanged_existing_layouts": 27,
+  "parks": [
+    {
+      "title": "Treetop Walk Park",
+      "version": "treetop-v003",
+      "variant": "student_treetop_walk_v1",
+      "model_sha256": "8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a",
+      "content_revision": "aef679e13148ddede9c39e73dbea57d74c23b41400d0363f3a132f93b6e72366",
+      "dimensions_m": [
+        56,
+        64
+      ],
+      "occupied_dimensions_m": [
+        56.0,
+        64.0
+      ],
+      "triangles": 816558,
+      "mesh_instances": 1422,
+      "offline": {
+        "status": "PASS",
+        "model_sha256": "8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a",
+        "samples": 4838,
+        "max_step_m": 0.15000000000000036,
+        "max_surface_error_m": 1.907348643470641e-07,
+        "body_clearance_width_m": 0.44,
+        "results": [
+          {
+            "route": "Canopy circuit and lookout",
+            "direction": "forward",
+            "end": [
+              0,
+              -31.46000000000032,
+              0
+            ]
+          },
+          {
+            "route": "Canopy circuit and lookout",
+            "direction": "reverse",
+            "end": [
+              0,
+              -31.46000000000032,
+              0
+            ]
+          },
+          {
+            "route": "Woodland ground garden",
+            "direction": "forward",
+            "end": [
+              4,
+              7,
+              0
+            ]
+          },
+          {
+            "route": "Woodland ground garden",
+            "direction": "reverse",
+            "end": [
+              0,
+              -31.5,
+              0
+            ]
+          }
+        ],
+        "failures": [],
+        "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+      },
+      "browser": {
+        "distance": 0.1467352636828941,
+        "elapsedS": 116.48240000003575,
+        "index": 39,
+        "maxHeight": 1101.322137275978,
+        "minHeight": 1097.1221372759778,
+        "model": "8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a",
+        "pose": {
+          "groundHeight": 1097.1221372759778,
+          "heading": 177.8994948556158,
+          "lat": 51.01820624498358,
+          "lng": -114.1207722514991
+        },
+        "reason": "route traversed with keyboard input in both directions",
+        "samples": 2912,
+        "status": "PASS",
+        "total": 40,
+        "variant": "student_treetop_walk_v1"
+      },
+      "seed": "seed\\classroom-parks\\garden-treetop-v003"
+    },
+    {
+      "title": "Terraced Rose Garden",
+      "version": "rose-v005",
+      "variant": "student_terraced_rose_v1",
+      "model_sha256": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+      "content_revision": "bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83",
+      "dimensions_m": [
+        50,
+        64
+      ],
+      "occupied_dimensions_m": [
+        50.1,
+        64.0
+      ],
+      "triangles": 741104,
+      "mesh_instances": 291,
+      "offline": {
+        "status": "PASS",
+        "model_sha256": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+        "samples": 3316,
+        "max_step_m": 0.1500000000000008,
+        "max_surface_error_m": 9.536743217353205e-08,
+        "body_clearance_width_m": 0.44,
+        "results": [
+          {
+            "route": "Rose terraces and pergola circuit",
+            "direction": "forward",
+            "end": [
+              0,
+              -31.5,
+              0
+            ]
+          },
+          {
+            "route": "Rose terraces and pergola circuit",
+            "direction": "reverse",
+            "end": [
+              0,
+              -31.5,
+              0
+            ]
+          }
+        ],
+        "failures": [],
+        "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+      },
+      "browser": {
+        "distance": 0.07540555323234922,
+        "elapsedS": 102.6015,
+        "index": 43,
+        "maxHeight": 1099.522137275978,
+        "minHeight": 1097.1221372759778,
+        "model": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+        "pose": {
+          "groundHeight": 1097.1221372759778,
+          "heading": 179.3604177708787,
+          "lat": 51.0182058539251,
+          "lng": -114.1195794531798
+        },
+        "reason": "route traversed with keyboard input in both directions",
+        "samples": 2565,
+        "status": "PASS",
+        "total": 44,
+        "variant": "student_terraced_rose_v1"
+      },
+      "seed": "seed\\classroom-parks\\garden-rose-v005"
+    }
+  ],
+  "limitations": [
+    "Prepared level sites only; natural/sloped terrain and public street connections not tested for these variants.",
+    "No paid image generation, export download, public deployment or human visual approval.",
+    "Routes checked in both directions; this is not an exhaustive guarantee for every possible input sequence.",
+    "Raised areas use stairs; no claim of step-free access or construction certification."
+  ]
+}

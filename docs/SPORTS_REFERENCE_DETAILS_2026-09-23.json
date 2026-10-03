@@ -1,0 +1,536 @@
+{
+  "version": 1,
+  "candidates": [
+    {
+      "kind": "basketball",
+      "id": "student_basketball_garden_v2",
+      "title": "Neighbourhood Basketball Garden",
+      "dimensions_m": [
+        41,
+        56
+      ],
+      "playing_m": [
+        15,
+        28
+      ],
+      "module_m": [
+        21,
+        36
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4873740,
+        "sha256": "74e5a6bfcf1776a3dcddee53f68d1b14663d114f2a7d9508036cb82bb1c1b65a"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 929888,
+        "sha256": "9765e795800e1feede21b74283d07380d666fb87d58e1c18d0cd28e91e1ab47b"
+      },
+      "triangles": 167454,
+      "mesh_instances": 121,
+      "source": "https://assets.fiba.basketball/image/upload/documents-corporate-fiba-official-rules-2024-v10a.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\basketball",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "basketball-court/hero.png",
+          "sha256": "24ca3e95c1b1b516152df7f93db3b7fa62a8ef2ca7c196481503236e2870bc10",
+          "bytes": 1502748
+        },
+        {
+          "path": "basketball-court/variant_0.png",
+          "sha256": "b240ce6d75354977aef2d1d278d99836f9c2b49212bc471fb4231429995d3382",
+          "bytes": 1371237
+        }
+      ],
+      "reference_profile": {
+        "terrace": "urban",
+        "sideline": "players",
+        "lights": "court",
+        "observed": "Simple player benches, open chain-link enclosure, charcoal playing finish and twin-head floodlights.",
+        "adaptation": "Single neighbourhood court; omit background buildings and image people."
+      }
+    },
+    {
+      "kind": "three_x_three",
+      "id": "student_three_x_three_garden_v2",
+      "title": "3 x 3 Pocket Basketball",
+      "dimensions_m": [
+        39,
+        37
+      ],
+      "playing_m": [
+        15,
+        11
+      ],
+      "module_m": [
+        19,
+        17
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4529856,
+        "sha256": "d70ac90b9e4f1d954eebe7409573fa0fa356d8c554a17e36c502079a469879c5"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 549016,
+        "sha256": "cf58c483948df12a5dd69de8db15216ae3cd96792be67227bf1ffe7c0c3b4648"
+      },
+      "triangles": 160652,
+      "mesh_instances": 122,
+      "source": "https://www.fiba.basketball/en/news/fcom-3x3-v2-q-a",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\three_x_three",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "basketball-court/hero.png",
+          "sha256": "24ca3e95c1b1b516152df7f93db3b7fa62a8ef2ca7c196481503236e2870bc10",
+          "bytes": 1502748
+        },
+        {
+          "path": "pickleball-courts/hero.png",
+          "sha256": "1409398e4190153e0ddfe16b9d996692f02a6551f5bbc7af6c20beb9caed6e6e",
+          "bytes": 1377002
+        }
+      ],
+      "reference_profile": {
+        "terrace": "urban",
+        "sideline": "walls",
+        "lights": "court",
+        "observed": "Urban player seating and timber-capped masonry seats.",
+        "adaptation": "Half-court adaptation; seat walls borrowed from the related pickleball reference, not an exact 3x3 image."
+      }
+    },
+    {
+      "kind": "tennis",
+      "id": "student_tennis_garden_v2",
+      "title": "Garden Tennis Court",
+      "dimensions_m": [
+        38.3,
+        56.6
+      ],
+      "playing_m": [
+        10.97,
+        23.77
+      ],
+      "module_m": [
+        18.3,
+        36.6
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 5041812,
+        "sha256": "c94401f7b526e450c194f5ce46fb9976486aca83256fb30e192cc9802b3bd9fd"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 1041848,
+        "sha256": "ecb7132278bfb9c64ce4270bc03bc2637ca50a9396fa443a408851077ece733c"
+      },
+      "triangles": 169910,
+      "mesh_instances": 118,
+      "source": "https://www.itftennis.com/media/7221/2026-rules-of-tennis-english.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\tennis",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "tennis-court-cluster/variant_0.png",
+          "sha256": "daf725e4c0d8089b4a65df973588c3efc166ac6b0068ad6ad0f88c9b4d901704",
+          "bytes": 1170885
+        },
+        {
+          "path": "pickleball-courts/hero.png",
+          "sha256": "1409398e4190153e0ddfe16b9d996692f02a6551f5bbc7af6c20beb9caed6e6e",
+          "bytes": 1377002
+        }
+      ],
+      "reference_profile": {
+        "terrace": "covered",
+        "sideline": "bleachers",
+        "lights": "court",
+        "observed": "Aluminium spectator stands, sport floodlights and covered timber player seating.",
+        "adaptation": "Retain one full native court, not the reference multi-court cluster. Shelter cue borrowed from pickleball."
+      }
+    },
+    {
+      "kind": "padel",
+      "id": "student_padel_garden_v2",
+      "title": "Glasshouse Padel Garden",
+      "dimensions_m": [
+        32,
+        42
+      ],
+      "playing_m": [
+        10,
+        20
+      ],
+      "module_m": [
+        12,
+        22
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4876196,
+        "sha256": "8b869444d3851f8056d0ae2d7a350338653d000f1d50f0c918a11073caa010af"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 870832,
+        "sha256": "5f82e683991a41da054f90edfc76ba9743b43e49d8bbcb0fbc5351459be8b2fe"
+      },
+      "triangles": 166954,
+      "mesh_instances": 122,
+      "source": "https://www.padelfip.com/wp-content/uploads/2025/12/FIP_Rules-of-Padel-1.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\padel",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "pickleball-courts/hero.png",
+          "sha256": "1409398e4190153e0ddfe16b9d996692f02a6551f5bbc7af6c20beb9caed6e6e",
+          "bytes": 1377002
+        },
+        {
+          "path": "beach-volleyball-courts/variant_1.png",
+          "sha256": "7793a6c32ef1ed87a90880f69819c412af77d8ee63adf831557d07409b5f53b7",
+          "bytes": 1382926
+        }
+      ],
+      "reference_profile": {
+        "terrace": "club",
+        "sideline": "players",
+        "lights": "court",
+        "observed": "Covered player seating and small parasol cafe terraces.",
+        "adaptation": "No exact padel catalogue image; related racquet-club treatment around the existing padel glass enclosure."
+      }
+    },
+    {
+      "kind": "volleyball",
+      "id": "student_volleyball_garden_v2",
+      "title": "Community Volleyball Court",
+      "dimensions_m": [
+        35,
+        44
+      ],
+      "playing_m": [
+        9,
+        18
+      ],
+      "module_m": [
+        15,
+        24
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4471692,
+        "sha256": "7050a2bd85e7f587dc2821b7676b0f74c0c0d4d1c9201ca70f9d118a8187c0dc"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 481636,
+        "sha256": "4d31a1256378729dee2f9f1bb71fd3e9601c5a0eec43aef9c4781b6573113104"
+      },
+      "triangles": 159256,
+      "mesh_instances": 120,
+      "source": "https://www.fivb.com/wp-content/uploads/2025/01/FIVB-Volleyball_Rules2025_2028-EN-v05.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\volleyball",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "beach-volleyball-courts/hero.png",
+          "sha256": "83ae174188716e6d0c796314ac03c76b5fb16aaac44d8dd899e3af7fac982aa1",
+          "bytes": 1356267
+        },
+        {
+          "path": "tennis-court-cluster/variant_0.png",
+          "sha256": "daf725e4c0d8089b4a65df973588c3efc166ac6b0068ad6ad0f88c9b4d901704",
+          "bytes": 1170885
+        },
+        {
+          "path": "pickleball-courts/hero.png",
+          "sha256": "1409398e4190153e0ddfe16b9d996692f02a6551f5bbc7af6c20beb9caed6e6e",
+          "bytes": 1377002
+        }
+      ],
+      "reference_profile": {
+        "terrace": "team",
+        "sideline": "bleachers",
+        "lights": "court",
+        "referee": true,
+        "observed": "Referee chair, spectator stands and covered player benches.",
+        "adaptation": "Hardcourt adaptation of beach officiating and related court seating; referee stand outside the full reserve."
+      }
+    },
+    {
+      "kind": "beach_volleyball",
+      "id": "student_beach_volleyball_garden_v2",
+      "title": "Beach Volleyball Grove",
+      "dimensions_m": [
+        34,
+        42
+      ],
+      "playing_m": [
+        8,
+        16
+      ],
+      "module_m": [
+        14,
+        22
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4589840,
+        "sha256": "9de1aeab900c28ef4e5f98fe2184097a87cc31aa333488691e4131805cf57a08"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 486712,
+        "sha256": "769b912ca35a13a053b6041662c15d48ba7675660ceabfd40f3bc6ac9fd08a31"
+      },
+      "triangles": 161234,
+      "mesh_instances": 126,
+      "source": "https://www.fivb.com/wp-content/uploads/2025/02/FIVB-BeachVolleyball_Rules2025_2028-EN-v01.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\beach_volleyball",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "beach-volleyball-courts/hero.png",
+          "sha256": "83ae174188716e6d0c796314ac03c76b5fb16aaac44d8dd899e3af7fac982aa1",
+          "bytes": 1356267
+        },
+        {
+          "path": "beach-volleyball-courts/variant_1.png",
+          "sha256": "7793a6c32ef1ed87a90880f69819c412af77d8ee63adf831557d07409b5f53b7",
+          "bytes": 1382926
+        }
+      ],
+      "reference_profile": {
+        "terrace": "parasols",
+        "sideline": "walls",
+        "lights": "park",
+        "referee": true,
+        "observed": "Low spectator seat walls, elevated referee chair, cafe tables and parasols.",
+        "adaptation": "Use the temperate meadow planting kit for Currie; do not import tropical palms or a clubhouse."
+      }
+    },
+    {
+      "kind": "badminton",
+      "id": "student_badminton_garden_v2",
+      "title": "Sheltered Badminton Garden",
+      "dimensions_m": [
+        30.1,
+        37.4
+      ],
+      "playing_m": [
+        6.1,
+        13.4
+      ],
+      "module_m": [
+        10.1,
+        17.4
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4511668,
+        "sha256": "a0b9fdea877cac08ac85bf4f617d38c25d45d933b085d2175858be20823dd5db"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 523084,
+        "sha256": "1b208a465935b7aa8f2f3e751503f331c31ad780f1b887c231a411f3a86b84f1"
+      },
+      "triangles": 160596,
+      "mesh_instances": 120,
+      "source": "https://www.badmintonengland.co.uk/wp-content/uploads/2022/01/Badminton-Design-Guide.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\badminton",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "pickleball-courts/variant_2.png",
+          "sha256": "1d0d37d16229424f26b1b3b4301a8c4b81322df9bb632c015278b0704e53c32e",
+          "bytes": 1580171
+        },
+        {
+          "path": "bocce-p\u00e9tanque-court/hero.png",
+          "sha256": "0a69c103f2675bc5fcf0b94fd8b481c24df3aec86c597e3ce1bd4a58475fcdbe",
+          "bytes": 1550186
+        }
+      ],
+      "reference_profile": {
+        "terrace": "garden",
+        "sideline": "players",
+        "lights": "park",
+        "observed": "Small timber shelters, player benches and informal cafe seating.",
+        "adaptation": "No exact badminton catalogue image; calm-weather garden adaptation of the related outdoor court kit."
+      }
+    },
+    {
+      "kind": "netball",
+      "id": "student_netball_garden_v2",
+      "title": "Neighbourhood Netball Court",
+      "dimensions_m": [
+        41.35,
+        56.6
+      ],
+      "playing_m": [
+        15.25,
+        30.5
+      ],
+      "module_m": [
+        21.35,
+        36.6
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4861400,
+        "sha256": "624a73a16599a388bccefecf6d97c975f32d13f823ad004ee6cdd2b2ff7dd299"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 900296,
+        "sha256": "ae8f154dec2db06d74e44945787e0ed683808e553da4310646d0a2542d55b7ba"
+      },
+      "triangles": 167262,
+      "mesh_instances": 119,
+      "source": "https://netball.sport/game/facilities-and-equipment/",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\netball",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "basketball-court/variant_0.png",
+          "sha256": "b240ce6d75354977aef2d1d278d99836f9c2b49212bc471fb4231429995d3382",
+          "bytes": 1371237
+        },
+        {
+          "path": "tennis-court-cluster/variant_0.png",
+          "sha256": "daf725e4c0d8089b4a65df973588c3efc166ac6b0068ad6ad0f88c9b4d901704",
+          "bytes": 1170885
+        }
+      ],
+      "reference_profile": {
+        "terrace": "urban",
+        "sideline": "bleachers",
+        "lights": "court",
+        "observed": "Player seating, low aluminium stands and tall court lighting.",
+        "adaptation": "No exact netball catalogue image; related community sports setting, retaining netball ring-only posts."
+      }
+    },
+    {
+      "kind": "bocce",
+      "id": "student_bocce_garden_v2",
+      "title": "Bocce Pergola Garden",
+      "dimensions_m": [
+        26.4,
+        49
+      ],
+      "playing_m": [
+        4,
+        26.5
+      ],
+      "module_m": [
+        6.4,
+        29
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4329440,
+        "sha256": "3933e3b09b9b2dd00567d63b9b26af04e3449d5efa6ad209a28e4178cd0eef28"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 148020,
+        "sha256": "b9ad8951576a4a0e7e8b4b61024f5f37369182192e2d5a35271aaf14d65fc567"
+      },
+      "triangles": 156411,
+      "mesh_instances": 123,
+      "source": "https://usbf.us/wp-content/uploads/2026/04/2024-CBI-PRV-English-Version-FINAL-012624.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\bocce",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "bocce-p\u00e9tanque-court/hero.png",
+          "sha256": "0a69c103f2675bc5fcf0b94fd8b481c24df3aec86c597e3ce1bd4a58475fcdbe",
+          "bytes": 1550186
+        },
+        {
+          "path": "bocce-p\u00e9tanque-court/variant_1.png",
+          "sha256": "5af0c11a5af06f17c07090265dc7295624ac98bb41639181f469a63381a95218",
+          "bytes": 1657004
+        }
+      ],
+      "reference_profile": {
+        "terrace": "arbour",
+        "sideline": "walls",
+        "lights": "park",
+        "observed": "Braced timber arbour, cafe tables/chairs, informal seat walls and overhead string lights.",
+        "adaptation": "Open neighbourhood garden with timber lane boards; light climbing foliage is an original refinement."
+      }
+    },
+    {
+      "kind": "petanque",
+      "id": "student_petanque_garden_v2",
+      "title": "Petanque Social Gardens",
+      "dimensions_m": [
+        32,
+        39
+      ],
+      "playing_m": [
+        4,
+        15
+      ],
+      "module_m": [
+        12,
+        19
+      ],
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 4227924,
+        "sha256": "5d7e08d5979fce03f0e50701a00b5f139b1a78caa5f8601edbcb721c1f89ad2d"
+      },
+      "sport_asset": {
+        "path": "sport-module.glb",
+        "bytes": 118008,
+        "sha256": "78d8f23c4bc99b02bd5678e84dd345d7cd27ab68f87876ba965fe35bbce3254f"
+      },
+      "triangles": 154792,
+      "mesh_instances": 121,
+      "source": "https://petanque.nz/documents/fipjp-rules-2021-with-nz-interpretations-202508.pdf",
+      "package": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final\\petanque",
+      "geometry_status": "PASS_OFFLINE_GEOMETRY",
+      "browser_status": "DEFERRED_BY_USER",
+      "image_references": [
+        {
+          "path": "bocce-p\u00e9tanque-court/variant_1.png",
+          "sha256": "5af0c11a5af06f17c07090265dc7295624ac98bb41639181f469a63381a95218",
+          "bytes": 1657004
+        },
+        {
+          "path": "bocce-p\u00e9tanque-court/hero.png",
+          "sha256": "0a69c103f2675bc5fcf0b94fd8b481c24df3aec86c597e3ce1bd4a58475fcdbe",
+          "bytes": 1550186
+        }
+      ],
+      "reference_profile": {
+        "terrace": "cafe",
+        "sideline": "walls",
+        "lights": "park",
+        "observed": "Cafe seating, low edge seats and strings of lights beneath trees.",
+        "adaptation": "Two marked lanes remain; use tree shade and cafe furniture without repeating the large pergola."
+      }
+    }
+  ],
+  "paid_calls": 0,
+  "runtime_activated": false,
+  "browser_status": "DEFERRED_BY_USER",
+  "evidence_root": "C:\\dev-artifacts\\CityPrompt\\sports-reference-details-2026-09-23\\final"
+}
