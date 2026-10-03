@@ -811,7 +811,8 @@ def test_building_plot_landscape_requires_its_prepared_site(blocked):
         zone.geometry = from_shape(box(-115, 51, -114.9, 51.1), srid=4326)
     elif blocked == "site_image":
         boundary.properties["community_3d_landscape"] = {
-            "surface_image_url": "/site.png", "surface_mode": "site_base",
+            "surface_image_url": "/site.png",
+            "surface_mode": "site_base",
         }
     elif blocked == "park_terrain":
         zone.properties["park_terrain"] = {"enabled": True}
@@ -1080,15 +1081,25 @@ def test_native_trial_street_junction_is_proven_only_for_registered_local_sectio
     longitude, latitude = -114.12, 51.0184
     meters_per_longitude = 111_320 * math.cos(math.radians(latitude))
     north_south = _zone(uuid.uuid4(), "street", properties={"public_realm_trial_asset": "student_main_street_v1"})
-    north_south.geometry = from_shape(box(
-        longitude - 23 / 2 / meters_per_longitude, latitude - 48 / 2 / 111_320,
-        longitude + 23 / 2 / meters_per_longitude, latitude + 48 / 2 / 111_320,
-    ), srid=4326)
+    north_south.geometry = from_shape(
+        box(
+            longitude - 23 / 2 / meters_per_longitude,
+            latitude - 48 / 2 / 111_320,
+            longitude + 23 / 2 / meters_per_longitude,
+            latitude + 48 / 2 / 111_320,
+        ),
+        srid=4326,
+    )
     east_west = _zone(uuid.uuid4(), "street", properties={"public_realm_trial_asset": "student_cycle_avenue_v1"})
-    east_west.geometry = from_shape(box(
-        longitude - 48 / 2 / meters_per_longitude, latitude - 24 / 2 / 111_320,
-        longitude + 48 / 2 / meters_per_longitude, latitude + 24 / 2 / 111_320,
-    ), srid=4326)
+    east_west.geometry = from_shape(
+        box(
+            longitude - 48 / 2 / meters_per_longitude,
+            latitude - 24 / 2 / 111_320,
+            longitude + 48 / 2 / meters_per_longitude,
+            latitude + 24 / 2 / 111_320,
+        ),
+        srid=4326,
+    )
     streets = [north_south, east_west]
     assert direct_api._effective_street_width(north_south) == 23
     assert direct_api._street_sources_form_four_arm_junction(streets)
@@ -1104,19 +1115,34 @@ def test_native_trial_street_t_uses_long_axis_and_does_not_invent_fourth_arm():
     longitude, latitude = -114.12, 51.0184
     meters_per_longitude = 111_320 * math.cos(math.radians(latitude))
     through = _zone(uuid.uuid4(), "street", properties={"public_realm_trial_asset": "student_main_street_v1"})
-    through.geometry = from_shape(box(
-        longitude - 23 / 2 / meters_per_longitude, latitude - 48 / 2 / 111_320,
-        longitude + 23 / 2 / meters_per_longitude, latitude + 48 / 2 / 111_320,
-    ), srid=4326)
+    through.geometry = from_shape(
+        box(
+            longitude - 23 / 2 / meters_per_longitude,
+            latitude - 48 / 2 / 111_320,
+            longitude + 23 / 2 / meters_per_longitude,
+            latitude + 48 / 2 / 111_320,
+        ),
+        srid=4326,
+    )
     stem = _zone(uuid.uuid4(), "street", properties={"public_realm_trial_asset": "student_green_alley_v1"})
-    stem.geometry = from_shape(box(
-        longitude, latitude - 11 / 2 / 111_320,
-        longitude + 40 / meters_per_longitude, latitude + 11 / 2 / 111_320,
-    ), srid=4326)
+    stem.geometry = from_shape(
+        box(
+            longitude,
+            latitude - 11 / 2 / 111_320,
+            longitude + 40 / meters_per_longitude,
+            latitude + 11 / 2 / 111_320,
+        ),
+        srid=4326,
+    )
     from app.schemas.direct_3d_render import Direct3DJunctionTopology
+
     topology = Direct3DJunctionTopology(
-        version=1, arm_count=3, longitude=longitude, latitude=latitude,
-        source_fingerprint="sj1|" + "|".join(
+        version=1,
+        arm_count=3,
+        longitude=longitude,
+        latitude=latitude,
+        source_fingerprint="sj1|"
+        + "|".join(
             f"{zone.id}:{'a' * 64}:{'b' * 64}" for zone in sorted([through, stem], key=lambda item: str(item.id))
         ),
     )
@@ -4183,7 +4209,12 @@ async def test_direct_endpoint_canonicalizes_frontend_data_url_before_audit(monk
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
+        lambda: SimpleNamespace(
+            openai_api_key="test-key",
+            render_global_daily_token_cap=0,
+            direct_3d_jobs_enabled=False,
+            direct_3d_images_enabled=True,
+        ),
     )
     db = _project_preflight_db(monkeypatch)
     user = SimpleNamespace(role="admin", email="admin@example.com", id="admin")
@@ -4248,7 +4279,12 @@ async def test_success_audit_marks_provider_first_scene_final(monkeypatch, outco
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
+        lambda: SimpleNamespace(
+            openai_api_key="test-key",
+            render_global_daily_token_cap=0,
+            direct_3d_jobs_enabled=False,
+            direct_3d_images_enabled=True,
+        ),
     )
 
     response = await direct_api.generate_direct_3d_render(
@@ -4287,7 +4323,12 @@ async def test_direct_endpoint_refunds_when_provider_produces_no_image(monkeypat
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
+        lambda: SimpleNamespace(
+            openai_api_key="test-key",
+            render_global_daily_token_cap=0,
+            direct_3d_jobs_enabled=False,
+            direct_3d_images_enabled=True,
+        ),
     )
 
     with pytest.raises(HTTPException) as exc_info:
@@ -4330,7 +4371,12 @@ async def test_direct_endpoint_keeps_charge_and_audits_post_provider_safety_fail
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
+        lambda: SimpleNamespace(
+            openai_api_key="test-key",
+            render_global_daily_token_cap=0,
+            direct_3d_jobs_enabled=False,
+            direct_3d_images_enabled=True,
+        ),
     )
 
     with pytest.raises(HTTPException) as exc_info:
@@ -4377,7 +4423,12 @@ async def test_direct_endpoint_restores_student_credit_but_retains_unknown_provi
     monkeypatch.setattr(
         direct_api,
         "get_settings",
-        lambda: SimpleNamespace(openai_api_key="test-key", render_global_daily_token_cap=0, direct_3d_jobs_enabled=False, direct_3d_images_enabled=True),
+        lambda: SimpleNamespace(
+            openai_api_key="test-key",
+            render_global_daily_token_cap=0,
+            direct_3d_jobs_enabled=False,
+            direct_3d_images_enabled=True,
+        ),
     )
 
     with pytest.raises(HTTPException) as exc_info:
@@ -4679,18 +4730,28 @@ def _tee_street_zones():
     ]
 
 
-@pytest.mark.parametrize("variant_id,archetype_id,width", [
-    ("student_main_street_v1", "neighborhood_main_street", 23),
-    ("student_market_street_v1", "pedestrian_only_street", 18),
-])
+@pytest.mark.parametrize(
+    "variant_id,archetype_id,width",
+    [
+        ("student_main_street_v1", "neighborhood_main_street", 23),
+        ("student_market_street_v1", "pedestrian_only_street", 18),
+    ],
+)
 def test_starter_native_street_junction_capture_uses_current_runtime_catalog(variant_id, archetype_id, width):
     streets = _tee_street_zones()
-    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
-        archetype_id=archetype_id, variant_id=variant_id,
-        target=StreetSegmentTarget(row_width_m=width, length_m=100),
-    ))
-    streets[0].properties.update(width=width, road_archetype_id=archetype_id,
-        road_selected_variant_id=variant_id, public_realm_lego=recipe.model_dump(mode="json"))
+    recipe = plan_public_realm_recipe(
+        PublicRealmPlanRequest(
+            archetype_id=archetype_id,
+            variant_id=variant_id,
+            target=StreetSegmentTarget(row_width_m=width, length_m=100),
+        )
+    )
+    streets[0].properties.update(
+        width=width,
+        road_archetype_id=archetype_id,
+        road_selected_variant_id=variant_id,
+        public_realm_lego=recipe.model_dump(mode="json"),
+    )
     topology = _junction_topology(streets)
     assert direct_api._validate_junction_topology(streets, streets, topology)
     request = _connected_junction_request(streets, topology)
@@ -4731,11 +4792,13 @@ def test_all_source_backed_manual_streets_have_verified_junction_identity(arms):
         if not selection.variant_id.endswith("_draft3_v1"):
             continue
         width = selection.compatibility.nominal_row_width_m
-        recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
-            archetype_id=selection.archetype_id,
-            variant_id=selection.variant_id,
-            target=StreetSegmentTarget(row_width_m=width, length_m=200),
-        ))
+        recipe = plan_public_realm_recipe(
+            PublicRealmPlanRequest(
+                archetype_id=selection.archetype_id,
+                variant_id=selection.variant_id,
+                target=StreetSegmentTarget(row_width_m=width, length_m=200),
+            )
+        )
         streets = _tee_street_zones()
         if arms == 4:
             streets[1].properties["plan_centerline"][0] = [-114.08, 51.039]
@@ -4799,7 +4862,8 @@ def test_connected_junction_accepts_skew_mixed_streets_and_a_remote_bend():
     # approach has cleared the junction. Mixed compiled sections stay valid.
     streets[1].properties = {
         **_supported_street_properties(
-            10, [[-114.08, 51.04], [-114.079, 51.041], [-114.0785, 51.0413]],
+            10,
+            [[-114.08, 51.04], [-114.079, 51.041], [-114.0785, 51.0413]],
             archetype_id="yield_street",
         ),
         "community_3d": streets[1].properties["community_3d"],
@@ -4814,7 +4878,9 @@ def test_connected_junction_keeps_public_road_connection_as_one_authored_arm():
     streets = _tee_street_zones()
     streets[0].properties["connect_to_public_road"] = True
     streets[0].properties["plan_centerline"] = [
-        [-114.0815, 51.04], [-114.08, 51.04], [-114.079, 51.04],
+        [-114.0815, 51.04],
+        [-114.08, 51.04],
+        [-114.079, 51.04],
     ]
     topology = _junction_topology(streets)
     assert direct_api._validate_junction_topology(streets, streets, topology)
@@ -4902,6 +4968,8 @@ def test_connected_junction_rejects_stub_too_short_for_an_actual_third_approach(
 def test_connected_junction_rejects_turn_inside_node_envelope():
     streets = _tee_street_zones()
     streets[1].properties["plan_centerline"] = [
-        [-114.08, 51.04], [-114.08, 51.04004], [-114.079, 51.0405],
+        [-114.08, 51.04],
+        [-114.08, 51.04004],
+        [-114.079, 51.0405],
     ]
     assert not direct_api._street_sources_form_junction(streets, _junction_topology(streets))

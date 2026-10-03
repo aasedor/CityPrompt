@@ -19,12 +19,22 @@ def evidence_key(attempt, name: str) -> str:
 
 def _client(*, timeout_seconds=30, retries=2):
     settings = get_settings()
-    return boto3.client(
-        "s3", endpoint_url=settings.s3_endpoint_url,
-        aws_access_key_id=settings.s3_access_key, aws_secret_access_key=settings.s3_secret_key,
-        region_name=settings.s3_region,
-        config=Config(signature_version="s3v4", connect_timeout=min(10, timeout_seconds), read_timeout=timeout_seconds, retries={"max_attempts": retries}),
-    ), settings.s3_bucket_name
+    return (
+        boto3.client(
+            "s3",
+            endpoint_url=settings.s3_endpoint_url,
+            aws_access_key_id=settings.s3_access_key,
+            aws_secret_access_key=settings.s3_secret_key,
+            region_name=settings.s3_region,
+            config=Config(
+                signature_version="s3v4",
+                connect_timeout=min(10, timeout_seconds),
+                read_timeout=timeout_seconds,
+                retries={"max_attempts": retries},
+            ),
+        ),
+        settings.s3_bucket_name,
+    )
 
 
 def _read(key):

@@ -12,7 +12,11 @@ from PIL import Image
 
 from app.api.v1 import buildings as buildings_api
 from app.services.photo_building import (
-    photo_state, prepare_photo, reference_prompt, refund_photo_tokens, reserve_photo_tokens,
+    photo_state,
+    prepare_photo,
+    reference_prompt,
+    refund_photo_tokens,
+    reserve_photo_tokens,
 )
 from app.tasks import processing
 
@@ -26,7 +30,6 @@ def _png() -> bytes:
 
 
 def test_uploaded_photo_is_bounded_normalized_and_hashed():
-    import hashlib
 
     prepared, digest = prepare_photo(_png())
     assert prepared.startswith(b"\xff\xd8")
@@ -55,14 +58,15 @@ async def test_photo_tokens_reserve_then_refund_once():
     from datetime import datetime, timezone
 
     user = SimpleNamespace(
-        id=uuid.uuid4(), email="student@example.com", role="editor",
-        render_credits=200, credits_reset_at=datetime.now(timezone.utc),
+        id=uuid.uuid4(),
+        email="student@example.com",
+        role="editor",
+        render_credits=200,
+        credits_reset_at=datetime.now(timezone.utc),
     )
     db = AsyncMock()
     db.add = MagicMock()
-    audit_id = await reserve_photo_tokens(
-        db, user, uuid.uuid4(), cost=50, stage="references", brief="test building"
-    )
+    audit_id = await reserve_photo_tokens(db, user, uuid.uuid4(), cost=50, stage="references", brief="test building")
     assert user.render_credits == 150
     assert isinstance(audit_id, uuid.UUID)
     audit = next(call.args[0] for call in db.add.call_args_list if hasattr(call.args[0], "tokens_spent"))
@@ -80,8 +84,11 @@ async def test_photo_tokens_reject_insufficient_balance_without_debit():
     from datetime import datetime, timezone
 
     user = SimpleNamespace(
-        id=uuid.uuid4(), email="student@example.com", role="editor",
-        render_credits=20, credits_reset_at=datetime.now(timezone.utc),
+        id=uuid.uuid4(),
+        email="student@example.com",
+        role="editor",
+        render_credits=20,
+        credits_reset_at=datetime.now(timezone.utc),
     )
     db = AsyncMock()
     db.add = MagicMock()
@@ -93,9 +100,7 @@ async def test_photo_tokens_reject_insufficient_balance_without_debit():
 
 @pytest.mark.anyio
 async def test_photo_upload_saves_private_sources_then_queues_one_preparation(monkeypatch):
-    building = SimpleNamespace(
-        id=uuid.uuid4(), project_id=uuid.uuid4(), specifications={}, generation_status="idle"
-    )
+    building = SimpleNamespace(id=uuid.uuid4(), project_id=uuid.uuid4(), specifications={}, generation_status="idle")
     user = SimpleNamespace(id=uuid.uuid4())
     db = AsyncMock()
     writes = []
@@ -113,9 +118,7 @@ async def test_photo_upload_saves_private_sources_then_queues_one_preparation(mo
         lambda args: queued.append(args) or SimpleNamespace(id="queued-once"),
     )
     file = UploadFile(filename="home.png", file=io.BytesIO(_png()))
-    result = await buildings_api.create_photo_references(
-        building.id, [file], "a white duplex", user, db
-    )
+    result = await buildings_api.create_photo_references(building.id, [file], "a white duplex", user, db)
 
     assert result["status"] == "synthesizing"
     assert len(writes) == len(queued) == 1
@@ -129,9 +132,7 @@ async def test_photo_upload_saves_private_sources_then_queues_one_preparation(mo
 
 @pytest.mark.anyio
 async def test_photo_model_requires_server_issued_views_and_accepts_selected_subset(monkeypatch):
-    building = SimpleNamespace(
-        id=uuid.uuid4(), project_id=uuid.uuid4(), specifications={}, generation_status="idle"
-    )
+    building = SimpleNamespace(id=uuid.uuid4(), project_id=uuid.uuid4(), specifications={}, generation_status="idle")
     user = SimpleNamespace(id=uuid.uuid4())
     db = AsyncMock()
     monkeypatch.setattr(buildings_api, "_editable_building", AsyncMock(return_value=building))
@@ -140,16 +141,22 @@ async def test_photo_model_requires_server_issued_views_and_accepts_selected_sub
     assert exc.value.status_code == 409
 
     prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/abc/"
-    building.specifications = {"photo_generation": {
-        "version": 1, "batch_id": "abc", "status": "references_ready",
-        "reference_keys": [f"{prefix}reference-{i}.jpg" for i in range(3)],
-        "reference_hashes": ["0" * 64] * 3, "brief": "two storeys",
-    }}
+    building.specifications = {
+        "photo_generation": {
+            "version": 1,
+            "batch_id": "abc",
+            "status": "references_ready",
+            "reference_keys": [f"{prefix}reference-{i}.jpg" for i in range(3)],
+            "reference_hashes": ["0" * 64] * 3,
+            "brief": "two storeys",
+        }
+    }
     monkeypatch.setattr(buildings_api, "_check_engine_available", lambda engine: None)
     monkeypatch.setattr(buildings_api, "reserve_photo_tokens", AsyncMock(return_value=uuid.UUID(int=2)))
     queued = []
     monkeypatch.setattr(
-        buildings_api, "queue_ai_generation_task",
+        buildings_api,
+        "queue_ai_generation_task",
         AsyncMock(side_effect=lambda *args, **kwargs: queued.append(kwargs)),
     )
     result = await buildings_api.generate_photo_model(building.id, user, db, selected_reference_indices=None)
@@ -171,7 +178,10 @@ async def test_photo_model_requires_server_issued_views_and_accepts_selected_sub
     for invalid_indices in ([], [3], [1, 1]):
         with pytest.raises(HTTPException) as exc:
             await buildings_api.generate_photo_model(
-                building.id, user, db, selected_reference_indices=invalid_indices,
+                building.id,
+                user,
+                db,
+                selected_reference_indices=invalid_indices,
             )
         assert exc.value.status_code == 422
 
@@ -184,19 +194,27 @@ async def test_photo_model_requires_server_issued_views_and_accepts_selected_sub
 @pytest.mark.anyio
 async def test_failed_reference_task_resumes_without_new_charge(monkeypatch):
     building = SimpleNamespace(
-        id=uuid.uuid4(), project_id=uuid.uuid4(), generation_status="idle",
-        specifications={"photo_generation": {
-            "version": 1, "batch_id": "batch-3", "status": "failed",
-            "provider_task_id": "already-paid-task", "reference_keys": [],
-            "reference_audit_id": str(uuid.uuid4()),
-        }},
+        id=uuid.uuid4(),
+        project_id=uuid.uuid4(),
+        generation_status="idle",
+        specifications={
+            "photo_generation": {
+                "version": 1,
+                "batch_id": "batch-3",
+                "status": "failed",
+                "provider_task_id": "already-paid-task",
+                "reference_keys": [],
+                "reference_audit_id": str(uuid.uuid4()),
+            }
+        },
     )
     db = AsyncMock()
     monkeypatch.setattr(buildings_api, "_editable_building", AsyncMock(return_value=building))
     monkeypatch.setattr(buildings_api, "reserve_photo_tokens", AsyncMock(side_effect=AssertionError("no charge")))
     queued = []
     monkeypatch.setattr(
-        processing.synthesize_building_photo_references, "apply_async",
+        processing.synthesize_building_photo_references,
+        "apply_async",
         lambda args: queued.append(args) or SimpleNamespace(id="resume-queued"),
     )
     result = await buildings_api.resume_photo_references(building.id, SimpleNamespace(id=uuid.uuid4()), db)
@@ -231,17 +249,24 @@ def test_reference_worker_accepts_two_reviewable_images_without_model(monkeypatc
 
     source, digest = prepare_photo(_png())
     building = SimpleNamespace(
-        id=uuid.uuid4(), project_id=uuid.uuid4(), model_url="old-model.glb", specifications={},
+        id=uuid.uuid4(),
+        project_id=uuid.uuid4(),
+        model_url="old-model.glb",
+        specifications={},
     )
     prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/batch-2/"
     building.specifications["photo_generation"] = {
-        "version": 1, "status": "synthesizing", "batch_id": "batch-2",
-        "source_keys": [prefix + "source-0.jpg"], "source_hashes": [digest], "brief": "white duplex",
+        "version": 1,
+        "status": "synthesizing",
+        "batch_id": "batch-2",
+        "source_keys": [prefix + "source-0.jpg"],
+        "source_hashes": [digest],
+        "brief": "white duplex",
     }
     monkeypatch.setattr(processing, "_get_sync_session", lambda: _WorkerSession(building))
-    monkeypatch.setattr(processing, "_get_s3_client", lambda: SimpleNamespace(
-        get_object=lambda **kwargs: {"Body": io.BytesIO(source)}
-    ))
+    monkeypatch.setattr(
+        processing, "_get_s3_client", lambda: SimpleNamespace(get_object=lambda **kwargs: {"Body": io.BytesIO(source)})
+    )
     writes = []
     monkeypatch.setattr(processing, "_upload_to_storage", lambda *args: writes.append(args))
     monkeypatch.setattr(processing, "log_api_usage_sync", lambda **kwargs: None)
@@ -282,25 +307,40 @@ def test_reference_worker_accepts_two_reviewable_images_without_model(monkeypatc
 def _photo_worker(monkeypatch, run_generation, *, corrupt=False):
     image, digest = prepare_photo(_png())
     building = SimpleNamespace(
-        id=uuid.uuid4(), project_id=uuid.uuid4(), generation_status="generating",
-        generation_prompt=None, generation_engine=None, architectural_style=None,
-        meshy_task_id=None, model_url="/api/v1/files/old-model.glb", lod_urls={"0": "/api/v1/files/old-model.glb"},
-        preview_url=None, preview_status="idle", specifications={},
+        id=uuid.uuid4(),
+        project_id=uuid.uuid4(),
+        generation_status="generating",
+        generation_prompt=None,
+        generation_engine=None,
+        architectural_style=None,
+        meshy_task_id=None,
+        model_url="/api/v1/files/old-model.glb",
+        lod_urls={"0": "/api/v1/files/old-model.glb"},
+        preview_url=None,
+        preview_status="idle",
+        specifications={},
     )
     prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/batch-1/"
     keys = [f"{prefix}reference-{i}.jpg" for i in range(3)]
     building.specifications["photo_generation"] = {
-        "version": 1, "status": "model_generating", "batch_id": "batch-1",
-        "reference_keys": keys, "reference_hashes": [digest] * 3,
+        "version": 1,
+        "status": "model_generating",
+        "batch_id": "batch-1",
+        "reference_keys": keys,
+        "reference_hashes": [digest] * 3,
     }
     monkeypatch.setattr(processing, "_get_sync_session", lambda: _WorkerSession(building))
-    monkeypatch.setattr(processing, "_get_s3_client", lambda: SimpleNamespace(
-        get_object=lambda **kwargs: {"Body": io.BytesIO(b"corrupt" if corrupt else image)}
-    ))
+    monkeypatch.setattr(
+        processing,
+        "_get_s3_client",
+        lambda: SimpleNamespace(get_object=lambda **kwargs: {"Body": io.BytesIO(b"corrupt" if corrupt else image)}),
+    )
     monkeypatch.setattr(processing, "_begin_building_representation_mutation", lambda *args: None)
     monkeypatch.setattr(processing, "_mark_building_representation_stale", lambda *args: None)
     monkeypatch.setattr(processing, "_upload_to_storage", lambda *args: None)
-    monkeypatch.setattr(processing, "_propagate_model_to_siblings", lambda *args: pytest.fail("private model propagated"))
+    monkeypatch.setattr(
+        processing, "_propagate_model_to_siblings", lambda *args: pytest.fail("private model propagated")
+    )
     monkeypatch.setattr(processing, "log_api_usage_sync", lambda **kwargs: None)
     monkeypatch.setattr(processing.generate_3d_model_ai, "update_state", lambda **kwargs: None)
     monkeypatch.setattr(processing.generate_3d_model_ai, "retry", lambda **kwargs: pytest.fail("paid retry"))
@@ -332,10 +372,16 @@ def test_photo_model_worker_keeps_old_model_until_private_result_commits(monkeyp
     building, keys = _photo_worker(monkeypatch, generate)
     keys = keys[:2]
     building.specifications["photo_generation"]["reference_keys"] = keys
-    building.specifications["photo_generation"]["reference_hashes"] = building.specifications["photo_generation"]["reference_hashes"][:2]
+    building.specifications["photo_generation"]["reference_hashes"] = building.specifications["photo_generation"][
+        "reference_hashes"
+    ][:2]
     result = processing.generate_3d_model_ai.run(
-        str(building.id), "materials", mode="multi_image", engine="meshy",
-        photo_reference_keys=keys, photo_batch_id="batch-1",
+        str(building.id),
+        "materials",
+        mode="multi_image",
+        engine="meshy",
+        photo_reference_keys=keys,
+        photo_batch_id="batch-1",
     )
     assert result["status"] == "completed"
     assert building.model_url.endswith("_photo_batch-1.glb")
@@ -352,8 +398,12 @@ def test_photo_model_worker_uses_only_reviewed_selected_view(monkeypatch):
     building, keys = _photo_worker(monkeypatch, generate)
     building.specifications["photo_generation"]["selected_reference_indices"] = [1]
     result = processing.generate_3d_model_ai.run(
-        str(building.id), "materials", mode="multi_image", engine="meshy",
-        photo_reference_keys=[keys[1]], photo_batch_id="batch-1",
+        str(building.id),
+        "materials",
+        mode="multi_image",
+        engine="meshy",
+        photo_reference_keys=[keys[1]],
+        photo_batch_id="batch-1",
     )
     assert result["status"] == "completed"
 
@@ -364,8 +414,12 @@ def test_photo_model_worker_rejects_changed_reference_without_spending(monkeypat
 
     building, keys = _photo_worker(monkeypatch, unexpected, corrupt=True)
     result = processing.generate_3d_model_ai.run(
-        str(building.id), "materials", mode="multi_image", engine="meshy",
-        photo_reference_keys=keys, photo_batch_id="batch-1",
+        str(building.id),
+        "materials",
+        mode="multi_image",
+        engine="meshy",
+        photo_reference_keys=keys,
+        photo_batch_id="batch-1",
     )
     assert result["status"] == "failed"
     assert building.model_url == "/api/v1/files/old-model.glb"

@@ -120,14 +120,20 @@ async def _authorize_file(
                 # The project ticket was verified above, including revocation.
                 # It must not turn another requester's control files into shared
                 # media. Exact-file tickets arrive here as their resolved user.
-                requester_id = str(user.id) if user else (
-                    decode_token(asset_ticket).get("sub") if asset_ticket and not share_token else None
+                requester_id = (
+                    str(user.id)
+                    if user
+                    else (decode_token(asset_ticket).get("sub") if asset_ticket and not share_token else None)
                 )
-                own_attempt = not share_token and requester_id and any(
-                    len(parts) >= 5
-                    and str(item.get("id")) == parts[3]
-                    and str(item.get("requested_by") or project.owner_id) == requester_id
-                    for item in attempts
+                own_attempt = (
+                    not share_token
+                    and requester_id
+                    and any(
+                        len(parts) >= 5
+                        and str(item.get("id")) == parts[3]
+                        and str(item.get("requested_by") or project.owner_id) == requester_id
+                        for item in attempts
+                    )
                 )
                 if not own_attempt:
                     raise HTTPException(status_code=403, detail="Video capture controls are private to their requester")

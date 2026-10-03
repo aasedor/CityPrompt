@@ -82,15 +82,23 @@ async def google_login(frontend_origin: str | None = Query(default=None)):
         )
 
     origin = frontend_origin if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url
-    return {"authorization_url": settings.google_redirect_uri.removesuffix('/callback') + '/start?' + urlencode({'frontend_origin': origin})}
+    return {
+        "authorization_url": settings.google_redirect_uri.removesuffix("/callback")
+        + "/start?"
+        + urlencode({"frontend_origin": origin})
+    }
 
 
 @router.get("/google/start")
 async def google_start(frontend_origin: str | None = Query(default=None)):
     if not settings.google_client_id:
         raise HTTPException(501, "Google OAuth is not configured")
-    origin = frontend_origin.rstrip('/') if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url.rstrip('/')
-    state, binding = await issue_state('google', origin)
+    origin = (
+        frontend_origin.rstrip("/")
+        if _is_allowed_frontend_origin(frontend_origin)
+        else settings.frontend_url.rstrip("/")
+    )
+    state, binding = await issue_state("google", origin)
     params = {
         "client_id": settings.google_client_id,
         "redirect_uri": settings.google_redirect_uri,
@@ -101,7 +109,7 @@ async def google_start(frontend_origin: str | None = Query(default=None)):
         "state": state,
     }
     authorization_url = f"{GOOGLE_AUTH_URL}?{urlencode(params)}"
-    return bind_browser(RedirectResponse(authorization_url, status_code=302), 'google', binding)
+    return bind_browser(RedirectResponse(authorization_url, status_code=302), "google", binding)
 
 
 @router.get("/google/callback")
@@ -116,7 +124,7 @@ async def google_callback(
     """Handle the Google OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
     # Verify before error handling, provider exchange or database lookup. The
     # redirect origin comes from the issued record, never callback JSON.
-    frontend_origin = await consume_state(request, 'google', state)
+    frontend_origin = await consume_state(request, "google", state)
 
     if error:
         reason = error_description or error
@@ -253,15 +261,23 @@ async def microsoft_login(frontend_origin: str | None = Query(default=None)):
         )
 
     origin = frontend_origin if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url
-    return {"authorization_url": settings.microsoft_redirect_uri.removesuffix('/callback') + '/start?' + urlencode({'frontend_origin': origin})}
+    return {
+        "authorization_url": settings.microsoft_redirect_uri.removesuffix("/callback")
+        + "/start?"
+        + urlencode({"frontend_origin": origin})
+    }
 
 
 @router.get("/microsoft/start")
 async def microsoft_start(frontend_origin: str | None = Query(default=None)):
     if not settings.microsoft_client_id:
         raise HTTPException(501, "Microsoft OAuth is not configured")
-    origin = frontend_origin.rstrip('/') if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url.rstrip('/')
-    state, binding = await issue_state('microsoft', origin)
+    origin = (
+        frontend_origin.rstrip("/")
+        if _is_allowed_frontend_origin(frontend_origin)
+        else settings.frontend_url.rstrip("/")
+    )
+    state, binding = await issue_state("microsoft", origin)
     params = {
         "client_id": settings.microsoft_client_id,
         "redirect_uri": settings.microsoft_redirect_uri,
@@ -272,7 +288,7 @@ async def microsoft_start(frontend_origin: str | None = Query(default=None)):
         "state": state,
     }
     authorization_url = f"{MICROSOFT_AUTH_URL}?{urlencode(params)}"
-    return bind_browser(RedirectResponse(authorization_url, status_code=302), 'microsoft', binding)
+    return bind_browser(RedirectResponse(authorization_url, status_code=302), "microsoft", binding)
 
 
 @router.get("/microsoft/callback")
@@ -284,9 +300,11 @@ async def microsoft_callback(
     db: AsyncSession = Depends(get_db),
 ):
     """Handle the Microsoft OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
-    frontend_origin = await consume_state(request, 'microsoft', state)
+    frontend_origin = await consume_state(request, "microsoft", state)
     if error or not code:
-        return _oauth_error_redirect(frontend_origin, "Microsoft sign-in was cancelled or did not return a code. Start sign-in again.")
+        return _oauth_error_redirect(
+            frontend_origin, "Microsoft sign-in was cancelled or did not return a code. Start sign-in again."
+        )
     if not settings.microsoft_client_id or not settings.microsoft_client_secret:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,

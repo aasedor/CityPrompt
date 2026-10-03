@@ -387,18 +387,29 @@ def make_row():
     )
 
 
-@pytest.mark.parametrize("status,connections,kind", [
-    ("connected", [{"id": "approach"}], "source_context"),
-    ("blocked", [], "unresolved_question"),
-    ("unresolved", [], "unresolved_question"),
-    ("connected", [], "unresolved_question"),
-])
+@pytest.mark.parametrize(
+    "status,connections,kind",
+    [
+        ("connected", [{"id": "approach"}], "source_context"),
+        ("blocked", [], "unresolved_question"),
+        ("unresolved", [], "unresolved_question"),
+        ("connected", [], "unresolved_question"),
+    ],
+)
 def test_report_distinguishes_derived_access_from_polygon_distance(status, connections, kind):
     park = zone("green_space", rectangle(x=0.003))
     plan = snapshot([zone("site_boundary", rectangle(width=0.01, height=0.01)), park, zone("road")])
     assert any("nearest drawn" in f["observation"] for f in analyze_snapshot(plan)["findings"])
-    plan["park_access_snapshot"] = {"parks": [{"parkZoneId": str(park.id), "status": status,
-        "connections": connections, "reason": "Leave a clear entrance corridor."}]}
+    plan["park_access_snapshot"] = {
+        "parks": [
+            {
+                "parkZoneId": str(park.id),
+                "status": status,
+                "connections": connections,
+                "reason": "Leave a clear entrance corridor.",
+            }
+        ]
+    }
     result = next(f for f in analyze_snapshot(plan)["findings"] if f["id"] == "park-access-" + str(park.id))
     assert result["kind"] == kind
     assert "Client-derived" in result["basis"]
@@ -418,12 +429,14 @@ def test_route_evidence_is_retained_without_making_report_immediately_stale():
 
 def test_export_draws_only_current_connected_approaches_in_report_scope():
     park = zone("green_space")
-    plan = snapshot([park, zone("road", rectangle(x=.002))])
+    plan = snapshot([park, zone("road", rectangle(x=0.002))])
     approach = {"path": [[-114.069, 51.0405], [-114.068, 51.0405]], "widthM": 2.2}
-    plan["park_access_snapshot"] = {"parks": [
-        {"parkZoneId": str(park.id), "status": "connected", "connections": [approach]},
-        {"parkZoneId": "outside-report", "status": "connected", "connections": [approach]},
-    ]}
+    plan["park_access_snapshot"] = {
+        "parks": [
+            {"parkZoneId": str(park.id), "status": "connected", "connections": [approach]},
+            {"parkZoneId": "outside-report", "status": "connected", "connections": [approach]},
+        ]
+    }
     assert snapshot_drawing(plan).count("<polyline") == 1
     plan["park_access_snapshot"]["parks"][0]["status"] = "blocked"
     assert "<polyline" not in snapshot_drawing(plan)
@@ -433,6 +446,7 @@ def test_export_draws_only_current_connected_approaches_in_report_scope():
 async def test_report_snapshot_rejects_stale_park_route_inventory():
     from tests.test_park_access_provenance import inputs
     from app.schemas.park_access import ParkAccessSnapshot
+
     _, zones, _, raw = inputs()
     for item in zones:
         item.name = item.zone_type

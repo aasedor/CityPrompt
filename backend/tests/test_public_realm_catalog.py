@@ -65,9 +65,7 @@ def test_local_validation_public_realm_ids_have_exact_fallback_identity():
         assert marker is not None
         assert marker["archetype_id"] == archetype_id
         assert marker["variant_id"] == archetype_id
-    assert resolve_public_realm_catalog_identity(
-        "park", "student_garden_square_v1", "student_garden_square_v2"
-    ) is None
+    assert resolve_public_realm_catalog_identity("park", "student_garden_square_v1", "student_garden_square_v2") is None
 
 
 def test_family_pending_identity_accepts_known_unbuilt_catalogue_ids_and_exact_variants():

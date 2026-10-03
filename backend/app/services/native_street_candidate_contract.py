@@ -43,7 +43,10 @@ def native_street_runtime_capabilities() -> tuple[PublicRealmFamilyCapability, .
         release = allowed.get(selection.variant_id)
         if release is None:
             continue
-        if release["archetypeId"] != selection.archetype_id or f"source_recipe:{release['revision']}" not in selection.component_set_ids:
+        if (
+            release["archetypeId"] != selection.archetype_id
+            or f"source_recipe:{release['revision']}" not in selection.component_set_ids
+        ):
             raise ValueError(f"Native street release lock disagrees with {selection.variant_id}")
         accepted.append(capability.model_copy(update={"title": capability.title.removeprefix("Candidate: ")}))
     if len(accepted) != len(allowed):
@@ -89,12 +92,12 @@ def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCap
             ("source_assembly", row["sourceAssemblySha256"]),
             ("reference", row["referenceSha256"]),
         ]
-        program = row.get('program')
+        program = row.get("program")
         if program is not None:
-            digest = hashlib.sha256(json.dumps(program, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
-            if row.get('programSha256') != digest:
-                raise ValueError(f'{pilot_id} has a changed executable program')
-            locks.append(('program', digest))
+            digest = hashlib.sha256(json.dumps(program, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+            if row.get("programSha256") != digest:
+                raise ValueError(f"{pilot_id} has a changed executable program")
+            locks.append(("program", digest))
         modules = row["modules"]
         if not isinstance(modules, dict) or not modules:
             raise ValueError(f"{pilot_id} has no native modules")
@@ -116,18 +119,20 @@ def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCap
                 nominal_row_width_m=width,
                 min_row_width_m=round(width - 0.05, 3),
                 max_row_width_m=round(width + 0.05, 3),
-                min_length_m=program['minLengthM'] if program else 8,
-                max_length_m=program['maxLengthM'] if program else 2_000,
+                min_length_m=program["minLengthM"] if program else 8,
+                max_length_m=program["maxLengthM"] if program else 2_000,
             ),
             is_default=True,
         )
-        capabilities.append(PublicRealmFamilyCapability(
-            family_id=f"street_native_{pilot_id}",
-            kind="street",
-            title=f"Candidate: {row['title']}",
-            generator="street_section",
-            selections=(selection,),
-        ))
+        capabilities.append(
+            PublicRealmFamilyCapability(
+                family_id=f"street_native_{pilot_id}",
+                kind="street",
+                title=f"Candidate: {row['title']}",
+                generator="street_section",
+                selections=(selection,),
+            )
+        )
     capabilities.sort(key=lambda item: item.family_id)
     payload = [item.model_dump(mode="json") for item in capabilities]
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")

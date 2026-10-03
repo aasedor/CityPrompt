@@ -1,4 +1,5 @@
 """Fault injection for the opt-in, network-isolated Linux probe only."""
+
 import os
 import signal
 import time
@@ -7,17 +8,25 @@ from unittest.mock import AsyncMock
 from app.core.config import get_settings
 
 settings = get_settings()
-if not (os.getenv("CITYPROMPT_PREFORK_PROBE") == "1"
-        and "@probe-db/" in settings.database_url
-        and settings.redis_url == "redis://probe-redis:6379/0"
-        and settings.s3_endpoint_url == "http://probe-media:9000"):
+if not (
+    os.getenv("CITYPROMPT_PREFORK_PROBE") == "1"
+    and "@probe-db/" in settings.database_url
+    and settings.redis_url == "redis://probe-redis:6379/0"
+    and settings.s3_endpoint_url == "http://probe-media:9000"
+):
     raise RuntimeError("Fault injection requires the isolated prefork probe services")
 
-from app.api.v1 import direct_3d_render as direct
-from app.services.direct_3d_render import Direct3DServiceResult
-from app.schemas.direct_3d_render import Direct3DRenderDiagnostics
-from app.tasks.worker import celery_app
-import redis
+from app.api.v1 import direct_3d_render as direct  # noqa: E402 - validate isolated services before importing task code
+from app.services.direct_3d_render import (  # noqa: E402 - validate isolated services before importing task code
+    Direct3DServiceResult,
+)
+from app.schemas.direct_3d_render import (  # noqa: E402 - validate isolated services before importing task code
+    Direct3DRenderDiagnostics,
+)
+from app.tasks.worker import (  # noqa: E402 - validate isolated services before importing task code
+    celery_app as celery_app,
+)
+import redis  # noqa: E402 - validate isolated services before importing task code
 
 client = redis.from_url(settings.redis_url)
 direct._validate_direct_3d_project_zones = lambda *_: []
@@ -37,12 +46,19 @@ async def generate(self, req, capture=None, **kwargs):
     return Direct3DServiceResult(
         image_base64=req.beauty_image_base64,
         audit_input_base64=req.beauty_image_base64,
-        capture_fingerprint="a" * 64, output_fingerprint="b" * 64,
-        outcome="review_required", warnings=("Mocked provider; not visual evidence",),
+        capture_fingerprint="a" * 64,
+        output_fingerprint="b" * 64,
+        outcome="review_required",
+        warnings=("Mocked provider; not visual evidence",),
         diagnostics=Direct3DRenderDiagnostics(
-            source_width=512, source_height=512, normalized_width=1024,
-            normalized_height=1024, proposal_coverage=.3, context_coverage=.7,
-            object_id_attached=False).model_dump(mode="json"),
+            source_width=512,
+            source_height=512,
+            normalized_width=1024,
+            normalized_height=1024,
+            proposal_coverage=0.3,
+            context_coverage=0.7,
+            object_id_attached=False,
+        ).model_dump(mode="json"),
         provider_image_base64=req.beauty_image_base64,
     )
 

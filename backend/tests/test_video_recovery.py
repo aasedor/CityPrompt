@@ -1,4 +1,5 @@
 """Paid video admission/recovery with real isolated PostgreSQL and mocked providers."""
+
 import asyncio
 import base64
 from datetime import timedelta
@@ -15,7 +16,9 @@ from app.core.security import create_project_asset_ticket, create_file_asset_tic
 from app.services.render_trial import TRIAL_KEY, check_trial_available
 from app.services.render_attempts import now
 from tests.test_omni_video import _jpeg_data_url
-from tests.test_render_attempts import isolated
+from tests.test_render_attempts import isolated as isolated_postgres
+
+isolated = isolated_postgres
 
 
 @pytest.fixture
@@ -25,21 +28,43 @@ async def pilot(isolated, monkeypatch):
     monkeypatch.setattr(video, "get_settings", lambda: settings)
     monkeypatch.setattr(video, "_validate_video_scene_revision", AsyncMock(return_value="a" * 64))
     monkeypatch.setattr(video, "seedance_runtime_error", lambda _: None)
-    provider = AsyncMock(return_value=SimpleNamespace(video_bytes=b"mock-mp4", mime_type="video/mp4", interaction_id="remote-id", request_id="remote-id", seed=7))
+    provider = AsyncMock(
+        return_value=SimpleNamespace(
+            video_bytes=b"mock-mp4", mime_type="video/mp4", interaction_id="remote-id", request_id="remote-id", seed=7
+        )
+    )
     monkeypatch.setattr(video, "request_omni_video_once", provider)
     monkeypatch.setattr(video, "request_seedance_video_once", provider)
-    monkeypatch.setattr(video, "score_video_fidelity", lambda **_: SimpleNamespace(metadata=lambda: {"fidelity_status": "drift", "fidelity_score": 0.1}))
+    monkeypatch.setattr(
+        video,
+        "score_video_fidelity",
+        lambda **_: SimpleNamespace(metadata=lambda: {"fidelity_status": "drift", "fidelity_score": 0.1}),
+    )
     saved = {}
+
     async def upload(key, value, _mime):
         saved[key] = value
+
     monkeypatch.setattr(documents, "_upload_to_storage", upload)
     async with f.sessions() as db:
         project = await db.get(Project, f.project.id)
-        project.metadata_ = {TRIAL_KEY: {"user_id": str(f.user.id), "image_limit": 10,
-            "video_limit": 3, "image_requests": {}, "video_requests": {}}}
+        project.metadata_ = {
+            TRIAL_KEY: {
+                "user_id": str(f.user.id),
+                "image_limit": 10,
+                "video_limit": 3,
+                "image_requests": {},
+                "video_requests": {},
+            }
+        }
         await db.commit()
-    request = video.VideoGenerateRequest(project_id=f.project.id, request_id=uuid.uuid4(), confirm_paid_submission=True,
-        guide_frame_base64=_jpeg_data_url(), route_points=[{"x": .2, "y": .8}, {"x": .8, "y": .2}])
+    request = video.VideoGenerateRequest(
+        project_id=f.project.id,
+        request_id=uuid.uuid4(),
+        confirm_paid_submission=True,
+        guide_frame_base64=_jpeg_data_url(),
+        route_points=[{"x": 0.2, "y": 0.8}, {"x": 0.8, "y": 0.2}],
+    )
     return SimpleNamespace(**vars(f), request=request, video_provider=provider, saved=saved)
 
 
@@ -63,7 +88,9 @@ async def test_concurrent_duplicate_video_submits_pay_once_and_recover_after_new
         p = await db.get(Project, f.project.id)
         assert len(p.metadata_[TRIAL_KEY]["video_requests"]) == 1
     with pytest.raises(HTTPException) as error:
-        await generate(f, f.request.model_copy(update={"scene_brief": "A different camera design request, using the same key."}))
+        await generate(
+            f, f.request.model_copy(update={"scene_brief": "A different camera design request, using the same key."})
+        )
     assert error.value.status_code == 409
     f.video_provider.assert_awaited_once()
 
@@ -77,12 +104,32 @@ async def test_video_allowance_spans_providers_and_counts_failure(pilot):
     assert (await generate(f)).attempt.status == "failed"
     f.video_provider.side_effect = None
     preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
-    await generate(f, f.request.model_copy(update={"request_id": uuid.uuid4(), "provider": "seedance_mini",
-        "control_mode": "preview_video", "preview_video_base64": preview, "preview_video_mime_type": "video/webm"}))
+    await generate(
+        f,
+        f.request.model_copy(
+            update={
+                "request_id": uuid.uuid4(),
+                "provider": "seedance_mini",
+                "control_mode": "preview_video",
+                "preview_video_base64": preview,
+                "preview_video_mime_type": "video/webm",
+            }
+        ),
+    )
     await generate(f, f.request.model_copy(update={"request_id": uuid.uuid4()}))
     with pytest.raises(HTTPException) as error:
-        await generate(f, f.request.model_copy(update={"request_id": uuid.uuid4(), "provider": "seedance_mini",
-            "control_mode": "preview_video", "preview_video_base64": preview, "preview_video_mime_type": "video/webm"}))
+        await generate(
+            f,
+            f.request.model_copy(
+                update={
+                    "request_id": uuid.uuid4(),
+                    "provider": "seedance_mini",
+                    "control_mode": "preview_video",
+                    "preview_video_base64": preview,
+                    "preview_video_mime_type": "video/webm",
+                }
+            ),
+        )
     assert error.value.status_code == 409
     assert f.video_provider.await_count == 3
     async with f.sessions() as db:
@@ -96,10 +143,12 @@ async def test_video_allowance_spans_providers_and_counts_failure(pilot):
 async def test_paid_pixels_survive_late_completion_failure(pilot, monkeypatch):
     f = pilot
     real_update = video._update_attempt
+
     async def fail_complete(db, project_id, attempt_id, **changes):
         if changes.get("status") == "complete":
             raise RuntimeError("simulated interruption after retained pixels")
         return await real_update(db, project_id, attempt_id, **changes)
+
     monkeypatch.setattr(video, "_update_attempt", fail_complete)
     with pytest.raises(HTTPException):
         await generate(f)
@@ -118,8 +167,9 @@ async def test_interrupted_submission_is_visible_and_never_replayed(pilot):
         p = await db.get(Project, f.project.id)
         meta = dict(p.metadata_)
         entry = dict(meta["video_pilot_attempts"][0])
-        entry.update(status="generating", video_url=None,
-                     provider_call_started_at=(now() - timedelta(days=1)).isoformat())
+        entry.update(
+            status="generating", video_url=None, provider_call_started_at=(now() - timedelta(days=1)).isoformat()
+        )
         meta["video_pilot_attempts"] = [entry]
         p.metadata_ = meta
         await db.commit()
@@ -211,7 +261,11 @@ async def test_real_membership_saved_video_private_controls_and_revocation(pilot
         await db.delete(editor_share)
         await db.commit()
         for endpoint in [files.get_file, files.head_file]:
-            for auth in [dict(user=requester), dict(user=None, asset_ticket=project_ticket), dict(user=None, file_ticket=file_ticket)]:
+            for auth in [
+                dict(user=requester),
+                dict(user=None, asset_ticket=project_ticket),
+                dict(user=None, file_ticket=file_ticket),
+            ]:
                 with pytest.raises(HTTPException) as exc:
                     await endpoint(output, db=db, **auth)
                 assert exc.value.status_code == 403

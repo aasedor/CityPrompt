@@ -792,34 +792,42 @@ def test_recipe_identity_fails_closed_after_payload_or_catalog_hash_tampering():
     assert public_realm_recipe_identity(payload) is None
 
 
-@pytest.mark.parametrize('archetype,width,variant', [
-    ('narrow_residential_street', 12, None),
-    ('neighborhood_main_street', 23, 'student_main_street_v1'),
-    ('pedestrian_only_street', 18, 'student_market_street_v1'),
-])
+@pytest.mark.parametrize(
+    "archetype,width,variant",
+    [
+        ("narrow_residential_street", 12, None),
+        ("neighborhood_main_street", 23, "student_main_street_v1"),
+        ("pedestrian_only_street", 18, "student_market_street_v1"),
+    ],
+)
 def test_saved_recipe_survives_catalog_additions_only_with_unchanged_trusted_family(archetype, width, variant):
-    catalog = replace(build_public_realm_capability_catalog(),
-        fingerprint='4e673702affdad9f2354c69d2a64a86a47bf877f77a2eb3425bd813dfafedbdb')
+    catalog = replace(
+        build_public_realm_capability_catalog(),
+        fingerprint="4e673702affdad9f2354c69d2a64a86a47bf877f77a2eb3425bd813dfafedbdb",
+    )
     recipe = plan_public_realm_recipe(_street_request(archetype, width, variant_id=variant), catalog=catalog)
-    expanded = replace(catalog, fingerprint='a' * 64)
+    expanded = replace(catalog, fingerprint="a" * 64)
     identity = public_realm_recipe_identity(recipe, catalog=expanded)
     assert identity is not None
-    assert identity['recipe'] == recipe.model_dump(mode='json')
+    assert identity["recipe"] == recipe.model_dump(mode="json")
 
-    unknown = recipe.model_dump(mode='json')
-    unknown['catalog_fingerprint'] = 'b' * 64
-    unknown['recipe_hash'] = public_realm_recipe_hash(unknown)
+    unknown = recipe.model_dump(mode="json")
+    unknown["catalog_fingerprint"] = "b" * 64
+    unknown["recipe_hash"] = public_realm_recipe_hash(unknown)
     assert public_realm_recipe_identity(unknown, catalog=expanded) is None
 
-    tampered = recipe.model_dump(mode='json')
-    tampered['appearance_kit_id'] = 'different_geometry'
-    tampered['recipe_hash'] = public_realm_recipe_hash(tampered)
+    tampered = recipe.model_dump(mode="json")
+    tampered["appearance_kit_id"] = "different_geometry"
+    tampered["recipe_hash"] = public_realm_recipe_hash(tampered)
     assert public_realm_recipe_identity(tampered, catalog=expanded) is None
 
-    changed = replace(expanded, capabilities=tuple(
-        c.model_copy(update={'title': 'changed definition'}) if c.family_id == recipe.family_id else c
-        for c in expanded.capabilities
-    ))
+    changed = replace(
+        expanded,
+        capabilities=tuple(
+            c.model_copy(update={"title": "changed definition"}) if c.family_id == recipe.family_id else c
+            for c in expanded.capabilities
+        ),
+    )
     assert public_realm_recipe_identity(recipe, catalog=changed) is None
 
 
@@ -993,17 +1001,22 @@ def test_manual_compile_and_direct_replan_share_one_canonical_street_target():
 
 def test_existing_fixed_street_is_neither_recompiled_nor_fallback():
     street = _to_wgs84(box(700_000, 5_650_000, 700_048, 5_650_018))
-    properties = dict(validation_fixed_fixture=True, road_archetype_id='quiet_residential_street',
-                      road_selected_variant_id='student_quiet_residential_street_v1', width=18)
-    assert plan_public_realm_zone_recipe('road', street, properties, strict=False) is None
-    assert public_realm_fallback_marker('road', properties) is None
+    properties = dict(
+        validation_fixed_fixture=True,
+        road_archetype_id="quiet_residential_street",
+        road_selected_variant_id="student_quiet_residential_street_v1",
+        width=18,
+    )
+    assert plan_public_realm_zone_recipe("road", street, properties, strict=False) is None
+    assert public_realm_fallback_marker("road", properties) is None
 
 
 def test_fixed_fixture_flag_does_not_bypass_strict_planning():
     street = _to_wgs84(box(700_000, 5_650_000, 700_048, 5_650_018))
     with pytest.raises(PublicRealmPlanningError):
-        plan_public_realm_zone_recipe('road', street, dict(validation_fixed_fixture=True,
-                                     road_archetype_id='unknown_fixture'), strict=True)
+        plan_public_realm_zone_recipe(
+            "road", street, dict(validation_fixed_fixture=True, road_archetype_id="unknown_fixture"), strict=True
+        )
 
 
 def test_zone_planner_preserves_legacy_fallback_but_ai_fails_closed():

@@ -2096,7 +2096,7 @@ async def place_community_3d(
                 source_zones.append(
                     ResidualSourceZone(
                         zone_id=str(zone.id),
-                        native_selection=properties.get('green_space_native_layout'),
+                        native_selection=properties.get("green_space_native_layout"),
                         kind=_community_3d_kind(zone) or str(zone.zone_type),
                         role=str(role) if role is not None else None,
                         geometry=to_shape(zone.geometry),
@@ -2131,14 +2131,18 @@ async def place_community_3d(
         source_locked_rlasm = False
         source_locked_user_generated = False
         if kind == "building":
-            if (zone.properties or {}).get('user_generated_source_id'):
+            if (zone.properties or {}).get("user_generated_source_id"):
                 from app.services.user_generated_models import has_user_generated_binding
+
                 linked_building = project_buildings_by_id.get(str(zone.building_id))
                 if item.recipe is not None or not has_user_generated_binding(zone, linked_building):
-                    raise HTTPException(status_code=422, detail='The selected user generated model is unavailable. Choose it again from the building picker.')
+                    raise HTTPException(
+                        status_code=422,
+                        detail="The selected user generated model is unavailable. Choose it again from the building picker.",
+                    )
                 building = linked_building
                 building.footprint = zone.geometry
-                building_generator = 'meshy'
+                building_generator = "meshy"
                 source_locked_user_generated = True
             elif item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)

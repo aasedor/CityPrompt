@@ -911,12 +911,18 @@ async def generate_render(
     # Internal callers (including custom landscape artwork) do not traverse
     # the API router's classroom dependency. Enforce the paid boundary here too.
     if getattr(settings, "classroom_release", False):
-        raise HTTPException(403, detail={
-            "code": "outside_classroom_release", "billed": False,
-            "message": "Custom AI ground artwork is outside the classroom starter release. Choose a free 3D landscape preset or use the current-view image tool. No credits were charged.",
-        })
+        raise HTTPException(
+            403,
+            detail={
+                "code": "outside_classroom_release",
+                "billed": False,
+                "message": "Custom AI ground artwork is outside the classroom starter release. Choose a free 3D landscape preset or use the current-view image tool. No credits were charged.",
+            },
+        )
     if not getattr(settings, "direct_3d_images_enabled", True):
-        raise HTTPException(503, "Image generation is paused. Free 3D landscape presets and exact image downloads remain available.")
+        raise HTTPException(
+            503, "Image generation is paused. Free 3D landscape presets and exact image downloads remain available."
+        )
     if req.project_id:
         await check_project_permission(req.project_id, user, db, required="editor")
     render_model = req.model if req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
@@ -1364,7 +1370,9 @@ async def persist_render_to_gallery(
     path (which persists every paid result, including the untouched provider
     image when a safety fallback replaced it).
     """
-    project_result = await db.execute(select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True))
+    project_result = await db.execute(
+        select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True)
+    )
     project = project_result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")

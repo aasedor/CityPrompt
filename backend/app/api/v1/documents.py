@@ -137,7 +137,9 @@ async def upload_document(
         except Exception:
             logger.exception("Could not queue document processing for %s", document.id)
             document.processing_status = "failed"
-            document.extracted_data = {"error": "Your file is saved, but text extraction could not start. Please try the upload again when the service is available."}
+            document.extracted_data = {
+                "error": "Your file is saved, but text extraction could not start. Please try the upload again when the service is available."
+            }
             await db.commit()
 
     return document

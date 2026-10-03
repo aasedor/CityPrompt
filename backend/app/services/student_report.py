@@ -454,8 +454,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                     uncertainty="Boundary precision and ownership have not been independently surveyed.",
                 )
         park_access = {
-            item["parkZoneId"]: item
-            for item in (snapshot.get("park_access_snapshot") or {}).get("parks", [])
+            item["parkZoneId"]: item for item in (snapshot.get("park_access_snapshot") or {}).get("parks", [])
         }
         for park in parks[:20]:
             access = park_access.get(park["id"])
@@ -464,10 +463,16 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 finding(
                     "park-access-" + park["id"],
                     "Review the park's walking connection" if connected else "Resolve the park's walking connection",
-                    ("The current 3D plan includes a walking approach to this park."
-                     if connected else access.get("reason") or "No supported walking approach is resolved for this park."),
-                    ("Check the entrance, path and sidewalk together in a close 3D view."
-                     if connected else "Use Connections to choose an entrance and nearby sidewalk; leave a clear corridor or adjust the layout."),
+                    (
+                        "The current 3D plan includes a walking approach to this park."
+                        if connected
+                        else access.get("reason") or "No supported walking approach is resolved for this park."
+                    ),
+                    (
+                        "Check the entrance, path and sidewalk together in a close 3D view."
+                        if connected
+                        else "Use Connections to choose an entrance and nearby sidewalk; leave a clear corridor or adjust the layout."
+                    ),
                     kind="source_context" if connected else "unresolved_question",
                     records=[park],
                     basis="Client-derived park routes bound to the saved project-zone revisions",
@@ -730,7 +735,9 @@ def snapshot_drawing(snapshot: dict) -> str:
         for route in park.get("connections", []):
             coords = [transformer.transform(lon, lat) for lon, lat in route["path"]]
             points = " ".join(f"{x - minx + padding:.2f},{maxy - y + padding:.2f}" for x, y in coords)
-            paths.append(f'<polyline points="{points}" fill="none" stroke="#a77b3f" stroke-width="{float(route["widthM"]):.2f}"><title>Client-derived park approach</title></polyline>')
+            paths.append(
+                f'<polyline points="{points}" fill="none" stroke="#a77b3f" stroke-width="{float(route["widthM"]):.2f}"><title>Client-derived park approach</title></polyline>'
+            )
     return f'<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Saved proposal plan" viewBox="0 0 {width:.2f} {height:.2f}" style="width:100%;max-height:460px;background:#f5f6f2">{"".join(paths)}</svg><p class="meta">Saved plan geometry · north up · drawing extent {width:.0f} × {height:.0f} m · purple buildings, green parks, gray roads, sand development allocations; dashed site boundary. Brown lines, when present, are client-derived park approaches.</p>'
 
 

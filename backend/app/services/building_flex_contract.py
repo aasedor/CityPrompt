@@ -38,7 +38,10 @@ def _contracts() -> tuple[str, float, float, dict[str, tuple[float, float]]]:
         depths = {round(float(row["native_dimensions_m"][1]), 6) for row in assemblies}
         if len(widths) != 1 or len(depths) != 1:
             raise ValueError(f"Storey assemblies changed footprint for {family['variant_id']}")
-        families[str(family["variant_id"])] = (float(assemblies[0]["native_dimensions_m"][0]), float(assemblies[0]["native_dimensions_m"][1]))
+        families[str(family["variant_id"])] = (
+            float(assemblies[0]["native_dimensions_m"][0]),
+            float(assemblies[0]["native_dimensions_m"][1]),
+        )
     return str(payload["id"]), minimum, maximum, families
 
 

@@ -272,9 +272,7 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         native_floors=_as_int_or_none(lego.get("native_floors")),
         occupied_storeys=max(
             0,
-            (_as_int_or_none(lego.get("occupied_storeys")) or 0)
-            if lego.get("occupied_storeys") is not None
-            else 1,
+            (_as_int_or_none(lego.get("occupied_storeys")) or 0) if lego.get("occupied_storeys") is not None else 1,
         ),
         source_variant_id=(str(lego.get("source_variant_id")) if lego.get("source_variant_id") else None),
         generation_archetype_id=(
@@ -1681,9 +1679,9 @@ def _plan_vertical_assembly_core(
                 "footprint_mode": "archetype_contain",
                 "delivery_format": (
                     RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT
-                    if levels and all(
-                        module.delivery_format == RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT
-                        for module, _, _, _ in levels
+                    if levels
+                    and all(
+                        module.delivery_format == RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT for module, _, _, _ in levels
                     )
                     else None
                 ),

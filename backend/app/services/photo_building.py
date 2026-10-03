@@ -44,8 +44,12 @@ async def reserve_photo_tokens(db, user, project_id, *, cost: int, stage: str, b
         user.render_credits -= charge
         db.add(user)
     audit = RenderAuditLog(
-        id=uuid.uuid4(), user_id=user.id, user_email=user.email,
-        project_id=project_id, model=f"meshy-photo-{stage}", tokens_spent=charge,
+        id=uuid.uuid4(),
+        user_id=user.id,
+        user_email=user.email,
+        project_id=project_id,
+        model=f"meshy-photo-{stage}",
+        tokens_spent=charge,
         prompt_preview=f"[Custom building {stage}] {brief[:400]}",
     )
     db.add(audit)
@@ -129,7 +133,7 @@ def reference_prompt(brief: str) -> str:
     )
     # Our Meshy client caps this prompt at 600; reserve space for student notes
     # rather than silently losing the whole brief at the provider boundary.
-    return base + ("Student notes: " + brief.strip())[:600 - len(base)]
+    return base + ("Student notes: " + brief.strip())[: 600 - len(base)]
 
 
 def photo_state(specifications: dict[str, Any] | None) -> dict[str, Any]:

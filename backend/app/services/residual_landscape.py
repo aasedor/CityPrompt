@@ -45,6 +45,7 @@ class ResidualSourceZone:
 def residual_occupied_geometry(zone: ResidualSourceZone) -> BaseGeometry:
     if zone.native_selection is not None:
         from app.services.native_parks import native_park_ground
+
         return native_park_ground(zone.native_selection)
     return zone.geometry
 

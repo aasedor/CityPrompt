@@ -331,8 +331,12 @@ def _visible_usage(project: Project, attempts: list[dict], provider: VideoProvid
     if trial and provider != "internal_enhance":
         used = len(trial.get("video_requests", {}))
         maximum = trial["video_limit"]
-        return VideoProviderUsage(attempts_used=used, max_attempts=maximum,
-            attempts_remaining=min(usage.attempts_remaining, max(0, maximum - used)), allowance_scope="trial")
+        return VideoProviderUsage(
+            attempts_used=used,
+            max_attempts=maximum,
+            attempts_remaining=min(usage.attempts_remaining, max(0, maximum - used)),
+            allowance_scope="trial",
+        )
     return usage
 
 
@@ -340,8 +344,11 @@ def _public_attempt(entry: dict) -> VideoAttemptResponse:
     public = {key: entry[key] for key in VideoAttemptResponse.model_fields if key in entry}
     # Retained pixels remain recoverable even if scoring or the response failed.
     if entry.get("video_url") and entry.get("status") != "complete":
-        public.update(status="complete", fidelity_status="unavailable",
-                      error="The video was saved, but completion checks were interrupted. Compare it with the source preview.")
+        public.update(
+            status="complete",
+            fidelity_status="unavailable",
+            error="The video was saved, but completion checks were interrupted. Compare it with the source preview.",
+        )
     elif entry.get("status") in {"reserved", "generating"}:
         started = entry.get("provider_call_started_at") or entry.get("local_run_started_at") or entry.get("created_at")
         try:
@@ -349,7 +356,10 @@ def _public_attempt(entry: dict) -> VideoAttemptResponse:
             settings = get_settings()
             timeout = max(settings.omni_video_timeout_seconds, settings.seedance_video_timeout_seconds) + 120
             if age > timeout:
-                public.update(status="interrupted", error="This video attempt was interrupted. Its provider outcome may be unknown; it will not be submitted again automatically.")
+                public.update(
+                    status="interrupted",
+                    error="This video attempt was interrupted. Its provider outcome may be unknown; it will not be submitted again automatically.",
+                )
         except (AttributeError, TypeError, ValueError):
             pass
     return VideoAttemptResponse(**public)
@@ -416,8 +426,9 @@ async def _project_internal_resources(db: AsyncSession, project_id: uuid.UUID) -
 
 
 async def _locked_project(db: AsyncSession, project_id: uuid.UUID) -> Project:
-    result = await db.execute(select(Project).where(Project.id == project_id).with_for_update()
-                              .execution_options(populate_existing=True))
+    result = await db.execute(
+        select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True)
+    )
     project = result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -775,8 +786,7 @@ async def list_video_attempts(
             # Shared gallery access is distinct from requester-only recovery.
             # Saved pixels survive an interrupted completion check too.
             shared = _public_attempt(item).model_dump()
-            shared.update(prompt=None, error=None, guide_image_url=None,
-                          interaction_id=None, request_id="")
+            shared.update(prompt=None, error=None, guide_image_url=None, interaction_id=None, request_id="")
             visible.append(shared)
     attempts = visible
     omni_usage = _visible_usage(project, all_attempts, "omni")
@@ -1093,13 +1103,26 @@ async def generate_video(
         {"local_run_started_at": _now()} if req.provider == "internal_enhance" else {"provider_call_started_at": _now()}
     )
     if credit_cost and not is_admin_or_above(user):
-        remaining = (await db.execute(update(User).where(
-            User.id == user.id, User.render_credits >= credit_cost,
-        ).values(render_credits=User.render_credits - credit_cost).returning(User.render_credits))).scalar_one_or_none()
+        remaining = (
+            await db.execute(
+                update(User)
+                .where(
+                    User.id == user.id,
+                    User.render_credits >= credit_cost,
+                )
+                .values(render_credits=User.render_credits - credit_cost)
+                .returning(User.render_credits)
+            )
+        ).scalar_one_or_none()
         if remaining is None:
             await db.rollback()
-            await _update_attempt(db, req.project_id, attempt_id, status="failed",
-                                  error="Insufficient video credits. The provider was not called.")
+            await _update_attempt(
+                db,
+                req.project_id,
+                attempt_id,
+                status="failed",
+                error="Insufficient video credits. The provider was not called.",
+            )
             raise HTTPException(402, "Insufficient Video Render credits.")
     entry = await _update_attempt(
         db,
@@ -1176,10 +1199,17 @@ async def generate_video(
         # Keep paid pixels and their address before optional scoring. A later
         # failure must not turn a usable saved result into another provider call.
         from app.api.v1.documents import _upload_to_storage
+
         await _upload_to_storage(video_key, result.video_bytes, result.mime_type)
         video_url = f"/api/v1/files/{video_key}"
-        await _update_attempt(db, req.project_id, attempt_id, video_url=video_url,
-                              interaction_id=interaction_id, size_bytes=len(result.video_bytes))
+        await _update_attempt(
+            db,
+            req.project_id,
+            attempt_id,
+            video_url=video_url,
+            interaction_id=interaction_id,
+            size_bytes=len(result.video_bytes),
+        )
         fidelity_updates: dict = {}
         if preview or len(keyframes) >= 2:
             try:

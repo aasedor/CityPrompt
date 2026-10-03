@@ -31,10 +31,14 @@ def now():
 
 def describe_attempt(attempt):
     return {
-        "id": str(attempt.id), "project_id": str(attempt.project_id),
+        "id": str(attempt.id),
+        "project_id": str(attempt.project_id),
         "idempotency_key": attempt.idempotency_key,
-        "status": attempt.status, "model": attempt.model, "style": attempt.style,
-        "created_at": attempt.created_at, "finished_at": attempt.finished_at,
+        "status": attempt.status,
+        "model": attempt.model,
+        "style": attempt.style,
+        "created_at": attempt.created_at,
+        "finished_at": attempt.finished_at,
         "error": attempt.error,
     }
 
@@ -47,12 +51,17 @@ async def submit_attempt(db, user, req: Direct3DRenderRequest, key: str):
     # Admission + idempotency are one global, short transaction. Only 16 active
     # jobs are allowed; image bodies live in private object storage, not rows.
     await db.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": QUEUE_LOCK})
-    existing = await db.scalar(select(RenderAttempt).where(
-        RenderAttempt.user_id == user.id, RenderAttempt.idempotency_key == key,
-    ))
+    existing = await db.scalar(
+        select(RenderAttempt).where(
+            RenderAttempt.user_id == user.id,
+            RenderAttempt.idempotency_key == key,
+        )
+    )
     if existing:
         if existing.request_sha256 != fingerprint:
-            raise HTTPException(409, "This request key already belongs to a different image. Recover the original attempt.")
+            raise HTTPException(
+                409, "This request key already belongs to a different image. Recover the original attempt."
+            )
         await db.commit()
         return existing
     if not settings.direct_3d_jobs_enabled or not settings.direct_3d_images_enabled:
@@ -62,14 +71,29 @@ async def submit_attempt(db, user, req: Direct3DRenderRequest, key: str):
     active = list((await db.scalars(select(RenderAttempt).where(RenderAttempt.status.in_(ACTIVE)))).all())
     own = next((item for item in active if item.user_id == user.id), None)
     if own:
-        raise HTTPException(409, {"code": "render_attempt_active", "attempt_id": str(own.id),
-                                 "message": "An image is already queued or running. Recover that attempt first."})
-    if len(active) >= settings.direct_3d_queue_limit or sum(item.project_id == req.project_id for item in active) >= settings.direct_3d_project_queue_limit:
+        raise HTTPException(
+            409,
+            {
+                "code": "render_attempt_active",
+                "attempt_id": str(own.id),
+                "message": "An image is already queued or running. Recover that attempt first.",
+            },
+        )
+    if (
+        len(active) >= settings.direct_3d_queue_limit
+        or sum(item.project_id == req.project_id for item in active) >= settings.direct_3d_project_queue_limit
+    ):
         raise HTTPException(429, "The image queue is full. Your credits have not been charged. Try later.")
     attempt = RenderAttempt(
-        id=uuid.uuid4(), user_id=user.id, project_id=req.project_id,
-        idempotency_key=key, request_sha256=fingerprint, status="queued",
-        model=req.model, style=req.style, created_at=now(),
+        id=uuid.uuid4(),
+        user_id=user.id,
+        project_id=req.project_id,
+        idempotency_key=key,
+        request_sha256=fingerprint,
+        status="queued",
+        model=req.model,
+        style=req.style,
+        created_at=now(),
     )
     await reserve_image_trial_slot(db, req.project_id, user.id, key, fingerprint)
     await write_evidence(attempt, "request", payload)
@@ -84,8 +108,11 @@ async def submit_attempt(db, user, req: Direct3DRenderRequest, key: str):
 async def deliver_attempt(attempt_id):
     import asyncio
     from app.tasks.direct_3d import render_direct_3d_attempt
+
     try:
-        await asyncio.to_thread(render_direct_3d_attempt.apply_async, args=[str(attempt_id)], queue="direct3d", retry=False)
+        await asyncio.to_thread(
+            render_direct_3d_attempt.apply_async, args=[str(attempt_id)], queue="direct3d", retry=False
+        )
     except Exception:
         logger.warning("Image %s is saved; broker delivery will be retried by maintenance", attempt_id)
 
@@ -101,9 +128,12 @@ async def authorized_attempt(db, user, attempt_id):
 def response_from_evidence(evidence):
     result = evidence["result"]
     return Direct3DRenderResponse(
-        image_base64=result["image_base64"], model=evidence["model"],
-        outcome=result["outcome"], warnings=result["warnings"],
-        capture_fingerprint=result["capture_fingerprint"], output_fingerprint=result["output_fingerprint"],
+        image_base64=result["image_base64"],
+        model=evidence["model"],
+        outcome=result["outcome"],
+        warnings=result["warnings"],
+        capture_fingerprint=result["capture_fingerprint"],
+        output_fingerprint=result["output_fingerprint"],
         diagnostics=result["diagnostics"],
     )
 
@@ -120,10 +150,19 @@ async def recover_result(attempt):
 
 async def execute_attempt(db, attempt_id):
     from app.api.v1.direct_3d_render import run_direct_3d_render
+
     # Atomic one-way claim: even 60 duplicate deliveries dispatch at most once.
-    attempt = (await db.execute(update(RenderAttempt).where(
-        RenderAttempt.id == attempt_id, RenderAttempt.status == "queued",
-    ).values(status="running", started_at=now()).returning(RenderAttempt))).scalar_one_or_none()
+    attempt = (
+        await db.execute(
+            update(RenderAttempt)
+            .where(
+                RenderAttempt.id == attempt_id,
+                RenderAttempt.status == "queued",
+            )
+            .values(status="running", started_at=now())
+            .returning(RenderAttempt)
+        )
+    ).scalar_one_or_none()
     await db.commit()
     if attempt is None:
         return
@@ -156,6 +195,7 @@ async def execute_attempt(db, attempt_id):
 
 async def reconcile_attempt(db, attempt_id, *, error=None):
     from app.api.v1.direct_3d_render import _refund_unknown_direct_render, _refund_unproduced_direct_render
+
     attempt = await db.scalar(select(RenderAttempt).where(RenderAttempt.id == attempt_id).with_for_update())
     if not attempt or attempt.status != "running":
         await db.commit()
@@ -170,16 +210,28 @@ async def reconcile_attempt(db, attempt_id, *, error=None):
     if reservation and reservation.student_refunded_at is None:
         provider_error = await read_evidence(attempt, "provider-error")
         if provider_error and provider_error.get("billing_status") == "produced":
-            detail = {"code": "direct_3d_billed_safety_rejection", "billed": True,
-                      "message": "An image was produced but rejected by safety checks. The attempt was charged; it will not retry."}
+            detail = {
+                "code": "direct_3d_billed_safety_rejection",
+                "billed": True,
+                "message": "An image was produced but rejected by safety checks. The attempt was charged; it will not retry.",
+            }
         else:
             # A reservation means dispatch MAY have happened. Unknown costs
             # stay in the global cap. The refund and terminal transition commit
             # together below (the helper commits; reacquire the attempt lock).
             user = await db.get(User, attempt.user_id)
-            refund = _refund_unproduced_direct_render if provider_error and provider_error.get("billing_status") == "unproduced" else _refund_unknown_direct_render
-            await refund(db, user, reservation,
-                token_cost=reservation.tokens_spent, detail="Worker stopped without a retained result")
+            refund = (
+                _refund_unproduced_direct_render
+                if provider_error and provider_error.get("billing_status") == "unproduced"
+                else _refund_unknown_direct_render
+            )
+            await refund(
+                db,
+                user,
+                reservation,
+                token_cost=reservation.tokens_spent,
+                detail="Worker stopped without a retained result",
+            )
             await db.refresh(attempt, with_for_update=True)
             if attempt.status != "running":
                 await db.commit()
@@ -187,12 +239,23 @@ async def reconcile_attempt(db, attempt_id, *, error=None):
     refunded = reservation is not None and reservation.student_refunded_at is not None
     unknown = refunded and reservation.tokens_spent > 0
     attempt.status = "unknown" if unknown else "failed"
-    attempt.error = detail if isinstance(detail, dict) else {
-        "code": "direct_3d_worker_stopped", "billed": bool(reservation and not refunded),
-        "message": str(detail) if detail else (
-            "The image did not finish. Your credits were restored; provider billing is uncertain. This attempt will not retry."
-            if unknown else "The image did not finish. No credits were charged. This attempt will not retry."),
-    }
+    attempt.error = (
+        detail
+        if isinstance(detail, dict)
+        else {
+            "code": "direct_3d_worker_stopped",
+            "billed": bool(reservation and not refunded),
+            "message": (
+                str(detail)
+                if detail
+                else (
+                    "The image did not finish. Your credits were restored; provider billing is uncertain. This attempt will not retry."
+                    if unknown
+                    else "The image did not finish. No credits were charged. This attempt will not retry."
+                )
+            ),
+        }
+    )
     attempt.finished_at = now()
     await db.commit()
 
@@ -201,18 +264,36 @@ async def maintain_attempts(db):
     settings = get_settings()
     if not settings.direct_3d_jobs_enabled:
         return
-    await db.execute(update(RenderAttempt).where(
-        RenderAttempt.status == "queued",
-        RenderAttempt.created_at < now() - timedelta(seconds=settings.direct_3d_queue_timeout_seconds),
-    ).values(status="failed", finished_at=now(), error={
-        "code": "render_queue_expired", "billed": False,
-        "message": "The image queue expired before generation. No credits were charged.",
-    }))
+    await db.execute(
+        update(RenderAttempt)
+        .where(
+            RenderAttempt.status == "queued",
+            RenderAttempt.created_at < now() - timedelta(seconds=settings.direct_3d_queue_timeout_seconds),
+        )
+        .values(
+            status="failed",
+            finished_at=now(),
+            error={
+                "code": "render_queue_expired",
+                "billed": False,
+                "message": "The image queue expired before generation. No credits were charged.",
+            },
+        )
+    )
     await db.commit()
     cutoff = now() - timedelta(seconds=settings.direct_3d_recovery_seconds)
-    stale = list((await db.scalars(select(RenderAttempt.id).where(
-        RenderAttempt.status == "running", RenderAttempt.started_at < cutoff,
-    ).limit(64))).all())
+    stale = list(
+        (
+            await db.scalars(
+                select(RenderAttempt.id)
+                .where(
+                    RenderAttempt.status == "running",
+                    RenderAttempt.started_at < cutoff,
+                )
+                .limit(64)
+            )
+        ).all()
+    )
     await db.commit()
     for attempt_id in stale:
         try:

@@ -9,14 +9,25 @@ from sqlalchemy import select
 
 from app.models.models import Project
 from app.services.render_trial import TRIAL_KEY, reserve_trial_slot, reserve_image_trial_slot
-from tests.test_render_attempts import isolated  # real PostgreSQL, disposable schema
+from tests.test_render_attempts import isolated as isolated_postgres
+
+# Register the imported disposable-schema fixture without shadowing its import.
+isolated = isolated_postgres
 
 
 def project(user="student"):
-    return SimpleNamespace(metadata_={"address": "Keep", TRIAL_KEY: {
-        "user_id": user, "image_limit": 10, "video_limit": 3,
-        "image_requests": {}, "video_requests": {},
-    }})
+    return SimpleNamespace(
+        metadata_={
+            "address": "Keep",
+            TRIAL_KEY: {
+                "user_id": user,
+                "image_limit": 10,
+                "video_limit": 3,
+                "image_requests": {},
+                "video_requests": {},
+            },
+        }
+    )
 
 
 @pytest.mark.parametrize("kind,limit", [("image", 10), ("video", 3)])
@@ -54,6 +65,7 @@ async def test_parallel_admission_and_new_sessions_cannot_exceed_trial(isolated,
         p = await db.get(Project, f.project.id)
         p.metadata_ = project(str(f.user.id)).metadata_
         await db.commit()
+
     async def reserve(key):
         async with f.sessions() as db:
             try:
@@ -67,6 +79,7 @@ async def test_parallel_admission_and_new_sessions_cannot_exceed_trial(isolated,
             except HTTPException:
                 await db.rollback()
                 return False
+
     admitted = await asyncio.gather(*(reserve(str(uuid.uuid4())) for _ in range(20)))
     assert sum(admitted) == limit
     async with f.sessions() as db:

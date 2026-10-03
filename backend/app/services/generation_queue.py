@@ -68,7 +68,9 @@ async def queue_ai_generation_task(
             state = photo_state(building.specifications)
             if state.get("batch_id") == photo_batch_id:
                 updates["photo_generation"] = {
-                    **state, "status": "failed", "error": "Could not start 3D generation. Please try again.",
+                    **state,
+                    "status": "failed",
+                    "error": "Could not start 3D generation. Please try again.",
                 }
         _merge_building_specifications(building, updates)
         try:

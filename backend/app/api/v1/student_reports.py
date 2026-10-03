@@ -37,8 +37,9 @@ from app.services.student_report import (
 router = APIRouter(prefix="/student-reports", tags=["student reports"])
 
 
-async def _snapshot(db: AsyncSession, project_id: uuid.UUID, zone_ids: list[str] | None,
-                    park_access: ParkAccessSnapshot | None = None) -> dict:
+async def _snapshot(
+    db: AsyncSession, project_id: uuid.UUID, zone_ids: list[str] | None, park_access: ParkAccessSnapshot | None = None
+) -> dict:
     project = (await db.execute(select(Project).where(Project.id == project_id))).scalar_one_or_none()
     if project is None:
         raise HTTPException(404, "Project not found")

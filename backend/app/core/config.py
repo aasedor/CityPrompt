@@ -277,8 +277,15 @@ class Settings(BaseSettings):
         if self.classroom_release:
             if not self.direct_3d_jobs_enabled:
                 raise ValueError("CLASSROOM_RELEASE requires DIRECT_3D_JOBS_ENABLED")
-            deferred_keys = (self.anthropic_api_key, self.gemini_api_key, self.meshy_api_key,
-                             self.tripo_api_key, self.stability_api_key, self.fal_key, self.vertex_ai_project)
+            deferred_keys = (
+                self.anthropic_api_key,
+                self.gemini_api_key,
+                self.meshy_api_key,
+                self.tripo_api_key,
+                self.stability_api_key,
+                self.fal_key,
+                self.vertex_ai_project,
+            )
             if any(deferred_keys):
                 raise ValueError("Classroom services must not receive keys for deferred AI, mesh or video providers")
             # Legacy saved layouts still have their deterministic fallback.
@@ -289,7 +296,12 @@ class Settings(BaseSettings):
             raise ValueError("DIRECT_3D_PROJECT_QUEUE_LIMIT exceeds the global queue")
         if self.direct_3d_recovery_seconds < 660 or self.direct_3d_queue_timeout_seconds < 60:
             raise ValueError("Image recovery must outlive the worker hard limit; queue expiry must be at least 60s")
-        if self.is_production and self.direct_3d_jobs_enabled and self.direct_3d_images_enabled and self.render_global_daily_token_cap <= 0:
+        if (
+            self.is_production
+            and self.direct_3d_jobs_enabled
+            and self.direct_3d_images_enabled
+            and self.render_global_daily_token_cap <= 0
+        ):
             raise ValueError("Durable production images require a positive RENDER_GLOBAL_DAILY_TOKEN_CAP")
         return self
 

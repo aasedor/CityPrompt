@@ -65,9 +65,9 @@ def public_realm_fallback_marker(
     props = properties or {}
     # Saved validation rectangles retain their separate native assembly binding.
     # A fixed native assembly must never be labelled a generic fallback.
-    if props.get('validation_fixed_fixture') is True:
+    if props.get("validation_fixed_fixture") is True:
         return None
-    if props.get('green_space_native_layout') is not None:
+    if props.get("green_space_native_layout") is not None:
         # A missing native layout must never turn into a generic park.
         return None
     is_street = props.get("_plan_role") == "street" or zone_type in {"road", "street", "path"}
@@ -2044,20 +2044,39 @@ def manual_street_capabilities() -> tuple[PublicRealmFamilyCapability, ...]:
     capabilities = []
     for row in rows:
         section = row["section"]
-        digest = hashlib.sha256(json.dumps(section, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest()
+        digest = hashlib.sha256(
+            json.dumps(section, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+        ).hexdigest()
         width = row["widthM"]
         if digest != row["sourceSectionSha256"] or abs(sum(z["width_m"] for z in section["zones"]) - width) > 1e-6:
             raise ValueError(f"Manual street source/width mismatch: {row['variantId']}")
-        capabilities.append(PublicRealmFamilyCapability(
-            family_id=row["familyId"], kind="street", title=row["title"], generator="street_section",
-            selections=(PublicRealmSelectionCapability(
-                archetype_id=row["archetypeId"], variant_id=row["variantId"], profile_id=row["variantId"],
-                profile_version=1, appearance_kit_id="calgary_contemporary_native", is_default=True,
-                component_set_ids=(f"manual_section:{digest}", "manual_streets_v1"),
-                compatibility=PublicRealmCompatibility(target_type="street_segment", nominal_row_width_m=width,
-                    min_row_width_m=width-.05, max_row_width_m=width+.05, min_length_m=width, max_length_m=2000),
-            ),),
-        ))
+        capabilities.append(
+            PublicRealmFamilyCapability(
+                family_id=row["familyId"],
+                kind="street",
+                title=row["title"],
+                generator="street_section",
+                selections=(
+                    PublicRealmSelectionCapability(
+                        archetype_id=row["archetypeId"],
+                        variant_id=row["variantId"],
+                        profile_id=row["variantId"],
+                        profile_version=1,
+                        appearance_kit_id="calgary_contemporary_native",
+                        is_default=True,
+                        component_set_ids=(f"manual_section:{digest}", "manual_streets_v1"),
+                        compatibility=PublicRealmCompatibility(
+                            target_type="street_segment",
+                            nominal_row_width_m=width,
+                            min_row_width_m=width - 0.05,
+                            max_row_width_m=width + 0.05,
+                            min_length_m=width,
+                            max_length_m=2000,
+                        ),
+                    ),
+                ),
+            )
+        )
     return tuple(capabilities)
 
 
@@ -2654,16 +2673,20 @@ def plan_public_realm_zone_recipe(
     props = properties or {}
     # Adding a route capability must not silently convert existing assembly
     # fixtures. Strict planner requests still require an executable recipe.
-    if props.get('validation_fixed_fixture') is True and not strict:
+    if props.get("validation_fixed_fixture") is True and not strict:
         return None
     from app.services.native_brt import validate_brt_properties
+
     validate_brt_properties(props)
     from app.services.native_tram import validate_tram_properties
+
     validate_tram_properties(props)
     from app.services.native_specialist_streets import validate_specialist_properties
+
     validate_specialist_properties(props)
-    if props.get('green_space_native_layout') is not None:
+    if props.get("green_space_native_layout") is not None:
         from app.services.native_parks import plan_native_park
+
         return plan_native_park(geometry_wgs84, props)
     is_street = props.get("_plan_role") == "street" or zone_type in {"road", "street", "path"}
     if is_street:
@@ -2783,8 +2806,8 @@ def _historical_catalog_locks() -> dict[str, dict[str, str]]:
     family definition is still executable. Changed families need their own
     retained version; an old global fingerprint cannot bless new geometry.
     """
-    path = Path(__file__).resolve().parents[1] / 'data/publicRealmCatalogHistory.json'
-    return json.loads(path.read_text(encoding='utf-8'))['catalogs']
+    path = Path(__file__).resolve().parents[1] / "data/publicRealmCatalogHistory.json"
+    return json.loads(path.read_text(encoding="utf-8"))["catalogs"]
 
 
 def public_realm_recipe_identity(
@@ -2796,9 +2819,10 @@ def public_realm_recipe_identity(
 
     if value is None:
         return None
-    if (isinstance(value, dict) and value.get('schema_version') == 2) or getattr(value, 'schema_version', None) == 2:
+    if (isinstance(value, dict) and value.get("schema_version") == 2) or getattr(value, "schema_version", None) == 2:
         from app.services.native_parks import native_park_identity
-        return native_park_identity(value.model_dump(mode='json') if hasattr(value, 'model_dump') else value)
+
+        return native_park_identity(value.model_dump(mode="json") if hasattr(value, "model_dump") else value)
     try:
         recipe = (
             value if isinstance(value, PublicRealmRecipePayload) else PublicRealmRecipePayload.model_validate(value)
@@ -2822,7 +2846,7 @@ def public_realm_recipe_identity(
         return None
     if recipe.catalog_fingerprint != catalog.fingerprint:
         trusted = _historical_catalog_locks().get(recipe.catalog_fingerprint, {})
-        if trusted.get(f'{recipe.family_id}@{recipe.family_version}') != recipe.capability_fingerprint:
+        if trusted.get(f"{recipe.family_id}@{recipe.family_version}") != recipe.capability_fingerprint:
             return None
         # Replan with the same exact capability and original catalogue identity.
         # All canonical field comparisons below remain mandatory.

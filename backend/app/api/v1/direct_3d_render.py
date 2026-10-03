@@ -120,7 +120,11 @@ def _has_building_plot_landscape(zone: SiteZone, all_zones: list[SiteZone]) -> b
         return False
     boundaries = [item for item in all_zones if item.zone_type == "site_boundary"]
     boundary = next((item for item in boundaries if getattr(item, "is_active_boundary", None) is True), None)
-    if boundary is None and boundaries and all(getattr(item, "is_active_boundary", None) is None for item in boundaries):
+    if (
+        boundary is None
+        and boundaries
+        and all(getattr(item, "is_active_boundary", None) is None for item in boundaries)
+    ):
         boundary = boundaries[0]
     if boundary is None:
         return False
@@ -364,7 +368,7 @@ def _validate_direct_3d_project_zones(
             [
                 ResidualSourceZone(
                     zone_id=str(zone.id),
-                    native_selection=(zone.properties or {}).get('green_space_native_layout'),
+                    native_selection=(zone.properties or {}).get("green_space_native_layout"),
                     kind=(community_3d_kind_for_source(zone.zone_type, zone.properties) or str(zone.zone_type)),
                     role=(
                         str((zone.properties or {}).get("_plan_role"))
@@ -651,8 +655,11 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     # roads. The capture inventory separately verifies its compiled source hash.
     fallback = properties.get("public_realm_fallback")
     from app.services.native_street_candidate_contract import native_street_runtime_capabilities
+
     junction_families = {
-        "street_local_public_realm", "street_complete_main_18m", "street_complete_main_22m",
+        "street_local_public_realm",
+        "street_complete_main_18m",
+        "street_complete_main_22m",
         *(capability.family_id for capability in native_street_runtime_capabilities()),
         *(capability.family_id for capability in manual_street_capabilities()),
     }
@@ -681,8 +688,7 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         or recipe.get("kind") != "street"
         or recipe.get("generator") != "street_section"
         or target.get("target_type") != "street_segment"
-        or recipe.get("family_id")
-        not in junction_families
+        or recipe.get("family_id") not in junction_families
     ):
         return False
     recipe_archetype_id = str(recipe.get("archetype_id") or "").strip()
@@ -954,7 +960,7 @@ def _street_sources_form_junction(
         for axis in axes:
             points = axis["points"]
             for index in range(1, len(points) - 1):  # type: ignore[arg-type]
-                previous, current, following = points[index - 1:index + 2]  # type: ignore[index]
+                previous, current, following = points[index - 1 : index + 2]  # type: ignore[index]
                 distance_to_node = math.hypot(
                     current[0] - float(cluster["x"]),
                     current[1] - float(cluster["y"]),
@@ -1067,7 +1073,8 @@ def _street_sources_form_junction(
                     other["width"] / 2 + 4
                     for other in grouped_arms
                     if _undirected_angle_distance(arm["bearing"], other["bearing"]) >= math.pi / 6
-                ) / sine
+                )
+                / sine
                 for arm in grouped_arms
             ):
                 continue
@@ -1605,10 +1612,15 @@ async def run_direct_3d_render(
 
     if attempt is not None:
         # Storage must succeed BEFORE any credit reservation or provider call.
-        await write_evidence(attempt, "source", {
-            "snapshot": source_snapshot, "scene_revision_sha256": scene_revision_sha256,
-            "server_inventory": server_inventory,
-        })
+        await write_evidence(
+            attempt,
+            "source",
+            {
+                "snapshot": source_snapshot,
+                "scene_revision_sha256": scene_revision_sha256,
+                "server_inventory": server_inventory,
+            },
+        )
 
     reservation = await _reserve_direct_render(
         db,
@@ -1630,12 +1642,17 @@ async def run_direct_3d_render(
         logger.warning("Direct 3D provider failure: %s", exc)
         if attempt is not None:
             try:
-                await write_evidence(attempt, "provider-error", {
-                    "billing_status": exc.billing_status, "message": str(exc),
-                    "provider_request_id": exc.provider_request_id,
-                    "provider_status_code": exc.provider_status_code,
-                    "provider_image_base64": exc.provider_image_base64,
-                })
+                await write_evidence(
+                    attempt,
+                    "provider-error",
+                    {
+                        "billing_status": exc.billing_status,
+                        "message": str(exc),
+                        "provider_request_id": exc.provider_request_id,
+                        "provider_status_code": exc.provider_status_code,
+                        "provider_image_base64": exc.provider_image_base64,
+                    },
+                )
             except Exception:
                 logger.exception("Could not retain failed provider evidence for %s", attempt.id)
         if not exc.refund_eligible:
@@ -1677,8 +1694,8 @@ async def run_direct_3d_render(
                     "message": (
                         "The connection to the image provider ended before a result arrived. "
                         "Your City Prompt credits have been restored. You can try again."
-                        if exc.transport_interrupted else
-                        "The image provider did not complete a usable response. Your City Prompt "
+                        if exc.transport_interrupted
+                        else "The image provider did not complete a usable response. Your City Prompt "
                         "credits have been restored. Please try again later."
                     ),
                 }
@@ -1698,7 +1715,10 @@ async def run_direct_3d_render(
         raise HTTPException(status_code=502, detail=error_detail) from exc
     except Exception as exc:
         await _refund_unknown_direct_render(
-            db, user, reservation, token_cost=token_cost,
+            db,
+            user,
+            reservation,
+            token_cost=token_cost,
             detail=f"Unexpected provider failure: {exc}",
         )
         logger.exception("Unexpected Direct 3D failure; provider billing is unknown")
@@ -1715,9 +1735,14 @@ async def run_direct_3d_render(
     if attempt is not None:
         # The paid result is durable before optional gallery/audit work. Recovery
         # returns these exact pixels; it NEVER invokes the provider a second time.
-        await write_evidence(attempt, "provider-result", {
-            "result": asdict(result), "model": req.model,
-        })
+        await write_evidence(
+            attempt,
+            "provider-result",
+            {
+                "result": asdict(result),
+                "model": req.model,
+            },
+        )
 
     try:
         processing_mode = str(result.diagnostics.get("processing_mode", "source_anchored"))
