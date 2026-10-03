@@ -593,7 +593,7 @@
         "description": "A two-storey Canadian suburban elementary school with two classroom wings and a central entrance commons. A gym wing has its own visible after-hours door for community use. Covered bicycle parking and a broad walking path lead to the entrance; grass playing fields extend behind the school. Vehicle access stays at the side, separated from the pedestrian forecourt.",
         "siteNote": "Reserve shared playing fields outside the building polygon; model drop-off and service access separately."
       },
-      "state": "held_for_next_bounded_pass",
+      "state": "local_prototype_pass",
       "attempts": [
         {
           "candidate": "school-campus-v001",
@@ -647,6 +647,30 @@
           "local_p0": 0,
           "local_p1": 2,
           "reason": "Missing half-landing side guards and teaching boards buried inside reversed rear-wall carriers. Last repair in this pass; not counted complete."
+        },
+        {
+          "candidate": "school-campus-v005",
+          "state": "local_prototype_pass",
+          "log": "school-campus-v005-build.log",
+          "pass_number": 2,
+          "native_routes_passed": 25,
+          "native_routes_total": 25,
+          "physical_samples_checked": 3225,
+          "physical_failures": 0,
+          "furniture_probes": 20,
+          "garden_probes": 5,
+          "circulation_guard_probes": 2,
+          "glb_sha256": "7746db3ce144518ecb50ddb35e72cc7124f25e97df45422114c6166d4b1795ef",
+          "renders": 44,
+          "carrier_apertures": "pass",
+          "max_roundtrip_delta_m": 0.0,
+          "independent_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/school-campus-v005/review/independent-visual-review.json",
+          "review_sha256": "979f85b434ec889152b3e917422956f9d7260cbcbe020cba7d9eae15ccd2376e",
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2,
+          "browser_verified": true,
+          "browser_screenshots": 9
         }
       ],
       "keeper_approved": false,
@@ -675,15 +699,31 @@
         "scope": "Source category only; not geometry or keeper approval"
       },
       "generation_provenance": "school-campus-locked-generation.json",
-      "current_candidate": "school-campus-v004",
+      "current_candidate": "school-campus-v005",
       "local_review": {
-        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v004\\review\\independent-visual-review.json",
-        "sha256": "6f59b5b4e21754c174d6015189acdf6876bc3b01229bcdd25cdc80bb987e55f4",
-        "decision": "hold",
+        "candidate": "school-campus-v005",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
         "p0": 0,
-        "p1": 2
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "school-campus-v005/review/independent-visual-review.json",
+        "review_sha256": "979f85b434ec889152b3e917422956f9d7260cbcbe020cba7d9eae15ccd2376e",
+        "glb_sha256": "7746db3ce144518ecb50ddb35e72cc7124f25e97df45422114c6166d4b1795ef",
+        "routes": 25,
+        "physical_samples": 3225,
+        "garden_probes": 5,
+        "circulation_guard_probes": 2,
+        "mandatory_views": 44,
+        "browser_verified": true
       },
-      "next_pass_plan": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\school-campus-next-pass.md"
+      "next_pass_plan": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\school-campus-next-pass.md",
+      "bounded_repair_pass": {
+        "pass_number": 2,
+        "start_version": "v005",
+        "max_repair_versions": 3,
+        "trigger": "Childcare courtyard v003 independently locally complete; concrete deferred two-fix plan"
+      },
+      "code_preflight": "prework/school-campus-v005-code-preflight.json"
     },
     {
       "archetype_id": "neighborhood_childcare_centre",
@@ -905,7 +945,33 @@
         "sixplex-garden-oblique-generation.json",
         "sixplex-garden-top-generation.json"
       ],
-      "source_note": "Compatible front001/oblique001/top001 locked. Use actual transverse main roof and three short front cross-gables terminating below main ridge. Initial parallel-roof prompt assumption is rejected. Source approval only."
+      "source_note": "Compatible front001/oblique001/top001 locked. Use actual transverse main roof and three short front cross-gables terminating below main ridge. Initial parallel-roof prompt assumption is rejected. Source approval only.",
+      "measurement_draft": "prework/sixplex-garden-measurement-draft.json",
+      "material_record": "sixplex-garden-material-v003-generation.json",
+      "material_note": "V003 independently source-compatible prototype masonry:4brick lengths x12even courses mapped.96x.90m. Original/v002 odd27courses preserved. Boundary/edge shading/repetition keeper limits remain; no geometry.",
+      "material_record_sha256": "1cbdba8a9afd5333b5411de8c6165dd8691319b34f80ec3bf6d18c8334cb07a1",
+      "measurement_draft_sha256": "e9ca836d02e4780810112dcfe4bc96389e892f6f2633f349f23608bd496534b7",
+      "material_lock": "prework/sixplex-garden-material-lock.json",
+      "material_lock_sha256": "f15dfe8ff3c08a1a00c9ceb645e5ad8d0b4b93d8699b0d03220f796a7fcfbd6b",
+      "build_generation": "sixplex-garden-build-v3-generation.json",
+      "material_attempts": [
+        {
+          "specimen": "materials/sixplex-garden-buff-brick.png",
+          "state": "prototype_compatible_with_odd_course_defect",
+          "review": "prework/sixplex-garden-material-review.json"
+        },
+        {
+          "specimen": "materials/sixplex-garden-buff-brick-v002.png",
+          "state": "failed_repeat_repair",
+          "review": "prework/sixplex-garden-material-review-v3.json"
+        },
+        {
+          "specimen": "materials/sixplex-garden-buff-brick-v003.png",
+          "state": "prototype_material_category_locked",
+          "review": "prework/sixplex-garden-material-review-v3.json",
+          "sha256": "cf14c5d3defe6f7b4fc3859eeff381dc2e49fb7bc3b6943a760b501c96404b68"
+        }
+      ]
     },
     {
       "archetype_id": "community_association_hall",
@@ -1199,9 +1265,9 @@
   "state": "wave2_in_progress",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
-  "completed_models": 6,
-  "next_action": "Reopen school_shared_community_campus in a new bounded pass using prework/school-campus-next-pass.md: half-landing side guards and correctly seated teaching boards, added proof views/probes. Preserve v004 hold; start unused v005 only after checking jobs. Then develop source-locked sixplex_two_storey_garden and queued hall_timber_park_edge. Childcare courtyard v003 is locally complete; do not rebuild. Completed 6/20; full keeper remains unapproved.",
-  "updated_utc": "2026-10-03T21:13:14.308387+00:00",
+  "completed_models": 7,
+  "next_action": "Develop sixplex_two_storey_garden from locked sources, measurement draft and conditioned buff masonry. Reconcile front-gable rise, freeze all six flat plans/three private stairs/roof graph/routes/cameras, then dedicated constructor dry run and unused v001. School-campus-v005 and childcare-courtyard-v003 are locally complete; do not rebuild. Then hall_timber_park_edge within wave2. Completed7/20; full keeper remains unapproved.",
+  "updated_utc": "2026-10-03T21:43:47.526496+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

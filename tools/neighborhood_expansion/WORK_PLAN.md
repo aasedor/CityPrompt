@@ -284,7 +284,7 @@ an upper gallery over the double-height commons. Two stair flights connect
 actual slab voids. The taller rear-right gym connects to the school and to a
 separate community vestibule. Its basketball boards have physical supports.
 Public-ground and interior threshold slabs must pass the exact-GLB path checks.
-There are42 mandatory cameras, including every classroom, both washrooms and
+There were42 mandatory cameras through v004, including every classroom, both washrooms and
 resource rooms, and reverse teaching-wall views.
 
 The source-conditioned buff masonry has five brick lengths across and36 courses
@@ -301,8 +301,8 @@ V004 still remains on independent local hold: both half-landing side edges
 lack guards, and reversing the classroom carrier buried the teaching boards
 inside the wall. Passing25 native/browser routes,57 apertures,20 furniture
 probes,5 garden probes and3,225 physical samples does not close these defects.
-This is the last repair in this pass. Do not begin v005 now or increment the
-completed count. The external `prework/school-campus-next-pass.md` records the
+That was the last repair in the first pass. The external
+`prework/school-campus-next-pass.md` records the
 specific two-part correction and added proof needed after advancing the next
 queued variant. Preserve all source snapshots and review decisions.
 
@@ -367,7 +367,40 @@ adjacency evidence only. Hidden elevations, six floorplans and three enclosed
 upper stairs still need explicit inference. No sixplex geometry or material
 exists yet; source approval is not model approval.
 
-No build job is running at this checkpoint. Next, reopen the held school with
-the exact two-fix plan in external `prework/school-campus-next-pass.md`, using
-unused v005 and a new bounded repair pass. Its prior hold stays immutable.
-Then develop the locked garden sixplex and queued park-edge hall within wave2.
+## Campus second bounded pass
+
+After courtyard childcare v003 passed, v005 opened a second finite pass with
+at most three repair versions. Its side guards have slab-seated pickets, short
+rail transitions to the last flight posts and rear guard connections. Two
+new side contact cameras make44 views. Embedded guard obstacles have two named
+exclusion probes at z2.04; `check-circulation.mjs` exercises those through the
+bundled actual app solver after `check-walking.mjs`. Teaching boards now centre
+at y=-9.1655 and trays at-9.20, overlapping the reversed classroom carrier by
+2 and5 mm respectively. The inward door swings remain.
+
+V005 passed the fresh independent local architecture/circulation review with
+zero local P0/P1. All44 exact-GLB views and three boards were reviewed, alongside
+25 native/browser routes,20 furniture probes,5 garden probes,2 circulation guard
+probes,57 carrier apertures and3,225 physical samples. Nine browser PNGs and logs
+prove entry from the sidewalk, repaired contact views, model switching, visibility
+and reload. Exact GLB hash begins7746db3c; full hash and independent review live
+in its delivery manifest and synchronized progress. V004's hold is preserved.
+Full keeper still has two P1 finish groups: schematic source details/landscape,
+including an overlapping lawn patch, and offline/browser optical/shadow response.
+
+The sixplex has an external measurement draft and source-conditioned buff brick
+specimens. Original and v002 specimens have10 brick lengths by27 courses and
+fail even-course bond continuity. Both remain preserved with independent records.
+V003 uses four lengths by12 alternating courses, mapped to0.96 by0.90 m. The
+independent material-category review confirms the corrected phase and source
+compatibility. `sixplex-garden-material-lock.json` locks only prototype masonry
+authority. Boundary mortar continuity, baked edge shading and short-pattern
+repetition still need mapped render proof before full keeper approval.
+The draft is not frozen construction authority. Read
+`prework/sixplex-garden-measurement-draft.json` and
+`sixplex-garden-material-v003-generation.json`,
+`prework/sixplex-garden-material-review-v3.json` and
+`sixplex-garden-build-v3-generation.json` before continuing. Resolve all six
+floorplans, three private upper stairs, roof intersections, routes and complete
+camera roster before creating its dedicated builder. Then advance the park-edge
+hall within wave2. Completed local count is7/20. No build job remains running.

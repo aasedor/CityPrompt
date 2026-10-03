@@ -41,8 +41,9 @@ def classroom(a,b,z,index):
         for y in (-17.9,-15.9,-13.9):desk(x,y)
     desk(a+2,-19.7)
     board_width=min(3.3,b-a-3.4)
-    C.box('teaching whiteboard',(a+2.5,-9.10,z+1.75),(board_width,.055,1.15),'ceiling','furniture')
-    C.box('whiteboard tray',(a+2.5,-9.15,z+1.16),(board_width,.13,.035),'trim','furniture')
+    # The reversed rear carrier ends at y=-9.14 on the classroom side.
+    C.box('teaching whiteboard',(a+2.5,-9.1655,z+1.75),(board_width,.055,1.15),'ceiling','furniture')
+    C.box('whiteboard tray',(a+2.5,-9.20,z+1.16),(board_width,.13,.035),'trim','furniture')
     for j in range(5):
         x=a+.5+j*.68
         C.box('classroom low cubby',(x,-9.48,z+.48),(.60,.55,.96),'timber','furniture')
@@ -67,6 +68,15 @@ def stair():
         outer=[(side*1.27,p[1]+.02,p[2]) for p in pts[:-1]]
         for p in outer:C.rod('seated outer stair post',p,(p[0],p[1],p[2]+1.02),.018,'trim','stair guard')
         for a,b in zip(outer,outer[1:]):C.beam('outer stair guard rail',(a[0],a[1],a[2]+1.02),(b[0],b[1],b[2]+1.02),.04,.04,'trim','stair guard')
+        # Landing pickets bear on its slab; the short rail transition joins
+        # the last flight post without duplicating it or blocking the turn.
+        foot=(side*1.27,-4.855,Z+RISE/2)
+        end=(side*1.27,-3.85,Z+RISE/2)
+        C.rod('landing side start post',foot,(foot[0],foot[1],foot[2]+1.02),.018,'trim','stair guard')
+        C.railing('landing side guard',foot,end,spacing=.10,bottom=0,end_posts=False)
+        last=outer[-1]
+        C.beam('landing flight rail connection',(last[0],last[1],last[2]+1.02),(foot[0],foot[1],foot[2]+1.02),.042,.038,'trim','stair guard')
+        C.beam('landing rear rail connection',(end[0],end[1],end[2]+1.02),(side*1.3125,end[1],end[2]+1.02),.042,.038,'trim','stair guard')
     for x in (-1.50,1.50):C.railing('upper stair edge',(x,-7.63,Z+RISE),(x,-3.70,Z+RISE),bottom=0)
     C.railing('upper rear stair edge',(-1.5,-3.70,Z+RISE),(1.5,-3.70,Z+RISE),bottom=0)
     C.railing('upper lower-flight lip',(-1.5,-7.64,Z+RISE),(0,-7.64,Z+RISE),bottom=0)
@@ -259,7 +269,8 @@ def network():
         if eligible:
             lo,hi=C.bounds([o]);obs.append([lo[0],hi[0],lo[1],hi[1],lo[2],hi[2]])
     probes=[dict(name='bench',point=[7,-28.5,Z]),dict(name='forecourt tree trunk',point=[28,-30,Z])]+[dict(name='bicycle '+str(x),point=[x,-28,Z]) for x in (-21,-19,-17)]
-    return dict(version=2,footprint=[80,76],entrance=[0,-32.7,.04],maxStepM=.18,triangles=tris,obstacles=obs,portals=[[-3,3,-33,-32]],routes=routes,gardenExclusionProbes=probes)
+    landing_probes=[dict(name='half landing '+('left' if side<0 else 'right')+' side guard',point=[side*1.30,-4.3,Z+RISE/2]) for side in (-1,1)]
+    return dict(version=2,footprint=[80,76],entrance=[0,-32.7,.04],maxStepM=.18,triangles=tris,obstacles=obs,portals=[[-3,3,-33,-32]],routes=routes,gardenExclusionProbes=probes,circulationExclusionProbes=landing_probes)
 
 def cameras():
     cams=[]
@@ -270,6 +281,8 @@ def cameras():
     add('solar_contact',(-24,-16,12),(-18,-12,8),35);add('commons',(3.8,-19.8,2.0),(0,-8,3.2),22)
     add('entry_closure',(3.6,-17,2.1),(0,-21,3.6),22);add('commons_stair',(-3.2,-9,2.2),(0,-5.6,2.6),20)
     add('upper_landing',(3.2,-8.2,5.7),(0,-5.3,4.0),20);add('gallery',(3.2,-5,5.7),(-2,-14,3),20)
+    add('landing_left_contact',(-3.6,-5.1,3.25),(-1.27,-4.3,2.55),28)
+    add('landing_right_contact',(3.6,-5.1,3.25),(1.27,-4.3,2.55),28)
     for level in range(2):
         z=Z+level*RISE
         for i,(a,b) in enumerate(ROOMS):add(('classroom_left' if i==0 and level==0 else 'classroom_'+str(i)+'_'+str(level)),(b-.65,-10.0,z+1.7),((a+b)/2,-16.4,z+1.2),20)

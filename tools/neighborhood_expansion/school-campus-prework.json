@@ -65,7 +65,7 @@
     "brick": "Built-in source-conditioned buff running bond. Observed five brick lengths across and36 courses vertically, tile1.20x2.70m; requested8x24 count was not generated.",
     "other": "Source palette and physical joinery/panels; full keeper finish remains separately assessed"
   },
-  "camera_contract": "42 mandatory exact-GLB cameras authored before geometry: seven complete exteriors, facade, portico, glazing, roof and solar contacts, commons/entry/stair/gallery, all ten classrooms, staff and washrooms on both floors, fixtures, gym both directions, vestibule, forecourt and public ramp; two reverse teaching-wall views and both resource rooms added for v003.",
+  "camera_contract": "44 mandatory exact-GLB cameras authored before geometry: seven complete exteriors, facade, portico, glazing, roof and solar contacts, commons/entry/stair/gallery, all ten classrooms, staff and washrooms on both floors, fixtures, gym both directions, vestibule, forecourt and public ramp; two reverse teaching-wall views and both resource rooms added for v003. Two side-on half-landing contact views added for v005.",
   "assumptions": [
     "Original generated design, not a real building survey.",
     "Hidden interiors and metric plan are declared architectural inferences.",
@@ -89,5 +89,10 @@
     "Classroom doors swing inward90 degrees, clearing teaching boards and corridor; do not shrink required passage.",
     "Canopy hanger anchor plates seat against masonry piers and rods reach plates.",
     "Washroom mirror has an opaque reflective material."
+  ],
+  "v005_corrections": [
+    "New bounded pass after courtyard childcare local completion; preserve v004 hold.",
+    "Continuous seated half-landing side guards join flight rails and rear guard without duplicated endpoint posts; two named movement exclusion probes at landing height.",
+    "Teaching boards centre y=-9.1655 and trays y=-9.20 meet classroom face of reversed carrier at y=-9.14; inward door leaves retained."
   ]
 }

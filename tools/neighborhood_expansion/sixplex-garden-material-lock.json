@@ -1,0 +1,37 @@
+{
+  "variant_id": "sixplex_two_storey_garden",
+  "method": "RLASM v6.1",
+  "state": "prototype_material_category_locked",
+  "model_approved": false,
+  "keeper_approved": false,
+  "material": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\materials\\sixplex-garden-buff-brick-v003.png",
+    "bytes": 3094039,
+    "sha256": "cf14c5d3defe6f7b4fc3859eeff381dc2e49fb7bc3b6943a760b501c96404b68",
+    "physical_repeat_m": [
+      0.96,
+      0.9
+    ],
+    "observed_brick_lengths": 4,
+    "observed_courses": 12
+  },
+  "generation": {
+    "path": "sixplex-garden-material-v003-generation.json",
+    "sha256": "1cbdba8a9afd5333b5411de8c6165dd8691319b34f80ec3bf6d18c8334cb07a1"
+  },
+  "independent_review": {
+    "path": "prework/sixplex-garden-material-review-v3.json",
+    "sha256": "6a38e9f0e70e6a7f9ca60867684d194e6cdaa8f188161e8b3d522f93d63ecc19",
+    "decision": "v003_source_compatible_prototype_material_authority_with_declared_boundary_and_optical_limits"
+  },
+  "limits": [
+    "Even-course phase confirmed; mortar-boundary continuity and mapped appearance still require render verification.",
+    "Baked edge shading, strong close texture and short-pattern repetition remain keeper limitations.",
+    "Authority applies only to buff masonry; no whole-building or runtime approval."
+  ],
+  "prior_attempts_preserved": [
+    "materials/sixplex-garden-buff-brick.png",
+    "materials/sixplex-garden-buff-brick-v002.png",
+    "prework/sixplex-garden-material-review.json"
+  ]
+}
