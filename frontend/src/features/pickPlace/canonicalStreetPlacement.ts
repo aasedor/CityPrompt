@@ -1,8 +1,9 @@
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { bufferLineToPolygon, extractZoneCenterline } from '@/utils/roadGeometry';
+import { bufferLineToPolygon, extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { CANONICAL_CHOICES, canonicalDrawing, type CanonicalSelection } from './canonicalCatalogue';
 import type { StreetAsset } from './assetRegistry';
+import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 
 const cache = new Map<string, StreetAsset>();
 
@@ -43,7 +44,12 @@ export function canonicalStreetForZone(zone: Pick<SiteZone, 'zone_type' | 'prope
 
 /** Centreline, identity and buffered footprint must change in one undoable write. */
 export function streetDesignUpdate(zone: SiteZone, asset: StreetAsset): { coordinates: number[][]; properties: SiteZoneProperties } {
-  const line = extractZoneCenterline(zone);
+  const savedControls = parsePersistedCenterline(zone.properties?.plan_route_controls);
+  const controls = savedControls ?? extractZoneCenterline(zone);
+  const line = savedControls && savedControls.length >= 3
+    ? roundAuthoredStreetRoute(controls, asset.sectionWidth, asset.properties)
+    : controls;
   return { coordinates: bufferLineToPolygon(line, asset.sectionWidth),
-    properties: { ...zone.properties, ...asset.properties, public_realm_lego: undefined, plan_centerline: line } };
+    properties: { ...zone.properties, ...asset.properties, procedural_road: 0, public_realm_lego: undefined,
+      plan_centerline: line, plan_route_controls: savedControls ?? undefined } };
 }

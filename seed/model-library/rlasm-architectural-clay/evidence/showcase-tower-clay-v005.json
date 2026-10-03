@@ -1,0 +1,324 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "showcase-tower-clay-v005",
+  "candidate_directory": "C:/dev-artifacts/CityPrompt/showcase-nine-2026-09-27/buildings/tower-v005",
+  "reviewer": {
+    "agent": "/root/showcase_market_review",
+    "role": "Independent architectural-clay reviewer; no builder source edits"
+  },
+  "reviewed_at_utc": "2026-09-28T07:20:06.355956+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Holistic offline architectural-clay exact-source review: massing, elevations, roof/crown topology, openings, colors, optical depth, occupied interiors, contacts and evidence cameras",
+  "model_path": "showcase-tower-clay-v005.glb",
+  "model_sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+  "source_hashes": [
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "cbfa6ffaf90e040b2ef9f631f438cc1184993ceec74de95be8943dd85804e40b"
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "sha256": "82d0cd1caf3cb7141de20e91e6960263745010d017ec971db623eff8fa64a9e9"
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "sha256": "05e11751364bfa854b7ea4d9da46a70f262c3424ea15498395e0bb4fe9e109cb"
+    }
+  ],
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "findings": [],
+  "finite_required_changes": [],
+  "inspection_coverage": {
+    "exact_sources": 3,
+    "individual_reimported_glb_renders": 14,
+    "phone_board": 1,
+    "all_images_opened_individually_at_full_resolution": true,
+    "counts_used_as_visual_approval": false
+  },
+  "prior_findings_rechecked": [
+    {
+      "id": "TWR2-01",
+      "status": "CLOSED within architectural-clay tier; regression rechecked",
+      "observation": "Fresh top, corner and aerial pixels retain projecting centre bays and reentrant shoulders. Closed terrace roof plates follow each cross-plan tier."
+    },
+    {
+      "id": "TWR2-02",
+      "status": "CLOSED within architectural-clay tier",
+      "observation": "Narrow recessed openings, broad grouped piers, staggered pier heads and cream mezzanine are legible; v005 entrance_access now supplies the formerly missing complete entrance proof."
+    },
+    {
+      "id": "TWR2-03",
+      "status": "CLOSED within architectural-clay tier",
+      "observation": "Heavy gilded buttresses, collars, two-stage tapered cap, four corner pinnacles and four seated diagonal links restore the crown relationships."
+    },
+    {
+      "id": "TWR3-01",
+      "status": "CLOSED",
+      "observation": "Top shows all four diagonal links reaching the octagonal outline; crown_contact and architecture_close show the inner joints meeting solid full-height receiver posts. The saved script derives receivers from the actual face centre and spans z58.85 to64.0, seating them through the lower and upper frame; no formerly exposed air gap remains."
+    },
+    {
+      "id": "TWR3-02",
+      "status": "CLOSED",
+      "observation": "entrance_access includes complete door leaves, pulls/standoffs, threshold, canopy and both bracket bearings with margins. Both bracket feet are on granite piers; the lobby and desk are visible behind the glass."
+    }
+  ],
+  "holistic_assessment": [
+    "The three exact locked sources were freshly compared with v005. The cream/gold Art Deco identity, dark ground-floor base, cream mezzanine, stepped cross-plan silhouette, narrow vertical openings and octagonal gilded crown remain recognizable at this geometry-only clay tier.",
+    "Front, both sides, rear and rear-side show continuous exterior enclosure without a glaring open wall or corner. Top and aerial show complete terrace plates and crown cap. No new floating roof part or pier/contact gap was observed.",
+    "Facade detail shows actual recessed reveals, sills, glazing and occupied floor/partition depth. Entrance glazing provides a lobby rather than an empty opaque card; full vertical circulation and a furnished office fit-out are outside what the exterior evidence proves.",
+    "Crown receiver and canopy bracket corrections were inspected directly in fresh pixels and checked against the saved authoring script; they were not accepted merely from builder claims.",
+    "Whole-building cameras preserve base and crown margins. Detail cameras serve facade, crown and optical-depth inspection. The upward walk view still crops the base, but the dedicated entrance_access view now independently covers the full pedestrian entrance.",
+    "The phone board was inspected at original resolution as a comparison aid. Its montage omits entrance_access, so the mandatory individual entrance view supplies that evidence; the board was not substituted for the complete roster."
+  ],
+  "positive_findings": [
+    "All four crown links terminate on seated receiver posts, with external pinnacle seats retained.",
+    "Canopy bracket feet bear on granite piers, and physical double-door pulls are attached with standoffs.",
+    "Cross-plan geometry, narrow fenestration, cream mezzanine and closed roof terraces survive the final corrections.",
+    "Exact GLB contains zero images and zero textures: observed surface identity is colored native geometry.",
+    "All three sources, all fourteen individual render files and the comparison board were opened at original resolution."
+  ],
+  "checks": {
+    "actual_model_hash_matches_build_report": true,
+    "source_hashes_match_source_entry": true,
+    "glb_images": 0,
+    "glb_textures": 0,
+    "glb_meshes": 9,
+    "glb_materials": 9,
+    "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+    "render_provenance_basis": "Builder report; reviewer inspected pixels and independently parsed exact GLB bytes, did not rerender."
+  },
+  "approval_boundaries": {
+    "textured_keeper_approved": false,
+    "browser_tested": false,
+    "runtime_placement_scaling_grounding_tested": false,
+    "engineering_or_code_compliance_verified": false,
+    "human_activation_approved": false,
+    "publication_approved": false
+  },
+  "limitations": [
+    "Architectural-clay tier accepts simplified fine ornament and absent material textures; this is not a textured keeper approval.",
+    "Conceptual dimensions are not surveyed. Inferred rear/interior details and complete vertical circulation are not independently established by these exterior views.",
+    "The entrance retains a low plinth/threshold step; accessibility or building-code compliance is not certified by this visual review.",
+    "Browser and runtime placement/scaling/grounding were not tested by user direction.",
+    "The render-to-model relationship follows the saved builder provenance; this independent review did not launch a new render.",
+    "Builder pending-review fields were left unchanged; this separate signed-by-agent record supplies the independent decision.",
+    "Only external review artifacts were written; builder geometry, source files and prior candidates were preserved."
+  ],
+  "next_checkpoint": "Eligible for exact-hash local architectural-clay registration under the parent workflow. Any textured keeper, browser/runtime activation or publication requires its separate review and authorization.",
+  "inspected_files": [
+    {
+      "path": "prework-manifest.json",
+      "bytes": 6647,
+      "sha256": "ec4da0e980c9ca7cca9a6065f4b6239521b29ee04bcffef21207750e4c5c5af6",
+      "inspection": "Supporting text read."
+    },
+    {
+      "path": "source-entry.json",
+      "bytes": 1553,
+      "sha256": "275c23a51bf635c90f00aaf65da46122c26a52913626642e09d9c064cdbe2c22",
+      "inspection": "Supporting text read."
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 759486,
+      "sha256": "42846e2bd1b6c12c7495c05fc5ebd4ab1e34b340da01125404f3a20f0eacc599",
+      "inspection": "Build metadata, runtime, provenance and camera roster inspected; generated authoring module inventory not independently audited line by line."
+    },
+    {
+      "path": "scripts/tower.py",
+      "bytes": 9648,
+      "sha256": "5d09bad4216326375bacdb695e9bd2718d50585b59c63bbed2b42f3e5db5618a",
+      "inspection": "Supporting text read."
+    },
+    {
+      "path": "showcase-tower-clay-v005.glb",
+      "bytes": 13166820,
+      "sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "inspection": "Exact bytes hashed and GLB JSON parsed independently."
+    },
+    {
+      "path": "sources/variant_0.png",
+      "bytes": 1120425,
+      "sha256": "cbfa6ffaf90e040b2ef9f631f438cc1184993ceec74de95be8943dd85804e40b",
+      "dimensions_px": [
+        1024,
+        768
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "sources/variant_0_angle_60.jpg",
+      "bytes": 969798,
+      "sha256": "82d0cd1caf3cb7141de20e91e6960263745010d017ec971db623eff8fa64a9e9",
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "sources/variant_0_angle_90.jpg",
+      "bytes": 824804,
+      "sha256": "05e11751364bfa854b7ea4d9da46a70f262c3424ea15498395e0bb4fe9e109cb",
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1358241,
+      "sha256": "699970568d08da676a1a9f25ab3d9770b0f516b78a08da824814291e5a9dc283",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1351328,
+      "sha256": "8bb1acbd1396b1cfdcf078d6fdc5cbb5ff483e48611539b137b5b9e2960a7249",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1330272,
+      "sha256": "c4ecdf8526297088aa5b95e7b2bfd2d67d7f9560c15977f6c189a7974a95d63e",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1347910,
+      "sha256": "1596cdf6f8e14e44908bb7590986425e9160aa62f63b4b541035a283cc14074b",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1481258,
+      "sha256": "cc82791f11b23069aa44efcb9be3ff476b303992dda9ccf1156ff0b4697404af",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1472555,
+      "sha256": "c19b7a32a014081068126dfed7ff791199ca6704999aca3f65438c75e490f9f8",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1473979,
+      "sha256": "cafd691b51f207ed5dbb4ccdf75d66adc4556827a85b248d8ad3c4bd06de0ad0",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1482277,
+      "sha256": "04416032f86881f302d8912819230f0aa5e0b648ae3591199f3399752f300f34",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1472407,
+      "sha256": "fe76b36d27c8236004fdf29163b81c836ad0a5723b20d63fcb50bbfea4189ab7",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1513193,
+      "sha256": "a023c6e2023bbab7dff48918cefaa665d581bfbf644998f129de063321f971d0",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1413548,
+      "sha256": "85e07a0eeead000afba00da5468ee77ea4f59d0861c45bac567f004a947baeeb",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/walk.png",
+      "bytes": 1685862,
+      "sha256": "13212fdde0a7219b795ee9a7a0b3bbd720d82bbe2cbc645b9c5f001d1517d482",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/crown_contact.png",
+      "bytes": 1515695,
+      "sha256": "c2c4e41a59012c24a9c008cbda3f537a54f3cd075fa040fd26d12f583f45d928",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "renders/entrance_access.png",
+      "bytes": 1412328,
+      "sha256": "68b987c14da8198f434307b67efe0e70b0baf39a202a4960cb3c21617ca8e477",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    },
+    {
+      "path": "boards/comparison-phone.png",
+      "bytes": 1518540,
+      "sha256": "1bee837a8aceb560997a20ab2ab79faa05b6f6d8f86c4fa02fac1284a0328de4",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "Individually visually inspected at original resolution."
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import {
   type LocalPt,
   type StreetStationElevationInput,
 } from './streetMesh3D';
+import { resolveStreetBandMaterial } from './streetSurfaceMaterials';
 import type { StreetSectionBand, StreetSectionProfile } from './streetSectionProfiles';
 
 export const MAX_STREET_FIXTURE_STATIONS = 8;
@@ -116,6 +117,7 @@ export type StreetPlantingCellStyle = 'tree_grate' | 'low_planting_cell';
 
 export interface StreetPlantingCellPlacement extends StreetFixturePose {
   style: StreetPlantingCellStyle;
+  surfaceLiftM?: number;
   lengthM: number;
   widthM: number;
   bandStartM: number;
@@ -211,12 +213,7 @@ const EMPTY_FIXTURES: StreetFamilyFixturePlacements = Object.freeze({
   stationCount: 0,
 });
 
-interface ScaledBand extends Pick<StreetSectionBand, 'kind' | 'liftM'> {
-  startM: number;
-  endM: number;
-  centerM: number;
-  widthM: number;
-}
+type ScaledBand = StreetSectionBand;
 
 interface StationFrame {
   index: number;
@@ -494,8 +491,7 @@ function fixturePose(
 
 function scaleBand(band: StreetSectionBand, sectionScale: number): ScaledBand {
   return {
-    kind: band.kind,
-    liftM: band.liftM,
+    ...band,
     startM: band.startM * sectionScale,
     endM: band.endM * sectionScale,
     centerM: band.centerM * sectionScale,
@@ -807,15 +803,19 @@ export function buildStreetFamilyFixturePlacements({
 }: StreetFamilyFixtureOptions): StreetFamilyFixturePlacements {
   if (
     !enabled
-    || !profile?.familyId
+    || !(profile?.familyId || profile?.manualSection)
     || points.length < 3
     || !(sectionScale > 0)
     || ['woonerf_shared_street', 'multi_use_trail', 'toronto_laneway']
       .includes(profile.archetypeId)
   ) return EMPTY_FIXTURES;
 
+  if (!profile) return EMPTY_FIXTURES;
+  const manual = profile.manualSection === true;
+  const manualHighActivity = manual && profile.archetypeId.includes('high_activity');
   const bands = profile.bands.map((band) => scaleBand(band, sectionScale));
-  const plantingBands = bands.filter((band) => band.kind === 'planting');
+  const plantingBands = bands.filter((band) => (band.kind === 'planting' || (profile.manualLandscape?.medianTrees && band.kind === 'median'))
+    && !(manual && profile.archetypeId.includes('industrial') && !profile.manualLandscape?.allowIndustrialTrees));
   const parkingBands = bands.filter((band) => band.kind === 'parking');
   const sidewalkBands = bands.filter((band) => band.kind === 'sidewalk');
   const cycleBands = bands.filter((band) => band.kind === 'cycle');
@@ -823,8 +823,8 @@ export function buildStreetFamilyFixturePlacements({
   const isMain = [
     'street_complete_main_18m',
     'street_complete_main_22m',
-  ].includes(profile.familyId);
-  const isNarrowResidential = profile.archetypeId === 'narrow_residential_street';
+  ].includes(profile.familyId ?? '') || manualHighActivity;
+  const isNarrowResidential = (manual && !manualHighActivity) || profile.archetypeId === 'narrow_residential_street';
   const sidePlantingBands = plantingBands.filter((band) => !(
     Math.min(band.startM, band.endM) < 0
     && Math.max(band.startM, band.endM) > 0
@@ -896,13 +896,14 @@ export function buildStreetFamilyFixturePlacements({
       const basePose = fixturePose(frame, band.centerM);
       const plantingWidthM = Math.max(0, band.widthM - STREET_BENCH_EDGE_CLEARANCE_M * 2);
       if (
-        plantingCells.length < MAX_STREET_PLANTING_CELLS_PER_ZONE
+        resolveStreetBandMaterial(profile, band).kind === 'planting_grass'
+        && plantingCells.length < MAX_STREET_PLANTING_CELLS_PER_ZONE
         && plantingWidthM >= 0.3
         && fixtureFitsClearance(basePose, clearancePoints)
       ) {
         plantingCells.push({
           ...basePose,
-          style: isMain ? 'tree_grate' : 'low_planting_cell',
+          style: 'low_planting_cell',
           lengthM: isMain ? Math.min(1.05, plantingWidthM) : 1.5,
           widthM: Math.min(isMain ? 1.05 : 0.9, plantingWidthM),
           bandStartM: Math.min(band.startM, band.endM),
@@ -1014,7 +1015,7 @@ export function buildStreetFamilyFixturePlacements({
     });
   });
 
-  const cycleProtectionOffsets = bufferBands.length > 0
+  const cycleProtectionOffsets = manual ? [] : bufferBands.length > 0
     ? bufferBands.map((band) => band.centerM)
     : cycleBands.map((band) => (
       Math.abs(band.startM) < Math.abs(band.endM) ? band.startM : band.endM
@@ -1055,7 +1056,7 @@ export function buildStreetFamilyFixturePlacements({
       default:
         return {
           canopyClass: 'mature_deciduous' as const,
-          lightStyle: 'traditional' as const,
+          lightStyle: manual ? 'contemporary' as const : 'traditional' as const,
           treeScaleFactor: 1,
         };
     }
@@ -1069,7 +1070,7 @@ export function buildStreetFamilyFixturePlacements({
       lightBands: furnishingBands,
       parkingBands,
       clearancePoints,
-      treeSpacingM: isMain ? MAIN_STREET_TREE_SPACING_M : NARROW_RESIDENTIAL_TREE_SPACING_M,
+      treeSpacingM: profile.manualLandscape?.treeSpacingM ?? (isMain ? MAIN_STREET_TREE_SPACING_M : NARROW_RESIDENTIAL_TREE_SPACING_M),
       lightSpacingM: isMain ? MAIN_STREET_LIGHT_SPACING_M : NARROW_RESIDENTIAL_LIGHT_SPACING_M,
       vehicleSpacingM: isMain ? MAIN_STREET_VEHICLE_SPACING_M : NARROW_RESIDENTIAL_VEHICLE_SPACING_M,
       maxTrees: isMain ? MAX_MAIN_STREET_TREES_PER_ZONE : MAX_NARROW_RESIDENTIAL_TREES_PER_ZONE,
@@ -1083,8 +1084,22 @@ export function buildStreetFamilyFixturePlacements({
     })
     : null;
 
+  // A tree well belongs to its tree, never to a separately decimated set of
+  // furniture stations. Align rectangular wells with the street, not crown yaw.
+  const finalTrees = streetSignature?.trees ?? trees;
+  for (const tree of finalTrees) {
+    const band = plantingBands.find(b => Math.abs(b.centerM - tree.offsetM) < 1e-6);
+    if (!band || resolveStreetBandMaterial(profile, band).kind === 'planting_grass') continue;
+    plantingCells.push({ ...tree, z: tree.z - .16,
+      surfaceLiftM: band.liftM,
+      yawRad: Math.atan2(tree.tangentY, tree.tangentX), style: 'tree_grate',
+      lengthM: 1.8, widthM: Math.min(1.8, band.widthM - STREET_BENCH_EDGE_CLEARANCE_M * 2),
+      bandStartM: Math.min(band.startM, band.endM), bandEndM: Math.max(band.startM, band.endM),
+    });
+  }
+
   const transitShelters: StreetTransitShelterPlacement[] = [];
-  if (isMain && furnishingBands.length > 0 && lengthM >= 60) {
+  if (!manual && isMain && furnishingBands.length > 0 && lengthM >= 60) {
     const band = furnishingBands[0];
     const availableDepthM = Math.max(
       0,
@@ -1117,7 +1132,7 @@ export function buildStreetFamilyFixturePlacements({
   }
 
   return {
-    trees: streetSignature?.trees ?? trees,
+    trees: finalTrees,
     benches,
     lights: streetSignature?.lights ?? lights,
     drains,
@@ -1126,7 +1141,8 @@ export function buildStreetFamilyFixturePlacements({
     bikeRacks,
     bollards,
     plantingCells,
-    parkedVehicles: streetSignature?.parkedVehicles ?? [],
+    // The manual describes space allocation, not a fleet of proxy cars.
+    parkedVehicles: manual ? [] : streetSignature?.parkedVehicles ?? [],
     transitShelters,
     stationCount: selectedIndices.length,
   };

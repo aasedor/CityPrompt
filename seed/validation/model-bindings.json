@@ -1,0 +1,878 @@
+[
+  {
+    "variant": "minimalist_infill_brick_monolith",
+    "title": "Buff-brick infill",
+    "path": "public/validation-assets/brick-v002/buff-brick-infill-clay-v002.glb",
+    "sha256": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "brick-v002",
+        "variant_id": "minimalist_infill_brick_monolith",
+        "archetype_id": "minimalist_infill_townhouse",
+        "model_sha256": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 15.8,
+          "depth": 16,
+          "height": 10.6
+        },
+        "native_dimensions_m": {
+          "width": 16.100000381469727,
+          "depth": 17.449999809265137,
+          "height": 10.680000305175781
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-minimalist_infill_brick_monolith",
+        "depth_m": 17.449999809265137,
+        "enabled": true,
+        "width_m": 16.100000381469727,
+        "height_m": 10.680000305175781,
+        "max_floors": 2,
+        "min_floors": 2,
+        "reuse_keys": [
+          "minimalist_infill_brick_monolith"
+        ],
+        "variant_key": "minimalist_infill_brick_monolith",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "minimalist_infill_townhouse",
+          "minimalist_infill_brick_monolith"
+        ],
+        "native_floors": 2,
+        "allowed_levels": [
+          2
+        ],
+        "source_variant_id": "minimalist_infill_brick_monolith",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "minimalist_infill_brick_monolith"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7.glb"
+  },
+  {
+    "variant": "brewery_crystal_brewhouse",
+    "title": "Crystal brewhouse",
+    "path": "public/validation-assets/brewhouse-v003/untried-brewhouse-clay-v003.glb",
+    "sha256": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "brewhouse-v003",
+        "variant_id": "brewery_crystal_brewhouse",
+        "archetype_id": "brewery_distillery",
+        "model_sha256": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 48,
+          "depth": 64,
+          "height": 17
+        },
+        "native_dimensions_m": {
+          "width": 48.0,
+          "depth": 64.0,
+          "height": 14.579999923706055
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-brewery_crystal_brewhouse",
+        "depth_m": 64.0,
+        "enabled": true,
+        "width_m": 48.0,
+        "height_m": 14.579999923706055,
+        "max_floors": 1,
+        "min_floors": 1,
+        "reuse_keys": [
+          "brewery_crystal_brewhouse"
+        ],
+        "variant_key": "brewery_crystal_brewhouse",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "brewery_distillery",
+          "brewery_crystal_brewhouse"
+        ],
+        "native_floors": 1,
+        "allowed_levels": [
+          1
+        ],
+        "source_variant_id": "brewery_crystal_brewhouse",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "brewery_crystal_brewhouse"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782.glb"
+  },
+  {
+    "variant": "museum_earth_sheltered",
+    "title": "Earth-sheltered museum",
+    "path": "public/validation-assets/museum-v005/showcase-museum-clay-v005.glb",
+    "sha256": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "museum-v005",
+        "variant_id": "museum_earth_sheltered",
+        "archetype_id": "monumental_museum_axis",
+        "model_sha256": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 44,
+          "depth": 62,
+          "height": 9.5
+        },
+        "native_dimensions_m": {
+          "width": 44.2599983215332,
+          "depth": 62.2599983215332,
+          "height": 8.819915771484375
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-museum_earth_sheltered",
+        "depth_m": 62.2599983215332,
+        "enabled": true,
+        "width_m": 44.2599983215332,
+        "height_m": 8.819915771484375,
+        "max_floors": 2,
+        "min_floors": 2,
+        "reuse_keys": [
+          "museum_earth_sheltered"
+        ],
+        "variant_key": "museum_earth_sheltered",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "monumental_museum_axis",
+          "museum_earth_sheltered"
+        ],
+        "native_floors": 2,
+        "allowed_levels": [
+          2
+        ],
+        "source_variant_id": "museum_earth_sheltered",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "museum_earth_sheltered"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106.glb"
+  },
+  {
+    "variant": "clapboard_north_end",
+    "title": "Halifax clapboard house",
+    "path": "public/validation-assets/clapboard-v003/untried-clapboard-clay-v003.glb",
+    "sha256": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "clapboard-v003",
+        "variant_id": "clapboard_north_end",
+        "archetype_id": "halifax_painted_clapboard_row",
+        "model_sha256": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 11.3,
+          "depth": 12,
+          "height": 10
+        },
+        "native_dimensions_m": {
+          "width": 11.0,
+          "depth": 12.275000095367432,
+          "height": 10.479999542236328
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-clapboard_north_end",
+        "depth_m": 12.275000095367432,
+        "enabled": true,
+        "width_m": 11.0,
+        "height_m": 10.479999542236328,
+        "max_floors": 2,
+        "min_floors": 2,
+        "reuse_keys": [
+          "clapboard_north_end"
+        ],
+        "variant_key": "clapboard_north_end",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "halifax_painted_clapboard_row",
+          "clapboard_north_end"
+        ],
+        "native_floors": 2,
+        "allowed_levels": [
+          2
+        ],
+        "source_variant_id": "clapboard_north_end",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "clapboard_north_end"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6.glb"
+  },
+  {
+    "variant": "machiya_cafe_gallery",
+    "title": "Machiya cafe and gallery",
+    "path": "public/validation-assets/machiya-v005/favourites-machiya-clay-v005.glb",
+    "sha256": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "machiya-v005",
+        "variant_id": "machiya_cafe_gallery",
+        "archetype_id": "japanese_machiya_mixed_use",
+        "model_sha256": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 12.6,
+          "depth": 16.6,
+          "height": 8.5
+        },
+        "native_dimensions_m": {
+          "width": 12.680000305175781,
+          "depth": 16.95500087738037,
+          "height": 8.358999252319336
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-machiya_cafe_gallery",
+        "depth_m": 16.95500087738037,
+        "enabled": true,
+        "width_m": 12.680000305175781,
+        "height_m": 8.358999252319336,
+        "max_floors": 2,
+        "min_floors": 2,
+        "reuse_keys": [
+          "machiya_cafe_gallery"
+        ],
+        "variant_key": "machiya_cafe_gallery",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "japanese_machiya_mixed_use",
+          "machiya_cafe_gallery"
+        ],
+        "native_floors": 2,
+        "allowed_levels": [
+          2
+        ],
+        "source_variant_id": "machiya_cafe_gallery",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "machiya_cafe_gallery"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9.glb"
+  },
+  {
+    "variant": "cast_iron_italianate",
+    "title": "SoHo cast-iron loft",
+    "path": "public/validation-assets/soho-v002/untried-soho-clay-v002.glb",
+    "sha256": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "soho-v002",
+        "variant_id": "cast_iron_italianate",
+        "archetype_id": "soho_cast_iron_loft_building",
+        "model_sha256": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 25,
+          "depth": 27,
+          "height": 17
+        },
+        "native_dimensions_m": {
+          "width": 24.68000030517578,
+          "depth": 27.145000457763672,
+          "height": 16.40999984741211
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-cast_iron_italianate",
+        "depth_m": 27.145000457763672,
+        "enabled": true,
+        "width_m": 24.68000030517578,
+        "height_m": 16.40999984741211,
+        "max_floors": 5,
+        "min_floors": 5,
+        "reuse_keys": [
+          "cast_iron_italianate"
+        ],
+        "variant_key": "cast_iron_italianate",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "soho_cast_iron_loft_building",
+          "cast_iron_italianate"
+        ],
+        "native_floors": 5,
+        "allowed_levels": [
+          5
+        ],
+        "source_variant_id": "cast_iron_italianate",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "cast_iron_italianate"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f.glb"
+  },
+  {
+    "variant": "art_deco_streamline_moderne",
+    "title": "Streamline Moderne corner",
+    "path": "public/validation-assets/streamline-v003/showcase-streamline-clay-v003.glb",
+    "sha256": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "streamline-v003",
+        "variant_id": "art_deco_streamline_moderne",
+        "archetype_id": "art_deco_setback_tower",
+        "model_sha256": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 24,
+          "depth": 24,
+          "height": 23.3
+        },
+        "native_dimensions_m": {
+          "width": 24.640000343322754,
+          "depth": 24.640000343322754,
+          "height": 23.31999969482422
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-art_deco_streamline_moderne",
+        "depth_m": 24.640000343322754,
+        "enabled": true,
+        "width_m": 24.640000343322754,
+        "height_m": 23.31999969482422,
+        "max_floors": 8,
+        "min_floors": 8,
+        "reuse_keys": [
+          "art_deco_streamline_moderne"
+        ],
+        "variant_key": "art_deco_streamline_moderne",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "art_deco_setback_tower",
+          "art_deco_streamline_moderne"
+        ],
+        "native_floors": 8,
+        "allowed_levels": [
+          8
+        ],
+        "source_variant_id": "art_deco_streamline_moderne",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "art_deco_streamline_moderne"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3.glb"
+  },
+  {
+    "variant": "rndsqr_midrise_terraced_garden",
+    "title": "Terraced garden mid-rise",
+    "path": "public/validation-assets/terrace-v006/showcase-terrace-clay-v006.glb",
+    "sha256": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "terrace-v006",
+        "variant_id": "rndsqr_midrise_terraced_garden",
+        "archetype_id": "rndsqr_terraced_mixed_use_midrise",
+        "model_sha256": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 34,
+          "depth": 28,
+          "height": 16.0
+        },
+        "native_dimensions_m": {
+          "width": 34.47100067138672,
+          "depth": 28.58899974822998,
+          "height": 16.349899291992188
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-rndsqr_midrise_terraced_garden",
+        "depth_m": 28.58899974822998,
+        "enabled": true,
+        "width_m": 34.47100067138672,
+        "height_m": 16.349899291992188,
+        "max_floors": 3,
+        "min_floors": 3,
+        "reuse_keys": [
+          "rndsqr_midrise_terraced_garden"
+        ],
+        "variant_key": "rndsqr_midrise_terraced_garden",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "rndsqr_terraced_mixed_use_midrise",
+          "rndsqr_midrise_terraced_garden"
+        ],
+        "native_floors": 3,
+        "allowed_levels": [
+          3
+        ],
+        "source_variant_id": "rndsqr_midrise_terraced_garden",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "rndsqr_midrise_terraced_garden"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47.glb"
+  },
+  {
+    "variant": "rec_centre_timber_hall",
+    "title": "Timber community hall",
+    "path": "public/validation-assets/hall-v004/favourites-hall-clay-v004.glb",
+    "sha256": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "hall-v004",
+        "variant_id": "rec_centre_timber_hall",
+        "archetype_id": "community_recreation_centre",
+        "model_sha256": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 22.4,
+          "depth": 26.4,
+          "height": 13.4
+        },
+        "native_dimensions_m": {
+          "width": 22.549999237060547,
+          "depth": 26.549999237060547,
+          "height": 13.09760856628418
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-rec_centre_timber_hall",
+        "depth_m": 26.549999237060547,
+        "enabled": true,
+        "width_m": 22.549999237060547,
+        "height_m": 13.09760856628418,
+        "max_floors": 1,
+        "min_floors": 1,
+        "reuse_keys": [
+          "rec_centre_timber_hall"
+        ],
+        "variant_key": "rec_centre_timber_hall",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "community_recreation_centre",
+          "rec_centre_timber_hall"
+        ],
+        "native_floors": 1,
+        "allowed_levels": [
+          1
+        ],
+        "source_variant_id": "rec_centre_timber_hall",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "rec_centre_timber_hall"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf.glb"
+  },
+  {
+    "variant": "contemporary_townhouse_timber_screen",
+    "title": "Timber-screen townhouse",
+    "path": "public/validation-assets/timber-v002/timber-screen-townhouse-clay-v002.glb",
+    "sha256": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "timber-v002",
+        "variant_id": "contemporary_townhouse_timber_screen",
+        "archetype_id": "contemporary_townhouse_courtyard",
+        "model_sha256": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+        "review_sha256": "",
+        "review_status": "Visual baseline approved; app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 12.8,
+          "depth": 17,
+          "height": 15.2
+        },
+        "native_dimensions_m": {
+          "width": 14.342480182647705,
+          "depth": 18.100000381469727,
+          "height": 16.4785213470459
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-contemporary_townhouse_timber_screen",
+        "depth_m": 18.100000381469727,
+        "enabled": true,
+        "width_m": 14.342480182647705,
+        "height_m": 16.4785213470459,
+        "max_floors": 2,
+        "min_floors": 2,
+        "reuse_keys": [
+          "contemporary_townhouse_timber_screen"
+        ],
+        "variant_key": "contemporary_townhouse_timber_screen",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "contemporary_townhouse_courtyard",
+          "contemporary_townhouse_timber_screen"
+        ],
+        "native_floors": 2,
+        "allowed_levels": [
+          2
+        ],
+        "source_variant_id": "contemporary_townhouse_timber_screen",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "contemporary_townhouse_timber_screen"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5.glb"
+  },
+  {
+    "variant": "beltline_brick_modern",
+    "title": "Beltline mixed-use mid-rise",
+    "path": "public/validation-assets/beltline-v005/calgary-beltline-mid-rise-clay-v005.glb",
+    "sha256": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "beltline-v005",
+        "variant_id": "beltline_brick_modern",
+        "archetype_id": "calgary_beltline_mid_rise",
+        "model_sha256": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618",
+        "review_sha256": "",
+        "review_status": "Upgrade candidate; visual and app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 31,
+          "depth": 31,
+          "height": 20
+        },
+        "native_dimensions_m": {
+          "width": 34.15999984741211,
+          "depth": 34.15999984741211,
+          "height": 20.43000030517578
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-beltline_brick_modern",
+        "depth_m": 34.15999984741211,
+        "enabled": true,
+        "width_m": 34.15999984741211,
+        "height_m": 20.43000030517578,
+        "max_floors": 4,
+        "min_floors": 4,
+        "reuse_keys": [
+          "beltline_brick_modern"
+        ],
+        "variant_key": "beltline_brick_modern",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "calgary_beltline_mid_rise",
+          "beltline_brick_modern"
+        ],
+        "native_floors": 4,
+        "allowed_levels": [
+          4
+        ],
+        "source_variant_id": "beltline_brick_modern",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "beltline_brick_modern"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618.glb"
+  },
+  {
+    "variant": "infill_flat_roof_minimal",
+    "title": "Calgary Modern Infill",
+    "path": "public/validation-assets/infill-v007/calgary-infill-flat-roof-minimal-clay-v007.glb",
+    "sha256": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74",
+    "metadata": {
+      "rlasm": {
+        "method": "RLASM",
+        "candidate": "infill-v007",
+        "variant_id": "infill_flat_roof_minimal",
+        "archetype_id": "calgary_modern_infill_house",
+        "model_sha256": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74",
+        "review_sha256": "",
+        "review_status": "Upgrade candidate; visual and app validation pending",
+        "source_locked": true,
+        "method_version": "6.1",
+        "delivery_format": "architectural_clay",
+        "keeper_approved": false,
+        "runtime_enabled": true,
+        "scaling_verified": false,
+        "design_dimensions_m": {
+          "width": 8.449999809265137,
+          "depth": 11.75,
+          "height": 6.980000019073486
+        },
+        "native_dimensions_m": {
+          "width": 8.449999809265137,
+          "depth": 11.75,
+          "height": 6.980000019073486
+        },
+        "terrain_fit_verified": false,
+        "continuous_resize_allowed": false
+      },
+      "lego": {
+        "lod": 0,
+        "role": "assembled",
+        "family": "validation-infill_flat_roof_minimal",
+        "depth_m": 11.75,
+        "enabled": true,
+        "width_m": 8.449999809265137,
+        "height_m": 6.980000019073486,
+        "max_floors": 2,
+        "min_floors": 2,
+        "reuse_keys": [
+          "infill_flat_roof_minimal"
+        ],
+        "variant_key": "infill_flat_roof_minimal",
+        "repeatable_z": false,
+        "archetype_ids": [
+          "calgary_modern_infill_house",
+          "infill_flat_roof_minimal"
+        ],
+        "native_floors": 2,
+        "allowed_levels": [
+          2
+        ],
+        "source_variant_id": "infill_flat_roof_minimal",
+        "placement_contract": {
+          "mode": "fixed_landmark",
+          "continuous_resize_allowed": false
+        },
+        "allow_inset_footprint": true,
+        "footprint_compatibility": {
+          "polygonFit": false,
+          "placementMode": "select_and_place",
+          "continuous_resize_allowed": false
+        },
+        "generation_archetype_id": "infill_flat_roof_minimal"
+      },
+      "validation_only": true
+    },
+    "url": "/api/v1/files/library/validation/71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74.glb"
+  }
+]

@@ -186,6 +186,7 @@ class Direct3DProviderError(RuntimeError):
         provider_image_base64: str | None = None,
         provider_status_code: int | None = None,
         provider_request_id: str | None = None,
+        transport_interrupted: bool = False,
     ) -> None:
         super().__init__(message)
         self.billing_status = billing_status
@@ -194,6 +195,7 @@ class Direct3DProviderError(RuntimeError):
         self.provider_image_base64 = provider_image_base64
         self.provider_status_code = provider_status_code
         self.provider_request_id = provider_request_id
+        self.transport_interrupted = transport_interrupted
 
 
 @dataclass(frozen=True)
@@ -4261,6 +4263,7 @@ class Direct3DRenderService:
             raise Direct3DProviderError(
                 "OpenAI Direct 3D request outcome is unknown: " f"{type(exc).__name__}: {exc!r}",
                 billing_status="unknown",
+                transport_interrupted=True,
             ) from exc
         response_headers = getattr(response, "headers", {})
         provider_request_id = response_headers.get("x-request-id")

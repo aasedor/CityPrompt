@@ -105,10 +105,21 @@ def test_quality_memory_is_versioned_and_preserves_core_lessons():
     principle_ids = {item["id"] for item in memory["non_negotiable_principles"]}
 
     assert memory["schema"] == "high-quality-building-memory@1"
-    assert (
-        memory["memory_version"]
-        == "2026-08-02-clean-3d-no-prisms-runtime-v118"
-    )
+    assert memory["memory_version"] == "2026-09-28-bounded-footprint-storeys-v120"
+    assert memory["runtime_storey_contract"] == {
+        "id": "bounded-footprint-and-storey-release-2026-09-28",
+        "metadata_required_for_every_building": True,
+        "variable_modes": ["select_authored_assembly", "repeat_authored_floor"],
+        "fixed_mode": "fixed_authored_assembly",
+        "fixed_mode_requires_equal_min_native_max": True,
+        "vertical_mesh_stretching_allowed": False,
+        "student_footprint_scaling": "trusted_bounded_programmes_only",
+        "footprint_scale_axes": ["x", "y"],
+        "footprint_vertical_scale": 1.0,
+        "footprint_and_storeys_persist_independently": True,
+        "legacy_saved_footprint_scales_preserved": True,
+        "evidence": "docs/HOUSE_FLEX_PILOT_2026-09-28.md",
+    }
     memory_doc = (
         Path(__file__).resolve().parents[3]
         / "docs"

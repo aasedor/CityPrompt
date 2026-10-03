@@ -4,6 +4,16 @@ import { classifyCalgaryVariant } from '@/features/calgaryCatalogue/guide';
 import { StreetCrossSection } from './StreetCrossSection';
 import type { CatalogueAsset } from './assetRegistry';
 import type { CanonicalChoice, CanonicalSelection } from './canonicalCatalogue';
+import { pickerHeroImage } from './pickerHeroImages';
+
+function CatalogueThumbnail({ sources, label }: { sources: string[]; label: string }) {
+  const [index, setIndex] = useState(0);
+  return index < sources.length
+    ? <img loading="lazy" src={sources[index]} alt="" onError={() => setIndex(value => value + 1)}
+      className="h-36 w-full bg-slate-100 object-cover" />
+    : <span role="img" aria-label={`${label}: preview image unavailable`}
+      className="flex h-36 items-center justify-center bg-slate-100 px-4 text-center text-sm text-slate-600">Preview image unavailable</span>;
+}
 
 export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, onPlacement, onDraw, initialVariantId }: {
   choice: CanonicalChoice; selected: string | null; activeStreetVariant?: string;
@@ -15,18 +25,21 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
   const variant = option.variants?.find(v => v.id === variantId);
   const placement = placements.find(a => a.model.variantId === variantId);
   const variantGuide = classifyCalgaryVariant(option.id, variantId);
-  const thumbnail = placement?.thumbnail ?? variant?.thumbnailUrl ?? option.catalogCardImageUrl ?? option.photoUrl;
+  const thumbnail = pickerHeroImage(placement?.id,
+    placement?.thumbnail ?? variant?.thumbnailUrl ?? option.catalogCardImageUrl ?? option.photoUrl);
   const label = placement?.label ?? option.label;
+  const imageSources = [...new Set([thumbnail, placement?.thumbnail, variant?.thumbnailUrl].filter((url): url is string => Boolean(url)))];
   return <article className="overflow-hidden rounded-xl border border-slate-300 bg-white">
     <button type="button" aria-pressed={placement ? (placement.kind === 'street' ? activeStreetVariant === variantId : selected === placement.id) : false}
       onClick={() => placement ? onPlacement(placement) : onDraw({ choice, variant })}
       className="group w-full text-left hover:bg-lime-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px]">
-      <img loading="lazy" src={thumbnail} alt="" className="h-36 w-full bg-slate-100 object-contain" />
+      <CatalogueThumbnail key={JSON.stringify(imageSources)} sources={imageSources} label={label} />
       <span className="block space-y-1 p-3">
         <span className="block text-sm font-bold">{label}</span>
         <span className="block text-xs text-slate-600 line-clamp-3">{placement?.description ?? variant?.description ?? option.description}</span>
         <span className="block text-xs font-medium text-slate-700">{placement ? 'Detailed 3D' : choice.domain === 'building' ? 'Design massing · detailed model depends on size and availability' : 'Design reference · layout depends on available 3D support'}</span>
-        <span className="block pt-1 text-sm font-semibold underline">{choice.domain === 'street_pathway' ? 'Choose & draw route' : 'Choose & place'}</span>
+        <span className="block pt-1 text-sm font-semibold underline">{placement?.kind === 'street' ? 'Choose & draw route'
+          : choice.domain === 'street_pathway' ? 'Place fixed review segment' : 'Choose & place'}</span>
       </span>
     </button>
     <div className="space-y-2 px-3 pb-3">

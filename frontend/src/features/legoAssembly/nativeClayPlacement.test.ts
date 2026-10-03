@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import * as THREE from 'three';
-import { centreNativeClayClone, isNativeClayPlan } from './nativeClayPlacement';
+import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from './nativeClayPlacement';
 
 describe('native clay placement', () => {
   it('centres an asymmetric model by translation without changing its geometry, scale or cached source', () => {
@@ -41,5 +41,8 @@ describe('native clay placement', () => {
     expect(isNativeClayPlan({ fit: { ...fit, native_scale_locked: true } })).toBe(false);
     expect(isNativeClayPlan({ fit: { ...fit, delivery_format: 'architectural_clay' } })).toBe(false);
     expect(isNativeClayPlan({ fit: { ...fit, native_scale_locked: true, delivery_format: 'architectural_clay' } })).toBe(true);
+    expect(isArchitecturalClayPlan({ fit: { ...fit, delivery_format: 'architectural_clay' } })).toBe(true);
+    expect(isArchitecturalClayPlan({ fit: { ...fit, delivery_format: 'architectural_clay_module_v1' } })).toBe(true);
+    expect(isNativeClayPlan({ fit: { ...fit, delivery_format: 'architectural_clay_module_v1' } })).toBe(false);
   });
 });

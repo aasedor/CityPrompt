@@ -2,11 +2,13 @@ import uuid
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+from app.schemas.park_access import ParkAccessSnapshot
 
 
 class StudentReportRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     zone_ids: list[uuid.UUID] | None = Field(default=None, max_length=5000)
+    park_access_snapshot: ParkAccessSnapshot | None = None
 
 
 class StudentDecisionRequest(BaseModel):

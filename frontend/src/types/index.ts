@@ -149,6 +149,7 @@ export interface CustomStyleAttachment {
 }
 
 export interface SiteZoneProperties {
+  road_native_stops?: Array<{id:string;stationM:number}>;
   height?: number;
   floors?: number;
   floor_height?: number;

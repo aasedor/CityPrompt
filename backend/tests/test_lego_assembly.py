@@ -6216,6 +6216,59 @@ async def test_place_community_certifies_source_locked_rlasm_glb_as_current_mode
     mock_db.add.assert_not_called()
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("valid_binding", [True, False])
+async def test_place_community_preserves_user_generated_model_or_rejects_missing_binding(
+    client, mock_db, test_user, auth_headers, valid_binding
+):
+    project = FakeProject(owner_id=test_user.id)
+    model_url = "/api/v1/files/projects/p/models/user.glb"
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="My generated house",
+        footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
+        height_meters=7.5,
+        floor_count=2,
+        model_url=model_url,
+        generation_engine="meshy",
+        generation_status="completed",
+        specifications={
+            "user_generated_model": {
+                "source_building_id": "source-house",
+                "model_url": model_url if valid_binding else "different.glb",
+            }
+        },
+    )
+    zone = _make_zone(
+        project,
+        building_id=building.id,
+        building_ids=[str(building.id)],
+        properties={"user_generated_source_id": "source-house", "height": 7.5, "floors": 2},
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(project.id),
+            _scalars_result([zone]),
+            _scalars_result([building]),
+        ]
+    )
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community", headers=auth_headers, json={"items": [_community_item(zone)]}
+    )
+    assert response.status_code == (200 if valid_binding else 422), response.text
+    if valid_binding:
+        assert response.json()["items"][0]["source_locked_user_generated"] is True
+        assert response.json()["items"][0]["source_locked_rlasm"] is False
+        assert building.model_url == model_url
+        assert building.footprint == zone.geometry
+        assert zone.properties["community_3d"]["generator"] == "meshy"
+    mock_db.add.assert_not_called()
+
+
 @pytest.mark.anyio
 async def test_place_community_rebuild_upgrades_massing_without_losing_public_realm(
     client, mock_db, test_user, auth_headers
@@ -6413,8 +6466,9 @@ async def test_place_community_rejects_framework_overlay_without_mutating_it(cli
 
 @pytest.mark.anyio
 @pytest.mark.parametrize("include_landscape", [True, False])
+@pytest.mark.parametrize("landscape_mode", [None, "generated", "placed_objects_only"])
 async def test_place_community_derives_residual_from_all_project_zones(
-    client, mock_db, test_user, auth_headers, include_landscape
+    client, mock_db, test_user, auth_headers, include_landscape, landscape_mode
 ):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
@@ -6431,7 +6485,17 @@ async def test_place_community_derives_residual_from_all_project_zones(
         project,
         zone_type="site_boundary",
         geometry=from_shape(box(-114.0800, 51.0400, -114.0780, 51.0415), srid=4326),
-        properties={"site_name": "Residual landscape test"},
+        properties={
+            "site_name": "Residual landscape test",
+            **(
+                {
+                    "community_3d_landscape_mode": landscape_mode,
+                    "community_3d_landscape": {"state": "stale", "source_hash": "previous-plan"},
+                }
+                if landscape_mode
+                else {}
+            ),
+        },
     )
     building_zone = _make_zone(
         project,
@@ -6476,8 +6540,12 @@ async def test_place_community_derives_residual_from_all_project_zones(
     payload = response.json()
     if not include_landscape:
         assert payload["residual_landscape"]["boundary_count"] == 0
-        assert "community_3d_landscape" not in boundary.properties
-        assert boundary.properties["community_3d_landscape_mode"] == "placed_objects_only"
+        if landscape_mode == "generated":
+            assert boundary.properties["community_3d_landscape"]["state"] == "stale"
+            assert boundary.properties["community_3d_landscape_mode"] == "generated"
+        else:
+            assert "community_3d_landscape" not in boundary.properties
+            assert boundary.properties["community_3d_landscape_mode"] == "placed_objects_only"
         return
     assert payload["residual_landscape"]["boundary_count"] == 1
     assert payload["residual_landscape"]["area_sqm"] > 0

@@ -580,7 +580,7 @@
       },
       "activation": {
         "authorized_by": "human_user",
-        "quote": "Let’s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
+        "quote": "Letâ€™s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
         "date": "2026-09-09",
         "model_sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43"
       },
@@ -675,7 +675,7 @@
       },
       "activation": {
         "authorized_by": "human_user",
-        "quote": "Let’s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
+        "quote": "Letâ€™s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
         "date": "2026-09-09",
         "model_sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172"
       },
@@ -770,7 +770,7 @@
       },
       "activation": {
         "authorized_by": "human_user",
-        "quote": "Let’s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
+        "quote": "Letâ€™s add Procedural road network, One-click RLASM generation repair, and Three tower activations",
         "date": "2026-09-09",
         "model_sha256": "932dc2152becbf9e74f2c7d83f314d6f93853be9794c628852a5e4154d010978"
       },
@@ -813,6 +813,1037 @@
       "review": {
         "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/glass-tower-twisted-clay-v005.json",
         "sha256": "fede6de6d1b2b7db4537e9f50ffb7ad21a6e133db92829b0999bd572ef231f51",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "calgary-side-by-side-duplex-clay-v004",
+      "family": "rlasm-clay-calgary-side-by-side-duplex",
+      "archetype_id": "calgary_modern_infill_house",
+      "variant_id": "infill_duplex",
+      "archetype_label": "Calgary modern infill",
+      "variant_label": "Side-by-side duplex",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 13.34,
+        "depth": 21.472,
+        "height": 9
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-modern-infill-house/variant_2.png",
+          "bytes": 1403041,
+          "sha256": "e5a2f4d6f6836643c65b5ee740c2b08f12e3ba9f8c52ac991eadf00d2a5447dc"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-modern-infill-house/variant_2_angle_60.jpg",
+          "bytes": 955606,
+          "sha256": "b9b67f5f53d507681994c506213a73986c8e55553576cf5da997ff7e6376b74f"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-modern-infill-house/variant_2_angle_90.jpg",
+          "bytes": 858902,
+          "sha256": "747c1802087cf9ace4c2ded7aee7af91f11f3c0b94257d9c772117c612078002"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004",
+      "picker": {
+        "id": "clay_side_by_side_duplex",
+        "description": "Two homes with separate recessed entrances and flat roofs.",
+        "group_id": "two_home",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete two-home building at its native size. Resize the surrounding plot; the homes do not stretch or repeat.",
+        "width": 17,
+        "depth": 25,
+        "max_size": 100
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {
+        "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+        "project_url": "http://127.0.0.1:5174/projects/0f3f2efd-ea57-400c-a754-6778939adc8e",
+        "tested_by": "Codex local runtime trial",
+        "tested_at": "2026-09-24",
+        "evidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": false,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": false,
+          "no_console_errors": true
+        },
+        "scope": "Prepared-ground local trial. Plot enlargement tested, not full size extremes. See runtime review for open gates."
+      },
+      "local_trial_only": true,
+      "model": {
+        "path": "models/calgary-side-by-side-duplex-clay-v004.glb",
+        "bytes": 3110128,
+        "sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+        "native_dimensions_m": {
+          "width": 13.34000015258789,
+          "height": 9.0,
+          "depth": 21.472000122070312
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/calgary-side-by-side-duplex-clay-v004.json",
+        "sha256": "529c7634a7173473532418be47a163c4c081264856f598f57ee56684b73649e1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "montreal-plateau-duplex-clay-v004",
+      "family": "rlasm-clay-montreal-plateau-duplex",
+      "archetype_id": "montreal_duplex",
+      "variant_id": "montreal_duplex_plateau",
+      "archetype_label": "Montreal duplex",
+      "variant_label": "Plateau stacked duplex",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 12.64909839630127,
+        "depth": 19.320000171661377,
+        "height": 8.104999542236328
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-duplex/variant_0.png",
+          "bytes": 1390036,
+          "sha256": "ceb646a88b05e64efc00199e3e2cb07bd93c3d254a718db0f437b8ae26516671"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-duplex/variant_0_angle_60.jpg",
+          "bytes": 917288,
+          "sha256": "5b99389489aaff656b0d78d7fa67019b11f80f23c42da564578201aef56186ca"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-duplex/variant_0_angle_90.jpg",
+          "bytes": 900166,
+          "sha256": "8c08fa902611ecb027b7c5c6e67360d2624dcd10d5fcc4f44df80cdc240f4114"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004",
+      "picker": {
+        "id": "clay_montreal_plateau_duplex",
+        "description": "Two stacked homes with bay windows and a curved outdoor stair.",
+        "group_id": "two_home",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete stacked duplex at native size, including its curved stair. Resize the surrounding plot without stretching the building.",
+        "width": 16,
+        "depth": 23,
+        "max_size": 100
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {
+        "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+        "project_url": "http://127.0.0.1:5174/projects/0f3f2efd-ea57-400c-a754-6778939adc8e",
+        "tested_by": "Codex local runtime trial",
+        "tested_at": "2026-09-24",
+        "evidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": false,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": false,
+          "no_console_errors": true
+        },
+        "scope": "Prepared-ground local trial. Plot enlargement tested, not full size extremes. See runtime review for open gates."
+      },
+      "local_trial_only": true,
+      "model": {
+        "path": "models/montreal-plateau-duplex-clay-v004.glb",
+        "bytes": 2148056,
+        "sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+        "native_dimensions_m": {
+          "width": 12.64909839630127,
+          "height": 8.104999542236328,
+          "depth": 19.320000171661377
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/montreal-plateau-duplex-clay-v004.json",
+        "sha256": "722075ca8076a2c3bd75641e3db42b7db5549da96fe1676c0719e0efbb357aa7",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "courtyard-brick-modern-clay-v004",
+      "family": "rlasm-clay-courtyard-brick-modern",
+      "archetype_id": "courtyard_family_housing",
+      "variant_id": "courtyard_family_brick_modern",
+      "archetype_label": "Courtyard family housing",
+      "variant_label": "Brick courtyard entrance building",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 25.582001,
+        "depth": 13.382,
+        "height": 12.275001
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/courtyard_family_housing/variant_2.png",
+          "bytes": 1379260,
+          "sha256": "a057771c31ead869c761723196c301bcce621f61db1fd6dd057a78f409711227"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/courtyard_family_housing/variant_2_angle_60.jpg",
+          "bytes": 905075,
+          "sha256": "04459d4d3ef3be7623609d75a59a651935fff05807502a8ec672ab7621d35139"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/courtyard_family_housing/variant_2_angle_90.jpg",
+          "bytes": 842411,
+          "sha256": "2871df00a87cee034e7cde10e1f540665116fed04ed7ef34b685dea4334d5599"
+        }
+      ],
+      "external_evidence": "C:/dev-artifacts/CityPrompt/astra-model-batch-2026-09-22/courtyard-v004",
+      "picker": {
+        "id": "clay_courtyard_brick_modern",
+        "description": "One three-storey brick entrance building with two homes-access vestibules and two open passages. The surrounding courtyard is designed separately.",
+        "group_id": "apartments",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete entrance building at native scale. Resize its plot without stretching the arches, passages or roof.",
+        "width": 30,
+        "depth": 17,
+        "max_size": 100
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {
+        "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+        "project_url": "http://127.0.0.1:5174/projects/0f3f2efd-ea57-400c-a754-6778939adc8e",
+        "tested_by": "Codex local runtime trial",
+        "tested_at": "2026-09-24",
+        "evidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": false,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": false,
+          "no_console_errors": true
+        },
+        "scope": "Prepared-ground local trial. Plot enlargement tested, not full size extremes. See runtime review for open gates."
+      },
+      "local_trial_only": true,
+      "model": {
+        "path": "models/courtyard-brick-modern-clay-v004.glb",
+        "bytes": 4422584,
+        "sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+        "native_dimensions_m": {
+          "width": 25.582000732421875,
+          "height": 12.27500057220459,
+          "depth": 13.381999969482422
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/courtyard-brick-modern-clay-v004.json",
+        "sha256": "d80f69e3bb72c567a72f419dfedf888ef42dc5d9f62d2fe7a524d8be9fa14d5a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "showcase-market-clay-v006",
+      "family": "rlasm-showcase-market",
+      "archetype_id": "food_hall_market_hall",
+      "variant_id": "market_historic_iron_glass",
+      "archetype_label": "Grand Iron & Glass Market",
+      "variant_label": "Grand Iron & Glass Market",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 34,
+        "depth": 48,
+        "height": 20
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+          "bytes": 3270166,
+          "sha256": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-oblique.jpg",
+          "bytes": 975284,
+          "sha256": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-top.jpg",
+          "bytes": 913131,
+          "sha256": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\showcase-nine-2026-09-27\\buildings\\market-v006",
+      "picker": {
+        "id": "showcase_market",
+        "description": "Two occupied market galleries, an iron barrel vault and complete vendor stalls.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 39,
+        "depth": 52,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/showcase-market-clay-v006.glb",
+        "bytes": 5900052,
+        "sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+        "native_dimensions_m": {
+          "width": 35.25,
+          "height": 19.09000015258789,
+          "depth": 48.47999954223633
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-market-clay-v006.json",
+        "sha256": "6e8ac57694913bcc5b42864df204274da1ab7cf03294efa3c26923c182e5ff76",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "showcase-aquatic-clay-v004",
+      "family": "rlasm-showcase-aquatic",
+      "archetype_id": "aquatic_natatorium_complex",
+      "variant_id": "biophilic_mass_timber_pool",
+      "archetype_label": "Living-Roof Aquatic Centre",
+      "variant_label": "Living-Roof Aquatic Centre",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 38,
+        "depth": 56,
+        "height": 17
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+          "bytes": 1292097,
+          "sha256": "06810b6ee8ed0f3a58588be35c41cb9945eadfa49efe62a1cc3b4e9f8892882c"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-oblique.jpg",
+          "bytes": 925963,
+          "sha256": "8a18d105da76d96e3548f04f5cea66130111845365079d4bf7817fa50344e67e"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-top.jpg",
+          "bytes": 916068,
+          "sha256": "77e193aa06682532fe8aa654224810f4e944bd1b91c8336487aba69e8b619dcf"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\showcase-nine-2026-09-27\\buildings\\aquatic-v004",
+      "picker": {
+        "id": "showcase_aquatic",
+        "description": "A planted glulam vault, glazed entrance arch and complete eight-lane swimming hall.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 42,
+        "depth": 60,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/showcase-aquatic-clay-v004.glb",
+        "bytes": 8005836,
+        "sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+        "native_dimensions_m": {
+          "width": 38.36000061035156,
+          "height": 16.597248077392578,
+          "depth": 56.73500061035156
+        },
+        "mesh_count": 15,
+        "material_count": 15,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-aquatic-clay-v004.json",
+        "sha256": "a7527b0e4a5f94f184e67bfec3f5f21e551371b9aa1475d62008551e64679f63",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "showcase-tower-clay-v005",
+      "family": "rlasm-showcase-tower",
+      "archetype_id": "art_deco_setback_tower",
+      "variant_id": "art_deco_cream_terracotta",
+      "archetype_label": "Gilded Terracotta Tower",
+      "variant_label": "Gilded Terracotta Tower",
+      "native_floors": 17,
+      "design_dimensions_m": {
+        "width": 32,
+        "depth": 28,
+        "height": 68
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+          "bytes": 1120425,
+          "sha256": "cbfa6ffaf90e040b2ef9f631f438cc1184993ceec74de95be8943dd85804e40b"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-oblique.jpg",
+          "bytes": 969798,
+          "sha256": "82d0cd1caf3cb7141de20e91e6960263745010d017ec971db623eff8fa64a9e9"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-top.jpg",
+          "bytes": 824804,
+          "sha256": "05e11751364bfa854b7ea4d9da46a70f262c3424ea15498395e0bb4fe9e109cb"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\showcase-nine-2026-09-27\\buildings\\tower-v005",
+      "picker": {
+        "id": "showcase_tower",
+        "description": "A cream terracotta setback tower with recessed windows, sunburst relief and a gilded lantern.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 36,
+        "depth": 33,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/showcase-tower-clay-v005.glb",
+        "bytes": 13166820,
+        "sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+        "native_dimensions_m": {
+          "width": 32.779998779296875,
+          "height": 68.5999984741211,
+          "depth": 29.31721782684326
+        },
+        "mesh_count": 9,
+        "material_count": 9,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-tower-clay-v005.json",
+        "sha256": "95198fa5d0744dc68c9f26810314e6f5388206853caf68636916db6c2bbf8f54",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "autumn-timber-clay-v004",
+      "family": "rlasm-autumn-timber",
+      "archetype_id": "nordic_timber_midrise",
+      "variant_id": "nordic_timber_mass_timber",
+      "archetype_label": "Nordic Roof-Garden Apartments",
+      "variant_label": "Nordic Roof-Garden Apartments",
+      "native_floors": 6,
+      "design_dimensions_m": {
+        "width": 20,
+        "depth": 18,
+        "height": 22.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
+          "bytes": 1227190,
+          "sha256": "646f3e4d0a5ce0bc4f0d37c1a380d6e1d8ee9139e457cdbb12addc1a0e09eed1"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-oblique.jpg",
+          "bytes": 931773,
+          "sha256": "e96cee6e9555300b794e2f31e6db1f88489a983892f6437219f804760d6f95f7"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-top.jpg",
+          "bytes": 852807,
+          "sha256": "34f7dc172e5900615b6a32da2d450767154ffc13e29a19e0a122f02b02bf992b"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\timber-v004",
+      "picker": {
+        "id": "autumn_timber",
+        "description": "A six-storey timber frame with recessed balconies, planted roof terrace and shaded pavilion.",
+        "group_id": "apartments",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 24,
+        "depth": 23,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/autumn-timber-clay-v004.glb",
+        "bytes": 48163508,
+        "sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+        "native_dimensions_m": {
+          "width": 20.350000381469727,
+          "height": 22.760000228881836,
+          "depth": 19.475000381469727
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-timber-clay-v004.json",
+        "sha256": "7441406609d1b179bb35a732c793fae955153750fa24c70d7adaf8e69c0773b2",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "autumn-villa-clay-v004",
+      "family": "rlasm-autumn-villa",
+      "archetype_id": "mediterranean_villa_estate",
+      "variant_id": "med_villa_tuscan",
+      "archetype_label": "Tuscan Arcade Villa",
+      "variant_label": "Tuscan Arcade Villa",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 18,
+        "depth": 13,
+        "height": 11.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
+          "bytes": 1182591,
+          "sha256": "a69fed88b5478ee2902ef21fffcc3c643f114f70ae9bdccf4f93da1a8863507d"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-oblique.jpg",
+          "bytes": 938165,
+          "sha256": "479cba141aaee286d33fc1e48a05483c2871db299a59833db8e86ce89c4aa03b"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-top.jpg",
+          "bytes": 886977,
+          "sha256": "93a8889f117f37693d8d97c69d9b0740f5ece304b18ae7f692c5dc1f704abe25"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\villa-v004",
+      "picker": {
+        "id": "autumn_villa",
+        "description": "A three-level Tuscan home with a covered stone arcade, green shutters and a canal-tile roof.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 23,
+        "depth": 18,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/autumn-villa-clay-v004.glb",
+        "bytes": 2401440,
+        "sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+        "native_dimensions_m": {
+          "width": 19.299999237060547,
+          "height": 11.779999732971191,
+          "depth": 14.130000114440918
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-villa-clay-v004.json",
+        "sha256": "d6f07fb315213822c4a8ead5efc7195da6c7d94aa697c65163a80d80b28b323e",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "autumn-cinema-clay-v004",
+      "family": "rlasm-autumn-cinema",
+      "archetype_id": "deco_theater_mainstreet",
+      "variant_id": "deco_theater_movie_palace",
+      "archetype_label": "Grand Deco Cinema",
+      "variant_label": "Grand Deco Cinema",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 24,
+        "depth": 38,
+        "height": 22
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+          "bytes": 1209103,
+          "sha256": "7d4c6e549afade74d08aad286d72e47dbbfbdf7508d4b4f7442fc3548a10f5a8"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-oblique.jpg",
+          "bytes": 913204,
+          "sha256": "172b54afc20efc454225cb5c6ecdda80293200668496f3f0cf58c8c7202aed40"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-top.jpg",
+          "bytes": 828028,
+          "sha256": "91743f99beceeaf2b275a162039513e7ff33d4732f3eb8929e67cd026c014239"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\cinema-v004",
+      "picker": {
+        "id": "autumn_cinema",
+        "description": "An Art Deco movie palace with arched gallery windows, a gold marquee and a double-sided blade sign.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete native building. Enlarge its surrounding plot or place another building.",
+        "width": 28,
+        "depth": 46,
+        "max_size": 150
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/autumn-cinema-clay-v004.glb",
+        "bytes": 994708,
+        "sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+        "native_dimensions_m": {
+          "width": 24.639999389648438,
+          "height": 21.420000076293945,
+          "depth": 42.290000915527344
+        },
+        "mesh_count": 13,
+        "material_count": 13,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-cinema-clay-v004.json",
+        "sha256": "0322fbc1407417d16d9c9ba5ae2711db8699a6b42633b0059d7040ac921eff1d",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "neighbourhood-library-clay-v003",
+      "family": "rlasm-clay-mass-timber-biophilic-barn",
+      "archetype_id": "university_library",
+      "variant_id": "mass_timber_biophilic_barn",
+      "archetype_label": "University Library",
+      "variant_label": "Mass-timber Library",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 34,
+        "depth": 30,
+        "height": 15.6
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/university-library/variant_2.png",
+          "bytes": 1119221,
+          "sha256": "dbff795881507ed296a2ca190bf6b6c7218544a98dcdbeef39da25ee19f7ec9b"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/university-library/variant_2_angle_60.jpg",
+          "bytes": 932069,
+          "sha256": "04b65811fdb3a5472214351a7018405711f13c8f3c89c20947c81e2d1bc5d702"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/university-library/variant_2_angle_90.jpg",
+          "bytes": 911188,
+          "sha256": "5037ce4f6c67f9d06892e64ae8b53be3e85b09875493a083b1039f24f6385969"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\library-v003",
+      "picker": {
+        "id": "clay_mass_timber_biophilic_barn",
+        "description": "Planted roof terraces, branching timber supports and a glazed reading hall.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 40,
+        "depth": 37,
+        "max_size": 140
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/neighbourhood-library-clay-v003.glb",
+        "bytes": 11996768,
+        "sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+        "native_dimensions_m": {
+          "width": 35.36000061035156,
+          "height": 15.5018310546875,
+          "depth": 32.599998474121094
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/neighbourhood-library-clay-v003.json",
+        "sha256": "5daca8e47e64fef3e6506f574a7835b3e8b60bc760b055d51fa02b3c42ae762c",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "neighbourhood-corner-cafe-clay-v010",
+      "family": "rlasm-clay-parisian-corner-cafe-culture",
+      "archetype_id": "parisian_boulevard_corner",
+      "variant_id": "parisian_corner_cafe_culture",
+      "archetype_label": "Parisian Boulevard Corner",
+      "variant_label": "Corner Café & Apartments",
+      "native_floors": 6,
+      "design_dimensions_m": {
+        "width": 44,
+        "depth": 44,
+        "height": 20.65
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+          "bytes": 1447547,
+          "sha256": "44a33ec2b53dd2e4eab9cbf9f14dd2f24db938a31fcd2d58cd14206501378fde"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1_angle_60.jpg",
+          "bytes": 948681,
+          "sha256": "52376c0bbf60f5fd01c3628debf642318ee9fd4390202c44f81b97088145917c"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1_angle_90.jpg",
+          "bytes": 907237,
+          "sha256": "fcdb62bcf9d787a973279e4b3beaa495e07f700e3aa75cdaf0b3a21d0ba023ab"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\cafe-v010",
+      "picker": {
+        "id": "clay_parisian_corner_cafe_culture",
+        "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
+        "group_id": "mixed",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 49,
+        "depth": 48,
+        "max_size": 140
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/neighbourhood-corner-cafe-clay-v010.glb",
+        "bytes": 16430728,
+        "sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+        "native_dimensions_m": {
+          "width": 44.06293869018555,
+          "height": 20.64999961555004,
+          "depth": 43.16806359868497
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/neighbourhood-corner-cafe-clay-v010.json",
+        "sha256": "b6980f2240b1a9996aabce5369f71a645290c191488fbc1aad76846d569904e0",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "victorian-station-interior-clay-v007",
+      "family": "rlasm-clay-station-victorian-iron-glass",
+      "archetype_id": "historic_grand_station",
+      "variant_id": "station_victorian_iron_glass",
+      "archetype_label": "Historic Grand Station",
+      "variant_label": "Victorian Grand Station",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 60,
+        "depth": 96,
+        "height": 33
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1.png",
+          "bytes": 1345064,
+          "sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1_angle_60.jpg",
+          "bytes": 967228,
+          "sha256": "995b11e41e157ce95cce34c91a9b23b633f4f7058efad6c7a59d16d06e42c784"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1_angle_90.jpg",
+          "bytes": 944707,
+          "sha256": "a31e8f92c8c0d20881a765642e489bd782238880a8fbe9c8bdf75739dcd7608e"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\station-interior-2026-10-01\\v007",
+      "picker": {
+        "id": "clay_station_victorian_iron_glass",
+        "description": "Victorian iron-and-glass train hall, ticket booths, café, platforms and two walkable gallery stairs.",
+        "group_id": "infrastructure",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 64,
+        "depth": 100,
+        "max_size": 140
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/victorian-station-interior-clay-v007.glb",
+        "bytes": 12906244,
+        "sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+        "native_dimensions_m": {
+          "width": 60.0,
+          "height": 32.560001373291016,
+          "depth": 96.0
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/victorian-station-interior-clay-v007.json",
+        "sha256": "e0b39dbc4db094696d799b7c35c166035b92dbd1d3477165dfe7b3045b1ff06b",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "interior-school-clay-v003",
+      "family": "rlasm-clay-biophilic-mass-timber-campus",
+      "archetype_id": "university_academic_complex",
+      "variant_id": "biophilic_mass_timber_campus",
+      "archetype_label": "University Academic Complex",
+      "variant_label": "Timber Art & Design School",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 36,
+        "depth": 30,
+        "height": 17
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2.png",
+          "bytes": 1243908,
+          "sha256": "1d66a10b13ffc137e6cec7ce6c4f31a23c5d8e1f64bffa015729059d9398eab3"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2_angle_60.jpg",
+          "bytes": 900471,
+          "sha256": "e42a6950bd166377be73ac393fbff42604dcf5742ff9d8f2ac4fbbc2693d5400"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2_angle_90.jpg",
+          "bytes": 906336,
+          "sha256": "2bcb1121c2703848c0de19c6b0017c1cdc753decd554c64ebc6b7e3bc1caec6a"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\school\\v003",
+      "picker": {
+        "id": "clay_biophilic_mass_timber_campus",
+        "description": "Exhibition gallery, painting and ceramics studios, roof lounge and planted terrace connected by walkable stairs.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 40,
+        "depth": 34,
+        "max_size": 100
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/interior-school-clay-v003.glb",
+        "bytes": 10306868,
+        "sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+        "native_dimensions_m": {
+          "width": 36.0,
+          "height": 16.309999465942383,
+          "depth": 30.0
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/interior-school-clay-v003.json",
+        "sha256": "28c7ddfb97fa9dd3699ac470ea53dd31e54a2e9bcbc42ffff5c839f5fcb4a53c",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "interior-hotel-clay-v006",
+      "family": "rlasm-clay-mediterranean-resort-courtyard",
+      "archetype_id": "boutique_hotel",
+      "variant_id": "mediterranean_resort_courtyard",
+      "archetype_label": "Boutique Hotel",
+      "variant_label": "Mediterranean Courtyard Hotel",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 40,
+        "depth": 36,
+        "height": 14
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1.png",
+          "bytes": 1256950,
+          "sha256": "1f126e400d9312467d5fc7febe0eb29a7a9471b001e424472814b4acfe08eee4"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1_angle_60.jpg",
+          "bytes": 937828,
+          "sha256": "b611dfd6dec268171bdd8f7c3f9493712f3d7a4dea349105fcbb6fbaf1532c82"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1_angle_90.jpg",
+          "bytes": 889403,
+          "sha256": "46610892dfcc44d36f036ba84709abcb8f81b06945f1a8bd439fa15076180de7"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\interior-building-pair-2026-10-01\\hotel\\v006",
+      "picker": {
+        "id": "clay_mediterranean_resort_courtyard",
+        "description": "Furnished guest suites, concierge lounge, open courtyard, upper galleries and a poolside loggia with walkable stairs.",
+        "group_id": "hotels",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "The complete building keeps its authored proportions within the plot.",
+        "width": 44,
+        "depth": 40,
+        "max_size": 100
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/interior-hotel-clay-v006.glb",
+        "bytes": 31885072,
+        "sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+        "native_dimensions_m": {
+          "width": 40.0,
+          "height": 13.588971138000488,
+          "depth": 36.0
+        },
+        "mesh_count": 20,
+        "material_count": 20,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/interior-hotel-clay-v006.json",
+        "sha256": "7ff2ccb8bfca64bc3b83fa23f822287a4251d457f94fa391cac22d787806b190",
         "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
         "unresolved_p0": 0,
         "unresolved_p1": 0

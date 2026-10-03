@@ -40,6 +40,7 @@ from app.services.plan_geometry.archetypes import load_dims_table
 VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
 VALID_FOOTPRINT_PROFILES = {"rectangle", "l_shape", "u_shape", "courtyard"}
 RLASM_ARCHITECTURAL_CLAY_FORMAT = "architectural_clay"
+RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT = "architectural_clay_module_v1"
 
 # family/role/variant/LOD become storage-key path segments
 # so they must be plain slugs — no slashes, dots, or other path syntax.
@@ -94,6 +95,10 @@ class ModuleDescriptor:
     lod: int = 0
     allowed_levels: tuple[int, ...] = ()
     native_floors: int | None = None
+    # Number of occupied storeys represented by one module instance.  Podiums
+    # may contain several complete levels while roofs contain none.  The
+    # default preserves the original one-module/one-storey planner contract.
+    occupied_storeys: int = 1
     source_variant_id: str | None = None
     generation_archetype_id: str | None = None
     footprint_compatibility: dict[str, Any] | None = None
@@ -192,7 +197,9 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         return None
 
     rlasm = metadata.get("rlasm") or {}
-    is_clay = isinstance(rlasm, dict) and rlasm.get("delivery_format") == RLASM_ARCHITECTURAL_CLAY_FORMAT
+    delivery_format = rlasm.get("delivery_format") if isinstance(rlasm, dict) else None
+    is_clay = delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT
+    is_clay_module = delivery_format == RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT
     if is_clay and not (
         rlasm.get("method_version") == "6.1"
         and rlasm.get("runtime_enabled") is True
@@ -203,6 +210,26 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         and lego["native_floors"] >= 1
         and lego.get("min_floors") == lego["native_floors"]
         and lego.get("max_floors") == lego["native_floors"]
+        and bool(rlasm.get("variant_id"))
+        and lego.get("source_variant_id") == rlasm["variant_id"]
+        and lego.get("generation_archetype_id") == rlasm["variant_id"]
+    ):
+        return None
+    module_role = lego.get("role")
+    module_is_complete_assembly = (
+        module_role == "assembled"
+        and lego.get("repeatable_z") is False
+        and isinstance(lego.get("native_floors"), int)
+        and lego["native_floors"] >= 1
+        and lego.get("min_floors") == lego["native_floors"]
+        and lego.get("max_floors") == lego["native_floors"]
+        and (lego.get("placement_contract") or {}).get("mode") == "authored_storey_program"
+    )
+    if is_clay_module and not (
+        rlasm.get("method_version") == "6.1"
+        and rlasm.get("runtime_enabled") is True
+        and rlasm.get("continuous_resize_allowed") is False
+        and (module_role in {"podium", "floor", "roof"} or module_is_complete_assembly)
         and bool(rlasm.get("variant_id"))
         and lego.get("source_variant_id") == rlasm["variant_id"]
         and lego.get("generation_archetype_id") == rlasm["variant_id"]
@@ -243,6 +270,10 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             if isinstance(value, (int, float)) and int(value) >= 0
         ),
         native_floors=_as_int_or_none(lego.get("native_floors")),
+        occupied_storeys=max(
+            0,
+            (_as_int_or_none(lego.get("occupied_storeys")) or 0) if lego.get("occupied_storeys") is not None else 1,
+        ),
         source_variant_id=(str(lego.get("source_variant_id")) if lego.get("source_variant_id") else None),
         generation_archetype_id=(
             str(lego.get("generation_archetype_id")) if lego.get("generation_archetype_id") else None
@@ -254,13 +285,26 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             lego.get("placement_contract") if isinstance(lego.get("placement_contract"), dict) else None
         ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
-        delivery_format=RLASM_ARCHITECTURAL_CLAY_FORMAT if is_clay else None,
+        delivery_format=(
+            RLASM_ARCHITECTURAL_CLAY_FORMAT
+            if is_clay
+            else RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT if is_clay_module else None
+        ),
     )
 
 
 def is_runtime_rlasm_architectural_clay_entry(entry: Any) -> bool:
     descriptor = descriptor_from_library_entry(entry)
     return descriptor is not None and descriptor.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT
+
+
+def is_runtime_rlasm_architecture_entry(entry: Any) -> bool:
+    """Return true for a validated exact assembly or one of its authored modules."""
+    descriptor = descriptor_from_library_entry(entry)
+    return descriptor is not None and descriptor.delivery_format in {
+        RLASM_ARCHITECTURAL_CLAY_FORMAT,
+        RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT,
+    }
 
 
 class RuntimeArchitectureEntries(list):
@@ -288,7 +332,7 @@ def select_runtime_architecture_entries(entries: Iterable[Any]) -> RuntimeArchit
     )
     if installed:
         return RuntimeArchitectureEntries(
-            (entry for entry in materialized if is_runtime_rlasm_architectural_clay_entry(entry)),
+            (entry for entry in materialized if is_runtime_rlasm_architecture_entry(entry)),
             clay_installed=True,
         )
     return RuntimeArchitectureEntries(
@@ -336,7 +380,7 @@ def _strip_card_variant_suffix(semantic_id: str) -> str:
 
 
 def _matches_requested_archetype(module: ModuleDescriptor, archetype_id: str) -> bool:
-    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT:
+    if module.delivery_format in {RLASM_ARCHITECTURAL_CLAY_FORMAT, RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT}:
         return bool(module.source_variant_id and _semantic_id(archetype_id) == _semantic_id(module.source_variant_id))
     requested = _strip_card_variant_suffix(_semantic_id(archetype_id))
     candidates = (
@@ -708,12 +752,21 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     re-imports share the same runtime behavior.
     """
 
-    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT:
-        return True
     placement = module.placement_contract or {}
     footprint = module.footprint_compatibility or {}
     placement_mode = _semantic_id(str(placement.get("mode") or ""))
     footprint_mode = _semantic_id(str(footprint.get("placementMode") or ""))
+    # An exact source GLB may participate in a finite, authored storey
+    # programme without changing its bytes.  Only that explicit programme can
+    # opt an architectural-clay source into the bounded uniform scale band;
+    # all other reviewed sources retain select-and-place behavior.
+    authored_storey_program = (
+        placement_mode == "authored_storey_program"
+        and placement.get("uniform_horizontal_scale_only") is True
+        and placement.get("vertical_scale") == 1.0
+    )
+    if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT and not authored_storey_program:
+        return True
     fixed_non_resizable = placement_mode == "fixed_landmark" and placement.get("continuous_resize_allowed") is False
     return bool(fixed_non_resizable or footprint_mode == "select_and_place" or footprint.get("polygonFit") is False)
 
@@ -1444,7 +1497,8 @@ def _plan_vertical_assembly_core(
             setback and request.target_floors >= (setback.setback_min_floors or 5) and request.allow_setback
         )
         use_crown = bool(crown and request.target_floors >= 3)
-        standard_count = request.target_floors - 1 - (1 if use_setback else 0) - (1 if use_crown else 0)
+        podium_storeys = max(1, podium.occupied_storeys)
+        standard_count = request.target_floors - podium_storeys - (1 if use_setback else 0) - (1 if use_crown else 0)
         if standard_count < 0:
             continue
         if standard_count and not floor_variants:
@@ -1530,8 +1584,8 @@ def _plan_vertical_assembly_core(
             z += module.height_m
 
         add_level(podium, "podium", 0)
-        for level in range(1, standard_count + 1):
-            add_level(floor_variants[(level - 1) % len(floor_variants)], "floor", level)
+        for index in range(standard_count):
+            add_level(floor_variants[index % len(floor_variants)], "floor", podium_storeys + index)
         if use_setback and setback:
             add_level(setback, "setback", request.target_floors - (2 if use_crown else 1))
         if use_crown and crown:
@@ -1623,6 +1677,14 @@ def _plan_vertical_assembly_core(
                 "profile": request.footprint_profile,
                 "segment_count": len(segments),
                 "footprint_mode": "archetype_contain",
+                "delivery_format": (
+                    RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT
+                    if levels
+                    and all(
+                        module.delivery_format == RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT for module, _, _, _ in levels
+                    )
+                    else None
+                ),
                 "compatibility_source": (
                     "forced_fit"
                     if forced

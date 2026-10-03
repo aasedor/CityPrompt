@@ -393,6 +393,7 @@ class RenderAuditLog(Base):
     project_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
     model: Mapped[str] = mapped_column(String(100), nullable=False)
     tokens_spent: Mapped[int] = mapped_column(Integer, default=0)
+    student_refunded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     input_image_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
     output_image_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
     prompt_preview: Mapped[str | None] = mapped_column(Text, nullable=True)

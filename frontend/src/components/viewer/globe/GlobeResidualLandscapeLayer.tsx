@@ -19,6 +19,7 @@ import {
 import { resolveParkTreeVariant } from './publicRealmPropPalettes';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { useSharedSiteGround } from './SharedSiteGroundProvider';
+import { clearsNativeParkApproaches, nativeParkApproaches } from '@/features/parks/nativeParkReservations';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_INTERVAL_FRAMES = 30;
@@ -151,14 +152,24 @@ function ResidualShrubs({placements}: {placements: Array<{x:number;y:number;z:nu
 export function GlobeResidualLandscapeLayer({
   zones,
   terrainHeight,
+  accessZones = zones,
 }: {
   zones: SiteZone[];
   terrainHeight: number;
+  accessZones?: SiteZone[];
 }) {
+  const paths = useMemo(() => nativeParkApproaches(accessZones), [accessZones]);
+  const visibleRecipes = useMemo(() => zones.map(zone => {
+    const recipe = getResidualLandscapeRecipe(zone);
+    if (!recipe) return null;
+    // Keep the same 5.8 m crown envelope used by the residual landscape builder.
+    // This also protects approaches across the unused part of a larger park parcel.
+    return {...recipe, placements: recipe.placements.filter(p => clearsNativeParkApproaches(p.lng, p.lat, 5.8 * p.scale, paths))};
+  }), [zones, paths]);
   return (
     <>
-      {zones.map((zone) => {
-        const recipe = getResidualLandscapeRecipe(zone);
+      {zones.map((zone, index) => {
+        const recipe = visibleRecipes[index];
         if (!recipe || !recipe.placements.length) return null;
         return (
           <ResidualLandscapeInstance

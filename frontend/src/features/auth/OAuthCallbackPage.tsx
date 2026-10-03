@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 import { resetSessionState } from '@/utils/sessionReset';
+import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
 import { safeReturnTo } from './returnTo';
 
 export function scrubOAuthCallbackUrl(): void {
@@ -49,9 +50,26 @@ export function OAuthCallbackPage() {
     // not left visible in screenshots or copied URLs.
     scrubOAuthCallbackUrl();
 
+    const failSignIn = (message: string) => {
+      // A partial credential write must not leave the UI signed in. Storage
+      // removal can itself be blocked, so always finish the in-memory reset.
+      for (const key of ['access_token', 'refresh_token']) {
+        try { localStorage.removeItem(key); } catch { /* storage unavailable */ }
+      }
+      resetSessionState(queryClient);
+      setUser(null);
+      toast.error(message);
+      navigate('/login', { replace: true });
+    };
+
     // Store tokens
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('refresh_token', refreshToken);
+    try {
+      localStorage.setItem('access_token', accessToken);
+      localStorage.setItem('refresh_token', refreshToken);
+    } catch {
+      failSignIn('Could not save your sign-in session. Enable browser storage or free up space, then try again.');
+      return;
+    }
 
     // Fetch user profile and redirect
     authApi
@@ -60,15 +78,12 @@ export function OAuthCallbackPage() {
         resetSessionState(queryClient);
         setUser(user);
         toast.success(`Welcome, ${user.full_name || user.email}!`);
-        const returnTo = localStorage.getItem('oauth_return_to');
-        localStorage.removeItem('oauth_return_to');
+        const returnTo = readBrowserPreference('oauth_return_to');
+        writeBrowserPreference('oauth_return_to', null);
         navigate(safeReturnTo(returnTo), { replace: true });
       })
       .catch(() => {
-        toast.error('Failed to load user profile after OAuth login');
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        navigate('/login', { replace: true });
+        failSignIn('Failed to load user profile after OAuth login');
       });
   }, [searchParams, navigate, queryClient, setUser]);
 

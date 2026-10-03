@@ -3,6 +3,7 @@ import type { SavedRender } from '@/types';
 type Presentation = Pick<SavedRender, 'outcome' | 'presentation_strategy' | 'variant'>;
 
 export function savedRenderNeedsReview(render: Presentation): boolean {
+  if (render.variant === 'provider_original') return false;
   return render.outcome?.split('·')[0].trim() === 'review_required';
 }
 
@@ -13,7 +14,7 @@ export function savedRenderIsSource(render: Presentation): boolean {
 }
 
 export function savedRenderNotice(render: Presentation): string {
-  if (render.variant === 'provider_original') return 'Unverified AI original. It may change the design; compare it with the original 3D view before using it.';
+  if (render.variant === 'provider_original') return '';
   if (savedRenderIsSource(render)) return '3D source returned. The AI finish could not be verified and was kept separately for review.';
   return savedRenderNeedsReview(render)
     ? 'Review building locations, shapes, and streets against your plan before presenting.' : '';

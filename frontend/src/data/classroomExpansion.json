@@ -1,0 +1,2472 @@
+{
+  "entries": [
+    {
+      "domain": "park",
+      "title": "Shaded Reading Garden",
+      "archetype_id": "student_reading_garden",
+      "variant_id": "student_reading_garden_v2",
+      "version": "reading-v002",
+      "placement_id": "native-park:student_reading_garden_v2--native-v1",
+      "sha256": "3482efa2b69276a5ae88229288bc5f288fdcfebac9bd2aa5c1fb878d05dc47ac",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Pickleball Social Garden",
+      "archetype_id": "student_pickleball_garden",
+      "variant_id": "student_pickleball_garden_v1",
+      "version": "pickleball-tree-wells-v001",
+      "placement_id": "native-park:student_pickleball_garden_v1--native-v1",
+      "sha256": "bdb0f854fab104dba862b0f8f3426b09db8c29e35a6b2bad3c2769d08e00c48a",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Garden Tennis Court",
+      "archetype_id": "student_tennis_garden",
+      "variant_id": "student_tennis_garden_v2",
+      "version": "tennis-v002",
+      "placement_id": "native-park:student_tennis_garden_v2--native-v1",
+      "sha256": "c94401f7b526e450c194f5ce46fb9976486aca83256fb30e192cc9802b3bd9fd",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Bocce Pergola Garden",
+      "archetype_id": "student_bocce_garden",
+      "variant_id": "student_bocce_garden_v2",
+      "version": "bocce-v002",
+      "placement_id": "native-park:student_bocce_garden_v2--native-v1",
+      "sha256": "3933e3b09b9b2dd00567d63b9b26af04e3449d5efa6ad209a28e4178cd0eef28",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Rustic Pocket Garden",
+      "archetype_id": "urban_pocket_park",
+      "variant_id": "urban_pocket_park_v0",
+      "version": "pocket-native-v003",
+      "placement_id": "native-park:urban_pocket_park_v0--native-v1",
+      "sha256": "985726fcef5a5964c0038088ceff65b21072e07456844d07994d509ff8493d5e",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Railway Meadow Greenway",
+      "archetype_id": "linear_park_greenway",
+      "variant_id": "linear_park_greenway_v0",
+      "version": "greenway-native-v002",
+      "placement_id": "native-park:linear_park_greenway_v0--native-v1",
+      "sha256": "c99516036b3f990387b91311d34786b3d65b0899c177a00c75e8df684a0de63e",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Inclusive Woodland Playground",
+      "archetype_id": "inclusive_accessible_playground",
+      "variant_id": "inclusive_accessible_playground_v0",
+      "version": "inclusive-native-v002",
+      "placement_id": "native-park:inclusive_accessible_playground_v0--native-v1",
+      "sha256": "1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Side-by-side duplex",
+      "archetype_id": "calgary_modern_infill_house",
+      "variant_id": "infill_duplex",
+      "version": "calgary-side-by-side-duplex-clay-v004",
+      "placement_id": "clay_side_by_side_duplex",
+      "sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Plateau stacked duplex",
+      "archetype_id": "montreal_duplex",
+      "variant_id": "montreal_duplex_plateau",
+      "version": "montreal-plateau-duplex-clay-v004",
+      "placement_id": "clay_montreal_plateau_duplex",
+      "sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Brick courtyard entrance building",
+      "archetype_id": "courtyard_family_housing",
+      "variant_id": "courtyard_family_brick_modern",
+      "version": "courtyard-brick-modern-clay-v004",
+      "placement_id": "clay_courtyard_brick_modern",
+      "sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Post-war bungalow",
+      "archetype_id": "calgary_inner_city_bungalow",
+      "variant_id": "bungalow_postwar_ranch",
+      "version": "calgary-inner-city-bungalow-clay-v005",
+      "placement_id": "trial_postwar_bungalow",
+      "sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Edwardian Foursquare",
+      "archetype_id": "toronto_edwardian_foursquare",
+      "variant_id": "toronto_foursquare_red_brick",
+      "version": "toronto-edwardian-foursquare-clay-v004",
+      "placement_id": "trial_edwardian_foursquare",
+      "sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Rammed-earth timber infill",
+      "archetype_id": "detached_contemporary_infill",
+      "variant_id": "detached_infill_rammed_earth",
+      "version": "detached_contemporary_infill-clay-v003",
+      "placement_id": "clay_rammed_earth_infill",
+      "sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Blue glass office tower",
+      "archetype_id": "glass_tower_podium_modern",
+      "variant_id": "glass_tower_blue_reflective",
+      "version": "glass_tower_podium_modern-clay-v003",
+      "placement_id": "clay_blue_glass_office_tower",
+      "sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Vancouver balcony and podium tower",
+      "archetype_id": "vancouverism_tower_podium",
+      "variant_id": "vancouverism_classic",
+      "version": "vancouverism-tower-podium-clay-v004",
+      "placement_id": "clay_vancouver_balcony_podium_tower",
+      "sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Protected Cycle Avenue",
+      "archetype_id": "protected_bike_lane_bidirectional",
+      "variant_id": "student_cycle_avenue_v1",
+      "version": "student_cycle_avenue_v1",
+      "placement_id": "student_cycle_avenue_v1",
+      "sha256": "673c1618cd6002c7e03523e06faf87b9476d8f5ce3b0c29ba0f237c63e75a2ea",
+      "asset_review": "source_reconstruction_verified",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Ruelle Verte Community Alley",
+      "archetype_id": "montreal_ruelle_verte",
+      "variant_id": "student_green_alley_v1",
+      "version": "student_green_alley_v1",
+      "placement_id": "student_green_alley_v1",
+      "sha256": "6d9514b1e9ab469ee38f3fa7115c00c6513e9fcb6abf199159108f24599963c5",
+      "asset_review": "source_reconstruction_verified",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Playful School Street",
+      "archetype_id": "school_street",
+      "variant_id": "student_school_street_v1",
+      "version": "student_school_street_v1",
+      "placement_id": "student_school_street_v1",
+      "sha256": "9606b8a34562784b1c5aeba0f108445c9e08cb2a83dfeb510fae1135b2ca8f3f",
+      "asset_review": "source_reconstruction_verified",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Woodland Stream & Bridge Garden",
+      "archetype_id": "japanese_garden",
+      "variant_id": "student_woodland_stream_garden_v1",
+      "version": "showcase-woodland-v004",
+      "placement_id": "native-park:student_woodland_stream_garden_v1--native-v1",
+      "sha256": "b4280c800244f05b035aea3a01ed954ec87740001b91130792f01a0bb19316b3",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Reflecting Fountain Garden",
+      "archetype_id": "fountain_water_feature",
+      "variant_id": "student_reflecting_fountain_garden_v1",
+      "version": "showcase-reflecting-v002",
+      "placement_id": "native-park:student_reflecting_fountain_garden_v1--native-v1",
+      "sha256": "2eb802caefceb5e591a12ea7393ac84f79dfbf82cb471d152acae6d04b691179",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Terraced Café & Fountain Court",
+      "archetype_id": "sunken_plaza",
+      "variant_id": "student_terraced_cafe_court_v1",
+      "version": "showcase-court-v002",
+      "placement_id": "native-park:student_terraced_cafe_court_v1--native-v1",
+      "sha256": "d4c6735bf653130f28ce81c87fcf228e31410e992b28a6ae8bf0b9263afbd477",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Garden Tram Avenue",
+      "archetype_id": "light_rail_tram_avenue",
+      "variant_id": "student_grass_tram_avenue_v1",
+      "version": "student_grass_tram_avenue_v1",
+      "placement_id": "student_grass_tram_avenue_v1",
+      "sha256": "db4d34616a99281938ad0d0852868fa624e3c2d491c7fe26fd891652b2bb65cb",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Vine Pergola Promenade",
+      "archetype_id": "riverfront_promenade",
+      "variant_id": "student_vine_pergola_promenade_v1",
+      "version": "student_vine_pergola_promenade_v1",
+      "placement_id": "student_vine_pergola_promenade_v1",
+      "sha256": "79f8d74d3720b895acd752d4d40853e7d48588dc6bb022715b7327165aa08a4b",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Grand Haussmann Boulevard",
+      "archetype_id": "haussmann_boulevard",
+      "variant_id": "student_grand_haussmann_boulevard_v1",
+      "version": "student_grand_haussmann_boulevard_v1",
+      "placement_id": "student_grand_haussmann_boulevard_v1",
+      "sha256": "2184816a560792cdee4b8eebced15b6fba833aa8e641fb41b2c8e1ab9776f079",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Grand Iron & Glass Market",
+      "archetype_id": "food_hall_market_hall",
+      "variant_id": "market_historic_iron_glass",
+      "version": "showcase-market-clay-v006",
+      "placement_id": "showcase_market",
+      "sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Living-Roof Aquatic Centre",
+      "archetype_id": "aquatic_natatorium_complex",
+      "variant_id": "biophilic_mass_timber_pool",
+      "version": "showcase-aquatic-clay-v004",
+      "placement_id": "showcase_aquatic",
+      "sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Gilded Terracotta Tower",
+      "archetype_id": "art_deco_setback_tower",
+      "variant_id": "art_deco_cream_terracotta",
+      "version": "showcase-tower-clay-v005",
+      "placement_id": "showcase_tower",
+      "sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Nordic Roof-Garden Apartments",
+      "archetype_id": "nordic_timber_midrise",
+      "variant_id": "nordic_timber_mass_timber",
+      "version": "autumn-timber-clay-v004",
+      "placement_id": "autumn_timber",
+      "sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Tuscan Arcade Villa",
+      "archetype_id": "mediterranean_villa_estate",
+      "variant_id": "med_villa_tuscan",
+      "version": "autumn-villa-clay-v004",
+      "placement_id": "autumn_villa",
+      "sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Grand Deco Cinema",
+      "archetype_id": "deco_theater_mainstreet",
+      "variant_id": "deco_theater_movie_palace",
+      "version": "autumn-cinema-clay-v004",
+      "placement_id": "autumn_cinema",
+      "sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Urban Splash-Play Plaza",
+      "archetype_id": "splash_pad_area",
+      "variant_id": "student_urban_splash_plaza_v1",
+      "version": "autumn-splash-v002",
+      "placement_id": "native-park:student_urban_splash_plaza_v1--native-v1",
+      "sha256": "3222433e6a629bc5d3328901c96d270619623cb8b758ecda78cda57b5e6e9e6d",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Stone Labyrinth Garden",
+      "archetype_id": "labyrinth_meditation",
+      "variant_id": "student_stone_labyrinth_garden_v1",
+      "version": "autumn-labyrinth-v005",
+      "placement_id": "native-park:student_stone_labyrinth_garden_v1--native-v1",
+      "sha256": "af81f58831b58430d0e23608782bc3d62086a34b5335c303a03eccc0e54e8018",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Sheltered Dog Park",
+      "archetype_id": "dog_park",
+      "variant_id": "student_sheltered_dog_park_v1",
+      "version": "autumn-dog-v001",
+      "placement_id": "native-park:student_sheltered_dog_park_v1--native-v1",
+      "sha256": "d164bee7af12da298a0e507122bd080143a73346dd0521955715e41a6063515e",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "London Cobbled Mews",
+      "archetype_id": "london_mews_lane",
+      "variant_id": "student_london_cobbled_mews_v1",
+      "version": "student_london_cobbled_mews_v1",
+      "placement_id": "student_london_cobbled_mews_v1",
+      "sha256": "793881f227523f99179fbbd339ed9c44fe994eddbef043d4392b4723ea313ab3",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Cherry Blossom Neighbourhood Street",
+      "archetype_id": "vancouver_cherry_blossom_street",
+      "variant_id": "student_cherry_blossom_street_v1",
+      "version": "student_cherry_blossom_street_v1",
+      "placement_id": "student_cherry_blossom_street_v1",
+      "sha256": "e81a9428bbfb00a002a25fe9d3a6eaf1b6a339e3344d928d23583cf41dee237e",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Barcelona Shaded Promenade",
+      "archetype_id": "barcelona_passeig",
+      "variant_id": "student_barcelona_shaded_promenade_v1",
+      "version": "student_barcelona_shaded_promenade_v1",
+      "placement_id": "student_barcelona_shaded_promenade_v1",
+      "sha256": "b62da7c2954673a45891069b44e1395087ea53db64677fb4e37c9c7a05c4a360",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Mass-timber Library",
+      "archetype_id": "university_library",
+      "variant_id": "mass_timber_biophilic_barn",
+      "version": "neighbourhood-library-clay-v003",
+      "placement_id": "clay_mass_timber_biophilic_barn",
+      "sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Corner Café & Apartments",
+      "archetype_id": "parisian_boulevard_corner",
+      "variant_id": "parisian_corner_cafe_culture",
+      "version": "neighbourhood-corner-cafe-clay-v010",
+      "placement_id": "clay_parisian_corner_cafe_culture",
+      "sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Community Allotment Garden",
+      "archetype_id": "community_garden_enhanced",
+      "variant_id": "student_community_allotment_v1",
+      "version": "neighbourhood-allotment-v006",
+      "placement_id": "native-park:student_community_allotment_v1--native-v1",
+      "sha256": "02ce66e57b40653d578aa41389040b9925d1f0c38944a87807176882b3388b6f",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Forest Adventure Nature Play",
+      "archetype_id": "nature_play_area",
+      "variant_id": "student_forest_adventure_v1",
+      "version": "neighbourhood-nature-v006",
+      "placement_id": "native-park:student_forest_adventure_v1--native-v1",
+      "sha256": "5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Spiral Lookout Park",
+      "archetype_id": "student_spiral_lookout",
+      "variant_id": "student_spiral_lookout_v1",
+      "version": "climbable-spiral-v003",
+      "placement_id": "native-park:student_spiral_lookout_v1--native-v1",
+      "sha256": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Quarry Garden",
+      "archetype_id": "student_quarry_garden",
+      "variant_id": "student_quarry_garden_v1",
+      "version": "climbable-quarry-v006",
+      "placement_id": "native-park:student_quarry_garden_v1--native-v1",
+      "sha256": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Cascade Water Garden",
+      "archetype_id": "student_cascade_water_garden",
+      "variant_id": "student_cascade_water_garden_v1",
+      "version": "climbable-cascade-v004",
+      "placement_id": "native-park:student_cascade_water_garden_v1--native-v1",
+      "sha256": "2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Victorian Grand Station",
+      "archetype_id": "historic_grand_station",
+      "variant_id": "station_victorian_iron_glass",
+      "version": "victorian-station-interior-clay-v007",
+      "placement_id": "clay_station_victorian_iron_glass",
+      "sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Timber Art & Design School",
+      "archetype_id": "university_academic_complex",
+      "variant_id": "biophilic_mass_timber_campus",
+      "version": "interior-school-clay-v003",
+      "placement_id": "clay_biophilic_mass_timber_campus",
+      "sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "building",
+      "title": "Mediterranean Courtyard Hotel",
+      "archetype_id": "boutique_hotel",
+      "variant_id": "mediterranean_resort_courtyard",
+      "version": "interior-hotel-clay-v006",
+      "placement_id": "clay_mediterranean_resort_courtyard",
+      "sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+      "asset_review": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Treetop Walk Park",
+      "archetype_id": "student_treetop_walk",
+      "variant_id": "student_treetop_walk_v1",
+      "version": "garden-treetop-v003",
+      "placement_id": "native-park:student_treetop_walk_v1--native-v1",
+      "sha256": "8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Terraced Rose Garden",
+      "archetype_id": "student_terraced_rose",
+      "variant_id": "student_terraced_rose_v1",
+      "version": "garden-rose-v005",
+      "placement_id": "native-park:student_terraced_rose_v1--native-v1",
+      "sha256": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Elevated Garden Rail",
+      "archetype_id": "elevated_garden_rail",
+      "variant_id": "student_elevated_garden_rail_v1",
+      "version": "student_elevated_garden_rail_v1",
+      "placement_id": "student_elevated_garden_rail_v1",
+      "sha256": "b058e887b30a73ca831a5c54e4f25011ae58ea9e6b8ae80c86d9256fdb4287e8",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "PASS_LOCAL_PREPARED_SITE",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "SkyTrain Elevated Corridor · Modern Station Hub",
+      "archetype_id": "skytrain_elevated_corridor",
+      "variant_id": "skytrain_elevated_corridor_v0",
+      "version": "skytrain_elevated_corridor_v0",
+      "placement_id": "skytrain_elevated_corridor_v0",
+      "sha256": "38b373e577f7146a14b2ab131603a0d7bdb62fc7267d67d00ff4adcc20fec825",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Elevated Rail Transit · Parametric Flow Station",
+      "archetype_id": "elevated_rail_transit_corridor",
+      "variant_id": "elevated_rail_transit_corridor_v0",
+      "version": "elevated_rail_transit_corridor_v0",
+      "placement_id": "elevated_rail_transit_corridor_v0",
+      "sha256": "c28f2998214b30f1cff48f95e33dd513456fb1f0fe498ed7ce83a0f347dfdef5",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    }
+  ],
+  "assets": [
+    {
+      "id": "native-park:student_reading_garden_v2--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Shaded Reading Garden",
+      "description": "Two shaded reading pergolas, flowering beds and quiet social seating.",
+      "thumbnail": "/native-park-assets/c5a650c4cad95a3abef617dbd640c8bf5fdd35ea1432fbd9dce705bcb6534815.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 30.0,
+      "depth": 26.0,
+      "minWidth": 30.0,
+      "minDepth": 26.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_reading_garden_v2",
+        "revision": "5c6a709fb7e69eeeb6de039809c16776bc30645de9614afffab85397c711c50a",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_reading_garden",
+        "green_space_selected_variant_id": "student_reading_garden_v2",
+        "green_space_native_layout_id": "student_reading_garden_v2--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_pickleball_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Pickleball Social Garden",
+      "description": "A native-size pickleball court, shaded social seating and planted tree wells.",
+      "thumbnail": "/native-park-assets/f8097bb4f869cf9a854192fba3e67155368b17348737fff6356b62c538f0251f.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 34.0,
+      "depth": 34.0,
+      "minWidth": 34.0,
+      "minDepth": 34.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_pickleball_garden_v1",
+        "revision": "ef5762251943079d6a7510f529b4d117a31d2837fe857f11d461ae4cdb47e7e3",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_pickleball_garden",
+        "green_space_selected_variant_id": "student_pickleball_garden_v1",
+        "green_space_native_layout_id": "student_pickleball_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_tennis_garden_v2--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Garden Tennis Court",
+      "description": "A garden tennis court with covered benches, spectator seating and lighting.",
+      "thumbnail": "/native-park-assets/b8264e62966be8443a2eb2184d502f13851e607f947faf2e9a67121ec3ab75e1.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 38.3,
+      "depth": 56.6,
+      "minWidth": 38.3,
+      "minDepth": 56.6,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_tennis_garden_v2",
+        "revision": "e2f7e20157f3ad95782137f984524f16f980670bcbdf9caa0034b43bdc063a41",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_tennis_garden",
+        "green_space_selected_variant_id": "student_tennis_garden_v2",
+        "green_space_native_layout_id": "student_tennis_garden_v2--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_bocce_garden_v2--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Bocce Pergola Garden",
+      "description": "A native bocce lane with vine pergola, cafe seating and garden borders.",
+      "thumbnail": "/native-park-assets/3d3bfef46dca5d933d89ec61ea442c73770a81166a9d3e2ecdedd1d02048299b.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 26.4,
+      "depth": 49.0,
+      "minWidth": 26.4,
+      "minDepth": 49.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_bocce_garden_v2",
+        "revision": "935250c769cf950991ce35e6ccc4a7fc580c43bbf808bb2d5bc4bbcb25f26fc0",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_bocce_garden",
+        "green_space_selected_variant_id": "student_bocce_garden_v2",
+        "green_space_native_layout_id": "student_bocce_garden_v2--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:urban_pocket_park_v0--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Rustic Pocket Garden",
+      "description": "A circular lawn, curved timber seat, rustic pergola and layered flowering borders.",
+      "thumbnail": "/native-park-assets/9ba6102ae7bd7376dcd8cfc5b213faec1e05384af1250242da2842e857882901.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 30.0,
+      "depth": 26.0,
+      "minWidth": 30.0,
+      "minDepth": 26.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "urban_pocket_park_v0",
+        "revision": "aa17f01fdb4a44036d038696728e54ec5b35974f30adae2be7a1258d557eaaad",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "urban_pocket_park",
+        "green_space_selected_variant_id": "urban_pocket_park_v0",
+        "green_space_native_layout_id": "urban_pocket_park_v0--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:linear_park_greenway_v0--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Railway Meadow Greenway",
+      "description": "A curving meadow trail with preserved rails, seating alcoves and an iron truss gateway.",
+      "thumbnail": "/native-park-assets/c8e21483ed9ac6ae20be7aa48ac869da3e0f8be5469185264e2978baac84ffa1.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 18.0,
+      "depth": 64.1,
+      "minWidth": 18.0,
+      "minDepth": 64.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "linear_park_greenway_v0",
+        "revision": "58be0c48376bb8b565fa8a9449072a542b68ec41d9b793be2018b58683e5d1b1",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "linear_park_greenway",
+        "green_space_selected_variant_id": "linear_park_greenway_v0",
+        "green_space_native_layout_id": "linear_park_greenway_v0--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:inclusive_accessible_playground_v0--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Inclusive Woodland Playground",
+      "description": "Two timber play towers, a ramp, slides, supported swings, sensory play and sheltered seating.",
+      "thumbnail": "/native-park-assets/1991a23fdb78085178a14e145132115f1f223824bd551db7e025ed8319308372.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 38.0,
+      "depth": 36.0,
+      "minWidth": 38.0,
+      "minDepth": 36.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "inclusive_accessible_playground_v0",
+        "revision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "inclusive_accessible_playground",
+        "green_space_selected_variant_id": "inclusive_accessible_playground_v0",
+        "green_space_native_layout_id": "inclusive_accessible_playground_v0--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_side_by_side_duplex",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Side-by-side duplex",
+      "description": "Two homes with separate recessed entrances and flat roofs.",
+      "thumbnail": "/archetypes/buildings/calgary-modern-infill-house/variant_2.png",
+      "model": {
+        "variantId": "infill_duplex",
+        "revision": "calgary-side-by-side-duplex-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "two_home",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 17.0,
+      "depth": 25.0,
+      "minWidth": 17.0,
+      "minDepth": 25.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        13.34000015258789,
+        21.472000122070312,
+        9.0
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "calgary_modern_infill_house",
+        "development_archetype_id": "calgary_modern_infill_house",
+        "development_selected_variant_id": "infill_duplex",
+        "development_archetype_label": "Side-by-side duplex",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_montreal_plateau_duplex",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Plateau stacked duplex",
+      "description": "Two stacked homes with bay windows and a curved outdoor stair.",
+      "thumbnail": "/archetypes/buildings/montreal-duplex/variant_0.png",
+      "model": {
+        "variantId": "montreal_duplex_plateau",
+        "revision": "montreal-plateau-duplex-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "two_home",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 16.0,
+      "depth": 23.0,
+      "minWidth": 16.0,
+      "minDepth": 23.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        12.64909839630127,
+        19.320000171661377,
+        8.104999542236328
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "montreal_duplex",
+        "development_archetype_id": "montreal_duplex",
+        "development_selected_variant_id": "montreal_duplex_plateau",
+        "development_archetype_label": "Plateau stacked duplex",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_courtyard_brick_modern",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Brick courtyard entrance building",
+      "description": "One three-storey brick entrance building with two homes-access vestibules and two open passages. The surrounding courtyard is designed separately.",
+      "thumbnail": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+      "model": {
+        "variantId": "courtyard_family_brick_modern",
+        "revision": "courtyard-brick-modern-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "apartments",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 30.0,
+      "depth": 17.0,
+      "minWidth": 30.0,
+      "minDepth": 17.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        25.582000732421875,
+        13.381999969482422,
+        12.27500057220459
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "courtyard_family_housing",
+        "development_archetype_id": "courtyard_family_housing",
+        "development_selected_variant_id": "courtyard_family_brick_modern",
+        "development_archetype_label": "Brick courtyard entrance building",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "trial_postwar_bungalow",
+      "kind": "object",
+      "definitionVersion": 3,
+      "readiness": "pilot",
+      "label": "Post-war bungalow",
+      "description": "One- or two-storey brick home with a sheltered porch.",
+      "thumbnail": "/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
+      "model": {
+        "variantId": "bungalow_postwar_ranch",
+        "revision": "calgary-inner-city-bungalow-clay-v005",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "detached",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 15.0,
+      "depth": 20.0,
+      "minWidth": 15.0,
+      "minDepth": 20.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        10.898324012756348,
+        16.050000190734863,
+        6.360000133514404
+      ],
+      "storeyProgram": {
+        "id": "house-flex-bungalow-v001",
+        "mode": "select_authored_assembly",
+        "nativeStoreys": 1,
+        "minStoreys": 1,
+        "maxStoreys": 2,
+        "recommendedMinStoreys": 1,
+        "recommendedMaxStoreys": 2,
+        "podiumStoreys": 1,
+        "podiumHeightM": 6.36,
+        "repeatedStoreyHeightM": 2.93,
+        "roofHeightM": 0.0
+      },
+      "footprintProgram": {
+        "id": "house-flex-pilot-v001",
+        "mode": "uniform_horizontal_scale",
+        "nativeWidthM": 10.898324012756348,
+        "nativeDepthM": 16.050000190734863,
+        "minScale": 0.85,
+        "maxScale": 1.15,
+        "defaultScale": 1.0,
+        "step": 0.05,
+        "editable": true
+      },
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
+      "properties": {
+        "building_archetype_id": "calgary_inner_city_bungalow",
+        "development_archetype_id": "calgary_inner_city_bungalow",
+        "development_selected_variant_id": "bungalow_postwar_ranch",
+        "development_archetype_label": "Post-war bungalow",
+        "floors": 1,
+        "floor_count": 1,
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "trial_edwardian_foursquare",
+      "kind": "object",
+      "definitionVersion": 3,
+      "readiness": "pilot",
+      "label": "Edwardian Foursquare",
+      "description": "One- or two-storey brick home with a porch and dormer.",
+      "thumbnail": "/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png",
+      "model": {
+        "variantId": "toronto_foursquare_red_brick",
+        "revision": "toronto-edwardian-foursquare-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "detached",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 15.0,
+      "depth": 22.0,
+      "minWidth": 15.0,
+      "minDepth": 22.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        11.069999694824219,
+        17.93000030517578,
+        10.8100004196167
+      ],
+      "storeyProgram": {
+        "id": "house-flex-foursquare-v001",
+        "mode": "select_authored_assembly",
+        "nativeStoreys": 2,
+        "minStoreys": 1,
+        "maxStoreys": 2,
+        "recommendedMinStoreys": 1,
+        "recommendedMaxStoreys": 2,
+        "podiumStoreys": 1,
+        "podiumHeightM": 7.66,
+        "repeatedStoreyHeightM": 3.15,
+        "roofHeightM": 0.0
+      },
+      "footprintProgram": {
+        "id": "house-flex-pilot-v001",
+        "mode": "uniform_horizontal_scale",
+        "nativeWidthM": 11.069999694824219,
+        "nativeDepthM": 17.93000030517578,
+        "minScale": 0.85,
+        "maxScale": 1.15,
+        "defaultScale": 1.0,
+        "step": 0.05,
+        "editable": true
+      },
+      "reshapeDescription": "Choose one or two authored storeys and gently scale the complete footprint from 85–115%. Height remains controlled by the selected authored storey assembly.",
+      "properties": {
+        "building_archetype_id": "toronto_edwardian_foursquare",
+        "development_archetype_id": "toronto_edwardian_foursquare",
+        "development_selected_variant_id": "toronto_foursquare_red_brick",
+        "development_archetype_label": "Edwardian Foursquare",
+        "floors": 2,
+        "floor_count": 2,
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_rammed_earth_infill",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Rammed-earth timber infill",
+      "description": "Three-storey rammed-earth home with shaded loggias and timber screens.",
+      "thumbnail": "/archetypes/buildings/detached_contemporary_infill/variant_3.png",
+      "model": {
+        "variantId": "detached_infill_rammed_earth",
+        "revision": "detached_contemporary_infill-clay-v003",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "detached",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 18.0,
+      "depth": 24.0,
+      "minWidth": 18.0,
+      "minDepth": 24.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        13.375,
+        19.600000381469727,
+        10.149999618530273
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "detached_contemporary_infill",
+        "development_archetype_id": "detached_contemporary_infill",
+        "development_selected_variant_id": "detached_infill_rammed_earth",
+        "development_archetype_label": "Rammed-earth timber infill",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_blue_glass_office_tower",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Blue glass office tower",
+      "description": "A 25-storey blue glass office tower with a glazed lobby, entrance canopy and rooftop crown.",
+      "thumbnail": "/archetypes/buildings/glass_tower_podium_modern/variant_0.png",
+      "model": {
+        "variantId": "glass_tower_blue_reflective",
+        "revision": "glass_tower_podium_modern-clay-v003",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "offices",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 36.0,
+      "depth": 34.0,
+      "minWidth": 36.0,
+      "minDepth": 34.0,
+      "maxSize": 160.0,
+      "nativeDimensions": [
+        32.1200008392334,
+        30.074999809265137,
+        99.0
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "glass_tower_podium_modern",
+        "development_archetype_id": "glass_tower_podium_modern",
+        "development_selected_variant_id": "glass_tower_blue_reflective",
+        "development_archetype_label": "Blue glass office tower",
+        "floors": 25,
+        "floor_count": 25,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_vancouver_balcony_podium_tower",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Vancouver balcony and podium tower",
+      "description": "A 16-storey residential tower with rounded balconies, a landscaped podium and a lower shop wing.",
+      "thumbnail": "/archetypes/buildings/vancouverism-tower-podium/variant_0.png",
+      "model": {
+        "variantId": "vancouverism_classic",
+        "revision": "vancouverism-tower-podium-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "towers",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 52.0,
+      "depth": 44.0,
+      "minWidth": 51.1,
+      "minDepth": 43.1,
+      "maxWidth": 57.5,
+      "maxDepth": 47.5,
+      "maxSize": 180.0,
+      "nativeDimensions": [
+        48.05500030517578,
+        40.05500030517578,
+        58.79999923706055
+      ],
+      "storeyProgram": {
+        "id": "vancouverism-classic-storey-program-v001",
+        "mode": "repeat_authored_floor",
+        "nativeStoreys": 16,
+        "minStoreys": 16,
+        "maxStoreys": 40,
+        "recommendedMinStoreys": 16,
+        "recommendedMaxStoreys": 40,
+        "podiumStoreys": 3,
+        "podiumHeightM": 13.0,
+        "repeatedStoreyHeightM": 3.2,
+        "roofHeightM": 4.2
+      },
+      "reshapeDescription": "Adjust the footprint within 51.1–57.5 m by 43.1–47.5 m and choose 16–40 storeys. Horizontal fit never changes the authored storey height.",
+      "properties": {
+        "building_archetype_id": "vancouverism_tower_podium",
+        "development_archetype_id": "vancouverism_tower_podium",
+        "development_selected_variant_id": "vancouverism_classic",
+        "development_archetype_label": "Vancouver balcony and podium tower",
+        "floors": 16,
+        "floor_count": 16,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_cycle_avenue_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Protected Cycle Avenue",
+      "description": "24.0 m wide; native planting and furniture on a drawn route.",
+      "thumbnail": "/street-kits/pilots/student_cycle_avenue_v1/reference.png",
+      "model": {
+        "variantId": "student_cycle_avenue_v1",
+        "revision": "f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "active",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 24.0,
+      "properties": {
+        "road_archetype_id": "protected_bike_lane_bidirectional",
+        "road_selected_variant_id": "student_cycle_avenue_v1",
+        "width": 24.0,
+        "pick_place_street_section": "student_cycle_avenue_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_green_alley_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Ruelle Verte Community Alley",
+      "description": "11 m wide; native planting and furniture on a drawn route.",
+      "thumbnail": "/street-kits/pilots/student_green_alley_v1/reference.png",
+      "model": {
+        "variantId": "student_green_alley_v1",
+        "revision": "5fa64b56938f1adaaa5088b454d58e736fa23db3930d6f7a47345f95fb746c7b",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "alley",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 11,
+      "properties": {
+        "road_archetype_id": "montreal_ruelle_verte",
+        "road_selected_variant_id": "student_green_alley_v1",
+        "width": 11,
+        "pick_place_street_section": "student_green_alley_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_school_street_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Playful School Street",
+      "description": "18.0 m wide; native planting and furniture on a drawn route.",
+      "thumbnail": "/street-kits/pilots/student_school_street_v1/reference.png",
+      "model": {
+        "variantId": "student_school_street_v1",
+        "revision": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "calming",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 18.0,
+      "properties": {
+        "road_archetype_id": "school_street",
+        "road_selected_variant_id": "student_school_street_v1",
+        "width": 18.0,
+        "pick_place_street_section": "student_school_street_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "native-park:student_woodland_stream_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Woodland Stream & Bridge Garden",
+      "description": "A winding stream, arched timber bridge, raked gravel room and layered woodland planting.",
+      "thumbnail": "/native-park-assets/28f48edec3db15c108b3ec4dac265f74dbd453b75cbd4d8efb58fbaa64ef5934.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 46.0,
+      "depth": 58.0,
+      "minWidth": 46.0,
+      "minDepth": 58.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_woodland_stream_garden_v1",
+        "revision": "e3fff90f005da1a2bb19b49c4cfeaa69a8ec32dca68a4a1a74f0179bc2c81461",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "japanese_garden",
+        "green_space_selected_variant_id": "student_woodland_stream_garden_v1",
+        "green_space_native_layout_id": "student_woodland_stream_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_reflecting_fountain_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Reflecting Fountain Garden",
+      "description": "A formal two-lobed pool with four jets, clipped hedges and shaded promenade seating.",
+      "thumbnail": "/native-park-assets/af2874114c8c9b673d449e00db6c1c9f1e1e3bffdfc4307f09d2fa24dd480edb.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 34.0,
+      "depth": 48.0,
+      "minWidth": 34.0,
+      "minDepth": 48.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_reflecting_fountain_garden_v1",
+        "revision": "eda91f3a08b13efd331753078900f080612d971d3acc14b994f3fea9d2f78b96",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "fountain_water_feature",
+        "green_space_selected_variant_id": "student_reflecting_fountain_garden_v1",
+        "green_space_native_layout_id": "student_reflecting_fountain_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_terraced_cafe_court_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Terraced Café & Fountain Court",
+      "description": "A limestone gathering court with seven seat steps, café umbrellas and a bronze fountain.",
+      "thumbnail": "/native-park-assets/fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 40.0,
+      "depth": 48.0,
+      "minWidth": 40.0,
+      "minDepth": 48.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_terraced_cafe_court_v1",
+        "revision": "6f8c9e3f3d67e18da2aef8c65719f5ba0eee9afe7a9613261e36705e8b9a166f",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "sunken_plaza",
+        "green_space_selected_variant_id": "student_terraced_cafe_court_v1",
+        "green_space_native_layout_id": "student_terraced_cafe_court_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_grass_tram_avenue_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Garden Tram Avenue",
+      "description": "22 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_grass_tram_avenue_v1/reference.png",
+      "model": {
+        "variantId": "student_grass_tram_avenue_v1",
+        "revision": "3562b794641d753ee9710233052adfc08931ca5bfc0ccece6c3853ae1a75f9bd",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 22,
+      "properties": {
+        "road_archetype_id": "light_rail_tram_avenue",
+        "road_selected_variant_id": "student_grass_tram_avenue_v1",
+        "width": 22,
+        "pick_place_street_section": "student_grass_tram_avenue_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_vine_pergola_promenade_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Vine Pergola Promenade",
+      "description": "13 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_vine_pergola_promenade_v1/reference.png",
+      "model": {
+        "variantId": "student_vine_pergola_promenade_v1",
+        "revision": "428b632b3202f7324cc0bb538bc7fe387c839c6074d5c148fc122574d5d43b46",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "active",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 13,
+      "properties": {
+        "road_archetype_id": "riverfront_promenade",
+        "road_selected_variant_id": "student_vine_pergola_promenade_v1",
+        "width": 13,
+        "pick_place_street_section": "student_vine_pergola_promenade_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_grand_haussmann_boulevard_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Grand Haussmann Boulevard",
+      "description": "32 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/reference.png",
+      "model": {
+        "variantId": "student_grand_haussmann_boulevard_v1",
+        "revision": "ad63425c5e2c4de12f1d961df5d5f61ff514aad9cae299eaf1e64a71d7f9df3c",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "arterial",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 32,
+      "properties": {
+        "road_archetype_id": "haussmann_boulevard",
+        "road_selected_variant_id": "student_grand_haussmann_boulevard_v1",
+        "width": 32,
+        "pick_place_street_section": "student_grand_haussmann_boulevard_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "showcase_market",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Grand Iron & Glass Market",
+      "description": "Two occupied market galleries, an iron barrel vault and complete vendor stalls.",
+      "thumbnail": "/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+      "model": {
+        "variantId": "market_historic_iron_glass",
+        "revision": "showcase-market-clay-v006",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "shops",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 39.0,
+      "depth": 52.0,
+      "minWidth": 39.0,
+      "minDepth": 52.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        35.25,
+        48.47999954223633,
+        19.09000015258789
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "food_hall_market_hall",
+        "development_archetype_id": "food_hall_market_hall",
+        "development_selected_variant_id": "market_historic_iron_glass",
+        "development_archetype_label": "Grand Iron & Glass Market",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "showcase_aquatic",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Living-Roof Aquatic Centre",
+      "description": "A planted glulam vault, glazed entrance arch and complete eight-lane swimming hall.",
+      "thumbnail": "/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+      "model": {
+        "variantId": "biophilic_mass_timber_pool",
+        "revision": "showcase-aquatic-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 42.0,
+      "depth": 60.0,
+      "minWidth": 42.0,
+      "minDepth": 60.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        38.36000061035156,
+        56.73500061035156,
+        16.597248077392578
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "aquatic_natatorium_complex",
+        "development_archetype_id": "aquatic_natatorium_complex",
+        "development_selected_variant_id": "biophilic_mass_timber_pool",
+        "development_archetype_label": "Living-Roof Aquatic Centre",
+        "floors": 1,
+        "floor_count": 1,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "showcase_tower",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Gilded Terracotta Tower",
+      "description": "A cream terracotta setback tower with recessed windows, sunburst relief and a gilded lantern.",
+      "thumbnail": "/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+      "model": {
+        "variantId": "art_deco_cream_terracotta",
+        "revision": "showcase-tower-clay-v005",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "offices",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 36.0,
+      "depth": 33.0,
+      "minWidth": 36.0,
+      "minDepth": 33.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        32.779998779296875,
+        29.31721782684326,
+        68.5999984741211
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "art_deco_setback_tower",
+        "development_archetype_id": "art_deco_setback_tower",
+        "development_selected_variant_id": "art_deco_cream_terracotta",
+        "development_archetype_label": "Gilded Terracotta Tower",
+        "floors": 17,
+        "floor_count": 17,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "autumn_timber",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Nordic Roof-Garden Apartments",
+      "description": "A six-storey timber frame with recessed balconies, planted roof terrace and shaded pavilion.",
+      "thumbnail": "/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
+      "model": {
+        "variantId": "nordic_timber_mass_timber",
+        "revision": "autumn-timber-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "apartments",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 24.0,
+      "depth": 23.0,
+      "minWidth": 24.0,
+      "minDepth": 23.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        20.350000381469727,
+        19.475000381469727,
+        22.760000228881836
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "nordic_timber_midrise",
+        "development_archetype_id": "nordic_timber_midrise",
+        "development_selected_variant_id": "nordic_timber_mass_timber",
+        "development_archetype_label": "Nordic Roof-Garden Apartments",
+        "floors": 6,
+        "floor_count": 6,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "autumn_villa",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Tuscan Arcade Villa",
+      "description": "A three-level Tuscan home with a covered stone arcade, green shutters and a canal-tile roof.",
+      "thumbnail": "/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
+      "model": {
+        "variantId": "med_villa_tuscan",
+        "revision": "autumn-villa-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "detached",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 23.0,
+      "depth": 18.0,
+      "minWidth": 23.0,
+      "minDepth": 18.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        19.299999237060547,
+        14.130000114440918,
+        11.779999732971191
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "mediterranean_villa_estate",
+        "development_archetype_id": "mediterranean_villa_estate",
+        "development_selected_variant_id": "med_villa_tuscan",
+        "development_archetype_label": "Tuscan Arcade Villa",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "autumn_cinema",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Grand Deco Cinema",
+      "description": "An Art Deco movie palace with arched gallery windows, a gold marquee and a double-sided blade sign.",
+      "thumbnail": "/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+      "model": {
+        "variantId": "deco_theater_movie_palace",
+        "revision": "autumn-cinema-clay-v004",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 28.0,
+      "depth": 46.0,
+      "minWidth": 28.0,
+      "minDepth": 46.0,
+      "maxSize": 150.0,
+      "nativeDimensions": [
+        24.639999389648438,
+        42.290000915527344,
+        21.420000076293945
+      ],
+      "reshapeDescription": "One complete building at its native size. Resize its surrounding plot; use Place another for a second building.",
+      "properties": {
+        "building_archetype_id": "deco_theater_mainstreet",
+        "development_archetype_id": "deco_theater_mainstreet",
+        "development_selected_variant_id": "deco_theater_movie_palace",
+        "development_archetype_label": "Grand Deco Cinema",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true,
+        "native_home_plot": false,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_urban_splash_plaza_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Urban Splash-Play Plaza",
+      "description": "Colourful flowing paving, flush jets, supported tipping bucket and planted seating edges",
+      "thumbnail": "/native-park-assets/6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 32.0,
+      "depth": 36.0,
+      "minWidth": 32.0,
+      "minDepth": 36.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_urban_splash_plaza_v1",
+        "revision": "274f6fb01e74ae32a5c6764508f50b917866e8bf98b617a7e94aeb5ce2fe6838",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "splash_pad_area",
+        "green_space_selected_variant_id": "student_urban_splash_plaza_v1",
+        "green_space_native_layout_id": "student_urban_splash_plaza_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_stone_labyrinth_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Stone Labyrinth Garden",
+      "description": "Concentric connected limestone walk, quiet central stone seat, clipped hedges and layered enclosed garden",
+      "thumbnail": "/native-park-assets/50435ea553ca02f70e4ebba59c55cd918d79477ca385361714d0fe458337ddcb.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 34.0,
+      "depth": 40.1,
+      "minWidth": 34.0,
+      "minDepth": 40.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_stone_labyrinth_garden_v1",
+        "revision": "c00bd66703707245b469c8c3d120470fc3d8b65aeb34e7918d45ca7e15145f07",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "labyrinth_meditation",
+        "green_space_selected_variant_id": "student_stone_labyrinth_garden_v1",
+        "green_space_native_layout_id": "student_stone_labyrinth_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_sheltered_dog_park_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Sheltered Dog Park",
+      "description": "Four turf rooms, three timber shade shelters, gravel circulation, timber rails, meadow edges and double-gate entry",
+      "thumbnail": "/native-park-assets/bbdf27c4d00e171e6ff704417ac8861067dd831dc9862ffeb68bae0aeea93b61.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 36.1,
+      "depth": 42.0,
+      "minWidth": 36.1,
+      "minDepth": 42.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_sheltered_dog_park_v1",
+        "revision": "2e4db53b86fef7e6451cbfcb77b8b169f4b788fe0e53a974e259ad7b84e54f0c",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "dog_park",
+        "green_space_selected_variant_id": "student_sheltered_dog_park_v1",
+        "green_space_native_layout_id": "student_sheltered_dog_park_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_london_cobbled_mews_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "London Cobbled Mews",
+      "description": "8 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_london_cobbled_mews_v1/reference.png",
+      "model": {
+        "variantId": "student_london_cobbled_mews_v1",
+        "revision": "143c3856c4008aa41439d50cf59b332178a97b36635f85453b1f1f13a94d1bc8",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "alley",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 8,
+      "properties": {
+        "road_archetype_id": "london_mews_lane",
+        "road_selected_variant_id": "student_london_cobbled_mews_v1",
+        "width": 8,
+        "pick_place_street_section": "student_london_cobbled_mews_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_cherry_blossom_street_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Cherry Blossom Neighbourhood Street",
+      "description": "20 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_cherry_blossom_street_v1/reference.png",
+      "model": {
+        "variantId": "student_cherry_blossom_street_v1",
+        "revision": "f66b0d19aefdcdf9607c68dd73574fd9d7e78896f6aa53dfe17d83ecd5427384",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "local",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 20,
+      "properties": {
+        "road_archetype_id": "vancouver_cherry_blossom_street",
+        "road_selected_variant_id": "student_cherry_blossom_street_v1",
+        "width": 20,
+        "pick_place_street_section": "student_cherry_blossom_street_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "student_barcelona_shaded_promenade_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Barcelona Shaded Promenade",
+      "description": "36 m native section with complete furnishings and drawn-route extension.",
+      "thumbnail": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/reference.png",
+      "model": {
+        "variantId": "student_barcelona_shaded_promenade_v1",
+        "revision": "33a5ba4c660e85527e85d60527088407fab69c67d5b774ce17f8f4d20446f1ec",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "active",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 36,
+      "properties": {
+        "road_archetype_id": "barcelona_passeig",
+        "road_selected_variant_id": "student_barcelona_shaded_promenade_v1",
+        "width": 36,
+        "pick_place_street_section": "student_barcelona_shaded_promenade_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt reference-informed teaching concept"
+      }
+    },
+    {
+      "id": "clay_mass_timber_biophilic_barn",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Mass-timber Library",
+      "description": "Planted roof terraces, branching timber supports and a glazed reading hall.",
+      "thumbnail": "/archetypes/buildings/university-library/variant_2.png",
+      "model": {
+        "variantId": "mass_timber_biophilic_barn",
+        "revision": "neighbourhood-library-clay-v003",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 40.0,
+      "depth": 37.0,
+      "minWidth": 40.0,
+      "minDepth": 37.0,
+      "maxSize": 140.0,
+      "nativeDimensions": [
+        35.36000061035156,
+        32.599998474121094,
+        15.5018310546875
+      ],
+      "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+      "properties": {
+        "building_archetype_id": "university_library",
+        "development_archetype_id": "university_library",
+        "development_selected_variant_id": "mass_timber_biophilic_barn",
+        "development_archetype_label": "Mass-timber Library",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true
+      }
+    },
+    {
+      "id": "clay_parisian_corner_cafe_culture",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Corner Café & Apartments",
+      "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
+      "thumbnail": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+      "model": {
+        "variantId": "parisian_corner_cafe_culture",
+        "revision": "neighbourhood-corner-cafe-clay-v010",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "mixed",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 49.0,
+      "depth": 48.0,
+      "minWidth": 49.0,
+      "minDepth": 48.0,
+      "maxSize": 140.0,
+      "nativeDimensions": [
+        44.06293869018555,
+        43.16806359868497,
+        20.64999961555004
+      ],
+      "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+      "properties": {
+        "building_archetype_id": "parisian_boulevard_corner",
+        "development_archetype_id": "parisian_boulevard_corner",
+        "development_selected_variant_id": "parisian_corner_cafe_culture",
+        "development_archetype_label": "Corner Café & Apartments",
+        "floors": 6,
+        "floor_count": 6,
+        "native_plot_axes": true
+      }
+    },
+    {
+      "id": "native-park:student_community_allotment_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Community Allotment Garden",
+      "description": "Four productive garden rooms, eight coloured sheds, trellises and a shared orchard.",
+      "thumbnail": "/native-park-assets/2356bc5f9178f600cbf512ddafda7e740c5a172adee6f1282caf171034a42ee9.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 36.0,
+      "depth": 46.0,
+      "minWidth": 36.0,
+      "minDepth": 46.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_community_allotment_v1",
+        "revision": "6b9d56fcc2d84088633503e9cc219ccef60fe79349b4fbc8d2138ce5d345af5a",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "community_garden_enhanced",
+        "green_space_selected_variant_id": "student_community_allotment_v1",
+        "green_space_native_layout_id": "student_community_allotment_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_forest_adventure_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Forest Adventure Nature Play",
+      "description": "Woodland stream, flat stepping stones, log crossings, tree deck and leafy willow tunnel.",
+      "thumbnail": "/native-park-assets/59fe473e5c81769c0bbae532851d162a335f0522c887f70183b3de3301f70212.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 34.0,
+      "depth": 46.0,
+      "minWidth": 34.0,
+      "minDepth": 46.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_forest_adventure_v1",
+        "revision": "84ce02e0cba75ce3faf810e571048d39141a14462184b112e87a144f63de86dd",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "nature_play_area",
+        "green_space_selected_variant_id": "student_forest_adventure_v1",
+        "green_space_native_layout_id": "student_forest_adventure_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_spiral_lookout_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Spiral Lookout Park",
+      "description": "Follow a continuous step-free spiral promenade to the landscaped lookout, then return along the same path.",
+      "thumbnail": "/archetypes/openspaces/spiral-lookout-park/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 64.0,
+      "depth": 68.1,
+      "minWidth": 64.0,
+      "minDepth": 68.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_spiral_lookout_v1",
+        "revision": "ba9ecbaafe0f56dd5206faa936951504675f05b4d5640adc25ca5d5aa98c773b",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_spiral_lookout",
+        "green_space_selected_variant_id": "student_spiral_lookout_v1",
+        "green_space_native_layout_id": "student_spiral_lookout_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_quarry_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Quarry Garden",
+      "description": "Explore the planted quarry by stairs or take the step-free bridge and lift to the lower garden. Intermediate terraces retain stair access.",
+      "thumbnail": "/archetypes/openspaces/quarry-garden/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 60.1,
+      "depth": 68.1,
+      "minWidth": 60.1,
+      "minDepth": 68.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_quarry_garden_v1",
+        "revision": "bae24fb0fc5fb032dfb74a8301789633b0d45f76a04da6971e4d9548eaf38312",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_quarry_garden",
+        "green_space_selected_variant_id": "student_quarry_garden_v1",
+        "green_space_native_layout_id": "student_quarry_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_cascade_water_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Cascade Water Garden",
+      "description": "Follow the cascading pools by stairs, or use the step-free edge bridge and lift to reach the upper garden.",
+      "thumbnail": "/archetypes/openspaces/cascade-water-garden/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 54.0,
+      "depth": 68.1,
+      "minWidth": 54.0,
+      "minDepth": 68.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_cascade_water_garden_v1",
+        "revision": "6b0f4391a5dfad1e21c0e1ca0a53dcd36fc609cf9eb541ac354f09e2ebd3ac4c",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_cascade_water_garden",
+        "green_space_selected_variant_id": "student_cascade_water_garden_v1",
+        "green_space_native_layout_id": "student_cascade_water_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "clay_station_victorian_iron_glass",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Victorian Grand Station",
+      "description": "Victorian iron-and-glass train hall, ticket booths, café, platforms and two walkable gallery stairs.",
+      "thumbnail": "/archetypes/buildings/historic_grand_station/variant_1.png",
+      "model": {
+        "variantId": "station_victorian_iron_glass",
+        "revision": "victorian-station-interior-clay-v007",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "infrastructure",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 64.0,
+      "depth": 100.0,
+      "minWidth": 64.0,
+      "minDepth": 100.0,
+      "maxSize": 140.0,
+      "nativeDimensions": [
+        60.0,
+        96.0,
+        32.560001373291016
+      ],
+      "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+      "properties": {
+        "building_archetype_id": "historic_grand_station",
+        "development_archetype_id": "historic_grand_station",
+        "development_selected_variant_id": "station_victorian_iron_glass",
+        "development_archetype_label": "Victorian Grand Station",
+        "floors": 2,
+        "floor_count": 2,
+        "native_plot_axes": true
+      }
+    },
+    {
+      "id": "clay_biophilic_mass_timber_campus",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Timber Art & Design School",
+      "description": "Exhibition gallery, painting and ceramics studios, roof lounge and planted terrace connected by walkable stairs.",
+      "thumbnail": "/archetypes/buildings/university-academic-complex/variant_2.png",
+      "model": {
+        "variantId": "biophilic_mass_timber_campus",
+        "revision": "interior-school-clay-v003",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 40.0,
+      "depth": 34.0,
+      "minWidth": 40.0,
+      "minDepth": 34.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        36.0,
+        30.0,
+        16.309999465942383
+      ],
+      "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+      "properties": {
+        "building_archetype_id": "university_academic_complex",
+        "development_archetype_id": "university_academic_complex",
+        "development_selected_variant_id": "biophilic_mass_timber_campus",
+        "development_archetype_label": "Timber Art & Design School",
+        "floors": 4,
+        "floor_count": 4,
+        "native_plot_axes": true
+      }
+    },
+    {
+      "id": "clay_mediterranean_resort_courtyard",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Mediterranean Courtyard Hotel",
+      "description": "Furnished guest suites, concierge lounge, open courtyard, upper galleries and a poolside loggia with walkable stairs.",
+      "thumbnail": "/archetypes/buildings/boutique-hotel/variant_1.png",
+      "model": {
+        "variantId": "mediterranean_resort_courtyard",
+        "revision": "interior-hotel-clay-v006",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "hotels",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 44.0,
+      "depth": 40.0,
+      "minWidth": 44.0,
+      "minDepth": 40.0,
+      "maxSize": 100.0,
+      "nativeDimensions": [
+        40.0,
+        36.0,
+        13.588971138000488
+      ],
+      "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+      "properties": {
+        "building_archetype_id": "boutique_hotel",
+        "development_archetype_id": "boutique_hotel",
+        "development_selected_variant_id": "mediterranean_resort_courtyard",
+        "development_archetype_label": "Mediterranean Courtyard Hotel",
+        "floors": 3,
+        "floor_count": 3,
+        "native_plot_axes": true
+      }
+    },
+    {
+      "id": "native-park:student_treetop_walk_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Treetop Walk Park",
+      "description": "Reach the woodland canopy walk by stairs or a separate step-free lift and bridge. A ground path leads to a resting glade.",
+      "thumbnail": "/archetypes/openspaces/treetop-walk-park/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 56.0,
+      "depth": 64.0,
+      "minWidth": 56.0,
+      "minDepth": 64.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_treetop_walk_v1",
+        "revision": "aef679e13148ddede9c39e73dbea57d74c23b41400d0363f3a132f93b6e72366",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_treetop_walk",
+        "green_space_selected_variant_id": "student_treetop_walk_v1",
+        "green_space_native_layout_id": "student_treetop_walk_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_terraced_rose_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Terraced Rose Garden",
+      "description": "Explore planted rose terraces by stairs or take the step-free lift and bridge to the upper garden and pergola.",
+      "thumbnail": "/archetypes/openspaces/terraced-rose-garden/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 50.1,
+      "depth": 64.0,
+      "minWidth": 50.1,
+      "minDepth": 64.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_terraced_rose_v1",
+        "revision": "bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "student_terraced_rose",
+        "green_space_selected_variant_id": "student_terraced_rose_v1",
+        "green_space_native_layout_id": "student_terraced_rose_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_elevated_garden_rail_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Elevated Garden Rail",
+      "description": "Twin-track concrete viaduct with a detailed static metro train, gardens, a cycle path and broad walking routes below. Straight 48–288 m corridor on a prepared level site.",
+      "thumbnail": "/archetypes/streets/elevated-garden-rail/variant_0.png",
+      "model": {
+        "variantId": "student_elevated_garden_rail_v1",
+        "revision": "d101b5b4d1871681b5c6f0ce1756c533a41a74425a846993ca1e2946a44bb43c",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 26,
+      "properties": {
+        "road_archetype_id": "elevated_garden_rail",
+        "road_selected_variant_id": "student_elevated_garden_rail_v1",
+        "width": 26,
+        "lane_count": 0,
+        "pick_place_street_section": "student_elevated_garden_rail_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original elevated rail teaching concept"
+      }
+    },
+    {
+      "id": "skytrain_elevated_corridor_v0",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "SkyTrain Elevated Corridor · Modern Station Hub",
+      "description": "Elevated twin-track corridor with movable stations, two platforms, stairs and step-free lifts. Straight 48–288 m on a prepared level site; trains are static.",
+      "thumbnail": "/archetypes/streets/skytrain-elevated-station-native/variant_0.png",
+      "model": {
+        "variantId": "skytrain_elevated_corridor_v0",
+        "revision": "0d49f39625d445fd165cc050f25287fe1f38a4d0d235ac8000b411466a22cd89",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 26,
+      "properties": {
+        "road_archetype_id": "skytrain_elevated_corridor",
+        "road_selected_variant_id": "skytrain_elevated_corridor_v0",
+        "width": 26,
+        "lane_count": 0,
+        "pick_place_street_section": "skytrain_elevated_corridor_v0",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original elevated rail station concept"
+      }
+    },
+    {
+      "id": "elevated_rail_transit_corridor_v0",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Elevated Rail Transit · Parametric Flow Station",
+      "description": "Elevated twin-track corridor with movable stations, two platforms, stairs and step-free lifts. Straight 48–288 m on a prepared level site; trains are static.",
+      "thumbnail": "/archetypes/streets/elevated-rail-transit-station-native/variant_0.png",
+      "model": {
+        "variantId": "elevated_rail_transit_corridor_v0",
+        "revision": "4192e4b060c89bb0cd5b867321f0061cb4f594c880fc3e25c54d82a5fc3762a7",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 26,
+      "properties": {
+        "road_archetype_id": "elevated_rail_transit_corridor",
+        "road_selected_variant_id": "elevated_rail_transit_corridor_v0",
+        "width": 26,
+        "lane_count": 0,
+        "pick_place_street_section": "elevated_rail_transit_corridor_v0",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original elevated rail station concept"
+      }
+    }
+  ]
+}

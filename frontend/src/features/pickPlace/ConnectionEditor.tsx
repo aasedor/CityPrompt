@@ -5,7 +5,7 @@ import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessCon
 import { rectangleDimensions } from './geometry';
 import { streetAssetForZone } from './streetPlacement';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
-import { readBuildingEntrance, readCrossings, resolvePedestrianConnections, type BuildingEntrance, type StreetCrossing } from './pedestrianConnections';
+import { readBuildingEntrance, readCrossings, resolvePedestrianConnections, supportsNativeEntranceStepPick, type BuildingEntrance, type StreetCrossing } from './pedestrianConnections';
 import { entrancePickZoneKey, type EntrancePickRequest, type EntrancePickResult } from './pickBuildingEntrance';
 
 const field='min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900';
@@ -118,7 +118,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
             <label className="block text-sm">Position along edge (%)<input className={field} type="number" min="0" max="100" value={Math.round(position*100)} onChange={e=>setPosition(e.target.valueAsNumber/100)}/></label>
             <p className="text-xs text-slate-600">The chosen edge and position rotate and resize with the park. If this entrance cannot connect, it stays unresolved.</p>
           </> : <>
-            {onPickEntrance && zone.properties?.native_home_plot === true && <div className="rounded-lg border border-slate-300 bg-lime-50 p-3 text-sm">
+            {onPickEntrance && supportsNativeEntranceStepPick(zone) && <div className="rounded-lg border border-slate-300 bg-lime-50 p-3 text-sm">
               <button className={button} type="button" disabled={!valid||disabled||busy||zoneChanged} onClick={()=>{
                 setPicking(true);
                 onPickEntrance({zoneId:zone.id,zoneKey:entrancePickZoneKey(zone),properties,finish:result=>{
@@ -127,7 +127,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
                   setX(result.anchor.xM);setY(result.anchor.yM);setEntranceHeight(0);setScale(false);setPicked(result);
                 }});
               }}>Pick entrance step in 3D</button>
-              <p className="mt-2">Choose the outer edge of the lowest entrance step on this house. You can navigate the map while picking. Changes stay in this dialog until you save.</p>
+              <p className="mt-2">Choose the outer edge of the lowest entrance step on this building. You can navigate the map while picking. Changes stay in this dialog until you save.</p>
             </div>}
             {pickFeedback && <p role="status" className={`rounded-lg p-3 text-sm ${pickFeedback.status==='ready'?'bg-lime-50':'bg-amber-50'}`}>{pickFeedback.message} Ground is checked again after saving.</p>}
             <p className="text-sm">Position the anchor at the outer foot of the building's entrance steps, where they meet its foundation edge. Distances are from the plot centre in its own orientation.</p>

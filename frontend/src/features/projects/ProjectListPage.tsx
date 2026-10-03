@@ -7,7 +7,7 @@ import { Download, Images, Plus, FolderOpen, Clock, X, MapPin, Pencil, Wand2 } f
 import { getApiErrorMessage, projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { geocodingApi, type GeocodeSuggestion } from '@/services/geocoding';
 import { useAuthStore } from '@/store';
-import type { Project, Location, SavedRender, UpdateProjectRequest } from '@/types';
+import type { CreateProjectRequest, Project, Location, SavedRender, UpdateProjectRequest } from '@/types';
 import { ProjectEditModal } from './ProjectEditModal';
 import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { isTextEntryTarget } from '@/utils/domEvents';
@@ -141,11 +141,7 @@ export function ProjectListPage() {
   });
 
   const createMutation = useMutation({
-    mutationFn: () => projectsApi.create({
-      name: newName,
-      description: newDescription || undefined,
-      location: selectedLocation || undefined,
-    }),
+    mutationFn: (request: CreateProjectRequest) => projectsApi.create(request),
     onSuccess: (newProject) => {
       queryClient.invalidateQueries({ queryKey: ['projects', currentUser?.id] });
       if (newProject?.id) {
@@ -187,13 +183,42 @@ export function ProjectListPage() {
     },
   });
 
-  const handleCreate = () => {
-    if (!newName.trim()) {
+  const handleCreate = async () => {
+    const name = newName.trim();
+    if (!name) {
       setError('Project name is required');
       return;
     }
+    if (createMutation.isPending || isResolvingLocation) return;
+
+    let projectLocation = selectedLocation;
+    const typedAddress = addressQuery.trim();
+    if (typedAddress && !projectLocation) {
+      if (geocodeTimerRef.current) clearTimeout(geocodeTimerRef.current);
+      setIsResolvingLocation(true);
+      try {
+        const [suggestion] = await geocodingApi.autocomplete(typedAddress);
+        if (!suggestion) {
+          setError('Could not locate that address. Choose a suggestion or clear the location.');
+          return;
+        }
+        projectLocation = await geocodingApi.resolve(suggestion.id);
+        setSelectedLocation(projectLocation);
+        setAddressQuery(projectLocation.address ?? suggestion.place_name);
+      } catch (err) {
+        setError(getApiErrorMessage(err, 'Could not locate that address. Choose a suggestion or clear the location.'));
+        return;
+      } finally {
+        setIsResolvingLocation(false);
+      }
+    }
+
     setError('');
-    createMutation.mutate();
+    createMutation.mutate({
+      name,
+      description: newDescription.trim() || undefined,
+      location: projectLocation ?? undefined,
+    });
   };
 
   const handleCancel = () => {
@@ -287,7 +312,7 @@ export function ProjectListPage() {
                 placeholder="e.g., Riverside Development Phase 1"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
+                onKeyDown={(e) => { if (e.key === 'Enter') void handleCreate(); }}
                 className="input-base w-full"
                 autoFocus
               />
@@ -348,7 +373,7 @@ export function ProjectListPage() {
             {error && <p className="text-sm text-red-600">{error}</p>}
             <div className="flex gap-3">
               <button
-                onClick={handleCreate}
+                onClick={() => void handleCreate()}
                 disabled={createMutation.isPending || isResolvingLocation}
                 className="inline-flex items-center rounded-full border-2 border-[#151515] bg-[#151515] px-5 py-2.5 text-sm font-black text-white shadow-[4px_4px_0_0_#151515] disabled:opacity-50"
               >

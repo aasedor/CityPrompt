@@ -1,0 +1,48 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "model_sha256": "3222433e6a629bc5d3328901c96d270619623cb8b758ecda78cda57b5e6e9e6d",
+  "runtime_status": "NOT TESTED",
+  "completed": false,
+  "notes": [
+    "Curved planted edge, flowing colour bands, six arched sprays, four flush jets, supported bucket, connected perimeter seats and unobstructed entry. Static water geometry.",
+    "Compared source front/oblique/top; inspected actual exported GLB aerial, top, detail and 1.65m walking views. Native metric park; no browser acceptance implied."
+  ],
+  "inspected_files": [
+    {
+      "path": "renders\\aerial.png",
+      "sha256": "6b30e1cf7f1600b277d18ccbf359b02bf4c3f5c75e14ea8d03a97018a5c95234"
+    },
+    {
+      "path": "renders\\detail.png",
+      "sha256": "9bc35badfbf16d192cdb43cbb58dd91f4e5ae7c7bdedc789cc5b54a5c19f7c0e"
+    },
+    {
+      "path": "renders\\top.png",
+      "sha256": "9588ff010e3f896354b9ca8303e6add77d18777c6643030d3f8ddaa8e7148432"
+    },
+    {
+      "path": "renders\\walk.png",
+      "sha256": "1693d36d77f095d87970404037129de89af7e2bf9b04462bbad55cafb412303b"
+    }
+  ],
+  "source_references": [
+    {
+      "role": "front",
+      "path": "frontend\\public\\archetypes\\openspaces\\splash-pad-water-play\\variant_3.png",
+      "bytes": 1394221,
+      "sha256": "6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend\\public\\archetypes\\openspaces\\splash-pad-water-play\\variant_3_angle_60.jpg",
+      "bytes": 882748,
+      "sha256": "8bf0ac07da5633e38a4f2c0fb1a60303b667724a9adf0cebdeba80e8397a7169"
+    },
+    {
+      "role": "top",
+      "path": "frontend\\public\\archetypes\\openspaces\\splash-pad-water-play\\variant_3_angle_90.jpg",
+      "bytes": 883219,
+      "sha256": "102716c4848b9404bfe988a280c5c396d43b27a5a923b44e1d3da7023bb0b28a"
+    }
+  ]
+}

@@ -174,10 +174,11 @@ describe('Direct 3D presentation adapter', () => {
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue(response);
   });
 
-  it('shows the server source fallback and retains the rejected AI image only for separate inspection', async () => {
+  it('shows the paid AI image while retaining the 3D source for comparison', async () => {
     const original = { id: 'original-1', image_url: '/api/v1/files/original.png', prompt: 'finish', created_at: '2026-09-05', variant: 'provider_original' };
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({
       ...response, outcome: 'review_required', provider_original_render: original,
+      provider_image_base64: 'paid-image',
       diagnostics: { ...response.diagnostics, returned_safety_strategy: 'authoritative_source' },
     });
     const { result } = renderHook(() => useDirect3DRender());
@@ -185,13 +186,27 @@ describe('Direct 3D presentation adapter', () => {
       style: 'photorealistic', projectId: 'project-1', community3DClaims,
     });
     expect(direct.providerOriginalRender).toEqual(original);
-    expect(direct.render.providerLabel).toBe('Original 3D view · AI finish needs review');
-    expect(direct.render.imageUrl).toBe(`data:image/png;base64,${response.image_base64}`);
-    expect(direct.render.savedRender).not.toEqual(original);
+    expect(direct.render.providerLabel).toContain('Direct 3D');
+    expect(direct.render.imageUrl).toBe('data:image/png;base64,paid-image');
+    expect(direct.render.savedRender).toEqual(original);
     expect(direct.outputFingerprint).toBe(response.output_fingerprint);
     expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
     expect(direct.outcome).toBe('review_required');
     expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(1);
+  });
+
+  it('still shows paid pixels when saving the original to the gallery fails', async () => {
+    vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({
+      ...response, outcome: 'review_required', provider_original_render: null,
+      provider_image_base64: 'unsaved-paid-image',
+      diagnostics: { ...response.diagnostics, returned_safety_strategy: 'authoritative_source' },
+    });
+    const { result } = renderHook(() => useDirect3DRender());
+    const direct = await result.current.renderDirect3D(capture, {
+      style: 'photorealistic', projectId: 'project-1', community3DClaims,
+    });
+    expect(direct.render.imageUrl).toBe('data:image/png;base64,unsaved-paid-image');
+    expect(direct.render.savedRender).toBeUndefined();
   });
 
   it('uses the same complete 22-style catalogue as Classic without changing Classic prompting', () => {
@@ -249,7 +264,8 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).not.toContain('Golden hour');
     expect(prompt).not.toContain('ray-traced');
     expect(prompt).not.toContain('colored polygon');
-    expect(prompt).toContain('openings and roof geometry');
+    expect(prompt).toContain('footprint, height and roof massing');
+    expect(buildDirect3DVisualPrompt('photorealistic', undefined, capture, 'precise')).toContain('openings and roof geometry');
     expect(prompt).not.toContain('floor-to-ceiling');
     expect(prompt).not.toContain('Add realistic public-realm activity');
   });
@@ -304,10 +320,10 @@ describe('Direct 3D presentation adapter', () => {
   });
 
   it('separates aesthetic style from the default fidelity policy', () => {
-    expect(resolveDirect3DFidelityPolicy('survey')).toBe('precise');
-    expect(resolveDirect3DFidelityPolicy('documentary')).toBe('precise');
-    expect(resolveDirect3DFidelityPolicy('photorealistic')).toBe('precise');
-    expect(resolveDirect3DFidelityPolicy('winter')).toBe('precise');
+    expect(resolveDirect3DFidelityPolicy('survey')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('documentary')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('photorealistic')).toBe('balanced');
+    expect(resolveDirect3DFidelityPolicy('winter')).toBe('balanced');
     expect(resolveDirect3DFidelityPolicy('watercolour')).toBe('expressive');
     expect(resolveDirect3DFidelityPolicy('isometric')).toBe('expressive');
     expect(resolveDirect3DFidelityPolicy('site-plan-photo')).toBe('expressive');
@@ -338,7 +354,7 @@ describe('Direct 3D presentation adapter', () => {
       instance_id_image_base64: capture.instanceIdImageBase64,
       instance_id_manifest: capture.instanceIdManifest,
       style: 'photorealistic',
-      fidelity_policy: 'precise',
+      fidelity_policy: 'balanced',
       presentation_mode: 'scene',
       project_id: 'project-1',
       community_3d_claims: community3DClaims,

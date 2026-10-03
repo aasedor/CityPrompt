@@ -1,0 +1,71 @@
+{
+  "title": "Cascade Water Garden",
+  "variant": "student_cascade_water_garden_v1",
+  "layout": "student_cascade_water_garden_v1--native-v1",
+  "content_revision": "6b0f4391a5dfad1e21c0e1ca0a53dcd36fc609cf9eb541ac354f09e2ebd3ac4c",
+  "model_sha256": "2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb",
+  "triangles": 714401,
+  "dimensions_m": [
+    54,
+    68
+  ],
+  "offline": {
+    "status": "PASS",
+    "model_sha256": "2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb",
+    "samples": 3356,
+    "max_step_m": 0.1500000000000008,
+    "max_surface_error_m": 1.9073486345888568e-07,
+    "body_clearance_width_m": 0.44,
+    "results": [
+      {
+        "route": "Twin stairs complete garden loop",
+        "direction": "forward",
+        "end": [
+          0,
+          -34,
+          0
+        ]
+      },
+      {
+        "route": "Twin stairs complete garden loop",
+        "direction": "reverse",
+        "end": [
+          0,
+          -34,
+          0
+        ]
+      }
+    ],
+    "failures": [],
+    "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+  },
+  "browser_walk": {
+    "distance": 0.08393827906011243,
+    "elapsedS": 96.80569999998808,
+    "index": 55,
+    "maxHeight": 1107.862898077914,
+    "minHeight": 1103.362898077914,
+    "model": "2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb",
+    "pose": {
+      "groundHeight": 1103.362898077914,
+      "heading": 160.43991191218174,
+      "lat": 51.0171302117456,
+      "lng": -114.1253301039165
+    },
+    "reason": "route traversed with keyboard input in both directions",
+    "samples": 2420,
+    "status": "PASS",
+    "total": 56,
+    "variant": "student_cascade_water_garden_v1"
+  },
+  "saved_selection": {
+    "content_revision": "6b0f4391a5dfad1e21c0e1ca0a53dcd36fc609cf9eb541ac354f09e2ebd3ac4c",
+    "frame": {
+      "latitude": 51.0174349086714,
+      "longitude": -114.12532979691215,
+      "yaw": 3.141592653589793
+    },
+    "layout_id": "student_cascade_water_garden_v1--native-v1"
+  },
+  "status": "PASS_LOCAL_PREPARED_SITE"
+}

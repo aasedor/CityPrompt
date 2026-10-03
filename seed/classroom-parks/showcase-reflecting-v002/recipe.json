@@ -1,0 +1,502 @@
+{
+  "id": "student_reflecting_fountain_garden_v1",
+  "archetype": "fountain_water_feature",
+  "source_variant": "fountain_water_feature_v1",
+  "index": 1,
+  "title": "Reflecting Fountain Garden",
+  "slug": "fountain-decorative-water-feature",
+  "dimensions_m": [
+    34,
+    48
+  ],
+  "programme": "Angular two-lobed reflecting basin, four fountain jets, clipped hedges, formal trees and perimeter seating",
+  "clear_routes": [
+    {
+      "a": [
+        0,
+        -24
+      ],
+      "b": [
+        0,
+        -22
+      ],
+      "width": 3
+    },
+    {
+      "a": [
+        0,
+        -22
+      ],
+      "b": [
+        -12.5,
+        -22
+      ],
+      "width": 2
+    },
+    {
+      "a": [
+        -12.5,
+        -22
+      ],
+      "b": [
+        -12.5,
+        21
+      ],
+      "width": 1.8
+    },
+    {
+      "a": [
+        0,
+        -22
+      ],
+      "b": [
+        12.5,
+        -22
+      ],
+      "width": 2
+    },
+    {
+      "a": [
+        12.5,
+        -22
+      ],
+      "b": [
+        12.5,
+        21
+      ],
+      "width": 1.8
+    }
+  ],
+  "source_references": [
+    {
+      "role": "front",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\openspaces\\fountain-decorative-water-feature\\variant_1.png",
+      "bytes": 1358002,
+      "sha256": "af2874114c8c9b673d449e00db6c1c9f1e1e3bffdfc4307f09d2fa24dd480edb"
+    },
+    {
+      "role": "oblique",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\openspaces\\fountain-decorative-water-feature\\variant_1_angle_60.jpg",
+      "bytes": 836602,
+      "sha256": "7617875e5e8d9a664d543750bc0dd400915e345cace54fbc6ae31ec2163ef084"
+    },
+    {
+      "role": "top",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\openspaces\\fountain-decorative-water-feature\\variant_1_angle_90.jpg",
+      "bytes": 793821,
+      "sha256": "5594c336d0496f103744a0b8623fdc480724ef3a5c34d43562c250894da115f9"
+    }
+  ],
+  "kit_sha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+  "runtime_status": "NOT TESTED",
+  "terrain_policy": "prepared_level",
+  "ground_owner": "assembly",
+  "native_scale_only": true,
+  "entrance": {
+    "x": 0,
+    "y": -24.0,
+    "widthM": 2.7
+  },
+  "adaptations": [
+    "Exact angular two-lobed basin and four-jet composition; perimeter trees and benches complete the stand-alone park instead of adding surrounding buildings."
+  ],
+  "source_build_files": {
+    "build_showcase_parks.py": "72edf34744cc3582c3ec4759c48f705b52df303658498cb39391709ee63a74a9",
+    "scene.py": "13d81480cea63e93315a06f73abdd243c3e2b443529b1ac850ead175375da02f"
+  },
+  "tree_wells": [
+    {
+      "x": -14.8,
+      "y": -17,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -14.8,
+      "y": -5,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -14.8,
+      "y": 7,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -14.8,
+      "y": 19,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 14.8,
+      "y": -17,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 14.8,
+      "y": -5,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 14.8,
+      "y": 7,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 14.8,
+      "y": 19,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "grove_tree",
+      "x": -14.8,
+      "y": -17,
+      "z": 0,
+      "yaw": -1.7000000000000002,
+      "scale": 0.82
+    },
+    {
+      "kind": "grove_tree",
+      "x": -14.8,
+      "y": -5,
+      "z": 0,
+      "yaw": -0.5,
+      "scale": 0.82
+    },
+    {
+      "kind": "grove_tree",
+      "x": -14.8,
+      "y": 7,
+      "z": 0,
+      "yaw": 0.7000000000000001,
+      "scale": 0.82
+    },
+    {
+      "kind": "grove_tree",
+      "x": -14.8,
+      "y": 19,
+      "z": 0,
+      "yaw": 1.9000000000000001,
+      "scale": 0.82
+    },
+    {
+      "kind": "bench",
+      "x": -14.65,
+      "y": -11,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": -14.65,
+      "y": 1,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": -14.65,
+      "y": 13,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": -15.0,
+      "y": -21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": -15.0,
+      "y": 21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": 14.8,
+      "y": -17,
+      "z": 0,
+      "yaw": -1.7000000000000002,
+      "scale": 0.82
+    },
+    {
+      "kind": "grove_tree",
+      "x": 14.8,
+      "y": -5,
+      "z": 0,
+      "yaw": -0.5,
+      "scale": 0.82
+    },
+    {
+      "kind": "grove_tree",
+      "x": 14.8,
+      "y": 7,
+      "z": 0,
+      "yaw": 0.7000000000000001,
+      "scale": 0.82
+    },
+    {
+      "kind": "grove_tree",
+      "x": 14.8,
+      "y": 19,
+      "z": 0,
+      "yaw": 1.9000000000000001,
+      "scale": 0.82
+    },
+    {
+      "kind": "bench",
+      "x": 14.65,
+      "y": -11,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": 14.65,
+      "y": 1,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": 14.65,
+      "y": 13,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": 15.0,
+      "y": -21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": 15.0,
+      "y": 21,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -14.8,
+      "y": -17,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -14.8,
+      "y": -5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -14.8,
+      "y": 7,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -14.8,
+      "y": 19,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 14.8,
+      "y": -17,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 14.8,
+      "y": -5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 14.8,
+      "y": 7,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 14.8,
+      "y": 19,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    }
+  ],
+  "surface_regions": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 34,
+      "depth": 48,
+      "material": "paving"
+    },
+    {
+      "x": -14.8,
+      "y": -17,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -14.8,
+      "y": -5,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -14.8,
+      "y": 7,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -14.8,
+      "y": 19,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 14.8,
+      "y": -17,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 14.8,
+      "y": -5,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 14.8,
+      "y": 7,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 14.8,
+      "y": 19,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    }
+  ],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 2595944,
+    "sha256": "2eb802caefceb5e591a12ea7393ac84f79dfbf82cb471d152acae6d04b691179"
+  },
+  "modules": {
+    "bench": {
+      "path": "bench.glb",
+      "bytes": 34024,
+      "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+    },
+    "grove_tree": {
+      "path": "grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278"
+    },
+    "light": {
+      "path": "light.glb",
+      "bytes": 37668,
+      "sha256": "010d21cd89f16db18aa6b5c467dcb77c37f7822539a9a3df9708fb7726e069a9"
+    },
+    "tree_well_grate": {
+      "path": "tree_well_grate.glb",
+      "bytes": 95608,
+      "sha256": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618"
+    }
+  },
+  "bounds_m": [
+    [
+      -17.0,
+      -24.0,
+      -0.11999999731779099
+    ],
+    [
+      17.0,
+      24.0,
+      6.600047588348389
+    ]
+  ],
+  "triangles": 117726,
+  "mesh_instances": 45,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

@@ -22,7 +22,7 @@ vi.mock('@/services/api', () => ({
 }));
 
 vi.mock('react-hot-toast', () => ({
-  default: { success: vi.fn(), error: vi.fn() },
+  default: Object.assign(vi.fn(), { success: vi.fn(), error: vi.fn() }),
 }));
 
 const PROJECT_ID = 'b1bb189e-8bf9-3888-9912-ace4e6543111';
@@ -179,6 +179,24 @@ describe('useSiteZones', () => {
 
     await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
     await waitFor(() => expect(siteZonesApi.fetchContext).toHaveBeenCalledWith(REAL_ZONE_ID));
+  });
+
+  it('keeps a saved boundary usable when optional nearby context fails', async () => {
+    vi.mocked(siteZonesApi.create).mockResolvedValue(makeZone(REAL_ZONE_ID));
+    vi.mocked(siteZonesApi.fetchContext).mockRejectedValue(new Error('Request failed with status code 500'));
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+    result.current.createZone.mutate({
+      zone_type: 'site_boundary',
+      coordinates: [[0, 0], [0, 1], [1, 1]],
+    });
+
+    await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
+    await waitFor(() => expect(toast).toHaveBeenCalledWith(
+      'Site boundary saved. Nearby map context is unavailable for now; you can keep designing.',
+      { icon: 'ℹ️' },
+    ));
+    expect(toast.error).not.toHaveBeenCalled();
+    expect(queryClient.getQueryData<SiteZone[]>(['site-zones', PROJECT_ID])?.[0]?.id).toBe(REAL_ZONE_ID);
   });
 
   it('reconciles the saved boundary and opens its Site DNA panel', async () => {

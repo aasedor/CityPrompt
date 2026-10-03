@@ -20,8 +20,9 @@ export function streetSurfaceMaskZone(zone: SiteZone): SiteZone {
   const bands = profile?.bands.filter(band => band.sourceType !== 'setback');
   if (!bands?.length || line.length < 2) return zone;
   const low = Math.min(...bands.map(band => band.startM)), high = Math.max(...bands.map(band => band.endM));
-  // The four fixed sections have symmetric outer setback strips. Preserve
-  // legacy ownership rather than invent an offset for an unsupported section.
-  if (Math.abs(low + high) > 0.01) return zone;
-  return {...zone, coordinates:bufferLineToPolygon(line,high-low)};
+  // Take the two independently offset edges from the same bounded-miter
+  // algorithm as the saved route. Asymmetric utility strips remain unmasked.
+  const positive = bufferLineToPolygon(line, Math.abs(high) * 2).slice(0, line.length);
+  const negative = bufferLineToPolygon(line, Math.abs(low) * 2).slice(line.length);
+  return {...zone, coordinates:[...positive, ...negative]};
 }

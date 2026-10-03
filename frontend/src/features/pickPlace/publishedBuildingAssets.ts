@@ -27,9 +27,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 20.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      10.898324012756348,
-      16.050000190734863,
-      6.360000133514404
+      10.898324013,
+      16.050000191,
+      6.360000134
     ],
     "reshapeDescription": "Widen the plot to add complete houses. Each house keeps its authored proportions.",
     "properties": {
@@ -67,9 +67,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 22.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      11.069999694824219,
-      17.93000030517578,
-      10.8100004196167
+      11.069999695,
+      17.930000305,
+      10.81000042
     ],
     "reshapeDescription": "Widen the plot to add complete houses. The porch, dormer and two storeys keep their proportions.",
     "properties": {
@@ -107,8 +107,8 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 66.0,
     "maxSize": 100.0,
     "nativeDimensions": [
-      59.40999984741211,
-      60.010000228881836,
+      59.409999847,
+      60.010000229,
       44.0
     ],
     "reshapeDescription": "A complete landmark at its authored size. Move or rotate it; the courtyard and tower retain their proportions.",
@@ -148,8 +148,8 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "maxSize": 100.0,
     "nativeDimensions": [
       13.375,
-      19.600000381469727,
-      10.149999618530273
+      19.600000381,
+      10.149999619
     ],
     "reshapeDescription": "Resize the plot around one complete building. The building keeps its three storeys and authored proportions.",
     "properties": {
@@ -187,9 +187,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 42.0,
     "maxSize": 120.0,
     "nativeDimensions": [
-      24.8799991607666,
-      37.7400016784668,
-      7.21999979019165
+      24.879999161,
+      37.740001678,
+      7.21999979
     ],
     "reshapeDescription": "Resize the plot around the complete motel. Wings, guest rooms and sign keep their authored proportions.",
     "properties": {
@@ -227,9 +227,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 39.0,
     "maxSize": 120.0,
     "nativeDimensions": [
-      34.15999984741211,
-      34.15999984741211,
-      20.43000030517578
+      34.159999847,
+      34.159999847,
+      20.430000305
     ],
     "reshapeDescription": "Resize the plot around the complete building. Shops, balconies and roof retain their authored proportions.",
     "properties": {
@@ -267,8 +267,8 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 34.0,
     "maxSize": 160.0,
     "nativeDimensions": [
-      32.1200008392334,
-      30.074999809265137,
+      32.120000839,
+      30.074999809,
       99.0
     ],
     "reshapeDescription": "Resize the plot around the complete tower. Its floors, canopy and crown keep their original proportions.",
@@ -307,9 +307,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 44.0,
     "maxSize": 180.0,
     "nativeDimensions": [
-      48.05500030517578,
-      40.05500030517578,
-      58.79999923706055
+      48.055000305,
+      40.055000305,
+      58.799999237
     ],
     "reshapeDescription": "Resize the plot around this complete tower. Floors, terraces and structural details retain their authored proportions.",
     "properties": {
@@ -347,9 +347,9 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 49.0,
     "maxSize": 180.0,
     "nativeDimensions": [
-      43.4902229309082,
-      44.02606964111328,
-      147.6999969482422
+      43.490222931,
+      44.026069641,
+      147.699996948
     ],
     "reshapeDescription": "Resize the plot around this complete tower. Floors, terraces and structural details retain their authored proportions.",
     "properties": {
@@ -359,6 +359,566 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "development_archetype_label": "Twisting glass tower with sky garden",
       "floors": 40,
       "floor_count": 40,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_side_by_side_duplex",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Side-by-side duplex",
+    "description": "Two homes with separate recessed entrances and flat roofs.",
+    "thumbnail": "/archetypes/buildings/calgary-modern-infill-house/variant_2.png",
+    "model": {
+      "variantId": "infill_duplex",
+      "revision": "calgary-side-by-side-duplex-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "two_home",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 17.0,
+    "depth": 25.0,
+    "minWidth": 17.0,
+    "minDepth": 25.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      13.340000153,
+      21.472000122,
+      9.0
+    ],
+    "reshapeDescription": "One complete two-home building at its native size. Resize the surrounding plot; the homes do not stretch or repeat.",
+    "properties": {
+      "building_archetype_id": "calgary_modern_infill_house",
+      "development_archetype_id": "calgary_modern_infill_house",
+      "development_selected_variant_id": "infill_duplex",
+      "development_archetype_label": "Side-by-side duplex",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_montreal_plateau_duplex",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Plateau stacked duplex",
+    "description": "Two stacked homes with bay windows and a curved outdoor stair.",
+    "thumbnail": "/archetypes/buildings/montreal-duplex/variant_0.png",
+    "model": {
+      "variantId": "montreal_duplex_plateau",
+      "revision": "montreal-plateau-duplex-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "two_home",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 16.0,
+    "depth": 23.0,
+    "minWidth": 16.0,
+    "minDepth": 23.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      12.649098396,
+      19.320000172,
+      8.104999542
+    ],
+    "reshapeDescription": "One complete stacked duplex at native size, including its curved stair. Resize the surrounding plot without stretching the building.",
+    "properties": {
+      "building_archetype_id": "montreal_duplex",
+      "development_archetype_id": "montreal_duplex",
+      "development_selected_variant_id": "montreal_duplex_plateau",
+      "development_archetype_label": "Plateau stacked duplex",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_courtyard_brick_modern",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Brick courtyard entrance building",
+    "description": "One three-storey brick entrance building with two homes-access vestibules and two open passages. The surrounding courtyard is designed separately.",
+    "thumbnail": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+    "model": {
+      "variantId": "courtyard_family_brick_modern",
+      "revision": "courtyard-brick-modern-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "apartments",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 30.0,
+    "depth": 17.0,
+    "minWidth": 30.0,
+    "minDepth": 17.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      25.582000732,
+      13.381999969,
+      12.275000572
+    ],
+    "reshapeDescription": "One complete entrance building at native scale. Resize its plot without stretching the arches, passages or roof.",
+    "properties": {
+      "building_archetype_id": "courtyard_family_housing",
+      "development_archetype_id": "courtyard_family_housing",
+      "development_selected_variant_id": "courtyard_family_brick_modern",
+      "development_archetype_label": "Brick courtyard entrance building",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "showcase_market",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Grand Iron & Glass Market",
+    "description": "Two occupied market galleries, an iron barrel vault and complete vendor stalls.",
+    "thumbnail": "/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+    "model": {
+      "variantId": "market_historic_iron_glass",
+      "revision": "showcase-market-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 39.0,
+    "depth": 52.0,
+    "minWidth": 39.0,
+    "minDepth": 52.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      35.25,
+      48.479999542,
+      19.090000153
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "food_hall_market_hall",
+      "development_archetype_id": "food_hall_market_hall",
+      "development_selected_variant_id": "market_historic_iron_glass",
+      "development_archetype_label": "Grand Iron & Glass Market",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "showcase_aquatic",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Living-Roof Aquatic Centre",
+    "description": "A planted glulam vault, glazed entrance arch and complete eight-lane swimming hall.",
+    "thumbnail": "/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+    "model": {
+      "variantId": "biophilic_mass_timber_pool",
+      "revision": "showcase-aquatic-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 42.0,
+    "depth": 60.0,
+    "minWidth": 42.0,
+    "minDepth": 60.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      38.36000061,
+      56.73500061,
+      16.597248077
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "aquatic_natatorium_complex",
+      "development_archetype_id": "aquatic_natatorium_complex",
+      "development_selected_variant_id": "biophilic_mass_timber_pool",
+      "development_archetype_label": "Living-Roof Aquatic Centre",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "showcase_tower",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Gilded Terracotta Tower",
+    "description": "A cream terracotta setback tower with recessed windows, sunburst relief and a gilded lantern.",
+    "thumbnail": "/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+    "model": {
+      "variantId": "art_deco_cream_terracotta",
+      "revision": "showcase-tower-clay-v005",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 36.0,
+    "depth": 33.0,
+    "minWidth": 36.0,
+    "minDepth": 33.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      32.779998779,
+      29.317217827,
+      68.599998474
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "art_deco_setback_tower",
+      "development_archetype_id": "art_deco_setback_tower",
+      "development_selected_variant_id": "art_deco_cream_terracotta",
+      "development_archetype_label": "Gilded Terracotta Tower",
+      "floors": 17,
+      "floor_count": 17,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "autumn_timber",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Nordic Roof-Garden Apartments",
+    "description": "A six-storey timber frame with recessed balconies, planted roof terrace and shaded pavilion.",
+    "thumbnail": "/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
+    "model": {
+      "variantId": "nordic_timber_mass_timber",
+      "revision": "autumn-timber-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "apartments",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 24.0,
+    "depth": 23.0,
+    "minWidth": 24.0,
+    "minDepth": 23.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      20.350000381,
+      19.475000381,
+      22.760000229
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "nordic_timber_midrise",
+      "development_archetype_id": "nordic_timber_midrise",
+      "development_selected_variant_id": "nordic_timber_mass_timber",
+      "development_archetype_label": "Nordic Roof-Garden Apartments",
+      "floors": 6,
+      "floor_count": 6,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "autumn_villa",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Tuscan Arcade Villa",
+    "description": "A three-level Tuscan home with a covered stone arcade, green shutters and a canal-tile roof.",
+    "thumbnail": "/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
+    "model": {
+      "variantId": "med_villa_tuscan",
+      "revision": "autumn-villa-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 23.0,
+    "depth": 18.0,
+    "minWidth": 23.0,
+    "minDepth": 18.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      19.299999237,
+      14.130000114,
+      11.779999733
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "mediterranean_villa_estate",
+      "development_archetype_id": "mediterranean_villa_estate",
+      "development_selected_variant_id": "med_villa_tuscan",
+      "development_archetype_label": "Tuscan Arcade Villa",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "autumn_cinema",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Grand Deco Cinema",
+    "description": "An Art Deco movie palace with arched gallery windows, a gold marquee and a double-sided blade sign.",
+    "thumbnail": "/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+    "model": {
+      "variantId": "deco_theater_movie_palace",
+      "revision": "autumn-cinema-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 28.0,
+    "depth": 46.0,
+    "minWidth": 28.0,
+    "minDepth": 46.0,
+    "maxSize": 150.0,
+    "nativeDimensions": [
+      24.63999939,
+      42.290000916,
+      21.420000076
+    ],
+    "reshapeDescription": "One complete native building. Enlarge its surrounding plot or place another building.",
+    "properties": {
+      "building_archetype_id": "deco_theater_mainstreet",
+      "development_archetype_id": "deco_theater_mainstreet",
+      "development_selected_variant_id": "deco_theater_movie_palace",
+      "development_archetype_label": "Grand Deco Cinema",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_mass_timber_biophilic_barn",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Mass-timber Library",
+    "description": "Planted roof terraces, branching timber supports and a glazed reading hall.",
+    "thumbnail": "/archetypes/buildings/university-library/variant_2.png",
+    "model": {
+      "variantId": "mass_timber_biophilic_barn",
+      "revision": "neighbourhood-library-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 40.0,
+    "depth": 37.0,
+    "minWidth": 40.0,
+    "minDepth": 37.0,
+    "maxSize": 140.0,
+    "nativeDimensions": [
+      35.36000061,
+      32.599998474,
+      15.501831055
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "university_library",
+      "development_archetype_id": "university_library",
+      "development_selected_variant_id": "mass_timber_biophilic_barn",
+      "development_archetype_label": "Mass-timber Library",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_parisian_corner_cafe_culture",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Corner Café & Apartments",
+    "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
+    "thumbnail": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+    "model": {
+      "variantId": "parisian_corner_cafe_culture",
+      "revision": "neighbourhood-corner-cafe-clay-v010",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "mixed",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 49.0,
+    "depth": 48.0,
+    "minWidth": 49.0,
+    "minDepth": 48.0,
+    "maxSize": 140.0,
+    "nativeDimensions": [
+      44.06293869,
+      43.168063599,
+      20.649999616
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "parisian_boulevard_corner",
+      "development_archetype_id": "parisian_boulevard_corner",
+      "development_selected_variant_id": "parisian_corner_cafe_culture",
+      "development_archetype_label": "Corner Café & Apartments",
+      "floors": 6,
+      "floor_count": 6,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_station_victorian_iron_glass",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Victorian Grand Station",
+    "description": "Victorian iron-and-glass train hall, ticket booths, café, platforms and two walkable gallery stairs.",
+    "thumbnail": "/archetypes/buildings/historic_grand_station/variant_1.png",
+    "model": {
+      "variantId": "station_victorian_iron_glass",
+      "revision": "victorian-station-interior-clay-v007",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "infrastructure",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 64.0,
+    "depth": 100.0,
+    "minWidth": 64.0,
+    "minDepth": 100.0,
+    "maxSize": 140.0,
+    "nativeDimensions": [
+      60.0,
+      96.0,
+      32.560001373
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "historic_grand_station",
+      "development_archetype_id": "historic_grand_station",
+      "development_selected_variant_id": "station_victorian_iron_glass",
+      "development_archetype_label": "Victorian Grand Station",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_biophilic_mass_timber_campus",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Timber Art & Design School",
+    "description": "Exhibition gallery, painting and ceramics studios, roof lounge and planted terrace connected by walkable stairs.",
+    "thumbnail": "/archetypes/buildings/university-academic-complex/variant_2.png",
+    "model": {
+      "variantId": "biophilic_mass_timber_campus",
+      "revision": "interior-school-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 40.0,
+    "depth": 34.0,
+    "minWidth": 40.0,
+    "minDepth": 34.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      36.0,
+      30.0,
+      16.309999466
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "university_academic_complex",
+      "development_archetype_id": "university_academic_complex",
+      "development_selected_variant_id": "biophilic_mass_timber_campus",
+      "development_archetype_label": "Timber Art & Design School",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_mediterranean_resort_courtyard",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Mediterranean Courtyard Hotel",
+    "description": "Furnished guest suites, concierge lounge, open courtyard, upper galleries and a poolside loggia with walkable stairs.",
+    "thumbnail": "/archetypes/buildings/boutique-hotel/variant_1.png",
+    "model": {
+      "variantId": "mediterranean_resort_courtyard",
+      "revision": "interior-hotel-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "hotels",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 44.0,
+    "depth": 40.0,
+    "minWidth": 44.0,
+    "minDepth": 40.0,
+    "maxSize": 100.0,
+    "nativeDimensions": [
+      40.0,
+      36.0,
+      13.588971138
+    ],
+    "reshapeDescription": "The complete building keeps its authored proportions within the plot.",
+    "properties": {
+      "building_archetype_id": "boutique_hotel",
+      "development_archetype_id": "boutique_hotel",
+      "development_selected_variant_id": "mediterranean_resort_courtyard",
+      "development_archetype_label": "Mediterranean Courtyard Hotel",
+      "floors": 3,
+      "floor_count": 3,
       "native_plot_axes": true
     }
   }

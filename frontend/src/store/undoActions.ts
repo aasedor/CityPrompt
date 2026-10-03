@@ -2,8 +2,9 @@ import type { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi, buildingsApi, zoneHistoryApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import type { UndoableAction } from './undoRedo';
-import { streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
+import { isFixedSectionStreet, streetCoordinateUpdate } from '@/features/pickPlace/streetPlacement';
 import { readParkTerrain, type ParkTerrainProfile } from '@/components/viewer/globe/parkTerrain';
+import { runProjectWrite } from '@/utils/projectWriteQueue';
 
 // =============================================================================
 // Helpers
@@ -44,6 +45,14 @@ function invalidateProject(queryClient: QueryClient, projectId: string) {
   return queryClient.invalidateQueries({ queryKey: ['project', projectId] });
 }
 
+/** Undo uses the same write lane as drawing and automatic compilation. Read
+ * the expected revision inside that lane, after our derived write has advanced
+ * it; never adopt an unrelated teammate revision to bypass a real conflict. */
+function queuedZoneAction(action: UndoableAction, client: QueryClient, projectId: string): UndoableAction {
+  return {...action, undo:()=>runProjectWrite(client,projectId,action.undo),
+    redo:()=>runProjectWrite(client,projectId,action.redo)};
+}
+
 // =============================================================================
 // Zone Actions
 // =============================================================================
@@ -58,7 +67,7 @@ export function createZoneCreateAction(
   const idRef: IdRef = { current: createdZone.id, revision: createdZone.updated_at };
   rememberRevision(queryClient, projectId, createdZone.id, createdZone.updated_at);
 
-  return {
+  return queuedZoneAction({
     projectId,
     label: 'Create zone',
     getZoneId: () => idRef.current,
@@ -81,7 +90,7 @@ export function createZoneCreateAction(
       rememberRevision(queryClient, projectId, zone.id, zone.updated_at);
       await invalidateZones(queryClient, projectId);
     },
-  };
+  },queryClient,projectId);
 }
 
 export function createZoneDeleteAction(
@@ -92,7 +101,7 @@ export function createZoneDeleteAction(
   const originalZoneId = deletedZone.id;
   const idRef: IdRef = { current: deletedZone.id, revision: deletedZone.updated_at };
 
-  return {
+  return queuedZoneAction({
     projectId,
     label: 'Delete zone',
     getZoneId: () => idRef.current,
@@ -110,7 +119,7 @@ export function createZoneDeleteAction(
       await siteZonesApi.delete(idRef.current, currentRevision(queryClient, projectId, idRef.current, idRef.revision), { skipHistory: true });
       await invalidateZones(queryClient, projectId);
     },
-  };
+  },queryClient,projectId);
 }
 
 export function createZoneUpdateAction(
@@ -123,7 +132,7 @@ export function createZoneUpdateAction(
 ): UndoableAction {
   let revision = savedRevision;
   rememberRevision(queryClient, projectId, zoneId, revision);
-  return {
+  return queuedZoneAction({
     projectId,
     label: 'Update zone',
     zoneId,
@@ -139,7 +148,7 @@ export function createZoneUpdateAction(
       rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
-  };
+  },queryClient,projectId);
 }
 
 export function createZoneCoordinatesAction(
@@ -150,6 +159,7 @@ export function createZoneCoordinatesAction(
   queryClient: QueryClient,
   savedRevision?: string,
   previousZone?: SiteZone,
+  savedZone?: SiteZone,
 ): UndoableAction {
   let revision = savedRevision;
   rememberRevision(queryClient, projectId, zoneId, revision);
@@ -158,20 +168,31 @@ export function createZoneCoordinatesAction(
   const terrain = (zone?: SiteZone): ParkTerrainProfile | undefined =>
     zone && readParkTerrain(zone) ? zone.properties?.park_terrain as ParkTerrainProfile : undefined;
   let beforeTerrain = terrain(previousZone), afterTerrain: ParkTerrainProfile | undefined;
-  const coordinateData = (current: SiteZone | undefined, coordinates: number[][], profile?: ParkTerrainProfile) => {
+  const coordinateData = (current: SiteZone | undefined, coordinates: number[][], profile?: ParkTerrainProfile, snapshot?: SiteZone) => {
+    if (current && snapshot?.properties?.green_space_native_layout) {
+      return {coordinates,properties:{...current.properties,green_space_native_layout:snapshot.properties.green_space_native_layout}};
+    }
+    // Curved street controls are authored alongside the sampled centreline.
+    // Undo/redo must restore that pair, not infer new controls from the strip.
+    if (current && snapshot && isFixedSectionStreet(current) && isFixedSectionStreet(snapshot)) {
+      return { coordinates, properties: { ...current.properties,
+        plan_centerline: snapshot.properties?.plan_centerline,
+        plan_route_controls: snapshot.properties?.plan_route_controls,
+      } };
+    }
     const data = streetCoordinateUpdate(current, coordinates);
     if (!current || !profile) return data;
     const properties = { ...current.properties, park_terrain: profile };
     return readParkTerrain({ ...current, coordinates, properties }) ? { ...data, properties } : data;
   };
-  return {
+  return queuedZoneAction({
     projectId,
     label: 'Move zone',
     zoneId,
     undo: async () => {
       const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
       const measured = terrain(current);
-      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, prevCoords, beforeTerrain), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, prevCoords, beforeTerrain, previousZone), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
       afterTerrain = measured ?? afterTerrain;
       revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zoneId, revision);
@@ -180,13 +201,13 @@ export function createZoneCoordinatesAction(
     redo: async () => {
       const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === zoneId);
       const measured = terrain(current);
-      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, newCoords, afterTerrain), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
+      const zone = await siteZonesApi.update(zoneId, { ...coordinateData(current, newCoords, afterTerrain, savedZone), expected_updated_at: currentRevision(queryClient, projectId, zoneId, revision) }, { skipHistory: true });
       beforeTerrain = measured ?? beforeTerrain;
       revision = zone.updated_at;
       rememberRevision(queryClient, projectId, zoneId, revision);
       await invalidateZones(queryClient, projectId);
     },
-  };
+  },queryClient,projectId);
 }
 
 // =============================================================================

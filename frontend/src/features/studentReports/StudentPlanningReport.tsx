@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Download, FileText, RefreshCw } from 'lucide-react';
+import type { ParkAccessSnapshot } from '@/components/viewer/globe/parkAccessConnections';
 
 import {
   reportError, safeSourceUrl, studentReportsApi,
@@ -12,6 +13,7 @@ interface Props {
   planChangeToken?: unknown;
   canEdit?: boolean;
   onSelectZone?: (zoneId: string) => void;
+  getParkAccessSnapshot?: () => ParkAccessSnapshot | undefined;
 }
 
 const kindLabels = {
@@ -109,7 +111,7 @@ export function StudentPlanningReport(props: Props) {
   return <ProjectPlanningReport key={props.projectId} {...props} />;
 }
 
-function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = true, onSelectZone }: Props) {
+function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = true, onSelectZone, getParkAccessSnapshot }: Props) {
   const [report, setReport] = useState<StudentReport | null>(null);
   const [history, setHistory] = useState<ReportSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -161,7 +163,7 @@ function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = 
     setError(null);
     const sequence = ++requestSequence.current;
     try {
-      const next = await studentReportsApi.create(projectId, zoneIds);
+      const next = await studentReportsApi.create(projectId, zoneIds, getParkAccessSnapshot?.());
       if (lifetime !== lifecycle.current || sequence !== requestSequence.current) return;
       selectedId.current = next.id;
       setReport(next);

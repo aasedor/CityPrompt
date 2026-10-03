@@ -1,0 +1,33 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "reviewer": "root builder: direct exported-GLB render inspection",
+  "independent": false,
+  "model_sha256": "b4280c800244f05b035aea3a01ed954ec87740001b91130792f01a0bb19316b3",
+  "reviewed_views": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "dcba2f793780c825c90b3d115e7b6bb19138f70ac2b66c8686e0e6b074247d83"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "2c249b254adf8b46840c169d85bf952117416f976c0923fd308e407adfffe6ee"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "8e182d6df11bd0b9e0e7ddf6176a88d2148905f1dbf92c19998a9e1575acf664"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "53ba9a944d791fd9f678b1c16fd92a20f91d82172a49102afb5f6a4ad06f3a5c"
+    }
+  ],
+  "findings": [
+    "Rounded winding stream has closed ends; arched timber bridge joins the gravel paths.",
+    "Whole benches occupy connected alcoves; raked gravel and grouped boulders retain the Japanese garden reference.",
+    "Reference repeats its oblique view as top; unseen plan is expressly inferred. Shared native tree family used."
+  ],
+  "scope": "Native composition, measured envelope, grounded furniture and source identity; no browser or user approval claimed.",
+  "runtime_status": "NOT TESTED",
+  "publication_status": "local pilot only",
+  "completed": false
+}

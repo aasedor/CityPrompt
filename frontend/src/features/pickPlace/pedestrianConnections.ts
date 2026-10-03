@@ -5,7 +5,9 @@ import { effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/r
 import { pedestrianAccessBands, resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { corridorInside, corridorOverlaps, pointInside } from '@/components/viewer/globe/parkAccessConnections';
 import { rectangleDimensions } from './geometry';
+import { CATALOGUE_ASSETS } from './assetRegistry';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
+import { buildingPlacementEnvelope } from './buildingPlacementEdges';
 
 export type Point = [number, number];
 /** Door coordinates are in the plot's rotating local metre frame. Native houses
@@ -17,6 +19,7 @@ export interface BuildingEntrance {
   heightAboveBaseM?: number;
   automatic?: boolean;
   sourceVariantId?: string;
+  sourceRevision?: string;
   /** One unscaled, centred building inside an editable plot, never repetition. */
   fixedNative?: boolean;
 }
@@ -28,6 +31,13 @@ export interface PedestrianStrip {
 export interface ConnectionResult {
   ownerId: string; kind: 'building' | 'crossing'; id: string;
   status: 'connected' | 'unresolved'; reason: string; strips: PedestrianStrip[];
+}
+/** Both legacy repeated-home plots and revision-locked fixed native models can
+ * report a hit on their real mesh. A drawn canonical plot has no such hit. */
+export function supportsNativeEntranceStepPick(zone: Pick<SiteZone, 'properties'>): boolean {
+  const properties = zone.properties;
+  return properties?.native_home_plot === true
+    || (properties?.native_plot_axes === true && typeof properties.pick_place_model_revision === 'string');
 }
 const finite = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x);
 const validRing = (z: SiteZone) => z.coordinates.length >= 3 && z.coordinates.length <= 512
@@ -55,6 +65,8 @@ export function readBuildingEntrance(zone: SiteZone, zones?: readonly SiteZone[]
   if (!v.automatic || !zones) return v;
   if (!validRing(zone) || zone.coordinates.length !== 4) return null;
   if (v.sourceVariantId && v.sourceVariantId !== zone.properties?.development_selected_variant_id) return null;
+  if (v.sourceRevision && (v.sourceRevision !== zone.properties?.pick_place_model_revision
+    || CATALOGUE_ASSETS.find(asset => asset.id === zone.properties?.pick_place_asset)?.model.revision !== v.sourceRevision)) return null;
   const d = rectangleDimensions(zone.coordinates);
   // Multiple repeated houses need a per-instance entrance contract; do not
   // attach their shared plot centre to an imaginary doorway.
@@ -139,7 +151,7 @@ export function resolvePedestrianConnections(zones: readonly SiteZone[], visible
       const obstacles = zones.filter(z => z.id !== owner.id && ['building','residential','green_space','parking','water'].includes(z.zone_type));
       const safe = (a: Point, b: Point, width: number, ignoredRoad: string) => corridorInside(a, b, border, width / 2)
         && ![...obstacles, ...zones.filter(z => z.zone_type === 'road' && z.id !== ignoredRoad)]
-          .some(z => corridorOverlaps(a, b, z.coordinates.map(f.local), width / 2 + 0.15));
+          .some(z => corridorOverlaps(a, b, buildingPlacementEnvelope(z).map(f.local), width / 2 + 0.15));
       if (crossing) {
         const section = resolvePilotStreetSectionProfile(owner), station = crossingStation(owner, crossing.position);
         result.reason = 'Choose a straight section with sidewalks on both sides, away from bends and intersections.';

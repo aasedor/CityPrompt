@@ -1,0 +1,700 @@
+{
+  "title": "Ruelle Verte Community Alley",
+  "reference": "montreal-ruelle-verte-green-alley/hero.png",
+  "length_m": 40,
+  "pattern": "brick",
+  "observed_features": [
+    "Raised timber planters, vines, small trees and community seating"
+  ],
+  "adapted_features": [
+    "Freestanding planted trellises instead of invented neighbouring walls; firm paver route instead of grass-grid surface"
+  ],
+  "id": "student_green_alley_v1",
+  "kind": "green_alley",
+  "dimensions_m": [
+    11,
+    40
+  ],
+  "sections": [
+    {
+      "name": "west_garden",
+      "x": -4.0,
+      "width": 3,
+      "material": "paving"
+    },
+    {
+      "name": "shared_lane",
+      "x": 0.0,
+      "width": 5,
+      "material": "paving"
+    },
+    {
+      "name": "east_garden",
+      "x": 4.0,
+      "width": 3,
+      "material": "paving"
+    }
+  ],
+  "fixed_width_m": 11,
+  "fixture_length_m": 40,
+  "image_references": [
+    {
+      "path": "references/montreal-ruelle-verte-green-alley/hero.png",
+      "sha256": "9387cb75833f31cb1a7f5127aef73cdf594cbc1d0aa0c9911718a21e9774d0a1",
+      "bytes": 1724508,
+      "source": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\streets\\montreal-ruelle-verte-green-alley\\hero.png"
+    }
+  ],
+  "kit_source": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\sports-ten-2026-09-23\\shared-kit\\kit.json",
+    "sha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050"
+  },
+  "clear_routes": [
+    {
+      "name": "shared_lane",
+      "a": [
+        0.0,
+        -19.5
+      ],
+      "b": [
+        0.0,
+        19.5
+      ],
+      "width": 4.6
+    },
+    {
+      "name": "cross_link",
+      "a": [
+        -5.3,
+        0
+      ],
+      "b": [
+        5.3,
+        0
+      ],
+      "width": 2.6
+    }
+  ],
+  "reference_assets": [
+    {
+      "kind": "planted_trellis",
+      "x": -4.8,
+      "y": -15,
+      "yaw": -1.5707963267948966,
+      "bounds_m": [
+        [
+          -5.310000419616699,
+          -16.399999618530273,
+          0.0
+        ],
+        [
+          -4.289999961853027,
+          -13.600000381469727,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.8,
+      "y": -6,
+      "yaw": -1.5707963267948966,
+      "bounds_m": [
+        [
+          -5.310000419616699,
+          -7.400000095367432,
+          0.0
+        ],
+        [
+          -4.289999961853027,
+          -4.599999904632568,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.8,
+      "y": 6,
+      "yaw": -1.5707963267948966,
+      "bounds_m": [
+        [
+          -5.310000419616699,
+          4.599999904632568,
+          0.0
+        ],
+        [
+          -4.289999961853027,
+          7.400000095367432,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.8,
+      "y": 15,
+      "yaw": -1.5707963267948966,
+      "bounds_m": [
+        [
+          -5.310000419616699,
+          13.600000381469727,
+          0.0
+        ],
+        [
+          -4.289999961853027,
+          16.399999618530273,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.8,
+      "y": -15,
+      "yaw": 1.5707963267948966,
+      "bounds_m": [
+        [
+          4.289999961853027,
+          -16.399999618530273,
+          0.0
+        ],
+        [
+          5.310000419616699,
+          -13.600000381469727,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.8,
+      "y": -6,
+      "yaw": 1.5707963267948966,
+      "bounds_m": [
+        [
+          4.289999961853027,
+          -7.400000095367432,
+          0.0
+        ],
+        [
+          5.310000419616699,
+          -4.599999904632568,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.8,
+      "y": 6,
+      "yaw": 1.5707963267948966,
+      "bounds_m": [
+        [
+          4.289999961853027,
+          4.599999904632568,
+          0.0
+        ],
+        [
+          5.310000419616699,
+          7.400000095367432,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.8,
+      "y": 15,
+      "yaw": 1.5707963267948966,
+      "bounds_m": [
+        [
+          4.289999961853027,
+          13.600000381469727,
+          0.0
+        ],
+        [
+          5.310000419616699,
+          16.399999618530273,
+          2.4800000190734863
+        ]
+      ],
+      "native_bounds_m": [
+        [
+          -1.399999976158142,
+          -0.5099999904632568,
+          0.0
+        ],
+        [
+          1.399999976158142,
+          0.5099999904632568,
+          2.4800000190734863
+        ]
+      ]
+    }
+  ],
+  "cycle_directions": [],
+  "reference_profile": {
+    "observed": [
+      "Raised timber planters, vines, small trees and community seating"
+    ],
+    "adapted": [
+      "Freestanding planted trellises instead of invented neighbouring walls; firm paver route instead of grass-grid surface"
+    ]
+  },
+  "terrain_policy": "Straight level concept fixture; reconstruct every band with shared runtime ground.",
+  "junction_policy": "Network owns all junctions, endpoints, crossings and ramps. Omit or move modules around connections.",
+  "limitations": [
+    "Original section for ideation, not measured from the image or certified for traffic/accessibility/drainage.",
+    "Ground-level street fixture; elevated kerbs, operational stop islands and sloped joins require runtime integration.",
+    "No buildings, people, vehicles, invented water body or surrounding context included.",
+    "Never repeat, bend or nonuniformly stretch assembly-preview.glb; place native amenity modules and rebuild bands.",
+    "Browser, Currie terrain, route edits, Undo/Redo, reload and export remain NOT TESTED."
+  ],
+  "tree_wells": [],
+  "placements": [
+    {
+      "kind": "planted_trellis",
+      "x": -4.8,
+      "y": -15,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.8,
+      "y": -6,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.8,
+      "y": 6,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": -4.8,
+      "y": 15,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -4.75,
+      "y": -10.7,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 0.65
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -4.75,
+      "y": -9.45,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.55
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -3.65,
+      "y": -10.7,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.65
+    },
+    {
+      "kind": "grove_tree",
+      "x": -3.85,
+      "y": -10,
+      "z": 0,
+      "yaw": -0.7000000000000001,
+      "scale": 0.68
+    },
+    {
+      "kind": "meadow_grass",
+      "x": -4.75,
+      "y": 9.3,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 0.65
+    },
+    {
+      "kind": "silver_shrub",
+      "x": -4.75,
+      "y": 10.55,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.55
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": -3.65,
+      "y": 9.3,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.65
+    },
+    {
+      "kind": "grove_tree",
+      "x": -3.85,
+      "y": 10,
+      "z": 0,
+      "yaw": 0.7000000000000001,
+      "scale": 0.68
+    },
+    {
+      "kind": "bench",
+      "x": -4.0,
+      "y": -3.5,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": -4.0,
+      "y": 3.5,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": -4.9,
+      "y": 18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.8,
+      "y": -15,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.8,
+      "y": -6,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.8,
+      "y": 6,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "planted_trellis",
+      "x": 4.8,
+      "y": 15,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 3.25,
+      "y": -10.7,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 0.65
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 3.25,
+      "y": -9.45,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.55
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 4.35,
+      "y": -10.7,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.65
+    },
+    {
+      "kind": "grove_tree",
+      "x": 3.85,
+      "y": -10,
+      "z": 0,
+      "yaw": -0.7000000000000001,
+      "scale": 0.68
+    },
+    {
+      "kind": "meadow_grass",
+      "x": 3.25,
+      "y": 9.3,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 0.65
+    },
+    {
+      "kind": "silver_shrub",
+      "x": 3.25,
+      "y": 10.55,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.55
+    },
+    {
+      "kind": "flowering_perennial",
+      "x": 4.35,
+      "y": 9.3,
+      "z": 0,
+      "yaw": 2.4,
+      "scale": 0.65
+    },
+    {
+      "kind": "grove_tree",
+      "x": 3.85,
+      "y": 10,
+      "z": 0,
+      "yaw": 0.7000000000000001,
+      "scale": 0.68
+    },
+    {
+      "kind": "bench",
+      "x": 4.0,
+      "y": -3.5,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": 4.0,
+      "y": 3.5,
+      "z": 0,
+      "yaw": -1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "light",
+      "x": 4.9,
+      "y": 18,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    }
+  ],
+  "surface_regions": [
+    {
+      "x": -4.0,
+      "y": 0,
+      "width": 3,
+      "depth": 40,
+      "material": "paving"
+    },
+    {
+      "x": 0.0,
+      "y": 0,
+      "width": 5,
+      "depth": 40,
+      "material": "paving"
+    },
+    {
+      "x": 4.0,
+      "y": 0,
+      "width": 3,
+      "depth": 40,
+      "material": "paving"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 11,
+      "depth": 3,
+      "material": "paving"
+    },
+    {
+      "x": -4.0,
+      "y": -10,
+      "width": 2.7,
+      "depth": 2.7,
+      "material": "soil"
+    },
+    {
+      "x": -4.0,
+      "y": 10,
+      "width": 2.7,
+      "depth": 2.7,
+      "material": "soil"
+    },
+    {
+      "x": 4.0,
+      "y": -10,
+      "width": 2.7,
+      "depth": 2.7,
+      "material": "soil"
+    },
+    {
+      "x": 4.0,
+      "y": 10,
+      "width": 2.7,
+      "depth": 2.7,
+      "material": "soil"
+    }
+  ],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 2788176,
+    "sha256": "6d9514b1e9ab469ee38f3fa7115c00c6513e9fcb6abf199159108f24599963c5"
+  },
+  "modules": {
+    "bench": {
+      "path": "bench.glb",
+      "bytes": 34024,
+      "sha256": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+    },
+    "flowering_perennial": {
+      "path": "flowering_perennial.glb",
+      "bytes": 162120,
+      "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+    },
+    "grove_tree": {
+      "path": "grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    "light": {
+      "path": "light.glb",
+      "bytes": 37668,
+      "sha256": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+    },
+    "meadow_grass": {
+      "path": "meadow_grass.glb",
+      "bytes": 68700,
+      "sha256": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+    },
+    "planted_trellis": {
+      "path": "planted_trellis.glb",
+      "bytes": 33656,
+      "sha256": "e81afde69f848f2407c607da9b727b1073db8fe315d8568636e75a85b7a0731c"
+    },
+    "silver_shrub": {
+      "path": "silver_shrub.glb",
+      "bytes": 367296,
+      "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+    }
+  },
+  "bounds_m": [
+    [
+      -5.5,
+      -20.0,
+      -0.11999999731779099
+    ],
+    [
+      5.5,
+      20.0,
+      5.473210334777832
+    ]
+  ],
+  "triangles": 82746,
+  "mesh_instances": 48,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

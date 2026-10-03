@@ -54,7 +54,7 @@ function compiledBuilding(): SiteZone {
 describe('deriveCityPromptWorkflow', () => {
   it('renders saved catalogue objects directly and asks for automatic updates while stale', () => {
     const home = compiledBuilding();
-    home.properties!.pick_place_asset = 'infill_home';
+    home.properties!.pick_place_asset = 'validation_minimalist_infill_brick_monolith';
     const ready = deriveCityPromptWorkflow([home]);
     expect(ready.canRender).toBe(true);
     expect(ready.generationReason).not.toContain('Generate to 3D');

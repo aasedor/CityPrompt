@@ -1,11 +1,12 @@
 import { expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
-import { STREET_ASSETS } from '@/features/pickPlace/assetRegistry';
+import { STREET_ASSETS, additionalStreet } from '@/features/pickPlace/assetRegistry';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { streetSurfaceMaskZone, streetSectionOwnsGround } from './streetSurfaceMask';
 
 it('retains the source setback outside the constructed collector and does not change its saved width',()=>{
-  const asset = STREET_ASSETS.find(a=>a.id==='calgary_collector_street')!;
+  // Legacy editing remains supported even though the classroom picker is finite.
+  const asset = additionalStreet('calgary_collector','Collector','', {groupId:'local',basis:'draft_manual'});
   const line = [[0,0],[100/111320,0]];
   const zone = {id:'road',project_id:'project',color:'#888',sort_order:0,created_at:'',updated_at:'',
     properties:{...asset.properties,plan_centerline:line},coordinates:bufferLineToPolygon(line,20),zone_type:'road'} as SiteZone;

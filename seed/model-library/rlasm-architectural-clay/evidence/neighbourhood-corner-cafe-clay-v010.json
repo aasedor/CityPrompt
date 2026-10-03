@@ -1,0 +1,158 @@
+{
+  "candidate": "neighbourhood-corner-cafe-clay-v010",
+  "reviewer": "independent_review",
+  "reviewed_at_utc": "2026-10-01T14:57:26.9984477Z",
+  "scope": "RLASM v6.1 independent architectural-clay holistic review against exact three photographic references",
+  "decision": "architectural_clay_reviewed",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "model": "neighbourhood-corner-cafe-clay-v010.glb",
+  "model_sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+  "status": "PASS_OFFLINE_ARCHITECTURAL_CLAY_REVIEW",
+  "inspected_files": [
+    {
+      "path": "sources/variant_1.png",
+      "sha256": "44a33ec2b53dd2e4eab9cbf9f14dd2f24db938a31fcd2d58cd14206501378fde",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "sources/variant_1_angle_60.jpg",
+      "sha256": "52376c0bbf60f5fd01c3628debf642318ee9fd4390202c44f81b97088145917c",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "sources/variant_1_angle_90.jpg",
+      "sha256": "fcdb62bcf9d787a973279e4b3beaa495e07f700e3aa75cdaf0b3a21d0ba023ab",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "955a61bcb8ef3392f966715c8da1ae89e43722121cfa200710c260283acc66e5",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "e54068850a540152b0b927935a58fe22b1a1d9da38f1c7b86a6cc9c9074f403a",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "a142eccf4876ca8b6041b16ade83a03ea86505218a53e20fda5e3ac1bf428243",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "86bd9ea2b19d74fbea2cc51e6727bc8f365011ef5fbb58931e0a9fad106f5136",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "a734fbe803b49869a78abc0fa2261d63f921b25d9f106ffcd9c401932aef84da",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "e5a99399584fd82a31f5e435555c38c2f8c44962d36ac030502975309b3ba51d",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "bed6abc98e212028900f37682908e63d0bf53446770d9984fdd5155f94dbb0fd",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "c899ab042845511dccf16e7f949df4f0feac0e0617c7962f879eef934fcc4ef6",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "655ff25b1036f7d6c8fe12d192f018cbb5693e3139b4e920c376c30a63b73285",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "48c659a70fb147007aea4b6face7d6da9b7f949ca0a145762b249d5d99e3febc",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "15c1633b6100970d4776ce1ab813faaf829a3778f38240373d804166f1fd0d2a",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "671137aef50ee8ec4c8017fdabf1be18b5a58aba52558a38eb4a171506ad02d0",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/courtyard.png",
+      "sha256": "85e3f8fcadc294da5e64f0861845da464c589c0b6b599db38ec5234f095073bb",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "59eb53514652de0b591bc95a2efaf2f4801d6f129f64c22f12fa6479d47205e0",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "boards/phone-front.png",
+      "sha256": "c2c462700220a14c0d02f14c52e7f17b1964dfe8d2f871a655c660f2f1f7179b",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "boards/phone-oblique.png",
+      "sha256": "f43b3cc09f93446562ff977592ff268d0353e9118a3372027cb58ea3097a9318",
+      "inspection": "Full image visually inspected for v010"
+    },
+    {
+      "path": "boards/phone-top.png",
+      "sha256": "b54772ba14972dedb7f2d256785fd9cae8c2ec4013fdf6eaeff0aa27fab4dd63",
+      "inspection": "Full image visually inspected for v010"
+    }
+  ],
+  "report_sha256": "7ca1fb1b4dd8d5687a765eb83adc857438e56b52efdf58b69fdc937031429645",
+  "source_identity": "Parisian ochre/cream corner perimeter block with one central chamfer axis, three regular upper levels, two dormer tiers in a pitched zinc mansard, iron balcony, multi-pot chimneys, and continuously wrapping green cafe canopy with striped central section.",
+  "positive_findings": [
+    "C1 closed: the courtyard, rear, left-side and top views show a joined roof envelope without the former open black wedges, overlapping ridge strip or penetrating attic slabs.",
+    "C2 closed: the single central chamfer entrance has a furniture-free approach; the glass and walk views show depth into a furnished interior.",
+    "C3 closed: pitched upper zinc planes, two attic tiers and curved dormer crowns retain the source-defining roof grammar. Dormer cheeks and sills meet their carriers.",
+    "C4 closed: the chamfer has one stacked window and dormer axis aligned over the central door and balcony.",
+    "C5 closed: the wrapping green canopy and striped center form continuous mitered corners, with visible supports.",
+    "C6 closed: architecture_close and roof_contact now show clean planar upper roof pitches and straight seams. The sawtooth shading patches and warped seam transitions from v009 are absent.",
+    "All 14 elevations and detail views plus three phone boards were inspected against the three exact source images. Ochre and cream facade hierarchy, recessed openings, iron balconies, multi-pot chimneys, cafe programme, grounding and whole-scene framing remain coherent at architectural-clay scope."
+  ],
+  "blockers": [],
+  "nonblocking_notes": [
+    {
+      "priority": "P2",
+      "finding": "Facade course relief, simple cafe chairs and planter foliage remain stylized clay-tier details. Some seam phases do not align across changes of pitch, but the roof planes and joins are clean and physically coherent."
+    }
+  ],
+  "limitations": [
+    "No browser/runtime verification performed.",
+    "No user, publication or runtime approval is granted.",
+    "Inferred hidden courtyard windows and concept interiors are acceptable within documented assumptions.",
+    "This is architectural clay review, not textured keeper approval."
+  ],
+  "next_gate": "Offline architectural-clay visual gate passed. Runtime integration, browser checks and any required human visual/publication approval remain separate gates.",
+  "physical_diagnosis": {
+    "method": "Read-only independent arithmetic check of the same straight-skeleton input, followed by full visual inspection of exact exported GLB renders; no model source edits",
+    "script": "scripts/cafe_build.py",
+    "script_sha256": "0e863ebc50917962aa4921f8e400c07a4375104d30a9c1946c99a154fad8d6ec",
+    "roof_input": "scripts/cafe_roof.json",
+    "roof_input_sha256": "9b29d121db6cf21d48eda0b46b0638e9ef542cfb084418a0b3c5b05d253a5fa0",
+    "boundary_depth_m": 3.7,
+    "boundary_height_m": 18.955,
+    "peak_m": 20,
+    "uniform_pitch": 0.35779608567658383,
+    "maximum_plane_z_residual_m": 1.1662333663485982E-07,
+    "face_count": 11,
+    "internal_edges_with_two_owners": 19,
+    "boundary_edges_with_one_owner": 11,
+    "sum_face_area_m2": 136.13808434981271,
+    "pixel_confirmation": "Clean planar cap, crisp roof folds, straight raised seams, and closed carrier joins in the full v010 evidence set."
+  }
+}

@@ -342,6 +342,8 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 ),
             )
     else:
+        from app.services.building_flex_contract import trusted_house_footprint_target
+
         geometry = _community_source_geometry(zone)
         if geometry.geom_type == "MultiPolygon":
             geometry = max(geometry.geoms, key=lambda item: item.area)
@@ -368,6 +370,13 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 east = 111_320 * math.cos(math.radians(lat))
                 width = round(math.hypot((ring[1][0] - ring[0][0]) * east, (ring[1][1] - ring[0][1]) * 111_320), 1)
                 depth = round(math.hypot((ring[2][0] - ring[1][0]) * east, (ring[2][1] - ring[1][1]) * 111_320), 1)
+        try:
+            authored_footprint = trusted_house_footprint_target(properties)
+        except ValueError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        if authored_footprint is not None:
+            width, depth = authored_footprint
+            profile = "rectangle"
         bound_wing = None
     if width <= 0 or depth <= 0 or profile not in {"rectangle", "l_shape", "u_shape", "courtyard"}:
         raise HTTPException(
@@ -2053,6 +2062,17 @@ async def place_community_3d(
     try:
         for boundary in boundaries:
             if not body.include_residual_landscape:
+                existing_landscape = (boundary.properties or {}).get("community_3d_landscape")
+                # Automatic object recompiles do not own a landscape the
+                # student explicitly generated in the Site tab. A zone edit
+                # has already marked that recipe stale; keep its refresh
+                # signal until the student reapplies or removes it there.
+                if (
+                    isinstance(existing_landscape, dict)
+                    and existing_landscape.get("state") in {"compiled", "stale"}
+                    and (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only"
+                ):
+                    continue
                 if (
                     "community_3d_landscape" in (boundary.properties or {})
                     or (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only"
@@ -2076,6 +2096,7 @@ async def place_community_3d(
                 source_zones.append(
                     ResidualSourceZone(
                         zone_id=str(zone.id),
+                        native_selection=properties.get("green_space_native_layout"),
                         kind=_community_3d_kind(zone) or str(zone.zone_type),
                         role=str(role) if role is not None else None,
                         geometry=to_shape(zone.geometry),
@@ -2108,8 +2129,22 @@ async def place_community_3d(
         building_created = False
         building_generator: Literal["lego_assembly", "planned_massing", "meshy"] = "lego_assembly"
         source_locked_rlasm = False
+        source_locked_user_generated = False
         if kind == "building":
-            if item.recipe is not None:
+            if (zone.properties or {}).get("user_generated_source_id"):
+                from app.services.user_generated_models import has_user_generated_binding
+
+                linked_building = project_buildings_by_id.get(str(zone.building_id))
+                if item.recipe is not None or not has_user_generated_binding(zone, linked_building):
+                    raise HTTPException(
+                        status_code=422,
+                        detail="The selected user generated model is unavailable. Choose it again from the building picker.",
+                    )
+                building = linked_building
+                building.footprint = zone.geometry
+                building_generator = "meshy"
+                source_locked_user_generated = True
+            elif item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
             else:
                 linked_building = project_buildings_by_id.get(str(zone.building_id))
@@ -2143,6 +2178,7 @@ async def place_community_3d(
                     building_generator if kind == "building" else "park_kit" if kind == "park" else "street_section"
                 ),
                 "source_locked_rlasm": source_locked_rlasm if kind == "building" else False,
+                "source_locked_user_generated": source_locked_user_generated if kind == "building" else False,
             }
         )
 

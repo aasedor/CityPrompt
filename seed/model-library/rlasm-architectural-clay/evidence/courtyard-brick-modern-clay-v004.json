@@ -1,0 +1,235 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "courtyard-brick-modern-clay-v004",
+  "archetype_id": "courtyard_family_housing",
+  "variant_id": "courtyard_family_brick_modern",
+  "reviewer": "Independent Astra reviewer /root/montreal_model_review, separate from builder",
+  "reviewed_utc": "2026-09-22T20:39:34.682054+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Fresh holistic exact-source architectural-clay regression of identity, topology, complete envelope, every elevation, roof and gable contacts, openings, optical depth, support, circulation, semantic materials, cameras and phone boards.",
+  "holistic_review_performed": true,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_pass",
+  "state": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "runtime_approved": false,
+  "runtime_activation_authorized": false,
+  "ready_for_sol_runtime_testing": true,
+  "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+  "model_bytes": 4422584,
+  "source_hashes_verified": true,
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\sources\\variant_2.png",
+      "bytes": 1379260,
+      "sha256": "a057771c31ead869c761723196c301bcce621f61db1fd6dd057a78f409711227",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\sources\\variant_2_angle_60.jpg",
+      "bytes": 905075,
+      "sha256": "04459d4d3ef3be7623609d75a59a651935fff05807502a8ec672ab7621d35139",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\sources\\variant_2_angle_90.jpg",
+      "bytes": 842411,
+      "sha256": "2871df00a87cee034e7cde10e1f540665116fed04ed7ef34b685dea4334d5599",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\aerial.png",
+      "bytes": 1566294,
+      "sha256": "2a993b2fea464edd21fe038870f401acc4bf50072c907f29918997ed3781e07d",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\architecture_close.png",
+      "bytes": 1475972,
+      "sha256": "e1a4c836796110257af51f256ac7fbd71e27b7b5afd58e404ac43e346e3bbdaf",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\facade_close.png",
+      "bytes": 1687454,
+      "sha256": "4fd726539afc5304166e293f45c6af56feb47eafc7243ddf8ad4e838da1882f2",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\front.png",
+      "bytes": 1418296,
+      "sha256": "8e7a7479501d19108743d29bbbe5ecea04cbba18f3aafbd7ba1d6847f973ef16",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\front_corner.png",
+      "bytes": 1530801,
+      "sha256": "d737800f3c3592b7f4a395cddabcd7f1efb0c7ac761378fd9ae48ceb2a56d422",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\glass_close.png",
+      "bytes": 1498401,
+      "sha256": "a4c676d63ff466794627afc1f575f4420dcc3cd6a85dd1fad240ad14ab3f3472",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\left_side.png",
+      "bytes": 1394041,
+      "sha256": "363cd9e822f01813e0e0de05a93b8273b42271fe4d95904da515eb8889c1a8c2",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\passage_axis.png",
+      "bytes": 1397907,
+      "sha256": "7e657424cf7991a45a5e90c52977e4818d95e8d5c730f079cbdfadd15c20809e",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\rear.png",
+      "bytes": 1427333,
+      "sha256": "ebe7ae3484a1c31507894cfcf7bb0351f533fd8e520b969a9cdff89a9042b06b",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\rear_side.png",
+      "bytes": 1570222,
+      "sha256": "29c9c201ec518f4e23ef305a12cdc079f92a6cbb0b0b8e58aabb94ca5c7cd38f",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\right_side.png",
+      "bytes": 1435442,
+      "sha256": "28f4a9bd90e06261f08cb1b3e0ac312bde5893efc557dbfb8f064895c760ddee",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\roof_contact.png",
+      "bytes": 1422198,
+      "sha256": "6953fdb239eace6a77605617ce4a12ca3ae1ee8d8be89d22db66568ac10407c1",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\side_projection.png",
+      "bytes": 1681746,
+      "sha256": "0d0610a04a4554c5e91afb227106d0f65cf51b8875f4c69085862625c11f2a13",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\top.png",
+      "bytes": 1310256,
+      "sha256": "929d41b09c6d3f071669da18fc96ff5711c87f0c96bccd2eec2b95c1d88d8f98",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\all-views-contact.png",
+      "bytes": 1880385,
+      "sha256": "a6351c4a4eb6217ee16c34b7284c3258ec4287f10d9ace66f89e76ef2413c7f4",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\locked-source-board.png",
+      "bytes": 1462901,
+      "sha256": "22750c29ad55a08f53da66b1eda73d67b96e75890db9134c1802d67edca89880",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\phone-construction.png",
+      "bytes": 1100404,
+      "sha256": "24e824bfe7e33f3bc2be321703594b8619aac5b18c9bfeef6c14322dc3ecc94c",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\phone-source-comparison.png",
+      "bytes": 1595247,
+      "sha256": "484306a22e1697345ca55e34fc721ca79a88efd6ef6147f6a7b8fab7cace71a4",
+      "inspection": "Fresh direct view_image original detail; all individual renders opened separately from boards"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\prework-manifest.json",
+      "bytes": 8129,
+      "sha256": "6769a0ecd26bd9c6835adfebf8c9d33801b26a413ce0063a35f4da2cc89b4860",
+      "inspection": "Supporting binary/hash/metadata inspection"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\build-report.json",
+      "bytes": 95668,
+      "sha256": "17fbe6f81c1ed62937d9ea8ed4b6a10d1257a5097adf3dae0d47e627297ce4b3",
+      "inspection": "Supporting binary/hash/metadata inspection"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\evidence\\delivery-verification.json",
+      "bytes": 1497,
+      "sha256": "ded9bc4ad9ebd42cb0567f57d1e403b0af7e6d3a4cee7f14e2f7cf0207a2ea5e",
+      "inspection": "Supporting binary/hash/metadata inspection"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\courtyard-brick-modern-clay-v004.glb",
+      "bytes": 4422584,
+      "sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "inspection": "Supporting binary/hash/metadata inspection"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-review.json",
+      "bytes": 13027,
+      "sha256": "dad1039623ea0c5baca8f76de35b557308e5230374ba8d720b9acab4815ea133",
+      "inspection": "Supporting binary/hash/metadata inspection"
+    }
+  ],
+  "full_resolution_individual_render_count": 14,
+  "boards_inspected": 4,
+  "phone_boards_inspected": 2,
+  "reported_complete_delivered_bounds_authoring_xyz_m": [
+    [
+      -12.791000366210938,
+      -6.690999984741211,
+      0.0
+    ],
+    [
+      12.791000366210938,
+      6.690999984741211,
+      12.27500057220459
+    ]
+  ],
+  "reported_complete_dimensions_m": {
+    "width": 25.582000732421875,
+    "depth": 13.381999969482422,
+    "height": 12.27500057220459
+  },
+  "findings": [],
+  "closed_prior_findings": [
+    {
+      "id": "COURT-V003-P1-VERGE",
+      "prior_candidate": "courtyard-brick-modern-clay-v003",
+      "resolution": "Fresh v004 front, top, aerial and rear-side pixels show uninterrupted grey roof coverage to both verges. Buff/black exposed strips and crossing masonry rows are absent. Side elevations retain seated gables and ridge without new open slots.",
+      "evidence": [
+        "renders/front.png",
+        "renders/top.png",
+        "renders/aerial.png",
+        "renders/rear_side.png",
+        "renders/left_side.png",
+        "renders/right_side.png"
+      ]
+    }
+  ],
+  "pixel_observations": [
+    "Three-storey buff entrance bar retains the source-specific sequence of four shallow segmental arches, outer balcony pairs, intermediate narrow windows, gable silhouette and three rooflights per slope. Adjacent red courtyard blocks are excluded transparently.",
+    "Whole front, left, right, rear and rear-side views show a grounded complete envelope with coherent window grammar and preserved balcony projections. Neutral camera margins include the complete base and roof.",
+    "Top/aerial/roof-contact views show closed longitudinal gable coverage, bounded ridge/eaves, and rooflight frames seated in physical roof openings. The previous exposed verge strips are now closed.",
+    "Fine staggered masonry remains readable on wall, gable and arch-pier surfaces. Semantic buff masonry, dark railings/frames and grey roof remain coherent for the architectural-clay profile.",
+    "Facade/glass/side-projection views retain cut returns, recessed paired glazed balcony doors and muted offset residential interior depth. Balcony rails terminate on slabs and slabs meet the masonry.",
+    "Architecture-close and passage-axis views show two clear through-passages with continuous floor, enclosed sidewalls/ceilings and rear exits; outer arches contain recessed entry vestibules. No new blockage or disconnected access appeared after roof repair.",
+    "All three exact source images, all fourteen final 1440x1080 renders and all four final boards were directly reopened. Phone boards retain the entrance-bar identity and visible connections; no board was used instead of individual render inspection."
+  ],
+  "limitations": [
+    "Architectural-clay approval only; no textured keeper, engineering, survey, code or accessibility certification.",
+    "Rear apartment rhythm, rear doors, interior partitions and stairs are declared inference. This is one entrance bar, not a complete enclosed courtyard development.",
+    "Use complete native bounds including balcony projections; no arbitrary mesh stretching, floor repetition or sibling substitution.",
+    "Sol must still verify Currie terrain contact, placement/collision envelope, ground-entry sidewalk connections, unobstructed passage approaches, edits, undo/reload and exports. No runtime entrance anchors are approved by this asset review.",
+    "No browser checks, seeding, paid calls, geometry edits or repository edits performed by reviewer."
+  ],
+  "review_actions": "New external v004 review; failed v003 record and both immutable candidates preserved."
+}

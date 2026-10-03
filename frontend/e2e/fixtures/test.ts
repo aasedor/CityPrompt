@@ -7,6 +7,16 @@ type CityPromptFixtures = {
 
 export const test = base.extend<CityPromptFixtures>({
   deterministicApiMocks: [async ({ page }, use) => {
+    // Match the non-classroom backend capabilities before asserting image/video
+    // controls. These tests run without an API server or paid job workers.
+    await page.route('**/api/v1/render/direct-3d-attempts/capabilities', async (route) => {
+      await route.fulfill({ json: {
+        enabled: false,
+        images_enabled: true,
+        classroom_release: false,
+        video_enabled: true,
+      } });
+    });
     // Model discovery is read-only and must not reach a real provider in UI tests.
     await page.route('**/api/v1/render/image-models', async (route) => {
       await route.fulfill({

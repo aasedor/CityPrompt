@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
-import { placeAsset } from './catalogue';
+import { placeAsset, type PlaceAsset } from './catalogue';
 import { rectangleAt, rectangleDimensions, resizeRectangleCorner, placementProblem } from './geometry';
 
 const center=[-114.04677,51.04542];
 const zone=(coords:number[][],type='building',id='z')=>({id,zone_type:type,coordinates:coords} as SiteZone);
+// Geometry limits are independent of which house is in the current catalogue.
+const boundedPlot={minWidth:12,minDepth:16,maxSize:240,properties:{}} as PlaceAsset;
 describe('pick and reshape geometry',()=>{
   it.each([0,37,90,175])('keeps metre dimensions at latitude 51 at %s degrees',angle=>{
     const d=rectangleDimensions(rectangleAt(center,36,16,angle));
@@ -13,9 +15,9 @@ describe('pick and reshape geometry',()=>{
   });
   it.each([0,1,2,3])('corner %s keeps its opposite fixed and cannot flatten a house',corner=>{
     const coords=rectangleAt(center,36,16,35),fixed=coords[(corner+2)%4];
-    const resized=resizeRectangleCorner(coords,corner,fixed,placeAsset('infill_home'));
+    const resized=resizeRectangleCorner(coords,corner,fixed,boundedPlot);
     const d=rectangleDimensions(resized);
-    expect(d.width).toBeCloseTo(12,3);expect(d.depth).toBeCloseTo(15,3);
+    expect(d.width).toBeCloseTo(12,3);expect(d.depth).toBeCloseTo(16,3);
     expect(d.degrees).toBeCloseTo(35,3);
     expect(resized[(corner+2)%4][0]).toBeCloseTo(fixed[0],8);
     expect(resized[(corner+2)%4][1]).toBeCloseTo(fixed[1],8);
@@ -36,6 +38,15 @@ describe('pick and reshape geometry',()=>{
   it('identifies the overlapping neighbour by its saved name or catalogue label',()=>{
     const coords=rectangleAt(center,20,20);
     expect(placementProblem(coords,[{...zone(coords),name:'Corner homes'}])).toContain('overlaps Corner homes');
-    expect(placementProblem(coords,[{...zone(coords,'green_space'),properties:{pick_place_asset:'neighbourhood_park'}}])).toContain('overlaps Neighbourhood park');
+    const park=placeAsset('native-park:student_garden_square_v1--native-v1');
+    expect(placementProblem(coords,[{...zone(coords,'green_space'),properties:{pick_place_asset:park.id}}])).toContain(`overlaps ${park.label}`);
+  });
+  it('protects streets from park placement while allowing street-to-street junctions', () => {
+    const park = rectangleAt(center,52,39,90);
+    const road = zone(rectangleAt(center,23,150),'road','main-street');
+    expect(placementProblem(park,[road])).toContain('Leave the street and sidewalks clear');
+    expect(placementProblem(park,[road],null,undefined,{allowStreetIntersections:true})).toBeNull();
+    expect(placementProblem(road.coordinates,[zone(park,'green_space','basketball')],null,'main-street',
+      {allowStreetIntersections:true})).toContain('overlaps');
   });
 });

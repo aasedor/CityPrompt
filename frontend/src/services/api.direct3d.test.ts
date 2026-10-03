@@ -10,6 +10,7 @@ describe('Direct 3D API timeout contract', () => {
   it('outlives the provider timeout and backend post-processing window', async () => {
     const request = {} as Parameters<typeof rendersApi.generateDirect3D>[0];
     const post = vi.spyOn(api, 'post').mockResolvedValue({ data: { ok: true } });
+    vi.spyOn(api, 'get').mockResolvedValue({ data: { enabled: false, images_enabled: true } });
 
     await rendersApi.generateDirect3D(request);
 

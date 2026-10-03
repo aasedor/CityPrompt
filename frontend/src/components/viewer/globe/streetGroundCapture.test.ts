@@ -2,6 +2,13 @@ import { expect, it } from 'vitest';
 import { Group } from 'three';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 
+it('does not export an unsaved canal opening, including when editor previews are hidden', () => {
+  const scene=new Group(),draft=new Group();draft.userData.streetPreviewGround=true;scene.add(draft);
+  expect(()=>assertStreetGroundReady(scene)).toThrow(/Finish or cancel/);
+  draft.visible=false;expect(()=>assertStreetGroundReady(scene)).toThrow(/Finish or cancel/);
+  scene.remove(draft);expect(()=>assertStreetGroundReady(scene)).not.toThrow();
+});
+
 it('does not capture a missing road while its independent ground is sampling', () => {
   const scene = new Group(), road = new Group(); scene.add(road);
   road.userData.streetGroundStatus = 'sampling';
@@ -24,4 +31,14 @@ it('blocks an early prepared-road export and rejects a new pending alignment dur
   expect(() => assertStreetGroundReady(scene)).toThrow(/still aligning/);
   road.userData.streetGroundStatus = 'unavailable';
   expect(() => assertStreetGroundReady(scene)).toThrow(/could not be measured completely/);
+});
+
+it('does not export a temporary terrain rehearsal as a saved road design', () => {
+  const scene = new Group(); scene.userData.roadTerrainRehearsal = {};
+  expect(() => assertStreetGroundReady(scene)).toThrow(/local preview/);
+  delete scene.userData.roadTerrainRehearsal;
+  scene.userData.roadTerrainRebuilding = {};
+  expect(() => assertStreetGroundReady(scene)).toThrow(/local preview/);
+  delete scene.userData.roadTerrainRebuilding;
+  expect(() => assertStreetGroundReady(scene)).not.toThrow();
 });

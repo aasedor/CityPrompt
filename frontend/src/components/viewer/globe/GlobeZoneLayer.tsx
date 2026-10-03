@@ -84,6 +84,7 @@ import { createSharedGroundTriangulation, drapeSharedGroundGeometry } from './sh
 import { selectDetailedStreetZones } from './streetDetailLod';
 import { useParkAssemblyGroundOwners } from './ParkAssemblyGround';
 import { streetSectionOwnsGround } from './streetSurfaceMask';
+import { useStreetPreviewGround } from '@/features/pickPlace/StreetPreviewGround';
 import { preparedPublicRoadMasks } from './preparedPublicRoads';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -419,7 +420,8 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts, preparedRoadOpenings, sectionOwnsGround = false }: {
+function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts, preparedRoadOpenings, sectionOwnsGround = false }: {
+  landscapeZones: SiteZone[];
   preparedGroundCutouts?: number[][][];
   preparedRoadOpenings?: number[][][];
   zone: SiteZone;
@@ -460,6 +462,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const communityKind = resolveCommunity3DKind(zone);
   const isBuilding = communityKind === 'building';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
+  const isWaterSurface = zone.zone_type === 'water';
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
   const residualLandscapeRecipe = useMemo(
     () => (isPreparedBoundary ? getResidualLandscapeRecipe(zone) : null),
@@ -502,6 +505,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const filterObjectHeights = (
     isPreparedBoundary
     || isCompiledGround
+    || isWaterSurface
     || shouldFilterObjectTerrainHeight(zone.zone_type)
   );
   // Drawn buildings are editable massing immediately. Generate to 3D swaps
@@ -514,7 +518,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     isBuilding,
     isCompiledCommunity,
     isCompiledGround,
-    isPark: communityKind === 'park',
+    isPark: communityKind === 'park' || isWaterSurface,
     isPreparedBoundary,
   });
   // Densify imported flat zones too (not just green_space): a long corridor needs
@@ -680,7 +684,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile, preparedGroundCutouts, preparedOriginLng, preparedOriginLat],
   );
   useDeferredDisposable(preparedSiteGeo);
-  const preparedSiteTexture = useSiteLandscapeTexture(zone, residualLandscapeRecipe, isPreparedBoundary);
+  const preparedSiteTexture = useSiteLandscapeTexture(zone, residualLandscapeRecipe, isPreparedBoundary, landscapeZones);
   useDeferredDisposable(preparedSiteTexture);
   const replacementGroundGeo = useMemo(
     () => (
@@ -696,7 +700,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const replacementGroundTexture = useMemo(
     () => (
       isReplacementFootprintGround
-        ? createSitePreparationTexture(`${zone.id}-footprint`)
+        ? createSitePreparationTexture(`${zone.id}-footprint`, 128, 'grass')
         : null
     ),
     [isReplacementFootprintGround, zone.id],
@@ -1199,11 +1203,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           network as one solid ground polygon that contains park parcels
           (no carve-out), so a lower park order leaves parks hidden under a
           gray slab. Real roadway strips (street detail) still draw above. */}
-      {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
+      {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary || isWaterSurface) && (
         <mesh
           ref={flatMeshRef}
           geometry={sharedFillGeo ?? importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData.flatTopGeo}
-          renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
+          renderOrder={isSiteBoundary ? 100 : isWaterSurface ? 121 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
           // Pure planning washes (the translucent boundary/zone fills) are
@@ -1211,7 +1215,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           // captures so they never tint the render. Compiled/drape surfaces
           // stay captured — they ARE the designed ground.
           userData={
-            sectionOwnsGround || (!isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround)
+            sectionOwnsGround || (!isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround && !isWaterSurface)
               ? DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA
               : undefined
           }
@@ -1235,6 +1239,19 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
               polygonOffset
               polygonOffsetFactor={4}
               polygonOffsetUnits={8}
+            />
+          ) : isWaterSurface ? (
+            <meshStandardMaterial
+              key="designed-water"
+              color="#387f8b"
+              roughness={0.38}
+              metalness={0.05}
+              side={THREE.DoubleSide}
+              depthTest
+              depthWrite
+              polygonOffset
+              polygonOffsetFactor={FLAT_ZONE_DEPTH_OFFSET_FACTOR}
+              polygonOffsetUnits={FLAT_ZONE_DEPTH_OFFSET_UNITS}
             />
           ) : isCompiledGround || drapeActive || isWoonerfGround ? (
             <meshStandardMaterial
@@ -1280,7 +1297,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         >
           <meshBasicMaterial
             key="replacement-footprint-ground"
-            color="#9b9488"
+            color="#ffffff"
             map={replacementGroundTexture ?? undefined}
             side={THREE.DoubleSide}
             depthTest
@@ -1390,8 +1407,11 @@ export function GlobeZoneLayer({
   }, []);
   const showPlanningOverlays = planningOverlaysVisible && !overlaysHidden;
   const parkGroundOwners = useParkAssemblyGroundOwners(zones);
+  const streetPreviewCutout = useStreetPreviewGround();
   const preparedRoadOpenings = useMemo(() => preparedPublicRoadMasks(zones).map(zone => zone.coordinates), [zones]);
-  const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...parkGroundOwners.map(zone => zone.coordinates)], [preparedGroundCutouts, parkGroundOwners]);
+  const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...(streetPreviewCutout ? [streetPreviewCutout] : []), ...parkGroundOwners.map(zone => zone.coordinates),
+    ...zones.filter(zone=>zone.zone_type==='road' && zone.properties?.road_selected_variant_id==='amsterdam_gracht_v1'
+      && !zone.properties?.validation_fixed_fixture).map(zone=>zone.coordinates)], [preparedGroundCutouts, parkGroundOwners,zones,streetPreviewCutout]);
   const sectionGroundIds = useMemo(() => new Set(selectDetailedStreetZones(zones.filter(zone =>
     resolveCommunity3DKind(zone) === 'street' && zone.coordinates.length >= 4 && shouldRenderCommunityGround(zone)))
     .filter(streetSectionOwnsGround)
@@ -1421,6 +1441,7 @@ export function GlobeZoneLayer({
             }}
           >
             <ZoneMesh
+              landscapeZones={zones}
               sectionOwnsGround={sectionGroundIds.has(zone.id) || parkGroundOwners.some(owner => owner.id === zone.id)}
               preparedGroundCutouts={groundCutouts}
               preparedRoadOpenings={preparedRoadOpenings}

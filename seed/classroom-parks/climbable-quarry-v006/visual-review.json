@@ -1,0 +1,23 @@
+{
+  "status": "PASS_AUTHOR_VISUAL_REVIEW",
+  "model_sha256": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6",
+  "reviewer": "Codex author review",
+  "inspected_files": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "33efe8066b59b1e238dbd4243a52ba187725e36cd236a47a2088d90581e0cbb4"
+    },
+    {
+      "path": "renders/entrance.png",
+      "sha256": "c4b4f2885851f5e2a921fb8108d9d2a4c742a2ca3634118d774f96dd0db88155"
+    }
+  ],
+  "findings": [
+    "Open side exits at intermediate stair landings.",
+    "Planted terraces, pool and stonework reviewed at aerial and pedestrian heights."
+  ],
+  "limitations": [
+    "Author review; independent human approval is not claimed.",
+    "Browser verification pending."
+  ]
+}

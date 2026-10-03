@@ -9,6 +9,21 @@ import { LOCAL_STREET_ASSET } from './assetRegistry';
 const house:SiteZone={id:'house',project_id:'test',zone_type:'building',coordinates:rectangleAt([-114,51],12,20),properties:{native_home_plot:true,unrelated:'preserve'},color:'#aaa',sort_order:0,created_at:'now',updated_at:'now'};
 const road:SiteZone={...house,id:'road',name:'Local street',zone_type:'road',properties:{road_archetype_id:'calgary_local'}};
 describe('connection controls',()=>{
+  it('offers the real-model step picker for a revision-locked fixed native building',()=>{
+    const fixed={...house,properties:{native_home_plot:false,native_plot_axes:true,
+      pick_place_model_revision:'reviewed-native-revision'}};
+    render(<ConnectionEditor zone={fixed} zones={[fixed,road]} disabled={false} onSave={vi.fn()}
+      onClose={vi.fn()} onPickEntrance={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('checkbox',{name:'Link an entrance to a sidewalk'}));
+    expect(screen.getByRole('button',{name:'Pick entrance step in 3D'})).toBeInTheDocument();
+  });
+  it('does not offer a native-mesh picker for a canonical drawing',()=>{
+    const canonical={...house,properties:{native_home_plot:false,native_plot_axes:true}};
+    render(<ConnectionEditor zone={canonical} zones={[canonical,road]} disabled={false} onSave={vi.fn()}
+      onClose={vi.fn()} onPickEntrance={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('checkbox',{name:'Link an entrance to a sidewalk'}));
+    expect(screen.queryByRole('button',{name:'Pick entrance step in 3D'})).not.toBeInTheDocument();
+  });
   it('preserves the unsaved dialog through pick cancellation and saves an accepted pick only on Save',async()=>{
     const onPickEntrance=vi.fn(),onSave=vi.fn().mockResolvedValue(undefined);
     render(<ConnectionEditor zone={house} zones={[house,road]} disabled={false} onSave={onSave} onClose={vi.fn()} onPickEntrance={onPickEntrance}/>);

@@ -1,3 +1,4 @@
+import { hasNativePark, nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import { runProjectWrite } from '@/utils/projectWriteQueue';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient, useIsMutating } from '@tanstack/react-query';
@@ -132,6 +133,7 @@ export function useSiteZones(projectId: string | undefined) {
       return { draft, optimisticId: `temp-${vars.requestId}` };
     },
     onSuccess: (createdZone, _vars, context) => {
+      if (createdZone.building_id) void queryClient.invalidateQueries({ queryKey: ['project', projectId] });
       if (context?.draft) removeDraft(context.draft.requestId);
       // Replace the exact optimistic polygon with the authoritative response
       // before refetching. This removes the temp-id gap so selection-dependent
@@ -181,9 +183,10 @@ export function useSiteZones(projectId: string | undefined) {
           void queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
           const total = context.buildings.length + context.roads.length + context.water.length + context.parks.length;
           toast.success(`Site ready with ${total} nearby context features`);
-        }).catch((error: unknown) => {
-          const message = getApiErrorMessage(error, 'context service unavailable');
-          toast.error(`Site boundary saved, but surrounding context could not load: ${message}`);
+        }).catch(() => {
+          toast('Site boundary saved. Nearby map context is unavailable for now; you can keep designing.', {
+            icon: 'ℹ️',
+          });
         });
       }
     },
@@ -304,7 +307,12 @@ export function useSiteZones(projectId: string | undefined) {
     mutationFn: (vars: { zoneId: string; coordinates: number[][]; revision?: string }) =>
       runProjectWrite(queryClient, projectId!, async () => {
         const current = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === vars.zoneId);
-        const result = await siteZonesApi.update(vars.zoneId, { ...streetCoordinateUpdate(
+        const nativeProperties = current && hasNativePark(current) ? nativeParkEditProperties(current,vars.coordinates) : undefined;
+        if (current && nativeProperties) {
+          const problem = nativeParkFitProblem({...current,coordinates:vars.coordinates,properties:nativeProperties});
+          if (problem) throw new Error(problem);
+        }
+        const result = await siteZonesApi.update(vars.zoneId, { ...(nativeProperties ? {properties:nativeProperties} : {}), ...streetCoordinateUpdate(
           queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])?.find(zone => zone.id === vars.zoneId), vars.coordinates),
           ...((current?.updated_at ?? vars.revision) ? { expected_updated_at: current?.updated_at ?? vars.revision } : {}) });
         queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], old => old?.map(z => z.id === result.id ? result : z));
@@ -339,7 +347,7 @@ export function useSiteZones(projectId: string | undefined) {
       // Push undo action for coordinate change
       if (projectId && currentProject.current === projectId && prevCoords) {
         useUndoRedoStore.getState().pushAction(
-          createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient, result.updated_at, prevZone),
+          createZoneCoordinatesAction(projectId, zoneId, prevCoords, result.coordinates, queryClient, result.updated_at, prevZone, result),
         );
       }
     }).catch(async (err: unknown) => {

@@ -1,4 +1,6 @@
 import type { SiteZone } from '@/types';
+import nativeStreets from '@/data/nativeStreetPilots.json';
+const nativeVariants = new Set<string>(nativeStreets.map(row => row.id));
 
 export const MAX_DETAILED_STREET_ZONES = 160;
 export const MAX_TREE_STREET_ZONES = 24;
@@ -70,7 +72,9 @@ export function selectDetailedStreetZones(
 ): SiteZone[] {
   if (zones.length <= limit) return zones;
   const selected = new Set(ranked(zones).slice(0, Math.max(0, limit)).map((zone) => zone.id));
-  return zones.filter((zone) => selected.has(zone.id));
+  // Verified native programs are required inventory, never optional LOD accents.
+  return zones.filter((zone) => selected.has(zone.id)
+    || (!zone.properties?.validation_fixed_fixture && nativeVariants.has(String(zone.properties?.road_selected_variant_id))));
 }
 
 /** Tree rows are a higher-cost district-scale accent; prioritize key streets. */

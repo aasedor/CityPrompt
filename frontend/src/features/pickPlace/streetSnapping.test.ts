@@ -5,6 +5,7 @@ import { detectConnectedStreetIntersections } from '@/components/viewer/globe/st
 import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJunctionGeometry';
 import { CALGARY_LOCAL_PLACEMENT, streetCoordinateUpdate } from './streetPlacement';
 import { snapStreetEndpoint, snapStreetEnds } from './streetSnapping';
+import { STREET_ASSETS } from './assetRegistry';
 
 const lonM = 111320 * Math.cos(51 * Math.PI / 180);
 const ll = ([x, y]: number[]) => [-114 + x / lonM, 51 + y / 111320];
@@ -19,6 +20,16 @@ const street = (id: string, points: number[][]): SiteZone => ({ id, project_id: 
 const main = street('main', [[-50, 0], [50, 0]]);
 
 describe('student street endpoint snapping', () => {
+  it('snaps a canal connection to its outer bank without painting a node across water',()=>{
+    const asset=STREET_ASSETS.find(a=>a.model.variantId==='amsterdam_gracht_v1')!;
+    const points=[[0,0],[0,160]].map(ll);
+    const canal={...main,id:'canal',coordinates:bufferLineToPolygon(points,36),properties:{...asset.properties,plan_centerline:points}};
+    const result=snapStreetEndpoint([[60,90],[19,90]].map(ll),1,[canal],undefined,18);
+    expect(xy(result[1])[0]).toBeCloseTo(18,3);
+    expect(xy(result[1])[1]).toBeCloseTo(90,3);
+    const approach=street('approach',result.map(xy));
+    expect(detectConnectedStreetIntersections([canal,approach])).toEqual([]);
+  });
   it('turns an imprecise near-kerb endpoint into a renderable T and persists the same line', () => {
     const raw = [[0, -45], [2, -6]].map(ll);
     const unjoined = [main, street('arm', [[0, -45], [2, -6]])];
@@ -44,9 +55,21 @@ describe('student street endpoint snapping', () => {
     expect(Math.hypot(...xy(snapped[0]))).toBeLessThan(.01);
     expect(snapped[1]).toEqual(raw[1]);
   });
-  it.each([{points:[[0,-45],[2,-18]]}, {points:[[0,-45],[25,-6]]}, {points:[[40,-45],[41,-6]]}])('keeps remote, oblique and near-corner endpoints untouched', ({points}) => {
+  it.each([{points:[[0,-45],[2,-18]]}, {points:[[0,-45],[50,-6]]}])('keeps remote and acute endpoints untouched', ({points}) => {
     const line = points.map(ll);
     expect(snapStreetEnds(line, [main])).toBe(line);
+  });
+  it.each([{points:[[0,-45],[25,-6]]}, {points:[[40,-45],[41,-6]]}])('joins angled and near-end gestures with room for their full widths', ({points}) => {
+    const line = snapStreetEnds(points.map(ll), [main], undefined, 23);
+    const arm = street('arm', points);
+    // The host clearance uses the incoming width even before its server recipe exists.
+    expect(xy(line[1])[1]).toBeCloseTo(0, 4);
+    expect(xy(line[1])[0]).toBeLessThan(35);
+    const saved = { ...arm, ...streetCoordinateUpdate(arm, bufferLineToPolygon(line, 16)) };
+    const nodes = detectConnectedStreetIntersections([main, saved]);
+    expect(nodes).toHaveLength(1);
+    expect(nodes[0].armCount).toBe(3);
+    expect(resolveStreetJunctionLayout(nodes[0], [main, saved])).not.toBeNull();
   });
   it('does not snap bends, reference layers, buildings, or itself', () => {
     const line = [[0,-40],[1,-2],[40,-40]].map(ll);

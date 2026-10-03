@@ -17,22 +17,16 @@ def test_development_preserves_ipv4_loopback_worktree_origin(monkeypatch):
     monkeypatch.setattr(oauth, "settings", _settings(production=False))
     origin = "http://127.0.0.1:5174"
 
-    state = oauth._build_oauth_state(origin)
-
-    assert oauth._resolve_frontend_redirect_origin(state) == origin
+    assert oauth._is_allowed_frontend_origin(origin)
 
 
 def test_development_rejects_loopback_url_that_is_not_an_origin(monkeypatch):
     monkeypatch.setattr(oauth, "settings", _settings(production=False))
 
-    state = oauth._build_oauth_state("http://127.0.0.1:5174/oauth/callback")
-
-    assert oauth._resolve_frontend_redirect_origin(state) == "http://localhost:5175"
+    assert not oauth._is_allowed_frontend_origin("http://127.0.0.1:5174/oauth/callback")
 
 
 def test_production_does_not_implicitly_allow_loopback_origin(monkeypatch):
     monkeypatch.setattr(oauth, "settings", _settings(production=True))
 
-    state = oauth._build_oauth_state("http://127.0.0.1:5174")
-
-    assert oauth._resolve_frontend_redirect_origin(state) == "https://cityprompt.example"
+    assert not oauth._is_allowed_frontend_origin("http://127.0.0.1:5174")

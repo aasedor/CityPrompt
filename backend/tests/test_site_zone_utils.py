@@ -114,6 +114,46 @@ def test_polygon_validation_rejects_a_material_bow_tie() -> None:
         )
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("building_is_live", [False, True])
+async def test_restore_snapshot_skips_deleted_compiled_building_link(monkeypatch, building_is_live) -> None:
+    project_id = uuid.uuid4()
+    zone_id = uuid.uuid4()
+    building_id = uuid.uuid4()
+    live_ids = [building_id] if building_is_live else []
+    live_result = _query_result(live_ids)
+    missing_zone_result = MagicMock()
+    missing_zone_result.scalar_one_or_none.return_value = None
+    db = SimpleNamespace(
+        execute=AsyncMock(side_effect=[live_result, missing_zone_result]),
+        add=MagicMock(),
+        flush=AsyncMock(),
+        refresh=AsyncMock(),
+    )
+    monkeypatch.setattr("app.api.v1.site_zones.lock_residual_landscape_project", AsyncMock())
+    monkeypatch.setattr("app.api.v1.site_zones._invalidate_residual_landscape", AsyncMock())
+
+    restored = await _restore_zone_snapshot(
+        db,
+        {
+            "id": str(zone_id),
+            "project_id": str(project_id),
+            "zone_type": "building",
+            "coordinates": [[0, 0], [1, 0], [1, 1], [0, 1]],
+            "properties": {},
+            "building_id": str(building_id),
+            "building_ids": [str(building_id)],
+        },
+        project_id=project_id,
+        expected_zone_id=zone_id,
+    )
+
+    assert restored.id == zone_id
+    assert restored.building_id == (building_id if building_is_live else None)
+    assert restored.building_ids == ([str(building_id)] if building_is_live else None)
+    db.flush.assert_awaited_once()
+
+
 def test_active_boundary_containment_allows_edge_touching_but_rejects_escape() -> None:
     boundary = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
     touching = Polygon([(0, 2), (4, 2), (4, 6), (0, 6)])

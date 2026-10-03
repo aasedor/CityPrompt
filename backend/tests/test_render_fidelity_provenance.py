@@ -170,9 +170,11 @@ async def test_gallery_sidecar_embeds_server_snapshot_and_dedupes_by_source_revi
         outcome="accepted",
         presentation_strategy="authoritative_source",
         capture_fingerprint="forged",
+        render_diagnostics={"passed": True},
     )
     assert "source_snapshot" not in save.model_dump()
     assert "presentation_strategy" not in save.model_dump()
+    assert "render_diagnostics" not in save.model_dump()
     result = await render_api.persist_render_to_gallery(
         db,
         request.project_id,
@@ -183,12 +185,16 @@ async def test_gallery_sidecar_embeds_server_snapshot_and_dedupes_by_source_revi
         source_snapshot=snapshot,
         capture_fingerprint="c" * 64,
         output_fingerprint="d" * 64,
+        render_diagnostics={"macro_design_fidelity": {"passed": False, "coarse_edge_recall": 0.52}},
+        render_warnings=["Compare the provider image with the exact source."],
     )
     sidecar = next(json.loads(data) for key, (data, kind) in uploads.items() if kind == "application/json")
     assert sidecar["source_snapshot"] == original_snapshot
     assert sidecar["outcome"] == "review_required"
     assert sidecar["presentation_strategy"] == "authoritative_source"
     assert sidecar["capture_fingerprint"] == "c" * 64
+    assert sidecar["render_diagnostics"]["macro_design_fidelity"]["coarse_edge_recall"] == 0.52
+    assert sidecar["render_warnings"] == ["Compare the provider image with the exact source."]
     png = next(data for _, (data, kind) in uploads.items() if kind == "image/png")
     embedded = json.loads(Image.open(io.BytesIO(png)).info["cityprompt:provenance"])
     assert embedded["source"]["plan_revision_sha256"] == snapshot["plan_revision_sha256"]
@@ -349,6 +355,11 @@ async def test_direct_endpoint_freezes_server_plan_before_provider_and_returns_s
     assert provenance["capture_fingerprint"] == result.capture_fingerprint
     assert provenance["output_fingerprint"] == result.output_fingerprint
     assert provenance["scene_revision_sha256"]
+    assert provenance["render_diagnostics"]["source_width"] == result.diagnostics.source_width
+    assert provenance["render_diagnostics"].get("returned_safety_strategy") == (
+        result.diagnostics.returned_safety_strategy
+    )
+    assert provenance["render_warnings"] == list(result.warnings)
     assert result.saved_render.id == "saved-source"
     assert provenance["outcome"] == result.outcome
     assert provenance["presentation_strategy"] == ("authoritative_source" if source_fallback else None)
@@ -357,5 +368,6 @@ async def test_direct_endpoint_freezes_server_plan_before_provider_and_returns_s
         original = save.await_args_list[1].kwargs
         assert original["outcome"] == "review_required"
         assert original["presentation_strategy"] == "provider_original"
+        assert original["render_diagnostics"] == provenance["render_diagnostics"]
     else:
         assert result.provider_original_render is None

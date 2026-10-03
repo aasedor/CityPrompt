@@ -1,7 +1,7 @@
 # RLASM v6.1 — integrated proven methodology
 
 **Method name:** Reference-Locked Atomic Sticker-and-Massing (RLASM)
-**Revision:** v6.1, 2026-09-03
+**Revision:** v6.1, 2026-09-28
 **Purpose:** build source-specific, physically credible, reviewable 3D building
 families without hiding generic construction behind a good hero image.
 
@@ -15,6 +15,18 @@ Active-tree storage and retirement rules are defined by
 but belongs in content-addressed artifact storage rather than the active Git
 tree. Only reviewed keeper packages or explicitly approved architectural-clay
 runtime deliveries are promoted into Git.
+
+## Runtime storey contract
+
+Every classroom catalogue building declares a finite storey programme. A
+variable programme is allowed only when each count selects a complete authored
+assembly or repeats a complete authored floor between fixed podium and roof
+assemblies. Mesh stretching in Z is prohibited. Exact models without reviewed
+alternate geometry use `fixed_authored_assembly`, with identical minimum,
+native and maximum storeys. Student footprint scaling is allowed only for an
+exact variant with a trusted bounded programme. Apply one uniform horizontal
+scale to the complete selected assembly, keep vertical scale at exactly one,
+and preserve the selected storey count and authored height independently.
 
 ## Authority and review boundaries
 
@@ -422,6 +434,18 @@ A keeper answers yes to every question:
 - Rejected history, hashes, reviews, and reviewed deliverables preserved?
 
 If any answer is no, the building is a candidate—not a keeper.
+
+## Large civic local pilot — 2026-10-02
+
+The original Gothic Community Church v005 passed independent architectural-clay
+review before the finite second build, Timber Sanctuary Church. Source boards
+are explicitly generated original designs, not photographs of existing churches.
+The Gothic review closed roof/ceiling joins, clipped arch glazing and overlapping
+tower wall ownership. A supplementary exact-GLB contact view distinguished a
+shaded roof plane from a hole. This is local trial evidence; no keeper or seed
+activation is implied. Timber v002 also passed with zero P0/P1 blockers. Both
+models passed local placement, aisle-route, furniture-exclusion, keyboard
+entry/exit and saved-reload checks. See `docs/LARGE_CIVIC_PILOT_2026-10-02.md`.
 
 ## Current forward-standard exemplars
 

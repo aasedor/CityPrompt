@@ -5,6 +5,7 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 import uuid
 
+import httpx
 import pytest
 from shapely.geometry import Polygon
 from tests.conftest import FakeProject
@@ -63,3 +64,27 @@ async def test_context_revision_contract(mode, client, mock_db, test_user, auth_
         assert zone.properties["terrain_elevation_m"] == 1102
         assert "_osm_context" in zone.properties
         lock.assert_awaited_once_with(mock_db, zone.project_id)
+
+
+@pytest.mark.anyio
+async def test_unavailable_osm_context_does_not_change_saved_boundary(
+    client, mock_db, test_user, auth_headers, monkeypatch
+):
+    zone = SimpleNamespace(
+        id=uuid.uuid4(),
+        project_id=uuid.uuid4(),
+        zone_type="site_boundary",
+        geometry=None,
+        properties={"terrain_elevation_m": 1102},
+        updated_at=datetime(2026, 9, 23, tzinfo=timezone.utc),
+    )
+    project = FakeProject(id=zone.project_id, owner_id=test_user.id)
+    mock_db.execute = AsyncMock(side_effect=[scalar(test_user), scalar(zone), scalar(project)])
+    fetch = AsyncMock(side_effect=httpx.ConnectError("Overpass unavailable"))
+    monkeypatch.setattr(site_zones, "OSMContextFetcher", lambda: SimpleNamespace(fetch=fetch))
+    monkeypatch.setattr(site_zones, "to_shape", lambda _: Polygon([(0, 0), (1, 0), (1, 1), (0, 1)]))
+    response = await client.post(f"/api/v1/site-zones/{zone.id}/fetch-context", headers=auth_headers)
+    assert response.status_code == 503
+    assert response.json()["detail"] == "Nearby map context is temporarily unavailable; the site boundary is saved."
+    assert zone.properties == {"terrain_elevation_m": 1102}
+    mock_db.flush.assert_not_awaited()

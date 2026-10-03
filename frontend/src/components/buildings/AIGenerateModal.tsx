@@ -1,13 +1,16 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { X, Sparkles, Image, LayoutGrid, Type, Loader2, CheckCircle, AlertCircle, Upload, Eye, Cpu } from 'lucide-react';
-import { buildingsApi } from '@/services/api';
+import { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react';
+import { X, Sparkles, Image, LayoutGrid, Type, Loader2, CheckCircle, AlertCircle, Eye, Cpu } from 'lucide-react';
+import { authApi, buildingsApi, getAssetTicketRevision, resolveApiFileUrl, subscribeAssetTicketChanges, type PhotoReferenceStatus, type BuildingReferenceCandidate } from '@/services/api';
+import { useAuthStore } from '@/store';
 import { StyleSelector } from './StyleSelector';
+import { BuildingReferenceSearch } from './BuildingReferenceSearch';
 import type { AITemplate, GenerationStatus, GenerationEngine, RenderPreview } from '@/types';
 
 interface AIGenerateModalProps {
   buildingId: string;
   buildingName?: string;
   initialPrompt?: string;
+  initialTab?: 'image';
   onClose: () => void;
   onComplete: () => void;
 }
@@ -15,9 +18,9 @@ interface AIGenerateModalProps {
 type TabId = 'templates' | 'text' | 'image' | 'preview';
 type CategoryFilter = 'all' | 'commercial' | 'residential' | 'infrastructure' | 'landscaping';
 
-export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClose, onComplete }: AIGenerateModalProps) {
+export function AIGenerateModal({ buildingId, buildingName, initialPrompt, initialTab, onClose, onComplete }: AIGenerateModalProps) {
   // When an initialPrompt is provided (from zone properties), default to the text tab
-  const [activeTab, setActiveTab] = useState<TabId>(initialPrompt ? 'text' : 'templates');
+  const [activeTab, setActiveTab] = useState<TabId>(initialTab ?? (initialPrompt ? 'text' : 'templates'));
   const [generating, setGenerating] = useState(false);
   const [genStatus, setGenStatus] = useState<GenerationStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -43,9 +46,65 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
   const [negativePrompt, setNegativePrompt] = useState('');
   const [showNegative, setShowNegative] = useState(false);
 
-  // Image tab state
-  const [imageUrl, setImageUrl] = useState('');
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  // Student photo workflow state
+  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
+  const [webReferences, setWebReferences] = useState<BuildingReferenceCandidate[]>([]);
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
+  const [photoBrief, setPhotoBrief] = useState('');
+  const [photoStatus, setPhotoStatus] = useState<PhotoReferenceStatus | null>(null);
+  const [selectedPhotoReferences, setSelectedPhotoReferences] = useState<number[]>([]);
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const resumedModelRef = useRef(false);
+  useSyncExternalStore(subscribeAssetTicketChanges, getAssetTicketRevision);
+
+  const refreshTokenBalance = useCallback(() => {
+    authApi.me().then((user) => useAuthStore.getState().setUser(user)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const urls = photoFiles.map((file) => URL.createObjectURL(file));
+    setPhotoPreviews(urls);
+    return () => urls.forEach((url) => URL.revokeObjectURL(url));
+  }, [photoFiles]);
+
+  useEffect(() => {
+    let mounted = true;
+    buildingsApi.getPhotoReferences(buildingId)
+      .then((status) => { if (mounted) setPhotoStatus(status); })
+      .catch(() => { /* Existing text and image generation still work. */ });
+    return () => { mounted = false; };
+  }, [buildingId]);
+
+  useEffect(() => {
+    if (photoStatus?.status !== 'synthesizing' && photoStatus?.status !== 'model_generating') return;
+    let mounted = true;
+    const timer = setInterval(() => {
+      buildingsApi.getPhotoReferences(buildingId)
+        .then((status) => { if (mounted) setPhotoStatus(status); })
+        .catch(() => {});
+    }, 3000);
+    return () => { mounted = false; clearInterval(timer); };
+  }, [buildingId, photoStatus?.status]);
+
+  useEffect(() => {
+    if (photoStatus?.status === 'model_generating') resumedModelRef.current = true;
+    if (photoStatus?.status === 'completed' && resumedModelRef.current) {
+      resumedModelRef.current = false;
+      onComplete();
+    }
+  }, [photoStatus?.status, onComplete]);
+
+  useEffect(() => {
+    if (photoStatus?.status && photoStatus.status !== 'idle') refreshTokenBalance();
+  }, [photoStatus?.status, refreshTokenBalance]);
+
+  useEffect(() => {
+    if (photoStatus?.status === 'references_ready' || photoStatus?.status === 'failed') {
+      setSelectedPhotoReferences(photoStatus.reference_urls.map((_, index) => index));
+    } else if (photoStatus?.status === 'completed' || photoStatus?.status === 'model_generating') {
+      setSelectedPhotoReferences(photoStatus.selected_reference_indices ?? []);
+    }
+  }, [photoStatus?.status, photoStatus?.reference_urls, photoStatus?.selected_reference_indices]);
 
   // Preview tab state
   const [previewPrompt, setPreviewPrompt] = useState('');
@@ -118,26 +177,49 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
     }
   }, [buildingId, artStyle, negativePrompt, selectedStyle, selectedEngine, startPolling]);
 
-  const handleGenerateImage = useCallback(async () => {
-    if (!imageUrl.trim()) return;
+  const handlePreparePhotos = useCallback(async () => {
+    if (photoFiles.length + webReferences.length === 0) return;
+    setError(null);
+    setPhotoBusy(true);
+    try {
+      await buildingsApi.createPhotoReferences(buildingId, photoFiles, photoBrief.trim(), webReferences.map((item) => item.id));
+      setPhotoStatus(await buildingsApi.getPhotoReferences(buildingId));
+    } catch (err: unknown) {
+      const apiError = err as { response?: { data?: { detail?: string } }; message?: string };
+      setError(apiError.response?.data?.detail || apiError.message || 'Could not prepare reference views');
+    } finally {
+      setPhotoBusy(false);
+    }
+  }, [buildingId, photoFiles, photoBrief, webReferences]);
+
+  const handleGeneratePhotoModel = useCallback(async () => {
     setError(null);
     setGenerating(true);
     setGenStatus({ status: 'generating', progress: 0 });
     try {
-      await buildingsApi.generateFromImage(buildingId, imageUrl.trim());
+      await buildingsApi.generatePhotoModel(buildingId, selectedPhotoReferences);
+      setPhotoStatus(await buildingsApi.getPhotoReferences(buildingId));
       startPolling();
     } catch (err: unknown) {
       setGenerating(false);
-      const axiosErr = err as { response?: { data?: { detail?: unknown } }; message?: string };
-      const detail = axiosErr.response?.data?.detail;
-      const msg = typeof detail === 'string'
-        ? detail
-        : Array.isArray(detail)
-          ? detail.map((d: Record<string, unknown>) => (d.msg as string) || JSON.stringify(d)).join('; ')
-          : axiosErr.message || 'Failed to start generation';
-      setError(msg);
+      const apiError = err as { response?: { data?: { detail?: string } }; message?: string };
+      setError(apiError.response?.data?.detail || apiError.message || 'Could not start the 3D model');
     }
-  }, [buildingId, imageUrl, startPolling]);
+  }, [buildingId, selectedPhotoReferences, startPolling]);
+
+  const handleResumePhotos = useCallback(async () => {
+    setError(null);
+    setPhotoBusy(true);
+    try {
+      await buildingsApi.resumePhotoReferences(buildingId);
+      setPhotoStatus(await buildingsApi.getPhotoReferences(buildingId));
+    } catch (err: unknown) {
+      const apiError = err as { response?: { data?: { detail?: string } }; message?: string };
+      setError(apiError.response?.data?.detail || apiError.message || 'Could not resume the views');
+    } finally {
+      setPhotoBusy(false);
+    }
+  }, [buildingId]);
 
   const handleGeneratePreview = useCallback(async () => {
     if (!previewPrompt.trim()) return;
@@ -180,28 +262,18 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
     }
   }, [buildingId, previewPrompt, selectedStyle]);
 
-  const handleImageFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result as string;
-      setImagePreview(dataUrl);
-      setImageUrl(dataUrl);
-    };
-    reader.readAsDataURL(file);
-  }, []);
-
   const filteredTemplates = categoryFilter === 'all'
     ? templates
     : templates.filter((t) => t.category === categoryFilter);
 
   const availableEngines = engines.filter((e) => e.available && e.id !== 'procedural');
+  const photoProviderUnavailable = engines.some((engine) => engine.id === 'meshy' && !engine.available);
+  const photoWorkInProgress = photoBusy || generating || photoStatus?.status === 'synthesizing' || photoStatus?.status === 'model_generating';
 
   const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
     { id: 'templates', label: 'Templates', icon: <LayoutGrid size={14} /> },
     { id: 'text', label: 'Text to 3D', icon: <Type size={14} /> },
-    { id: 'image', label: 'Image to 3D', icon: <Image size={14} /> },
+    { id: 'image', label: 'Photos to 3D', icon: <Image size={14} /> },
     { id: 'preview', label: 'Preview', icon: <Eye size={14} /> },
   ];
 
@@ -249,6 +321,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
             )}
             <button
               onClick={onClose}
+              aria-label="Close AI generation"
               className="rounded-md p-1.5 text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/60"
             >
               <X size={20} />
@@ -497,58 +570,107 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
           {/* Image to 3D Tab */}
           {activeTab === 'image' && (
             <div className="space-y-4">
-              <div>
-                <label className="mb-1 block text-sm font-medium text-primary-950/60">Upload Image</label>
-                <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-primary-950/[0.12] p-6 transition-all hover:border-purple-400/50 hover:bg-purple-500/10">
-                  {imagePreview ? (
-                    <img src={imagePreview} alt="Preview" className="max-h-40 rounded-lg object-contain" />
-                  ) : (
-                    <>
-                      <Upload size={32} className="mb-2 text-primary-950/50" />
-                      <p className="text-sm text-primary-950/50">Click to upload an image</p>
-                      <p className="text-xs text-primary-950/40">PNG, JPG up to 10MB</p>
-                    </>
-                  )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageFileSelect}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-primary-950/[0.08]" />
-                </div>
-                <div className="relative flex justify-center">
-                  <span className="bg-white/95 px-2 text-xs text-primary-950/50">or</span>
-                </div>
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm font-medium text-primary-950/60">Image URL</label>
+              <div className="rounded-xl border border-primary-950/[0.1] bg-primary-950/[0.02] p-4">
+                <h3 className="text-sm font-bold text-primary-950">Build from your photos</h3>
+                <p className="mt-1 text-xs text-primary-950/65">
+                  Choose 1–4 views of the same building: upload photos or find more views online below. Put your clearest front photo first. We prepare reference views for you to review, then create a private 3D model preview. This is an AI mesh, not a reviewed catalogue building.
+                </p>
+                {photoProviderUnavailable && <p role="status" className="mt-2 text-xs text-amber-800">Photo modeling is temporarily unavailable. An administrator needs to connect the 3D provider.</p>}
+                <label className="mt-3 block text-xs font-semibold text-primary-950/70">Building photos (JPG or PNG, 5 MB each)</label>
                 <input
-                  type="url"
-                  value={imageUrl.startsWith('data:') ? '' : imageUrl}
-                  onChange={(e) => {
-                    setImageUrl(e.target.value);
-                    setImagePreview(null);
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  multiple
+                  disabled={photoWorkInProgress}
+                  onChange={(event) => {
+                    const files = Array.from(event.target.files || []);
+                    if (files.length + webReferences.length > 4 || files.some((file) => file.size > 5 * 1024 * 1024)) {
+                      setError('Choose up to 4 photos total, including web photos. Uploads must be 5 MB or smaller.');
+                      event.target.value = '';
+                      return;
+                    }
+                    setError(null);
+                    setPhotoFiles(files);
                   }}
-                  placeholder="https://example.com/building-photo.jpg"
-                  className="w-full rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  className="mt-1 w-full text-xs text-primary-950/70 file:mr-3 file:rounded-lg file:border-0 file:bg-primary-950 file:px-3 file:py-2 file:text-white"
                 />
+                {photoPreviews.length > 0 && (
+                  <div className="mt-3 grid grid-cols-4 gap-2">
+                    {photoPreviews.map((url, index) => <img key={url} src={url} alt={`Uploaded view ${index + 1}`} className="h-20 w-full rounded object-cover" />)}
+                  </div>
+                )}
+                <BuildingReferenceSearch buildingId={buildingId} selected={webReferences} onChange={setWebReferences}
+                  capacity={4 - photoFiles.length} disabled={photoWorkInProgress} />
+                <label className="mt-3 block text-xs font-semibold text-primary-950/70" htmlFor="photo-building-brief">Describe anything the photos do not show</label>
+                <textarea
+                  id="photo-building-brief"
+                  disabled={photoWorkInProgress}
+                  value={photoBrief}
+                  onChange={(event) => setPhotoBrief(event.target.value.slice(0, 500))}
+                  rows={2}
+                  placeholder="For example: two mirrored homes, two storeys, separate front doors..."
+                  className="mt-1 w-full rounded-lg border border-primary-950/[0.12] bg-white p-2 text-sm text-primary-950"
+                />
+                <button
+                  onClick={handlePreparePhotos}
+                  disabled={photoProviderUnavailable || photoWorkInProgress || photoFiles.length + webReferences.length === 0}
+                  className="mt-2 w-full rounded-lg bg-purple-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+                >
+                  {photoBusy || photoStatus?.status === 'synthesizing' ? 'Preparing reference views…' : 'Step 1 · Prepare reference views'}
+                </button>
+                <p className="mt-1 text-xs text-primary-950/55">Costs {photoStatus?.reference_token_cost ?? 50} City Prompt tokens. Tokens are restored if this step fails. It may take several minutes.</p>
               </div>
 
-              <button
-                onClick={handleGenerateImage}
-                disabled={generating || !imageUrl.trim()}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-medium text-primary-950 hover:bg-purple-700 disabled:opacity-50"
-              >
-                <Sparkles size={14} />
-                {generating ? 'Generating...' : 'Generate from Image'}
-              </button>
+              {photoStatus?.status === 'synthesizing' && <p className="text-sm text-primary-950/65">Preparing reference views. You can close this window and return later.</p>}
+              {photoStatus?.status === 'failed' && <p role="alert" className="text-sm text-red-700">{photoStatus.error || 'Photo generation failed.'} Your existing building remains in place.</p>}
+              {photoStatus?.resume_available && (
+                <button onClick={handleResumePhotos} disabled={photoBusy} className="w-full rounded-lg border border-primary-950 px-3 py-2 text-sm font-semibold text-primary-950 disabled:opacity-50">
+                  Recover prepared views · no extra tokens
+                </button>
+              )}
+              {photoStatus && photoStatus.reference_urls.length >= 2 && (
+                <div className="rounded-xl border border-primary-950/[0.1] p-4">
+                  <h3 className="text-sm font-bold text-primary-950">Review the generated views</h3>
+                  {photoStatus.source_provenance?.some((source) => source.provider === 'wikimedia_commons') && (
+                    <details className="mt-2 text-xs text-primary-950/65">
+                      <summary className="cursor-pointer">Web photo sources used for these views</summary>
+                      <ul className="mt-1 space-y-1">
+                        {photoStatus.source_provenance.filter((source) => source.provider === 'wikimedia_commons').map((source) => (
+                          <li key={source.sha256}><a href={source.source_url} target="_blank" rel="noopener noreferrer" className="underline">{source.title}</a> · {source.author} · {source.license}</li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
+                  <p className="mt-1 text-xs text-primary-950/65">Check the roof, entrances, window pattern and materials. Deselect any damaged or misleading view before making a model, or upload better photos to prepare a new set.</p>
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    {photoStatus.reference_urls.map((url, index) => (
+                      <label key={url} className="block text-xs text-primary-950/70">
+                        <img src={resolveApiFileUrl(url)} alt={`Generated building reference ${index + 1}`} className="aspect-square w-full rounded border border-primary-950/[0.1] object-contain" />
+                        <span className="mt-1 flex items-center gap-1">
+                          <input
+                            type="checkbox"
+                            disabled={photoWorkInProgress || photoStatus.status === 'completed'}
+                            checked={selectedPhotoReferences.includes(index)}
+                            onChange={() => setSelectedPhotoReferences((current) => current.includes(index)
+                              ? current.filter((item) => item !== index)
+                              : [...current, index].sort((a, b) => a - b))}
+                          />
+                          Use view {index + 1}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                  <button
+                    onClick={handleGeneratePhotoModel}
+                    disabled={photoProviderUnavailable || generating || selectedPhotoReferences.length === 0 || !['references_ready', 'failed'].includes(photoStatus.status)}
+                    className="mt-3 w-full rounded-lg bg-primary-950 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+                  >
+                    {photoStatus.status === 'model_generating' ? '3D model generating…' : photoStatus.status === 'completed' ? '3D model ready' : 'Step 2 · Generate 3D model preview'}
+                  </button>
+                  <p className="mt-1 text-xs text-primary-950/55">Costs {photoStatus.model_token_cost} City Prompt tokens. Tokens are restored if this step fails. Review the result before using it in a final render.</p>
+                </div>
+              )}
+
             </div>
           )}
 

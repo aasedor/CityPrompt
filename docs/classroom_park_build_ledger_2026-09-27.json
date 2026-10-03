@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-27",
+  "scope": "Seven additions; original eight parks retain their own acceptance records.",
+  "baseline_commit": "a1ef001cd",
+  "branch": "codex/classroom-park-catalogue",
+  "build_phase": "Astra/offline",
+  "browser_phase": "Deferred to Sol by user instruction",
+  "local_picker_counts": {
+    "buildings": 12,
+    "parks": 15,
+    "streets": 7
+  },
+  "entries": [
+    {
+      "title": "Shaded Reading Garden",
+      "variant": "student_reading_garden_v2",
+      "version": "reading-v002",
+      "layout_id": "student_reading_garden_v2--native-v1",
+      "content_revision": "5c6a709fb7e69eeeb6de039809c16776bc30645de9614afffab85397c711c50a",
+      "sha256": "3482efa2b69276a5ae88229288bc5f288fdcfebac9bd2aa5c1fb878d05dc47ac",
+      "source_recipe": "seed/classroom-parks/reading-v002/recipe.json",
+      "source_recipe_sha256": "4cf2f9f3a55b602b6b6788b0cfc990a275c3005670c0a0012dfd3f9ce40e263c",
+      "model": "seed/classroom-parks/reading-v002/assembly-preview.glb",
+      "dimensions_m": [
+        30,
+        26
+      ],
+      "occupied_dimensions_m": [
+        30.0,
+        26.0
+      ],
+      "triangles": 254656,
+      "asset_verification": "PASS_OFFLINE_GEOMETRY_AND_HASH",
+      "visual_review": "AGENT_NATIVE_VISUAL_REVIEW_PASS",
+      "human_visual_approval": "PENDING",
+      "browser_acceptance": "NOT_TESTED",
+      "production_browser_acceptance": "NOT_TESTED",
+      "publication": "LOCAL_STUDENT_PICKER_ONLY",
+      "completed": false,
+      "limitations": [
+        "Original concept, no compliance claim.",
+        "Level preview only; surfaces and approaches need shared terrain integration."
+      ]
+    },
+    {
+      "title": "Pickleball Social Garden",
+      "variant": "student_pickleball_garden_v1",
+      "version": "pickleball-tree-wells-v001",
+      "layout_id": "student_pickleball_garden_v1--native-v1",
+      "content_revision": "ef5762251943079d6a7510f529b4d117a31d2837fe857f11d461ae4cdb47e7e3",
+      "sha256": "bdb0f854fab104dba862b0f8f3426b09db8c29e35a6b2bad3c2769d08e00c48a",
+      "source_recipe": "seed/classroom-parks/pickleball-tree-wells-v001/recipe.json",
+      "source_recipe_sha256": "707585e7240e1c2101615085be49f6c9eeb8600b0e6d91f1a5019649c4970526",
+      "model": "seed/classroom-parks/pickleball-tree-wells-v001/assembly-preview.glb",
+      "dimensions_m": [
+        34,
+        34
+      ],
+      "occupied_dimensions_m": [
+        34.0,
+        34.0
+      ],
+      "triangles": 165094,
+      "asset_verification": "PASS_OFFLINE_GEOMETRY_AND_HASH",
+      "visual_review": "AGENT_NATIVE_VISUAL_REVIEW_PASS",
+      "human_visual_approval": "PENDING",
+      "browser_acceptance": "NOT_TESTED",
+      "production_browser_acceptance": "NOT_TESTED",
+      "publication": "LOCAL_STUDENT_PICKER_ONLY",
+      "completed": false,
+      "limitations": [
+        "Outdoor neighbourhood concept, not certified competition or accessibility design.",
+        "Court geometry is fixed size; surrounding park may be redesigned, never squeeze court or runoff."
+      ]
+    },
+    {
+      "title": "Garden Tennis Court",
+      "variant": "student_tennis_garden_v2",
+      "version": "tennis-v002",
+      "layout_id": "student_tennis_garden_v2--native-v1",
+      "content_revision": "e2f7e20157f3ad95782137f984524f16f980670bcbdf9caa0034b43bdc063a41",
+      "sha256": "c94401f7b526e450c194f5ce46fb9976486aca83256fb30e192cc9802b3bd9fd",
+      "source_recipe": "seed/classroom-parks/tennis-v002/recipe.json",
+      "source_recipe_sha256": "2dcdc344414b89c26d058723454374f37c469b1e0ef669da5ef5d41ea23d5120",
+      "model": "seed/classroom-parks/tennis-v002/assembly-preview.glb",
+      "dimensions_m": [
+        38.3,
+        56.6
+      ],
+      "occupied_dimensions_m": [
+        38.3,
+        56.6
+      ],
+      "triangles": 169910,
+      "asset_verification": "PASS_OFFLINE_GEOMETRY_AND_HASH",
+      "visual_review": "AGENT_NATIVE_VISUAL_REVIEW_PASS",
+      "human_visual_approval": "PENDING",
+      "browser_acceptance": "NOT_TESTED",
+      "production_browser_acceptance": "NOT_TESTED",
+      "publication": "LOCAL_STUDENT_PICKER_ONLY",
+      "completed": false,
+      "limitations": [
+        "Neighbourhood ideation model; not a certified competition or engineering design.",
+        "Rigid court and equipment remain native size; never stretch or crop to a site polygon.",
+        "Level preview only; terrain, access, edit/recovery and capture await runtime integration."
+      ]
+    },
+    {
+      "title": "Bocce Pergola Garden",
+      "variant": "student_bocce_garden_v2",
+      "version": "bocce-v002",
+      "layout_id": "student_bocce_garden_v2--native-v1",
+      "content_revision": "935250c769cf950991ce35e6ccc4a7fc580c43bbf808bb2d5bc4bbcb25f26fc0",
+      "sha256": "3933e3b09b9b2dd00567d63b9b26af04e3449d5efa6ad209a28e4178cd0eef28",
+      "source_recipe": "seed/classroom-parks/bocce-v002/recipe.json",
+      "source_recipe_sha256": "93bf939c7fe9c4c46824c5c18ad579863f11f4091e82b504cce5475a169fd81b",
+      "model": "seed/classroom-parks/bocce-v002/assembly-preview.glb",
+      "dimensions_m": [
+        26.4,
+        49
+      ],
+      "occupied_dimensions_m": [
+        26.4,
+        49.0
+      ],
+      "triangles": 156411,
+      "asset_verification": "PASS_OFFLINE_GEOMETRY_AND_HASH",
+      "visual_review": "AGENT_NATIVE_VISUAL_REVIEW_PASS",
+      "human_visual_approval": "PENDING",
+      "browser_acceptance": "NOT_TESTED",
+      "production_browser_acceptance": "NOT_TESTED",
+      "publication": "LOCAL_STUDENT_PICKER_ONLY",
+      "completed": false,
+      "limitations": [
+        "Neighbourhood ideation model; not a certified competition or engineering design.",
+        "Rigid court and equipment remain native size; never stretch or crop to a site polygon.",
+        "Level preview only; terrain, access, edit/recovery and capture await runtime integration.",
+        "Sideboard access leaf shown open for arrival; close the leaf before play."
+      ]
+    },
+    {
+      "title": "Rustic Pocket Garden",
+      "variant": "urban_pocket_park_v0",
+      "version": "pocket-native-v003",
+      "layout_id": "urban_pocket_park_v0--native-v1",
+      "content_revision": "aa17f01fdb4a44036d038696728e54ec5b35974f30adae2be7a1258d557eaaad",
+      "sha256": "985726fcef5a5964c0038088ceff65b21072e07456844d07994d509ff8493d5e",
+      "source_recipe": "seed/classroom-parks/pocket-native-v003/recipe.json",
+      "source_recipe_sha256": "0b272a3a164d356225f6afd9e25f78cc6233f8058afb580e69950a0332e4e05b",
+      "model": "seed/classroom-parks/pocket-native-v003/assembly-preview.glb",
+      "dimensions_m": [
+        30,
+        26
+      ],
+      "occupied_dimensions_m": [
+        30.0,
+        26.0
+      ],
+      "triangles": 720254,
+      "asset_verification": "PASS_OFFLINE_GEOMETRY_AND_HASH",
+      "visual_review": "AGENT_NATIVE_VISUAL_REVIEW_PASS",
+      "human_visual_approval": "PENDING",
+      "browser_acceptance": "NOT_TESTED",
+      "production_browser_acceptance": "NOT_TESTED",
+      "publication": "LOCAL_STUDENT_PICKER_ONLY",
+      "completed": false,
+      "limitations": [
+        "Prepared level concept only; fixed native composition. No competition, structural or accessibility certification."
+      ]
+    },
+    {
+      "title": "Railway Meadow Greenway",
+      "variant": "linear_park_greenway_v0",
+      "version": "greenway-native-v002",
+      "layout_id": "linear_park_greenway_v0--native-v1",
+      "content_revision": "58be0c48376bb8b565fa8a9449072a542b68ec41d9b793be2018b58683e5d1b1",
+      "sha256": "c99516036b3f990387b91311d34786b3d65b0899c177a00c75e8df684a0de63e",
+      "source_recipe": "seed/classroom-parks/greenway-native-v002/recipe.json",
+      "source_recipe_sha256": "a1e230bb960e372d1a0a7f4f3418a9ae9bae4f3a7a46e428210c30c690a3fbdb",
+      "model": "seed/classroom-parks/greenway-native-v002/assembly-preview.glb",
+      "dimensions_m": [
+        18,
+        64
+      ],
+      "occupied_dimensions_m": [
+        18.0,
+        64.1
+      ],
+      "triangles": 638167,
+      "asset_verification": "PASS_OFFLINE_GEOMETRY_AND_HASH",
+      "visual_review": "AGENT_NATIVE_VISUAL_REVIEW_PASS",
+      "human_visual_approval": "PENDING",
+      "browser_acceptance": "NOT_TESTED",
+      "production_browser_acceptance": "NOT_TESTED",
+      "publication": "LOCAL_STUDENT_PICKER_ONLY",
+      "completed": false,
+      "limitations": [
+        "Prepared level concept only; fixed native composition. No competition, structural or accessibility certification."
+      ]
+    },
+    {
+      "title": "Inclusive Woodland Playground",
+      "variant": "inclusive_accessible_playground_v0",
+      "version": "inclusive-native-v002",
+      "layout_id": "inclusive_accessible_playground_v0--native-v1",
+      "content_revision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888",
+      "sha256": "1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12",
+      "source_recipe": "seed/classroom-parks/inclusive-native-v002/recipe.json",
+      "source_recipe_sha256": "9fe5755f12037aadc147d42ca903ac8d779b35d903c752f714bb0a6f15ac072c",
+      "model": "seed/classroom-parks/inclusive-native-v002/assembly-preview.glb",
+      "dimensions_m": [
+        38,
+        36
+      ],
+      "occupied_dimensions_m": [
+        38.0,
+        36.0
+      ],
+      "triangles": 298676,
+      "asset_verification": "PASS_OFFLINE_GEOMETRY_AND_HASH",
+      "visual_review": "AGENT_NATIVE_VISUAL_REVIEW_PASS",
+      "human_visual_approval": "PENDING",
+      "browser_acceptance": "NOT_TESTED",
+      "production_browser_acceptance": "NOT_TESTED",
+      "publication": "LOCAL_STUDENT_PICKER_ONLY",
+      "completed": false,
+      "limitations": [
+        "Prepared level concept only. Play equipment is conceptual; accessibility, fall zones and safety require specialist design review."
+      ]
+    }
+  ],
+  "evidence_root": "C:/dev-artifacts/CityPrompt/classroom-parks-2026-09-27",
+  "paid_submissions": 0,
+  "pushed": false
+}

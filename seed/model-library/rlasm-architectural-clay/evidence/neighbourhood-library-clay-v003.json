@@ -1,0 +1,144 @@
+{
+  "candidate": "neighbourhood-library-clay-v003",
+  "reviewer": "independent_review",
+  "date": "2026-10-01",
+  "scope": "Holistic architectural-clay review of exact exported GLB evidence against three exact locked catalogue sources",
+  "decision": "architectural_clay_reviewed",
+  "model_sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "path": "sources/variant_2.png",
+      "sha256": "dbff795881507ed296a2ca190bf6b6c7218544a98dcdbeef39da25ee19f7ec9b",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "sources/variant_2_angle_60.jpg",
+      "sha256": "04b65811fdb3a5472214351a7018405711f13c8f3c89c20947c81e2d1bc5d702",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "sources/variant_2_angle_90.jpg",
+      "sha256": "5037ce4f6c67f9d06892e64ae8b53be3e85b09875493a083b1039f24f6385969",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "927b3fd858a603a91b0f41f2e993894ddc001178696177706ef5134386cf9603",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "3e4a892ff9aa80660de9f5c570a16a97dfabd05b072a18bbb4ef48eaf868d890",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "84ea904eb3ae3645e7d727c8f8fb3cd353b8afb1ea15ec4bdd07813d01864efe",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "bd7194f498cc51662f890ebe261784d42bd543ee98ae5596d7f6bdb8892ade17",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "a5d5e564f097dcd8f4bc1a3e08cc57da1d2a3346aa589ae4a00c1e37bd01ed5f",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "91baf837b447896918cb4e2e8e9e5ddb1343511ce3617055b27d73dcf4ae9112",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "285abcde9f7c06a1667737caf6fdee4f3934e67136c1343cdece388c2028e5b2",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "a2a5380cae28f2a9c530effda17ab2d31143bb732a80fbc676c1a14c5d9e744b",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "d58b8e24f53fcc8562d6a034a9b53bb1535c7b1c2071cbd54161097ed8b09c3f",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "5fc53f9dbc49c8e78a6e04dba8bfad423b3142ef4aac9c637aa9b04daa2dfaf5",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "04915b97de21c1200e097a729d7d4335933339ed44c840e2ab5ef72f709857ec",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "1575715f216ee5222d2c23a6414d103bbb44a489b56dbd760e78d13acf4a988c",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/program_interior.png",
+      "sha256": "ac13ae98a49034809e8de3950005cb02b3ccb87fd311de5d2df41791643655ff",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "5cf38962a57214f3cba48c33192b72a2d62478f440e2ac5b278be3c59968e885",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "boards/phone-front.png",
+      "sha256": "ba9d2a9fcb32c76a72af7182cc1bc7cf1af0fcfd1b02afe422ff4c10d22e841e",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "boards/phone-oblique.png",
+      "sha256": "8ee72c47430c0e6aca0b70cea31f2201b22ec47069c2d0db228ee3ce6e1b3e3d",
+      "inspection": "direct full-resolution visual inspection"
+    },
+    {
+      "path": "boards/phone-top.png",
+      "sha256": "249f2a6fce366909951eb715c9c48a729661aa93f45eb4bb4450c70a84354f53",
+      "inspection": "direct full-resolution visual inspection"
+    }
+  ],
+  "pixel_findings": [
+    "Near-square timber library identity is legible in whole views and phone boards: dark vertical cladding, full-height glazed timber-fork side and broad recessed entrance.",
+    "Source-defining folded perimeter roof profile and curved lower clerestory are visible after correction; stepped tiers and curved return remain continuous without detached drums.",
+    "Both long skylights have source-appropriate short-axis proportion and show interior depth through their apertures.",
+    "Facade close proves entrance center column removed and usable clear span between portal side supports.",
+    "Timber forks have visible ground seating; front, sides, rear and roof remain complete.",
+    "Bookshelves, reading furniture, galleries and connecting stairs make the library program unmistakable; interior and glazing views are adequately lit.",
+    "Roof vegetation is low irregular geometry rather than v001 pyramidal grid.",
+    "Whole-building cameras retain full footprint, grade, highest roof and safety margin; close views show intended relationships."
+  ],
+  "previous_blockers_closed": [
+    "v002 L1 central entrance column",
+    "v002 L2 roof silhouette and low arch",
+    "v002 L3 skylight width"
+  ],
+  "blockers": [],
+  "p2_followups": [
+    "Detailed joinery, timber grain, weathering and roof botanical texture belong to a future textured deliverable."
+  ],
+  "limitations": [
+    "Architectural clay only; this is not textured keeper approval.",
+    "Unseen side/rear details are authored architectural assumptions, not recovered photographic evidence.",
+    "Source street and roof views are not perfectly consistent; visible roof topology follows oblique/top evidence with facade identity preserved.",
+    "Source streetscape planting and surrounding urban context are outside this building-only delivery.",
+    "No runtime placement, resize, terrain, persistence, browser performance or user activation approval is granted."
+  ],
+  "keeper_approved": false,
+  "user_approved": false,
+  "publication_approved": false,
+  "runtime_approved": false
+}

@@ -1,0 +1,222 @@
+{
+  "schema": "cityprompt.classroom-model-bindings@1",
+  "provenance": "Exact active local starter bindings; no new geometry or expanded asset approval. Local fixture tags and account/project identities omitted.",
+  "entries": [
+    {
+      "id": "56ca336a-3264-5253-bc18-7725ca3fce33",
+      "name": "Calgary Modern Infill House — Flat Roof Minimal — RLASM Clay",
+      "variantId": "infill_flat_roof_minimal",
+      "modelDependency": "repository:seed/classroom-release/models/calgary-infill-flat-roof-minimal-clay-v006.glb",
+      "model_url": "/api/v1/files/library/rlasm-architectural-clay/calgary-infill-flat-roof-minimal-clay-v006.glb",
+      "metadata": {
+        "rlasm": {
+          "method": "RLASM",
+          "candidate": "calgary-infill-flat-roof-minimal-clay-v006",
+          "variant_id": "infill_flat_roof_minimal",
+          "archetype_id": "calgary_modern_infill_house",
+          "model_sha256": "eeb0d1d878ec474e6743a1e1aeef7bf84dfda360c1150662b60430095f26ac37",
+          "review_sha256": "93f3612322117cba3904cd22522870712d194115a894afd4e6f31dbd93f97344",
+          "review_status": "PASS_ARCHITECTURAL_CLAY_ONLY",
+          "source_locked": true,
+          "method_version": "6.1",
+          "delivery_format": "architectural_clay",
+          "keeper_approved": false,
+          "runtime_enabled": true,
+          "scaling_verified": false,
+          "design_dimensions_m": {
+            "depth": 10.0,
+            "width": 8.4,
+            "height": 6.98
+          },
+          "native_dimensions_m": {
+            "depth": 11.75,
+            "width": 8.45,
+            "height": 6.98001
+          },
+          "terrain_fit_verified": false,
+          "continuous_resize_allowed": false
+        },
+        "lego": {
+          "lod": 0,
+          "role": "assembled",
+          "family": "rlasm-clay-infill-flat-roof-minimal",
+          "depth_m": 11.75,
+          "enabled": true,
+          "width_m": 8.45,
+          "height_m": 6.98001,
+          "max_floors": 2,
+          "min_floors": 2,
+          "reuse_keys": [
+            "infill_flat_roof_minimal"
+          ],
+          "variant_key": "infill_flat_roof_minimal",
+          "repeatable_z": false,
+          "archetype_ids": [
+            "calgary_modern_infill_house",
+            "infill_flat_roof_minimal"
+          ],
+          "native_floors": 2,
+          "allowed_levels": [
+            2
+          ],
+          "source_variant_id": "infill_flat_roof_minimal",
+          "placement_contract": {
+            "mode": "fixed_landmark",
+            "continuous_resize_allowed": false
+          },
+          "allow_inset_footprint": true,
+          "footprint_compatibility": {
+            "polygonFit": false,
+            "placementMode": "select_and_place",
+            "continuous_resize_allowed": false
+          },
+          "generation_archetype_id": "infill_flat_roof_minimal"
+        }
+      }
+    },
+    {
+      "id": "1788455b-0bfc-5c2a-b5e4-d5cd3e2b1a3e",
+      "name": "Post-war bungalow — Post-war bungalow — RLASM Clay",
+      "variantId": "bungalow_postwar_ranch",
+      "modelDependency": "repository:seed/model-library/rlasm-architectural-clay/models/calgary-inner-city-bungalow-clay-v005.glb",
+      "model_url": "/api/v1/files/library/rlasm-architectural-clay/calgary-inner-city-bungalow-clay-v005.glb",
+      "metadata": {
+        "rlasm": {
+          "method": "RLASM",
+          "candidate": "calgary-inner-city-bungalow-clay-v005",
+          "variant_id": "bungalow_postwar_ranch",
+          "archetype_id": "calgary_inner_city_bungalow",
+          "model_sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+          "review_sha256": "86f3a5579369f8bebf9486d38700358fad6348f3f3a45916de7dbc2b8627655b",
+          "review_status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "source_locked": true,
+          "method_version": "6.1",
+          "delivery_format": "architectural_clay",
+          "keeper_approved": false,
+          "runtime_enabled": true,
+          "scaling_verified": false,
+          "design_dimensions_m": {
+            "depth": 15.0,
+            "width": 10.6,
+            "height": 6.0
+          },
+          "native_dimensions_m": {
+            "depth": 16.050000190734863,
+            "width": 10.898324012756348,
+            "height": 6.360000133514404
+          },
+          "terrain_fit_verified": false,
+          "continuous_resize_allowed": false
+        },
+        "lego": {
+          "lod": 0,
+          "role": "assembled",
+          "family": "rlasm-clay-bungalow-postwar-ranch",
+          "depth_m": 16.050000190734863,
+          "enabled": true,
+          "width_m": 10.898324012756348,
+          "height_m": 6.360000133514404,
+          "max_floors": 1,
+          "min_floors": 1,
+          "reuse_keys": [
+            "bungalow_postwar_ranch"
+          ],
+          "variant_key": "bungalow_postwar_ranch",
+          "repeatable_z": false,
+          "archetype_ids": [
+            "calgary_inner_city_bungalow",
+            "bungalow_postwar_ranch"
+          ],
+          "native_floors": 1,
+          "allowed_levels": [
+            1
+          ],
+          "source_variant_id": "bungalow_postwar_ranch",
+          "placement_contract": {
+            "mode": "fixed_landmark",
+            "continuous_resize_allowed": false
+          },
+          "allow_inset_footprint": true,
+          "footprint_compatibility": {
+            "polygonFit": false,
+            "placementMode": "select_and_place",
+            "continuous_resize_allowed": false
+          },
+          "generation_archetype_id": "bungalow_postwar_ranch"
+        }
+      }
+    },
+    {
+      "id": "1646c02c-996c-531a-94ab-f06dfd8483a1",
+      "name": "Calgary Beltline mid-rise — Beltline brick mixed-use mid-rise — RLASM Clay",
+      "variantId": "beltline_brick_modern",
+      "modelDependency": "repository:seed/model-library/rlasm-architectural-clay/models/calgary-beltline-mid-rise-clay-v003.glb",
+      "model_url": "/api/v1/files/library/rlasm-architectural-clay/calgary-beltline-mid-rise-clay-v003.glb",
+      "metadata": {
+        "rlasm": {
+          "method": "RLASM",
+          "candidate": "calgary-beltline-mid-rise-clay-v003",
+          "variant_id": "beltline_brick_modern",
+          "archetype_id": "calgary_beltline_mid_rise",
+          "model_sha256": "1ed0f47bb38a6879233fe54d441ba734f60f533f97a21b5e894a0706472cef41",
+          "review_sha256": "057d02506643b20f8951d7c196660084e459d734f73a34981fdc43753687edb6",
+          "review_status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "source_locked": true,
+          "method_version": "6.1",
+          "delivery_format": "architectural_clay",
+          "keeper_approved": false,
+          "runtime_enabled": true,
+          "scaling_verified": false,
+          "design_dimensions_m": {
+            "depth": 31,
+            "width": 31,
+            "height": 20
+          },
+          "native_dimensions_m": {
+            "depth": 34.15999984741211,
+            "width": 34.15999984741211,
+            "height": 20.43000030517578
+          },
+          "terrain_fit_verified": false,
+          "continuous_resize_allowed": false
+        },
+        "lego": {
+          "lod": 0,
+          "role": "assembled",
+          "family": "beltline-brick-midrise",
+          "depth_m": 34.15999984741211,
+          "enabled": true,
+          "width_m": 34.15999984741211,
+          "height_m": 20.43000030517578,
+          "max_floors": 5,
+          "min_floors": 5,
+          "reuse_keys": [
+            "beltline_brick_modern"
+          ],
+          "variant_key": "beltline_brick_modern",
+          "repeatable_z": false,
+          "archetype_ids": [
+            "calgary_beltline_mid_rise",
+            "beltline_brick_modern"
+          ],
+          "native_floors": 5,
+          "allowed_levels": [
+            5
+          ],
+          "source_variant_id": "beltline_brick_modern",
+          "placement_contract": {
+            "mode": "fixed_landmark",
+            "continuous_resize_allowed": false
+          },
+          "allow_inset_footprint": true,
+          "footprint_compatibility": {
+            "polygonFit": false,
+            "placementMode": "select_and_place",
+            "continuous_resize_allowed": false
+          },
+          "generation_archetype_id": "beltline_brick_modern"
+        }
+      }
+    }
+  ]
+}

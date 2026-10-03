@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "model_sha256": "2f48acc772f625b3db95666f085ca150c4ec3be20a56cccf64aa73924c1b5cfb",
+  "samples": 3356,
+  "max_step_m": 0.1500000000000008,
+  "max_surface_error_m": 1.9073486345888568e-7,
+  "body_clearance_width_m": 0.44,
+  "results": [
+    {
+      "route": "Twin stairs complete garden loop",
+      "direction": "forward",
+      "end": [
+        0,
+        -34,
+        0
+      ]
+    },
+    {
+      "route": "Twin stairs complete garden loop",
+      "direction": "reverse",
+      "end": [
+        0,
+        -34,
+        0
+      ]
+    }
+  ],
+  "failures": [],
+  "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+}

@@ -5,7 +5,10 @@ import {
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, MANUAL_STREET_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import starter from '@/data/classroomStarter.json';
+import validation from '@/data/validationCatalogue.json';
+import expansion from '@/data/classroomExpansion.json';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
@@ -39,7 +42,64 @@ export function catalogueChoices(domains = CANONICAL_DOMAINS, assets = CATALOGUE
   }
   return choices.sort((a, b) => Number(b.placements.length > 0) - Number(a.placements.length > 0));
 }
-export const CANONICAL_CHOICES = catalogueChoices();
+interface CatalogueRosterEntry {
+  domain: string; archetype_id: string; variant_id: string; placement_id: string;
+}
+
+/** A missing registration must not prevent the other designs from loading.
+ * Native upgrades may rename placement IDs, but must retain the exact design. */
+export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets = CATALOGUE_ASSETS) {
+  const choices: CanonicalChoice[] = [];
+  const unavailable: CatalogueRosterEntry[] = [];
+  for (const entry of entries) {
+    const domain = entry.domain === 'building' ? 'building' : entry.domain === 'park' ? 'park_plaza'
+      : entry.domain === 'street' ? 'street_pathway' : undefined;
+    if (!domain) { unavailable.push(entry); continue; }
+    const parentKey = domain === 'building' ? 'development_archetype_id'
+      : domain === 'park_plaza' ? 'green_space_archetype_id' : 'road_archetype_id';
+    const zoneType = domain === 'building' ? 'building' : domain === 'park_plaza' ? 'green_space' : 'road';
+    const matches = assets.filter(asset => isPlaceable(asset)
+      && (asset.kind === 'street' ? zoneType === 'road' : asset.zoneType === zoneType)
+      && asset.properties[parentKey] === entry.archetype_id && asset.model.variantId === entry.variant_id);
+    const asset = matches.find(candidate => candidate.id === entry.placement_id) ?? matches[0];
+    if (!asset) { unavailable.push(entry); continue; }
+    const source = CANONICAL_DOMAINS[domain].find(option => option.id === entry.archetype_id);
+    choices.push({ id: `${domain}:${entry.archetype_id}:${entry.variant_id}`, domain, placements: [asset], option: {
+      ...source, id: entry.archetype_id, label: asset.label, description: asset.description,
+      photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+      variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }],
+    } });
+  }
+  return { choices, unavailable };
+}
+
+// Local validation roster: no legacy variants or generic massing fallbacks in discovery.
+const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries]);
+export const CANONICAL_CHOICES = resolvedRoster.choices;
+export const UNAVAILABLE_CATALOGUE_ENTRIES = resolvedRoster.unavailable;
+/** Exact starter variants only. Parent cards must not quietly expose their other
+ * variants under the classroom promise. The full catalogue remains separate. */
+export function classroomChoices(choices = CANONICAL_CHOICES): CanonicalChoice[] {
+  return starter.entries.flatMap(entry => {
+    const domain = entry.domain === 'street' ? 'street_pathway' : entry.domain === 'park' ? 'park_plaza' : 'building';
+    const choice = choices.find(item => item.domain === domain && item.option.id === entry.archetypeId);
+    const placement = choice?.placements.find(asset => asset.id === entry.placementId && asset.model.variantId === entry.variantId);
+    if (!choice || !placement) return [];
+    const variant = choice.option.variants?.find(item => item.id === entry.variantId)
+      ?? { id: entry.variantId, label: placement.label, thumbnailUrl: placement.thumbnail };
+    return [{ ...choice, placements: [placement], option: { ...choice.option, variants: [variant] } }];
+  });
+}
+CANONICAL_CHOICES.push(...MANUAL_STREET_ASSETS.map(asset => ({
+  id: `street_pathway:${asset.properties.road_archetype_id}:${asset.model.variantId}`,
+  domain: 'street_pathway' as const, placements: [asset], option: {
+    ...CANONICAL_DOMAINS.street_pathway.find(o => o.id === asset.properties.road_archetype_id),
+    id: String(asset.properties.road_archetype_id), label: asset.label, description: asset.description,
+    photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+    variants: [{ id: asset.model.variantId, label: 'Street Manual | metric 3D', thumbnailUrl: asset.thumbnail }],
+  },
+})));
+export const CLASSROOM_CHOICES = CANONICAL_CHOICES;
 const normalizeSearch = (v: string) => v.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
 export function choiceMatchesGroup(choice: CanonicalChoice, groupId: string) {
   return !groupId || choice.option.calgaryGuide?.groupId === groupId

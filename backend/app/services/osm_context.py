@@ -182,6 +182,16 @@ out skel qt;
                         "name": tags.get("name"),
                         "surface": tags.get("surface"),
                         "lanes": tags.get("lanes"),
+                        # Retain restrictions for optional road-connection suggestions.
+                        # Older stored snapshots without these tags are not snap targets.
+                        "connection_tags": {
+                            key: tags[key]
+                            for key in tags
+                            if key
+                            in {"highway", "access", "motor_vehicle", "vehicle", "bridge", "tunnel", "layer", "service"}
+                            or ":conditional" in key
+                        },
+                        "geometry_complete": len(coords) == len(node_ids),
                     }
                 )
             elif tags.get("natural") == "water" or tags.get("waterway"):
@@ -212,6 +222,10 @@ out skel qt;
         )
 
         return {
+            "truncated": any(
+                len(items) > self.feature_caps[key]
+                for key, items in [("buildings", buildings), ("roads", roads), ("water", water), ("parks", parks)]
+            ),
             "buildings": buildings[: self.feature_caps["buildings"]],
             "roads": roads[: self.feature_caps["roads"]],
             "water": water[: self.feature_caps["water"]],

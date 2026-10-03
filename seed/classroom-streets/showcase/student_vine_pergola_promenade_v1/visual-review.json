@@ -1,0 +1,33 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "reviewer": "root builder: direct exported-GLB render inspection",
+  "independent": false,
+  "model_sha256": "79f8d74d3720b895acd752d4d40853e7d48588dc6bb022715b7327165aa08a4b",
+  "reviewed_views": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "45bfd019a0a990a9927793717c9b190fded669b1594127b6178577cc5abb4750"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "7fad880844cb9e50184c1cb50d9871240c6d86437ede8bdc2fdacfaa25bdcda5"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "e42a1a53f862e8ae2942f6709eca6225722e604ce61209b18b5f674dcb5b3885"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "7e523454bfcb4b49f8e1b4d7d98f469a8acf1bd33c111cf493b54c8103c11169"
+    }
+  ],
+  "findings": [
+    "Vine pergolas, planted border, terracotta pavers, timber benches and waterside iron guard retain the source character.",
+    "Clear promenade runs beside complete independent native furniture modules.",
+    "River and surrounding city context are not included in the section."
+  ],
+  "scope": "Native composition, measured envelope, grounded furniture and source identity; no browser or user approval claimed.",
+  "runtime_status": "NOT TESTED",
+  "publication_status": "local pilot only",
+  "completed": false
+}

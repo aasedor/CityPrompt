@@ -1,0 +1,33 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "reviewer": "root builder: direct exported-GLB render inspection",
+  "independent": false,
+  "model_sha256": "2184816a560792cdee4b8eebced15b6fba833aa8e641fb41b2c8e1ab9776f079",
+  "reviewed_views": [
+    {
+      "path": "renders/aerial.png",
+      "sha256": "3f558f6e6da68a292ea2754f220717a7d36eff7e6fe7bb6b7132a9ca488e5adb"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "08d7ffd4a9ac983a34a323d00d35a36e8509584ecc670ed6a2524b629cc078e9"
+    },
+    {
+      "path": "renders/detail.png",
+      "sha256": "182c9cba68fea81ce6f460282673afbbc9e165f3db02490b62961614a07249e8"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "73c4644c98dc66191872bc0c598673a2cb1157eb9b88aab4146e77a2e410c8ef"
+    }
+  ],
+  "findings": [
+    "Broad tree-lined stone walks, Morris columns, kiosks, historic lamps and central roadway are visible.",
+    "Complete native furnishings remain outside the travel lanes.",
+    "Background Haussmann buildings are excluded and may be placed separately."
+  ],
+  "scope": "Native composition, measured envelope, grounded furniture and source identity; no browser or user approval claimed.",
+  "runtime_status": "NOT TESTED",
+  "publication_status": "local pilot only",
+  "completed": false
+}

@@ -1,0 +1,1342 @@
+{
+  "schema": "cityprompt.offline-building-reuse-review@1",
+  "date": "2026-09-27",
+  "reviewer": "Independent Astra building reuse reviewer /root/building_reuse_review",
+  "method": "RLASM 6.1 architectural-clay reuse",
+  "holistic": false,
+  "decision": "Eight exact reviewed clay models recommended for bounded local integration and subsequent browser acceptance.",
+  "scope": "Fresh offline selection review of actual source/model phone comparisons, all-view inventory boards and one original-resolution contact render per selected candidate; exact GLB hashes and 214 available historical evidence hashes checked. Historical independent reviews are preserved as the holistic asset-review authority. No claim to have freshly inspected every full-resolution view.",
+  "historical_evidence_hash_check_count": 214,
+  "historical_evidence_hash_mismatches": [],
+  "selection_basis": "The five library choices add two familiar detached-house forms, one contemporary infill form, one office shaft and one residential tower/podium to the three specified low-rise buildings. All eight are distinct from the 12 validation picker variants read at review start. Strong means practical clay identity, coverage and available exact-byte approval; no numerical quality ranking is claimed.",
+  "selected": [
+    {
+      "candidate": "calgary-inner-city-bungalow-clay-v005",
+      "package": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\calgary-inner-city-bungalow-clay-v005.glb",
+      "model_sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+      "historical_review_path": "C:\\dev\\CityPrompt-approved-validation\\tools\\catalogue_ranch_pilot\\evidence\\independent-review.json",
+      "historical_review_sha256": "86f3a5579369f8bebf9486d38700358fad6348f3f3a45916de7dbc2b8627655b",
+      "historical_decision": "architectural_clay_pass",
+      "historical_model_sha256": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+      "library_model_matches": true,
+      "library_review_matches": true,
+      "review_evidence_hash_checks": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\sources\\variant_2.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\sources\\variant_2_angle_60.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\sources\\variant_2_angle_90.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\aerial.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\architecture_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\facade_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\front.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\front_corner.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\glass_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\left_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\porch_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\rear.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\rear_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\right_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\roof_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\top.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\all-views-contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\layout-provenance.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\locked-source-board.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\phone-construction.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\phone-source-comparison.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\prework-manifest.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\source-entry.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\build-report.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\calgary-inner-city-bungalow-clay-v005.glb",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\evidence\\builder-evidence.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\evidence\\builder-pixel-review.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\evidence\\carrier-aperture-audit.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\evidence\\delivery-verification.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\scripts\\build.py",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\scripts\\clay_core.py",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\scripts\\proof.py",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\scripts\\support.py",
+          "matches": true
+        }
+      ],
+      "historical_limitations": [
+        "Architectural clay only; no textured-keeper, runtime placement, terrain, stretch or canonical activation approval.",
+        "Native dimensions and hidden room/rear layouts are inferred rather than surveyed.",
+        "Source target is the bungalow on the left; neighboring modern infill excluded.",
+        "Generated builder-evidence pending label is superseded by separately inspected builder-pixel-review.json."
+      ],
+      "boards": [
+        "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\phone-source-comparison.png",
+        "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\all-views-contact.png"
+      ],
+      "decision": "RECOMMENDED_FOR_LOCAL_CLASSROOM_REUSE_VALIDATION",
+      "scope": "category_closure_only: exact-byte reuse suitability, broad source identity, and one family-specific contact spot check; not a new holistic RLASM approval",
+      "pixel_findings": [
+        "The bungalow is correctly isolated from the adjacent infill in its source. Hipped roof with front gable, chimney, porch, recessed door and grounded steps retain the low-rise identity. Porch close shows physical brick courses, open window depth and a clear stair approach."
+      ],
+      "fresh_inspected_files": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\phone-source-comparison.png",
+          "sha256": "3903cc8d492499e71d52b512b5d371951e7b0a6fc09d5931f7fbd575277d6d8e",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\boards\\all-views-contact.png",
+          "sha256": "85b148506d28824279a0c71350d62b0c0d84f0b4a1771173ae62e79fb9b19583",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\renders\\porch_contact.png",
+          "sha256": "dfd46c1151beefac840b4b53de31e6ab96adf4819b3260deddc8ad309efd86d6",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        }
+      ],
+      "new_visual_blockers_in_inspected_scope": [],
+      "runtime_acceptance": "NOT TESTED in this review; historical trials do not confer current-build acceptance",
+      "remaining": [
+        "Bind only this exact model hash and exact variant at native scale.",
+        "Run the later Sol browser trial for placement, frontage, all intended entrances, terrain contact, rotation, plot bounds, edits/undo/save/reload, capture fidelity and performance."
+      ]
+    },
+    {
+      "candidate": "toronto-edwardian-foursquare-clay-v004",
+      "package": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\toronto-edwardian-foursquare-clay-v004.glb",
+      "model_sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+      "historical_review_path": "C:\\dev\\CityPrompt-approved-validation\\tools\\catalogue_foursquare_pilot\\evidence\\independent-review.json",
+      "historical_review_sha256": "6dff58ab4ef76b9e2cfa2feac390bd6e3297eae0effc1759d995343a2f8fd51d",
+      "historical_decision": "architectural_clay_pass",
+      "historical_model_sha256": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+      "library_model_matches": true,
+      "library_review_matches": true,
+      "review_evidence_hash_checks": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\sources\\variant_0.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\sources\\variant_0_angle_60.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\sources\\variant_0_angle_90.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\aerial.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\architecture_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\dormer_section.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\facade_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\front.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\front_corner.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\glass_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\left_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\rear.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\rear_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\right_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\roof_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\top.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\all-views-contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\layout-provenance.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\locked-source-board.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\phone-construction.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\phone-source-comparison.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\prework-manifest.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\source-entry.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\build-report.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\toronto-edwardian-foursquare-clay-v004.glb",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\evidence\\builder-evidence.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\evidence\\builder-pixel-review.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\evidence\\carrier-aperture-audit.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\evidence\\delivery-verification.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\evidence\\source-reconciliation.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\scripts\\build.py",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\scripts\\clay_core.py",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\scripts\\proof.py",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\scripts\\support.py",
+          "matches": true
+        }
+      ],
+      "historical_limitations": [
+        "Architectural clay only; no textured-keeper, runtime, terrain, stretch or canonical activation approval.",
+        "Source-view conflicts regularized and documented; native scale, side/rear apertures, room layout and porch secondary columns are conceptual inferences.",
+        "Approximately 10.3MB masonry GLB requires runtime performance trial.",
+        "Generated builder-evidence pending label superseded by separate builder-pixel-review.json."
+      ],
+      "boards": [
+        "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\phone-source-comparison.png",
+        "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\all-views-contact.png"
+      ],
+      "decision": "RECOMMENDED_FOR_LOCAL_CLASSROOM_REUSE_VALIDATION",
+      "scope": "category_closure_only: exact-byte reuse suitability, broad source identity, and one family-specific contact spot check; not a new holistic RLASM approval",
+      "pixel_findings": [
+        "Two-storey brick block, full porch and hipped dormer remain distinct. Fresh dormer close shows cheeks crossing the roof and recessed glazing with room depth, rather than a floating frame. Whole-view board continues windows and roof around the back."
+      ],
+      "fresh_inspected_files": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\phone-source-comparison.png",
+          "sha256": "93627ed40bf0d4f77504d3cad0ae69b134039819ed1bdb721cd1b45ed06370b2",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\boards\\all-views-contact.png",
+          "sha256": "8e9ebb34513800b9f0f490d053aab44aed8f3e7b41dc274d16049f75a4c1b654",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\renders\\dormer_section.png",
+          "sha256": "bcca1b8300575fc6359abecec063bdf8b41c7d1e85325e519606fdce86458a37",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        }
+      ],
+      "new_visual_blockers_in_inspected_scope": [],
+      "runtime_acceptance": "NOT TESTED in this review; historical trials do not confer current-build acceptance",
+      "remaining": [
+        "Bind only this exact model hash and exact variant at native scale.",
+        "Run the later Sol browser trial for placement, frontage, all intended entrances, terrain contact, rotation, plot bounds, edits/undo/save/reload, capture fidelity and performance."
+      ]
+    },
+    {
+      "candidate": "detached_contemporary_infill-clay-v003",
+      "package": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\detached_contemporary_infill-clay-v003.glb",
+      "model_sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+      "historical_review_path": "C:\\dev\\CityPrompt-approved-validation\\seed\\model-library\\rlasm-architectural-clay\\evidence\\detached_contemporary_infill-clay-v003.json",
+      "historical_review_sha256": "9485d44ee29aedb22ca9653b6b5a40b2fee9e5f16152e7196333e4c1c4e11ea4",
+      "historical_decision": "architectural_clay_reviewed",
+      "historical_model_sha256": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+      "library_model_matches": true,
+      "library_review_matches": true,
+      "review_evidence_hash_checks": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\sources\\variant_3.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\sources\\variant_3_angle_60.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\sources\\variant_3_angle_90.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\front.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\front_corner.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\aerial.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\top.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\left_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\right_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\rear.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\rear_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\facade_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\architecture_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\glass_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\roof_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\balcony_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\boards\\locked-source-board.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\boards\\phone-source-comparison.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\boards\\phone-construction.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\build-report.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\evidence\\delivery-verification.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\detached_contemporary_infill-clay-v003.glb",
+          "matches": true
+        }
+      ],
+      "historical_limitations": [
+        "Exact source is detached_contemporary_infill variant_3 / detached_infill_rammed_earth; this review does not generalize to siblings.",
+        "Metric dimensions and unobserved rear/left elevations and interiors remain architectural inferences, not surveyed facts.",
+        "Secondary fine roof framing and material morphology are simplified for texture-free architectural clay.",
+        "Catalogue images remain selection/render-conditioning authority; clay preview does not replace them.",
+        "Use fixed native geometry and complete recorded envelope with its origin offset. This review does not authorize arbitrary scaling, engineering, terrain fit, textured keeper status, or runtime activation.",
+        "A human activation decision and separate runtime integration checks remain necessary for publication."
+      ],
+      "boards": [
+        "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\boards\\phone-source-comparison.png",
+        "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\boards\\all-views-contact.png"
+      ],
+      "decision": "RECOMMENDED_FOR_LOCAL_CLASSROOM_REUSE_VALIDATION",
+      "scope": "category_closure_only: exact-byte reuse suitability, broad source identity, and one family-specific contact spot check; not a new holistic RLASM approval",
+      "pixel_findings": [
+        "Three occupied storeys, deep front loggias, repeated roof joists and side timber screen preserve source identity. Fresh screen close shows real slat spacing, returns and framing; source and model top retain the long rectangular roof rhythm."
+      ],
+      "fresh_inspected_files": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\boards\\phone-source-comparison.png",
+          "sha256": "b9408d6fa4a5e87f6547ae250bf16a5ca3c55a6675d3701d9896d8e9882777aa",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\boards\\all-views-contact.png",
+          "sha256": "8a69460ce31713b31eccccb22729b5c5a3a77b99de3e34157d867f7035c10abf",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\renders\\balcony_contact.png",
+          "sha256": "19d2875cd89d639a6c6c4909b7b2c806e149f50700bbace95a9a655ed6dc919c",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        }
+      ],
+      "new_visual_blockers_in_inspected_scope": [],
+      "runtime_acceptance": "NOT TESTED in this review; historical trials do not confer current-build acceptance",
+      "remaining": [
+        "Bind only this exact model hash and exact variant at native scale.",
+        "Run the later Sol browser trial for placement, frontage, all intended entrances, terrain contact, rotation, plot bounds, edits/undo/save/reload, capture fidelity and performance."
+      ]
+    },
+    {
+      "candidate": "glass_tower_podium_modern-clay-v003",
+      "package": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\glass_tower_podium_modern-clay-v003.glb",
+      "model_sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43",
+      "historical_review_path": "C:\\dev\\CityPrompt-approved-validation\\seed\\model-library\\rlasm-architectural-clay\\evidence\\glass_tower_podium_modern-clay-v003.json",
+      "historical_review_sha256": "230740421d679916b9320dfc756045f735b9d30ee99e53a085b4f342d47ee28a",
+      "historical_decision": "architectural_clay_reviewed",
+      "historical_model_sha256": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43",
+      "library_model_matches": true,
+      "library_review_matches": true,
+      "review_evidence_hash_checks": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\sources\\variant_0_angle_60.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\sources\\variant_0_angle_90.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\sources\\variant_0.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\aerial.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\architecture_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\facade_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\front_corner.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\front.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\glass_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\left_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\lobby_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\rear_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\rear.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\right_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\roof_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\top.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\boards\\all-views-contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\boards\\locked-source-board.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\boards\\phone-construction.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\boards\\phone-source-comparison.png",
+          "matches": true
+        }
+      ],
+      "historical_limitations": [
+        "Conceptual native dimensions, not surveyed.",
+        "Rear and office fitout inferred; source podium disagreement explicitly resolved in favour of front identity.",
+        "No textured keeper, engineering, terrain-fit, arbitrary-scaling or runtime activation approval."
+      ],
+      "boards": [
+        "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\boards\\phone-source-comparison.png",
+        "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\boards\\all-views-contact.png"
+      ],
+      "decision": "RECOMMENDED_FOR_LOCAL_CLASSROOM_REUSE_VALIDATION",
+      "scope": "category_closure_only: exact-byte reuse suitability, broad source identity, and one family-specific contact spot check; not a new holistic RLASM approval",
+      "pixel_findings": [
+        "Slender blue glazed office shaft, discrete low podium and roof screen are legible. Fresh lobby close shows canopy structure and recessed doors with enclosed depth. The simplified podium and mechanical roof remain within the historical clay scope; source podium conflict was already disclosed."
+      ],
+      "fresh_inspected_files": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\boards\\phone-source-comparison.png",
+          "sha256": "8d861c9f46bfaea787db57ea6795c64c884c3757cbf0def19493e00dd1760d6c",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\boards\\all-views-contact.png",
+          "sha256": "88cacdca92739b508c0d5d823ed175b0f4d31c8dc2241e2007d58b7df0181a6f",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\renders\\lobby_contact.png",
+          "sha256": "375f57c29bffb9e4aa61b7c803f1f4b27957d1cd9b62c5807839ab8f1421d542",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        }
+      ],
+      "new_visual_blockers_in_inspected_scope": [],
+      "runtime_acceptance": "NOT TESTED in this review; historical trials do not confer current-build acceptance",
+      "remaining": [
+        "Bind only this exact model hash and exact variant at native scale.",
+        "Run the later Sol browser trial for placement, frontage, all intended entrances, terrain contact, rotation, plot bounds, edits/undo/save/reload, capture fidelity and performance."
+      ]
+    },
+    {
+      "candidate": "vancouverism-tower-podium-clay-v004",
+      "package": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\vancouverism-tower-podium-clay-v004.glb",
+      "model_sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+      "historical_review_path": "C:\\dev\\CityPrompt-approved-validation\\seed\\model-library\\rlasm-architectural-clay\\evidence\\vancouverism-tower-podium-clay-v004.json",
+      "historical_review_sha256": "4a7e7a536028a1b9ebc20c9e07c5f18db2d226df411217381cd0d8e9945dc6e1",
+      "historical_decision": "architectural_clay_pass",
+      "historical_model_sha256": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+      "library_model_matches": true,
+      "library_review_matches": true,
+      "review_evidence_hash_checks": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\sources\\variant_0_angle_60.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\sources\\variant_0_angle_90.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\sources\\variant_0.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\aerial.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\architecture_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\facade_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\front_corner.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\front_right.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\front.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\glass_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\left_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\lobby_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\rear_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\rear.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\ribbon_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\right_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\roof_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\top.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\boards\\all-views-contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\boards\\locked-source-board.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\boards\\phone-construction.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\boards\\phone-source-comparison.png",
+          "matches": true
+        }
+      ],
+      "historical_limitations": [
+        "Front source cropped; oblique governs full native height.",
+        "Rear and room layouts and low-detail planting are inferred.",
+        "Source ribbon simplified to a rounded frame; broad asymmetry is less pronounced (P2)."
+      ],
+      "boards": [
+        "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\boards\\phone-source-comparison.png",
+        "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\boards\\all-views-contact.png"
+      ],
+      "decision": "RECOMMENDED_FOR_LOCAL_CLASSROOM_REUSE_VALIDATION",
+      "scope": "category_closure_only: exact-byte reuse suitability, broad source identity, and one family-specific contact spot check; not a new holistic RLASM approval",
+      "pixel_findings": [
+        "Rounded podium, inset tower, balcony side and elevated planting distinguish this model from the office shaft. Fresh ribbon close shows continuous balcony edges, guardrails and recessed openings. Rounded outer ribbon is more regular than the source and remains the historical P2 simplification."
+      ],
+      "fresh_inspected_files": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\boards\\phone-source-comparison.png",
+          "sha256": "d0c314997735a7f8eeed51366248c77c96fb0dd3eecb03caf4f59b3056d08f8c",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\boards\\all-views-contact.png",
+          "sha256": "06be3113655102549f156d61abaa654183b5e713e0d8563d1559270d97d1a15b",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\renders\\ribbon_contact.png",
+          "sha256": "8a66ccc13231d46e056bb4450fb3d72c856ba85a3f67ab790c16134c69ad3d35",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        }
+      ],
+      "new_visual_blockers_in_inspected_scope": [],
+      "runtime_acceptance": "NOT TESTED in this review; historical trials do not confer current-build acceptance",
+      "remaining": [
+        "Bind only this exact model hash and exact variant at native scale.",
+        "Run the later Sol browser trial for placement, frontage, all intended entrances, terrain contact, rotation, plot bounds, edits/undo/save/reload, capture fidelity and performance."
+      ]
+    },
+    {
+      "candidate": "calgary-side-by-side-duplex-clay-v004",
+      "package": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\calgary-side-by-side-duplex-clay-v004.glb",
+      "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "historical_review_path": "C:\\dev-artifacts\\CityPrompt\\catalogue-priority-2026-09-22\\independent-duplex-review.json",
+      "historical_review_sha256": "529c7634a7173473532418be47a163c4c081264856f598f57ee56684b73649e1",
+      "historical_decision": "The unchanged exact v004 model passes the architectural-clay visual gate. This is a newly performed review, not a relabeling of the September 5 decision. No runtime activation, placement acceptance, catalogue publication, textured keeper, engineering or survey approval is conferred.",
+      "historical_model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "library_model_matches": null,
+      "library_review_matches": null,
+      "review_evidence_hash_checks": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2_angle_60.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\sources\\variant_2_angle_90.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\aerial.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\architecture_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\facade_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\front.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\front_corner.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\glass_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\left_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\rear.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\rear_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\right_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\roof_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\side_projection.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\top.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\all-views-contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\locked-source-board.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\phone-construction.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\phone-source-comparison.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\calgary-side-by-side-duplex-clay-v004.glb",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\prework-manifest.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\build-report.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\evidence\\builder-evidence.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\evidence\\delivery-verification.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\layout-provenance.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\review\\builder-visual-review.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\scripts\\proof.py",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev\\CityPrompt-grounding-edit-race\\tools\\catalogue_duplex_pilot\\independent-review-v004.json",
+          "matches": true
+        }
+      ],
+      "historical_limitations": [
+        "Rear fenestration and internal partitions are inferred consistently from two separate homes; not claimed as photographed.",
+        "Left upper side projection repeats the stepped outline visible in top view; its windows are inferred.",
+        "Two separate residential circulation routes and modest furniture are inferred behind visible glazing.",
+        "Only the above-grade basement glazing bands are visible; below-grade rooms and excavations are outside this asset. The bands open into the enclosed shallow volume below the ground-floor slab.",
+        "Neighbouring buildings, alley garages, public street and mature contextual trees are excluded from this building asset.",
+        "Conceptual native metres inferred from sources; no measured survey.",
+        "Rear fenestration, left-side windows and internal circulation are inferred; exterior images do not establish detailed code compliance or every hidden interior route.",
+        "Fixed native scale only. No terrain-fit, arbitrary resizing, repetition contract, runtime activation or publication approval.",
+        "Glass/material appearance is architectural clay, not photorealistic keeper quality."
+      ],
+      "boards": [
+        "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\phone-source-comparison.png",
+        "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\all-views-contact.png"
+      ],
+      "decision": "RECOMMENDED_FOR_LOCAL_CLASSROOM_REUSE_VALIDATION",
+      "scope": "category_closure_only: exact-byte reuse suitability, broad source identity, and one family-specific contact spot check; not a new holistic RLASM approval",
+      "pixel_findings": [
+        "Two separate homes remain readable through paired recesses, two independent stairs, walks, flat roofs and coping spine. Fresh entry close confirms ground-level separation, physical steps and recessed entry depth; no obvious shelf blocks either door."
+      ],
+      "fresh_inspected_files": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\phone-source-comparison.png",
+          "sha256": "78ea74f8f06d6ab0bc5bf47f6696007106b3156e21ebcbbf9a24983b698d1032",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\boards\\all-views-contact.png",
+          "sha256": "287d7fb3110f9bafb55b28bbdf75726cb4ea6afc5d220d50b7605badb2f2753e",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\renders\\architecture_close.png",
+          "sha256": "67dc805f6a951ddb8fb58d3431b2cf6ebf0419b99b63694c5e4afdbb181e75a7",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        }
+      ],
+      "new_visual_blockers_in_inspected_scope": [],
+      "runtime_acceptance": "NOT TESTED in this review; historical trials do not confer current-build acceptance",
+      "remaining": [
+        "Bind only this exact model hash and exact variant at native scale.",
+        "Run the later Sol browser trial for placement, frontage, all intended entrances, terrain contact, rotation, plot bounds, edits/undo/save/reload, capture fidelity and performance."
+      ]
+    },
+    {
+      "candidate": "montreal-plateau-duplex-clay-v004",
+      "package": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\montreal-plateau-duplex-clay-v004.glb",
+      "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "historical_review_path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\montreal-review.json",
+      "historical_review_sha256": "722075ca8076a2c3bd75641e3db42b7db5549da96fe1676c0719e0efbb357aa7",
+      "historical_decision": "architectural_clay_pass",
+      "historical_model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "library_model_matches": null,
+      "library_review_matches": null,
+      "review_evidence_hash_checks": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\sources\\variant_0.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\sources\\variant_0_angle_60.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\sources\\variant_0_angle_90.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\aerial.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\architecture_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\facade_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\front.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\front_corner.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\glass_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\left_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\rear.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\rear_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\right_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\roof_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\side_projection.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\stair_landing.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\top.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\all-views-contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\locked-source-board.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\phone-construction.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\phone-source-comparison.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\prework-manifest.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\source-entry.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\build-report.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\evidence\\builder-pixel-review.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\evidence\\delivery-verification.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\review\\independent-architectural-clay-review.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\montreal-plateau-duplex-clay-v004.glb",
+          "matches": true
+        }
+      ],
+      "historical_limitations": [
+        "Review reuses the exact existing v004 model; no new geometry or re-render was authored in this review.",
+        "Architectural-clay approval only. Not a textured keeper, surveyed scale, engineering, accessibility or code-compliance certification.",
+        "Right/rear elevations, partitions and furnishing are declared inference; surrounding neighbours, garden, public sidewalk and street are excluded context.",
+        "One complete stacked-duplex assembly at native size. No stretching, floor repetition or sibling substitution.",
+        "Entrances require runtime verification: front lower entry and curved stair upper entry share front approach space; an additional side lower-flat entry projects left. Reserve complete measured bounds, not 10.4x13.8 nominal wall dimensions.",
+        "No runtime entrance anchors were measured or approved by this task. Test connections at ground approach points, never at upper-floor door elevation; preserve side-step clearance.",
+        "Sol still must test Currie terrain contact, orientation, collision envelope, entry-to-sidewalk connections, edits, undo/reload and export. No browser check or seed was performed."
+      ],
+      "boards": [
+        "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\phone-source-comparison.png",
+        "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\all-views-contact.png"
+      ],
+      "decision": "RECOMMENDED_FOR_LOCAL_CLASSROOM_REUSE_VALIDATION",
+      "scope": "category_closure_only: exact-byte reuse suitability, broad source identity, and one family-specific contact spot check; not a new holistic RLASM approval",
+      "pixel_findings": [
+        "Two-storey Montreal stone duplex retains projecting bays, layered cornice and curved external stair. Fresh landing close shows attached stair landing, clear upper doors, supported balcony and lower entrance. Hidden rear remains inferred."
+      ],
+      "fresh_inspected_files": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\phone-source-comparison.png",
+          "sha256": "4b515ac4ca917c80fb7ea0b6cb48a32b61a2133a4c62bac59570e77a17794f19",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\boards\\all-views-contact.png",
+          "sha256": "beea4d1b271273f561c18ffdf35a2d9425f2e3e0ff40b928b43e469593c0e56d",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\renders\\stair_landing.png",
+          "sha256": "fef5a048e812a2941e60b981d2be6ecd708c076b731a2c8fb58757c6b10a8bc3",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        }
+      ],
+      "new_visual_blockers_in_inspected_scope": [],
+      "runtime_acceptance": "NOT TESTED in this review; historical trials do not confer current-build acceptance",
+      "remaining": [
+        "Bind only this exact model hash and exact variant at native scale.",
+        "Run the later Sol browser trial for placement, frontage, all intended entrances, terrain contact, rotation, plot bounds, edits/undo/save/reload, capture fidelity and performance."
+      ]
+    },
+    {
+      "candidate": "courtyard-brick-modern-clay-v004",
+      "package": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\courtyard-brick-modern-clay-v004.glb",
+      "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "historical_review_path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004-review.json",
+      "historical_review_sha256": "d80f69e3bb72c567a72f419dfedf888ef42dc5d9f62d2fe7a524d8be9fa14d5a",
+      "historical_decision": "architectural_clay_pass",
+      "historical_model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "library_model_matches": null,
+      "library_review_matches": null,
+      "review_evidence_hash_checks": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\sources\\variant_2.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\sources\\variant_2_angle_60.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\sources\\variant_2_angle_90.jpg",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\aerial.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\architecture_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\facade_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\front.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\front_corner.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\glass_close.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\left_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\passage_axis.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\rear.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\rear_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\right_side.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\roof_contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\side_projection.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\top.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\all-views-contact.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\locked-source-board.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\phone-construction.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\phone-source-comparison.png",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\prework-manifest.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\build-report.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\evidence\\delivery-verification.json",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\courtyard-brick-modern-clay-v004.glb",
+          "matches": true
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-review.json",
+          "matches": true
+        }
+      ],
+      "historical_limitations": [
+        "Architectural-clay approval only; no textured keeper, engineering, survey, code or accessibility certification.",
+        "Rear apartment rhythm, rear doors, interior partitions and stairs are declared inference. This is one entrance bar, not a complete enclosed courtyard development.",
+        "Use complete native bounds including balcony projections; no arbitrary mesh stretching, floor repetition or sibling substitution.",
+        "Sol must still verify Currie terrain contact, placement/collision envelope, ground-entry sidewalk connections, unobstructed passage approaches, edits, undo/reload and exports. No runtime entrance anchors are approved by this asset review.",
+        "No browser checks, seeding, paid calls, geometry edits or repository edits performed by reviewer."
+      ],
+      "boards": [
+        "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\phone-source-comparison.png",
+        "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\all-views-contact.png"
+      ],
+      "decision": "RECOMMENDED_FOR_LOCAL_CLASSROOM_REUSE_VALIDATION",
+      "scope": "category_closure_only: exact-byte reuse suitability, broad source identity, and one family-specific contact spot check; not a new holistic RLASM approval",
+      "pixel_findings": [
+        "Three-storey gabled brick block retains flanking balconies and segmental ground arches. Fresh axial close proves a continuous open through-passage with full wall depth and enclosed soffit. This is the individual source building, not the surrounding courtyard neighbourhood."
+      ],
+      "fresh_inspected_files": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\phone-source-comparison.png",
+          "sha256": "484306a22e1697345ca55e34fc721ca79a88efd6ef6147f6a7b8fab7cace71a4",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\boards\\all-views-contact.png",
+          "sha256": "a6351c4a4eb6217ee16c34b7284c3258ec4287f10d9ace66f89e76ef2413c7f4",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\renders\\passage_axis.png",
+          "sha256": "7e657424cf7991a45a5e90c52977e4818d95e8d5c730f079cbdfadd15c20809e",
+          "inspection": "Direct pixels opened with view_image; phone source comparison and contact inventory at displayed resolution; named individual render at original resolution."
+        }
+      ],
+      "new_visual_blockers_in_inspected_scope": [],
+      "runtime_acceptance": "NOT TESTED in this review; historical trials do not confer current-build acceptance",
+      "remaining": [
+        "Bind only this exact model hash and exact variant at native scale.",
+        "Run the later Sol browser trial for placement, frontage, all intended entrances, terrain contact, rotation, plot bounds, edits/undo/save/reload, capture fidelity and performance."
+      ]
+    }
+  ],
+  "not_selected": [
+    {
+      "candidate": "calgary-beltline-mid-rise-clay-v003",
+      "reason": "Exclude duplicate family/variant: validation picker already contains beltline-v005. Do not regress current picker to older v003; preserve historical v003 review."
+    },
+    {
+      "candidate": "calgary-sandstone-heritage-clay-v007",
+      "reason": "Source/model phone comparison inspected; credible reserve civic landmark with large roughly 60 m envelope and about 12.3 MB model. Not rejected; lower priority for this eight-building bounded classroom batch."
+    },
+    {
+      "candidate": "highway-motor-hotel-clay-v002",
+      "reason": "Source/model phone comparison inspected; coherent U-shaped court and sign. Credible reserve, not rejected. Parking/court context excluded from model requires separate site composition."
+    },
+    {
+      "candidate": "glass-tower-twisted-clay-v005",
+      "reason": "Source/model phone comparison inspected; twist and transfer garden legible. Credible reserve, not rejected. Two simpler contrasting tower forms selected first; phone framing is weak at whole-tower scale."
+    }
+  ],
+  "finite_remaining_gates": [
+    {
+      "id": "R01",
+      "status": "NOT TESTED",
+      "action": "Run current app browser acceptance later with Sol for all eight; no browser was opened in this phase.",
+      "impact": "Release blocker until advertised classroom interactions and captures pass."
+    },
+    {
+      "id": "R02",
+      "status": "REQUIRED INTEGRATION CONSTRAINT",
+      "action": "Preserve exact variant/hash, native scale, all intended public entrances and inferred-hidden-view limitations. Do not silently substitute siblings or allow mesh stretching.",
+      "impact": "Incorrect binding or access is a classroom blocker."
+    },
+    {
+      "id": "R03",
+      "status": "FOLLOW-UP",
+      "action": "Check Foursquare roughly 10.3 MB GLB and mixed tower scene performance in later actual runtime.",
+      "impact": "Only becomes blocker if ordinary classroom authoring/capture is unusable."
+    }
+  ],
+  "keeper_approved": false,
+  "runtime_acceptance_granted": false,
+  "publication_approval_granted": false,
+  "historical_approvals_modified": false,
+  "repo_files_modified_by_reviewer": false,
+  "browser_used": false,
+  "paid_calls": 0,
+  "committed": false,
+  "pushed": false
+}

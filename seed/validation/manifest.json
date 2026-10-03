@@ -1,0 +1,1392 @@
+{
+  "schema": "cityprompt.validation-packet@1",
+  "scope": "27 exact candidates; rebuilt copy only, no browser or release approval",
+  "archive_sha256": "76e640f93b54228a479e39cd6113ee5556519e795920395ee0151be61dd99731",
+  "files": [
+    {
+      "path": "evidence/validation_amphitheater_lawn_v0/recipe.json",
+      "bytes": 183927,
+      "sha256": "a5875b156b19d7ae5ef7afca0f0917832760deebea1c124179997edc198e81d1"
+    },
+    {
+      "path": "evidence/validation_amphitheater_lawn_v0/renders/aerial.png",
+      "bytes": 1798958,
+      "sha256": "ca2e992edfa91bd7cc98f48ce5c557ffdb8187531824b3662882fc62f35628fe"
+    },
+    {
+      "path": "evidence/validation_amphitheater_lawn_v0/sources/variant_0.png",
+      "bytes": 1427020,
+      "sha256": "41882be45777464ae92e5e7daac499515953450aec653a5833a81488390d9472"
+    },
+    {
+      "path": "evidence/validation_amphitheater_lawn_v0/sources/variant_0_angle_60.jpg",
+      "bytes": 1002643,
+      "sha256": "f8a020ec47362113d16661a03c017653833a821ef7d189fc5fd6c297dc416f8d"
+    },
+    {
+      "path": "evidence/validation_amphitheater_lawn_v0/sources/variant_0_angle_90.jpg",
+      "bytes": 994326,
+      "sha256": "a1c370711acea9f9a38a3657d5e324bd222e2db2779175367db8bf5e3e250173"
+    },
+    {
+      "path": "evidence/validation_amsterdam_gracht_v1/recipe.json",
+      "bytes": 24166,
+      "sha256": "db99c735b29e2d9c9131d89f787fd137fb1f41523cbae55d8a15322e35535ef9"
+    },
+    {
+      "path": "evidence/validation_amsterdam_gracht_v1/renders/aerial.png",
+      "bytes": 1789571,
+      "sha256": "69295e0bed67c6b9561d189ebbe346b1a383ba6c94a03c4b1a291b468a1bccc2"
+    },
+    {
+      "path": "evidence/validation_amsterdam_gracht_v1/sources/variant_1.png",
+      "bytes": 1537482,
+      "sha256": "12b631fccef4facfaa4170680acbbb8949c968a001855468ddd9b4f4e7062fff"
+    },
+    {
+      "path": "evidence/validation_amsterdam_gracht_v1/sources/variant_1_angle_60.jpg",
+      "bytes": 1001889,
+      "sha256": "c8d54fc9f2a8d43eb4e51b3eaa3d9a308c657898235ccb019bc4b531501e24e4"
+    },
+    {
+      "path": "evidence/validation_amsterdam_gracht_v1/sources/variant_1_angle_90.jpg",
+      "bytes": 934461,
+      "sha256": "cb9d10259e06c903c4e12573a50e6e1514fa6dd8b33f3653f7bdae904b291236"
+    },
+    {
+      "path": "evidence/validation_art_deco_streamline_moderne/build-report.json",
+      "bytes": 306682,
+      "sha256": "46147c782aa0de3795737493eff64fe878aa2489db364dd09875538ba773bb8f"
+    },
+    {
+      "path": "evidence/validation_art_deco_streamline_moderne/renders/aerial.png",
+      "bytes": 1516563,
+      "sha256": "f9b3faf865bdff64187618f4830f8a0687870034ed71830388bc00489e5019bf"
+    },
+    {
+      "path": "evidence/validation_art_deco_streamline_moderne/renders/front_corner.png",
+      "bytes": 1503429,
+      "sha256": "01b2ea19023c2d8388974fb7c5763dcbb9b7a4b2323bc3a1c7108a9959e7e3b4"
+    },
+    {
+      "path": "evidence/validation_art_deco_streamline_moderne/sources/variant_3.png",
+      "bytes": 1087264,
+      "sha256": "aec55f944bf84f5fa76d6226f8ca75a7a6d9a9bc5b920093f78aa10411eaa333"
+    },
+    {
+      "path": "evidence/validation_art_deco_streamline_moderne/sources/variant_3_angle_60.jpg",
+      "bytes": 861922,
+      "sha256": "a3c6a2b16253f0b0fe7f4068744d34e72b81e83cfa0635652b3df077bb8af346"
+    },
+    {
+      "path": "evidence/validation_art_deco_streamline_moderne/sources/variant_3_angle_90.jpg",
+      "bytes": 811179,
+      "sha256": "a2997c8dfc17e8eb8d1da1e9913f12db47cae98fd4439204aa63da233604edf3"
+    },
+    {
+      "path": "evidence/validation_basketball_court_v1/recipe.json",
+      "bytes": 5376,
+      "sha256": "8908c7162682881b65448f9934f0ca3e46fc83d7b69860f38fade8a2cfb51ae3"
+    },
+    {
+      "path": "evidence/validation_basketball_court_v1/references/variant_1.png",
+      "bytes": 1407609,
+      "sha256": "aab139515a6cbde875f659405b349e8941f1d9ff2a6f0034500a644804b203bf"
+    },
+    {
+      "path": "evidence/validation_basketball_court_v1/references/variant_1_angle_60.jpg",
+      "bytes": 867618,
+      "sha256": "92869d43a166845c5e802932cf477dde8827bc4b249c425e2ce57f64662daf47"
+    },
+    {
+      "path": "evidence/validation_basketball_court_v1/references/variant_1_angle_90.jpg",
+      "bytes": 842432,
+      "sha256": "f4a668ab02f0cf8c4b48501d7920910bada38d969cb71003e87a8cb68425e85a"
+    },
+    {
+      "path": "evidence/validation_basketball_court_v1/renders/aerial.png",
+      "bytes": 1709105,
+      "sha256": "87114753519ec4548dfee4ac972d21aa9cfed134b991cf940816be0cecf54300"
+    },
+    {
+      "path": "evidence/validation_basketball_court_v1/renders/street.png",
+      "bytes": 1728874,
+      "sha256": "8ddb98fc82f7da337a99775bc6b0c873b754831a628c9eb4cc454e47423d92ae"
+    },
+    {
+      "path": "evidence/validation_beltline_brick_modern/build-report.json",
+      "bytes": 245590,
+      "sha256": "7c59f15fcebd7ce7d5bd664943a7963fcbb1f38afa6afa719aaa282c3b77ecac"
+    },
+    {
+      "path": "evidence/validation_beltline_brick_modern/renders/aerial.png",
+      "bytes": 1522931,
+      "sha256": "f6b176070132025136fec5188571b4aed94f62286b17a883252191266c785115"
+    },
+    {
+      "path": "evidence/validation_beltline_brick_modern/renders/front_corner.png",
+      "bytes": 1487946,
+      "sha256": "2a9a2e58dffce7424267dc0ab871d5f258437afa722b32b3371177c1330aba78"
+    },
+    {
+      "path": "evidence/validation_beltline_brick_modern/sources/variant_1.png",
+      "bytes": 1331259,
+      "sha256": "39f3dd9260e14f262498e67a1923c07b09d3265873f9e5f0908185ce8b856bc3"
+    },
+    {
+      "path": "evidence/validation_beltline_brick_modern/sources/variant_1_angle_60.jpg",
+      "bytes": 921981,
+      "sha256": "95a0ae40934152fdb2de1586fb5741e8afe3c99c9f669ab30bc3454d47aea2c3"
+    },
+    {
+      "path": "evidence/validation_beltline_brick_modern/sources/variant_1_angle_90.jpg",
+      "bytes": 819036,
+      "sha256": "a3dd6eb5a6246a3613c8fa9de81d52b921e1fdd9ab1eb43c90e024f4a2ad0714"
+    },
+    {
+      "path": "evidence/validation_botanical_garden_v3/recipe.json",
+      "bytes": 2823885,
+      "sha256": "b5cd5c25d1ce2c2cba3c2e6674ccfb89b61f660ed1c17a284c36b53c0958044d"
+    },
+    {
+      "path": "evidence/validation_botanical_garden_v3/renders/aerial.png",
+      "bytes": 2629182,
+      "sha256": "054a72160158536e9ab69dc51dfee07650297a3e8e59f69a9a73aaa573f562a8"
+    },
+    {
+      "path": "evidence/validation_botanical_garden_v3/sources/variant_3.png",
+      "bytes": 1556674,
+      "sha256": "0c734068ef9eeb09fbb032a8c0a7a15b58056eadd5313f332715f026e6f22a78"
+    },
+    {
+      "path": "evidence/validation_botanical_garden_v3/sources/variant_3_angle_60.jpg",
+      "bytes": 1035312,
+      "sha256": "0adb23a7c3726d7d78a44bb59156280c9fc178e89fd506b32e9a256385add5b9"
+    },
+    {
+      "path": "evidence/validation_botanical_garden_v3/sources/variant_3_angle_90.jpg",
+      "bytes": 1080727,
+      "sha256": "3a428dd4344c7d132c9221b06e033d31ab3c5b13bbdffec97f2a19921bcccf43"
+    },
+    {
+      "path": "evidence/validation_brewery_crystal_brewhouse/build-report.json",
+      "bytes": 139197,
+      "sha256": "c926e2b11a24f171a153ecdfdcebfd48c49ffb14cbc8423dcd350353b94b42dd"
+    },
+    {
+      "path": "evidence/validation_brewery_crystal_brewhouse/renders/aerial.png",
+      "bytes": 1518354,
+      "sha256": "46b9260e713fea941775776f4cf5b1ae9614531af8e4e1bfe248751e9657ffe7"
+    },
+    {
+      "path": "evidence/validation_brewery_crystal_brewhouse/renders/front_corner.png",
+      "bytes": 1401008,
+      "sha256": "5d366055408a198537f70bf855f24e5ec951fd9e27033189625572cbc9a87a75"
+    },
+    {
+      "path": "evidence/validation_brewery_crystal_brewhouse/sources/variant_2.png",
+      "bytes": 1312547,
+      "sha256": "cb150d7c2543b9fe5423a8aeb52fea6a55ee9c7fc503e939225a3ddce2c0c6ca"
+    },
+    {
+      "path": "evidence/validation_brewery_crystal_brewhouse/sources/variant_2_angle_60.jpg",
+      "bytes": 825258,
+      "sha256": "ab115e82876afa3bd7c059b7c512a5f4909a7183fcc9935cbb4f19b11cbecb75"
+    },
+    {
+      "path": "evidence/validation_brewery_crystal_brewhouse/sources/variant_2_angle_90.jpg",
+      "bytes": 907969,
+      "sha256": "d9a4983f9964632e9f41ca3bfc73a10b9f2eae8167e5aed7cd668c25c2639129"
+    },
+    {
+      "path": "evidence/validation_brt_bus_rapid_transit_corridor_v0/recipe.json",
+      "bytes": 40658,
+      "sha256": "c18cdf29bc7474a90b1bbbc5531650faefb388e0366f6ce2d1ba98c75bbecb1c"
+    },
+    {
+      "path": "evidence/validation_brt_bus_rapid_transit_corridor_v0/renders/aerial.png",
+      "bytes": 1681346,
+      "sha256": "1d5edb5eec400a6cfce28a247413f2c3b40d769f9d5d7b2853e135f02b8044cc"
+    },
+    {
+      "path": "evidence/validation_brt_bus_rapid_transit_corridor_v0/sources/variant_0.png",
+      "bytes": 1411041,
+      "sha256": "896d376aa35b3164b57d7aa4b220d4b4b892e07340431a3d55af63736ba730aa"
+    },
+    {
+      "path": "evidence/validation_brt_bus_rapid_transit_corridor_v0/sources/variant_0_angle_60.jpg",
+      "bytes": 924854,
+      "sha256": "f7aa984256ab2a88a8ef451ffbd33a6d7d74b4335fed983396f7020700d5bdb9"
+    },
+    {
+      "path": "evidence/validation_brt_bus_rapid_transit_corridor_v0/sources/variant_0_angle_90.jpg",
+      "bytes": 940438,
+      "sha256": "868e64a52fbf812ba4f2c9b7d56891138d009be572a7a7c2bfa055ac62519877"
+    },
+    {
+      "path": "evidence/validation_cast_iron_italianate/build-report.json",
+      "bytes": 158503,
+      "sha256": "f65b122001f43c222446dd2a5a65bf0bd186bc01cb5a845e28c286837e55da68"
+    },
+    {
+      "path": "evidence/validation_cast_iron_italianate/renders/aerial.png",
+      "bytes": 1608027,
+      "sha256": "66e1d36b002cfae34132e4ca4d4c001069fa91942a0397b18a4e3eedab4cd2a1"
+    },
+    {
+      "path": "evidence/validation_cast_iron_italianate/renders/front_corner.png",
+      "bytes": 1676509,
+      "sha256": "73fb82c50fee25e621dac437222a7b6bc7b30966e3e9b5931a513d4318f15615"
+    },
+    {
+      "path": "evidence/validation_cast_iron_italianate/sources/variant_0.png",
+      "bytes": 1433920,
+      "sha256": "93702cf15872f17332409ce8e9e810113279107a03f5ab99d40448fc4ef41699"
+    },
+    {
+      "path": "evidence/validation_cast_iron_italianate/sources/variant_0_angle_60.jpg",
+      "bytes": 915715,
+      "sha256": "443eaea5e6f84c271254d772dc49f339978918a2aacd510d1711e93b18345dd6"
+    },
+    {
+      "path": "evidence/validation_cast_iron_italianate/sources/variant_0_angle_90.jpg",
+      "bytes": 796871,
+      "sha256": "e10ab4a7f5e3cfe0190f9cb4439020e8ef7d5a9f4cb02227ad636bb90fadddd4"
+    },
+    {
+      "path": "evidence/validation_clapboard_north_end/build-report.json",
+      "bytes": 68786,
+      "sha256": "23906a7918553a280edd80925f4cb76c9be2b251624177ca22486d90f1a57062"
+    },
+    {
+      "path": "evidence/validation_clapboard_north_end/renders/aerial.png",
+      "bytes": 1665451,
+      "sha256": "a395fb2256580c40052e97bc6ade3d42b14d370e60f84ad60c4ee19719c9dc6a"
+    },
+    {
+      "path": "evidence/validation_clapboard_north_end/renders/front_corner.png",
+      "bytes": 1671952,
+      "sha256": "2034df29425382566ebc9d30d0f7c345a0f25dc3411010c3a7c560d3737a8392"
+    },
+    {
+      "path": "evidence/validation_clapboard_north_end/sources/variant_0.png",
+      "bytes": 1411763,
+      "sha256": "3b3ee4fd17c395e1e0e448b39fa3b31b7e28698fc29c5c2673110754f497a423"
+    },
+    {
+      "path": "evidence/validation_clapboard_north_end/sources/variant_0_angle_60.jpg",
+      "bytes": 943774,
+      "sha256": "0ac01a138545a4e56ad2249d9c117c88aba8aeb5c3490f9b77f487e245ee545d"
+    },
+    {
+      "path": "evidence/validation_clapboard_north_end/sources/variant_0_angle_90.jpg",
+      "bytes": 869617,
+      "sha256": "d941d73f8dc52663dfb9ede8beb088be7a4bbfcef9236a7d45381bac47386a0b"
+    },
+    {
+      "path": "evidence/validation_contemporary_townhouse_timber_screen/build-report.json",
+      "bytes": 81754,
+      "sha256": "a811e4e649b909890f4cc88c9c5258d64877e479a858088d59660db4bc6e8236"
+    },
+    {
+      "path": "evidence/validation_contemporary_townhouse_timber_screen/renders/aerial.png",
+      "bytes": 1619020,
+      "sha256": "fdfc1260a44651ba43e5e3114747237146285dd37f0e9b044919853bb264680d"
+    },
+    {
+      "path": "evidence/validation_contemporary_townhouse_timber_screen/renders/front_corner.png",
+      "bytes": 1554553,
+      "sha256": "5302020ed7864def8ba15ea99ead3392f1d168856c1f565857bda3b68cd66073"
+    },
+    {
+      "path": "evidence/validation_contemporary_townhouse_timber_screen/sources/variant_0.png",
+      "bytes": 1246752,
+      "sha256": "739131b5b65c63d02d9ff9969206c7c69a3d174526ecfdedec2e0970f29feff3"
+    },
+    {
+      "path": "evidence/validation_contemporary_townhouse_timber_screen/sources/variant_0_angle_60.jpg",
+      "bytes": 924109,
+      "sha256": "2b09e83e58769c7ed47b71c2f446c4e995055f44448b0bec90b6cce174afa43b"
+    },
+    {
+      "path": "evidence/validation_contemporary_townhouse_timber_screen/sources/variant_0_angle_90.jpg",
+      "bytes": 826654,
+      "sha256": "ecdea4c2041370d963932b9719f807418cd75d353ad78937574cc4ac8ed3c853"
+    },
+    {
+      "path": "evidence/validation_infill_flat_roof_minimal/build-report.json",
+      "bytes": 56100,
+      "sha256": "fabda077a27b7588ef9597e1b5b879049376c2307313f447405106eacbf4dfb9"
+    },
+    {
+      "path": "evidence/validation_infill_flat_roof_minimal/renders/aerial.png",
+      "bytes": 1430727,
+      "sha256": "aa79cc8119c58d7d8e7cac0608d6ca6bac153b769814b29f59c2a7674d21bfe9"
+    },
+    {
+      "path": "evidence/validation_infill_flat_roof_minimal/renders/front_corner.png",
+      "bytes": 1417927,
+      "sha256": "f4ce0e01a0caa65688154bdd7c6ddaeac430771992b21933262a61c12945c7d0"
+    },
+    {
+      "path": "evidence/validation_infill_flat_roof_minimal/sources/variant_0.png",
+      "bytes": 1399202,
+      "sha256": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8"
+    },
+    {
+      "path": "evidence/validation_infill_flat_roof_minimal/sources/variant_0_angle_60.jpg",
+      "bytes": 899966,
+      "sha256": "6940063f19f1bd5714d96ea2111aa0c2b79fc288ef20382df55c893ffdc44549"
+    },
+    {
+      "path": "evidence/validation_infill_flat_roof_minimal/sources/variant_0_angle_90.jpg",
+      "bytes": 849949,
+      "sha256": "bffa096d9d2c44c961394f43979f852a5504362a8b01537b226066447c69ae45"
+    },
+    {
+      "path": "evidence/validation_landmark_signature_bridge_v2/recipe.json",
+      "bytes": 15672,
+      "sha256": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c"
+    },
+    {
+      "path": "evidence/validation_landmark_signature_bridge_v2/renders/aerial.png",
+      "bytes": 1685036,
+      "sha256": "f9cc9b22c0e872f347d7a7a73dbe2747cfa2443ecd90300c0005ab7bea7e3c2d"
+    },
+    {
+      "path": "evidence/validation_landmark_signature_bridge_v2/sources/variant_2.png",
+      "bytes": 1193686,
+      "sha256": "3a68ae18809b45c35a44bb252251dda3beb8da1a3ca7d95fc30079d7d7cb7443"
+    },
+    {
+      "path": "evidence/validation_landmark_signature_bridge_v2/sources/variant_2_angle_60.jpg",
+      "bytes": 856093,
+      "sha256": "993b1d389b238b0de98d5c4187fc3a4d7e70c3d26b1bb18553668b777c9ee524"
+    },
+    {
+      "path": "evidence/validation_landmark_signature_bridge_v2/sources/variant_2_angle_90.jpg",
+      "bytes": 816048,
+      "sha256": "0316d3bb91037171702568814f5a06fd01b859b7a8abaf0ff96e54064aa4a2d3"
+    },
+    {
+      "path": "evidence/validation_machiya_cafe_gallery/build-report.json",
+      "bytes": 33600,
+      "sha256": "d887d1a6e2e276b83005303b10afcb8720a97755ca53caf79a4c217da509bf1b"
+    },
+    {
+      "path": "evidence/validation_machiya_cafe_gallery/renders/aerial.png",
+      "bytes": 1616638,
+      "sha256": "c43967d3f41c9ea5d772183b3d339e292af3d79ee7c2700d830a98ec710a64d0"
+    },
+    {
+      "path": "evidence/validation_machiya_cafe_gallery/renders/front_corner.png",
+      "bytes": 1648510,
+      "sha256": "e8a2906d40ef3b844646a56ac8cc37ecb1f452bd00ca40efa0acb43cf1986363"
+    },
+    {
+      "path": "evidence/validation_machiya_cafe_gallery/sources/variant_2.png",
+      "bytes": 1464734,
+      "sha256": "1980f62c2a080c0b5b44946e6281d94e7cb7a103377326f40123f0730f6deec7"
+    },
+    {
+      "path": "evidence/validation_machiya_cafe_gallery/sources/variant_2_angle_60.jpg",
+      "bytes": 921892,
+      "sha256": "04e599e53e9fa83830c9f5c29e2bc5a516a885032c9f0be71b0e0c0479a19446"
+    },
+    {
+      "path": "evidence/validation_machiya_cafe_gallery/sources/variant_2_angle_90.jpg",
+      "bytes": 913414,
+      "sha256": "05e82acde45eb6d92c3927315dbda3c11e3dc17f7d722a737746c6dcf7a17d9d"
+    },
+    {
+      "path": "evidence/validation_minimalist_infill_brick_monolith/build-report.json",
+      "bytes": 37555,
+      "sha256": "ba3a66b602697a2ef86f8b6091fd52317393fc1c78de6ee82efb34faeb848fa8"
+    },
+    {
+      "path": "evidence/validation_minimalist_infill_brick_monolith/renders/aerial.png",
+      "bytes": 1540175,
+      "sha256": "5c6dfd7bd5012f8d4d20935e7b53ebce5684198573413f532b2b6bbf027bc4ab"
+    },
+    {
+      "path": "evidence/validation_minimalist_infill_brick_monolith/renders/front_corner.png",
+      "bytes": 1701169,
+      "sha256": "8d2d59311aac6ec8fa30c3321eb102938f25b38a04b37bc033f9c42fb844d261"
+    },
+    {
+      "path": "evidence/validation_minimalist_infill_brick_monolith/sources/variant_2.png",
+      "bytes": 1243528,
+      "sha256": "a4d5f02a39e6ff1179801cd07192292b6da99da61c5e72a7673e269cca52a121"
+    },
+    {
+      "path": "evidence/validation_minimalist_infill_brick_monolith/sources/variant_2_angle_60.jpg",
+      "bytes": 911033,
+      "sha256": "5971a814eb8088530691a368a222884a86ac5d40caba2750186dc066575db0e2"
+    },
+    {
+      "path": "evidence/validation_minimalist_infill_brick_monolith/sources/variant_2_angle_90.jpg",
+      "bytes": 819104,
+      "sha256": "ff22673ef6b12197d25c863fe547b92a1f57222f54bcc8de0497a1700412b1bc"
+    },
+    {
+      "path": "evidence/validation_museum_earth_sheltered/build-report.json",
+      "bytes": 35210,
+      "sha256": "8ab20f5e7d4054bf361fa7ee302ce5d0de9a126ca0d9eb3d2eb691023e64b851"
+    },
+    {
+      "path": "evidence/validation_museum_earth_sheltered/renders/aerial.png",
+      "bytes": 1737115,
+      "sha256": "222c7a8caa45f43e5de56ed86090b12ec668b1af2ab9d207126b999b2327a442"
+    },
+    {
+      "path": "evidence/validation_museum_earth_sheltered/renders/front_corner.png",
+      "bytes": 1346546,
+      "sha256": "be84c4b4e141883246eae189c0de17f4531cdb912460a759f88bbed06d225e11"
+    },
+    {
+      "path": "evidence/validation_museum_earth_sheltered/sources/variant_3.png",
+      "bytes": 1215360,
+      "sha256": "c59d8c45ec5b9760b04b98e7f640d96ad033dd4bc487c5dae135b68c9f3655b0"
+    },
+    {
+      "path": "evidence/validation_museum_earth_sheltered/sources/variant_3_angle_60.jpg",
+      "bytes": 837436,
+      "sha256": "3356624210e255a47a8cd0cf6c5c8c15bdef2b8da64334991cbcca3e56785dd5"
+    },
+    {
+      "path": "evidence/validation_museum_earth_sheltered/sources/variant_3_angle_90.jpg",
+      "bytes": 884128,
+      "sha256": "f159fad732155f2e5bd359a94c474ef4c30b4ecc5620372c3bac41d553fadad5"
+    },
+    {
+      "path": "evidence/validation_rec_centre_timber_hall/build-report.json",
+      "bytes": 54434,
+      "sha256": "371985120aa27906b6e2683ec65f13ddabd3b7bffb4c0f0c41cbf7f9fea8ef42"
+    },
+    {
+      "path": "evidence/validation_rec_centre_timber_hall/renders/aerial.png",
+      "bytes": 1559090,
+      "sha256": "7d5ebeef964b85215933058fc7659bd76de33a073b7731d04f6ba75169b417a5"
+    },
+    {
+      "path": "evidence/validation_rec_centre_timber_hall/renders/front_corner.png",
+      "bytes": 1623548,
+      "sha256": "5289e38efab82ca8e64c7f2293885d159c17011c3007bca84aa67d262f4071bc"
+    },
+    {
+      "path": "evidence/validation_rec_centre_timber_hall/sources/variant_1.png",
+      "bytes": 1520697,
+      "sha256": "37fb1b42faaa321cc22dd4a845343e8ff8a1806b4f6297f00198e02d60352120"
+    },
+    {
+      "path": "evidence/validation_rec_centre_timber_hall/sources/variant_1_angle_60.jpg",
+      "bytes": 840971,
+      "sha256": "439df098445e197ffe0278c66ae1891f888f0bd854bc4eb621963428a2173b8a"
+    },
+    {
+      "path": "evidence/validation_rec_centre_timber_hall/sources/variant_1_angle_90.jpg",
+      "bytes": 783028,
+      "sha256": "b0aa054196a889d9c987938d76e6040b95c6a9a61ecef2ac9328c00850188bff"
+    },
+    {
+      "path": "evidence/validation_research_garden_teaching_arboretum_variant_3/recipe.json",
+      "bytes": 8868,
+      "sha256": "40c50511ac1ad97e498d26fc926c139bdee28b0a26600b24fa51df6054300545"
+    },
+    {
+      "path": "evidence/validation_research_garden_teaching_arboretum_variant_3/references/variant_3.png",
+      "bytes": 1557500,
+      "sha256": "c0ac61bcf1e14b6672288d1f750188a655dab931b902f761e84dbff2dfc57308"
+    },
+    {
+      "path": "evidence/validation_research_garden_teaching_arboretum_variant_3/references/variant_3_angle_60.jpg",
+      "bytes": 1029853,
+      "sha256": "06216218935e00b5f87ca76951564a1dc27705165b8a82b3e69b1889dca3c6d7"
+    },
+    {
+      "path": "evidence/validation_research_garden_teaching_arboretum_variant_3/references/variant_3_angle_90.jpg",
+      "bytes": 939298,
+      "sha256": "d649896b0097725ec753a811176fd6923cefade874f54ab0b89fb8e21692d48a"
+    },
+    {
+      "path": "evidence/validation_research_garden_teaching_arboretum_variant_3/renders/aerial.png",
+      "bytes": 1592014,
+      "sha256": "7d9973fa396018568d19250037f19581b340336edfae6322d6cbf203828b2718"
+    },
+    {
+      "path": "evidence/validation_research_garden_teaching_arboretum_variant_3/renders/street.png",
+      "bytes": 1621809,
+      "sha256": "b7ce6334c82688d91514345059f9d065d74f2fb09ca6012465d376a2312d653a"
+    },
+    {
+      "path": "evidence/validation_rndsqr_midrise_terraced_garden/build-report.json",
+      "bytes": 307344,
+      "sha256": "e5fac72e81aa374d5e748e17fcf1d6a6d669d87ceaa5422e8c4e060840d46f3a"
+    },
+    {
+      "path": "evidence/validation_rndsqr_midrise_terraced_garden/renders/aerial.png",
+      "bytes": 1775069,
+      "sha256": "797f2f6adddcbf93b5daba8901c0107b82d9e70c3518f432c22e0e2107bd3ac1"
+    },
+    {
+      "path": "evidence/validation_rndsqr_midrise_terraced_garden/renders/front_corner.png",
+      "bytes": 1722573,
+      "sha256": "9845b58be0d3fe18b097d3e823103b9c065908317154d9467b97191b7db7b693"
+    },
+    {
+      "path": "evidence/validation_rndsqr_midrise_terraced_garden/sources/variant_2.png",
+      "bytes": 1226034,
+      "sha256": "9f7bd70d1b4c7675663f62dad4a071dc61ec35134be284646d75b3fd12b3a092"
+    },
+    {
+      "path": "evidence/validation_rndsqr_midrise_terraced_garden/sources/variant_2_angle_60.jpg",
+      "bytes": 1003131,
+      "sha256": "f6494497345f4c51c9ab4ad7e080a5d758ecbfcc9a6190ec99d6e32552bdca8e"
+    },
+    {
+      "path": "evidence/validation_rndsqr_midrise_terraced_garden/sources/variant_2_angle_90.jpg",
+      "bytes": 925813,
+      "sha256": "7e1a951e99e5025cf9fbd1a111630eff9b32654a975c2e6633d2d89e1ccdd75d"
+    },
+    {
+      "path": "evidence/validation_sculpture_garden_v0/recipe.json",
+      "bytes": 288739,
+      "sha256": "a708028ec79e4a765d7b8dbb08ff81e17dab8190a4b123e3f0660afcfefaefab"
+    },
+    {
+      "path": "evidence/validation_sculpture_garden_v0/renders/aerial.png",
+      "bytes": 1777330,
+      "sha256": "948fc3205e190260ee3ea1afd5353840771eb8c090447ad5ca891b8336e1637a"
+    },
+    {
+      "path": "evidence/validation_sculpture_garden_v0/sources/variant_0.png",
+      "bytes": 1418834,
+      "sha256": "63324af609bfcc7346f06852b7986aaef956bf6a05b25431054a67a2d7e0ef43"
+    },
+    {
+      "path": "evidence/validation_sculpture_garden_v0/sources/variant_0_angle_60.jpg",
+      "bytes": 935099,
+      "sha256": "78204d094ce8b6e106600fe09eaa8c35f9f02647a46eeaad708fd0b20578372a"
+    },
+    {
+      "path": "evidence/validation_sculpture_garden_v0/sources/variant_0_angle_90.jpg",
+      "bytes": 847173,
+      "sha256": "b1797d5dd34f4194b8ec9b10054d2988a465e6a605964baa41dc83dc44603864"
+    },
+    {
+      "path": "evidence/validation_student_garden_square_v1/recipe.json",
+      "bytes": 17162,
+      "sha256": "eed679911e52e66e9a761fb36ddcdd49b873656dd3306f3149cd1d2b707db282"
+    },
+    {
+      "path": "evidence/validation_student_garden_square_v1/renders/aerial.png",
+      "bytes": 1630279,
+      "sha256": "f79f8a701d58969b839d3b5b7746e7f453546ef97df74350eb05b6987aa00593"
+    },
+    {
+      "path": "evidence/validation_student_main_street_v1/recipe.json",
+      "bytes": 16726,
+      "sha256": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531"
+    },
+    {
+      "path": "evidence/validation_student_main_street_v1/references/neighborhood-main-street/hero.png",
+      "bytes": 985092,
+      "sha256": "af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392"
+    },
+    {
+      "path": "evidence/validation_student_main_street_v1/renders/aerial.png",
+      "bytes": 1613582,
+      "sha256": "d4becb71d4ca3dcc9d1f8a77baf15efcc1d7b49c6114f2189f4ad4d33a6a8ced"
+    },
+    {
+      "path": "evidence/validation_student_main_street_v1/renders/street.png",
+      "bytes": 1668609,
+      "sha256": "91a099d133e0d7043dd0bd8e320aa3317ef6c4d7fe27a6bb829fa7f7eedea9f3"
+    },
+    {
+      "path": "evidence/validation_student_market_street_v1/recipe.json",
+      "bytes": 15599,
+      "sha256": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345"
+    },
+    {
+      "path": "evidence/validation_student_market_street_v1/references/pedestrian-only-street/hero.png",
+      "bytes": 1172072,
+      "sha256": "32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee"
+    },
+    {
+      "path": "evidence/validation_student_market_street_v1/renders/aerial.png",
+      "bytes": 1655701,
+      "sha256": "41be96f3ab2413566fac341509fb95a3866d8ea922b972f086bc7ebf10edbf0c"
+    },
+    {
+      "path": "evidence/validation_student_market_street_v1/renders/street.png",
+      "bytes": 1720948,
+      "sha256": "58565a7b925ba54b12f4d2a4398cf183dca68a54f5839f7b6d61324b847502fa"
+    },
+    {
+      "path": "evidence/validation_student_neighbourhood_orchard_v1/recipe.json",
+      "bytes": 14928,
+      "sha256": "b92bd29095d7fdb179f3dd6cc71d2f98c6b3edf6f80127365a544a93aececd88"
+    },
+    {
+      "path": "evidence/validation_student_neighbourhood_orchard_v1/renders/aerial.png",
+      "bytes": 1614350,
+      "sha256": "3ca1b1cbb6a3cae9e7d2a4b6ef28ca664c9f00dce064d1caf8d2ff4f5b012f99"
+    },
+    {
+      "path": "evidence/validation_student_planted_shared_lane_v1/recipe.json",
+      "bytes": 25631,
+      "sha256": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520"
+    },
+    {
+      "path": "evidence/validation_student_planted_shared_lane_v1/renders/aerial.png",
+      "bytes": 1650182,
+      "sha256": "f5f8d1d21e9e73db65db6242711422a2d146c0c994c11b0a905b5410bdbcebf2"
+    },
+    {
+      "path": "evidence/validation_student_planted_shared_lane_v1/renders/street.png",
+      "bytes": 1846628,
+      "sha256": "a652a5f7449820f3d52ddd4cbfb9dcc2bb70c85619410e2d7775eef81c83f6d2"
+    },
+    {
+      "path": "evidence/validation_student_quiet_residential_street_v1/recipe.json",
+      "bytes": 28481,
+      "sha256": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626"
+    },
+    {
+      "path": "evidence/validation_student_quiet_residential_street_v1/renders/aerial.png",
+      "bytes": 1552396,
+      "sha256": "cf86132edc3221c08f8f99ed1b2daf46c59590c2684e1eb055b4ae94b3c26ca3"
+    },
+    {
+      "path": "evidence/validation_student_quiet_residential_street_v1/renders/street.png",
+      "bytes": 1722225,
+      "sha256": "72bff76cca584235eb84da2861f60ccdad29a43e816470794d07bd93bd3e0174"
+    },
+    {
+      "path": "evidence/validation_wetland_rain_garden_v0/recipe.json",
+      "bytes": 3944193,
+      "sha256": "9aeb61ea7d53db8c872652a589d08aa3b7a73cc08a2f14d08db3cb6bad164e0f"
+    },
+    {
+      "path": "evidence/validation_wetland_rain_garden_v0/renders/aerial.png",
+      "bytes": 2208420,
+      "sha256": "f60b2ec14dd0a3fecdc80b53862e881d1ff9453a46f56be78b57d8a515988e6d"
+    },
+    {
+      "path": "evidence/validation_wetland_rain_garden_v0/sources/variant_0.png",
+      "bytes": 1508305,
+      "sha256": "b93293184859e075c5e96a084de7243253b91d75b6b81bd3bd6b4d19612d57c0"
+    },
+    {
+      "path": "evidence/validation_wetland_rain_garden_v0/sources/variant_0_angle_60.jpg",
+      "bytes": 980225,
+      "sha256": "a10bf856b9f4e72bff5c2fdd6dacf4a916e621eb97063c3a76649ff54af11353"
+    },
+    {
+      "path": "evidence/validation_wetland_rain_garden_v0/sources/variant_0_angle_90.jpg",
+      "bytes": 1043744,
+      "sha256": "fe7f363bc9837f4bdaa02d8d4f22849234cbf4a31a4a4b7834d13f149891f165"
+    },
+    {
+      "path": "public/assets/landscape/tree-crown-honey-locust.png",
+      "bytes": 423852,
+      "sha256": "3a11f60b28f9c609d43ab0478c5f5a818c6e6a9602244c8d49b7cc9dab595209"
+    },
+    {
+      "path": "public/assets/landscape/tree-crown-maple.png",
+      "bytes": 398887,
+      "sha256": "40bb74327f6229b8137e9456f36a4e1cdbda1ac3c3b66f061fa900cdfca046cc"
+    },
+    {
+      "path": "public/assets/landscape/tree-crown-ornamental-pear.png",
+      "bytes": 356719,
+      "sha256": "4515066c5d3bbfa947fb6232c3d3ee867aa0167a52b66af6863a14ddfc0b91a5"
+    },
+    {
+      "path": "public/favicon.svg",
+      "bytes": 260,
+      "sha256": "21cd14f3323d326a2475f94d70fd32d6cd75fe474caa7e74bb24f0be42e484cb"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/FOLIAGE_LICENSE.txt",
+      "bytes": 1073,
+      "sha256": "20e4afadfb10c67952b3d73cd2982d21d165ab4ae82b0dd9e4d6f2166ee349b6"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/boulders.glb",
+      "bytes": 357708,
+      "sha256": "b4ddd1de1e18d549a7e55984caa34efaba00929910bacf17f1f6d1fa91f53bef"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/gable-pavilion.glb",
+      "bytes": 735852,
+      "sha256": "f66bbf5c2355e911bdf1f4f0a5b0f6e685a3b0d6ebec5c58159c383e2f67c4ad"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/manifest.json",
+      "bytes": 5552,
+      "sha256": "3a156f0b17356ef7b966fee23f4d5b4407673c5cc8d8c62e6184cea4f23f021e"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/oak-0.glb",
+      "bytes": 522732,
+      "sha256": "1ad88f57ec42fd7c016c559a6b924dd066c78c2495ca3bb8b6a616d2f587e7df"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/oak-1.glb",
+      "bytes": 518952,
+      "sha256": "dcf6f2eb9a03f8ea785c023f8636e272080a81d7aeff56ba03940a74725c19bc"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/oak-2.glb",
+      "bytes": 527916,
+      "sha256": "2bc81800969aa53c872490238753eae0de60aead63b0bd6a085860736163fc0c"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/split-rail.glb",
+      "bytes": 363148,
+      "sha256": "ccd7da27ace4645cf81b83b174457bbab6757eeac070ba1a189b11dfaee7d18d"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/timber-bench.glb",
+      "bytes": 698344,
+      "sha256": "71a4a5b0850c9b5fa34e370b1a2f9540ff6c39d635de780ac655e32e2c9fe8bc"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/timber-play-tower.glb",
+      "bytes": 424388,
+      "sha256": "97b717873a30d94c77612392a2560bd707ffabd88a2b4485117a561b23f28dd9"
+    },
+    {
+      "path": "public/landscape-pilots/neighborhood-rustic-v5/timber-swing.glb",
+      "bytes": 573684,
+      "sha256": "000dc4c20e312c638597175d7f624a41f738f6df8695e4cf09108253b6a95e77"
+    },
+    {
+      "path": "public/manifest.json",
+      "bytes": 522,
+      "sha256": "dcee9a5cd8139804c38cb9e90b3bf9e91b8c7b998f3679f87fc727a1030ad4d1"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/asphalt/albedo.jpg",
+      "bytes": 21637,
+      "sha256": "5aaf563e90abae9592dfeec09363c7e10a92dfa8d746e8733152b14ef0c45621"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/asphalt/ao.jpg",
+      "bytes": 15409,
+      "sha256": "2f64598400b527be3bcf18882a5677d5de2a99fa24ba1dff2de2f487ffc9e30b"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/asphalt/normal.png",
+      "bytes": 40974,
+      "sha256": "b4bfe9b1f515340850a6d0f6f813c45fbe1b473dc776d28ea24a0ee4ca6f3449"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/asphalt/roughness.jpg",
+      "bytes": 51038,
+      "sha256": "d7811c81a72fb430b66f5d3c60bcdd746201bf3fe84f13fd3b6695bec31ae3ae"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/asphalt/source_crop.jpg",
+      "bytes": 88510,
+      "sha256": "787c14cb3df52a3a80d866a3a27c87a2db4c13ab221dcf877b20c5ff3bcdcbdf"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/albedo.jpg",
+      "bytes": 23236,
+      "sha256": "ce174730a611715222c0eb116e88bd4c281896741b9bd095499ada3343392e02"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/ao.jpg",
+      "bytes": 15290,
+      "sha256": "0d66f31b73242ea02d34f19d354b0292d368f2903372d40769bc99f0f0bdd02d"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/normal.png",
+      "bytes": 96403,
+      "sha256": "5a9019b7a30a9dd878c693b57b93247999b56a6cbbba8b6a8fee9984c6552d0b"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/roughness.jpg",
+      "bytes": 73927,
+      "sha256": "2ed01daa258a9072ac77cd5a67888050a5713555d233b83b334c43aec59e829a"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/source_crop.jpg",
+      "bytes": 43132,
+      "sha256": "6fead3ccb19dc044f34b906f25b7704144c9ed6eaa7988abbf35c86fd47b20a8"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/manifest.json",
+      "bytes": 5107,
+      "sha256": "9f78a7494eb07bcdda2631cf472e9cea3feb3180e9ac6087f0925fc43e284a2b"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/metal/albedo.jpg",
+      "bytes": 12071,
+      "sha256": "5bd079f8ae55fb7bd869186689fdd0a4adabded155dfd08273e680555063e24d"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/metal/ao.jpg",
+      "bytes": 9494,
+      "sha256": "e5cf1dade6b2ae4b5f8ede2615708618d936971c42a030625193e5e50c228998"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/metal/normal.png",
+      "bytes": 37826,
+      "sha256": "ab85de3dd463c5b3b81500e7f364261a59ca2015dc93c36bdda3c390062c3444"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/metal/roughness.jpg",
+      "bytes": 71987,
+      "sha256": "804555ac1c22b163723ad7fd30b946fa50c294bd0090b9365aac7f9ea505ecc8"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/metal/source_crop.jpg",
+      "bytes": 82665,
+      "sha256": "b1e28444343c520627e69147293cdff75d099e0e93c274c236c1f77984f2648e"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/albedo.jpg",
+      "bytes": 24715,
+      "sha256": "b3ff5aff718793a6b3259ed19c3259c635301d403edfa0b710c2b30cd32094a3"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/ao.jpg",
+      "bytes": 18573,
+      "sha256": "771d11bbc2f7d1eb4d56d894b56612da4f98adc720b83d8a9a44385b165f2d8c"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/normal.png",
+      "bytes": 64298,
+      "sha256": "613639a6affb55ded9efdf67ecb8b78a1733266099ac32c470f035786ce38837"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/roughness.jpg",
+      "bytes": 49469,
+      "sha256": "bf6ac42a0b79343f494529aa1af46be78ba7746ce7560557e773a1affb0265f0"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/paver/source_crop.jpg",
+      "bytes": 83017,
+      "sha256": "af0b6f0dbf356b7012b6937d98a268879deb085ee99bac48fa35a93a6ec93e52"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/planting/albedo.jpg",
+      "bytes": 61289,
+      "sha256": "032e1053778426e953b6cfeec1364a089b169084b76a7b3bfac040490a70b11f"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/planting/ao.jpg",
+      "bytes": 31047,
+      "sha256": "5fd15a589432bcc98a517959d94cdc82c3c43f367bc81aa3dffda25a4764e5a5"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/planting/normal.png",
+      "bytes": 183756,
+      "sha256": "3a1d04aa334a06f926eaf4a3d0c10a95dccd3e0d5afdb3d9d6078b786b949ac6"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/planting/roughness.jpg",
+      "bytes": 21249,
+      "sha256": "fecbf5d353a641d601bd2ca41179630d3769a1079396db36591a859258e51e60"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/planting/source_crop.jpg",
+      "bytes": 128471,
+      "sha256": "3e8cc8b2bc4c68ea7b1594435374688680299d3d3c5cdf7e54e40d44d7c766c8"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/rope/albedo.jpg",
+      "bytes": 21798,
+      "sha256": "ffbf466a5c1f2e50d9fa892f17c62523b4b349b1019c8009bb3787f414d39942"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/rope/ao.jpg",
+      "bytes": 14571,
+      "sha256": "0751f83b4c34ef72540b95d83b1ab8c65f17a572dbb1117e9aa567dbd3af42bd"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/rope/normal.png",
+      "bytes": 64597,
+      "sha256": "23ae67bf4430d900cd54a67eca264002b579151b62af52cd0319252f6a652b8e"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/rope/roughness.jpg",
+      "bytes": 19376,
+      "sha256": "e4d11a18ab7cbf5bd3016741cf73226eec572e2405b985c08765365115254bcc"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/rope/source_crop.jpg",
+      "bytes": 71531,
+      "sha256": "e6e0f5c9b2be2df5d412c3b0959cf9ce3981a4a56e9a58876cc01ec02134627a"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/albedo.jpg",
+      "bytes": 17381,
+      "sha256": "2975ceb8144fa8083dffe83ab3e9935542bfbeb9da8ec94eebcc726cae8f03c8"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/ao.jpg",
+      "bytes": 12162,
+      "sha256": "5a770b4d7d6dab7c3ce1d59296ad741ab78c363dad54a5d316bb7d9585b0d8b0"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/normal.png",
+      "bytes": 72895,
+      "sha256": "c09d311e6acc155907e856709c8b4d433b818c24a5a3a786f01dcf073e7a31a7"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/roughness.jpg",
+      "bytes": 81633,
+      "sha256": "bdaf80e2617cf05ca9ada1c09e286305f9336afe2ac09166f74958bad8c0ac97"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/safety/source_crop.jpg",
+      "bytes": 34528,
+      "sha256": "b5a74de6434145d45169e7be84a57043a1fce7181a50475d7771507f894ad04c"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/stone/albedo.jpg",
+      "bytes": 8600,
+      "sha256": "37500eae808f7d7e5d9221a63b35ff46fca6c58c191cd520290bc4ffdc5763ea"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/stone/ao.jpg",
+      "bytes": 7713,
+      "sha256": "f19008e6d59c8c7b7b7cedf3c85ff6b22259a8eb2f862398bf70fecd336ecb2d"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/stone/normal.png",
+      "bytes": 48410,
+      "sha256": "9c80d8363b83416e0f03ac4396b339d0969286e1f89e5fe1f6cd95947cf51882"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/stone/roughness.jpg",
+      "bytes": 77660,
+      "sha256": "e79cb903c70b6477e621495c833f2ce14bd57458c24efaedeada10b70e66dece"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/stone/source_crop.jpg",
+      "bytes": 34390,
+      "sha256": "6fb6295d2a00100d958d41988659af7d2be83c3ab95d3fd48612cde1577d6d29"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/timber/albedo.jpg",
+      "bytes": 40657,
+      "sha256": "7124af59a4f25996969667c102505fc1d87a6eec5a3cbb4dcf15101ce73d3e55"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/timber/ao.jpg",
+      "bytes": 24857,
+      "sha256": "dcb886099c06a83d39267ea29e61b2720eb18dc34830c2279825a4260e28e99e"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/timber/normal.png",
+      "bytes": 120576,
+      "sha256": "f2d9eca85db46668fb7a3d5b10e64932679bba34bd95e1606eb88a84f58ed466"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/timber/roughness.jpg",
+      "bytes": 42609,
+      "sha256": "59eb04ef6c9ae578014f2325e293907495a4c9a432027e59dbfcec6c2f2e3482"
+    },
+    {
+      "path": "public/park-skins/neighborhood-park-rustic-v0/adaptive-v1/timber/source_crop.jpg",
+      "bytes": 71821,
+      "sha256": "2f0419947d865033b94027cc923f65f45549d8ba10070f973828f903742381db"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/bench.glb",
+      "bytes": 34024,
+      "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/bike_rack.glb",
+      "bytes": 96964,
+      "sha256": "bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/bin.glb",
+      "bytes": 80532,
+      "sha256": "31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/heritage_lantern.glb",
+      "bytes": 30692,
+      "sha256": "cee3838e334ba6e37a0a20707dec80d9173cce79f7f40e783dcc67acd951c4de"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/planter.glb",
+      "bytes": 131616,
+      "sha256": "c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/reference.png",
+      "bytes": 985092,
+      "sha256": "af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
+      "bytes": 18172,
+      "sha256": "100ee7db5a4c6889be5a355260bda4670117d7241b1cb7f9ddcebd6e3047dcfd"
+    },
+    {
+      "path": "public/street-kits/pilots/student_main_street_v1/tree_well_grate.glb",
+      "bytes": 95608,
+      "sha256": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618"
+    },
+    {
+      "path": "public/street-kits/pilots/student_market_street_v1/bench.glb",
+      "bytes": 34024,
+      "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+    },
+    {
+      "path": "public/street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
+      "bytes": 60396,
+      "sha256": "60d58e1acfb57d9cde82ea33f60b368d9d95bc3446b6b48f8ae97b194af6a38e"
+    },
+    {
+      "path": "public/street-kits/pilots/student_market_street_v1/heritage_lantern.glb",
+      "bytes": 30692,
+      "sha256": "cee3838e334ba6e37a0a20707dec80d9173cce79f7f40e783dcc67acd951c4de"
+    },
+    {
+      "path": "public/street-kits/pilots/student_market_street_v1/market_stall.glb",
+      "bytes": 65200,
+      "sha256": "5d7c588fbb89704d7b1199432b17bd257a837f5df9f8b8bc45a8694cad80c2b3"
+    },
+    {
+      "path": "public/street-kits/pilots/student_market_street_v1/planter.glb",
+      "bytes": 131616,
+      "sha256": "c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b"
+    },
+    {
+      "path": "public/street-kits/pilots/student_market_street_v1/reference.png",
+      "bytes": 1172072,
+      "sha256": "32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee"
+    },
+    {
+      "path": "public/street-kits/pilots/student_market_street_v1/stone_fountain.glb",
+      "bytes": 115896,
+      "sha256": "263b17b8a091f076e8e5f784c3315eff9270f3c5516124b02e162877e6de12aa"
+    },
+    {
+      "path": "public/validation-assets/basketball-v4-review/assembly-preview.glb",
+      "bytes": 2200212,
+      "sha256": "a3c219f333b46938d85499e0b2b41e0ed77a108d2d2996084225b0ced3c55fdd"
+    },
+    {
+      "path": "public/validation-assets/basketball-v4-review/modules/basketball.glb",
+      "bytes": 790796,
+      "sha256": "da289955236460873f401b7c8f4db85c5101a3670a8c56efe14176946cc7d1e2"
+    },
+    {
+      "path": "public/validation-assets/basketball-v4-review/modules/bench.glb",
+      "bytes": 34024,
+      "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+    },
+    {
+      "path": "public/validation-assets/basketball-v4-review/modules/grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278"
+    },
+    {
+      "path": "public/validation-assets/basketball-v4-review/reference.png",
+      "bytes": 1407609,
+      "sha256": "aab139515a6cbde875f659405b349e8941f1d9ff2a6f0034500a644804b203bf"
+    },
+    {
+      "path": "public/validation-assets/beltline-v005/calgary-beltline-mid-rise-clay-v005.glb",
+      "bytes": 7969952,
+      "sha256": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618"
+    },
+    {
+      "path": "public/validation-assets/beltline-v005/reference.png",
+      "bytes": 1331259,
+      "sha256": "39f3dd9260e14f262498e67a1923c07b09d3265873f9e5f0908185ce8b856bc3"
+    },
+    {
+      "path": "public/validation-assets/brewhouse-v003/reference.png",
+      "bytes": 1312547,
+      "sha256": "cb150d7c2543b9fe5423a8aeb52fea6a55ee9c7fc503e939225a3ddce2c0c6ca"
+    },
+    {
+      "path": "public/validation-assets/brewhouse-v003/untried-brewhouse-clay-v003.glb",
+      "bytes": 3603856,
+      "sha256": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782"
+    },
+    {
+      "path": "public/validation-assets/brick-v002/buff-brick-infill-clay-v002.glb",
+      "bytes": 27316700,
+      "sha256": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7"
+    },
+    {
+      "path": "public/validation-assets/brick-v002/reference.png",
+      "bytes": 1243528,
+      "sha256": "a4d5f02a39e6ff1179801cd07192292b6da99da61c5e72a7673e269cca52a121"
+    },
+    {
+      "path": "public/validation-assets/bridge-v003/assembly-preview.glb",
+      "bytes": 1918596,
+      "sha256": "bdb700b0967dbdaf8a7deb1bdb9d9ebe410736057edc7bdc88e69bf2af05d4aa"
+    },
+    {
+      "path": "public/validation-assets/bridge-v003/reference.png",
+      "bytes": 1193686,
+      "sha256": "3a68ae18809b45c35a44bb252251dda3beb8da1a3ca7d95fc30079d7d7cb7443"
+    },
+    {
+      "path": "public/validation-assets/brt-v004/assembly-preview.glb",
+      "bytes": 2964764,
+      "sha256": "a83e47527c56fe19fc846d657017c422c045d3a5ef1669b82920402de3eeda69"
+    },
+    {
+      "path": "public/validation-assets/brt-v004/reference.png",
+      "bytes": 1411041,
+      "sha256": "896d376aa35b3164b57d7aa4b220d4b4b892e07340431a3d55af63736ba730aa"
+    },
+    {
+      "path": "public/validation-assets/canal-v005/assembly-preview.glb",
+      "bytes": 10945744,
+      "sha256": "70398463c12c2a69acc148dd9795558cd7f567e23a65438522ac3ddfc772e9f8"
+    },
+    {
+      "path": "public/validation-assets/canal-v005/reference.png",
+      "bytes": 1537482,
+      "sha256": "12b631fccef4facfaa4170680acbbb8949c968a001855468ddd9b4f4e7062fff"
+    },
+    {
+      "path": "public/validation-assets/clapboard-v003/reference.png",
+      "bytes": 1411763,
+      "sha256": "3b3ee4fd17c395e1e0e448b39fa3b31b7e28698fc29c5c2673110754f497a423"
+    },
+    {
+      "path": "public/validation-assets/clapboard-v003/untried-clapboard-clay-v003.glb",
+      "bytes": 2457580,
+      "sha256": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6"
+    },
+    {
+      "path": "public/validation-assets/conservatory-v013/assembly-preview.glb",
+      "bytes": 14079036,
+      "sha256": "464f2968e652c84136c1858d3d0d1a1fe7d6bd956824dfc7f785752f3ec551d2"
+    },
+    {
+      "path": "public/validation-assets/conservatory-v013/reference.png",
+      "bytes": 1556674,
+      "sha256": "0c734068ef9eeb09fbb032a8c0a7a15b58056eadd5313f332715f026e6f22a78"
+    },
+    {
+      "path": "public/validation-assets/hall-v004/favourites-hall-clay-v004.glb",
+      "bytes": 919296,
+      "sha256": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf"
+    },
+    {
+      "path": "public/validation-assets/hall-v004/reference.png",
+      "bytes": 1520697,
+      "sha256": "37fb1b42faaa321cc22dd4a845343e8ff8a1806b4f6297f00198e02d60352120"
+    },
+    {
+      "path": "public/validation-assets/infill-v007/calgary-infill-flat-roof-minimal-clay-v007.glb",
+      "bytes": 936864,
+      "sha256": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74"
+    },
+    {
+      "path": "public/validation-assets/infill-v007/reference.png",
+      "bytes": 1399202,
+      "sha256": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8"
+    },
+    {
+      "path": "public/validation-assets/machiya-v005/favourites-machiya-clay-v005.glb",
+      "bytes": 7036704,
+      "sha256": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9"
+    },
+    {
+      "path": "public/validation-assets/machiya-v005/reference.png",
+      "bytes": 1464734,
+      "sha256": "1980f62c2a080c0b5b44946e6281d94e7cb7a103377326f40123f0730f6deec7"
+    },
+    {
+      "path": "public/validation-assets/main-street-v2/assembly-preview.glb",
+      "bytes": 2011624,
+      "sha256": "5d4d7133dc53864029a91efc09ffc0b89d7ee5a831ac34d3485df3856c8eb179"
+    },
+    {
+      "path": "public/validation-assets/main-street-v2/reference.png",
+      "bytes": 985092,
+      "sha256": "af0d9590d9aac59acd94fe64c0511ca753e6bd3bf4b9e250b9e041f7a706b392"
+    },
+    {
+      "path": "public/validation-assets/market-street-v2/assembly-preview.glb",
+      "bytes": 2699460,
+      "sha256": "a74074b02282f71e486b24e88ce732f9d669f3a195e7c3cb045f004af83d8831"
+    },
+    {
+      "path": "public/validation-assets/market-street-v2/reference.png",
+      "bytes": 1172072,
+      "sha256": "32fb34cbe478cdba6b1e098ac74f17d61b706c2e28781c754b86608b9645e1ee"
+    },
+    {
+      "path": "public/validation-assets/museum-v005/reference.png",
+      "bytes": 1215360,
+      "sha256": "c59d8c45ec5b9760b04b98e7f640d96ad033dd4bc487c5dae135b68c9f3655b0"
+    },
+    {
+      "path": "public/validation-assets/museum-v005/showcase-museum-clay-v005.glb",
+      "bytes": 11109460,
+      "sha256": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106"
+    },
+    {
+      "path": "public/validation-assets/orchard-v002/assembly-preview.glb",
+      "bytes": 2344324,
+      "sha256": "ce8d1198b654d8bb8ba3e050d3a540fd48077fe5d635b39377de58fff3f06220"
+    },
+    {
+      "path": "public/validation-assets/orchard-v002/reference.png",
+      "bytes": 1614350,
+      "sha256": "3ca1b1cbb6a3cae9e7d2a4b6ef28ca664c9f00dce064d1caf8d2ff4f5b012f99"
+    },
+    {
+      "path": "public/validation-assets/performance-v003/assembly-preview.glb",
+      "bytes": 2560188,
+      "sha256": "ea80cb09b3effdec7a7c041d46dd4adf94998cf081751a80f243be1674d78338"
+    },
+    {
+      "path": "public/validation-assets/performance-v003/reference.png",
+      "bytes": 1427020,
+      "sha256": "41882be45777464ae92e5e7daac499515953450aec653a5833a81488390d9472"
+    },
+    {
+      "path": "public/validation-assets/residential-v002/assembly-preview.glb",
+      "bytes": 2354620,
+      "sha256": "52305899464101def9199c861f1dabe3ae083fef56b87984fbd27bf9cf765bdd"
+    },
+    {
+      "path": "public/validation-assets/residential-v002/reference.png",
+      "bytes": 1552396,
+      "sha256": "cf86132edc3221c08f8f99ed1b2daf46c59590c2684e1eb055b4ae94b3c26ca3"
+    },
+    {
+      "path": "public/validation-assets/sculpture-v006/assembly-preview.glb",
+      "bytes": 5917936,
+      "sha256": "c84cc3b8a0ff727175ffd6ffe2aa457e35c30bbd64545ee99c94f36c41ec0717"
+    },
+    {
+      "path": "public/validation-assets/sculpture-v006/reference.png",
+      "bytes": 1418834,
+      "sha256": "63324af609bfcc7346f06852b7986aaef956bf6a05b25431054a67a2d7e0ef43"
+    },
+    {
+      "path": "public/validation-assets/shared-v001/assembly-preview.glb",
+      "bytes": 2876420,
+      "sha256": "68fdd2f054c1ac324aac9f4bdf9782373e8bdf942c1fe82bd41a532f04263f1a"
+    },
+    {
+      "path": "public/validation-assets/shared-v001/reference.png",
+      "bytes": 1650182,
+      "sha256": "f5f8d1d21e9e73db65db6242711422a2d146c0c994c11b0a905b5410bdbcebf2"
+    },
+    {
+      "path": "public/validation-assets/soho-v002/reference.png",
+      "bytes": 1433920,
+      "sha256": "93702cf15872f17332409ce8e9e810113279107a03f5ab99d40448fc4ef41699"
+    },
+    {
+      "path": "public/validation-assets/soho-v002/untried-soho-clay-v002.glb",
+      "bytes": 6338448,
+      "sha256": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f"
+    },
+    {
+      "path": "public/validation-assets/square-v003/assembly-preview.glb",
+      "bytes": 3785296,
+      "sha256": "fab4a16d62e10ff56bd0a48ed78d13059ecb37b2e2f0a60d192cbeddd92a2018"
+    },
+    {
+      "path": "public/validation-assets/square-v003/reference.png",
+      "bytes": 1630279,
+      "sha256": "f79f8a701d58969b839d3b5b7746e7f453546ef97df74350eb05b6987aa00593"
+    },
+    {
+      "path": "public/validation-assets/streamline-v003/reference.png",
+      "bytes": 1087264,
+      "sha256": "aec55f944bf84f5fa76d6226f8ca75a7a6d9a9bc5b920093f78aa10411eaa333"
+    },
+    {
+      "path": "public/validation-assets/streamline-v003/showcase-streamline-clay-v003.glb",
+      "bytes": 4416884,
+      "sha256": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3"
+    },
+    {
+      "path": "public/validation-assets/teaching-garden-v5-review-connected/assembly-preview.glb",
+      "bytes": 4901616,
+      "sha256": "bb6646faf8375fa684173c259b69dee6db7c75768a4122db1ba2e2281b71d286"
+    },
+    {
+      "path": "public/validation-assets/teaching-garden-v5-review-connected/modules/bed.glb",
+      "bytes": 201368,
+      "sha256": "ac07d58ec8459ba99149600beeb27f24ef78fdaeaf03fbbdd8a1ad36f3fdc7ee"
+    },
+    {
+      "path": "public/validation-assets/teaching-garden-v5-review-connected/modules/bench.glb",
+      "bytes": 34024,
+      "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
+    },
+    {
+      "path": "public/validation-assets/teaching-garden-v5-review-connected/modules/grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278"
+    },
+    {
+      "path": "public/validation-assets/teaching-garden-v5-review-connected/modules/label.glb",
+      "bytes": 18640,
+      "sha256": "553d163fc67891265778705e32ce92d99aa410c370f36a116dd33a0336cb797a"
+    },
+    {
+      "path": "public/validation-assets/teaching-garden-v5-review-connected/modules/shelter.glb",
+      "bytes": 1090000,
+      "sha256": "27bbf2e45ff478559e04ba334425d9a279cc5c1dbe902c6a2cdd0c698b314393"
+    },
+    {
+      "path": "public/validation-assets/teaching-garden-v5-review-connected/reference.png",
+      "bytes": 1557500,
+      "sha256": "c0ac61bcf1e14b6672288d1f750188a655dab931b902f761e84dbff2dfc57308"
+    },
+    {
+      "path": "public/validation-assets/terrace-v006/reference.png",
+      "bytes": 1226034,
+      "sha256": "9f7bd70d1b4c7675663f62dad4a071dc61ec35134be284646d75b3fd12b3a092"
+    },
+    {
+      "path": "public/validation-assets/terrace-v006/showcase-terrace-clay-v006.glb",
+      "bytes": 49637492,
+      "sha256": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47"
+    },
+    {
+      "path": "public/validation-assets/timber-v002/reference.png",
+      "bytes": 1246752,
+      "sha256": "739131b5b65c63d02d9ff9969206c7c69a3d174526ecfdedec2e0970f29feff3"
+    },
+    {
+      "path": "public/validation-assets/timber-v002/timber-screen-townhouse-clay-v002.glb",
+      "bytes": 23529748,
+      "sha256": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5"
+    },
+    {
+      "path": "public/validation-assets/wetland-v005/assembly-preview.glb",
+      "bytes": 22284176,
+      "sha256": "597aa18495bccb0dade8f3539aa3a28f0e46202e99629e34ebb30d9cb13c8490"
+    },
+    {
+      "path": "public/validation-assets/wetland-v005/reference.png",
+      "bytes": 1508305,
+      "sha256": "b93293184859e075c5e96a084de7243253b91d75b6b81bd3bd6b4d19612d57c0"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "student_quiet_residential_street_v1": {
+    "delivery": "residential-v002",
+    "sourceArchetypeId": "student_quiet_residential_street_v1",
+    "recipeSha256": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+    "files": {
+      "build.py": "930045ca3faeee5ef5cebd68c3494f335bf17c7396d9906a55763d246d7a6be1",
+      "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+      "build_street_batch.py": "1c65582db8d7caf0fc4ee0c639f8ac92e02e8f11ba7b089b8c91a7335815053e",
+      "renders/aerial.png": "cf86132edc3221c08f8f99ed1b2daf46c59590c2684e1eb055b4ae94b3c26ca3"
+    }
+  },
+  "student_planted_shared_lane_v1": {
+    "delivery": "shared-v001",
+    "sourceArchetypeId": "student_planted_shared_lane_v1",
+    "recipeSha256": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520",
+    "files": {
+      "build.py": "6029fd04ae04aefb6ec9a35d1add57ba3794199ddc12809364bf26699e279dd4",
+      "scene.py": "b7572497dc11bffbb80c08d28bbf3a8f41ae12f666c471d34eb1d7654f62eb0a",
+      "build_street_batch.py": "1c65582db8d7caf0fc4ee0c639f8ac92e02e8f11ba7b089b8c91a7335815053e",
+      "renders/aerial.png": "f5f8d1d21e9e73db65db6242711422a2d146c0c994c11b0a905b5410bdbcebf2"
+    }
+  }
+}

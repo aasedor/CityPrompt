@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "model_sha256": "3dc067ce6c4bb2721db7beacc2d633d55a8ab6a33066360803ef28cb711295fc",
+  "samples": 3316,
+  "max_step_m": 0.1500000000000008,
+  "max_surface_error_m": 9.536743217353205e-8,
+  "body_clearance_width_m": 0.44,
+  "results": [
+    {
+      "route": "Rose terraces and pergola circuit",
+      "direction": "forward",
+      "end": [
+        0,
+        -31.5,
+        0
+      ]
+    },
+    {
+      "route": "Rose terraces and pergola circuit",
+      "direction": "reverse",
+      "end": [
+        0,
+        -31.5,
+        0
+      ]
+    }
+  ],
+  "failures": [],
+  "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+}

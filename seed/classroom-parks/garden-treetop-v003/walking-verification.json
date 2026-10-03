@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "model_sha256": "8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a",
+  "samples": 4838,
+  "max_step_m": 0.15000000000000036,
+  "max_surface_error_m": 1.907348643470641e-7,
+  "body_clearance_width_m": 0.44,
+  "results": [
+    {
+      "route": "Canopy circuit and lookout",
+      "direction": "forward",
+      "end": [
+        0,
+        -31.46000000000032,
+        0
+      ]
+    },
+    {
+      "route": "Canopy circuit and lookout",
+      "direction": "reverse",
+      "end": [
+        0,
+        -31.46000000000032,
+        0
+      ]
+    },
+    {
+      "route": "Woodland ground garden",
+      "direction": "forward",
+      "end": [
+        4,
+        7,
+        0
+      ]
+    },
+    {
+      "route": "Woodland ground garden",
+      "direction": "reverse",
+      "end": [
+        0,
+        -31.5,
+        0
+      ]
+    }
+  ],
+  "failures": [],
+  "scope": "Deterministic movement and torso clearance on exported route geometry; browser and visual review are separate."
+}

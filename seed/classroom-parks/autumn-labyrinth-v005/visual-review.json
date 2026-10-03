@@ -1,0 +1,47 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "model_sha256": "af81f58831b58430d0e23608782bc3d62086a34b5335c303a03eccc0e54e8018",
+  "runtime_status": "NOT TESTED",
+  "completed": false,
+  "notes": [
+    "Six connected limestone circuits, tangent joins without folded faces, central stone bench, planted enclosure and aligned entrance. Measured native size. All four actual exported-GLB views compared to locked references. No browser or accessibility certification claimed."
+  ],
+  "inspected_files": [
+    {
+      "path": "renders\\aerial.png",
+      "sha256": "0a3ecd29831ada7e3c42f5fc9d273a02c0c6139fd8f545b6c3963b5a42fbed7e"
+    },
+    {
+      "path": "renders\\detail.png",
+      "sha256": "4294afa75dd55160ab71371eb0116eee28fc2cf661db823354238c1a06eff0f2"
+    },
+    {
+      "path": "renders\\top.png",
+      "sha256": "7cabadc2596f795d022afd0e6c23c74bde4c43b24b5e844099dbf26c31dc4134"
+    },
+    {
+      "path": "renders\\walk.png",
+      "sha256": "fdb6e92d440cc9b95bb423a03653306119ff6fa5c147d8822677e12dd0427922"
+    }
+  ],
+  "source_references": [
+    {
+      "role": "front",
+      "path": "frontend\\public\\archetypes\\openspaces\\labyrinth-meditation-garden\\variant_0.png",
+      "bytes": 1504394,
+      "sha256": "50435ea553ca02f70e4ebba59c55cd918d79477ca385361714d0fe458337ddcb"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend\\public\\archetypes\\openspaces\\labyrinth-meditation-garden\\variant_0_angle_60.jpg",
+      "bytes": 959399,
+      "sha256": "48f754d59742ef8b73022c7e8d8c595231a6f5da4c0e0220a734f71c56f96dfa"
+    },
+    {
+      "role": "top",
+      "path": "frontend\\public\\archetypes\\openspaces\\labyrinth-meditation-garden\\variant_0_angle_90.jpg",
+      "bytes": 873831,
+      "sha256": "1121b38f737376056aa84d0eed36b3e631a008675a50a04897c0f0aa653a5148"
+    }
+  ]
+}
