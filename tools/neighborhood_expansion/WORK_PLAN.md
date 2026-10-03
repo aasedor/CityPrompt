@@ -262,9 +262,71 @@ browser routes,20 furniture probes,4 garden probes and1,088 physical samples pas
 V003 passed independent local architecture/circulation review with zero P0/P1.
 Full keeper remains on hold for browser roof seams and source finish/landscape.
 This completes the pilot plus the first four-building group:5/20 local prototypes.
-Wave2 begins with `school_shared_community_campus`; no sources are locked for it yet.
+Wave2 began with `school_shared_community_campus`; its later hold is recorded below.
 
 All sinks cut the cabinet as well as the worktop. Every light and extractor reaches
 a physical support. The public approach begins at ground z0.04 and rises to z0.14
 over a solid1.3 m ramp. These checks establish a local walking prototype, not code
 or accessibility certification. Do not activate this or any batch entry in runtime.
+
+## Shared community campus tooling
+
+`build_campus_school.py` is the dedicated two-storey school constructor. Its
+three original sources are locked in `school-campus-prework.json`; prompts,
+inputs and hashes are in external `school-campus-locked-generation.json`.
+The independent source-only review accepts front001 and oblique001 as facade
+and roof/side authority. Top001 supplies adjacency only: its altered bay count,
+bicycle shelter rotation, rear notches and depth ratios are excluded. The
+64 by42 m plan is an architectural inference, not a survey.
+
+The classroom bar has five furnished rooms per floor, rear support rooms and
+an upper gallery over the double-height commons. Two stair flights connect
+actual slab voids. The taller rear-right gym connects to the school and to a
+separate community vestibule. Its basketball boards have physical supports.
+Public-ground and interior threshold slabs must pass the exact-GLB path checks.
+There are42 mandatory cameras, including every classroom, both washrooms and
+resource rooms, and reverse teaching-wall views.
+
+The source-conditioned buff masonry has five brick lengths across and36 courses
+vertically, mapped to1.20 by2.70 m. These observed counts supersede the requested
+image dimensions. Other finishes remain a declared prototype scope.
+V001 stopped at the grounding assertion before export. V002 produced38 views
+but failed two classroom routes and two staff window carrier checks; it also
+had unsupported paving, missing trunk collisions and incomplete room evidence.
+V003 corrected those with42 views and25 passing routes, but reverse views
+exposed door leaves intersecting teaching boards and detached canopy anchors.
+V004 swings the doors inward, seats the anchors and makes mirrors opaque.
+
+V004 still remains on independent local hold: both half-landing side edges
+lack guards, and reversing the classroom carrier buried the teaching boards
+inside the wall. Passing25 native/browser routes,57 apertures,20 furniture
+probes,5 garden probes and3,225 physical samples does not close these defects.
+This is the last repair in this pass. Do not begin v005 now or increment the
+completed count. The external `prework/school-campus-next-pass.md` records the
+specific two-part correction and added proof needed after advancing the next
+queued variant. Preserve all source snapshots and review decisions.
+
+## Courtyard childcare source checkpoint
+
+`childcare-courtyard-source-lock.json` locks front001, corrected oblique002 and
+top001 for `childcare_sheltered_courtyard`. Independent source review v2 closes
+identity compatibility and the three-field mono-pitch roof topology only.
+Oblique001 and its rejection remain preserved: its left roof introduced an
+internal ridge and secondary strip. Built-in image generation repaired that
+view using front001 and top001; no external image API was used.
+
+Front001 controls facade identity and relative heights. Oblique002 corroborates
+the exposed left elevation and continuous inward-falling roof plane. Top001
+supplies adjacency only: three wings, an uncovered court, and two diagonal rear
+roof junctions. Canonical copies occupy variant1 in the external childcare
+reference folder; the original pilot sources remain intact. Prompts and input
+hashes are in external `childcare-courtyard-locked-generation.json`.
+
+Next, measure the inferred plan, wing and veranda depths, opening schedule,
+interior programme, roof intersections and drainage, physical contacts, and the
+complete camera roster. Then prepare source-conditioned material and a dedicated
+constructor, run the dry run, and build v001. No childcare courtyard geometry or
+material exists yet. Source review grants no model or keeper approval.
+
+The completed count remains5/20. No model build is running at this checkpoint.
+The school remains excluded until a later bounded repair and independent review.

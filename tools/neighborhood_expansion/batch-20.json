@@ -593,10 +593,97 @@
         "description": "A two-storey Canadian suburban elementary school with two classroom wings and a central entrance commons. A gym wing has its own visible after-hours door for community use. Covered bicycle parking and a broad walking path lead to the entrance; grass playing fields extend behind the school. Vehicle access stays at the side, separated from the pedestrian forecourt.",
         "siteNote": "Reserve shared playing fields outside the building polygon; model drop-off and service access separately."
       },
-      "state": "queued",
-      "attempts": [],
+      "state": "held_for_next_bounded_pass",
+      "attempts": [
+        {
+          "candidate": "school-campus-v001",
+          "state": "build_failed",
+          "reason": "Grounding assertion: slab bottoms extended to z=-0.04m. No GLB or renders exported. Preserved source snapshot and log.",
+          "log": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v001-build.log"
+        },
+        {
+          "candidate": "school-campus-v002",
+          "state": "visual_rework_required",
+          "glb_sha256": "90db9d474453d5952cdcfd2bd88ece19969df787bd7edab21ee2897dbb9f5ae8",
+          "renders": 38,
+          "native_routes_passed": 23,
+          "native_routes_total": 25,
+          "physical_samples_checked": 3114,
+          "physical_failures": 0,
+          "reason": "Two teaching-board doorway obstructions; staff window lining carrier failures; paving support; forecourt tree missing collision; reverse classroom/resource evidence missing. Independent review record pending.",
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v002\\review\\independent-visual-review.json",
+          "review_sha256": "489e2b95d31cde419d3266e3054f6465e785c3122d5030dce4299ea4dd880a67"
+        },
+        {
+          "candidate": "school-campus-v003",
+          "state": "visual_rework_required",
+          "glb_sha256": "852c79ae7e35d6d75ba339fcba2d7dfcefe115dbe5894e440ed055c58b430b95",
+          "renders": 42,
+          "native_routes_passed": 25,
+          "native_routes_total": 25,
+          "physical_samples_checked": 3225,
+          "physical_failures": 0,
+          "carrier_apertures": "pass",
+          "furniture_probes": 20,
+          "garden_probes": 5,
+          "reason": "Reverse teaching view reveals flat open leaf intersecting board; small canopy hanger end gaps. Independent review being finalized.",
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v003\\review\\independent-visual-review.json",
+          "review_sha256": "a418d4a9c46bed6a79db05a7bc198959a33619f147326b034d4fedc0566c43bd"
+        },
+        {
+          "candidate": "school-campus-v004",
+          "state": "visual_rework_required",
+          "glb_sha256": "8206c6474e046c23f4774ff47279efd00e711eac5be96fb468d136c4447d3172",
+          "renders": 42,
+          "native_routes_passed": 25,
+          "native_routes_total": 25,
+          "physical_samples_checked": 3225,
+          "physical_failures": 0,
+          "carrier_apertures": "pass",
+          "furniture_probes": 20,
+          "garden_probes": 5,
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v004\\review\\independent-visual-review.json",
+          "review_sha256": "6f59b5b4e21754c174d6015189acdf6876bc3b01229bcdd25cdc80bb987e55f4",
+          "local_p0": 0,
+          "local_p1": 2,
+          "reason": "Missing half-landing side guards and teaching boards buried inside reversed rear-wall carriers. Last repair in this pass; not counted complete."
+        }
+      ],
       "keeper_approved": false,
-      "catalogue_activated": false
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\school_shared_community_campus\\front-001.png",
+          "bytes": 2152364,
+          "sha256": "2edf6ea01541b64e4967ef87190b25bc385926e4c1e4f941cb103aeec2e86e91"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\school_shared_community_campus\\oblique-001.png",
+          "bytes": 2659020,
+          "sha256": "415fd0ee375e4feafc9b01ec6d096bfa2d7eec63c3d1483d707924fd61729100"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\school_shared_community_campus\\top-001.png",
+          "bytes": 2607434,
+          "sha256": "7294ff1af40c2afb9b3b4b987931447b1eb21f131794684fc42fe17712700e1c"
+        }
+      ],
+      "prework": "tools/neighborhood_expansion/school-campus-prework.json",
+      "source_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\school-campus-source-review.json",
+        "sha256": "94d401cd64184847e079fd054ee817c160ef1cec6b5dfa8ce8f5101296f28dcb",
+        "scope": "Source category only; not geometry or keeper approval"
+      },
+      "generation_provenance": "school-campus-locked-generation.json",
+      "current_candidate": "school-campus-v004",
+      "local_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v004\\review\\independent-visual-review.json",
+        "sha256": "6f59b5b4e21754c174d6015189acdf6876bc3b01229bcdd25cdc80bb987e55f4",
+        "decision": "hold",
+        "p0": 0,
+        "p1": 2
+      },
+      "next_pass_plan": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\school-campus-next-pass.md"
     },
     {
       "archetype_id": "neighborhood_childcare_centre",
@@ -617,10 +704,47 @@
         "description": "A single-storey U-shaped childcare centre with three classroom wings around a secure garden courtyard. A low front gate and sheltered entrance reveal the courtyard without exposing it directly to traffic. Deep timber verandas provide shade and rain shelter; classroom doors open directly to the enclosed play area. Keep the scale domestic and the landscape low enough for supervision.",
         "siteNote": "Outer dimensions include the courtyard envelope; the courtyard itself must remain open."
       },
-      "state": "queued",
+      "state": "source_locked",
       "attempts": [],
       "keeper_approved": false,
-      "catalogue_activated": false
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\childcare_sheltered_courtyard\\front-001.png",
+          "bytes": 3268013,
+          "sha256": "de9b3cd2e564ed8f3933948262307b5bc3c2dd2fe8cd03c501823b101750b8b3"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\childcare_sheltered_courtyard\\oblique-001.png",
+          "bytes": 3379664,
+          "sha256": "ca96f1232f20b3f5fa0d81da08bdbedc46916aaa2090266a4ee4a9bbb7723f62"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\childcare_sheltered_courtyard\\oblique-002.png",
+          "bytes": 3568230,
+          "sha256": "e6541d58262992fc9ae3b1aa5d70d0cdfeade9d7fe496ece3d8a6ab74c42cb7e"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\childcare_sheltered_courtyard\\top-001.png",
+          "bytes": 3070435,
+          "sha256": "8fa9386b09497961bb89abf188d088e4112c0052b7a7f38461acac865cdd4dd1"
+        }
+      ],
+      "generation_records": [
+        "childcare-courtyard-front-generation.json",
+        "childcare-courtyard-oblique-generation.json",
+        "childcare-courtyard-top-generation.json",
+        "childcare-courtyard-oblique-repair-generation.json"
+      ],
+      "source_note": "Front001, corrected oblique002 and top001 independently compatible and locked. Oblique001 and initial rejection preserved. Source categories only; no geometry, material or keeper approval.",
+      "source_lock": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\childcare-courtyard-source-lock.json",
+      "source_lock_sha256": "375c1cbad1d3b416919ada6eaaeb3110b2bf2c939fc1eff8a9d470235847b3db",
+      "source_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\childcare-courtyard-source-review-v2.json",
+        "sha256": "6a5143270967522d304055a97772ffbd02e4d0b938a4da683dc09403d9b0c799",
+        "decision": "category_closure_only",
+        "scope": "Source compatibility and roof graph only. Direct full-pixel comparison of front-001, repaired oblique-002 and top-001, with brief and generation provenance. No model, material, optical, circulation or keeper approval."
+      }
     },
     {
       "archetype_id": "neighborhood_sixplex",
@@ -935,12 +1059,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "wave1_complete_wave2_queued",
+  "state": "wave2_in_progress",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 5,
-  "next_action": "First group of four after childcare pilot is complete. Begin Wave2 with school_shared_community_campus: obtain original front, compatible oblique and top, independent source review, prework and source-conditioned materials before geometry. No building jobs running.15 models remain. Hallv003 is accepted local prototype, fullkeeper hold; preserve v001/v002.",
-  "updated_utc": "2026-10-03T19:00:55.263783+00:00",
+  "next_action": "Build childcare_sheltered_courtyard from the accepted source-only lock in tools/neighborhood_expansion/childcare-courtyard-source-lock.json. First measure plan, opening schedule, three inward roof planes and two diagonal joins, occupied programme, physical contacts and complete camera roster; then prepare source-conditioned material and dedicated constructor, dry run and v001. School-campus-v004 remains held with two local P1; its finite pass is exhausted. Reopen only after advancing childcare using prework/school-campus-next-pass.md. No building jobs running. Completed 5/20; 15 remain.",
+  "updated_utc": "2026-10-03T20:16:39.404493+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

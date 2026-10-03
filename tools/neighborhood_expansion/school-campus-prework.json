@@ -1,0 +1,93 @@
+{
+  "variant_id": "school_shared_community_campus",
+  "archetype_id": "neighborhood_elementary_school",
+  "method": "RLASM v6.1 prototype",
+  "state": "source_locked",
+  "keeper_approved": false,
+  "generation_provenance": "school-campus-locked-generation.json",
+  "sources": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-school\\variant_1.png",
+      "role": "front",
+      "bytes": 2152364,
+      "sha256": "2edf6ea01541b64e4967ef87190b25bc385926e4c1e4f941cb103aeec2e86e91"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-school\\variant_1_oblique.png",
+      "role": "oblique",
+      "bytes": 2659020,
+      "sha256": "415fd0ee375e4feafc9b01ec6d096bfa2d7eec63c3d1483d707924fd61729100"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-school\\variant_1_roof-study.png",
+      "role": "topology",
+      "bytes": 2607434,
+      "sha256": "7294ff1af40c2afb9b3b4b987931447b1eb21f131794684fc42fe17712700e1c"
+    }
+  ],
+  "independent_source_review": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\school-campus-source-review.json",
+    "sha256": "94d401cd64184847e079fd054ee817c160ef1cec6b5dfa8ce8f5101296f28dcb",
+    "scope": "Source category only; not geometry or keeper approval"
+  },
+  "measurement_contract": {
+    "units": "Inferred metres, not surveyed",
+    "width": 64,
+    "depth": 42,
+    "floor": 0.14,
+    "floor_rise": 3.8,
+    "classroom_bar": "x[-32,24], y[-21,-3], two floors, parapet8.15; left wing27m, commons10m, right wing19m",
+    "commons": "x[-5,5], double-height front; rear upper gallery y[-9,-3.3] with a real stair void, parapet8.75",
+    "gym": "x[14,32],y[-3,21], parapet10.35; community vestibule x[24,32],y[-7,-3], parapet4.2",
+    "roof_graph": "Flat connected classroom bar; raised central commons and rear-right gym; bounded left-wing solar array. No inferred top-image rear notches.",
+    "source_roles": "Front controls window schedule and relative mass identity. Oblique controls side and roof relationships. Top supplies adjacency only: exclude altered bays, shelter rotation, depth ratios and rear-edge notches.",
+    "classroom_dividers": "Left x[-31.7,-23,-11.3,-5]; right x[5,17.9,23.7], chosen between source window groups."
+  },
+  "program_contract": {
+    "classrooms": "Five furnished classrooms per floor, ten total; six or nine student desks according to room width, teacher desk, cubbies and rear teaching board. Desks face rear boards; partitions meet solid front piers.",
+    "support": "Staff room, washroom with cut basin and WC, resource storage per floor; reception and seating in double-height commons",
+    "gym": "Full-height sport floor, court lines, supported basketball boards and rings, spectator benches, school door, community vestibule and rear field exit",
+    "landscape": "Covered bicycle hoops, benches, native beds, four trees, separated right service drive, rear shared grass field"
+  },
+  "opening_schedule": {
+    "front": "Left four groups per floor including a narrow single light; right four groups with blue-grey spandrels; full-height central screens and actual open entrance",
+    "sides": "Three classroom groups per floor at each flank; four elevated gym light groups per long side",
+    "rear": "Staff/resource daylight and school-gym connection; upper gym-facing window is explicitly inferred",
+    "doors": "Open leaves and cut carriers on classroom, support, commons, gym and community routes"
+  },
+  "circulation_contract": {
+    "routes": "Ten classroom routes, six support-room routes, stair ascent/descent, public entrance, reception, school-gym, community-gym, gym rear exit, bicycle and bench",
+    "stair": "22 steps,3.8m rise, two1.25m flights and half landing; no upper slab in flight void; gallery and stair edges guarded",
+    "approach": "Solid ramp from public sidewalk z.04 to forecourt/floor z.14 over1.5m; source-specific embedded navigation plus exact-GLB physical checks required",
+    "limits": "Authored route proof only; not unrestricted collision, building-code or accessibility certification"
+  },
+  "material_contract": {
+    "brick": "Built-in source-conditioned buff running bond. Observed five brick lengths across and36 courses vertically, tile1.20x2.70m; requested8x24 count was not generated.",
+    "other": "Source palette and physical joinery/panels; full keeper finish remains separately assessed"
+  },
+  "camera_contract": "42 mandatory exact-GLB cameras authored before geometry: seven complete exteriors, facade, portico, glazing, roof and solar contacts, commons/entry/stair/gallery, all ten classrooms, staff and washrooms on both floors, fixtures, gym both directions, vestibule, forecourt and public ramp; two reverse teaching-wall views and both resource rooms added for v003.",
+  "assumptions": [
+    "Original generated design, not a real building survey.",
+    "Hidden interiors and metric plan are declared architectural inferences.",
+    "No human approval, catalogue activation, publishing or keeper claim."
+  ],
+  "v002_corrections": [
+    "Ground slabs stop at z0; v001 aborted grounding preflight before export.",
+    "Forecourt split around real approach ramp; no upper slab covers ramp.",
+    "Partitions moved off glazing; washroom mirrors and low resource cabinets clear rear openings.",
+    "Seated stair posts and half-landing guard; fixtures reach ceilings; solar ballast bears on roof.",
+    "Gym padding seated against walls, rings bracketed and facing court."
+  ],
+  "v003_corrections": [
+    "Resize classroom teaching boards/trays clear of narrow doorways; preserve all route endpoints.",
+    "Remove redundant staff room side lining over left flank windows.",
+    "Extend paving solids to ground; explicit tree-trunk/branch obstacles and named tree probe.",
+    "Move blue-grey panels into the inter-storey zone and grouped right bays; fill rear school lawn.",
+    "Add reverse classroom and resource-room evidence cameras."
+  ],
+  "v004_corrections": [
+    "Classroom doors swing inward90 degrees, clearing teaching boards and corridor; do not shrink required passage.",
+    "Canopy hanger anchor plates seat against masonry piers and rods reach plates.",
+    "Washroom mirror has an opaque reflective material."
+  ]
+}
