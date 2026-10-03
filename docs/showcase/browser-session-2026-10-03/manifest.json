@@ -1,0 +1,1047 @@
+{
+  "title": "Chips hangout — browser session renders",
+  "timezone": "America/Edmonton",
+  "count": 52,
+  "images": [
+    {
+      "number": 1,
+      "render_id": "31f360e4-345e-4211-a345-8dca5e1fb31a",
+      "created_at": "2026-10-03T15:11:19.653124+00:00",
+      "local_time": "2026-10-03T09:11:19.653124-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "street-view / Direct 3D Street · GPT Image 2.5 Flare edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        1704,
+        923
+      ],
+      "bytes": 2486036,
+      "sha256": "f5bdf45369677ebcff311cfc454e9cfc1b867aaf74393d2160db4e5631c762e5",
+      "image": "images/01-2026-10-03-091119-saved-edit-gpt-2.5-flare.png",
+      "preview": "previews/01-2026-10-03-091119-saved-edit-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 2,
+      "render_id": "36fa59a8-9b4e-4037-9ceb-587d75366b69",
+      "created_at": "2026-10-03T15:10:56.305769+00:00",
+      "local_time": "2026-10-03T09:10:56.305769-06:00",
+      "model": "gpt-image-2",
+      "style": "street-view / Direct 3D Street · GPT Image 2.5 Flare edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        1705,
+        923
+      ],
+      "bytes": 2467673,
+      "sha256": "e8eaa37fe2705153be51bcc81a51edd3e75868ff026558fbf317e7e6de3d1d29",
+      "image": "images/02-2026-10-03-091056-saved-edit-gpt-2.png",
+      "preview": "previews/02-2026-10-03-091056-saved-edit-gpt-2.webp"
+    },
+    {
+      "number": 3,
+      "render_id": "bbf715f0-a821-40ad-b3c0-96182f28c9fe",
+      "created_at": "2026-10-03T15:09:46.278834+00:00",
+      "local_time": "2026-10-03T09:09:46.278834-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2997017,
+      "sha256": "0128296ce9588394d0707578a9d3ca52c9866046b48c6a9558809ba5f167ae10",
+      "image": "images/03-2026-10-03-090946-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/03-2026-10-03-090946-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 4,
+      "render_id": "9dfdd34a-be4b-45b5-a277-f4ce7c35cc44",
+      "created_at": "2026-10-03T15:09:45.610085+00:00",
+      "local_time": "2026-10-03T09:09:45.610085-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 808321,
+      "sha256": "26c26b7a03d3bc51ad6a9d3632b00ed8c87b543141426b7d2d289931d25dad63",
+      "image": "images/04-2026-10-03-090945-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/04-2026-10-03-090945-scene-reference-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 5,
+      "render_id": "39a9b9a8-10e3-45fb-91ff-df7723bd62b4",
+      "created_at": "2026-10-03T15:09:04.473461+00:00",
+      "local_time": "2026-10-03T09:09:04.473461-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2832338,
+      "sha256": "8af423b672bd2c644076b53cfe1bbe9582a2d1267250749a337cca220427bb43",
+      "image": "images/05-2026-10-03-090904-ai-original-gpt-2.5-flare.png",
+      "preview": "previews/05-2026-10-03-090904-ai-original-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 6,
+      "render_id": "71e8b347-4f77-4afa-95eb-f7b7e330adbe",
+      "created_at": "2026-10-03T15:09:03.922017+00:00",
+      "local_time": "2026-10-03T09:09:03.922017-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 808318,
+      "sha256": "c59904accc31e171f04ebdb924ea83c1f274e1cd308c5c2738b03854130f6172",
+      "image": "images/06-2026-10-03-090903-scene-reference-gpt-2.5-flare.png",
+      "preview": "previews/06-2026-10-03-090903-scene-reference-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 7,
+      "render_id": "d726b10d-0e88-4285-99ab-9bc66559d642",
+      "created_at": "2026-10-03T15:08:33.663896+00:00",
+      "local_time": "2026-10-03T09:08:33.663896-06:00",
+      "model": "gpt-image-2",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2730289,
+      "sha256": "d0a2af9eeccc3f4070c9759f0b2d7f8ef3ee4767d29d6247b6303901f66f36d5",
+      "image": "images/07-2026-10-03-090833-ai-original-gpt-2.png",
+      "preview": "previews/07-2026-10-03-090833-ai-original-gpt-2.webp"
+    },
+    {
+      "number": 8,
+      "render_id": "99145f19-517d-46e7-8f3c-a49ab10f1d51",
+      "created_at": "2026-10-03T15:08:33.089424+00:00",
+      "local_time": "2026-10-03T09:08:33.089424-06:00",
+      "model": "gpt-image-2",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 808310,
+      "sha256": "910afc6cc37872ce31958057b9f726727e72c492e6b7ab8fb56580e6c39edc32",
+      "image": "images/08-2026-10-03-090833-scene-reference-gpt-2.png",
+      "preview": "previews/08-2026-10-03-090833-scene-reference-gpt-2.webp"
+    },
+    {
+      "number": 9,
+      "render_id": "19fb20f7-464d-4ebb-abcd-390339ef3312",
+      "created_at": "2026-10-03T15:06:57.795891+00:00",
+      "local_time": "2026-10-03T09:06:57.795891-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2876155,
+      "sha256": "96c0f339b9ed0d5159c27100640f7139a8e63bc09dee2b85cd70b2afb7c37e6a",
+      "image": "images/09-2026-10-03-090657-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/09-2026-10-03-090657-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 10,
+      "render_id": "dd18c791-9846-4bba-aa71-225850f2ac93",
+      "created_at": "2026-10-03T15:06:57.389759+00:00",
+      "local_time": "2026-10-03T09:06:57.389759-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 790137,
+      "sha256": "b43bc5615b62de49ad9ddeeced73147e90333f581697f19d4f31834cdbb4dc8f",
+      "image": "images/10-2026-10-03-090657-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/10-2026-10-03-090657-scene-reference-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 11,
+      "render_id": "51b9c3f3-6e86-482a-90ff-a07b886fdc55",
+      "created_at": "2026-10-03T15:06:17.466203+00:00",
+      "local_time": "2026-10-03T09:06:17.466203-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2725657,
+      "sha256": "471db0f822bf8c38c90b73ccbb071cf983e93d7e3d828ca7e08e57476ddbabcb",
+      "image": "images/11-2026-10-03-090617-ai-original-gpt-2.5-flare.png",
+      "preview": "previews/11-2026-10-03-090617-ai-original-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 12,
+      "render_id": "6a89576e-0d38-4633-824d-4bf846acc1fd",
+      "created_at": "2026-10-03T15:06:16.388202+00:00",
+      "local_time": "2026-10-03T09:06:16.388202-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 790134,
+      "sha256": "acf30d5d0507a994e0ba2c000e91f2bcb10415364bdd0228bbe1616893976493",
+      "image": "images/12-2026-10-03-090616-scene-reference-gpt-2.5-flare.png",
+      "preview": "previews/12-2026-10-03-090616-scene-reference-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 13,
+      "render_id": "b19e05a4-9768-482d-b200-15be277f2ca6",
+      "created_at": "2026-10-03T15:05:43.751738+00:00",
+      "local_time": "2026-10-03T09:05:43.751738-06:00",
+      "model": "gpt-image-2",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2561910,
+      "sha256": "2af56a38fb45642fbd3ca379969149a82ca702d5ea967cdf6555c0dafaef7919",
+      "image": "images/13-2026-10-03-090543-ai-original-gpt-2.png",
+      "preview": "previews/13-2026-10-03-090543-ai-original-gpt-2.webp"
+    },
+    {
+      "number": 14,
+      "render_id": "43911abf-b911-4b81-8a58-9e85d022c05a",
+      "created_at": "2026-10-03T15:05:41.568836+00:00",
+      "local_time": "2026-10-03T09:05:41.568836-06:00",
+      "model": "gpt-image-2",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 790126,
+      "sha256": "acdab0fab8b5073762eb885323067489d5fe01f1ae552a532211722e7e109b49",
+      "image": "images/14-2026-10-03-090541-scene-reference-gpt-2.png",
+      "preview": "previews/14-2026-10-03-090541-scene-reference-gpt-2.webp"
+    },
+    {
+      "number": 15,
+      "render_id": "7013da12-15fa-4d29-b860-e0dc3308e852",
+      "created_at": "2026-10-03T14:58:51.157805+00:00",
+      "local_time": "2026-10-03T08:58:51.157805-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "street-view / Direct 3D Street · GPT Image 2 edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        1704,
+        923
+      ],
+      "bytes": 2310088,
+      "sha256": "b12ce416978d97b85afd22fa1db06b86599eb49c946492ad5b7d10095a9b404b",
+      "image": "images/15-2026-10-03-085851-saved-edit-gpt-2.5-sunburst.png",
+      "preview": "previews/15-2026-10-03-085851-saved-edit-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 16,
+      "render_id": "d5b5b3fb-6984-4b65-bb6c-089d480d62cc",
+      "created_at": "2026-10-03T14:58:15.521675+00:00",
+      "local_time": "2026-10-03T08:58:15.521675-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "street-view / Direct 3D Street · GPT Image 2 edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        1704,
+        923
+      ],
+      "bytes": 2492207,
+      "sha256": "8c44a901158758af1d5e48095822c6c907e5a8ca24e73c963d2b6586e8b4925d",
+      "image": "images/16-2026-10-03-085815-saved-edit-gpt-2.5-flare.png",
+      "preview": "previews/16-2026-10-03-085815-saved-edit-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 17,
+      "render_id": "f8fb5cb2-dfe2-4777-8fa5-961b1969ebd1",
+      "created_at": "2026-10-03T14:57:50.878828+00:00",
+      "local_time": "2026-10-03T08:57:50.878828-06:00",
+      "model": "gpt-image-2",
+      "style": "street-view / Direct 3D Street · GPT Image 2 edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        1704,
+        923
+      ],
+      "bytes": 2464121,
+      "sha256": "9f50769daab8073e0843df09e58f9aa94c935eccb3fab0d342c6344641fb4bd0",
+      "image": "images/17-2026-10-03-085750-saved-edit-gpt-2.png",
+      "preview": "previews/17-2026-10-03-085750-saved-edit-gpt-2.webp"
+    },
+    {
+      "number": 18,
+      "render_id": "c29ba013-5feb-448d-b49e-67b206bc62f5",
+      "created_at": "2026-10-03T14:56:58.220065+00:00",
+      "local_time": "2026-10-03T08:56:58.220065-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2876563,
+      "sha256": "c203440b30d8477b0acf8262780450dd566df386ede3ff52b6d760cf7f9591e8",
+      "image": "images/18-2026-10-03-085658-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/18-2026-10-03-085658-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 19,
+      "render_id": "6fedd00c-8b43-443e-9ee6-d74965333af0",
+      "created_at": "2026-10-03T14:56:57.548140+00:00",
+      "local_time": "2026-10-03T08:56:57.548140-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 952220,
+      "sha256": "bbc4a7f634bc2735af7571881e8cf78365896c2a57c1ad8acd8705db14c0a9c6",
+      "image": "images/19-2026-10-03-085657-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/19-2026-10-03-085657-scene-reference-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 20,
+      "render_id": "52d7bcdf-d613-4df0-a8a1-5a69a54abcc1",
+      "created_at": "2026-10-03T14:56:05.887675+00:00",
+      "local_time": "2026-10-03T08:56:05.887675-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2784477,
+      "sha256": "ee8fa3c59b35e032f3f08b0395b03fbb76f33451233c5dae3037e219f99c7464",
+      "image": "images/20-2026-10-03-085605-ai-original-gpt-2.5-flare.png",
+      "preview": "previews/20-2026-10-03-085605-ai-original-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 21,
+      "render_id": "857b9eee-37b9-4003-b4ad-4f9cca62bc8a",
+      "created_at": "2026-10-03T14:56:05.406707+00:00",
+      "local_time": "2026-10-03T08:56:05.406707-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 952217,
+      "sha256": "4b004e152bc1dc777ad5479578b0eb00aff9dda35305cdecd70d7bd4b4e8e635",
+      "image": "images/21-2026-10-03-085605-scene-reference-gpt-2.5-flare.png",
+      "preview": "previews/21-2026-10-03-085605-scene-reference-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 22,
+      "render_id": "f4b3ed42-4bcb-4004-8876-4ebf19d080b3",
+      "created_at": "2026-10-03T14:55:33.350265+00:00",
+      "local_time": "2026-10-03T08:55:33.350265-06:00",
+      "model": "gpt-image-2",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2576451,
+      "sha256": "c8d72cc99593636e9c63570b22ef4b36344de4888b2a84762a7a1f96b1209abc",
+      "image": "images/22-2026-10-03-085533-ai-original-gpt-2.png",
+      "preview": "previews/22-2026-10-03-085533-ai-original-gpt-2.webp"
+    },
+    {
+      "number": 23,
+      "render_id": "de7f3474-41b4-4ac5-b4fb-87a0c4ff17ef",
+      "created_at": "2026-10-03T14:55:32.903643+00:00",
+      "local_time": "2026-10-03T08:55:32.903643-06:00",
+      "model": "gpt-image-2",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 952209,
+      "sha256": "012febe6056438047826c26ca18c3934dbcd446c2bf85e31bf2dde20fa0bfa33",
+      "image": "images/23-2026-10-03-085532-scene-reference-gpt-2.png",
+      "preview": "previews/23-2026-10-03-085532-scene-reference-gpt-2.webp"
+    },
+    {
+      "number": 24,
+      "render_id": "8856bad7-77b1-4015-8a49-18f277777e47",
+      "created_at": "2026-10-03T14:50:19.592640+00:00",
+      "local_time": "2026-10-03T08:50:19.592640-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        1704,
+        923
+      ],
+      "bytes": 2437974,
+      "sha256": "67b3ef275c3190ac85dd437e52d72976fea0569f8b03a777b35916f24b4eef6c",
+      "image": "images/24-2026-10-03-085019-saved-edit-gpt-2.5-sunburst.png",
+      "preview": "previews/24-2026-10-03-085019-saved-edit-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 25,
+      "render_id": "75f85ec2-f365-4f2d-a591-24ab25e86157",
+      "created_at": "2026-10-03T14:49:46.714205+00:00",
+      "local_time": "2026-10-03T08:49:46.714205-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        1704,
+        923
+      ],
+      "bytes": 2410266,
+      "sha256": "54ab1140d79b02cf1adb054fc97f67fb1015928e8c690bef363d536b2a9af023",
+      "image": "images/25-2026-10-03-084946-saved-edit-gpt-2.5-flare.png",
+      "preview": "previews/25-2026-10-03-084946-saved-edit-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 26,
+      "render_id": "2ea9a339-7a87-4b86-85f1-8d8444de3481",
+      "created_at": "2026-10-03T14:49:23.479893+00:00",
+      "local_time": "2026-10-03T08:49:23.479893-06:00",
+      "model": "gpt-image-2",
+      "style": "documentary edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        1704,
+        923
+      ],
+      "bytes": 2540587,
+      "sha256": "ecdef379009b257996d62a92ba2dbb80ef69f8efacdc9e4d40c577aacfad08d6",
+      "image": "images/26-2026-10-03-084923-saved-edit-gpt-2.png",
+      "preview": "previews/26-2026-10-03-084923-saved-edit-gpt-2.webp"
+    },
+    {
+      "number": 27,
+      "render_id": "2a46324e-6c5a-4ef9-99e3-350aa8a4ea7c",
+      "created_at": "2026-10-03T14:46:39.464623+00:00",
+      "local_time": "2026-10-03T08:46:39.464623-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2649678,
+      "sha256": "b5a25aef6c9ce720a523ebfcda65cf04b9a49712c83256912fde16d0a46dcefc",
+      "image": "images/27-2026-10-03-084639-ai-original-gpt-2.5-flare.png",
+      "preview": "previews/27-2026-10-03-084639-ai-original-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 28,
+      "render_id": "d8d4afc3-0736-485c-a97b-e9bd7943d079",
+      "created_at": "2026-10-03T14:46:38.448047+00:00",
+      "local_time": "2026-10-03T08:46:38.448047-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 601026,
+      "sha256": "9273803ddc4b3f349cfb9511d8d9afc9e7170552693b2cbdba3b316bf5c80e4c",
+      "image": "images/28-2026-10-03-084638-scene-reference-gpt-2.5-flare.png",
+      "preview": "previews/28-2026-10-03-084638-scene-reference-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 29,
+      "render_id": "06cdda5c-cc64-40be-9a65-bc41586a78e5",
+      "created_at": "2026-10-03T14:44:05.818087+00:00",
+      "local_time": "2026-10-03T08:44:05.818087-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2513484,
+      "sha256": "2e06d2a31f56f05eb0c1750397182cd550b5b0de46022be975992874fbd30bc2",
+      "image": "images/29-2026-10-03-084405-ai-original-gpt-2.5-flare.png",
+      "preview": "previews/29-2026-10-03-084405-ai-original-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 30,
+      "render_id": "6b9871e4-e972-472a-a99a-6843c6897172",
+      "created_at": "2026-10-03T14:44:05.276760+00:00",
+      "local_time": "2026-10-03T08:44:05.276760-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 601016,
+      "sha256": "febb72e5cc5c51dd461c8094bf904b927612524eb3e17dd6ffef983e0c69288e",
+      "image": "images/30-2026-10-03-084405-scene-reference-gpt-2.5-flare.png",
+      "preview": "previews/30-2026-10-03-084405-scene-reference-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 31,
+      "render_id": "ae661641-d7bf-405a-b276-e5cccc1ad1a2",
+      "created_at": "2026-10-03T14:38:22.889051+00:00",
+      "local_time": "2026-10-03T08:38:22.889051-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 3020767,
+      "sha256": "7d80233c182bb56b9675858bf8bae4350c3e31e53cf57bddc2b91c773d932fa6",
+      "image": "images/31-2026-10-03-083822-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/31-2026-10-03-083822-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 32,
+      "render_id": "218a48fb-3012-458a-b814-f23d284aad89",
+      "created_at": "2026-10-03T14:38:22.406465+00:00",
+      "local_time": "2026-10-03T08:38:22.406465-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 1014366,
+      "sha256": "5c5a330c7056ef3b0d577ead875d40110e6c7a3ebcc1b7c5e9f80cffe6f51781",
+      "image": "images/32-2026-10-03-083822-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/32-2026-10-03-083822-scene-reference-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 33,
+      "render_id": "2ec3bc9e-617a-473d-8671-94e9fe5e4a4c",
+      "created_at": "2026-10-03T14:35:32.207640+00:00",
+      "local_time": "2026-10-03T08:35:32.207640-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2370973,
+      "sha256": "77242586ae49c85f9bcc784f648279aa5b402819142a2de4110aca7d454c2913",
+      "image": "images/33-2026-10-03-083532-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/33-2026-10-03-083532-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 34,
+      "render_id": "48514d34-f2a4-48bd-9a05-e60fbaeb9765",
+      "created_at": "2026-10-03T14:35:31.372717+00:00",
+      "local_time": "2026-10-03T08:35:31.372717-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "documentary",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 267703,
+      "sha256": "6412d7150bb4da2d5bb89ba9952e1effe80660706b8d85364ec4aba4e230bf2b",
+      "image": "images/34-2026-10-03-083531-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/34-2026-10-03-083531-scene-reference-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 35,
+      "render_id": "0d637ba3-2d43-4824-a709-8f07d6ccb757",
+      "created_at": "2026-10-03T14:28:35.211704+00:00",
+      "local_time": "2026-10-03T08:28:35.211704-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "photorealistic",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 3070797,
+      "sha256": "73e4f77a53f44d591b93e52f864f5e61ed268a6e0edc7135f5afa861689065a1",
+      "image": "images/35-2026-10-03-082835-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/35-2026-10-03-082835-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 36,
+      "render_id": "d9fbd724-b2d9-48eb-94bb-92906ec12938",
+      "created_at": "2026-10-03T14:28:34.405373+00:00",
+      "local_time": "2026-10-03T08:28:34.405373-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "photorealistic",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 1160008,
+      "sha256": "87b6c4cf3c15f85c60f06a91191c2ebfd39e4c378b256b29a8b612fbd5e8ceb8",
+      "image": "images/36-2026-10-03-082834-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/36-2026-10-03-082834-scene-reference-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 37,
+      "render_id": "4f9ac2fe-7b57-49a1-ac82-8b1cd242d6e7",
+      "created_at": "2026-10-03T14:20:30.545685+00:00",
+      "local_time": "2026-10-03T08:20:30.545685-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "photomontage",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 3803527,
+      "sha256": "28a14125a07771ce6086c00220f7281364e8984ec061cc82a8158e14c4f06c7d",
+      "image": "images/37-2026-10-03-082030-ai-original-gpt-2.5-flare.png",
+      "preview": "previews/37-2026-10-03-082030-ai-original-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 38,
+      "render_id": "c2b942bb-fa5f-4993-8088-03d639591c9e",
+      "created_at": "2026-10-03T14:20:29.589788+00:00",
+      "local_time": "2026-10-03T08:20:29.589788-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "photomontage",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2292448,
+      "sha256": "5d58ca1bfab2eb4f929c67b9228df053202091b03fbe77a682c5be5f08bdd4d7",
+      "image": "images/38-2026-10-03-082029-scene-reference-gpt-2.5-flare.png",
+      "preview": "previews/38-2026-10-03-082029-scene-reference-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 39,
+      "render_id": "59d376f3-efb7-4350-ab46-64d3b8a61640",
+      "created_at": "2026-10-03T14:15:53.265712+00:00",
+      "local_time": "2026-10-03T08:15:53.265712-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "photorealistic",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 3165135,
+      "sha256": "2950814996bace525fb7595e4df2e64650636ef351c3ad61a39a637dcdd395e8",
+      "image": "images/39-2026-10-03-081553-ai-original-gpt-2.5-flare.png",
+      "preview": "previews/39-2026-10-03-081553-ai-original-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 40,
+      "render_id": "101d6933-aad2-45be-86ec-8739177b8d66",
+      "created_at": "2026-10-03T14:15:52.838557+00:00",
+      "local_time": "2026-10-03T08:15:52.838557-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "photorealistic",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 831286,
+      "sha256": "244d882fc6e0f9f3115d751ae836b3392010335a135de73a365336d2f61edb76",
+      "image": "images/40-2026-10-03-081552-scene-reference-gpt-2.5-flare.png",
+      "preview": "previews/40-2026-10-03-081552-scene-reference-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 41,
+      "render_id": "00d9d1bb-7e6e-45bc-accf-f6791c182572",
+      "created_at": "2026-10-03T14:14:45.045048+00:00",
+      "local_time": "2026-10-03T08:14:45.045048-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "photorealistic",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 3027767,
+      "sha256": "2bcdaeeb85111f3c5b4e06f0d5c5f6bdc69349abd10c9c27a07bf70d67d760c6",
+      "image": "images/41-2026-10-03-081445-ai-original-gpt-2.5-flare.png",
+      "preview": "previews/41-2026-10-03-081445-ai-original-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 42,
+      "render_id": "7ce0fa55-a38b-4b93-a416-53023cfecb61",
+      "created_at": "2026-10-03T14:14:44.563343+00:00",
+      "local_time": "2026-10-03T08:14:44.563343-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "photorealistic",
+      "kind": "final-render",
+      "variant": "final",
+      "presentation_strategy": "provider_full_scene_local_repairs",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2102962,
+      "sha256": "d15b875e810af7192f842293b88e581ddc6f05e2906a08480cc31a6479647baa",
+      "image": "images/42-2026-10-03-081444-final-render-gpt-2.5-flare.png",
+      "preview": "previews/42-2026-10-03-081444-final-render-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 43,
+      "render_id": "68306651-86f2-4117-9cbd-abce90dc8aa2",
+      "created_at": "2026-10-03T14:09:36.391674+00:00",
+      "local_time": "2026-10-03T08:09:36.391674-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "photomontage",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 3796309,
+      "sha256": "c011ac532a006c838052d14e6d182c0ebee50fd450140543838832b5c8b78dc6",
+      "image": "images/43-2026-10-03-080936-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/43-2026-10-03-080936-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 44,
+      "render_id": "793c468c-7573-47b5-91ca-d998ad0103ce",
+      "created_at": "2026-10-03T14:09:36.012353+00:00",
+      "local_time": "2026-10-03T08:09:36.012353-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "photomontage",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 2127848,
+      "sha256": "93ca406525dc5b7b3441adda6327dab25399fd58fcd8d1d6d1284297f37f19eb",
+      "image": "images/44-2026-10-03-080936-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/44-2026-10-03-080936-scene-reference-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 45,
+      "render_id": "e2338dc1-be0c-41af-8c96-68a890cc51ee",
+      "created_at": "2026-10-03T14:05:47.573940+00:00",
+      "local_time": "2026-10-03T08:05:47.573940-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "photomontage",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 3704914,
+      "sha256": "cae2efe1f40953a19a51e211e53ff1c4f5202a88628ad581545ce70ae5df43a9",
+      "image": "images/45-2026-10-03-080547-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/45-2026-10-03-080547-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 46,
+      "render_id": "94adcf42-54b3-49af-9807-cbf301e31d25",
+      "created_at": "2026-10-03T14:05:47.175904+00:00",
+      "local_time": "2026-10-03T08:05:47.175904-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "photomontage",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1920,
+        1040
+      ],
+      "bytes": 1098215,
+      "sha256": "7cf4e352aa0d93b2e945b3f3c4eb05280b71a49168a269f73a5db69ae640b978",
+      "image": "images/46-2026-10-03-080547-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/46-2026-10-03-080547-scene-reference-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 47,
+      "render_id": "af628529-09df-488e-94d1-4dc36513352f",
+      "created_at": "2026-10-03T03:40:21.806408+00:00",
+      "local_time": "2026-10-02T21:40:21.806408-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "street-view / Direct 3D Street · GPT Image 2.5 Sunburst edit edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        2086,
+        754
+      ],
+      "bytes": 2823499,
+      "sha256": "d51979abc0f27eb294cd922c7d7f221acc256579096b759d28cec87b2acc4c3a",
+      "image": "images/47-2026-10-02-214021-saved-edit-gpt-2.5-sunburst.png",
+      "preview": "previews/47-2026-10-02-214021-saved-edit-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 48,
+      "render_id": "6b84ad99-5e7b-4352-beec-c47ca10a8900",
+      "created_at": "2026-10-03T03:39:02.017194+00:00",
+      "local_time": "2026-10-02T21:39:02.017194-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "street-view / Direct 3D Street · GPT Image 2.5 Sunburst edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        2089,
+        753
+      ],
+      "bytes": 2801400,
+      "sha256": "2d710303bd350c73d0762bc2a59afb2950d104d971ee5410cce5c346db8c7245",
+      "image": "images/48-2026-10-02-213902-saved-edit-gpt-2.5-sunburst.png",
+      "preview": "previews/48-2026-10-02-213902-saved-edit-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 49,
+      "render_id": "c8a40d7c-d3de-43c1-8713-fc86706b7df9",
+      "created_at": "2026-10-03T03:38:32.150955+00:00",
+      "local_time": "2026-10-02T21:38:32.150955-06:00",
+      "model": "gpt-image-2.5-flare",
+      "style": "street-view / Direct 3D Street · GPT Image 2.5 Sunburst edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        2087,
+        753
+      ],
+      "bytes": 2856302,
+      "sha256": "f5a5b2bad3c30f6e2521b59d06ecb6f2f90604685ddb5112316039e9feaab28b",
+      "image": "images/49-2026-10-02-213832-saved-edit-gpt-2.5-flare.png",
+      "preview": "previews/49-2026-10-02-213832-saved-edit-gpt-2.5-flare.webp"
+    },
+    {
+      "number": 50,
+      "render_id": "cd0be02b-b983-4665-8d20-af99bb49e57e",
+      "created_at": "2026-10-03T03:38:12.387027+00:00",
+      "local_time": "2026-10-02T21:38:12.387027-06:00",
+      "model": "gpt-image-2",
+      "style": "street-view / Direct 3D Street · GPT Image 2.5 Sunburst edit",
+      "kind": "saved-edit",
+      "variant": "saved_edit",
+      "presentation_strategy": null,
+      "outcome": null,
+      "dimensions": [
+        2087,
+        754
+      ],
+      "bytes": 2871986,
+      "sha256": "85f540b2f3af345c9f9762a4ded271d9443c20996251c9144cd88a8936c6211e",
+      "image": "images/50-2026-10-02-213812-saved-edit-gpt-2.png",
+      "preview": "previews/50-2026-10-02-213812-saved-edit-gpt-2.webp"
+    },
+    {
+      "number": 51,
+      "render_id": "3701b1d2-911f-4b34-8249-5da969d3e775",
+      "created_at": "2026-10-03T03:35:56.495663+00:00",
+      "local_time": "2026-10-02T21:35:56.495663-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "photomontage",
+      "kind": "ai-original",
+      "variant": "provider_original",
+      "presentation_strategy": "provider_original",
+      "outcome": "review_required",
+      "dimensions": [
+        1952,
+        704
+      ],
+      "bytes": 2502783,
+      "sha256": "0701e19ea03477a07c741e96d7d4fb070cc5b870e1de4d026a63358cd53a56d2",
+      "image": "images/51-2026-10-02-213556-ai-original-gpt-2.5-sunburst.png",
+      "preview": "previews/51-2026-10-02-213556-ai-original-gpt-2.5-sunburst.webp"
+    },
+    {
+      "number": 52,
+      "render_id": "56ec7034-577f-4483-a41f-9b76d7f9efcd",
+      "created_at": "2026-10-03T03:35:55.519108+00:00",
+      "local_time": "2026-10-02T21:35:55.519108-06:00",
+      "model": "gpt-image-2.5-sunburst",
+      "style": "photomontage",
+      "kind": "scene-reference",
+      "variant": "final",
+      "presentation_strategy": "authoritative_source",
+      "outcome": "review_required",
+      "dimensions": [
+        1952,
+        704
+      ],
+      "bytes": 947350,
+      "sha256": "b61180695e66dd6102e3252dc77477e8cc975d1fe62458d050cc82599347d12d",
+      "image": "images/52-2026-10-02-213555-scene-reference-gpt-2.5-sunburst.png",
+      "preview": "previews/52-2026-10-02-213555-scene-reference-gpt-2.5-sunburst.webp"
+    }
+  ]
+}
