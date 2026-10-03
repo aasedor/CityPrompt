@@ -798,6 +798,37 @@ def test_instance_inventory_rejects_server_unsupported_supplemental_surfaces(
         )
 
 
+@pytest.mark.parametrize("blocked", [None, "uncleared", "terrain", "inactive", "outside", "site_image", "park_terrain"])
+def test_building_plot_landscape_requires_its_prepared_site(blocked):
+    zone = _zone(uuid.uuid4(), "building")
+    boundary = _zone(uuid.uuid4(), "site_boundary")
+    boundary.is_active_boundary = blocked != "inactive"
+    if blocked == "uncleared":
+        boundary.properties["community_3d_mask_existing_tiles"] = False
+    elif blocked == "terrain":
+        boundary.properties["terrain_strategy"] = "landscape"
+    elif blocked == "outside":
+        zone.geometry = from_shape(box(-115, 51, -114.9, 51.1), srid=4326)
+    elif blocked == "site_image":
+        boundary.properties["community_3d_landscape"] = {
+            "surface_image_url": "/site.png", "surface_mode": "site_base",
+        }
+    elif blocked == "park_terrain":
+        zone.properties["park_terrain"] = {"enabled": True}
+    payload = _request(presentation_mode="scene", style="development").model_dump()
+    payload["instance_id_manifest"] = {
+        "#010001": {"instance_id": f"zone:{zone.id}:building", "semantic_class": "building", "zone_id": zone.id},
+        "#010002": {"instance_id": f"zone:{zone.id}:landscape", "semantic_class": "landscape", "zone_id": zone.id},
+    }
+    request = Direct3DRenderRequest(**payload)
+    if blocked:
+        with pytest.raises(HTTPException, match="supplemental surface is not present"):
+            direct_api._bind_instance_manifest_to_server_zones(request, [zone], [boundary, zone])
+    else:
+        inventory = direct_api._bind_instance_manifest_to_server_zones(request, [zone], [boundary, zone])
+        assert {item["semantic_class"] for item in inventory} == {"building", "landscape"}
+
+
 def test_instance_inventory_rejects_supplemental_surface_from_hidden_layer():
     selected = _zone(
         uuid.uuid4(),

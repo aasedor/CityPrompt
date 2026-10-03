@@ -108,6 +108,35 @@ def _direct_source_geometry(zone: SiteZone):
             raise ValueError("Unusable Direct 3D source geometry") from exc
 
 
+def _has_building_plot_landscape(zone: SiteZone, all_zones: list[SiteZone]) -> bool:
+    """Match the prepared-site eligibility of GlobeBuildingPlotLandscape.
+
+    The supplement belongs to an existing visible building, never to an
+    arbitrary client-provided landscape instance or an uncleared site.
+    """
+    if community_3d_kind_for_source(zone.zone_type, zone.properties) != "building":
+        return False
+    if (zone.properties or {}).get("park_terrain"):
+        return False
+    boundaries = [item for item in all_zones if item.zone_type == "site_boundary"]
+    boundary = next((item for item in boundaries if getattr(item, "is_active_boundary", None) is True), None)
+    if boundary is None and boundaries and all(getattr(item, "is_active_boundary", None) is None for item in boundaries):
+        boundary = boundaries[0]
+    if boundary is None:
+        return False
+    properties = boundary.properties or {}
+    if properties.get("community_3d_mask_existing_tiles") is False or properties.get("terrain_strategy") == "landscape":
+        return False
+    recipe = properties.get("community_3d_landscape")
+    if isinstance(recipe, dict) and recipe.get("surface_image_url") and recipe.get("surface_mode") == "site_base":
+        return False
+    try:
+        outer, inner = _direct_source_geometry(boundary), _direct_source_geometry(zone)
+        return outer.is_valid and inner.is_valid and not inner.is_empty and outer.covers(inner)
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+
 def _validate_direct_3d_project_zones(
     req: Direct3DRenderRequest,
     zones: list[SiteZone],
@@ -1156,6 +1185,9 @@ def _bind_instance_manifest_to_server_zones(
         # boundary) are the only server-derived ground supplements.
         if source_kind not in {"park", "street"}:
             allowed_supplemental_surfaces.add((zone_id, "ground"))
+
+        if _has_building_plot_landscape(zone, all_zones):
+            allowed_supplemental_surfaces.add((zone_id, "landscape"))
 
         stored_landscape = (zone.properties or {}).get("community_3d_landscape")
         if (
