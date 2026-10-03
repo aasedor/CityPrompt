@@ -1,0 +1,42 @@
+{
+  "entries": [
+    {
+      "archetype_id": "timber_sanctuary_church",
+      "variant_id": "timber_sanctuary_church_glazed_gable",
+      "sources": [
+        {
+          "role": "front",
+          "region": "top-left",
+          "path": "frontend/public/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+          "bytes": 2780624,
+          "sha256": "ed1b1fd0c2d072533e324552a06821bfe939d63fdea936dc1f48ecef68effc0b",
+          "source_origin": "Original generated design reference"
+        },
+        {
+          "role": "oblique",
+          "region": "top-right",
+          "path": "frontend/public/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+          "bytes": 2780624,
+          "sha256": "ed1b1fd0c2d072533e324552a06821bfe939d63fdea936dc1f48ecef68effc0b",
+          "source_origin": "Original generated design reference"
+        },
+        {
+          "role": "top",
+          "region": "bottom-left high oblique roof",
+          "path": "frontend/public/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+          "bytes": 2780624,
+          "sha256": "ed1b1fd0c2d072533e324552a06821bfe939d63fdea936dc1f48ecef68effc0b",
+          "source_origin": "Original generated design reference"
+        },
+        {
+          "role": "interior",
+          "region": "bottom-right",
+          "path": "frontend/public/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+          "bytes": 2780624,
+          "sha256": "ed1b1fd0c2d072533e324552a06821bfe939d63fdea936dc1f48ecef68effc0b",
+          "source_origin": "Original generated design reference"
+        }
+      ]
+    }
+  ]
+}

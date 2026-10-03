@@ -1,4 +1,4 @@
-import { Component, Suspense, useMemo, type ReactNode } from 'react';
+import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
@@ -8,6 +8,7 @@ import { rectangleDimensions } from '@/features/pickPlace/geometry';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { resolveZoneTerrainHeight } from './globeTerrainUtils';
 import { direct3DInstanceUserData, direct3DZoneInstanceDescriptor } from './direct3dCapture';
+import { mountBuildingWalking, readBuildingWalking } from '@/features/legoAssembly/buildingWalking';
 
 /** Isolated local-review GLB. A bad candidate leaves a visible fallback and
  * never takes down the project view or another building. */
@@ -21,9 +22,15 @@ class ReviewBoundary extends Component<{ children: ReactNode }, { failed: boolea
     : this.props.children; }
 }
 
-function BuildingGLB({ url, zone }: { url: string; zone: SiteZone }) {
+function BuildingGLB({ url, zone, walkReady }: { url: string; zone: SiteZone; walkReady: boolean }) {
   const { scene } = useGLTF(url);
   const model = useMemo(() => centreNativeClayClone(scene.clone(true)), [scene]);
+  useEffect(() => {
+    const source = model.children[0];
+    if (!walkReady || !source) return;
+    const walking = readBuildingWalking(source);
+    if (walking) return mountBuildingWalking(`review:${zone.id}`, zone, source, walking);
+  }, [model, zone, walkReady]);
   return <group name="review-building-loaded" userData={{ reviewBuildingStatus: 'ready',
     ...direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'building',
       zone.building_id ? { building_id: zone.building_id } : {})) }}
@@ -39,6 +46,7 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight }: {
   const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)
     ?? resolveZoneTerrainHeight(null, Number.isFinite(storedTerrain) ? storedTerrain : null, terrainHeight);
   const degrees = rectangleDimensions(zone.coordinates).degrees;
+  const walkReady = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight) !== null;
   if (!url || zone.coordinates.length < 4) return null;
   return <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height + .12}>
     <group name={`review-building-${zone.id}`} rotation={[0, 0, degrees * Math.PI / 180]}>
@@ -46,7 +54,7 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight }: {
         <mesh name="review-building-loading" userData={{ reviewBuildingStatus: 'loading' }} position={[0, 0, 4]}>
           <boxGeometry args={[22, 14, 8]}/><meshBasicMaterial color="#64748b" wireframe/>
         </mesh>
-      }><BuildingGLB url={url} zone={zone}/></Suspense></ReviewBoundary>
+      }><BuildingGLB url={url} zone={zone} walkReady={walkReady}/></Suspense></ReviewBoundary>
     </group>
   </EastNorthUpFrame>;
 }

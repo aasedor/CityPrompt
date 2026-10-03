@@ -1,0 +1,42 @@
+{
+  "entries": [
+    {
+      "archetype_id": "gothic_community_church",
+      "variant_id": "gothic_community_church_single_spire",
+      "sources": [
+        {
+          "role": "front",
+          "path": "frontend/public/archetypes/buildings/gothic_community_church/reference-board-v1.png",
+          "region": "top-left",
+          "bytes": 2957489,
+          "sha256": "ad8e1c759ba7d1b2ef0b648bbb484529a28bc4f93c9bd15057bdd24c2583c89e",
+          "source_origin": "original generated design reference"
+        },
+        {
+          "role": "oblique",
+          "path": "frontend/public/archetypes/buildings/gothic_community_church/reference-board-v1.png",
+          "region": "top-right",
+          "bytes": 2957489,
+          "sha256": "ad8e1c759ba7d1b2ef0b648bbb484529a28bc4f93c9bd15057bdd24c2583c89e",
+          "source_origin": "original generated design reference"
+        },
+        {
+          "role": "interior",
+          "path": "frontend/public/archetypes/buildings/gothic_community_church/reference-board-v1.png",
+          "region": "bottom-right",
+          "bytes": 2957489,
+          "sha256": "ad8e1c759ba7d1b2ef0b648bbb484529a28bc4f93c9bd15057bdd24c2583c89e",
+          "source_origin": "original generated design reference"
+        },
+        {
+          "role": "top",
+          "path": "frontend/public/archetypes/buildings/gothic_community_church/roof-reference-v1.png",
+          "region": "whole image; high oblique roof",
+          "bytes": 3754632,
+          "sha256": "2edcd29bd6a7d9938c7f31fe4d324396450bd4da970e7050ee2ee3c1f75dd887",
+          "source_origin": "original generated design reference"
+        }
+      ]
+    }
+  ]
+}

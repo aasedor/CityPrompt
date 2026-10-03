@@ -1,6 +1,66 @@
 {
   "entries": [
     {
+      "record_id": "building/timber_sanctuary_church/timber_sanctuary_church_glazed_gable@da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+      "domain": "building",
+      "title": "Timber Sanctuary Church",
+      "archetype_id": "timber_sanctuary_church",
+      "variant_id": "timber_sanctuary_church_glazed_gable",
+      "version": "timber-sanctuary-church-clay-v002",
+      "sha256": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+      "existing_reviews": [
+        "PASS_INDEPENDENT_ARCHITECTURAL_CLAY"
+      ],
+      "completed": false,
+      "remaining": [
+        "Human visual approval before catalogue publication"
+      ],
+      "quality_status": "builder_candidate",
+      "approval_scope": "Local architectural-clay review and browser trial only",
+      "verified_model_path": "C:\\dev-artifacts\\CityPrompt\\large-civic-archetypes-2026-10-02\\timber-v002\\timber-sanctuary-church-clay-v002.glb",
+      "app_eligible": false,
+      "status": "Independently reviewed architectural clay; local trial",
+      "local_url": "/validation-assets/timber-sanctuary-church-clay-v002/timber-sanctuary-church-clay-v002.glb",
+      "placement_id": "validation_timber_sanctuary_church_glazed_gable",
+      "runtime_status": "LOCAL_BROWSER_PASSED",
+      "binding": "fixed-native-review",
+      "native_dimensions_m": [
+        32.76999855041504,
+        43.5,
+        17.549999237060547
+      ]
+    },
+    {
+      "record_id": "building/gothic_community_church/gothic_community_church_single_spire@ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+      "domain": "building",
+      "title": "Gothic Community Church",
+      "archetype_id": "gothic_community_church",
+      "variant_id": "gothic_community_church_single_spire",
+      "version": "gothic-community-church-clay-v005",
+      "sha256": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+      "existing_reviews": [
+        "PASS_INDEPENDENT_ARCHITECTURAL_CLAY"
+      ],
+      "completed": false,
+      "remaining": [
+        "Human visual approval before catalogue publication"
+      ],
+      "quality_status": "builder_candidate",
+      "approval_scope": "Local architectural-clay review and browser trial only",
+      "verified_model_path": "C:\\dev-artifacts\\CityPrompt\\large-civic-archetypes-2026-10-02\\gothic-v005\\gothic-community-church-clay-v005.glb",
+      "app_eligible": false,
+      "status": "Independently reviewed architectural clay; local trial",
+      "local_url": "/validation-assets/gothic-community-church-clay-v005/gothic-community-church-clay-v005.glb",
+      "placement_id": "validation_gothic_community_church_single_spire",
+      "runtime_status": "LOCAL_BROWSER_PASSED",
+      "binding": "fixed-native-review",
+      "native_dimensions_m": [
+        27.094999313354492,
+        55.44499969482422,
+        43.95000076293945
+      ]
+    },
+    {
       "record_id": "building/reference_charcoal_gable_fourplex/reference_charcoal_gable_fourplex_v1@22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
       "domain": "building",
       "title": "Charcoal Gable Fourplex",
@@ -1479,6 +1539,98 @@
     }
   ],
   "assets": [
+    {
+      "id": "validation_timber_sanctuary_church_glazed_gable",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Timber Sanctuary Church",
+      "description": "A contemporary timber sanctuary with a tall glazed front gable, eight exposed portal frames, warm timber walls and a low community annex. A level entrance leads to a broad centre aisle and two pew banks.",
+      "thumbnail": "/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+      "model": {
+        "variantId": "timber_sanctuary_church_glazed_gable",
+        "revision": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+        "method": "RLASM 6.1 architectural clay"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 42,
+      "depth": 47,
+      "minWidth": 42,
+      "minDepth": 47,
+      "maxSize": 160,
+      "reshapeDescription": "Keep the church at its authored dimensions; enlarge its surrounding plot without stretching the architecture.",
+      "nativeDimensions": [
+        32.76999855041504,
+        43.5,
+        17.549999237060547
+      ],
+      "properties": {
+        "validation_fixed_fixture": true,
+        "validation_native_url": "/validation-assets/timber-sanctuary-church-clay-v002/timber-sanctuary-church-clay-v002.glb",
+        "building_archetype_id": "timber_sanctuary_church",
+        "development_archetype_id": "timber_sanctuary_church",
+        "development_selected_variant_id": "timber_sanctuary_church_glazed_gable",
+        "development_archetype_label": "Timber Sanctuary Church",
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "community_3d_mask_existing_tiles": true,
+        "floors": 1,
+        "floor_count": 1,
+        "floor_height": 17.549999237060547,
+        "height": 17.549999237060547
+      }
+    },
+    {
+      "id": "validation_gothic_community_church_single_spire",
+      "kind": "object",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Gothic Community Church",
+      "description": "A six-bay limestone church with one bell tower and spire, rose window, vaulted nave, side aisles and polygonal sanctuary. A level entrance opens onto clear aisles between timber pews.",
+      "thumbnail": "/archetypes/buildings/gothic_community_church/reference-board-v1.png",
+      "model": {
+        "variantId": "gothic_community_church_single_spire",
+        "revision": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+        "method": "RLASM 6.1 architectural clay"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "form_reference"
+      },
+      "zoneType": "building",
+      "reshapeMode": "fixed_native",
+      "width": 35,
+      "depth": 63,
+      "minWidth": 35,
+      "minDepth": 63,
+      "maxSize": 160,
+      "reshapeDescription": "Keep the church at its authored dimensions; enlarge its surrounding plot without stretching the architecture.",
+      "nativeDimensions": [
+        27.094999313354492,
+        55.44499969482422,
+        43.95000076293945
+      ],
+      "properties": {
+        "validation_fixed_fixture": true,
+        "validation_native_url": "/validation-assets/gothic-community-church-clay-v005/gothic-community-church-clay-v005.glb",
+        "building_archetype_id": "gothic_community_church",
+        "development_archetype_id": "gothic_community_church",
+        "development_selected_variant_id": "gothic_community_church_single_spire",
+        "development_archetype_label": "Gothic Community Church",
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "community_3d_mask_existing_tiles": true,
+        "floors": 1,
+        "floor_count": 1,
+        "floor_height": 43.95000076293945,
+        "height": 43.95000076293945
+      }
+    },
     {
       "id": "validation_reference_charcoal_gable_fourplex_v1",
       "kind": "object",

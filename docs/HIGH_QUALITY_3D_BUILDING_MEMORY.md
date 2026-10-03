@@ -30,6 +30,17 @@ their horizontal transform remains independent from the authored height.
 
 ## The quality target
 
+Large civic local pilot, 2026-10-02: Gothic Community Church v005 passed
+independent architectural-clay review before starting the bounded Timber
+Sanctuary Church build. Preserve curved partial glass cells at arch edges,
+terminate mullions at their frame, and cut/remove every overlapping opaque
+carrier. Resolve dark roof joints using a lit exact-GLB close and contact probes
+before treating darkness as a hole. Sources are original generated designs;
+review does not grant textured keeper or seed activation. The matching
+`large_civic_local_pilot` record is in both machine companions. Timber v002
+passed after seating the glazing perimeter and extending pendant cords to the
+roof lining. Both churches passed the bounded local browser walking trial.
+
 The target is Kinnaird-class architectural identity in a modular real-time asset, not a literal photogrammetric reconstruction. A successful family must read correctly at three distances:
 
 1. **Block scale:** massing, setbacks, roofline, corner condition and base-middle-crown hierarchy match the archetype.

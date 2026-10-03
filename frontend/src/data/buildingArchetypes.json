@@ -174,6 +174,181 @@
   ],
   "archetypes": [
     {
+      "id": "timber_sanctuary_church",
+      "title": "Timber Sanctuary Church",
+      "aestheticCategory": "civic_institutional",
+      "description": "A contemporary timber sanctuary with a tall glazed front gable, eight exposed portal frames, warm timber walls and a low community annex. A level entrance leads to a broad centre aisle and two pew banks.",
+      "buildingSubcategory": "Civic — Church / Community",
+      "developmentType": "institutional",
+      "districtKit": "calgary",
+      "generationTags": [
+        "church",
+        "community",
+        "sanctuary",
+        "interior"
+      ],
+      "suggestedWidth_m": 42,
+      "suggestedDepth_m": 47,
+      "minWidth_m": 42,
+      "maxWidth_m": 42,
+      "minDepth_m": 47,
+      "maxDepth_m": 47,
+      "suggestedFloorHeight": 17.549999237060547,
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedAreaSqm": 1974,
+      "aspectRatio": "42:47",
+      "shadeId": "#b9925f",
+      "thumbnailUrl": "/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+      "palette": {
+        "skyTop": "#88a8ca",
+        "skyBottom": "#d8e4ed",
+        "facadePrimary": "#b9925f",
+        "facadeSecondary": "#e2d6bc",
+        "accent": "#504637",
+        "window": "#a6b7ba",
+        "ground": "#71934f",
+        "street": "#57595a",
+        "landscape": "#567743"
+      },
+      "styleProfile": {
+        "materials": [
+          "laminated timber",
+          "vertical cedar boards",
+          "standing-seam metal",
+          "clear glass",
+          "buff stone"
+        ],
+        "massing": "A contemporary timber sanctuary with a tall glazed front gable, eight exposed portal frames, warm timber walls and a low community annex. A level entrance leads to a broad centre aisle and two pew banks.",
+        "facadeRhythm": "Tall narrow side windows between eight timber portal frames, full-height glazed front and rear altar slit.",
+        "roofForm": "One steep metal gable over the sanctuary and a low flat roof over the rear-right annex.",
+        "frontageType": "Level buff forecourt and native prairie grasses with flowering meadow planting; the entrance and side access stay open.",
+        "windowStyle": "Tall narrow side windows between eight timber portal frames, full-height glazed front and rear altar slit.",
+        "streetRelationship": "Level buff forecourt and native prairie grasses with flowering meadow planting; the entrance and side access stay open.",
+        "articulation": "A contemporary timber sanctuary with a tall glazed front gable, eight exposed portal frames, warm timber walls and a low community annex. A level entrance leads to a broad centre aisle and two pew banks."
+      },
+      "facadeDetail": {
+        "primaryMaterial": "laminated timber",
+        "secondaryMaterial": "vertical cedar boards, standing-seam metal, clear glass, buff stone",
+        "groundFloor": "Level buff forecourt and native prairie grasses with flowering meadow planting; the entrance and side access stay open.",
+        "upperFloors": "No occupied upper storeys; sanctuary height and tower are fixed architecture.",
+        "cornice": "One steep metal gable over the sanctuary and a low flat roof over the rear-right annex.",
+        "colorScheme": "#b9925f"
+      },
+      "roofDetail": {
+        "form": "One steep metal gable over the sanctuary and a low flat roof over the rear-right annex.",
+        "material": "vertical cedar boards",
+        "features": "One steep metal gable over the sanctuary and a low flat roof over the rear-right annex.",
+        "aerialAppearance": "One steep metal gable over the sanctuary and a low flat roof over the rear-right annex."
+      },
+      "renderPrompt": {
+        "mapOverlay": "A contemporary timber sanctuary with a tall glazed front gable, eight exposed portal frames, warm timber walls and a low community annex. A level entrance leads to a broad centre aisle and two pew banks. Level buff forecourt and native prairie grasses with flowering meadow planting; the entrance and side access stay open. Keep the site context and exact native architecture.",
+        "roofView": "One steep metal gable over the sanctuary and a low flat roof over the rear-right annex.",
+        "negative": "extra towers, changed footprint, extra storeys, floating entrances, blocked aisles"
+      },
+      "variants": [
+        {
+          "id": "timber_sanctuary_church_glazed_gable",
+          "label": "Timber Sanctuary Church",
+          "thumbnailUrl": "/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+          "description": "A contemporary timber sanctuary with a tall glazed front gable, eight exposed portal frames, warm timber walls and a low community annex. A level entrance leads to a broad centre aisle and two pew banks.",
+          "minFloors": 1,
+          "maxFloors": 1,
+          "suggestedAreaSqm": 1974,
+          "palette": {
+            "primary": "#b9925f"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gothic_community_church",
+      "title": "Gothic Community Church",
+      "aestheticCategory": "civic_institutional",
+      "description": "A six-bay limestone church with one bell tower and spire, rose window, vaulted nave, side aisles and polygonal sanctuary. A level entrance opens onto clear aisles between timber pews.",
+      "buildingSubcategory": "Civic — Church / Community",
+      "developmentType": "institutional",
+      "districtKit": "calgary",
+      "generationTags": [
+        "church",
+        "community",
+        "sanctuary",
+        "interior"
+      ],
+      "suggestedWidth_m": 35,
+      "suggestedDepth_m": 63,
+      "minWidth_m": 35,
+      "maxWidth_m": 35,
+      "minDepth_m": 63,
+      "maxDepth_m": 63,
+      "suggestedFloorHeight": 43.95000076293945,
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedAreaSqm": 2205,
+      "aspectRatio": "35:63",
+      "shadeId": "#b1a185",
+      "thumbnailUrl": "/archetypes/buildings/gothic_community_church/reference-board-v1.png",
+      "palette": {
+        "skyTop": "#88a8ca",
+        "skyBottom": "#d8e4ed",
+        "facadePrimary": "#b1a185",
+        "facadeSecondary": "#e2d6bc",
+        "accent": "#504637",
+        "window": "#a6b7ba",
+        "ground": "#71934f",
+        "street": "#57595a",
+        "landscape": "#567743"
+      },
+      "styleProfile": {
+        "materials": [
+          "buff limestone",
+          "slate",
+          "stained glass",
+          "timber pews"
+        ],
+        "massing": "A six-bay limestone church with one bell tower and spire, rose window, vaulted nave, side aisles and polygonal sanctuary. A level entrance opens onto clear aisles between timber pews.",
+        "facadeRhythm": "Six pointed side windows with clerestory lights; rose window and recessed front portal.",
+        "roofForm": "Steep nave gable, lower lean-to aisle roofs, polygonal hipped apse and one octagonal spire.",
+        "frontageType": "Level stone forecourt with flowering perennial beds and low clipped hedges, keeping the central entrance and side circulation clear.",
+        "windowStyle": "Six pointed side windows with clerestory lights; rose window and recessed front portal.",
+        "streetRelationship": "Level stone forecourt with flowering perennial beds and low clipped hedges, keeping the central entrance and side circulation clear.",
+        "articulation": "A six-bay limestone church with one bell tower and spire, rose window, vaulted nave, side aisles and polygonal sanctuary. A level entrance opens onto clear aisles between timber pews."
+      },
+      "facadeDetail": {
+        "primaryMaterial": "buff limestone",
+        "secondaryMaterial": "slate, stained glass, timber pews",
+        "groundFloor": "Level stone forecourt with flowering perennial beds and low clipped hedges, keeping the central entrance and side circulation clear.",
+        "upperFloors": "No occupied upper storeys; sanctuary height and tower are fixed architecture.",
+        "cornice": "Steep nave gable, lower lean-to aisle roofs, polygonal hipped apse and one octagonal spire.",
+        "colorScheme": "#b1a185"
+      },
+      "roofDetail": {
+        "form": "Steep nave gable, lower lean-to aisle roofs, polygonal hipped apse and one octagonal spire.",
+        "material": "slate",
+        "features": "Steep nave gable, lower lean-to aisle roofs, polygonal hipped apse and one octagonal spire.",
+        "aerialAppearance": "Steep nave gable, lower lean-to aisle roofs, polygonal hipped apse and one octagonal spire."
+      },
+      "renderPrompt": {
+        "mapOverlay": "A six-bay limestone church with one bell tower and spire, rose window, vaulted nave, side aisles and polygonal sanctuary. A level entrance opens onto clear aisles between timber pews. Level stone forecourt with flowering perennial beds and low clipped hedges, keeping the central entrance and side circulation clear. Keep the site context and exact native architecture.",
+        "roofView": "Steep nave gable, lower lean-to aisle roofs, polygonal hipped apse and one octagonal spire.",
+        "negative": "extra towers, changed footprint, extra storeys, floating entrances, blocked aisles"
+      },
+      "variants": [
+        {
+          "id": "gothic_community_church_single_spire",
+          "label": "Gothic Community Church",
+          "thumbnailUrl": "/archetypes/buildings/gothic_community_church/reference-board-v1.png",
+          "description": "A six-bay limestone church with one bell tower and spire, rose window, vaulted nave, side aisles and polygonal sanctuary. A level entrance opens onto clear aisles between timber pews.",
+          "minFloors": 1,
+          "maxFloors": 1,
+          "suggestedAreaSqm": 2205,
+          "palette": {
+            "primary": "#b1a185"
+          }
+        }
+      ]
+    },
+    {
       "id": "collegiate_gothic_education",
       "footprintCompatibility": {
         "preferredProfiles": ["courtyard", "u_shape", "rectangle"],

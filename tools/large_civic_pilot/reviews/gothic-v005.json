@@ -1,0 +1,56 @@
+{
+  "candidate": "gothic-community-church-clay-v005",
+  "reviewer": "independent RLASM verifier /root/church_review",
+  "date": "2026-10-03",
+  "review_type": "holistic architectural-clay review",
+  "decision": "architectural_clay_reviewed",
+  "scope": "Complete exact-GLB visual evidence against the original generated design source lock, including whole envelope, visible contacts, openings, interior program, circulation appearance and phone comparison. This approves the architectural-clay candidate for a local runtime trial only.",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "blockers": [],
+  "runtime_pilot_recommended": true,
+  "runtime_integration_verified": false,
+  "broad_runtime_activation_approved": false,
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "human_activation_required": true,
+  "exact_glb": {
+    "path": "gothic-community-church-clay-v005.glb",
+    "sha256": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+    "bytes": 12172560,
+    "textures": 0,
+    "images": 0
+  },
+  "source_provenance": "Original generated design references, not photographs of a real church. Board top-left/front, top-right/oblique and bottom-right/interior are enrolled. The contradictory lower-left annex is excluded; the separate high-oblique roof reference governs topology.",
+  "inspected_files": [
+    "sources/reference-board-v1.png", "sources/roof-reference-v1.png",
+    "renders/front.png", "renders/front_corner.png", "renders/aerial.png", "renders/top.png",
+    "renders/left_side.png", "renders/right_side.png", "renders/rear.png", "renders/rear_side.png",
+    "renders/facade_close.png", "renders/architecture_close.png", "renders/glass_close.png",
+    "renders/program_interior.png", "renders/vault_interior.png", "renders/walk.png",
+    "renders/entrance_access.png", "renders/apse_interior.png", "renders/roof_contact.png",
+    "boards/phone-comparison.png"
+  ],
+  "supporting_records": ["source-entry.json", "prework-manifest.json", "build-report.json", "evidence/carrier-aperture-audit.json", "evidence/roof-contact-rays.json", "review/roof-contact-probe.json", "scripts/build_church.py"],
+  "resolved_previous_findings": [
+    {"id": "GOTHIC-003-01", "closure": "The sanctuary ceiling band is now closed in program_interior, vault_interior and walk views. The supplemental unchanged-GLB roof_contact render shows the rear gable and front apse roof plane joining as solid surfaces. The remaining dark triangle in the baseline top view is shading on the steep roof face, not a missing surface. Independent exact-GLB downward probes over the interface also hit roof/coping at all 18 sampled positions."},
+    {"id": "GOTHIC-003-02", "closure": "Partial stained cells now fill the arch boundary and the main mullions meet the pointed outline. Glass-close and apse-interior views show continuous coloured glazing with framed depth rather than the former large stepped voids."},
+    {"id": "GOTHIC-003-03", "closure": "Tower-side opening now has room depth without the overlapping aisle carrier. The exact export aperture audit passes, and tower windows remain visibly recessed in the side and facade views."},
+    {"id": "GOTHIC-003-04", "closure": "The phone board removes the incompatible annex panel and includes the governing roof image. Generated-design provenance and exact delivered-GLB images are labelled clearly."}
+  ],
+  "holistic_findings": [
+    "Front-left square bell tower and single octagonal spire, axial gable, rose window, six nave bays, lower aisles and polygonal sanctuary form a coherent whole building in every elevation.",
+    "Ground contact, main opening, shallow approach, rear aisle closure, roof seating, belfry and side window recesses remain intact. No regression of the previously repaired duplicate lancet was found.",
+    "The interior contains pews, altar, coloured glazing, column clusters and a pointed vault. Central and side routes are visually clear, with doors parked away from the entry path. Actual collision and traversal require the separate browser trial.",
+    "The complete sixteen-view roster has useful exposure and framing; whole-envelope views retain grade and spire margins. The supplemental contact view resolves the one ambiguous dark roof face without replacing material or geometry.",
+    "The exact GLB retains the declared architectural-clay representation: simplified stone, ornament and coloured glazing, with no texture imagery. It is not an exact textured reconstruction or a surveyed building."
+  ],
+  "limitations": [
+    "No browser placement, saved reload, embedded walking-network behavior, terrain transition, accessibility-code compliance or performance acceptance is implied by this asset review.",
+    "No tower-climbing access is advertised or approved.",
+    "Landscape and site integration must be judged in the runtime trial; the standalone neutral evidence does not include a landscaped site.",
+    "Photoreal material treatment, carved tracery and construction detailing would require a separate textured-keeper build and review."
+  ],
+  "prior_reviews_preserved": ["../gothic-v003/review/independent-review.json"],
+  "builder_source_edited_by_reviewer": false
+}

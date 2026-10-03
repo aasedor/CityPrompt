@@ -435,6 +435,18 @@ A keeper answers yes to every question:
 
 If any answer is no, the building is a candidate—not a keeper.
 
+## Large civic local pilot — 2026-10-02
+
+The original Gothic Community Church v005 passed independent architectural-clay
+review before the finite second build, Timber Sanctuary Church. Source boards
+are explicitly generated original designs, not photographs of existing churches.
+The Gothic review closed roof/ceiling joins, clipped arch glazing and overlapping
+tower wall ownership. A supplementary exact-GLB contact view distinguished a
+shaded roof plane from a hole. This is local trial evidence; no keeper or seed
+activation is implied. Timber v002 also passed with zero P0/P1 blockers. Both
+models passed local placement, aisle-route, furniture-exclusion, keyboard
+entry/exit and saved-reload checks. See `docs/LARGE_CIVIC_PILOT_2026-10-02.md`.
+
 ## Current forward-standard exemplars
 
 The following raw-photo-only pilots are the current RLASM v6.1 reference

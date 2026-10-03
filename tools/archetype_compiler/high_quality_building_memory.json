@@ -1,4 +1,5 @@
 {
+  "large_civic_local_pilot": {"date":"2026-10-03","pilot":"gothic-community-church-clay-v005","second_build":"timber-sanctuary-church-clay-v002","source_origin":"original_generated_design","review_scope":"architectural_clay","unresolved_p0":0,"unresolved_p1":0,"runtime_acceptance":"local browser: placement, aisle routes, furniture exclusion, keyboard entry and exit, saved reload","seed_activation":false,"evidence":"docs/LARGE_CIVIC_PILOT_2026-10-02.md"},
   "catalogue_publication_workflow": {"runbook": "docs/BUILDING_CATALOGUE_WORKFLOW.md", "tool": "tools/catalogue_promotion.py", "source_of_truth": "seed/model-library/rlasm-architectural-clay/library.json", "local_trial_before_activation": true, "exact_byte_review_required": true, "human_activation_required": true, "git_merge_is_not_database_install": true},
   "published_building_trio_2026_09_06": {
     "activation": "human_user",
