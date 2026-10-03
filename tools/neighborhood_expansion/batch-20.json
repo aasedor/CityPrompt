@@ -704,8 +704,93 @@
         "description": "A single-storey U-shaped childcare centre with three classroom wings around a secure garden courtyard. A low front gate and sheltered entrance reveal the courtyard without exposing it directly to traffic. Deep timber verandas provide shade and rain shelter; classroom doors open directly to the enclosed play area. Keep the scale domestic and the landscape low enough for supervision.",
         "siteNote": "Outer dimensions include the courtyard envelope; the courtyard itself must remain open."
       },
-      "state": "source_locked",
-      "attempts": [],
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "childcare-courtyard-v001",
+          "state": "visual_rework_required",
+          "build": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v001\\build-report.json",
+            "sha256": "b4190df1ed4ab3abe3fa3d2d037bf8faa87a43d2781ec5f1dea347aea5c97a74"
+          },
+          "glb_sha256": "4b4bd9f1b0334ce6459be33b5da433e77d30e95a377019c32f82091f5b14b407",
+          "walking": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v001\\evidence\\walking-solver-review.json",
+            "sha256": "39067802703035677011826954c0c459c5f163409742461dd17408633ddba7ed"
+          },
+          "routes_passed": 14,
+          "routes_total": 22,
+          "garden": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v001\\evidence\\garden-collision-review.json",
+            "sha256": "6e7fadb038dca133402d6ffc292e4949f93f00facb496f755beb78e8c66c1840"
+          },
+          "physical": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v001\\evidence\\physical-walking-review.json",
+            "sha256": "f8c84ff9554f7b4c317d43630f19fa0d7a8608bf2892f9e17874a19dfcea929d"
+          },
+          "independent_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/childcare-courtyard-v001/review/independent-visual-review.json",
+          "review_sha256": "77546d0f0c16202b9f64ecd72cc4753521060c760a2ba531f3070617620b27ef",
+          "local_p0": 0,
+          "local_p1": 7,
+          "keeper_p1": 0
+        },
+        {
+          "candidate": "childcare-courtyard-v002",
+          "state": "visual_rework_required",
+          "build": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v002\\build-report.json",
+            "sha256": "669a95a1b23d6fd02d22dc7cffc901fbabe3c6077ae48d32651cae7a055e361c"
+          },
+          "glb_sha256": "122edd60a33831596d03c65e9946906c6310823b521018afd322a3e5dc96794f",
+          "walking": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v002\\evidence\\walking-solver-review.json",
+            "sha256": "adc307415642e948b131d47e9b8da884b44759d711d001a97027a852102750a5"
+          },
+          "routes_passed": 21,
+          "routes_total": 22,
+          "garden": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v002\\evidence\\garden-collision-review.json",
+            "sha256": "6e7fadb038dca133402d6ffc292e4949f93f00facb496f755beb78e8c66c1840"
+          },
+          "physical": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v002\\evidence\\physical-walking-review.json",
+            "sha256": "bb21f4f01c3a400be587e031543af3c5d0d513ed05290e9569fccc9b0230edab"
+          },
+          "independent_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/childcare-courtyard-v002/review/independent-visual-review.json",
+          "review_sha256": "bd62ade236ea7f0e09b9dcb5a3bbae5f7b98ede7a2aca2392cf01a78d6f69cfc",
+          "local_p0": 0,
+          "local_p1": 3,
+          "keeper_p1": 2
+        },
+        {
+          "candidate": "childcare-courtyard-v003",
+          "state": "local_prototype_pass",
+          "build": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v003\\build-report.json",
+            "sha256": "7095f399c6d89891ab96f1f39d90b04fbccda93d2cc5949a4849395007817549"
+          },
+          "glb_sha256": "91b265f8cfd9d1bd9e229e01d4bbfdc1a8ca042afea2732fc3d16023183f660f",
+          "walking": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v003\\evidence\\walking-solver-review.json",
+            "sha256": "bbcfa5a3352088e969dc40049acc127b19d24451d99f10fea85dc886134a42d7"
+          },
+          "routes_passed": 22,
+          "routes_total": 22,
+          "garden": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v003\\evidence\\garden-collision-review.json",
+            "sha256": "6e7fadb038dca133402d6ffc292e4949f93f00facb496f755beb78e8c66c1840"
+          },
+          "physical": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v003\\evidence\\physical-walking-review.json",
+            "sha256": "dad99e5d19c1893089054d41167d0726ba95f60710eafe7b764b56fac0532333"
+          },
+          "independent_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/childcare-courtyard-v003/review/independent-visual-review.json",
+          "review_sha256": "f20ead8a4f58f2fbc6dc7e930cd68893ed045832267da7fb14c77da907c7b725",
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2
+        }
+      ],
       "keeper_approved": false,
       "catalogue_activated": false,
       "source_attempts": [
@@ -734,7 +819,8 @@
         "childcare-courtyard-front-generation.json",
         "childcare-courtyard-oblique-generation.json",
         "childcare-courtyard-top-generation.json",
-        "childcare-courtyard-oblique-repair-generation.json"
+        "childcare-courtyard-oblique-repair-generation.json",
+        "childcare-courtyard-material-generation.json"
       ],
       "source_note": "Front001, corrected oblique002 and top001 independently compatible and locked. Oblique001 and initial rejection preserved. Source categories only; no geometry, material or keeper approval.",
       "source_lock": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\childcare-courtyard-source-lock.json",
@@ -744,6 +830,24 @@
         "sha256": "6a5143270967522d304055a97772ffbd02e4d0b938a4da683dc09403d9b0c799",
         "decision": "category_closure_only",
         "scope": "Source compatibility and roof graph only. Direct full-pixel comparison of front-001, repaired oblique-002 and top-001, with brief and generation provenance. No model, material, optical, circulation or keeper approval."
+      },
+      "prework": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\childcare-courtyard-prework.json",
+      "material_record": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-material-generation.json",
+      "current_candidate": "childcare-courtyard-v003",
+      "local_review": {
+        "candidate": "childcare-courtyard-v003",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "childcare-courtyard-v003/review/independent-visual-review.json",
+        "review_sha256": "f20ead8a4f58f2fbc6dc7e930cd68893ed045832267da7fb14c77da907c7b725",
+        "glb_sha256": "91b265f8cfd9d1bd9e229e01d4bbfdc1a8ca042afea2732fc3d16023183f660f",
+        "routes": 22,
+        "physical_samples": 1018,
+        "garden_probes": 7,
+        "mandatory_views": 41,
+        "browser_verified": true
       }
     },
     {
@@ -765,10 +869,43 @@
         "description": "A wider two-storey sixplex with exactly three flats per floor. Three paired entrance bays each serve a lower and upper apartment. Upper-floor recessed balconies overlook a small shared front garden, with more generous common landscape behind. The three gables and three repeated apartment bays explain the wider footprint while keeping a quiet residential street edge.",
         "siteNote": "Compare its larger footprint with the three-storey sixplex while holding the total at six homes."
       },
-      "state": "queued",
+      "state": "source_locked",
       "attempts": [],
       "keeper_approved": false,
-      "catalogue_activated": false
+      "catalogue_activated": false,
+      "source_lock": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\sixplex-garden-source-lock.json",
+      "source_lock_sha256": "9f8da578542638c6c987e0667b3084d7dcede8fc7e8284dbafc7b8804540315f",
+      "source_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\sixplex-garden-source-review.json",
+        "sha256": "5d3abdd14b98e4a7b2fa6d556459810b5a3ee6801345e459433272d01b0a5e7d",
+        "scope": "Source compatibility only: direct full-resolution front001, oblique001 and top001 pixels; generation provenance and progress brief. No geometry, material, model, walking, keeper or catalogue assessment."
+      },
+      "source_attempts": [
+        {
+          "path": "source-attempts/sixplex_two_storey_garden/front-001.png",
+          "full_pixels_inspected": true,
+          "bytes": 2886468,
+          "sha256": "def791f606d4ac4914d294610d9fbe60b42abacfa297e563d1b0a28d88affffd"
+        },
+        {
+          "path": "source-attempts/sixplex_two_storey_garden/oblique-001.png",
+          "full_pixels_inspected": true,
+          "bytes": 3420771,
+          "sha256": "dfb250d2ecd9f851fc19615cffdf32c6656c86a3853282ab1766a7f77d8ede88"
+        },
+        {
+          "path": "source-attempts/sixplex_two_storey_garden/top-001.png",
+          "full_pixels_inspected": true,
+          "bytes": 3578634,
+          "sha256": "846c0b1c1b072cefe3d3ff15cf3ad88a8beff46cc70e3614ee75e82c3a8fc5f6"
+        }
+      ],
+      "generation_records": [
+        "sixplex-garden-front-generation.json",
+        "sixplex-garden-oblique-generation.json",
+        "sixplex-garden-top-generation.json"
+      ],
+      "source_note": "Compatible front001/oblique001/top001 locked. Use actual transverse main roof and three short front cross-gables terminating below main ridge. Initial parallel-roof prompt assumption is rejected. Source approval only."
     },
     {
       "archetype_id": "community_association_hall",
@@ -1062,9 +1199,9 @@
   "state": "wave2_in_progress",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
-  "completed_models": 5,
-  "next_action": "Build childcare_sheltered_courtyard from the accepted source-only lock in tools/neighborhood_expansion/childcare-courtyard-source-lock.json. First measure plan, opening schedule, three inward roof planes and two diagonal joins, occupied programme, physical contacts and complete camera roster; then prepare source-conditioned material and dedicated constructor, dry run and v001. School-campus-v004 remains held with two local P1; its finite pass is exhausted. Reopen only after advancing childcare using prework/school-campus-next-pass.md. No building jobs running. Completed 5/20; 15 remain.",
-  "updated_utc": "2026-10-03T20:16:39.404493+00:00",
+  "completed_models": 6,
+  "next_action": "Reopen school_shared_community_campus in a new bounded pass using prework/school-campus-next-pass.md: half-landing side guards and correctly seated teaching boards, added proof views/probes. Preserve v004 hold; start unused v005 only after checking jobs. Then develop source-locked sixplex_two_storey_garden and queued hall_timber_park_edge. Childcare courtyard v003 is locally complete; do not rebuild. Completed 6/20; full keeper remains unapproved.",
+  "updated_utc": "2026-10-03T21:13:14.308387+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

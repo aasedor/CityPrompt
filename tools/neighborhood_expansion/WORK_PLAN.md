@@ -322,11 +322,52 @@ roof junctions. Canonical copies occupy variant1 in the external childcare
 reference folder; the original pilot sources remain intact. Prompts and input
 hashes are in external `childcare-courtyard-locked-generation.json`.
 
-Next, measure the inferred plan, wing and veranda depths, opening schedule,
-interior programme, roof intersections and drainage, physical contacts, and the
-complete camera roster. Then prepare source-conditioned material and a dedicated
-constructor, run the dry run, and build v001. No childcare courtyard geometry or
-material exists yet. Source review grants no model or keeper approval.
+## Courtyard childcare delivery checkpoint
 
-The completed count remains5/20. No model build is running at this checkpoint.
-The school remains excluded until a later bounded repair and independent review.
+`build_courtyard_childcare.py` now authors this distinct U-shaped building.
+`childcare-courtyard-prework.json` records the inferred 30 by24 m envelope,
+6 m wings, 2 m verandas, three inward-falling roof planes and diagonal rear joins.
+Three furnished learning rooms surround the open play court, with reception,
+a four-cot nap room, staff room, kitchen, adult and child washrooms. Timber roof
+supports, low gate, playhouse, sandbox, growing beds and bicycles are explicit.
+The source-conditioned terracotta tile uses its observed cadence: eight brick
+lengths by about26.6 courses, mapped to1.92 by2.00 m. Source-only provenance stays
+immutable; `childcare-courtyard-build-generation.json` adds material provenance.
+
+V001 remains a failed36-view attempt: blocked routes, a bicycle approach gap,
+a pane crossing a partition, poorly seated fixtures/cubbies, playhouse roof
+penetration and incomplete camera proof. V002 repairs those with39 views but
+retains a staff-route obstruction, coincident earth/turf and two evidence gaps.
+V003 routes around the staff chair, separates earth and turf, and adds direct
+staff and mirror contact cameras. Preserve both failed versions and reviews.
+
+V003 passed independent local architecture/circulation review: zero local P0/P1,
+41 exact-GLB views,22 native and browser routes,20 furniture probes,7 garden
+probes,41 carrier apertures and1,018 physical samples. Seven browser screenshots
+record manual entry from public ground, detail views, model switching, visibility
+and reload. Full keeper remains unapproved: source finish/landscape/fixtures and
+optical response, including roof stippling and a dark browser mirror, need work.
+Its delivery manifest preserves these limits. The completed local count is6/20.
+
+## Garden sixplex source checkpoint
+
+`sixplex-garden-source-lock.json` locks compatible front001, oblique001 and
+top001 in external variant1; the brick sixplex pilot sources remain intact.
+Independent source review is `prework/sixplex-garden-source-review.json`.
+The actual pixels show a transverse main gable with three short front cross-
+gables. Their ridges terminate on the main forward plane below its ridge.
+Reject the original prompt assumption of three full-depth parallel roof bars
+and the top prompt's claim that cross-ridges meet the main ridge. Solve actual
+plane intersections for the valleys; do not treat seam lines as roof folds.
+
+Front controls the six door leaves and three recessed balconies. The left and
+middle bays have windows left of their paired entries; the right bay mirrors
+that arrangement. Oblique controls four left-side windows per storey. Top is
+adjacency evidence only. Hidden elevations, six floorplans and three enclosed
+upper stairs still need explicit inference. No sixplex geometry or material
+exists yet; source approval is not model approval.
+
+No build job is running at this checkpoint. Next, reopen the held school with
+the exact two-fix plan in external `prework/school-campus-next-pass.md`, using
+unused v005 and a new bounded repair pass. Its prior hold stays immutable.
+Then develop the locked garden sixplex and queued park-edge hall within wave2.

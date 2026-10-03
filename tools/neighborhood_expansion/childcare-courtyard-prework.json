@@ -1,0 +1,95 @@
+{
+  "variant_id": "childcare_sheltered_courtyard",
+  "archetype_id": "neighborhood_childcare_centre",
+  "method": "RLASM v6.1",
+  "state": "measured_prework",
+  "keeper_approved": false,
+  "catalogue_activated": false,
+  "sources": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-childcare-centre\\variant_1.png",
+      "source_attempt": "source-attempts/childcare_sheltered_courtyard/front-001.png",
+      "bytes": 3268013,
+      "sha256": "de9b3cd2e564ed8f3933948262307b5bc3c2dd2fe8cd03c501823b101750b8b3",
+      "role": "front",
+      "authority": "Primary facade, mass proportion and programme identity: domestic single-storey U, two front wing-end windows in terracotta walls with cream reveals, low front timber fence/gate, sheltered left-front entry, glazed court edges and timber veranda rhythm. Primary relative-height and eave authority."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-childcare-centre\\variant_1_oblique.png",
+      "source_attempt": "source-attempts/childcare_sheltered_courtyard/oblique-002.png",
+      "bytes": 3568230,
+      "sha256": "e6541d58262992fc9ae3b1aa5d70d0cdfeade9d7fe496ece3d8a6ab74c42cb7e",
+      "role": "oblique",
+      "authority": "Exposed-left elevation and roof contact corroboration: repeated flank windows, outer wall height, inward roof fall, continuous left front fascia, timber court veranda and diagonal rear-corner roof join. Do not use perspective pixels as surveyed lengths."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-childcare-centre\\variant_1_roof-study.png",
+      "source_attempt": "source-attempts/childcare_sheltered_courtyard/top-001.png",
+      "bytes": 3070435,
+      "sha256": "8fa9386b09497961bb89abf188d088e4112c0052b7a7f38461acac865cdd4dd1",
+      "role": "topology",
+      "authority": "Topology only: three principal inward-falling roof fields around a fully uncovered court, rear bar linking side wings at two diagonal corner joins, front centre remains fence/gate rather than a fourth building wing. Do not transfer its apparent court depth or minor planting shifts as metric constraints."
+    }
+  ],
+  "independent_source_review": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\childcare-courtyard-source-review-v2.json",
+    "sha256": "6a5143270967522d304055a97772ffbd02e4d0b938a4da683dc09403d9b0c799",
+    "decision": "category_closure_only",
+    "scope": "Source compatibility and roof graph only. Direct full-pixel comparison of front-001, repaired oblique-002 and top-001, with brief and generation provenance. No model, material, optical, circulation or keeper approval."
+  },
+  "accepted_roof_graph": [
+    "Left wing: one plane high along outside-left brick wall, low at inside-right courtyard eave/gutter.",
+    "Right wing: one plane high along outside-right brick wall, low at inside-left courtyard eave/gutter.",
+    "Rear bar: one plane high at rear outer wall, falling toward its front court eave/gutter.",
+    "Two diagonal rear-corner junctions close the three fields; no internal longitudinal ridge or extra side-wing roof strip.",
+    "Courtyard remains uncovered; veranda cover belongs to bounded court-edge roof overhangs, not a court-spanning roof."
+  ],
+  "remaining_inferences": [
+    "The 30x24m outer envelope and 3.6m nominal floor height are brief values, not measurements validated by generated photography. Infer and document actual wall/eave heights, roof pitch, wing widths, court depth and veranda depth using front proportions.",
+    "Interior partitions, classroom distribution, staff/support/washroom programme, furniture quantities, child-scale fixtures and door swings are not established by these exterior sources. Author and prove them independently.",
+    "Roof thickness, rear-corner plane intersections, gutters/downpipes and water discharge, porch beam/post seating and foundations require explicit constructible contact inference. Source agreement is not enclosure proof.",
+    "Gate dimensions, secure enclosure, staff sightlines, public approach gradients and all walking/collision paths require exact-GLB evidence.",
+    "Rear and right outer elevation opening schedules are incompletely exposed; declare compatible inferred schedules rather than inventing source certainty.",
+    "Materials, glazing, shadows, landscape detail and production finish remain unreviewed until a model exists."
+  ],
+  "generation_provenance": "childcare-courtyard-build-generation.json",
+  "generation_provenance_sha256": "457bdd0c9f43ad4fd13edda6405667d7c4d59c4426ddf0460b1d27f5fd57b598",
+  "next_step": "Dry run, then unused childcare-courtyard-v003. Preserve earlier holds; independent review required.",
+  "measurement_contract": {
+    "units": "Architecturally inferred metres; generated sources are not a survey",
+    "envelope": "30 by24m, x[-15,15],y[-12,12]; open court x[-9,9],y[-12,6]",
+    "wings": "Two6m side wings and6m rear bar; veranda occupies2m at each court edge",
+    "floors": "One occupied floor z0.14; public sidewalk z0.04;1.5m solid entrance ramp",
+    "heights": "Outer roof top4.95 at walls; inner roof top3.51 at veranda eaves; flat occupied ceiling underside3.44",
+    "roof_planes": "Left z=-0.18x+2.25; right z=0.18x+2.25; rear z=0.18y+2.79. Rear joints y=-x-3 and y=x-3 from outer rear corners to inner eave corners.",
+    "roof_contacts": "Exact common polygon nodes;0.12m roof+0.055m lining; external walls overlap lining by0.005m; seated timber posts, headers and rafters; courtyard gutters/downpipes and basins",
+    "inferences": "Rear/right opening schedules, room partitions, drainage and support dimensions inferred. Top source supplies topology only; do not transfer its deeper perspective court."
+  },
+  "program_contract": {
+    "rooms": "Left-front reception; left toddler room; right preschool room; broad rear creative classroom. Three distinct learning rooms.",
+    "support": "Four-cot nap room, staff room, adult washroom, two-child-toilet washroom, snack kitchen; continuous interior connection along inner sides and rear front aisle",
+    "furnishing": "Child tables/chairs, low cubbies, mats/cushions, reception desk, four cots, staff table, hollow sinks and toilet bowls, kitchen storage and preparation surfaces",
+    "landscape": "Secure low timber front enclosure with open gate, uncovered court with sandpit, child playhouse, low growing beds, benches and lawn; exterior trees and bicycles",
+    "scope": "Local authored programme, not regulatory or accessibility certification; child playhouse is excluded from adult navigation"
+  },
+  "opening_schedule": {
+    "front": "One cream-revealed2.6x2.3m picture window per brick wing end; actual entrance on sheltered left court elevation",
+    "side_courts": "Two doors and three large panes per wing; glazed inward-held door leaves and cut masonry carriers",
+    "outer_flanks": "Six source-led left windows and five inferred right windows,2.2x2.3m, clear of room dividers",
+    "rear_court": "Five windows and two doors to the central classroom, with solid piers between all apertures",
+    "outer_rear": "Seven inferred2.2x2.2m windows; support-room partitions land on solid piers",
+    "interior": "All support rooms connected through actual1.25m apertures and inward90-degree held leaves"
+  },
+  "circulation_contract": {
+    "routes": "22 authored paths: public ramp/gate, reception, three learning rooms, nap, staff, both washrooms, kitchen, court verandas, play props, growing beds and bicycles",
+    "evidence": "Actual app solver, furniture and garden exclusion probes, exact GLB floor/head/body ray checks, browser load/manual walking/reload/visibility, independent complete render review",
+    "clearances": "Reserve paths from protruding open leaves, low furniture, veranda posts, planting edges and sandbox rims; solver body radius0.22m",
+    "limits": "Authored routes and sampled probes only; no exhaustive free-roam collision or statutory compliance claim"
+  },
+  "material_contract": {
+    "masonry": "Built-in source-conditioned terracotta running bond,8brickwidths across and approximately26.6courses;1.92x2.00m mapping",
+    "other": "Cream reveals, timber joinery/soffits, grey metal roof, floor and landscape use prototype palette; opaque metallic mirrors",
+    "lighting": "No camera/glossy/transmission visibility or specular/transmission contribution from QA area lights"
+  },
+  "camera_contract": "41 mandatory whole/exterior/roof-joint/veranda-contact views plus every occupied room, reverse learning and nap views, all sinks/toilets, gate/ramp, playhouse and bicycle context. Exact locations/lenses authored in builder before geometry. Staff reverse and adult mirror detail prove the final contact corrections."
+}
