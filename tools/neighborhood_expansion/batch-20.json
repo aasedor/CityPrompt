@@ -213,8 +213,48 @@
         "description": "A modest three-storey sixplex with exactly two apartments per floor. Two generous window bays flank a recessed central entrance and vertically stacked stair windows. The ground floor meets a landscaped front walk with a low entrance canopy; a side path reaches bicycle storage and a shared rear garden. No commercial base, tower massing or fourth floor.",
         "siteNote": "Exactly six flats, two per floor; evaluate upper-floor accessibility separately from the exterior reference."
       },
-      "state": "front_source_attempt_pending",
-      "attempts": [],
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "sixplex-brick-v001",
+          "state": "failed_local_routes",
+          "source_locked": true,
+          "planned_render_count": 40,
+          "log": "sixplex-brick-v001.log",
+          "blockers": [
+            "Six flat-entry paths obstructed by bookcase protrusions;19/25routes pass. Physical checks cover reached samples only."
+          ],
+          "renders": 40
+        },
+        {
+          "candidate": "sixplex-brick-v002",
+          "state": "failed_local_fixture",
+          "repairs": [
+            "Offset entry aisles to x +/-2.70 and reconnect at +/-2.50",
+            "Add two kitchen sink/contact cameras"
+          ],
+          "render_count": 42,
+          "blockers": [
+            "Uncut cabinet base fills all six sink bowls, independently confirmed in close views."
+          ],
+          "checks": {
+            "routes_passed": 25,
+            "physical_samples_passed": 1024,
+            "garden_probes_passed": 4,
+            "furniture_probes_passed": 20
+          }
+        },
+        {
+          "candidate": "sixplex-brick-v003",
+          "state": "local_prototype_pass",
+          "repairs": [
+            "Cut cabinet base around each sink bowl, retaining surrounding support"
+          ],
+          "render_count": 42,
+          "source_locked": true,
+          "log": "sixplex-brick-v003.log"
+        }
+      ],
       "keeper_approved": false,
       "catalogue_activated": false,
       "source_attempt": {
@@ -222,7 +262,26 @@
         "sha256": "463d0faab14633398d881b9b33e2972bb538f6e400c50fc43fe4183072a9573e",
         "provenance": "sixplex-reference-generation.json",
         "locked": false,
-        "next": "Resolve narrower depicted frontage versus17m brief before compatible oblique/top views and material tile. Preserve original attempt."
+        "next": "Historical rejected narrow front; superseded by locked front in source_manifest.",
+        "status": "superseded_by_widened_locked_front"
+      },
+      "source_manifest": "prework/sixplex_brick_walk_up.json",
+      "source_generation": "sixplex-locked-generation.json",
+      "current_candidate": "sixplex-brick-v003",
+      "local_review": {
+        "candidate": "sixplex-brick-v003",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "sixplex-brick-v003/review/independent-visual-review.json",
+        "review_sha256": "a08656afca79cf90eec1832196707bcc9978f58f2b705dcc9f42bbbc551e3ce9",
+        "glb_sha256": "e3f1614dc9409878b0b19e01a05cff848485241f6a04df6e0cc85b8339f42841",
+        "routes": 25,
+        "physical_samples": 1024,
+        "garden_probes": 4,
+        "mandatory_views": 42,
+        "browser_verified": true
       }
     },
     {
@@ -244,10 +303,38 @@
         "description": "A single-storey neighborhood branch library with a welcoming glazed reading room beneath one shallow pitched roof. Warm brick encloses the quieter book stacks and service rooms; timber beams and a narrow clerestory light the main hall. The entrance faces a small planted forecourt with benches and bicycle parking. Bookshelves and reading tables are visible through clear glass.",
         "siteNote": "Pair with a walking route and a small public forecourt; keep the branch modest rather than a central-library landmark."
       },
-      "state": "queued",
+      "state": "source_compatibility_pending",
       "attempts": [],
       "keeper_approved": false,
-      "catalogue_activated": false
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\front-001.png",
+          "bytes": 3253508,
+          "sha256": "fcf5e708692ff8e02331247f5f33d66645afabe537c73d031aa27b22147cc942"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\front-002.png",
+          "bytes": 2962005,
+          "sha256": "22d99056c52a868f7799858a2a63928a8dba133698495f57347f91d73172d4d9"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\oblique-001.png",
+          "bytes": 3354508,
+          "sha256": "46cb9c62a9d23b0b2b7fa8db219287a5ec1e94fb6c8f4c47bec969454f7f730b"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\oblique-002.png",
+          "bytes": 3093698,
+          "sha256": "d87c2aa1163cb6bede3fd317e2376a3270a480112604d785347e19ef4023efc6"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\top-001.png",
+          "bytes": 2533597,
+          "sha256": "3ea1d4d4f8ac5c2e8caa4a36cdc12e9b4dbea92a04c6f74d560671f85c253edb"
+        }
+      ],
+      "source_next_action": "Use front002,corrected oblique002,top001 as proposed set. Harmonize distant right rear roof in front002 with continuous slope in corrected oblique002; original oblique001 has rejected roof notch. Top001 governs topology only due perspective residuals. Independent source review, material tile, detailedprework, then dryrun before geometry."
     },
     {
       "archetype_id": "community_association_hall",
@@ -637,9 +724,9 @@
   "state": "wave1_in_progress",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
-  "completed_models": 2,
-  "next_action": "Resume sixplex_brick_walk_up source lock. One front attempt and exact prompt are saved in sixplex-reference-generation.json; frontage is narrower than17m brief. Use a source-conditioned widening or explicitly justified source-derived dimensions, then generate compatible oblique/top and material tile, write dedicated prework/constructor. Do not reuse the fourplex envelope. Childcare-garden-v004 and fourplex-corner-v004 are locally complete, with2 keeper P1s each.18 models remain unbuilt. No active render jobs remain; inspector5203 remains available. Preserve all failed attempts; next model starts a fresh finite pilot/repair pass.",
-  "updated_utc": "2026-10-03 16:54:49 UTC",
+  "completed_models": 3,
+  "next_action": "Resume library_neighborhood_pavilion source compatibility: front002,corrected oblique002,top001 saved with generation records. Harmonize distant rear roof in front against corrected continuous oblique roof, independently review sources, create tile and detailed prework, then dryrun/build. Sixplex v003 accepted local prototype; no sixplex build running. Continue Wave1 with library then prairie community hall.17models remain.",
+  "updated_utc": "2026-10-03T17:39:39.960821+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

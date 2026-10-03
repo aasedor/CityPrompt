@@ -167,8 +167,43 @@ Carry these concrete corrections into later constructors:
 - Reserve the bicycle parking footprint before placing shrubs. Include hardware
   helpers explicitly in obstacles when their default module is not a site prop.
 
-The next sixplex has one generated front attempt saved outside the source tree
-in `source-attempts/sixplex_brick_walk_up/front-001.png`; prompt, hash and review
-notes are in `sixplex-reference-generation.json`. It is not source-locked or a
-completed building. Resolve its narrower frontage versus the17m brief before
-locking compatible oblique/top references. Preserve the attempt and prompt.
+## Brick sixplex tooling
+
+`build_brick_sixplex.py` authors a three-storey brick walk-up with exactly six
+furnished flats and one stacked shared stair. Its revised wide front, compatible
+oblique and roof study are locked in `sixplex-prework.json`; generation records
+are in the external `sixplex-locked-generation.json`. The original narrow front
+in `source-attempts/sixplex_brick_walk_up/front-001.png` remains preserved with
+its original provenance. The roof study governs topology, not metric dimensions.
+
+Use the same builder arguments as the other constructors. The sixplex reuses
+atomic wall, door, bed and bathroom helpers from `build_corner_fourplex.py`;
+`delivery.py` snapshots that dependency through its optional `extra_scripts`.
+The envelope, flat roof, facade composition, plan and circulation are sixplex
+specific. Its source-conditioned brick tile maps to2.16x2.08m.
+
+V001 has40 completed views but fails six apartment entry paths beside protruding
+books. V002 offsets those aisles by0.20m and adds two clear kitchen sink/contact
+views, making42 required views. Those views exposed cabinet timber filling the
+sink recesses. V003 cuts the cabinet around each bowl. Preserve both failed
+versions. The gate requires all25 routes,20 furniture probes,4 garden probes,
+physical checks, browser and independent review. Read live progress for the
+final decision; machine checks alone cannot approve a candidate.
+
+Carry the middle-floor stair distinction forward: a stacked continuing flight
+needs an open upward mouth; the guard across the lower-flight lip belongs only
+on the top floor. Disable camera, glossy and transmission visibility on QA lights
+as well as their specular/transmission factors. This removes the oversized light
+ovals established in earlier prototypes; material finish remains a separate gate.
+For sinks, cut the supporting cabinet as well as the worktop and bowl. A real
+bowl can otherwise be filled by solid timber even when the countertop hole looks
+correct from a distance. Require a close kitchen view before accepting it.
+
+The following library has source attempts saved under
+`source-attempts/library_neighborhood_pavilion/`, with separate `library-*.json`
+generation records. Proposed sources are widened `front-002.png`, corrected
+`oblique-002.png` and `top-001.png`. The original oblique has a rejected rear roof
+notch. Reconcile the front's distant rear roof against the corrected oblique,
+then finish the independent compatibility check, material tile and detailed
+prework before geometry. The overhead study governs topology only. The library
+is unbuilt and not counted as complete.

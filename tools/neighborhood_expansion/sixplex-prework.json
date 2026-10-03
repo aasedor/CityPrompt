@@ -1,0 +1,76 @@
+{
+  "variant_id": "sixplex_brick_walk_up",
+  "archetype_id": "neighborhood_sixplex",
+  "method": "RLASM v6.1 prototype",
+  "state": "source_locked",
+  "keeper_approved": false,
+  "generation_provenance": "sixplex-locked-generation.json",
+  "sources": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_0.png",
+      "role": "front",
+      "bytes": 2823414,
+      "sha256": "e5666455bc032d6a178df714889f7507bbe6b90f76e33907f2ef3900c0cef42f"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_0_oblique.png",
+      "role": "oblique",
+      "bytes": 3576979,
+      "sha256": "15de45cda2290e1440397d6ae311baeb39cea5aadb3f60bae39f65dd7da7522d"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_0_roof-study.png",
+      "role": "topology",
+      "bytes": 2965803,
+      "sha256": "2b248b55166b73dda6b574f989a95d279a605a7514f19edde6d4cb6f7295654b"
+    }
+  ],
+  "measurement_contract": {
+    "units": "Inferred metres, not surveyed",
+    "dimensions_m": {
+      "width": 17,
+      "depth": 15,
+      "parapet": 9.94
+    },
+    "storeys": 3,
+    "homes": 6,
+    "floors": [
+      0.28,
+      3.38,
+      6.48
+    ],
+    "floor_rise": 3.1,
+    "source_ratios": "Revised front width/height approximately1.74. Broad windows are source-led4.8m, not the narrower requested prose. Complete oblique gives4 side windows per storey; partial front side view is subordinate. Roof study has perspective residuals and governs topology only.",
+    "roof_graph": "One continuous flat membrane deck at9.58, low capped perimeter parapet, hatch near rear centre and2 short plumbing vents. No occupied roof or extra storey."
+  },
+  "program_contract": {
+    "count": 6,
+    "common_core": "Central shared entrance; stacked U stairs withinx[-1.48,1.48],y[-5.475,-1.6].22 risers per3.1m rise. Upper guard across lower-flight lip only on topmost floor; middle floor continues upward.",
+    "every_home": [
+      "Living area",
+      "Kitchen with sink, hob, refrigerator and cabinets",
+      "Dining table and chairs",
+      "Separated furnished bedroom",
+      "Basin, toilet and shower bathroom"
+    ],
+    "garden": "Clear right-side path to separate northeast bicycle bay and rear seating. Planting stays outside parking footprint.",
+    "scope": "Local architecture/circulation prototype; no code, accessibility or keeper certification"
+  },
+  "material_contract": {
+    "brick": "Exact-source conditioned russet running bond, actual about9bricks x26courses mapped2.16x2.08m",
+    "other_finishes": "Source palette with physical membrane seams, parapet caps, cedar slats, furniture and fixtures; remaining finish limitations declared",
+    "glass": "Real recessed panes. Nonarchitectural QA light camera/glossy/transmission visibility disabled explicitly."
+  },
+  "circulation_contract": {
+    "routes": "Entry, both stair ascents/descents, each of6flat entry/bedroom/bathroom, rear seating and bicycle approach",
+    "obstacles": "Walls, door leaves, furniture, guards and bicycle hardware. No hidden floor beneath stair navigation.",
+    "evidence": "Native app solver and exactGLB sampled floor/headroom checks, prop probes and isolated browser."
+  },
+  "camera_contract": "All42 cameras saved before v002 geometry:7whole+3facade/details+roof+garden+24apartment room/fixture views+4stair/landing views+2 mirrored kitchen close views. Entry aisles offset tox +/-2.70 to clear protruding books before joining room routes atx +/-2.50.",
+  "assumptions": [
+    "Rear and interiors inferred from programme, not surveyed.",
+    "Service base vents in references do not authorize basement homes; model has no basement or extra occupied storey.",
+    "Entrance two low steps inferred from oblique; three occupied floors remain exact.",
+    "Flat roof has a service hatch without an occupied stair tower. Upper-floor accessibility remains unevaluated."
+  ]
+}

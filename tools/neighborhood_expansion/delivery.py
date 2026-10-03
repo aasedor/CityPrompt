@@ -14,7 +14,7 @@ import refinements as R
 import walking as W
 
 
-def run(builder,spec_name,candidate_prefix,palette,cameras,construct,network,brick_tile,tile_m):
+def run(builder,spec_name,candidate_prefix,palette,cameras,construct,network,brick_tile,tile_m,extra_scripts=()):
     p=argparse.ArgumentParser();p.add_argument('--output-root',type=Path,required=True)
     p.add_argument('--version',default='v001');p.add_argument('--resolution',type=int,default=1280)
     p.add_argument('--dry-run',action='store_true')
@@ -31,7 +31,7 @@ def run(builder,spec_name,candidate_prefix,palette,cameras,construct,network,bri
     for s in spec['sources']:
         q=Path(s['path']);shutil.copy2(q,out/'sources'/q.name)
         sources.append(dict(s,original_path=str(q),path='sources/'+q.name))
-    for f in (Path(builder),Path(__file__),HERE/spec_name,Path(C.__file__),Path(B.__file__),Path(R.__file__),Path(W.__file__)):
+    for f in (Path(builder),Path(__file__),HERE/spec_name,Path(C.__file__),Path(B.__file__),Path(R.__file__),Path(W.__file__),*[Path(s) for s in extra_scripts]):
         shutil.copy2(f,out/'scripts'/f.name)
     tex=root/'materials'/brick_tile;shutil.copy2(tex,out/'textures'/tex.name)
     provenance=root/spec['generation_provenance'];shutil.copy2(provenance,out/'sources/generation-provenance.json')
