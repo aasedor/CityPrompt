@@ -469,3 +469,61 @@ and reviews; `hall-park-build-v2-generation.json` collects their provenance.
 
 Next is the hall's dedicated measured constructor. Completed local count is
 8/20. Final contact sheet/catalogue and full keeper assessment remain pending.
+
+## Park-edge timber hall first construction checkpoint
+
+`build_park_hall.py` and `hall-park-prework.json` freeze one common gable roof,
+six outer veranda columns/five bays, separate recessed and inferred rear
+supports, a vaulted entrance commons, occupied main hall, two meeting rooms,
+kitchen and washroom. The 32 x 22 m envelope includes the 3.5 m veranda.
+Individual 0.12 m cedar boards use interior intervals from the source specimen,
+without raw horizontal/vertical wrapping. Physical brick solids are clipped
+against every opening and consolidated into one mesh; prototype edges/finish
+remain declared limitations. No shared compiler or live project was changed.
+
+Independent initial preflight found seven source/code groups; corrections
+preserved its hold. A later low-window brick-coverage hold was also preserved
+and corrected with two-axis clipping. V4 source/code preflight passes with zero
+P0/P1, scoped to pre-build only. The first unskinned diagnostic was interrupted
+for a bounded brick-mesh optimization. V002 preserved two route failures at a
+room leaf and storage rack. V003 passed all 23 actual-app routes, 20 furniture
+and four garden probes, with 1,031 cedar board segments inside source UV bounds.
+The 1.3 m public ramp, plateau, native surfaces, waypoint and portal agree.
+
+The first candidate `hall-park-v001` completed 38 exact-GLB views. Its later
+independent hold and the bounded correction are recorded below. The unskinned
+checks and source/material categories do not approve a model. Checkpoint the
+completed second group before beginning the third group.
+
+## Park hall bounded v002 correction
+
+V001 is preserved with all 38 exact-GLB renders, three boards, 23 native routes
+and 1,556 physical floor/headroom samples. Independent review holds two local
+P1 groups: rear windows/artwork intersect posts, and the rack base floats 11 cm
+above the floor. Full keeper also holds source finish/detail and optics.
+The broader 462-ray aperture check confirms two obstructed rear windows;
+the carrier-only audit missed nearby geometry. Browser evidence is partial.
+
+V002 moves the inferred rear lights into clear bays, seats art on the solid
+wall between them, adds four grounded rack casters and updates its route/camera.
+Sources, front roof and frame stay locked. Fresh complete renders, machine and
+browser checks, and independent review are required before counting it.
+
+## Wave2 complete: nine local prototypes
+
+Hall park v002 passes independent local architecture/circulation with zero
+P0/P1 blockers. Rear lights and artwork clear the retained posts. Four physical
+rack casters reach the floor and overlap the base by 40 mm, independently
+verified from the exported GLB.
+
+All 38 exact-GLB views and three boards, 23 native/browser routes, 20 furniture
+and four garden probes, 1,544 physical samples, 462 aperture rays and 13 browser
+screenshots pass. Controls, model switching, visibility and reload work. Browser
+route error reaches 25 mm at the washroom basin; every route stays within the
+agreed tolerance. Full keeper retains two finish/optical groups.
+
+V001 and failed diagnostics remain preserved. This completes the pilot plus two
+bounded groups: 9/20. All nine GLB/review hashes match local-pass-index. Wave3
+begins with school_timber_learning_courtyard and requires its own source lock
+and inferred plan before construction. Main-app runtime, human catalogue and
+publication approval remain absent.

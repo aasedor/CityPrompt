@@ -914,7 +914,7 @@
         {
           "candidate": "sixplex-garden-v001",
           "state": "visual_rework_required",
-          "started_utc": "2026-10-03T22:13:22.445535+00:00",
+          "started_utc": "2026-10-03T16:13:22.445535-06:00",
           "keeper_approved": false,
           "catalogue_activated": false,
           "glb_sha256": "3102c2ab403a1690e42af35275a5cec9d45df9b22513806d66e8e39ae684018d",
@@ -934,7 +934,7 @@
         {
           "candidate": "sixplex-garden-v002",
           "state": "local_prototype_pass",
-          "started_utc": "2026-10-03T22:25:01.575790+00:00",
+          "started_utc": "2026-10-03T16:25:01.57579-06:00",
           "keeper_approved": false,
           "catalogue_activated": false,
           "glb_sha256": "31499e365aa764aa5cc3b0e0cec47b7fa89439e6648a3c97bf17b5586b0221d7",
@@ -1071,8 +1071,50 @@
         "description": "A single-storey timber community hall beside a neighborhood park. Repeated glulam frames support a simple pitched roof and a deep veranda facing the grass. A glazed multipurpose room shares a sheltered entry with smaller meeting rooms and a community kitchen. Movable tables are visible inside; low native planting and bicycle parking connect to the public path.",
         "siteNote": "Keep the park a separate open-space use; the veranda provides a clear threshold between indoor activities and outdoor gathering."
       },
-      "state": "source_locked",
-      "attempts": [],
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "hall-park-v001",
+          "state": "independent_local_hold",
+          "expected_renders": 38,
+          "expected_routes": 23,
+          "keeper_approved": false,
+          "glb_sha256": "5b54804a3b70efba061c342cf287e5a40be95f910732fee162b09cf4d2660850",
+          "renders": 38,
+          "boards": 3,
+          "native_routes_passed": 23,
+          "physical_samples": 1556,
+          "physical_aperture_rays": 462,
+          "physical_aperture_failed_openings": 2,
+          "independent_review_sha256": "3c9ab1b6b4a2313b3c5a593273d55bc72b1e364a3c1bfd4e6933572d18da8248",
+          "local_p1_groups": 2,
+          "browser": "partial: exterior, routes and artwork; full controls untested",
+          "counted_complete": false
+        },
+        {
+          "candidate": "hall-park-v002",
+          "state": "local_prototype_pass",
+          "expected_renders": 38,
+          "expected_routes": 23,
+          "keeper_approved": false,
+          "counted_complete": true,
+          "glb_sha256": "e837b35d3c451d15ae3710fcb0e5e5f0c5b4cb0ea9725953b20ce59bd5c5d153",
+          "renders_completed": 38,
+          "boards": 3,
+          "native_routes_passed": 23,
+          "native_routes_total": 23,
+          "physical_samples": 1544,
+          "physical_aperture_rays": 462,
+          "physical_aperture_failed_openings": 0,
+          "browser_verified": true,
+          "browser_screenshots": 13,
+          "independent_review": "hall-park-v002/review/independent-visual-review.json",
+          "review_sha256": "829d6337a0d4c84b47c04ed3bf11673e24d5ab004957c738d7161c1257037079",
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2
+        }
+      ],
       "keeper_approved": false,
       "catalogue_activated": false,
       "source_attempts": [
@@ -1160,6 +1202,62 @@
         "path": "hall-park-build-v2-generation.json",
         "bytes": 1721,
         "sha256": "3298f9b5f9f51357de6cac61e3c26bf474f8f476fdcfbacb4be3b9a4dc6e751a"
+      },
+      "current_candidate": "hall-park-v002",
+      "job": {
+        "candidate": "hall-park-v002",
+        "pid": 9016,
+        "state": "finished_local_prototype_pass",
+        "started_utc": "2026-10-03T23:41:01.5802658Z",
+        "stdout": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/hall-park-v002.stdout.log",
+        "stderr": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/hall-park-v002.stderr.log",
+        "expected_renders": 38,
+        "expected_routes": 23,
+        "counted_complete": false
+      },
+      "prework": {
+        "path": "prework/hall-park-prework.json",
+        "sha256": "81f651e52ffd3b29eccbd6135bd7c30ce64e82471a8283c7e9f42130969719ee"
+      },
+      "prebuild_review": {
+        "path": "prework/hall-park-builder-preflight-v4.json",
+        "sha256": "3088eb0bd27dd92823453e28c557bb1454429b28b116a23457e52ff8000b62bb"
+      },
+      "unskinned_diagnostic": {
+        "path": "prework/hall-park-unskinned-v003",
+        "scope": "Construction/native preflight only, no delivery approval",
+        "routes_passed": 23,
+        "native_samples": 4667,
+        "furniture_probes": 20,
+        "garden_probes": 4,
+        "cedar_board_segments": 1031,
+        "raw_texture_wrap": false,
+        "cameras": 38,
+        "preserved_attempts": [
+          "prework/hall-park-unskinned-v001",
+          "prework/hall-park-unskinned-v002"
+        ]
+      },
+      "repair_preflight": {
+        "path": "prework/hall-park-repair-v002-preflight.json",
+        "sha256": "b67fd575faa0a83cdff8d03551ba661b89dd67836b4da1545f657989e940de7c",
+        "scope": "Code-only coherent repair; model review pending"
+      },
+      "local_review": {
+        "candidate": "hall-park-v002",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "hall-park-v002/review/independent-visual-review.json",
+        "review_sha256": "829d6337a0d4c84b47c04ed3bf11673e24d5ab004957c738d7161c1257037079",
+        "glb_sha256": "e837b35d3c451d15ae3710fcb0e5e5f0c5b4cb0ea9725953b20ce59bd5c5d153",
+        "routes": 23,
+        "physical_samples": 1544,
+        "aperture_rays": 462,
+        "garden_probes": 4,
+        "mandatory_views": 38,
+        "browser_verified": true
       }
     },
     {
@@ -1427,12 +1525,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "wave2_in_progress",
+  "state": "wave2_complete",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
-  "completed_models": 8,
-  "next_action": "Develop hall_timber_park_edge from three locked compatible sources: six outer veranda columns, five structural bays and separately classified recessed supports. Read the unfrozen measurement draft and hall-park-build-v2-generation.json. Cedar v002 is category-compatible with a residual boundary hold; use board-aware geometry/UVs without raw horizontal wrapping, or a bounded separate correction. Freeze complete programme, frame/roof contacts, routes and camera roster before the dedicated constructor dry run and unused hall-park-v001. Garden sixplex v002 is locally complete with 61 views, 41 routes, 1,626 physical samples, 102 riser-boundary probes and 13 browser PNGs; do not rebuild it. Completed 8/20; full keeper remains unapproved.",
-  "updated_utc": "2026-10-03T22:43:20.685250+00:00",
+  "completed_models": 9,
+  "next_action": "Wave2 checkpoint complete9/20 local prototypes. Begin wave3 first item school_timber_learning_courtyard: inspect existing canonical exact variant sources if present; otherwise built-in generation front/oblique/top. Lock coherent source/roof set and independent source review before measured dedicated constructor. No model duplicate/recolour, keeper claim, activation/push or live-project change. Preserve all hall failures and finish limitations.",
+  "updated_utc": "2026-10-03T23:56:55.603041+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [
