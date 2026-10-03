@@ -1,0 +1,71 @@
+{
+  "variant_id": "hall_timber_park_edge",
+  "method": "RLASM v6.1",
+  "state": "prototype_material_category_locked_with_boundary_hold",
+  "model_approved": false,
+  "keeper_approved": false,
+  "seamless_approved": false,
+  "boundary_phase_repair_complete": false,
+  "material": {
+    "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/materials/hall-park-cedar-v002.png",
+    "bytes": 1350094,
+    "sha256": "dfa4abf55592ad6b5d65c6d2544ed099621fe7c99d8ab2655289d626404f9462",
+    "physical_mapping_m": [
+      0.96,
+      2.4
+    ],
+    "observed_board_widths": 8,
+    "inferred_board_module_m": 0.12
+  },
+  "generation": {
+    "path": "hall-park-cedar-v002-generation.json",
+    "bytes": 2343,
+    "sha256": "36d6cfe6525ce778a32bb0a218688d48a8f82ca5ccef269316f71140b3c888b0"
+  },
+  "independent_review": {
+    "path": "prework/hall-park-material-review-v2.json",
+    "bytes": 7182,
+    "sha256": "ce66fb08d054ae924953809cf16edc2c55496dcbbf0f5cc2b2626320d15a1d37",
+    "decision": "category_compatible_boundary_repair_partial_seamless_hold"
+  },
+  "use_scope": "Compatible category specimen for prototype measured prework with all residual limits declared. Raw seamless repeating cladding and any final building material application remain unapproved.",
+  "application_contract": [
+    "Prototype category authority only; do not certify raw seamless repeating cladding.",
+    "Author board-aware geometry/UVs without raw horizontal tile wrapping, or make a bounded separate material correction before relying on tiled boundary continuity.",
+    "Preserve the inferred 0.12 m board module and vertical axes; avoid top/bottom grain wrapping by fitting each board height to one source interval.",
+    "Prove actual mapped roof, wall and opening contacts in the complete exact-GLB render set and independent building review before counting the hall."
+  ],
+  "limits": [
+    {
+      "id": "M1_residual_boundary_phase",
+      "severity": "P1_if_claimed_seamless_keeper_repeat",
+      "status": "partly_repaired_still_open",
+      "symptom": "Two inset groove bands separated by pale edge pixels at horizontal repetition; boundary groove is not equivalent to the seven internal joints.",
+      "finite_correction": "In a separately authorized bounded material correction, place complementary groove halves on the actual first/last pixel columns and reconcile adjacent edge colour. Alternatively use explicitly segmented board geometry/UVs that do not rely on raw horizontal tile wrapping. Verify the actual repeated surface at original resolution."
+    },
+    {
+      "id": "M2_vertical_grain_and_source_finish",
+      "severity": "keeper_material_limit",
+      "status": "retained",
+      "symptom": "Top/bottom grain phase unproven, strong repeated knots, golden hue and baked groove/highlight shading.",
+      "finite_correction": "Inspect actual board-aware application under final offline/browser lighting and source comparison before keeper claims; do not certify seamless albedo from this specimen."
+    }
+  ],
+  "prior_attempts_preserved": [
+    {
+      "path": "materials/hall-park-cedar-v001.png",
+      "bytes": 1753565,
+      "sha256": "888e764780c1e6a26405ffa8540241284f168673d3d16f122f73f2a1cc2128d6"
+    },
+    {
+      "path": "hall-park-cedar-v001-generation.json",
+      "bytes": 2388,
+      "sha256": "adf263e4779e0c1a90cece580ffa2c7c9e5d3beeec044a6e5c6fb84faf26009b"
+    },
+    {
+      "path": "prework/hall-park-material-review.json",
+      "bytes": 5554,
+      "sha256": "296d50104f2e5020942ba2acb4b827f3dff690af893d74647c87220871c6e413"
+    }
+  ]
+}

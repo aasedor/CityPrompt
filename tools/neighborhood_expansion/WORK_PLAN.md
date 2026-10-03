@@ -132,7 +132,7 @@ node tools/neighborhood_expansion/preview.mjs $batchRoot 5203 --refresh
 
 The source builder snapshots its own code, low-level dependencies, source pixels
 and masonry tile into each external candidate. It renders the reimported GLB.
-The tile's observed cadence was calibrated to1.25×2.2m; the requested2.4m square
+The tile's observed cadence was calibrated to1.25Ã—2.2m; the requested2.4m square
 was not produced by the image generator. Remaining palette finishes require a
 separate full keeper material pass. Route checks cover authored paths and cannot
 certify unrestricted collision or building-code compliance.
@@ -404,3 +404,68 @@ The draft is not frozen construction authority. Read
 floorplans, three private upper stairs, roof intersections, routes and complete
 camera roster before creating its dedicated builder. Then advance the park-edge
 hall within wave2. Completed local count is7/20. No build job remains running.
+
+## Garden sixplex first geometry checkpoint
+
+`build_garden_sixplex.py` is a dedicated constructor for six flats in three
+8.333 m bays, three private straight stairs and three recessed upper balconies.
+`sixplex-garden-prework.json` freezes inferred dimensions, six furnished plans,
+three source locks, v003 material authority, 41 routes and 61 cameras. Its 13
+clipped roof fields cover exactly 387.09 square metres: one transverse main
+gable and three lower short front cross-gables. Wall caps follow the analytic
+planes. Independent code preflight corrected balcony/stair separation, fixture
+contacts, a rear opening collision, shower bracket support and table supports.
+Dry run passed three sources and 61 cameras before the first finite candidate.
+
+### Garden sixplex v001 hold and finite v002 repair
+
+V001 completed all 61 views and three boards but failed six native routes:
+three upper entries omitted a native strip across a physically solid doorway;
+three stair ascents targeted the shared approach/riser boundary. Two of 1,561
+physical route samples hit the underside at a float32 riser edge. These failures
+remain preserved. Both sides of all 51 risers passed 102 unchanged-tolerance
+physical probes, proving complete treads. A separate amended-metadata diagnostic
+on the unchanged v001 GLB passed 41 routes and 1,626 physical samples. That
+diagnostic is not a model deliverable or approval.
+
+V002 adds the real portal surface, puts the first tread waypoint inside that
+tread, and seats twelve book props on six dining tables. It rerendered all
+61 views for complete independent review. Both jobs have finished; consult the
+latest progress record instead of relaunching either candidate.
+
+## Garden sixplex local delivery and park-edge hall handoff
+
+V002 passed independent local architecture/circulation review with zero local
+P0/P1: 61 exact-GLB renders, 41 native and browser routes, 20 furniture probes,
+six garden probes, three balcony barrier probes, 31 carrier apertures, 1,626
+physical samples and 102 two-sided riser probes. Thirteen browser screenshots
+cover manual entry/back, upper landing, kitchen/shower/balcony, switching,
+visibility and reload. Direct GLB inspection verified all three native portals
+and twelve books seated on six dining tables. Earlier prework prose said six
+books; the delivery manifest records the actual twelve. V001 and its three
+local P1 groups remain preserved.
+
+V002 retains two keeper P1 groups: source finish/detail/landscape and optical
+finish, including roof stippling, pale metal, near-absent offline glass and an
+opaque browser shower screen. Delivery manifest and local-pass-index preserve
+these limitations. Keeper approval, runtime activation and main-app placement
+remain unapproved.
+
+The hall's front001, oblique001 and top002 sources are independently compatible
+and locked by `hall-park-source-lock.json` in external variant1. Top001 remains
+held for an apparent unsupported rear bar. Top002 is topology-only and supplies
+no nadir metric authority. All three compatible sources show six outer veranda
+columns; an apparent seventh is recessed at the glazing plane. Author five
+structural bays and classify recessed supports separately.
+
+The measurement draft is not frozen: 32 x 22 m includes a 3.5 m veranda.
+Room/frame/roof/contact coordinates, routes and cameras need reconciliation.
+Cedar v002 retains eight full board widths at an inferred 0.96 x 2.40 m mapping.
+Independent category review finds it source-compatible, with a partial boundary
+repair and unresolved repeat/optical limits. `hall-park-material-lock.json`
+records category authority only. Use board-aware geometry/UVs without raw
+horizontal wrapping, or a separate bounded correction. Preserve both specimens
+and reviews; `hall-park-build-v2-generation.json` collects their provenance.
+
+Next is the hall's dedicated measured constructor. Completed local count is
+8/20. Final contact sheet/catalogue and full keeper assessment remain pending.

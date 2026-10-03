@@ -909,8 +909,53 @@
         "description": "A wider two-storey sixplex with exactly three flats per floor. Three paired entrance bays each serve a lower and upper apartment. Upper-floor recessed balconies overlook a small shared front garden, with more generous common landscape behind. The three gables and three repeated apartment bays explain the wider footprint while keeping a quiet residential street edge.",
         "siteNote": "Compare its larger footprint with the three-storey sixplex while holding the total at six homes."
       },
-      "state": "source_locked",
-      "attempts": [],
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "sixplex-garden-v001",
+          "state": "visual_rework_required",
+          "started_utc": "2026-10-03T22:13:22.445535+00:00",
+          "keeper_approved": false,
+          "catalogue_activated": false,
+          "glb_sha256": "3102c2ab403a1690e42af35275a5cec9d45df9b22513806d66e8e39ae684018d",
+          "required_renders": 61,
+          "renders_completed": 61,
+          "native_routes_passed": 35,
+          "native_routes_total": 41,
+          "physical_samples": 1561,
+          "physical_failures": 2,
+          "stair_boundary_probes_passed": 102,
+          "independent_review": "sixplex-garden-v001/review/independent-visual-review.json",
+          "independent_review_sha256": "ab8157abd3928b25ad63a47370cbf424a075e73a237773789ed8ed34a1038a6f",
+          "local_p0": 0,
+          "local_p1": 3,
+          "keeper_p1": 2
+        },
+        {
+          "candidate": "sixplex-garden-v002",
+          "state": "local_prototype_pass",
+          "started_utc": "2026-10-03T22:25:01.575790+00:00",
+          "keeper_approved": false,
+          "catalogue_activated": false,
+          "glb_sha256": "31499e365aa764aa5cc3b0e0cec47b7fa89439e6648a3c97bf17b5586b0221d7",
+          "required_renders": 61,
+          "renders_completed": 61,
+          "native_routes_passed": 41,
+          "native_routes_total": 41,
+          "physical_samples": 1626,
+          "physical_failures": 0,
+          "stair_boundary_probes_passed": 102,
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\sixplex-garden-v002\\review\\independent-visual-review.json",
+          "review_sha256": "3c2c9fc495aba9bf7e81f2eb7ea31235ae997a2fa9b26759d83942de4167f1b2",
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2,
+          "browser_verified": true,
+          "browser_screenshots": 13,
+          "carrier_apertures": "pass",
+          "max_roundtrip_delta_m": 0
+        }
+      ],
       "keeper_approved": false,
       "catalogue_activated": false,
       "source_lock": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\sixplex-garden-source-lock.json",
@@ -971,7 +1016,41 @@
           "review": "prework/sixplex-garden-material-review-v3.json",
           "sha256": "cf14c5d3defe6f7b4fc3859eeff381dc2e49fb7bc3b6943a760b501c96404b68"
         }
-      ]
+      ],
+      "prework": {
+        "path": "prework/sixplex-garden-prework.json",
+        "sha256": "7a55ccc6d6ff8461c9174045980b54433435e1a97de8da961ac25dae8cbd9f65",
+        "camera_count": 61,
+        "planned_native_routes": 41,
+        "dry_run": "PASS:3sources,61cameras,no geometry"
+      },
+      "builder": {
+        "path": "tools/neighborhood_expansion/build_garden_sixplex.py",
+        "sha256": "309fc19e727c8697ae1ea0c7a6b0705e782f6255ce349b5ba57915f8251beb67"
+      },
+      "independent_builder_preflight": {
+        "path": "prework/sixplex-garden-builder-preflight.json",
+        "sha256": "618835101b17a125d6198b074aa0799c47780f2e845085d76fc6a7c17d3a4116",
+        "scope": "Source/code-plan only; no model approval"
+      },
+      "current_candidate": "sixplex-garden-v002",
+      "local_review": {
+        "candidate": "sixplex-garden-v002",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "sixplex-garden-v002/review/independent-visual-review.json",
+        "review_sha256": "3c2c9fc495aba9bf7e81f2eb7ea31235ae997a2fa9b26759d83942de4167f1b2",
+        "glb_sha256": "31499e365aa764aa5cc3b0e0cec47b7fa89439e6648a3c97bf17b5586b0221d7",
+        "routes": 41,
+        "physical_samples": 1626,
+        "stair_boundary_probes": 102,
+        "garden_probes": 6,
+        "circulation_guard_probes": 3,
+        "mandatory_views": 61,
+        "browser_verified": true
+      }
     },
     {
       "archetype_id": "community_association_hall",
@@ -992,10 +1071,96 @@
         "description": "A single-storey timber community hall beside a neighborhood park. Repeated glulam frames support a simple pitched roof and a deep veranda facing the grass. A glazed multipurpose room shares a sheltered entry with smaller meeting rooms and a community kitchen. Movable tables are visible inside; low native planting and bicycle parking connect to the public path.",
         "siteNote": "Keep the park a separate open-space use; the veranda provides a clear threshold between indoor activities and outdoor gathering."
       },
-      "state": "queued",
+      "state": "source_locked",
       "attempts": [],
       "keeper_approved": false,
-      "catalogue_activated": false
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "view": "front-001",
+          "path": "source-attempts/hall_timber_park_edge/front-001.png",
+          "generation": "hall-park-front-generation.json",
+          "state": "locked_source_compatible"
+        },
+        {
+          "view": "oblique-001",
+          "path": "source-attempts/hall_timber_park_edge/oblique-001.png",
+          "generation": "hall-park-oblique-generation.json",
+          "state": "locked_source_compatible"
+        },
+        {
+          "view": "top-001",
+          "path": "source-attempts/hall_timber_park_edge/top-001.png",
+          "generation": "hall-park-top001-generation.json",
+          "state": "builder_hold_apparent_extra_rear_bar_weak_projection"
+        },
+        {
+          "view": "top-002",
+          "path": "source-attempts/hall_timber_park_edge/top-002.png",
+          "generation": "hall-park-top002-generation.json",
+          "state": "locked_topology_only"
+        }
+      ],
+      "source_lock": {
+        "path": "prework/hall-park-source-lock.json",
+        "sha256": "3043aba746ff77d64eb011bf3115f417b2ade6c2ab968db1c148c23da57c96d2"
+      },
+      "sources": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1.png",
+          "bytes": 2791843,
+          "sha256": "6625e74a7cfe40790cb52742dd6f55c0c4bc449c8b60713429d2a8105ac21953",
+          "source_attempt": "source-attempts\\hall_timber_park_edge\\front-001.png",
+          "authority": "Primary design identity and frontage cadence. One occupied floor; long glazed park-facing frontage; six outer veranda columns on brick pedestals with knee braces; recessed glazing-line supports; main public double entry toward the left and secondary glazed exit toward the right; cedar ends and low planting/bicycle approach. Trace the projected individual members rather than inferring an evenly spaced seven-post row."
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1_oblique.png",
+          "bytes": 2800553,
+          "sha256": "201c869868dfd99e2df7e209ffaaefc54d2a0d7a81840141a9978fc0276371a2",
+          "source_attempt": "source-attempts\\hall_timber_park_edge\\oblique-001.png",
+          "authority": "Corroborates the continuous front veranda, exposed right gable, right-end three narrow windows, timber framing/brick pedestal relationships and front-to-back roof arrangement. The front view remains primary for facade placement."
+        },
+        {
+          "role": "topology",
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1_roof-study.png",
+          "bytes": 3148972,
+          "sha256": "d11dc3c03947bbc83dd9f6eca7445e61ea63b8aa9f64145dcdb6d2b5cd00a5bf",
+          "source_attempt": "source-attempts\\hall_timber_park_edge\\top-002.png",
+          "authority": "Topology corroboration only: one rectangular common roof with two pitched planes meeting one continuous long ridge parallel to the front, extending forward over the veranda. No extra rear bar, roofbox, dormer or valley. Still elevated oblique rather than requested near-nadir; not metric footprint, bay spacing or hidden rear-fenestration authority."
+        }
+      ],
+      "material_attempt": {
+        "path": "materials/hall-park-cedar-v002.png",
+        "state": "prototype_material_category_locked_with_boundary_hold",
+        "generation": "hall-park-cedar-v002-generation.json",
+        "review": "prework/hall-park-material-review-v2.json"
+      },
+      "material_attempts": [
+        {
+          "path": "materials/hall-park-cedar-v001.png",
+          "state": "category_compatible_boundary_hold",
+          "generation": "hall-park-cedar-v001-generation.json",
+          "review": "prework/hall-park-material-review.json"
+        },
+        {
+          "path": "materials/hall-park-cedar-v002.png",
+          "state": "prototype_material_category_locked_with_boundary_hold",
+          "generation": "hall-park-cedar-v002-generation.json",
+          "review": "prework/hall-park-material-review-v2.json"
+        }
+      ],
+      "material_lock": {
+        "path": "prework/hall-park-material-lock.json",
+        "bytes": 3659,
+        "sha256": "5e99cda9f9a81f1c3d5e89c8117b11f059279656cbbbdf6f033c545530a048f7"
+      },
+      "build_generation": {
+        "path": "hall-park-build-v2-generation.json",
+        "bytes": 1721,
+        "sha256": "3298f9b5f9f51357de6cac61e3c26bf474f8f476fdcfbacb4be3b9a4dc6e751a"
+      }
     },
     {
       "archetype_id": "neighborhood_elementary_school",
@@ -1265,9 +1430,9 @@
   "state": "wave2_in_progress",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
-  "completed_models": 7,
-  "next_action": "Develop sixplex_two_storey_garden from locked sources, measurement draft and conditioned buff masonry. Reconcile front-gable rise, freeze all six flat plans/three private stairs/roof graph/routes/cameras, then dedicated constructor dry run and unused v001. School-campus-v005 and childcare-courtyard-v003 are locally complete; do not rebuild. Then hall_timber_park_edge within wave2. Completed7/20; full keeper remains unapproved.",
-  "updated_utc": "2026-10-03T21:43:47.526496+00:00",
+  "completed_models": 8,
+  "next_action": "Develop hall_timber_park_edge from three locked compatible sources: six outer veranda columns, five structural bays and separately classified recessed supports. Read the unfrozen measurement draft and hall-park-build-v2-generation.json. Cedar v002 is category-compatible with a residual boundary hold; use board-aware geometry/UVs without raw horizontal wrapping, or a bounded separate correction. Freeze complete programme, frame/roof contacts, routes and camera roster before the dedicated constructor dry run and unused hall-park-v001. Garden sixplex v002 is locally complete with 61 views, 41 routes, 1,626 physical samples, 102 riser-boundary probes and 13 browser PNGs; do not rebuild it. Completed 8/20; full keeper remains unapproved.",
+  "updated_utc": "2026-10-03T22:43:20.685250+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

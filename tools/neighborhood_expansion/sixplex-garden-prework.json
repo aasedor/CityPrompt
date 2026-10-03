@@ -1,0 +1,1180 @@
+{
+  "variant_id": "sixplex_two_storey_garden",
+  "archetype_id": "neighborhood_sixplex",
+  "method": "RLASM v6.1",
+  "state": "prework_frozen",
+  "sources": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_1.png",
+      "source_attempt": "source-attempts/sixplex_two_storey_garden/front-001.png",
+      "bytes": 2886468,
+      "sha256": "def791f606d4ac4914d294610d9fbe60b42abacfa297e563d1b0a28d88affffd",
+      "role": "front",
+      "authority": "Primary front identity and relative facade proportions: exactly three repeated front gables, three recessed upper balconies, three ground living-window bays and six distinct door leaves in three pairs. First two bays place the window left and door pair right; right bay mirrors that arrangement. Buff brick, cream recess soffits, dark railings/glazing and warm timber entries; planted walks and bicycle hoops.",
+      "limits": "No invisible depth, rear facade, unit/stair layout or surveyed roof heights can be derived from this single projection."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_1_oblique.png",
+      "source_attempt": "source-attempts/sixplex_two_storey_garden/oblique-001.png",
+      "bytes": 3420771,
+      "sha256": "dfb250d2ecd9f851fc19615cffdf32c6656c86a3853282ab1766a7f77d8ede88",
+      "role": "oblique",
+      "authority": "Exposed left flank, real balcony recess, two occupied storeys and roof depth relationship. Four visible side-window positions per storey, broad main-roof gable on the left side, common ridge parallel to front, and three front cross-gables intersecting its forward slope.",
+      "limits": "Perspective lengths and partly occluded garden/ground windows are not metric authority; hidden right/rear details remain inferred."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_1_roof-study.png",
+      "source_attempt": "source-attempts/sixplex_two_storey_garden/top-001.png",
+      "bytes": 3578634,
+      "sha256": "846c0b1c1b072cefe3d3ff15cf3ad88a8beff46cc70e3614ee75e82c3a8fc5f6",
+      "role": "topology",
+      "authority": "Topology corroboration only: a continuous transverse main ridge, rear roof plane, three short front cross-ridges and diagonal valley boundaries on the main forward plane. Confirms common rectangular body, three front bays and rear garden.",
+      "limits": "This remains elevated oblique rather than nadir. Do not use apparent footprint depth, repeated-seam spacing, exact valley nodes, shadow lines or minor planting shifts as surveyed dimensions."
+    }
+  ],
+  "roof_graph": {
+    "principal_mass": "One common two-storey rectangular body under a main gable whose ridge runs parallel to the front facade.",
+    "main_roof": "Two principal slopes, front and rear, meeting along one transverse ridge; broad main gable closes the left end and an inferred matching right end.",
+    "front_cross_gables": "Three short ridges perpendicular to the front, one above each balcony bay. Each cross-ridge terminates against the main front slope below the higher main ridge.",
+    "junctions": "Each cross-gable has two diagonal valley intersections with the main front plane, converging at its ridge termination. Adjacent valleys discharge toward the two bay-divider gutter/downpipe positions and outer front eave ends. Solve continuous watertight plane intersections; do not overlap complete hidden roof fields.",
+    "not_supported": [
+      "Three independent full-depth parallel front-to-back ridges.",
+      "A fourth roof bay or a separate rear roofbox.",
+      "Extending all three front cross-ridges to the main ridge at equal height.",
+      "Treating every heavy straight standing-seam/flash line in top001 as an additional valley or fold."
+    ]
+  },
+  "remaining_inferences": [
+    "Exact wall/roof heights, roof pitch, eave depth, cross-gable run and watertight junction coordinates.",
+    "Detailed balcony slab/recess depth, guard connections and cedar-screen construction.",
+    "Six separate dwelling plans, three enclosed upper-home stairs, fire/structure/MEP and room fixtures.",
+    "Hidden right/rear fenestration and circulation; no source image shows a complete rear elevation.",
+    "Walkable public approaches, stair and balcony guards, route/collision metadata and actual-GLB physical contact.",
+    "Texture, glass, metal, wood, lighting and landscape finish are unapproved future work."
+  ],
+  "keeper_approved": false,
+  "catalogue_activated": false,
+  "independent_source_review": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\sixplex-garden-source-review.json",
+    "sha256": "5d3abdd14b98e4a7b2fa6d556459810b5a3ee6801345e459433272d01b0a5e7d",
+    "scope": "Source compatibility only: direct full-resolution front001, oblique001 and top001 pixels; generation provenance and progress brief. No geometry, material, model, walking, keeper or catalogue assessment."
+  },
+  "generation_provenance": "sixplex-garden-build-v3-generation.json",
+  "generation_provenance_sha256": "bd3dc83fa0556e2771fd5bf121df3bf0c0d579b3dba5b6c4e7592e72f0f10b9a",
+  "created_utc": "2026-10-03T22:05:51.814355+00:00",
+  "builder_sha256": "309fc19e727c8697ae1ea0c7a6b0705e782f6255ce349b5ba57915f8251beb67",
+  "measurement_contract": {
+    "units": "Metres, inferred design scale; no survey or code certification.",
+    "dimensions_m": {
+      "width": 25,
+      "depth": 15,
+      "site": [
+        34,
+        28
+      ],
+      "floor_z": [
+        0.14,
+        3.24
+      ],
+      "floor_rise": 3.1,
+      "wall_band_top": 6.6,
+      "main_ridge_z": 9.5,
+      "front_cross_ridge_z": 8.95,
+      "roof_eave_z": 6.83,
+      "roof_overhang": 0.15
+    },
+    "storeys": 2,
+    "homes": 6,
+    "source_ratios": "Three equal front bays; source gable rise reconciled to2.12m on8.333m bay, versus2.67m on15.3m main span. Main ridge is.55m higher than three cross-ridges. Balconies occupy each bay between.70m piers. Front door/window asymmetry follows pixels; right bay mirrors first two.",
+    "roof_graph": {
+      "main_planes": "z=9.5-(2.67/7.65)*abs(y)",
+      "cross_planes": "For cx=-25/3,0,25/3: z=8.95-(2.12/(25/6))*abs(x-cx)",
+      "cross_ridge_termination_y": -1.5758426966292156,
+      "ownership": "Forward half uses upper envelope of main and local cross planes, clipped at equality; rear is continuous main plane. Separate metal/lining patches. Six valley flashings and four ridge caps; no complete hidden stacked roof fields.",
+      "wall_caps": "Every exterior wall band is clipped against actual roof patch bounds and terminates at roofz-.17, overlapping lining by.005m."
+    },
+    "opening_schedule": {
+      "ground_front_per_bay": "living u2.55,w3.65,sill+.55,h2.05; lower entry u5.65 and upper private entry u7.15,w1.05,h2.45",
+      "upper_front_per_bay": "recess y-7.5..-5.85; opening u.70..7.633,z3.54..6.11; back glazing u2.9,w4.1,sill+.10,h2.4; balcony door u5.65,w1.25,h2.4",
+      "flanks": "Four per floor y[-4.7,-1.6,2.5,5.65],w1.2. Bathroom sill+1.25/h1.4; other sill+.75/h1.9. Right flank inferred matching.",
+      "rear": "Upper bedroom pane per flat u3,w3.2; lower u2.8,w3.0 leaves .275m clear pier before rear garden door u5.15,w1.15,h2.35. All sill+.75,h1.9; hidden rear inferred."
+    }
+  },
+  "program_contract": {
+    "count": 6,
+    "each_home": "One living/dining/kitchen room, separated rear bedroom and bathroom with basin/toilet/shower; one private upper stair per paired-door bay, no extra dwelling or occupied attic.",
+    "coordinate_rule": "Bay-local u0..25/3; world x=-12.5+i*(25/3)+u for first two, +25/3-u for third. y front=-7.5, rear=7.5; floor z=.14+3.1*level.",
+    "plans": {
+      "stair": "u6.62..7.72,y-5.30..-.26; eighteen .28m treads, .172222m rises. Upper/lower ceiling cut u6.47..7.87,y-5.30..-.26; landing y-.26..1.20; inner entry at y.45. Side walls u6.40..6.54 and7.81..7.95; seated posts and rails. Upper enclosure starts y-5.55 behind occupied back glazing; lower starts-7.20. Upper back carrier extends to u8.033, closing front of private stair core while balcony remains continuous.",
+      "bedroom": "Rear of y3.85 partition with door u5.15,w1.15. Bed(2.2,5.45),bedside(3.62,5.70),wardrobe(7.2,6.67).",
+      "bathroom": "u.30..2.87,y1.43..3.72; front door u2.1,w1.15. Vanity(1,3.18), toilet(2.2,3.1),shower(.92,2.0), real screen/hardware, wall-seated mirror. Shower riser/brackets at y1.80 on solid pier ahead of flank bathroom window start1.90.",
+      "kitchen": "Base/upper cabinets at right party face u7.60/7.843,y2.4; real sink apertures/bowl/tap, hob,fridge(5.99,3.18). Dining table(3.8,1.90).",
+      "living": "Sofa(2.6,-3.7),rug and coffee table(2.6,-5.05); upper front living behind recessed glazed balcony.",
+      "balcony": "u.85..7.483,y-7.46..-5.85; 1.65m recess, wall-seated cedar screen, two chairs/table; guard on .30m brick kerb.",
+      "party_walls": "Inferred .60m masonry/service band centred on each bay seam gives .30m inner-face inset on all flat sides; kitchen cupboards and shower brackets seat against these actual faces."
+    },
+    "garden": "Three paired-entry ramps, low planting, front bike pad, side path to shared rear benches/beds and garden; every lower flat has a rear exit. Tree trunks kept clear of authored paths."
+  },
+  "material_contract": {
+    "masonry_authority": {
+      "variant_id": "sixplex_two_storey_garden",
+      "method": "RLASM v6.1",
+      "state": "prototype_material_category_locked",
+      "model_approved": false,
+      "keeper_approved": false,
+      "material": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\materials\\sixplex-garden-buff-brick-v003.png",
+        "bytes": 3094039,
+        "sha256": "cf14c5d3defe6f7b4fc3859eeff381dc2e49fb7bc3b6943a760b501c96404b68",
+        "physical_repeat_m": [
+          0.96,
+          0.9
+        ],
+        "observed_brick_lengths": 4,
+        "observed_courses": 12
+      },
+      "generation": {
+        "path": "sixplex-garden-material-v003-generation.json",
+        "sha256": "1cbdba8a9afd5333b5411de8c6165dd8691319b34f80ec3bf6d18c8334cb07a1"
+      },
+      "independent_review": {
+        "path": "prework/sixplex-garden-material-review-v3.json",
+        "sha256": "6a38e9f0e70e6a7f9ca60867684d194e6cdaa8f188161e8b3d522f93d63ecc19",
+        "decision": "v003_source_compatible_prototype_material_authority_with_declared_boundary_and_optical_limits"
+      },
+      "limits": [
+        "Even-course phase confirmed; mortar-boundary continuity and mapped appearance still require render verification.",
+        "Baked edge shading, strong close texture and short-pattern repetition remain keeper limitations.",
+        "Authority applies only to buff masonry; no whole-building or runtime approval."
+      ],
+      "prior_attempts_preserved": [
+        "materials/sixplex-garden-buff-brick.png",
+        "materials/sixplex-garden-buff-brick-v002.png",
+        "prework/sixplex-garden-material-review.json"
+      ]
+    },
+    "other_finishes": "Source palette cedar, cream soffits, grey standing seam and dark metal. Remaining palette finishes are disclosed prototype limits.",
+    "glass": "Recessed clear physical panes, IOR1.45,roughness.035; QA lights camera/glossy/transmission visibility and specular contribution disabled."
+  },
+  "circulation_contract": {
+    "solver": "Embedded actual app walking metadata; maximum step.18m, body clearance.22m. Forty-one authored routes planned; actual output count must be checked.",
+    "routes_per_bay": [
+      "lower public entry",
+      "upper private approach",
+      "private stair ascent",
+      "private stair descent",
+      "upper flat entry",
+      "lower bedroom",
+      "upper bedroom",
+      "lower bathroom",
+      "upper bathroom",
+      "lower kitchen",
+      "upper kitchen",
+      "balcony",
+      "lower rear garden exit"
+    ],
+    "shared_routes": [
+      "Public route to shared rear bench",
+      "Front bicycle approach"
+    ],
+    "native_ownership": "Actual occupied floors, eighteen tread bands, real landings and balcony surfaces. No broad upper floor over stair void; exterior ramps triangulated at their real elevations.",
+    "exclusions": "Partition intervals and real mesh extents of furniture, supports, open leaves, guards, trees and bike hoops. Twenty furniture probes, six garden probes, three balcony guard probes.",
+    "verification": "Actual solver plus exact GLB physical floor/body/headroom sampling and isolated browser embedded route exercise; full rendered geometry reviewed independently."
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -51,
+        11
+      ],
+      "target": [
+        0,
+        0,
+        4.7
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        37,
+        -43,
+        27
+      ],
+      "target": [
+        0,
+        0,
+        4.7
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "aerial",
+      "location": [
+        32,
+        -35,
+        49
+      ],
+      "target": [
+        0,
+        0,
+        4.7
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -47,
+        0,
+        15
+      ],
+      "target": [
+        0,
+        0,
+        4.7
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "right_side",
+      "location": [
+        47,
+        0,
+        15
+      ],
+      "target": [
+        0,
+        0,
+        4.7
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        49,
+        15
+      ],
+      "target": [
+        0,
+        0,
+        4.7
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -34,
+        37,
+        28
+      ],
+      "target": [
+        0,
+        0,
+        4.7
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -18,
+        -23,
+        9
+      ],
+      "target": [
+        -8,
+        -7.2,
+        4.5
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        1,
+        -15,
+        3.8
+      ],
+      "target": [
+        1,
+        -7.5,
+        2.4
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -11,
+        -13,
+        2
+      ],
+      "target": [
+        -9,
+        -5,
+        1.7
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        -22,
+        -21,
+        17
+      ],
+      "target": [
+        -8,
+        -2,
+        8.5
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "central_valleys",
+      "location": [
+        7,
+        -19,
+        15
+      ],
+      "target": [
+        0,
+        -2.3,
+        8.5
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "main_ridge_contact",
+      "location": [
+        21,
+        13,
+        17
+      ],
+      "target": [
+        8,
+        0,
+        9.4
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "public_approach",
+      "location": [
+        -3,
+        -11,
+        1.1
+      ],
+      "target": [
+        -6.85,
+        -8.2,
+        0.14
+      ],
+      "whole": false,
+      "lens": 28
+    },
+    {
+      "name": "rear_garden",
+      "location": [
+        20,
+        19,
+        11
+      ],
+      "target": [
+        0,
+        10.5,
+        1.2
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "program_interior",
+      "location": [
+        -11.85,
+        -5.5,
+        1.79
+      ],
+      "target": [
+        -8.3,
+        -2.7,
+        1.2400000000000002
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay1_living_0",
+      "location": [
+        -11.85,
+        -5.5,
+        1.79
+      ],
+      "target": [
+        -8.3,
+        -2.7,
+        1.2400000000000002
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay1_kitchen_0",
+      "location": [
+        -7.0,
+        1.45,
+        1.94
+      ],
+      "target": [
+        -4.9,
+        2.5,
+        1.2400000000000002
+      ],
+      "whole": false,
+      "lens": 25
+    },
+    {
+      "name": "bay1_kitchen_sink_0",
+      "location": [
+        -6.2,
+        1.3,
+        2.04
+      ],
+      "target": [
+        -4.9,
+        2.0,
+        1.04
+      ],
+      "whole": false,
+      "lens": 29
+    },
+    {
+      "name": "bay1_bedroom_0",
+      "location": [
+        -7.35,
+        4.3,
+        1.79
+      ],
+      "target": [
+        -10.3,
+        5.45,
+        1.0899999999999999
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "bay1_bathroom_0",
+      "location": [
+        -10.0,
+        1.82,
+        1.79
+      ],
+      "target": [
+        -11.05,
+        3.05,
+        0.99
+      ],
+      "whole": false,
+      "lens": 16
+    },
+    {
+      "name": "bay1_shower_0",
+      "location": [
+        -10.2,
+        3.45,
+        1.79
+      ],
+      "target": [
+        -11.7,
+        2.0,
+        1.1400000000000001
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "bay1_living_1",
+      "location": [
+        -11.85,
+        -5.5,
+        4.890000000000001
+      ],
+      "target": [
+        -8.3,
+        -2.7,
+        4.34
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay1_kitchen_1",
+      "location": [
+        -7.0,
+        1.45,
+        5.04
+      ],
+      "target": [
+        -4.9,
+        2.5,
+        4.34
+      ],
+      "whole": false,
+      "lens": 25
+    },
+    {
+      "name": "bay1_kitchen_sink_1",
+      "location": [
+        -6.2,
+        1.3,
+        5.140000000000001
+      ],
+      "target": [
+        -4.9,
+        2.0,
+        4.140000000000001
+      ],
+      "whole": false,
+      "lens": 29
+    },
+    {
+      "name": "bay1_bedroom_1",
+      "location": [
+        -7.35,
+        4.3,
+        4.890000000000001
+      ],
+      "target": [
+        -10.3,
+        5.45,
+        4.19
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "bay1_bathroom_1",
+      "location": [
+        -10.0,
+        1.82,
+        4.890000000000001
+      ],
+      "target": [
+        -11.05,
+        3.05,
+        4.09
+      ],
+      "whole": false,
+      "lens": 16
+    },
+    {
+      "name": "bay1_shower_1",
+      "location": [
+        -10.2,
+        3.45,
+        4.890000000000001
+      ],
+      "target": [
+        -11.7,
+        2.0,
+        4.24
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "bay1_stair",
+      "location": [
+        -5.34,
+        -6.5,
+        1.8
+      ],
+      "target": [
+        -5.33,
+        -2.4,
+        2.1
+      ],
+      "whole": false,
+      "lens": 19
+    },
+    {
+      "name": "bay1_upper_landing",
+      "location": [
+        -5.33,
+        0.9,
+        4.9
+      ],
+      "target": [
+        -5.33,
+        -2.1,
+        2.4
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay1_balcony",
+      "location": [
+        -5.6,
+        -6.5,
+        4.89
+      ],
+      "target": [
+        -9.5,
+        -6.8,
+        4.0
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "bay2_living_0",
+      "location": [
+        -3.516666666666666,
+        -5.5,
+        1.79
+      ],
+      "target": [
+        0.0333333333333341,
+        -2.7,
+        1.2400000000000002
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay2_kitchen_0",
+      "location": [
+        1.333333333333334,
+        1.45,
+        1.94
+      ],
+      "target": [
+        3.4333333333333336,
+        2.5,
+        1.2400000000000002
+      ],
+      "whole": false,
+      "lens": 25
+    },
+    {
+      "name": "bay2_kitchen_sink_0",
+      "location": [
+        2.1333333333333337,
+        1.3,
+        2.04
+      ],
+      "target": [
+        3.4333333333333336,
+        2.0,
+        1.04
+      ],
+      "whole": false,
+      "lens": 29
+    },
+    {
+      "name": "bay2_bedroom_0",
+      "location": [
+        0.9833333333333343,
+        4.3,
+        1.79
+      ],
+      "target": [
+        -1.966666666666666,
+        5.45,
+        1.0899999999999999
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "bay2_bathroom_0",
+      "location": [
+        -1.666666666666666,
+        1.82,
+        1.79
+      ],
+      "target": [
+        -2.716666666666666,
+        3.05,
+        0.99
+      ],
+      "whole": false,
+      "lens": 16
+    },
+    {
+      "name": "bay2_shower_0",
+      "location": [
+        -1.8666666666666663,
+        3.45,
+        1.79
+      ],
+      "target": [
+        -3.3666666666666663,
+        2.0,
+        1.1400000000000001
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "bay2_living_1",
+      "location": [
+        -3.516666666666666,
+        -5.5,
+        4.890000000000001
+      ],
+      "target": [
+        0.0333333333333341,
+        -2.7,
+        4.34
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay2_kitchen_1",
+      "location": [
+        1.333333333333334,
+        1.45,
+        5.04
+      ],
+      "target": [
+        3.4333333333333336,
+        2.5,
+        4.34
+      ],
+      "whole": false,
+      "lens": 25
+    },
+    {
+      "name": "bay2_kitchen_sink_1",
+      "location": [
+        2.1333333333333337,
+        1.3,
+        5.140000000000001
+      ],
+      "target": [
+        3.4333333333333336,
+        2.0,
+        4.140000000000001
+      ],
+      "whole": false,
+      "lens": 29
+    },
+    {
+      "name": "bay2_bedroom_1",
+      "location": [
+        0.9833333333333343,
+        4.3,
+        4.890000000000001
+      ],
+      "target": [
+        -1.966666666666666,
+        5.45,
+        4.19
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "bay2_bathroom_1",
+      "location": [
+        -1.666666666666666,
+        1.82,
+        4.890000000000001
+      ],
+      "target": [
+        -2.716666666666666,
+        3.05,
+        4.09
+      ],
+      "whole": false,
+      "lens": 16
+    },
+    {
+      "name": "bay2_shower_1",
+      "location": [
+        -1.8666666666666663,
+        3.45,
+        4.890000000000001
+      ],
+      "target": [
+        -3.3666666666666663,
+        2.0,
+        4.24
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "bay2_stair",
+      "location": [
+        2.993333333333334,
+        -6.5,
+        1.8
+      ],
+      "target": [
+        3.003333333333334,
+        -2.4,
+        2.1
+      ],
+      "whole": false,
+      "lens": 19
+    },
+    {
+      "name": "bay2_upper_landing",
+      "location": [
+        3.003333333333334,
+        0.9,
+        4.9
+      ],
+      "target": [
+        3.003333333333334,
+        -2.1,
+        2.4
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay2_balcony",
+      "location": [
+        2.7333333333333343,
+        -6.5,
+        4.89
+      ],
+      "target": [
+        -1.166666666666666,
+        -6.8,
+        4.0
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "bay3_living_0",
+      "location": [
+        11.850000000000001,
+        -5.5,
+        1.79
+      ],
+      "target": [
+        8.3,
+        -2.7,
+        1.2400000000000002
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay3_kitchen_0",
+      "location": [
+        7.000000000000002,
+        1.45,
+        1.94
+      ],
+      "target": [
+        4.900000000000002,
+        2.5,
+        1.2400000000000002
+      ],
+      "whole": false,
+      "lens": 25
+    },
+    {
+      "name": "bay3_kitchen_sink_0",
+      "location": [
+        6.200000000000002,
+        1.3,
+        2.04
+      ],
+      "target": [
+        4.900000000000002,
+        2.0,
+        1.04
+      ],
+      "whole": false,
+      "lens": 29
+    },
+    {
+      "name": "bay3_bedroom_0",
+      "location": [
+        7.350000000000001,
+        4.3,
+        1.79
+      ],
+      "target": [
+        10.3,
+        5.45,
+        1.0899999999999999
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "bay3_bathroom_0",
+      "location": [
+        10.000000000000002,
+        1.82,
+        1.79
+      ],
+      "target": [
+        11.05,
+        3.05,
+        0.99
+      ],
+      "whole": false,
+      "lens": 16
+    },
+    {
+      "name": "bay3_shower_0",
+      "location": [
+        10.200000000000003,
+        3.45,
+        1.79
+      ],
+      "target": [
+        11.700000000000003,
+        2.0,
+        1.1400000000000001
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "bay3_living_1",
+      "location": [
+        11.850000000000001,
+        -5.5,
+        4.890000000000001
+      ],
+      "target": [
+        8.3,
+        -2.7,
+        4.34
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay3_kitchen_1",
+      "location": [
+        7.000000000000002,
+        1.45,
+        5.04
+      ],
+      "target": [
+        4.900000000000002,
+        2.5,
+        4.34
+      ],
+      "whole": false,
+      "lens": 25
+    },
+    {
+      "name": "bay3_kitchen_sink_1",
+      "location": [
+        6.200000000000002,
+        1.3,
+        5.140000000000001
+      ],
+      "target": [
+        4.900000000000002,
+        2.0,
+        4.140000000000001
+      ],
+      "whole": false,
+      "lens": 29
+    },
+    {
+      "name": "bay3_bedroom_1",
+      "location": [
+        7.350000000000001,
+        4.3,
+        4.890000000000001
+      ],
+      "target": [
+        10.3,
+        5.45,
+        4.19
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "bay3_bathroom_1",
+      "location": [
+        10.000000000000002,
+        1.82,
+        4.890000000000001
+      ],
+      "target": [
+        11.05,
+        3.05,
+        4.09
+      ],
+      "whole": false,
+      "lens": 16
+    },
+    {
+      "name": "bay3_shower_1",
+      "location": [
+        10.200000000000003,
+        3.45,
+        4.890000000000001
+      ],
+      "target": [
+        11.700000000000003,
+        2.0,
+        4.24
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "bay3_stair",
+      "location": [
+        5.340000000000002,
+        -6.5,
+        1.8
+      ],
+      "target": [
+        5.330000000000002,
+        -2.4,
+        2.1
+      ],
+      "whole": false,
+      "lens": 19
+    },
+    {
+      "name": "bay3_upper_landing",
+      "location": [
+        5.330000000000002,
+        0.9,
+        4.9
+      ],
+      "target": [
+        5.330000000000002,
+        -2.1,
+        2.4
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "bay3_balcony",
+      "location": [
+        5.600000000000001,
+        -6.5,
+        4.89
+      ],
+      "target": [
+        9.500000000000002,
+        -6.8,
+        4.0
+      ],
+      "whole": false,
+      "lens": 23
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "central_valleys",
+    "main_ridge_contact",
+    "public_approach",
+    "rear_garden",
+    "program_interior",
+    "bay1_living_0",
+    "bay1_kitchen_0",
+    "bay1_kitchen_sink_0",
+    "bay1_bedroom_0",
+    "bay1_bathroom_0",
+    "bay1_shower_0",
+    "bay1_living_1",
+    "bay1_kitchen_1",
+    "bay1_kitchen_sink_1",
+    "bay1_bedroom_1",
+    "bay1_bathroom_1",
+    "bay1_shower_1",
+    "bay1_stair",
+    "bay1_upper_landing",
+    "bay1_balcony",
+    "bay2_living_0",
+    "bay2_kitchen_0",
+    "bay2_kitchen_sink_0",
+    "bay2_bedroom_0",
+    "bay2_bathroom_0",
+    "bay2_shower_0",
+    "bay2_living_1",
+    "bay2_kitchen_1",
+    "bay2_kitchen_sink_1",
+    "bay2_bedroom_1",
+    "bay2_bathroom_1",
+    "bay2_shower_1",
+    "bay2_stair",
+    "bay2_upper_landing",
+    "bay2_balcony",
+    "bay3_living_0",
+    "bay3_kitchen_0",
+    "bay3_kitchen_sink_0",
+    "bay3_bedroom_0",
+    "bay3_bathroom_0",
+    "bay3_shower_0",
+    "bay3_living_1",
+    "bay3_kitchen_1",
+    "bay3_kitchen_sink_1",
+    "bay3_bedroom_1",
+    "bay3_bathroom_1",
+    "bay3_shower_1",
+    "bay3_stair",
+    "bay3_upper_landing",
+    "bay3_balcony"
+  ],
+  "camera_contract": "All61 views authored before geometry: fifteen exterior/contact views, one phone-board interior, and fifteen per bay covering six home room views per floor, stair, landing and balcony.",
+  "assumptions": [
+    "Hidden right/rear elevations, six plans and furnishings are inferred.",
+    "Source front and top roof prose conflicts resolved by directly reviewed pixels: three short cross-gables end below main ridge.",
+    "Local architecture/walking pass and full textured keeper are separate; full keeper not claimed.",
+    "Material boundary/edge lighting/short repeat, prototype surfaces and browser/offline optical differences require honest independent assessment."
+  ],
+  "finite_repair_v002": {
+    "preserved_candidate": "sixplex-garden-v001",
+    "corrections": [
+      "Add upper inner-door native floor u6.40..6.54,y-.15..1.05 over actual solid slab.",
+      "Move first tread waypoint from exact riser edgey-5.30 to its insidey-5.285; preserve unchanged stair geometry and step limits.",
+      "Lower six dining-table book meshes .01m to contact real table tops."
+    ],
+    "diagnostic_evidence": "Both sides of51risers passed102 exact-GLB probes; amendednative diagnostic passed41 routes/1626physicalsamples on unchangedv001 GLB. Original6route/2physicalfailures preserved; newv002must rerunfull gates."
+  }
+}
