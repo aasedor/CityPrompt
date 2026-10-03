@@ -12,22 +12,24 @@ import {
   type ResidualLandscapeRecipe,
 } from "@/components/viewer/globe/residualLandscape";
 import { createSitePreparationTexture } from "@/components/viewer/globe/sitePreparationSurface";
+const NO_ZONES: SiteZone[] = [];
 
 /** Compose into the boundary material; no overlay covers an archetype or its hit target. */
 export function useSiteLandscapeTexture(
   zone: SiteZone,
   recipe: ResidualLandscapeRecipe | null,
   enabled: boolean,
+  zones: SiteZone[] = NO_ZONES,
 ) {
   const texture = useMemo(() => {
     if (!enabled) return null;
     const value = recipe
-      ? createResidualLandscapeTexture(zone, recipe)
+      ? createResidualLandscapeTexture(zone, recipe, undefined, zones)
       : createSitePreparationTexture(zone.id, 256, "grass");
     if (recipe?.surface_image_url)
       value.userData.siteLandscapeStatus = "loading";
     return value;
-  }, [enabled, recipe, zone]);
+  }, [enabled, recipe, zone, zones]);
   useEffect(() => {
     if (!texture || !recipe?.surface_image_url) return;
     const imagePath = siteLandscapeImagePath(

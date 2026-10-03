@@ -7,6 +7,7 @@ import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlaceme
 import { rectangleDimensions } from '@/features/pickPlace/geometry';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { resolveZoneTerrainHeight } from './globeTerrainUtils';
+import { direct3DInstanceUserData, direct3DZoneInstanceDescriptor } from './direct3dCapture';
 
 /** Isolated local-review GLB. A bad candidate leaves a visible fallback and
  * never takes down the project view or another building. */
@@ -20,10 +21,12 @@ class ReviewBoundary extends Component<{ children: ReactNode }, { failed: boolea
     : this.props.children; }
 }
 
-function BuildingGLB({ url }: { url: string }) {
+function BuildingGLB({ url, zone }: { url: string; zone: SiteZone }) {
   const { scene } = useGLTF(url);
   const model = useMemo(() => centreNativeClayClone(scene.clone(true)), [scene]);
-  return <group name="review-building-loaded" userData={{ reviewBuildingStatus: 'ready' }}
+  return <group name="review-building-loaded" userData={{ reviewBuildingStatus: 'ready',
+    ...direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'building',
+      zone.building_id ? { building_id: zone.building_id } : {})) }}
     rotation={[Math.PI / 2, 0, 0]} dispose={null}><primitive object={model}/></group>;
 }
 
@@ -43,7 +46,7 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight }: {
         <mesh name="review-building-loading" userData={{ reviewBuildingStatus: 'loading' }} position={[0, 0, 4]}>
           <boxGeometry args={[22, 14, 8]}/><meshBasicMaterial color="#64748b" wireframe/>
         </mesh>
-      }><BuildingGLB url={url}/></Suspense></ReviewBoundary>
+      }><BuildingGLB url={url} zone={zone}/></Suspense></ReviewBoundary>
     </group>
   </EastNorthUpFrame>;
 }

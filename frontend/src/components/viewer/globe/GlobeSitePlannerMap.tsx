@@ -27,6 +27,8 @@ import * as THREE from 'three';
 import { GlobePlacementPreview } from '@/features/pickPlace/GlobePlacementPreview';
 import { GlobeStreetDrawingPreview } from '@/features/pickPlace/GlobeStreetDrawingPreview';
 import { StreetPreviewGroundProvider } from '@/features/pickPlace/StreetPreviewGround';
+import { GlobeBuildingPlotLandscape } from './GlobeBuildingPlotLandscape';
+import { BuildingLandscapeSurfaceProvider } from './BuildingFoundationSurface';
 import { nativeStreetPreparationProblem } from './nativeStreetPilot';
 import { streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
 import { usePublicRoadContext } from '@/features/pickPlace/usePublicRoadContext';
@@ -4503,6 +4505,7 @@ export function GlobeSitePlannerMap({
               the prepared boundary surface; this layer adds the deterministic
               canopy placements that are safe outside every authored zone. */}
           <group name="siteforge-direct3d-landscape" userData={direct3DProposalUserData('landscape')}>
+            {buildingModelsVisible && <GlobeBuildingPlotLandscape zones={connectedSceneZones} terrainHeight={terrainElevation}/>}
             {siteZones.flatMap((zone) => {
               const recipe = getResidualLandscapeRecipe(zone);
               if (!recipe?.placements.length) return [];
@@ -4547,6 +4550,7 @@ export function GlobeSitePlannerMap({
               captures. Conditional render (not `visible`) so toggling off
               unmounts the models and the prisms return automatically. */}
           <group name="siteforge-direct3d-building" userData={direct3DProposalUserData('building')}>
+            <BuildingLandscapeSurfaceProvider zones={connectedSceneZones}>
             {buildingModelsVisible && reviewBuildingZones.map((zone) =>
               <GlobeReviewBuilding key={zone.id} zone={zone} zones={siteZones} terrainHeight={terrainElevation}/>)}
             {buildingModelsVisible && meshyBuildings.length > 0 && (
@@ -4581,6 +4585,7 @@ export function GlobeSitePlannerMap({
                 onBuildingClick={handleBuildingModelClick}
               />
             )}
+            </BuildingLandscapeSurfaceProvider>
           </group>
 
           <group name="siteforge-direct3d-editor-ui" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>

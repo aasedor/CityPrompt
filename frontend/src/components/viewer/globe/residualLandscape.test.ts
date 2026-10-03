@@ -191,6 +191,21 @@ describe('residual landscape recipe', () => {
     texture.dispose();
   });
 
+  it('blends building lots and foundation bands into the site while preserving unrelated holes and saved data', () => {
+    const building: SiteZone = { ...boundary, id: 'house', zone_type: 'building',
+      coordinates: [[5, 0], [10, 0], [10, 10], [5, 10]] };
+    const bandRecipe = { ...recipe, regions: recipe.regions.map(r => ({ ...r, kind: 'foundation_planting' as const })) };
+    const before = JSON.stringify(bandRecipe);
+    const blended = createResidualLandscapeTexture(boundary, bandRecipe, 32, [building]);
+    const continuous = createResidualLandscapeTexture(boundary, { ...recipe, regions: [{ ...recipe.regions[0],
+      geometry: { type: 'Polygon', coordinates: [boundary.coordinates as [number, number][]] } }] }, 32);
+    expect(pixel(blended, 26, 16)).toEqual(pixel(continuous, 26, 16));
+    expect(pixel(blended, 13, 26)).toEqual(pixel(continuous, 13, 26));
+    expect(pixel(blended, 6, 16)[0]).toBeGreaterThan(135);
+    expect(JSON.stringify(bandRecipe)).toBe(before);
+    blended.dispose(); continuous.dispose();
+  });
+
   it('rasterizes every multipart island, preserves holes, and keeps first-region wins', () => {
     const overlappingGroundcover = {
       id: 'groundcover-overlap',

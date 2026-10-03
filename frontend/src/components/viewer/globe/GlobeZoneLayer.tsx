@@ -420,7 +420,8 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts, preparedRoadOpenings, sectionOwnsGround = false }: {
+function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false, planningOverlaysVisible = true, boundaryOverlayVisible = true, sitePrepared = false, preparedTerrain = null, inheritedMaskPreference = null, preparedGroundCutouts, preparedRoadOpenings, sectionOwnsGround = false }: {
+  landscapeZones: SiteZone[];
   preparedGroundCutouts?: number[][][];
   preparedRoadOpenings?: number[][][];
   zone: SiteZone;
@@ -683,7 +684,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile, preparedGroundCutouts, preparedOriginLng, preparedOriginLat],
   );
   useDeferredDisposable(preparedSiteGeo);
-  const preparedSiteTexture = useSiteLandscapeTexture(zone, residualLandscapeRecipe, isPreparedBoundary);
+  const preparedSiteTexture = useSiteLandscapeTexture(zone, residualLandscapeRecipe, isPreparedBoundary, landscapeZones);
   useDeferredDisposable(preparedSiteTexture);
   const replacementGroundGeo = useMemo(
     () => (
@@ -699,7 +700,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const replacementGroundTexture = useMemo(
     () => (
       isReplacementFootprintGround
-        ? createSitePreparationTexture(`${zone.id}-footprint`)
+        ? createSitePreparationTexture(`${zone.id}-footprint`, 128, 'grass')
         : null
     ),
     [isReplacementFootprintGround, zone.id],
@@ -1296,7 +1297,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         >
           <meshBasicMaterial
             key="replacement-footprint-ground"
-            color="#9b9488"
+            color="#ffffff"
             map={replacementGroundTexture ?? undefined}
             side={THREE.DoubleSide}
             depthTest
@@ -1440,6 +1441,7 @@ export function GlobeZoneLayer({
             }}
           >
             <ZoneMesh
+              landscapeZones={zones}
               sectionOwnsGround={sectionGroundIds.has(zone.id) || parkGroundOwners.some(owner => owner.id === zone.id)}
               preparedGroundCutouts={groundCutouts}
               preparedRoadOpenings={preparedRoadOpenings}

@@ -31,6 +31,7 @@ import {
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import { BuildingFoundationSurface } from './BuildingFoundationSurface';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
@@ -398,10 +399,8 @@ function LegoMassingStack({
           side={THREE.DoubleSide}
         />
       </mesh>
-      {foundation.geometry && <mesh geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
-        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
-        <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
-      </mesh>}
+      {foundation.geometry && <BuildingFoundationSurface frame={frame} zone={zone} geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
+        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA} />}
       <BuildingEntranceApproachMesh approach={foundation.approach} />
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
@@ -663,10 +662,8 @@ function LegoStackInstance({
           </group>
         </group>
       </group>
-      {foundation.geometry && <mesh geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
-        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
-        <meshStandardMaterial color="#8f8c84" roughness={0.95} side={THREE.DoubleSide} />
-      </mesh>}
+      {foundation.geometry && <BuildingFoundationSurface frame={frame} zone={zone} geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
+        userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA} />}
       <BuildingEntranceApproachMesh approach={foundation.approach} />
       {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
