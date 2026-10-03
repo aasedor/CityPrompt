@@ -2,13 +2,21 @@
 
 ## Browser render gallery
 
-**October 2–3, 2026 · 52 saved images**
+**October 2–3, 2026 · 52 saved images + 1 branded copy**
 
 Tap a preview to open the full-resolution image. On your phone, pinch to zoom or use the browser’s image-save option.
 
 - [View all 33 renders and edits](renders.md)
 - [View all 19 saved 3D reference views](scene-references.md)
 - [Browse the full-size image folder](images/)
+
+## City Prompt logo edition
+
+[![Interior render with the City Prompt logo in the top-left corner](https://media.githubusercontent.com/media/aasedor/CityPrompt/codex/browser-render-gallery-2026-10-03/docs/showcase/browser-session-2026-10-03/images/city-prompt-interior-logo.png)](https://media.githubusercontent.com/media/aasedor/CityPrompt/codex/browser-render-gallery-2026-10-03/docs/showcase/browser-session-2026-10-03/images/city-prompt-interior-logo.png)
+
+[Open or save the full-size image](https://media.githubusercontent.com/media/aasedor/CityPrompt/codex/browser-render-gallery-2026-10-03/docs/showcase/browser-session-2026-10-03/images/city-prompt-interior-logo.png) · 1280 × 693
+
+City Prompt logo added to the supplied interior image. The rest of the image and its existing caption are preserved.
 
 ## Latest renders
 
