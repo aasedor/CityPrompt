@@ -5,6 +5,13 @@ import { PlacementPalette } from './PlacementPalette';
 import * as catalogue from './canonicalCatalogue';
 
 describe('student asset browsing', () => {
+  it('offers an explicit refresh when saved detailed models were unavailable', () => {
+    const onRetry=vi.fn();
+    render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onCancel={vi.fn()}
+      status="ready" message="1 building is shown as design massing" canRefreshDetail onRetry={onRetry} />);
+    fireEvent.click(screen.getByRole('button',{name:'Refresh detailed models'}));
+    expect(onRetry).toHaveBeenCalledOnce();
+  });
   it('filters towers and transit independently, and resets categories on a section change', () => {
     const onPick=vi.fn();
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={onPick} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
@@ -33,6 +40,7 @@ describe('student asset browsing', () => {
     expect(screen.getAllByRole('article')).toHaveLength(count('building'));
     fireEvent.click(screen.getAllByRole('button', { name: 'Parks' })[1]);
     expect(screen.getAllByRole('article')).toHaveLength(12);
+    fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
     expect(screen.getAllByRole('article')).toHaveLength(count('park_plaza'));
     expect(catalogue.CLASSROOM_CHOICES.every(choice => choice.placements.length === 1 && choice.option.variants?.length === 1)).toBe(true);

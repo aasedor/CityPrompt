@@ -1212,7 +1212,7 @@ export function ProjectViewPage() {
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
               streetInPlacement
               placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
-                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
+                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} canRefreshDetail={automatic3D.canRefreshDetail}
                 onBrowseChange={setShowCatalogue}
                 onPickGenerated={model => {
                   setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);

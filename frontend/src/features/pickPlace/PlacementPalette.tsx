@@ -20,9 +20,9 @@ const classroomSummary = `${CLASSROOM_CHOICES.length} exact choices: ${classroom
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
-export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated }: {
+export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, canRefreshDetail, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated }: {
   selected: PlaceAssetId | null; onPick: (id: PlaceAssetId) => void; onCancel: () => void;
-  status: string; message: string; onRetry: () => void;
+  status: string; message: string; onRetry: () => void; canRefreshDetail?: boolean;
   onPickStreet?: (asset: StreetAsset) => void; activeStreetVariant?: string;
   onBrowseChange?: (open: boolean) => void;
   onPickCanonical: (selection: CanonicalSelection) => void;
@@ -72,6 +72,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
       <p className="font-semibold">{status === 'updating' ? 'Updating 3D…' : status === 'error' ? '3D update needs attention' : status === 'ready' ? '3D saved' : '3D appears automatically'}</p>
       {message && <p className="mt-1">{message}</p>}
       {status === 'error' && <button onClick={onRetry} className="mt-1 min-h-11 underline">Retry 3D update</button>}
+      {status === 'ready' && canRefreshDetail && <button onClick={onRetry} className="mt-1 min-h-11 underline">Refresh detailed models</button>}
     </div>
     {open && <StudioDialog title="Community catalogue" onClose={close}>
       <div className="flex h-[min(70dvh,640px)] min-h-0 flex-col gap-3 text-slate-900">

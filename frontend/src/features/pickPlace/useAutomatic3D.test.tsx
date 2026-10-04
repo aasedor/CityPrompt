@@ -133,6 +133,21 @@ describe('automatic placement compilation',()=>{
     const viewer=renderHook(()=>useAutomatic3D(undefined,[zone()],false),{wrapper});await advance();viewer.unmount();
     expect(compileMixedCommunity3D).not.toHaveBeenCalled();
   });
+  it('refreshes saved design massing only when explicitly requested',async()=>{
+    const saved=zone(0,true);
+    const massing={...saved,properties:{...saved.properties,community_3d:{
+      schema_version:1,state:'compiled',kind:'building',generator:'planned_massing',
+      compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64),
+    }}} as SiteZone;
+    const {result,unmount}=renderHook(()=>useAutomatic3D('p',[massing],false),{wrapper});
+    await advance();
+    expect(result.current.canRefreshDetail).toBe(true);
+    expect(compileMixedCommunity3D).not.toHaveBeenCalled();
+    act(()=>result.current.retry());
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    unmount();
+  });
   it('keeps runtime building entrance edits and Undo from recompiling the saved native house',async()=>{
     const saved=zone(0,true);
     const {rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{initialProps:{zones:[saved]},wrapper});
