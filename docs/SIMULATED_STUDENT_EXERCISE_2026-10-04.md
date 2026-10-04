@@ -33,9 +33,9 @@ Enabled Connect to a public road and dragged the street's eastern end toward the
 | Fractional fixed-plot rotation | Initially blocked for the walk-up: exact 25.148 m depth displayed as 25.1 m and failed the minimum. Repaired validation and preserved exact saved dimensions. Normal UI rotation to 5 degrees saved and survived reload. Eight reshape tests pass, including exact fractional dimensions. |
 | Recoverable deletion | PASS. Deleted the walk-up, restored it with Undo, then reloaded; its detailed model and 5-degree rotation returned. |
 | Walking inside the brick walk-up | PASS for entering the open front doorway and moving into its lobby through normal walking controls. Return to entrance and Exit walk worked. Stairs, upper floors and every-room access were not tested. |
-| Walking inside Buff-brick infill | FAIL. WALK INSIDE is offered, but reports “No walking route is available for this model.” See `03-infill-walk-inside-unavailable.jpg`. |
-| Buff-brick entrance picking | FAIL. Picking the visible low entrance step was rejected with “Choose the lowest entrance step on the selected catalogue house.” Cancelled without saving an approximate entrance. |
-| Review entrances | All three housing entries reported no selected entrance. Complete building-to-sidewalk routes remain unresolved. |
+| Walking inside Buff-brick infill | Initially failed with “No walking route is available for this model.” Walking metadata repair and the continuation trial now pass entry into its furnished ground floor after reload. Original failure: `03-infill-walk-inside-unavailable.jpg`. |
+| Buff-brick entrance picking | Initially rejected the visible landing. The continuation repaired missing mesh-click forwarding in the local-review renderer; a real entrance paving pick now saves and survives reload. |
+| Review entrances | Initially reported no selected entrances. All three buildings now have saved measured approaches to the residential sidewalk; see the continuation below. |
 | Review ground | PASS for measured original heights (approximately 1097.5–1103.7 m), unchanged prepared level and saving retaining edges. After reload, Close gaps at site edges remained checked with “Using saved edge measurements.” The first accessibility-index attempt closed the dialog unexpectedly; retry through the semantic checkbox worked. Measured hillside park option remained unavailable (0 of 1 repeatable park measurements). |
 | Site landscaping | PASS for Generate 3D Site Landscape, preview, Apply landscape and Save changes; models stayed clear and visible. |
 | Layers | PASS for Calgary zoning and nearby existing streets/paths loading. One zoning area and a separate route reference layer appeared. Both overlays can be hidden. |
@@ -56,6 +56,26 @@ Prepared the external v003 delivery packet and restarted only the owned port-517
 
 Validation: eight narrow ReshapePanel tests, seven delivery tests, TypeScript and lint for touched files pass. Generated screenshots, captures, audit receipts and packet bytes stay outside Git. The five equipment models are existing LFS assets; this repair introduces no new generated model geometry.
 
+## Continued browser trial: entrance connections
+
+Continued through the same disposable project's visible controls. Fixed two renderer omissions: local-review models did not forward real mesh hits to the entrance picker, and they did not render or report the shared entrance approach. Hits now use the unrotated foundation frame and preserve their ray for occlusion checks. Approaches use the existing ground and clearance checks; invalid or removed street targets retire the approach and its review. No model bytes, sealed fixture reviews or catalogue definitions changed.
+
+Selected the outer authored entrance paving for Buff-brick infill and the brick walk-up, then the older fourplex's first entrance. The fourplex includes paving beyond its stairs; the picker correctly rejected the interior stair foot. Updated the instructions to describe the paving edge without relaxing physical checks.
+
+| Building | Saved local anchor, metres | Reloaded review |
+| --- | --- | --- |
+| Buff-brick infill | x = -0.853, y = -8.725, height = 0 | Two generated steps; 0.20 m descent; 1.80 m clear width; support up to 0.06 m |
+| Three-Storey Brick Walk-Up | x = -0.353, y = -12.574, height = 0 | Two generated steps; 0.20 m descent; 1.80 m clear width; support up to 0.06 m |
+| Charcoal Gable Fourplex, primary entrance | x = -9.555, y = -8.675, height = 0 | Two generated steps; 0.20 m descent; 1.80 m clear width; support up to 0.06 m |
+
+All anchors retain native dimensions (`scaleWithPlot: false`) and target the residential street. The walk-up connection's Undo removed it and Redo restored it. Reload retained all three detailed models and their measured approaches. Walk inside passed again for the infill and walk-up after reload; movement, Return to building entrance and Exit walk worked in the walk-up. The existing fourplex entry was tested in the preceding walking repair. These are ground-floor entry trials, not proof of every unit, room or upper floor.
+
+Free Export current 3D view displayed the intact connected community. Saved its displayed PNG as `continuation-v002/exact-connected-community.png`; no paid generation ran. The editor was left visibly open on Currie Commons in Design mode. The account still showed 1,000 tokens and the generation automation remained paused.
+
+Validation: **58 focused tests in six files**, TypeScript and touched-file lint pass. New tests check the actual rotated hit transform and approach lifecycle, including removal of an invalid target. The read-only delivery check passes **105 catalogue choices, 359 distinct image/model dependencies, zero failures**, including the ten sealed local fixtures. All **19 ModelLibrary assets** pass exact storage readback. These delivery counts establish availability and byte identity, not physical access certification for every model.
+
+Evidence is outside Git in `C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/continuation-v002/`. `all-three-reloaded-ready.png` is the completed reload proof; `all-three-after-reload.png` is an earlier loading frame and is not pass evidence. `continuation-results.json` records the outcomes and limits.
+
 ## Outstanding work
 
-Buff-brick walking metadata and entrance-step picking need repair and a separate runtime trial. The three building-to-sidewalk connections remain unverified. Normal downloads, paid rendering, video and broad novice usability remain open. Retaining edges and the proposed public-road connection are concept geometry requiring physical/design review. A report or visible model does not certify accessibility, local policy conformance or classroom readiness.
+Every room, upper floors, all fourplex unit entrances and continuous walking along every possible sidewalk route remain unverified. Normal downloads, paid rendering, video and broad novice usability remain open. Retaining edges and the proposed public-road connection are concept geometry requiring physical/design review. A report or visible model does not certify accessibility, local policy conformance or classroom readiness.

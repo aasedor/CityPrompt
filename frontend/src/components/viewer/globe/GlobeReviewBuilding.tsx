@@ -1,4 +1,5 @@
-import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
+import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
+import type { ThreeEvent } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
@@ -18,8 +19,24 @@ import { reviewBuildingFootprints, reviewBuildingGroundContact } from './reviewB
 import { BuildingFoundationSurface } from './BuildingFoundationSurface';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { prepareReviewBuildingGlass } from './reviewBuildingGlass';
+import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
+import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
+import { useBuildingEntranceApproach, BuildingEntranceApproachMesh } from './BuildingEntranceApproaches';
+import { computeFootprintFrame } from './buildingPlacement';
+import { entranceReviewRevision, type BuildingEntranceReview } from './buildingEntranceReview';
 
-type GroundReporter = (buildingId: string, rendererId: string, reason: string | null) => void;
+type BuildingClick = (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
+
+/** Use the unrotated foundation frame; the footprints already include plot yaw. */
+export function reviewBuildingPointerHit(frame: THREE.Object3D, event: Pick<ThreeEvent<PointerEvent>, 'point' | 'ray' | 'distance'>,
+  ground: Omit<NativeEntranceHit, 'point' | 'ray'>): NativeEntranceHit {
+  const local = frame.worldToLocal(event.point.clone());
+  return { ...ground, point: local.toArray(), ray: {
+    origin: event.ray.origin.toArray(), direction: event.ray.direction.toArray(), distance: event.distance,
+  } };
+}
+
+type GroundReporter = (buildingId: string, rendererId: string, reason: string | null, review?: BuildingEntranceReview | null) => void;
 
 function PendingGroundIssue({ zone, reason, report }: { zone: SiteZone; reason: string; report?: GroundReporter }) {
   const buildingId = zone.building_id || zone.id;
@@ -39,9 +56,10 @@ class ReviewBoundary extends Component<{ children: ReactNode; fallback: ReactNod
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue }: {
-  url: string; zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter;
+function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuildingClick }: {
+  url: string; zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter; onBuildingClick?: BuildingClick;
 }) {
+  const frameRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(url);
   const preparedModel = useMemo(() => prepareReviewBuildingGlass(scene), [scene]);
   const model = useMemo(() => centreNativeClayClone(preparedModel.clone), [preparedModel]);
@@ -74,12 +92,24 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue }: {
   useEffect(() => geometry ? retainResourceForDeferredDisposal(geometry, value => value.dispose()) : undefined, [geometry]);
   const buildingId = zone.building_id || zone.id;
   const rendererId = `review:${zone.id}`;
+  const footprintFrame = useMemo(() => computeFootprintFrame(zone.coordinates)!, [zone.coordinates]);
+  const approach = useBuildingEntranceApproach(contact, footprints, footprintFrame, buildingId, prepared);
   const reason = contact.status === 'ready' ? null : contact.status === 'outside'
     ? 'incomplete_footprint_ground' : contact.reason ?? 'incomplete_footprint_ground';
+  const combinedReason = reason ?? approach.reason;
+  const review = useMemo<BuildingEntranceReview | null>(() => {
+    const sections = approach.userData?.entranceApproachSections;
+    const details = approach.userData?.entranceApproachDetails;
+    const revision = entranceReviewRevision(displayGround, ground);
+    if (combinedReason || contact.status !== 'ready' || !sections?.length || !details || revision === null) return null;
+    return {buildingId, groundRevision:revision, generatedSteps:approach.userData!.entranceApproachStepCount,
+      riseM:sections[sections.length-1].endHeightM-sections[0].startHeightM, clearWidthM:details.clearWidthM,
+      supportHeightM:contact.positions.reduce((max,value,index) => index%3===2 ? Math.max(max,-value) : max,0)};
+  }, [approach.userData, combinedReason, contact, buildingId, displayGround, ground]);
   useEffect(() => {
-    onGroundingIssue?.(buildingId, rendererId, reason);
+    onGroundingIssue?.(buildingId, rendererId, combinedReason, review);
     return () => onGroundingIssue?.(buildingId, rendererId, null);
-  }, [buildingId, rendererId, reason, onGroundingIssue]);
+  }, [buildingId, rendererId, combinedReason, review, onGroundingIssue]);
   useEffect(() => {
     const source = model.children[0];
     if (contact.status !== 'ready' || !source) return;
@@ -100,18 +130,29 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue }: {
     ...direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'building',
       zone.building_id ? { building_id: zone.building_id } : {})) };
   return <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>
-    <group name={`review-building-${zone.id}`}>
+    <group ref={frameRef} name={`review-building-${zone.id}`}>
       {geometry && <BuildingFoundationSurface geometry={geometry} renderOrder={150} userData={userData}/>}
-      <group rotation={[0, 0, yaw]}>
+      <group rotation={[0, 0, yaw]}
+        onPointerDown={event => {
+          event.stopPropagation();
+          const hit = frameRef.current && supportsNativeEntranceStepPick(zone)
+            ? reviewBuildingPointerHit(frameRef.current, event, { footprints, lng, lat, contact }) : undefined;
+          onBuildingClick?.(buildingId, hit ?? undefined, 'pointerdown');
+        }}
+        onClick={event => {
+          event.stopPropagation();
+          if (event.delta <= 6) onBuildingClick?.(buildingId);
+        }}>
         <group name="review-building-loaded" userData={userData}
           rotation={[Math.PI / 2, 0, 0]} dispose={null}><primitive object={model}/></group>
       </group>
+      <BuildingEntranceApproachMesh approach={approach}/>
     </group>
   </EastNorthUpFrame>;
 }
 
-export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIssue }: {
-  zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter;
+export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIssue, onBuildingClick }: {
+  zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter; onBuildingClick?: BuildingClick;
 }) {
   const url = String(zone.properties?.validation_native_url || '');
   const [lng, lat] = computeCentroid(zone.coordinates);
@@ -134,5 +175,5 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIss
         </mesh>
       </EastNorthUpFrame>
     </>}><BuildingGLB url={url} zone={zone} zones={zones} terrainHeight={terrainHeight}
-      onGroundingIssue={onGroundingIssue}/></Suspense></ReviewBoundary>;
+      onGroundingIssue={onGroundingIssue} onBuildingClick={onBuildingClick}/></Suspense></ReviewBoundary>;
 }

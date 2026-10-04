@@ -4,7 +4,7 @@ import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
 import { assertSiteLandscapeReady } from '@/features/siteLandscape/landscapeCapture';
 import { BuildingEntranceReviewPanel } from './BuildingEntranceReviewPanel';
-import type { BuildingEntranceReview } from './buildingEntranceReview';
+import { updateEntranceReviews, type BuildingEntranceReview } from './buildingEntranceReview';
 import { BuildingGroundProblems } from './BuildingGroundProblems';
 import { pickBuildingEntrance, entrancePickOccluded, entrancePickZoneKey, type NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import { useContextPresentation } from '@/features/context/useContextPresentation';
@@ -1656,6 +1656,7 @@ export function GlobeSitePlannerMap({
   const [showBuildingGroundProblems, setShowBuildingGroundProblems] = useState(false);
   const [showEntranceReview,setShowEntranceReview]=useState(false);
   const [entranceReviews,setEntranceReviews]=useState<BuildingEntranceReview[]>([]);
+  const [reviewEntranceReviews,setReviewEntranceReviews]=useState<ReadonlyMap<string,BuildingEntranceReview>>(new Map());
   const contextPresentation = useContextPresentation(allSiteZones);
   const contextPresentationRef = useRef(contextPresentation);
   contextPresentationRef.current = contextPresentation;
@@ -1668,8 +1669,9 @@ export function GlobeSitePlannerMap({
   const [legoGroundingIssues, setLegoGroundingIssues] = useState<LegoGroundingIssue[]>([]);
   const [modelGroundingIssues, setModelGroundingIssues] = useState<LegoGroundingIssue[]>([]);
   const [reviewGroundingIssues, setReviewGroundingIssues] = useState<ReadonlyMap<string, LegoGroundingIssue>>(new Map());
-  const handleReviewGroundingIssue = useCallback((buildingId: string, rendererId: string, reason: string | null) => {
+  const handleReviewGroundingIssue = useCallback((buildingId: string, rendererId: string, reason: string | null, review?: BuildingEntranceReview | null) => {
     setReviewGroundingIssues(previous => updateBuildingGroundingIssues(previous, buildingId, rendererId, reason));
+    setReviewEntranceReviews(previous => updateEntranceReviews(previous, rendererId, review ?? null));
   }, []);
   const buildingGroundingIssues = useMemo(() => [...legoGroundingIssues, ...modelGroundingIssues, ...reviewGroundingIssues.values()],
     [legoGroundingIssues, modelGroundingIssues, reviewGroundingIssues]);
@@ -4571,7 +4573,7 @@ export function GlobeSitePlannerMap({
             <BuildingLandscapeSurfaceProvider zones={connectedSceneZones}>
             {buildingModelsVisible && reviewBuildingZones.map((zone) =>
               <GlobeReviewBuilding key={zone.id} zone={zone} zones={siteZones} terrainHeight={terrainElevation}
-                onGroundingIssue={handleReviewGroundingIssue}/>)}
+                onGroundingIssue={handleReviewGroundingIssue} onBuildingClick={handleBuildingModelClick}/>)}
             {buildingModelsVisible && meshyBuildings.length > 0 && (
               <GlobeBuildingModelsLayer
                 key={`meshy-models-${buildingLayerRecoveryGeneration}`}
@@ -4755,12 +4757,12 @@ export function GlobeSitePlannerMap({
       )}
 
       {entrancePick && <section aria-label="Choose entrance in 3D" className="absolute inset-x-3 bottom-3 z-50 rounded-xl border border-slate-400 bg-white p-3 text-sm text-slate-900 shadow-lg sm:inset-x-auto sm:bottom-auto sm:right-4 sm:top-28 sm:w-80">
-        <p className="font-semibold">Pick the lowest entrance step</p>
-        <p className="mt-1">{siteZones.find(z=>z.id===entrancePick.zoneId)?.name}. Click the outer edge where the step meets the building base. Drag or zoom to see it clearly.</p>
+        <p className="font-semibold">Pick the entrance edge</p>
+        <p className="mt-1">Click the outer edge of the lowest step, or the end of its paved entrance path where it meets the ground. Drag or zoom to see it clearly.</p>
         {entrancePickError && <p role="alert" className="mt-2 text-amber-900">{entrancePickError}</p>}
         <button type="button" className="mt-2 min-h-11 rounded-lg border border-slate-600 px-3 font-semibold" onClick={()=>entrancePick.finish(null)}>Cancel pick</button>
       </section>}
-      {showEntranceReview&&<BuildingEntranceReviewPanel zones={siteZones} reviews={entranceReviews} issues={buildingGroundingIssues}
+      {showEntranceReview&&<BuildingEntranceReviewPanel zones={siteZones} reviews={[...entranceReviews,...reviewEntranceReviews.values()]} issues={buildingGroundingIssues}
         groundRevision={sharedGroundState.status === 'inactive' && preparedReviewGround ? preparedReviewGround.revision : sharedGroundState.revision}
         groundCurrent={(sharedGroundState.status === 'inactive' && Boolean(preparedReviewGround))
           || (sharedGroundState.status==='ready'&&sharedGroundState.isCurrent?.()!==false&&!sharedGroundState.preview)}
