@@ -12,6 +12,6 @@ const require=createRequire(path.join(repo,'frontend/package.json'));
 const {createServer}=await import(pathToFileURL(require.resolve('vite')).href);
 for(const name of ['index.html','review.js']) fs.copyFileSync(path.join(here,'preview',name),path.join(root,name));
 const server=await createServer({configFile:false,root,
- resolve:{alias:{three:path.resolve(path.dirname(require.resolve('three')),'..'),'@walk-solver':path.join(repo,'frontend/src/features/parks/parkWalking.ts')}},
+ resolve:{alias:{three:path.resolve(path.dirname(require.resolve('three')),'..'),'@walk-solver':path.join(repo,'frontend/src/features/parks/parkWalking.ts'),'@review-glass':path.join(repo,'frontend/src/components/viewer/globe/reviewBuildingGlass.ts')}},
  server:{host:'127.0.0.1',port:Number(process.argv[3]||5201),strictPort:true,fs:{allow:[root,repo,fs.realpathSync(path.join(repo,'frontend/node_modules'))]}}});
 await server.listen();server.printUrls();

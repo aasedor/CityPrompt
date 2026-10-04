@@ -16,6 +16,7 @@ import { preparedEntranceGround } from './preparedEntranceGround';
 import { reviewBuildingFootprints, reviewBuildingGroundContact } from './reviewBuildingGround';
 import { BuildingFoundationSurface } from './BuildingFoundationSurface';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
+import { prepareReviewBuildingGlass } from './reviewBuildingGlass';
 
 type GroundReporter = (buildingId: string, rendererId: string, reason: string | null) => void;
 
@@ -41,7 +42,10 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue }: {
   url: string; zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter;
 }) {
   const { scene } = useGLTF(url);
-  const model = useMemo(() => centreNativeClayClone(scene.clone(true)), [scene]);
+  const preparedModel = useMemo(() => prepareReviewBuildingGlass(scene), [scene]);
+  const model = useMemo(() => centreNativeClayClone(preparedModel.clone), [preparedModel]);
+  useEffect(() => retainResourceForDeferredDisposal(preparedModel,
+    value => value.ownedMaterials.forEach(material => material.dispose())), [preparedModel]);
   const [lng, lat] = computeCentroid(zone.coordinates);
   const yaw = rectangleDimensions(zone.coordinates).degrees * Math.PI / 180;
   const footprints = useMemo(() => reviewBuildingFootprints(scene, yaw), [scene, yaw]);

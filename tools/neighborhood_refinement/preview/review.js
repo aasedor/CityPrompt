@@ -3,18 +3,19 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { advanceParkWalk,parkWalkHeight } from '@walk-solver';
+import { prepareReviewBuildingGlass } from '@review-glass';
 const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setSize(innerWidth-330,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.85;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.domElement.style.marginLeft='330px';document.body.appendChild(renderer.domElement);
 const scene=new THREE.Scene();scene.background=new THREE.Color('#dbe2e3');scene.environment=new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(),.04).texture;
 scene.environmentIntensity=.35;scene.add(new THREE.HemisphereLight(0xf6f1e9,0x6b7668,.65));const sun=new THREE.DirectionalLight(0xfff1dc,2.5);sun.position.set(-20,35,30);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-30,right:30,top:30,bottom:-30,near:1,far:100});sun.shadow.bias=-.0002;sun.shadow.normalBias=.025;scene.add(sun);
 const camera=new THREE.PerspectiveCamera(48,(innerWidth-330)/innerHeight,.04,1000),controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,4,0);
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(140,140),new THREE.MeshStandardMaterial({color:0xb8c2b1,roughness:1}));ground.rotation.x=-Math.PI/2;ground.position.y=-.02;ground.receiveShadow=true;scene.add(ground);
-let model,network,spec,walking=false,position,yaw=0;const keys=new Set(),status=document.querySelector('#status');
+let model,modelMaterials=[],network,spec,walking=false,position,yaw=0;const keys=new Set(),status=document.querySelector('#status');
 const v=p=>new THREE.Vector3(p[0],p[2],-p[1]);
 function view(loc,target,lens=null){camera.fov=lens?THREE.MathUtils.radToDeg(2*Math.atan(36/(2*lens*camera.aspect))):48;camera.updateProjectionMatrix();walking=false;controls.enabled=true;camera.position.copy(v(loc));controls.target.copy(v(target));controls.update();}
 function exterior(){const k=spec?.archetype_id==='neighborhood_fourplex' ? .67 : 1;view([35*k,-45*k,26*k],[0,0,4*k]);status.textContent=document.querySelector('#model').value+' - exterior';}
-async function load(name){document.querySelector('#results').textContent='';status.textContent='Loading '+name+'…';walking=false;if(model)scene.remove(model);network=null;spec=await fetch('/'+name+'/prework-manifest.json').then(r=>r.json());
+async function load(name){document.querySelector('#results').textContent='';status.textContent='Loading '+name+'…';walking=false;if(model)scene.remove(model);for(const material of modelMaterials)material.dispose();modelMaterials=[];network=null;spec=await fetch('/'+name+'/prework-manifest.json').then(r=>r.json());
  if(spec.archetype_id==='neighborhood_fourplex')spec.camera_roster.push({name:'shower_detail',location:[-2.65,2.1,2.15],target:[-3.6,2.4,1.4],lens:14,whole:false});
- const gltf=await new GLTFLoader().loadAsync('/'+name+'/'+name+'.glb');model=gltf.scene;scene.add(model);let count=0;model.traverse(o=>{if(o.isMesh){count++;o.castShadow=true;o.receiveShadow=true;}if(o.userData.cityprompt_walking_json)network=JSON.parse(o.userData.cityprompt_walking_json);});
+ const gltf=await new GLTFLoader().loadAsync('/'+name+'/'+name+'.glb');const prepared=prepareReviewBuildingGlass(gltf.scene);model=prepared.clone;modelMaterials=prepared.ownedMaterials;scene.add(model);let count=0;model.traverse(o=>{if(o.isMesh){count++;o.castShadow=true;o.receiveShadow=true;}if(o.userData.cityprompt_walking_json)network=JSON.parse(o.userData.cityprompt_walking_json);});
  document.querySelector('#view').innerHTML='<option value="">Select an interior view</option>'+spec.camera_roster.filter(c=>!c.whole).map(c=>`<option>${c.name}</option>`).join('');
  status.textContent=`${name} · ${count} meshes · ${network?network.routes.length+' walking routes':'walking metadata pending'}`;exterior();history.replaceState(null,'','?model='+name);localStorage.setItem('neighborhood-review-model',name);}
 document.querySelector('#model').onchange=e=>load(e.target.value).catch(e=>status.textContent=e.message);
