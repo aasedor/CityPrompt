@@ -26,11 +26,16 @@ function readPacket(directory) {
 }
 const source = name => read(resolve(frontend,'src/data',name));
 const server = await createServer({root:frontend,configFile:resolve(frontend,'vite.config.ts'),logLevel:'silent',
+  // This SSR-only audit must never re-optimize the scripts of a live preview.
+  // node_modules can be shared between worktrees, so put its cache in the
+  // checkout's ignored artifact directory rather than that shared dependency tree.
+  cacheDir:resolve(repo,'artifacts/catalogue-audit-vite-cache'),
   server:{middlewareMode:true},appType:'custom', optimizeDeps:{noDiscovery:true,entries:[]}});
-let choices, heroImage;
+let choices, heroImage, sharedEquipment;
 try {
   choices = (await server.ssrLoadModule('/src/features/pickPlace/canonicalCatalogue.ts')).CLASSROOM_CHOICES;
   heroImage = (await server.ssrLoadModule('/src/features/pickPlace/pickerHeroImages.ts')).pickerHeroImage;
+  sharedEquipment = Object.values((await server.ssrLoadModule('/src/data/sharedParkEquipment.ts')).SHARED_PARK_EQUIPMENT);
 } finally { await server.close(); }
 const entries = [...source('validationCatalogue.json').entries,...source('classroomExpansion.json').entries];
 if (fixtures) {
@@ -42,9 +47,15 @@ if (fixtures) {
   }
 }
 const starter = source('classroomStarter.json');
+const equipmentManifest = read(resolve(frontend,'public/park-kits/shared-park-equipment-v1/kit_manifest.json'));
+const sharedKits = sharedEquipment.map(asset => {
+  const lock = equipmentManifest.assets.find(row => row.id === asset.id && asset.url.endsWith('/'+row.file));
+  if (!lock?.sha256) throw new Error('Shared park equipment lacks an exact delivery lock: '+asset.id);
+  return {url:asset.url,kind:'glb',sha256:lock.sha256};
+});
 const data = {entries,parks:source('nativeParks.json').layouts,streets:source('nativeStreetPilots.json'),
   library:read(resolve(repo,'seed/model-library/rlasm-architectural-clay/library.json')).entries,
-  kits:starter.dependencies.filter(row=>row.location==='public'&&row.path.endsWith('.glb')&&/park-kits|landscape-pilots/.test(row.path)).map(row=>({url:'/'+row.path,kind:'glb',sha256:row.sha256}))};
+  kits:[...sharedKits,...starter.dependencies.filter(row=>row.location==='public'&&row.path.endsWith('.glb')&&/park-kits|landscape-pilots/.test(row.path)).map(row=>({url:'/'+row.path,kind:'glb',sha256:row.sha256}))]};
 const rows = catalogueRequirements(choices,heroImage,data);
 const savedLayoutChecks = Object.values(Object.fromEntries(data.parks.flatMap(park=>Object.values(park.assets).map(asset=>[asset.url,{url:asset.url,kind:'glb',sha256:asset.sha256}]))));
 const receipt = libraryReport ? read(libraryReport) : null;
@@ -89,7 +100,7 @@ if (output) writeFileSync(output,JSON.stringify(report,null,2)+'\n');
 if (packetDirectory && report.failures.length===0 && !metadataOnly) {
   const directory=resolve(packetDirectory);
   if(directory.startsWith(repo)) throw new Error('Keep generated packets outside the source tree');
-  const sources=['src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/canonicalCatalogue.ts'];
+  const sources=['src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/canonicalCatalogue.ts'];
   const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
   const normalize=file=>readFileSync(file,'utf8').replace(/\r\n?/g,'\n');
   const receipt={schema:'cityprompt.catalogue-packet@1',catalogue_activation:false,sourceInputs:sources.map(file=>({path:file,sha256:hash(normalize(resolve(frontend,file)))})),

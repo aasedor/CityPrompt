@@ -63,6 +63,9 @@ function resolveEnvDir(): string {
 }
 
 export default defineConfig({
+  // Dependencies may be junctioned across worktrees. Keep optimized browser
+  // scripts in this checkout so another preview cannot invalidate live chunks.
+  cacheDir: path.resolve(__dirname, '../artifacts/vite-cache'),
   // Isolated source worktrees can reuse the large, already hydrated asset
   // directory without duplicating it or changing production asset URLs.
   publicDir: process.env.CITYPROMPT_PUBLIC_DIR || 'public',
