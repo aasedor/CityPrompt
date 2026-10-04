@@ -1279,10 +1279,66 @@
         "description": "A two-storey U-shaped elementary school framing a sheltered rear outdoor classroom. Modest timber classroom wings have generous windows, projecting sunshades and covered ground-floor walks. The street elevation has a clear central entrance, low planting and a roofed bike shelter. The architecture feels durable, warm and attainable rather than monumental.",
         "siteNote": "Keep the learning courtyard unbuilt and connect it to a larger play area; footprint dimensions describe the outer envelope."
       },
-      "state": "queued",
+      "state": "source_locked_only",
       "attempts": [],
       "keeper_approved": false,
-      "catalogue_activated": false
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "role": "front",
+          "path": "source-attempts/school_timber_learning_courtyard/front-001.png",
+          "bytes": 2813460,
+          "sha256": "8761c896efdae84efd76b365f133909053ddcc592120cab0e6ba5345030c2de1",
+          "full_pixels_inspected": true
+        },
+        {
+          "role": "oblique",
+          "path": "source-attempts/school_timber_learning_courtyard/oblique-001.png",
+          "bytes": 3332090,
+          "sha256": "f9a1c8ff9f26ed53e4a1e53878e793f85bfd3c91b46c32e738db41a325bbb231",
+          "full_pixels_inspected": true
+        },
+        {
+          "role": "topology",
+          "path": "source-attempts/school_timber_learning_courtyard/top-001.png",
+          "bytes": 3621958,
+          "sha256": "16a4faab41229b0058895645b7840bd120b21b3b12e4482aae6c3b2a9b14211f",
+          "full_pixels_inspected": true
+        }
+      ],
+      "generation_records": [
+        {
+          "path": "school-timber-front-generation.json",
+          "sha256": "98a3299910cff2d5214439af4a8b763348cc402926b6eca6d5914f52ff399e93"
+        },
+        {
+          "path": "school-timber-oblique-generation.json",
+          "sha256": "582f6a7fa8ec65c4dd40532397c789687541d437bcb463e303a63bff6cba9df1"
+        },
+        {
+          "path": "school-timber-top-generation.json",
+          "sha256": "39d9236bc179d4b6501359cfa8dbc16254c6ff1d74c024614b303589001c6c83"
+        }
+      ],
+      "source_note": "Three exact sources independently compatible with explicit roles. Canonical neighborhood-school variant_2 images locked; front/oblique identity, top graph only. Full brick ground storey/cedar above governs source fidelity. No model or material approval.",
+      "source_lock": {
+        "path": "prework/school-timber-source-lock.json",
+        "sha256": "e2670f9b5a253a311daf6670debe39cbe05fa8877f18a524f6c865f2d56f98db"
+      },
+      "source_review": {
+        "path": "prework/school-timber-source-review.json",
+        "sha256": "cf55ea3acbfbd3a45c7c7ae837dd905fb5b46aede32b2ac6d9c6144dbbed9336",
+        "scope": "Source compatibility and authority assignment only. Direct full-resolution inspection of three source images, exact generation prompts/input hashes and progress brief. No constructor, model, material specimen, physical contact, walking, keeper or catalogue approval."
+      },
+      "generation_provenance": {
+        "path": "school-timber-locked-generation.json",
+        "sha256": "a0ef95ab703fedeed7aada02ea8fc79c93768642038bddd20ae6fdb92cbd2e1c"
+      },
+      "measurement_draft": {
+        "path": "prework/school-timber-measurement-draft.json",
+        "sha256": "0fb599d5f512d15641b47b20c8cbaa426f10e702689df88accecd3e094c4ebdf",
+        "scope": "Pending programme/bay/roof/material/camera preflight; no geometry"
+      }
     },
     {
       "archetype_id": "neighborhood_fourplex",
@@ -1525,12 +1581,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "wave2_complete",
+  "state": "wave3_source_prework",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 9,
-  "next_action": "Wave2 checkpoint complete9/20 local prototypes. Begin wave3 first item school_timber_learning_courtyard: inspect existing canonical exact variant sources if present; otherwise built-in generation front/oblique/top. Lock coherent source/roof set and independent source review before measured dedicated constructor. No model duplicate/recolour, keeper claim, activation/push or live-project change. Preserve all hall failures and finish limitations.",
-  "updated_utc": "2026-10-03T23:56:55.603041+00:00",
+  "next_action": "School timber source lock complete; resume measured U-school layout/material prework from prework/school-timber-measurement-draft.json. Confirm source front bays/partitions, support-room/stair/floor-void allocation and clipped roof planes. Generate exact-family cedar/brick specimens with built-in tool and independent material review; then dedicated constructor/full camera roster with independent prebuild and unskinned checks. No duplicate references or model before plan/material gates.9/20; wave2 checkpoint2079deacb. No keeper/main-app/human/catalogue/publication approval.",
+  "updated_utc": "2026-10-04T00:07:04.617267+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

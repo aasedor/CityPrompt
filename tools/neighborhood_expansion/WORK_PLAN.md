@@ -527,3 +527,27 @@ bounded groups: 9/20. All nine GLB/review hashes match local-pass-index. Wave3
 begins with school_timber_learning_courtyard and requires its own source lock
 and inferred plan before construction. Main-app runtime, human catalogue and
 publication approval remain absent.
+
+## Timber courtyard school source checkpoint
+
+The third group begins with school_timber_learning_courtyard. Built-in front,
+rear oblique and roof-study references are independently compatible with explicit
+source roles. Their exact pixels are copied to the external canonical
+neighborhood-school variant_2 files. school-timber-source-lock.json records
+front facade/entrance authority, rear courtyard/covered-walk authority, and
+topology-only use of the elevated roof study. Its changed four front window
+groups and canopy/site details are excluded. The primary front has three broad
+connector upper groups plus narrower or obscured transitions.
+
+Source images show a full brick ground storey with cedar above. The two parallel
+wing ridges meet a transverse connector roof; infer actual unequal heights and
+clipped plane intersections rather than copying projected crossings. The rear
+court stays completely unbuilt and open to a play lawn.
+
+External prework/school-timber-measurement-draft.json proposes a 52 by40m U,
+six furnished classrooms per floor, connected courtyard corridors, two stairs
+and occupied support rooms. This is a draft. Bay/partition, washroom, stair-void,
+roof/lining, material and camera contracts still need a complete prebuild review.
+No school geometry or material specimen has been approved or built. Resume those
+concrete steps; preserve the three original references and provenance. Completed
+local count remains 9/20. Keeper and main-app readiness remain unapproved.

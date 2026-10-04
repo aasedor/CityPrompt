@@ -1,0 +1,63 @@
+{
+  "variant_id": "school_timber_learning_courtyard",
+  "archetype_id": "neighborhood_elementary_school",
+  "method": "RLASM v6.1",
+  "state": "source_locked_only",
+  "sources": [
+    {
+      "role": "front",
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-school/variant_2.png",
+      "bytes": 2813460,
+      "sha256": "8761c896efdae84efd76b365f133909053ddcc592120cab0e6ba5345030c2de1",
+      "source_attempt": "source-attempts/school_timber_learning_courtyard/front-001.png",
+      "authority": "Primary street identity: two occupied floors, cedar upper storey over a full brick ground storey, two street-facing end gables framing the broad transverse connector, three prominent wide upper connector window groups with narrower/partly tree-obscured end transitions, corresponding lower groups and central glazed entrance with timber porch. Left roofed bicycle shelter, low planting, seating and clear public approach. Use actual visible grouping/occlusion boundaries; do not turn every partly hidden pane into a new equal-width bay."
+    },
+    {
+      "role": "oblique",
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-school/variant_2_oblique.png",
+      "bytes": 3332090,
+      "sha256": "f9a1c8ff9f26ed53e4a1e53878e793f85bfd3c91b46c32e738db41a325bbb231",
+      "source_attempt": "source-attempts/school_timber_learning_courtyard/oblique-001.png",
+      "authority": "Rear-courtyard relationship authority: two parallel two-storey wings extending behind the front connector; both rear wing tips are gabled, the rear mouth remains open to play lawn. Courtyard-facing classroom glazing on both levels, roofed low timber walks along both wing interiors and connector rear, outdoor tables/benches/planting. It is a rear elevated view of different elevations, not an alternative front facade. Visible classroom occupation informs programme category only."
+    },
+    {
+      "role": "topology",
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-school/variant_2_roof-study.png",
+      "bytes": 3621958,
+      "sha256": "16a4faab41229b0058895645b7840bd120b21b3b12e4482aae6c3b2a9b14211f",
+      "source_attempt": "source-attempts/school_timber_learning_courtyard/top-001.png",
+      "authority": "Corroborates only a U footprint with two longitudinal parallel wing ridges and one perpendicular transverse front-connector ridge, seated corner roof junctions, open uncovered rear court and no rear closing bar. Elevated oblique projection, not the requested <=10-degree near-nadir. Excluded from facade counts, entrance/canopy shape, metric lengths, slope, relative ridge/eave heights and precise valley coordinates."
+    }
+  ],
+  "roof_graph": {
+    "body": "Two occupied storeys in a U: front connector and two parallel side wings; rear courtyard mouth stays open to play lawn.",
+    "main_ridges": "Two parallel longitudinal wing ridges and one transverse front connector ridge. Connector terminates into wing roof fields; do not assume equal heights.",
+    "junctions": "Solve actual intersecting/clipped roof planes, valleys and complete lining/carrier closure. Projected source crossings are not metric intersection coordinates.",
+    "secondary_roofs": "Low covered timber walks along courtyard edges and modest front porch/bicycle shelter. These are secondary roofs, not fourth main volumes.",
+    "excluded": "No rear closing bar, roof over court, tall gym, tower, dormers or extra storeys."
+  },
+  "facade_material_observation": "Images coherently show full brick ground storey with vertical cedar above; this governs construction rather than the original low-brick-base wording.",
+  "source_limits": [
+    "Front governs three prominent connector upper window groups plus narrow or obscured transitions; tree occlusion does not create an additional repeated bay.",
+    "Top changes connector front groups to four and alters canopy/site details; exclude those features.",
+    "Top is elevated oblique, not near-nadir; use topology only, no metric width/depth/height/slope/proportions.",
+    "Hidden outer wing elevations and complete programme, room partitions, stairs, fixtures, support contacts and landscape extents require explicit inference."
+  ],
+  "remaining_inferences": [
+    "52 by40m envelope, wing/connector widths and site allocation.",
+    "Eave/ridge levels, actual roof intersections/lining/fascias and canopy support contacts.",
+    "Occupied room count and programme, connected stairs and floor voids, furnishings and every route.",
+    "Source-conditioned cedar/brick physical scale and bounded mapping; glulam/glass/fixtures remain unapproved until relevant review."
+  ],
+  "independent_source_review": {
+    "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/prework/school-timber-source-review.json",
+    "sha256": "cf55ea3acbfbd3a45c7c7ae837dd905fb5b46aede32b2ac6d9c6144dbbed9336",
+    "scope": "Source compatibility and authority assignment only. Direct full-resolution inspection of three source images, exact generation prompts/input hashes and progress brief. No constructor, model, material specimen, physical contact, walking, keeper or catalogue approval."
+  },
+  "generation_provenance": "school-timber-locked-generation.json",
+  "generation_provenance_sha256": "a0ef95ab703fedeed7aada02ea8fc79c93768642038bddd20ae6fdb92cbd2e1c",
+  "created_utc": "2026-10-04T00:07:04.617267+00:00",
+  "keeper_approved": false,
+  "catalogue_activated": false,
+  "next_step": "Measured plan/roof/camera/programme draft, source-conditioned materials and independent prebuild review before dedicated U-school constructor."
+}
