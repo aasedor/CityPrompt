@@ -1,0 +1,32 @@
+{
+  "title": "Currie Commons — three presentation renders",
+  "created": "2026-10-04",
+  "source_project_id": "9638ee5a-f0cf-422d-a608-c35b378c23e3",
+  "source": "CityPrompt main browser application",
+  "engine_reported_by_app": "GPT Image 2.5 Flare",
+  "render_mode": "Direct 3D",
+  "note": "AI presentation images based on the saved 3D community. Original model geometry was not changed.",
+  "app_tokens_used": 306,
+  "renders": [
+    {
+      "file": "street-fourplex.png",
+      "view": "street",
+      "subject": "Charcoal Gable Fourplex",
+      "heading_degrees": 346,
+      "sha256": "15d44fc23e8a2004522eaa67f63f2a5a27d4a5d73263a76fca147cc288e0fe32"
+    },
+    {
+      "file": "street-brick-housing.png",
+      "view": "street",
+      "subject": "Three-Storey Brick Walk-Up and Buff-brick infill",
+      "heading_degrees": 3,
+      "sha256": "d9b2b3cbcebc2c7f093312cfc7d88872647991028d8578d4b8f79fc326db72dd"
+    },
+    {
+      "file": "aerial.png",
+      "view": "aerial",
+      "subject": "Complete community with three buildings, residential street and pocket park",
+      "sha256": "14cf77907927fbfbbcab2b1ddf8a3c861b764087abd703af6c2f97b820a8a9ac"
+    }
+  ]
+}
