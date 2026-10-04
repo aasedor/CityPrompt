@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "programmes": [
+    {
+      "id": "flexible_pocket_park_v1",
+      "key": "pocket-v1",
+      "archetypeId": "urban_pocket_park",
+      "variantId": "urban_pocket_park_v0",
+      "label": "Flexible pocket park",
+      "description": "Draw an irregular small park. Lawn, shade and seating adapt to the space.",
+      "thumbnail": "/archetypes/openspaces/urban-pocket-park/variant_0.png",
+      "widthM": 30,
+      "depthM": 30,
+      "minWidthM": 8,
+      "minDepthM": 8,
+      "maxSizeM": 100,
+      "reshapeDescription": "Draw or reshape a simple, non-crossing outline. The lawn and planting adapt; benches and trees keep their real size. Supported area: 64–3,600 m²."
+    },
+    {
+      "id": "flexible_linear_greenway_v1",
+      "key": "greenway-v1",
+      "archetypeId": "linear_park_greenway",
+      "variantId": "linear_park_greenway_v0",
+      "label": "Flexible linear greenway",
+      "description": "Draw a long, varied-width corridor with a continuous walking trail.",
+      "thumbnail": "/archetypes/openspaces/linear-park-greenway/variant_0.png",
+      "widthM": 90,
+      "depthM": 18,
+      "minWidthM": 12,
+      "minDepthM": 12,
+      "maxSizeM": 1000,
+      "reshapeDescription": "Keep a connected corridor at least 60 m long, 12–60 m wide and three times longer than wide. The clear trail and planting adapt to its outline."
+    }
+  ]
+}

@@ -3697,7 +3697,7 @@ export function GlobeSitePlannerMap({
     setCenterNearStartVertex(false);
     drawingPointsRef.current = [];
     drawingPointHeightsRef.current = [];
-    if (isMobileDrawingViewport() || zoneProperties.pick_place_street_section) {
+    if (isMobileDrawingViewport() || zoneProperties.pick_place_street_section || zoneProperties.pick_place_flexible_park) {
       setActiveSitePlannerTool(null);
     }
   }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, setActiveSitePlannerTool, terrainElevation, siteZones, publicRoadSnapEnabled, publicRoadContext.data, streetPreparationProblem, showGroundReview]);

@@ -37,9 +37,9 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
       <span className="block space-y-1 p-3">
         <span className="block text-sm font-bold">{label}</span>
         <span className="block text-xs text-slate-600 line-clamp-3">{placement?.description ?? variant?.description ?? option.description}</span>
-        <span className="block text-xs font-medium text-slate-700">{placement ? 'Detailed 3D' : choice.domain === 'building' ? 'Design massing · detailed model depends on size and availability' : 'Design reference · layout depends on available 3D support'}</span>
+        <span className="block text-xs font-medium text-slate-700">{placement?.kind === 'object' && placement.properties.pick_place_flexible_park ? 'Flexible 3D · draw your outline' : placement ? 'Detailed 3D' : choice.domain === 'building' ? 'Design massing · detailed model depends on size and availability' : 'Design reference · layout depends on available 3D support'}</span>
         <span className="block pt-1 text-sm font-semibold underline">{placement?.kind === 'street' ? 'Choose & draw route'
-          : choice.domain === 'street_pathway' ? 'Place fixed review segment' : 'Choose & place'}</span>
+          : placement?.kind === 'object' && placement.properties.pick_place_flexible_park ? 'Choose & draw park' : choice.domain === 'street_pathway' ? 'Place fixed review segment' : 'Choose & place'}</span>
       </span>
     </button>
     <div className="space-y-2 px-3 pb-3">

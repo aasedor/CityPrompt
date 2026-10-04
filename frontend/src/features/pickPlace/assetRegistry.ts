@@ -1,6 +1,7 @@
 import { nativeParkLayouts } from '@/features/parks/nativeParkRegistry';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
+import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
@@ -117,6 +118,21 @@ export const LEGACY_OBJECT_ASSETS: PlaceAsset[] = [
       neighborhood_park_layout: 'adaptive_rustic_v1' },
   },
 ];
+
+/** Shape-first parks use the existing measured public-realm kits. Their
+ * programme adapts to the drawn parcel; they never scale a native assembly. */
+export const FLEXIBLE_PARK_ASSETS: PlaceAsset[] = flexibleParks.programmes.map(programme => ({
+  id: programme.id, kind: 'object', definitionVersion: 1,
+  readiness: 'pilot', reshapeMode: 'authored_footprint',
+  model: { variantId: programme.variantId, revision: 'flexible-outline-v1', method: 'public_realm_park_kit' },
+  label: programme.label, description: programme.description, thumbnail: programme.thumbnail,
+  calgaryGuide: classifyCalgaryAsset('park_plaza', { id: programme.archetypeId }),
+  zoneType: 'green_space', width: programme.widthM, depth: programme.depthM,
+  minWidth: programme.minWidthM, minDepth: programme.minDepthM, maxSize: programme.maxSizeM,
+  reshapeDescription: programme.reshapeDescription,
+  properties: { green_space_archetype_id: programme.archetypeId, green_space_selected_variant_id: programme.variantId,
+    pick_place_flexible_park: programme.key, pick_place_automatic_3d: true },
+}));
 
 const streetSource = streetCatalogue.archetypes.find(entry => entry.id === 'calgary_local')!;
 export const LOCAL_STREET_ASSET: StreetAsset = {
@@ -235,7 +251,7 @@ function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
   };
 }
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS].map(asset => {
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS].map((asset): CatalogueAsset => {
   if (asset.kind==='object' && asset.zoneType==='road') {
     const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
     if(native)return {...native,calgaryGuide:asset.calgaryGuide};
@@ -251,7 +267,7 @@ export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, 
     model:{...asset.model,revision:layout.contentRevision,method:'native_park_v2'},
     width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
     properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
-});
+}).concat(FLEXIBLE_PARK_ASSETS);
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

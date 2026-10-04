@@ -1,4 +1,5 @@
 import validationRoster from '@/data/validationCatalogue.json';
+import flexibleParks from '@/data/flexibleParks.json';
 
 import type { SiteZoneProperties } from '@/types';
 import buildingArchetypeLibrary from '@/data/buildingArchetypes.json';
@@ -839,10 +840,11 @@ for (const [domain, options] of [
   const allowed = validationRoster.entries.filter(entry => entry.domain === domain);
   const selected = options.flatMap(option => {
     const entry = allowed.find(row => row.archetype_id === option.id);
-    if (!entry) return [];
-    const asset = validationRoster.assets.find(row => row.id === entry.placement_id && row.model.variantId === entry.variant_id);
+    const flexible = domain === 'park' ? flexibleParks.programmes.find(row => row.archetypeId === option.id) : undefined;
+    if (!entry && !flexible) return [];
+    const asset = entry ? validationRoster.assets.find(row => row.id === entry.placement_id && row.model.variantId === entry.variant_id) : flexible;
     if (!asset) return [];
-    return [{ ...option, variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }] }];
+    return [{ ...option, variants: [{ id: entry?.variant_id ?? flexible!.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }] }];
   });
   options.splice(0, options.length, ...selected);
 }

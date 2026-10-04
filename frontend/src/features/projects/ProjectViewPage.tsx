@@ -21,6 +21,7 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { parkOutlineProblem } from '@/features/pickPlace/parkOutline';
+import { flexibleParkFitProblem, isFlexiblePark } from '@/features/parks/flexibleParkFit';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
 import { duplicateStreet } from '@/features/pickPlace/duplicateStreet';
 import { streetConnectionProblem } from '@/features/pickPlace/streetConnectionProblem';
@@ -283,6 +284,11 @@ export function ProjectViewPage() {
     const asset = placeAsset(assetId);
     setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
     useViewerStore.getState().setStreetViewActive(false);
+    if (isFlexiblePark(asset.properties)) {
+      cancelPlacement();
+      setActiveSitePlannerTool('green_space', asset.properties);
+      return;
+    }
     setPlacementDraft({ assetId, width: width ?? asset.width, depth: depth ?? asset.depth, degrees,
       faceStreet: asset.zoneType === 'building' });
   };
@@ -330,7 +336,7 @@ export function ProjectViewPage() {
         ?? brtConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
         ?? streetConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
         ?? nativeStreetRouteProblem({...zone,...(streetUpdate??{coordinates})},getActiveSiteBoundary(siteZones))
-        ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
+        ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates) ?? flexibleParkFitProblem(coordinates,zone.properties)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
           parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
@@ -1152,6 +1158,12 @@ export function ProjectViewPage() {
             transportContext={transportContext}
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
+              if (type === 'green_space' && isFlexiblePark(properties)) {
+                const problem = parkOutlineProblem(coordinates)
+                  ?? flexibleParkFitProblem(coordinates, properties)
+                  ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined);
+                if (problem) { toast.error(problem, {position:'top-center'}); return false; }
+              }
               if (isFixedSectionStreet({zone_type:type, properties})) {
                 const problem = specialistConnectionProblem({coordinates,properties},siteZones)
                   ?? brtConnectionProblem({coordinates,properties},siteZones)

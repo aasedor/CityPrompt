@@ -5,7 +5,7 @@ import {
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, MANUAL_STREET_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
@@ -75,7 +75,18 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
 
 // Local validation roster: no legacy variants or generic massing fallbacks in discovery.
 const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries]);
-export const CANONICAL_CHOICES = resolvedRoster.choices;
+export const CANONICAL_CHOICES: CanonicalChoice[] = [
+  ...resolvedRoster.choices,
+  ...FLEXIBLE_PARK_ASSETS.map(asset => {
+    const source = CANONICAL_DOMAINS.park_plaza.find(option => option.id === asset.properties.green_space_archetype_id);
+    if (!source) throw new Error(`Missing park reference for ${asset.id}`);
+    return { id: `park_plaza:${source.id}:flexible`, domain: 'park_plaza' as const, placements: [asset], option: {
+      ...source, label: asset.label, description: asset.description, photoUrl: asset.thumbnail,
+      calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+      variants: [{ id: asset.model.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }],
+    } };
+  }),
+];
 export const UNAVAILABLE_CATALOGUE_ENTRIES = resolvedRoster.unavailable;
 /** Exact starter variants only. Parent cards must not quietly expose their other
  * variants under the classroom promise. The full catalogue remains separate. */
