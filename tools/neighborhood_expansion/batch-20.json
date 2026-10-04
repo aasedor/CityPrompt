@@ -1585,8 +1585,8 @@
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 9,
-  "next_action": "School timber source lock complete; resume measured U-school layout/material prework from prework/school-timber-measurement-draft.json. Confirm source front bays/partitions, support-room/stair/floor-void allocation and clipped roof planes. Generate exact-family cedar/brick specimens with built-in tool and independent material review; then dedicated constructor/full camera roster with independent prebuild and unskinned checks. No duplicate references or model before plan/material gates.9/20; wave2 checkpoint2079deacb. No keeper/main-app/human/catalogue/publication approval.",
-  "updated_utc": "2026-10-04T00:07:04.617267+00:00",
+  "next_action": "School timber source lock complete; resume measured U-school layout/material prework from prework/school-timber-measurement-draft.json. Confirm source front bays/partitions, support-room/stair/floor-void allocation and clipped roof planes. Generate exact-family cedar/brick specimens with built-in tool and independent material review; then dedicated constructor/full camera roster with independent prebuild and unskinned checks. No duplicate references or model before plan/material gates.9/20; wave2 checkpoint2079deacb. No keeper/main-app/human/catalogue/publication approval. User added a required checkpoint: after the tenth local pass, trial all first ten in the main CityPrompt browser using separate test projects and preserve runtime evidence before building11. Read ten_building_browser_checkpoint; isolated inspector checks alone do not satisfy it.",
+  "updated_utc": "2026-10-04T00:10:37.598164+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [
@@ -1618,5 +1618,27 @@
       "sixplex_shared_garden",
       "library_reused_neighborhood_hall"
     ]
-  ]
+  ],
+  "ten_building_browser_checkpoint": {
+    "requested_by_user": "Once you get to 10, please trial them all in the City prompt browser.",
+    "trigger_completed_models": 10,
+    "before_building": 11,
+    "status": "pending_tenth_local_pass",
+    "scope": "First ten completed additional buildings in the main CityPrompt browser application. The standalone model inspector evidence does not satisfy this requested trial.",
+    "project_policy": "Use a separate disposable test project and appropriate vacant site; preserve the user live project, original candidates and all prior evidence.",
+    "trial_plan": [
+      "Freeze the first ten keeper-unapproved local-pass candidate IDs and exact GLB hashes.",
+      "Identify the actual CityPrompt main app, source version, backend/storage environment and supported local test-asset binding. Use isolated local fixtures; no public catalogue activation, publication or push.",
+      "Load/place each exact model through the supported app workflow at its native scale. Check identity, dimensions, full plot support, visible entrances, exterior/interior views and available walking/approach behaviour.",
+      "Exercise supported selection, move/rotate, Undo/Redo, save/reload/reopen and visibility/capture controls. Preserve screenshots, console/network findings and exact binding/hash readback.",
+      "Trial a mixed neighbourhood with all ten on a sufficiently large vacant test site. Verify clear approaches, surrounding paths/open space, distinct models and low/aerial views. Preserve individual trials for oversized civic buildings.",
+      "Save per-model PASS/FAIL/NOT_TESTED findings in separate runtime trial reports; never rewrite sealed independent asset reviews. Record finish limits and unsupported or unavailable advertised features honestly.",
+      "Resolve concrete blockers within authorized local scope, or record the exact intervention needed. Complete this checkpoint and report its evidence before starting building11."
+    ],
+    "runtime_reference": "docs/ARCHETYPE_RUNTIME_INTEGRATION.md and per-variant runtime review templates",
+    "keeper_approval_granted": false,
+    "catalogue_activation_authorized": false,
+    "publication_authorized": false,
+    "created_utc": "2026-10-04T00:10:37.598164+00:00"
+  }
 }

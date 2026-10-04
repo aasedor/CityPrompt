@@ -551,3 +551,28 @@ roof/lining, material and camera contracts still need a complete prebuild review
 No school geometry or material specimen has been approved or built. Resume those
 concrete steps; preserve the three original references and provenance. Completed
 local count remains 9/20. Keeper and main-app readiness remain unapproved.
+
+## User checkpoint after building ten: main CityPrompt browser trial
+
+The user requested: "Once you get to 10, please trial them all in the City prompt
+browser." After the tenth independently passing local model, trial all first ten
+additional buildings in the main CityPrompt app before starting building eleven.
+This checkpoint is part of the ongoing finite batch. The standalone inspector
+checks already recorded do not establish this trial.
+
+Use a separate disposable project on an appropriately sized vacant site, preserving
+the user's live project and all original candidates. Freeze the ten exact IDs and
+GLB hashes. Verify each model through supported local app placement, identity,
+scale, ground support, entrances/approaches, visible rooms and available walking.
+Exercise supported editing, Undo/Redo, save/reload/reopen, visibility and capture;
+then review a mixed neighbourhood containing all ten with clear paths/open space.
+Keep individual trials for large civic buildings. Save per-model screenshots,
+binding/hash readback, console/network findings and PASS/FAIL/NOT TESTED results
+using the shared runtime checklist. Preserve sealed asset reviews; add separate
+runtime evidence. Do not infer keeper approval from a browser load.
+
+Temporary isolated local test bindings are within this trial's scope. Public
+catalogue activation, publishing, pushing and changing the user's live project
+remain unauthorized. Identify the actual app/backend/storage environment before
+installing fixtures. Record concrete blockers and required intervention honestly.
+Read the machine checkpoint in progress.json and finish it before building eleven.
