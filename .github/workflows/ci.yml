@@ -83,6 +83,9 @@ jobs:
           python -m pytest tools/archetype_compiler/tests/test_catalogue_promotion.py -q
           python -m tools.catalogue_promotion check --metadata-only
 
+      - name: Test expected catalogue storage and exact byte checks
+        run: python -m pytest ../scripts/tests/test_check_model_library_storage.py -q
+
       - name: Lint with ruff
         run: ruff check .
 
@@ -154,6 +157,11 @@ jobs:
 
       - name: Validate archetype assets
         run: npm run check:archetype-assets
+
+      - name: Verify catalogue delivery guards and exact model bindings
+        run: |
+          npm run test:catalogue-delivery
+          npm run check:catalogue-delivery -- --metadata-only
 
       - name: Validate Sticker Method assets
         run: npm run check:sticker-pilot-assets

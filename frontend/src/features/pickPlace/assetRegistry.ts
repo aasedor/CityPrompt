@@ -252,6 +252,16 @@ function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
 }
 
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS].map((asset): CatalogueAsset => {
+  // Exact local validation buildings already declare their delivered GLB.
+  // Keep that binding reproducible rather than depending on an unrelated
+  // developer database having a matching Model Library row.
+  if(asset.kind==='object' && asset.zoneType==='building' && asset.reshapeMode==='fixed_native') {
+    const entry=validation.entries.find(row=>row.placement_id===asset.id);
+    if(entry?.local_url && entry.sha256===asset.model.revision && entry.binding==='native-runtime') {
+      asset={...asset,properties:{...asset.properties,validation_fixed_fixture:true,
+        validation_native_url:entry.local_url,community_3d_mask_existing_tiles:true}};
+    }
+  }
   if (asset.kind==='object' && asset.zoneType==='road') {
     const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
     if(native)return {...native,calgaryGuide:asset.calgaryGuide};
