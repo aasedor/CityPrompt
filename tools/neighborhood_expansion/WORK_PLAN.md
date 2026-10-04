@@ -752,3 +752,56 @@ record the seal SHA, and restart only own5175 frontend with that exact
 UI individual and mixed vacant-site trials with per-model runtime evidence
 before building11. Current count9. School-timber-v001 PID5212 has entered its
 71-view render stage; run fresh complete skinned gates only after BUILD_COMPLETE.
+
+
+## Tenth local model passed; main-app trial checkpoint triggered
+
+School-timber-v001 finished71 exact GLB1280x960 views, three boards and all fresh
+gates:45native/browser routes,20furniture,9garden,6at-height guards,13,450bound
+physical route/start samples,4,469generic samples,96stairs and1,638aperture rays.
+Independent full-resolution review passes local0P0/P1 and holds two keeper-only
+finish/material and optics groups. ExactGLB538e8115/64,702,276bytes is pinned.
+Both independent review versions are preserved; additive v002 harmonizes only
+the canonical local decision literal without changing findings. No main-app
+runtime approval. Legacy null-only guard4/6 failure remains preserved.
+
+COUNT10/20. Stop new buildings at the user-required checkpoint. Freeze/install
+the exactten external private fixtures with v003 helpers and process sealSHA,
+then trial all10 in the dedicated main app5175/8003 through ordinary controls
+on separate disposable vacant-site projects plus a mixed neighbourhood. Save
+per-model PASS/FAIL/NOT TESTED, screenshots/readbacks and honest limitations.
+Complete and report the trial before11. Original projects/catalogue untouched.
+
+
+## Exact ten installed; first main-app trial active
+
+Corrected v004 fixture helpers independently pass0P0/P1 and13 positive/negative
+cases. Earlier holds and the actual v003 seal refusal remain preserved. Allten
+are now sealed externally at43fb056d; own5175 frontendjobv005PID26756 enforces
+that exact startup seal from the frontend working directory. Do not apply the
+sealer again or duplicate running jobs. Source catalogue remains unchanged.
+
+Normal UI created only disposable Garden Pavilion project0a17a73b in owned8003
+trial DB. Exact9,051,328-byte GLBf509d4a1 and native38x30m plot pass HTTP/readback;
+front entry walk reaches connector/classroom doorway and return entrance works.
+Visibility toggle, exact free preview PNG, rotation Undo/Redo, move save/reload
+retain stable zone identity and dimensions. Original natural ground hadfive
+unavailable cells; preserved evidence precedes deliberate UI redevelopment
+level1102.662m. This is prepared concept evidence, not natural terrain approval.
+
+First trial remainsIN_PROGRESS: sidewalk/actualstepfoot, complete ground/low
+view review, additional recovery checks and independent runtime review remain.
+No sidewalk selected; no comprehensive route traversal or runtime acceptance
+claimed. Evidence is externalmain-app-trials/01-childcare-garden-v004. Complete
+the remainingnine separate ordinary UI vacant-site projects and mixedten, record
+honest PASS/FAIL/NOT_TESTED, and report checkpoint before11. Count10/20 unchanged.
+
+## First main-app pilot on hold
+
+The Garden pilot reproduced C3 ground seating, C5/C9 entrance integration and C8 visual blockers. Independent diagnosis and adapter-design preflight are preserved under its external review folder. Native walking omits the 0.6 m band across existing paving at the plot boundary; portal rectangles alone do not create floor. Begin only a bounded shared C3 repair using exact native bounds, current shared/prepared ground and measured foundation seating. Entrance and optics remain on hold; keep nine other main-app trials NOT TESTED and building eleven queued. The internal lane recovered through hydration of nine existing local LFS objects and normal Retry. A rejected boundary edit recovered through normal Reload saved version. Landscape Apply is UI-only evidence pending invalidation, reload and capture.
+
+## Bounded C3 repair verified
+
+The review renderer now measures the complete native GLB bounds, matches the existing bottom-centred transform, and uses shared full-footprint contact and measured foundation seating. Verified ground controls walking and capture issues; retained display ground only keeps a coherent draft. Suspended/failed models register blockers and clean up on unmount. Independent source review v002 passes 52 narrow tests plus type-check. Independent browser C3 review v001 passes only the first Garden prepared-ground contact, reload and free capture; natural terrain and real-browser negative cases remain untested. Source freezes and all nine images/readbacks are external. Sealed GLB bytes and native dimensions remain unchanged.
+
+The additive runtime-trial-report-v001.json remains HOLD for C5/C9 advertised entrance controls/native floor handoff and C8 glazing/roof artifacts. Nine other main-app trials, mixed neighbourhood and building eleven remain queued. Next: finite renderer diagnosis and explicit physical/native handoff review, then reprove Garden before scale. No assets, catalogue entries, original projects or running environment jobs were replaced.

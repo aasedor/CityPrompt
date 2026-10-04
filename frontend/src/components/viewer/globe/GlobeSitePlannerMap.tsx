@@ -65,6 +65,7 @@ import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeReviewBuilding } from './GlobeReviewBuilding';
+import { updateBuildingGroundingIssues } from './buildingGroundContact';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
 import { preparedPublicRoadMasks } from './preparedPublicRoads';
@@ -1666,7 +1667,12 @@ export function GlobeSitePlannerMap({
   const sharedGroundRef = useRef(sharedGroundState);
   const [legoGroundingIssues, setLegoGroundingIssues] = useState<LegoGroundingIssue[]>([]);
   const [modelGroundingIssues, setModelGroundingIssues] = useState<LegoGroundingIssue[]>([]);
-  const buildingGroundingIssues = useMemo(() => [...legoGroundingIssues, ...modelGroundingIssues], [legoGroundingIssues, modelGroundingIssues]);
+  const [reviewGroundingIssues, setReviewGroundingIssues] = useState<ReadonlyMap<string, LegoGroundingIssue>>(new Map());
+  const handleReviewGroundingIssue = useCallback((buildingId: string, rendererId: string, reason: string | null) => {
+    setReviewGroundingIssues(previous => updateBuildingGroundingIssues(previous, buildingId, rendererId, reason));
+  }, []);
+  const buildingGroundingIssues = useMemo(() => [...legoGroundingIssues, ...modelGroundingIssues, ...reviewGroundingIssues.values()],
+    [legoGroundingIssues, modelGroundingIssues, reviewGroundingIssues]);
   const buildingGroundingIssuesRef = useRef(buildingGroundingIssues);
   buildingGroundingIssuesRef.current = buildingGroundingIssues;
   const pendingGroundBuildingsRef = useRef<string[]>([]);
@@ -4552,7 +4558,8 @@ export function GlobeSitePlannerMap({
           <group name="siteforge-direct3d-building" userData={direct3DProposalUserData('building')}>
             <BuildingLandscapeSurfaceProvider zones={connectedSceneZones}>
             {buildingModelsVisible && reviewBuildingZones.map((zone) =>
-              <GlobeReviewBuilding key={zone.id} zone={zone} zones={siteZones} terrainHeight={terrainElevation}/>)}
+              <GlobeReviewBuilding key={zone.id} zone={zone} zones={siteZones} terrainHeight={terrainElevation}
+                onGroundingIssue={handleReviewGroundingIssue}/>)}
             {buildingModelsVisible && meshyBuildings.length > 0 && (
               <GlobeBuildingModelsLayer
                 key={`meshy-models-${buildingLayerRecoveryGeneration}`}

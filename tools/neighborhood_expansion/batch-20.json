@@ -1281,16 +1281,22 @@
         "description": "A two-storey U-shaped elementary school framing a sheltered rear outdoor classroom. Modest timber classroom wings have generous windows, projecting sunshades and covered ground-floor walks. The street elevation has a clear central entrance, low planting and a roofed bike shelter. The architecture feels durable, warm and attainable rather than monumental.",
         "siteNote": "Keep the learning courtyard unbuilt and connect it to a larger play area; footprint dimensions describe the outer envelope."
       },
-      "state": "skinned_v001_build_running",
+      "state": "local_prototype_pass",
       "attempts": [
         {
           "candidate": "school-timber-v001",
-          "state": "building_not_counted_complete",
+          "state": "local_prototype_pass",
           "source_locked": true,
           "planned_render_count": 71,
           "resolution": 1280,
           "log": "school-timber-v001.log",
-          "requires": "Fresh full-skinned native/physical71pixels/3boards/validator/browser and independent holistic local review"
+          "requires": "Fresh full-skinned native/physical71pixels/3boards/validator/browser and independent holistic local review",
+          "glb_sha256": "538e8115f2069a8e177c79487d009fca933462ae7ab6c19972fd28c316a3fa79",
+          "mandatory_views": 71,
+          "native_routes": 45,
+          "physical_samples": 13450,
+          "browser_verified": true,
+          "keeper_approved": false
         }
       ],
       "keeper_approved": false,
@@ -1554,8 +1560,30 @@
         "candidate": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/school-timber-v001",
         "expected_renders": 71,
         "resolution": 1280,
-        "state": "running",
-        "counted_complete": false
+        "state": "completed_full_build_and_review",
+        "counted_complete": true
+      },
+      "current_candidate": "school-timber-v001",
+      "local_review": {
+        "candidate": "school-timber-v001",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "school-timber-v001/review/independent-visual-review-v002.json",
+        "review_sha256": "d41dd74de2d5f5606a033456ab6993b76e9205418684d24204c967927e5d20bb",
+        "glb_sha256": "538e8115f2069a8e177c79487d009fca933462ae7ab6c19972fd28c316a3fa79",
+        "routes": 45,
+        "physical_samples": 13450,
+        "garden_probes": 9,
+        "furniture_exclusions": 20,
+        "circulation_guard_probes": 6,
+        "stair_boundary_probes": 96,
+        "aperture_rays": 1638,
+        "mandatory_views": 71,
+        "browser_verified": true,
+        "main_app_trial": "NOT_TESTED",
+        "preserved_review_v001": "school-timber-v001/review/independent-visual-review.json"
       }
     },
     {
@@ -1799,12 +1827,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "wave3_school_timber_skinned_v001_running",
+  "state": "ten_building_main_app_trial_required_before_eleven",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
-  "completed_models": 9,
-  "next_action": "Observe one full school-timber-v001 PID5212 (now rendering71views); do not duplicate or change frozen sources. After actual BUILD_COMPLETE, run fresh full-skinned native/physical/detail/board/validator/standalone/independent gates. Count9 until localpass. Isolated main-app5175/8003 own empty DB/account/privatebucket ready; latest frontend jobv004PID22284 uses independently preflighted v003runner from frontend cwd. At10 seal exactten with mandatory reviewpins and process seal-SHA, then required individual/mixed main-app trial before11. Do not claim runtime/keeper/finish approval.",
-  "updated_utc": "2026-10-04T02:43:07.657934+00:00",
+  "completed_models": 10,
+  "next_action": "Finish a separate finite C8 renderer diagnosis and explicit physically measured/native walking handoff design review. Do not relax route guards or rewrite sealed assets. Recheck Garden before scaling to nine remaining individual trials; mixed ten and building11 remain queued. Own5175/8003 jobs and exact fixture seal remain running/unchanged; no reinstall or duplicate job.",
+  "updated_utc": "2026-10-04T04:14:33.707280+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [
@@ -1841,7 +1869,7 @@
     "requested_by_user": "Once you get to 10, please trial them all in the City prompt browser.",
     "trigger_completed_models": 10,
     "before_building": 11,
-    "status": "pending_tenth_local_pass",
+    "status": "HOLD_first_pilot_runtime_blockers",
     "scope": "First ten completed additional buildings in the main CityPrompt browser application. The standalone model inspector evidence does not satisfy this requested trial.",
     "project_policy": "Use a separate disposable test project and appropriate vacant site; preserve the user live project, original candidates and all prior evidence.",
     "trial_plan": [
@@ -1862,18 +1890,83 @@
     "fixture_draft_scope": "Provisional firstnine exact GLB/sidecar/hash bindings only; external, no installation, no catalogue or DB mutation. Add reviewedtenth and freeze ten when count10. Runtime NOT_TESTED.",
     "environment_preparation": "ten-building-trial-environment-prework-v004.json",
     "environment_preparation_sha256": "f2adf68b233005d7a8f38ca05cd677e5288faacf6587ffa5c8009543071e6ea5",
-    "environment_status": "isolated_empty_main_app_ready_no_models_installed",
+    "environment_status": "isolated_main_app_exact_ten_installed_first_disposable_project_active",
     "frontend_url": "http://127.0.0.1:5175/",
     "backend_url": "http://127.0.0.1:8003",
-    "frontend_job": "main-app-runtime/frontend-job-v004.json",
+    "frontend_job": "main-app-runtime/frontend-job-v005.json",
     "backend_job": "main-app-runtime/backend-job.json",
     "browser_tab_id": "5",
-    "fixture_helper_preflight": "prework/main-app-ten-fixture-helper-preflight-v003.json",
-    "fixture_helper_preflight_sha256": "251f2580c3a23d77cbd015d986d4d3a91102ebba5a772a27ccec7a80461ef654",
-    "fixture_sealer": "seal-main-app-ten-fixtures-v003.py",
-    "fixture_frontend": "main-app-frontend-neighborhood20-v003.mjs",
-    "fixtures_installed": 0,
-    "models_trialled": 0
+    "fixture_helper_preflight": "prework/main-app-ten-fixture-helper-preflight-v004.json",
+    "fixture_helper_preflight_sha256": "c576d921d5349f770d51d2bb272e4d6397e85ce104f5043d9b8cc9b74c34b5b5",
+    "fixture_sealer": "seal-main-app-ten-fixtures-v004.py",
+    "fixture_frontend": "main-app-frontend-neighborhood20-v004.mjs",
+    "fixtures_installed": 10,
+    "models_trialled": 0,
+    "triggered_utc": "2026-10-04T02:57:26.200436+00:00",
+    "local_models_passed": 10,
+    "fixture_seal": "main-app-runtime/sealed-ten-fixtures.json",
+    "fixture_seal_sha256": "43fb056d74d449e288f9536ca448a3e49f09429fcde4a65534bbdbac66966303",
+    "models_started": 1,
+    "individual_trials": [
+      {
+        "candidate": "childcare-garden-v004",
+        "project_id": "0a17a73b-4b9b-4645-b6cf-b00e4a3e15cd",
+        "project_name": "Neighbourhood20 — 01 Garden Pavilion Trial",
+        "status": "HOLD",
+        "evidence_dir": "main-app-trials/01-childcare-garden-v004",
+        "verified_so_far": [
+          "ordinary_UI_exact_native_placement",
+          "front_public_entry_walk_connector_and_classroom_doorway",
+          "return_entrance",
+          "toggle_visibility",
+          "free_exact_3D_preview_capture",
+          "rotation_undo_redo",
+          "move_save_reload_stable_ID_dimensions_hash",
+          "internal_lane_stock_LFS_hydration_and_Retry_recovery",
+          "rejected_boundary_save_and_Reload_saved_version_recovery",
+          "residual_site_landscape_Apply_UI_only",
+          "shared_native_bounds_ground_contact_repair_52_tests_typecheck",
+          "independent_prepared_C3_runtime_review",
+          "landscape_saved_reload_and_exact_capture"
+        ],
+        "open": [
+          "C5/C9 exact entrance picking, measured approach and native external walking handoff",
+          "C8 glazing/roof renderer diagnosis",
+          "natural ground and real-browser negative capture/freshness cases",
+          "landscape edit invalidation Undo/Redo",
+          "actual Download delivery",
+          "remaining nine individual trials and mixed ten"
+        ],
+        "natural_ground": "PARTIAL: five unavailable cells preserved; deliberate ordinary UI redevelopment level at median1102.662m for prepared concept trial",
+        "keeper_approved": false,
+        "final_rotation_degrees": 180,
+        "runtime_report": "main-app-trials/01-childcare-garden-v004/runtime-trial-report-v001.json",
+        "runtime_report_sha256": "2ff3a4a4838c7501382308f169440ef4daea1e9fa891d65374ae684e86fd2bdb",
+        "prepared_ground_c3": "PASS observed Garden contact/reload/capture, independent review"
+      }
+    ],
+    "independent_runtime_diagnosis": "main-app-trials/01-childcare-garden-v004/review/independent-runtime-diagnosis-v001.json",
+    "independent_adapter_design_preflight": "main-app-trials/01-childcare-garden-v004/review/independent-runtime-adapter-design-preflight-v001.json",
+    "runtime_blockers": [
+      "Actual native entrance picking/approach report missing. Public portal reaches y=-15 but walking triangles start at y=-14.4. Existing paving at z=.04 does not authorize a fabricated navigation floor. Internal lane is not an off-site public-road junction.",
+      "Main-app glazing streaks and roof artifacts persist in low views and exact low preview. Exact free captures succeed and preserve context. PNG data URL extraction proves content; actual Download action/file delivery NOT_TESTED. AI image calls not made."
+    ],
+    "runtime_c3_repair": {
+      "status": "PASS_scoped_source_and_first_Garden_prepared_browser",
+      "source_freeze": "prework/runtime-c3-source-after-v003/manifest.json",
+      "reviews": [
+        {
+          "path": "main-app-trials/01-childcare-garden-v004/review/independent-runtime-c3-source-review-v002.json",
+          "sha256": "18f4159d2da52e17e1d8e419e7e41816f7466fc9d1abfd6546f55ab31b18d32b"
+        },
+        {
+          "path": "main-app-trials/01-childcare-garden-v004/review/independent-runtime-c3-browser-review-v001.json",
+          "sha256": "ac5df32f0ca735776bb94af8d0004bfcee94b062fdc43d82673f0fc46baadcef"
+        }
+      ],
+      "tests": "52/52 plus type-check PASS",
+      "remaining": "Natural-ground runtime and negative capture states not visually exercised. C5/C9/C8 HOLD."
+    }
   },
   "completion_browser_handoff": {
     "requested_by_user": "When you are finished, can you bring up the City Prompt Browser",
