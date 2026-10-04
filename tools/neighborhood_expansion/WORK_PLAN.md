@@ -607,3 +607,31 @@ pixel review before the first skinned candidate. Full71 exact-GLB views, three
 boards, browser evidence and independent holistic local review remain required.
 Completed count remains9/20. The main CityPrompt all-ten trial stays pending the
 tenth local pass and must finish before building eleven.
+
+
+## Timber school diagnostic checks prepared
+
+The texture-free diagnostic PID10664 remains the one active school job. The
+source builder and measured prework stay frozen at ae889608 and53dde8b0.
+No model pass has been added:9/20, with the allten main-app trial pending.
+
+External `check-school-timber-physical-details-v003.py` passed independent
+checker-only review with0P0/P1. It checks both sides of all44 stair risers and
+four flat joins (96 probes),78 aperture sections (1,638 rays), actual floor-based
+headroom and asserted imported opaque roles. Its explicit `--unskinned` mode
+validates diagnostic bytes and source snapshots before allowing the two absent
+skin roles; skinned models require both. Preserve the earlier two checker holds.
+Actual mesh results are still pending and this review grants no model approval.
+
+External `school-timber-boards.py` prepares the22-view diagnostic contact sheet,
+or the complete71-view/source/phone boards for the later skinned candidate.
+It selects the actual `classroom_left_1_1` camera and refuses missing renders
+and overwrites. Both helpers passed Python compilation; hashes and commands
+are recorded in the manifest. Run only after the necessary files exist.
+
+Read-only main-app preparation identified5174 as the qwen-street-trial frontend
+at48ef5038082d2636c2ec9cde4301114373e71cfd, with a live main-app landing page.
+Its8001 backend/database/storage configuration remains unverified. This is
+preparation only: no models placed, fixtures installed or original projects
+changed. Save a new runtime preparation record and identify the isolated trial
+environment when the tenth model passes.

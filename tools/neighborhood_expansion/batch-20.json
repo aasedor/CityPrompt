@@ -1380,6 +1380,34 @@
         "builder_sha256": "ae889608b911a4226cf03b57d420da723b41c717c7f35b60fc01f6287dca543c",
         "prework_sha256": "53dde8b0a778cff4dbb12c2faee03faea117c45eafd4441fb6a3c15070cdfefb",
         "record": "school-timber-unskinned-v001-job.json"
+      },
+      "diagnostic_helpers": {
+        "updated_utc": "2026-10-04T01:22:21.275141+00:00",
+        "scope": "Prepared and independently code-reviewed checks only; actual GLB/solver/physical/render review pending.",
+        "helpers": {
+          "check-school-timber-physical-details-v003.py": {
+            "path": "check-school-timber-physical-details-v003.py",
+            "sha256": "bc85a6fade0b3ea1b14a7398e84c799f5a051ee7358267af7bb8adfdc8ad618b",
+            "bytes": 7125
+          },
+          "school-timber-boards.py": {
+            "path": "school-timber-boards.py",
+            "sha256": "515565c1844c50dfccb0db4852e11ada720fd3971e4985fb4e8415ba17c02c06",
+            "bytes": 3603
+          }
+        },
+        "physical_checker_review": {
+          "path": "prework\\school-timber-physical-checker-review-v003.json",
+          "sha256": "80e699e9ec288d7fab763f58ae0ff2dc84043bd4069fd937bc9afea9c41f8052",
+          "unresolved_p0": 0,
+          "unresolved_p1": 0
+        },
+        "preserved_checker_holds": [
+          "prework/school-timber-physical-checker-review-v001.json",
+          "prework/school-timber-physical-checker-review-v002.json"
+        ],
+        "diagnostic_command": "blender --background --factory-startup --python check-school-timber-physical-details-v003.py -- prework/school-timber-unskinned-v001 --unskinned",
+        "diagnostic_boards_command": "python school-timber-boards.py prework/school-timber-unskinned-v001 --diagnostic"
       }
     },
     {
@@ -1627,8 +1655,8 @@
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 9,
-  "next_action": "Inspect school-timber-unskinned-v001 PID10664/log/error/diagnostic-report; do not duplicate. Complete22clay exactGLB renders, run actual app solver/check-garden/check-circulation, exactGLB physical and aperture/stair/contact checks, independentdiagnostic pixels. Preserve failures before finite correction. Skinned71views afterdiagnosticpass, tenthmainappallten trial before11.",
-  "updated_utc": "2026-10-04T01:02:28.072443+00:00",
+  "next_action": "Resume PID10664 school-timber-unskinned-v001 without duplication. When exact GLB/report exists, run native45 routes, garden9/guard6, physical walk and independently preflighted physical checker v003 with --unskinned. After22 renders create diagnostic board with school-timber-boards.py --diagnostic and request independent pixels. Skinned71 views only after diagnostic pass; main-app allten trial after tenth local pass and before11.",
+  "updated_utc": "2026-10-04T01:22:21.275141+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [
