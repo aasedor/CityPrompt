@@ -576,3 +576,34 @@ catalogue activation, publishing, pushing and changing the user's live project
 remain unauthorized. Identify the actual app/backend/storage environment before
 installing fixtures. Record concrete blockers and required intervention honestly.
 Read the machine checkpoint in progress.json and finish it before building eleven.
+
+## Timber courtyard school prebuild and diagnostic checkpoint
+
+The material review confirms eight120mm cedar pitches and24courses/eight brick
+length equivalents. Both raw repeating specimens remain held. The dedicated
+school uses physical116mm cedar faces/4mm gaps and230x65mm brick faces in
+240x75mm running-bond modules, with measured interior-face sampling and parent
+UVs through opening/ridge cuts. Long cedar grain stretching remains a finish
+limitation. Brick stays behind the separate interior finish.
+
+Measured prework freezes twelve24-seat classrooms, eight support rooms, both
+connected floor corridors, two22-riser stair cores, exact floor/ceiling voids,
+seated guards and a source-specific three-ridge U roof. Equal-drop overhangs and
+upper-envelope plane clipping close the roof intersections without overlapping
+whole roofs. All71 review cameras were authored before geometry.
+
+Independent constructor v001 holds seven source/contact/circulation groups;
+v002 holds two residual furniture/path groups. Both source snapshots and reviews
+are preserved externally. V003 code preflight passes zeroP0/P1 after finite
+corrections, including supported window shades, ceiling joins, real table/bench
+links, rear native thresholds, measured material samples, seated fixtures/books,
+and clear stair cameras. This closes only the prebuild code category.
+
+The bounded22-view texture-free diagnostic has started externally at
+prework/school-timber-unskinned-v001. Read its saved job/PID/log before resuming;
+never duplicate it. Run45 actual-app routes, nine garden and six guard probes,
+physical exact-GLB floor/headroom/aperture/stair checks and independent diagnostic
+pixel review before the first skinned candidate. Full71 exact-GLB views, three
+boards, browser evidence and independent holistic local review remain required.
+Completed count remains9/20. The main CityPrompt all-ten trial stays pending the
+tenth local pass and must finish before building eleven.

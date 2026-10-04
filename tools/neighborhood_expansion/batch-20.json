@@ -1279,7 +1279,7 @@
         "description": "A two-storey U-shaped elementary school framing a sheltered rear outdoor classroom. Modest timber classroom wings have generous windows, projecting sunshades and covered ground-floor walks. The street elevation has a clear central entrance, low planting and a roofed bike shelter. The architecture feels durable, warm and attainable rather than monumental.",
         "siteNote": "Keep the learning courtyard unbuilt and connect it to a larger play area; footprint dimensions describe the outer envelope."
       },
-      "state": "source_locked_only",
+      "state": "unskinned_diagnostic_running",
       "attempts": [],
       "keeper_approved": false,
       "catalogue_activated": false,
@@ -1338,6 +1338,48 @@
         "path": "prework/school-timber-measurement-draft.json",
         "sha256": "0fb599d5f512d15641b47b20c8cbaa426f10e702689df88accecd3e094c4ebdf",
         "scope": "Pending programme/bay/roof/material/camera preflight; no geometry"
+      },
+      "material_review": {
+        "path": "prework/school-timber-material-review.json",
+        "sha256": "0158d88aebd866e4d58381005c822b4beec30827cd33c0cf6f469a7142b22656",
+        "scope": "Category only; raw repeat held; face sampling conditions frozen"
+      },
+      "measured_prework": {
+        "path": "prework/school-timber-measured-plan-v004.json",
+        "sha256": "53dde8b0a778cff4dbb12c2faee03faea117c45eafd4441fb6a3c15070cdfefb",
+        "builder_sha256": "ae889608b911a4226cf03b57d420da723b41c717c7f35b60fc01f6287dca543c",
+        "cameras": 71,
+        "planned_routes": 45
+      },
+      "constructor_hold": {
+        "path": "prework/school-timber-builder-preflight-v001.json",
+        "sha256": "4adc15b465a5c28e224de519f35ebed36c108da1873e3d7ae1f1e1ef1d7bcf04",
+        "builder_snapshot": "prework/build_timber_school-preflight-v001.py",
+        "p1_groups": 7
+      },
+      "constructor_hold_v002": {
+        "path": "prework/school-timber-builder-preflight-v002.json",
+        "sha256": "4c0f04fcb293c20dd6035006284a20982f04317e4b7d0f5e7b99faa4510b61c3",
+        "p1_groups": 2
+      },
+      "constructor_review": {
+        "path": "prework/school-timber-builder-preflight-v003.json",
+        "sha256": "fb814b8f4e70ff17de0647a6f620b1e8898d2b0e3a3229d14b8f8d92869a70f1",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "scope": "Prebuild code only; no model/walking/browser approval"
+      },
+      "diagnostic_job": {
+        "stage": "unskinned_diagnostic",
+        "pid": 10664,
+        "script": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\check-school-timber-unskinned.py",
+        "stdout": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-timber-unskinned-v001.log",
+        "stderr": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-timber-unskinned-v001-error.log",
+        "started_utc": "2026-10-04T01:01:26.2518566Z",
+        "candidate": "prework/school-timber-unskinned-v001",
+        "builder_sha256": "ae889608b911a4226cf03b57d420da723b41c717c7f35b60fc01f6287dca543c",
+        "prework_sha256": "53dde8b0a778cff4dbb12c2faee03faea117c45eafd4441fb6a3c15070cdfefb",
+        "record": "school-timber-unskinned-v001-job.json"
       }
     },
     {
@@ -1581,12 +1623,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "wave3_source_prework",
+  "state": "wave3_unskinned_diagnostic_running",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 9,
-  "next_action": "School timber source lock complete; resume measured U-school layout/material prework from prework/school-timber-measurement-draft.json. Confirm source front bays/partitions, support-room/stair/floor-void allocation and clipped roof planes. Generate exact-family cedar/brick specimens with built-in tool and independent material review; then dedicated constructor/full camera roster with independent prebuild and unskinned checks. No duplicate references or model before plan/material gates.9/20; wave2 checkpoint2079deacb. No keeper/main-app/human/catalogue/publication approval. User added a required checkpoint: after the tenth local pass, trial all first ten in the main CityPrompt browser using separate test projects and preserve runtime evidence before building11. Read ten_building_browser_checkpoint; isolated inspector checks alone do not satisfy it.",
-  "updated_utc": "2026-10-04T00:10:37.598164+00:00",
+  "next_action": "Inspect school-timber-unskinned-v001 PID10664/log/error/diagnostic-report; do not duplicate. Complete22clay exactGLB renders, run actual app solver/check-garden/check-circulation, exactGLB physical and aperture/stair/contact checks, independentdiagnostic pixels. Preserve failures before finite correction. Skinned71views afterdiagnosticpass, tenthmainappallten trial before11.",
+  "updated_utc": "2026-10-04T01:02:28.072443+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [
