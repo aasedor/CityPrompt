@@ -106,8 +106,8 @@ import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
 import { constrainElevatedRailWalk, elevatedRailLiftDestination } from './elevatedRailWalking';
-import { constrainNativeParkWalk, nativeParkLiftDestination, nativeParkWalkEntry, nativeParkWalkEntrance } from '@/features/parks/nativeParkWalking';
-import { buildingWalkEntry, buildingWalkEntrance, buildingWalkStartForZone, constrainBuildingWalk } from '@/features/legoAssembly/buildingWalking';
+import { constrainNativeParkWalk, nativeParkLiftDestination, nativeParkWalkEntry, nativeParkWalkEntrance, nativeParkWalkStartForZone } from '@/features/parks/nativeParkWalking';
+import { buildingWalkEntry, buildingWalkEntrance, buildingWalkStartForZone, constrainBuildingWalk, setBuildingWalkingDoorsOpen } from '@/features/legoAssembly/buildingWalking';
 import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
@@ -2350,6 +2350,7 @@ export function GlobeSitePlannerMap({
   }, []);
 
   const leaveWalk = useCallback(() => {
+    setBuildingWalkingDoorsOpen(false);
     const camera = cameraRef.current;
     const saved = walkSavedCameraRef.current;
     const controls = globeControlsRef.current;
@@ -2368,9 +2369,12 @@ export function GlobeSitePlannerMap({
     setWalkMode(null);
   }, []);
 
+  useEffect(() => () => { setBuildingWalkingDoorsOpen(false); }, []);
+
   const activateWalkAtPose = useCallback((pose: WalkPose) => {
     const camera = cameraRef.current;
     if (!camera) return;
+    setBuildingWalkingDoorsOpen(true);
     walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
       up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
     if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
@@ -5052,7 +5056,7 @@ export function GlobeSitePlannerMap({
             Focus building
           </button>
         )}
-        {!walkMode && selectedInspectionZone && typeof selectedInspectionZone.properties?.validation_native_url === 'string' && (
+        {!walkMode && selectedInspectionZone?.zone_type === 'building' && (
           <button type="button" onClick={() => {
             const start = buildingWalkStartForZone(terrainZonesRef.current, selectedInspectionZone.id);
             if (start) { onZoneSelected(null); setSelectedBuildingId(null); activateWalkAtPose(start); }
@@ -5060,6 +5064,21 @@ export function GlobeSitePlannerMap({
           }} className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] hover:bg-[#dcff81]"
             title="Start walking at this building's authored entrance">
             Walk inside
+          </button>
+        )}
+        {!walkMode && selectedInspectionZone?.zone_type === 'green_space' && (
+          <button type="button" onClick={() => {
+            let start = nativeParkWalkStartForZone(terrainZonesRef.current, selectedInspectionZone.id);
+            if (!start && !selectedInspectionZone.properties?.green_space_native_layout) {
+              const [lng, lat] = computeCentroid(selectedInspectionZone.coordinates);
+              const height = authoredCameraGround(terrainZonesRef.current, lng, lat, terrainElevation);
+              start = { lng, lat, groundHeight: height, heading: 0 };
+            }
+            if (start) { onZoneSelected(null); setSelectedBuildingId(null); activateWalkAtPose(start); }
+            else { setWalkPickError('The park’s detailed model and ground must finish loading before walking.'); setWalkMode('pick'); }
+          }} className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] hover:bg-[#dcff81]"
+            title="Start on a dry park path">
+            Walk in park
           </button>
         )}
         {siteZones.length > 0 && (

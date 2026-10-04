@@ -95,4 +95,19 @@ describe('occupied building walking',()=>{
     mesh.userData.cityprompt_walking_json=JSON.stringify({...network(),maxStepM:20});expect(readBuildingWalking(scene)).toBeNull();
     mesh.userData.cityprompt_walking_json=JSON.stringify(network());expect(readBuildingWalking(scene)?.version).toBe(2);
   });
+  it('joins the site at a real paving edge inside an overhang and allows re-entry without bypassing a solid barrier',()=>{
+    const n=network(); n.groundFloorOnly=true; n.triangles=rect(-5,5,-7.6,6,0);
+    const {at,cleanup}=placed(n);
+    try {
+      const inside=at(0,-7.59,0),outside=at(0,-7.65,0);
+      expect(constrainBuildingWalk([zone],inside,outside)).toEqual(outside);
+      const back=constrainBuildingWalk([zone],outside,inside);
+      expect(back.lat).toBeCloseTo(inside.lat,8);
+      expect(buildingWalkGround([zone],outside)).toBeNull();
+      n.barriers=[[-1,-7.55,1,-7.55,0,2.2]];
+      const blocked=constrainBuildingWalk([zone],at(0,-7.25,0),at(0,-7.4,0));
+      expect(blocked.lat).toBeGreaterThan(at(0,-7.4,0).lat+1e-8);
+      expect(buildingWalkGround([zone],at(0,-7.4,0))).not.toBeNull();
+    } finally {cleanup();}
+  });
 });

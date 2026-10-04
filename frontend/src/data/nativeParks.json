@@ -2508,6 +2508,7 @@
       "id": "student_woodland_stream_garden_v1--native-v1",
       "archetypeId": "japanese_garden",
       "variantId": "student_woodland_stream_garden_v1",
+      "walkSurfaceMaterials": ["gravel", "moss", "timber"],
       "title": "Woodland Stream & Bridge Garden",
       "label": "Original layout",
       "mode": "native_assembly",

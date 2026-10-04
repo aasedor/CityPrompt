@@ -41,6 +41,7 @@ import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianC
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
 import { buildingWalkRevision, mountBuildingWalking, readBuildingWalking } from '@/features/legoAssembly/buildingWalking';
+import { resolveMeasuredWalkPlan, prepareMeasuredBuildingWalking } from '@/features/legoAssembly/measuredBuildingWalking';
 import { authoredHomePlotFrame, preservesAuthoredPlotAxes } from '@/features/legoAssembly/detachedPlot';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
@@ -561,14 +562,27 @@ function LegoStackInstance({
 
   const walkingZoneRevision = zone ? buildingWalkRevision(zone) : '';
   useEffect(() => {
-    if (!zone || !detailedReady || foundation.contact.status !== 'ready' || preparedSiteTerrainHeight == null
-      || !isNativeClayPlan(recipe) || modules.length !== 1) return;
-    const { cloned, transform } = modules[0];
-    if (transform.scale.some(s => Math.abs(s - 1) > 1e-6)) return;
-    const source = cloned.children[0];
-    if (!source) return;
-    const walking = readBuildingWalking(source);
-    if (walking) return mountBuildingWalking(building.id, zone, source, walking);
+    if (!zone || !detailedReady || foundation.contact.status !== 'ready' || !isNativeClayPlan(recipe)) return;
+    const cleanup: (() => void)[] = [];
+    let cancelled = false;
+    for (const [i, { cloned, transform }] of modules.entries()) {
+      // Keep authored vertical dimensions and circulation clearances.
+      if (transform.scale.some(s => Math.abs(s - 1) > 1e-6)) continue;
+      const source = cloned.children[0];
+      if (!source) continue;
+      const walking = readBuildingWalking(source);
+      if (walking) { cleanup.push(mountBuildingWalking(`${building.id}:${i}`, zone, source, walking)); continue; }
+      const url = recipe.instances[i]?.model_url;
+      if (!url) continue;
+      void resolveMeasuredWalkPlan(zone.properties?.pick_place_model_revision, resolveApiFileUrl(url)).then(plan => {
+        if (cancelled || !plan) return;
+        const measured = prepareMeasuredBuildingWalking(source, plan);
+        if (!measured) return;
+        const unmount = mountBuildingWalking(`${building.id}:${i}`, zone, source, measured.network, measured.setOpen);
+        cleanup.push(() => { unmount(); measured.dispose(); });
+      });
+    }
+    return () => { cancelled = true; cleanup.forEach(dispose => dispose()); };
   }, [building.id, walkingZoneRevision, detailedReady, foundation.contact.status, preparedSiteTerrainHeight, modules, recipe, zone]);
 
   useFrame(({ camera }) => {

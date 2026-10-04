@@ -7,6 +7,7 @@ import { readNativePark, nativeParkFitProblem } from './nativeParkRegistry';
 import { verifiedScene } from './nativeParkAssets';
 import { advanceParkWalk, nearestParkWalkPoint, parkWalkHeight, type ParkWalkingNetwork, type WalkPoint } from './parkWalking';
 import { stepFreeParkWalkingNetwork, STEP_FREE_PARK_LIFTS } from './stepFreeParkAccess';
+import { measuredParkWalking } from './measuredParkWalking';
 
 /** Opt-in: all existing parks keep their prior camera behavior. */
 function context(zones: SiteZone[], pose: WalkPose) {
@@ -16,8 +17,11 @@ function context(zones: SiteZone[], pose: WalkPose) {
     const resolved = readNativePark(zone);
     if (!resolved) continue;
     const source = (resolved.layout as typeof resolved.layout & { walking?: ParkWalkingNetwork }).walking;
-    if (!source || source.version !== 1 || nativeParkFitProblem(zone)) continue;
-    const network = stepFreeParkWalkingNetwork(resolved.layout.variantId, source);
+    if (nativeParkFitProblem(zone)) continue;
+    let network: ParkWalkingNetwork | null;
+    try { network = source?.version === 1 ? stepFreeParkWalkingNetwork(resolved.layout.variantId, source) : measuredParkWalking(resolved.layout); }
+    catch { continue; }
+    if (!network) continue;
     const f = resolved.selection.frame, c = Math.cos(f.yaw), s = Math.sin(f.yaw), sx = metersPerDegLon(f.latitude);
     const level = resolvePreparedSiteTerrainForZone(zone, zones, pose.groundHeight);
     if (level === null) continue;
@@ -28,7 +32,7 @@ function context(zones: SiteZone[], pose: WalkPose) {
     const p = local(pose);
     if (Math.abs(p[0]) > resolved.layout.widthM / 2 + .01 || Math.abs(p[1]) > resolved.layout.depthM / 2 + .01) continue;
     // No invisible walking surface before the exact model is ready.
-    try { verifiedScene(resolved.layout.assets.assembly!); } catch { return null; }
+    try { for (const asset of Object.values(resolved.layout.assets)) if (asset) verifiedScene(asset); } catch { return null; }
     const world = (p: WalkPoint, heading: number): WalkPose => ({
       lng: f.longitude + (p[0] * c - p[1] * s) / sx,
       lat: f.latitude + (p[0] * s + p[1] * c) / METERS_PER_DEG_LAT,
@@ -65,6 +69,23 @@ export function nativeParkWalkEntrance(zones: SiteZone[], pose: WalkPose): WalkP
   return ctx ? ctx.world(ctx.network.entrance as WalkPoint, pose.heading) : null;
 }
 
+export function nativeParkWalkStartForZone(zones: SiteZone[], zoneId: string): WalkPose | null {
+  const zone = zones.find(z => z.id === zoneId), resolved = zone && readNativePark(zone);
+  if (!resolved) return null;
+  const f = resolved.selection.frame, level = resolvePreparedSiteTerrainForZone(zone!, zones, 0);
+  if (level === null) return null;
+  const ctx = context(zones, { lng: f.longitude, lat: f.latitude, groundHeight: level, heading: 0 });
+  if (!ctx) return null;
+  const entry = ctx.network.entrance as WalkPoint;
+  const directions = [[0, 1], [1, 0], [-1, 0], [0, -1]];
+  const direction = directions.find(([x, y]) => {
+    const next = advanceParkWalk(ctx.network, entry, [entry[0] + x * .4, entry[1] + y * .4]);
+    return Math.hypot(next[0] - entry[0], next[1] - entry[1]) > .2;
+  }) ?? [0, 1];
+  const heading = Math.atan2(direction[0], direction[1]) * 180 / Math.PI - f.yaw * 180 / Math.PI;
+  return ctx.world(entry, (heading + 360) % 360);
+}
+
 /** Keep both ascent and descent on connected treads. A ground-level portal is
  * the only transition to/from the surrounding site; turning always works. */
 export function constrainNativeParkWalk(zones: SiteZone[], previous: WalkPose, next: WalkPose): WalkPose {
@@ -73,7 +94,7 @@ export function constrainNativeParkWalk(zones: SiteZone[], previous: WalkPose, n
   const from = ctx.local(previous), to = ctx.local(next);
   const inside = (p: WalkPoint) => Math.abs(p[0]) <= ctx.layout.widthM / 2 + .001 && Math.abs(p[1]) <= ctx.layout.depthM / 2 + .001;
   const entrance = ctx.network.entrance;
-  const atPortal = (p: WalkPoint) => Math.abs(p[0] - entrance[0]) <= 1.5 && p[1] <= entrance[1] + .5;
+  const atPortal = (p: WalkPoint) => ctx.network.groundFloorOnly || (Math.abs(p[0] - entrance[0]) <= 1.5 && p[1] <= entrance[1] + .5);
   if (!inside(to) && inside(from) && atPortal(from) && Math.abs(previous.groundHeight - ctx.level) < .25) return next;
   if (!inside(from)) {
     if (!atPortal(to)) return { ...previous, heading: next.heading };

@@ -8,17 +8,54 @@ export interface ParkWalkingNetwork {
   entrance: number[];
   maxStepM: number;
   obstacles: number[][];
+  /** Vertical faces measured from the visible model: segment XY and height interval. */
+  barriers?: number[][];
+  groundFloorOnly?: boolean;
+  /** Real water faces exclude the ground beneath a pool or pond. */
+  hazards?: number[][][];
+  /** Clearance above water required for a measured bridge top. */
+  waterClearanceM?: number;
   routes: { name: string; points: number[][] }[];
 }
 
 function blocked(network: ParkWalkingNetwork, x: number, y: number, z?: number) {
   const clearance = network.version === 2 ? .22 : .12;
-  return network.obstacles.some(([left, right, bottom, top, low, high]) =>
+  return network.hazards?.some(([a, b, c]) => {
+    const d = (b[1] - c[1]) * (a[0] - c[0]) + (c[0] - b[0]) * (a[1] - c[1]);
+    if (Math.abs(d) < 1e-10) return false;
+    const u = ((b[1] - c[1]) * (x - c[0]) + (c[0] - b[0]) * (y - c[1])) / d;
+    const v = ((c[1] - a[1]) * (x - c[0]) + (a[0] - c[0]) * (y - c[1])) / d;
+    return Math.min(u, v, 1 - u - v) >= -1e-7 && (z === undefined || Math.max(a[2], b[2], c[2]) >= z - (network.waterClearanceM ?? .3));
+  }) || network.obstacles.some(([left, right, bottom, top, low, high]) =>
     (low === undefined || z === undefined || (z + 1.8 > low && z < high - .01))
-    && x > left - clearance && x < right + clearance && y > bottom - clearance && y < top + clearance);
+    && x > left - clearance && x < right + clearance && y > bottom - clearance && y < top + clearance)
+    || nearbyBarriers(network, x, y).some(([ax, ay, bx, by, low, high]) => {
+      if (z !== undefined && (z + 1.8 <= low || z + network.maxStepM >= high - .02)) return false;
+      const dx = bx - ax, dy = by - ay, length = dx * dx + dy * dy;
+      const t = length ? Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / length)) : 0;
+      return Math.hypot(x - ax - t * dx, y - ay - t * dy) < clearance;
+    });
 }
 
-export function parkWalkHeight(network: ParkWalkingNetwork, x: number, y: number, fromHeight?: number): number | null {
+const barrierGrids = new WeakMap<ParkWalkingNetwork, Map<string, number[][]>>();
+function nearbyBarriers(network: ParkWalkingNetwork, x: number, y: number) {
+  if (!network.barriers?.length) return [];
+  let grid = barrierGrids.get(network);
+  if (!grid) {
+    grid = new Map();
+    for (const b of network.barriers) {
+      for (let ix = Math.floor(Math.min(b[0], b[2]) - .25); ix <= Math.floor(Math.max(b[0], b[2]) + .25); ix++)
+        for (let iy = Math.floor(Math.min(b[1], b[3]) - .25); iy <= Math.floor(Math.max(b[1], b[3]) + .25); iy++) {
+          const key = `${ix}:${iy}`, cell = grid.get(key) ?? [];
+          cell.push(b); grid.set(key, cell);
+        }
+    }
+    barrierGrids.set(network, grid);
+  }
+  return grid.get(`${Math.floor(x)}:${Math.floor(y)}`) ?? [];
+}
+
+export function parkWalkHeight(network: ParkWalkingNetwork, x: number, y: number, fromHeight?: number, ignoreObstacles = false): number | null {
   if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
   let height: number | null = null;
   for (const [a, b, c] of network.triangles) {
@@ -31,8 +68,8 @@ export function parkWalkHeight(network: ParkWalkingNetwork, x: number, y: number
     const w = 1 - u - v;
     if (Math.min(u, v, w) < -1e-7) continue;
     const z = u * a[2] + v * b[2] + w * c[2];
-    if (Number.isFinite(z) && !blocked(network, x, y, z)) {
-      const layered = network.version === 2 && fromHeight !== undefined;
+    if (Number.isFinite(z) && (ignoreObstacles || !blocked(network, x, y, z))) {
+      const layered = network.version === 2 && !network.groundFloorOnly && fromHeight !== undefined;
       if (height === null || (layered ? Math.abs(z - fromHeight) < Math.abs(height - fromHeight) : z > height)) height = z;
     }
   }
