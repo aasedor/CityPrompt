@@ -1279,8 +1279,18 @@
         "description": "A two-storey U-shaped elementary school framing a sheltered rear outdoor classroom. Modest timber classroom wings have generous windows, projecting sunshades and covered ground-floor walks. The street elevation has a clear central entrance, low planting and a roofed bike shelter. The architecture feels durable, warm and attainable rather than monumental.",
         "siteNote": "Keep the learning courtyard unbuilt and connect it to a larger play area; footprint dimensions describe the outer envelope."
       },
-      "state": "unskinned_v002_render_evidence_held",
-      "attempts": [],
+      "state": "skinned_v001_build_running",
+      "attempts": [
+        {
+          "candidate": "school-timber-v001",
+          "state": "building_not_counted_complete",
+          "source_locked": true,
+          "planned_render_count": 71,
+          "resolution": 1280,
+          "log": "school-timber-v001.log",
+          "requires": "Fresh full-skinned native/physical71pixels/3boards/validator/browser and independent holistic local review"
+        }
+      ],
       "keeper_approved": false,
       "catalogue_activated": false,
       "source_attempts": [
@@ -1478,6 +1488,72 @@
           "render_state_control": "prework/school-timber-render-state-control-v001",
           "independent_review": "prework/school-timber-unskinned-v002-independent-review.json"
         }
+      },
+      "diagnostic_v003": {
+        "state": "independent_unskinned_diagnostic_pass_only",
+        "candidate": "prework/school-timber-unskinned-v003",
+        "glb_sha256": "a05a7561b333f78ef0d00b4aeb36c988d422b8b1fa84bf34724c2b11ed8eb8c8",
+        "independent_review": {
+          "path": "prework/school-timber-unskinned-v003-independent-review.json",
+          "sha256": "17a39efb75057c795173a69cdfab2bff630dae1a7dd1646f8cd3216ac69ab143",
+          "p0": 0,
+          "p1": 0
+        },
+        "renders_completed": 22,
+        "native_routes_passed": 45,
+        "furniture": 20,
+        "garden": 9,
+        "at_height_guard_movements": 6,
+        "physical_route_samples_including_starts": 13450,
+        "physical_stair_boundary_samples": 96,
+        "physical_aperture_rays": 1638,
+        "evidence": {
+          "walking-solver-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/walking-solver-review.json",
+            "sha256": "7a2a48ef86b8eac41159798f37c38131db0b9b0461fdff7041eca35686ad3786"
+          },
+          "at-height-guard-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/at-height-guard-review.json",
+            "sha256": "954646c1a273cdf4df40a72b277103126050e72efaebdcb469b287d3d9af8613"
+          },
+          "garden-collision-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/garden-collision-review.json",
+            "sha256": "9b23b9e85503882bb724fbc28f24377781a870d592e7484c855ee179108ea9cd"
+          },
+          "physical-route-actual-floor-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/physical-route-actual-floor-review.json",
+            "sha256": "03e69feaac50d82b300441930d75b4d67068bd9bb109e516dcca9f293a917411"
+          },
+          "stair-boundary-physical-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/stair-boundary-physical-review.json",
+            "sha256": "97b0d4617b617feef39899b457606608d574e6597ef7439749ba471e174e3119"
+          },
+          "physical-aperture-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/physical-aperture-review.json",
+            "sha256": "fcf15c765ec73f509c59303697bc0e5e212dd3d3a5af6376d46ebda5695aa870"
+          },
+          "replay-geometry-identity.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/replay-geometry-identity.json",
+            "sha256": "abf5114dae65d1889cb47d1793f2bcb2ef532685562b7cb97c07d1674b8d6ca2"
+          }
+        },
+        "original_geometry_identity": "Exact BIN and geometry JSON excluding walking extras, same native bounds",
+        "render_repair": "Original OPTIX device initialization and typed rear camera lookup",
+        "keeper_approved": false,
+        "local_model_approved": false
+      },
+      "skinned_v001_job": {
+        "pid": 5212,
+        "started_utc": "2026-10-04T02:10:25.9318054Z",
+        "builder": "tools/neighborhood_expansion/build_timber_school.py",
+        "builder_sha256": "a60f515ee5807d19b1dbb87a16876b191a00fcd3a2b586240a653d4aa9fd56cd",
+        "prework_sha256": "9526ab315795422b922609ad0a42ca3de6e7e337d294f2d928211b8da37eb44a",
+        "diagnostic_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/prework/school-timber-unskinned-v003-independent-review.json",
+        "candidate": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/school-timber-v001",
+        "expected_renders": 71,
+        "resolution": 1280,
+        "state": "running",
+        "counted_complete": false
       }
     },
     {
@@ -1721,12 +1797,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "wave3_diagnostic_render_evidence_repair",
+  "state": "wave3_school_timber_skinned_v001_running",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 9,
-  "next_action": "Preserve v002 held22 images and passing native/physical evidence. Diagnose finite saved-scene render regression using GPU/CPU control; assert typed rear-camera identity. Prepare independently preflighted v003 render-only correction; same exact GLB geometry and navigation. No fullskin until independent diagnostic pixels pass. Count9/20; no11.",
-  "updated_utc": "2026-10-04T02:01:37.833610+00:00",
+  "next_action": "Observe single full-skinned school-timber-v001 PID 5212; do not duplicate or modify frozen builder/prework. Original constructor may take over30minutes before export. Wait for actual full71render completion/build report, then fresh native45/20furniture/9garden/6at-height guards plus exactGLB physical routes/stairs/apertures,3boards,validator,standalonebrowser and independent local review. Count9/20 until localpass. At10 freeze exactten and complete main CityPrompt disposable individual/mixed trial before11. Full20 finalvisiblebrowserhandoff remains pending.",
+  "updated_utc": "2026-10-04T02:11:33.093172+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [
@@ -1779,7 +1855,9 @@
     "keeper_approval_granted": false,
     "catalogue_activation_authorized": false,
     "publication_authorized": false,
-    "created_utc": "2026-10-04T00:10:37.598164+00:00"
+    "created_utc": "2026-10-04T00:10:37.598164+00:00",
+    "fixture_draft": "prework/ten-building-fixed-fixture-draft-v002.json",
+    "fixture_draft_scope": "Provisional firstnine exact GLB/sidecar/hash bindings only; external, no installation, no catalogue or DB mutation. Add reviewedtenth and freeze ten when count10. Runtime NOT_TESTED."
   },
   "completion_browser_handoff": {
     "requested_by_user": "When you are finished, can you bring up the City Prompt Browser",

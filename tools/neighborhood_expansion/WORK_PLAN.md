@@ -699,3 +699,29 @@ render-state diagnosis despite unchanged geometry. Preserve all22 images and
 passing machine evidence. A finite GPU/CPU control is running; require typed
 camera assertions and independently reviewed render-only correction before
 fresh22 pixels and the full skinned candidate. Count remains9, no building11.
+
+
+## Timber school diagnostic pass; first full skinned build running
+
+Independent unskinned v003 review passes0P0/P1 after all22 direct pixel views,
+three locked sources and complete bound evidence. Both earlier diagnostic holds
+remain preserved. The rear CAMERA identity and original OPTIX process-device
+initialization restore correct rear framing and remove black surface artifacts.
+Exact geometry JSON/BIN remain unchanged. Native45 routes,20 furniture,9 garden,
+six at-height guards,13,450 physical route/start samples,96 stair boundaries
+and1,638 aperture rays pass within their declared scopes. This is diagnostic
+approval only, not a complete textured model or keeper approval.
+
+The first full school-timber-v001 build is now one hidden Blender job, PID5212.
+Builder/prework are frozen at a60f515e/9526ab31. It constructs physical source
+brick/cedar and renders all71 exact-GLB views at1280. Preserve original jobs and
+evidence; the source assembly may exceed30minutes before export. Run fresh
+full-skinned checks, three boards, validator, browser and independent holistic
+local review after actual completion. Count remains9/20; no building11.
+
+Main-app checkpoint preparation also records an external first-nine fixed-native
+fixture draft v002 with exact reviewed GLB hashes, full landscaped plot bounds
+and embedded network equality. It is provisional and NOT_TESTED: no fixture
+installed, source catalogue/database/project modified or runtime gate claimed.
+Add the tenth after local pass, then freeze ten and complete all required
+individual/mixed CityPrompt app trials before starting eleven.
