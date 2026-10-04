@@ -107,7 +107,7 @@ import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
 import { constrainElevatedRailWalk, elevatedRailLiftDestination } from './elevatedRailWalking';
 import { constrainNativeParkWalk, nativeParkLiftDestination, nativeParkWalkEntry, nativeParkWalkEntrance } from '@/features/parks/nativeParkWalking';
-import { buildingWalkEntry, buildingWalkEntrance, constrainBuildingWalk } from '@/features/legoAssembly/buildingWalking';
+import { buildingWalkEntry, buildingWalkEntrance, buildingWalkStartForZone, constrainBuildingWalk } from '@/features/legoAssembly/buildingWalking';
 import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
@@ -2368,6 +2368,19 @@ export function GlobeSitePlannerMap({
     setWalkMode(null);
   }, []);
 
+  const activateWalkAtPose = useCallback((pose: WalkPose) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+    walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
+      up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
+    if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
+    if (globeControlsRef.current) globeControlsRef.current.enabled = false;
+    markUserInteracted();
+    setWalkPickError('');
+    applyWalkPose(pose);
+    setWalkMode('active');
+  }, [applyWalkPose, markUserInteracted]);
+
   const enterWalkAt = useCallback((hit: { lngLat: [number, number]; height: number }) => {
     const camera = cameraRef.current;
     if (!camera) return;
@@ -2393,14 +2406,9 @@ export function GlobeSitePlannerMap({
       { east: forward.dot(east), north: forward.dot(north) },
       { east: mapUp.dot(east), north: mapUp.dot(north) },
     );
-    walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
-      up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
-    if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
-    if (globeControlsRef.current) globeControlsRef.current.enabled = false;
-    markUserInteracted();
-    applyWalkPose(buildingWalkEntry(terrainZonesRef.current, nativeParkWalkEntry(terrainZonesRef.current, { lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading })));
-    setWalkMode('active');
-  }, [applyWalkPose, markUserInteracted]);
+    activateWalkAtPose(buildingWalkEntry(terrainZonesRef.current, nativeParkWalkEntry(terrainZonesRef.current,
+      { lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading })));
+  }, [activateWalkAtPose]);
 
   const renderWalkView = useCallback(() => {
     const pose = walkPoseRef.current;
@@ -5042,6 +5050,16 @@ export function GlobeSitePlannerMap({
             title="Hide planning polygons and focus on the selected building"
           >
             Focus building
+          </button>
+        )}
+        {!walkMode && selectedInspectionZone && typeof selectedInspectionZone.properties?.validation_native_url === 'string' && (
+          <button type="button" onClick={() => {
+            const start = buildingWalkStartForZone(terrainZonesRef.current, selectedInspectionZone.id);
+            if (start) { onZoneSelected(null); setSelectedBuildingId(null); activateWalkAtPose(start); }
+            else { setWalkPickError('No walking route is available for this model. Check that its detailed 3D model has loaded.'); setWalkMode('pick'); }
+          }} className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] hover:bg-[#dcff81]"
+            title="Start walking at this building's authored entrance">
+            Walk inside
           </button>
         )}
         {siteZones.length > 0 && (

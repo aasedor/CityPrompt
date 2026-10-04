@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { advanceParkWalk, parkWalkHeight } from '@/features/parks/parkWalking';
-import { buildingWalkEntry, buildingWalkEntrance, buildingWalkGround, constrainBuildingWalk, mountBuildingWalking, readBuildingWalking, type BuildingWalkNetwork } from './buildingWalking';
+import { buildingWalkEntry, buildingWalkEntrance, buildingWalkGround, buildingWalkStartForZone, constrainBuildingWalk, mountBuildingWalking, readBuildingWalking, type BuildingWalkNetwork } from './buildingWalking';
 
 const rect = (x0:number,x1:number,y0:number,y1:number,z:number) => [
   [[x0,y0,z],[x1,y0,z],[x1,y1,z]], [[x0,y0,z],[x1,y1,z],[x0,y1,z]],
@@ -64,6 +64,21 @@ describe('occupied building walking',()=>{
       expect(buildingWalkEntrance([{...zone,updated_at:'moved'}],from)).toBeNull();
     } finally {cleanup();}
     expect(buildingWalkEntrance([zone],at(0,2,0))).toBeNull();
+  });
+  it.each([0,Math.PI/2,Math.PI,Math.PI*1.5])('starts a selected model at its actual entrance and faces inward at yaw %s',yaw=>{
+    const {at,cleanup}=placed(network(),yaw);
+    try {
+      const start=buildingWalkStartForZone([zone],zone.id)!;
+      expect(start.lng).toBeCloseTo(at(0,-7,0).lng,8);
+      expect(start.lat).toBeCloseTo(at(0,-7,0).lat,8);
+      expect(start.heading).toBeGreaterThanOrEqual(0);
+      expect(start.heading).toBeLessThan(360);
+      const inward=at(0,-6,0), radians=start.heading*Math.PI/180;
+      const north=inward.lat-start.lat, east=(inward.lng-start.lng)*Math.cos(start.lat*Math.PI/180);
+      expect(Math.cos(radians)*north+Math.sin(radians)*east).toBeGreaterThan(0);
+      expect(buildingWalkStartForZone([{...zone,updated_at:'moved'}],zone.id)).toBeNull();
+    } finally {cleanup();}
+    expect(buildingWalkStartForZone([zone],zone.id)).toBeNull();
   });
   it('lets a visitor exit the front portal, blocks entering through the side, and preserves turning',()=>{
     const {at,cleanup}=placed(network());

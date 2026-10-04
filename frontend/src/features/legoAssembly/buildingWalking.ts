@@ -79,6 +79,23 @@ export function buildingWalkEntrance(zones: SiteZone[], pose: WalkPose): WalkPos
   const ctx = context(zones, pose);
   return ctx ? world(ctx.record, ctx.record.network.entrance as WalkPoint, pose.heading) : null;
 }
+
+/** Start a selected exact model at its authored, walkable entrance. This does
+ * not assert a continuous route from an arbitrary sidewalk to that door. */
+export function buildingWalkStartForZone(zones: SiteZone[], zoneId: string): WalkPose | null {
+  const zone = zones.find(candidate => candidate.id === zoneId);
+  if (!zone) return null;
+  for (const record of mounted.values()) {
+    if (record.zoneId !== zoneId || record.revision !== buildingWalkRevision(zone)) continue;
+    const entry = record.network.entrance as WalkPoint;
+    const origin = world(record, entry, 0);
+    const inward = world(record, [entry[0], entry[1] + 1, entry[2]], 0);
+    const north = (inward.lat - origin.lat) * Math.PI / 180;
+    const east = (inward.lng - origin.lng) * Math.PI / 180 * Math.cos(origin.lat * Math.PI / 180);
+    return { ...origin, heading: (Math.atan2(east, north) * 180 / Math.PI + 360) % 360 };
+  }
+  return null;
+}
 export function buildingWalkEntry(zones: SiteZone[], pose: WalkPose): WalkPose {
   // Deliberate entry always starts at the signed front door, never on a roof,
   // an inaccessible clock chamber, a rail bed or a bench.
