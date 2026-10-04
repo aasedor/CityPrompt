@@ -22,3 +22,11 @@ The animation uses the image above as its sole input. Across sampled frames, bot
 - Generated 2026-10-03; reviewed locally before publication.
 
 These are illustrative model trials, not an approved design or catalogue asset. The media files use Git LFS.
+
+## Front-facing person follow-up
+
+[Open full-size front-facing image](https://media.githubusercontent.com/media/aasedor/CityPrompt/codex/people-interior-phone-review/docs/showcase/qwen-wan-people-interior/qwen-front-facing.png)
+
+![One foreground adult facing the camera directly](qwen-front-facing.png)
+
+One Qwen Image 3 generation through the current main-based City Prompt street-render trial. The prompt replaced the back-facing pedestrians with one nearby adult facing the lens directly, with both eyes visible, natural skin and hair, and ordinary clothing. The resulting face looks convincing at normal viewing size; the hands are partly cropped. Saved and reviewed in the browser before publication. This follow-up is a still image only.
