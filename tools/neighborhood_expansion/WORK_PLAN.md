@@ -646,3 +646,56 @@ user can inspect the results. Verify the page loaded and keep the tab as the
 user-facing deliverable. Preserve original projects. The standalone model
 inspector does not satisfy this handoff. Record completion_browser_handoff,
 then report the honest result and pause the heartbeat.
+
+
+## Timber school first diagnostic hold and finite replay
+
+Unskinned v001 completed22 exact-GLB views and preserved its original named
+scene. Its0f7fa425 GLB passes96 stair-boundary probes and1,638 aperture rays.
+The actual app solver passes40/45 routes,20 furniture and9 garden probes.
+Both ascents stay on an incorrectly competing lower native plane; three routes
+cross real open leaves/posts. Physical route review preserves279 failures,
+including under-stair head hits and failed-route continuation at paving edges.
+Independent diagnostic review holds twoP1 groups; no model pass has been added.
+
+The null-only guard helper also reports six failures because it selects a
+distant legitimate lower floor. Independent movement toward all six guards at
+their occupied height rejects crossing without a level drop. Preserve the old
+failure; use a separate explicit at-height movement proof for the revised
+diagnostic. App clearance/step tolerances stay unchanged.
+
+V005 source/prework changes only navigation ownership/routes and camera poses.
+The proposed v002 replay uses v001's sealed named blend, asserts identical
+non-navigation/camera source AST, preserves obstacles, and requires identical
+exported binary geometry. It must rerender22 views from the newly exported GLB
+and pass fresh native/physical and independent review. Keep original assembly
+source/spec separate from the newer network/camera snapshots. Classroom views
+clear foreground leaves and canopy-post views include the feet. Complete71-view
+skinned/model/browser gates remain pending. Count9/20, no building11 started.
+
+
+## Timber school v002 replay launched
+
+Independent v005 source/replay preflight passed0P0/P1. The one bounded replay
+uses the original named diagnostic scene, unchanged geometric source AST and
+asserted exact BIN bytes, with updated navigation and camera evidence only.
+Job PID28948 is recorded externally. Preserve v001 hold and all failures.
+Fresh geometry JSON/bounds,45 routes,9 garden probes, six at-height guards,
+physical floor/headroom/stair/aperture evidence and22 rerendered views still
+require independent diagnostic review. Count remains9; no skinned/model pass.
+
+
+## Timber school v002: physical pass, rendered evidence hold
+
+Fresh45/45 app routes,20 furniture,9 garden and6 at-height guard controls pass.
+ExactGLB physical proof passes13,450 route/start samples,96 stair boundaries and
+1,638 aperture rays. BIN and geometry-bearing JSON match v001; only walking
+extras change. The old null-only guard report remains4/6; occupied-height
+movement rejects both upper-lip approaches without dropping to a lower floor.
+
+Independent pixel regression holds v002: blind object-name lookup selected
+QA rear LIGHT instead of QA rear.001 CAMERA. New black patches also require
+render-state diagnosis despite unchanged geometry. Preserve all22 images and
+passing machine evidence. A finite GPU/CPU control is running; require typed
+camera assertions and independently reviewed render-only correction before
+fresh22 pixels and the full skinned candidate. Count remains9, no building11.

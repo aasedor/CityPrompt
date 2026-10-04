@@ -1279,7 +1279,7 @@
         "description": "A two-storey U-shaped elementary school framing a sheltered rear outdoor classroom. Modest timber classroom wings have generous windows, projecting sunshades and covered ground-floor walks. The street elevation has a clear central entrance, low planting and a roofed bike shelter. The architecture feels durable, warm and attainable rather than monumental.",
         "siteNote": "Keep the learning courtyard unbuilt and connect it to a larger play area; footprint dimensions describe the outer envelope."
       },
-      "state": "unskinned_diagnostic_running",
+      "state": "unskinned_v002_render_evidence_held",
       "attempts": [],
       "keeper_approved": false,
       "catalogue_activated": false,
@@ -1408,6 +1408,76 @@
         ],
         "diagnostic_command": "blender --background --factory-startup --python check-school-timber-physical-details-v003.py -- prework/school-timber-unskinned-v001 --unskinned",
         "diagnostic_boards_command": "python school-timber-boards.py prework/school-timber-unskinned-v001 --diagnostic"
+      },
+      "diagnostic_v001_completed": {
+        "candidate": "prework/school-timber-unskinned-v001",
+        "state": "held_not_model_pass",
+        "finished_observed_utc": "2026-10-04T01:45:23.919669+00:00",
+        "glb_sha256": "0f7fa42504d89cbe88071831337e1375b732d94a80083846df6df71621907d92",
+        "renders_completed": 22,
+        "native_routes_passed": 40,
+        "native_routes_tested": 45,
+        "garden_probes_passed": 9,
+        "furniture_probes_passed": 20,
+        "legacy_null_only_guard_probes": "0/6; preserved. Layered-floor semantics invalid; independent at-height supplementary movement6/6 rejects.",
+        "physical_route_samples": 4323,
+        "physical_route_failures": 279,
+        "physical_stair_samples_passed": 96,
+        "physical_aperture_rays_passed": 1638,
+        "independent_review": {
+          "path": "prework/school-timber-unskinned-v001-independent-review.json",
+          "sha256": "29c363eb0c5d636c7fff5ac1e8a98085c29a2e0a0bc91859f77d0bd01353b88c"
+        },
+        "finite_corrections": "Lower stair native ownership; three routes around actual leaves/posts; classroom and canopy-post evidence framing. No geometry change.",
+        "current_network_camera_builder_sha256": "a60f515ee5807d19b1dbb87a16876b191a00fcd3a2b586240a653d4aa9fd56cd",
+        "current_network_camera_prework_sha256": "9526ab315795422b922609ad0a42ca3de6e7e337d294f2d928211b8da37eb44a",
+        "pending_replay": "replay-school-timber-unskinned-v002.py"
+      },
+      "diagnostic_v002": {
+        "state": "held_render_evidence_not_model_pass",
+        "job": {
+          "pid": 28948,
+          "started_utc": "2026-10-04T01:51:48.8943702Z",
+          "runner": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/replay-school-timber-unskinned-v002.py",
+          "preflight": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/prework/school-timber-builder-preflight-v005.json",
+          "candidate": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/prework/school-timber-unskinned-v002",
+          "state": "running",
+          "counted_complete": false
+        },
+        "preflight": {
+          "path": "prework/school-timber-builder-preflight-v005.json",
+          "sha256": "6cf60a7aa25db8878297b793ccf3d2cbcddefd6a71c60bb97ceb52db59f5c3ca"
+        },
+        "fresh_checks_required": [
+          "geometry JSON/BIN identity",
+          "45 app routes",
+          "9 garden exclusions",
+          "6 at-height guard movements",
+          "exact-GLB physical routes/stairs/apertures",
+          "22 exact-GLB render pixels",
+          "independent diagnostic review"
+        ],
+        "completed_evidence": {
+          "glb_sha256": "a05a7561b333f78ef0d00b4aeb36c988d422b8b1fa84bf34724c2b11ed8eb8c8",
+          "native_routes": 45,
+          "trace_samples": 13405,
+          "physical_samples_including_starts": 13450,
+          "stair_boundary_samples": 96,
+          "aperture_rays": 1638,
+          "garden": 9,
+          "furniture": 20,
+          "at_height_guards": 6,
+          "legacy_null_guard_report": "4/6; upper lip fallback remains a semantic false-negative; preserved separately",
+          "geometry_BIN_and_JSON_identical_except_walking_extras": true,
+          "renders_written": 22,
+          "render_evidence_blockers": [
+            "Rear lookup selected QA rear LIGHT rather than QA rear.001 CAMERA",
+            "Black rectangular surface patches regression despite exact geometry identity"
+          ],
+          "diagnosis": "prework/school-timber-replay-scene-diagnosis.json",
+          "render_state_control": "prework/school-timber-render-state-control-v001",
+          "independent_review": "prework/school-timber-unskinned-v002-independent-review.json"
+        }
       }
     },
     {
@@ -1651,12 +1721,12 @@
       "catalogue_activated": false
     }
   ],
-  "state": "wave3_unskinned_diagnostic_running",
+  "state": "wave3_diagnostic_render_evidence_repair",
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 9,
-  "next_action": "Resume PID10664 school-timber-unskinned-v001 without duplication. When exact GLB/report exists, run native45 routes, garden9/guard6, physical walk and independently preflighted physical checker v003 with --unskinned. After22 renders create diagnostic board with school-timber-boards.py --diagnostic and request independent pixels. Skinned71 views only after diagnostic pass; main-app allten trial after tenth local pass and before11.",
-  "updated_utc": "2026-10-04T01:23:51.643635+00:00",
+  "next_action": "Preserve v002 held22 images and passing native/physical evidence. Diagnose finite saved-scene render regression using GPU/CPU control; assert typed rear-camera identity. Prepare independently preflighted v003 render-only correction; same exact GLB geometry and navigation. No fullskin until independent diagnostic pixels pass. Count9/20; no11.",
+  "updated_utc": "2026-10-04T02:01:37.833610+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [

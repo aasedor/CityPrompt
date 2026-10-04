@@ -2,7 +2,7 @@
   "variant_id": "school_timber_learning_courtyard",
   "archetype_id": "neighborhood_elementary_school",
   "method": "RLASM v6.1",
-  "state": "constructor_preflight_v003_pending",
+  "state": "diagnostic_v002_navigation_camera_corrections_pending",
   "sources": [
     {
       "role": "front",
@@ -59,7 +59,7 @@
   "created_utc": "2026-10-04T00:07:04.617267+00:00",
   "keeper_approved": false,
   "catalogue_activated": false,
-  "next_step": "Measured plan/roof/camera/programme draft, source-conditioned materials and independent prebuild review before dedicated U-school constructor.",
+  "next_step": "Independent finite correction/replay preflight, second22-view unskinned diagnostic with new embedded network and fresh physical proof, then full skinned71 views only after diagnostic pass.",
   "measurement_contract": {
     "units": "Inferred metres; no survey, engineering, code or accessibility certification",
     "body_rectangles_xy": {
@@ -746,14 +746,15 @@
     "programme_connection": "Front crosspassage reaches both wing corridors at abs(x)13.7 on both floors; rear2.095m crosspassage bypasses both cores/WCs and also joins wings. Central commons connects front/rear transverse routes.",
     "headroom": "Upper ceiling underside7.54 gives3.60m over top landing3.94; lower ceiling removed over full core. Prove exact mesh sampled headroom and void guards before local pass.",
     "qualification": "Authored prototype circulation; no building-code or accessibility certification.",
-    "guard_detail": "Intermediate pickets seated on every tread/outer landing transition, nominal125mm pitch, continuous top rail. Upper void sides/rear/lower lip retained; exact physical/contact/camera proof pending."
+    "guard_detail": "Intermediate pickets seated on every tread/outer landing transition, nominal125mm pitch, continuous top rail. Upper void sides/rear/lower lip retained; exact physical/contact/camera proof pending.",
+    "native_surface_ownership": "Both lower and upper connector navigation exclude the3m by3.93m core rectangles. Physical lower slabs stay intact; actual22treads/half-landing own the covered core walking surface. Unchanged maxStepM.18 and app clearance.22."
   },
   "opening_schedule": {
-    "front_connector": "Three prominent6.6m upper groups x[-8,0,8], sill+1.05,height2.15. Lower support groups x\u00b18,6.6m,sill+.75,height2.35. Central double entry2.4m plus two1.8m sidelights and transom, cut through all carriers.",
-    "wing_front_and_rear": "Each level broad5.8m classroom group x\u00b120, sill+.95,height2.2; narrow corridor front/end group x\u00b113.9,1.65m where unobscured. Rear ground corridor exit1.4m.",
+    "front_connector": "Three prominent6.6m upper groups x[-8,0,8], sill+1.05,height2.15. Lower support groups x±8,6.6m,sill+.75,height2.35. Central double entry2.4m plus two1.8m sidelights and transom, cut through all carriers.",
+    "wing_front_and_rear": "Each level broad5.8m classroom group x±20, sill+.95,height2.2; narrow corridor front/end group x±13.9,1.65m where unobscured. Rear ground corridor exit1.4m.",
     "outer_long_wings": "Two3.2m groups per classroom at y=low+4.3 and low+9.3, both levels, chosen away from crosswalls.",
     "courtyard_wings": "Three exposed groups y[-3,5,14.2], widths[6.2,4.8,7], both levels. Ground sill floor+.75,height2.10; full top frame<=2.99, opening sill.89/head2.99. Upper sill floor+1.05,height2.15. Ground court door y9.2,width1.4,height2.40,between glazing. Classroom programme visible behind glazed inner wall.",
-    "connector_rear": "Upper three groups x[-8,0,8],widths[4.4,6.6,4.4],sill+1.05,height2.15. Ground side groups x\u00b18,width4.4,sill+.75,height2.10. Centre2.4m double exit height2.40 with two1.8m sidelights to2.99m and transom z2.61..2.99. Full frame top<=2.99, clear under wall canopy.",
+    "connector_rear": "Upper three groups x[-8,0,8],widths[4.4,6.6,4.4],sill+1.05,height2.15. Ground side groups x±8,width4.4,sill+.75,height2.10. Centre2.4m double exit height2.40 with two1.8m sidelights to2.99m and transom z2.61..2.99. Full frame top<=2.99, clear under wall canopy.",
     "timber_head_shades": "Every broad exterior window>=3m has a supported440mm-deep timber head shade, top=openinghead+.15, separate from frame. Ground court heads2.99=>shade3.14, below ledgerunderside3.15 and lining3.245. Recessed brackets bear on solid jamb/head returns. Exact pixels still need verification."
   },
   "landscape_contract": {
@@ -855,14 +856,14 @@
     },
     "scope": "Dominant two wall materials conditioned from exact front family; remaining trim/timber/metal/interior prototype palette, keeper finish/optics unapproved."
   },
-  "camera_contract": "71 unique mandatory cameras authored before geometry. Complete7exteriors, source facade/glass/entrance,5main roof junction/ridge and2gable contacts,2canopy corners/2post andlining/materialcontact,12classrooms/4teachingboards/4wingcorridors/8supportrooms/6commons-crossconnections/6stairlandings-guards,fixtures/court/play/bikes/ramp/porch. Both sides of all stair cameras face from outer open connector side, away from washroom walls. Full exactGLB rerender and3boards mandatory.",
-  "readiness": "Plan only. Constructor/code still require independent preflight; unskinned exact-GLB topology/native/physical diagnostics precede skinned full candidate. No model/keeper/runtime approval.",
-  "plan_revision": "v004: bounded final prebuild contact/path/ridge corrections",
+  "camera_contract": "71 unique mandatory cameras authored before geometry. Complete7exteriors, source facade/glass/entrance,5main roof junction/ridge and2gable contacts,2canopy corners/2post andlining/materialcontact,12classrooms/4teachingboards/4wingcorridors/8supportrooms/6commons-crossconnections/6stairlandings-guards,fixtures/court/play/bikes/ramp/porch. Both sides of all stair cameras face from outer open connector side, away from washroom walls. Full exactGLB rerender and3boards mandatory. Classroom camera moves beyond the open leaf at abs(x)17,y=roomLow+2.8; both canopy-post cameras include the foot using abs(x)5.5,y11.5,z1.8,targetz1.35,lens24. Same71 camera identities.",
+  "readiness": "Unskinned v001 held on native ownership/route failures. Geometry-only staircase/aperture rays pass; navigation/camera correction and all later full-model/browser gates remain pending.",
+  "plan_revision": "v005: exact diagnostic navigation ownership and evidence framing corrections",
   "finite_corrections_v002": [
     "Shared internal wing interfaces open continuously bothfloors; native surfaces include actual slab seam.",
     "Court lower frame heads frozen2.99m, lining/ledger/header complete bounds frozen and source-compatible."
   ],
-  "builder_sha256": "ae889608b911a4226cf03b57d420da723b41c717c7f35b60fc01f6287dca543c",
+  "builder_sha256": "a60f515ee5807d19b1dbb87a16876b191a00fcd3a2b586240a653d4aa9fd56cd",
   "independent_measured_plan_review": {
     "path": "prework/school-timber-measured-plan-v002-review.json",
     "sha256": "ef61cf38b90845bf6598b24be69a937f71aa7d039faefa7c0c032701a3c76a59",
@@ -891,5 +892,25 @@
     "Both court bench approaches now physically/native connected and explicitly routed.",
     "All support desks use corrected chair atom; every school bookshelf book rests on actual closest shelf top.",
     "Every parent cedar strip crossing a gable ridge splits there with original parent coordinates and full apex height."
-  ]
+  ],
+  "finite_corrections_v005": [
+    "Remove only lower native plane ownership under both stair cores; no physical floor/geometry change.",
+    "Rear wing exits cross beyond their actual90-degree open leaves at y21.65.",
+    "Court/play route detours around the central canopy post via x.6 and y-6.8/-5.",
+    "Covered U path uses x+-10.3 and cross y-6.35, preserving actual paving and all post/leaf obstacles.",
+    "All12 classroom cameras clear foreground door leaves; both canopy-post cameras show complete foot contact.",
+    "Preserve null-only guard failures. Supplemental at-height movement checks must prove rejection without a level drop using the unchanged actual app solver."
+  ],
+  "preserved_diagnostic_v001": {
+    "path": "prework/school-timber-unskinned-v001",
+    "glb_sha256": "0f7fa42504d89cbe88071831337e1375b732d94a80083846df6df71621907d92",
+    "independent_review": "prework/school-timber-unskinned-v001-independent-review.json",
+    "native_routes": "40/45",
+    "physical_failures": 279,
+    "stair_boundary_samples": "96/96",
+    "aperture_rays": "1638/1638",
+    "garden": "9/9",
+    "furniture": "20/20",
+    "no_model_pass": true
+  }
 }

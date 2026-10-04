@@ -42,7 +42,7 @@ def cameras():
         add('roof_valley_'+side,(sign*13,-16,16),(sign*16,-14,9),32)
         add('roof_valley_end_'+side,(sign*8,-4,11),(sign*11.5,-7.5,7.9),30)
         add('gable_contact_'+side,(sign*26,25,12),(sign*20,20,8.5),30)
-        add('canopy_post_'+side,(sign*8,12,2.2),(sign*9.72,13,1.8),28)
+        add('canopy_post_'+side,(sign*5.5,11.5,1.8),(sign*9.72,13,1.35),24)
         add('canopy_corner_'+side,(sign*7,-1,5),(sign*10,-6,3.2),26)
     add('roof_connector_ridge',(0,-11,16),(0,-14,9.6),30)
     add('cedar_brick_contact',(21,-25,5),(20,-20,3.94),36)
@@ -53,7 +53,7 @@ def cameras():
             side='left' if sign<0 else 'right'
             for i in range(3):
                 lo,hi=room_bounds(i)
-                add(f'classroom_{side}_{i+1}_{level+1}',(sign*16.3,lo+.85,z+1.75),
+                add(f'classroom_{side}_{i+1}_{level+1}',(sign*17.0,lo+2.8,z+1.75),
                     (sign*21,lo+7.5,z+1.0),20)
             add(f'teaching_wall_{side}_{level+1}',(sign*19.5,-14.5,z+1.75),
                 (sign*15.43,-15.2,z+1.6),26)
@@ -623,11 +623,10 @@ def network():
             route(f'{"Left" if sign<0 else "Right"} wing corridor floor {level+1}',[(0,-9.4),(sign*13.7,-9.4),(sign*13.7,18.5)],z)
             route(f'Front support {sign} floor {level+1}',[(0,-15.1),(0,-17.8),(sign*5.6,-17.8)],z)
             route(f'Washroom {sign} floor {level+1}',[(0,-9.4),(sign*6,-9.4),(sign*6,-12.3)],z)
-        # Complete connector floor surface, partitioned only at actual upper voids.
-        if not level:rect(-12,-19.7,12,-8.3,z)
-        else:
-            rect(-12,-19.7,12,-14.325,z);rect(-12,-10.395,12,-8.3,z)
-            rect(-12,-14.325,-11.2,-10.395,z);rect(-8.2,-14.325,8.2,-10.395,z);rect(11.2,-14.325,12,-10.395,z)
+        # Covered lower core floors cannot compete with the actual stair tops.
+        # Physical lower slabs remain; navigation owns only the reachable surface.
+        rect(-12,-19.7,12,-14.325,z);rect(-12,-10.395,12,-8.3,z)
+        rect(-12,-14.325,-11.2,-10.395,z);rect(-8.2,-14.325,8.2,-10.395,z);rect(11.2,-14.325,12,-10.395,z)
         route('Front cross connection floor '+str(level+1),[(-13.7,-15.1),(13.7,-15.1)],z)
         route('Rear cross connection floor '+str(level+1),[(-13.7,-9.4),(13.7,-9.4)],z)
     for cx in CORE_X:
@@ -646,14 +645,14 @@ def network():
         rect(a,-8,b,20);rect(sign*19-7,20,sign*19+7,22.6)
         a,b=(-30,-26) if sign<0 else (26,30);rect(a,-28,b,28)
         route('Courtyard wing exit '+str(sign),[(sign*13.7,9.2),(sign*10.8,9.2),(sign*10.8,18)])
-        route('Rear wing exit '+str(sign),[(sign*13.7,18),(sign*13.9,18),(sign*13.9,21.2),(sign*10.8,21.2)])
+        route('Rear wing exit '+str(sign),[(sign*13.7,18),(sign*13.9,18),(sign*13.9,21.65),(sign*10.8,21.65)])
         rect(sign*13.9-.7,19.7,sign*13.9+.7,20)
     rect(-1.6,-5.6,1.6,26);rect(-12,20,12,26)
     rect(-7.7,.4,-2.3,6);rect(2.3,6.9,7.7,11.1);rect(3.5,15,6.5,17);rect(1.6,15,3.5,17)
     rect(-2.3,1.3,-1.6,3.7);rect(1.6,7.8,2.3,10.2)
     routes.append(dict(name='Public school entrance',points=[[0,-29.7,.04],[0,-29.5,.04],[0,-28,Z],[0,-23,Z],[0,-18,Z],[0,-9.4,Z]]))
-    route('School to court and play lawn',[(0,-9.4),(0,-5),(0,21),(2,21)])
-    route('Covered U walk',[(-10.8,18),(-10.8,-6.8),(10.8,-6.8),(10.8,18)])
+    route('School to court and play lawn',[(0,-9.4),(0,-6.8),(.6,-6.8),(.6,-5),(0,-5),(0,21),(2,21)])
+    route('Covered U walk',[(-10.3,18),(-10.3,-6.35),(10.3,-6.35),(10.3,18)])
     route('Reception',[(0,-9.4),(0,-12.6),(-.35,-12.6)])
     route('Bicycle shelter',[(0,-26),(-20,-26),(-20,-25.3)])
     route('Front bench',[(0,-26),(10,-26),(10,-25.85)])
