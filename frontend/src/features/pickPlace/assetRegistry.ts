@@ -164,7 +164,7 @@ export function additionalStreet(archetypeId: string, label: string, description
 
 const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
   id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
-    label: street.title, description: street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${street.program.maxLengthM} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
+    label: street.title, description: street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${street.program.maxLengthM} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
   calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
   model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },

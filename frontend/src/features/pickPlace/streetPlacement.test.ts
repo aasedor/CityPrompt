@@ -27,7 +27,7 @@ describe('fixed sections across street types', () => {
     const profile = resolvePilotStreetSectionProfile(saved)!;
     expect(profile.rowM).toBe(width);
     expect(profile.bands.reduce((sum, band) => sum + band.widthM, 0)).toBeCloseTo(width, 8);
-    if(asset.model.variantId==='brt_bus_rapid_transit_corridor_v0'||isSpecialistStreet(asset.model.variantId)){
+    if(asset.model.variantId==='brt_bus_rapid_transit_corridor_v0'||(isSpecialistStreet(asset.model.variantId)&&asset.model.variantId!=='amsterdam_gracht_v1')){
       expect(addStreetBend(saved)).toBeNull();
       const moved=streetCoordinateUpdate(saved,saved.coordinates.map(([x,y])=>[x,y+2/111320]));
       expect(moved.properties?.width).toBe(width);

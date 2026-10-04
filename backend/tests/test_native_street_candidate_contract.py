@@ -18,6 +18,18 @@ from app.services.public_realm_lego import (
 MANIFEST = Path(__file__).resolve().parents[2] / "frontend/src/data/nativeStreetPilots.json"
 
 
+@pytest.mark.parametrize('length', [36, 53.7, 79, 334, 712.5, 2000])
+def test_flexible_canal_recipe_roundtrip(length):
+    catalog = build_public_realm_capability_catalog()
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id='amsterdam_gracht', variant_id='amsterdam_gracht_v1',
+        target=StreetSegmentTarget(row_width_m=36, length_m=length),
+    ), catalog=catalog)
+    identity = public_realm_recipe_identity(recipe, catalog=catalog)
+    assert identity is not None
+    assert identity['recipe']['target']['length_m'] == length
+
+
 def test_new_route_capabilities_do_not_convert_saved_fixed_rectangles():
     from shapely.geometry import Polygon
     from app.services.public_realm_lego import plan_public_realm_zone_recipe, PublicRealmPlanningError

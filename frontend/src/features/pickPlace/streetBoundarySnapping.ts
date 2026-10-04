@@ -20,7 +20,7 @@ export function snapStreetToBoundary(points: number[][], width: number, boundary
   const world = (p: { x: number; y: number }) => [origin[0] + p.x / sx, origin[1] + p.y / sy];
   const ring = boundary.coordinates.map(local);
   const variant = String(properties.road_selected_variant_id);
-  const straightOnly = isSpecialistStreet(variant) || [BRT_VARIANT, TRAM_VARIANT].includes(variant);
+  const straightOnly = (isSpecialistStreet(variant) && variant !== 'amsterdam_gracht_v1') || [BRT_VARIANT, TRAM_VARIANT].includes(variant);
   let result = points.map(p => [...p]);
   // Work on the two endpoints only; interior waypoints remain authored.
   for (const reverse of [false, true]) {

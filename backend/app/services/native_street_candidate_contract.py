@@ -51,7 +51,7 @@ def native_street_runtime_capabilities() -> tuple[PublicRealmFamilyCapability, .
     return tuple(accepted)
 
 
-def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCapabilityCatalog:
+def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canals: bool = True) -> PublicRealmCapabilityCatalog:
     """Compile an explicit review-only catalogue from the staged source lock."""
 
     rows = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -104,6 +104,10 @@ def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCap
             locks.append((f"module_{kind}", module["sha256"]))
         if any(not _SHA256.fullmatch(value) for _, value in locks):
             raise ValueError(f"{pilot_id} has an invalid source or module hash")
+        route_policy = program
+        if flexible_canals and pilot_id == 'amsterdam_gracht_v1':
+            from app.services.native_specialist_streets import CANAL_POLICY
+            route_policy = CANAL_POLICY
         selection = PublicRealmSelectionCapability(
             archetype_id=parent_id,
             variant_id=pilot_id,
@@ -116,8 +120,8 @@ def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCap
                 nominal_row_width_m=width,
                 min_row_width_m=round(width - 0.05, 3),
                 max_row_width_m=round(width + 0.05, 3),
-                min_length_m=program['minLengthM'] if program else 8,
-                max_length_m=program['maxLengthM'] if program else 2_000,
+                min_length_m=route_policy['minLengthM'] if route_policy else 8,
+                max_length_m=route_policy['maxLengthM'] if route_policy else 2_000,
             ),
             is_default=True,
         )
@@ -143,3 +147,12 @@ def build_native_street_candidate_catalog(manifest_path: Path) -> PublicRealmCap
         prompt_vocabulary="",  # Never advertise a review candidate to AI planning.
         fingerprint=hashlib.sha256(encoded).hexdigest(),
     )
+
+
+@lru_cache(maxsize=1)
+def retained_canal_capability():
+    """Exact pre-flexible contract, only for validating an existing recipe."""
+    manifest = Path(__file__).resolve().parents[1] / 'data/nativeStreetPilots.json'
+    catalog = build_native_street_candidate_catalog(manifest, flexible_canals=False)
+    cap = next(c for c in catalog.capabilities if c.family_id == 'street_native_amsterdam_gracht_v1')
+    return cap.model_copy(update={'title': cap.title.removeprefix('Candidate: ')})

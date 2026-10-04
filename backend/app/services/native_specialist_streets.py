@@ -2,12 +2,15 @@
 import json
 import math
 import re
+from pathlib import Path
+
+CANAL_POLICY = json.loads((Path(__file__).resolve().parents[1] / 'data/canalRoutePolicy.json').read_text())
 
 CONTRACTS = {
     'student_elevated_garden_rail_v1': ('elevated_garden_rail', 26, 48, 288),
     'skytrain_elevated_corridor_v0': ('skytrain_elevated_corridor', 26, 48, 288),
     'elevated_rail_transit_corridor_v0': ('elevated_rail_transit_corridor', 26, 48, 288),
-    'amsterdam_gracht_v1': ('amsterdam_gracht', 36, 80, 320),
+    'amsterdam_gracht_v1': ('amsterdam_gracht', 36, CANAL_POLICY['minLengthM'], CANAL_POLICY['maxLengthM']),
     'landmark_signature_bridge_v2': ('landmark_signature_bridge', 36, 260, 480),
 }
 
@@ -46,6 +49,16 @@ def validate_specialist_properties(properties):
         raise ValueError('Specialist street route coordinates are invalid.')
     sx = 111320*math.cos(math.radians(route[0][1]))
     local = [((p[0]-route[0][0])*sx, (p[1]-route[0][1])*111320) for p in route]
+    if props['road_selected_variant_id'] == 'amsterdam_gracht_v1':
+        segments = [(b[0]-a[0], b[1]-a[1]) for a,b in zip(local,local[1:])]
+        segments = [p for p in segments if math.hypot(*p)>1e-6]
+        length = sum(math.hypot(*p) for p in segments)
+        if not minimum-.01 <= length <= maximum+.01:
+            raise ValueError(f'Keep this canal route {minimum}–{maximum} m long so its full banks fit.')
+        for a,b in zip(segments,segments[1:]):
+            if (a[0]*b[0]+a[1]*b[1])/math.hypot(*a)/math.hypot(*b)<-.5:
+                raise ValueError('Use a gentler canal bend so the banks do not fold over each other.')
+        return
     dx,dy = local[-1]
     length = math.hypot(dx,dy)
     if not minimum-.01 <= length <= maximum+.01:

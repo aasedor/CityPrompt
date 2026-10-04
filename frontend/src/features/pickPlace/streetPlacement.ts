@@ -98,7 +98,7 @@ export function streetRouteProblem(
 }
 
 export function addStreetBend(zone: SiteZone): number[][] | null {
-  if(isSpecialistStreet(zone.properties?.road_selected_variant_id) || zone.properties?.road_selected_variant_id==='brt_bus_rapid_transit_corridor_v0')return null;
+  if((isSpecialistStreet(zone.properties?.road_selected_variant_id) && zone.properties?.road_selected_variant_id !== 'amsterdam_gracht_v1') || zone.properties?.road_selected_variant_id==='brt_bus_rapid_transit_corridor_v0')return null;
   const width = streetSectionWidth(zone);
   const savedControls = parsePersistedCenterline(zone.properties?.plan_route_controls);
   const line = savedControls ?? extractZoneCenterline(zone);
