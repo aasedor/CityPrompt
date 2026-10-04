@@ -39,8 +39,13 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   const [reshapeRejected,setReshapeRejected] = useState(false);
   const maxWidth = asset.maxWidth ?? asset.maxSize;
   const maxDepth = asset.maxDepth ?? asset.maxSize;
+  // Fixed plots have read-only rounded labels. Rotate their exact saved
+  // footprint; those display values must not shrink it or fail a fractional
+  // native minimum (for example 25.148 m displayed as 25.1 m).
+  const shapeWidth = fixedFixture ? dimensions.width : Number(width);
+  const shapeDepth = fixedFixture ? dimensions.depth : Number(depth);
   const dimensionsValid = Number.isFinite(Number(width)) && Number.isFinite(Number(depth)) && Number.isFinite(Number(degrees))
-    && Number(width)>=asset.minWidth && Number(depth)>=asset.minDepth && Number(width)<=maxWidth && Number(depth)<=maxDepth;
+    && (fixedFixture || (Number(width)>=asset.minWidth && Number(depth)>=asset.minDepth && Number(width)<=maxWidth && Number(depth)<=maxDepth));
   const flexibleProblem = useMemo(() => {
     if (!dimensionsValid || !isFlexiblePark(zone.properties)) return null;
     const candidate = reshapeParkOutline(zone.coordinates, Number(width), Number(depth), Number(degrees), outline || undefined);
@@ -63,7 +68,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     </div>}
     <form onSubmit={event => { event.preventDefault(); if(valid) { const problem = onReshape(keepOutline
       ? reshapeParkOutline(zone.coordinates,Number(width),Number(depth),Number(degrees),isPark ? outline || undefined : undefined)
-      : rectangleAt(dimensions.center,Number(width),Number(depth),Number(degrees)));
+      : rectangleAt(dimensions.center,shapeWidth,shapeDepth,Number(degrees)));
       setReshapeRejected(problem === false); } }}>
       {isPark && <div className="mb-3">
         <label className="text-xs font-semibold text-slate-800">Park outline<select aria-label="Park outline" value={outline} onChange={e=>setOutline(e.target.value as ParkOutlineShape | '')} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900">
