@@ -13,6 +13,12 @@ Sticker Method/V98 material is historical compatibility evidence.
 - Run `git status --short --branch` before editing.
 - Work on one named initiative per branch or Git worktree. Do not mix parks,
   streets, building families, compiler changes, and unrelated fixes.
+- Keep at most nine registered worktrees. Before adding one, run
+  `pwsh -File scripts/audit_git_worktrees.ps1 -SummaryOnly -FailOnBudget` and
+  confirm adding it stays within the budget. Retire a finished worktree only
+  after preserving unique changes, ignored evidence, and dependency links.
+- Follow `docs/REPOSITORY_STORAGE_POLICY.md` for runtime assets, external
+  reference libraries, archive verification, and the current workspace map.
 - Treat pre-existing changes as user work. Do not reset, clean, overwrite, or
   stage files outside the current initiative.
 - If the tree is already dirty in files the task needs, inventory the overlap

@@ -35,6 +35,21 @@ function Get-ResolvedDirectory([string] $Path) {
 }
 
 function Get-FileRecords([string] $Root) {
+    if ((Get-Item -LiteralPath $Root -Force).Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
+        throw "Archive root is a reparse point: $Root"
+    }
+    # A nested junction can point outside the approved root. Reject every
+    # reparse point before Copy-Item or recursive removal can reach it.
+    $pending = [System.Collections.Generic.Stack[string]]::new()
+    $pending.Push($Root)
+    while ($pending.Count -gt 0) {
+        foreach ($entry in Get-ChildItem -LiteralPath $pending.Pop() -Force) {
+            if ($entry.Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
+                throw "Archive source contains a reparse point: $($entry.FullName)"
+            }
+            if ($entry.PSIsContainer) { $pending.Push($entry.FullName) }
+        }
+    }
     $records = @(
         Get-ChildItem -LiteralPath $Root -Recurse -File -Force |
             ForEach-Object {
@@ -72,7 +87,6 @@ function Assert-MatchingRecords([object[]] $Expected, [object[]] $Actual, [strin
 $sourceRoot = Get-ResolvedDirectory $AllowedSourceRoot
 $sourcePrefix = $sourceRoot.TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
 $storeFull = [System.IO.Path]::GetFullPath($StoreRoot)
-New-Item -ItemType Directory -Path $storeFull -Force | Out-Null
 $results = @()
 
 foreach ($source in $SourcePath) {
@@ -83,6 +97,21 @@ foreach ($source in $SourcePath) {
     )) {
         throw "Source is outside allowed root: $sourceFull"
     }
+    $candidatePrefix = $sourceFull.TrimEnd([System.IO.Path]::DirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
+    if (($storeFull + [System.IO.Path]::DirectorySeparatorChar).StartsWith(
+        $candidatePrefix, [System.StringComparison]::OrdinalIgnoreCase
+    )) { throw "Archive store must be outside the source directory" }
+    # Require existing destination ancestors to be physical directories too.
+    $ancestor = $storeFull
+    while ($ancestor) {
+        if (Test-Path -LiteralPath $ancestor) {
+            if ((Get-Item -LiteralPath $ancestor -Force).Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
+                throw "Archive destination contains a reparse point: $ancestor"
+            }
+        }
+        $ancestor = [System.IO.Path]::GetDirectoryName($ancestor)
+    }
+    New-Item -ItemType Directory -Path $storeFull -Force | Out-Null
 
     $records = @(Get-FileRecords $sourceFull)
     $treeHash = Get-RecordsDigest $records

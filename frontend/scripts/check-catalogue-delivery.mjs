@@ -47,7 +47,7 @@ if (fixtures) {
   }
 }
 const starter = source('classroomStarter.json');
-const equipmentManifest = read(resolve(frontend,'public/park-kits/shared-park-equipment-v1/kit_manifest.json'));
+const equipmentManifest = read(resolve(publicRoot,'park-kits/shared-park-equipment-v1/kit_manifest.json'));
 const sharedKits = sharedEquipment.map(asset => {
   const lock = equipmentManifest.assets.find(row => row.id === asset.id && asset.url.endsWith('/'+row.file));
   if (!lock?.sha256) throw new Error('Shared park equipment lacks an exact delivery lock: '+asset.id);

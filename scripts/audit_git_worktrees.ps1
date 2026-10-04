@@ -1,6 +1,9 @@
 [CmdletBinding()]
 param(
-    [string] $Repository = '.'
+    [string] $Repository = '.',
+    [int] $MaximumWorktrees = 9,
+    [switch] $SummaryOnly,
+    [switch] $FailOnBudget
 )
 
 Set-StrictMode -Version Latest
@@ -41,6 +44,17 @@ foreach ($line in $lines) {
 }
 if ($null -ne $current) { $records += [pscustomobject]$current }
 
+if ($SummaryOnly) {
+    [pscustomobject]@{
+        worktree_count = $records.Count
+        maximum_worktrees = $MaximumWorktrees
+        within_budget = $records.Count -le $MaximumWorktrees
+        worktrees = $records
+    } | ConvertTo-Json -Depth 5
+    if ($FailOnBudget -and $records.Count -gt $MaximumWorktrees) { exit 1 }
+    exit 0
+}
+
 $result = foreach ($record in $records) {
     $statusLines = @(& git -C $record.path status --porcelain 2>$null)
     $statusExitCode = $LASTEXITCODE
@@ -64,3 +78,4 @@ $result = foreach ($record in $records) {
 }
 
 $result | ConvertTo-Json -Depth 4
+if ($FailOnBudget -and $records.Count -gt $MaximumWorktrees) { exit 1 }

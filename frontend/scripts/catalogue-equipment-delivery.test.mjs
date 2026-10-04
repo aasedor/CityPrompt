@@ -17,8 +17,8 @@ test('the actual flexible-park audit includes every shared equipment model and i
       '--metadata-only', '--report=' + reportPath], { cwd: frontend, env, timeout: 60000 });
     const report = JSON.parse(readFileSync(reportPath, 'utf8'));
     assert.deepEqual(report.failures, []);
-    const manifest = JSON.parse(readFileSync(join(frontend,
-      'public/park-kits/shared-park-equipment-v1/kit_manifest.json'), 'utf8'));
+    const manifest = JSON.parse(readFileSync(join(env.CITYPROMPT_PUBLIC_DIR || join(frontend, 'public'),
+      'park-kits/shared-park-equipment-v1/kit_manifest.json'), 'utf8'));
     const parks = report.choices.filter(row => row.representation === 'procedural_park_kit');
     assert.ok(parks.length > 0, 'test must exercise actual flexible park choices');
     assert.equal(manifest.assets.length, 5);

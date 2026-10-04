@@ -64,6 +64,22 @@ class BlobPolicyTests(unittest.TestCase):
             ],
         )
 
+    def test_rejects_external_reference_material_even_when_small(self) -> None:
+        commit_file(self.repo, "reference-photos/future-building.jpg", b"small-image")
+        failures = blob_policy.audit_paths(
+            self.repo, ["reference-photos/future-building.jpg"], max_bytes=64
+        )
+        self.assertEqual(len(failures), 1)
+        self.assertIn("belong in external artifact storage", failures[0])
+
+    def test_accepts_runtime_asset_and_source_fixture(self) -> None:
+        commit_file(self.repo, "frontend/public/archetypes/buildings/current/license.txt", b"license")
+        commit_file(self.repo, "tools/archetype_compiler/tests/fixtures/source.json", b"{}")
+        self.assertEqual(blob_policy.audit_paths(self.repo, [
+            "frontend/public/archetypes/buildings/current/license.txt",
+            "tools/archetype_compiler/tests/fixtures/source.json",
+        ], max_bytes=64), [])
+
     def test_accepts_valid_lfs_pointer(self) -> None:
         (self.repo / ".gitattributes").write_text(
             "*.bin filter=lfs diff=lfs merge=lfs -text\n", encoding="utf-8"

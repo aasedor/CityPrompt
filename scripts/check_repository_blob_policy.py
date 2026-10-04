@@ -16,6 +16,7 @@ from pathlib import Path
 
 DEFAULT_MAX_BYTES = 1024 * 1024
 LFS_HEADER = b"version https://git-lfs.github.com/spec/v1\n"
+EXTERNAL_ONLY_ROOTS = ("artifacts/", "archives/", "reference-library/", "reference-photos/")
 
 
 def git(repo: Path, *args: str, check: bool = True) -> bytes:
@@ -93,6 +94,12 @@ def valid_lfs_pointer(blob: bytes) -> bool:
 def audit_paths(repo: Path, paths: list[str], max_bytes: int) -> list[str]:
     failures: list[str] = []
     for path in paths:
+        if path.startswith(EXTERNAL_ONLY_ROOTS):
+            failures.append(
+                f"{path}: generated output, archives, and future reference libraries "
+                "belong in external artifact storage, not the source repository"
+            )
+            continue
         try:
             blob = blob_bytes(repo, path)
         except RuntimeError as exc:

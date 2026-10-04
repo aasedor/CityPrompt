@@ -4,6 +4,10 @@
     "public/sw.js",
     "src/dev/NeighborhoodParkPilotReview.tsx",
     "src/dev/ParkTrioReview.tsx",
+    "src/dev/NativeParkReview.tsx",
+    "src/review/nativeStreetMixedJunctionReview.tsx",
+    "src/review/nativeStreetPilotReview.tsx",
+    "test-fixtures/road-recovery/main.tsx",
     "e2e/**/*.ts"
   ]
 }

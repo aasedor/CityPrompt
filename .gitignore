@@ -23,6 +23,10 @@ build/
 # deliverable explicitly (prefer Git LFS or artifact storage) instead of
 # committing an entire experiment directory.
 /artifacts/
+# Future reference material and preservation archives live in external storage.
+/reference-library/
+/reference-photos/
+/archives/
 /tools/park_trials/
 /tools/archetype_compiler/facade_sheets_pbr_*/
 /tools/archetype_compiler/facade_sheets_openai*/
