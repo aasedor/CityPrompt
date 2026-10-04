@@ -1656,7 +1656,7 @@
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 9,
   "next_action": "Resume PID10664 school-timber-unskinned-v001 without duplication. When exact GLB/report exists, run native45 routes, garden9/guard6, physical walk and independently preflighted physical checker v003 with --unskinned. After22 renders create diagnostic board with school-timber-boards.py --diagnostic and request independent pixels. Skinned71 views only after diagnostic pass; main-app allten trial after tenth local pass and before11.",
-  "updated_utc": "2026-10-04T01:22:21.275141+00:00",
+  "updated_utc": "2026-10-04T01:23:51.643635+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [
@@ -1710,5 +1710,14 @@
     "catalogue_activation_authorized": false,
     "publication_authorized": false,
     "created_utc": "2026-10-04T00:10:37.598164+00:00"
+  },
+  "completion_browser_handoff": {
+    "requested_by_user": "When you are finished, can you bring up the City Prompt Browser",
+    "trigger": "After all20 additional buildings and the required firstten main-app trial are complete",
+    "status": "pending_batch_completion",
+    "action": "Open the verified main CityPrompt application visibly in the Codex browser, preferably on the disposable mixed-neighbourhood trial project. Verify it is loaded and mark the browser tab as a user-facing deliverable.",
+    "preserve_original_projects": true,
+    "standalone_inspector_satisfies_request": false,
+    "created_utc": "2026-10-04T01:23:51.643635+00:00"
   }
 }

@@ -635,3 +635,14 @@ Its8001 backend/database/storage configuration remains unverified. This is
 preparation only: no models placed, fixtures installed or original projects
 changed. Save a new runtime preparation record and identify the isolated trial
 environment when the tenth model passes.
+
+
+## User completion handoff: bring up CityPrompt
+
+After the full twenty-building batch and the required ten-building main-app
+trial are finished, bring up the verified main CityPrompt app visibly in the
+Codex browser. Prefer the disposable mixed-neighbourhood trial project so the
+user can inspect the results. Verify the page loaded and keep the tab as the
+user-facing deliverable. Preserve original projects. The standalone model
+inspector does not satisfy this handoff. Record completion_browser_handoff,
+then report the honest result and pause the heartbeat.
