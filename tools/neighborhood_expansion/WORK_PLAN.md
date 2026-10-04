@@ -725,3 +725,30 @@ and embedded network equality. It is provisional and NOT_TESTED: no fixture
 installed, source catalogue/database/project modified or runtime gate claimed.
 Add the tenth after local pass, then freeze ten and complete all required
 individual/mixed CityPrompt app trials before starting eleven.
+
+
+## Isolated main-app checkpoint environment prepared
+
+Main CityPrompt now runs from this worktree at5175 with a dedicated8003 backend,
+owned empty cityprompt_neighborhood20_20261003 database, one local trial account,
+own56380 Redis and private19003 media bucket. Normal UI login and the styled
+empty dashboard reload pass; no fixtures installed, models trialled or projects
+created. Preserve original databases, projects,5174/8001 and the5201 user tab.
+Current5174 is qwen-wan-current-main; earlier qwen-street-trial identification
+is historical. Detailed redacted proofs and preserved preparation failures are
+in ten-building-trial-environment-prework-v004.json and main-app-runtime/.
+
+Independent fixture helper v001/v002 holds remain. Corrected v003 passes
+helper-only0P0/P1, with complete exact GLB/review/network/build/thumbnail/source
+bindings, ten distinct identities, GLB-bound native dimensions and a process
+startup seal SHA. The omitted original childcare review hash is independently
+verified and pinned; no review or decision rewritten. No runtime approval.
+Frontend jobv004PID22284 uses the v003runner, launched FROM frontend so Tailwind
+content paths resolve. Keep earlier missing-style screenshot and jobs.
+
+At10 local passes, run seal-main-app-ten-fixtures-v003.py --apply externally,
+record the seal SHA, and restart only own5175 frontend with that exact
+--seal-sha256 argument and frontend working directory. Then complete ordinary
+UI individual and mixed vacant-site trials with per-model runtime evidence
+before building11. Current count9. School-timber-v001 PID5212 has entered its
+71-view render stage; run fresh complete skinned gates only after BUILD_COMPLETE.

@@ -108,7 +108,9 @@
         "physical_samples": 515,
         "garden_probes": 4,
         "mandatory_views": 22,
-        "browser_verified": true
+        "browser_verified": true,
+        "review_sha256": "a22dcca0b6c36e06f8cc24d9155bef76d4139f0fd060a0ed8254969619010be0",
+        "review_pin_provenance": "prework/main-app-ten-fixture-helper-preflight-v002.json; independently verified original review without changing decisions"
       }
     },
     {
@@ -1801,8 +1803,8 @@
   "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
   "automation_id": "build-20-neighbourhood-buildings",
   "completed_models": 9,
-  "next_action": "Observe single full-skinned school-timber-v001 PID 5212; do not duplicate or modify frozen builder/prework. Original constructor may take over30minutes before export. Wait for actual full71render completion/build report, then fresh native45/20furniture/9garden/6at-height guards plus exactGLB physical routes/stairs/apertures,3boards,validator,standalonebrowser and independent local review. Count9/20 until localpass. At10 freeze exactten and complete main CityPrompt disposable individual/mixed trial before11. Full20 finalvisiblebrowserhandoff remains pending.",
-  "updated_utc": "2026-10-04T02:11:33.093172+00:00",
+  "next_action": "Observe one full school-timber-v001 PID5212 (now rendering71views); do not duplicate or change frozen sources. After actual BUILD_COMPLETE, run fresh full-skinned native/physical/detail/board/validator/standalone/independent gates. Count9 until localpass. Isolated main-app5175/8003 own empty DB/account/privatebucket ready; latest frontend jobv004PID22284 uses independently preflighted v003runner from frontend cwd. At10 seal exactten with mandatory reviewpins and process seal-SHA, then required individual/mixed main-app trial before11. Do not claim runtime/keeper/finish approval.",
+  "updated_utc": "2026-10-04T02:43:07.657934+00:00",
   "inspector_url": "http://127.0.0.1:5203/",
   "bounded_waves": [
     [
@@ -1857,7 +1859,21 @@
     "publication_authorized": false,
     "created_utc": "2026-10-04T00:10:37.598164+00:00",
     "fixture_draft": "prework/ten-building-fixed-fixture-draft-v002.json",
-    "fixture_draft_scope": "Provisional firstnine exact GLB/sidecar/hash bindings only; external, no installation, no catalogue or DB mutation. Add reviewedtenth and freeze ten when count10. Runtime NOT_TESTED."
+    "fixture_draft_scope": "Provisional firstnine exact GLB/sidecar/hash bindings only; external, no installation, no catalogue or DB mutation. Add reviewedtenth and freeze ten when count10. Runtime NOT_TESTED.",
+    "environment_preparation": "ten-building-trial-environment-prework-v004.json",
+    "environment_preparation_sha256": "f2adf68b233005d7a8f38ca05cd677e5288faacf6587ffa5c8009543071e6ea5",
+    "environment_status": "isolated_empty_main_app_ready_no_models_installed",
+    "frontend_url": "http://127.0.0.1:5175/",
+    "backend_url": "http://127.0.0.1:8003",
+    "frontend_job": "main-app-runtime/frontend-job-v004.json",
+    "backend_job": "main-app-runtime/backend-job.json",
+    "browser_tab_id": "5",
+    "fixture_helper_preflight": "prework/main-app-ten-fixture-helper-preflight-v003.json",
+    "fixture_helper_preflight_sha256": "251f2580c3a23d77cbd015d986d4d3a91102ebba5a772a27ccec7a80461ef654",
+    "fixture_sealer": "seal-main-app-ten-fixtures-v003.py",
+    "fixture_frontend": "main-app-frontend-neighborhood20-v003.mjs",
+    "fixtures_installed": 0,
+    "models_trialled": 0
   },
   "completion_browser_handoff": {
     "requested_by_user": "When you are finished, can you bring up the City Prompt Browser",
