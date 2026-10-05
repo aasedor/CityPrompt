@@ -74,6 +74,7 @@ import { studyMetadata } from '@/features/referenceLayers/zoningStudy';
 import { useZoningLabels } from '@/features/referenceLayers/useZoningLabels';
 import { useRileyPolicy } from '@/features/policyPlans/useRileyPolicy';
 import { RileyPolicyPanel } from '@/features/policyPlans/RileyPolicyPanel';
+import { PolicyDetailsCard } from '@/features/policyPlans/PolicyDetailsCard';
 import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
 import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
@@ -1328,6 +1329,7 @@ export function ProjectViewPage() {
           <LayersPanel siteZones={siteZones} hiddenLayers={hiddenLayers} onToggleLayer={toggleLayer} onDeleteLayer={deleteLayer} deletingLayer={deletingLayer} />
           <SiteElevation lat={project.location?.latitude} lon={project.location?.longitude} />
         </aside>}
+        {!studyMap.editing && <PolicyDetailsCard selected={rileyPolicy.selected} onClose={rileyPolicy.clearSelection} />}
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
           <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}

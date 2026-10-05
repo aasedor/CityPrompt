@@ -59,7 +59,8 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
 import { GlobeZoningLabels } from '@/features/referenceLayers/GlobeZoningLabels';
-import { GlobePolicyMap, type GlobePolicyMapProps } from '@/features/policyPlans/GlobePolicyMap';
+import { GlobePolicyMap, type GlobePolicyMapProps, type PolicyMapHandle } from '@/features/policyPlans/GlobePolicyMap';
+import { policyInspectionAllowed } from '@/features/policyPlans/policyPicking';
 import type { ZoningLabelsState } from '@/features/referenceLayers/useZoningLabels';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
@@ -1661,6 +1662,7 @@ export function GlobeSitePlannerMap({
 
   // LOD settlement state â€” true when 3D tiles have fully loaded
   const referenceOverlayGroup = useRef<THREE.Group>(null);
+  const policyMapRef = useRef<PolicyMapHandle>(null);
   const [isSceneSettled, setIsSceneSettled] = useState(false);
   // The loading badge can release once visible context is usable; capture
   // continues to rely on the stricter scene-settled signal below.
@@ -2788,6 +2790,7 @@ export function GlobeSitePlannerMap({
   const measurePointsRef = useRef<number[][]>([]);
   const measurePointHeightsRef = useRef<number[]>([]);
   const handleCanvasClickRef = useRef<((e: MouseEvent) => void) | null>(null);
+  const handlePolicyClickRef = useRef<((e: MouseEvent) => boolean) | null>(null);
   const finishDrawingRef = useRef<(() => void) | null>(null);
   const cleanupCanvasListenersRef = useRef<(() => void) | null>(null);
   const attachCanvasListenersRef = useRef<(() => void) | null>(null);
@@ -4293,6 +4296,30 @@ export function GlobeSitePlannerMap({
 
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
+  // Inspect in the canvas capture phase, before R3F can select the underlying
+  // site/building. Authoring, navigation drags and other picking modes win.
+  handlePolicyClickRef.current = (event: MouseEvent) => {
+    if (event.button !== 0 || !policyMap || !policyInspectionAllowed({
+      enabled: policyMap.enabled, opacity: policyMap.opacity, paused: interactionPaused,
+      drawing: hasDrawingTool, placing: Boolean(placementDraft), measuring: measureModeActive,
+      streetView: streetViewPegman !== null, dragged: draggedSincePointerDownRef.current,
+    })) return false;
+    const canvas = canvasRef.current, camera = cameraRef.current;
+    if (!canvas || !camera) return false;
+    const rect = canvas.getBoundingClientRect();
+    const id = policyMapRef.current?.pick(((event.clientX-rect.left)/rect.width)*2-1,
+      -((event.clientY-rect.top)/rect.height)*2+1, camera);
+    if (!id) { if (policyMap.selected) policyMap.clearSelection(); return false; }
+    ignoreNextCanvasClickRef.current = false;
+    markUserInteracted();
+    setSelectedBuildingId(null);
+    onZoneSelected(null);
+    policyMap.selectArea(id);
+    return true;
+  };
+  useEffect(() => {
+    if (policyMap?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) policyMap.clearSelection();
+  }, [policyMap?.selected, policyMap?.clearSelection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
 
   // Effects restart on Fast Refresh even when R3F keeps the same canvas.
   useEffect(() => {
@@ -4364,6 +4391,9 @@ export function GlobeSitePlannerMap({
             cleanupCanvasListenersRef.current = null;
           }
 
+          const handlePolicyClickCapture = (event: MouseEvent) => {
+            if (handlePolicyClickRef.current?.(event)) event.stopImmediatePropagation();
+          };
           const handleClick = (e: MouseEvent) => {
             if (draggedSincePointerDownRef.current) {
               draggedSincePointerDownRef.current = false;
@@ -4441,6 +4471,7 @@ export function GlobeSitePlannerMap({
           cvs.addEventListener('pointermove', handlePointerMove);
           cvs.addEventListener('pointerup', handlePointerUp);
           cvs.addEventListener('click', handleClick);
+          cvs.addEventListener('click', handlePolicyClickCapture, true);
           cvs.addEventListener('dblclick', handleDblClick);
           cvs.addEventListener('webglcontextlost', handleWebGlContextLost);
           cvs.addEventListener('webglcontextrestored', handleWebGlContextRestored);
@@ -4451,6 +4482,7 @@ export function GlobeSitePlannerMap({
             cvs.removeEventListener('pointermove', handlePointerMove);
             cvs.removeEventListener('pointerup', handlePointerUp);
             cvs.removeEventListener('click', handleClick);
+            cvs.removeEventListener('click', handlePolicyClickCapture, true);
             cvs.removeEventListener('dblclick', handleDblClick);
             cvs.removeEventListener('webglcontextlost', handleWebGlContextLost);
             cvs.removeEventListener('webglcontextrestored', handleWebGlContextRestored);
@@ -4538,7 +4570,7 @@ export function GlobeSitePlannerMap({
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />
             {zoningLabels && <GlobeZoningLabels {...zoningLabels} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
-            {policyMap && <GlobePolicyMap {...policyMap} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
+            {policyMap && <GlobePolicyMap ref={policyMapRef} {...policyMap} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
           </group>
           <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />

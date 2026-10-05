@@ -6,10 +6,18 @@ Layers panel. The layer has 0–100% opacity, an original-colour legend identify
 categories in the selected site, and an **Only show inside my site** option.
 Existing district codes and student zoning studies retain their own controls.
 
+Click a coloured polygon or a legend entry to open its designation explanation.
+The selected polygon is outlined; selecting a legend entry outlines that category.
+All nine categories have a student summary, three planning considerations and a
+link to the relevant section and printed page in the approved PDF. The panel can
+be closed with its button or Escape and scrolls on smaller screens.
+
 This is a bounded Urban Form pilot, not the complete local-area-plan policy
-analysis. Building Scale, modified-scale areas, comprehensive planning-site
-hatching, active-frontage symbols and the written policies are not interpreted
-by this layer. The panel links to the full approved plan and states these limits.
+analysis. The explanations summarize the category policies in section 2.2.
+Building Scale, modified-scale areas, comprehensive planning-site hatching,
+active-frontage symbols and parcel-specific policy combinations still require
+the original plan. Conditional provisions remain conditional: for example, the
+Neighbourhood Local colour alone does not impose the Limited Scale restrictions.
 
 ## Sources and extraction
 
@@ -85,8 +93,15 @@ terrain or building roofs. It does not alter the flat site or building placement
   plan polygon determines coverage, not only its bounding rectangle.
 - Opacity changes reuse the batched mesh. Off/0% remove the overlay. Full Riley
   uses 7,895 triangles; the Hillhurst test site's clipped map uses 179.
-- The overlay does not intercept drawing/picking or enter AI/direct-3D captures.
-  It hides during zoning-study drawing, like existing district cartography.
+- Normal terrain/model raycasting still ignores the overlay. A browse-mode click
+  explicitly tests the rendered policy triangles, including their holes, so an
+  angled view selects the visible polygon rather than the ground below it.
+  Compact per-polygon face ranges keep the base surface batched.
+- Drawing, placement, measurement, walking, entrance/Street View picking and
+  navigation drags take priority over policy inspection. Details clear on entry
+  into these modes and when the layer is hidden, clipped or made transparent.
+  The overlay stays excluded from AI/direct-3D captures and hides during
+  zoning-study drawing, like existing district cartography.
 - The snapshot is pinned to the reviewed 2025 consolidation. It does not claim
   automatic amendment tracking. A different PDF hash stops extraction until its
   paths, colours and geographic calibration are reviewed again.
@@ -105,11 +120,12 @@ python -m unittest discover -s tools/policy_maps -p 'test_*.py' -v
 Frontend verification from `frontend`:
 
 ```powershell
-npm.cmd test -- --run src/features/policyPlans/rileyPolicy.test.ts src/features/policyPlans/RileyPolicyPanel.test.tsx src/features/referenceLayers/zoningSurfaceGeometry.test.ts src/features/referenceLayers/ZoningLabelsControls.test.tsx
+npm.cmd test -- --run src/features/policyPlans src/features/referenceLayers/zoningSurfaceGeometry.test.ts src/features/referenceLayers/ZoningLabelsControls.test.tsx
 npm.cmd run type-check
 ```
 
-Results: **19 frontend tests, 3 extraction/geography tests and TypeScript pass**.
+Results: **25 frontend tests and TypeScript pass**. The three extraction/geography
+tests passed for the unchanged polygon snapshot in the original pilot.
 React review checked lazy data loading, stable memoized geometry, project-scoped
 preferences, labelled native controls and cleanup through the existing renderer.
 
@@ -120,6 +136,15 @@ site clipping, capture exclusion, non-intercepting picking, reload persistence
 and a 1024×768 viewport. No project API writes or browser errors were recorded.
 The viewport check is not a physical iPad or forty-student hosting load test.
 
+Designation inspection adds 22 browser checks covering all nine legend entries,
+source-page links, Escape, actual polygon clicks in top/oblique views, clipped
+polygons, zero-opacity picking, off/on dismissal and tablet panel bounds.
+No new browser errors occurred after a fresh load; the browser log retained four
+earlier development hot-reload errors, recorded separately in the QA report.
+With the policy layer visible, measurement produced a 309 m two-point result and
+an unfinished building outline accepted two points without opening policy
+details. Both were cancelled; the drawing was not saved.
+
 Reviewed screenshots and detailed local evidence are outside Git at
 `C:/dev-artifacts/CityPrompt/riley-policy-pilot-2026-10-05/`:
 
@@ -129,6 +154,9 @@ Reviewed screenshots and detailed local evidence are outside Git at
 - `riley-site-only-solid-top.png` — polygons clipped to the drawn site.
 - `riley-hillhurst-context-top.png` — matching view with 0% policy opacity.
 - `riley-tablet.png` and `browser-qa.json` — viewport and functional checks.
+- `riley-policy-polygon-details.png` — clicked polygon, explanation and source.
+- `riley-policy-details-tablet.png` and `policy-details-browser-qa.json` —
+  designation selection, source links, keyboard dismissal and smaller viewport.
 
 Source changes and the small reviewed geographic snapshot are committed locally.
 Downloaded PDFs, browser credentials, research intermediates and screenshots are

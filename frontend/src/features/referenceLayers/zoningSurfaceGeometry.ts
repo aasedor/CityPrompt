@@ -3,6 +3,8 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { Position, ZoningOverlay } from './zoningLabels';
 import { zoningColor } from './zoningAppearance';
 
+export type ZoningFaceRange = { id: string; firstFace: number; endFace: number };
+
 /** One batched fill and one shared edge set. Holes and exact City coordinates
  * survive triangulation; neighbouring districts do not darken their shared edge.
  * This is a cartographic overlay at the site's reference elevation, not grading.
@@ -22,6 +24,7 @@ export function zoningSurfaceGeometry(data: ZoningOverlay, terrainHeight: number
   };
   const positions: number[] = [], colors: number[] = [], lines: number[] = [];
   const edges = new Set<string>();
+  const faceRanges: ZoningFaceRange[] = [];
   for (const district of data.districts) {
     const rings = district.polygon.map(ring => {
       const last = ring.length - 1;
@@ -33,9 +36,11 @@ export function zoningSurfaceGeometry(data: ZoningOverlay, terrainHeight: number
     const contour = localRings[0].map(([x, y]) => new THREE.Vector2(x, y));
     const holes = localRings.slice(1).map(ring => ring.map(([x, y]) => new THREE.Vector2(x, y)));
     const color = new THREE.Color(district.color ?? zoningColor(district));
+    const firstFace = positions.length / 9;
     for (const face of THREE.ShapeUtils.triangulateShape(contour, holes)) {
       for (const index of face) { positions.push(...points[index]); colors.push(color.r, color.g, color.b); }
     }
+    faceRanges.push({ id: district.id, firstFace, endFace: positions.length / 9 });
     for (let r = 0; r < rings.length; r++) for (let i = 0; i < rings[r].length; i++) {
       const next = (i + 1) % rings[r].length;
       const a = rings[r][i].join(','), b = rings[r][next].join(',');
@@ -47,5 +52,8 @@ export function zoningSurfaceGeometry(data: ZoningOverlay, terrainHeight: number
   const fill = new THREE.BufferGeometry();
   fill.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   fill.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  // Small per-district ranges support explicit policy inspection without adding
+  // hundreds of R3F event meshes or changing ordinary overlay raycasting.
+  fill.userData.zoningFaceRanges = faceRanges;
   return { lat, lon, height, fill, lines };
 }

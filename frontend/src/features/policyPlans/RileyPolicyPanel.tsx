@@ -18,7 +18,7 @@ export function RileyPolicyPanel({ state }: { state: RileyPolicyState }) {
     </label>
     {state.problem && <p role="status" className="text-xs leading-relaxed text-[#5c554d]">{state.problem}</p>}
     {state.enabled && !state.problem && <>
-      <p className="text-xs leading-relaxed">Explore the area’s future urban form. These are planning policies, separate from today’s zoning districts.</p>
+      <p className="text-xs leading-relaxed">Click a coloured area on the map or a designation in the legend to learn what it means. These are planning policies, separate from today’s zoning districts.</p>
       <label className="block text-xs"><span className="flex justify-between"><span>Policy map opacity</span><span className="tabular-nums">{Math.round(state.opacity * 100)}%</span></span>
         <input aria-label="Policy map opacity" type="range" min="0" max="100" step="1" value={Math.round(state.opacity * 100)} onChange={event => state.setOpacity(Number(event.target.value) / 100)} className="h-9 w-full cursor-pointer accent-[#37594b]" />
         <span className="flex justify-between text-[10px] text-[#5c554d]"><span>Transparent</span><span>Solid</span></span>
@@ -30,8 +30,11 @@ export function RileyPolicyPanel({ state }: { state: RileyPolicyState }) {
       {state.data && <>
         <details open className="rounded-xl border border-[#151515]/15 bg-white/80">
           <summary className="min-h-11 cursor-pointer px-3 py-3 text-xs font-semibold">Urban form legend</summary>
-          <ul aria-label="Riley urban form categories" className="max-h-56 space-y-2 overflow-y-auto border-t border-[#151515]/10 px-3 py-3 text-xs">
-            {state.legend.map(entry => <li key={entry.category} className="flex items-start gap-2"><span aria-hidden className="mt-0.5 h-3 w-3 shrink-0 rounded-sm border border-black/20" style={{ backgroundColor: entry.color }} /><span>{entry.category}{entry.withinSite && <span className="ml-1 text-[10px] font-semibold text-[#37594b]">· in your site</span>}</span></li>)}
+          <ul aria-label="Riley urban form categories" className="max-h-56 overflow-y-auto border-t border-[#151515]/10 p-1 text-xs">
+            {state.legend.map(entry => <li key={entry.category}><button type="button" aria-label={`About ${entry.category}`} aria-pressed={state.selected?.designation.name === entry.category}
+              onClick={() => state.selectCategory(entry.category)} className="flex min-h-11 w-full items-start gap-2 rounded-lg px-2 py-3 text-left hover:bg-[#edf2ec] aria-pressed:bg-[#e7eee8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#37594b]">
+              <span aria-hidden className="mt-0.5 h-3 w-3 shrink-0 rounded-sm border border-black/20" style={{ backgroundColor: entry.color }} /><span>{entry.category}{entry.withinSite && <span className="ml-1 text-[10px] font-semibold text-[#37594b]">· in your site</span>}</span>
+            </button></li>)}
           </ul>
         </details>
         <p className="text-[10px] leading-relaxed text-[#5c554d]">City map colours · aligned PDF polygons. Five checked street junctions differ by 0.1–4 m. Use Top View to compare boundaries; the 3D overlay follows the site’s reference elevation.</p>

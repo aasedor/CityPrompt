@@ -6,12 +6,15 @@ import type { SiteZone } from '@/types';
 import { RileyPolicyPanel } from './RileyPolicyPanel';
 import { useRileyPolicy } from './useRileyPolicy';
 import { loadRileyPolicy } from './rileyPolicy';
+import { PolicyDetailsCard } from './PolicyDetailsCard';
 
 vi.mock('./rileyPolicy', async original => ({ ...await original<object>(), loadRileyPolicy: vi.fn() }));
 const site = { id: 'site', zone_type: 'site_boundary', is_active_boundary: true, coordinates: [[-114.10,51.055],[-114.09,51.055],[-114.09,51.06],[-114.10,51.06]], properties: {} } as SiteZone;
 function App({ projectId = 'one', zones = [site] }: { projectId?: string; zones?: SiteZone[] }) {
   const state = useRileyPolicy(projectId, zones);
-  return <><RileyPolicyPanel state={state} /><output data-testid="map">{state.data ? 'visible' : 'absent'}</output></>;
+  return <><RileyPolicyPanel state={state} /><PolicyDetailsCard selected={state.selected} onClose={state.clearSelection} /><output data-testid="map">{state.data ? 'visible' : 'absent'}</output>
+    <button onClick={() => { if (state.data?.districts[0]) state.selectArea(state.data.districts[0].id); }}>Inspect first area</button>
+    <output data-testid="feature">{state.selected?.featureId ?? 'none'}</output></>;
 }
 function setup() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -24,6 +27,39 @@ beforeEach(async () => {
 });
 
 describe('Riley policy controls', () => {
+  it('opens an explanation from every legend button with its correct PDF page, and closes with Escape', async () => {
+    render(setup()()); fireEvent.click(screen.getByRole('switch'));
+    const flex = await screen.findByRole('button', { name: 'About Neighbourhood Flex' });
+    const buttons = screen.getAllByRole('button', { name: /^About / });
+    expect(buttons).toHaveLength(9);
+    for (const button of buttons) {
+      fireEvent.click(button);
+      const title = button.getAttribute('aria-label')!.replace('About ', '');
+      const card = screen.getByRole('region', { name: title });
+      expect(card).toHaveFocus();
+      expect(button).toHaveAttribute('aria-pressed','true');
+      expect(screen.getByRole('link', { name: /^Read section/ })).toHaveAttribute('href', expect.stringMatching(/\.pdf#page=\d+$/));
+      fireEvent.keyDown(card, { key: 'Escape' });
+      expect(screen.queryByRole('region', { name: title })).not.toBeInTheDocument();
+    }
+    fireEvent.click(flex);
+    expect(screen.getByRole('link', { name: 'Read section 2.2.1.3 · page 26' })).toHaveAttribute('href', expect.stringContaining('#page=31'));
+    fireEvent.click(screen.getByRole('button', { name: 'Close policy details' }));
+    expect(screen.queryByRole('region', { name: 'Neighbourhood Flex' })).not.toBeInTheDocument();
+  });
+  it('associates map selections with a polygon and clears details when hidden or clipped', async () => {
+    render(setup()()); fireEvent.click(screen.getByRole('switch')); await screen.findByText('Urban form legend');
+    fireEvent.click(screen.getByRole('button', { name: 'Inspect first area' }));
+    expect(screen.getByTestId('feature')).not.toHaveTextContent('none');
+    expect(screen.getByText('Selected policy area')).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText('Only show inside my site'));
+    expect(screen.queryByText('Selected policy area')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'About Neighbourhood Flex' }));
+    fireEvent.click(screen.getByRole('switch'));
+    expect(screen.queryByRole('region', { name: 'Neighbourhood Flex' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('switch'));
+    expect(screen.queryByRole('region', { name: 'Neighbourhood Flex' })).not.toBeInTheDocument();
+  });
   it('loads on demand, toggles the entire map, and persists opacity endpoints and site clipping', async () => {
     const view = setup(); const { unmount } = render(view());
     expect(loadRileyPolicy).not.toHaveBeenCalled();
