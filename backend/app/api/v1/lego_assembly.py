@@ -1597,7 +1597,11 @@ def _column_height_meters(value: float) -> float:
 def _planned_massing_dimensions(zone: SiteZone) -> tuple[int | None, float]:
     """Resolve the planner's authoritative height without inventing a family."""
     properties = zone.properties or {}
-    floors = _positive_int(properties.get("floors"))
+    from app.services.model_contract import native_model_facts
+    native = native_model_facts(properties)
+    if native and native['fixed']:
+        return _positive_int(native['storeys']), _column_height_meters(native['dimensions_m'][2])
+    floors = _positive_int(properties.get("floor_count")) or _positive_int(properties.get("floors"))
     floor_height = _positive_float(properties.get("floor_height")) or 3.2
     height = (
         _positive_float(properties.get("height_m"))

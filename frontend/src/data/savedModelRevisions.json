@@ -1,0 +1,16 @@
+{
+  "schema": "cityprompt.saved-model-revisions@1",
+  "revisions": [
+    {
+      "assetId": "validation_minimalist_infill_brick_monolith",
+      "variantId": "minimalist_infill_brick_monolith",
+      "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
+      "url": "/model-revisions/3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6.glb",
+      "nativeDimensions": [11, 12.275000095367432, 10.479999542236328],
+      "plotWidthM": 15,
+      "plotDepthM": 17,
+      "storeys": 2,
+      "measurementBasis": "SHA256-verified preserved GLB bounds; floor plates unmeasured"
+    }
+  ]
+}

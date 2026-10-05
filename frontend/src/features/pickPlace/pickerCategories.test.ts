@@ -22,10 +22,18 @@ describe('student picker categories', () => {
     ['student_elevated_garden_rail_v1','transit'],
     ['skytrain_elevated_corridor_v0','transit'],
     ['elevated_rail_transit_corridor_v0','transit'],
+    ['museum_earth_sheltered','civic'], ['machiya_cafe_gallery','workplaces'],
+    ['cast_iron_italianate','apartments'], ['rndsqr_midrise_terraced_garden','apartments'],
+    ['rec_centre_timber_hall','civic'], ['beltline_brick_modern','apartments'],
+    ['basketball_court_v1','play-sport'], ['brt_bus_rapid_transit_corridor_v0','transit'],
+    ['landmark_signature_bridge_v2','boulevards'],
   ])('places %s in %s without changing its binding', (variant,category) => {
     const choice=CLASSROOM_CHOICES.find(c=>c.placements[0]?.model.variantId===variant)!;
     const original=JSON.stringify(choice);
     expect(pickerCategory(choice)).toBe(category);
+    const asset = choice.placements[0];
+    expect(PICKER_CATEGORIES.find(row => row.id === category)?.groups).toContain(asset.calgaryGuide.groupId);
+    expect(choice.option.calgaryGuide).toEqual(asset.calgaryGuide);
     expect(JSON.stringify(choice)).toBe(original);
   });
 });

@@ -75,7 +75,7 @@ describe('automatic placement compilation',()=>{
     });
     await advance();
     expect(compileMixedCommunity3D).toHaveBeenCalledWith([zone()],undefined,{
-      includeResidualLandscape:true,scopeZoneIds:['zone','water'],
+      includeResidualLandscape:true,scopeMode:'project',scopeZoneIds:['zone','water'],
     });
     const movedWater={...water,coordinates:[[2,0],[3,0],[3,1],[2,1]]};
     rerender({zones:[zone(),movedWater]});
@@ -135,7 +135,7 @@ describe('automatic placement compilation',()=>{
   });
   it('refreshes saved design massing only when explicitly requested',async()=>{
     const saved=zone(0,true);
-    const massing={...saved,properties:{...saved.properties,community_3d:{
+    const massing={...saved,properties:{...saved.properties,pick_place_model_revision:'unavailable-saved-revision',community_3d:{
       schema_version:1,state:'compiled',kind:'building',generator:'planned_massing',
       compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64),
     }}} as SiteZone;
@@ -167,7 +167,7 @@ describe('automatic placement compilation',()=>{
     });
     await advance();
     expect(compileMixedCommunity3D).toHaveBeenCalledWith([fixture],undefined,{
-      includeResidualLandscape:true,scopeZoneIds:['zone'],
+      includeResidualLandscape:true,scopeMode:'project',scopeZoneIds:['zone'],
     });
     rerender({zones:[{...fixture,properties:{...fixture.properties,community_3d:{schema_version:1,state:'compiled',kind:'park',generator:'park_kit',compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64)}}},boundary('compiled')]});
     await advance();

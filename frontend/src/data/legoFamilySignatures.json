@@ -107,13 +107,6 @@
                                                          "materialZones":  "warm red pressed brick; cream limestone banding and naturalistic carving; blue-black brick base and courses; dark occupied leaded glazing; polychrome red, grey and purple slate; dark oak entrance doors",
                                                          "glassProfile":  "heritage_leaded_occupied"
                                                      },
-                     "collegiate_gothic_education":  {
-                                                         "archetypeId":  "collegiate_gothic_education",
-                                                         "identity":  "Collegiate Gothic hall with a crenellated central tower, buttressed bays, pointed entrance arch, tracery-like verticals and steep slate roofs.",
-                                                         "materialZones":  "weathered buff stone; dark tracery; slate roofs; oxidized metal accents",
-                                                         "glassProfile":  "residential_low_e",
-                                                         "elevationUrl":  "/families/collegiate-gothic-education/elevation.jpg"
-                                                     },
                      "classic_brownstone_streetwall":  {
                                                            "archetypeId":  "classic_brownstone_streetwall",
                                                            "identity":  "Paired four-storey New York brownstone streetwall with three fixed high stoops, arched timber entrances, dense pedimented sash rhythm, iron-grilled basement and two continuous bracketed cornice sections.",
@@ -580,13 +573,6 @@
                                                        "glassProfile": "aquatic_low_iron_pool_clear",
                                                        "elevationUrl": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg"
                                                    },
-                     "parametric_wave_shell": {
-                                                   "archetypeId": "parametric_wave_shell",
-                                                   "identity": "A transparent civic natatorium sits beneath one continuous unequal double-wave platinum shell, held by exactly two cable-stay masts and eight integrated pale concrete supports above a support-free recessed entrance and warm occupied timber pool halls.",
-                                                   "materialZones": "platinum standing-seam wave shell; honey glulam ribs and timber soffit; pale board-formed concrete supports; physical low-iron pool glazing; occupied competition and leisure halls; translucent ribbed polycarbonate; cobalt microperforated service panels; charcoal honed plinth; blue pool water",
-                                                   "glassProfile": "aquatic_low_iron_pool_clear",
-                                                   "elevationUrl": "/families/parametric-wave-shell-aquatic-centre/elevation.jpg"
-                                               },
                      "rural_gas_station": {
                                                "archetypeId": "rural_gas_station",
                                                "identity": "A thin satin-white canopy with one burnt-orange identity band rests on exactly six charcoal columns above exactly three detailed double-sided pump islands, in front of an occupied buff-brick and charcoal prairie convenience store with a honey soffit and separate blank roadside pylon.",

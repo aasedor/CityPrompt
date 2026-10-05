@@ -3,6 +3,7 @@ import type { ThreeEvent } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
+import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
 import { computeCentroid } from '../mapEngine/geoUtils';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
 import { rectangleDimensions } from '@/features/pickPlace/geometry';
@@ -154,7 +155,7 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
 export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIssue, onBuildingClick }: {
   zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter; onBuildingClick?: BuildingClick;
 }) {
-  const url = String(zone.properties?.validation_native_url || '');
+  const url = nativeBuildingUrl(zone) ?? '';
   const [lng, lat] = computeCentroid(zone.coordinates);
   const storedTerrain = Number(zone.properties?.terrain_elevation_m);
   const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)

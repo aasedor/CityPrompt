@@ -19,6 +19,7 @@ from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
 
 from app.services.plan_metrics import DerivedMetric
+from app.services.model_contract import uses_placement_plot
 from app.services.lego_assembly import DETACHED_ARCHETYPE_IDS, catalog_parent_archetype_id
 from app.services.residual_landscape import community_3d_source_hash
 from app.services.policy_intelligence.retrieval import (
@@ -491,6 +492,14 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             str(bid) for z in zones for bid in ([z["building_id"]] if z["building_id"] else []) + z["building_ids"]
         }
         linked = [b for b in snapshot["buildings"] if b["id"] in linked_ids]
+        plot_zones = [z for z in building_zones + development_areas if uses_placement_plot(z['properties'])]
+        plot_ids = {z['id'] for z in plot_zones}
+        plot_building_ids = {str(bid) for z in plot_zones
+                             for bid in ([z['building_id']] if z['building_id'] else []) + z['building_ids']}
+        plot_shapes = [measured[z['id']] for z in plot_zones if z['id'] in measured]
+        metric('building_placement_plot_m2', 'Building placement plots',
+               unary_union(plot_shapes).area if plot_shapes else 0, 'm²',
+               'Occupied placement/landscape plots for authored models. Includes yards and paving; not building footprint or floor area.')
         # A linked Building replaces its zone's coarse footprint; never count both.
         footprints = [
             {**z, "floors": z["properties"].get("floor_count", z["properties"].get("floors"))}
@@ -502,7 +511,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         gfa = 0.0
         measured_floor_plates = 0
         for building in footprints:
-            if building["id"] in detached_zone_ids or building["id"] in detached_building_ids:
+            if building["id"] in detached_zone_ids or building["id"] in detached_building_ids or building['id'] in plot_ids or building['id'] in plot_building_ids:
                 # A detached recipe is anchored to its whole plot, including
                 # yards. That parent polygon is never a building floor plate.
                 missing_floors.append(building)
@@ -526,7 +535,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "Known building footprints (incomplete)" if has_unknown_buildings else "Known building footprints",
             unary_union(areas).area if areas else None if has_unknown_buildings else 0,
             "m²",
-            "Union of direct building-zone footprints and linked building records; excludes unbuilt development allocations and detached housing plots whose individual floor plates are not measured.",
+            "Union of drawn building footprints and linked footprint records; excludes development allocations and authored-model placement plots whose individual floor plates are unmeasured.",
         )
         complete = not missing_floors and all(z["building_id"] or z["building_ids"] for z in development_areas)
         metric(
@@ -534,7 +543,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "Floor-area estimate" if complete else "Known floor area (incomplete)",
             gfa if measured_floor_plates or complete else None,
             "m²",
-            "Sum of known footprint × recorded storeys. Assumes equal floor plates; excludes unknown floors, unresolved development allocations, and detached housing plots (yards are not floor area).",
+            "Estimate from drawn footprints × recorded storeys, assuming equal floor plates. Excludes unknown floors, unresolved allocations and authored-model placement plots. Model bounding rectangles are not measured floor plates.",
             0.7,
         )
         if missing_floors or not complete:
@@ -542,7 +551,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 "floor-area-inputs",
                 "Complete the building quantities",
                 "Some building footprints or storey counts are not resolved, so the floor-area total is incomplete.",
-                "Record missing storeys and individual building floor plates before using floor area for a density argument. Rebuilding a detached plot alone does not measure its floor plates.",
+                "Record missing storeys and individual building floor plates before using floor area for a density argument. Rebuilding or enlarging a placement plot does not measure building floor plates.",
                 kind="unresolved_question",
                 uncertainty="No floor count or housing yield has been guessed.",
             )
@@ -654,7 +663,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         uncertainty="No replacement district is recommended without verified proposal requirements and current municipal rules.",
     )
     return {
-        "method_version": "student-review-v1",
+        "method_version": "student-review-v2-placement-plots",
         "metrics": metrics,
         "findings": findings,
         "limitations": limitations,
@@ -741,6 +750,10 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
         return html.escape(str(value if value is not None else ""), quote=True)
 
     analysis = report["analysis"]
+    historical_notice = (
+        '<p class="notice">Historical measurement method: placement plots may have been counted as building footprint or floor area. Request a new report for corrected quantities; this saved record remains unchanged.</p>'
+        if analysis.get('method_version') != 'student-review-v2-placement-plots' else ''
+    )
     rows = "".join(
         f"<tr><th>{esc(m['label'])}</th><td>{esc(m['value'] if m['value'] is not None else 'Unknown')} {esc(m['unit'])}</td><td>{esc(m['derivation'])}</td></tr>"
         for m in analysis["metrics"]
@@ -796,7 +809,7 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
 <h1>{esc(report['project_name'])}</h1><p>Planning report and student decision record</p>
 <p class="meta">Requested by {esc(report['requested_by_name'])} · {esc(report['created_at'])}<br>Report {esc(report['id'])} · Plan version {esc(report['plan_version'])} · Response revision {esc(report['response_revision'])}</p>
 <p class="notice">{esc(stale)} Recommendations are advisory. Student choices and reasoning are recorded in their own words; selecting “implement” records an intention, not a verified design change.</p>
-<h2>The saved proposal</h2>{snapshot_drawing(snapshot)}<h2>Proposal quantities</h2><table>{rows}</table><ul>{''.join('<li>'+esc(x)+'</li>' for x in analysis['limitations'])}</ul>
+<h2>The saved proposal</h2>{snapshot_drawing(snapshot)}<h2>Proposal quantities</h2>{historical_notice}<table>{rows}</table><ul>{''.join('<li>'+esc(x)+'</li>' for x in analysis['limitations'])}</ul>
 {''.join(sections)}<h2>Saved proposal inventory</h2><table><tr><th>Area</th><th>Type</th><th>Stable ID</th></tr>{inventory}</table>
 <h2>Decision history</h2><ul>{history or '<li>No responses recorded.</li>'}</ul>
 <p class="meta">Use your browser’s Print command to save this self-contained report as PDF. The original geometry snapshot is embedded in this HTML for traceability.</p><script type="application/json" id="plan-snapshot">{snapshot_json}</script></body></html>"""

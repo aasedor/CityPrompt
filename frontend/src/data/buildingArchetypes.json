@@ -6349,7 +6349,6 @@
       "shadeId": "#b33719",
       "title": "Transit-Oriented Station Block",
       "aestheticCategory": "transportation",
-      "developmentType": "transit_station",
       "description": "Transit-Oriented Station Block archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Commercial — Mixed-Use Mid-Rise",
       "generationTags": [
@@ -6522,7 +6521,6 @@
       "shadeId": "#c93f1d",
       "title": "Transit Podium Residential",
       "aestheticCategory": "transportation",
-      "developmentType": "transit_station",
       "description": "Transit Podium Residential archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Residential — High-Rise / Tower",
       "generationTags": [
@@ -13492,7 +13490,6 @@
       "shadeId": "#8B7355",
       "title": "Historic Grand Station",
       "aestheticCategory": "transportation",
-      "developmentType": "transit_station",
       "description": "Monumental historic railway terminal combining grand civic architecture with the engineering spectacle of iron and",
       "buildingSubcategory": "Transportation",
       "generationTags": [
@@ -13636,7 +13633,6 @@
       "shadeId": "#E0E0E0",
       "title": "Contemporary Transit Hub",
       "aestheticCategory": "transportation",
-      "developmentType": "transit_hub",
       "description": "Iconic contemporary transit station with dramatic structural forms, advanced materials, and the station as a landmark",
       "buildingSubcategory": "Transportation",
       "generationTags": [
@@ -13788,7 +13784,6 @@
       "shadeId": "#4682B4",
       "title": "Urban Light Rail Stop",
       "aestheticCategory": "transportation",
-      "developmentType": "transit_station",
       "description": "Street-level light rail, tram, or BRT stop shelter with weather protection, passenger information, and integration into",
       "buildingSubcategory": "Transportation",
       "generationTags": [
@@ -14096,7 +14091,6 @@
       "shadeId": "#5A7D3E",
       "title": "Waste-to-Energy Plant",
       "aestheticCategory": "energy_infrastructure",
-      "developmentType": "energy_infrastructure",
       "description": "Innovative waste-to-energy facility that transforms municipal waste into electricity and heat, featuring architectural",
       "buildingSubcategory": "Energy / Infrastructure",
       "generationTags": [
@@ -14608,7 +14602,6 @@
       "shadeId": "#1E3A5F",
       "title": "Solar Farm / Agrivoltaics",
       "aestheticCategory": "energy_infrastructure",
-      "developmentType": "energy_renewable",
       "description": "Large-scale solar energy installation ranging from desert utility-scale PV arrays to innovative agrivoltaic, floating,",
       "buildingSubcategory": "Energy / Infrastructure",
       "generationTags": [

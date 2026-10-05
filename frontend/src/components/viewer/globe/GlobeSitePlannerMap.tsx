@@ -65,6 +65,7 @@ import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeReviewBuilding } from './GlobeReviewBuilding';
+import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
 import { updateBuildingGroundingIssues } from './buildingGroundContact';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
@@ -1806,8 +1807,7 @@ export function GlobeSitePlannerMap({
   // Buildings with a saved recipe or an honest planned-massing fallback mount
   // the LEGO layer, which itself skips + debug-counts footprint-less records.
   const reviewBuildingZones = useMemo(() => siteZones.filter((zone) =>
-    zone.zone_type === 'building' && typeof zone.properties?.validation_native_url === 'string'
-    && zone.properties.validation_native_url.length > 0), [siteZones]);
+    zone.zone_type === 'building' && Boolean(nativeBuildingUrl(zone))), [siteZones]);
   const reviewBuildingIds = useMemo(() => new Set(reviewBuildingZones
     .map((zone) => zone.building_id).filter((id): id is string => Boolean(id))), [reviewBuildingZones]);
   const meshyBuildings = useMemo(

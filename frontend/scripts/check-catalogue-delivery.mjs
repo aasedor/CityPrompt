@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { catalogueRequirements, containedPath, inspectAsset } from './catalogue-delivery-core.mjs';
+import { gitLfsObjectRoot, parseLfsPointer, readVerifiedLfsObject } from './lfs-runtime-assets.mjs';
 
 const frontend = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const repo = resolve(frontend, '..');
@@ -58,11 +59,13 @@ const data = {entries,parks:source('nativeParks.json').layouts,streets:source('n
   kits:[...sharedKits,...starter.dependencies.filter(row=>row.location==='public'&&row.path.endsWith('.glb')&&/park-kits|landscape-pilots/.test(row.path)).map(row=>({url:'/'+row.path,kind:'glb',sha256:row.sha256}))]};
 const rows = catalogueRequirements(choices,heroImage,data);
 const savedLayoutChecks = Object.values(Object.fromEntries(data.parks.flatMap(park=>Object.values(park.assets).map(asset=>[asset.url,{url:asset.url,kind:'glb',sha256:asset.sha256}]))));
+const rusticKitChecks=Object.values(source('neighborhoodParkV0StickerKit.json').assets).map(asset=>({url:asset.url,kind:'glb',sha256:asset.sha256}));
+const savedRevisionChecks=source('savedModelRevisions.json').revisions.map(row=>({url:row.url,kind:'glb',sha256:row.revision}));
 const receipt = libraryReport ? read(libraryReport) : null;
 if(base && (!receipt?.checked_utc || Date.now()-Date.parse(receipt.checked_utc)>10*60*1000)) throw new Error('A fresh Model Library storage receipt is required (within ten minutes)');
 const results = new Map();
 const payloads = new Map();
-for (const row of [...rows,{checks:savedLayoutChecks}]) for (const check of row.checks) {
+for (const row of [...rows,{checks:[...savedLayoutChecks,...rusticKitChecks,...savedRevisionChecks]}]) for (const check of row.checks) {
   const key = check.url || check.sourcePath;
   if (results.has(key)) continue;
   try {
@@ -84,7 +87,11 @@ for (const row of [...rows,{checks:savedLayoutChecks}]) for (const check of row.
       bytes = Buffer.from(await response.arrayBuffer());
     } else {
       const bound=packet?.receipt.assets.find(row=>row.url===check.url);
-      bytes=readFileSync(check.sourcePath?resolve(repo,check.sourcePath):containedPath(bound?packet.directory:publicRoot,check.url));
+      const file=check.sourcePath?resolve(repo,check.sourcePath):containedPath(bound?packet.directory:publicRoot,check.url);
+      bytes=existsSync(file)?readFileSync(file):check.url?.startsWith('/model-revisions/')
+        ? readVerifiedLfsObject(gitLfsObjectRoot(repo),check.sha256) : readFileSync(file);
+      const pointer=parseLfsPointer(bytes);
+      if(pointer)bytes=readVerifiedLfsObject(gitLfsObjectRoot(repo),pointer.sha256,pointer.size);
       if(bound) inspectAsset(bytes,check.kind,bound.sha256);
     }
     results.set(key,{status:'PASS',...inspectAsset(bytes,check.kind,check.sha256)});
@@ -95,12 +102,14 @@ const report = {schema:'cityprompt.catalogue-delivery-audit@1',checked_utc:new D
   metadata_only:metadataOnly,choice_count:rows.length,distinct_assets:results.size,
   failures:[...results].filter(([,v])=>v.status==='FAIL').map(([asset,result])=>({asset,...result})),
   saved_layout_dependencies:savedLayoutChecks.map(check=>({...check,...results.get(check.url)})),
+  saved_model_revisions:savedRevisionChecks.map(check=>({...check,...results.get(check.url)})),
+  rustic_park_dependencies:rusticKitChecks.map(check=>({...check,...results.get(check.url)})),
   choices:rows.map(row=>({...row,status:row.checks.every(check=>results.get(check.url||check.sourcePath).status!=='FAIL')?(metadataOnly?'METADATA_ONLY':'PASS'):'FAIL',checks:row.checks.map(check=>({...check,...results.get(check.url||check.sourcePath)}))}))};
 if (output) writeFileSync(output,JSON.stringify(report,null,2)+'\n');
 if (packetDirectory && report.failures.length===0 && !metadataOnly) {
   const directory=resolve(packetDirectory);
   if(directory.startsWith(repo)) throw new Error('Keep generated packets outside the source tree');
-  const sources=['src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/canonicalCatalogue.ts'];
+  const sources=['src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','src/data/neighborhoodParkV0StickerKit.json','src/data/savedModelRevisions.json','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/canonicalCatalogue.ts','src/features/pickPlace/catalogueClassification.ts'];
   const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
   const normalize=file=>readFileSync(file,'utf8').replace(/\r\n?/g,'\n');
   const receipt={schema:'cityprompt.catalogue-packet@1',catalogue_activation:false,sourceInputs:sources.map(file=>({path:file,sha256:hash(normalize(resolve(frontend,file)))})),

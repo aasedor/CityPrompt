@@ -833,6 +833,10 @@ export function mapDevelopmentTypeToCategory(_value?: string): string | undefine
 
 // This dedicated local build offers only the exact validation roster, including
 // inspector selectors. Source reference catalogues remain preserved on disk.
+// Read-only compatibility lookup; these records are not student discovery choices.
+export const SAVED_BUILDING_AESTHETIC_OPTIONS = [...BUILDING_AESTHETIC_OPTIONS_V2];
+export const SAVED_ROADWAY_AESTHETIC_OPTIONS = [...ROADWAY_AESTHETIC_OPTIONS_V2];
+export const SAVED_OPENSPACE_AESTHETIC_OPTIONS = [...OPENSPACE_AESTHETIC_OPTIONS_V2];
 for (const [domain, options] of [
   ['building', BUILDING_AESTHETIC_OPTIONS_V2], ['park', OPENSPACE_AESTHETIC_OPTIONS_V2],
   ['street', ROADWAY_AESTHETIC_OPTIONS_V2],

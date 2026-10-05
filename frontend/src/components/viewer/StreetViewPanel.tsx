@@ -197,7 +197,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [customPrompt, setCustomPrompt] = useState('');
   // A street view starts with one image call; comparisons are an explicit choice.
-  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false });
+  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false, projectId });
   const [imageProgress, setImageProgress] = useState('');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Real Street View / Places / satellite grounding, anchored at the pegman.

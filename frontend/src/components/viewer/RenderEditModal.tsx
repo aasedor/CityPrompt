@@ -47,7 +47,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
   const undoStackRef = useRef<CanvasSnapshot[]>([]);
 
   const [prompt, setPrompt] = useState('');
-  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice();
+  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ projectId });
   const [imageProgress, setImageProgress] = useState('');
   const [brushSize, setBrushSize] = useState(DEFAULT_BRUSH_SIZE);
   const [zoom, setZoom] = useState(1);

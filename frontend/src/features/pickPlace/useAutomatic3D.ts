@@ -12,6 +12,7 @@ import { deriveCityPromptWorkflow } from '@/features/workflow/cityPromptWorkflow
 import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import { isCatalogueOnlyScene } from './catalogue';
 import { representationNotice } from './representationNotice';
+import { nativeBuildingUrl } from './nativeBuildingContract';
 
 const physicalZone = (zone: SiteZone) => resolveCommunity3DKind(zone) !== null && !zone.id.startsWith('temp-');
 const physicalScopeZone = (zone: SiteZone) => zone.zone_type !== 'site_boundary'
@@ -62,7 +63,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   const key = authoredPlacementKey([...scopeZones, ...(boundary ? [boundary] : [])], false);
   const compiled = deriveCityPromptWorkflow(zones).sceneReady;
   const canRefreshDetail = candidates.some(zone => getCommunity3DMeta(zone)?.generator === 'planned_massing'
-    && !(zone.zone_type === 'building' && typeof zone.properties?.validation_native_url === 'string'));
+    && !(zone.zone_type === 'building' && nativeBuildingUrl(zone)));
 
   useEffect(() => {
     if (state.current.projectId !== projectId) {
@@ -83,6 +84,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           if (!sources.length) return { plannedMasses: 0 };
           const result = await compileMixedCommunity3D(sources, undefined, {
             includeResidualLandscape: true,
+            scopeMode: 'project',
             scopeZoneIds: scope.map(zone => zone.id),
           });
           const saved = await siteZonesApi.list(projectId);

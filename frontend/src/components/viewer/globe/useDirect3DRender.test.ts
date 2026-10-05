@@ -1,7 +1,9 @@
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { rendersApi } from '@/services/api';
+import { useImageModelChoice } from '../useImageModelChoice';
+import { imageModelsForChoice } from '@/config/imageModels';
 import {
   buildDirect3DVisualPrompt,
   DIRECT_3D_ALLOWED_STYLES,
@@ -24,7 +26,7 @@ import {
 import type { SharedSiteGroundSnapshot } from './sharedSiteGround';
 
 vi.mock('@/services/api', () => ({
-  rendersApi: { generateDirect3D: vi.fn() },
+  rendersApi: { generateDirect3D: vi.fn(), imageModels: vi.fn() },
   resolveApiFileUrl: (url: string) => url,
 }));
 
@@ -470,4 +472,15 @@ describe('Direct 3D presentation adapter', () => {
     })).rejects.toThrow('Unknown Direct 3D style');
     expect(rendersApi.generateDirect3D).not.toHaveBeenCalled();
   });
+  it('sends the project draft’s persisted Sunburst engine to the mocked image request', async () => {
+    sessionStorage.setItem('cityprompt:render-draft:project-1', JSON.stringify({ imageModel: 'gpt-image-2.5-sunburst' }));
+    vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2.5-flare',models:[{id:'gpt-image-2.5-sunburst',available:true}]});
+    const { result, unmount } = renderHook(() => ({choice:useImageModelChoice({projectId:'project-1'}), renderer:useDirect3DRender()}));
+    await act(async () => {
+      await result.current.renderer.renderDirect3D(capture, {style:'photorealistic',projectId:'project-1',community3DClaims,model:imageModelsForChoice(result.current.choice.imageModel)[0]});
+    });
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({model:'gpt-image-2.5-sunburst'}));
+    unmount();sessionStorage.removeItem('cityprompt:render-draft:project-1');
+  });
+
 });

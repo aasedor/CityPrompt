@@ -2,7 +2,9 @@ import { useState } from 'react';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import { CANONICAL_CHOICES, canonicalDrawing } from './canonicalCatalogue';
 import { canonicalBuildingAsset } from './canonicalBuildingPlacement';
-import { assetForZone } from './catalogue';
+import { assetForZone, placementProperties } from './catalogue';
+import { savedModelRevision } from './savedModelRevision';
+import { withStoreyMetadata } from './assetRegistry';
 import { storeyProgramHeight, storeyProgramSupports } from './buildingStoreyProgram';
 import { footprintProgramSupports } from './buildingFootprintProgram';
 
@@ -19,7 +21,11 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const initialVariant = String(savedProperties.development_selected_variant_id ?? '');
   const initialChoice = choices.find(c => c.option.id === initialParent && c.option.variants?.some(v => v.id === initialVariant))
     ?? choices.find(c => c.option.id === initialParent);
-  const initialAsset = initialChoice?.placements.find(asset => asset.kind === 'object' && asset.model.variantId === initialVariant);
+  const initialCandidate = initialChoice?.placements.find(asset => asset.kind === 'object' && asset.model.variantId === initialVariant);
+  const resolvedSaved = initialCandidate?.kind === 'object' ? savedModelRevision(initialCandidate, savedProperties) : initialCandidate;
+  const legacySaved = assetForZone(zone);
+  const initialAsset = resolvedSaved ?? (legacySaved && legacySaved.model.revision === savedProperties.pick_place_model_revision
+    ? withStoreyMetadata(legacySaved) : undefined);
   const initialStoreyProgram = initialAsset?.kind === 'object' ? initialAsset.storeyProgram : undefined;
   const savedFloors = savedProperties.floor_count ?? savedProperties.floors ?? 2;
   const initialFloors = initialStoreyProgram?.mode === 'fixed_authored_assembly'
@@ -40,7 +46,8 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const [heightEdited, setHeightEdited] = useState(false);
   const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
-  const selectedAsset = choice?.placements.find(asset => asset.kind === 'object' && asset.model.variantId === variantId);
+  const selectedAsset = choiceId === initialChoice?.id && variantId === initialVariant ? initialAsset
+    : choice?.placements.find(asset => asset.kind === 'object' && asset.model.variantId === variantId);
   const storeyProgram = selectedAsset?.kind === 'object' ? selectedAsset.storeyProgram : undefined;
   const footprintProgram = selectedAsset?.kind === 'object' ? selectedAsset.footprintProgram : undefined;
   const filtered = choices.filter(c => c.id === choiceId || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase()));
@@ -48,6 +55,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     && Number(floors) >= (storeyProgram?.minStoreys ?? 1)
     && Number(floors) <= (storeyProgram?.maxStoreys ?? 100);
   const valid = choice && floorCountValid
+    && !(choiceId === initialChoice?.id && variantId === initialVariant && savedProperties.pick_place_model_revision && !initialAsset)
     && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000
     && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height))
     && (!footprintProgram || footprintProgram.editable === false || footprintProgramSupports(footprintProgram, footprintScale));
@@ -71,7 +79,8 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     const properties = changedType ? { ...savedProperties, native_home_plot: undefined,
       building_footprint_scale: undefined, building_footprint_program_id: undefined,
       building_footprint_native_width_m: undefined, building_footprint_native_depth_m: undefined,
-      ...canonicalDrawing(selection).properties, ...(native?.properties ?? {}),
+      model_native_dimensions_m: undefined, model_dimensions_revision: undefined, pick_place_model_revision: undefined,
+      ...canonicalDrawing(selection).properties, ...(native?.kind === 'object' ? placementProperties(native) : {}),
       pick_place_asset: native?.id ?? canonicalBuildingAsset(selection).id,
       building_archetype_id: choice.option.id, development_height_override_m: undefined,
     } : { ...savedProperties };
@@ -83,7 +92,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
         : footprintProgram?.defaultScale;
     onSave({ ...properties, pick_place_automatic_3d: true, native_plot_axes: true,
       floors: Number(floors), floor_count: Number(floors), height: Number(height), height_m: Number(height),
-      floor_height: Number(height) / Number(floors),
+      floor_height: storeyProgram?.mode === 'fixed_authored_assembly' ? properties.floor_height : Number(height) / Number(floors),
       ...(footprintProgram && selectedFootprintScale != null ? {
         building_footprint_scale: selectedFootprintScale,
         building_footprint_program_id: footprintProgram.id,
@@ -95,6 +104,8 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
         : heightEdited ? { development_height_override_m: Number(height) } : {}),
     });
   }}>
+    {Boolean(savedProperties.pick_place_model_revision) && !initialAsset && choiceId === initialChoice?.id && variantId === initialVariant
+      && <p role="alert" className="text-xs text-amber-800">This saved model revision is unavailable. Your design is preserved. Select another building explicitly to replace it.</p>}
     <label className="block text-xs font-semibold">Find building type<input type="search" value={query} onChange={e => setQuery(e.target.value)} className={field} /></label>
     <label className="block text-xs font-semibold">Building type<select value={choiceId} onChange={e => choose(e.target.value)} className={field}>
       {!choice && <option value="">Current building</option>}

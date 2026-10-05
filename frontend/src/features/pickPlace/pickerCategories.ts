@@ -23,46 +23,10 @@ export const PICKER_CATEGORIES = [
   { id: 'alleys', domain: 'street_pathway', label: 'Alleys & mews', groups: ['alley'] },
 ] satisfies { id: string; domain: CatalogueDomain; label: string; groups: string[] }[];
 
-// Exact forms whose authored program is more specific than the inherited guide.
-const VARIANT_CATEGORY: Record<string, string> = {
-  clapboard_north_end: 'low-density',
-  glass_tower_blue_reflective: 'towers',
-  art_deco_cream_terracotta: 'towers',
-  art_deco_streamline_moderne: 'apartments',
-  market_historic_iron_glass: 'workplaces',
-  brewery_crystal_brewhouse: 'workplaces',
-  deco_theater_movie_palace: 'civic',
-  student_pickleball_garden_v1: 'play-sport',
-  student_tennis_garden_v2: 'play-sport',
-  student_bocce_garden_v2: 'play-sport',
-  student_urban_splash_plaza_v1: 'play-sport',
-  student_sheltered_dog_park_v1: 'play-sport',
-  inclusive_accessible_playground_v0: 'play-sport',
-  student_neighbourhood_orchard_v1: 'community-parks',
-  amphitheater_lawn_v0: 'community-parks',
-  wetland_rain_garden_v0: 'nature-trails',
-  student_woodland_stream_garden_v1: 'nature-trails',
-  linear_park_greenway_v0: 'nature-trails',
-  student_reflecting_fountain_garden_v1: 'plazas-water',
-  student_terraced_cafe_court_v1: 'plazas-water',
-  student_garden_square_v1: 'plazas-water',
-  student_quiet_residential_street_v1: 'neighbourhood-streets',
-  student_school_street_v1: 'neighbourhood-streets',
-  student_green_alley_v1: 'alleys',
-  student_london_cobbled_mews_v1: 'alleys',
-  student_cherry_blossom_street_v1: 'neighbourhood-streets',
-  student_market_street_v1: 'walking-cycling',
-  student_planted_shared_lane_v1: 'walking-cycling',
-};
-
 export function pickerCategory(choice: CanonicalChoice): string {
   const asset = choice.placements[0];
   if (asset?.model.method === 'manual_metric_section_v1') return 'street-manual';
-  const override = VARIANT_CATEGORY[asset?.model.variantId ?? ''];
-  if (override) return override;
   const guideGroup = asset?.calgaryGuide.groupId ?? choice.option.calgaryGuide?.groupId ?? '';
-  const nativeStoreys = asset?.kind === 'object' ? asset.storeyProgram?.nativeStoreys ?? Number(asset.properties.floors ?? 0) : 0;
-  if (choice.domain === 'building' && nativeStoreys >= 12) return 'towers';
   return PICKER_CATEGORIES.find(category => category.domain === choice.domain && category.groups.includes(guideGroup))?.id
     ?? ({ building: 'industry', park_plaza: 'community-parks', street_pathway: 'boulevards' }[choice.domain]);
 }

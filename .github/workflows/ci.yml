@@ -161,6 +161,7 @@ jobs:
       - name: Verify catalogue delivery guards and exact model bindings
         run: |
           npm run test:catalogue-delivery
+          npm run check:catalogue-json
           npm run check:catalogue-delivery -- --metadata-only
 
       - name: Validate Sticker Method assets

@@ -266,8 +266,9 @@ export function GlobeAIRenderPanel({
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
   const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>(() => resolveDirect3DFidelityPolicy(selectedStyle));
-  const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false });
-  const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelAvailability?.models.find(entry => entry.id === model)?.available === false);
+  const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false, projectId });
+  const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelAvailability !== null
+    && !imageModelAvailability.models.some(entry => entry.id === model && entry.available !== false));
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
   const directPreviewMetadata = useRef(new Map<string, { diagnostics: Direct3DRenderDiagnostics; review: Direct3DReview | null }>());
   // Development mode gate: at least one zone in the scene is backed by real
@@ -613,6 +614,7 @@ export function GlobeAIRenderPanel({
         },
         {
           ...communityCompileOptionsForZones(communityCompileZones),
+          scopeMode: 'project',
           scopeZoneIds: communityZones.map((zone) => zone.id),
         },
       );
@@ -1247,7 +1249,7 @@ export function GlobeAIRenderPanel({
         />
       </div>
       {!direct3DAvailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">{direct3DUnavailableReason}</p>}
-      {imageGenerationUnavailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">Image generation is unavailable right now. You can still export your current 3D view below.</p>}
+      {imageGenerationUnavailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">Your selected image engine is unavailable. Choose an available engine in Advanced image controls, or export your current 3D view below. Your engine preference is preserved.</p>}
       <details className="border-b border-white/20 bg-slate-900/90 text-white">
       <summary className="min-h-11 cursor-pointer px-4 py-3 text-sm font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime-300">Advanced image controls</summary>
       <div className="border-b-2 border-white/10 px-4 py-2">

@@ -161,3 +161,23 @@ it('clears the house footprint programme when changing to an unrelated building'
     building_footprint_native_depth_m: undefined,
   }));
 });
+
+
+it('retains the saved older model when applying its authored dimensions', () => {
+  const asset = placeAsset('validation_minimalist_infill_brick_monolith');
+  const revision = '3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6';
+  const onSave = vi.fn();
+  render(<BuildingDesignControls zone={{ ...zone, properties: { ...placementProperties(asset), pick_place_model_revision: revision, height: 30 } }} disabled={false} onSave={onSave} />);
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('10.48');
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).readOnly).toBe(true);
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ pick_place_model_revision: revision, height_m: 10.48 }));
+});
+
+it('does not apply the current model over an unavailable saved revision', () => {
+  const asset = placeAsset('validation_minimalist_infill_brick_monolith');
+  const onSave = vi.fn();
+  render(<BuildingDesignControls zone={{ ...zone, properties: { ...placementProperties(asset), pick_place_model_revision: 'unavailable' } }} disabled={false} onSave={onSave} />);
+  expect(screen.getByRole('alert').textContent).toContain('saved model revision is unavailable');
+  expect((screen.getByRole('button', { name: 'Apply building' }) as HTMLButtonElement).disabled).toBe(true);
+});

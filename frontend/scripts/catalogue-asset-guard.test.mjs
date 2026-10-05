@@ -50,3 +50,43 @@ test('a packet with changed bytes or stale catalogue inputs refuses startup',asy
     rmSync(root,{recursive:true,force:true});
   }
 });
+
+test('verified cached LFS bytes are served without rewriting tracked pointers',async()=>{
+  const repo=mkdtempSync(join(tmpdir(),'cityprompt-lfs-delivery-'));
+  const root=join(repo,'frontend');mkdirSync(join(root,'public/archetypes'),{recursive:true});
+  const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=','base64');
+  const digest=createHash('sha256').update(png).digest('hex');
+  const objectDir=join(repo,'.git/lfs/objects',digest.slice(0,2),digest.slice(2,4));mkdirSync(objectDir,{recursive:true});
+  writeFileSync(join(objectDir,digest),png);
+  const pointer=`version https://git-lfs.github.com/spec/v1\noid sha256:${digest}\nsize ${png.length}\n`;
+  const source=join(root,'public/archetypes/exact.png');writeFileSync(source,pointer);
+  const server=await createServer({configFile:false,root,plugins:[catalogueAssetGuard()],logLevel:'silent',server:{host:'127.0.0.1',port:0},optimizeDeps:{noDiscovery:true,entries:[]}});
+  try {
+    await server.listen();const base='http://127.0.0.1:'+server.httpServer.address().port;
+    const response=await fetch(base+'/archetypes/exact.png');
+    assert.equal(response.status,200);assert.equal(response.headers.get('x-cityprompt-exact-sha256'),digest);
+    assert.deepEqual(Buffer.from(await response.arrayBuffer()),png);
+    assert.equal((await import('node:fs')).readFileSync(source,'utf8'),pointer);
+    writeFileSync(join(objectDir,digest),'changed object');
+    assert.equal((await fetch(base+'/archetypes/exact.png')).status,503);
+  } finally {await server.close();rmSync(repo,{recursive:true,force:true});}
+});
+
+
+test('production packets copy exact assets and refuse source output directories', async()=>{
+  const root=mkdtempSync(join(tmpdir(),'cityprompt-production-packet-'));
+  const packet=join(root,'packet');mkdirSync(join(packet,'archetypes'),{recursive:true});
+  const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=','base64');
+  writeFileSync(join(packet,'archetypes/exact.png'),png);
+  writeFileSync(join(packet,'delivery-manifest.json'),JSON.stringify({schema:'cityprompt.catalogue-packet@1',catalogue_activation:false,sourceInputs:[],assets:[{url:'/archetypes/exact.png',sha256:createHash('sha256').update(png).digest('hex'),bytes:png.length}]}));
+  const prior=process.env.CITYPROMPT_CATALOGUE_PACKET;process.env.CITYPROMPT_CATALOGUE_PACKET=packet;
+  try {
+    const plugin=catalogueAssetGuard();plugin.configResolved({root,build:{outDir:'dist'}});plugin.writeBundle();
+    assert.deepEqual((await import('node:fs')).readFileSync(join(root,'dist/archetypes/exact.png')),png);
+    plugin.configResolved({root,build:{outDir:'src'}});
+    assert.throws(()=>plugin.writeBundle(),/outside source directories/);
+  } finally {
+    if(prior===undefined)delete process.env.CITYPROMPT_CATALOGUE_PACKET;else process.env.CITYPROMPT_CATALOGUE_PACKET=prior;
+    rmSync(root,{recursive:true,force:true});
+  }
+});

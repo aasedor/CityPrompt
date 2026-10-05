@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { readStoredRenderDraft } from '../renderDraftStorage';
 
 type RenderDraft = { selectedStyle: string; customPrompt: string; addPeople: boolean; addVehicles: boolean };
 const DEFAULT_DRAFT: RenderDraft = { selectedStyle: 'photorealistic', customPrompt: '', addPeople: false, addVehicles: false };
@@ -21,7 +22,9 @@ export function useRenderDraft(projectId: string | undefined, styleIds: readonly
   const draft = drafts[key] ?? initial;
   useEffect(() => {
     if (!key) return;
-    try { sessionStorage.setItem(key, JSON.stringify(draft)); } catch { /* Editing still works without storage. */ }
+    try {
+      sessionStorage.setItem(key, JSON.stringify({ ...readStoredRenderDraft(key), ...draft }));
+    } catch { /* Editing still works without storage. */ }
   }, [key, draft]);
   const update = useCallback((patch: Partial<RenderDraft>) => {
     setDrafts(previous => ({ ...previous, [key]: { ...(previous[key] ?? initial), ...patch } }));

@@ -9314,36 +9314,6 @@
       "hasBikeLane": true,
       "shape": "circle",
       "title": "Protected Intersection",
-      "variants": [
-        {
-          "id": "protected_intersection_v0",
-          "label": "Permanent (Dutch Standard)",
-          "color": "#C75B39",
-          "description": "The full NACTO/Dutch build: a red-brown asphalt cycle track curves around four raised, planted corner refuge islands; pedestrian and cycle crossings are set back about one car length from the travel lanes and tight corner radii hold turning cars slow. Cyclists turn protected from traffic. Summer, low-rise mixed-use frontage.",
-          "thumbnailUrl": "/archetypes/streets/protected-intersection/variant_0.png"
-        },
-        {
-          "id": "protected_intersection_v1",
-          "label": "Winter Operations",
-          "color": "#9FB8C8",
-          "description": "The same protected geometry under Calgary snow: cleared cycle track and crossings with snow stored on the planted corner islands, low golden winter sun, cyclists in parkas. Demonstrates the design works through winter.",
-          "thumbnailUrl": "/archetypes/streets/protected-intersection/variant_1.png"
-        },
-        {
-          "id": "protected_intersection_v2",
-          "label": "Quick-Build Pilot",
-          "color": "#4A8C6F",
-          "description": "Tactical interim materials that test the permanent geometry: white flexible delineator posts and modular planters form the corner refuge islands, with green conflict-zone paint and paint-marked crossings. A low-cost install that can go in within weeks.",
-          "thumbnailUrl": "/archetypes/streets/protected-intersection/variant_2.png"
-        },
-        {
-          "id": "protected_intersection_v3",
-          "label": "High-Visibility Crossings",
-          "color": "#3F76C4",
-          "description": "The crossing-priority expression: bold painted continental crosswalks across all four legs, set back from the travel lanes, with transit and heavy pedestrian traffic. Emphasises the protected, visible place every road user has to cross.",
-          "thumbnailUrl": "/archetypes/streets/protected-intersection/variant_3.png"
-        }
-      ],
       "aestheticCategory": "intersections",
       "description": "Dutch-style protected intersection per NACTO's 'Don't Give Up at the Intersection': four raised corner refuge islands carry the cycle track around the junction, pedestrian and cycle crossings sit set back about one car length (5 m) from the parallel travel lanes, and 3–4.5 m corner radii hold turning cars near 15 km/h. 43% of urban cyclist fatalities occur at intersections — this geometry is the fix: every road user arrives at the conflict point slowly, visibly, and with a protected place to wait.",
       "transportModes": [

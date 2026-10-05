@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, CustomStyleDomain } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { isFixedSectionStreet, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
+import { nativeBuildingContract } from '@/features/pickPlace/nativeBuildingContract';
 import { getShadeForArchetype, getCustomZoneShade } from '@/data/archetypeShadeMap';
 import { CustomStyleEditor } from './CustomStyleEditor';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
@@ -452,6 +453,14 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
   const lastAppliedUndoRedoAction = useUndoRedoStore((s) => s.lastAppliedAction);
   const [name, setName] = useState(zone.name || '');
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
+  const nativeModel = nativeBuildingContract({ properties: props });
+  const rigidModel = nativeModel?.rigid === true;
+  const developmentType = props.development_type || ({
+    detached: 'residential_single_family', two_home: 'residential_duplex', ground_housing: 'residential_multifamily',
+    apartments: 'residential_multifamily', mixed: 'mixed_use', towers: 'residential_highrise', shops: 'commercial_retail',
+    offices: 'commercial_office', hotels: 'hotel', civic: 'institutional', industry: 'industrial',
+    indoor_food: 'industrial_light', infrastructure: 'mobility_infrastructure', building_other: 'other',
+  } as Record<string, string>)[nativeModel?.asset.calgaryGuide.groupId ?? ''];
   const panelRef = useRef<HTMLDivElement>(null);
   const lastSyncedUndoRedoVersionRef = useRef(0);
   // Custom-style auto-save machinery. handleSaveRef always points at the
@@ -511,10 +520,10 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
   }, [name, props]);
 
   useEffect(() => {
-    if (usesBuildingWorkflow && !props.development_type && (activeBuildingStep === 2 || activeBuildingStep === 4)) {
+    if (usesBuildingWorkflow && !developmentType && (activeBuildingStep === 2 || activeBuildingStep === 4)) {
       setActiveBuildingStep(1);
     }
-  }, [activeBuildingStep, props.development_type, usesBuildingWorkflow]);
+  }, [activeBuildingStep, developmentType, usesBuildingWorkflow]);
 
   useEffect(() => {
     if (undoRedoHistoryVersion === 0) return;
@@ -965,7 +974,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
         </div>
         {footprintMetrics.width > 0 && footprintMetrics.depth > 0 && (
           <div className="flex justify-between">
-            <span className={panelMetricLabelClass}>Footprint</span>
+            <span className={panelMetricLabelClass}>{nativeModel ? 'Placement plot' : 'Footprint'}</span>
             <span className={panelMetricValueClass}>
               {Math.round(footprintMetrics.width).toLocaleString()} m x {Math.round(footprintMetrics.depth).toLocaleString()} m
             </span>
@@ -1036,7 +1045,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
           <>
             <BuildingWorkflowStepper
               activeStep={activeBuildingStep}
-              developmentSelected={!!props.development_type}
+              developmentSelected={!!developmentType}
               onStepChange={setActiveBuildingStep}
             />
             {activeBuildingStep === 1 && (
@@ -1044,7 +1053,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
             <div>
               <label className={panelLabelClass}>Development Type</label>
               <select
-                value={(props.development_type as string) || ''}
+                value={(developmentType as string) || ''}
                 onChange={(e) => {
                   const nextDevelopmentType = e.target.value || undefined;
                   applyBuildingDevelopmentType(nextDevelopmentType);
@@ -1095,13 +1104,13 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
             </div>
             <BuildingWorkflowPager
               activeStep={activeBuildingStep}
-              developmentSelected={!!props.development_type}
+              developmentSelected={!!developmentType}
               onStepChange={setActiveBuildingStep}
             />
             </PanelStep>
             )}
             {/* Development Aesthetic – only shown after a development type is chosen */}
-            {activeBuildingStep === 2 && props.development_type && (
+            {activeBuildingStep === 2 && developmentType && (
             <PanelStep step="2" title="Pick an archetype and check fit">
             <div>
               {renderCustomStyleToggle('building')}
@@ -1122,7 +1131,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                       selectedReferenceId={(props.development_archetype_id as string) || undefined}
                       selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                       zoneType={zone.zone_type}
-                      developmentType={(props.development_type as string) || undefined}
+                      developmentType={(developmentType as string) || undefined}
                       areaSqm={area}
                       onChange={(next, archetypeImageId, variantId) => {
                         applyBuildingAesthetic(next, archetypeImageId, variantId);
@@ -1134,19 +1143,19 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
             </div>
             <BuildingWorkflowPager
               activeStep={activeBuildingStep}
-              developmentSelected={!!props.development_type}
+              developmentSelected={!!developmentType}
               onStepChange={setActiveBuildingStep}
             />
             </PanelStep>
             )}
-            {activeBuildingStep === 2 && !props.development_type && (
+            {activeBuildingStep === 2 && !developmentType && (
               <PanelStep step="2" title="Pick an archetype and check fit" muted>
                 <p className="text-[11px] font-semibold text-[#151515]/55">
                   Choose a development type first to narrow the archetype list.
                 </p>
                 <BuildingWorkflowPager
                   activeStep={activeBuildingStep}
-                  developmentSelected={!!props.development_type}
+                  developmentSelected={!!developmentType}
                   onStepChange={setActiveBuildingStep}
                 />
               </PanelStep>
@@ -1173,7 +1182,8 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                       step="1"
                       min={archMinFloors ?? 1}
                       max={archMaxFloors}
-                      value={props.floors ?? config?.defaultProperties.floors ?? ''}
+                      disabled={Boolean(nativeModel)}
+                      value={rigidModel ? nativeModel?.storeys ?? '' : props.floors ?? config?.defaultProperties.floors ?? ''}
                       onChange={(e) => {
                         const floors = parseInt(e.target.value) || undefined;
                         setProps((p) => {
@@ -1184,10 +1194,10 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                       }}
                       className={panelFieldClass}
                     />
-                    {archMinFloors != null && archMaxFloors != null && (
+                    {!rigidModel && archMinFloors != null && archMaxFloors != null && (
                       <p className="mt-0.5 text-[10px] text-primary-950/40">Suggested: {archMinFloors}–{archMaxFloors} floors</p>
                     )}
-                    {floorOutOfRange && (
+                    {!rigidModel && floorOutOfRange && (
                       <p className="mt-0.5 text-[10px] text-orange-500">Floor count is outside the typical range for this archetype ({archMinFloors}–{archMaxFloors})</p>
                     )}
                   </div>
@@ -1197,7 +1207,8 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                       id="building-height"
                       type="number"
                       step="1"
-                      value={props.height ?? config?.defaultProperties.height ?? ''}
+                      disabled={Boolean(nativeModel)}
+                      value={rigidModel ? nativeModel?.heightM : props.height ?? config?.defaultProperties.height ?? ''}
                       onChange={(e) => {
                         const height = parseFloat(e.target.value) || undefined;
                         setProps((p) => {
@@ -1209,6 +1220,8 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                       className={panelFieldClass}
                     />
                     {(() => {
+                      if (rigidModel) return <p className="mt-0.5 text-[10px] text-primary-950/60">Authored model height. Move or rotate the model; its floors and height stay fixed.</p>;
+                      if (nativeModel) return <p className="mt-0.5 text-[10px] text-primary-950/60">Use the object’s building controls to select supported storeys and scale.</p>;
                       const floors = (props.floors as number) || (config?.defaultProperties.floors as number);
                       const height = (props.height as number) || (config?.defaultProperties.height as number);
                       if (floors && height) {
@@ -1218,11 +1231,11 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                     })()}
                   </div>
                   <div className="rounded border border-primary-950/[0.08] px-2 py-2 text-xs">
-                    <p className="font-bold">Change the footprint</p>
-                    <p>Choose Top view. With Select active, drag the white corner handles of the selected building. Its dimensions and area update as you reshape it.</p>
+                    <p className="font-bold">{nativeModel ? 'Placement plot' : 'Change the footprint'}</p>
+                    <p>{rigidModel ? 'Use the object controls to move or rotate this model. Its surrounding plot is separate from the building footprint; supported plot changes keep the model at its authored size.' : 'Choose Top view. With Select active, drag the white corner handles of the selected building. Its dimensions and area update as you reshape it.'}</p>
                     <p className="mt-1">Draw separate outlines for separate buildings. Detailed 3D models have their own size limits; an area match does not guarantee a model fits.</p>
                   </div>
-                  {archSuggestedArea != null && (() => {
+                  {!nativeModel && archSuggestedArea != null && (() => {
                     const ratio = area / archSuggestedArea;
                     const pct = Math.round((ratio - 1) * 100);
                     const isClose = ratio >= 0.7 && ratio <= 1.5;
@@ -1278,7 +1291,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                   })()}
                   <BuildingWorkflowPager
                     activeStep={activeBuildingStep}
-                    developmentSelected={!!props.development_type}
+                    developmentSelected={!!developmentType}
                     onStepChange={setActiveBuildingStep}
                   />
                 </PanelStep>
@@ -1450,7 +1463,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
           <>
             <BuildingWorkflowStepper
               activeStep={activeBuildingStep}
-              developmentSelected={!!props.development_type}
+              developmentSelected={!!developmentType}
               onStepChange={setActiveBuildingStep}
             />
             {activeBuildingStep === 1 && (
@@ -1458,7 +1471,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
             <div>
               <label className={panelLabelClass}>Development Type</label>
               <select
-                value={(props.development_type as string) || ''}
+                value={(developmentType as string) || ''}
                 onChange={(e) => {
                   const nextDevelopmentType = e.target.value || undefined;
                   applyBuildingDevelopmentType(nextDevelopmentType);
@@ -1504,12 +1517,12 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
             </div>
             <BuildingWorkflowPager
               activeStep={activeBuildingStep}
-              developmentSelected={!!props.development_type}
+              developmentSelected={!!developmentType}
               onStepChange={setActiveBuildingStep}
             />
             </PanelStep>
             )}
-            {activeBuildingStep === 2 && props.development_type && (
+            {activeBuildingStep === 2 && developmentType && (
             <PanelStep step="2" title="Pick an archetype and check fit">
             <div>
               {renderCustomStyleToggle('building')}
@@ -1530,7 +1543,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                       selectedReferenceId={(props.development_archetype_id as string) || undefined}
                       selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                       zoneType={zone.zone_type}
-                      developmentType={(props.development_type as string) || undefined}
+                      developmentType={(developmentType as string) || undefined}
                       areaSqm={area}
                       onChange={(next, archetypeImageId, variantId) => {
                         applyBuildingAesthetic(next, archetypeImageId, variantId);
@@ -1542,19 +1555,19 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
             </div>
             <BuildingWorkflowPager
               activeStep={activeBuildingStep}
-              developmentSelected={!!props.development_type}
+              developmentSelected={!!developmentType}
               onStepChange={setActiveBuildingStep}
             />
             </PanelStep>
             )}
-            {activeBuildingStep === 2 && !props.development_type && (
+            {activeBuildingStep === 2 && !developmentType && (
               <PanelStep step="2" title="Pick an archetype and check fit" muted>
                 <p className="text-[11px] font-semibold text-[#151515]/55">
                   Choose a development type first to narrow the archetype list.
                 </p>
                 <BuildingWorkflowPager
                   activeStep={activeBuildingStep}
-                  developmentSelected={!!props.development_type}
+                  developmentSelected={!!developmentType}
                   onStepChange={setActiveBuildingStep}
                 />
               </PanelStep>
@@ -1648,7 +1661,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                   })()}
                   <BuildingWorkflowPager
                     activeStep={activeBuildingStep}
-                    developmentSelected={!!props.development_type}
+                    developmentSelected={!!developmentType}
                     onStepChange={setActiveBuildingStep}
                   />
                 </PanelStep>
@@ -1681,7 +1694,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
               />
               <BuildingWorkflowPager
                 activeStep={activeBuildingStep}
-                developmentSelected={!!props.development_type}
+                developmentSelected={!!developmentType}
                 onStepChange={setActiveBuildingStep}
               />
             </PanelStep>
@@ -3974,10 +3987,11 @@ function composeZonePrompt(zone: SiteZone): string {
   }
 
   // 2. Approximate dimensions from coordinates
+  const native = nativeBuildingContract(zone);
   if (zone.coordinates && zone.coordinates.length >= 3) {
     const { width, depth, area } = polygonDimensionsMeters(zone.coordinates);
     if (area > 1 && width > 1 && depth > 1) {
-      parts.push(`Building footprint approximately ${width.toFixed(0)}m wide by ${depth.toFixed(0)}m deep (${area.toFixed(0)} sq meters)`);
+      parts.push(`${native ? 'Surrounding placement plot' : 'Building footprint'} approximately ${width.toFixed(0)}m wide by ${depth.toFixed(0)}m deep (${area.toFixed(0)} sq meters)`);
     }
   }
 
@@ -3985,7 +3999,9 @@ function composeZonePrompt(zone: SiteZone): string {
   const floors = props.floors as number | undefined;
   const height = props.height as number | undefined;
   const floorHeight = (props.floor_height as number) || 3;
-  if (floors && height) {
+  if (native?.rigid) {
+    parts.push(`Preserve the exact authored model: ${native.heightM.toFixed(2)}m total height${native.storeys ? `, ${native.storeys} storeys` : ''}. Placement plot area is not measured building floor area.`);
+  } else if (floors && height) {
     parts.push(`${floors} stories tall (${height}m total height), each floor ${floorHeight}m high`);
   } else if (floors) {
     const total = floors * floorHeight;
