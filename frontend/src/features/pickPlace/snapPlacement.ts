@@ -5,9 +5,8 @@ import { placementProblem, rectangleAt, rectangleDimensions } from './geometry';
 import { streetFacingDegrees } from './streetFacing';
 import { bufferLineToPolygon, effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/roadGeometry';
 import { readBuildingEntrance, resolvePedestrianConnections } from './pedestrianConnections';
-import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { nativeParkApproaches } from '@/features/parks/nativeParkReservations';
-import { buildingEdgeContract, buildingEdgeSnapCandidates, buildingPlacementEnvelope } from './buildingPlacementEdges';
+import { buildingEdgeContract, placementEdgeSnapCandidates, buildingPlacementEnvelope } from './buildingPlacementEdges';
 import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
 
 type Point = { x: number; y: number };
@@ -17,13 +16,14 @@ export function snapBuildingMove(zone: SiteZone, coordinates: number[][], zones:
     const d = rectangleDimensions(coordinates);
     coordinates = rectangleAt(d.center,d.width,d.depth,streetFacingDegrees(d.center,zones,d.degrees));
   }
-  return snapPlacement(coordinates,zones,boundary,zone.id,zone.properties);
+  return snapPlacement(coordinates,zones,boundary,zone.id,zone.properties,zone.zone_type);
 }
 /** Find a nearby clear position without changing the student's size or rotation.
  * Search is bounded for live dragging. Every candidate passes the same polygon
  * checks as a save, including concave boundaries and all neighbouring plots. */
-export function snapPlacement(coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string, properties?: SiteZone['properties']) {
+export function snapPlacement(coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null, ignoreId?: string, properties?: SiteZone['properties'], zoneType?: SiteZone['zone_type']) {
   properties ??= zones.find(z=>z.id===ignoreId)?.properties;
+  zoneType ??= zones.find(z=>z.id===ignoreId)?.zone_type;
   const context=zones.filter(z=>z.id!==ignoreId);
   const contract=buildingEdgeContract({coordinates,properties});
   const occupied=(coords:number[][])=>buildingPlacementEnvelope({coordinates:coords,properties});
@@ -40,11 +40,11 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   // Protect the street and already-working approaches as part of the usable
   // neighbourhood, rather than solving one plot overlap by blocking a route.
   const reserves: SiteZone[] = zones.filter(z=>z.zone_type==='road').flatMap(road=>{
-    if (contract) return [{...streetSurfaceMaskZone(road),id:`snap-road:${road.id}`,zone_type:'parking' as const}];
+    // The constructed street includes its sidewalks. Do not impose an extra
+    // blanket three-metre setback on every park or unreviewed building plot.
+    if (road.coordinates.length>=3) return [{...streetSurfaceMaskZone(road),id:`snap-road:${road.id}`,zone_type:'parking' as const}];
     const line=extractRenderableStreetCenterline(road);
-    const section=resolvePilotStreetSectionProfile(road);
-    const width=section?.metricWidthLocked ? section.targetRowM ?? section.rowM : effectiveRoadWidth(road.properties);
-    return line.length<2 ? [] : [{...road,id:`snap-road:${road.id}`,zone_type:'parking' as const,coordinates:bufferLineToPolygon(line,width+6)}];
+    return line.length<2 ? [] : [{...road,id:`snap-road:${road.id}`,zone_type:'parking' as const,coordinates:bufferLineToPolygon(line,effectiveRoadWidth(road.properties))}];
   });
   for (const plan of resolvePedestrianConnections(context)) {
     if (plan.ownerId===ignoreId || plan.status!=='connected') continue;
@@ -58,12 +58,16 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   zones=[...zones,...reserves];
   // Magnetism applies even when the original position is valid, so a small
   // visible gap can close. A candidate must preserve all approach reservations.
-  const neighbours=context.map(z=>z.zone_type==='road'?streetSurfaceMaskZone(z):z);
+  const neighbours=context.map(z=>{
+    if(z.zone_type!=='road')return z;
+    const reservedStreet=reserves.find(reserve=>reserve.id===`snap-road:${z.id}`);
+    return reservedStreet ? {...reservedStreet,id:z.id,zone_type:z.zone_type} : z;
+  });
   let magnetCoordinates=coordinates;
   // A corner can meet both a neighbour and a sidewalk. Resolve the two axes
   // together instead of requiring the student to place and drag a second time.
   for(let pass=0;pass<2;pass++) {
-    const candidate=buildingEdgeSnapCandidates({coordinates:magnetCoordinates,properties},neighbours)
+    const candidate=placementEdgeSnapCandidates({coordinates:magnetCoordinates,properties,zone_type:zoneType},neighbours)
       .find(item=>!check(item.coordinates) && connectionFits(item.coordinates));
     if(!candidate)break;
     magnetCoordinates=candidate.coordinates;

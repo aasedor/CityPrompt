@@ -387,7 +387,7 @@ export function GlobeEditMode({
       if (['building', 'residential', 'green_space'].includes(zone.zone_type)) {
         const boundary = getActiveSiteBoundary(zones);
         const snapped = zone.zone_type === 'green_space'
-          ? snapPlacement(newCoords, zones, boundary, zone.id, zone.properties)
+          ? snapPlacement(newCoords, zones, boundary, zone.id, zone.properties, zone.zone_type)
           : snapBuildingMove(zone, newCoords, zones, boundary);
         if (snapped.problem) return; // Hold the last valid preview until space opens.
         newCoords = snapped.coordinates;

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
-import { rectangleAt } from './geometry';
+import { placementProblem, rectangleAt } from './geometry';
 import { placeAsset, placementProperties } from './catalogue';
 import { readBuildingEntrance, resolvePedestrianConnections } from './pedestrianConnections';
 import { streetConnectionCaptureUserData } from '@/components/viewer/globe/pedestrianCapture';
@@ -42,7 +42,8 @@ describe('automatic native entrance connections',()=>{
     const onRoad=snapPlacement(rectangleAt(ll(0,20),12,16,90),zones,site);
     expect(onRoad.problem).toBeNull();
     const center=onRoad.coordinates.reduce((a,p)=>[a[0]+p[0]/4,a[1]+p[1]/4],[0,0]);
-    expect(Math.abs((center[0]+114)*metersPerDegLon(51))).toBeGreaterThan(18);
+    expect(Math.abs((center[0]+114)*metersPerDegLon(51))).toBeCloseTo(16.02,2);
+    expect(placementProblem(onRoad.coordinates,zones,site)).toBeNull();
   });
   it('waits for a nearby sidewalk and responds when a street is added',()=>{
     const house=home(20,[]),road=street('road',0);
