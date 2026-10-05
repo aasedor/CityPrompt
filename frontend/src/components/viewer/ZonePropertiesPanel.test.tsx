@@ -526,7 +526,25 @@ describe('ZonePropertiesPanel explicit saved-version reload', () => {
 });
 
 describe('ZonePropertiesPanel site ground', () => {
+  beforeEach(() => Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() }));
   afterEach(cleanup);
+
+  it.each([0, 45, 100])('saves %s percent boundary opacity without changing the ground mode or level', (percentage) => {
+    const zone = { ...siteBoundaryZone(), properties: { community_3d_mask_existing_tiles: true, terrain_elevation_m: 1035 } };
+    const onUpdate = vi.fn();
+    const view = renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByLabelText('Site boundary opacity')).toHaveValue('100');
+    fireEvent.change(screen.getByLabelText('Site boundary opacity'), { target: { value: '50' } });
+    fireEvent.change(screen.getByLabelText('Site boundary opacity'), { target: { value: String(percentage) } });
+    expect(onUpdate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
+    expect(onUpdate).toHaveBeenCalledWith(zone.id, expect.objectContaining({ properties: {
+      community_3d_mask_existing_tiles: true, terrain_elevation_m: 1035, site_boundary_opacity: percentage / 100,
+    } }));
+    view.unmount();
+    renderPanel(<ZonePropertiesPanel zone={{ ...zone, properties: onUpdate.mock.calls[0][1].properties }} onUpdate={vi.fn()} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByLabelText('Site boundary opacity')).toHaveValue(String(percentage));
+  });
 
   it('preserves legacy ground until the student explicitly saves a terrain choice', () => {
     Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() });

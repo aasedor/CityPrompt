@@ -23,6 +23,17 @@ it('keeps a prepared boundary and its outside road in the live tile shader, then
   expect(material.userData.__cityPromptTileSpatialMaskPatch.config.maskCount).toBe(2);
   rerender(component([site]));
   expect(material.userData.__cityPromptTileSpatialMaskPatch.config.maskCount).toBe(1);
+  // Opacity reveals context without changing the prepared height or removing
+  // independent outside road cuts. Returning to solid reinstates the site cut.
+  const translucent = { ...site, properties: { ...site.properties, site_boundary_opacity: 0.45 } };
+  rerender(component([translucent, road]));
+  expect(material.userData.__cityPromptTileSpatialMaskPatch.config.maskCount).toBe(1);
+  rerender(component([translucent]));
+  expect(material.userData.__cityPromptTileSpatialMaskPatch).toBeUndefined();
+  rerender(component([{ ...translucent, properties: { ...translucent.properties, site_boundary_opacity: 0 } }]));
+  expect(material.userData.__cityPromptTileSpatialMaskPatch).toBeUndefined();
+  rerender(component([site]));
+  expect(material.userData.__cityPromptTileSpatialMaskPatch.config.maskCount).toBe(1);
   unmount();
   expect(material.userData.__cityPromptTileSpatialMaskPatch).toBeUndefined();
   material.dispose();geometry.dispose();

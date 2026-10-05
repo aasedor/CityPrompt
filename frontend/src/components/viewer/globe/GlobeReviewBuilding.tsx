@@ -63,7 +63,13 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
   const frameRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(url);
   const preparedModel = useMemo(() => prepareReviewBuildingGlass(scene), [scene]);
-  const model = useMemo(() => centreNativeClayClone(preparedModel.clone), [preparedModel]);
+  const model = useMemo(() => {
+    const clone = centreNativeClayClone(preparedModel.clone);
+    // Draw authored geometry after the prepared surface, whose depth remains
+    // flat even when its colour is transparent over the Google context.
+    clone.traverse(object => { if ((object as THREE.Mesh).isMesh) object.renderOrder = 150; });
+    return clone;
+  }, [preparedModel]);
   useEffect(() => retainResourceForDeferredDisposal(preparedModel,
     value => value.ownedMaterials.forEach(material => material.dispose())), [preparedModel]);
   const [lng, lat] = computeCentroid(zone.coordinates);

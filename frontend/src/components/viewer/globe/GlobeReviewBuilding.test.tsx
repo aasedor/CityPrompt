@@ -102,11 +102,11 @@ describe('review GLB ground lifecycle', () => {
     expect(report).toHaveBeenLastCalledWith('building','review:zone',
       mode === 'partial' ? 'incomplete_footprint_ground' : 'ground_not_ready',null);
   });
-  it('uses an explicitly prepared level only when shared measured ground is inactive', () => {
+  it.each([0, 0.5, 1])('uses an explicitly prepared level at opacity %s only when shared measured ground is inactive', (opacity) => {
     const {props,report} = setup();
     const boundary = { ...zone, id:'boundary', building_id:undefined, zone_type:'site_boundary',
       coordinates:[[-114.001,50.999],[-113.999,50.999],[-113.999,51.001],[-114.001,51.001]],
-      properties:{community_3d_mask_existing_tiles:true,terrain_elevation_m:1102.662} } as SiteZone;
+      properties:{community_3d_mask_existing_tiles:true,terrain_elevation_m:1102.662,site_boundary_opacity:opacity} } as SiteZone;
     mocks.display.mockReturnValue(ground('inactive')); mocks.verified.mockReturnValue(ground('inactive'));
     const view = render(<GlobeReviewBuilding {...props} zones={[boundary,zone]} onGroundingIssue={report}/>);
     expect(Number(screen.getByTestId('frame').dataset.height)).toBeCloseTo(1102.702,8);

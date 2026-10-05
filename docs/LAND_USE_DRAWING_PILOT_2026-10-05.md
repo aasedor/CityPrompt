@@ -66,3 +66,36 @@ Screenshots, raw API inspection, and browser helpers are outside the source tree
 `10-final-cleared-plan.png` and `11-final-cleared-oblique.png`.
 `trial-verification.json` records the filtered API/geometry checks. These generated
 files are not part of the source commit.
+
+## Site boundary opacity follow-up
+
+**Site → Review site boundary → Site boundary opacity** provides a 0–100% slider.
+Use **Save Changes** to apply it. The value persists in the boundary's properties,
+independently of either zoning study's opacity. Older prepared boundaries retain
+their solid appearance; boundaries following existing terrain retain their clear
+fill until explicitly edited.
+
+Partial opacity reveals the original Google tiles, including roads and buildings.
+The prepared level, flat placement surface and boundary outline remain in place.
+At 100%, the prepared boundary clips the source tiles again. Independent road cuts
+remain active at every opacity. The surface writes flat depth before authored
+buildings, so original rooftops cannot hide proposals. Exact GLB review buildings
+now use the same render order as other authored building geometry.
+
+Browser verification on the same Hillhurst project:
+
+- Saved 0%, 50% and 100%; reloaded and confirmed 50% in the slider and API.
+- Placed a temporary fourplex through the catalogue. Its prepared datum remained
+  1034.9375555295435 m and its foundation anchor 1034.977555527964 m at both
+  endpoints, with no reported grounding issues. Verified the fourplex visually
+  against the revealed Google context at 50%.
+- Removed the temporary fourplex and its automatic landscape after the trial.
+  The pilot retains the original boundary and both zoning studies; boundary
+  opacity is now 50% for review.
+- 59 focused Vitest tests across the properties panel, tile masking, prepared
+  surface and exact GLB placement passed, along with the TypeScript check.
+  The browser reported no page errors.
+
+Final screenshot: `18-final-site-opacity-50.png`; building verification:
+`15-opacity-flat-building-trial.png`, in the external evidence directory above.
+No migration or backend change was required. This follow-up is local only.

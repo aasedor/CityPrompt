@@ -19,6 +19,7 @@ import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 import { SiteIntelligencePanel } from './SiteIntelligencePanel';
 import { BuildingModelViewer } from './BuildingModelViewer';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
+import { siteBoundaryOpacity } from '@/utils/siteBoundaryAppearance';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
@@ -1019,6 +1020,14 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                   ? 'Buildings, parks and roads align to the visible Google ground after you save. Choose an open site without existing buildings.'
                   : 'Replaces the existing site with a level surface. Use Follow existing terrain to build on an open site.'}
               </p>
+            </div>
+            <div>
+              <label htmlFor="site-boundary-opacity" className={panelLabelClass}>Site boundary opacity · {Math.round(siteBoundaryOpacity(props) * 100)}%</label>
+              <input id="site-boundary-opacity" aria-label="Site boundary opacity" type="range" min={0} max={100} step={1}
+                value={Math.round(siteBoundaryOpacity(props) * 100)}
+                onChange={event => setProps(current => ({ ...current, site_boundary_opacity: Number(event.target.value) / 100 }))}
+                className="min-h-11 w-full accent-[#151515]" />
+              <p className="text-xs text-text-muted">Lower opacity reveals Google roads and buildings. {props.community_3d_mask_existing_tiles !== false && 'The flat placement surface stays in place. '}Save changes to apply. Land-use colours have their own opacity control.</p>
             </div>
             <SiteLandscapePanel zone={zone} captureContext={captureLandscapeContext} onSaved={saved => setProps(current => ({...current,
               community_3d_landscape:saved.community_3d_landscape,

@@ -71,8 +71,8 @@ describe('compiled site preparation', () => {
     source.dispose(); backing.dispose();
   });
 
-  it('shares the active prepared datum only with contained authored zones', () => {
-    const boundary = { ...zone('site', 'site_boundary', { terrain_elevation_m: 1031.25 }), is_active_boundary: true,
+  it.each([0, 0.45, 1])('shares the active prepared datum only with contained authored zones at opacity %s', (opacity) => {
+    const boundary = { ...zone('site', 'site_boundary', { terrain_elevation_m: 1031.25, site_boundary_opacity: opacity }), is_active_boundary: true,
       coordinates: [[0, 0], [10, 0], [10, 4], [4, 4], [4, 10], [0, 10]] as [number, number][] };
     for (const type of ['building', 'road', 'green_space'] as const) {
       const contained = { ...zone(type, type, { terrain_elevation_m: 1090 }), coordinates: [[1, 1], [3, 1], [3, 3], [1, 3]] as [number, number][] };

@@ -17,6 +17,7 @@ import {
   unpatchMaterialSpatialMask,
 } from './TileSpatialMaskPlugin';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { siteBoundaryOpacity } from '@/utils/siteBoundaryAppearance';
 import { resolvePreparedSiteTerrainHeight } from './sitePreparationSurface';
 import { useParkAssemblyGroundOwners } from './ParkAssemblyGround';
 
@@ -39,7 +40,8 @@ export function TileStencilPatcher({ zones, terrainHeight, assemblyZones = NO_AS
       return createTileSpatialMaskSetConfig(
         // The caller already reduces a prepared site to its boundary plus
         // supported public-road extensions. Do not discard those outside cuts.
-        siteBoundary ? zones : [...zones, ...parkGroundOwners.filter(owner => !zones.some(zone => zone.id === owner.id))],
+        siteBoundary ? zones.filter(zone => zone.id !== siteBoundary.id || siteBoundaryOpacity(siteBoundary.properties) === 1)
+          : [...zones, ...parkGroundOwners.filter(owner => !zones.some(zone => zone.id === owner.id))],
         siteBoundary ? resolvePreparedSiteTerrainHeight(siteBoundary, terrainHeight) : terrainHeight,
       );
     },
