@@ -1,13 +1,14 @@
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import type { SiteZoneProperties } from '@/types';
 
-type Programme = 'pocket-v1' | 'greenway-v1';
+type Programme = 'pocket-v1' | 'greenway-v1' | 'shade-courtyard-v1' | 'meadow-grove-v1';
+const POCKET_PROGRAMMES = ['pocket-v1', 'shade-courtyard-v1', 'meadow-grove-v1'];
 
 /** Mirrors the metric minimum-rotated-rectangle and area limits of the two
  * server capabilities, so an unsupported drawing is explained before save. */
 export function flexibleParkFitProblem(coordinates: number[][], properties?: SiteZoneProperties): string | null {
   const programme = properties?.pick_place_flexible_park;
-  if (programme !== 'pocket-v1' && programme !== 'greenway-v1') return null;
+  if (!isFlexiblePark(properties)) return null;
   if (coordinates.length < 3 || coordinates.some(point => point.length < 2 || !point.slice(0, 2).every(Number.isFinite))) {
     return 'Draw at least three park corners to make a complete outline.';
   }
@@ -29,7 +30,7 @@ export function flexibleParkFitProblem(coordinates: number[][], properties?: Sit
   });
   const frame = frames.reduce((best, current) => current.boxArea < best.boxArea ? current : best);
   const { long, short } = frame;
-  if (programme === 'pocket-v1') {
+  if (POCKET_PROGRAMMES.includes(String(programme))) {
     if (short < 8.05 || long > 99.9 || area < 65 || area > 3590) {
       return 'The flexible pocket park needs an 8–100 m outline and 64–3,600 m² of land. Adjust the corners or choose another park.';
     }
@@ -41,5 +42,5 @@ export function flexibleParkFitProblem(coordinates: number[][], properties?: Sit
 }
 
 export function isFlexiblePark(properties?: SiteZoneProperties): properties is SiteZoneProperties & { pick_place_flexible_park: Programme } {
-  return properties?.pick_place_flexible_park === 'pocket-v1' || properties?.pick_place_flexible_park === 'greenway-v1';
+  return POCKET_PROGRAMMES.includes(String(properties?.pick_place_flexible_park)) || properties?.pick_place_flexible_park === 'greenway-v1';
 }

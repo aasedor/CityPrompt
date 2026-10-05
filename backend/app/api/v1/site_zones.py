@@ -214,6 +214,8 @@ def _assert_optional_boundary_covers(
 _FLEXIBLE_PARK_VARIANTS = {
     'pocket-v1': ('urban_pocket_park', 'urban_pocket_park_v0'),
     'greenway-v1': ('linear_park_greenway', 'linear_park_greenway_v0'),
+    'shade-courtyard-v1': ('urban_pocket_park', 'urban_pocket_park_v1'),
+    'meadow-grove-v1': ('urban_pocket_park', 'urban_pocket_park_v2'),
 }
 
 

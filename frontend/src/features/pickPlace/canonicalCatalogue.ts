@@ -95,7 +95,7 @@ export const CANONICAL_CHOICES: CanonicalChoice[] = [
   ...FLEXIBLE_PARK_ASSETS.map(registeredSupplement).map(asset => {
     const source = CANONICAL_DOMAINS.park_plaza.find(option => option.id === asset.properties.green_space_archetype_id);
     if (!source) throw new Error(`Missing park reference for ${asset.id}`);
-    return { id: `park_plaza:${source.id}:flexible`, domain: 'park_plaza' as const, placements: [asset], option: {
+    return { id: `park_plaza:${source.id}:flexible:${asset.id}`, domain: 'park_plaza' as const, placements: [asset], option: {
       ...source, label: asset.label, description: asset.description, photoUrl: asset.thumbnail,
       calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
       variants: [{ id: asset.model.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }],

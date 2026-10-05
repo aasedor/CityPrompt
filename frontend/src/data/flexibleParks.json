@@ -30,6 +30,36 @@
       "minDepthM": 12,
       "maxSizeM": 1000,
       "reshapeDescription": "Keep a connected corridor at least 60 m long, 12–60 m wide and three times longer than wide. The clear trail and planting adapt to its outline."
+    },
+    {
+      "id": "flexible_shade_courtyard_v1",
+      "key": "shade-courtyard-v1",
+      "archetypeId": "urban_pocket_park",
+      "variantId": "urban_pocket_park_v1",
+      "label": "Flexible shade courtyard",
+      "description": "A quiet contemporary courtyard with clear lawn, shade trees and seating. Draw its outline to fit a small leftover space.",
+      "thumbnail": "/archetypes/openspaces/urban-pocket-park/variant_1.png",
+      "widthM": 30,
+      "depthM": 26,
+      "minWidthM": 8,
+      "minDepthM": 8,
+      "maxSizeM": 100,
+      "reshapeDescription": "Draw a simple outline of 64–3,600 m². Lawn and circulation adapt; benches and trees keep their real size and need clear space."
+    },
+    {
+      "id": "flexible_meadow_grove_v1",
+      "key": "meadow-grove-v1",
+      "archetypeId": "urban_pocket_park",
+      "variantId": "urban_pocket_park_v2",
+      "label": "Flexible meadow grove",
+      "description": "A natural pocket refuge with meadow textures, irregular shade trees and timber seating. Draw a tapered or angled garden outline.",
+      "thumbnail": "/archetypes/openspaces/urban-pocket-park/variant_2.png",
+      "widthM": 34,
+      "depthM": 28,
+      "minWidthM": 8,
+      "minDepthM": 8,
+      "maxSizeM": 100,
+      "reshapeDescription": "Draw a simple outline of 64–3,600 m². Planting adapts to the parcel; paths and fixed-size furniture must fit inside it. This is a visual planting concept, not a habitat assessment."
     }
   ]
 }

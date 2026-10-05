@@ -844,11 +844,15 @@ for (const [domain, options] of [
   const allowed = validationRoster.entries.filter(entry => entry.domain === domain);
   const selected = options.flatMap(option => {
     const entry = allowed.find(row => row.archetype_id === option.id);
-    const flexible = domain === 'park' ? flexibleParks.programmes.find(row => row.archetypeId === option.id) : undefined;
-    if (!entry && !flexible) return [];
-    const asset = entry ? validationRoster.assets.find(row => row.id === entry.placement_id && row.model.variantId === entry.variant_id) : flexible;
+    const flexible = domain === 'park' ? flexibleParks.programmes.filter(row => row.archetypeId === option.id) : [];
+    if (!entry && !flexible.length) return [];
+    const asset = entry ? validationRoster.assets.find(row => row.id === entry.placement_id && row.model.variantId === entry.variant_id) : flexible[0];
     if (!asset) return [];
-    return [{ ...option, variants: [{ id: entry?.variant_id ?? flexible!.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }] }];
+    const variants = [{ id: entry?.variant_id ?? flexible[0].variantId, label: asset.label, thumbnailUrl: asset.thumbnail }];
+    for (const programme of flexible) if (!variants.some(variant => variant.id === programme.variantId)) {
+      variants.push({ id: programme.variantId, label: programme.label, thumbnailUrl: programme.thumbnail });
+    }
+    return [{ ...option, variants }];
   });
   options.splice(0, options.length, ...selected);
 }
