@@ -5,26 +5,21 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/direct3dCapture';
 import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
 import type { ZoningOverlay } from './zoningLabels';
-import type { ReferenceLayer } from './api';
-import { GlobeReferenceLayer } from './GlobeReferenceLayer';
+import { GlobeZoningSurface } from './GlobeZoningSurface';
+import type { ZoningPreferences } from './zoningAppearance';
 
 const NO_HIT = () => {};
 const RAD = Math.PI / 180;
 
 /** Display-only cartography: excluded from captures, raycasting and terrain masks. */
-export function GlobeZoningLabels({ data, labels, lines, terrainHeight }: {
-  data?: ZoningOverlay; labels: boolean; lines: boolean; terrainHeight: number;
-}) {
-  const outlines = useMemo<ReferenceLayer[]>(() => !data || !lines ? [] : [{
-    id: 'calgary-district-outlines', project_id: '', name: 'Calgary zoning boundaries',
-    source_filename: '', source_crs: 'EPSG:4326', source_url: null, description: null,
-    kind: 'zoning', bounds: data.bounds, feature_count: data.districts.length, warnings: [],
-    color: '#fff9ec', opacity: 0.95, created_at: data.loadedAt,
-    feature_collection: { type: 'FeatureCollection', features: data.districts.map(district => ({
-      type: 'Feature', id: district.id, properties: { label: district.label },
-      geometry: { type: 'Polygon', coordinates: district.polygon },
-    })) },
-  }], [data, lines]);
+type Props = ZoningPreferences & { data?: ZoningOverlay; terrainHeight: number };
+
+export function GlobeZoningLabels(props: Props) {
+  // Off removes the entire overlay, including its per-frame label work.
+  return props.enabled && props.data ? <ActiveZoningMap {...props} data={props.data} /> : null;
+}
+
+function ActiveZoningMap({ data, labels, lines, fill, fillOpacity, terrainHeight }: Props & { data: ZoningOverlay }) {
   const sprites = useMemo(() => {
     const group = new THREE.Group();
     group.name = 'zoning-labels';
@@ -43,21 +38,18 @@ export function GlobeZoningLabels({ data, labels, lines, terrainHeight }: {
         if (last >= 0 && context.measureText(combined).width <= 340) labelLines[last] = combined;
         else labelLines.push(code);
       }
-      canvas.width = Math.ceil(Math.max(...labelLines.map(line => context.measureText(line).width))) + 64;
-      canvas.height = labelLines.length * 32 + 28;
-      context.beginPath();
-      context.roundRect(6, 5, canvas.width - 12, canvas.height - 14, 18);
-      context.shadowColor = 'rgba(0,0,0,0.30)';
-      context.shadowBlur = 6; context.shadowOffsetY = 3;
-      context.fillStyle = 'rgba(21,25,24,0.96)';
-      context.fill();
-      context.shadowBlur = 0; context.shadowOffsetY = 0;
-      context.strokeStyle = 'rgba(255,249,236,0.40)'; context.lineWidth = 2; context.stroke();
-      context.beginPath(); context.arc(24, canvas.height / 2 - 2, 4, 0, Math.PI * 2);
-      context.fillStyle = '#c9ff3d'; context.fill();
+      canvas.width = Math.ceil(Math.max(...labelLines.map(line => context.measureText(line).width))) + 28;
+      canvas.height = labelLines.length * 32 + 16;
+      // Planning-map lettering with a fine paper halo. No floating pin/badge
+      // background: the district colour and the Google context carry the map.
       context.font = '600 26px Inter, system-ui, sans-serif';
-      context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillStyle = '#fff9ec';
-      labelLines.forEach((line, index) => context.fillText(line, canvas.width / 2 + 8, 28 + index * 32));
+      context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillStyle = '#23362e';
+      context.strokeStyle = 'rgba(255,253,242,0.96)'; context.lineWidth = 4; context.lineJoin = 'round';
+      labelLines.forEach((line, index) => {
+        const y = 24 + index * 32;
+        context.strokeText(line, canvas.width / 2, y);
+        context.fillText(line, canvas.width / 2, y);
+      });
       const texture = new THREE.CanvasTexture(canvas);
       texture.colorSpace = THREE.SRGBColorSpace;
       const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, depthWrite: false, toneMapped: false });
@@ -102,7 +94,7 @@ export function GlobeZoningLabels({ data, labels, lines, terrainHeight }: {
     }
   });
   return <group name="zoning-label-overlay" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-    <GlobeReferenceLayer layers={outlines} terrainHeight={terrainHeight} />
+    <GlobeZoningSurface data={data} terrainHeight={terrainHeight} lines={lines} fill={fill} fillOpacity={fillOpacity} />
     <primitive object={sprites} />
   </group>;
 }

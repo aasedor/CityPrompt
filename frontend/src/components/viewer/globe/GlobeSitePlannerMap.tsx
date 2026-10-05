@@ -1486,7 +1486,7 @@ interface GlobeSitePlannerMapProps {
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
-  zoningLabels?: Pick<ZoningLabelsState, 'data' | 'labels' | 'lines'>;
+  zoningLabels?: Pick<ZoningLabelsState, 'data' | 'enabled' | 'labels' | 'lines' | 'fill' | 'fillOpacity'>;
   transportContext?: ExistingTransport;
   latitude?: number;
   longitude?: number;
