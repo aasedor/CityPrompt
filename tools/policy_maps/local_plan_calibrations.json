@@ -1,0 +1,638 @@
+{
+  "east-calgary": {
+    "id": "east-calgary",
+    "source_url": "https://publicaccess.calgary.ca/lldm01/exccpa?func=ccpa.general&msgID=FTyqcsscsgR&msgAction=Download",
+    "source_sha256": "198f1c8450c36ee1d4da1535a73c320905b172a1ba7d98f9416d1220100d411f",
+    "pdf_page": 26,
+    "boundary_index": 2,
+    "pdf_bounds": [
+      97.72869873046875,
+      101.6414794921875,
+      953.314697265625,
+      690.3584594726562
+    ],
+    "crs": "EPSG:26911",
+    "matrix": [
+      [
+        7.951285152580113,
+        0.3245159177102328
+      ],
+      [
+        0.32395052138083075,
+        -7.951373173741426
+      ]
+    ],
+    "translation": [
+      708193.834962247,
+      5661131.127842426
+    ],
+    "boundary_object_id": 641,
+    "fit_rms_m": 0.17851369254370295,
+    "fit_p95_m": 0.32976665298247376,
+    "fit_max_m": 0.5883465977985216,
+    "categories": {
+      "#e4002b": "Neighbourhood Commercial",
+      "#ed9d4d": "Neighbourhood Flex",
+      "#fedb00": "Neighbourhood Connector",
+      "#fff4b2": "Neighbourhood Local",
+      "#d28c96": "Commercial Corridor",
+      "#c1acc4": "Industrial General",
+      "#a95ba5": "Industrial Heavy",
+      "#a9c23f": "Natural Areas",
+      "#70a355": "Parks and Open Space",
+      "#4db69f": "City Civic and Recreation",
+      "#cccccc": "No Urban Form Category"
+    },
+    "mask_colors": [
+      "#ffffff",
+      "#cce4f4",
+      "#e5e5e5",
+      "#f0f0f0"
+    ],
+    "road_color": "#999999",
+    "independent_checks": [
+      {
+        "name": "40 ST SE / 12 AV SE",
+        "pdf_point": [
+          466.045,
+          299.442
+        ],
+        "city_lon_lat": [
+          -113.9757489,
+          51.0424919
+        ],
+        "residual_m": 1.6459483383389761
+      },
+      {
+        "name": "44 ST SE / 14 AV SE",
+        "pdf_point": [
+          516.621,
+          320.963
+        ],
+        "city_lon_lat": [
+          -113.9700154,
+          51.0409438
+        ],
+        "residual_m": 1.0752703604178313
+      },
+      {
+        "name": "28 ST SE / 10 AV SE",
+        "pdf_point": [
+          313.338,
+          281.344
+        ],
+        "city_lon_lat": [
+          -113.993093,
+          51.0437689
+        ],
+        "residual_m": 2.0334024817140963
+      }
+    ],
+    "independent_source": "https://data.calgary.ca/resource/4dx8-rtm5.json",
+    "checked_date": "2026-10-05"
+  },
+  "chinook": {
+    "id": "chinook",
+    "source_url": "https://publicaccess.calgary.ca/lldm01/exccpa?func=ccpa.general&msgID=GTsTccrrcsT&msgAction=Download",
+    "source_sha256": "6aaa9f7abe47aaf08122a465fa62cc0a5fb5d679c425b3b9b3da43cd9f84379a",
+    "pdf_page": 34,
+    "boundary_index": 2,
+    "pdf_bounds": [
+      106.69683837890625,
+      41.5001220703125,
+      890.5968017578125,
+      750.5001220703125
+    ],
+    "crs": "EPSG:26911",
+    "matrix": [
+      [
+        4.688280819010918,
+        0.19113753470910425
+      ],
+      [
+        0.19100226260475164,
+        -4.688120564337998
+      ]
+    ],
+    "translation": [
+      702870.7005373719,
+      5656643.151743641
+    ],
+    "boundary_object_id": 643,
+    "fit_rms_m": 0.17054235929838388,
+    "fit_p95_m": 0.22069150173317714,
+    "fit_max_m": 1.1623960578865022,
+    "categories": {
+      "#ed2d2f": "Neighbourhood Commercial",
+      "#f19753": "Neighbourhood Flex",
+      "#ffd324": "Neighbourhood Connector",
+      "#fcecad": "Neighbourhood Local",
+      "#ab2a32": "Commercial Centre",
+      "#cd8898": "Commercial Corridor",
+      "#b5a7c4": "Industrial General",
+      "#9d64a9": "Industrial Heavy",
+      "#afbd4a": "Natural Areas",
+      "#76a15c": "Parks and Open Space",
+      "#44b79e": "City Civic and Recreation",
+      "#a8dbd0": "Private Institutional and Recreation",
+      "#c2c7ca": "No Urban Form Category"
+    },
+    "mask_colors": [
+      "#ffffff",
+      "#bfe0f0",
+      "#dde0e2"
+    ],
+    "road_color": "#8f9599",
+    "independent_checks": [
+      {
+        "name": "ELBOW DR SW / 50 AV SW",
+        "pdf_point": [
+          382.996,
+          398.3
+        ],
+        "city_lon_lat": [
+          -114.0813912,
+          51.0087248
+        ],
+        "residual_m": 1.7684841222803653
+      },
+      {
+        "name": "5 ST SW / 58 AV SW",
+        "pdf_point": [
+          460.196,
+          572.6
+        ],
+        "city_lon_lat": [
+          -114.0762117,
+          51.001378
+        ],
+        "residual_m": 1.3905785887437485
+      },
+      {
+        "name": "5 ST SW / 54 AV SW",
+        "pdf_point": [
+          456.796,
+          483.0
+        ],
+        "city_lon_lat": [
+          -114.0764504,
+          51.0051472
+        ],
+        "residual_m": 1.492989117925253
+      }
+    ],
+    "independent_source": "https://data.calgary.ca/resource/4dx8-rtm5.json",
+    "checked_date": "2026-10-05"
+  },
+  "heritage": {
+    "id": "heritage",
+    "source_url": "https://publicaccess.calgary.ca/lldm01/livelink.exe?func=ccpa.general&msgID=HTKscgqAqeU&msgAction=Download",
+    "source_sha256": "0b62347ca3be18cabd01ee4e792667c200dbc2911501e3166d161a6e23016f9f",
+    "pdf_page": 25,
+    "boundary_index": 2,
+    "pdf_bounds": [
+      86.39999389648438,
+      58.171417236328125,
+      960.7999877929688,
+      732.17138671875
+    ],
+    "crs": "EPSG:26911",
+    "matrix": [
+      [
+        7.800149089344847,
+        0.31761729800339283
+      ],
+      [
+        0.3175351267479273,
+        -7.800111562490983
+      ]
+    ],
+    "translation": [
+      701582.3563445191,
+      5653701.1018949915
+    ],
+    "boundary_object_id": 61,
+    "fit_rms_m": 0.2020566131367564,
+    "fit_p95_m": 0.36223901939859937,
+    "fit_max_m": 0.5136424443154428,
+    "categories": {
+      "#e4002b": "Neighbourhood Commercial",
+      "#ed9d4d": "Neighbourhood Flex",
+      "#fedb00": "Neighbourhood Connector",
+      "#fff4b2": "Neighbourhood Local",
+      "#a5192e": "Commercial Centre",
+      "#d28c96": "Commercial Corridor",
+      "#c1acc4": "Industrial General",
+      "#a9c23f": "Natural Areas",
+      "#70a355": "Parks and Open Space",
+      "#4db69f": "City Civic and Recreation",
+      "#b2e0d5": "Private Institutional and Recreation",
+      "#7fbbe3": "Regional Campus",
+      "#cccccc": "No Urban Form Category"
+    },
+    "mask_colors": [
+      "#ffffff",
+      "#cce4f4",
+      "#e5e5e5",
+      "#f0f0f0"
+    ],
+    "road_color": "#999999",
+    "independent_checks": [
+      {
+        "name": "ELBOW DR SW / HERITAGE DR SW",
+        "pdf_point": [
+          394.0,
+          284.871
+        ],
+        "city_lon_lat": [
+          -114.0831626,
+          50.979579
+        ],
+        "residual_m": 1.291264813540483
+      },
+      {
+        "name": "5 ST SW / 78 AV SW",
+        "pdf_point": [
+          446.6,
+          232.871
+        ],
+        "city_lon_lat": [
+          -114.0773157,
+          50.9832363
+        ],
+        "residual_m": 1.2336986606181417
+      },
+      {
+        "name": "FAIRMOUNT DR SE / 94 AV SE",
+        "pdf_point": [
+          609.4,
+          441.071
+        ],
+        "city_lon_lat": [
+          -114.0592064,
+          50.9686393
+        ],
+        "residual_m": 1.5525769754051617
+      }
+    ],
+    "independent_source": "https://data.calgary.ca/resource/4dx8-rtm5.json",
+    "checked_date": "2026-10-05"
+  },
+  "north-hill": {
+    "id": "north-hill",
+    "source_url": "https://publicaccess.calgary.ca/lldm01/livelink.exe?func=ccpa.general&msgID=XTTrAcrcgyN&msgAction=Download",
+    "source_sha256": "8d2c49cc837d90d8ca56730aebbebb78dcb98816504d8a06f8b6f2f9e5c220c8",
+    "pdf_page": 35,
+    "boundary_index": 2,
+    "pdf_bounds": [
+      79.49990844726562,
+      21.699981689453125,
+      978.6998901367188,
+      770.2999877929688
+    ],
+    "crs": "EPSG:26911",
+    "matrix": [
+      [
+        6.698629093924023,
+        0.27315011846280596
+      ],
+      [
+        0.2729836627672221,
+        -6.6990685974769715
+      ]
+    ],
+    "translation": [
+      702165.626349076,
+      5664616.702188617
+    ],
+    "boundary_object_id": 77,
+    "fit_rms_m": 1.2006923152947115,
+    "fit_p95_m": 0.5896893887687967,
+    "fit_max_m": 10.078654096580374,
+    "categories": {
+      "#e4002b": "Neighbourhood Commercial",
+      "#ed9d4d": "Neighbourhood Flex",
+      "#fedb00": "Neighbourhood Connector",
+      "#fff4b2": "Neighbourhood Local",
+      "#d28c96": "Commercial Corridor",
+      "#c1acc4": "Industrial General",
+      "#a9c23f": "Natural Areas",
+      "#70a355": "Parks and Open Space",
+      "#4db69f": "City Civic and Recreation",
+      "#7fbbe3": "Regional Campus",
+      "#cccccc": "No Urban Form Category"
+    },
+    "mask_colors": [
+      "#ffffff",
+      "#cce4f4",
+      "#e5e5e5",
+      "#f0f0f0"
+    ],
+    "road_color": "#999999",
+    "independent_checks": [
+      {
+        "name": "4 ST NW / 24 AV NW",
+        "pdf_point": [
+          428.6949999987189,
+          384.1270016746082
+        ],
+        "city_lon_lat": [
+          -114.0715601,
+          51.0742462
+        ],
+        "residual_m": 1.9101432965982514
+      },
+      {
+        "name": "CENTRE ST N / 20 AV NW",
+        "pdf_point": [
+          522.872999359303,
+          444.31600000000003
+        ],
+        "city_lon_lat": [
+          -114.0625288,
+          51.0706267
+        ],
+        "residual_m": 1.3491534813921306
+      },
+      {
+        "name": "EDMONTON TR NE / 12 AV NE",
+        "pdf_point": [
+          590.3359982397927,
+          565.4629921892458
+        ],
+        "city_lon_lat": [
+          -114.0560713,
+          51.0633134
+        ],
+        "residual_m": 0.7223184729022936
+      }
+    ],
+    "independent_source": "https://data.calgary.ca/resource/4dx8-rtm5.json",
+    "checked_date": "2026-10-05"
+  },
+  "south-shaganappi": {
+    "id": "south-shaganappi",
+    "source_url": "https://publicaccess.calgary.ca/lldm01/exccpa?func=ccpa.general&msgID=LTsrysceeyI&msgAction=Download",
+    "source_sha256": "4e8a98b2f1f5fef9dbcdd6d903d44837702c30610c98a73612c1c1bf3862de08",
+    "pdf_page": 34,
+    "boundary_index": 2,
+    "pdf_bounds": [
+      41.47833251953125,
+      112.8909912109375,
+      750.5213012695312,
+      936.0980224609375
+    ],
+    "crs": "EPSG:26911",
+    "matrix": [
+      [
+        7.638133232620888,
+        0.3115524756831487
+      ],
+      [
+        0.3112792596460818,
+        -7.638097103162244
+      ]
+    ],
+    "translation": [
+      696895.0672290779,
+      5666755.646532107
+    ],
+    "boundary_object_id": 324,
+    "fit_rms_m": 0.20366490129461554,
+    "fit_p95_m": 0.34475438342737175,
+    "fit_max_m": 3.7029332504164447,
+    "categories": {
+      "#e4002b": "Neighbourhood Commercial",
+      "#ed9d4d": "Neighbourhood Flex",
+      "#fadb07": "Neighbourhood Connector",
+      "#fcf4b2": "Neighbourhood Local",
+      "#a5192e": "Commercial Centre",
+      "#d28c96": "Commercial Corridor",
+      "#a9c23f": "Natural Areas",
+      "#70a355": "Parks and Open Space",
+      "#4cb69f": "City Civic and Recreation",
+      "#b2e0d5": "Private Institutional and Recreation",
+      "#7fbbe3": "Regional Campus",
+      "#cccccc": "No Urban Form Category"
+    },
+    "mask_colors": [
+      "#ffffff",
+      "#cce4f4",
+      "#e5e5e5",
+      "#f0f0f0"
+    ],
+    "road_color": "#999999",
+    "independent_checks": [
+      {
+        "name": "19 ST NW / 24 AV NW",
+        "pdf_point": [
+          734.674,
+          643.5980000000001
+        ],
+        "city_lon_lat": [
+          -114.1063124,
+          51.0742834
+        ],
+        "residual_m": 1.060692861779668
+      },
+      {
+        "name": "BOWNESS RD NW / 46 ST NW",
+        "pdf_point": [
+          237.326,
+          666.489
+        ],
+        "city_lon_lat": [
+          -114.1605496,
+          51.0726471
+        ],
+        "residual_m": 0.9146546788912537
+      }
+    ],
+    "independent_source": "https://data.calgary.ca/resource/4dx8-rtm5.json",
+    "checked_date": "2026-10-05"
+  },
+  "westbrook": {
+    "id": "westbrook",
+    "source_url": "https://publicaccess.calgary.ca/lldm01/exccpa?func=ccpa.general&msgID=CTKccgAyqsD&msgAction=Download",
+    "source_sha256": "c95a970a83a7366424ee12e251cc021e50994d8313ceafc346deab5246ef4435",
+    "pdf_page": 26,
+    "boundary_index": 2,
+    "pdf_bounds": [
+      83.59991455078125,
+      99.07012939453125,
+      708.39990234375,
+      948.3701171875
+    ],
+    "crs": "EPSG:26911",
+    "matrix": [
+      [
+        7.1778918354676025,
+        0.2926063346496625
+      ],
+      [
+        0.2925447125906265,
+        -7.177967113674873
+      ]
+    ],
+    "translation": [
+      697209.428161033,
+      5662388.92203338
+    ],
+    "boundary_object_id": 326,
+    "fit_rms_m": 0.15985030136603517,
+    "fit_p95_m": 0.3147944721633295,
+    "fit_max_m": 0.44313006378969694,
+    "categories": {
+      "#e4002b": "Neighbourhood Commercial",
+      "#ed9d4d": "Neighbourhood Flex",
+      "#fedb00": "Neighbourhood Connector",
+      "#fff4b2": "Neighbourhood Local",
+      "#a5192e": "Commercial Centre",
+      "#d28c96": "Commercial Corridor",
+      "#a9c23f": "Natural Areas",
+      "#70a355": "Parks and Open Space",
+      "#4db69f": "City Civic and Recreation",
+      "#7fbbe3": "Regional Campus",
+      "#cccccc": "No Urban Form Category"
+    },
+    "mask_colors": [
+      "#ffffff",
+      "#cce4f4",
+      "#e5e5e5",
+      "#f0f0f0"
+    ],
+    "road_color": "#999999",
+    "independent_checks": [
+      {
+        "name": "37 ST SW / 17 AV SW",
+        "pdf_point": [
+          421.2,
+          639.97
+        ],
+        "city_lon_lat": [
+          -114.1412255,
+          51.0377995
+        ],
+        "residual_m": 1.6073571033582872
+      },
+      {
+        "name": "45 ST SW / 8 AV SW",
+        "pdf_point": [
+          309.5,
+          527.37
+        ],
+        "city_lon_lat": [
+          -114.1526715,
+          51.0450722
+        ],
+        "residual_m": 1.0205902827096087
+      },
+      {
+        "name": "33 ST SW / 26 AV SW",
+        "pdf_point": [
+          476.79900000000004,
+          760.17
+        ],
+        "city_lon_lat": [
+          -114.13551,
+          51.0300571
+        ],
+        "residual_m": 1.5427953511261152
+      }
+    ],
+    "independent_source": "https://data.calgary.ca/resource/4dx8-rtm5.json",
+    "checked_date": "2026-10-05"
+  },
+  "west-elbow": {
+    "id": "west-elbow",
+    "source_url": "https://publicaccess.calgary.ca/lldm01/exccpa?func=ccpa.general&msgID=DTsceAKTeAK&msgAction=Download",
+    "source_sha256": "d88abebb99405a4bcae9d813f0dace6e182eb459995fe1d6936a1cf45b758134",
+    "pdf_page": 35,
+    "boundary_index": 2,
+    "pdf_bounds": [
+      88.30000305175781,
+      99.30010986328125,
+      703.699951171875,
+      946.10009765625
+    ],
+    "crs": "EPSG:26911",
+    "matrix": [
+      [
+        6.751381205168477,
+        0.27498514500010585
+      ],
+      [
+        0.2749723586196338,
+        -6.750959643102024
+      ]
+    ],
+    "translation": [
+      701362.3160054154,
+      5659634.893171649
+    ],
+    "boundary_object_id": 642,
+    "fit_rms_m": 0.35585145306349114,
+    "fit_p95_m": 0.30726242462387987,
+    "fit_max_m": 5.2843822960493085,
+    "categories": {
+      "#e4002b": "Neighbourhood Commercial",
+      "#ed9d4d": "Neighbourhood Flex",
+      "#fedb00": "Neighbourhood Connector",
+      "#fff4b2": "Neighbourhood Local",
+      "#d28c96": "Commercial Corridor",
+      "#a9c23f": "Natural Areas",
+      "#70a355": "Parks and Open Space",
+      "#4db69f": "City Civic and Recreation",
+      "#b2e0d5": "Private Institutional and Recreation",
+      "#7fbbe3": "Regional Campus",
+      "#cccccc": "No Urban Form Category"
+    },
+    "mask_colors": [
+      "#ffffff",
+      "#cce4f4",
+      "#e5e5e5",
+      "#f0f0f0"
+    ],
+    "road_color": "#999999",
+    "independent_checks": [
+      {
+        "name": "14 ST SW / 17 AV SW",
+        "pdf_point": [
+          333.2,
+          248.6
+        ],
+        "city_lon_lat": [
+          -114.0947243,
+          51.0378309
+        ],
+        "residual_m": 2.2775325940155047
+      },
+      {
+        "name": "33 AV SW / 20 ST SW",
+        "pdf_point": [
+          179.4,
+          476.3
+        ],
+        "city_lon_lat": [
+          -114.1094602,
+          51.0239932
+        ],
+        "residual_m": 1.3157476952980793
+      },
+      {
+        "name": "4 ST SW / 25 AV SW",
+        "pdf_point": [
+          573.799,
+          368.2
+        ],
+        "city_lon_lat": [
+          -114.0715228,
+          51.0305847
+        ],
+        "residual_m": 1.293316999677733
+      }
+    ],
+    "independent_source": "https://data.calgary.ca/resource/4dx8-rtm5.json",
+    "checked_date": "2026-10-05"
+  }
+}

@@ -51,7 +51,7 @@ export function selectPolicySite(snapshot: PolicySnapshot, coordinates: number[]
 }
 
 export function policyOverlay(snapshot: PolicySnapshot, features: PolicyFeature[]): ZoningOverlay {
-  return { bounds: snapshot.bounds, loadedAt: '2025-04-09', districts: features.flatMap(feature => {
+  return { bounds: snapshot.bounds, loadedAt: new Date().toISOString(), districts: features.flatMap(feature => {
     const anchor = zoningAnchor(feature.geometry.coordinates);
     return anchor ? [{ id: feature.id, label: feature.properties.category, color: feature.properties.color,
       anchor, polygon: feature.geometry.coordinates }] : [];
