@@ -59,6 +59,7 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
 import { GlobeZoningLabels } from '@/features/referenceLayers/GlobeZoningLabels';
+import { GlobePolicyMap, type GlobePolicyMapProps } from '@/features/policyPlans/GlobePolicyMap';
 import type { ZoningLabelsState } from '@/features/referenceLayers/useZoningLabels';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
@@ -1487,6 +1488,7 @@ interface GlobeSitePlannerMapProps {
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
   zoningLabels?: Pick<ZoningLabelsState, 'data' | 'enabled' | 'labels' | 'lines' | 'fill' | 'fillOpacity'>;
+  policyMap?: GlobePolicyMapProps;
   transportContext?: ExistingTransport;
   latitude?: number;
   longitude?: number;
@@ -1590,6 +1592,7 @@ export function GlobeSitePlannerMap({
   onCancelPlacement,
   referenceLayers = [],
   zoningLabels,
+  policyMap,
   transportContext = EMPTY_TRANSPORT,
   latitude,
   longitude,
@@ -4535,6 +4538,7 @@ export function GlobeSitePlannerMap({
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />
             {zoningLabels && <GlobeZoningLabels {...zoningLabels} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
+            {policyMap && <GlobePolicyMap {...policyMap} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
           </group>
           <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
