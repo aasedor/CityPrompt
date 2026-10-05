@@ -1,6 +1,8 @@
 # City Prompt — recent progress, 5 October 2026
 
-**Latest update:** [Land-use map in Google 3D — transparent and solid fills, boundaries, on/off toggle, and tablet controls](globe-land-use-pilot/README.md).
+**Latest update:** [Hillhurst residential alignment check — neighbourhood overview, close-up boundaries and Google 3D view](hillhurst-alignment/README.md).
+
+**Google 3D pilot:** [Currie / Richmond — transparent and solid fills, boundaries, on/off toggle, and tablet controls](globe-land-use-pilot/README.md).
 
 **Earlier correction:** [Corrected Calgary zoning codes — existing districts, proposed R-CG/S-SPR map, and PNG export](zoning-correction/README.md). This supersedes the generic-label zoning screenshot below.
 

@@ -1,0 +1,151 @@
+{
+  "boundarySegments": 128,
+  "displayedDistrictPieces": 20,
+  "distinctDesignations": [
+    "MU-2f4.0h24",
+    "DC112Z2006",
+    "R-C2",
+    "S-CS",
+    "DC76Z89",
+    "C-COR2f2.8h16",
+    "M-CGd72",
+    "DC78Z91",
+    "DC34D2016",
+    "DC114Z2001",
+    "R-CG",
+    "DC95Z2005",
+    "DC52D2011",
+    "DC137Z2000",
+    "DC121D2021SITE1",
+    "DC785",
+    "S-R",
+    "C-N1",
+    "C-COR1f3.0h20"
+  ],
+  "groundStatus": "unavailable",
+  "maxDistanceToSourceOrSiteClipMeters": 0.000013438345390615525,
+  "overlayHeightMeters": [
+    1025.380126950998,
+    1025.380126955224
+  ],
+  "renderInfo": {
+    "memory": {
+      "geometries": 65,
+      "textures": 78
+    },
+    "render": {
+      "calls": 63,
+      "frame": 5396,
+      "lines": 0,
+      "points": 0,
+      "triangles": 164788
+    }
+  },
+  "retrievedAt": "2026-10-05T19:27:04.860Z",
+  "smallDistricts": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              [
+                -114.097041,
+                51.0578421
+              ],
+              [
+                -114.097803,
+                51.0578408
+              ],
+              [
+                -114.0978054,
+                51.0576158
+              ],
+              [
+                -114.0978063,
+                51.0576158
+              ],
+              [
+                -114.0978061,
+                51.0575454
+              ],
+              [
+                -114.0978058,
+                51.0573977
+              ],
+              [
+                -114.0976601,
+                51.0573974
+              ],
+              [
+                -114.0970743,
+                51.0573986
+              ],
+              [
+                -114.0970357,
+                51.0573983
+              ],
+              [
+                -114.097036,
+                51.0575354
+              ],
+              [
+                -114.0970362,
+                51.0576165
+              ],
+              [
+                -114.0970373,
+                51.0576165
+              ],
+              [
+                -114.097041,
+                51.0578421
+              ]
+            ]
+          ]
+        ],
+        "type": "MultiPolygon"
+      },
+      "label": "R-CG"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              [
+                -114.0954896,
+                51.0573343
+              ],
+              [
+                -114.0954898,
+                51.057418
+              ],
+              [
+                -114.0954904,
+                51.057418
+              ],
+              [
+                -114.0962581,
+                51.0574172
+              ],
+              [
+                -114.096258,
+                51.0573323
+              ],
+              [
+                -114.0954896,
+                51.0573343
+              ]
+            ]
+          ]
+        ],
+        "type": "MultiPolygon"
+      },
+      "label": "C-N1"
+    }
+  ],
+  "source": "https://data.calgary.ca/resource/qe6k-p9nh.json",
+  "sourceRows": 20,
+  "terrainReferenceHeightMeters": 1024.380126953125,
+  "uniqueRenderedBoundaryVertices": 111
+}
