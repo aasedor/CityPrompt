@@ -15,6 +15,8 @@ import { AlternateContextLayer, GoogleContextVisibility } from '@/features/conte
 import { contextPilotCaptureProblem } from '@/features/context/contextProvider';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { projectedFrameFraction } from './projectFrameHeight';
+import { useWorkingViewQuality } from './useWorkingViewQuality';
+import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
 /**
  * GlobeSitePlannerMap.tsx â€” Google Earth-style 3D globe with SiteForge tools.
  *
@@ -1608,6 +1610,9 @@ export function GlobeSitePlannerMap({
   onGlobeReady,
   onModeledBuildingsChange,
 }: GlobeSitePlannerMapProps) {
+  const {quality: workingQuality, changeQuality: changeWorkingQuality, dpr: workingDpr} = useWorkingViewQuality();
+  const [showPerformance, setShowPerformance] = useState(false);
+  const [workingStats, setWorkingStats] = useState<WorkingViewStats | null>(null);
   const _latitude = latitude ?? 51.045;
   const _longitude = longitude ?? -114.07;
   const [walkMode, setWalkMode] = useState<'pick' | 'active' | null>(null);
@@ -4318,7 +4323,7 @@ export function GlobeSitePlannerMap({
         role="application"
         style={{ visibility: isInitialCameraApplied ? 'visible' : 'hidden', cursor: entrancePick ? 'crosshair' : undefined }}
         camera={initialThreeCamera}
-        dpr={[1, 2]}
+        dpr={workingDpr}
         shadows
         gl={{ antialias: true, logarithmicDepthBuffer: true, preserveDrawingBuffer: true, stencil: true }}
         onPointerMissed={() => {
@@ -4444,6 +4449,7 @@ export function GlobeSitePlannerMap({
       >
         <GlobeDragProvider value={globeDragRef}>
         <CameraExposer cameraRef={cameraRef} />
+        {showPerformance && <WorkingViewStatsSampler onSample={setWorkingStats} />}
         <PitchMonitor onPitchChange={setPitchAngle} />
         <FallbackPlaneSync controlsRef={globeControlsRef} />
         <color attach="background" args={[streetRenderProfileActive ? '#cfdae4' : '#dbeafe']} />
@@ -5036,6 +5042,7 @@ export function GlobeSitePlannerMap({
         <div className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
           <span className="text-[11px] font-black uppercase text-[#151515]">3D Globe</span>
         </div>
+        <WorkingViewPerformance quality={workingQuality} onQuality={quality => {setWorkingStats(null); changeWorkingQuality(quality);}} onOpen={open => {setWorkingStats(null); setShowPerformance(open);}} stats={workingStats} />
         <div className={`rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl ${cameraElevationBadge.textClass}`}>
           {cameraElevation}° {cameraElevationBadge.label}
         </div>
