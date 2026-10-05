@@ -7,7 +7,7 @@
     "predev": "npm run check:catalogue-delivery",
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "prebuild": "npm run check:catalogue-json && npm run check:render-style-examples",
+    "prebuild": "npm run check:catalogue-json && npm run check:render-style-examples && npm run check:policy-maps",
     "preview": "vite preview",
     "lint": "eslint .",
     "check:dead-code": "knip --include files,dependencies,unlisted --no-progress",
@@ -26,7 +26,8 @@
     "check:runtime-assets": "node scripts/generate-runtime-asset-manifest.mjs --check",
     "check:runtime-assets:hydrated": "node scripts/generate-runtime-asset-manifest.mjs --check --require-hydrated",
     "check-budget": "node scripts/check-bundle-size.js",
-    "check:render-style-examples": "node --test scripts/render-style-examples.test.mjs"
+    "check:render-style-examples": "node --test scripts/render-style-examples.test.mjs",
+    "check:policy-maps": "node scripts/check-policy-map-assets.mjs"
   },
   "dependencies": {
     "@dgreenheck/ez-tree": "^1.1.0",

@@ -1,0 +1,484 @@
+{
+  "edition": "Office consolidation 2026 June 23; Bylaw 18P2026",
+  "crs": "EPSG:26911",
+  "sources": {
+    "mdp": {
+      "sha256": "808c86083a1eeb15020d8dcc231c87230cf94814a92bee2f254cb4e2ee2b9980",
+      "url": "https://publicaccess.calgary.ca/lldm01/exccpa?func=ccpa.general&msgAction=Download&msgID=OTTKcgyTerX"
+    },
+    "ctp": {
+      "sha256": "282ba8a32ba49d091d5debd270b5e4ba8e60f072dade24369eb3dfa63431c3b6",
+      "url": "https://publicaccess.calgary.ca/lldm01/exccpa?func=ccpa.general&msgAction=Download&msgID=ETerrTTsycC"
+    }
+  },
+  "maps": {
+    "mdp-188": {
+      "matrix": [
+        [
+          47.948505543640636,
+          1.9531909687984852
+        ],
+        [
+          1.9532859271950844,
+          -47.947910810425796
+        ]
+      ],
+      "translation": [
+        684310.5119484196,
+        5683714.757388075
+      ],
+      "rms": 1.3405288860332847,
+      "p95": 2.4900281500588517,
+      "max": 6.992567505829222,
+      "pdfBoundaryBounds": [
+        59.384002685546875,
+        146.0999755859375,
+        725.583984375,
+        1003.0
+      ],
+      "document": "mdp",
+      "pdfPage": 188,
+      "boundaryDrawing": 1141,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          381.58401,
+          516.79993
+        ],
+        "offsetMetres": 2.33
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "mdp-189": {
+      "matrix": [
+        [
+          47.948504491042755,
+          1.953191527906515
+        ],
+        [
+          1.953285799268187,
+          -47.9479107705327
+        ]
+      ],
+      "translation": [
+        684121.0577993697,
+        5683866.464782576
+      ],
+      "rms": 1.3405928949138934,
+      "p95": 2.490022648583742,
+      "max": 6.9931319337607505,
+      "pdfBoundaryBounds": [
+        63.199981689453125,
+        149.41943359375,
+        729.4000244140625,
+        1006.3194580078125
+      ],
+      "document": "mdp",
+      "pdfPage": 189,
+      "boundaryDrawing": 922,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          385.39999,
+          520.11938
+        ],
+        "offsetMetres": 2.33
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "mdp-190": {
+      "matrix": [
+        [
+          47.94850465921433,
+          1.9531912220043866
+        ],
+        [
+          1.9532858135265314,
+          -47.94791078111692
+        ]
+      ],
+      "translation": [
+        684551.1851472671,
+        5683918.641535927
+      ],
+      "rms": 1.340575058886255,
+      "p95": 2.490032485914651,
+      "max": 6.993087924642586,
+      "pdfBoundaryBounds": [
+        54.199981689453125,
+        150.1409912109375,
+        720.4000244140625,
+        1007.041015625
+      ],
+      "document": "mdp",
+      "pdfPage": 190,
+      "boundaryDrawing": 16765,
+      "independentCheck": {
+        "method": "Visual comparison with City street junction and river geography",
+        "limitation": "No measurable road-junction vector in this map. City-boundary or Centre City outline registration; no independent numeric accuracy claim."
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "mdp-191": {
+      "matrix": [
+        [
+          49.26885110126936,
+          2.007105199394542
+        ],
+        [
+          2.0064720234229987,
+          -49.26872628104347
+        ]
+      ],
+      "translation": [
+        684194.0684503845,
+        5684099.969605078
+      ],
+      "rms": 1.392424985970016,
+      "p95": 2.6031445418646326,
+      "max": 6.693824271967771,
+      "pdfBoundaryBounds": [
+        59.836517333984375,
+        150.0999755859375,
+        708.136474609375,
+        984.0
+      ],
+      "document": "mdp",
+      "pdfPage": 191,
+      "boundaryDrawing": 37053,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          373.43649,
+          510.80002
+        ],
+        "offsetMetres": 3.64
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "mdp-193": {
+      "matrix": [
+        [
+          49.72297521536345,
+          2.026064906360379
+        ],
+        [
+          2.026119674787245,
+          -49.72389802050521
+        ]
+      ],
+      "translation": [
+        684287.0658738817,
+        5686036.406467668
+      ],
+      "rms": 1.3300450399900685,
+      "p95": 2.552326727482509,
+      "max": 5.999114145891693,
+      "pdfBoundaryBounds": [
+        55.750701904296875,
+        187.5665283203125,
+        698.1666870117188,
+        1013.8675537109375
+      ],
+      "document": "mdp",
+      "pdfPage": 193,
+      "boundaryDrawing": 46265,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          366.5242,
+          545.00043
+        ],
+        "offsetMetres": 2.99
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "ctp-101": {
+      "matrix": [
+        [
+          47.94850449097343,
+          1.9531915280236278
+        ],
+        [
+          1.9532857994650186,
+          -47.94791077062477
+        ]
+      ],
+      "translation": [
+        684328.3871949525,
+        5684082.416233012
+      ],
+      "rms": 1.340592867023065,
+      "p95": 2.4900225087116916,
+      "max": 6.993131945362527,
+      "pdfBoundaryBounds": [
+        58.699981689453125,
+        153.739990234375,
+        724.9000244140625,
+        1010.6400146484375
+      ],
+      "document": "ctp",
+      "pdfPage": 101,
+      "boundaryDrawing": 922,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          380.89999,
+          524.43988
+        ],
+        "offsetMetres": 2.33
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "ctp-104": {
+      "matrix": [
+        [
+          48.65332883792855,
+          1.9824772278298242
+        ],
+        [
+          1.9823646556053087,
+          -48.65354365607708
+        ]
+      ],
+      "translation": [
+        684239.2405612087,
+        5684111.008010896
+      ],
+      "rms": 1.3101228109074874,
+      "p95": 2.360392764838553,
+      "max": 5.964544568163155,
+      "pdfBoundaryBounds": [
+        59.659820556640625,
+        152.2178955078125,
+        716.1597900390625,
+        996.7178955078125
+      ],
+      "document": "ctp",
+      "pdfPage": 104,
+      "boundaryDrawing": 16749,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          377.15991,
+          517.51788
+        ],
+        "offsetMetres": 2.63
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "ctp-105": {
+      "matrix": [
+        [
+          47.94829264628076,
+          1.9533502242063159
+        ],
+        [
+          1.9532807324655317,
+          -47.94806492233583
+        ]
+      ],
+      "translation": [
+        684451.1258854159,
+        5684016.298763152
+      ],
+      "rms": 1.3130865409724686,
+      "p95": 2.4267293226295714,
+      "max": 6.397214431766268,
+      "pdfBoundaryBounds": [
+        56.183990478515625,
+        152.26806640625,
+        722.384033203125,
+        1009.1680908203125
+      ],
+      "document": "ctp",
+      "pdfPage": 105,
+      "boundaryDrawing": 16809,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          378.384,
+          522.96802
+        ],
+        "offsetMetres": 2.27
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "ctp-106": {
+      "matrix": [
+        [
+          47.948504611561376,
+          1.9531913152352542
+        ],
+        [
+          1.9532858093180356,
+          -47.94791077956837
+        ]
+      ],
+      "translation": [
+        684760.3613502049,
+        5684089.255522309
+      ],
+      "rms": 1.3405758243100585,
+      "p95": 2.490028183730298,
+      "max": 6.993275115127998,
+      "pdfBoundaryBounds": [
+        49.699981689453125,
+        153.5159912109375,
+        715.9000244140625,
+        1010.416015625
+      ],
+      "document": "ctp",
+      "pdfPage": 106,
+      "boundaryDrawing": 16765,
+      "independentCheck": {
+        "method": "Visual comparison with City street junction and river geography",
+        "limitation": "No measurable road-junction vector in this map. City-boundary or Centre City outline registration; no independent numeric accuracy claim."
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "ctp-100": {
+      "matrix": [
+        [
+          47.10056214807125,
+          1.9088598192921034
+        ],
+        [
+          1.920580757725938,
+          -47.11047777044115
+        ]
+      ],
+      "translation": [
+        684987.5850689923,
+        5687237.980340014
+      ],
+      "reference": "City boundary from MDP Map 1 fitted to rendered dashed boundary",
+      "pdfToMdpMatrix": [
+        [
+          0.9823170993003684,
+          -0.00021274518265148264
+        ],
+        [
+          -3.8262180529314324e-05,
+          0.9825258582074902
+        ]
+      ],
+      "pdfToMdpTranslation": [
+        17.085715733132588,
+        -72.78418610646033
+      ],
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          371.52591,
+          600.4743
+        ],
+        "offsetMetres": 26.59
+      },
+      "diagnosticOnly": {
+        "allSampleNearestDarkInkRms": 729.4884822633121,
+        "allSampleNearestDarkInkP95": 1053.9524145963787,
+        "note": "Includes missing dashes, excluded areas and coloured boundary segments. These are not positional accuracy measures."
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "mdp-192": {
+      "matrix": [
+        [
+          54.11534704965097,
+          2.1918734444034436
+        ],
+        [
+          2.1906324451874832,
+          -54.1894042860925
+        ]
+      ],
+      "translation": [
+        682527.0501683815,
+        5689544.303793385
+      ],
+      "reference": "City boundary from MDP Map 1 fitted to rendered dashed boundary",
+      "pdfToMdpMatrix": [
+        [
+          1.128602075133846,
+          -0.0003241652713621513
+        ],
+        [
+          0.0002888573316444884,
+          1.1301591702895855
+        ]
+      ],
+      "pdfToMdpTranslation": [
+        -32.189323628672724,
+        -122.89213979431119
+      ],
+      "independentCheck": {
+        "method": "Visual comparison with City street junction and river geography",
+        "limitation": "No measurable road-junction vector in this map. City-boundary or Centre City outline registration; no independent numeric accuracy claim."
+      },
+      "diagnosticOnly": {
+        "allSampleNearestDarkInkRms": 1166.1889973757538,
+        "allSampleNearestDarkInkP95": 3103.4787110827624,
+        "note": "Includes missing dashes, excluded areas and coloured boundary segments. These are not positional accuracy measures."
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "ctp-102": {
+      "matrix": [
+        [
+          0.2207096541104762,
+          -5.439340644219558
+        ],
+        [
+          -5.4229506628740065,
+          -0.22317795314061492
+        ]
+      ],
+      "translation": [
+        708833.6386931958,
+        5660804.68660546
+      ],
+      "rms": 1.274430895038426,
+      "p95": 1.9525595363754151,
+      "reference": "Centre City outline matched to calibrated MDP Map 1",
+      "independentCheck": {
+        "method": "Visual comparison with City street junction and river geography",
+        "limitation": "No measurable road-junction vector in this map. City-boundary or Centre City outline registration; no independent numeric accuracy claim."
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    }
+  },
+  "controlSource": "City of Calgary City Boundary FeatureServer/0, EPSG:26911; independent road check: Calgary Open Data Road Street Network, segment junction coordinates, retrieved 2026-10-05."
+}

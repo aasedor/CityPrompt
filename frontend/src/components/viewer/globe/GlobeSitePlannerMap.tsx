@@ -61,6 +61,7 @@ import { useViewerStore } from '@/store';
 import { GlobeZoningLabels } from '@/features/referenceLayers/GlobeZoningLabels';
 import { GlobePolicyMap, type GlobePolicyMapProps, type PolicyMapHandle } from '@/features/policyPlans/GlobePolicyMap';
 import { policyInspectionAllowed } from '@/features/policyPlans/policyPicking';
+import { GlobeCityPolicyMaps, type GlobeCityPolicyProps, type CityPolicyMapHandle } from '@/features/policyPlans/GlobeCityPolicyMaps';
 import type { ZoningLabelsState } from '@/features/referenceLayers/useZoningLabels';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
 import { EMPTY_TRANSPORT, type ExistingTransport } from '@/features/referenceLayers/existingTransport';
@@ -1490,6 +1491,7 @@ interface GlobeSitePlannerMapProps {
   referenceLayers?: ReferenceLayer[];
   zoningLabels?: Pick<ZoningLabelsState, 'data' | 'enabled' | 'labels' | 'lines' | 'fill' | 'fillOpacity'>;
   policyMap?: GlobePolicyMapProps;
+  cityPolicyMaps?: GlobeCityPolicyProps;
   transportContext?: ExistingTransport;
   latitude?: number;
   longitude?: number;
@@ -1594,6 +1596,7 @@ export function GlobeSitePlannerMap({
   referenceLayers = [],
   zoningLabels,
   policyMap,
+  cityPolicyMaps,
   transportContext = EMPTY_TRANSPORT,
   latitude,
   longitude,
@@ -1663,6 +1666,7 @@ export function GlobeSitePlannerMap({
   // LOD settlement state â€” true when 3D tiles have fully loaded
   const referenceOverlayGroup = useRef<THREE.Group>(null);
   const policyMapRef = useRef<PolicyMapHandle>(null);
+  const cityPolicyMapsRef = useRef<CityPolicyMapHandle>(null);
   const [isSceneSettled, setIsSceneSettled] = useState(false);
   // The loading badge can release once visible context is usable; capture
   // continues to rely on the stricter scene-settled signal below.
@@ -4299,27 +4303,32 @@ export function GlobeSitePlannerMap({
   // Inspect in the canvas capture phase, before R3F can select the underlying
   // site/building. Authoring, navigation drags and other picking modes win.
   handlePolicyClickRef.current = (event: MouseEvent) => {
-    if (event.button !== 0 || !policyMap || !policyInspectionAllowed({
-      enabled: policyMap.enabled, opacity: policyMap.opacity, paused: interactionPaused,
+    if (event.button !== 0 || !policyInspectionAllowed({
+      enabled: Boolean((policyMap?.enabled && policyMap.opacity > 0) || cityPolicyMaps?.layers.some(layer=>layer.enabled && layer.opacity>0)), opacity: 1, paused: interactionPaused,
       drawing: hasDrawingTool, placing: Boolean(placementDraft), measuring: measureModeActive,
       streetView: streetViewPegman !== null, dragged: draggedSincePointerDownRef.current,
     })) return false;
     const canvas = canvasRef.current, camera = cameraRef.current;
     if (!canvas || !camera) return false;
     const rect = canvas.getBoundingClientRect();
-    const id = policyMapRef.current?.pick(((event.clientX-rect.left)/rect.width)*2-1,
-      -((event.clientY-rect.top)/rect.height)*2+1, camera);
-    if (!id) { if (policyMap.selected) policyMap.clearSelection(); return false; }
+    const x=((event.clientX-rect.left)/rect.width)*2-1, y=-((event.clientY-rect.top)/rect.height)*2+1;
+    const id = policyMapRef.current?.pick(x,y,camera);
+    const cityMapId = id ? null : cityPolicyMapsRef.current?.pick(x,y,camera);
+    if (!id && !cityMapId) { policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return false; }
     ignoreNextCanvasClickRef.current = false;
     markUserInteracted();
     setSelectedBuildingId(null);
     onZoneSelected(null);
-    policyMap.selectArea(id);
+    if (id) { cityPolicyMaps?.clearSelection(); policyMap?.selectArea(id); }
+    else if (cityMapId) { policyMap?.clearSelection(); cityPolicyMaps?.inspect(cityMapId); }
     return true;
   };
   useEffect(() => {
     if (policyMap?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) policyMap.clearSelection();
   }, [policyMap?.selected, policyMap?.clearSelection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
+  useEffect(() => {
+    if (cityPolicyMaps?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) cityPolicyMaps.clearSelection();
+  }, [cityPolicyMaps?.selected, cityPolicyMaps?.clearSelection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
 
   // Effects restart on Fast Refresh even when R3F keeps the same canvas.
   useEffect(() => {
@@ -4571,6 +4580,7 @@ export function GlobeSitePlannerMap({
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />
             {zoningLabels && <GlobeZoningLabels {...zoningLabels} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
             {policyMap && <GlobePolicyMap ref={policyMapRef} {...policyMap} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
+            {cityPolicyMaps && <GlobeCityPolicyMaps ref={cityPolicyMapsRef} {...cityPolicyMaps} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
           </group>
           <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
