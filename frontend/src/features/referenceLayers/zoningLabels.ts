@@ -4,7 +4,7 @@ import type { MultiPolygon } from 'polygon-clipping';
 export const ZONING_SOURCE = 'https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh';
 export const ZONING_LIMIT = 1500;
 export type Position = [number, number];
-export type ZoningLabel = { id: string; label: string; description?: string; anchor: Position; polygon: Position[][] };
+export type ZoningLabel = { id: string; label: string; code?: string; description?: string; anchor: Position; polygon: Position[][] };
 export type ZoningOverlay = { districts: ZoningLabel[]; bounds: [number, number, number, number]; loadedAt: string };
 
 export function zoningBounds(coordinates: number[][]): ZoningOverlay['bounds'] | null {
@@ -76,10 +76,11 @@ export async function districtLabels(rows: unknown[], coordinates: number[][], s
     const label = [row.label, row.lu_code].find(value => typeof value === 'string' && value.trim()) as string | undefined;
     if (!label) throw new Error('Calgary returned a district without a zoning code.');
     const description = typeof row.description === 'string' ? row.description.trim().slice(0, 300) || undefined : undefined;
+    const code = typeof row.lu_code === 'string' ? row.lu_code.trim().slice(0, 40) || undefined : undefined;
     const pieces = clipping.intersection(row.multipolygon.coordinates, [site]);
     for (let j = 0; j < pieces.length; j++) {
       const anchor = zoningAnchor(pieces[j]);
-      if (anchor) result.push({ id: `district-${i}-${j}`, label: label.trim().slice(0, 120), description, anchor, polygon: pieces[j] });
+      if (anchor) result.push({ id: `district-${i}-${j}`, label: label.trim().slice(0, 120), code, description, anchor, polygon: pieces[j] });
       if (result.length > ZONING_LIMIT) throw new Error('This site contains too many zoning areas. Use a smaller boundary.');
     }
   }

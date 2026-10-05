@@ -25,6 +25,7 @@ describe('district zoning labels without parcel data', () => {
       { label: 'DC48Z84', lu_code: 'DC', multipolygon: geometry },
       { lu_code: 'H-GO', description: null, multipolygon: geometry },
     ], site);
+    expect(result.map(zone=>zone.code)).toEqual(['M-C1','DC','H-GO']);
     expect(result.map(({ label, description }) => ({ label, description }))).toEqual([
       { label: 'M-C1 d75', description: 'Multi-Residential - Contextual Low Profile' },
       { label: 'DC48Z84', description: undefined },

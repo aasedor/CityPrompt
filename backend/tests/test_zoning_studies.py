@@ -132,6 +132,30 @@ def test_validated_shapes_preserve_holes_source_provenance_and_overlay_warning()
     assert any("overlap" in warning for warning in warnings)
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("district", [
+    {"code": "M-C1", "designation": "M-C1 d75", "description": "Multi-Residential - Contextual Low Profile"},
+    {"code": "DC", "designation": "DC48Z84", "description": "Direct Control"},
+])
+async def test_saves_district_identity_independently_of_student_caption(client, db, district):
+    body = copy.deepcopy(BODY)
+    body["zones"][0].update(label="Courtyard housing", origin="student", district=district)
+    response = await client.put(f"/api/v1/zoning-studies/projects/{PROJECT}/proposed", json=body)
+    assert response.status_code == 200, response.text
+    properties = response.json()["feature_collection"]["features"][0]["properties"]
+    assert properties["district"] == district
+    assert properties["label"] == "Courtyard housing"
+    assert response.json()["source_url"].endswith("/qe6k-p9nh")
+
+
+@pytest.mark.parametrize("district", [{"designation": " "}, {"designation": "x"*121}, {"designation": "M-C1", "code": " "}, {"designation": "M-C1", "description": "x"*301}])
+def test_invalid_district_metadata_is_rejected(district):
+    body = copy.deepcopy(BODY)
+    body["zones"][0]["district"] = district
+    with pytest.raises(ValueError):
+        endpoint.StudyRequest(**body)
+
+
 @pytest.mark.parametrize("kind", ["crossing", "outside", "unclosed", "duplicate-id", "blank-label"])
 def test_invalid_drawings_are_rejected_before_storage(kind):
     body = copy.deepcopy(BODY)

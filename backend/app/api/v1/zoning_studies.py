@@ -11,7 +11,7 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 from geoalchemy2.shape import to_shape
-from pydantic import BaseModel, Field, FiniteFloat
+from pydantic import BaseModel, Field, FiniteFloat, StringConstraints
 from shapely.geometry import Polygon, mapping
 from shapely.ops import unary_union
 from sqlalchemy import select
@@ -31,11 +31,20 @@ Position = tuple[FiniteFloat, FiniteFloat]
 Ring = Annotated[list[Position], Field(min_length=4, max_length=4096)]
 
 
+class StudyDistrict(BaseModel):
+    # A student's district reference, not a regulatory compliance assertion.
+    # Full designation retains density/height modifiers and individual DC bylaws.
+    designation: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=120)]
+    code: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=40)] | None = None
+    description: Annotated[str, StringConstraints(strip_whitespace=True, max_length=300)] | None = None
+
+
 class StudyZone(BaseModel):
     id: str = Field(min_length=1, max_length=80, pattern=r"^[a-zA-Z0-9_-]+$")
     label: str = Field(min_length=1, max_length=120)
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     origin: Literal["student", "calgary-extract"] = "student"
+    district: StudyDistrict | None = None
     rings: list[Ring] = Field(min_length=1, max_length=32)
 
 
@@ -69,8 +78,10 @@ def study_collection(request: StudyRequest, condition: Condition, site: Polygon)
         if not label:
             raise ValueError("Give each zone a label.")
         shapes.append(shape)
-        features.append({"type": "Feature", "id": zone.id, "geometry": mapping(shape),
-                         "properties": {"label": label, "color": zone.color, "origin": zone.origin}})
+        properties = {"label": label, "color": zone.color, "origin": zone.origin}
+        if zone.district is not None:
+            properties["district"] = zone.district.model_dump(exclude_none=True)
+        features.append({"type": "Feature", "id": zone.id, "geometry": mapping(shape), "properties": properties})
     warnings = ["Student-authored graphic; consult official district data for statutory zoning."]
     if shapes:
         union = unary_union(shapes)
@@ -124,7 +135,7 @@ async def save_zoning_study(
     layer.kind = "zoning"
     layer.source_filename = filename
     layer.source_crs = "EPSG:4326"
-    layer.source_url = "https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh" if any(zone.origin == "calgary-extract" for zone in request.zones) else None
+    layer.source_url = "https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh" if any(zone.origin == "calgary-extract" or zone.district is not None for zone in request.zones) else None
     layer.description = "Editable student graphic. Existing and proposed conditions are separate; official zoning and project drawings remain independent."
     layer.feature_collection = collection
     layer.feature_count = len(request.zones)

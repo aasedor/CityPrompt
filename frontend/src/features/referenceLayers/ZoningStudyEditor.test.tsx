@@ -10,6 +10,10 @@ import ZoningStudyEditor from './ZoningStudyEditor';
 
 vi.mock('@/services/api',()=>({api:{put:vi.fn()},getApiErrorMessage:(error:Error)=>error.message}));
 vi.mock('./api',()=>({referenceLayerQueryKey:(id:string)=>['reference-layers',id],referenceLayersApi:{list:vi.fn()}}));
+vi.mock('./calgaryDistricts',async(importOriginal)=>({
+  ...await importOriginal<typeof import('./calgaryDistricts')>(),
+  fetchCalgaryDistricts:vi.fn().mockResolvedValue([{code:'S-SPR',designation:'S-SPR',description:'Special Purpose - School, Park and Community Reserve'}]),
+}));
 const boundary:Position[]=[[-114.12,51.01],[-114.119,51.01],[-114.119,51.011],[-114.12,51.011]];
 const layer={id:'saved',name:'Existing zoning study',content_hash:'a'.repeat(64),feature_collection:{type:'FeatureCollection',
   _citypromptStudy:{schema:1,condition:'existing',boundaryCoordinates:boundary},features:[{type:'Feature',id:'one',geometry:{type:'Polygon',coordinates:[[...boundary,boundary[0]]]},properties:{label:'Housing',color:'#dfb88b',origin:'student'}}]}} as unknown as ReferenceLayer;
@@ -17,9 +21,42 @@ const props={projectId:'project',accountId:'student',boundaryId:'site',boundary,
 const setup=(changes:Partial<typeof props>={})=>render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}><ZoningStudyEditor {...props} {...changes}/></QueryClientProvider>);
 beforeEach(()=>{vi.clearAllMocks();localStorage.clear();});
 describe('zoning study editing and recovery',()=>{
+  it('keeps the full City designation when editing a caption, undoing, switching conditions and saving',async()=>{
+    const district={code:'DC',designation:'DC48Z84',description:'Direct Control'};
+    const cityLayer={...layer,feature_collection:{...layer.feature_collection,features:layer.feature_collection.features.map(feature=>({...feature,
+      properties:{...feature.properties,label:'DC48Z84',origin:'calgary-extract',district},
+    }))}};
+    vi.mocked(api.put).mockResolvedValue({data:cityLayer});
+    setup({layers:[cityLayer]});
+    fireEvent.click(screen.getByRole('button',{name:'DC48Z84'}));
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Courtyard housing'}});
+    expect(screen.getByLabelText('Calgary district')).toHaveValue('DC48Z84');
+    fireEvent.click(screen.getByRole('tab',{name:'Proposed land use'}));
+    fireEvent.click(screen.getByRole('button',{name:'Copy existing study'}));
+    fireEvent.click(screen.getByRole('button',{name:'DC48Z84 Courtyard housing'}));
+    expect(screen.getByLabelText('Calgary district')).toHaveValue('DC48Z84');
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Courtyard proposal'}});
+    fireEvent.click(screen.getByRole('button',{name:'Undo'}));
+    fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
+    await waitFor(()=>expect(api.put).toHaveBeenCalledOnce());
+    expect(vi.mocked(api.put).mock.calls[0][1]).toMatchObject({zones:[{label:'Courtyard housing',district}]});
+  });
+  it('keeps legacy concept areas unassigned until the student chooses a published district',async()=>{
+    setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
+    expect(screen.getByLabelText('Calgary district')).toHaveValue('');
+    await screen.findByRole('option',{name:/S-SPR — Special Purpose/});
+    fireEvent.change(screen.getByLabelText('Calgary district'),{target:{value:'S-SPR'}});
+    expect(screen.getByLabelText('Map caption')).toHaveValue('Housing');
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Community garden'}});
+    expect(screen.getByLabelText('Calgary district')).toHaveValue('S-SPR');
+    fireEvent.click(screen.getByRole('button',{name:'Undo'}));
+    fireEvent.click(screen.getByRole('button',{name:'Undo'}));
+    fireEvent.click(screen.getByRole('button',{name:'Housing'}));
+    expect(screen.getByLabelText('Calgary district')).toHaveValue('');
+  });
   it('edits only the selected condition and preserves undo across condition switches',()=>{
     setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
-    fireEvent.change(screen.getByLabelText('Zone label'),{target:{value:'Homes'}});
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Homes'}});
     fireEvent.click(screen.getByRole('tab',{name:'Proposed land use'}));
     expect(screen.queryByRole('button',{name:'Homes'})).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('tab',{name:'Existing conditions'}));
@@ -42,7 +79,7 @@ describe('zoning study editing and recovery',()=>{
   it('keeps a failed/conflicting save as a recoverable draft when closed and reopened',async()=>{
     vi.mocked(api.put).mockRejectedValue(new Error('The shared study changed.'));
     const view=setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
-    fireEvent.change(screen.getByLabelText('Zone label'),{target:{value:'Kept draft'}});
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Kept draft'}});
     fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
     expect(await screen.findByRole('alert')).toHaveTextContent('shared study changed');
     view.unmount();setup();
@@ -51,11 +88,11 @@ describe('zoning study editing and recovery',()=>{
   });
   it('flushes the latest edit before an immediate reload or page suspension',()=>{
     const view=setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
-    fireEvent.change(screen.getByLabelText('Zone label'),{target:{value:'Immediate draft'}});
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Immediate draft'}});
     fireEvent(window,new Event('beforeunload'));
     const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
     expect(JSON.parse(localStorage.getItem(key)!)).toMatchObject({zones:[{label:'Immediate draft'}]});
-    fireEvent.change(screen.getByLabelText('Zone label'),{target:{value:'Suspended draft'}});
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Suspended draft'}});
     fireEvent(window,new Event('pagehide'));
     expect(JSON.parse(localStorage.getItem(key)!)).toMatchObject({zones:[{label:'Suspended draft'}]});
     view.unmount();
@@ -73,7 +110,7 @@ describe('zoning study editing and recovery',()=>{
       features:layer.feature_collection.features.map(feature=>({...feature,properties:{...feature.properties,label:'Canonical label'}}))}};
     vi.mocked(api.put).mockResolvedValue({data:canonical});
     setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
-    fireEvent.change(screen.getByLabelText('Zone label'),{target:{value:'  Canonical label  '}});
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'  Canonical label  '}});
     fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
     expect(await screen.findByText('Existing zoning study saved as its own map layer.')).toBeInTheDocument();
     expect(screen.getByRole('button',{name:'Canonical label'})).toBeInTheDocument();
@@ -82,7 +119,7 @@ describe('zoning study editing and recovery',()=>{
   it('reloads a shared revision explicitly and allows undoing that draft replacement',async()=>{
     vi.mocked(referenceLayersApi.list).mockResolvedValue({layers:[layer],can_edit:true});
     setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
-    fireEvent.change(screen.getByLabelText('Zone label'),{target:{value:'Local edit'}});
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Local edit'}});
     fireEvent.click(screen.getByRole('button',{name:'Reload shared version'}));
     expect(await screen.findByText(/Shared version loaded/)).toBeInTheDocument();
     expect(screen.getByRole('button',{name:'Housing'})).toBeInTheDocument();
@@ -93,7 +130,7 @@ describe('zoning study editing and recovery',()=>{
     setup({canEdit:false});
     expect(screen.getByRole('button',{name:'Draw zone'})).toBeDisabled();
     fireEvent.click(screen.getByRole('button',{name:'Housing'}));
-    expect(screen.getByLabelText('Zone label')).toBeDisabled();
+    expect(screen.getByLabelText('Map caption')).toBeDisabled();
     expect(screen.getByRole('button',{name:'Save map layer'})).toBeDisabled();
     expect(screen.getByRole('button',{name:'Export SVG'})).toBeEnabled();
   });
