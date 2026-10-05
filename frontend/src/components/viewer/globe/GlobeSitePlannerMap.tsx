@@ -109,6 +109,7 @@ import { authoredCameraGround } from './authoredCameraGround';
 import { constrainElevatedRailWalk, elevatedRailLiftDestination } from './elevatedRailWalking';
 import { constrainNativeParkWalk, nativeParkLiftDestination, nativeParkWalkEntry, nativeParkWalkEntrance, nativeParkWalkStartForZone } from '@/features/parks/nativeParkWalking';
 import { buildingWalkEntry, buildingWalkEntrance, buildingWalkStartForZone, constrainBuildingWalk, setBuildingWalkingDoorsOpen } from '@/features/legoAssembly/buildingWalking';
+import { beginBuildingInspection, buildingInspectionStart, constrainBuildingInspection, endBuildingInspection } from '@/features/legoAssembly/buildingInspection';
 import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
@@ -1615,6 +1616,9 @@ export function GlobeSitePlannerMap({
   const [walkHasParkEntrance, setWalkHasParkEntrance] = useState(false);
   const [walkLiftLabel, setWalkLiftLabel] = useState<string|null>(null);
   const [walkHasBuildingEntrance, setWalkHasBuildingEntrance] = useState(false);
+  const [walkBuildingZoneId, setWalkBuildingZoneId] = useState<string | null>(null);
+  const [walkShellInspection, setWalkShellInspection] = useState(false);
+  const inspectionZoneRef = useRef<string | null>(null);
   const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
   const interactionPaused = externalInteractionPaused || Boolean(entrancePick) || walkMode !== null;
@@ -1794,20 +1798,21 @@ export function GlobeSitePlannerMap({
   // promotes its authored LEGO family instead of leaving a massing proxy.
   const selectedRenderedBuildingId = selectedBuildingId
     ?? siteZones.find((zone) => zone.id === selectedZoneId)?.building_id
+    ?? siteZones.find((zone) => zone.id === walkBuildingZoneId)?.building_id
     ?? null;
   const selectedInspectionZone = useMemo(
     () => siteZones.find((zone) => (
       zone.id === selectedZoneId
-      || (selectedRenderedBuildingId != null && zone.building_id === selectedRenderedBuildingId)
+      || (selectedBuildingId != null && zone.building_id === selectedBuildingId)
     )) ?? null,
-    [selectedRenderedBuildingId, selectedZoneId, siteZones],
+    [selectedBuildingId, selectedZoneId, siteZones],
   );
   // Coexistence: a building with a renderable LEGO recipe renders as a module
   // stack — it is excluded from the Meshy model layer (the stack wins).
   // Buildings with a saved recipe or an honest planned-massing fallback mount
   // the LEGO layer, which itself skips + debug-counts footprint-less records.
   const reviewBuildingZones = useMemo(() => siteZones.filter((zone) =>
-    zone.zone_type === 'building' && Boolean(nativeBuildingUrl(zone))), [siteZones]);
+    isBuildingZoneType(zone.zone_type) && Boolean(nativeBuildingUrl(zone))), [siteZones]);
   const reviewBuildingIds = useMemo(() => new Set(reviewBuildingZones
     .map((zone) => zone.building_id).filter((id): id is string => Boolean(id))), [reviewBuildingZones]);
   const meshyBuildings = useMemo(
@@ -2312,13 +2317,20 @@ export function GlobeSitePlannerMap({
   const applyWalkPose = useCallback((next: WalkPose) => {
     const camera = cameraRef.current;
     if (!camera) return;
+    const inspectionPose = inspectionZoneRef.current
+      ? constrainBuildingInspection(terrainZonesRef.current, inspectionZoneRef.current, next) : null;
+    if (inspectionZoneRef.current && !inspectionPose) {
+      setWalkPickError('The model or its ground changed. Exit walk and select the building again.');
+      return;
+    }
     if (import.meta.env.DEV && walkPoseRef.current) {
       if(sceneRef.current?.userData.roadTerrainRebuilding)
         next={...next,lng:walkPoseRef.current.lng,lat:walkPoseRef.current.lat};
       const constrained=sceneRef.current?.userData.roadTerrainRehearsal?.constrainWalk?.(walkPoseRef.current,next);
       if(constrained)next={...next,...constrained};
     }
-    let groundHeight = authoredCameraGround(terrainZonesRef.current, next.lng, next.lat, next.groundHeight);
+    if (inspectionPose) next = inspectionPose;
+    let groundHeight = inspectionPose?.groundHeight ?? authoredCameraGround(terrainZonesRef.current, next.lng, next.lat, next.groundHeight);
     // The isolated terrain rehearsal uses the same physical surface for its
     // pedestrian camera. This development hook is absent from release builds.
     if (import.meta.env.DEV) {
@@ -2329,11 +2341,11 @@ export function GlobeSitePlannerMap({
     }
     const pose = { ...next, groundHeight };
     walkPoseRef.current = pose;
-    setWalkHasParkEntrance(Boolean(nativeParkWalkEntrance(terrainZonesRef.current, pose)));
-    const railLift=elevatedRailLiftDestination(terrainZonesRef.current,pose);
-    const parkLift=nativeParkLiftDestination(terrainZonesRef.current,pose);
+    setWalkHasParkEntrance(!inspectionPose && Boolean(nativeParkWalkEntrance(terrainZonesRef.current, pose)));
+    const railLift=inspectionPose ? null : elevatedRailLiftDestination(terrainZonesRef.current,pose);
+    const parkLift=inspectionPose ? null : nativeParkLiftDestination(terrainZonesRef.current,pose);
     setWalkLiftLabel(parkLift?.label ?? (railLift ? `Take lift to ${railLift.groundHeight>pose.groundHeight?'platform':'street'}` : null));
-    setWalkHasBuildingEntrance(Boolean(buildingWalkEntrance(terrainZonesRef.current, pose)));
+    setWalkHasBuildingEntrance(!inspectionPose && Boolean(buildingWalkEntrance(terrainZonesRef.current, pose)));
     const lat = pose.lat * DEG_TO_RAD;
     const lng = pose.lng * DEG_TO_RAD;
     const surface = new THREE.Vector3();
@@ -2352,6 +2364,11 @@ export function GlobeSitePlannerMap({
   }, []);
 
   const leaveWalk = useCallback(() => {
+    endBuildingInspection();
+    inspectionZoneRef.current = null;
+    setWalkShellInspection(false);
+    setWalkBuildingZoneId(null);
+    setWalkPickError('');
     setBuildingWalkingDoorsOpen(false);
     const camera = cameraRef.current;
     const saved = walkSavedCameraRef.current;
@@ -2371,12 +2388,16 @@ export function GlobeSitePlannerMap({
     setWalkMode(null);
   }, []);
 
-  useEffect(() => () => { setBuildingWalkingDoorsOpen(false); }, []);
+  useEffect(() => () => { setBuildingWalkingDoorsOpen(false); endBuildingInspection(); }, []);
 
-  const activateWalkAtPose = useCallback((pose: WalkPose) => {
+  const activateWalkAtPose = useCallback((pose: WalkPose, buildingZoneId?: string, shellInspection = false) => {
     const camera = cameraRef.current;
-    if (!camera) return;
-    setBuildingWalkingDoorsOpen(true);
+    if (!camera) { endBuildingInspection(); return; }
+    inspectionZoneRef.current = shellInspection ? buildingZoneId ?? null : null;
+    setWalkShellInspection(shellInspection);
+    setWalkBuildingZoneId(buildingZoneId ?? null);
+    if (!shellInspection) endBuildingInspection();
+    setBuildingWalkingDoorsOpen(!shellInspection);
     walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
       up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
     if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
@@ -2462,7 +2483,8 @@ export function GlobeSitePlannerMap({
         if (next !== current) {
           // A building zone is a planning plot, not a solid collision mesh.
           // It can contain open courts, arcades and paved passages.
-          applyWalkPose(constrainBuildingWalk(terrainZonesRef.current, current, constrainNativeParkWalk(terrainZonesRef.current, current, constrainElevatedRailWalk(terrainZonesRef.current, current, next))));
+          applyWalkPose(inspectionZoneRef.current ? next
+            : constrainBuildingWalk(terrainZonesRef.current, current, constrainNativeParkWalk(terrainZonesRef.current, current, constrainElevatedRailWalk(terrainZonesRef.current, current, next))));
         }
       }
       lastTime = time;
@@ -4515,7 +4537,7 @@ export function GlobeSitePlannerMap({
               onZoneClick={handleZoneMeshClick}
               selectionEnabled={!interactionPaused && !hasDrawingTool && !measureModeActive}
               suppressedBuildingIds={suppressedBuildingIds}
-              planningOverlaysVisible={zoneOverlaysVisible}
+              planningOverlaysVisible={zoneOverlaysVisible && walkMode !== 'active'}
               placementBoundaryVisible={!captureOverlaysHidden && (Boolean(placementDraft) || activeSitePlannerTool === 'road')}
             />
           </group>
@@ -4585,6 +4607,7 @@ export function GlobeSitePlannerMap({
                 onLoadedIdsChange={handleModeledIdsChange}
                 onGroundingIssuesChange={setModelGroundingIssues}
                 selectedBuildingId={selectedRenderedBuildingId}
+                selectionOutlineVisible={walkMode !== 'active'}
                 onBuildingClick={handleBuildingModelClick}
               />
             )}
@@ -4603,6 +4626,7 @@ export function GlobeSitePlannerMap({
                 onGroundingIssuesChange={handleGroundingIssuesChange}
                 onEntranceReviewsChange={setEntranceReviews}
                 selectedBuildingId={selectedRenderedBuildingId}
+                selectionOutlineVisible={walkMode !== 'active'}
                 onBuildingClick={handleBuildingModelClick}
               />
             )}
@@ -4714,6 +4738,12 @@ export function GlobeSitePlannerMap({
           onPointerCancel={() => { walkPointerRef.current = null; }} />
         <div className="absolute bottom-20 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-xl border border-slate-950 bg-white/95 p-2 text-xs font-semibold text-slate-950 shadow-xl">
           <span className="px-2">WASD move · Drag to turn · Shift faster · Esc exit</span>
+          {walkShellInspection && <span role="status" className="px-2">Shell inspection · No authored interior</span>}
+          {walkPickError && <span role="alert" className="px-2 text-red-800">{walkPickError}</span>}
+          {walkShellInspection && <button type="button" onClick={() => {
+            const start = inspectionZoneRef.current && buildingInspectionStart(terrainZonesRef.current, inspectionZoneRef.current);
+            if (start) applyWalkPose(start);
+          }} className="min-h-11 rounded-lg border border-slate-700 px-3">Return to inspection start</button>}
           {walkHasParkEntrance &&
             <button type="button" onClick={() => {
               const pose = walkPoseRef.current;
@@ -5058,13 +5088,16 @@ export function GlobeSitePlannerMap({
             Focus building
           </button>
         )}
-        {!walkMode && selectedInspectionZone?.zone_type === 'building' && (
+        {!walkMode && selectedInspectionZone && isBuildingZoneType(selectedInspectionZone.zone_type) && (
           <button type="button" onClick={() => {
-            const start = buildingWalkStartForZone(terrainZonesRef.current, selectedInspectionZone.id);
-            if (start) { onZoneSelected(null); setSelectedBuildingId(null); activateWalkAtPose(start); }
-            else { setWalkPickError('No walking route is available for this model. Check that its detailed 3D model has loaded.'); setWalkMode('pick'); }
+            const authored = buildingWalkStartForZone(terrainZonesRef.current, selectedInspectionZone.id);
+            const start = authored ?? beginBuildingInspection(terrainZonesRef.current, selectedInspectionZone.id);
+            if (start) {
+              onZoneSelected(null); setSelectedBuildingId(null);
+              activateWalkAtPose(start, selectedInspectionZone.id, !authored);
+            } else { setWalkPickError('Turn on 3D models and let this building and its ground finish loading, then select Walk inside again.'); setWalkMode('pick'); }
           }} className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] hover:bg-[#dcff81]"
-            title="Start walking at this building's authored entrance">
+            title="Enter this building's walking route or inspect its 3D shell">
             Walk inside
           </button>
         )}

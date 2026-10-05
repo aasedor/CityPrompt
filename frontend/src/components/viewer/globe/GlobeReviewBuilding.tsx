@@ -10,8 +10,8 @@ import { rectangleDimensions } from '@/features/pickPlace/geometry';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { resolveZoneTerrainHeight } from './globeTerrainUtils';
 import { direct3DInstanceUserData, direct3DZoneInstanceDescriptor } from './direct3dCapture';
-import { mountBuildingWalking, readBuildingWalking } from '@/features/legoAssembly/buildingWalking';
-import { measuredWalkPlan, prepareMeasuredBuildingWalking } from '@/features/legoAssembly/measuredBuildingWalking';
+import { mountBuildingInspection } from '@/features/legoAssembly/buildingInspection';
+import { mountModelBuildingWalking } from '@/features/legoAssembly/mountModelBuildingWalking';
 import * as THREE from 'three';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useSharedSiteGround, useSharedSiteGroundVerification } from './SharedSiteGroundProvider';
@@ -114,15 +114,10 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
   useEffect(() => {
     const source = model.children[0];
     if (contact.status !== 'ready' || !source) return;
-    const walking = readBuildingWalking(source);
-    if (walking) return mountBuildingWalking(rendererId, zone, source, walking);
-    const plan = measuredWalkPlan(zone.properties?.pick_place_model_revision);
-    const measured = plan && prepareMeasuredBuildingWalking(source, plan);
-    if (measured) {
-      const unmount = mountBuildingWalking(rendererId, zone, source, measured.network, measured.setOpen);
-      return () => { unmount(); measured.dispose(); };
-    }
-  }, [model, zone, contact, rendererId]);
+    const inspect = mountBuildingInspection(rendererId, zone, source);
+    const walk = mountModelBuildingWalking(rendererId, zone, source, url);
+    return () => { walk(); inspect(); };
+  }, [model, zone, contact, rendererId, url]);
   const storedTerrain = Number(zone.properties?.terrain_elevation_m);
   const height = displayContact.status === 'ready' ? displayContact.anchorHeight : preparedLevel
     ?? resolveZoneTerrainHeight(null, Number.isFinite(storedTerrain) ? storedTerrain : null, terrainHeight);

@@ -40,8 +40,9 @@ import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntranc
 import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
-import { buildingWalkRevision, mountBuildingWalking, readBuildingWalking } from '@/features/legoAssembly/buildingWalking';
-import { resolveMeasuredWalkPlan, prepareMeasuredBuildingWalking } from '@/features/legoAssembly/measuredBuildingWalking';
+import { buildingWalkRevision } from '@/features/legoAssembly/buildingWalking';
+import { mountBuildingInspection } from '@/features/legoAssembly/buildingInspection';
+import { mountModelBuildingWalking } from '@/features/legoAssembly/mountModelBuildingWalking';
 import { authoredHomePlotFrame, preservesAuthoredPlotAxes } from '@/features/legoAssembly/detachedPlot';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
@@ -163,6 +164,7 @@ interface GlobeLegoAssemblyLayerProps {
   onGroundingIssuesChange?: (issues: LegoGroundingIssue[]) => void;
   onEntranceReviewsChange?: (reviews: BuildingEntranceReview[]) => void;
   selectedBuildingId?: string | null;
+  selectionOutlineVisible?: boolean;
   onBuildingClick?: (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
 }
 
@@ -304,6 +306,12 @@ function LegoMassingStack({
   const groundFootprints = useMemo(() => [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)], [ring, frame.centroidLng, frame.centroidLat]);
   const foundation = useBuildingFoundation(groundFootprints, frame, building.id, preparedBoundary, preparedSiteTerrainHeight, onGroundingStatus);
 
+  const inspectionRef = useRef<THREE.Mesh>(null);
+  useEffect(() => {
+    if (!zone || !geometry || foundation.contact.status !== 'ready' || !inspectionRef.current) return;
+    return mountBuildingInspection(`lego-massing:${building.id}`, zone, inspectionRef.current, 'z');
+  }, [building.id, zone, geometry, foundation.contact.status]);
+
   const tiles = useContext(TilesRendererContext);
   const properties = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(properties?.terrain_elevation_m ?? properties?.terrain_height);
@@ -382,6 +390,7 @@ function LegoMassingStack({
       height={terrain}
     >
       <mesh
+        ref={inspectionRef}
         geometry={geometry}
         position={[0, 0, 0]}
         renderOrder={LEGO_RENDER_ORDER}
@@ -562,27 +571,21 @@ function LegoStackInstance({
 
   const walkingZoneRevision = zone ? buildingWalkRevision(zone) : '';
   useEffect(() => {
+    if (!zone || !detailedReady || foundation.contact.status !== 'ready' || !stackRef.current) return;
+    return mountBuildingInspection(`lego:${building.id}`, zone, stackRef.current, 'z');
+  }, [building.id, zone, walkingZoneRevision, detailedReady, foundation.contact.status, modules]);
+  useEffect(() => {
     if (!zone || !detailedReady || foundation.contact.status !== 'ready' || !isNativeClayPlan(recipe)) return;
     const cleanup: (() => void)[] = [];
-    let cancelled = false;
     for (const [i, { cloned, transform }] of modules.entries()) {
       // Keep authored vertical dimensions and circulation clearances.
       if (transform.scale.some(s => Math.abs(s - 1) > 1e-6)) continue;
       const source = cloned.children[0];
       if (!source) continue;
-      const walking = readBuildingWalking(source);
-      if (walking) { cleanup.push(mountBuildingWalking(`${building.id}:${i}`, zone, source, walking)); continue; }
       const url = recipe.instances[i]?.model_url;
-      if (!url) continue;
-      void resolveMeasuredWalkPlan(zone.properties?.pick_place_model_revision, resolveApiFileUrl(url)).then(plan => {
-        if (cancelled || !plan) return;
-        const measured = prepareMeasuredBuildingWalking(source, plan);
-        if (!measured) return;
-        const unmount = mountBuildingWalking(`${building.id}:${i}`, zone, source, measured.network, measured.setOpen);
-        cleanup.push(() => { unmount(); measured.dispose(); });
-      });
+      cleanup.push(mountModelBuildingWalking(`${building.id}:${i}`, zone, source, url ? resolveApiFileUrl(url) : ''));
     }
-    return () => { cancelled = true; cleanup.forEach(dispose => dispose()); };
+    return () => { cleanup.forEach(dispose => dispose()); };
   }, [building.id, walkingZoneRevision, detailedReady, foundation.contact.status, preparedSiteTerrainHeight, modules, recipe, zone]);
 
   useFrame(({ camera }) => {
@@ -693,6 +696,7 @@ export function GlobeLegoAssemblyLayer({
   onGroundingIssuesChange,
   onEntranceReviewsChange,
   selectedBuildingId = null,
+  selectionOutlineVisible = true,
   onBuildingClick,
 }: GlobeLegoAssemblyLayerProps) {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
@@ -930,7 +934,7 @@ export function GlobeLegoAssemblyLayer({
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               onGroundingStatus={handleGroundingStatus}
-              selected={selectedBuildingId === building.id}
+              selected={selectionOutlineVisible && selectedBuildingId === building.id}
               proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
               onBuildingClick={onBuildingClick}
             />
@@ -951,7 +955,7 @@ export function GlobeLegoAssemblyLayer({
             onLoaded={handleFallbackLoaded}
             onUnloaded={handleFallbackUnloaded}
             onGroundingStatus={handleGroundingStatus}
-            selected={selectedBuildingId === building.id}
+            selected={selectionOutlineVisible && selectedBuildingId === building.id}
             proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
           />
@@ -971,7 +975,7 @@ export function GlobeLegoAssemblyLayer({
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             onGroundingStatus={handleGroundingStatus}
-            selected={selectedBuildingId === building.id}
+            selected={selectionOutlineVisible && selectedBuildingId === building.id}
             proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
           />;
@@ -991,7 +995,7 @@ export function GlobeLegoAssemblyLayer({
                 onLoaded={handleDetailedLoaded}
                 onUnloaded={handleDetailedUnloaded}
                 onGroundingStatus={handleGroundingStatus}
-                selected={selectedBuildingId === building.id}
+                selected={selectionOutlineVisible && selectedBuildingId === building.id}
                 proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
                 onBuildingClick={onBuildingClick}
                 incompleteFallback={massing}

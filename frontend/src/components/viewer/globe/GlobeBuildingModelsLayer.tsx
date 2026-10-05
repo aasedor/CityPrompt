@@ -29,6 +29,8 @@ import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { BuildingFoundationSurface } from './BuildingFoundationSurface';
+import { mountBuildingInspection } from '@/features/legoAssembly/buildingInspection';
+import { mountModelBuildingWalking } from '@/features/legoAssembly/mountModelBuildingWalking';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
@@ -103,6 +105,7 @@ interface GlobeBuildingModelsLayerProps {
   onLoadedIdsChange: (ids: Set<string>) => void;
   onGroundingIssuesChange?: (issues: LegoGroundingIssue[]) => void;
   selectedBuildingId?: string | null;
+  selectionOutlineVisible?: boolean;
   onBuildingClick?: (buildingId: string) => void;
 }
 
@@ -238,6 +241,14 @@ function BuildingModelInstance({
   );
   const groundFootprints = useMemo(() => importedModelGroundFootprints(bbox, placement, frame), [bbox, placement, frame]);
   const foundation = useModelFoundation(groundFootprints, frame, building.id, onGroundingStatus);
+
+  useEffect(() => {
+    if (!zone || !placement || foundation.contact.status !== 'ready') return;
+    const inspect = mountBuildingInspection(`model:${building.id}`, zone, cloned);
+    const walk = Math.abs(placement.scale - 1) < 1e-6
+      ? mountModelBuildingWalking(`model:${building.id}`, zone, cloned, url) : () => {};
+    return () => { walk(); inspect(); };
+  }, [building.id, zone, placement, foundation.contact.status, cloned, url]);
 
   useEffect(() => {
     if (placement?.heightWarning) {
@@ -413,6 +424,12 @@ function GeneratedBuildingMassing({
   const groundFootprints = useMemo(() => [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)], [ring, frame.centroidLng, frame.centroidLat]);
   const foundation = useModelFoundation(groundFootprints, frame, building.id, onGroundingStatus);
 
+  const inspectionRef = useRef<THREE.Mesh>(null);
+  useEffect(() => {
+    if (!zone || !geometry || foundation.contact.status !== 'ready' || !inspectionRef.current) return;
+    return mountBuildingInspection(`model-massing:${building.id}`, zone, inspectionRef.current, 'z');
+  }, [building.id, zone, geometry, foundation.contact.status]);
+
   const tiles = useContext(TilesRendererContext);
   const properties = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(properties?.terrain_elevation_m ?? properties?.terrain_height);
@@ -491,6 +508,7 @@ function GeneratedBuildingMassing({
       height={terrain}
     >
       <mesh
+        ref={inspectionRef}
         geometry={geometry}
         position={[0, 0, 0]}
         renderOrder={MODEL_RENDER_ORDER}
@@ -526,6 +544,7 @@ export function GlobeBuildingModelsLayer({
   onLoadedIdsChange,
   onGroundingIssuesChange,
   selectedBuildingId = null,
+  selectionOutlineVisible = true,
   onBuildingClick,
 }: GlobeBuildingModelsLayerProps) {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
@@ -710,7 +729,7 @@ export function GlobeBuildingModelsLayer({
             onLoaded={handleLoaded}
             onUnloaded={handleUnloaded}
             onGroundingStatus={handleGroundingStatus}
-            selected={selectedBuildingId === building.id}
+            selected={selectionOutlineVisible && selectedBuildingId === building.id}
             proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
             onBuildingClick={onBuildingClick}
           />
@@ -728,7 +747,7 @@ export function GlobeBuildingModelsLayer({
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
               onGroundingStatus={handleGroundingStatus}
-              selected={selectedBuildingId === building.id}
+              selected={selectionOutlineVisible && selectedBuildingId === building.id}
               proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
               onBuildingClick={onBuildingClick}
             />
@@ -748,7 +767,7 @@ export function GlobeBuildingModelsLayer({
                 onLoaded={handleLoaded}
                 onUnloaded={handleUnloaded}
                 onGroundingStatus={handleGroundingStatus}
-                selected={selectedBuildingId === building.id}
+                selected={selectionOutlineVisible && selectedBuildingId === building.id}
                 proposalForDirect3D={direct3DProposalBuildingIds?.has(building.id) ?? false}
                 onBuildingClick={onBuildingClick}
               />
