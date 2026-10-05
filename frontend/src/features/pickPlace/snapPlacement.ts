@@ -8,6 +8,7 @@ import { readBuildingEntrance, resolvePedestrianConnections } from './pedestrian
 import { nativeParkApproaches } from '@/features/parks/nativeParkReservations';
 import { buildingEdgeContract, placementEdgeSnapCandidates, buildingPlacementEnvelope } from './buildingPlacementEdges';
 import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
+import { siteBoundarySnapCandidates } from './siteBoundarySnapping';
 
 type Point = { x: number; y: number };
 export function snapBuildingMove(zone: SiteZone, coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null) {
@@ -67,7 +68,8 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   // A corner can meet both a neighbour and a sidewalk. Resolve the two axes
   // together instead of requiring the student to place and drag a second time.
   for(let pass=0;pass<2;pass++) {
-    const candidate=placementEdgeSnapCandidates({coordinates:magnetCoordinates,properties,zone_type:zoneType},neighbours)
+    const candidate=[...placementEdgeSnapCandidates({coordinates:magnetCoordinates,properties,zone_type:zoneType},neighbours),
+      ...siteBoundarySnapCandidates(magnetCoordinates,boundary)].sort((a,b)=>a.distance-b.distance)
       .find(item=>!check(item.coordinates) && connectionFits(item.coordinates));
     if(!candidate)break;
     magnetCoordinates=candidate.coordinates;

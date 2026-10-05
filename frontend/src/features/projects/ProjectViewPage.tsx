@@ -40,6 +40,7 @@ import { specialistConnectionProblem } from '@/features/pickPlace/specialistConn
 import { snapConnectedStreetEdit, streetEditConnectionCheck } from '@/features/pickPlace/streetEditConnections';
 import { isAxiosError } from 'axios';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
+import { snapStreetBoundaryPlacement } from '@/features/pickPlace/streetBoundaryPlacement';
 import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
 import type { PlacementDraft } from '@/features/pickPlace/GlobePlacementPreview';
 import { generatedPlacementDraft, placementDraftProperties } from '@/features/pickPlace/generatedPlacement';
@@ -323,6 +324,11 @@ export function ProjectViewPage() {
   const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
     const zone = siteZones.find(item => item.id === zoneId);
     if (zone && isFixedSectionStreet(zone)) coordinates = snapConnectedStreetEdit(zone, coordinates, siteZones);
+    if (zone?.zone_type === 'road') {
+      const snapped = snapStreetBoundaryPlacement({ ...zone, ...streetCoordinateUpdate(zone, coordinates) }, siteZones, getActiveSiteBoundary(siteZones));
+      if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
+      coordinates = snapped.coordinates;
+    }
     if (zone && ['building', 'residential', 'green_space'].includes(zone.zone_type)) {
       const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId,zone.properties);
       if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
@@ -1158,6 +1164,19 @@ export function ProjectViewPage() {
             transportContext={transportContext}
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
+              if (['building', 'residential', 'green_space'].includes(type)) {
+                const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, properties, type);
+                if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
+                coordinates = snapped.coordinates;
+              }
+              if (type === 'road') {
+                const snapped = snapStreetBoundaryPlacement({
+                  id: 'boundary-street-preview', zone_type: type, project_id: id ?? '', color: '',
+                  sort_order: 0, created_at: '', updated_at: '', coordinates, properties,
+                }, siteZones, getActiveSiteBoundary(siteZones));
+                if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
+                coordinates = snapped.coordinates; properties = snapped.properties;
+              }
               if (type === 'green_space' && isFlexiblePark(properties)) {
                 const problem = parkOutlineProblem(coordinates)
                   ?? flexibleParkFitProblem(coordinates, properties)

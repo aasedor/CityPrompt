@@ -19,6 +19,8 @@ import { assetForZone } from '@/features/pickPlace/catalogue';
 import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
 import { snapBuildingMove, snapPlacement } from '@/features/pickPlace/snapPlacement';
 import { snapConnectedStreetEdit } from '@/features/pickPlace/streetEditConnections';
+import { snapStreetBoundaryPlacement } from '@/features/pickPlace/streetBoundaryPlacement';
+import { snapStreetToBoundary } from '@/features/pickPlace/streetBoundarySnapping';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { isFixedSectionStreet, reshapeStreetPoint, streetCoordinateUpdate, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { extractCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
@@ -393,6 +395,12 @@ export function GlobeEditMode({
         newCoords = snapped.coordinates;
       }
       if (isFixedSectionStreet(zone)) newCoords = snapConnectedStreetEdit(zone, newCoords, zones);
+      if (zone.zone_type === 'road') {
+        const draft = { ...zone, ...streetCoordinateUpdate(zone, newCoords) };
+        const snapped = snapStreetBoundaryPlacement(draft, zones, getActiveSiteBoundary(zones));
+        if (snapped.problem) return;
+        newCoords = snapped.coordinates;
+      }
 
       // Write to drag ref (no React state update — useFrame reads this)
       dragRef.current.zoneId = zone.id;
@@ -674,7 +682,8 @@ export function GlobeEditMode({
         ? resizeRectangleCorner(originalCoordsRef.current, index, lngLat, asset)
         : originalCoordsRef.current.map((c, i) => i === index ? [...lngLat] : [...c]);
       if (isFixedSectionStreet(zone) && !pe.altKey) {
-        const line = extractCenterline(newCoords);
+        const line = snapStreetToBoundary(extractCenterline(newCoords), streetSectionWidth(zone), getActiveSiteBoundary(zones), zone.properties ?? {});
+        newCoords = bufferLineToPolygon(line, streetSectionWidth(zone));
         const snapped = snapStreetEndpoint(line, index, zones, zone.id, streetSectionWidth(zone));
         if (snapped !== line) newCoords = bufferLineToPolygon(snapped, streetSectionWidth(zone));
       }

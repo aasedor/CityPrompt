@@ -7,6 +7,7 @@ import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJun
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { streetCoordinateUpdate } from './streetPlacement';
 import { snapConnectedStreetEdit, streetEditConnectionCheck } from './streetEditConnections';
+import { snapStreetBoundaryPlacement } from './streetBoundaryPlacement';
 
 // Replay the recorded gesture against current module bindings. The historical
 // fixture stays unchanged; its pre-upgrade locks cannot approve today's models.
@@ -56,5 +57,14 @@ describe('connected street editing', () => {
   it('detects a lost junction for section replacement without mutating neighbours', () => {
     const gesture = bufferLineToPolygon(saved.brokenControls, 23);
     expect(streetEditConnectionCheck(main, zones)({ ...main, ...streetCoordinateUpdate(main, gesture) })).toBe(false);
+  });
+
+  it('does not let boundary snapping approve a disconnected street edit', () => {
+    const boundary = saved.nonRoadZones.find(zone => zone.zone_type === 'site_boundary') as unknown as SiteZone;
+    const gesture = bufferLineToPolygon(saved.brokenControls, 23);
+    const broken = { ...main, ...streetCoordinateUpdate(main, gesture) };
+    const result = snapStreetBoundaryPlacement(broken, zones, boundary);
+    expect(result.problem).not.toBeNull();
+    expect(streetEditConnectionCheck(main, zones)({ ...broken, ...result })).toBe(false);
   });
 });
