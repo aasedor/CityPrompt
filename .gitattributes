@@ -75,3 +75,4 @@ seed/classroom-streets/skytrain-modern-station-v001/*.png filter=lfs diff=lfs me
 seed/classroom-streets/civic-flow-station-v001/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/gothic_community_church/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/timber_sanctuary_church/*.png filter=lfs diff=lfs merge=lfs -text
+frontend/public/render-style-examples/*.png filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,74 @@
+{
+  "schema": "cityprompt.render-style-examples@1",
+  "project": "Currie Commons - student community trial",
+  "evidence_date": "2026-09-08/09",
+  "camera_note": "Street examples share a community and direction; source captures are not byte-identical. Charcoal uses a closer building camera.",
+  "examples": [
+    {
+      "style_id": "photomontage",
+      "view": "Street view",
+      "provider": "gpt-image-2",
+      "audit_id": "ebe0c34f-4d13-44aa-a48d-7c433c274c1f",
+      "files": [
+        {
+          "role": "output",
+          "file": "photomontage-output.png",
+          "original_file": "photomontage-provider_original-02fe5846.png",
+          "bytes": 2791836,
+          "sha256": "b1d93d4cb2ceda5e0849174f35834fc5cb669cd25ea3b31f7ff6485c6003d373"
+        },
+        {
+          "role": "source",
+          "file": "photomontage-source.png",
+          "original_file": "02-audit-input_image_key.png",
+          "bytes": 1070923,
+          "sha256": "eacfcecaa2f7d457e249cc6eb69d0b61667446b353ed6dc83243ca1fd5ceffc1"
+        }
+      ]
+    },
+    {
+      "style_id": "watercolour",
+      "view": "Street view",
+      "provider": "gpt-image-2",
+      "audit_id": "4e2513b7-a224-4e12-89e1-891308941a9a",
+      "files": [
+        {
+          "role": "output",
+          "file": "watercolour-output.png",
+          "original_file": "watercolour-provider_original-dc1e8317.png",
+          "bytes": 3208721,
+          "sha256": "574eef233c631672d38376c807e1ece6de2f74b31577430d28295f0f6b231070"
+        },
+        {
+          "role": "source",
+          "file": "watercolour-source.png",
+          "original_file": "05-audit-input_image_key.png",
+          "bytes": 1070505,
+          "sha256": "c6ca5a251924420baeee7fcd8a58cbf6c6902399101ccddfca0ff36b1644e195"
+        }
+      ]
+    },
+    {
+      "style_id": "charcoal",
+      "view": "Closer building view",
+      "provider": "gpt-image-2",
+      "audit_id": "200a9069-5b37-4de1-b60e-b611f7344205",
+      "files": [
+        {
+          "role": "output",
+          "file": "charcoal-output.png",
+          "original_file": "charcoal-provider_original-bc22803c.png",
+          "bytes": 3280666,
+          "sha256": "64c585dcc44b499abaef898549ef779382b929638043d741471f23304f5747b8"
+        },
+        {
+          "role": "source",
+          "file": "charcoal-source.png",
+          "original_file": "07-audit-input_image_key.png",
+          "bytes": 822929,
+          "sha256": "8b160020bf2615330a6f7b38a5b75b48a4b199b3b82436d2b0fefcec01d0308c"
+        }
+      ]
+    }
+  ]
+}

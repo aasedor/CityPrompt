@@ -25,6 +25,7 @@ import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel } from '@/config/imageModel
 import { ImageModelSelect } from './ImageModelSelect';
 import { useImageModelChoice } from './useImageModelChoice';
 import { runImageModelBatch } from './runImageModelBatch';
+import { RenderStyleGuideButton } from './RenderStyleGuideButton';
 
 const COMPASS_LABELS: Record<number, string> = {
   0: 'N', 45: 'NE', 90: 'E', 135: 'SE',
@@ -847,6 +848,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
 
         {/* Style selector */}
         <div className="street-view-style-list max-h-36 min-w-[220px] flex-1 overflow-y-auto rounded-lg p-2">
+          <RenderStyleGuideButton styles={STREET_VIEW_STYLES} selectedStyle={selectedStyle} onStyle={setSelectedStyle} disabled={isGenerating} className="mb-2" />
           {directStreetMode && <div className="mb-2"><ImageModelSelect value={imageModel} onChange={setImageModel} disabled={isGenerating} availability={imageModelAvailability} />{imageProgress && <p role="status" className="mt-1 text-xs">{imageProgress}</p>}</div>}
           {STREET_VIEW_STYLE_GROUPS.map(group => (
             <div key={group.label}>

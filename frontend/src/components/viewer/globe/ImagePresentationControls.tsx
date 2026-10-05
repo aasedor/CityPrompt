@@ -1,5 +1,7 @@
 import { STYLES, STYLE_GROUPS } from './imageStyles';
 import { resolveDirect3DPresentationMode } from './useDirect3DRender';
+import { RenderStyleGuideButton } from '../RenderStyleGuideButton';
+import { renderStyleDirection } from '../renderStyleGuideData';
 
 /** All established styles remain primary creative choices. */
 export function ImagePresentationControls({ style, onStyle, addPeople, addVehicles, onPeople, onVehicles, isStyleDisabled, styleHint }: {
@@ -11,6 +13,7 @@ export function ImagePresentationControls({ style, onStyle, addPeople, addVehicl
 }) {
   return <section aria-label="Image presentation" className="space-y-3 bg-slate-900/90 px-4 py-3 text-white">
     <h4 className="text-sm font-bold">Choose a style</h4>
+    <RenderStyleGuideButton styles={STYLES} selectedStyle={style} onStyle={onStyle} isStyleDisabled={isStyleDisabled} styleHint={styleHint} />
     <div className="space-y-3">
       {STYLE_GROUPS.map(group => <fieldset key={group.label}>
         <legend className="mb-1 text-xs font-bold text-slate-200">{group.label}</legend>
@@ -26,6 +29,7 @@ export function ImagePresentationControls({ style, onStyle, addPeople, addVehicl
         </div>
       </fieldset>)}
     </div>
+    <p className="text-sm leading-6 text-slate-200">{renderStyleDirection(style)?.summary}</p>
     <div className="flex flex-wrap gap-x-6">
       <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm"><input className="h-5 w-5 accent-lime-300" type="checkbox" checked={addPeople} onChange={event => onPeople(event.target.checked)} />Add People</label>
       <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm"><input className="h-5 w-5 accent-lime-300" type="checkbox" checked={addVehicles} onChange={event => onVehicles(event.target.checked)} />Add Vehicles</label>

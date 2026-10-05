@@ -8,7 +8,8 @@ afterEach(() => { cleanup(); vi.clearAllMocks(); });
 it('keeps every established style directly discoverable with its original name and independent entourage', () => {
   render(<ImagePresentationControls {...props} />);
   expect(screen.getByRole('button', { name: 'Photo Realistic' }).getAttribute('aria-pressed')).toBe('true');
-  expect(screen.getAllByRole('button')).toHaveLength(STYLES.length);
+  expect(screen.getAllByRole('button')).toHaveLength(STYLES.length + 1);
+  expect(screen.getByRole('button', {name:'Compare styles & examples'})).toBeTruthy();
   for (const group of STYLE_GROUPS) expect(screen.getByRole('group', {name: group.label})).toBeTruthy();
   for (const option of STYLES) {
     const button = screen.getByRole('button', {name: option.label});

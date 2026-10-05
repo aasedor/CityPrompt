@@ -27,6 +27,9 @@ describe('student street render', () => {
   };
   afterEach(cleanup);
   beforeEach(() => {
+    // Each case starts a fresh project preference; comparison tests persist
+    // their engine choice just like the real student workflow.
+    sessionStorage.removeItem('cityprompt:render-draft:project-1');
     mocks.imageModels.mockResolvedValue({ default_model: 'gpt-image-2', models: [{ id: 'gpt-image-2', available: true }] });
     vi.clearAllMocks();
     mocks.claims.mockReturnValue([{ zone_id: 'zone-1' }]);
@@ -52,6 +55,23 @@ describe('student street render', () => {
     expect(mocks.direct.mock.calls[0][1].customPrompt).not.toContain('Scale people');
     expect(screen.getByAltText('AI render render')).toBeInTheDocument();
     expect(mocks.save).not.toHaveBeenCalled();
+  });
+
+  it('browses saved examples without capture and sends the explicitly applied style to the renderer', async () => {
+    const capture = vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} });
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Compare styles & examples' }));
+    await screen.findByRole('dialog', { name: 'Render style guide' });
+    fireEvent.click(screen.getByRole('button', { name: 'View Watercolour' }));
+    expect(capture).not.toHaveBeenCalled();
+    expect(mocks.direct).not.toHaveBeenCalled();
+    expect(mocks.classic).not.toHaveBeenCalled();
+    expect(mocks.save).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Use this style · Watercolour' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    await waitFor(() => expect(mocks.direct).toHaveBeenCalledTimes(1));
+    expect(mocks.direct.mock.calls[0][1].style).toBe('watercolour');
   });
 
   it('forwards explicitly selected street activity to the Direct request', async () => {
