@@ -1,5 +1,7 @@
 # City Prompt — recent progress, 5 October 2026
 
+**Latest update:** [Corrected Calgary zoning codes — existing districts, proposed R-CG/S-SPR map, and PNG export](zoning-correction/README.md). This supersedes the generic-label zoning screenshot below.
+
 Eight screenshots from the local City Prompt browser trials. The earlier screens show the morning's checkpoints; the park outline and programme browser were captured again for this gallery. The latest local code checkpoint is `add5c30bf`.
 
 This branch publishes the screenshot gallery only. The newer application code remains on its separate local development branches. Cityprompt.ca on Render still runs the older deployment. No new AI image or paid video generation was used to make this gallery.
@@ -11,6 +13,8 @@ The updated introduction explains the Site → Design → Present workflow, with
 ![Updated City Prompt landing page](01-landing-page.jpg)
 
 ## 2. Existing and proposed zoning maps
+
+**Updated:** The [corrected zoning gallery](zoning-correction/README.md) shows the City district designations retained separately from student captions. The earlier screenshot below is kept as the original checkpoint, not the corrected version.
 
 Students can redraw existing conditions and proposed land use as separate saved graphic layers, edit labels and colours, move corners and export a styled map. The student study remains separate from statutory zoning.
 
