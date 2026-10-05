@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'path';
 import { selectViteEnvDir } from './src/config/viteEnvDir';
 import { catalogueAssetGuard } from './scripts/catalogue-asset-guard.mjs';
+import { packedCatalogue } from './scripts/packed-catalogue.mjs';
 
 function gitCommonDir(projectRoot: string): string | null {
   const dotGit = path.join(projectRoot, '.git');
@@ -73,7 +74,7 @@ export default defineConfig({
   // common directory. VITE_ENV_DIR and a worktree-root .env remain explicit
   // overrides for unusual local or CI setups.
   envDir: resolveEnvDir(),
-  plugins: [react(), catalogueAssetGuard(), {
+  plugins: [react(), catalogueAssetGuard(), packedCatalogue(), {
     name: 'local-terrain-rehearsal-data',
     apply: 'serve',
     configureServer(server) {
