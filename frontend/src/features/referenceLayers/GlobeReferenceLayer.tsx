@@ -6,7 +6,9 @@ import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/d
 import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
 import type { ReferenceLayer, ReferencePosition } from './api';
 import { referenceGeometryPaths } from './referenceGeometry';
-import { studyMetadata } from './zoningStudy';
+import { closedRing, studyMetadata, studyZones, studyZoneName } from './zoningStudy';
+import { zoningAnchor, type ZoningOverlay } from './zoningLabels';
+import { GlobeZoningLabels } from './GlobeZoningLabels';
 
 const NO_HIT = () => {};
 const RAD = Math.PI / 180;
@@ -18,7 +20,28 @@ const RAD = Math.PI / 180;
  */
 export function GlobeReferenceLayer({ layers, terrainHeight }: { layers: ReferenceLayer[]; terrainHeight: number }) {
   return <group name="reference-overlays" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-    {layers.map((layer) => <ReferenceOutline key={layer.id} layer={layer} terrainHeight={terrainHeight} />)}
+    {layers.map((layer) => studyMetadata(layer)
+      ? <StudyOverlay key={layer.id} layer={layer} terrainHeight={terrainHeight} />
+      : <ReferenceOutline key={layer.id} layer={layer} terrainHeight={terrainHeight} />)}
+  </group>;
+}
+
+function StudyOverlay({ layer, terrainHeight }: { layer: ReferenceLayer; terrainHeight: number }) {
+  const data = useMemo<ZoningOverlay>(() => ({ bounds: layer.bounds, loadedAt: layer.created_at,
+    districts: studyZones(layer).flatMap(zone => {
+      const anchor = zoningAnchor(zone.rings);
+      return anchor ? [{ id: zone.id, label: studyZoneName(zone), anchor, polygon: zone.rings, color: zone.color }] : [];
+    }),
+  }), [layer.bounds, layer.created_at, layer.feature_collection]);
+  const boundary = useMemo<ZoningOverlay>(() => {
+    const points = studyMetadata(layer)?.boundaryCoordinates ?? [];
+    return { bounds: layer.bounds, loadedAt: layer.created_at, districts: points.length < 3 ? [] : [
+      { id: 'study-site-boundary', label: '', anchor: points[0], polygon: [closedRing(points)] },
+    ] };
+  }, [layer.bounds, layer.created_at, layer.feature_collection]);
+  return <group name={`study-layer:${layer.id}`}>
+    <GlobeZoningLabels data={data} terrainHeight={terrainHeight} enabled labels lines fill fillOpacity={layer.opacity} />
+    <GlobeZoningLabels data={boundary} terrainHeight={terrainHeight} enabled labels={false} lines fill={false} fillOpacity={0} />
   </group>;
 }
 

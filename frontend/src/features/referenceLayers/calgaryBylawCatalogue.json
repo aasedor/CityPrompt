@@ -1,0 +1,434 @@
+{
+  "retrievedAt": "2026-10-05T19:36:44.550Z",
+  "bylaw": "1P2007",
+  "bylawSource": "https://www.calgary.ca/planning/land-use/districts.html",
+  "districtSource": "https://data.calgary.ca/resource/qe6k-p9nh.json",
+  "colourSource": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Calgary_Land_Use_Class/FeatureServer/0",
+  "colourItem": "https://www.arcgis.com/home/item.html?id=9b9a0fbe41794e34902948dfd30eb04e",
+  "colours": {
+    "Residential - Low Density": "#fff7da",
+    "Residential - Medium Density": "#ffefa9",
+    "Residential - High Density": "#ffe672",
+    "Commercial": "#f9bca9",
+    "Commercial - Core": "#f58c7d",
+    "Mixed Use": "#e99aad",
+    "Industrial": "#8d8d8d",
+    "Transportation and Utility Corridor": "#cecece",
+    "Parks, Recreation and Public Education": "#d3e6bd",
+    "Recreational": "#b9b933",
+    "Institutional": "#acbcd0",
+    "Major Infrastructure": "#cbedff",
+    "Direct Control": "#ceb2cd",
+    "Future Urban Development": "#f1f7ed"
+  },
+  "districts": [
+    {
+      "code": "C-C1",
+      "designation": "C-C1",
+      "description": "Commercial - Community 1",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-C2",
+      "designation": "C-C2",
+      "description": "Commercial - Community 2",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-COR1",
+      "designation": "C-COR1",
+      "description": "Commercial - Corridor 1",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-COR2",
+      "designation": "C-COR2",
+      "description": "Commercial - Corridor 2",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-COR3",
+      "designation": "C-COR3",
+      "description": "Commercial - Corridor 3",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-N1",
+      "designation": "C-N1",
+      "description": "Commercial - Neighbourhood 1",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-N2",
+      "designation": "C-N2",
+      "description": "Commercial - Neighbourhood 2",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-O",
+      "designation": "C-O",
+      "description": "Commercial - Office",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-R1",
+      "designation": "C-R1",
+      "description": "Commercial - Regional 1",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-R2",
+      "designation": "C-R2",
+      "description": "Commercial - Regional 2",
+      "major": "Commercial"
+    },
+    {
+      "code": "C-R3",
+      "designation": "C-R3",
+      "description": "Commercial - Regional 3",
+      "major": "Commercial"
+    },
+    {
+      "code": "CC-COR",
+      "designation": "CC-COR",
+      "description": "Centre City Commercial Corridor District",
+      "major": "Commercial"
+    },
+    {
+      "code": "CC-EIR",
+      "designation": "CC-EIR",
+      "description": "Centre City East Village Integrated Residential",
+      "major": "Mixed Use"
+    },
+    {
+      "code": "CC-EMU",
+      "designation": "CC-EMU",
+      "description": "Centre City East Village Mixed Use",
+      "major": "Mixed Use"
+    },
+    {
+      "code": "CC-EPR",
+      "designation": "CC-EPR",
+      "description": "Centre City East Village Primary Residential",
+      "major": "Mixed Use"
+    },
+    {
+      "code": "CC-ER",
+      "designation": "CC-ER",
+      "description": "Centre City East Village Recreational",
+      "major": "Recreational"
+    },
+    {
+      "code": "CC-ERR",
+      "designation": "CC-ERR",
+      "description": "Centre City East Village Riverfront Residential",
+      "major": "Mixed Use"
+    },
+    {
+      "code": "CC-ET",
+      "designation": "CC-ET",
+      "description": "Centre City East Village Transition",
+      "major": "Mixed Use"
+    },
+    {
+      "code": "CC-MH",
+      "designation": "CC-MH",
+      "description": "Centre City Multi-Residential High Rise District",
+      "major": "Residential - High Density"
+    },
+    {
+      "code": "CC-MHX",
+      "designation": "CC-MHX",
+      "description": "Centre City",
+      "major": "Residential - High Density"
+    },
+    {
+      "code": "CC-X",
+      "designation": "CC-X",
+      "description": "Centre City Mixed Use District",
+      "major": "Commercial"
+    },
+    {
+      "code": "CR20-C20/R20",
+      "designation": "CR20-C20/R20",
+      "description": "Commercial - Residential Core",
+      "major": "Commercial - Core"
+    },
+    {
+      "code": "H-GO",
+      "designation": "H-GO",
+      "description": "Housing - Grade-Oriented",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "I-B",
+      "designation": "I-B",
+      "description": "Industrial - Business",
+      "major": "Industrial"
+    },
+    {
+      "code": "I-C",
+      "designation": "I-C",
+      "description": "Industrial - Commercial",
+      "major": "Industrial"
+    },
+    {
+      "code": "I-E",
+      "designation": "I-E",
+      "description": "Industrial - Edge",
+      "major": "Industrial"
+    },
+    {
+      "code": "I-G",
+      "designation": "I-G",
+      "description": "Industrial - General",
+      "major": "Industrial"
+    },
+    {
+      "code": "I-H",
+      "designation": "I-H",
+      "description": "Industrial - Heavy",
+      "major": "Industrial"
+    },
+    {
+      "code": "I-O",
+      "designation": "I-O",
+      "description": "Industrial - Outdoor",
+      "major": "Industrial"
+    },
+    {
+      "code": "I-R",
+      "designation": "I-R",
+      "description": "Industrial - Redevelopment",
+      "major": "Industrial"
+    },
+    {
+      "code": "M-1",
+      "designation": "M-1",
+      "description": "Multi-Residential - Low Profile",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "M-2",
+      "designation": "M-2",
+      "description": "Multi-Residential - Medium Profile",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "M-C1",
+      "designation": "M-C1",
+      "description": "Multi-Residential - Contextual Low Profile",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "M-C2",
+      "designation": "M-C2",
+      "description": "Multi-Residential - Contextual Medium Profile",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "M-CG",
+      "designation": "M-CG",
+      "description": "Multi-Residential - Contextual Ground Oriented",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "M-G",
+      "designation": "M-G",
+      "description": "Multi-Residential - At Grade Housing",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "M-H1",
+      "designation": "M-H1",
+      "description": "Multi-Residential - High Density, Low Rise",
+      "major": "Residential - High Density"
+    },
+    {
+      "code": "M-H2",
+      "designation": "M-H2",
+      "description": "Multi-Residential - High Density, Medium Rise",
+      "major": "Residential - High Density"
+    },
+    {
+      "code": "M-H3",
+      "designation": "M-H3",
+      "description": "Multi-Residential - High Density High Rise",
+      "major": "Residential - High Density"
+    },
+    {
+      "code": "M-X1",
+      "designation": "M-X1",
+      "description": "Multi-Residential - Low Profile, Support Commercial",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "M-X2",
+      "designation": "M-X2",
+      "description": "Multi-Residential - Medium Profile Support Commercial",
+      "major": "Residential - Medium Density"
+    },
+    {
+      "code": "MU-1",
+      "designation": "MU-1",
+      "description": "Mixed Use - General",
+      "major": "Mixed Use"
+    },
+    {
+      "code": "MU-2",
+      "designation": "MU-2",
+      "description": "Mixed Use - Active Frontage",
+      "major": "Mixed Use"
+    },
+    {
+      "code": "R-1",
+      "designation": "R-1",
+      "description": "Residential - One Dwelling",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-1N",
+      "designation": "R-1N",
+      "description": "Residential - Narrow Lot Dwelling",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-1s",
+      "designation": "R-1s",
+      "description": "Residential - One Dwelling - Provision for Secondary Suite",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-2",
+      "designation": "R-2",
+      "description": "Residential - One/Two Dwelling",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-2M",
+      "designation": "R-2M",
+      "description": "Residential - Low Density Multiple Dwellings",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-C1",
+      "designation": "R-C1",
+      "description": "Residential - Contextual One Dwelling",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-C1L",
+      "designation": "R-C1L",
+      "description": "Residential - Contextual Large Lot One Dwelling",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-C1Ls",
+      "designation": "R-C1Ls",
+      "description": "Residential - Contextual Large Lot One Dwelling - Secondary Suite OK",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-C1N",
+      "designation": "R-C1N",
+      "description": "Residential - Contextual Narrow Lot One Dwelling",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-C1s",
+      "designation": "R-C1s",
+      "description": "Residential - Contextual One Dwelling - Provision for Secondary Suite",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-C2",
+      "designation": "R-C2",
+      "description": "Residential - Contextual One/Two Dwelling",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-CG",
+      "designation": "R-CG",
+      "description": "Residential - Grade-Oriented Infill",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-CGex",
+      "designation": "R-CGex",
+      "description": "Residential - Grade-Oriented Infill Excluding Suites",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-G",
+      "designation": "R-G",
+      "description": "Residential - Low Density Mixed Housing",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-Gm",
+      "designation": "R-Gm",
+      "description": "Residential - Low Density Mixed Housing - Attached Housing Only",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "R-MH",
+      "designation": "R-MH",
+      "description": "Residential - Manufactured Home",
+      "major": "Residential - Low Density"
+    },
+    {
+      "code": "S-CI",
+      "designation": "S-CI",
+      "description": "Special Purpose - Community Institution",
+      "major": "Institutional"
+    },
+    {
+      "code": "S-CRI",
+      "designation": "S-CRI",
+      "description": "Special Purpose - City and Regional Infrastructure",
+      "major": "Major Infrastructure"
+    },
+    {
+      "code": "S-CS",
+      "designation": "S-CS",
+      "description": "Special Purpose - Community Service",
+      "major": "Parks, Recreation and Public Education"
+    },
+    {
+      "code": "S-FUD",
+      "designation": "S-FUD",
+      "description": "Special Purpose - Future Urban Development",
+      "major": "Future Urban Development"
+    },
+    {
+      "code": "S-R",
+      "designation": "S-R",
+      "description": "Special Purpose - Recreation",
+      "major": "Parks, Recreation and Public Education"
+    },
+    {
+      "code": "S-SPR",
+      "designation": "S-SPR",
+      "description": "Special Purpose - School, Park and Community Reserve",
+      "major": "Parks, Recreation and Public Education"
+    },
+    {
+      "code": "S-TUC",
+      "designation": "S-TUC",
+      "description": "Special Purpose - Transportation and Utility Corridor",
+      "major": "Transportation and Utility Corridor"
+    },
+    {
+      "code": "S-UN",
+      "designation": "S-UN",
+      "description": "Special Purpose - Urban Nature",
+      "major": "Parks, Recreation and Public Education"
+    },
+    {
+      "code": "S-URP",
+      "designation": "S-URP",
+      "description": "Special Purpose - University Research Park",
+      "major": "Institutional"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import type { MultiPolygon } from 'polygon-clipping';
 export const ZONING_SOURCE = 'https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh';
 export const ZONING_LIMIT = 1500;
 export type Position = [number, number];
-export type ZoningLabel = { id: string; label: string; code?: string; description?: string; anchor: Position; polygon: Position[][] };
+export type ZoningLabel = { id: string; label: string; code?: string; description?: string; color?: string; anchor: Position; polygon: Position[][] };
 export type ZoningOverlay = { districts: ZoningLabel[]; bounds: [number, number, number, number]; loadedAt: string };
 
 export function zoningBounds(coordinates: number[][]): ZoningOverlay['bounds'] | null {

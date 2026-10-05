@@ -1,10 +1,11 @@
 import type { ReferenceLayer } from './api';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import { readCalgaryDistrict, type CalgaryDistrict } from './calgaryDistricts';
+import { calgaryDistrictColour } from './calgaryBylaw';
 import { ZONING_SOURCE, zoningAnchor, zoningBounds, type Position, type ZoningOverlay } from './zoningLabels';
 
 export type StudyCondition = 'existing' | 'proposed';
-export interface StudyZone { id: string; label: string; color: string; origin: 'student' | 'calgary-extract'; rings: Position[][]; district?: CalgaryDistrict }
+export interface StudyZone { id: string; label: string; color: string; origin: 'student' | 'calgary-extract'; rings: Position[][]; district?: CalgaryDistrict; custom?: boolean }
 export interface StudyDocument { zones: StudyZone[]; baseHash: string | null }
 export const STUDY_PALETTE = ['#dfb88b', '#d99782', '#9eaf91', '#90adbb', '#c5b1cc', '#e4d19c', '#b5b5aa'];
 export const studyTitle = (condition: StudyCondition) => condition === 'existing' ? 'Existing zoning study' : 'Proposed land-use study';
@@ -18,6 +19,7 @@ export function studyZones(layer?: ReferenceLayer): StudyZone[] {
     id: String(feature.id), label: String(feature.properties.label || 'Zone'),
     color: /^#[\da-f]{6}$/i.test(String(feature.properties.color)) ? String(feature.properties.color) : '#9eaf91',
     origin: feature.properties.origin === 'calgary-extract' ? 'calgary-extract' as const : 'student' as const,
+    ...(feature.properties.custom === true ? { custom: true } : {}),
     // Older City copies saved only the full designation as their label. Keep it;
     // never infer a district from an arbitrary student caption.
     district: readCalgaryDistrict(feature.properties.district) ?? (feature.properties.origin === 'calgary-extract'
@@ -25,19 +27,24 @@ export function studyZones(layer?: ReferenceLayer): StudyZone[] {
     rings: feature.geometry.coordinates.map(ring => ring.map(([x, y]) => [x, y] as Position)),
   }] : []) ?? [];
 }
-/** Stable study colours, not the City's official map symbology. */
-export function studyDistrictColor(designation: string): string {
-  let hash = 0;
-  for (const char of designation) hash = (Math.imul(hash, 31) + char.charCodeAt(0)) | 0;
-  return STUDY_PALETTE[(hash >>> 0) % STUDY_PALETTE.length];
-}
-export const studyZoneName = (zone: StudyZone) => zone.district?.designation ?? zone.label;
+/** City's published Land Use Class renderer; custom colours remain student-authored. */
+export const studyDistrictColor = calgaryDistrictColour;
+export const studyZoneName = (zone: StudyZone) => zone.custom ? `Custom · ${zone.label}` : zone.district?.designation ?? zone.label;
 export const studyZoneCaption = (zone: StudyZone) => zone.district && zone.label !== zone.district.designation ? zone.label : '';
 export const zonesFromCalgary = (data: ZoningOverlay): StudyZone[] => data.districts.map(zone => ({
   id: crypto.randomUUID(), label: zone.label, origin: 'calgary-extract',
   district: { designation: zone.label, ...(zone.code ? { code: zone.code } : {}), ...(zone.description ? { description: zone.description } : {}) },
   color: studyDistrictColor(zone.label), rings: zone.polygon,
 }));
+
+export function studyPreviewLayer(zones: StudyZone[], boundary: Position[], condition: StudyCondition, opacity: number): ReferenceLayer {
+  const collection = { type: 'FeatureCollection' as const, _citypromptStudy: { schema: 1, condition, boundaryCoordinates: boundary },
+    features: zones.map(zone => ({ type: 'Feature' as const, id: zone.id, geometry: { type: 'Polygon' as const, coordinates: zone.rings },
+      properties: { label: zone.label, color: zone.color, origin: zone.origin, district: zone.district, custom: zone.custom } })) };
+  return { id: 'study-live-preview', project_id: '', name: studyTitle(condition), source_filename: '', source_crs: 'EPSG:4326', source_url: null,
+    description: null, kind: 'zoning', feature_collection: collection, feature_count: zones.length, bounds: zoningBounds(boundary)!,
+    warnings: [], color: '#34362f', opacity, created_at: '' };
+}
 
 export function closedRing(points: Position[]): Position[] {
   const first = points[0], last = points[points.length-1];
@@ -117,7 +124,7 @@ export function studyMapLabels(zones: StudyZone[], boundary: Position[]) {
       const box=boxAt(candidate,width,height);
       return free(box)&&[0,.5,1].every(x=>[0,.5,1].every(y=>booleanPointInPolygon(frame.unproject([box.x+x*width,box.y+y*height]),{type:'Polygon',coordinates:zone.rings})));
     });
-    if(point){placed.push({id:zone.id,text,point,unassigned:!zone.district});boxes.push(boxAt(point,width,height));}
+    if(point){placed.push({id:zone.id,text,point,unassigned:!zone.district&&!zone.custom});boxes.push(boxAt(point,width,height));}
     else pending.push({zone,text,anchor,width,height});
   }
   for(const item of pending) {
@@ -130,7 +137,7 @@ export function studyMapLabels(zones: StudyZone[], boundary: Position[]) {
     if(height>25)continue;
     const rows=anchor[1]>380?[674,96]:[96,674];
     const point=rows.flatMap(y=>xs.map(x=>[x,y] as Position)).find(candidate=>free(boxAt(candidate,width,height)));
-    if(point){placed.push({id:zone.id,text,point,leader:anchor,unassigned:!zone.district});boxes.push(boxAt(point,width,height));}
+    if(point){placed.push({id:zone.id,text,point,leader:anchor,unassigned:!zone.district&&!zone.custom});boxes.push(boxAt(point,width,height));}
   }
   return placed;
 }
@@ -140,7 +147,7 @@ export function studySvg(zones: StudyZone[], boundary: Position[], title: string
   const legend = [...new Map(zones.map(zone => [JSON.stringify([studyZoneName(zone),zone.label,zone.color]),zone])).values()];
   const wrap = (text: string) => text.match(/.{1,58}(?:\s|$)|\S{1,58}/g)?.map(line=>line.trim()) ?? [];
   const legendLines = legend.map(zone=>wrap([studyZoneCaption(zone),zone.district?.description,
-    !zone.district?'District unassigned':undefined].filter(Boolean).join(' · ')));
+    !zone.district&&!zone.custom?'District unassigned':undefined].filter(Boolean).join(' · ')));
   const rowHeight = 30 + Math.max(1,...legendLines.map(lines=>lines.length))*16;
   const height = 805 + Math.ceil(legend.length/2)*rowHeight;
   const paths=zones.map(zone=>`<path d="${frame.path(zone.rings)}" fill="${zone.color}" fill-rule="evenodd" stroke="#34362f" stroke-width="1.5"><title>${xml([studyZoneName(zone),studyZoneCaption(zone),zone.district?.description].filter(Boolean).join(' · '))}</title></path>`).join('');

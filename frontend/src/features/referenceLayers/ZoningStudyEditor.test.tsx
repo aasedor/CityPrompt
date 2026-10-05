@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ReferenceLayer } from './api';
@@ -7,6 +7,7 @@ import type { Position } from './zoningLabels';
 import { api } from '@/services/api';
 import { referenceLayersApi } from './api';
 import ZoningStudyEditor from './ZoningStudyEditor';
+import type { StudyMapDrawing } from './useStudyMapDrawing';
 
 vi.mock('@/services/api',()=>({api:{put:vi.fn()},getApiErrorMessage:(error:Error)=>error.message}));
 vi.mock('./api',()=>({referenceLayerQueryKey:(id:string)=>['reference-layers',id],referenceLayersApi:{list:vi.fn()}}));
@@ -18,9 +19,41 @@ const boundary:Position[]=[[-114.12,51.01],[-114.119,51.01],[-114.119,51.011],[-
 const layer={id:'saved',name:'Existing zoning study',content_hash:'a'.repeat(64),feature_collection:{type:'FeatureCollection',
   _citypromptStudy:{schema:1,condition:'existing',boundaryCoordinates:boundary},features:[{type:'Feature',id:'one',geometry:{type:'Polygon',coordinates:[[...boundary,boundary[0]]]},properties:{label:'Housing',color:'#dfb88b',origin:'student'}}]}} as unknown as ReferenceLayer;
 const props={projectId:'project',accountId:'student',boundaryId:'site',boundary,projectName:'Trial',layers:[layer],canEdit:true,onClose:vi.fn()};
-const setup=(changes:Partial<typeof props>={})=>render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}><ZoningStudyEditor {...props} {...changes}/></QueryClientProvider>);
+const setup=(changes:Partial<typeof props>&{mapDrawing?:StudyMapDrawing}={})=>render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}><ZoningStudyEditor {...props} {...changes}/></QueryClientProvider>);
 beforeEach(()=>{vi.clearAllMocks();localStorage.clear();});
 describe('zoning study editing and recovery',()=>{
+  it('draws a custom area on the globe and saves its identity and opacity',async()=>{
+    const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn()};
+    vi.mocked(api.put).mockResolvedValue({data:layer});
+    const view=setup({mapDrawing});
+    fireEvent.click(screen.getByRole('tab',{name:'Proposed land use'}));
+    fireEvent.change(screen.getByLabelText('New zone type'),{target:{value:'__custom__'}});
+    expect(screen.getByRole('button',{name:'Draw zone'})).toBeDisabled();
+    fireEvent.change(screen.getByLabelText('Custom zone name'),{target:{value:'Community garden'}});
+    fireEvent.change(screen.getByLabelText('Custom colour'),{target:{value:'#75b6b0'}});
+    fireEvent.click(screen.getByRole('button',{name:'Draw zone'}));
+    await act(async()=>{expect(mapDrawing.begin.mock.calls[0][0](boundary)).toBe(true);});
+    expect(await screen.findByRole('button',{name:'Custom · Community garden'})).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Study fill opacity'),{target:{value:'100'}});
+    fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
+    await waitFor(()=>expect(api.put).toHaveBeenCalledOnce());
+    expect(vi.mocked(api.put).mock.calls[0][0]).toContain('/proposed');
+    expect(vi.mocked(api.put).mock.calls[0][1]).toMatchObject({opacity:1,zones:[{custom:true,label:'Community garden',color:'#75b6b0'}]});
+    view.unmount();expect(mapDrawing.cancel).toHaveBeenCalled();expect(mapDrawing.preview).toHaveBeenLastCalledWith(null);
+  });
+  it('applies City colours and rejects a globe polygon outside the site',async()=>{
+    const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn()};
+    setup({mapDrawing});
+    fireEvent.change(screen.getByLabelText('New zone type'),{target:{value:'S-SPR'}});
+    fireEvent.click(screen.getByRole('button',{name:'Draw zone'}));
+    await act(async()=>{mapDrawing.begin.mock.calls[0][0](boundary);});
+    expect(await screen.findByLabelText('Zone colour')).toHaveValue('#d3e6bd');
+    expect(screen.getByLabelText('Zone colour')).toBeDisabled();
+    fireEvent.click(screen.getByRole('button',{name:'Draw zone'}));
+    await act(async()=>{mapDrawing.begin.mock.calls[1][0](boundary.map(([x,y])=>[x+1,y]));});
+    expect(await screen.findByRole('alert')).toHaveTextContent('Draw inside the site boundary');
+    expect(within(screen.getByLabelText('Study zones')).getAllByRole('button')).toHaveLength(2);
+  });
   it('keeps the full City designation when editing a caption, undoing, switching conditions and saving',async()=>{
     const district={code:'DC',designation:'DC48Z84',description:'Direct Control'};
     const cityLayer={...layer,feature_collection:{...layer.feature_collection,features:layer.feature_collection.features.map(feature=>({...feature,
@@ -44,7 +77,7 @@ describe('zoning study editing and recovery',()=>{
   it('keeps legacy concept areas unassigned until the student chooses a published district',async()=>{
     setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
     expect(screen.getByLabelText('Calgary district')).toHaveValue('');
-    await screen.findByRole('option',{name:/S-SPR — Special Purpose/});
+    await within(screen.getByLabelText('Calgary district')).findByRole('option',{name:/S-SPR — Special Purpose/});
     fireEvent.change(screen.getByLabelText('Calgary district'),{target:{value:'S-SPR'}});
     expect(screen.getByLabelText('Map caption')).toHaveValue('Housing');
     fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Community garden'}});

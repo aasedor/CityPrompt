@@ -156,6 +156,33 @@ def test_invalid_district_metadata_is_rejected(district):
         endpoint.StudyRequest(**body)
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("opacity", [0, 0.4, 1])
+async def test_custom_zone_and_opacity_round_trip_without_city_provenance(client, db, opacity):
+    body = copy.deepcopy(BODY)
+    body["opacity"] = opacity
+    body["zones"][0].update(custom=True, label="Community garden", color="#75b6b0")
+    response = await client.put(f"/api/v1/zoning-studies/projects/{PROJECT}/proposed", json=body)
+    assert response.status_code == 200, response.text
+    saved = response.json()
+    assert saved["opacity"] == opacity
+    assert saved["source_url"] is None
+    properties = saved["feature_collection"]["features"][0]["properties"]
+    assert properties["custom"] is True
+    assert properties["label"] == "Community garden"
+    assert properties["color"] == "#75b6b0"
+    assert "district" not in properties
+
+
+@pytest.mark.parametrize("patch", [
+    {"opacity": -0.1}, {"opacity": 1.1},
+    {"zones": [{**BODY["zones"][0], "custom": True, "district": {"designation": "R-CG"}}]},
+])
+def test_invalid_opacity_or_custom_city_identity_is_rejected(patch):
+    with pytest.raises(ValueError):
+        endpoint.study_collection(endpoint.StudyRequest(**{**BODY, **patch}), "proposed", SITE)
+
+
 @pytest.mark.parametrize("kind", ["crossing", "outside", "unclosed", "duplicate-id", "blank-label"])
 def test_invalid_drawings_are_rejected_before_storage(kind):
     body = copy.deepcopy(BODY)

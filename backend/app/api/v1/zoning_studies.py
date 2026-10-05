@@ -45,6 +45,7 @@ class StudyZone(BaseModel):
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     origin: Literal["student", "calgary-extract"] = "student"
     district: StudyDistrict | None = None
+    custom: bool = False
     rings: list[Ring] = Field(min_length=1, max_length=32)
 
 
@@ -53,6 +54,7 @@ class StudyRequest(BaseModel):
     boundary_coordinates: list[Position] = Field(min_length=3, max_length=1024)
     expected_hash: str | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
     zones: list[StudyZone] = Field(max_length=256)
+    opacity: float = Field(default=0.4, ge=0, le=1, allow_inf_nan=False)
 
 
 def study_collection(request: StudyRequest, condition: Condition, site: Polygon):
@@ -80,7 +82,11 @@ def study_collection(request: StudyRequest, condition: Condition, site: Polygon)
         shapes.append(shape)
         properties = {"label": label, "color": zone.color, "origin": zone.origin}
         if zone.district is not None:
+            if zone.custom:
+                raise ValueError("A custom zone cannot also claim a Calgary district.")
             properties["district"] = zone.district.model_dump(exclude_none=True)
+        if zone.custom:
+            properties["custom"] = True
         features.append({"type": "Feature", "id": zone.id, "geometry": mapping(shape), "properties": properties})
     warnings = ["Student-authored graphic; consult official district data for statutory zoning."]
     if shapes:
@@ -144,7 +150,7 @@ async def save_zoning_study(
     layer.bounds = list(site.bounds)
     layer.warnings = warnings
     layer.color = "#8b5e3c" if condition == "existing" else "#315f73"
-    layer.opacity = .85
+    layer.opacity = request.opacity
     await db.flush()
     await db.refresh(layer)
     return layer

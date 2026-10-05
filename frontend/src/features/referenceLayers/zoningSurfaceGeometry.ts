@@ -32,7 +32,7 @@ export function zoningSurfaceGeometry(data: ZoningOverlay, terrainHeight: number
     const points = localRings.flat();
     const contour = localRings[0].map(([x, y]) => new THREE.Vector2(x, y));
     const holes = localRings.slice(1).map(ring => ring.map(([x, y]) => new THREE.Vector2(x, y)));
-    const color = new THREE.Color(zoningColor(district));
+    const color = new THREE.Color(district.color ?? zoningColor(district));
     for (const face of THREE.ShapeUtils.triangulateShape(contour, holes)) {
       for (const index of face) { positions.push(...points[index]); colors.push(color.r, color.g, color.b); }
     }

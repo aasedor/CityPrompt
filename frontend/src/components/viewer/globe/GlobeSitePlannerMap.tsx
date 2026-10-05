@@ -4533,8 +4533,8 @@ export function GlobeSitePlannerMap({
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
-          <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={terrainElevation} />
-            {zoningLabels && <GlobeZoningLabels {...zoningLabels} terrainHeight={terrainElevation} />}
+          <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />
+            {zoningLabels && <GlobeZoningLabels {...zoningLabels} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
           </group>
           <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
@@ -4966,7 +4966,7 @@ export function GlobeSitePlannerMap({
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;
         const tool = activeSitePlannerTool!;
-        const label = getToolDisplayLabel(tool);
+        const label = activeToolProperties?.cartography_study ? 'Land-use zone' : getToolDisplayLabel(tool);
         const min = minPointsForTool(tool);
         const linear = isLinearTool(tool);
 
