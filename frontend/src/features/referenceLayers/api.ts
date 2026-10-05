@@ -31,6 +31,7 @@ export interface ReferenceLayer {
   color: string;
   opacity: number;
   created_at: string;
+  content_hash?: string | null;
 }
 
 export const referenceLayerQueryKey = (projectId: string | undefined) => ['reference-layers', projectId] as const;

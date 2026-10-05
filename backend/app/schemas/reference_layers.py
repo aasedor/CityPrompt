@@ -49,6 +49,7 @@ class ReferenceLayerResponse(BaseModel):
     color: str
     opacity: float
     created_at: datetime
+    content_hash: str | None = None
 
 
 class ReferenceLayerListResponse(BaseModel):
