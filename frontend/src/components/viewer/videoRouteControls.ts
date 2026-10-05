@@ -16,7 +16,7 @@ export interface NormalizedVideoRoutePoint {
 
 export interface VideoRouteCaptureRequest {
   routePoints: NormalizedVideoRoutePoint[];
-  cameraMotion: 'path_follow' | 'street_walkby' | 'detail_flythrough';
+  cameraMotion: 'path_follow' | 'street_walkby' | 'detail_flythrough' | 'bicycle_ride';
   renderQuality: VideoRenderQuality;
   durationSeconds: 8;
   keyframeCount?: number;
@@ -24,6 +24,7 @@ export interface VideoRouteCaptureRequest {
 }
 
 export interface VideoRouteCaptureResult {
+  routeProfile?: { distanceMeters: number; averageSpeedMps: number; eyeHeightMeters?: number };
   keyframesBase64: string[];
   previewVideoBase64: string;
   previewVideoMimeType: string;
@@ -91,6 +92,21 @@ export function videoGeometryPassProfile(
 export function cinematicRouteProgress(progress: number): number {
   const time = clamp01(progress);
   return time * time * (3 - 2 * time);
+}
+
+/** Riding uses constant travelled distance; other shots keep their gentle easing. */
+export function videoMotionProgress(progress: number, motion: VideoRouteCaptureRequest['cameraMotion']): number {
+  return motion === 'bicycle_ride' ? clamp01(progress) : cinematicRouteProgress(progress);
+}
+
+export const BICYCLE_CAMERA_HEIGHT_METERS = 1.6;
+export function assertBicycleRouteLength(distanceMeters: number, durationSeconds: number): void {
+  if (!Number.isFinite(distanceMeters) || !Number.isFinite(durationSeconds) || durationSeconds <= 0 || distanceMeters < .75) {
+    throw new Error('Draw a bicycle route with a clear start and finish.');
+  }
+  if (distanceMeters / durationSeconds > 7) {
+    throw new Error(`This bicycle route is ${Math.round(distanceMeters)} m long. Keep an 8-second ride within 56 m, or frame a smaller part of the site.`);
+  }
 }
 
 /** Sample a hand-drawn route at equal travelled-distance intervals. */

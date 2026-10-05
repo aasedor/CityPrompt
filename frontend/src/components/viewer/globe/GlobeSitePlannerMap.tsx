@@ -187,7 +187,9 @@ import {
   type Direct3DCaptureOptions,
 } from './direct3dCapture';
 import {
-  cinematicRouteProgress,
+  videoMotionProgress,
+  assertBicycleRouteLength,
+  BICYCLE_CAMERA_HEIGHT_METERS,
   normalizedVideoPointToNdc,
   resampleVideoRoute,
   stableNearFieldTerrainHeight,
@@ -200,7 +202,6 @@ import {
   captureDeterministicVideo,
   getCenterCropRect,
 } from '../deterministicVideoCapture';
-import { assertNearFieldVideoSourceQuality } from '../videoSourceQuality';
 import {
   applyVideoFrameProjection,
   buildVideoWarmupFrames,
@@ -3148,7 +3149,8 @@ export function GlobeSitePlannerMap({
     const sourceAspect = (canvas.clientWidth || canvas.width) / Math.max(1, canvas.clientHeight || canvas.height);
     const streetWalkby = request.cameraMotion === 'street_walkby';
     const detailFlythrough = request.cameraMotion === 'detail_flythrough';
-    const nearFieldRoute = streetWalkby || detailFlythrough;
+    const bicycleRide = request.cameraMotion === 'bicycle_ride';
+    const nearFieldRoute = streetWalkby || detailFlythrough || bicycleRide;
     const streetUp = camera.up.clone().normalize();
     let previousStreetProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     let routeSurfacePoints: THREE.Vector3[];
@@ -3185,6 +3187,11 @@ export function GlobeSitePlannerMap({
       restoreStreetCameraProjection(camera, previousStreetProjection);
       throw error;
     }
+    const pathCurve = new THREE.CatmullRomCurve3(routeSurfacePoints, false, 'centripetal');
+    const routeDistanceMeters = pathCurve.getLength();
+    // Validate before changing lens/renderer state so a too-long ride leaves
+    // the student's camera intact and starts no expensive frame capture.
+    if (bicycleRide) assertBicycleRouteLength(routeDistanceMeters, request.durationSeconds);
     const centerHit = raycastSurfacePoint(0, 0);
     if (!centerHit) {
       restoreStreetCameraProjection(camera, previousStreetProjection);
@@ -3215,7 +3222,6 @@ export function GlobeSitePlannerMap({
     const streetFocusWorld = streetWalkby
       ? centerWorld.clone().addScaledVector(streetUp, 7)
       : null;
-    const pathCurve = new THREE.CatmullRomCurve3(routeSurfacePoints, false, 'centripetal');
     const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
     const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
     const previousSelectedBuildingId = selectedBuildingIdRef.current;
@@ -3252,6 +3258,10 @@ export function GlobeSitePlannerMap({
       : waitForCurrentTiles();
 
     const applyRoutePose = (progress: number) => {
+      if (bicycleRide) {
+        applyStreetRoutePose(camera, pathCurve, progress, streetUp, BICYCLE_CAMERA_HEIGHT_METERS);
+        return;
+      }
       if (streetWalkby) {
         applyStreetRoutePose(camera, pathCurve, progress, streetUp, undefined, streetFocusWorld ?? undefined);
         return;
@@ -3353,7 +3363,7 @@ export function GlobeSitePlannerMap({
       const geometryCheckpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']> = [];
       for (let index = 0; index < sampledRoute.length; index += 1) {
         request.onProgress?.('checking', index, sampledRoute.length);
-        applyRoutePose(cinematicRouteProgress(index / (sampledRoute.length - 1)));
+        applyRoutePose(videoMotionProgress(index / (sampledRoute.length - 1), request.cameraMotion));
         await twoFrames();
         const settled = await waitForRouteContext();
         if (!settled) {
@@ -3404,9 +3414,6 @@ export function GlobeSitePlannerMap({
           keyframesBase64.push(beautyImageBase64);
         }
       }
-      if (nearFieldRoute) {
-        await assertNearFieldVideoSourceQuality(keyframesBase64);
-      }
       if (nearFieldRoute) streetRenderReadiness = inspectStreetRenderReadiness(scene);
 
       // Render a dedicated 16:9, fixed-timestep frame sequence so local output
@@ -3434,7 +3441,7 @@ export function GlobeSitePlannerMap({
         bitrate: renderProfile.bitrate,
         renderFrame: async (frame) => {
           if (frame.index % 8 === 0) request.onProgress?.('rendering', frame.index, 192);
-          applyRoutePose(cinematicRouteProgress(frame.progress));
+          applyRoutePose(videoMotionProgress(frame.progress, request.cameraMotion));
           // Give TilesRenderer and the authored R3F layers one render cycle to
           // respond to this indexed pose, then render that exact camera state.
           await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
@@ -3456,6 +3463,8 @@ export function GlobeSitePlannerMap({
         keyframesBase64,
         previewVideoBase64,
         previewVideoMimeType: previewBlob.type,
+        routeProfile: { distanceMeters: routeDistanceMeters, averageSpeedMps: routeDistanceMeters / request.durationSeconds,
+          ...(bicycleRide ? {eyeHeightMeters: BICYCLE_CAMERA_HEIGHT_METERS} : streetWalkby ? {eyeHeightMeters: 1.7} : detailFlythrough ? {eyeHeightMeters: 6} : {}) },
         geometryCheckpoints,
         previewCaptureProfile: {
           encoder: previewCapture.encoder,

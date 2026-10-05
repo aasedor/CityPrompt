@@ -23,6 +23,12 @@ MAX_PREVIEW_VIDEO_BYTES = 24 * 1024 * 1024
 MIN_GUIDE_IMAGE_EDGE = 640
 
 MOTION_PROMPTS: dict[str, str] = {
+    "bicycle_ride": (
+        "Create a stabilized forward-facing bicycle ride along the supplied route. Hold the camera 1.6 metres "
+        "above the route surface with a natural 35 mm perspective and level verticals. Follow the travel "
+        "direction at constant speed, preserving the source timing, with no orbit, drone rise or added cyclist. "
+        "Never pass through a solid wall, tree or other obstacle"
+    ),
     "path_follow": (
         "Use the drawn route to define heading and curve shape, not the amount of distance to cover. Make an extremely "
         "slow constant-altitude drone truck with gentle banking only where the route curves. Do not dolly toward the "
@@ -158,6 +164,7 @@ def build_cinematic_prompt(
     prompt_scene_brief = scene_brief.strip()
     motion_prompt = MOTION_PROMPTS[camera_motion]
     route_description = describe_route(route_points)
+    is_bicycle = camera_motion == "bicycle_ride"
     is_street = camera_motion == "street_walkby"
     is_detail_flythrough = camera_motion == "detail_flythrough"
     omni_preview_finish = provider == "omni" and control_mode == "preview_video"
@@ -165,7 +172,9 @@ def build_cinematic_prompt(
         "Match the source video's total travel distance, altitude, speed curve, and camera timing exactly."
         if control_mode == "preview_video"
         else (
-            "Move no more than 4 metres during the full shot."
+            "Ride no more than 56 metres during the full shot."
+            if is_bicycle
+            else "Move no more than 4 metres during the full shot."
             if is_street
             else (
                 "Translate no more than one sixteenth of the shorter authored building dimension during the full shot; "
@@ -176,8 +185,8 @@ def build_cinematic_prompt(
         )
     )
     shot_kind = (
-        "pedestrian-height architectural walk-by"
-        if is_street
+        "forward-facing bicycle ride" if is_bicycle
+        else "pedestrian-height architectural walk-by" if is_street
         else (
             "low detail architectural-drone fly-through"
             if is_detail_flythrough
@@ -185,7 +194,10 @@ def build_cinematic_prompt(
         )
     )
     framing_lock = (
-        "Keep the authored facade and adjacent public realm in the same clear close-up view for the entire shot. Preserve "
+        "Keep the forward route corridor, paving and adjacent public realm legible at cycling eye height. "
+        "Stay in clear open space; never pass through a building, wall or tree."
+        if is_bicycle
+        else "Keep the authored facade and adjacent public realm in the same clear close-up view for the entire shot. Preserve "
         "every already-visible joint, window frame, railing, entrance, plant, and paving edge at its source level of detail."
         if is_street
         else (
@@ -200,7 +212,8 @@ def build_cinematic_prompt(
         control_prefix = f"[# Sources <FIRST_FRAME>@Image1] [# References {references}]"
         input_authority = (
             f"Images1 through Image{keyframe_count} are deterministic City Prompt renders of the same frozen scene, "
-            "sampled in chronological order at equal time intervals along the route's approved eased speed curve"
+            "sampled in chronological order at equal time intervals along the route's approved "
+            f"{'constant cycling speed' if is_bicycle else 'eased speed curve'}"
         )
         flight_instruction = (
             "Follow the exact chronological camera progression demonstrated by the ordered route images. "

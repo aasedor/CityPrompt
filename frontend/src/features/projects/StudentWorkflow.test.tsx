@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { StudentStepPanel, StudentWorkflowNav, studentLandscapeNeedsRefresh, studentStreetAccessNotice } from './StudentWorkflow';
 import type { SiteZone } from '@/types';
@@ -8,7 +8,7 @@ const capabilities = vi.hoisted(() => vi.fn());
 vi.mock('@/services/api', () => ({ direct3DAttempts: { capabilities } }));
 
 describe('student workflow', () => {
-  beforeEach(() => capabilities.mockResolvedValue({ video_enabled: true }));
+  beforeEach(() => { capabilities.mockResolvedValue({ video_enabled: true }); });
   it('keeps all steps reachable and identifies the current step', () => {
     const onChange = vi.fn();
     render(<StudentWorkflowNav step="design" onChange={onChange} />);
@@ -37,12 +37,22 @@ describe('student workflow', () => {
     expect(onImage).not.toHaveBeenCalled();
     expect(onVideo).not.toHaveBeenCalled();
   });
-  it('keeps deferred video out of the classroom presentation controls', async () => {
+  it('offers the free route preview when finished video is deferred', async () => {
     capabilities.mockResolvedValue({ video_enabled: false, classroom_release: true });
-    render(<StudentStepPanel step="present" hasSite canRender renderReason=""
-      onSite={vi.fn()} onDesign={vi.fn()} onImage={vi.fn()} onVideo={vi.fn()} onRefreshLandscape={vi.fn()} />);
+    const onVideo = vi.fn();
+    await act(async () => { render(<StudentStepPanel step="present" hasSite canRender renderReason=""
+      onSite={vi.fn()} onDesign={vi.fn()} onImage={vi.fn()} onVideo={onVideo} onRefreshLandscape={vi.fn()} />); });
     expect(await screen.findByRole('button', { name: 'Image' })).toBeEnabled();
-    expect(screen.queryByRole('button', { name: 'Video' })).toBeNull();
+    fireEvent.click(await screen.findByRole('button', { name: 'Video preview · free' }));
+    expect(onVideo).toHaveBeenCalledOnce();
+  });
+  it('preserves the free preview if capability lookup fails', async () => {
+    capabilities.mockRejectedValue(new Error('offline'));
+    const onVideo = vi.fn();
+    await act(async () => { render(<StudentStepPanel step="present" hasSite canRender renderReason=""
+      onSite={vi.fn()} onDesign={vi.fn()} onImage={vi.fn()} onVideo={onVideo} onRefreshLandscape={vi.fn()} />); });
+    fireEvent.click(await screen.findByRole('button', { name: 'Video preview · free' }));
+    expect(onVideo).toHaveBeenCalledOnce();
   });
   it('shows an access check before a concept render without blocking it', () => {
     const onImage = vi.fn();

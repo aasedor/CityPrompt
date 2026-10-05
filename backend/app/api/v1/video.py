@@ -72,7 +72,7 @@ VIDEO_CREDIT_COST = 50
 SEEDANCE_VIDEO_CREDIT_COST = 125
 ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
 
-CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough"]
+CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough", "bicycle_ride"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
 VideoProvider = Literal["omni", "seedance_mini", "internal_enhance"]
 SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
