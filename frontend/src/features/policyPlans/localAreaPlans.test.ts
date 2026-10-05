@@ -1,6 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { installPolicyMapFetch } from './policyMapFetch.test-support';
+import { describe, expect, it, vi } from 'vitest';
 import { LOCAL_AREA_PLANS, loadLocalAreaPlan, localAreaPlan, matchLocalAreaPlans, readLocalPolicyPreferences } from './localAreaPlans';
 import { selectPolicySite } from './rileyPolicy';
+
+installPolicyMapFetch();
 
 // Independent named street junctions from the City Street Centreline dataset.
 export const SITES: Record<string, [number, number]> = {
@@ -16,6 +19,16 @@ export const SITES: Record<string, [number, number]> = {
 const square = ([x,y]: [number,number]) => [[x-.0002,y-.0002],[x+.0002,y-.0002],[x+.0002,y+.0002],[x-.0002,y+.0002]];
 
 describe('approved local area plan collection', () => {
+  it('does not cache failed requests or accept a failed/mismatched asset response', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(new Response('Unavailable', { status:503 }));
+    await expect(loadLocalAreaPlan('chinook')).rejects.toThrow('unavailable');
+    await expect(loadLocalAreaPlan('chinook')).resolves.toMatchObject({ snapshot:localAreaPlan('chinook')!.snapshot });
+    vi.mocked(fetch).mockResolvedValueOnce(new Response('null'));
+    await expect(loadLocalAreaPlan('chinook')).rejects.toThrow('Invalid');
+    const wrongPlan = await loadLocalAreaPlan('heritage');
+    vi.mocked(fetch).mockResolvedValueOnce(new Response(JSON.stringify(wrongPlan)));
+    await expect(loadLocalAreaPlan('chinook')).rejects.toThrow('edition');
+  });
   it('matches real sites to all eight plans using exact plan boundaries', () => {
     for (const [id, point] of Object.entries(SITES)) {
       const match = matchLocalAreaPlans(square(point));

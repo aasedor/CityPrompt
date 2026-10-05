@@ -1,4 +1,5 @@
 import clipping from 'polygon-clipping';
+import { loadPolicySnapshot } from './policySnapshotLoader';
 import { zoningAnchor, zoningBounds, type Position, type ZoningOverlay } from '@/features/referenceLayers/zoningLabels';
 
 export const RILEY_SOURCE = 'https://www.calgary.ca/content/dam/www/pda/pd/publishingimages/riley-communities-local-area-plan/Riley-Communities-Local-Area-Plan.pdf#page=24';
@@ -30,11 +31,7 @@ export function policyCoverageProblem(coordinates: number[][]): string | null {
 }
 
 export async function loadRileyPolicy(): Promise<PolicySnapshot> {
-  // Separate cached chunk: no PDF processing or City API call on student laptops.
-  const { default: snapshot } = await import('./data/rileyUrbanForm.json');
-  // JSON imports widen tuple/literal types. Snapshot geometry is checked by the
-  // extractor and the committed-data regression tests, not supplied by users.
-  return snapshot as unknown as PolicySnapshot;
+  return loadPolicySnapshot(new URL('./data/rileyUrbanForm.json', import.meta.url));
 }
 
 export function selectPolicySite(snapshot: PolicySnapshot, coordinates: number[][]) {

@@ -3,6 +3,7 @@ import { zoningBounds, type Position } from '@/features/referenceLayers/zoningLa
 import index from './data/localPlanIndex.json';
 import { localDesignations, type DesignationReference } from './localDesignations';
 import { loadRileyPolicy, type PolicySnapshot, type PolicyPreferences, readPolicyPreferences } from './rileyPolicy';
+import { loadPolicySnapshot } from './policySnapshotLoader';
 
 type PlanIndex = Omit<PolicySnapshot, 'features'> & {
   id: string; name: string; title: string; edition: string; source: string; pageUrl: string;
@@ -20,22 +21,24 @@ export function readLocalPolicyPreferences(raw: string | null): LocalPolicyPrefe
   } catch { return { ...basic, planId: 'auto' }; }
 }
 
-// Each map is a separate cached chunk; no PDF processing or eight-map download
+// Each map is a separate cached asset; no PDF processing or eight-map download
 // during project startup. The index contains only boundaries and small metadata.
-const loaders: Record<string, () => Promise<{ default: unknown }>> = {
-  'east-calgary': () => import('./data/east-calgaryUrbanForm.json'),
-  chinook: () => import('./data/chinookUrbanForm.json'),
-  heritage: () => import('./data/heritageUrbanForm.json'),
-  'north-hill': () => import('./data/north-hillUrbanForm.json'),
-  'south-shaganappi': () => import('./data/south-shaganappiUrbanForm.json'),
-  westbrook: () => import('./data/westbrookUrbanForm.json'),
-  'west-elbow': () => import('./data/west-elbowUrbanForm.json'),
+const sources: Record<string, URL> = {
+  'east-calgary': new URL('./data/east-calgaryUrbanForm.json', import.meta.url),
+  chinook: new URL('./data/chinookUrbanForm.json', import.meta.url),
+  heritage: new URL('./data/heritageUrbanForm.json', import.meta.url),
+  'north-hill': new URL('./data/north-hillUrbanForm.json', import.meta.url),
+  'south-shaganappi': new URL('./data/south-shaganappiUrbanForm.json', import.meta.url),
+  westbrook: new URL('./data/westbrookUrbanForm.json', import.meta.url),
+  'west-elbow': new URL('./data/west-elbowUrbanForm.json', import.meta.url),
 };
 export async function loadLocalAreaPlan(id: string): Promise<PolicySnapshot> {
   if (id === 'riley') return loadRileyPolicy();
-  const loader = loaders[id];
-  if (!loader) throw new Error('Unknown local area plan');
-  return (await loader()).default as PolicySnapshot;
+  const source = sources[id];
+  if (!source) throw new Error('Unknown local area plan');
+  const data = await loadPolicySnapshot(source);
+  if (data.snapshot !== localAreaPlan(id)?.snapshot) throw new Error('Unexpected policy map edition');
+  return data;
 }
 
 function ringArea(ring: Position[]) {

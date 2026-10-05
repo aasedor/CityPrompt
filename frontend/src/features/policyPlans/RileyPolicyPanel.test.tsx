@@ -1,3 +1,4 @@
+import { installPolicyMapFetch } from './policyMapFetch.test-support';
 import '@testing-library/jest-dom/vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -7,6 +8,8 @@ import { RileyPolicyPanel } from './RileyPolicyPanel';
 import { useRileyPolicy } from './useRileyPolicy';
 import { loadRileyPolicy } from './rileyPolicy';
 import { PolicyDetailsCard } from './PolicyDetailsCard';
+
+installPolicyMapFetch();
 
 vi.mock('./rileyPolicy', async original => ({ ...await original<object>(), loadRileyPolicy: vi.fn() }));
 const site = { id: 'site', zone_type: 'site_boundary', is_active_boundary: true, coordinates: [[-114.10,51.055],[-114.09,51.055],[-114.09,51.06],[-114.10,51.06]], properties: {} } as SiteZone;

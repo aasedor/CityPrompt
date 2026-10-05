@@ -1,6 +1,9 @@
+import { installPolicyMapFetch } from './policyMapFetch.test-support';
 import { describe, expect, it } from 'vitest';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import { loadRileyPolicy, policyCoverageProblem, policyOverlay, readPolicyPreferences, selectPolicySite, type PolicySnapshot } from './rileyPolicy';
+
+installPolicyMapFetch();
 
 const site = [[-114.09789,51.05755],[-114.09489,51.05756],[-114.09488,51.05943],[-114.08762,51.05944],[-114.08766,51.05455],[-114.09791,51.05454]];
 

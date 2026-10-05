@@ -1,6 +1,9 @@
+import { installPolicyMapFetch } from './policyMapFetch.test-support';
 import { describe, expect, it } from 'vitest';
 import { loadRileyPolicy } from './rileyPolicy';
 import { RILEY_DESIGNATIONS, rileyDesignation } from './rileyDesignations';
+
+installPolicyMapFetch();
 
 describe('Riley designation explanations', () => {
   it('provides a colour-matched explanation and source for every polygon', async () => {

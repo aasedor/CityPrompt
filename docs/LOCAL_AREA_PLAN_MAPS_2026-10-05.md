@@ -105,7 +105,7 @@ against the source and verify policy references when updating the catalogue inde
 ## Delivery and verification
 
 The small boundary/metadata index is approximately 25 KiB gzip. Each of the seven
-new maps is loaded lazily in a separate chunk (approximately 154–295 KiB gzip of
+new maps is loaded lazily as a separate JSON asset (approximately 154–295 KiB gzip of
 JSON), then cached. No PDF extraction or live City API request runs on student
 laptops. Opacity changes reuse the existing batched mesh. This is not a hosted
 40-student load test.
@@ -133,3 +133,63 @@ Reviewed source changes are the extractor/configuration, seven compact JSON
 snapshots and metadata index, plan controls, explanatory content and tests. Original
 PDFs, research scripts and browser screenshots remain outside Git under
 `C:/dev-artifacts/CityPrompt/local-area-plans-2026-10-05/`.
+
+## Additional browser trial and download recovery
+
+Follow-up on 5 October 2026 tested the local app in Chrome at 1366×768,
+1024×768, 768×1024 and 820×1180. The details cards stayed inside the viewport
+without horizontal document overflow. These are viewport simulations, not
+physical iPad/Safari testing.
+
+Additional confirmed browser checks:
+
+- A fresh page initially requested only the selected Westbrook map.
+- Rapidly changing through eight plans ended on the correct final geometry,
+  and changing plans cleared the old explanation.
+- Browsing a non-overlapping plan displayed the outside-site message; clipping
+  removed all its polygons and explained the empty result.
+- Opacity changes between visible values reused geometry. Zero opacity and
+  switching the layer off removed picking; dragging did not open a details card.
+- Four native map clicks and Finish drawing created a saved boundary spanning
+  North Hill and Riley while Riley's map was visible. Policy cards did not
+  intercept drawing. Both clipped plans could subsequently be clicked and
+  explained correctly. Automatic selection named both plans.
+- Changing the plan in Layers updated the duplicate Site controls immediately.
+- A fresh outside-coverage project disabled automatic display and explained why.
+
+The failed-download trial found a real recovery bug: a rejected JavaScript
+dynamic import stayed rejected in the browser module cache, so React Query's
+Retry button could not fetch the asset again. All eight loaders now request
+hashed JSON assets with fetch. Successful results retain the existing Query
+cache; failed requests can be repeated without reloading or changing a project.
+HTTP failures, invalid responses and a mismatched new-plan edition are rejected.
+The real browser trial aborted Chinook and Riley requests, removed the network
+block, then successfully loaded each map using Retry. Regression tests exercise
+the real loader through the fetch boundary instead of mocking a successful
+module retry.
+
+Validation: 114 tests across 26 policy/reference suites and TypeScript passed.
+After the loader fix, all eight plans passed native polygon selection, legend
+source, opacity endpoint and toggle-off browser checks again.
+Vite's production compilation passed and emitted all eight separate hashed JSON
+assets, byte-identical to the reviewed source snapshots. Public catalogue files
+were not copied into this external QA build;
+this was an asset/bundle compilation check, not a deployment. Existing large
+JavaScript chunk warnings remain.
+
+Two limits remain recorded rather than counted as passes:
+
+- The roughly 36 ha cross-plan boundary exceeded the existing Follow existing
+  terrain sampling budget (1,200 points, maximum 12 m spacing). Ground verification
+  reported unavailable while the policy overlays remained usable. No ground
+  guard or sampling limit was changed by this initiative.
+- Some navigation/reload attempts caused the automated Chrome session to restart
+  at about:blank. This follow-up does not claim those attempts passed, or establish
+  an application cause. The earlier Westbrook reload check remains separate.
+  A manual desktop/Safari navigation trial and hosted classroom load test are
+  still needed before release.
+
+Follow-up screenshots, local trial scripts, failed/passing recovery evidence and
+the production build remain outside Git in
+`C:/dev-artifacts/CityPrompt/local-area-plans-browser-followup-2026-10-05/`.
+No paid rendering, production data change or deployment was performed.

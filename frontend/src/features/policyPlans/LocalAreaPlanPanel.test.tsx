@@ -1,3 +1,4 @@
+import { installPolicyMapFetch } from './policyMapFetch.test-support';
 import '@testing-library/jest-dom/vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -8,6 +9,8 @@ import { PolicyDetailsCard } from './PolicyDetailsCard';
 import { useLocalAreaPolicy } from './useLocalAreaPolicy';
 import { LOCAL_AREA_PLANS, loadLocalAreaPlan, localAreaPlan } from './localAreaPlans';
 import type { PolicySnapshot } from './rileyPolicy';
+
+installPolicyMapFetch();
 
 vi.mock('./localAreaPlans', async original => ({ ...await original<object>(), loadLocalAreaPlan: vi.fn() }));
 const site = (x: number, y: number) => ({ id:'site', zone_type:'site_boundary', is_active_boundary:true, properties:{}, coordinates:[[x-.001,y-.001],[x+.001,y-.001],[x+.001,y+.001],[x-.001,y+.001]] }) as SiteZone;
@@ -29,6 +32,18 @@ beforeEach(async () => {
 });
 
 describe('local area plan workflow', () => {
+  it('retries the real map request after a connection failure without reloading the project', async () => {
+    vi.mocked(fetch).mockRejectedValueOnce(new TypeError('Failed to fetch'));
+    render(setup()());
+    fireEvent.change(screen.getByRole('combobox'), { target:{ value:'west-elbow' } });
+    fireEvent.click(screen.getByRole('switch'));
+    await screen.findByRole('alert');
+    expect(screen.getByTestId('geometry')).toHaveTextContent('none');
+    fireEvent.click(screen.getByRole('button', { name:'Retry policy map' }));
+    await waitFor(() => expect(screen.getByTestId('geometry')).toHaveTextContent('west-elbow-'));
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
   it('loads only the enabled selection and opens each plan’s own explanations and PDF pages', async () => {
     render(setup()());
     expect(loadLocalAreaPlan).not.toHaveBeenCalled();
