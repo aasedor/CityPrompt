@@ -8,6 +8,7 @@ from app.core.classroom_scope import require_classroom_scope
 from app.api.v1 import (
     projects,
     reference_layers,
+    site_assessments,
     student_reports,
     documents,
     buildings,
@@ -74,6 +75,7 @@ api_router.include_router(custom_style.router, prefix="/custom-style", tags=["Cu
 api_router.include_router(urban_dna.router, prefix="/urban-dna", tags=["Urban Intelligence DNA"])
 
 api_router.include_router(reference_layers.router, prefix="/reference-layers", tags=["Reference layers"])
+api_router.include_router(site_assessments.router, prefix="/site-assessments", tags=["Site assessments"])
 api_router.include_router(student_reports.router)
 
 api_router.include_router(site_landscape.router, prefix="/site-landscape", tags=["Site Landscape"])

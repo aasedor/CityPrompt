@@ -5,14 +5,26 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/direct3dCapture';
 import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
 import type { ZoningOverlay } from './zoningLabels';
+import type { ReferenceLayer } from './api';
+import { GlobeReferenceLayer } from './GlobeReferenceLayer';
 
 const NO_HIT = () => {};
 const RAD = Math.PI / 180;
 
 /** Display-only cartography: excluded from captures, raycasting and terrain masks. */
-export function GlobeZoningLabels({ data, labels, terrainHeight }: {
-  data?: ZoningOverlay; labels: boolean; terrainHeight: number;
+export function GlobeZoningLabels({ data, labels, lines, terrainHeight }: {
+  data?: ZoningOverlay; labels: boolean; lines: boolean; terrainHeight: number;
 }) {
+  const outlines = useMemo<ReferenceLayer[]>(() => !data || !lines ? [] : [{
+    id: 'calgary-district-outlines', project_id: '', name: 'Calgary zoning boundaries',
+    source_filename: '', source_crs: 'EPSG:4326', source_url: null, description: null,
+    kind: 'zoning', bounds: data.bounds, feature_count: data.districts.length, warnings: [],
+    color: '#fff9ec', opacity: 0.95, created_at: data.loadedAt,
+    feature_collection: { type: 'FeatureCollection', features: data.districts.map(district => ({
+      type: 'Feature', id: district.id, properties: { label: district.label },
+      geometry: { type: 'Polygon', coordinates: district.polygon },
+    })) },
+  }], [data, lines]);
   const sprites = useMemo(() => {
     const group = new THREE.Group();
     group.name = 'zoning-labels';
@@ -90,6 +102,7 @@ export function GlobeZoningLabels({ data, labels, terrainHeight }: {
     }
   });
   return <group name="zoning-label-overlay" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
+    <GlobeReferenceLayer layers={outlines} terrainHeight={terrainHeight} />
     <primitive object={sprites} />
   </group>;
 }

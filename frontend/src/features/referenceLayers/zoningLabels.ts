@@ -3,8 +3,8 @@ import type { MultiPolygon } from 'polygon-clipping';
 
 export const ZONING_SOURCE = 'https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh';
 export const ZONING_LIMIT = 1500;
-type Position = [number, number];
-export type ZoningLabel = { id: string; label: string; description?: string; anchor: Position };
+export type Position = [number, number];
+export type ZoningLabel = { id: string; label: string; description?: string; anchor: Position; polygon: Position[][] };
 export type ZoningOverlay = { districts: ZoningLabel[]; bounds: [number, number, number, number]; loadedAt: string };
 
 export function zoningBounds(coordinates: number[][]): ZoningOverlay['bounds'] | null {
@@ -79,7 +79,7 @@ export async function districtLabels(rows: unknown[], coordinates: number[][], s
     const pieces = clipping.intersection(row.multipolygon.coordinates, [site]);
     for (let j = 0; j < pieces.length; j++) {
       const anchor = zoningAnchor(pieces[j]);
-      if (anchor) result.push({ id: `district-${i}-${j}`, label: label.trim().slice(0, 120), description, anchor });
+      if (anchor) result.push({ id: `district-${i}-${j}`, label: label.trim().slice(0, 120), description, anchor, polygon: pieces[j] });
       if (result.length > ZONING_LIMIT) throw new Error('This site contains too many zoning areas. Use a smaller boundary.');
     }
   }

@@ -11,6 +11,7 @@ describe('district zoning labels without parcel data', () => {
     const result = await districtLabels([{ label: 'R-CG', multipolygon: geometry }], site);
     expect(result).toHaveLength(1);
     expect(result[0].label).toBe('R-CG');
+    expect(result[0].polygon).toEqual([[...site, site[0]]]);
     expect(booleanPointInPolygon(result[0].anchor, { type: 'Polygon', coordinates: [[...site, site[0]]] })).toBe(true);
     expect(site).toHaveLength(4);
   });

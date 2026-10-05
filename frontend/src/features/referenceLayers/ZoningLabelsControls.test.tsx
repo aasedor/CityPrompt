@@ -23,11 +23,11 @@ describe('zoning label controls', () => {
   it('explains codes once per designation and keeps different modifiers distinct', async () => {
     vi.mocked(fetchZoningLabels).mockResolvedValue({
       districts: [
-        { id: 'a', label: 'R-CG', description: 'Residential - Grade-Oriented Infill', anchor: [-114.12, 51.01] },
-        { id: 'b', label: 'R-CG', description: 'Residential - Grade-Oriented Infill', anchor: [-114.12, 51.01] },
-        { id: 'c', label: 'M-C1 d75', description: 'Multi-Residential - Contextual Low Profile', anchor: [-114.12, 51.01] },
-        { id: 'd', label: 'M-C1 d100', description: 'Multi-Residential - Contextual Low Profile', anchor: [-114.12, 51.01] },
-        { id: 'e', label: 'DC48Z84', anchor: [-114.12, 51.01] },
+        { id: 'a', label: 'R-CG', description: 'Residential - Grade-Oriented Infill', anchor: [-114.12, 51.01], polygon: [boundary.coordinates as [number, number][]] },
+        { id: 'b', label: 'R-CG', description: 'Residential - Grade-Oriented Infill', anchor: [-114.12, 51.01], polygon: [boundary.coordinates as [number, number][]] },
+        { id: 'c', label: 'M-C1 d75', description: 'Multi-Residential - Contextual Low Profile', anchor: [-114.12, 51.01], polygon: [boundary.coordinates as [number, number][]] },
+        { id: 'd', label: 'M-C1 d100', description: 'Multi-Residential - Contextual Low Profile', anchor: [-114.12, 51.01], polygon: [boundary.coordinates as [number, number][]] },
+        { id: 'e', label: 'DC48Z84', anchor: [-114.12, 51.01], polygon: [boundary.coordinates as [number, number][]] },
       ], bounds: [-114.12, 51.01, -114.119, 51.011], loadedAt: 'ready',
     });
     render(setup()());
@@ -57,7 +57,20 @@ describe('zoning label controls', () => {
     vi.mocked(fetchZoningLabels).mockReturnValue(new Promise(() => {}));
     render(setup()());
     expect(screen.getByLabelText('Show zoning codes')).toBeChecked();
-    expect(screen.getAllByRole('checkbox')).toHaveLength(1);
+    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+    expect(screen.getByLabelText('Show zoning boundaries')).not.toBeChecked();
+  });
+  it('loads outlines independently, reuses code data, and retains the district preference', async () => {
+    vi.mocked(fetchZoningLabels).mockResolvedValue({ districts: [], bounds: [-114.12, 51.01, -114.119, 51.011], loadedAt: 'ready' });
+    const view = setup(); const { unmount } = render(view());
+    fireEvent.click(screen.getByLabelText('Show zoning boundaries'));
+    await waitFor(() => expect(screen.getByTestId('data')).toHaveTextContent('ready'));
+    expect(screen.getByLabelText('Show zoning codes')).not.toBeChecked();
+    fireEvent.click(screen.getByLabelText('Show zoning codes'));
+    expect(fetchZoningLabels).toHaveBeenCalledOnce();
+    expect(JSON.parse(localStorage.getItem('cityprompt:parcel-zoning:one')!)).toEqual({ labels: true, districtLines: true });
+    unmount(); render(view());
+    expect(screen.getByLabelText('Show zoning boundaries')).toBeChecked();
   });
   it('does not reuse old site geometry after boundary changes or deletion', async () => {
     let resolveSecond: (value: Awaited<ReturnType<typeof fetchZoningLabels>>) => void = () => {};
