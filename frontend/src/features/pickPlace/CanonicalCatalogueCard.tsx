@@ -5,6 +5,7 @@ import { StreetCrossSection } from './StreetCrossSection';
 import type { CatalogueAsset } from './assetRegistry';
 import type { CanonicalChoice, CanonicalSelection } from './canonicalCatalogue';
 import { pickerHeroImage } from './pickerHeroImages';
+import { catalogueSizeLabel, catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
 
 function CatalogueThumbnail({ sources, label }: { sources: string[]; label: string }) {
   const [index, setIndex] = useState(0);
@@ -43,6 +44,8 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
       </span>
     </button>
     <div className="space-y-2 px-3 pb-3">
+      <p className="text-[11px] text-slate-600">{catalogueSizeLabel(placement)}</p>
+      {choice.domain === 'building' && <p className="text-[11px] text-slate-600">{catalogueStyleIds(choice).map(id => catalogueStyleLabel(id)).join(' · ') || 'Style not catalogued'}</p>}
       {Boolean(option.variants?.length) && <label className="block text-xs font-medium">Design variant
         <select aria-label={`Variant for ${option.label}`} value={variantId} onChange={event => setVariantId(event.target.value)}
           className="mt-1 min-h-11 w-full rounded-lg border border-slate-400 bg-white px-2 text-sm text-slate-900">
