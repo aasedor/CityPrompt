@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-34e5f1ab-0a4a-4efa-8ab9-59a067823abe.png",
+      "prompt": "Use case: photorealistic-natural. Design an excellent ORIGINAL contractor equipment STORAGE YARD with an ancillary workshop and dispatch office, for an urban-design teaching catalogue. Single image, no text, logos, people or vehicles, no collage. Slightly elevated front-right architectural photograph (camera about 8 m high), enough to see the complete yard composition and every outer edge with generous margin. Soft clear daylight, realistic material scale, warm restrained contemporary industrial vernacular.\nLOCKED ARRANGEMENT: rectangular compact asset courtyard 38 m across the front by 30 m deep. A neat 2.2 m tall corten and timber slatted screening fence encloses the yard. Front-centre has a clearly open 8 m vehicle gate and separate small pedestrian gate toward the left office. BACK of yard has one 22 m wide by 9 m deep ancillary equipment service shed, single occupied storey, two closed dark grey garage doors facing front, pale concrete lower wall and weathered corten upper siding, single mono-pitch roof rising from front 5.4 m to back 6.3 m. FRONT LEFT corner contains a SMALL single-storey dispatch office 8 m by 6 m, 3.7 m tall, flat roof, warm timber siding and a glazed entrance facing front. Along LEFT side, behind office, a simple open timber lean-to rack canopy stores tidy stacks of usable lumber and pipe. RIGHT side has a few tidy outdoor steel storage racks for usable construction equipment and materials. Courtyard centre remains a generous clear drive aisle. No scrap, waste, recycling, retail display or independent factory. The exterior perimeter screens the working yard but the raised camera can see its clear organisation. Contemporary utilitarian beauty from precise joinery, repeated posts, weathered steel, warm timber and practical clear circulation.",
+      "input_roles": [],
+      "sha256": "1f76fbd12bfc7b7caec39fcf5027105ce3d79a4ae5df1055f846f8124742e544",
+      "bytes": 3316191,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-234118c7-a315-49b5-abd0-835681bc3c6e.png",
+      "prompt": "Create a second view of the EXACT SAME original equipment storage yard in the supplied reference. Change ONLY camera to a higher front-right aerial looking down about60degrees, pulled back to show the ENTIRE rectangular yard and fence boundary on every side with at least10% empty margin. Do not crop any boundary. Retain exact arrangement: rear single monopitch service shed with TWO grey sectional doors and small right personnel door, corten upper band and concrete lower wall; small flat-roof cedar dispatch office FRONT LEFT with glazed double front entrance; long timber lean-to along LEFT side behind office, stocked with neat usable lumber and pipe; open steel racks of usable pipes and materials along RIGHT side; generous empty central driveway; front-centre OPEN double vehicle gate and separate small pedestrian gate directly toward office. Corten-and-timber perimeter screen, no extra sheds, no vehicles, no scrap/waste. Overall authored yard38m across front by30m deep. Building and landscape identities from input take priority. Same palette, modest low planting, real construction, sharp coherent geometry in calm natural light, no people or text, one photograph.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "0ef76032e91b70594d1b1494942520fcbe42e6a5f8f5a1e3e3ff8ebb7a7d766c",
+      "bytes": 3559438,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-5a384a49-fb98-4c3f-a70b-87a44cd2f75a.png",
+      "prompt": "Make a true vertical overhead reference of the EXACT SAME rectangular screened equipment yard in the two inputs. Camera points straight down, no horizon, all four fence corners clearly visible with 12% margin, front vehicle gate at BOTTOM centre, office BOTTOM LEFT, service shed across TOP rear. Preserve existing composition and proportions from images. Exactly one rear two-bay mono-pitch shed (weathered steel/concrete), one small flat-roof timber office, one long narrow lean-to storage canopy along LEFT behind office, uncovered steel storage racks along RIGHT, open central driveway and front-centre open double gate plus separate pedestrian gate aligned to office. Same tidy stacks of reusable lumber/pipe, never scrap or waste. Fence is corten base with timber upper slats. Single coherent38m-frontage by30m-deep asset, no added buildings, trucks, equipment clutter, roads through yard, roof protrusions or solar panels. Natural daylight with short soft shadows and realistic material detail. One image, no labels or diagrams, no text.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "fc23d7d636b37d80b65b6c7671ca25e07612d7cf9990f6b77eff8280e53f261a",
+      "bytes": 3226671,
+      "dimensions_px": [
+        1411,
+        1115
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

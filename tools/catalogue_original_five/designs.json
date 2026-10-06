@@ -1,0 +1,434 @@
+{
+  "schema": "cityprompt.original-reference-batch@1",
+  "created": "2026-10-06",
+  "method": "RLASM v6.1",
+  "source_origin": "original_generated_design",
+  "scope": "Five new original building designs, generated references and metadata, followed by source-locked architectural-clay models.",
+  "generator": "built-in image_gen",
+  "runtime_activation": false,
+  "candidates": [
+    {
+      "kind": "home",
+      "id": "prairie_manufactured_home",
+      "variant": "prairie_cedar_chassis_home",
+      "title": "Prairie Fold Manufactured Home",
+      "slug": "prairie-manufactured-home",
+      "styles": [
+        "Scandinavian",
+        "Prairie contemporary"
+      ],
+      "uses": [
+        "Manufactured Home"
+      ],
+      "storeys": 1,
+      "dimensions_m": {
+        "width": 16,
+        "depth": 4.6,
+        "height": 4.4
+      },
+      "program": "One factory-built dwelling on a permanent transportable chassis; two bedrooms and one accessible-from-front living/kitchen zone. Manufactured-home certification and transport permits are not established by an architectural model.",
+      "priority": "No current Manufactured Home program or usable dedicated reference set.",
+      "reference_reconciliation": "The generated overhead roof reads about 3.3:1. The original prompt nominal 16x6m was superseded before construction by authored 16x4.6m body; roof 16.44x5.04m. References are uncalibrated concept images, not measured evidence.",
+      "transportability": "Permanent steel chassis and removable skirt modeled. Transport permits, fabrication connections and certification require specialist design.",
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Illustrative use routes only; model envelope and site development rules require separate review.",
+        "use_label": "Manufactured Home",
+        "definition": "s.227",
+        "definition_url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=M#section227",
+        "district_candidates": [
+          {
+            "district": "R-MH",
+            "category": "permitted use route",
+            "section": "507(c)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=10",
+            "remaining_conditions": "Individual parcel and park rules differ; individual model is not a Manufactured Home Park approval. s.518 maximum building height is 5m."
+          }
+        ],
+        "excluded_automatic_routes": [],
+        "program_conditions": [
+          "One year-round dwelling; permanent chassis/undercarriage; transportable without a permanent foundation; not an RV.",
+          "Show credible seated support/skirt and access steps/ramp; do not substitute a conventional permanent-foundation bungalow or merely label it prefab."
+        ],
+        "approval": false
+      },
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "search_tags": [
+        "Scandinavian",
+        "Prairie contemporary",
+        "Manufactured Home",
+        "Prairie Fold Manufactured Home"
+      ],
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      }
+    },
+    {
+      "kind": "depot",
+      "id": "municipal_works_depot",
+      "variant": "copperline_four_bay_depot",
+      "title": "Copperline Municipal Works Depot",
+      "slug": "municipal-works-depot",
+      "styles": [
+        "Civic industrial",
+        "Prairie modern"
+      ],
+      "uses": [
+        "Municipal Works Depot"
+      ],
+      "storeys": 1,
+      "dimensions_m": {
+        "width": 45.5,
+        "depth": 22,
+        "height": 7.65
+      },
+      "program": "Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office.",
+      "priority": "Public works and maintenance program absent from current teaching catalogue and dedicated references.",
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Illustrative use routes only; model envelope and site development rules require separate review.",
+        "use_label": "Municipal Works Depot",
+        "definition": "s.241",
+        "definition_url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=M#section241",
+        "district_candidates": [
+          {
+            "district": "S-CRI",
+            "category": "permitted use route",
+            "section": "1067(1)(f)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=7"
+          },
+          {
+            "district": "I-G",
+            "category": "permitted or discretionary depending on servicing",
+            "section": "907(2)(s), 908(1)(b)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=2",
+            "remaining_conditions": "No City sewer and water together makes the listed s.907(2) route discretionary."
+          }
+        ],
+        "excluded_automatic_routes": [],
+        "program_conditions": [
+          "Declare government operator and infrastructure-maintenance program.",
+          "Reference should distinguish service bays, staff/admin entrance, equipment access and associated screened outdoor storage; do not depict a fire/emergency-response station."
+        ],
+        "approval": false
+      },
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "search_tags": [
+        "Civic industrial",
+        "Prairie modern",
+        "Municipal Works Depot",
+        "Copperline Municipal Works Depot"
+      ],
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "assemblies": {
+        "hall_m": [
+          30,
+          22,
+          7.6
+        ],
+        "office_m": [
+          15.5,
+          12,
+          4.1
+        ],
+        "canopy_width_m": 14.5
+      },
+      "reference_reconciliation": "Generated pixels supersede nominal 40m frontage: main 30x22m and office 15.5x12m, aligned at front, total 45.5m. Front/oblique near-full-width 14.5m canopy govern; shorter canopy in high-angle view is discarded as generated drift. High-angle source is not nadir or surveyed."
+    },
+    {
+      "kind": "recovery",
+      "id": "enclosed_materials_recovery",
+      "variant": "folded_roof_recovery_hall",
+      "title": "Folded-Roof Materials Recovery Hall",
+      "slug": "enclosed-materials-recovery",
+      "styles": [
+        "Industrial expressionism",
+        "Sustainable industrial"
+      ],
+      "uses": [
+        "General Industrial – Light"
+      ],
+      "storeys": 1,
+      "dimensions_m": {
+        "width": 36,
+        "depth": 24,
+        "height": 9
+      },
+      "program": "Enclosed sorting, baling and shipping of non-hazardous dry recyclables, with all operations indoors; no external processing, escaped dust/vibration, waste incineration or landfill.",
+      "priority": "No dedicated recycling reference set or stated materials-recovery programme.",
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Illustrative use routes only; model envelope and site development rules require separate review.",
+        "use_label": "General Industrial — Light",
+        "definition": "s.203.2(a)(i)(D), (iii)-(v)",
+        "definition_url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=G#section203.2",
+        "district_candidates": [
+          {
+            "district": "I-G",
+            "category": "permitted or discretionary depending on servicing",
+            "section": "907(2)(n), 908(1)(b)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=2",
+            "remaining_conditions": "All processing functions must be enclosed and no dust/vibration may be seen/felt outside the building. Verify operator/process details."
+          }
+        ],
+        "excluded_automatic_routes": [
+          {
+            "district": "I-H",
+            "reason": "s.1001(2) restricts General Industrial — Light/Medium to buildings legally existing or approved before the bylaw effective date; not a blanket route for a new building.",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=8"
+          }
+        ],
+        "program_conditions": [
+          "Name the accepted non-hazardous recyclable stream and enclosed sorting/baling/recovery operation; no landfill, hazardous waste or waste-storage use assumed.",
+          "Show enclosed receiving/sorting hall and contained loading; no outdoor processing stockpiles that contradict Light classification.",
+          "Do not use obsolete Recycling Plant or assume Salvage Yard: current Salvage Yard s.288.1 includes an outdoor component. Operations with outdoor processing or different dust/vibration impacts need a fresh classification."
+        ],
+        "approval": false
+      },
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "search_tags": [
+        "Industrial expressionism",
+        "Sustainable industrial",
+        "General Industrial – Light",
+        "Folded-Roof Materials Recovery Hall"
+      ],
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "reference_reconciliation": "Three single-slope modules rising left-to-right, with right-edge vertical glazed drops. Front tooth profile and overhead three-strip arrangement govern; no gabled folds inferred from oblique shading. Straight standing seams down slope; rotated diagonal seams in near-nadir source are discarded. No geographic north orientation established."
+    },
+    {
+      "kind": "yard",
+      "id": "contractor_storage_yard",
+      "variant": "corten_timber_equipment_yard",
+      "title": "Corten & Timber Equipment Yard",
+      "slug": "contractor-storage-yard",
+      "styles": [
+        "Industrial vernacular",
+        "Warm contemporary"
+      ],
+      "uses": [
+        "Storage Yard"
+      ],
+      "storeys": 1,
+      "dimensions_m": {
+        "width": 38,
+        "depth": 30,
+        "height": 6.5
+      },
+      "program": "Screened outdoor storage of contractor equipment and materials, with ancillary servicing of stored equipment and a compact dispatch office. No separate retail or independent manufacturing use.",
+      "priority": "Outdoor industrial yards remain a gap; a closed warehouse does not establish this operating program.",
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Illustrative use routes only; model envelope and site development rules require separate review.",
+        "use_label": "Storage Yard",
+        "definition": "s.313",
+        "definition_url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=S#section313",
+        "district_candidates": [
+          {
+            "district": "I-O",
+            "category": "permitted use route",
+            "section": "983(h)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=7",
+            "remaining_conditions": "s.986 minimum parcel area 1.6ha; s.987 total building GFA maximum 1600m2; s.988 height maximum 10m. A compact asset footprint does not constitute a compliant I-O parcel."
+          },
+          {
+            "district": "I-G",
+            "category": "discretionary use route",
+            "section": "908(2)(y)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=2"
+          },
+          {
+            "district": "S-CRI",
+            "category": "discretionary use route",
+            "section": "1068(1)(m.1)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=7"
+          }
+        ],
+        "excluded_automatic_routes": [],
+        "program_conditions": [
+          "Outdoor stored usable goods/materials/supplies with a small office and ancillary servicing of stored construction equipment, as described by s.313(a)(viii).",
+          "Exclude salvage/waste/recyclable piles and vehicle-storage operations from the assumed use.",
+          "An independent trades, fabrication or manufacturing workshop may require General Industrial — Light/Medium as another use. New General Industrial uses cannot inherit I-O permission: s.984(2) has an existing/approved condition. Do not use obsolete Contractor's Shop."
+        ],
+        "approval": false
+      },
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "search_tags": [
+        "Industrial vernacular",
+        "Warm contemporary",
+        "Storage Yard",
+        "Corten & Timber Equipment Yard"
+      ],
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "assemblies": {
+        "compound_m": [
+          38,
+          30
+        ],
+        "shed_m": [
+          22,
+          6
+        ],
+        "office_m": [
+          8,
+          6
+        ],
+        "gate_m": 8,
+        "shed_front_height_m": 5.4,
+        "shed_rear_height_m": 6.3
+      },
+      "reference_reconciliation": "Shed depth reduced from nominal 9m to authored 6m from visible proportions. Higher views govern complete perimeter; first image clips context. Top source is high oblique, not nadir/survey. 1140m2 compound is an asset, not an I-O-compliant parcel."
+    },
+    {
+      "kind": "childcare",
+      "id": "courtyard_childcare_centre",
+      "variant": "meadow_three_gable_childcare",
+      "title": "Meadow Court Childcare Centre",
+      "slug": "courtyard-childcare-centre",
+      "styles": [
+        "Scandinavian civic",
+        "Timber contemporary"
+      ],
+      "uses": [
+        "Child Care Service"
+      ],
+      "storeys": 1,
+      "dimensions_m": {
+        "width": 28,
+        "depth": 26,
+        "height": 6.3
+      },
+      "program": "Purpose-built daytime childcare study with three activity rooms, a rear circulation spine and staff service counter, and a screened secure courtyard play area. Separate reception, toilets and other support rooms are not resolved in this clay layout. No school or overnight care assumed. Teaching capacity: 30 children aged 3-5, with three pick-up/drop-off spaces to be provided in the project site design.",
+      "priority": "No dedicated childcare/daycare reference set; an elementary or postsecondary school is a different program.",
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Illustrative use routes only; model envelope and site development rules require separate review.",
+        "use_label": "Child Care Service",
+        "definition": "s.165",
+        "definition_url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=C#section165",
+        "district_candidates": [
+          {
+            "district": "S-CS",
+            "category": "discretionary use route",
+            "section": "1035(a)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=4"
+          },
+          {
+            "district": "C-N1",
+            "category": "discretionary use route",
+            "section": "703(3)(c)",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=2"
+          }
+        ],
+        "excluded_automatic_routes": [],
+        "program_conditions": [
+          "Declare seven or more children and non-overnight care, with age/capacity program recorded.",
+          "Show screened courtyard play space and separated pedestrian entry/drop-off. s.165(e) requires one pick-up/drop-off stall per ten children; capacity must be set before interpreting the site plan.",
+          "Treat it as a new building. Do not inherit existing-approved-building childcare permissions in low-density residential districts."
+        ],
+        "approval": false
+      },
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "search_tags": [
+        "Scandinavian civic",
+        "Timber contemporary",
+        "Child Care Service",
+        "Meadow Court Childcare Centre"
+      ],
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "capacity_assumption": {
+        "children": 30,
+        "age_range": "3 to 5 years",
+        "overnight": false,
+        "dropoff_stalls_required_for_teaching_program": 3,
+        "site_design_verified": false
+      },
+      "assemblies": {
+        "compound_m": [
+          28,
+          26
+        ],
+        "pavilions_m": [
+          22.5,
+          12
+        ],
+        "rear_service_spine_depth_m": 2,
+        "veranda_depth_m": 2,
+        "open_court_depth_m": 8,
+        "boundary_margins_total_m": 2,
+        "veranda_posts": 6
+      },
+      "reference_reconciliation": "Six veranda supports follow front/oblique, not four-post top drift. Three joined gables with triangular clerestories enclose one occupied tallroom level. Retain low flat rear service spine. Compound expanded to authored 28x26m to fit 12m pavilion block, 2m spine, 2m veranda, 8m open court and 2m boundary margins. Top governs arrangement only; front/oblique govern courtyard scale."
+    }
+  ],
+  "selection_audit": {
+    "path": "C:/dev-artifacts/CityPrompt/rlasm-original-five-2026-10-06/reviews/original-five-selection-independent-audit-2026-10-06-v003.json",
+    "catalogue_families_checked": 224,
+    "catalogue_variants_checked": 896,
+    "novelty_method": "Structured metadata and filenames; no exhaustive visual inspection of every historic image.",
+    "decision": "Retain all five; no dedicated usable programme reference sets found."
+  },
+  "pilot_checkpoint": {
+    "candidate": "prairie-manufactured-home-clay-v003",
+    "review": "C:/dev-artifacts/CityPrompt/rlasm-original-five-2026-10-06/reviews/prairie-manufactured-home-clay-v003-independent-review-2026-10-06-v001.json",
+    "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+    "bounded_remaining_batch": [
+      "depot",
+      "recovery",
+      "yard",
+      "childcare"
+    ]
+  }
+}

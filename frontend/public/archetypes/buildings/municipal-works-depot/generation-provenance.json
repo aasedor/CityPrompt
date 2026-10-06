@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-91b66377-b680-47b5-a37b-6949f75f7762.png",
+      "prompt": "Use case: photorealistic-natural. Create one beautiful, buildable ORIGINAL architectural design for a municipal public works depot in Calgary. It is a new fictional teaching archetype, not an existing property. One photograph, no collage, no people, no text/logos/signs, no cars obstructing the facade. Entire building and ground contact visible with 12% breathing room, editorial architectural photography, clear soft prairie daylight and refined material detail, front-right eye-level three-quarter view.\nLOCKED DESIGN: single occupied storey. L-shaped joined composition, 40 m overall frontage and 22 m maximum depth. Main vehicle maintenance hall is the RIGHT 30 m of the frontage, 22 m deep, 7.4 m wall height; low staff/dispatch office is the LEFT 10 m, only 12 m deep, 4.1 m tall, front faces aligned. Both have clean flat roofs and subtle metal parapets, no pitched roofs. Main hall has FOUR equal tall recessed sectional garage doors across the front, each 4.8 m wide by 5.2 m high. Pale warm concrete lower walls, graphite framing, broad weathered COPPER fascia across the upper 1.3 m wrapping the hall, finely spaced vertical metal ribs. One dark horizontal clerestory ribbon on the right side, high on the wall. Left office has generous full-height glazing, one double entrance, warm cedar vertical screens at the entrance, a thin dark flat canopy supported by two slender posts. Modest low planted strip at office only, open clear concrete vehicle apron in front of all four service bays. No emergency station features, no red doors. Elegant civic-industrial character, precise real construction and joints, realistic reflections and visible enclosed spaces behind glazing. A dignified, highly detailed small municipal maintenance depot, exactly four bays, exactly one low left office wing, coherent roofs and supports.",
+      "input_roles": [],
+      "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34",
+      "bytes": 2467808,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-89af78e3-ea6c-48bc-bfd8-0c706c2436c5.png",
+      "prompt": "Make a second reference photograph of the EXACT SAME original municipal works depot in the supplied image. This input is design identity authority. Only change camera to elevated front-right aerial, about 50 degrees downward, show the entire L-shaped building and all roof edges with 12% margin. Preserve the FOUR equal tall glazed sectional service doors with dark bottom panels, concrete piers and yellow bollards, copper ribbed upper band, one low glass-fronted office wing at LEFT with cedar entry screen and two-post dark canopy, high clerestory ribbon and small personnel door on right side. Plan authority: main hall at right is 30 m wide x22 m deep, office to left10 m wide x12 m deep; aligned FRONT walls, office stops short of rear to make L-shaped outline. Flat dark membrane roofs with low parapets, absolutely no pitched roof, no new wings, roof gardens, solar panels, skylights or mechanical clutter. Preserve door cadence, material palette and opening proportions. Calm clear daylight, neutral apron and small office-only planting, no vehicles, people or text. One faithful architectural photo, not a redesign or collage.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13",
+      "bytes": 2805302,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-2545d058-94be-4b40-ba1a-b039010d5fee.png",
+      "prompt": "Create a true vertical NADIR overhead reference of the EXACT SAME municipal works depot in the two supplied images. Inputs are geometry/identity authority. Camera points straight down, orthographic-like, no horizon, no perspectival redesign, no visible facade other than tiny edge. Whole L-shaped footprint with 12% margin, frontage left-to-right and FRONT at BOTTOM. Higher MAIN HALL is RIGHT30m by22m; lower OFFICE is LEFT10m by12m aligned at front and ending10m short of main rear. Show clean flat grey membrane roofs with thin parapets, subtle construction seams; no new rooftop equipment, holes, skylights, solar panels or gables. Shallow rectangular entrance canopy projects toward bottom from office front only; low office planting strip and clean vehicle apron below main hall. Preserve exactly the same two-volume composition, copper fascia at tall hall edge, roof outlines and lower office canopy as source images. Soft natural daylight. One photoreal architectural documentation image, no words, symbols, labels or dimensions.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a",
+      "bytes": 2780834,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}
