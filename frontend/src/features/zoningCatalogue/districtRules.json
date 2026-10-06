@@ -1,0 +1,5740 @@
+{
+  "reviewedAt": "2026-10-05",
+  "scope": "New catalogue buildings; use list and preliminary model-envelope height screen only.",
+  "districts": {
+    "CC-MH": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=11&div=2",
+      "rules": [
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "1123(2)",
+          "definition": "291",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "1123(2)",
+          "definition": "293",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "1124(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "1124(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1124(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1124(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1124(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1124(2)",
+          "definition": "290",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "1124(2)",
+          "definition": "292",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1124(3)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1124(3)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "1124(4)",
+          "definition": "187",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "1124(4)",
+          "definition": "305",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "1124(5)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "unlimited",
+        "section": "1130",
+        "note": "No district-wide maximum; other overlays and design rules still apply."
+      }
+    },
+    "CC-MHX": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=11&div=3",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "1133(2)",
+          "definition": "144",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "1133(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "1133(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1133(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "1133(3)",
+          "definition": "291",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "1133(3)",
+          "definition": "293",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1134(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1134(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "1134(3)",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1134(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "1134(3)",
+          "definition": "261"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1134(3)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1134(3)",
+          "definition": "281"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1134(4)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1134(4)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1134(4)",
+          "definition": "290",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "1134(4)",
+          "definition": "292",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1134(5)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1134(5)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "1134(6)",
+          "definition": "187",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "1134(6)",
+          "definition": "297",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "1134(6)",
+          "definition": "305",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1134(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1134(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1134(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1134(1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "unlimited",
+        "section": "1140",
+        "note": "No district-wide maximum; other overlays and design rules still apply."
+      }
+    },
+    "CC-X": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=11&div=5",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "1163(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "1163(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1163(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1163(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1164(1.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1164(1.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1164(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery, Distillery",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "169"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "261"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "281"
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "290"
+        },
+        {
+          "use": "School Authority – School",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "291"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "1164(3)",
+          "definition": "314"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1164(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1164(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1164(1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "unlimited",
+        "section": "1167",
+        "note": "No district-wide maximum; other overlays and design rules still apply."
+      }
+    },
+    "CC-COR": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=11&div=6",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "1180(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "1180(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "1180(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1180(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1180(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1181(1.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1181(1.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1181(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery;",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "281"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "1181(3)",
+          "definition": "314"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1181(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1181(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1181(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1181(1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "unlimited",
+        "section": "1184",
+        "note": "No district-wide maximum; other overlays and design rules still apply."
+      }
+    },
+    "CC-ET": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=12&div=2",
+      "rules": [
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "1244(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1244(2)",
+          "definition": "286",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1244(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1245(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1245(2.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "169"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "224"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "281"
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "290"
+        },
+        {
+          "use": "School Authority – School",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "291"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "1245(3)",
+          "definition": "314"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1245(2)",
+          "definition": "242"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1245(2)",
+          "definition": "286"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "CC-EIR": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=12&div=3",
+      "rules": [
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "1254(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1254(2)",
+          "definition": "286",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1254(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1255(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1255(2.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "169"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "224"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "281"
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "290"
+        },
+        {
+          "use": "School Authority – School",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "291"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "1255(3)",
+          "definition": "314"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1255(2)",
+          "definition": "242"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1255(2)",
+          "definition": "286"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "CC-EMU": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=12&div=4",
+      "rules": [
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "1260(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1260(2)",
+          "definition": "286",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1260(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1261(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1261(2.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "169"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "281"
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "290"
+        },
+        {
+          "use": "School Authority – School",
+          "category": "discretionary",
+          "section": "1261(3)",
+          "definition": "291"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1261(4)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1261(4)",
+          "definition": "281"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1261(2)",
+          "definition": "242"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1261(2)",
+          "definition": "286"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "CC-EPR": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=12&div=5",
+      "rules": [
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1266(2)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1266(2)",
+          "definition": "286",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "169"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "281"
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "290"
+        },
+        {
+          "use": "School Authority – School",
+          "category": "discretionary",
+          "section": "1267(3)",
+          "definition": "291"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1267(2)",
+          "definition": "278"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1267(2)",
+          "definition": "286"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "CC-ERR": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=12&div=6",
+      "rules": [
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "1273(1)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1273(1)",
+          "definition": "169"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1273(1)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1273(1)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1273(1)",
+          "definition": "211"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1273(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1273(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1273(1)",
+          "definition": "286"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "CC-ER": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=12&div=7",
+      "rules": [
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1279(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1279(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1279(1)",
+          "definition": "286"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "CR20-C20/R20": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=13&div=2",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "1306(2)",
+          "definition": "144",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "1306(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "1306(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "1306(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1306(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Supermarket",
+          "category": "permitted",
+          "section": "1306(2)",
+          "definition": "314",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1306(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "1306(2.2)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1307(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1307(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Auction Market – Other Goods",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "147"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-Secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "281"
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "290"
+        },
+        {
+          "use": "School Authority – School",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "291"
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "292"
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "1307(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1307(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1307(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1307(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1307(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1307(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "1307(1)",
+          "definition": "314"
+        }
+      ],
+      "height": {
+        "mode": "unlimited",
+        "section": "1312",
+        "note": "No district-wide maximum; other overlays and design rules still apply."
+      }
+    },
+    "MU-1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=14&div=2",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "1366(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1366(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1366(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "1366(2.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "1366(3)",
+          "definition": "144",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "1366(3)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1367(1.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1367(1.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1367(1.2)",
+          "definition": "281"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "169"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "1367(3)",
+          "definition": "314"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1367(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1367(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1367(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1367(1)",
+          "definition": "246"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "1371",
+        "note": "Use the full map designation, including h (height in metres)."
+      },
+      "note": "Ground-floor use, frontage, density and floor-area-ratio rules must also be checked. Proposed buildings use the discretionary routes, including uses permitted only inside existing approved buildings."
+    },
+    "MU-2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=14&div=3",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "1376(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "1376(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "1376(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "1376(2.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "1376(3)",
+          "definition": "144",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "1376(3)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1377(1.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1377(1.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1377(1.2)",
+          "definition": "281"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "169"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "242"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "1377(3)",
+          "definition": "314"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1377(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1377(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "1377(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1377(1)",
+          "definition": "246"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "1381",
+        "note": "Use the full map designation, including h (height in metres)."
+      },
+      "note": "Ground-floor use, frontage, density and floor-area-ratio rules must also be checked. Proposed buildings use the discretionary routes, including uses permitted only inside existing approved buildings."
+    },
+    "H-GO": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=15&div=1",
+      "rules": [
+        {
+          "use": "Dwelling Unit",
+          "category": "permitted",
+          "section": "1387",
+          "definition": "188"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1388(1)",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 12.0,
+        "section": "1399",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      },
+      "note": "Grade orientation, unit access, density and building configuration require a separate check."
+    },
+    "R-MH": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=10",
+      "rules": [],
+      "height": {
+        "mode": "fixed",
+        "metres": 5.0,
+        "section": "518",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "R-CG": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=11",
+      "rules": [
+        {
+          "use": "Contextual Semi-detached Dwelling",
+          "category": "permitted",
+          "section": "526(1)",
+          "definition": "170.2",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Contextual Single Detached Dwelling",
+          "category": "permitted",
+          "section": "526(1)",
+          "definition": "171",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Rowhouse Building",
+          "category": "permitted",
+          "section": "526(2)",
+          "definition": "287",
+          "review": "The rowhouse approval route depends on all district rules and section 347.3."
+        },
+        {
+          "use": "Rowhouse Building",
+          "category": "discretionary",
+          "section": "527(1)",
+          "definition": "287",
+          "review": "The rowhouse approval route depends on all district rules and section 347.3."
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "187"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "262"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "305"
+        },
+        {
+          "use": "Townhouse",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "319"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 10.0,
+        "section": "541",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "R-CGex": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=11",
+      "rules": [
+        {
+          "use": "Contextual Semi-detached Dwelling",
+          "category": "permitted",
+          "section": "526(1)",
+          "definition": "170.2",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Contextual Single Detached Dwelling",
+          "category": "permitted",
+          "section": "526(1)",
+          "definition": "171",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Rowhouse Building",
+          "category": "permitted",
+          "section": "526(2)",
+          "definition": "287",
+          "review": "The rowhouse approval route depends on all district rules and section 347.3."
+        },
+        {
+          "use": "Rowhouse Building",
+          "category": "discretionary",
+          "section": "527(1)",
+          "definition": "287",
+          "review": "The rowhouse approval route depends on all district rules and section 347.3."
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "187"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "262"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "305"
+        },
+        {
+          "use": "Townhouse",
+          "category": "discretionary",
+          "section": "527(2)",
+          "definition": "319"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 10.0,
+        "section": "541",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      },
+      "note": "R-CGex excludes Secondary Suites and Backyard Suites (s.527.1)."
+    },
+    "R-G": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=12",
+      "rules": [
+        {
+          "use": "Duplex Dwelling",
+          "category": "permitted",
+          "section": "547.1",
+          "definition": "187"
+        },
+        {
+          "use": "Rowhouse Building",
+          "category": "permitted",
+          "section": "547.1",
+          "definition": "287"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "permitted",
+          "section": "547.1",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "permitted",
+          "section": "547.1",
+          "definition": "305"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "547.2(1)",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 12.0,
+        "section": "547.13",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "R-Gm": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=12",
+      "rules": [
+        {
+          "use": "Duplex Dwelling",
+          "category": "permitted",
+          "section": "547.1",
+          "definition": "187"
+        },
+        {
+          "use": "Rowhouse Building",
+          "category": "permitted",
+          "section": "547.1",
+          "definition": "287"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "permitted",
+          "section": "547.1",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "547.3(2)",
+          "definition": "305"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "547.2(1)",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 12.0,
+        "section": "547.13",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      },
+      "note": "Single Detached Dwelling is discretionary in R-Gm (s.547.3)."
+    },
+    "R-C1L": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=2",
+      "rules": [
+        {
+          "use": "Contextual Single Detached Dwelling",
+          "category": "permitted",
+          "section": "367",
+          "definition": "171",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "368(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "368(1)",
+          "definition": "305"
+        }
+      ],
+      "height": {
+        "mode": "contextual",
+        "metres": 8.6,
+        "section": "381",
+        "note": "Homes: 8.6 m, or contextual height + 1.5 m up to 10 m. Adjoining building heights are not yet checked.",
+        "upperMetres": 10
+      }
+    },
+    "R-C1Ls": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=2",
+      "rules": [
+        {
+          "use": "Contextual Single Detached Dwelling",
+          "category": "permitted",
+          "section": "367",
+          "definition": "171",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "368(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "368(1)",
+          "definition": "305"
+        }
+      ],
+      "height": {
+        "mode": "contextual",
+        "metres": 8.6,
+        "section": "381",
+        "note": "Homes: 8.6 m, or contextual height + 1.5 m up to 10 m. Adjoining building heights are not yet checked.",
+        "upperMetres": 10
+      }
+    },
+    "R-C1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=3",
+      "rules": [
+        {
+          "use": "Contextual Single Detached Dwelling",
+          "category": "permitted",
+          "section": "385(1)",
+          "definition": "171",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "permitted",
+          "section": "385(2)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "385(2)",
+          "definition": "291",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "385(2)",
+          "definition": "293",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "386(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "386(1)",
+          "definition": "305"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "386(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "386(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "386(2)",
+          "definition": "290",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "386(2)",
+          "definition": "292",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "386(3)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "386(3)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "386(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "386(4)",
+          "definition": "261",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "contextual",
+        "metres": 8.6,
+        "section": "399",
+        "note": "Homes: 8.6 m, or contextual height + 1.5 m up to 10 m. Adjoining building heights are not yet checked.",
+        "upperMetres": 10
+      }
+    },
+    "R-C1s": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=3",
+      "rules": [
+        {
+          "use": "Contextual Single Detached Dwelling",
+          "category": "permitted",
+          "section": "385(1)",
+          "definition": "171",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "permitted",
+          "section": "385(2)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "385(2)",
+          "definition": "291",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "385(2)",
+          "definition": "293",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "386(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "386(1)",
+          "definition": "305"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "386(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "386(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "386(2)",
+          "definition": "290",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "386(2)",
+          "definition": "292",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "386(3)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "386(3)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "386(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "386(4)",
+          "definition": "261",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "contextual",
+        "metres": 8.6,
+        "section": "399",
+        "note": "Homes: 8.6 m, or contextual height + 1.5 m up to 10 m. Adjoining building heights are not yet checked.",
+        "upperMetres": 10
+      }
+    },
+    "R-C1N": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=4",
+      "rules": [
+        {
+          "use": "Contextual Single Detached Dwelling",
+          "category": "permitted",
+          "section": "405",
+          "definition": "171",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "406(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "406(1)",
+          "definition": "305"
+        }
+      ],
+      "height": {
+        "mode": "contextual",
+        "metres": 8.6,
+        "section": "418",
+        "note": "Homes: 8.6 m, or contextual height + 1.5 m up to 10 m. Adjoining building heights are not yet checked.",
+        "upperMetres": 10
+      }
+    },
+    "R-C2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=5",
+      "rules": [
+        {
+          "use": "Contextual Semi-detached Dwelling",
+          "category": "permitted",
+          "section": "425(1)",
+          "definition": "170.2",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Contextual Single Detached Dwelling",
+          "category": "permitted",
+          "section": "425(1)",
+          "definition": "171",
+          "review": "Contextual use requires the bylaw’s parcel, building and neighbouring-context tests; the catalogue alone cannot establish this."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "permitted",
+          "section": "425(2)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "425(2)",
+          "definition": "291",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "425(2)",
+          "definition": "293",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "426(1)",
+          "definition": "187"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "426(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "426(1)",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "426(1)",
+          "definition": "305"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "426(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "426(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "426(2)",
+          "definition": "292",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "426(2)",
+          "definition": "290",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "426(3)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "426(3)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "426(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "426(4)",
+          "definition": "261",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "contextual",
+        "metres": 8.6,
+        "section": "438",
+        "note": "Homes: 8.6 m, or contextual height + 1.5 m up to 10 m. Adjoining building heights are not yet checked.",
+        "upperMetres": 10
+      }
+    },
+    "R-1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=6",
+      "rules": [
+        {
+          "use": "Single Detached Dwelling",
+          "category": "permitted",
+          "section": "445",
+          "definition": "305"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "446(1)",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "parcel",
+        "metres": 11,
+        "section": "458",
+        "note": "The higher limit depends on parcel dimensions and, for R-2, dwelling form. These are not yet confirmed.",
+        "upperMetres": 12
+      }
+    },
+    "R-1s": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=6",
+      "rules": [
+        {
+          "use": "Single Detached Dwelling",
+          "category": "permitted",
+          "section": "445",
+          "definition": "305"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "446(1)",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "parcel",
+        "metres": 11,
+        "section": "458",
+        "note": "The higher limit depends on parcel dimensions and, for R-2, dwelling form. These are not yet confirmed.",
+        "upperMetres": 12
+      }
+    },
+    "R-1N": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=7",
+      "rules": [
+        {
+          "use": "Single Detached Dwelling",
+          "category": "permitted",
+          "section": "460",
+          "definition": "305"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "461(1)",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "parcel",
+        "metres": 10,
+        "section": "472",
+        "note": "The higher limit depends on parcel dimensions and, for R-2, dwelling form. These are not yet confirmed.",
+        "upperMetres": 11
+      }
+    },
+    "R-2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=8",
+      "rules": [
+        {
+          "use": "Duplex Dwelling",
+          "category": "permitted",
+          "section": "475",
+          "definition": "187"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "permitted",
+          "section": "475",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "permitted",
+          "section": "475",
+          "definition": "305"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "476(1)",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "parcel",
+        "metres": 10,
+        "section": "487",
+        "note": "The higher limit depends on parcel dimensions and, for R-2, dwelling form. These are not yet confirmed.",
+        "upperMetres": 11
+      }
+    },
+    "R-2M": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=9",
+      "rules": [
+        {
+          "use": "Rowhouse Building",
+          "category": "permitted",
+          "section": "490",
+          "definition": "287"
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "permitted",
+          "section": "490.1(1)",
+          "definition": "187",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "permitted",
+          "section": "490.1(1)",
+          "definition": "297",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "491(2)",
+          "definition": "262"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "491(2)",
+          "definition": "305"
+        },
+        {
+          "use": "Townhouse",
+          "category": "discretionary",
+          "section": "491(2)",
+          "definition": "319"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 11.0,
+        "section": "502",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "M-H3": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=10",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "659(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "659(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "659(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "659(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "659(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "659(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "659(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "659(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "659(2)",
+          "definition": "187",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "659(2)",
+          "definition": "297",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "659(2)",
+          "definition": "305",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "666",
+        "note": "Use the full map designation, including h (height in metres)."
+      }
+    },
+    "M-X1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=11",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "670(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "670(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "670(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "670(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "670(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "670(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "670(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "670(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "670(2)",
+          "definition": "187",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "670(2)",
+          "definition": "297",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "670(2)",
+          "definition": "305",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 14.0,
+        "section": "676",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "M-X2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=12",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "680(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "680(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "680(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "680(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "680(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "680(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "680(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "680(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "680(2)",
+          "definition": "187",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "680(2)",
+          "definition": "297",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "680(2)",
+          "definition": "305",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 16.0,
+        "section": "687",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "M-CG": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=2",
+      "rules": [
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "577(2)",
+          "definition": "291",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "577(2)",
+          "definition": "293",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "578(1)",
+          "definition": "187"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "578(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "578(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "578(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "578(1)",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "578(1)",
+          "definition": "305"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "578(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "578(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "578(2)",
+          "definition": "290",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "578(2)",
+          "definition": "292",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "578(3)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "578(3)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "578(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "578(4)",
+          "definition": "261",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 12.0,
+        "section": "585",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      },
+      "note": "Grade orientation, unit access, density and building configuration require a separate check."
+    },
+    "M-C1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=3",
+      "rules": [
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "587(2)",
+          "definition": "291",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "587(2)",
+          "definition": "293",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "588(1)",
+          "definition": "187"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "588(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "588(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "588(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "588(1)",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "588(1)",
+          "definition": "305"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "588(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "588(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "588(2)",
+          "definition": "290",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "588(2)",
+          "definition": "292",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "588(3)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "588(3)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "588(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "588(4)",
+          "definition": "261",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 14.0,
+        "section": "594",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "M-C2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=4",
+      "rules": [
+        {
+          "use": "Community Recreation Facility",
+          "category": "permitted",
+          "section": "596(2)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "596(2)",
+          "definition": "291",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "596(2)",
+          "definition": "293",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "597(1)",
+          "definition": "187"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "597(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "597(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "597(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "597(1)",
+          "definition": "297"
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "597(1)",
+          "definition": "305"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "597(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "597(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "597(2)",
+          "definition": "290",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "597(2)",
+          "definition": "292",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "597(3)",
+          "definition": "169",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "597(3)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "597(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "597(4)",
+          "definition": "261",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 16.0,
+        "section": "604",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "M-G": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=5",
+      "rules": [
+        {
+          "use": "Multi-Residential Development – Minor",
+          "category": "permitted",
+          "section": "606",
+          "definition": "240"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "607",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "607",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "607",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 13.0,
+        "section": "614",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      },
+      "note": "Grade orientation, unit access, density and building configuration require a separate check."
+    },
+    "M-1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=6",
+      "rules": [
+        {
+          "use": "Multi-Residential Development – Minor",
+          "category": "permitted",
+          "section": "617",
+          "definition": "240"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "618",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "618",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "618",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 14.0,
+        "section": "624",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "M-2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=7",
+      "rules": [
+        {
+          "use": "Multi-Residential Development – Minor",
+          "category": "permitted",
+          "section": "626",
+          "definition": "240"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "627",
+          "definition": "239"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "627",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "627",
+          "definition": "262"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 16.0,
+        "section": "634",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "M-H1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=8",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "637(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "637(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "637(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "637(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "637(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "637(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "637(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "637(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "637(2)",
+          "definition": "187",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "637(2)",
+          "definition": "297",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "637(2)",
+          "definition": "305",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "644",
+        "note": "Use the full map designation, including h (height in metres).",
+        "metres": 26
+      }
+    },
+    "M-H2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=9",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "648(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "648(1)",
+          "definition": "239"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "648(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "648(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "648(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "648(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "648(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "648(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Duplex Dwelling",
+          "category": "discretionary",
+          "section": "648(2)",
+          "definition": "187",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Semi-detached Dwelling",
+          "category": "discretionary",
+          "section": "648(2)",
+          "definition": "297",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Single Detached Dwelling",
+          "category": "discretionary",
+          "section": "648(2)",
+          "definition": "305",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "655",
+        "note": "Use the full map designation, including h (height in metres).",
+        "metres": 50
+      }
+    },
+    "C-R1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=10",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Auction Market – Other Goods",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "147"
+        },
+        {
+          "use": "Auction Market – Vehicles and Equipment",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "148"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "211"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "845(1)",
+          "definition": "314"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 15.0,
+        "section": "849",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "C-R2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=11",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "144",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Cinema",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "166",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Supermarket",
+          "category": "permitted",
+          "section": "862(2)",
+          "definition": "314",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "862(3)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "863(1.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "863(1.2)",
+          "definition": "281"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "863(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "863(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "863(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "863(3)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "863(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "863(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "166"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "211"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "863(1)",
+          "definition": "314"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 46.0,
+        "section": "868",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "C-R3": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=12",
+      "rules": [
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "permitted",
+          "section": "881(2)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "881(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "881(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "881(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "881(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Supermarket",
+          "category": "permitted",
+          "section": "881(2)",
+          "definition": "314",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "881(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "881(3)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "882(1.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "882(1.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "882(1.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "882(1.2)",
+          "definition": "281"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "882(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "882(2.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "882(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "882(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "882(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "882(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "882(3)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "882(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "882(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "882(1)",
+          "definition": "211"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "882(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "882(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "882(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "882(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "882(1)",
+          "definition": "314"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "885",
+        "note": "Use the full map designation, including h (height in metres)."
+      }
+    },
+    "C-N1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=2",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "702(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "702(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "702(2)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "702(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "703(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "703(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "703(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "703(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "703(3)",
+          "definition": "281"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "703(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "703(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "703(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "703(1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 10.0,
+        "section": "707",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "C-N2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=3",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "722(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "722(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "722(2)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "722(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "723(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "723(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "723(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "723(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "723(3)",
+          "definition": "281"
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "723(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "723(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "723(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "723(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "723(1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 10.0,
+        "section": "727",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "C-C1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=4",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "739(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "739(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "739(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "739(2)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "739(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Supermarket",
+          "category": "permitted",
+          "section": "739(2)",
+          "definition": "314",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "739(3)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "740(1.2)",
+          "definition": "281"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "740(2.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "740(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery;",
+          "category": "discretionary",
+          "section": "740(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "740(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "740(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "740(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "740(3)",
+          "definition": "281"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "740(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "740(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "740(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "740(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "740(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "740(1)",
+          "definition": "314"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 10.0,
+        "section": "744",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "C-C2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=5",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "758(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "758(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "758(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "758(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Supermarket",
+          "category": "permitted",
+          "section": "758(2)",
+          "definition": "314",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "758(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "758(4)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "759(1.3)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "759(1.3)",
+          "definition": "281"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "759(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "759(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "759(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "759(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "759(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "759(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "759(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "759(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "759(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "759(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "759(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "759(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "759(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "759(1)",
+          "definition": "314"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "763",
+        "note": "Use the full map designation, including h (height in metres)."
+      }
+    },
+    "C-COR1": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=6",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "777(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "777(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "777(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "777(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "777(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "777(3)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "778(1.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "778(1.2)",
+          "definition": "281"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "778(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "778(2.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "778(3)",
+          "definition": "314"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "778(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "778(1)",
+          "definition": "281"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "781",
+        "note": "Use the full map designation, including h (height in metres)."
+      }
+    },
+    "C-COR2": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=7",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "797(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "797(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "797(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "797(2)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "797(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "797(3)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "798(1.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "798(1.2)",
+          "definition": "281"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "798(2.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Dwelling Unit",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "188"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "798(3)",
+          "definition": "314"
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "798(4)",
+          "definition": "260",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "798(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "798(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "798(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "798(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "798(1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "802",
+        "note": "Use the full map designation, including h (height in metres)."
+      }
+    },
+    "C-COR3": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=8",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "814(2)",
+          "definition": "144",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Auction Market – Other Goods",
+          "category": "permitted",
+          "section": "814(2)",
+          "definition": "147",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "814(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Museum",
+          "category": "permitted",
+          "section": "814(2)",
+          "definition": "242",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "814(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "814(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Supermarket",
+          "category": "permitted",
+          "section": "814(2)",
+          "definition": "314",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "814(3)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "814(3)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "815(1.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "815(1.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "815(1.2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "815(1.2)",
+          "definition": "281"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "815(2.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "815(3)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Cinema",
+          "category": "discretionary",
+          "section": "815(3)",
+          "definition": "166"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "815(3)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "815(3)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "815(3)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "815(3)",
+          "definition": "263"
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "815(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Auction Market – Other Goods",
+          "category": "discretionary",
+          "section": "815(1)",
+          "definition": "147"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "815(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "815(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "815(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "815(1)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Supermarket",
+          "category": "discretionary",
+          "section": "815(1)",
+          "definition": "314"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "819",
+        "note": "Use the full map designation, including h (height in metres)."
+      }
+    },
+    "C-O": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=9",
+      "rules": [
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "829(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "permitted",
+          "section": "829(2)",
+          "definition": "263",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "829(3)",
+          "definition": "144",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "permitted",
+          "section": "829(3)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "829(3)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "829(3)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "829(4)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "permitted",
+          "section": "829(4)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "830(1.1)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "830(1.1)",
+          "definition": "281",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "830(3.1)",
+          "definition": "278",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "830(3.1)",
+          "definition": "281",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "830(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "830(1)",
+          "definition": "263"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "833",
+        "note": "Use the full map designation, including h (height in metres)."
+      }
+    },
+    "I-G": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=2",
+      "rules": [
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "permitted",
+          "section": "907(2)",
+          "definition": "156.1",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Auction Market – Other Goods",
+          "category": "discretionary",
+          "section": "908(2)",
+          "definition": "147"
+        },
+        {
+          "use": "Auction Market – Vehicles and Equipment",
+          "category": "discretionary",
+          "section": "908(2)",
+          "definition": "148"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "908(2)",
+          "definition": "246"
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "908(2)",
+          "definition": "260"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "908(2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "908(2)",
+          "definition": "281"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": "912"
+      }
+    },
+    "I-B": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=3",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "permitted",
+          "section": "923(2)",
+          "definition": "224",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "923(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "924(2)",
+          "definition": "144"
+        },
+        {
+          "use": "Hotel",
+          "category": "discretionary",
+          "section": "924(2)",
+          "definition": "209"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "924(2)",
+          "definition": "211"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "924(2)",
+          "definition": "263"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "924(2)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "924(2.1)",
+          "definition": "278",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "924(2.1)",
+          "definition": "281",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "924(3)",
+          "definition": "156.1",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "924(3.1)",
+          "definition": "278",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "924(3.1)",
+          "definition": "281",
+          "review": "Additional conditions in this use section need a site-specific check."
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "924(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "924(1)",
+          "definition": "246"
+        }
+      ],
+      "height": {
+        "mode": "mapped",
+        "section": "927",
+        "note": "Use the full map designation, including h (height in metres).",
+        "metres": 12
+      }
+    },
+    "I-E": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=4",
+      "rules": [
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "938(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "938(2)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "938(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "939(2)",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "939(2)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "939(2)",
+          "definition": "211"
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "939(2)",
+          "definition": "260"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "939(2)",
+          "definition": "281"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "939(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "939(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "939(1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 12.0,
+        "section": "942",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "I-C": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=5",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "954(2)",
+          "definition": "144",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "permitted",
+          "section": "954(2)",
+          "definition": "211",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "954(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "permitted",
+          "section": "954(2)",
+          "definition": "278",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "permitted",
+          "section": "954(2)",
+          "definition": "286.1",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Auction Market – Other Goods",
+          "category": "discretionary",
+          "section": "955(2)",
+          "definition": "147"
+        },
+        {
+          "use": "Auction Market – Vehicles and Equipment",
+          "category": "discretionary",
+          "section": "955(2)",
+          "definition": "148"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "955(2)",
+          "definition": "156.1"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "955(2)",
+          "definition": "281"
+        },
+        {
+          "use": "Artist's Studio",
+          "category": "discretionary",
+          "section": "955(1)",
+          "definition": "144"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "955(1)",
+          "definition": "211"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "955(1)",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "955(1)",
+          "definition": "278"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "955(1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 12.0,
+        "section": "959",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "I-R": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=6",
+      "rules": [
+        {
+          "use": "Artist's Studio",
+          "category": "permitted",
+          "section": "968",
+          "definition": "144"
+        },
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "permitted",
+          "section": "968",
+          "definition": "156.1"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "permitted",
+          "section": "968",
+          "definition": "211"
+        },
+        {
+          "use": "Auction Market – Other Goods",
+          "category": "discretionary",
+          "section": "969",
+          "definition": "147"
+        },
+        {
+          "use": "Auction Market – Vehicles and Equipment",
+          "category": "discretionary",
+          "section": "969",
+          "definition": "148"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "969",
+          "definition": "246"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "969",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "969",
+          "definition": "281"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 16.0,
+        "section": "973",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "I-O": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=7",
+      "rules": [],
+      "height": {
+        "mode": "fixed",
+        "metres": 10.0,
+        "section": "988",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "I-H": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=8",
+      "rules": [
+        {
+          "use": "Brewery, Winery and Distillery",
+          "category": "discretionary",
+          "section": "1001(1)",
+          "definition": "156.1"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "S-TUC": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=10",
+      "rules": [
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1094(1.1)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "S-UN": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=2",
+      "rules": [
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1023",
+          "definition": "242"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "S-SPR": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=3",
+      "rules": [
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "1026",
+          "definition": "291"
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "1026",
+          "definition": "293"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1027(1)",
+          "definition": "211"
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "1027(1)",
+          "definition": "292"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "S-CS": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=4",
+      "rules": [
+        {
+          "use": "School Authority – School",
+          "category": "permitted",
+          "section": "1034(1)",
+          "definition": "291"
+        },
+        {
+          "use": "School Authority Purpose – Minor",
+          "category": "permitted",
+          "section": "1034(1)",
+          "definition": "293"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1035",
+          "definition": "169"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1035",
+          "definition": "211"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1035",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1035",
+          "definition": "242"
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1035",
+          "definition": "290"
+        },
+        {
+          "use": "School Authority Purpose – Major",
+          "category": "discretionary",
+          "section": "1035",
+          "definition": "292"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "S-R": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=5",
+      "rules": [
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1043(1)",
+          "definition": "169"
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1043(1)",
+          "definition": "211"
+        },
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1043(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1043(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1043(2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1043(2)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1043(2)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1043(3)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1043(3)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1043(3)",
+          "definition": "286.1"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1043(5)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1043(5)",
+          "definition": "281"
+        },
+        {
+          "use": "Retail and Consumer Service",
+          "category": "discretionary",
+          "section": "1043(5)",
+          "definition": "286.1"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "S-CI": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=6",
+      "rules": [
+        {
+          "use": "Library",
+          "category": "discretionary",
+          "section": "1055(1)",
+          "definition": "224"
+        },
+        {
+          "use": "Museum",
+          "category": "discretionary",
+          "section": "1055(1)",
+          "definition": "242"
+        },
+        {
+          "use": "Place of Worship – Large",
+          "category": "discretionary",
+          "section": "1055(1)",
+          "definition": "260"
+        },
+        {
+          "use": "Place of Worship – Medium",
+          "category": "discretionary",
+          "section": "1055(1)",
+          "definition": "261"
+        },
+        {
+          "use": "Place of Worship – Small",
+          "category": "discretionary",
+          "section": "1055(1)",
+          "definition": "262"
+        },
+        {
+          "use": "Post-secondary Learning Institution",
+          "category": "discretionary",
+          "section": "1055(1)",
+          "definition": "263"
+        },
+        {
+          "use": "School – Private",
+          "category": "discretionary",
+          "section": "1055(1)",
+          "definition": "290"
+        },
+        {
+          "use": "School Authority – School",
+          "category": "discretionary",
+          "section": "1055(1)",
+          "definition": "291"
+        },
+        {
+          "use": "Multi-Residential Development",
+          "category": "discretionary",
+          "section": "1055(2)",
+          "definition": "239",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": "1057"
+      }
+    },
+    "S-CRI": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=7",
+      "rules": [
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1068(1)",
+          "definition": "246"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    },
+    "S-URP": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=8",
+      "rules": [
+        {
+          "use": "Office",
+          "category": "permitted",
+          "section": "1075(2)",
+          "definition": "246",
+          "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue building."
+        },
+        {
+          "use": "Indoor Recreation Facility",
+          "category": "discretionary",
+          "section": "1076(2)",
+          "definition": "211"
+        },
+        {
+          "use": "Restaurant: Food Service Only",
+          "category": "discretionary",
+          "section": "1076(2)",
+          "definition": "278"
+        },
+        {
+          "use": "Restaurant: Licensed",
+          "category": "discretionary",
+          "section": "1076(2)",
+          "definition": "281"
+        },
+        {
+          "use": "Office",
+          "category": "discretionary",
+          "section": "1076(1)",
+          "definition": "246"
+        }
+      ],
+      "height": {
+        "mode": "fixed",
+        "metres": 25.0,
+        "section": "1078",
+        "note": "Check grade, setbacks and any lower height planes at parcel edges."
+      }
+    },
+    "S-FUD": {
+      "source": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=9",
+      "rules": [
+        {
+          "use": "Single-Detached Dwelling",
+          "category": "permitted",
+          "section": "1086",
+          "definition": "305"
+        }
+      ],
+      "height": {
+        "mode": "review",
+        "note": "Height requires the district’s site-specific rules or mapped height area.",
+        "section": ""
+      }
+    }
+  }
+}

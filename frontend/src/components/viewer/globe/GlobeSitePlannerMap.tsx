@@ -59,6 +59,7 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
 import { GlobeZoningLabels } from '@/features/referenceLayers/GlobeZoningLabels';
+import { pickZoningArea, type ZoningInspectionControls } from '@/features/zoningCatalogue/zoningInspection';
 import { GlobePolicyMap, type GlobePolicyMapProps, type PolicyMapHandle } from '@/features/policyPlans/GlobePolicyMap';
 import { policyInspectionAllowed } from '@/features/policyPlans/policyPicking';
 import { GlobeCityPolicyMaps, type GlobeCityPolicyProps, type CityPolicyMapHandle } from '@/features/policyPlans/GlobeCityPolicyMaps';
@@ -1490,6 +1491,7 @@ interface GlobeSitePlannerMapProps {
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
   zoningLabels?: Pick<ZoningLabelsState, 'data' | 'enabled' | 'labels' | 'lines' | 'fill' | 'fillOpacity'>;
+  zoningInspection?: ZoningInspectionControls;
   policyMap?: GlobePolicyMapProps;
   cityPolicyMaps?: GlobeCityPolicyProps;
   transportContext?: ExistingTransport;
@@ -1595,6 +1597,7 @@ export function GlobeSitePlannerMap({
   onCancelPlacement,
   referenceLayers = [],
   zoningLabels,
+  zoningInspection,
   policyMap,
   cityPolicyMaps,
   transportContext = EMPTY_TRANSPORT,
@@ -1666,6 +1669,7 @@ export function GlobeSitePlannerMap({
   // LOD settlement state â€” true when 3D tiles have fully loaded
   const referenceOverlayGroup = useRef<THREE.Group>(null);
   const policyMapRef = useRef<PolicyMapHandle>(null);
+  const zoningRaycaster = useMemo(() => new THREE.Raycaster(), []);
   const cityPolicyMapsRef = useRef<CityPolicyMapHandle>(null);
   const [isSceneSettled, setIsSceneSettled] = useState(false);
   // The loading badge can release once visible context is usable; capture
@@ -4304,7 +4308,7 @@ export function GlobeSitePlannerMap({
   // site/building. Authoring, navigation drags and other picking modes win.
   handlePolicyClickRef.current = (event: MouseEvent) => {
     if (event.button !== 0 || !policyInspectionAllowed({
-      enabled: Boolean((policyMap?.enabled && policyMap.opacity > 0) || cityPolicyMaps?.layers.some(layer=>layer.enabled && layer.opacity>0)), opacity: 1, paused: interactionPaused,
+      enabled: Boolean(zoningInspection || (policyMap?.enabled && policyMap.opacity > 0) || cityPolicyMaps?.layers.some(layer=>layer.enabled && layer.opacity>0)), opacity: 1, paused: interactionPaused,
       drawing: hasDrawingTool, placing: Boolean(placementDraft), measuring: measureModeActive,
       streetView: streetViewPegman !== null, dragged: draggedSincePointerDownRef.current,
     })) return false;
@@ -4314,15 +4318,22 @@ export function GlobeSitePlannerMap({
     const x=((event.clientX-rect.left)/rect.width)*2-1, y=-((event.clientY-rect.top)/rect.height)*2+1;
     const id = policyMapRef.current?.pick(x,y,camera);
     const cityMapId = id ? null : cityPolicyMapsRef.current?.pick(x,y,camera);
-    if (!id && !cityMapId) { policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return false; }
+    zoningRaycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+    const zoningHit = !id && !cityMapId && zoningInspection ? pickZoningArea(referenceOverlayGroup.current, zoningRaycaster, zoningLabels, referenceLayers) : null;
+    if (!id && !cityMapId && !zoningHit) { zoningInspection?.select(null); policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return false; }
     ignoreNextCanvasClickRef.current = false;
     markUserInteracted();
     setSelectedBuildingId(null);
     onZoneSelected(null);
+    zoningInspection?.select(zoningHit);
     if (id) { cityPolicyMaps?.clearSelection(); policyMap?.selectArea(id); }
     else if (cityMapId) { policyMap?.clearSelection(); cityPolicyMaps?.inspect(cityMapId); }
+    else { policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); }
     return true;
   };
+  useEffect(() => {
+    if (zoningInspection?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) zoningInspection.select(null);
+  }, [zoningInspection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
   useEffect(() => {
     if (policyMap?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) policyMap.clearSelection();
   }, [policyMap?.selected, policyMap?.clearSelection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);

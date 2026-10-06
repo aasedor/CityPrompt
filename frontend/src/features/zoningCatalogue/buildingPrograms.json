@@ -1,0 +1,377 @@
+{
+  "infill_flat_roof_minimal": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74"
+  },
+  "bungalow_postwar_ranch": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "calgary-inner-city-bungalow-clay-v005"
+  },
+  "toronto_foursquare_red_brick": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "toronto-edwardian-foursquare-clay-v004"
+  },
+  "detached_infill_rammed_earth": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "detached_contemporary_infill-clay-v003"
+  },
+  "med_villa_tuscan": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "autumn-villa-clay-v004"
+  },
+  "clapboard_north_end": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6"
+  },
+  "infill_duplex": {
+    "components": [
+      [
+        "Semi-detached Dwelling",
+        "Contextual Semi-detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Two side-by-side homes. Calgary classifies this arrangement as semi-detached, rather than a stacked duplex.",
+    "revision": "calgary-side-by-side-duplex-clay-v004"
+  },
+  "montreal_duplex_plateau": {
+    "components": [
+      [
+        "Duplex Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Two stacked homes, treated as a Duplex Dwelling.",
+    "revision": "montreal-plateau-duplex-clay-v004"
+  },
+  "nordic_timber_mass_timber": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Residential apartments; no shops or offices assumed.",
+    "revision": "autumn-timber-clay-v004"
+  },
+  "courtyard_family_brick_modern": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Residential entrance building; the shared courtyard is designed separately.",
+    "review": "Confirm the number and arrangement of homes and whether all required access is within this building.",
+    "revision": "courtyard-brick-modern-clay-v004"
+  },
+  "rndsqr_midrise_terraced_garden": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Terraced apartments with a described live-work frontage.",
+    "review": "Confirm whether the live-work frontage adds an Office or another commercial use.",
+    "revision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47"
+  },
+  "cast_iron_italianate": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Teaching program: apartments above or alongside retail. Both residential and retail uses must be listed; changing the shop program changes the result.",
+    "revision": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f"
+  },
+  "beltline_brick_modern": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Teaching program: apartments above or alongside retail. Both residential and retail uses must be listed; changing the shop program changes the result.",
+    "revision": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618"
+  },
+  "vancouverism_classic": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Teaching program: apartments above or alongside retail. Both residential and retail uses must be listed; changing the shop program changes the result.",
+    "revision": "vancouverism-tower-podium-clay-v004"
+  },
+  "parisian_corner_cafe_culture": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Restaurant: Food Service Only"
+      ]
+    ],
+    "assumption": "Apartments over an unlicensed café. A licensed restaurant would need its own use check.",
+    "revision": "neighbourhood-corner-cafe-clay-v010"
+  },
+  "glass_tower_blue_reflective": {
+    "components": [
+      [
+        "Office"
+      ]
+    ],
+    "assumption": "Office tower, including its entrance lobby; no residential use assumed.",
+    "revision": "glass_tower_podium_modern-clay-v003"
+  },
+  "art_deco_cream_terracotta": {
+    "components": [
+      [
+        "Office",
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "The architectural form does not determine its occupancy.",
+    "review": "Catalogue sources conflict between office and residential use. Choose and verify the occupied program before matching.",
+    "revision": "showcase-tower-clay-v005"
+  },
+  "art_deco_streamline_moderne": {
+    "components": [
+      [
+        "Office",
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "The architectural form does not determine its occupancy.",
+    "review": "Catalogue sources conflict between office and residential use. Choose and verify the occupied program before matching.",
+    "revision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3"
+  },
+  "museum_earth_sheltered": {
+    "components": [
+      [
+        "Museum"
+      ]
+    ],
+    "assumption": "Museum exhibition and visitor spaces.",
+    "revision": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106"
+  },
+  "mass_timber_biophilic_barn": {
+    "components": [
+      [
+        "Library"
+      ]
+    ],
+    "assumption": "Library reading, collection and associated spaces.",
+    "revision": "neighbourhood-library-clay-v003"
+  },
+  "deco_theater_movie_palace": {
+    "components": [
+      [
+        "Cinema"
+      ]
+    ],
+    "assumption": "Cinema/movie theatre, with associated lobby spaces.",
+    "revision": "autumn-cinema-clay-v004"
+  },
+  "biophilic_mass_timber_pool": {
+    "components": [
+      [
+        "Indoor Recreation Facility"
+      ]
+    ],
+    "assumption": "Indoor swimming facility. A community-operated facility may follow a different use definition.",
+    "revision": "showcase-aquatic-clay-v004"
+  },
+  "mediterranean_resort_courtyard": {
+    "components": [
+      [
+        "Hotel"
+      ]
+    ],
+    "assumption": "Hotel guest accommodation with associated reception and pool.",
+    "revision": "interior-hotel-clay-v006"
+  },
+  "timber_sanctuary_church_glazed_gable": {
+    "components": [
+      [
+        "Place of Worship – Small",
+        "Place of Worship – Medium",
+        "Place of Worship – Large"
+      ]
+    ],
+    "assumption": "Place of worship; the small/medium/large designation depends on assembly area.",
+    "review": "Assembly area has not been recorded. Confirm the worship size class and how the spire is measured for height.",
+    "revision": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b"
+  },
+  "gothic_community_church_single_spire": {
+    "components": [
+      [
+        "Place of Worship – Small",
+        "Place of Worship – Medium",
+        "Place of Worship – Large"
+      ]
+    ],
+    "assumption": "Place of worship; the small/medium/large designation depends on assembly area.",
+    "review": "Assembly area has not been recorded. Confirm the worship size class and how the spire is measured for height.",
+    "revision": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb"
+  },
+  "reference_charcoal_gable_fourplex_v1": {
+    "components": [
+      [
+        "Rowhouse Building",
+        "Townhouse",
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Four homes with four stoops.",
+    "review": "Four entrances do not establish a legal Rowhouse Building. Confirm stacking, party walls and unit access before choosing the bylaw use.",
+    "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732"
+  },
+  "minimalist_infill_brick_monolith": {
+    "components": [
+      [
+        "Townhouse",
+        "Single Detached Dwelling",
+        "Multi-Residential Development"
+      ]
+    ],
+    "assumption": "Townhouse/infill form.",
+    "review": "Confirm whether this exact model contains one dwelling or multiple attached dwellings, and their access arrangement.",
+    "revision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7"
+  },
+  "contemporary_townhouse_timber_screen": {
+    "components": [
+      [
+        "Townhouse",
+        "Single Detached Dwelling",
+        "Multi-Residential Development"
+      ]
+    ],
+    "assumption": "Townhouse/infill form.",
+    "review": "Confirm whether this exact model contains one dwelling or multiple attached dwellings, and their access arrangement.",
+    "revision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5"
+  },
+  "brewery_crystal_brewhouse": {
+    "components": [
+      [
+        "Brewery, Winery and Distillery"
+      ]
+    ],
+    "assumption": "Brewery production spaces.",
+    "review": "Confirm the intended production program and whether a public taproom or restaurant adds another use.",
+    "revision": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782"
+  },
+  "machiya_cafe_gallery": {
+    "components": [
+      [
+        "Restaurant: Food Service Only"
+      ],
+      [
+        "Museum",
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Café and gallery.",
+    "review": "Confirm whether the gallery is a museum, retail art gallery or artist’s studio; each uses different bylaw definitions.",
+    "revision": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9"
+  },
+  "rec_centre_timber_hall": {
+    "components": [
+      [
+        "Community Recreation Facility",
+        "Indoor Recreation Facility"
+      ]
+    ],
+    "assumption": "Community recreation hall.",
+    "review": "Confirm the operator and activity program before selecting Community Recreation Facility or Indoor Recreation Facility.",
+    "revision": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf"
+  },
+  "market_historic_iron_glass": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ],
+      [
+        "Restaurant: Food Service Only"
+      ]
+    ],
+    "assumption": "Multi-vendor market galleries.",
+    "review": "Confirm the vendor mix, food preparation and shared areas; market architecture alone does not determine all required uses.",
+    "revision": "showcase-market-clay-v006"
+  },
+  "station_victorian_iron_glass": {
+    "components": [],
+    "assumption": "Passenger station with platforms, ticketing and café.",
+    "review": "Transportation infrastructure and accessory café uses require a dedicated site and operator review.",
+    "revision": "victorian-station-interior-clay-v007"
+  },
+  "biophilic_mass_timber_campus": {
+    "components": [
+      [
+        "Post-secondary Learning Institution",
+        "School – Private"
+      ]
+    ],
+    "assumption": "Art and design education with studios and gallery.",
+    "review": "Confirm the education provider, student level and public gallery program before choosing the school use.",
+    "revision": "interior-school-clay-v003"
+  }
+}

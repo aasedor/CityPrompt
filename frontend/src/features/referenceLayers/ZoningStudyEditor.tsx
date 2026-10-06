@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { api, getApiErrorMessage } from '@/services/api';
 import { StudyEditorShell } from './StudyEditorShell';
 import { CalgaryDistrictSelect } from './CalgaryDistrictSelect';
+import { CatalogueMatches } from '@/features/zoningCatalogue/ZoningCatalogueCard';
 import { CALGARY_COLOUR_SOURCE, CALGARY_CATALOGUE_DATE, CUSTOM_ZONE, districtChoices as bylawChoices } from './calgaryBylaw';
 import type { StudyMapDrawing } from './useStudyMapDrawing';
 import { referenceLayerQueryKey, referenceLayersApi, type ReferenceLayer } from './api';
@@ -297,6 +298,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
             });
           }}/>
           {active.district&&<p className="text-xs leading-relaxed text-stone-600">{active.district.description||'Saved district designation. Copy Calgary outlines to retrieve current source descriptions.'}{active.district.code==='DC'&&' Direct Control: review the specific bylaw for this designation.'}</p>}
+          <details className="rounded-xl border border-stone-200 bg-[#fffdf6] p-3"><summary className="min-h-11 cursor-pointer text-xs font-bold">Catalogue matches for this zone</summary><CatalogueMatches zone={{ id: active.id, label: active.label, source: studyTitle(condition), district: active.district, custom: active.custom }} /></details>
           <label className="block font-semibold">Map caption<input aria-label="Map caption" disabled={!canEdit||busy} maxLength={120} value={active.label} onChange={event=>updateZone({label:event.target.value})} className="mt-1 min-h-11 w-full rounded-lg border-stone-300 text-sm"/></label>
           <label className="flex min-h-11 items-center justify-between font-semibold">Zone colour<input aria-label="Zone colour" type="color" disabled={!canEdit||busy||Boolean(active.district)} value={active.color} onChange={event=>updateZone({color:event.target.value})} className="h-11 w-14 cursor-pointer"/></label>
           {active.district&&<p className="text-xs text-stone-600">Colour follows the City class. Choose Custom zone to use your own colour.</p>}

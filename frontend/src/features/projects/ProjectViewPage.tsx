@@ -78,6 +78,9 @@ import { PolicyDetailsCard } from '@/features/policyPlans/PolicyDetailsCard';
 import { useCityPolicyMaps } from '@/features/policyPlans/useCityPolicyMaps';
 import { CityPolicyMapsPanel } from '@/features/policyPlans/CityPolicyMapsPanel';
 import { CityPolicyDetailsCard } from '@/features/policyPlans/CityPolicyDetailsCard';
+import { ZoningCatalogueCard } from '@/features/zoningCatalogue/ZoningCatalogueCard';
+import { resolveZoneInspection } from '@/features/zoningCatalogue/zoningInspection';
+import type { ZoneInspection } from '@/features/zoningCatalogue/types';
 import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
 import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
@@ -282,13 +285,25 @@ export function ProjectViewPage() {
   const zoningLabels = useZoningLabels(id, siteZones);
   const localPolicy = useLocalAreaPolicy(id, siteZones);
   const cityPolicyMaps = useCityPolicyMaps(id);
+  const [zoningSelection, setZoningSelection] = useState<{ projectId?: string; zone: ZoneInspection | null } | null>(null);
+  const selectZoning = useCallback((zone: ZoneInspection | null) => setZoningSelection({ projectId: id, zone }), [id]);
+  const inspectZoningLegend = (zoneId: string) => {
+    localPolicy.clearSelection(); cityPolicyMaps.clearSelection();
+    selectZone(null);
+    selectZoning({ id: zoneId, label: '', source: '' });
+  };
+  const selectedZoning = useMemo(() => resolveZoneInspection(zoningSelection && zoningSelection.projectId === id ? zoningSelection.zone : null,
+    zoningLabels, references.visibleLayers), [id, zoningSelection, zoningLabels, references.visibleLayers]);
   const localPolicyPanel = { ...localPolicy, selectCategory: (category: string) => {
-    cityPolicyMaps.clearSelection(); localPolicy.selectCategory(category);
+    selectZoning(null); cityPolicyMaps.clearSelection(); localPolicy.selectCategory(category);
   } };
   const cityPolicyPanel = { ...cityPolicyMaps, inspect: (mapId: string) => {
-    localPolicy.clearSelection(); cityPolicyMaps.inspect(mapId);
+    selectZoning(null); localPolicy.clearSelection(); cityPolicyMaps.inspect(mapId);
   } };
   const studyMap = useStudyMapDrawing(id);
+  useEffect(() => {
+    if (zoningSelection?.zone && (!selectedZoning || studyMap.editing || selectedZoneId)) selectZoning(null);
+  }, [zoningSelection, selectedZoning, studyMap.editing, selectedZoneId, selectZoning]);
   const { savedVersionReload, reloadSavedVersion } = useZonePropertiesReload(id, selectedZoneId, reloadZones);
 
   const initializedSiteToolProjectRef = useRef<string | null>(null);
@@ -1180,6 +1195,7 @@ export function ProjectViewPage() {
             allSiteZones={siteZones}
             referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}
             zoningLabels={studyMap.editing ? {...zoningLabels,enabled:false} : zoningLabels}
+            zoningInspection={studyMap.editing ? undefined : { selected: selectedZoning, select: selectZoning }}
             policyMap={studyMap.editing ? { ...localPolicy, enabled: false } : localPolicy}
             cityPolicyMaps={studyMap.editing ? { ...cityPolicyMaps, layers: [] } : cityPolicyMaps}
             transportContext={transportContext}
@@ -1247,7 +1263,7 @@ export function ProjectViewPage() {
               automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
               onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={handleOpenGenerate3D} onRetry3D={automatic3D.retry} />}
-            {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} /></div>}
+            {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} /></div>}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
@@ -1328,7 +1344,7 @@ export function ProjectViewPage() {
         </div>
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
           <div className="sticky -top-3 z-10 flex items-center justify-between bg-white py-1"><h2 className="font-semibold text-slate-900">Map layers</h2><button onClick={() => setShowReferenceLayers(false)} aria-label="Close layers" className="flex h-11 w-11 items-center justify-center"><X size={18} /></button></div>
-          <ZoningLabelsControls state={zoningLabels} />
+          <ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} />
           <LocalAreaPlanPanel state={localPolicyPanel} />
           <CityPolicyMapsPanel state={cityPolicyPanel} />
           <ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/>
@@ -1341,6 +1357,7 @@ export function ProjectViewPage() {
           <LayersPanel siteZones={siteZones} hiddenLayers={hiddenLayers} onToggleLayer={toggleLayer} onDeleteLayer={deleteLayer} deletingLayer={deletingLayer} />
           <SiteElevation lat={project.location?.latitude} lon={project.location?.longitude} />
         </aside>}
+        {!studyMap.editing && !localPolicy.selected && !cityPolicyMaps.selected && <ZoningCatalogueCard zone={selectedZoning} onClose={() => selectZoning(null)} />}
         {!studyMap.editing && <PolicyDetailsCard selected={localPolicy.selected} onClose={localPolicy.clearSelection} />}
         {!studyMap.editing && !localPolicy.selected && <CityPolicyDetailsCard map={cityPolicyMaps.selected} onClose={cityPolicyMaps.clearSelection} />}
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
