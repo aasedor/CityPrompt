@@ -9,12 +9,23 @@ pointer.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import subprocess
 import sys
 from pathlib import Path
 
 DEFAULT_MAX_BYTES = 1024 * 1024
+# These editable source datasets are imported without LFS hydration. Preserve
+# geographic precision and readable catalogue metadata with exact-path budgets;
+# runtime models, imagery and arbitrary JSON keep the ordinary limit.
+SOURCE_JSON_BUDGETS = {
+    "frontend/src/data/buildingArchetypes.json": (3 * 1024 * 1024, "archetypes"),
+    "frontend/src/features/policyPlans/data/east-calgaryUrbanForm.json": (2 * 1024 * 1024, "features"),
+    "frontend/src/features/policyPlans/data/heritageUrbanForm.json": (2 * 1024 * 1024, "features"),
+    "frontend/src/features/policyPlans/data/south-shaganappiUrbanForm.json": (2 * 1024 * 1024, "features"),
+    "frontend/src/features/policyPlans/data/west-elbowUrbanForm.json": (2 * 1024 * 1024, "features"),
+}
 LFS_HEADER = b"version https://git-lfs.github.com/spec/v1\n"
 
 
@@ -105,10 +116,19 @@ def audit_paths(repo: Path, paths: list[str], max_bytes: int) -> list[str]:
             failures.append(
                 f"{path}: filter=lfs but committed blob is not a valid LFS pointer"
             )
-        if not is_pointer and len(blob) > max_bytes:
+        limit = max_bytes
+        if max_bytes == DEFAULT_MAX_BYTES and path in SOURCE_JSON_BUDGETS:
+            try:
+                source = json.loads(blob)
+                budget, collection = SOURCE_JSON_BUDGETS[path]
+                if isinstance(source, dict) and isinstance(source.get(collection), list):
+                    limit = budget
+            except (ValueError, UnicodeDecodeError):
+                pass
+        if not is_pointer and len(blob) > limit:
             failures.append(
                 f"{path}: ordinary Git blob is {len(blob)} bytes; "
-                f"limit is {max_bytes} bytes (use Git LFS, artifact storage, or split it)"
+                f"limit is {limit} bytes (use Git LFS, artifact storage, or split it)"
             )
     return failures
 
@@ -140,7 +160,7 @@ def main() -> int:
     scope = f"{len(paths)} changed path(s)" if base else f"{len(paths)} tracked path(s)"
     print(
         f"Repository blob policy passed for {scope}; "
-        f"ordinary blob limit={args.max_bytes} bytes."
+        f"ordinary blob limit={args.max_bytes} bytes; named source JSON budgets apply at the default limit."
     )
     return 0
 

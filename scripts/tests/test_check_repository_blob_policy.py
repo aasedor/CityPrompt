@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import subprocess
 import tempfile
 import unittest
@@ -80,6 +81,21 @@ class BlobPolicyTests(unittest.TestCase):
             blob_policy.audit_paths(self.repo, ["asset.bin"], max_bytes=64), []
         )
 
+    def test_only_named_valid_source_json_has_a_bounded_budget(self) -> None:
+        named = "frontend/src/data/buildingArchetypes.json"
+        source = json.dumps({"archetypes": [], "notes": "x" * (1024 * 1024)}).encode()
+        commit_file(self.repo, named, source)
+        self.assertEqual(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES), [])
+        commit_file(self.repo, "another.json", source)
+        self.assertTrue(blob_policy.audit_paths(self.repo, ["another.json"], blob_policy.DEFAULT_MAX_BYTES))
+        # An explicitly stricter caller must not be overridden by the allowance.
+        self.assertTrue(blob_policy.audit_paths(self.repo, [named], max_bytes=64))
+        commit_file(self.repo, named, b"not-json" * (1024 * 1024 // 4))
+        self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+        over_budget = json.dumps({"archetypes": [], "notes": "x" * (3 * 1024 * 1024)}).encode()
+        commit_file(self.repo, named, over_budget)
+        self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+
     def test_rejects_lfs_attribute_with_raw_blob(self) -> None:
         (self.repo / ".gitattributes").write_text(
             "*.bin filter=lfs diff=lfs merge=lfs -text\n", encoding="utf-8"
@@ -92,6 +108,18 @@ class BlobPolicyTests(unittest.TestCase):
             failures,
             ["raw.bin: filter=lfs but committed blob is not a valid LFS pointer"],
         )
+
+    def test_geographic_source_budget_requires_the_expected_collection(self) -> None:
+        named = "frontend/src/features/policyPlans/data/heritageUrbanForm.json"
+        source = json.dumps({"type": "FeatureCollection", "features": [], "notes": "x" * (1024 * 1024)}).encode()
+        commit_file(self.repo, named, source)
+        self.assertEqual(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES), [])
+        malformed = json.dumps({"archetypes": [], "notes": "x" * (1024 * 1024)}).encode()
+        commit_file(self.repo, named, malformed)
+        self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+        too_large = json.dumps({"features": [], "notes": "x" * (2 * 1024 * 1024)}).encode()
+        commit_file(self.repo, named, too_large)
+        self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
 
     def test_changed_paths_only_returns_new_commit_delta(self) -> None:
         base = subprocess.run(
