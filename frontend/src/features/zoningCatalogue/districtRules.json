@@ -280,6 +280,12 @@
           "category": "discretionary",
           "section": "1134(1)",
           "definition": "286.1"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1134(3)",
+          "definition": "169"
         }
       ],
       "height": {
@@ -1408,6 +1414,12 @@
           "category": "discretionary",
           "section": "1307(1)",
           "definition": "314"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1307(3)",
+          "definition": "169"
         }
       ],
       "height": {
@@ -5443,6 +5455,12 @@
           "category": "discretionary",
           "section": "1027(1)",
           "definition": "292"
+        },
+        {
+          "use": "Community Recreation Facility",
+          "category": "discretionary",
+          "section": "1027(1)",
+          "definition": "169"
         }
       ],
       "height": {

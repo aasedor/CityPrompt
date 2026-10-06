@@ -186,8 +186,12 @@
         "Restaurant: Food Service Only"
       ]
     ],
-    "assumption": "Landscaped court with outdoor food-service seating. The trial program includes Park, Outdoor Café and a supporting food-service restaurant; the actual food operator and facilities still need confirmation.",
-    "review": "Confirm the food-service operator, indoor facilities and approval of the principal food use. Outdoor Café cannot be approved by itself (s.247)."
+    "assumption": "Classroom program: a landscaped court with an outdoor café terrace, served by an associated unlicensed restaurant supplied separately on the site.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The court recipe contains a fountain, terraced seats and four café table/parasol groups. It supplies no restaurant building or food-preparation space. The restaurant component below is a required associated use, not a building contained in this park model."
+    },
+    "siteReview": "Outdoor Café cannot be approved by itself: identify its associated approved food-service use and location. This park does not supply the restaurant; both the restaurant and patio require their own site assessment."
   },
   "native-park:student_urban_splash_plaza_v1--native-v1": {
     "variantId": "student_urban_splash_plaza_v1",

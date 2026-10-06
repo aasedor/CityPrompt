@@ -15,6 +15,13 @@ export interface CatalogueProgram {
   /** Each component is required; names within one component are alternative legal forms. */
   components: string[][];
   assumption: string;
+  /** Exact-model evidence, or an explicit classroom occupancy chosen for this revision. */
+  classification?: { basis: 'model' | 'teaching'; evidence: string };
+  /** Conditions of the stated program; candidates still require normal site assessment. */
+  conditions?: string[];
+  /** Known program whose approval depends on information outside this model. Blocks confirmation. */
+  siteReview?: string;
+  /** Unresolved catalogue classification, distinct from a known site dependency. */
   review?: string;
 }
 export interface ParkProgram extends CatalogueProgram {

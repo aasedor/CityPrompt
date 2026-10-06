@@ -13,8 +13,18 @@ describe('zoning catalogue panel', () => {
     const list = screen.getByRole('region', { name: 'Discretionary use candidates' });
     expect(within(list).getByRole('link', { name: 'Semi-detached Dwelling · s.527(2)' })).toHaveAttribute('href', expect.stringContaining('#section527'));
     rerender(<CatalogueMatches zone={zone('R-G')} />);
-    expect(screen.getByRole('heading', { name: 'Permitted use candidates (8)' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Permitted use candidates (10)' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Discretionary use candidates (0)' })).toBeInTheDocument();
+  });
+  it('shows the declared program, conditions and evidence alongside the actual use definition', () => {
+    render(<CatalogueMatches zone={zone('R-G')} />);
+    const list = screen.getByRole('region', { name: 'Permitted use candidates' });
+    const row = within(list).getByRole('heading', { name: 'Charcoal Gable Fourplex' }).closest('li')!;
+    expect(within(row).getByText(/Classroom program: four side-by-side/)).toBeInTheDocument();
+    expect(within(row).getByText(/every home must face a public street/)).toBeInTheDocument();
+    fireEvent.click(within(row).getByText('Classroom program · basis'));
+    expect(row.querySelector('details')).toHaveAttribute('open');
+    expect(within(row).getByRole('link', { name: 'What “Rowhouse Building” means · s.287' })).toHaveAttribute('href', expect.stringContaining('#section287'));
   });
   it('focuses on selection and supports Escape and the close button', () => {
     const close = vi.fn();

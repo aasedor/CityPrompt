@@ -71,12 +71,17 @@ function MatchRow({ row, source }: { row: CatalogueMatch; source: string }) {
         : <img src={row.asset.thumbnail} alt="" loading="lazy" onError={() => setFailedImage(row.asset.thumbnail)} className="h-16 w-16 shrink-0 rounded-lg bg-stone-100 object-cover" />}
       <div className="min-w-0"><h4 className="text-xs font-bold leading-snug">{row.asset.label}</h4>
         <p className="mt-1 text-[11px] text-stone-600">{park ? 'Land use only · structures need a site check' : <>{row.height === undefined ? 'Height unverified' : `${row.height.toFixed(1)} m model height`}{row.limit !== undefined ? ` · ${row.limit} m limit` : ''}</>}</p>
-        {park && row.program && <p className="mt-1 text-[11px] text-stone-600">Intended uses: {row.program.components.map(alternatives => alternatives.join(' / ')).join(' + ')}</p>}
+        {row.program && row.program.components.length > 0 && <p className="mt-1 text-[11px] text-stone-600">Intended uses: {row.program.components.map(alternatives => alternatives.join(' / ')).join(' + ')}</p>}
         {row.uses.map(use => <p key={`${use.use}:${use.section}`} className="mt-1 text-[11px]"><a className="underline underline-offset-2" href={`${source}#section${use.section.split('(')[0]}`} target="_blank" rel="noreferrer">{use.use} · s.{use.section}</a></p>)}
       </div>
     </div>
     {row.program && <p className="mt-2 text-[11px] text-stone-600">{row.program.assumption}</p>}
-    {park && row.uses.map(use => <a key={`definition:${use.use}`} className="mt-1 flex min-h-11 items-center text-[11px] text-[#37594b] underline" href={`https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=${use.use[0]}#section${use.definition}`} target="_blank" rel="noreferrer">What “{use.use}” means · s.{use.definition}</a>)}
+    {row.program?.conditions?.map(condition => <p key={condition} className="mt-2 text-[11px] text-stone-700"><strong>Program condition:</strong> {condition}</p>)}
+    {row.program?.classification && <details className="mt-1 text-[11px] text-stone-600">
+      <summary className="flex min-h-11 cursor-pointer items-center font-semibold underline underline-offset-2">{row.program.classification.basis === 'teaching' ? 'Classroom program · basis' : 'Model evidence · basis'}</summary>
+      <p>{row.program.classification.evidence}</p>
+    </details>}
+    {row.uses.map(use => <a key={`definition:${use.use}`} className="mt-1 flex min-h-11 items-center text-[11px] text-[#37594b] underline" href={`https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=${use.use[0]}#section${use.definition}`} target="_blank" rel="noreferrer">What “{use.use}” means · s.{use.definition}</a>)}
     {row.reasons.map(reason => <p key={reason} className="mt-2 text-[11px] text-amber-900">{reason}</p>)}
   </li>;
 }

@@ -103,20 +103,32 @@
         "Dwelling Unit"
       ]
     ],
-    "assumption": "Residential entrance building; the shared courtyard is designed separately.",
-    "review": "Confirm the number and arrangement of homes and whether all required access is within this building.",
-    "revision": "courtyard-brick-modern-clay-v004"
+    "assumption": "Classroom program: eight apartments on the two upper occupied floors, reached by shared stairs. The courtyard is a separate site element.",
+    "revision": "courtyard-brick-modern-clay-v004",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The v004 builder places four furnished residential bays on each of two upper floors, with two internal stairs. Eight dwellings is the declared teaching layout, not a surveyed unit count."
+    },
+    "conditions": [
+      "Shared stair access does not establish individual access to grade for every apartment."
+    ]
   },
   "rndsqr_midrise_terraced_garden": {
     "components": [
       [
         "Multi-Residential Development",
         "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
       ]
     ],
-    "assumption": "Terraced apartments with a described live-work frontage.",
-    "review": "Confirm whether the live-work frontage adds an Office or another commercial use.",
-    "revision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47"
+    "assumption": "Classroom program: apartments above ground-floor shops. Both residential and retail uses must be allowed.",
+    "revision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact terrace-v006 recipe identifies ground-floor shopfronts on all four sides and living windows, terrace doors and residential furniture above. The shop program is retail; a restaurant or office would need a different check."
+    }
   },
   "cast_iron_italianate": {
     "components": [
@@ -182,26 +194,35 @@
   "art_deco_cream_terracotta": {
     "components": [
       [
-        "Office",
-        "Multi-Residential Development",
-        "Dwelling Unit"
+        "Office"
+      ],
+      [
+        "Retail and Consumer Service"
       ]
     ],
-    "assumption": "The architectural form does not determine its occupancy.",
-    "review": "Catalogue sources conflict between office and residential use. Choose and verify the occupied program before matching.",
-    "revision": "showcase-tower-clay-v005"
+    "assumption": "Classroom program: offices above a retail base.",
+    "revision": "showcase-tower-clay-v005",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The current tower-v005 builder names office interior partitions and retail base details. This exact-model evidence takes precedence over the older residential family label; residential occupancy is not assumed."
+    }
   },
   "art_deco_streamline_moderne": {
     "components": [
       [
-        "Office",
         "Multi-Residential Development",
         "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
       ]
     ],
-    "assumption": "The architectural form does not determine its occupancy.",
-    "review": "Catalogue sources conflict between office and residential use. Choose and verify the occupied program before matching.",
-    "revision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3"
+    "assumption": "Classroom program: apartments above street-level shops.",
+    "revision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The streamline-v003 recipe explicitly models street shops and upper occupied lounge spaces. Residential upper floors are the declared teaching occupancy, consistent with the residential catalogue family; an office conversion is a different program."
+    }
   },
   "museum_earth_sheltered": {
     "components": [
@@ -251,63 +272,82 @@
   "timber_sanctuary_church_glazed_gable": {
     "components": [
       [
-        "Place of Worship – Small",
-        "Place of Worship – Medium",
         "Place of Worship – Large"
       ]
     ],
-    "assumption": "Place of worship; the small/medium/large designation depends on assembly area.",
-    "review": "Assembly area has not been recorded. Confirm the worship size class and how the spire is measured for height.",
-    "revision": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b"
+    "assumption": "Place of Worship – Large: the authored assembly hall exceeds 500 m².",
+    "revision": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+    "classification": {
+      "basis": "model",
+      "evidence": "The exact model recipe has a 24 × 38 m sanctuary floor. A conservative 22 × 30 m portion of the connected hall alone is 660 m² before small column deductions, comfortably above the Large threshold. This measures the conceptual model, not a real property."
+    },
+    "conditions": [
+      "The screen conservatively uses the complete model height. Any spire or roof-feature exemption requires a separate bylaw height assessment."
+    ]
   },
   "gothic_community_church_single_spire": {
     "components": [
       [
-        "Place of Worship – Small",
-        "Place of Worship – Medium",
         "Place of Worship – Large"
       ]
     ],
-    "assumption": "Place of worship; the small/medium/large designation depends on assembly area.",
-    "review": "Assembly area has not been recorded. Confirm the worship size class and how the spire is measured for height.",
-    "revision": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb"
+    "assumption": "Place of Worship – Large: the authored assembly hall exceeds 500 m².",
+    "revision": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+    "classification": {
+      "basis": "model",
+      "evidence": "The exact model recipe has a 25 × 41 m nave floor with connected side aisles. A conservative 22 × 30 m portion of the connected hall alone is 660 m² before small column deductions, comfortably above the Large threshold. This measures the conceptual model, not a real property."
+    },
+    "conditions": [
+      "The screen conservatively uses the complete model height. Any spire or roof-feature exemption requires a separate bylaw height assessment."
+    ]
   },
   "reference_charcoal_gable_fourplex_v1": {
     "components": [
       [
         "Rowhouse Building",
-        "Townhouse",
         "Multi-Residential Development",
         "Dwelling Unit"
       ]
     ],
-    "assumption": "Four homes with four stoops.",
-    "review": "Four entrances do not establish a legal Rowhouse Building. Confirm stacking, party walls and unit access before choosing the bylaw use.",
-    "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732"
+    "assumption": "Classroom program: four side-by-side, unstacked homes with individual entrances and shared party walls.",
+    "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The fourplex-v001 recipe provides four two-storey residential units, three party-wall divisions and individual front stoops. The Rowhouse route assumes street-facing placement; Townhouse is not treated as an interchangeable label."
+    },
+    "conditions": [
+      "For the Rowhouse Building route, every home must face a public street with its own direct grade entrance beside the public sidewalk or street, with no intervening building. The intended party walls run from foundation to roof."
+    ]
   },
   "minimalist_infill_brick_monolith": {
     "components": [
       [
-        "Townhouse",
         "Single Detached Dwelling",
-        "Multi-Residential Development"
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
       ]
     ],
-    "assumption": "Townhouse/infill form.",
-    "review": "Confirm whether this exact model contains one dwelling or multiple attached dwellings, and their access arrangement.",
-    "revision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7"
+    "assumption": "Classroom program: one detached home occupying the complete buff-brick building, without a secondary suite.",
+    "revision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact brick-v002 recipe supplies a complete freestanding envelope with main, recessed and rear entrances, but no verified dwelling divisions. One household is an explicit teaching choice; multiple doors do not establish multiple dwellings."
+    }
   },
   "contemporary_townhouse_timber_screen": {
     "components": [
       [
-        "Townhouse",
         "Single Detached Dwelling",
-        "Multi-Residential Development"
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
       ]
     ],
-    "assumption": "Townhouse/infill form.",
-    "review": "Confirm whether this exact model contains one dwelling or multiple attached dwellings, and their access arrangement.",
-    "revision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5"
+    "assumption": "Classroom program: one detached home occupying the complete timber-screen building, without a secondary suite.",
+    "revision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact timber-v002 recipe has one wide recessed entrance, screened upper levels and a penthouse terrace. The architectural name does not establish three or more dwellings. A single household is the declared teaching program; the native 16.5 m height is retained."
+    }
   },
   "brewery_crystal_brewhouse": {
     "components": [
@@ -315,9 +355,15 @@
         "Brewery, Winery and Distillery"
       ]
     ],
-    "assumption": "Brewery production spaces.",
-    "review": "Confirm the intended production program and whether a public taproom or restaurant adds another use.",
-    "revision": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782"
+    "assumption": "Classroom program: brewery production with a small public tasting area included in the brewery use.",
+    "revision": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The brewhouse-v003 recipe models brewing vessels and six tasting tables. The public-area limit is a declared operating constraint, not a measured claim about the whole visitor wing. Bylaw s.156.1 includes public consumption up to 150 m²."
+    },
+    "conditions": [
+      "Limit all indoor public consumption space to 150 m² and entertainment to 10 m². A larger taproom or a separate restaurant needs another use classification; the remaining visitor wing is not assumed to be public consumption space."
+    ]
   },
   "machiya_cafe_gallery": {
     "components": [
@@ -325,53 +371,75 @@
         "Restaurant: Food Service Only"
       ],
       [
-        "Museum",
         "Retail and Consumer Service"
       ]
     ],
-    "assumption": "Café and gallery.",
-    "review": "Confirm whether the gallery is a museum, retail art gallery or artist’s studio; each uses different bylaw definitions.",
-    "revision": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9"
+    "assumption": "Classroom program: an unlicensed café and a commercial art gallery selling artwork.",
+    "revision": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact machiya-v005 catalogue program is café/gallery. Selling artwork is the stated retail scenario; neither museum operation nor an artist-production studio is assumed."
+    },
+    "conditions": [
+      "No alcohol service. Food preparation, public area and any required separation from residential districts need a site check."
+    ]
   },
   "rec_centre_timber_hall": {
     "components": [
       [
-        "Community Recreation Facility",
-        "Indoor Recreation Facility"
+        "Community Recreation Facility"
       ]
     ],
-    "assumption": "Community recreation hall.",
-    "review": "Confirm the operator and activity program before selecting Community Recreation Facility or Indoor Recreation Facility.",
-    "revision": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf"
+    "assumption": "Classroom program: a neighbourhood community association hall for social and recreational activities.",
+    "revision": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The hall-v004 model supports a community hall. The operator is explicitly assumed to be a non-profit association whose voluntary membership represents a neighbourhood, as required by s.169."
+    },
+    "conditions": [
+      "A commercial gym, private event venue or other operator would require reclassification."
+    ]
   },
   "market_historic_iron_glass": {
     "components": [
       [
         "Retail and Consumer Service"
-      ],
-      [
-        "Restaurant: Food Service Only"
       ]
     ],
-    "assumption": "Multi-vendor market galleries.",
-    "review": "Confirm the vendor mix, food preparation and shared areas; market architecture alone does not determine all required uses.",
-    "revision": "showcase-market-clay-v006"
+    "assumption": "Classroom program: a multi-vendor market selling goods and food products, with shared customer seating.",
+    "revision": "showcase-market-clay-v006",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The market-v006 recipe provides stocked vendor stalls, product displays and common tables. Retail and Consumer Service s.286.1 includes multi-vendor food-product markets and seating. Separate restaurants, alcohol service and entertainment are not part of this teaching program."
+    },
+    "conditions": [
+      "A vendor operating a separate restaurant or licensed venue needs its own use check."
+    ]
   },
   "station_victorian_iron_glass": {
     "components": [],
-    "assumption": "Passenger station with platforms, ticketing and café.",
-    "review": "Transportation infrastructure and accessory café uses require a dedicated site and operator review.",
-    "revision": "victorian-station-interior-clay-v007"
+    "assumption": "Passenger rail station: platforms, ticketing, passenger circulation and a café.",
+    "revision": "victorian-station-interior-clay-v007",
+    "classification": {
+      "basis": "model",
+      "evidence": "The station-v007 model establishes a passenger station. No ordinary new-building use route has been verified for the complete rail program. It must not be relabelled Office, Retail or Utilities to create a match."
+    },
+    "siteReview": "Known passenger-station program: confirm the rail operator, site-specific planning authority and applicable approvals, including the café. No permitted or discretionary district recommendation is made for this station."
   },
   "biophilic_mass_timber_campus": {
     "components": [
       [
-        "Post-secondary Learning Institution",
-        "School – Private"
+        "Post-secondary Learning Institution"
       ]
     ],
-    "assumption": "Art and design education with studios and gallery.",
-    "review": "Confirm the education provider, student level and public gallery program before choosing the school use.",
-    "revision": "interior-school-clay-v003"
+    "assumption": "Classroom program: a post-secondary art and design school with teaching studios and a student exhibition gallery.",
+    "revision": "interior-school-clay-v003",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact school-v003 model provides painting/ceramics studios and a gallery, within the University Academic Complex family. A post-secondary education provider is the stated operator; the gallery is ancillary teaching space."
+    },
+    "conditions": [
+      "K–12 schooling or an independently operated public gallery would require a different use check."
+    ]
   }
 }

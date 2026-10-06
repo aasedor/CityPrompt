@@ -49,6 +49,9 @@ describe('park land-use screening', () => {
   it('keeps the cafe unconfirmed until its principal food-service program is established', () => {
     const cafe = result('student_terraced_cafe_court_v1', 'CC-X');
     expect(cafe.status).toBe('review');
+    expect(cafe.program?.review).toBeUndefined();
+    expect(cafe.program?.classification?.evidence).toMatch(/no restaurant building/);
+    expect(cafe.program?.siteReview).toMatch(/does not supply the restaurant/);
     expect(cafe.uses.map(use => use.use)).toEqual(['Park', 'Outdoor Café', 'Restaurant: Food Service Only']);
     expect(cafe.reasons.join(' ')).toMatch(/Outdoor Café cannot be approved by itself/);
     expect(result('student_terraced_cafe_court_v1', 'S-SPR').status).toBe('outside');

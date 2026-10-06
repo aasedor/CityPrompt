@@ -60,16 +60,67 @@ describe('catalogue zoning screening', () => {
     expect(library.uses[0].section).toBe('1367(1)');
     expect(result('museum_earth_sheltered', 'R-C1').status).toBe('review');
   });
-  it('keeps uncertain programs, worship classes and grade access out of confirmed lists', () => {
-    expect(result('timber_sanctuary_church_glazed_gable', 'CC-X').status).toBe('review');
+  it('keeps district prerequisites and grade access out of confirmed lists', () => {
     expect(result('reference_charcoal_gable_fourplex_v1', 'R-CG').status).toBe('review');
     expect(result('nordic_timber_mass_timber', 'H-GO').status).toBe('outside');
     const small = { ...model('nordic_timber_mass_timber'), nativeDimensions: [10, 10, 10] as [number, number, number] };
     expect(matchBuilding(small, zone('H-GO')).status).toBe('review');
   });
+  it('requires all uses in the reviewed mixed programs and keeps their native heights', () => {
+    for (const id of ['rndsqr_midrise_terraced_garden', 'art_deco_streamline_moderne']) {
+      expect(result(id, 'MU-2 h26')).toMatchObject({ status: 'discretionary', uses: [
+        { use: 'Dwelling Unit' }, { use: 'Retail and Consumer Service' },
+      ] });
+      expect(result(id, 'CC-MH').status).toBe('outside'); // no retail route
+    }
+    expect(result('art_deco_cream_terracotta', 'CC-X')).toMatchObject({ status: 'discretionary', uses: [
+      { use: 'Office' }, { use: 'Retail and Consumer Service' },
+    ] });
+    expect(result('art_deco_cream_terracotta', 'MU-2 h26').status).toBe('outside');
+  });
+  it('uses the actual large worship program, never the smallest class that fits a district', () => {
+    for (const id of ['timber_sanctuary_church_glazed_gable', 'gothic_community_church_single_spire']) {
+      const match = result(id, 'CC-X'); // lists Small and Medium, not Large
+      expect(match.status).toBe('outside');
+      expect(match.uses).toEqual([]);
+      expect(match.reasons.join(' ')).toContain('Place of Worship – Large');
+    }
+  });
+  it('distinguishes declared household programs from architectural names and keeps frontage conditions', () => {
+    expect(result('minimalist_infill_brick_monolith', 'R-G')).toMatchObject({ status: 'permitted', uses: [{ use: 'Single Detached Dwelling' }] });
+    const tall = result('contemporary_townhouse_timber_screen', 'R-G');
+    expect(tall.status).toBe('outside');
+    expect(tall.height).toBeGreaterThan(16);
+    expect(tall.reasons.join(' ')).toMatch(/exceeds the 12 m/);
+    const rowhouse = result('reference_charcoal_gable_fourplex_v1', 'R-G');
+    expect(rowhouse).toMatchObject({ status: 'permitted', uses: [{ use: 'Rowhouse Building' }] });
+    expect(rowhouse.program?.conditions?.join(' ')).toMatch(/public street/);
+    expect(rowhouse.program?.components.flat()).not.toContain('Townhouse');
+  });
+  it('retains explicit operator assumptions and the correctly cited community-hall routes', () => {
+    for (const code of ['CC-MHX', 'CR20-C20/R20', 'S-SPR']) {
+      const hall = result('rec_centre_timber_hall', code);
+      expect(hall.uses).toEqual([expect.objectContaining({ use: 'Community Recreation Facility', category: 'discretionary', definition: '169' })]);
+      expect(hall.status).toBe(code === 'S-SPR' ? 'review' : 'discretionary'); // unresolved S-SPR height
+      expect(hall.program?.classification).toMatchObject({ basis: 'teaching', evidence: expect.stringContaining('non-profit') });
+    }
+    const school = result('biophilic_mass_timber_campus', 'CC-X');
+    expect(school.uses).toEqual([expect.objectContaining({ use: 'Post-secondary Learning Institution' })]);
+    expect(school.program?.components.flat()).not.toContain('School – Private');
+    expect(result('brewery_crystal_brewhouse', 'CC-X').program?.conditions?.join(' ')).toContain('150 m²');
+  });
+  it('does not confirm a known passenger station from a café or infrastructure-sounding district', () => {
+    for (const code of Object.keys(DISTRICT_RULES)) {
+      const station = result('station_victorian_iron_glass', code);
+      expect(station.status).toBe('review');
+      expect(station.uses).toEqual([]);
+      expect(station.program?.review).toBeUndefined();
+      expect(station.reasons.join(' ')).toContain('rail operator');
+    }
+  });
   it('fails safely when a model changes, lacks dimensions or loses placement eligibility', () => {
     const home = model('infill_flat_roof_minimal');
-    expect(matchBuilding({ ...home, model: { ...home.model, revision: 'new' } }, zone('R-G')).status).toBe('review');
+    expect(matchBuilding({ ...home, model: { ...home.model, revision: 'new' } }, zone('R-G'))).toMatchObject({ status: 'review', program: undefined });
     expect(matchBuilding({ ...home, nativeDimensions: undefined }, zone('R-G')).status).toBe('review');
     expect(matchCatalogue([{ ...home, readiness: 'candidate' }], zone('R-G'))).toHaveLength(0);
   });

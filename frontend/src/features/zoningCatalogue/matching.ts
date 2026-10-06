@@ -58,7 +58,7 @@ function finishMatch(result: CatalogueMatch) {
 export function matchBuilding(asset: PlaceAsset, zone: ZoneInspection,
   program: CatalogueProgram | undefined = BUILDING_PROGRAMS[asset.model.variantId]): CatalogueMatch {
   const height = asset.nativeDimensions?.[2];
-  const result: CatalogueMatch = { asset, program, status: 'review', uses: [], reasons: [],
+  const result: CatalogueMatch = { asset, program: program?.revision === asset.model.revision ? program : undefined, status: 'review', uses: [], reasons: [],
     ...(height != null && Number.isFinite(height) && height > 0 ? { height } : {}) };
   const district = rulesForZone(zone);
   if (!district) {
@@ -69,10 +69,11 @@ export function matchBuilding(asset: PlaceAsset, zone: ZoneInspection,
     result.reasons.push('This exact model revision needs a use classification.'); return result;
   }
   if (program.review || !program.components.length) {
-    result.reasons.push(program.review ?? 'The building program needs review.'); return result;
+    result.reasons.push(program.review ?? program.siteReview ?? 'The building program needs review.'); return result;
   }
   const { rule } = district;
   matchUses(result, program, rule, 'building');
+  if (program.siteReview) result.reasons.push(program.siteReview);
   const h = rule.height;
   const limit = h.mode === 'mapped' ? district.height ?? h.metres : h.metres;
   result.limit = limit;
@@ -108,6 +109,7 @@ export function matchPark(asset: PlaceAsset, zone: ZoneInspection): CatalogueMat
   }
   matchUses(result, program, district.rule, 'park');
   if (program.review) result.reasons.push(program.review);
+  if (program.siteReview) result.reasons.push(program.siteReview);
   return finishMatch(result);
 }
 
