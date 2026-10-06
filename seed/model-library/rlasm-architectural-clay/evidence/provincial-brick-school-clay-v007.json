@@ -1,0 +1,748 @@
+{
+  "schema": "cityprompt.rlasm.independent-clay-review@1",
+  "candidate": "provincial-brick-school-clay-v007",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "reviewed_utc": "2026-10-06T20:55:33.662500+00:00",
+  "review_date_local": "2026-10-06",
+  "scope": "Holistic source-locked architectural-clay review of supplied mandatory evidence.",
+  "holistic": true,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "promotion_allowed": false,
+  "inspected_files": [
+    {
+      "path": "sources/variant_2.png",
+      "sha256": "8d13d2ba3fd84e9291f7e55e2e6ae4a477a619bda999a4cd88b574fdc15b6948",
+      "bytes": 1268822,
+      "dimensions_px": [
+        1024,
+        768
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\sources\\variant_2.png"
+    },
+    {
+      "path": "sources/variant_2_angle_60.jpg",
+      "sha256": "4256012eb20794bb0f8b7a3292afac8c953adbcc7b172f9a1769f3160659b829",
+      "bytes": 951769,
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\sources\\variant_2_angle_60.jpg"
+    },
+    {
+      "path": "sources/variant_2_angle_90.jpg",
+      "sha256": "4c927b38a2114ee2b3511ca94092230243bb52a661daf649179be4f56078f485",
+      "bytes": 853809,
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\sources\\variant_2_angle_90.jpg"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "f3499d53b426c1e611b7c9618c4313d2e18e9f5a8f5a47143961d9817506920b",
+      "bytes": 1624159,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\aerial.png"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "c0110da789de45f437a8695f6318da536c7cd27cd267d3fac806d0ae78edbe4b",
+      "bytes": 1580540,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\architecture_close.png"
+    },
+    {
+      "path": "renders/classroom.png",
+      "sha256": "6c75e2436e926fa3be792684e98d6ce0027498c92322a960cb8e45dd0bd44818",
+      "bytes": 1442346,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\classroom.png"
+    },
+    {
+      "path": "renders/clock_close.png",
+      "sha256": "7ce8db50f0eaabff66e915f28cd252cf7ce4daa7caa91c7b678dad481bd5fe21",
+      "bytes": 1676099,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\clock_close.png"
+    },
+    {
+      "path": "renders/courtyard.png",
+      "sha256": "137d87f2ed3598e8557f07ef3a92fa6df5fd31d4ddeab6a55045fe59d2badc00",
+      "bytes": 1409614,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\courtyard.png"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "857da87c4960f610b7a73ad422db2bd8eca96150b2ef90432032eb181c80c85c",
+      "bytes": 1725416,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\facade_close.png"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "9645177c52a81219c5f6686d7a21473ca3c5afeceade9f81cfa17b60b017bc8e",
+      "bytes": 1472511,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\front.png"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "37789adc875472003cb954daf6f7795889266a40c938b72555edbc9704f1fbe6",
+      "bytes": 1625386,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\front_corner.png"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "fdaa95d09a87d69dfa882617fa9f517b5e10955682debe3d351ddec27e74e3ad",
+      "bytes": 1477844,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\glass_close.png"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "dcd1689bc587d985e21ee4c208bd0ee79ef6d32e30f33e87b9c436730c0bf88f",
+      "bytes": 1375749,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\left_side.png"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "ca08abc11c825189121536893af6d6488f05b91eae1d1b3635041862195b65a1",
+      "bytes": 1410098,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\rear.png"
+    },
+    {
+      "path": "renders/rear_roof_contact.png",
+      "sha256": "9c7555cd9875629c8dcdd5c126c22040e399237f057275621dade16861777c46",
+      "bytes": 1798672,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\rear_roof_contact.png"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "38de705123ff3aa2132a2c0f34559a40c9a9b996d37f3bed7ede0fd892c50401",
+      "bytes": 1626332,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\rear_side.png"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "6df92ddb47a35a8bb95378030f04bc66ea7e4e00ca4c061936b9d855bd5d0b35",
+      "bytes": 1379527,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\right_side.png"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "6190aa674a7e520f491406310880a08e1703ca551860470567f24c7ebf0375a8",
+      "bytes": 1878241,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\roof_contact.png"
+    },
+    {
+      "path": "renders/school_stair.png",
+      "sha256": "5d63b01eb6f659e62cdf0cad55552ed6d6c3836266c5804d31548cd80e374c81",
+      "bytes": 1503642,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\school_stair.png"
+    },
+    {
+      "path": "renders/school_stair_top.png",
+      "sha256": "daea39b6ab067e9fb6256dcc3a65d61fe51e059d78538e85bdc29471edacc2d6",
+      "bytes": 1621002,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\school_stair_top.png"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "0e975d21409123d96b149f355fb3e1f1d0e8f95ef893e9c0b5fad8f54493ac68",
+      "bytes": 1595799,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\side_projection.png"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "30d2aee9a89c5ea313fedcc6ce9ef643bcbc61e73730377748b163ac076dcf6e",
+      "bytes": 1337431,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\renders\\top.png"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "43890626a226bc2ff9d5088343878dd0ac0a63465aa55db8e05b893071d606b2",
+      "bytes": 2926580,
+      "dimensions_px": [
+        1920,
+        2095
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\boards\\all-views-contact.png"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "081039ec47108875ffd609cdb8fb1a74716b74bfcee7ab1b4a876fec71432162",
+      "bytes": 1487930,
+      "dimensions_px": [
+        1800,
+        570
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\boards\\locked-source-board.png"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "698d04466e3c240e1fbea3d691b7944ff02c190cfe44ac841578eb5bdb566456",
+      "bytes": 1250079,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\boards\\phone-construction.png"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "1a2aa79aceb7513b53eb6158b64a3d77a598c17e9418d5434155008e0e3e1918",
+      "bytes": 1673794,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007\\boards\\phone-source-comparison.png"
+    }
+  ],
+  "mandatory_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "courtyard",
+    "clock_close",
+    "classroom",
+    "school_stair",
+    "school_stair_top",
+    "rear_roof_contact"
+  ],
+  "complete_evidence_opened": true,
+  "integrity": {
+    "checks": [
+      {
+        "kind": "source",
+        "path": "sources/variant_2.png",
+        "sha256": "8d13d2ba3fd84e9291f7e55e2e6ae4a477a619bda999a4cd88b574fdc15b6948",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ecole-republicaine\\variant_2.png",
+        "authoritative_sha256": "8d13d2ba3fd84e9291f7e55e2e6ae4a477a619bda999a4cd88b574fdc15b6948",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_2_angle_60.jpg",
+        "sha256": "4256012eb20794bb0f8b7a3292afac8c953adbcc7b172f9a1769f3160659b829",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ecole-republicaine\\variant_2_angle_60.jpg",
+        "authoritative_sha256": "4256012eb20794bb0f8b7a3292afac8c953adbcc7b172f9a1769f3160659b829",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_2_angle_90.jpg",
+        "sha256": "4c927b38a2114ee2b3511ca94092230243bb52a661daf649179be4f56078f485",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ecole-republicaine\\variant_2_angle_90.jpg",
+        "authoritative_sha256": "4c927b38a2114ee2b3511ca94092230243bb52a661daf649179be4f56078f485",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/build.py",
+        "sha256": "d23efeafabb8a4b1c1116c4cdf605b57fbea727c1a203f5925fdfef29f63d6d8",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/plan.py",
+        "sha256": "20d1d1d43d276cd20f5a1645209129c8a61f67d41817d3b5a1d638d3cf241e4f",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/guards.py",
+        "sha256": "e0a5de22a0d994bf2148c1a844d3b65d3621a28803e62964d93306cb660a17ec",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_2.png",
+        "sha256": "8d13d2ba3fd84e9291f7e55e2e6ae4a477a619bda999a4cd88b574fdc15b6948",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_2_angle_60.jpg",
+        "sha256": "4256012eb20794bb0f8b7a3292afac8c953adbcc7b172f9a1769f3160659b829",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_2_angle_90.jpg",
+        "sha256": "4c927b38a2114ee2b3511ca94092230243bb52a661daf649179be4f56078f485",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\aerial.png",
+        "sha256": "f3499d53b426c1e611b7c9618c4313d2e18e9f5a8f5a47143961d9817506920b",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\architecture_close.png",
+        "sha256": "c0110da789de45f437a8695f6318da536c7cd27cd267d3fac806d0ae78edbe4b",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\classroom.png",
+        "sha256": "6c75e2436e926fa3be792684e98d6ce0027498c92322a960cb8e45dd0bd44818",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\clock_close.png",
+        "sha256": "7ce8db50f0eaabff66e915f28cd252cf7ce4daa7caa91c7b678dad481bd5fe21",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\courtyard.png",
+        "sha256": "137d87f2ed3598e8557f07ef3a92fa6df5fd31d4ddeab6a55045fe59d2badc00",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\facade_close.png",
+        "sha256": "857da87c4960f610b7a73ad422db2bd8eca96150b2ef90432032eb181c80c85c",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front.png",
+        "sha256": "9645177c52a81219c5f6686d7a21473ca3c5afeceade9f81cfa17b60b017bc8e",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front_corner.png",
+        "sha256": "37789adc875472003cb954daf6f7795889266a40c938b72555edbc9704f1fbe6",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\glass_close.png",
+        "sha256": "fdaa95d09a87d69dfa882617fa9f517b5e10955682debe3d351ddec27e74e3ad",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\left_side.png",
+        "sha256": "dcd1689bc587d985e21ee4c208bd0ee79ef6d32e30f33e87b9c436730c0bf88f",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear.png",
+        "sha256": "ca08abc11c825189121536893af6d6488f05b91eae1d1b3635041862195b65a1",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear_roof_contact.png",
+        "sha256": "9c7555cd9875629c8dcdd5c126c22040e399237f057275621dade16861777c46",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear_side.png",
+        "sha256": "38de705123ff3aa2132a2c0f34559a40c9a9b996d37f3bed7ede0fd892c50401",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\right_side.png",
+        "sha256": "6df92ddb47a35a8bb95378030f04bc66ea7e4e00ca4c061936b9d855bd5d0b35",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\roof_contact.png",
+        "sha256": "6190aa674a7e520f491406310880a08e1703ca551860470567f24c7ebf0375a8",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\school_stair.png",
+        "sha256": "5d63b01eb6f659e62cdf0cad55552ed6d6c3836266c5804d31548cd80e374c81",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\school_stair_top.png",
+        "sha256": "daea39b6ab067e9fb6256dcc3a65d61fe51e059d78538e85bdc29471edacc2d6",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\side_projection.png",
+        "sha256": "0e975d21409123d96b149f355fb3e1f1d0e8f95ef893e9c0b5fad8f54493ac68",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\top.png",
+        "sha256": "30d2aee9a89c5ea313fedcc6ce9ef643bcbc61e73730377748b163ac076dcf6e",
+        "passed": true
+      }
+    ],
+    "glb_checks": {
+      "header": true,
+      "json_chunk": true,
+      "hash_match": true,
+      "bytes_match": true,
+      "texture_free": true,
+      "self_contained": true,
+      "no_cameras": true,
+      "no_lights": true
+    },
+    "glb_sha256": "aff2cc294e9a8540f7915fc9466e93b92378abc730e0b89b906d73ba33fa8dec",
+    "glb_path": "provincial-brick-school-clay-v007.glb",
+    "glb_bytes": 3671928,
+    "meshes": 11,
+    "materials": 11,
+    "images": 0,
+    "textures": 0,
+    "source_manifest_sha256": "b8a1513ee10f9f3af933bde2bdc7419612a55f4c42d791ff71ac1c996e5f5439",
+    "build_report_sha256": "11951c1d69028fe3109dfe5a8e9d4bc63b20206f2a6dd39b7b6292eaaa3377aa",
+    "build_report_bounds_m": [
+      [
+        -16.450000762939453,
+        -20.450000762939453,
+        0.0
+      ],
+      [
+        16.450000762939453,
+        20.399999618530273,
+        20.65999984741211
+      ]
+    ],
+    "build_report_roundtrip_delta_m": 0.0,
+    "evidence_files": [
+      {
+        "path": "evidence/builder-evidence.json",
+        "sha256": "f57f45df0ce63df4359c34a04fb707e7f251f72acf79ee79080d693415ee3bc7",
+        "bytes": 279241
+      },
+      {
+        "path": "evidence/carrier-aperture-audit.json",
+        "sha256": "525b6f4571eed85471bcf0135eac349e96b6bfe16fba7224d4705278ff8ded2d",
+        "bytes": 16523
+      },
+      {
+        "path": "evidence/delivery-verification.json",
+        "sha256": "243726662c59040a610de5327a667e0038412d09942711abddc04b928c816f4c",
+        "bytes": 1745
+      },
+      {
+        "path": "evidence/runtime-review.md",
+        "sha256": "bd4ad60ca710348f35debc296616d0ba9e9a1e49deca492e549f4fee92474a80",
+        "bytes": 17244
+      }
+    ]
+  },
+  "deterministic_preflight": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "delivery_check_report": {
+    "status": "PASS_DELIVERY_CHECKS",
+    "checks": {
+      "source front": true,
+      "source oblique": true,
+      "source top": true,
+      "script scripts/clay_core.py": true,
+      "script scripts/build.py": true,
+      "script scripts/plan.py": true,
+      "script scripts/guards.py": true,
+      "glb header": true,
+      "model hash": true,
+      "texture-free": true,
+      "self-contained": true,
+      "no QA camera or light": true,
+      "native grade zero": true,
+      "bounds roundtrip": true,
+      "carrier apertures": true,
+      "finite geometry": true,
+      "nonzero triangles": true,
+      "render front": true,
+      "render front_corner": true,
+      "render aerial": true,
+      "render top": true,
+      "render left_side": true,
+      "render right_side": true,
+      "render rear": true,
+      "render rear_side": true,
+      "render facade_close": true,
+      "render architecture_close": true,
+      "render glass_close": true,
+      "render roof_contact": true,
+      "render side_projection": true,
+      "render courtyard": true,
+      "render clock_close": true,
+      "render classroom": true,
+      "render school_stair": true,
+      "render school_stair_top": true,
+      "render rear_roof_contact": true,
+      "camera margin front": true,
+      "camera margin front_corner": true,
+      "camera margin aerial": true,
+      "camera margin top": true,
+      "camera margin left_side": true,
+      "camera margin right_side": true,
+      "camera margin rear": true,
+      "camera margin rear_side": true,
+      "phone-source-comparison.png": true,
+      "phone-construction.png": true
+    },
+    "model_sha256": "aff2cc294e9a8540f7915fc9466e93b92378abc730e0b89b906d73ba33fa8dec",
+    "runtime_approved": false,
+    "independent_visual_review": "pending"
+  },
+  "provenance_scope": "Preserved build script inspected: exported GLB replaces authored meshes before rendering without material override. Reviewer did not independently rerender Blender or test runtime.",
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval.",
+    "Three occupied storeys only; high roof bridge and dormers do not imply extra occupied levels.",
+    "Semantic brick, copper and roof finish do not carry source-conditioned PBR detail or weathering.",
+    "Classroom and hidden plans are conceptual; no complete institutional programme, accessibility, fire/structure or code approval."
+  ],
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "blockers": [],
+  "model_sha256": "aff2cc294e9a8540f7915fc9466e93b92378abc730e0b89b906d73ba33fa8dec",
+  "findings": [
+    {
+      "category": "source identity and reconciliation",
+      "result": "pass_with_disclosed_reconciliation",
+      "evidence": [
+        "sources/variant_2.png",
+        "sources/variant_2_angle_60.jpg",
+        "sources/variant_2_angle_90.jpg",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png"
+      ],
+      "observation": "Three occupied teaching levels in side/rear wings surround the open court; high front roof bridge remains unoccupied over an open facade gap. Low arched gateway and clock/bell tower retain their distinct physical masses. Top governs roof topology and dormer placement, while hero front governs curved dormer heads and metal-seam expression. Source slate/metal contradiction remains explicitly disclosed, not silently claimed resolved photographically."
+    },
+    {
+      "category": "complete roof and envelope",
+      "result": "pass",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/glass_close.png",
+        "renders/roof_contact.png",
+        "renders/rear_roof_contact.png",
+        "renders/clock_close.png"
+      ],
+      "observation": "Fresh complete elevations and contacts show closed eaves, rear gables and joined valleys; seated dormer cheeks/caps and actual framed openings with transparent room depth. Roof bridge, dormers and arched octagonal bell lantern are supported and enclosed as appropriate. No new roof-junction hole identified."
+    },
+    {
+      "category": "street grille repair and external circulation",
+      "result": "pass",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/courtyard.png",
+        "renders/rear.png",
+        "scripts/build.py"
+      ],
+      "observation": "Each of the four street grilles now has a continuous 0.18m grounded sill beneath its footplates, closing the prior 0.165m unsupported gap. The main arch stays open. Grounded courtyard and rear steps/landings continue to meet the 0.52m occupied thresholds. Finite findings SCHOOL-REPAIR-02 and SCHOOL-REPAIR-03 are closed for exact v007 bytes."
+    },
+    {
+      "category": "teaching rooms, lighting and stairs",
+      "result": "pass",
+      "evidence": [
+        "renders/side_projection.png",
+        "renders/classroom.png",
+        "renders/school_stair.png",
+        "renders/school_stair_top.png",
+        "scripts/guards.py"
+      ],
+      "observation": "Contained wing QA emitters retain readable interior depth without former external light patches. Classroom aisles and floor-level wing connections are clear. Supported flights and midlandings pass through true floor holes into full upper arrival floors; structural guard posts/anchorplates visibly bear on slabs. SCHOOL-REPAIR-01 remains closed."
+    },
+    {
+      "category": "complete holistic evidence",
+      "result": "pass",
+      "evidence": [
+        "boards/locked-source-board.png",
+        "boards/all-views-contact.png",
+        "boards/phone-construction.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "observation": "All three original source images, nineteen mandatory full-resolution renders and four boards directly inspected for this fresh candidate. Exact current sources, preserved scripts, board inputs, GLB and canonical/delivery checks independently revalidated with zero unresolved P0/P1."
+    }
+  ],
+  "prior_authority": {
+    "previous_review": "provincial-brick-school-clay-v006-independent-review-2026-10-06-v001.json",
+    "previous_decision": "FAIL",
+    "resolved_findings": [
+      "SCHOOL-REPAIR-03"
+    ],
+    "disposition": "Fresh holistic decision; previous failed bytes and decisions preserved."
+  }
+}

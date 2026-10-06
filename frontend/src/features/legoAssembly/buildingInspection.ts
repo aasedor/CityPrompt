@@ -8,6 +8,8 @@ type UpAxis = 'y' | 'z';
 interface Inspection {
   zoneId: string; revision: string; object: THREE.Object3D; bounds: THREE.Box3; up: UpAxis;
   restore: (() => void) | null;
+  startPoint?: THREE.Vector3;
+  startDirection?: THREE.Vector3;
 }
 const mounted = new Map<string, Inspection>();
 let active: Inspection | null = null;
@@ -54,10 +56,45 @@ function world(record: Inspection, point: THREE.Vector3, heading: number): WalkP
 }
 
 function start(record: Inspection): WalkPose {
-  const point = record.bounds.getCenter(new THREE.Vector3());
-  point[record.up] = record.bounds.min[record.up] + .05;
-  const origin = world(record, point, 0), inward = point.clone();
-  if (record.up === 'y') inward.z -= 1; else inward.y += 1;
+  // A bounds centre may be inside a party wall or facing furniture. Sample
+  // a bounded grid at eye height, using the actual mounted geometry. This
+  // chooses a clear inspection viewpoint; it does not infer a walkable route.
+  if (!record.startPoint) {
+    const depth = record.up === 'y' ? 'z' : 'y';
+    const centre = record.bounds.getCenter(new THREE.Vector3());
+    centre[record.up] = record.bounds.min[record.up] + .05;
+    const directions = [new THREE.Vector3(1, 0, 0), new THREE.Vector3(-1, 0, 0),
+      new THREE.Vector3(), new THREE.Vector3()];
+    directions[2][depth] = 1; directions[3][depth] = -1;
+    record.object.updateWorldMatrix(true, true);
+    const ray = new THREE.Raycaster();
+    ray.far = Math.max(10, record.bounds.getSize(new THREE.Vector3()).length());
+    let best = -Infinity;
+    for (const x of [0, -.2, .2, -.35, .35]) for (const y of [0, -.2, .2, -.35, .35]) {
+      const point = centre.clone();
+      point.x += x * (record.bounds.max.x - record.bounds.min.x);
+      point[depth] += y * (record.bounds.max[depth] - record.bounds.min[depth]);
+      const eye = point.clone(); eye[record.up] += 1.7;
+      record.object.localToWorld(eye);
+      const distances = directions.map(direction => {
+        ray.set(eye, direction.clone().transformDirection(record.object.matrixWorld));
+        return ray.intersectObject(record.object, true)[0]?.distance ?? ray.far;
+      });
+      const clearance = Math.min(...distances);
+      // Landscape and patio geometry can extend the bounds well past the
+      // building. Prefer a clear point surrounded by shell surfaces, rather
+      // than an unobstructed point outside looking away from the model.
+      const enclosed = distances.filter(distance => distance < ray.far).length >= 3;
+      const score = Math.min(clearance, 2) + (enclosed && clearance > .45 ? 3 : 0)
+        - Math.hypot(x, y) * .2;
+      if (score > best) {
+        best = score; record.startPoint = point;
+        record.startDirection = directions[distances.indexOf(Math.max(...distances))].clone();
+      }
+    }
+  }
+  const point = record.startPoint!;
+  const origin = world(record, point, 0), inward = point.clone().add(record.startDirection!);
   const next = world(record, inward, 0);
   const east = (next.lng - origin.lng) * Math.cos(origin.lat * Math.PI / 180), north = next.lat - origin.lat;
   return { ...origin, heading: (Math.atan2(east, north) * 180 / Math.PI + 360) % 360 };

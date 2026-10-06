@@ -1,0 +1,712 @@
+{
+  "schema": "cityprompt.rlasm.independent-clay-review@1",
+  "candidate": "tilt-wall-warehouse-clay-v006",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "reviewed_utc": "2026-10-06T20:51:23.026573+00:00",
+  "review_date_local": "2026-10-06",
+  "scope": "Holistic source-locked architectural-clay review of supplied mandatory evidence.",
+  "holistic": true,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "promotion_allowed": false,
+  "inspected_files": [
+    {
+      "path": "sources/variant_1.png",
+      "sha256": "740b5effaf7f25f38a5342c02ccce816f07a0f00c8b6e8eda2d16979db112f53",
+      "bytes": 1061888,
+      "dimensions_px": [
+        1024,
+        768
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\sources\\variant_1.png"
+    },
+    {
+      "path": "sources/variant_1_angle_60.jpg",
+      "sha256": "337c2cdd061efe44d0d87cf8deb4e0c86683314c2b18e111cc024ce8ab023277",
+      "bytes": 826591,
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\sources\\variant_1_angle_60.jpg"
+    },
+    {
+      "path": "sources/variant_1_angle_90.jpg",
+      "sha256": "015295a7c65cc0ea9c4c425567eb8cf0bb122ff1fdba315c04ae28cdceca9165",
+      "bytes": 771202,
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\sources\\variant_1_angle_90.jpg"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "453ce86cf57da49fd778a540af58662784c13fa39fa29a109add5c7c7f6fb77a",
+      "bytes": 1321192,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\aerial.png"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "aab392c9df3bbb2c2a9f6dee63dc102df7adef038a637c322872479c5e04f2d6",
+      "bytes": 1459016,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\architecture_close.png"
+    },
+    {
+      "path": "renders/dock_close.png",
+      "sha256": "aceef4224e0909ed62069f0e5ac9658e250ca788e7b53734681f0e96eeda783a",
+      "bytes": 1341764,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\dock_close.png"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "644efac30e5c1876947d22ee2ddd0e38c8d9c1582ca8c2f51254b7111dc6f064",
+      "bytes": 1381330,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\facade_close.png"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "3076846958f102f2ccf342f9facfdb43fdab407fa3187c3f93f3951345310030",
+      "bytes": 1288084,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\front.png"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "cf6ac05a7209aa4a52758da701c9680007e223fb89869b4c50fe36560cd82ea9",
+      "bytes": 1350978,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\front_corner.png"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "3bd266d9de09fd36858a349ea9955be04d730974816f913a85ebb2a03167558a",
+      "bytes": 1491868,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\glass_close.png"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "c445d7f1a8a7b6a1115ff60a1807125b21f810c6fefc4e4b008edc907a2afc3c",
+      "bytes": 1319386,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\interior.png"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "b3372e555f82747e80d42e3371dcb7b0f88b691244d4ab8954dd13fd0d770d01",
+      "bytes": 1260740,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\left_side.png"
+    },
+    {
+      "path": "renders/office_stair.png",
+      "sha256": "f8777027193d2b9cec7e0c073e5c51cd9b37084319593ece17a1ad3bef25e4aa",
+      "bytes": 1455366,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\office_stair.png"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "9cde259e98ba8fdf296f931f961e3f3bcbd332c15e7d6ba996013867b77fe9f2",
+      "bytes": 1271162,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\rear.png"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "972be7e867cf45a7ad98a71f7d98b4bd0f1c35d123f0cd437e857580249422a4",
+      "bytes": 1335240,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\rear_side.png"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "7eb286b9fa8c7f574b238ee690600917ec3af24c61b06288ae23194f1d62bbf5",
+      "bytes": 1276928,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\right_side.png"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "dfb6528774543bde5c4d027c68fa742a4083373120d220d477600c7706e88e05",
+      "bytes": 1118111,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\roof_contact.png"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "92269dab7702e58d7cf26dbf0975bb9a2b2a50b19e5124611b8f372fde9d6726",
+      "bytes": 1423054,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\side_projection.png"
+    },
+    {
+      "path": "renders/stair_arrival.png",
+      "sha256": "abf3348622694576a36de3712533a96fc058886e15195cfd64cea8ac436a32a5",
+      "bytes": 1513536,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\stair_arrival.png"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "6288fc10e78fc37459d690fd3de7c4c91679f5df111f6751d9ae2293772500ab",
+      "bytes": 1242104,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\renders\\top.png"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "5b41fa52688da4eb9a49c86f4b1e6337d85070e182eb3f2587584a4994e9a035",
+      "bytes": 1868970,
+      "dimensions_px": [
+        1920,
+        2095
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\boards\\all-views-contact.png"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "804b75ebc6b72e442015b470370b374445f344aefff4ab608b6f36c9ae4f19f8",
+      "bytes": 1317414,
+      "dimensions_px": [
+        1800,
+        570
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\boards\\locked-source-board.png"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "6d6e60c9b72f93633a2fe47770ffb3a38e6eedeaf3e8ab3e6970341fdeadf09c",
+      "bytes": 875522,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\boards\\phone-construction.png"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "eae9bebf79807c4ea710fcea5888f24122051083eaa70a5f82ae6051ee3572fc",
+      "bytes": 1433791,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006\\boards\\phone-source-comparison.png"
+    }
+  ],
+  "mandatory_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "dock_close",
+    "interior",
+    "office_stair",
+    "stair_arrival"
+  ],
+  "complete_evidence_opened": true,
+  "integrity": {
+    "checks": [
+      {
+        "kind": "source",
+        "path": "sources/variant_1.png",
+        "sha256": "740b5effaf7f25f38a5342c02ccce816f07a0f00c8b6e8eda2d16979db112f53",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\modern_bigbox_warehouse\\variant_1.png",
+        "authoritative_sha256": "740b5effaf7f25f38a5342c02ccce816f07a0f00c8b6e8eda2d16979db112f53",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_1_angle_60.jpg",
+        "sha256": "337c2cdd061efe44d0d87cf8deb4e0c86683314c2b18e111cc024ce8ab023277",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\modern_bigbox_warehouse\\variant_1_angle_60.jpg",
+        "authoritative_sha256": "337c2cdd061efe44d0d87cf8deb4e0c86683314c2b18e111cc024ce8ab023277",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_1_angle_90.jpg",
+        "sha256": "015295a7c65cc0ea9c4c425567eb8cf0bb122ff1fdba315c04ae28cdceca9165",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\modern_bigbox_warehouse\\variant_1_angle_90.jpg",
+        "authoritative_sha256": "015295a7c65cc0ea9c4c425567eb8cf0bb122ff1fdba315c04ae28cdceca9165",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/build.py",
+        "sha256": "f11fab927f2960d2998f82aed0eabd85f30c53752773cb9dd1dd91fae4bda2e9",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/plan.py",
+        "sha256": "ffab4da485f4b43dca96e3d839d52fa41d93213edecc79b87ff7a01d25a6db0f",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/warehouse.py",
+        "sha256": "3bff32365238cdcc3865306b31e484ab9fbe40d6b5131a5fceede7110cbacb8d",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/guards.py",
+        "sha256": "e0a5de22a0d994bf2148c1a844d3b65d3621a28803e62964d93306cb660a17ec",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_1.png",
+        "sha256": "740b5effaf7f25f38a5342c02ccce816f07a0f00c8b6e8eda2d16979db112f53",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_1_angle_60.jpg",
+        "sha256": "337c2cdd061efe44d0d87cf8deb4e0c86683314c2b18e111cc024ce8ab023277",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_1_angle_90.jpg",
+        "sha256": "015295a7c65cc0ea9c4c425567eb8cf0bb122ff1fdba315c04ae28cdceca9165",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\aerial.png",
+        "sha256": "453ce86cf57da49fd778a540af58662784c13fa39fa29a109add5c7c7f6fb77a",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\architecture_close.png",
+        "sha256": "aab392c9df3bbb2c2a9f6dee63dc102df7adef038a637c322872479c5e04f2d6",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\dock_close.png",
+        "sha256": "aceef4224e0909ed62069f0e5ac9658e250ca788e7b53734681f0e96eeda783a",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\facade_close.png",
+        "sha256": "644efac30e5c1876947d22ee2ddd0e38c8d9c1582ca8c2f51254b7111dc6f064",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front.png",
+        "sha256": "3076846958f102f2ccf342f9facfdb43fdab407fa3187c3f93f3951345310030",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front_corner.png",
+        "sha256": "cf6ac05a7209aa4a52758da701c9680007e223fb89869b4c50fe36560cd82ea9",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\glass_close.png",
+        "sha256": "3bd266d9de09fd36858a349ea9955be04d730974816f913a85ebb2a03167558a",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\interior.png",
+        "sha256": "c445d7f1a8a7b6a1115ff60a1807125b21f810c6fefc4e4b008edc907a2afc3c",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\left_side.png",
+        "sha256": "b3372e555f82747e80d42e3371dcb7b0f88b691244d4ab8954dd13fd0d770d01",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\office_stair.png",
+        "sha256": "f8777027193d2b9cec7e0c073e5c51cd9b37084319593ece17a1ad3bef25e4aa",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear.png",
+        "sha256": "9cde259e98ba8fdf296f931f961e3f3bcbd332c15e7d6ba996013867b77fe9f2",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear_side.png",
+        "sha256": "972be7e867cf45a7ad98a71f7d98b4bd0f1c35d123f0cd437e857580249422a4",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\right_side.png",
+        "sha256": "7eb286b9fa8c7f574b238ee690600917ec3af24c61b06288ae23194f1d62bbf5",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\roof_contact.png",
+        "sha256": "dfb6528774543bde5c4d027c68fa742a4083373120d220d477600c7706e88e05",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\side_projection.png",
+        "sha256": "92269dab7702e58d7cf26dbf0975bb9a2b2a50b19e5124611b8f372fde9d6726",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\stair_arrival.png",
+        "sha256": "abf3348622694576a36de3712533a96fc058886e15195cfd64cea8ac436a32a5",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\top.png",
+        "sha256": "6288fc10e78fc37459d690fd3de7c4c91679f5df111f6751d9ae2293772500ab",
+        "passed": true
+      }
+    ],
+    "glb_checks": {
+      "header": true,
+      "json_chunk": true,
+      "hash_match": true,
+      "bytes_match": true,
+      "texture_free": true,
+      "self_contained": true,
+      "no_cameras": true,
+      "no_lights": true
+    },
+    "glb_sha256": "f44bfe40398e1e1bcc3f53387f71f6e2818aaf6c36ee1990c992ee844898d2c5",
+    "glb_path": "tilt-wall-warehouse-clay-v006.glb",
+    "glb_bytes": 1458960,
+    "meshes": 11,
+    "materials": 11,
+    "images": 0,
+    "textures": 0,
+    "source_manifest_sha256": "8f410bf4554813a06045c54c999db7c8096bb940c8f78792aa4986223549b754",
+    "build_report_sha256": "63060351b15f15842cb4ddbcde7241fc4b72458a565928badade2e306b579e8c",
+    "build_report_bounds_m": [
+      [
+        -75.16000366210938,
+        -45.54999923706055,
+        0.0
+      ],
+      [
+        75.16000366210938,
+        43.45000076293945,
+        16.350000381469727
+      ]
+    ],
+    "build_report_roundtrip_delta_m": 0.0,
+    "evidence_files": [
+      {
+        "path": "evidence/builder-evidence.json",
+        "sha256": "845cdb647201ad967e91599b4629def8a231dd73ea71c7533eda8dbfd83612d0",
+        "bytes": 119155
+      },
+      {
+        "path": "evidence/carrier-aperture-audit.json",
+        "sha256": "8c92d89fdd422f69e6982f351c80d8ee88f8b431bdfe0097acf8193395c8c34e",
+        "bytes": 8373
+      },
+      {
+        "path": "evidence/delivery-verification.json",
+        "sha256": "fc35beef1b28abe06abdda17b07923f6e8bde8a0ca6b8942b13dc6958d480c9e",
+        "bytes": 1712
+      },
+      {
+        "path": "evidence/runtime-review.md",
+        "sha256": "176d8fe5b8d5642a70eb45a3a1160fa5ea2982bde166d588a13c56c75b8e9e85",
+        "bytes": 17217
+      }
+    ]
+  },
+  "deterministic_preflight": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "delivery_check_report": {
+    "status": "PASS_DELIVERY_CHECKS",
+    "checks": {
+      "source front": true,
+      "source oblique": true,
+      "source top": true,
+      "script scripts/clay_core.py": true,
+      "script scripts/build.py": true,
+      "script scripts/plan.py": true,
+      "script scripts/warehouse.py": true,
+      "script scripts/guards.py": true,
+      "glb header": true,
+      "model hash": true,
+      "texture-free": true,
+      "self-contained": true,
+      "no QA camera or light": true,
+      "native grade zero": true,
+      "bounds roundtrip": true,
+      "carrier apertures": true,
+      "finite geometry": true,
+      "nonzero triangles": true,
+      "render front": true,
+      "render front_corner": true,
+      "render aerial": true,
+      "render top": true,
+      "render left_side": true,
+      "render right_side": true,
+      "render rear": true,
+      "render rear_side": true,
+      "render facade_close": true,
+      "render architecture_close": true,
+      "render glass_close": true,
+      "render roof_contact": true,
+      "render side_projection": true,
+      "render dock_close": true,
+      "render interior": true,
+      "render office_stair": true,
+      "render stair_arrival": true,
+      "camera margin front": true,
+      "camera margin front_corner": true,
+      "camera margin aerial": true,
+      "camera margin top": true,
+      "camera margin left_side": true,
+      "camera margin right_side": true,
+      "camera margin rear": true,
+      "camera margin rear_side": true,
+      "phone-source-comparison.png": true,
+      "phone-construction.png": true
+    },
+    "model_sha256": "f44bfe40398e1e1bcc3f53387f71f6e2818aaf6c36ee1990c992ee844898d2c5",
+    "runtime_approved": false,
+    "independent_visual_review": "pending"
+  },
+  "provenance_scope": "Preserved build script inspected: exported GLB replaces authored meshes before rendering without material override. Reviewer did not independently rerender Blender or test runtime.",
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval.",
+    "Three storeys refer only to the local office corner, not three complete warehouse floor plates.",
+    "Warehouse rack/interior layout is inferred and only the prescribed office interior views are supplied; this is not a complete industrial fit-out or logistics approval.",
+    "No source-conditioned concrete texture, weathering, signage or source-lighting approval."
+  ],
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "blockers": [],
+  "model_sha256": "f44bfe40398e1e1bcc3f53387f71f6e2818aaf6c36ee1990c992ee844898d2c5",
+  "findings": [
+    {
+      "category": "source identity and programme",
+      "result": "pass",
+      "evidence": [
+        "sources/variant_1.png",
+        "sources/variant_1_angle_60.jpg",
+        "sources/variant_1_angle_90.jpg",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png"
+      ],
+      "observation": "144x86m authored pale tilt-wall warehouse retains one high industrial hall and three local office levels at its front-right wrapped glazed corner. The long opposing dock rows, quiet panel grid, low membrane/parapet roof, sparse plant and wrap entrance canopy preserve the locked source identity. Trucks, street and gatehouse remain excluded context, not missing building parts."
+    },
+    {
+      "category": "complete envelope, openings and loading",
+      "result": "pass",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/dock_close.png"
+      ],
+      "observation": "Closed elevations and cut carrier openings retain grounded service stairs, door approaches and canopy posts/plinths. Recessed freight doors have dock levellers, bumpers and heads; their raised thresholds correctly represent goods access, not ordinary grade pedestrian entrances. Public paired entrance is separately stepped."
+    },
+    {
+      "category": "floor and corner-glass repair",
+      "result": "pass",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/side_projection.png",
+        "scripts/warehouse.py"
+      ],
+      "observation": "Office slabs now stop at front y=-42.76 and right x=71.76, behind the clear glazing. The upper floor at z=8.1..8.3 seats within the new opaque 7.95..8.45 spandrel rather than cutting the upper pane. Fresh corner/glass views show continuous clean frames and bands without the earlier black intersection. Glass retains visible room depth."
+    },
+    {
+      "category": "roof and circulation contacts",
+      "result": "pass",
+      "evidence": [
+        "renders/roof_contact.png",
+        "renders/interior.png",
+        "renders/office_stair.png",
+        "renders/stair_arrival.png",
+        "scripts/guards.py"
+      ],
+      "observation": "Closed membrane roof carries curbed service equipment and visible seams. Two connected switchback stair stages retain physical floor holes, supported strings and midlandings, clear approaches and protected terminal arrival. Structural guard posts and anchorplates are visibly seated on floor/landing surfaces. Inferred goods-floor transition is recorded separately from the office circulation."
+    },
+    {
+      "category": "complete holistic evidence",
+      "result": "pass",
+      "evidence": [
+        "boards/locked-source-board.png",
+        "boards/all-views-contact.png",
+        "boards/phone-construction.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "observation": "All three source originals, seventeen full-resolution mandatory renders and four boards directly inspected. Exact authoritative sources, preserved scripts, board input hashes, actual GLB and canonical delivery checks independently revalidated."
+    }
+  ],
+  "prior_authority": {
+    "previous_review": "tilt-wall-warehouse-clay-v005-independent-review-2026-10-06-v001.json",
+    "previous_decision": "FAIL",
+    "resolved_findings": [
+      "WAREHOUSE-REPAIR-01"
+    ],
+    "disposition": "Fresh holistic decision for exact v006 bytes; failed v005 and earlier evidence preserved."
+  }
+}

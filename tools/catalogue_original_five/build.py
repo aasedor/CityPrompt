@@ -445,8 +445,12 @@ def mono_shed(name,cx,cy,w,d,front_h,rear_h,holes):
         C.beam(name+' roof standing seam',(xx,cy-d/2-.2,front_h+.02),(xx,cy+d/2+.2,rear_h+.02),.025,.028,'trim','roof seam')
     for idx,span,top in ((0,w,front_h),(1,d,front_h),(2,w,rear_h),(3,d,front_h)):
         f=ff[idx];openings=holes if idx==0 else []
-        f.wall(name+' corten siding',-span/2,span/2,2.35,top-.12,depth=.28,role='copper',holes=openings)
-        cladding(f,-span/2,span/2,2.35,top-.12,openings,.35,'timber')
+        # One outer skin: the former d=0 siding duplicated the structural wall
+        # face and flickered in Cesium. Seat a 60mm facing 35mm proud, with
+        # its rear 25mm buried in the carrier and its joints on the same face.
+        siding=C.Face(f.p(0,-.035,0),f.t,f.n,f.label+' siding')
+        siding.wall(name+' corten siding',-span/2,span/2,2.35,top-.12,depth=.06,role='copper',holes=openings)
+        cladding(siding,-span/2,span/2,2.35,top-.12,openings,.35,'timber')
     return ff
 
 

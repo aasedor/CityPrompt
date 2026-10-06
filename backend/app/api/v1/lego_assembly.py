@@ -89,6 +89,7 @@ class LegoAssemblyPlanRequest(BaseModel):
     target_depth_m: float = Field(gt=0)
     target_floors: int = Field(ge=1, le=100)
     target_height_m: float | None = Field(default=None, gt=0, le=1000)
+    model_revision: str | None = Field(default=None, min_length=1, max_length=160)
     archetype_id: str | None = None
     reuse_keys: list[str] = Field(default_factory=list)
     preferred_family: str | None = None
@@ -428,6 +429,7 @@ def _strict_locked_building_plan(
             allow_setback=_building_allows_setback(properties),
             footprint_local_m=plot_coordinates,
             native_home_plot=properties.get("native_home_plot") is True,
+            model_revision=properties.get("pick_place_model_revision") or None,
         ),
         allow_forced_fit=allow_forced_fit,
     )
@@ -851,6 +853,7 @@ async def create_lego_assembly_plan(
                 wing_depth_m=body.wing_depth_m,
                 footprint_local_m=tuple(body.footprint_local_m) if body.footprint_local_m is not None else None,
                 native_home_plot=body.native_home_plot,
+                model_revision=body.model_revision,
             ),
             allow_forced_fit=body.allow_forced_fit,
         )

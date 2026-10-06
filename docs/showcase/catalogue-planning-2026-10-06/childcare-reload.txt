@@ -1,0 +1,178 @@
+- banner:
+  - link "City Prompt City Prompt":
+    - /url: /
+    - img "City Prompt"
+    - generic: City Prompt
+  - navigation:
+    - link "Projects":
+      - /url: /projects
+    - text: 106 tokens
+    - generic "Theme selector":
+      - button "Light mode" [pressed]:
+      - button "System theme":
+      - button "Dark mode":
+    - button "Neighbourhood20 Local Trial":
+      - generic: Neighbourhood20 Local Trial
+- main:
+  - application "3D city map":
+    - application "3D city map"
+    - generic: Google; Airbus; Data SIO, NOAA, U.S. Navy, NGA, GEBCO; IBCAO
+  - generic: Drag to move | Use the reshape panel to resize or rotate | 3D updates automatically after saving | Esc to deselect
+  - generic: 3D Globe
+  - button "3D detail · Balanced"
+  - generic: 30° oblique
+  - button "Top view"
+  - button "Walk"
+  - button "Focus building"
+  - button "Walk inside"
+  - button "Focus plan" [active]
+  - button "3D Models On" [pressed]
+  - button "Clean 3D"
+  - button "Review ground"
+  - button "Review entrances"
+  - navigation "Community workflow":
+    - button "1 Site":
+      - text: "1"
+      - text: Site
+    - button "2 Design":
+      - text: "2"
+      - text: Design
+    - button "3 Present":
+      - text: "3"
+      - text: Present
+  - generic "Drawing tools":
+    - region "Place 3D objects":
+      - paragraph: Add to your community
+      - button "Buildings":
+        - text: Buildings
+      - button "Parks":
+        - text: Parks
+      - button "Streets":
+        - text: Streets
+      - button "Draw a road route"
+      - status:
+        - paragraph: 3D saved
+    - button "Select" [pressed]:
+      - text: Select
+    - generic "Undo and redo":
+      - button "Undo (Ctrl+Z)" [disabled]:
+      - button "Redo (Ctrl+Shift+Z)" [disabled]:
+    - button "More Tools":
+      - text: More Tools
+    - button "Guide":
+      - text: Guide
+    - status:
+      - text: Drawings saved
+    - generic "Project steps & custom 3D"
+    - button "Render this view":
+      - text: Render this view
+  - navigation "Project tools":
+    - button "Layers":
+      - text: Layers
+    - button "Report":
+      - text: Report
+    - button "Team":
+      - text: Team
+    - button "Help":
+      - text: Help
+  - complementary "Reshape object":
+    - heading "Meadow Court Childcare Centre" [level=2]
+    - button "Close reshape":
+    - paragraph: Drag the Move handle on the selected plot to move this building. Use a corner to reshape or the orange handle to turn it.
+    - text: Find building type
+    - searchbox "Find building type"
+    - text: Building type
+    - combobox "Building type":
+      - option "Garden Pavilion — local trial"
+      - option "Corner-Lot Fourplex — local trial"
+      - option "Three-Storey Brick Walk-Up — local trial"
+      - option "Neighborhood Reading Pavilion — local trial"
+      - option "Prairie Community Hall — local trial"
+      - option "Shared Community Campus — local trial"
+      - option "Sheltered Play Courtyard — local trial"
+      - option "Two-Storey Garden Sixplex — local trial"
+      - option "Timber Hall at the Park — local trial"
+      - option "Timber Learning Courtyard — local trial"
+      - option "Timber Sanctuary Church"
+      - option "Gothic Community Church"
+      - option "Charcoal Gable Fourplex"
+      - option "Buff-brick infill"
+      - option "Crystal brewhouse"
+      - option "Earth-sheltered museum"
+      - option "Halifax clapboard house"
+      - option "Machiya cafe and gallery"
+      - option "SoHo cast-iron loft"
+      - option "Streamline Moderne corner"
+      - option "Terraced garden mid-rise"
+      - option "Timber community hall"
+      - option "Timber-screen townhouse"
+      - option "Beltline mixed-use mid-rise"
+      - option "Calgary Modern Infill"
+      - option "Side-by-side duplex"
+      - option "Plateau stacked duplex"
+      - option "Brick courtyard entrance building"
+      - option "Post-war bungalow"
+      - option "Edwardian Foursquare"
+      - option "Rammed-earth timber infill"
+      - option "Blue glass office tower"
+      - option "Vancouver balcony and podium tower"
+      - option "Grand Iron & Glass Market"
+      - option "Living-Roof Aquatic Centre"
+      - option "Gilded Terracotta Tower"
+      - option "Nordic Roof-Garden Apartments"
+      - option "Tuscan Arcade Villa"
+      - option "Grand Deco Cinema"
+      - option "Mass-timber Library"
+      - option "Corner Café & Apartments"
+      - option "Victorian Grand Station"
+      - option "Timber Art & Design School"
+      - option "Mediterranean Courtyard Hotel"
+      - option "Neoclassical office"
+      - option "Brick-and-bronze faculty office"
+      - option "Brick-and-timber Courtyard Office"
+      - option "Classic retail strip"
+      - option "Corten & Timber Equipment Yard"
+      - option "Meadow Court Childcare Centre" [selected]
+      - option "Daylight sawtooth factory"
+      - option "Folded-Roof Materials Recovery Hall"
+      - option "Garden Mews Courtyard Housing"
+      - option "Horizon Manufactured Home"
+      - option "Industrial shed"
+      - option "Tilt-up industrial building"
+      - option "Maple Porch Manufactured Cottage"
+      - option "Copperline Municipal Works Depot"
+      - option "Narrow-lot Craftsman Cottage"
+      - option "Prairie Fold Manufactured Home"
+      - option "RNDSQR contextual townhouses"
+      - option "Tilt-wall logistics warehouse"
+      - option "Provincial Brick school"
+      - option "Scandinavian townhouse row"
+    - text: Building variant
+    - combobox "Building variant":
+      - option "Meadow Court Childcare Centre" [selected]
+    - text: Storeys
+    - spinbutton "Storeys": "1"
+    - text: Height (m)
+    - spinbutton "Height (m)": "6.26"
+    - paragraph: This exact model is currently available at 1 storey.
+    - button "Apply building"
+    - text: Plot width (m)
+    - spinbutton "Plot width (m)": "50.0"
+    - text: Plot depth (m)
+    - spinbutton "Plot depth (m)": "48.0"
+    - text: Rotation (°)
+    - spinbutton "Rotation (degrees)": "27"
+    - paragraph: Resize the surrounding plot; this complete building keeps its authored dimensions.
+    - button "Apply shape"
+    - button "Place another"
+    - button "Delete"
+    - button "Connections"
+    - button "Terrace & path"
+    - button "More settings"
+  - link "Back to projects":
+    - /url: /projects
+  - generic: QA · 25-model release verification
+  - button "Project Renders 0":
+    - text: Project Renders
+    - generic: "0"
+- button "Send feedback":

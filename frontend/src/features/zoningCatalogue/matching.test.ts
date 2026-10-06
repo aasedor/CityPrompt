@@ -3,6 +3,7 @@ import { BUILDING_PROGRAMS, DISTRICT_RULES, matchBuilding, matchCatalogue, parse
 import { ZONING_CATALOGUE_BUILDINGS } from './ZoningCatalogueCard';
 import type { ZoneInspection } from './types';
 import catalogue from '@/features/referenceLayers/calgaryBylawCatalogue.json';
+import { OCTOBER_BUILDING_ASSETS } from '@/features/pickPlace/assetRegistry';
 
 const zone = (designation: string): ZoneInspection => ({ id: 'z', label: designation, source: 'Test', district: { designation } });
 const model = (variant: string) => ZONING_CATALOGUE_BUILDINGS.find(a => a.model.variantId === variant)!;
@@ -10,10 +11,39 @@ const result = (variant: string, designation: string) => matchBuilding(model(var
 
 describe('catalogue zoning screening', () => {
   it('reviews every exact current building revision without reviving legacy models', () => {
-    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34);
+    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length);
     expect(Object.keys(BUILDING_PROGRAMS).sort()).toEqual(ZONING_CATALOGUE_BUILDINGS.map(a => a.model.variantId).sort());
     for (const a of ZONING_CATALOGUE_BUILDINGS) expect(BUILDING_PROGRAMS[a.model.variantId].revision).toBe(a.model.revision);
     expect(Object.keys(DISTRICT_RULES).sort()).toEqual(catalogue.districts.map(d => d.code).sort());
+  });
+  it('does not transfer a researched use route to an unreviewed district', () => {
+    const asset = model('infill_flat_roof_minimal');
+    const program = { revision: asset.model.revision, components: [['Dwelling Unit']],
+      assumption: 'A cluster with a particular access arrangement.',
+      districtUseGroups: { 'H-GO': [['Dwelling Unit']] } };
+    expect(matchBuilding(asset, zone('R-G'), program).status).toBe('review');
+    expect(matchBuilding(asset, zone('R-G'), program).uses).toEqual([]);
+    expect(matchBuilding(asset, zone('H-GO'), program).uses[0].use).toBe('Dwelling Unit');
+  });
+  it('retains known envelope conflicts even below the nominal height maximum', () => {
+    const asset = model('infill_flat_roof_minimal');
+    const program = { revision: asset.model.revision, components: [['Multi-Residential Development']],
+      assumption: 'A full-width upper storey.', districtReview: { 'M-C1': 'Upper-storey cross-section conflicts with section 594.' } };
+    const match = matchBuilding(asset, zone('M-C1'), program);
+    expect(match.status).toBe('review');
+    expect(match.reasons).toContain('Upper-storey cross-section conflicts with section 594.');
+  });
+  it('screens courtyard cottages by their cluster use and permanent modular apartments by occupancy', () => {
+    expect(result('affordable_juniper_original', 'R-CG')).toMatchObject({
+      status: 'discretionary', uses: [{ use: 'Cottage Housing Cluster', section: '527(2)(f)' }],
+    });
+    expect(DISTRICT_RULES['R-CGex'].rules).toContainEqual(expect.objectContaining({
+      use: 'Cottage Housing Cluster', category: 'discretionary', definition: '175',
+    }));
+    const studios = model('affordable_switchback_original');
+    expect(BUILDING_PROGRAMS[studios.model.variantId].components.flat()).not.toContain('Manufactured Home');
+    expect(result(studios.model.variantId, 'R-CG').status).toBe('review');
+    expect(result(studios.model.variantId, 'R-MH').status).toBe('review');
   });
   it('preserves full designations and rejects custom, DC, ambiguous or malformed modifiers', () => {
     expect(parseDesignation('MU-2f3.0h26d150')).toEqual({ code: 'MU-2', height: 26 });

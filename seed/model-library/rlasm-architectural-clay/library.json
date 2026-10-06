@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-09-09",
+  "updated_at": "2026-10-06",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -1844,6 +1844,2405 @@
       "review": {
         "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/interior-hotel-clay-v006.json",
         "sha256": "7ff2ccb8bfca64bc3b83fa23f822287a4251d457f94fa391cac22d787806b190",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "neoclassical-brick-office-clay-v005",
+      "family": "neoclassical_brick_headquarters",
+      "archetype_id": "corporate_office_campus_headquarters",
+      "archetype_label": "Neoclassical office",
+      "variant_id": "neoclassical_brick_headquarters",
+      "variant_label": "Neoclassical office",
+      "runtime_enabled": true,
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 28.8,
+        "depth": 33.4,
+        "height": 21.2
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_1.png",
+          "bytes": 1264260,
+          "sha256": "97acfa3d777c30e9deaa223261c4f71f8da8737ba1e8c5fee90adb732bb1b4ac"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_1_angle_60.jpg",
+          "bytes": 949263,
+          "sha256": "53bc32320876449bd32dc78315641f330cf5b567714e0523709e7c110b4d70e0"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_1_angle_90.jpg",
+          "bytes": 839724,
+          "sha256": "3851bb43478968f4d321c1ffca1b3fe0db3021da25267e6b47ea7795f8761bac"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\office-v005",
+      "picker": {
+        "id": "clay_neoclassical_brick_headquarters",
+        "description": "Neoclassical office; fixed source-locked architectural model.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 33,
+        "depth": 36,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "52434045faa623bc1a8c1cdced981138f0c0dd4bfa748a1eedd4af24662122b5"
+      },
+      "local_trial": {
+        "model_sha256": "52434045faa623bc1a8c1cdced981138f0c0dd4bfa748a1eedd4af24662122b5",
+        "project_url": "http://127.0.0.1:5180/projects/efd1a776-abbf-4dbe-ad3a-f78e5dc4c27c",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/office-rotated-larger-plot.png",
+          "docs/showcase/catalogue-planning-2026-10-06/office-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/neoclassical-brick-office-clay-v005.glb",
+        "bytes": 3885532,
+        "sha256": "52434045faa623bc1a8c1cdced981138f0c0dd4bfa748a1eedd4af24662122b5",
+        "native_dimensions_m": {
+          "width": 29.239999771118164,
+          "height": 20.850000381469727,
+          "depth": 32.519999504089355
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/neoclassical-brick-office-clay-v005.json",
+        "sha256": "b47a3a747c03b308c522b91a2dc1d3391f4fc7c998d5d45639bcdb917d0514cc",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "brick-bronze-faculty-office-clay-v004",
+      "family": "admin_faculty_brick_bronze_fins",
+      "archetype_id": "administrative_faculty_office_building",
+      "archetype_label": "Brick-and-bronze faculty office",
+      "variant_id": "admin_faculty_brick_bronze_fins",
+      "variant_label": "Brick-and-bronze faculty office",
+      "runtime_enabled": true,
+      "native_floors": 5,
+      "design_dimensions_m": {
+        "width": 34.0,
+        "depth": 34.0,
+        "height": 23.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+          "bytes": 1365114,
+          "sha256": "e69d0f36223a5885eb91af8d1b24b7ccce18ee672ae58d93cc707e88757ba3be"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0_angle_60.jpg",
+          "bytes": 937078,
+          "sha256": "1749deb52c5d8a40dd46ad74b3079f61a6502f173a5b4fc4871bd17a91879333"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/administrative-faculty-office-building/variant_0_angle_90.jpg",
+          "bytes": 886404,
+          "sha256": "d51450e610ac79e4373cd657c3d0249e6522558618e3419f609df7fed6eb69de"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\admin-v004",
+      "picker": {
+        "id": "clay_admin_faculty_brick_bronze_fins",
+        "description": "Brick-and-bronze faculty office; fixed source-locked architectural model.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 38,
+        "depth": 39,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "8987226e37b06e3f5419122912ff9e30fb34a25e50e79c7738bbe416112459fe"
+      },
+      "local_trial": {
+        "model_sha256": "8987226e37b06e3f5419122912ff9e30fb34a25e50e79c7738bbe416112459fe",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/faculty-final-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/faculty-final-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/faculty-final-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/brick-bronze-faculty-office-clay-v004.glb",
+        "bytes": 2666144,
+        "sha256": "8987226e37b06e3f5419122912ff9e30fb34a25e50e79c7738bbe416112459fe",
+        "native_dimensions_m": {
+          "width": 34.4060001373291,
+          "height": 23.799999237060547,
+          "depth": 35.93000030517578
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/brick-bronze-faculty-office-clay-v004.json",
+        "sha256": "f9e9712e7ab8a99c1e3d97ee017d8d56ba29e952a234368f499b52a061f8b2b1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "brick-timber-courtyard-office-clay-v004",
+      "family": "brick_timber_two_storey_office",
+      "archetype_id": "courtyard_lowrise_office",
+      "archetype_label": "Brick-and-timber Courtyard Office",
+      "variant_id": "brick_timber_two_storey_office",
+      "variant_label": "Brick-and-timber Courtyard Office",
+      "runtime_enabled": true,
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 14.0,
+        "depth": 12.0,
+        "height": 7.4
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/brick-timber-courtyard-office/variant_0.png",
+          "bytes": 3142357,
+          "sha256": "29dc3deeab0693872b3e1bbcc9c60356fdfd94e2b9cbfa2deb9bbf113d9e6348"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/brick-timber-courtyard-office/variant_0_angle_60.png",
+          "bytes": 3400169,
+          "sha256": "ef755dc9aca321e273dcca047a6a255d3e1d233e3b5f010e5e89f1b4e706db78"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/brick-timber-courtyard-office/variant_0_angle_90.png",
+          "bytes": 3569374,
+          "sha256": "ee83a704c6068ab75383968b34b6921b11f97b9afc3ed488deb2d8c3258ff83a"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\office-v004",
+      "picker": {
+        "id": "clay_brick_timber_two_storey_office",
+        "description": "Compact two-storey U-shaped professional office in a 14m by 12m envelope around an open central court. Two 3.5m by 12m side wings and one 7m by 4m rear connector give an authored 112m² footprint and approximately 224m² gross floor area over two storeys, including circulation. One main entrance, reception, work areas, meeting room, stair and reserved lift core. No medical, counselling, retail or laboratory programme inferred.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 18,
+        "depth": 16,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "2338f50857d2ec8365a2fe7854e86d438d33f8bc661187f06f803b112d3acde6"
+      },
+      "local_trial": {
+        "model_sha256": "2338f50857d2ec8365a2fe7854e86d438d33f8bc661187f06f803b112d3acde6",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/courtyard-office-final-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/courtyard-office-final-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/courtyard-office-final-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/brick-timber-courtyard-office-clay-v004.glb",
+        "bytes": 10153324,
+        "sha256": "2338f50857d2ec8365a2fe7854e86d438d33f8bc661187f06f803b112d3acde6",
+        "native_dimensions_m": {
+          "width": 14.359999656677246,
+          "height": 7.400000095367432,
+          "depth": 12.359999656677246
+        },
+        "mesh_count": 13,
+        "material_count": 13,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/brick-timber-courtyard-office-clay-v004.json",
+        "sha256": "4a4dec762e46ebac7c9fb9943c473572973081deb5264692c28079befa9c55fe",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "commercial-strip-single-storey-classic-clay-v002",
+      "family": "strip_single_storey_classic",
+      "archetype_id": "commercial_strip_mall",
+      "archetype_label": "Classic retail strip",
+      "variant_id": "strip_single_storey_classic",
+      "variant_label": "Classic retail strip",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 32.0,
+        "depth": 17.0,
+        "height": 6.539999961853027
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_0.png",
+          "bytes": 1152386,
+          "sha256": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_0_angle_60.jpg",
+          "bytes": 778501,
+          "sha256": "a310b2439e6f9675d2b348f189366ead11dbbab2c3ccf2b070e1db3971ef5e36"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_0_angle_90.jpg",
+          "bytes": 811531,
+          "sha256": "f64471d9309f809878f94103528487e6a8ef5db12e1c6f5538bc85608bd5dd7b"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002",
+      "picker": {
+        "id": "clay_strip_single_storey_classic",
+        "description": "Classic retail strip; fixed source-locked architectural model.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 36,
+        "depth": 22,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44"
+      },
+      "local_trial": {
+        "model_sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/retail-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/retail-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/retail-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/commercial-strip-single-storey-classic-clay-v002.glb",
+        "bytes": 1532400,
+        "sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+        "native_dimensions_m": {
+          "width": 32.70000076293945,
+          "height": 6.539999961853027,
+          "depth": 18.65000057220459
+        },
+        "mesh_count": 13,
+        "material_count": 13,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/commercial-strip-single-storey-classic-clay-v002.json",
+        "sha256": "d82cc34b7e998b67bbf39dba715e493cf73a3b1d2db39880fd591fa0ea98909a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "contractor-storage-yard-clay-v003",
+      "family": "corten_timber_equipment_yard",
+      "archetype_id": "contractor_storage_yard",
+      "archetype_label": "Corten & Timber Equipment Yard",
+      "variant_id": "corten_timber_equipment_yard",
+      "variant_label": "Corten & Timber Equipment Yard",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 38.0,
+        "depth": 30.0,
+        "height": 6.5
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/contractor-storage-yard/variant_0.png",
+          "bytes": 3316191,
+          "sha256": "1f76fbd12bfc7b7caec39fcf5027105ce3d79a4ae5df1055f846f8124742e544"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/contractor-storage-yard/variant_0_angle_60.png",
+          "bytes": 3559438,
+          "sha256": "0ef76032e91b70594d1b1494942520fcbe42e6a5f8f5a1e3e3ff8ebb7a7d766c"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/contractor-storage-yard/variant_0_angle_90.png",
+          "bytes": 3226671,
+          "sha256": "fc23d7d636b37d80b65b6c7671ca25e07612d7cf9990f6b77eff8280e53f261a"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\yard-v003",
+      "picker": {
+        "id": "clay_corten_timber_equipment_yard",
+        "description": "Screened outdoor storage of contractor equipment and materials, with ancillary servicing of stored equipment and a compact dispatch office. No separate retail or independent manufacturing use.",
+        "group_id": "industry",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 42,
+        "depth": 34,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "7f5159f27adc5a50bbafd5f441d0c62240f56b03910c837d6699ad6ceb8a8ac3"
+      },
+      "local_trial": {
+        "model_sha256": "7f5159f27adc5a50bbafd5f441d0c62240f56b03910c837d6699ad6ceb8a8ac3",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/yard-v3-exact-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/yard-v3-exact-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/yard-v3-exact-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/contractor-storage-yard-clay-v003.glb",
+        "bytes": 1667392,
+        "sha256": "7f5159f27adc5a50bbafd5f441d0c62240f56b03910c837d6699ad6ceb8a8ac3",
+        "native_dimensions_m": {
+          "width": 38.14999961853027,
+          "height": 6.333863735198975,
+          "depth": 30.20300006866455
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/contractor-storage-yard-clay-v003.json",
+        "sha256": "dca3c75a8c60c7ada43b70f1fcea979ec8ea5146da9bad56f2636701e0321f77",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "courtyard-childcare-centre-clay-v003",
+      "family": "meadow_three_gable_childcare",
+      "archetype_id": "courtyard_childcare_centre",
+      "archetype_label": "Meadow Court Childcare Centre",
+      "variant_id": "meadow_three_gable_childcare",
+      "variant_label": "Meadow Court Childcare Centre",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 28.0,
+        "depth": 26.0,
+        "height": 6.3
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/courtyard-childcare-centre/variant_0.png",
+          "bytes": 3359153,
+          "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/courtyard-childcare-centre/variant_0_angle_60.png",
+          "bytes": 3717880,
+          "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/courtyard-childcare-centre/variant_0_angle_90.png",
+          "bytes": 3206421,
+          "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003",
+      "picker": {
+        "id": "clay_meadow_three_gable_childcare",
+        "description": "Purpose-built daytime childcare study with three activity rooms, a rear circulation spine and staff service counter, and a screened secure courtyard play area. Separate reception, toilets and other support rooms are not resolved in this clay layout. No school or overnight care assumed. Teaching capacity: 30 children aged 3-5, with three pick-up/drop-off spaces to be provided in the project site design.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 32,
+        "depth": 30,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f"
+      },
+      "local_trial": {
+        "model_sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/childcare-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/childcare-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/childcare-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/courtyard-childcare-centre-clay-v003.glb",
+        "bytes": 1387204,
+        "sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f",
+        "native_dimensions_m": {
+          "width": 28.149999618530273,
+          "height": 6.260000228881836,
+          "depth": 26.210000038146973
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/courtyard-childcare-centre-clay-v003.json",
+        "sha256": "8a234cc26a2b7854682bdc0189b8bfefe66798af63fd7c6074915244223f47e1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "daylight-sawtooth-factory-clay-v003",
+      "family": "factory_sawtooth_roof",
+      "archetype_id": "daylight_factory",
+      "archetype_label": "Daylight sawtooth factory",
+      "variant_id": "factory_sawtooth_roof",
+      "variant_label": "Daylight sawtooth factory",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 49.0,
+        "depth": 29.0,
+        "height": 25.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/daylight_factory/variant_0.png",
+          "bytes": 1376693,
+          "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/daylight_factory/variant_0_angle_60.jpg",
+          "bytes": 866062,
+          "sha256": "734ae95f07271be05506eafdc1495ccdbbd0b2d3b9765343fd0c56059e870180"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/daylight_factory/variant_0_angle_90.jpg",
+          "bytes": 848396,
+          "sha256": "4bb6bb58b8bd3a7455b07220a5df3bdb0391b2158a183a4244b831c56bfa8d40"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003",
+      "picker": {
+        "id": "clay_factory_sawtooth_roof",
+        "description": "Daylight sawtooth factory; fixed source-locked architectural model.",
+        "group_id": "industry",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 58,
+        "depth": 36,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "db0d255c0f987f6738cbd4eb0340eddc5143fc497145089fb819c4e32c8fa09d"
+      },
+      "local_trial": {
+        "model_sha256": "db0d255c0f987f6738cbd4eb0340eddc5143fc497145089fb819c4e32c8fa09d",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/sawtooth-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/sawtooth-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/sawtooth-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/daylight-sawtooth-factory-clay-v003.glb",
+        "bytes": 2188628,
+        "sha256": "db0d255c0f987f6738cbd4eb0340eddc5143fc497145089fb819c4e32c8fa09d",
+        "native_dimensions_m": {
+          "width": 54.39999961853027,
+          "height": 25.0,
+          "depth": 32.53999996185303
+        },
+        "mesh_count": 8,
+        "material_count": 8,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/daylight-sawtooth-factory-clay-v003.json",
+        "sha256": "72ddc9a36b5a59e4cc64bbc8b06e12dd0edfe312196ecf563904e99d61665f17",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "enclosed-materials-recovery-clay-v002",
+      "family": "folded_roof_recovery_hall",
+      "archetype_id": "enclosed_materials_recovery",
+      "archetype_label": "Folded-Roof Materials Recovery Hall",
+      "variant_id": "folded_roof_recovery_hall",
+      "variant_label": "Folded-Roof Materials Recovery Hall",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 36.0,
+        "depth": 24.0,
+        "height": 9.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/enclosed-materials-recovery/variant_0.png",
+          "bytes": 2106234,
+          "sha256": "6aa993c6fd3b967723c5d0f4b5f4282c63695145aabe2ee2c9eecd6b69a98a42"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/enclosed-materials-recovery/variant_0_angle_60.png",
+          "bytes": 2946935,
+          "sha256": "96c87b670d8b8e0ba5e315fa2ad8140cb8b46f14e0fdbcefc3ea9c7c9c89788b"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/enclosed-materials-recovery/variant_0_angle_90.png",
+          "bytes": 2750419,
+          "sha256": "e79b039a4d4c52dc14a6396a23e35f64be47887a6b6ffabcb4ccd0b2906fddb1"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\recovery-v002",
+      "picker": {
+        "id": "clay_folded_roof_recovery_hall",
+        "description": "Enclosed sorting, baling and shipping of non-hazardous dry recyclables, with all operations indoors; no external processing, escaped dust/vibration, waste incineration or landfill.",
+        "group_id": "industry",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 40,
+        "depth": 29,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "c828f68cb29328f2fcceb8288c5774740c4aa0a350ff4d5d42c62b2aec71f77c"
+      },
+      "local_trial": {
+        "model_sha256": "c828f68cb29328f2fcceb8288c5774740c4aa0a350ff4d5d42c62b2aec71f77c",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/recovery-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/recovery-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/recovery-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/enclosed-materials-recovery-clay-v002.glb",
+        "bytes": 869316,
+        "sha256": "c828f68cb29328f2fcceb8288c5774740c4aa0a350ff4d5d42c62b2aec71f77c",
+        "native_dimensions_m": {
+          "width": 36.2400016784668,
+          "height": 9.068168640136719,
+          "depth": 25.980000495910645
+        },
+        "mesh_count": 10,
+        "material_count": 10,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/enclosed-materials-recovery-clay-v002.json",
+        "sha256": "0023d52d04d32d92353c7532a76f99c665d0b1ffe7907cc8eba54800faa2907c",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "garden-mews-courtyard-housing-clay-v003",
+      "family": "garden_mews_six_homes",
+      "archetype_id": "garden_mews_courtyard_housing",
+      "archetype_label": "Garden Mews Courtyard Housing",
+      "variant_id": "garden_mews_six_homes",
+      "variant_label": "Garden Mews Courtyard Housing",
+      "runtime_enabled": true,
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 23.0,
+        "depth": 23.0,
+        "height": 8.7
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/garden-mews-courtyard-housing/variant_0.png",
+          "bytes": 3215101,
+          "sha256": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/garden-mews-courtyard-housing/variant_0_angle_60.png",
+          "bytes": 3479453,
+          "sha256": "f46549541102072d1acfa6bf430eb187900fd17309f52deccba5182389016288"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/garden-mews-courtyard-housing/variant_0_angle_90.png",
+          "bytes": 3268862,
+          "sha256": "fa077b77b88bbeddce308d5077c9f9507c8467323b7e39d03278eafca02f11b7"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003",
+      "picker": {
+        "id": "clay_garden_mews_six_homes",
+        "description": "Six unstacked two-storey homes in two parallel blocks of three, facing one open shared garden court. Each home has an individual front door directly to grade and its own internal stair. No common indoor access corridor.",
+        "group_id": "ground_housing",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 26,
+        "depth": 26,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6"
+      },
+      "local_trial": {
+        "model_sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/mews-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/mews-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/mews-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/garden-mews-courtyard-housing-clay-v003.glb",
+        "bytes": 4191152,
+        "sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6",
+        "native_dimensions_m": {
+          "width": 23.0,
+          "height": 8.699999809265137,
+          "depth": 23.0
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/garden-mews-courtyard-housing-clay-v003.json",
+        "sha256": "f0e85f755ee6f6e3ace1429e92d5513f56a453d875876f91641da1292b8b78c0",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "horizon-manufactured-home-clay-v003",
+      "family": "horizon_double_section",
+      "archetype_id": "horizon_manufactured_home",
+      "archetype_label": "Horizon Manufactured Home",
+      "variant_id": "horizon_double_section",
+      "variant_label": "Horizon Manufactured Home",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 13.6,
+        "depth": 7.2,
+        "height": 4.65
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/horizon-manufactured-home/variant_0.png",
+          "bytes": 3036322,
+          "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/horizon-manufactured-home/variant_0_angle_60.png",
+          "bytes": 3201466,
+          "sha256": "1caf71ec52c5515181677c8c966b60ba0fb27e6b73ce9b55fc5b5689e8da21b3"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/horizon-manufactured-home/variant_0_angle_90.png",
+          "bytes": 3421837,
+          "sha256": "50b8e4ad1577a7451c78cd2d753d9221184df2258afbcb747aead6bf2c978681"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003",
+      "picker": {
+        "id": "clay_horizon_double_section",
+        "description": "One dwelling assembled from two permanent-chassis transport sections, with three bedrooms and one open living/kitchen space. Clerestory roof step is unoccupied; no second storey.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 18,
+        "depth": 13,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42"
+      },
+      "local_trial": {
+        "model_sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/horizon-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/horizon-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/horizon-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/horizon-manufactured-home-clay-v003.glb",
+        "bytes": 349384,
+        "sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42",
+        "native_dimensions_m": {
+          "width": 14.180000305175781,
+          "height": 4.62440824508667,
+          "depth": 9.422999858856201
+        },
+        "mesh_count": 10,
+        "material_count": 10,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/horizon-manufactured-home-clay-v003.json",
+        "sha256": "4a7493509c4cff35813392fd94455053386ec02c871a28adcb2bb5f9a8d23a5e",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "industrial-gabled-metal-shed-clay-v002",
+      "family": "industrial_gabled_metal_shed",
+      "archetype_id": "corrugated_vernacular_industrial",
+      "archetype_label": "Industrial shed",
+      "variant_id": "industrial_gabled_metal_shed",
+      "variant_label": "Industrial shed",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 12.0,
+        "depth": 21.0,
+        "height": 8.649999618530273
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/corrugated_vernacular_industrial/variant_1.png",
+          "bytes": 1033561,
+          "sha256": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/corrugated_vernacular_industrial/variant_1_angle_60.jpg",
+          "bytes": 843820,
+          "sha256": "08bf2afccce0bab0ca4ce103a59de03c8964c3cafee16de6c3cf7bc74087e82c"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/corrugated_vernacular_industrial/variant_1_angle_90.jpg",
+          "bytes": 823950,
+          "sha256": "96947f04d1ab0860d0c008f3f00cf7b429d864a248157ee5c7d6d609d0d42680"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002",
+      "picker": {
+        "id": "clay_industrial_gabled_metal_shed",
+        "description": "Industrial shed; fixed source-locked architectural model.",
+        "group_id": "industry",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 17,
+        "depth": 25,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d"
+      },
+      "local_trial": {
+        "model_sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/shed-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/shed-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/shed-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/industrial-gabled-metal-shed-clay-v002.glb",
+        "bytes": 1231548,
+        "sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+        "native_dimensions_m": {
+          "width": 13.369999885559082,
+          "height": 8.649999618530273,
+          "depth": 21.71500015258789
+        },
+        "mesh_count": 9,
+        "material_count": 9,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/industrial-gabled-metal-shed-clay-v002.json",
+        "sha256": "2b04d6f2835657cc28d29d02f5be0b91bc3d565016e6976ee9ee3cc4a173193f",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "industrial-tilt-up-concrete-clay-v006",
+      "family": "industrial_tilt_up_concrete",
+      "archetype_id": "industrial_park_modernism",
+      "archetype_label": "Tilt-up industrial building",
+      "variant_id": "industrial_tilt_up_concrete",
+      "variant_label": "Tilt-up industrial building",
+      "runtime_enabled": true,
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 54.0,
+        "depth": 36.0,
+        "height": 10.5
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0.png",
+          "bytes": 1158882,
+          "sha256": "de5e08df02bcda3c33c5a0d9eb5f13ac4c8f4d4c50a5ac89ef9d0df7826baab7"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_60.jpg",
+          "bytes": 822009,
+          "sha256": "0e2fd31a87d156a3e8a04f0fbaea93b1e0e69606e1c4ebbe8f1a52bb9923c65b"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/industrial_park_modernism/variant_0_angle_90.jpg",
+          "bytes": 742031,
+          "sha256": "d6abca22f264b4ba34c4d43af49eb0d311236f5dadebce2ed393220e1be3817e"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\tiltup-v006",
+      "picker": {
+        "id": "clay_industrial_tilt_up_concrete",
+        "description": "Tilt-up industrial building; fixed source-locked architectural model.",
+        "group_id": "industry",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 58,
+        "depth": 43,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "a8f40bf20373f4b7f5eb15d7f4e3f3fadb4c98a1a6762eddced728411b4d9ada"
+      },
+      "local_trial": {
+        "model_sha256": "a8f40bf20373f4b7f5eb15d7f4e3f3fadb4c98a1a6762eddced728411b4d9ada",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/tiltup-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/tiltup-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/tiltup-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/industrial-tilt-up-concrete-clay-v006.glb",
+        "bytes": 792300,
+        "sha256": "a8f40bf20373f4b7f5eb15d7f4e3f3fadb4c98a1a6762eddced728411b4d9ada",
+        "native_dimensions_m": {
+          "width": 54.720001220703125,
+          "height": 10.550000190734863,
+          "depth": 39.84000015258789
+        },
+        "mesh_count": 13,
+        "material_count": 13,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/industrial-tilt-up-concrete-clay-v006.json",
+        "sha256": "05c2d8c70981a38e89e4b66413d41cc178fdf61dbde2eb790c5a60051bd72f74",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "maple-porch-manufactured-cottage-clay-v004",
+      "family": "maple_porch_sage",
+      "archetype_id": "maple_porch_manufactured_home",
+      "archetype_label": "Maple Porch Manufactured Cottage",
+      "variant_id": "maple_porch_sage",
+      "variant_label": "Maple Porch Manufactured Cottage",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 14.0,
+        "depth": 4.8,
+        "height": 4.55
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/maple-porch-manufactured-cottage/variant_0.png",
+          "bytes": 3208770,
+          "sha256": "c6757674bdefda401a9928d1296e845c46058ba9556f9bc3496c895f32e6dd1b"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/maple-porch-manufactured-cottage/variant_0_angle_60.png",
+          "bytes": 3854243,
+          "sha256": "78342d46b5e55bbd7c3b17d6b69a583a277c2261fba251d72d38bb617390331e"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/maple-porch-manufactured-cottage/variant_0_angle_90.png",
+          "bytes": 3959130,
+          "sha256": "2a7b170d3350e50c45414d606638c68e74a823706e3c2ce53b7c9e020a41074c"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\maple-v004",
+      "picker": {
+        "id": "clay_maple_porch_sage",
+        "description": "One year-round dwelling on a permanent steel chassis, two bedrooms, kitchen and living room. A supported low front porch has one central entrance. Fabrication, transport and certification remain specialist design matters.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 18,
+        "depth": 11,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "0e55ef41aba5a5216a39218a381cd1aad15b94fc4257b14b51503852738d7f5a"
+      },
+      "local_trial": {
+        "model_sha256": "0e55ef41aba5a5216a39218a381cd1aad15b94fc4257b14b51503852738d7f5a",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/maple-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/maple-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/maple-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/maple-porch-manufactured-cottage-clay-v004.glb",
+        "bytes": 530768,
+        "sha256": "0e55ef41aba5a5216a39218a381cd1aad15b94fc4257b14b51503852738d7f5a",
+        "native_dimensions_m": {
+          "width": 14.529999732971191,
+          "height": 4.550000190734863,
+          "depth": 7.442999839782715
+        },
+        "mesh_count": 10,
+        "material_count": 10,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/maple-porch-manufactured-cottage-clay-v004.json",
+        "sha256": "1cf198d3e4a74a96aa1b4ec30da16a30c2e5e70c6fa4e813e570445c932e8380",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "municipal-works-depot-clay-v003",
+      "family": "copperline_four_bay_depot",
+      "archetype_id": "municipal_works_depot",
+      "archetype_label": "Copperline Municipal Works Depot",
+      "variant_id": "copperline_four_bay_depot",
+      "variant_label": "Copperline Municipal Works Depot",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 45.5,
+        "depth": 22.0,
+        "height": 7.65
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/municipal-works-depot/variant_0.png",
+          "bytes": 2467808,
+          "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/municipal-works-depot/variant_0_angle_60.png",
+          "bytes": 2805302,
+          "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/municipal-works-depot/variant_0_angle_90.png",
+          "bytes": 2780834,
+          "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003",
+      "picker": {
+        "id": "clay_copperline_four_bay_depot",
+        "description": "Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 49,
+        "depth": 28,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b"
+      },
+      "local_trial": {
+        "model_sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/depot-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/depot-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/depot-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/municipal-works-depot-clay-v003.glb",
+        "bytes": 641808,
+        "sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b",
+        "native_dimensions_m": {
+          "width": 45.86000061035156,
+          "height": 7.650000095367432,
+          "depth": 24.780000686645508
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/municipal-works-depot-clay-v003.json",
+        "sha256": "e0c09297a681cb7b50e34c4ef62eb62ad593c5268faf3c62152b017f71b507a5",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "narrow-lot-craftsman-cottage-clay-v003",
+      "family": "brick_timber_craftsman",
+      "archetype_id": "narrow_lot_craftsman_cottage",
+      "archetype_label": "Narrow-lot Craftsman Cottage",
+      "variant_id": "brick_timber_craftsman",
+      "variant_label": "Narrow-lot Craftsman Cottage",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 7.2,
+        "depth": 12.8,
+        "height": 6.3
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0.png",
+          "bytes": 2913125,
+          "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0_angle_60.png",
+          "bytes": 2932943,
+          "sha256": "1540cda4637310dc81f489e65dd06e7e1bcc872aea84ff21a86315ac6bf39f39"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0_angle_90.png",
+          "bytes": 3558530,
+          "sha256": "6da001c3a743418f18afab6bdc8ad0987a3b5abb047c110f1186c892083c7d6e"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003",
+      "picker": {
+        "id": "clay_brick_timber_craftsman",
+        "description": "One single-storey detached dwelling with two bedrooms and a separate front porch. Tall gabled roof encloses an unoccupied attic. One main front entrance and rear garden exit. No secondary suite.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 13,
+        "depth": 20,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a"
+      },
+      "local_trial": {
+        "model_sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/craftsman-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/craftsman-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/craftsman-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/narrow-lot-craftsman-cottage-clay-v003.glb",
+        "bytes": 714084,
+        "sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a",
+        "native_dimensions_m": {
+          "width": 9.322999954223633,
+          "height": 6.300000190734863,
+          "depth": 16.1899995803833
+        },
+        "mesh_count": 10,
+        "material_count": 10,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/narrow-lot-craftsman-cottage-clay-v003.json",
+        "sha256": "9ee6af8cc64dedf98da50506ebdd21babbffc6e75de86b6250a9b26fa2097840",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "prairie-manufactured-home-clay-v003",
+      "family": "prairie_cedar_chassis_home",
+      "archetype_id": "prairie_manufactured_home",
+      "archetype_label": "Prairie Fold Manufactured Home",
+      "variant_id": "prairie_cedar_chassis_home",
+      "variant_label": "Prairie Fold Manufactured Home",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 16.0,
+        "depth": 4.6,
+        "height": 4.4
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/prairie-manufactured-home/variant_0.png",
+          "bytes": 2879262,
+          "sha256": "3bf9de8703d6e737b270f1a5140876376c8a06f1927b74efee46660cd5586f56"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/prairie-manufactured-home/variant_0_angle_60.png",
+          "bytes": 3811965,
+          "sha256": "f0975857ff37a304864cd1b44c73e0ad531a26442b506fc41a743b4ae9cd2a8d"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/prairie-manufactured-home/variant_0_angle_90.png",
+          "bytes": 2821329,
+          "sha256": "0446c6e512c367859619d298c42735840947d8fb18bb33a3c288e92a268c5330"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\home-v003",
+      "picker": {
+        "id": "clay_prairie_cedar_chassis_home",
+        "description": "One factory-built dwelling on a permanent transportable chassis; two bedrooms and one accessible-from-front living/kitchen zone. Manufactured-home certification and transport permits are not established by an architectural model.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 20,
+        "depth": 10,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "eaa3991f32d5582e534edda6c7ccf5b44f8eff78cc2347b4ac57721423ac7607"
+      },
+      "local_trial": {
+        "model_sha256": "eaa3991f32d5582e534edda6c7ccf5b44f8eff78cc2347b4ac57721423ac7607",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/prairie-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/prairie-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/prairie-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/prairie-manufactured-home-clay-v003.glb",
+        "bytes": 438712,
+        "sha256": "eaa3991f32d5582e534edda6c7ccf5b44f8eff78cc2347b4ac57721423ac7607",
+        "native_dimensions_m": {
+          "width": 16.465999603271484,
+          "height": 4.409999847412109,
+          "depth": 6.828604698181152
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/prairie-manufactured-home-clay-v003.json",
+        "sha256": "e355ed09230f7b8303dd05c742e4f3a7352ff40ba9dea9360990680203315f6a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "rndsqr-brick-contextual-row-clay-v005",
+      "family": "rndsqr_townhome_brick_contextual",
+      "archetype_id": "rndsqr_missing_middle_townhomes",
+      "archetype_label": "RNDSQR contextual townhouses",
+      "variant_id": "rndsqr_townhome_brick_contextual",
+      "variant_label": "RNDSQR contextual townhouses",
+      "runtime_enabled": true,
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 25.2,
+        "depth": 15.6,
+        "height": 12.65
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_2.png",
+          "bytes": 1259623,
+          "sha256": "ebf8a4faf2f43f24961f212e7cef61a0e721bd8fb4d5187bc768de9fc88bdcf3"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_2_angle_60.jpg",
+          "bytes": 941705,
+          "sha256": "6f8801a53df5858837b7f03a09ab35a57ba3296446a945b3f0bacda9398dfe31"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_2_angle_90.jpg",
+          "bytes": 825466,
+          "sha256": "2b7de50edf8755f122635ad521200fad38ce59e61a155227de6b67f43c14560d"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\row-v005",
+      "picker": {
+        "id": "clay_rndsqr_townhome_brick_contextual",
+        "description": "RNDSQR contextual townhouses; fixed source-locked architectural model.",
+        "group_id": "ground_housing",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 28,
+        "depth": 19,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "e4d45b4b6ade347afd44fd835856e03e1ae31cbe9c1ebad2d2eb3857493fdf41"
+      },
+      "local_trial": {
+        "model_sha256": "e4d45b4b6ade347afd44fd835856e03e1ae31cbe9c1ebad2d2eb3857493fdf41",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/row-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/row-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/row-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/rndsqr-brick-contextual-row-clay-v005.glb",
+        "bytes": 3008576,
+        "sha256": "e4d45b4b6ade347afd44fd835856e03e1ae31cbe9c1ebad2d2eb3857493fdf41",
+        "native_dimensions_m": {
+          "width": 24.610000610351562,
+          "height": 12.390000343322754,
+          "depth": 15.179999828338623
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/rndsqr-brick-contextual-row-clay-v005.json",
+        "sha256": "e885e7335c69a9cdc77d38bae54da90a137d0a47020e5aaac998893973fb99d1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "tilt-wall-warehouse-clay-v006",
+      "family": "warehouse_tilt_wall_mega",
+      "archetype_id": "modern_bigbox_warehouse",
+      "archetype_label": "Tilt-wall logistics warehouse",
+      "variant_id": "warehouse_tilt_wall_mega",
+      "variant_label": "Tilt-wall logistics warehouse",
+      "runtime_enabled": true,
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 144.0,
+        "depth": 86.0,
+        "height": 16.4
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/modern_bigbox_warehouse/variant_1.png",
+          "bytes": 1061888,
+          "sha256": "740b5effaf7f25f38a5342c02ccce816f07a0f00c8b6e8eda2d16979db112f53"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/modern_bigbox_warehouse/variant_1_angle_60.jpg",
+          "bytes": 826591,
+          "sha256": "337c2cdd061efe44d0d87cf8deb4e0c86683314c2b18e111cc024ce8ab023277"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/modern_bigbox_warehouse/variant_1_angle_90.jpg",
+          "bytes": 771202,
+          "sha256": "015295a7c65cc0ea9c4c425567eb8cf0bb122ff1fdba315c04ae28cdceca9165"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\warehouse-v006",
+      "picker": {
+        "id": "clay_warehouse_tilt_wall_mega",
+        "description": "Tilt-wall logistics warehouse; fixed source-locked architectural model.",
+        "group_id": "industry",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 154,
+        "depth": 92,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "f44bfe40398e1e1bcc3f53387f71f6e2818aaf6c36ee1990c992ee844898d2c5"
+      },
+      "local_trial": {
+        "model_sha256": "f44bfe40398e1e1bcc3f53387f71f6e2818aaf6c36ee1990c992ee844898d2c5",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/warehouse-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/warehouse-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/warehouse-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/tilt-wall-warehouse-clay-v006.glb",
+        "bytes": 1458960,
+        "sha256": "f44bfe40398e1e1bcc3f53387f71f6e2818aaf6c36ee1990c992ee844898d2c5",
+        "native_dimensions_m": {
+          "width": 150.32000732421875,
+          "height": 16.350000381469727,
+          "depth": 89.0
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/tilt-wall-warehouse-clay-v006.json",
+        "sha256": "086cd6e78927b65c4746dd004f9fb9dbb42c5f77f8b4cc7f1fd075f9914c030b",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "provincial-brick-school-clay-v007",
+      "family": "ecole-republicaine-provincial-brick",
+      "archetype_id": "ecole_republicaine",
+      "archetype_label": "Provincial Brick school",
+      "variant_id": "ecole-republicaine-provincial-brick",
+      "variant_label": "Provincial Brick school",
+      "runtime_enabled": true,
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 33.0,
+        "depth": 41.0,
+        "height": 21.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_2.png",
+          "bytes": 1268822,
+          "sha256": "8d13d2ba3fd84e9291f7e55e2e6ae4a477a619bda999a4cd88b574fdc15b6948"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_2_angle_60.jpg",
+          "bytes": 951769,
+          "sha256": "4256012eb20794bb0f8b7a3292afac8c953adbcc7b172f9a1769f3160659b829"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_2_angle_90.jpg",
+          "bytes": 853809,
+          "sha256": "4c927b38a2114ee2b3511ca94092230243bb52a661daf649179be4f56078f485"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\school-v007",
+      "picker": {
+        "id": "clay_ecole_republicaine_provincial_brick",
+        "description": "Provincial Brick school; fixed source-locked architectural model.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 36,
+        "depth": 44,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "aff2cc294e9a8540f7915fc9466e93b92378abc730e0b89b906d73ba33fa8dec"
+      },
+      "local_trial": {
+        "model_sha256": "aff2cc294e9a8540f7915fc9466e93b92378abc730e0b89b906d73ba33fa8dec",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/school-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/school-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/school-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/provincial-brick-school-clay-v007.glb",
+        "bytes": 3671928,
+        "sha256": "aff2cc294e9a8540f7915fc9466e93b92378abc730e0b89b906d73ba33fa8dec",
+        "native_dimensions_m": {
+          "width": 32.900001525878906,
+          "height": 20.65999984741211,
+          "depth": 40.85000038146973
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/provincial-brick-school-clay-v007.json",
+        "sha256": "8c4dbfc4dea0fe8593ef4d680da8be5935122f73e7d90c188fe9d4405abcf54b",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "family": "rndsqr_townhome_scandinavian_peaks",
+      "archetype_id": "rndsqr_missing_middle_townhomes",
+      "archetype_label": "Scandinavian townhouse row",
+      "variant_id": "rndsqr_townhome_scandinavian_peaks",
+      "variant_label": "Scandinavian townhouse row",
+      "runtime_enabled": true,
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 33.6,
+        "depth": 22.0,
+        "height": 14.1
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_1.png",
+          "bytes": 1126212,
+          "sha256": "01afdd56cf283f97c2cec678605ebc3aaf07a93d394e1f97bc32e581d830e263"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_1_angle_60.jpg",
+          "bytes": 947399,
+          "sha256": "ec6016ee77eaed4dac6954422ce1e486b43094c48314a513ea9a0dd4f4f9ba45"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_1_angle_90.jpg",
+          "bytes": 831883,
+          "sha256": "5f4d10e7128956b76bdd81189eec2ac9a4478c7671b3aa3e1fb8a9c955999b60"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\peaks-v006",
+      "picker": {
+        "id": "clay_rndsqr_townhome_scandinavian_peaks",
+        "description": "Scandinavian townhouse row; fixed source-locked architectural model.",
+        "group_id": "ground_housing",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 38,
+        "depth": 27,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "7e4b536479dc7cae6faa0d7930bff92384258d4a70c2a0b46b17932a57ad3e86"
+      },
+      "local_trial": {
+        "model_sha256": "7e4b536479dc7cae6faa0d7930bff92384258d4a70c2a0b46b17932a57ad3e86",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/peaks-v6-exact-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/peaks-v6-exact-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/peaks-v6-exact-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/rndsqr-scandinavian-peaks-row-clay-v006.glb",
+        "bytes": 4922684,
+        "sha256": "7e4b536479dc7cae6faa0d7930bff92384258d4a70c2a0b46b17932a57ad3e86",
+        "native_dimensions_m": {
+          "width": 34.119998931884766,
+          "height": 14.137221336364746,
+          "depth": 23.329999923706055
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/rndsqr-scandinavian-peaks-row-clay-v006.json",
+        "sha256": "ed480f3eb1a24ba3088670b84c3a518b769ac367e07cf3da7fdfa3f26424bcaa",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "affordable-porchlight-clay-v004",
+      "family": "affordable_porchlight_original",
+      "archetype_id": "affordable_porchlight",
+      "archetype_label": "Porchlight Townhouse Row",
+      "variant_id": "affordable_porchlight_original",
+      "variant_label": "Porchlight Townhouse Row",
+      "runtime_enabled": true,
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 22,
+        "depth": 9,
+        "height": 7.75
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-porchlight/variant_0.png",
+          "bytes": 1992647,
+          "sha256": "0c007771825a58b3908cb52177532172561cae418bc718b20f2aede07bdc2a68"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-porchlight/variant_0_angle_60.png",
+          "bytes": 2041517,
+          "sha256": "ac9d7f793cd96fdc38d43a6c23cacdd3ec81c17ce18cc85407745f538c31d2c9"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-porchlight/variant_0_angle_90.png",
+          "bytes": 1991738,
+          "sha256": "b693b185f66951c8d46a112613992cdbe22df92830149293b9e050112e55ad31"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004",
+      "picker": {
+        "id": "clay_affordable_porchlight_original",
+        "description": "Four two-storey two-bedroom homes; independent street entrances, internal stairs, kitchen/living rooms and private rear patios. Repeated simple envelope for an attainable homeownership teaching programme.",
+        "group_id": "ground_housing",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 26,
+        "depth": 18,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "61543f9f882065a7743953146ddb23568eb7dacb75903e9630479c02fd7ff7bc"
+      },
+      "local_trial": {
+        "model_sha256": "61543f9f882065a7743953146ddb23568eb7dacb75903e9630479c02fd7ff7bc",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/porchlight-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/porchlight-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/porchlight-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/affordable-porchlight-clay-v004.glb",
+        "bytes": 1304672,
+        "sha256": "61543f9f882065a7743953146ddb23568eb7dacb75903e9630479c02fd7ff7bc",
+        "native_dimensions_m": {
+          "width": 22.58999729156494,
+          "height": 7.699999809265137,
+          "depth": 14.014153480529785
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/affordable-porchlight-clay-v004.json",
+        "sha256": "047ebbe2fe25b507c4a68e23c700e599f4ce10d6205cac6b2f440a0e44204fbf",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "affordable-juniper-clay-v006",
+      "family": "affordable_juniper_original",
+      "archetype_id": "affordable_juniper",
+      "archetype_label": "Juniper Courtyard Cottages",
+      "variant_id": "affordable_juniper_original",
+      "variant_label": "Juniper Courtyard Cottages",
+      "runtime_enabled": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 28,
+        "depth": 24.9,
+        "height": 6.1
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-juniper/variant_0.png",
+          "bytes": 3482961,
+          "sha256": "e896808e3cf7b8015395e63a72b2b4ea48c2cec8af0154a3d5688cdefaedfdb5"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-juniper/variant_0_angle_60.png",
+          "bytes": 3907515,
+          "sha256": "03562559f39caba6a366419fe2ebbb3a155d3ecbc9f47be355e81edbf442cbc1"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-juniper/variant_0_angle_90.png",
+          "bytes": 3973403,
+          "sha256": "23daf76d60a9bb1ec4e4a9c2ac64fe886755a5b6823a8003e9dc7accd847de0c"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006",
+      "picker": {
+        "id": "clay_affordable_juniper_original",
+        "description": "Four single-level 49 m² one-bedroom cottages, a 22 × 22 m body cluster, an 8 × 8 m shared garden and four private 12 m² outboard patios. Front cottages face the street; rear cottages face the garden. Authored 6 m roof ridge with no attic dwelling. Site and accessibility approval required.",
+        "group_id": "ground_housing",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 31,
+        "depth": 28,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402"
+      },
+      "local_trial": {
+        "model_sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/juniper-v6-exact-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/juniper-v6-exact-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/juniper-v6-exact-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/affordable-juniper-clay-v006.glb",
+        "bytes": 1332996,
+        "sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+        "native_dimensions_m": {
+          "width": 28.0,
+          "height": 6.050000198978445,
+          "depth": 24.899999618530273
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/affordable-juniper-clay-v006.json",
+        "sha256": "083da511377150a95e507232ab3df6ca770928e2d85fc5608d6e294b76571c58",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "affordable-stackyard-clay-v003",
+      "family": "affordable_stackyard_original",
+      "archetype_id": "affordable_stackyard",
+      "archetype_label": "Stackyard Stacked Townhomes",
+      "variant_id": "affordable_stackyard_original",
+      "variant_label": "Stackyard Stacked Townhomes",
+      "runtime_enabled": true,
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 21,
+        "depth": 11,
+        "height": 7.2
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-stackyard/variant_0.png",
+          "bytes": 2142032,
+          "sha256": "224a6ce61e4c964e2fd33d15d9f744d3806a5e0436b7084177ee6d928307a8d1"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-stackyard/variant_0_angle_60.png",
+          "bytes": 2587640,
+          "sha256": "f8455e33818fdf9ef0697bbfb29ea34e8f0d073f3370665e677d90a436e968b6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-stackyard/variant_0_angle_90.png",
+          "bytes": 2913134,
+          "sha256": "c2b6d7a66bf64e4bdb439774220fa105e86a9e75d527facae27f126b86cc1d87"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\stackyard-v003",
+      "picker": {
+        "id": "clay_affordable_stackyard_original",
+        "description": "Six two-bedroom homes stacked as three ground and three upper dwellings. Upper outdoor gallery with two end stairs; private lower patios.",
+        "group_id": "ground_housing",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 27,
+        "depth": 23,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "1b95f83a2201ac0150dfd13795d826aa12b046b5ff551948b65e49b0cd3d4298"
+      },
+      "local_trial": {
+        "model_sha256": "1b95f83a2201ac0150dfd13795d826aa12b046b5ff551948b65e49b0cd3d4298",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/stackyard-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/stackyard-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/stackyard-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/affordable-stackyard-clay-v003.glb",
+        "bytes": 1208532,
+        "sha256": "1b95f83a2201ac0150dfd13795d826aa12b046b5ff551948b65e49b0cd3d4298",
+        "native_dimensions_m": {
+          "width": 23.920000076293945,
+          "height": 7.090000152587891,
+          "depth": 19.032999515533447
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/affordable-stackyard-clay-v003.json",
+        "sha256": "7389330291b92adec0cc6648d871fd7ef5023c1c3b7263122c07ec5a5acb177a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "affordable-aspen-clay-v003",
+      "family": "affordable_aspen_original",
+      "archetype_id": "affordable_aspen",
+      "archetype_label": "Aspen Walk Apartments",
+      "variant_id": "affordable_aspen_original",
+      "variant_label": "Aspen Walk Apartments",
+      "runtime_enabled": true,
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 24,
+        "depth": 13,
+        "height": 10.7
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-aspen/variant_0.png",
+          "bytes": 2658804,
+          "sha256": "38aef23b99fe01a55e8396a3651d4757a73af067aaff605db7c55555ca9a1e05"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-aspen/variant_0_angle_60.png",
+          "bytes": 3056106,
+          "sha256": "d84a5665f337896bdeb1fa89eb29e7085691ce31ca42cea16f648fd7c8b1a851"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-aspen/variant_0_angle_90.png",
+          "bytes": 3414053,
+          "sha256": "088704543c7c9af7f57631d873daf28eade9159c3fd24606a1196198ae6e2616"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003",
+      "picker": {
+        "id": "clay_affordable_aspen_original",
+        "description": "Twelve compact one-bedroom rental apartments, shared interior circulation, two stairs and a reserved lift core.",
+        "group_id": "apartments",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 28,
+        "depth": 20,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "8294af1f246c5ad812a6c3783d4b0fc9e309b627fcab5c5acdd1e09d219fe09c"
+      },
+      "local_trial": {
+        "model_sha256": "8294af1f246c5ad812a6c3783d4b0fc9e309b627fcab5c5acdd1e09d219fe09c",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/aspen-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/aspen-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/aspen-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/affordable-aspen-clay-v003.glb",
+        "bytes": 1785272,
+        "sha256": "8294af1f246c5ad812a6c3783d4b0fc9e309b627fcab5c5acdd1e09d219fe09c",
+        "native_dimensions_m": {
+          "width": 24.360000610351562,
+          "height": 10.449999809265137,
+          "depth": 16.152999877929688
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/affordable-aspen-clay-v003.json",
+        "sha256": "ebbae39bbffcb6a2a7ea80aa9cba3fd551d01a1b54e499a2d8ac19175194855c",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "affordable-switchback-clay-v003",
+      "family": "affordable_switchback_original",
+      "archetype_id": "affordable_switchback",
+      "archetype_label": "Switchback Modular Studios",
+      "variant_id": "affordable_switchback_original",
+      "variant_label": "Switchback Modular Studios",
+      "runtime_enabled": true,
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 24,
+        "depth": 14,
+        "height": 13.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-switchback/variant_0.png",
+          "bytes": 2422931,
+          "sha256": "d5ee46b884d03cec0c3b6584cbea84c2e0e8ee0a4620fca2a633703629ed21e0"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-switchback/variant_0_angle_60.png",
+          "bytes": 2504041,
+          "sha256": "d90bc9e15378502361d9a42b649e181bc69b20a3e60f6fab2206e3cbec9eb88b"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/affordable-switchback/variant_0_angle_90.png",
+          "bytes": 2984102,
+          "sha256": "49555d2046a7fdee921fc56eb7530b63baba904c98f699e7946307f4176c3bb2"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\switchback-v003",
+      "picker": {
+        "id": "clay_affordable_switchback_original",
+        "description": "Twenty-four permanent studio dwellings in an authored modular apartment assembly, six per floor, common corridor, two stairs and lift core. Prefabricated construction, no permanent transport chassis.",
+        "group_id": "apartments",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+        "width": 28,
+        "depth": 20,
+        "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Let’s do the affordable housing batch, then test all the models in the City Prompt Browser, then push the new models and the work we did with the zoning, Local Area Plans, MDP and CTP. Sounds good?",
+        "date": "2026-10-06",
+        "model_sha256": "5dfc02904816d1d52c2a888b22db504754ebf82d7524067da9d9f95bba0f5c5f"
+      },
+      "local_trial": {
+        "model_sha256": "5dfc02904816d1d52c2a888b22db504754ebf82d7524067da9d9f95bba0f5c5f",
+        "project_url": "http://127.0.0.1:5180/projects/4fadcfd5-0d35-4895-9bce-d44614e91548",
+        "tested_by": "Codex, real Edge browser controls; independent RLASM pixel review",
+        "tested_at": "2026-10-06",
+        "evidence": [
+          "docs/showcase/catalogue-planning-2026-10-06/switchback-small.png",
+          "docs/showcase/catalogue-planning-2026-10-06/switchback-close-shell.png",
+          "docs/showcase/catalogue-planning-2026-10-06/switchback-reload.txt",
+          "docs/showcase/catalogue-planning-2026-10-06/browser-visual-addendum-2026-10-06-v004.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/affordable-switchback-clay-v003.glb",
+        "bytes": 2521764,
+        "sha256": "5dfc02904816d1d52c2a888b22db504754ebf82d7524067da9d9f95bba0f5c5f",
+        "native_dimensions_m": {
+          "width": 24.360000610351562,
+          "height": 13.75,
+          "depth": 16.08299970626831
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/affordable-switchback-clay-v003.json",
+        "sha256": "b8135d825686b3a50d674941ec1b50f2c9063df3be17f2ce90d06fd7b13019d2",
         "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
         "unresolved_p0": 0,
         "unresolved_p1": 0

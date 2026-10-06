@@ -9,8 +9,9 @@ const zone = (designation: string): ZoneInspection => ({ id: 'zone', label: 'Hom
 describe('zoning catalogue panel', () => {
   it('updates both lists when a student rezones, preserving the correct bylaw links', () => {
     const { rerender } = render(<CatalogueMatches zone={zone('R-CG')} />);
-    expect(screen.getByRole('heading', { name: 'Discretionary use candidates (4)' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Discretionary use candidates (6)' })).toBeInTheDocument();
     const list = screen.getByRole('region', { name: 'Discretionary use candidates' });
+    expect(within(list).getByRole('heading', { name: 'Juniper Courtyard Cottages' })).toBeInTheDocument();
     expect(within(list).getByRole('link', { name: 'Semi-detached Dwelling · s.527(2)' })).toHaveAttribute('href', expect.stringContaining('#section527'));
     rerender(<CatalogueMatches zone={zone('R-G')} />);
     expect(screen.getByRole('heading', { name: 'Permitted use candidates (10)' })).toBeInTheDocument();
@@ -71,7 +72,7 @@ describe('zoning catalogue panel', () => {
     const discretionary = screen.getByRole('region', { name: 'Discretionary use candidates' });
     expect(within(discretionary).getByRole('heading', { name: 'Basketball park' })).toBeInTheDocument();
     expect(within(discretionary).getByRole('heading', { name: 'Terraced performance lawn' })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Buildings (34)' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Buildings \(\d+\)$/ }));
     expect(screen.queryByRole('heading', { name: 'Basketball park' })).not.toBeInTheDocument();
   });
 });

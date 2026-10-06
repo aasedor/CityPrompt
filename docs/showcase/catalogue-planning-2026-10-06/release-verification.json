@@ -1,0 +1,1078 @@
+{
+  "date": "2026-10-06",
+  "model_count": 25,
+  "scope": "20 recent zoning-coverage models and 5 new affordable concepts; local prepared-site browser test, not hosted load test.",
+  "models": [
+    {
+      "candidate": "neoclassical-brick-office-clay-v005",
+      "label": "Neoclassical office",
+      "variant_id": "neoclassical_brick_headquarters",
+      "model_sha256": "52434045faa623bc1a8c1cdced981138f0c0dd4bfa748a1eedd4af24662122b5",
+      "small_plot_m": [
+        33,
+        36
+      ],
+      "large_plot_m": [
+        42,
+        43
+      ],
+      "rotation_degrees": 25,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/office-rotated-larger-plot.png",
+          "sha256": "89ac0876a4f07efadc26e84a35ba9a5c5b729a90cf3b91be764dfb80397bc360",
+          "bytes": 360212
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/office-close-shell.png",
+          "sha256": "48a43d0ee97a77a894307746d062b563b3d736a664bf634cd50f4f8b9bb14af8",
+          "bytes": 130819
+        }
+      ]
+    },
+    {
+      "candidate": "brick-bronze-faculty-office-clay-v004",
+      "label": "Brick-and-bronze faculty office",
+      "variant_id": "admin_faculty_brick_bronze_fins",
+      "model_sha256": "8987226e37b06e3f5419122912ff9e30fb34a25e50e79c7738bbe416112459fe",
+      "small_plot_m": [
+        38,
+        39
+      ],
+      "large_plot_m": [
+        52,
+        53
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/faculty-final-small.png",
+          "sha256": "8577e5171e105819be83cc611d8344f1e93a2fae6496fefdff57ed4cfe237787",
+          "bytes": 356390
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/faculty-final-close-shell.png",
+          "sha256": "c9f7f4d089bf051647fbb18e6a367f914da4b74338ec30cbb32d6ece3dcb8e5c",
+          "bytes": 112046
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/faculty-final-reload.txt",
+          "sha256": "37b371fc899535f36fbb853b2da0fb7f64bd2e2d72018d99b4e7c06c8e6edf31",
+          "bytes": 6700
+        }
+      ]
+    },
+    {
+      "candidate": "brick-timber-courtyard-office-clay-v004",
+      "label": "Brick-and-timber Courtyard Office",
+      "variant_id": "brick_timber_two_storey_office",
+      "model_sha256": "2338f50857d2ec8365a2fe7854e86d438d33f8bc661187f06f803b112d3acde6",
+      "small_plot_m": [
+        18,
+        16
+      ],
+      "large_plot_m": [
+        36,
+        34
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/courtyard-office-final-small.png",
+          "sha256": "df20bf4357302fbe7ee5eb53f213dbc829a65569f3b1a7311c2b807c77279781",
+          "bytes": 290359
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/courtyard-office-final-close-shell.png",
+          "sha256": "8723aa5784372d9dc5354740c2cd9ad780712ec0a8d5545c500379f2fc45755f",
+          "bytes": 177612
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/courtyard-office-final-reload.txt",
+          "sha256": "a370408b6ba8db05940d50e576800dfe8dacab93fb1023388b7b7b0824b802bb",
+          "bytes": 6703
+        }
+      ]
+    },
+    {
+      "candidate": "commercial-strip-single-storey-classic-clay-v002",
+      "label": "Classic retail strip",
+      "variant_id": "strip_single_storey_classic",
+      "model_sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+      "small_plot_m": [
+        36,
+        22
+      ],
+      "large_plot_m": [
+        54,
+        40
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/retail-small.png",
+          "sha256": "04cfd369611b8a37b34d7e3e06bac0d5fd5d2486ae084652f509366b9eee1e08",
+          "bytes": 344288
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/retail-close-shell.png",
+          "sha256": "bfa4161200bc4ca6a7417734d8f77d24eb6d40ccf24d2c217472a117b6a3fba1",
+          "bytes": 102372
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/retail-reload.txt",
+          "sha256": "220e9f0aef69c360acc1f8263eeb936d23883bbd511827e3b360a5351482af3d",
+          "bytes": 6454
+        }
+      ]
+    },
+    {
+      "candidate": "contractor-storage-yard-clay-v003",
+      "label": "Corten & Timber Equipment Yard",
+      "variant_id": "corten_timber_equipment_yard",
+      "model_sha256": "7f5159f27adc5a50bbafd5f441d0c62240f56b03910c837d6699ad6ceb8a8ac3",
+      "small_plot_m": [
+        42,
+        34
+      ],
+      "large_plot_m": [
+        60,
+        52
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/yard-v3-exact-small.png",
+          "sha256": "f7b0befa0da686faf3b7bc03b1b6c8de3aaed8170083088dd26b0d57783f392e",
+          "bytes": 348389
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/yard-v3-exact-close-shell.png",
+          "sha256": "7654e76dce14e09ef42a1fa6814d60334b7b108cabac8cc4d22f18a2464b69a4",
+          "bytes": 121840
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/yard-v3-exact-reload.txt",
+          "sha256": "a45184bb78d7ea6199611e0efd7f50be3fcb100470c92f46f8415f7cba4e1405",
+          "bytes": 6697
+        }
+      ]
+    },
+    {
+      "candidate": "courtyard-childcare-centre-clay-v003",
+      "label": "Meadow Court Childcare Centre",
+      "variant_id": "meadow_three_gable_childcare",
+      "model_sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f",
+      "small_plot_m": [
+        32,
+        30
+      ],
+      "large_plot_m": [
+        50,
+        48
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/childcare-small.png",
+          "sha256": "7cd25b6255a08efd72498d2c30befd81c06edf0956c74a5095fadc842d3cc478",
+          "bytes": 351297
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/childcare-close-shell.png",
+          "sha256": "8309c203016269c427a1deccd8c029dd0dd9414efc0cf4bb9cd55cb798c35c6a",
+          "bytes": 114726
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/childcare-reload.txt",
+          "sha256": "ea50daeb96e744657d5f96451562b00e5256e0b2c0b7c7167ad4cd70c6f9994c",
+          "bytes": 6481
+        }
+      ]
+    },
+    {
+      "candidate": "daylight-sawtooth-factory-clay-v003",
+      "label": "Daylight sawtooth factory",
+      "variant_id": "factory_sawtooth_roof",
+      "model_sha256": "db0d255c0f987f6738cbd4eb0340eddc5143fc497145089fb819c4e32c8fa09d",
+      "small_plot_m": [
+        58,
+        36
+      ],
+      "large_plot_m": [
+        76,
+        54
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/sawtooth-small.png",
+          "sha256": "230066a4bea74fb7bf454eab8917995ca51985cf57abaf20fda993747a8be8aa",
+          "bytes": 354726
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/sawtooth-close-shell.png",
+          "sha256": "9a2ac5fb1fac76e5ea783c77604b7ab06730f1868211db8e37af485a1e799efd",
+          "bytes": 141201
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/sawtooth-reload.txt",
+          "sha256": "b2de2ac3d6479896ee8cb0013eb2c5852dd2bb8a3fbd7bab3bcc2184ac298454",
+          "bytes": 6471
+        }
+      ]
+    },
+    {
+      "candidate": "enclosed-materials-recovery-clay-v002",
+      "label": "Folded-Roof Materials Recovery Hall",
+      "variant_id": "folded_roof_recovery_hall",
+      "model_sha256": "c828f68cb29328f2fcceb8288c5774740c4aa0a350ff4d5d42c62b2aec71f77c",
+      "small_plot_m": [
+        40,
+        29
+      ],
+      "large_plot_m": [
+        58,
+        47
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/recovery-small.png",
+          "sha256": "868a5d1a29475089dbba6d761650884e163e62e5a2d5313e82fa673e77babda0",
+          "bytes": 351279
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/recovery-close-shell.png",
+          "sha256": "504e9505b82bf0411e7777232fd6b1b789375fb3a85cb0152ed5ff45d3382739",
+          "bytes": 108084
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/recovery-reload.txt",
+          "sha256": "8652babe6135513585585dcea489164dae27e45f7c68388d7445c8ecd0d56abd",
+          "bytes": 6493
+        }
+      ]
+    },
+    {
+      "candidate": "garden-mews-courtyard-housing-clay-v003",
+      "label": "Garden Mews Courtyard Housing",
+      "variant_id": "garden_mews_six_homes",
+      "model_sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6",
+      "small_plot_m": [
+        26,
+        26
+      ],
+      "large_plot_m": [
+        44,
+        44
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/mews-small.png",
+          "sha256": "2cce05a46e173c7fb0f12d65638559d00ab257fa857ee1aad8dfa2175605a87a",
+          "bytes": 350452
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/mews-close-shell.png",
+          "sha256": "5ce5a00754c6d3d9a5075309a16d5f39ba29285f1cdc59b185dccb985e186c28",
+          "bytes": 169644
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/mews-reload.txt",
+          "sha256": "c7b64bb254c3035a30209d5ff125f54f1d769c3f1169483d85d6ac582d6ad5b9",
+          "bytes": 6481
+        }
+      ]
+    },
+    {
+      "candidate": "horizon-manufactured-home-clay-v003",
+      "label": "Horizon Manufactured Home",
+      "variant_id": "horizon_double_section",
+      "model_sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42",
+      "small_plot_m": [
+        18,
+        13
+      ],
+      "large_plot_m": [
+        36,
+        31
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/horizon-small.png",
+          "sha256": "024aee15df477c4e08ddc3ffe25f73c5a268893a8444d0448892709362beb303",
+          "bytes": 349971
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/horizon-close-shell.png",
+          "sha256": "09b1db13969c95e281d461a6cff7b77f865c84a0d79efb74c24e0f7854d9865d",
+          "bytes": 102137
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/horizon-reload.txt",
+          "sha256": "5f1dd66e8c21d7432368f0d71e8636eb49bcd895e118d96bf1c55feb906e63fc",
+          "bytes": 6473
+        }
+      ]
+    },
+    {
+      "candidate": "industrial-gabled-metal-shed-clay-v002",
+      "label": "Industrial shed",
+      "variant_id": "industrial_gabled_metal_shed",
+      "model_sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+      "small_plot_m": [
+        17,
+        25
+      ],
+      "large_plot_m": [
+        35,
+        43
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/shed-small.png",
+          "sha256": "18ed27583527ba20139a40993e857fb52c18774fa028d8a9da215cc7e868313f",
+          "bytes": 348635
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/shed-close-shell.png",
+          "sha256": "942aabbd4321786bcb0dc32b9922c66cd45f44f38661d20806a3ac9c57e3b977",
+          "bytes": 112320
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/shed-reload.txt",
+          "sha256": "40e1493c0a77d5fa2e897f2d66f0d638b05ff8586f91afbb770b225c381ecd39",
+          "bytes": 6453
+        }
+      ]
+    },
+    {
+      "candidate": "industrial-tilt-up-concrete-clay-v006",
+      "label": "Tilt-up industrial building",
+      "variant_id": "industrial_tilt_up_concrete",
+      "model_sha256": "a8f40bf20373f4b7f5eb15d7f4e3f3fadb4c98a1a6762eddced728411b4d9ada",
+      "small_plot_m": [
+        58,
+        43
+      ],
+      "large_plot_m": [
+        76,
+        61
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/tiltup-small.png",
+          "sha256": "d9ebea97d531e187d43263e8b54cd9d3196f8239f743b121542199d1ed49bc26",
+          "bytes": 343659
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/tiltup-close-shell.png",
+          "sha256": "c9142e52e74a92d1fd4db30cbe31c4339b7a4ab462929f630e08ae9f25e2e3fd",
+          "bytes": 112800
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/tiltup-reload.txt",
+          "sha256": "f1bc1c960d4684fac727ea824f9bd098d299c0d27b60e38f789b6a3e16cf934d",
+          "bytes": 6479
+        }
+      ]
+    },
+    {
+      "candidate": "maple-porch-manufactured-cottage-clay-v004",
+      "label": "Maple Porch Manufactured Cottage",
+      "variant_id": "maple_porch_sage",
+      "model_sha256": "0e55ef41aba5a5216a39218a381cd1aad15b94fc4257b14b51503852738d7f5a",
+      "small_plot_m": [
+        18,
+        11
+      ],
+      "large_plot_m": [
+        36,
+        29
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/maple-small.png",
+          "sha256": "fcc508f0615cff0c8592d0750464b741cee8cf6d803dd090e33ef53e88dabf5f",
+          "bytes": 349177
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/maple-close-shell.png",
+          "sha256": "196b84cc0df5ada10971e00a3f7af508510841d52cb9dff46ec52ac897167a0f",
+          "bytes": 94776
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/maple-reload.txt",
+          "sha256": "a3d9471e7266c3efaa26a760708d4737892f68a416d59191fae63325ca7f1a69",
+          "bytes": 6487
+        }
+      ]
+    },
+    {
+      "candidate": "municipal-works-depot-clay-v003",
+      "label": "Copperline Municipal Works Depot",
+      "variant_id": "copperline_four_bay_depot",
+      "model_sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b",
+      "small_plot_m": [
+        49,
+        28
+      ],
+      "large_plot_m": [
+        67,
+        46
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/depot-small.png",
+          "sha256": "a22efeb72221ae9e8eb8d0635d3961adc1bb78cb43bc9ad3d03f8ab4ee25c3cf",
+          "bytes": 351044
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/depot-close-shell.png",
+          "sha256": "ab9b90fed186ce750402f379df03f3e252af0c66da26378ca5e85c22ff2f878b",
+          "bytes": 113688
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/depot-reload.txt",
+          "sha256": "694a2b25bef630b97920057ecefedc7219d1fef4a1b4272dc98397e53040ce19",
+          "bytes": 6487
+        }
+      ]
+    },
+    {
+      "candidate": "narrow-lot-craftsman-cottage-clay-v003",
+      "label": "Narrow-lot Craftsman Cottage",
+      "variant_id": "brick_timber_craftsman",
+      "model_sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a",
+      "small_plot_m": [
+        13,
+        20
+      ],
+      "large_plot_m": [
+        31,
+        38
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/craftsman-small.png",
+          "sha256": "be47fdece4de7acf43aa138fb178c82d7d4c24787c1cf459ac1852af6e3bcea5",
+          "bytes": 347900
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/craftsman-close-shell.png",
+          "sha256": "bfced51578a3f5adbf0796a0b9c063d5bc2333d61cce51ae9b22c48c11541e9a",
+          "bytes": 99676
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/craftsman-reload.txt",
+          "sha256": "14e454dad9dd75efaa5205fabb6c8090b0001feff47916579c3e1b699e0bf6da",
+          "bytes": 6478
+        }
+      ]
+    },
+    {
+      "candidate": "prairie-manufactured-home-clay-v003",
+      "label": "Prairie Fold Manufactured Home",
+      "variant_id": "prairie_cedar_chassis_home",
+      "model_sha256": "eaa3991f32d5582e534edda6c7ccf5b44f8eff78cc2347b4ac57721423ac7607",
+      "small_plot_m": [
+        20,
+        10
+      ],
+      "large_plot_m": [
+        38,
+        28
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/prairie-small.png",
+          "sha256": "f57691c10ca4f465c67a213e5568837d876a60f66913aed0b7caec7245a7029d",
+          "bytes": 347682
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/prairie-close-shell.png",
+          "sha256": "7d1ea0891c1422b90d11bac0584cedca1bcffe5702d1b92af191741ecec0ef54",
+          "bytes": 91101
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/prairie-reload.txt",
+          "sha256": "376f2e98fe0bef67dee0ced75070c1e72d254d0be556d5a8ad03bcaf23ad452c",
+          "bytes": 6483
+        }
+      ]
+    },
+    {
+      "candidate": "rndsqr-brick-contextual-row-clay-v005",
+      "label": "RNDSQR contextual townhouses",
+      "variant_id": "rndsqr_townhome_brick_contextual",
+      "model_sha256": "e4d45b4b6ade347afd44fd835856e03e1ae31cbe9c1ebad2d2eb3857493fdf41",
+      "small_plot_m": [
+        28,
+        19
+      ],
+      "large_plot_m": [
+        46,
+        37
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/row-small.png",
+          "sha256": "1cc4e82e6d20a4d06fd13dac412761311c274a22976ed60d8e92a6821616aae9",
+          "bytes": 354418
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/row-close-shell.png",
+          "sha256": "be48d93acf801c9d42a3792446eb063b1a8b6b0864fea6957608e06316230258",
+          "bytes": 126328
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/row-reload.txt",
+          "sha256": "41c687c190a8799143ab0d3613d77453e4863033a58a2507c3edacb1216befdb",
+          "bytes": 6481
+        }
+      ]
+    },
+    {
+      "candidate": "tilt-wall-warehouse-clay-v006",
+      "label": "Tilt-wall logistics warehouse",
+      "variant_id": "warehouse_tilt_wall_mega",
+      "model_sha256": "f44bfe40398e1e1bcc3f53387f71f6e2818aaf6c36ee1990c992ee844898d2c5",
+      "small_plot_m": [
+        154,
+        92
+      ],
+      "large_plot_m": [
+        172,
+        110
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/warehouse-small.png",
+          "sha256": "e6bff69d3161b0004d94115d7f93dcd808c5d3e6ff7fc7a1b59c7b3dfdad07b9",
+          "bytes": 316760
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/warehouse-close-shell.png",
+          "sha256": "f4d1df08a71d3073e40dbfbe19cad491c07bfecee20ecfa3b17841ea3ee316c7",
+          "bytes": 103288
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/warehouse-reload.txt",
+          "sha256": "3ed709460aaa834fbb165c16b299d178646ceaa5e7221c687b1f80e9899b8bef",
+          "bytes": 6485
+        }
+      ]
+    },
+    {
+      "candidate": "provincial-brick-school-clay-v007",
+      "label": "Provincial Brick school",
+      "variant_id": "ecole-republicaine-provincial-brick",
+      "model_sha256": "aff2cc294e9a8540f7915fc9466e93b92378abc730e0b89b906d73ba33fa8dec",
+      "small_plot_m": [
+        36,
+        44
+      ],
+      "large_plot_m": [
+        54,
+        62
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/school-small.png",
+          "sha256": "c21453725b940c37cfca3312904e08ea2b45151b2d85aae4bba4e75b2b94966a",
+          "bytes": 350211
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/school-close-shell.png",
+          "sha256": "7d43f9fc3b361926b87eee1dfce620b6a5ab541713388fab559911aac152d31c",
+          "bytes": 120554
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/school-reload.txt",
+          "sha256": "719b17c5efcdde916fd5196a2afe395ded5706e730d475587cae9e68855dfb82",
+          "bytes": 6471
+        }
+      ]
+    },
+    {
+      "candidate": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "label": "Scandinavian townhouse row",
+      "variant_id": "rndsqr_townhome_scandinavian_peaks",
+      "model_sha256": "7e4b536479dc7cae6faa0d7930bff92384258d4a70c2a0b46b17932a57ad3e86",
+      "small_plot_m": [
+        38,
+        27
+      ],
+      "large_plot_m": [
+        56,
+        45
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/peaks-v6-exact-small.png",
+          "sha256": "e65d39d79e3e983bf54ecfd13b2852cde6267842ead3f5f85e50362dd8e17ef7",
+          "bytes": 296707
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/peaks-v6-exact-close-shell.png",
+          "sha256": "bc2f2a42a5277772bdc5cb790df4e86c86db1c06a5936085751970d9c18ce585",
+          "bytes": 103971
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/peaks-v6-exact-reload.txt",
+          "sha256": "617c1b9ebe28bec90349de50bf25cc4ca2855dbefc9c7b7b0dde1349f14deb66",
+          "bytes": 6888
+        }
+      ]
+    },
+    {
+      "candidate": "affordable-porchlight-clay-v004",
+      "label": "Porchlight Townhouse Row",
+      "variant_id": "affordable_porchlight_original",
+      "model_sha256": "61543f9f882065a7743953146ddb23568eb7dacb75903e9630479c02fd7ff7bc",
+      "small_plot_m": [
+        26,
+        18
+      ],
+      "large_plot_m": [
+        44,
+        36
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/porchlight-small.png",
+          "sha256": "7737e3df62d0b4081ef4d77dd6435d93e0cbcd514f446742b6060423ebbf5209",
+          "bytes": 219415
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/porchlight-close-shell.png",
+          "sha256": "726ab74dfc7ec38e904425ec38dbeda70fba0733c0ae86e07b446c13cdef21d3",
+          "bytes": 108803
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/porchlight-reload.txt",
+          "sha256": "ff0b384080e85074cb42e911dcdf133135cbee15a87aca7d41aa253d14296d54",
+          "bytes": 6685
+        }
+      ]
+    },
+    {
+      "candidate": "affordable-juniper-clay-v006",
+      "label": "Juniper Courtyard Cottages",
+      "variant_id": "affordable_juniper_original",
+      "model_sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+      "small_plot_m": [
+        31,
+        28
+      ],
+      "large_plot_m": [
+        49,
+        46
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/juniper-v6-exact-small.png",
+          "sha256": "fdc097826ff828d977951562194a23b04baf45e9781a1417aeba7d37ee0dc9d4",
+          "bytes": 290492
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/juniper-v6-exact-close-shell.png",
+          "sha256": "26fa51da8c38e5950104cf41cbb0e661817cb183a5e90d7f68ce71ca382001bc",
+          "bytes": 106158
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/juniper-v6-exact-reload.txt",
+          "sha256": "7dfc6688032f4e6ed81f4a0ceae17b8400797f46f15cf6f587a1ab5f9f88d932",
+          "bytes": 6886
+        }
+      ]
+    },
+    {
+      "candidate": "affordable-stackyard-clay-v003",
+      "label": "Stackyard Stacked Townhomes",
+      "variant_id": "affordable_stackyard_original",
+      "model_sha256": "1b95f83a2201ac0150dfd13795d826aa12b046b5ff551948b65e49b0cd3d4298",
+      "small_plot_m": [
+        27,
+        23
+      ],
+      "large_plot_m": [
+        45,
+        41
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/stackyard-small.png",
+          "sha256": "151c0c1dbabf89bbc4af5f83b12c23e1e9790a565b3d751d33055894931a0029",
+          "bytes": 295180
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/stackyard-close-shell.png",
+          "sha256": "7069622b2f6c1c1bfa9c11a3cd1bd7f6b55c8de168d4c63de46f71c37c127716",
+          "bytes": 102808
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/stackyard-reload.txt",
+          "sha256": "b55c57ff46b02936325ffdb6e5ca251b39c1208512d830171c9fcdce50821793",
+          "bytes": 6692
+        }
+      ]
+    },
+    {
+      "candidate": "affordable-aspen-clay-v003",
+      "label": "Aspen Walk Apartments",
+      "variant_id": "affordable_aspen_original",
+      "model_sha256": "8294af1f246c5ad812a6c3783d4b0fc9e309b627fcab5c5acdd1e09d219fe09c",
+      "small_plot_m": [
+        29,
+        24
+      ],
+      "large_plot_m": [
+        47,
+        42
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/aspen-small.png",
+          "sha256": "b079531ebce315c23301e57196afe67e4d6d1078b9d6f99564cdeac17f7bfcb5",
+          "bytes": 347364
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/aspen-close-shell.png",
+          "sha256": "920e8ed69659d63a5f1e8f9ad5f810f09850754726a7178b5a50cb5f69c92f35",
+          "bytes": 98712
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/aspen-reload.txt",
+          "sha256": "fdc78917dfca73fa14e162ae9d128f736aea05957698112c9db3a8e30f079370",
+          "bytes": 6681
+        }
+      ]
+    },
+    {
+      "candidate": "affordable-switchback-clay-v003",
+      "label": "Switchback Modular Studios",
+      "variant_id": "affordable_switchback_original",
+      "model_sha256": "5dfc02904816d1d52c2a888b22db504754ebf82d7524067da9d9f95bba0f5c5f",
+      "small_plot_m": [
+        29,
+        22
+      ],
+      "large_plot_m": [
+        47,
+        40
+      ],
+      "rotation_degrees": 27,
+      "save_reload_verified": true,
+      "browser_error_count": 0,
+      "screenshots": [
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/switchback-small.png",
+          "sha256": "05f7631c3f44b4a4a61f4fb7dbe3552efc4ecf2ff2ed58f0c1e6d1764134e493",
+          "bytes": 301407
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/switchback-close-shell.png",
+          "sha256": "07a15dc809ea13971cecf555bcb7b81065be86033c2dd80a315f8211790acb54",
+          "bytes": 94393
+        },
+        {
+          "path": "docs/showcase/catalogue-planning-2026-10-06/switchback-reload.txt",
+          "sha256": "88d12bc80009b239de71bf537eef56292b380cdcb46a4b81de2260fdaa818797",
+          "bytes": 6691
+        }
+      ]
+    }
+  ],
+  "other_evidence": [
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/yard-v3-exact-facade.png",
+      "sha256": "ebf00b84b82883209b85000e9ad5284ff21350776320d8e6368327c09d977be2",
+      "bytes": 168280
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/juniper-v6-exact-garden-seams.png",
+      "sha256": "8c0c937df2b4c3b7385c21336317b599e0dc872e79593a8f52f7fb73bfc80bbb",
+      "bytes": 252302
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/craftsman-clear-inspection-v3.png",
+      "sha256": "5e9c780e1ca580a7c9128114b9b53aa987d04e5a3ab4ce749211404873af7d08",
+      "bytes": 104068
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/prairie-clear-inspection-v3.png",
+      "sha256": "f3aaa075d20644b34b4fd06b86af5dadff5b57819fd80123d4808185d6d930b7",
+      "bytes": 119974
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/porchlight-clear-inspection-v2.png",
+      "sha256": "1da9221e177ea9ad4ed5a5f3a0186c178860b7b57e859c83167f8229a8a63985",
+      "bytes": 121340
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/retail-inspection-start-v3.png",
+      "sha256": "d548105df99c2ce97be8aa2763c52baeaac8728cfad6dee2c1b4cff27fe4d8c6",
+      "bytes": 102358
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/brick-row-inspection-start-v3.png",
+      "sha256": "6e6dbf33575bbe7ccd96b65e9517f78be37eef3b4dd13dfb3c38bfe43d047ddb",
+      "bytes": 110553
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/porchlight-card-final.png",
+      "sha256": "58e0b3eca30e2138495761a7570011b2943f66e65f08442605eaec821fb1ec79",
+      "bytes": 105970
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/juniper-card-final.png",
+      "sha256": "f1068fcc129537f828a138191bba70d8175fd4ef24497c210be1ec68a209eeed",
+      "bytes": 97635
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/stackyard-card-final.png",
+      "sha256": "4434f4fb8f3ed0e34b1d74c7985915cea0066359c3e06f576eca7ab8fbae3d3e",
+      "bytes": 93693
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/aspen-card-final.png",
+      "sha256": "dc2d78626146121c7dc4b9e40f3003ca7afa9cb98b8f526bf62198f68a2259cb",
+      "bytes": 105634
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/switchback-card-final.png",
+      "sha256": "c75e2e407b54eaf792ddaaef619bf4b2ec2a5e3449aef2b59ef38fdf0b038b78",
+      "bytes": 94478
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/existing-direct-control.png",
+      "sha256": "48b52f996980b81994f1bd406455427dbfe8ef0f4269256de5afcb844daa4c08",
+      "bytes": 373800
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/existing-park-zoning.png",
+      "sha256": "3b15675fee8950b31cbe42c9aa5fa9b7f653fa6996a551f7e54f9a5ddad73328",
+      "bytes": 340762
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/proposed-rcg-affordable-matches.png",
+      "sha256": "1e2d28eb73df77c52be4b664909c87c26c3b509a7622979a23935014ea327c42",
+      "bytes": 348332
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/proposed-rcg-reloaded.png",
+      "sha256": "1f6165907ae7b8a85e2fb4c7e21631459ec76748635f8828370cd9b597978118",
+      "bytes": 380086
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/flat-site-opacity-35.png",
+      "sha256": "8a0efccd263f27613a52729cca4bf5711bb031d267aecd91c3b91d295df885e1",
+      "bytes": 359461
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/westbrook-policy-meaning.png",
+      "sha256": "bc8cecd3c1d0d41a6cbf2fb39ebeadb4650adf77539db8bae6ffe271d82a3bfb",
+      "bytes": 268883
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/riley-meaning.png",
+      "sha256": "c559a47def45a99511dbb17b535ed74a0a564c37f05415d2ede46b44cb9f4618",
+      "bytes": 371471
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/chinook-meaning.png",
+      "sha256": "7b521224d979cf0f0e4801941c01b54e47d02e87f11fe9020cb517220ceec791",
+      "bytes": 375144
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/east-calgary-international-avenue-meaning.png",
+      "sha256": "05ed6bc9f0e4085b66d880e0be78fdd2a0d088060225877c496868f1e2631f34",
+      "bytes": 375267
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/heritage-meaning.png",
+      "sha256": "cf862fbb81b99285d290176bc1d1c6061bff2aa3a12f0c8771849da2c26327f8",
+      "bytes": 375448
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/north-hill-meaning.png",
+      "sha256": "5673b8b14871dddc28843edb4b905af0c916a3ac4aa7bdf9d55edc02bfcf60e0",
+      "bytes": 373742
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/south-shaganappi-meaning.png",
+      "sha256": "f35441423dc59f6870117ad333fe4fa207e3723330d8b0f2b01de55997afb37e",
+      "bytes": 374675
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/west-elbow-meaning.png",
+      "sha256": "fcaa0d17e7ed4fed6395fb1f1a17280b7647fe7dd0b762526f95245306b73197",
+      "bytes": 375180
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/westbrook-meaning.png",
+      "sha256": "2c74e5a4142c7b59d1fdbfed87bc8c0bd796ace4079d17170090ef66ed349a02",
+      "bytes": 373420
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/mdp-1-meaning.png",
+      "sha256": "4c8a1595b191f3aedaaf0177070d42a1d8f3e3a4cd1d5db7552e010c5ed85f90",
+      "bytes": 269869
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/mdp-2-meaning.png",
+      "sha256": "d46bf0a2a8924ea70fb9218f833eb9ad1f440ea916a855dba045d4d7947016ee",
+      "bytes": 331733
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/mdp-3-meaning.png",
+      "sha256": "70323c23f91e6b752bcf52ba818234bc4e354f1a399145e48393a6eb9be3a687",
+      "bytes": 331717
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/mdp-4-meaning.png",
+      "sha256": "0adfc0aac2a6487ebbc8a3be7de39e979a67e6a19fa8be41eb3cd8f3a3930f95",
+      "bytes": 326065
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/mdp-5-meaning.png",
+      "sha256": "97b5ec5117ba1a8aa850b7a9c728914c142ea209677a0ea5e3d60145d4960541",
+      "bytes": 344278
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/mdp-6-meaning.png",
+      "sha256": "2eb829754b90af1d8975c5ec056b62cf28a227e2646a19d015bbd20927fb0a04",
+      "bytes": 340287
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/ctp-1-meaning.png",
+      "sha256": "1122cae326b246f5c1e2b22c741b28337a8531ab5f6e87badf5f702665eaa0e4",
+      "bytes": 305156
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/ctp-2-meaning.png",
+      "sha256": "17873d467651a2e3c9e04470486772b11120eb9430a18883578b7fc7304df071",
+      "bytes": 331470
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/ctp-3-meaning.png",
+      "sha256": "63aca958f324aeb2ef25e9f6f8272eeeb3bb03fcc3ea7b455fe0afa6b9b062a0",
+      "bytes": 347806
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/ctp-5-meaning.png",
+      "sha256": "6b7c1ec049dd53cb5cb64448d4336f0f997bf5f56cfe2c4fc0cc1bca970a2f73",
+      "bytes": 349923
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/ctp-6-meaning.png",
+      "sha256": "62b283f9961d583d940071b0f4b22f60fc614b82da2b048dd44ba6ed91f4c6f4",
+      "bytes": 340737
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/ctp-7-meaning.png",
+      "sha256": "a2ae64bfbb7c9fbe97b278728508a6050ec97862fda116f603b879aacaaa2415",
+      "bytes": 337310
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/citywide-maps-trial.json",
+      "sha256": "e3453fa75fe83097c680d27f066c88c25d9ba2c2c1b87cabd673be8cdce9460a",
+      "bytes": 26862
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/local-plans-trial.json",
+      "sha256": "a377d4b6c4b4ee70badffc3e70030e301e4a07f40275ee6a459c0ef7cb24f92e",
+      "bytes": 22891
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/model-ui-trials-v4.json",
+      "sha256": "168fdb7effcb75b9b191677a9bdd55ac01cf4cd29c526378ba5916e1d1af045a",
+      "bytes": 4398
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/twenty-card-audit.json",
+      "sha256": "afa32dfa5afbc777341e5f64030a9f0a564f97cd7dbe16b098caea98a66298cc",
+      "bytes": 19233
+    },
+    {
+      "path": "docs/showcase/catalogue-planning-2026-10-06/affordable-card-audit-final.json",
+      "sha256": "176ddb24f79757a23d789fc6c2d4be5104c85770f89b24b88e2912131914312d",
+      "bytes": 2193
+    }
+  ],
+  "preserved_other_library_entries": 23,
+  "preserved_local_trials": 14,
+  "limitations": [
+    "Architectural-clay geometry approval; no textured-material approval.",
+    "MDP/CTP inspection explains the whole map; LAP Urban Form has individual polygons.",
+    "Eight LAP controls and twelve MDP/CTP controls tested; no city-wide cadastral accuracy claim.",
+    "Prior unrelated catalogue/park test failures reproduced at starting HEAD 34076e0d4.",
+    "No production deployment or 40-student hosted load test."
+  ]
+}

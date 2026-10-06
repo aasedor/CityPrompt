@@ -1,0 +1,821 @@
+{
+  "schema": "cityprompt.rlasm.prior-review-supplemental-attestation@1",
+  "candidate": "commercial-strip-single-storey-classic-clay-v002",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002",
+  "model_path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\commercial-strip-single-storey-classic-clay-v002.glb",
+  "model_sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "attested_utc": "2026-10-06T20:05:10.598534+00:00",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "holistic_review_basis": "Cited original independent full holistic review, not new pixels in this attestation.",
+  "fresh_holistic_pixel_review_performed": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "decision": "PASS_PRIOR_ARCHITECTURAL_CLAY_REVIEW_REVALIDATED",
+  "scope": "Machine-schema normalization of an existing holistic architectural-clay pass plus fresh exact-byte integrity revalidation. No new visual, runtime, textured-keeper or zoning approval.",
+  "prior_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-five-zoning-gaps-2026-10-05\\independent-review\\commercial-strip-single-storey-classic-clay-v002-independent-review-2026-10-05.json",
+    "sha256": "c0f84eae87da71ef38be701f260de6534d158838e9b9a6befcb31d7e130f365d",
+    "reviewer": "separate agent /root/rlasm_independent_review",
+    "date": "2026-10-05",
+    "decision": "PASS_ARCHITECTURAL_CLAY_ONLY",
+    "original_bytes_preserved": true
+  },
+  "readiness_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\recent-twenty-readiness-audit-2026-10-06-v001.json",
+    "sha256": "7ebc72a2577a4e7194e3691cdc32f977e08958321bec9ac02fa02fabb16bd362",
+    "no_readiness_hold": true
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\aerial.png",
+      "sha256": "437bcd273a08cbb641bdcad4dbd11fe55e93722e72f8ca53ccc341873204a420",
+      "bytes": 1402152,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\architecture_close.png",
+      "sha256": "e0a368e8222bd7c0160200235c7e6b322f43b2c0f61c6e0a6d61027ea9807a84",
+      "bytes": 1418472,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\canopy_contact.png",
+      "sha256": "4d5d845ea5fbb97815b9b1ddb04007a4d02e8d703a80165cec0e98abaa000c79",
+      "bytes": 1430719,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\facade_close.png",
+      "sha256": "f8a0e79678dc45af0c8bfda38c19f57c7b21475ac68a30f1af95f06be667de6c",
+      "bytes": 1360376,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\foundation_contact.png",
+      "sha256": "540ea5128ea46b3906b0f64d40db862d77026b942baaef752e16d3e251a5702f",
+      "bytes": 1357927,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\front.png",
+      "sha256": "afe1afe723dea511ab9946c9ff5fac0338bf2cc555e01e4cee28cc21d11e09aa",
+      "bytes": 1313407,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\front_corner.png",
+      "sha256": "9963ecb3da134541a62506e9a8f21f97a74ddcf6f14417eabb1ecea79225b0ba",
+      "bytes": 1319070,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\glass_close.png",
+      "sha256": "b0417025fe23a8d3ebc31cf6f47c4e62da7d8666e19a5b22ce19f0f1a81109fe",
+      "bytes": 1380316,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\grocery_sign_contact.png",
+      "sha256": "9c64eb978038ec8a99f0f5fe9d9f92b6079bbe994bcf34f7f252012f204976a5",
+      "bytes": 1310147,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_doublefan_contact.png",
+      "sha256": "8c333f2234aac1eeff3be09c66c7dfefb172daa1320c97fd414a3eaaba96ce59",
+      "bytes": 1445968,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_left_contact.png",
+      "sha256": "ddfcde16ae4fd8dd8b130c8706437de3c0218270b59032752642767e74bef5f4",
+      "bytes": 1408482,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_right_contact.png",
+      "sha256": "064f3f7051a114622291892896a95325d04749d44f202ba5ac8a41c464b5e944",
+      "bytes": 1348478,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\left_service_contact.png",
+      "sha256": "282d3e95e17aa6f338910ab78f19a827e93ef9f641e4f436835780a0135ac83d",
+      "bytes": 1363569,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\left_side.png",
+      "sha256": "310ee32fec464a3641164774c25db438d09902cd73397c8031926f3f382353af",
+      "bytes": 1206096,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\opposite_aerial.png",
+      "sha256": "99c7e8fc697ef649d997aa2e19e8f0843c2b654673e3582f0cc828c02b93c375",
+      "bytes": 1334892,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\plumbing_contact.png",
+      "sha256": "d99c2c38b65b043f911f67373d3e2314a96ea39fa30c3dab82b5df3c4841ea54",
+      "bytes": 1242561,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_cafe.png",
+      "sha256": "b8fb5dafa7a9b03f1b6bca98f8aae7e95801dfe3585191a6ce36c9c70e9d973c",
+      "bytes": 1348319,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_dollar.png",
+      "sha256": "18abe58f40d25bbd0d74d316d937f54b6bbcd0236f256c04899105b5f48e3cdb",
+      "bytes": 1372137,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_interior.png",
+      "sha256": "e74bc80d8e7e256a1362ffca0aba695ed8c3fa737c967a8cdfd9285218105783",
+      "bytes": 1348844,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_nail.png",
+      "sha256": "70726fee32817822d91d76677685ce88fd00b05ec0c03316e5340c26714c0754",
+      "bytes": 1307691,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_pizza.png",
+      "sha256": "3cb42a8acbd9e7860f3f3c77b7013d4edb022ab18ac0dd30b179955ec42bd647",
+      "bytes": 1308003,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\rear.png",
+      "sha256": "678a55b8e3a7bd8c7b7b2d8b1b82d84c38d398b64a6646fd1cbb4d26d3ded825",
+      "bytes": 1253592,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\rear_side.png",
+      "sha256": "cb22a84505ccee884572063f32dc0dae7f08ef58d79fc804a56722c6bd661d72",
+      "bytes": 1317065,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\right_side.png",
+      "sha256": "d335b63e385cbe3df45d922669a5326fbbd1cd61ea2eb49f3d004dba9a06e93b",
+      "bytes": 1202281,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\roof_contact.png",
+      "sha256": "6931ccea3a915cbc9ee6e4130fb80999f27be7750f75b8362d02c474555c6272",
+      "bytes": 1317861,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\roof_utilities.png",
+      "sha256": "9622bce4deeb14cf7871c88332c6087e23c2be69c648a0e01d48ec0254bf08fe",
+      "bytes": 1257910,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\service_pipe_contact.png",
+      "sha256": "706551c7503b7f65d6a80637e58cb82f132176f725fc909125fe07971afb8ceb",
+      "bytes": 1289883,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\sign_band_review.png",
+      "sha256": "9747f78829e6884ea674437d0692c12b19b042cdf73618012edd164af9069876",
+      "bytes": 1329302,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\true_top.png",
+      "sha256": "e813df8613521886689e0a49574cee73904ae1c1429cdf6889e04e6d92323a4a",
+      "bytes": 1274432,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\boards\\all-views-contact.png",
+      "sha256": "d257a12a2f49e7b78df155a4ec7ba10815e3d9e0d370160e297584b82df5a258",
+      "bytes": 3090105,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\boards\\locked-source-board.png",
+      "sha256": "222845eb4d5689d52ab727ac3f8c742cc9f9c895e73c17a98796dd5dfdf6ad8e",
+      "bytes": 1320986,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\boards\\phone-construction.png",
+      "sha256": "a356320d1862f994b5a5e8c6fbdb54143f932b750e234af4c3a3b061c8ca3209",
+      "bytes": 848357,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\boards\\phone-source-comparison.png",
+      "sha256": "c8d0c4d7e1f44010310294c03675d1b4d86e7f767c1dce8afb6ad1908633ee51",
+      "bytes": 1460822,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0.png",
+      "sha256": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6",
+      "bytes": 1152386,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0_angle_60.jpg",
+      "sha256": "a310b2439e6f9675d2b348f189366ead11dbbab2c3ccf2b070e1db3971ef5e36",
+      "bytes": 778501,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0_angle_90.jpg",
+      "sha256": "f64471d9309f809878f94103528487e6a8ef5db12e1c6f5538bc85608bd5dd7b",
+      "bytes": 811531,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    }
+  ],
+  "sources_current_exact": [
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\commercial-strip-mall\\variant_0.png",
+      "sha256": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\commercial-strip-mall\\variant_0_angle_60.jpg",
+      "sha256": "a310b2439e6f9675d2b348f189366ead11dbbab2c3ccf2b070e1db3971ef5e36",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\commercial-strip-mall\\variant_0_angle_90.jpg",
+      "sha256": "f64471d9309f809878f94103528487e6a8ef5db12e1c6f5538bc85608bd5dd7b",
+      "passed": true
+    }
+  ],
+  "integrity_checks": [
+    {
+      "kind": "build model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\commercial-strip-single-storey-classic-clay-v002.glb",
+      "sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+      "passed": true
+    },
+    {
+      "kind": "gallery model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\commercial-strip-single-storey-classic-clay-v002.glb",
+      "sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+      "passed": true
+    },
+    {
+      "kind": "review model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\commercial-strip-single-storey-classic-clay-v002.glb",
+      "sha256": "f4f4f5cd300f178c394650265aedfc3f7dbc19dacdb9641c7dc356f0e258ea44",
+      "passed": true
+    },
+    {
+      "kind": "authoring blend",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\commercial-strip-single-storey-classic-clay-v002-authoring.blend",
+      "sha256": "f7ddc0851d9c8104f45398c113bcb5663fdb3aa60c257dc25ae95f41f0b143ad",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0.png",
+      "sha256": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\commercial-strip-mall\\variant_0.png",
+      "sha256": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0_angle_60.jpg",
+      "sha256": "a310b2439e6f9675d2b348f189366ead11dbbab2c3ccf2b070e1db3971ef5e36",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\commercial-strip-mall\\variant_0_angle_60.jpg",
+      "sha256": "a310b2439e6f9675d2b348f189366ead11dbbab2c3ccf2b070e1db3971ef5e36",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0_angle_90.jpg",
+      "sha256": "f64471d9309f809878f94103528487e6a8ef5db12e1c6f5538bc85608bd5dd7b",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\commercial-strip-mall\\variant_0_angle_90.jpg",
+      "sha256": "f64471d9309f809878f94103528487e6a8ef5db12e1c6f5538bc85608bd5dd7b",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\clay_core.py",
+      "sha256": "97682a3f5e5e21c65401a3d1133d3e0d0bf501deb5519aa9da4de4acc77f536a",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\build_commercial_strip_mall.py",
+      "sha256": "4967587697c862fa7f972d99e132b93e70d0ff698bac1e087b30c88cb11ed472",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\clay_components.py",
+      "sha256": "0a2375da8da0c57f6abfcdec1f0ca9f860079ed0bbcb6bb8994ad91c47896379",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\clay_row_windows.py",
+      "sha256": "0131e9590af61a68f87b57f8c253529956615eaeab0bd07edc1522e4dab27f04",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\clay_letters.py",
+      "sha256": "49742824a900e1f03c8fb41633220c66eb8e8e49830a1d66d35616f8fb6ac3a6",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\arial.ttf",
+      "sha256": "b3658eadae55e682b5f69eb64c439c1ecc8f196c0bb8d4756d145d13bc86476a",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\timesbd.ttf",
+      "sha256": "54fbe2c70af7c85a97bed0573227e3ccc4b2486012e3ca2a40c6bc77065846f5",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\source-plane-measurements.json",
+      "sha256": "bd471113e78d36f0383ef56e372e69c4101e43eb0b5b1581a5cb6c853768db98",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\scripts\\source-preflight-independent.json",
+      "sha256": "2db6d438162267464079704753806252e55d3ddc44afc48b4bc3c1daafdae67f",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\aerial.png",
+      "sha256": "437bcd273a08cbb641bdcad4dbd11fe55e93722e72f8ca53ccc341873204a420",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\architecture_close.png",
+      "sha256": "e0a368e8222bd7c0160200235c7e6b322f43b2c0f61c6e0a6d61027ea9807a84",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\canopy_contact.png",
+      "sha256": "4d5d845ea5fbb97815b9b1ddb04007a4d02e8d703a80165cec0e98abaa000c79",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\facade_close.png",
+      "sha256": "f8a0e79678dc45af0c8bfda38c19f57c7b21475ac68a30f1af95f06be667de6c",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\foundation_contact.png",
+      "sha256": "540ea5128ea46b3906b0f64d40db862d77026b942baaef752e16d3e251a5702f",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\front.png",
+      "sha256": "afe1afe723dea511ab9946c9ff5fac0338bf2cc555e01e4cee28cc21d11e09aa",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\front_corner.png",
+      "sha256": "9963ecb3da134541a62506e9a8f21f97a74ddcf6f14417eabb1ecea79225b0ba",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\glass_close.png",
+      "sha256": "b0417025fe23a8d3ebc31cf6f47c4e62da7d8666e19a5b22ce19f0f1a81109fe",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\grocery_sign_contact.png",
+      "sha256": "9c64eb978038ec8a99f0f5fe9d9f92b6079bbe994bcf34f7f252012f204976a5",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_doublefan_contact.png",
+      "sha256": "8c333f2234aac1eeff3be09c66c7dfefb172daa1320c97fd414a3eaaba96ce59",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_left_contact.png",
+      "sha256": "ddfcde16ae4fd8dd8b130c8706437de3c0218270b59032752642767e74bef5f4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_right_contact.png",
+      "sha256": "064f3f7051a114622291892896a95325d04749d44f202ba5ac8a41c464b5e944",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\left_service_contact.png",
+      "sha256": "282d3e95e17aa6f338910ab78f19a827e93ef9f641e4f436835780a0135ac83d",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\left_side.png",
+      "sha256": "310ee32fec464a3641164774c25db438d09902cd73397c8031926f3f382353af",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\opposite_aerial.png",
+      "sha256": "99c7e8fc697ef649d997aa2e19e8f0843c2b654673e3582f0cc828c02b93c375",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\plumbing_contact.png",
+      "sha256": "d99c2c38b65b043f911f67373d3e2314a96ea39fa30c3dab82b5df3c4841ea54",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_cafe.png",
+      "sha256": "b8fb5dafa7a9b03f1b6bca98f8aae7e95801dfe3585191a6ce36c9c70e9d973c",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_dollar.png",
+      "sha256": "18abe58f40d25bbd0d74d316d937f54b6bbcd0236f256c04899105b5f48e3cdb",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_interior.png",
+      "sha256": "e74bc80d8e7e256a1362ffca0aba695ed8c3fa737c967a8cdfd9285218105783",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_nail.png",
+      "sha256": "70726fee32817822d91d76677685ce88fd00b05ec0c03316e5340c26714c0754",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_pizza.png",
+      "sha256": "3cb42a8acbd9e7860f3f3c77b7013d4edb022ab18ac0dd30b179955ec42bd647",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\rear.png",
+      "sha256": "678a55b8e3a7bd8c7b7b2d8b1b82d84c38d398b64a6646fd1cbb4d26d3ded825",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\rear_side.png",
+      "sha256": "cb22a84505ccee884572063f32dc0dae7f08ef58d79fc804a56722c6bd661d72",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\right_side.png",
+      "sha256": "d335b63e385cbe3df45d922669a5326fbbd1cd61ea2eb49f3d004dba9a06e93b",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\roof_contact.png",
+      "sha256": "6931ccea3a915cbc9ee6e4130fb80999f27be7750f75b8362d02c474555c6272",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\roof_utilities.png",
+      "sha256": "9622bce4deeb14cf7871c88332c6087e23c2be69c648a0e01d48ec0254bf08fe",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\service_pipe_contact.png",
+      "sha256": "706551c7503b7f65d6a80637e58cb82f132176f725fc909125fe07971afb8ceb",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\sign_band_review.png",
+      "sha256": "9747f78829e6884ea674437d0692c12b19b042cdf73618012edd164af9069876",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\true_top.png",
+      "sha256": "e813df8613521886689e0a49574cee73904ae1c1429cdf6889e04e6d92323a4a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\boards\\all-views-contact.png",
+      "sha256": "d257a12a2f49e7b78df155a4ec7ba10815e3d9e0d370160e297584b82df5a258",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\boards\\locked-source-board.png",
+      "sha256": "222845eb4d5689d52ab727ac3f8c742cc9f9c895e73c17a98796dd5dfdf6ad8e",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\boards\\phone-construction.png",
+      "sha256": "a356320d1862f994b5a5e8c6fbdb54143f932b750e234af4c3a3b061c8ca3209",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\boards\\phone-source-comparison.png",
+      "sha256": "c8d0c4d7e1f44010310294c03675d1b4d86e7f767c1dce8afb6ad1908633ee51",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0.png",
+      "sha256": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0_angle_60.jpg",
+      "sha256": "a310b2439e6f9675d2b348f189366ead11dbbab2c3ccf2b070e1db3971ef5e36",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0_angle_90.jpg",
+      "sha256": "f64471d9309f809878f94103528487e6a8ef5db12e1c6f5538bc85608bd5dd7b",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0.png",
+      "sha256": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0_angle_60.jpg",
+      "sha256": "a310b2439e6f9675d2b348f189366ead11dbbab2c3ccf2b070e1db3971ef5e36",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\sources\\variant_0_angle_90.jpg",
+      "sha256": "f64471d9309f809878f94103528487e6a8ef5db12e1c6f5538bc85608bd5dd7b",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\aerial.png",
+      "sha256": "437bcd273a08cbb641bdcad4dbd11fe55e93722e72f8ca53ccc341873204a420",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\architecture_close.png",
+      "sha256": "e0a368e8222bd7c0160200235c7e6b322f43b2c0f61c6e0a6d61027ea9807a84",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\canopy_contact.png",
+      "sha256": "4d5d845ea5fbb97815b9b1ddb04007a4d02e8d703a80165cec0e98abaa000c79",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\facade_close.png",
+      "sha256": "f8a0e79678dc45af0c8bfda38c19f57c7b21475ac68a30f1af95f06be667de6c",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\foundation_contact.png",
+      "sha256": "540ea5128ea46b3906b0f64d40db862d77026b942baaef752e16d3e251a5702f",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\front.png",
+      "sha256": "afe1afe723dea511ab9946c9ff5fac0338bf2cc555e01e4cee28cc21d11e09aa",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\front_corner.png",
+      "sha256": "9963ecb3da134541a62506e9a8f21f97a74ddcf6f14417eabb1ecea79225b0ba",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\glass_close.png",
+      "sha256": "b0417025fe23a8d3ebc31cf6f47c4e62da7d8666e19a5b22ce19f0f1a81109fe",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\grocery_sign_contact.png",
+      "sha256": "9c64eb978038ec8a99f0f5fe9d9f92b6079bbe994bcf34f7f252012f204976a5",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_doublefan_contact.png",
+      "sha256": "8c333f2234aac1eeff3be09c66c7dfefb172daa1320c97fd414a3eaaba96ce59",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_left_contact.png",
+      "sha256": "ddfcde16ae4fd8dd8b130c8706437de3c0218270b59032752642767e74bef5f4",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\hvac_right_contact.png",
+      "sha256": "064f3f7051a114622291892896a95325d04749d44f202ba5ac8a41c464b5e944",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\left_service_contact.png",
+      "sha256": "282d3e95e17aa6f338910ab78f19a827e93ef9f641e4f436835780a0135ac83d",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\left_side.png",
+      "sha256": "310ee32fec464a3641164774c25db438d09902cd73397c8031926f3f382353af",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\opposite_aerial.png",
+      "sha256": "99c7e8fc697ef649d997aa2e19e8f0843c2b654673e3582f0cc828c02b93c375",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\plumbing_contact.png",
+      "sha256": "d99c2c38b65b043f911f67373d3e2314a96ea39fa30c3dab82b5df3c4841ea54",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_cafe.png",
+      "sha256": "b8fb5dafa7a9b03f1b6bca98f8aae7e95801dfe3585191a6ce36c9c70e9d973c",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_dollar.png",
+      "sha256": "18abe58f40d25bbd0d74d316d937f54b6bbcd0236f256c04899105b5f48e3cdb",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_interior.png",
+      "sha256": "e74bc80d8e7e256a1362ffca0aba695ed8c3fa737c967a8cdfd9285218105783",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_nail.png",
+      "sha256": "70726fee32817822d91d76677685ce88fd00b05ec0c03316e5340c26714c0754",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\program_pizza.png",
+      "sha256": "3cb42a8acbd9e7860f3f3c77b7013d4edb022ab18ac0dd30b179955ec42bd647",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\rear.png",
+      "sha256": "678a55b8e3a7bd8c7b7b2d8b1b82d84c38d398b64a6646fd1cbb4d26d3ded825",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\rear_side.png",
+      "sha256": "cb22a84505ccee884572063f32dc0dae7f08ef58d79fc804a56722c6bd661d72",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\right_side.png",
+      "sha256": "d335b63e385cbe3df45d922669a5326fbbd1cd61ea2eb49f3d004dba9a06e93b",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\roof_contact.png",
+      "sha256": "6931ccea3a915cbc9ee6e4130fb80999f27be7750f75b8362d02c474555c6272",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\roof_utilities.png",
+      "sha256": "9622bce4deeb14cf7871c88332c6087e23c2be69c648a0e01d48ec0254bf08fe",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\service_pipe_contact.png",
+      "sha256": "706551c7503b7f65d6a80637e58cb82f132176f725fc909125fe07971afb8ceb",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\sign_band_review.png",
+      "sha256": "9747f78829e6884ea674437d0692c12b19b042cdf73618012edd164af9069876",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002\\renders\\true_top.png",
+      "sha256": "e813df8613521886689e0a49574cee73904ae1c1429cdf6889e04e6d92323a4a",
+      "passed": true
+    }
+  ],
+  "canonical_validator": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\07-commercial-strip-mall\\v002",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "mandatory_view_count": 29,
+  "all_mandatory_views_covered_by_original_review": true,
+  "requires_fresh_review": false,
+  "runtime_approved": false,
+  "textured_keeper_approved": false,
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "limitations": [
+    "Fixed native architectural-clay model only; arbitrary resizing and sibling substitution are unapproved.",
+    "Absolute dimensions are authored inferences from uncalibrated generated catalogue images, not a measured real building.",
+    "Hidden elevations and sparse interior fixtures remain explicitly inferred.",
+    "No textured-keeper, detailed operating-program, engineering, zoning compliance, egress, accessibility, terrain-fit or runtime-integration approval.",
+    "Catalogue sources remain selection and render-conditioning authority.",
+    "New runtime activation requires the applicable human approval; this review does not activate or publish anything."
+  ]
+}

@@ -109,6 +109,7 @@ class ModuleDescriptor:
     # independently back to the parcel edges at runtime.
     allow_inset_footprint: bool = False
     delivery_format: str | None = None
+    model_revision: str | None = None
 
 
 @dataclass(frozen=True)
@@ -126,6 +127,7 @@ class AssemblyRequest:
     # derives this from the zone; dimension-only callers retain rectangle fit.
     footprint_local_m: tuple[tuple[float, float], ...] | None = None
     native_home_plot: bool = False
+    model_revision: str | None = None
 
 
 AssemblyPlanningErrorCode = Literal["family_not_found", "family_incompatible"]
@@ -287,6 +289,7 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
             lego.get("placement_contract") if isinstance(lego.get("placement_contract"), dict) else None
         ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
+        model_revision=str(rlasm.get("candidate")) if rlasm.get("candidate") else None,
         delivery_format=(
             RLASM_ARCHITECTURAL_CLAY_FORMAT
             if is_clay
@@ -1136,6 +1139,10 @@ def plan_vertical_assembly(
     allow_forced_fit: bool = True,
 ) -> dict[str, Any]:
     modules = list(modules)
+    if request.model_revision:
+        modules = [module for module in modules if module.model_revision == request.model_revision]
+        if not modules:
+            raise AssemblyPlanningError("The selected model revision is not installed.", code="family_not_found")
     # An explicit home plot groups whole independent copies. It does not grant
     # a clay asset a repeatable floor/bay contract or allow mesh deformation.
     if request.native_home_plot:

@@ -37,6 +37,9 @@ describe('student asset browsing', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
     expect(screen.getAllByRole('article')).toHaveLength(24);
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
+    while (screen.queryByRole('button', { name: 'Show more choices' })) {
+      fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
+    }
     expect(screen.getAllByRole('article')).toHaveLength(count('building'));
     fireEvent.click(screen.getAllByRole('button', { name: 'Parks' })[1]);
     expect(screen.getAllByRole('article')).toHaveLength(12);

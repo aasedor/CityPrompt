@@ -1,0 +1,329 @@
+{
+  "schema": "rlasm-bounded-browser-visual-addendum-v1",
+  "reviewer": "independent /root/rlasm_independent_review",
+  "review_date": "2026-10-06",
+  "decision": "PASS_SCOPED_BROWSER_VISUAL_RETEST",
+  "holistic_review_performed": false,
+  "runtime_visual_closure_approved": true,
+  "runtime_visual_closure_scope": "Three named repaired surfaces plus six previously identified shell-start screenshot cases; exact supplied files only.",
+  "human_keeper_approval": false,
+  "textured_material_approval": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "count_scope": "No unresolved P0/P1 found within this bounded retest. Counts do not certify untested camera positions, all model sides or full application behavior.",
+  "inspected_screenshot_count": 13,
+  "previous_record": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\browser-visual-addendum-2026-10-06-v003.json",
+    "sha256": "0edb1cf8b4fe7900876663cd945745a575aac9df2e067c04c3df8123dfc78582",
+    "bytes": 11330
+  },
+  "scope": "Direct original-resolution review of eight fresh exact-revision browser screenshots and five unchanged/new camera-case screenshots, plus read-only saved-state URL checks and local exact candidate/review hash revalidation. The offline architectural-clay approvals are separate full reviews.",
+  "findings": [
+    {
+      "id": "BROWSER-YARD-01",
+      "previous_severity": "P1",
+      "status": "closed for exact reviewed v003 in supplied browser retest",
+      "evidence": [
+        "yard-v3-exact-facade.png",
+        "yard-v3-exact-small.png",
+        "yard-v3-exact-close-shell.png"
+      ],
+      "observation": "Dedicated close facade shows continuous copper-coloured cladding above and between both loading doors, with regular physical ribs and no former irregular beige/copper fragments. Low wall, door frames, bollards and apron meet coherently. Gate/office view shows unobstructed yard standing space. Offline v003 finite offset diagnosis and fresh exact saved compiled URL support closure."
+    },
+    {
+      "id": "BROWSER-PEAKS-01",
+      "previous_severity": "P1",
+      "status": "closed for exact reviewed v006 in supplied browser retest",
+      "evidence": [
+        "peaks-v6-exact-close-shell.png",
+        "peaks-v6-exact-small.png"
+      ],
+      "observation": "Visible ground floor beside the stair/wall is a continuous grey surface without the former fragmented thin strips. The camera is in an open interior volume rather than a party-wall cross-section. Whole form retains six upper gables and four occupied levels. Offline removal of the redundant ground slab and saved v006 compiled URL support closure."
+    },
+    {
+      "id": "BROWSER-JUNIPER-01",
+      "previous_severity": "P1",
+      "status": "closed for exact reviewed v006 in supplied browser retest",
+      "evidence": [
+        "juniper-v6-exact-garden-seams.png",
+        "juniper-v6-exact-small.png",
+        "juniper-v6-exact-close-shell.png"
+      ],
+      "observation": "Overhead view exposes both rear cottage garden/lawn boundaries cleanly, with no former pale irregular streaks. Lawn, garden and crossing paths retain coherent extents. Cottage interior floor and room depth are legible. Offline trimmed lawn geometry and saved v006 compiled URL support closure."
+    },
+    {
+      "id": "BROWSER-SHELL-START-01",
+      "previous_severity": "P1",
+      "status": "closed for the six previously identified supplied start-view cases only",
+      "evidence": [
+        "craftsman-clear-inspection-v3.png",
+        "prairie-clear-inspection-v3.png",
+        "porchlight-clear-inspection-v2.png",
+        "peaks-v6-exact-close-shell.png",
+        "retail-inspection-start-v3.png",
+        "brick-row-inspection-start-v3.png"
+      ],
+      "observation": "Craftsman shows standing space behind its sofa; Prairie shows the kitchen/living aisle; Porchlight shows room space beside its stair; Peaks shows an open stair-side interior; Retail shows an aisle alongside shelving rather than a rack intersection; brick Row shows an open furnished room. None of these six frames is a partition cross-section or a viewpoint visibly embedded in a carrier. This is bounded case coverage, not universal camera-position validation."
+    },
+    {
+      "id": "BROWSER-ASSET-SELECTION-01",
+      "previous_severity": "P1",
+      "status": "closed for the three supplied saved-state snapshots; wider operational proof remains parent scope",
+      "observation": "Saved specifications.legoAssembly.instances model_url now points to the exact v003/v006/v006 filenames, and matches revision properties. Native instance scale is [1,1,1]. The earlier props-only inference is superseded for these snapshots. Candidate GLB bytes were independently rehashed against full-review authorities; screenshots alone and supplied JSON do not prove network response byte hashes."
+    }
+  ],
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\yard-v3-exact-small.png",
+      "sha256": "f7b0befa0da686faf3b7bc03b1b6c8de3aaed8170083088dd26b0d57783f392e",
+      "bytes": 348389,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\yard-v3-exact-close-shell.png",
+      "sha256": "7654e76dce14e09ef42a1fa6814d60334b7b108cabac8cc4d22f18a2464b69a4",
+      "bytes": 121840,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\yard-v3-exact-facade.png",
+      "sha256": "ebf00b84b82883209b85000e9ad5284ff21350776320d8e6368327c09d977be2",
+      "bytes": 168280,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\peaks-v6-exact-small.png",
+      "sha256": "e65d39d79e3e983bf54ecfd13b2852cde6267842ead3f5f85e50362dd8e17ef7",
+      "bytes": 296707,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\peaks-v6-exact-close-shell.png",
+      "sha256": "bc2f2a42a5277772bdc5cb790df4e86c86db1c06a5936085751970d9c18ce585",
+      "bytes": 103971,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\juniper-v6-exact-small.png",
+      "sha256": "fdc097826ff828d977951562194a23b04baf45e9781a1417aeba7d37ee0dc9d4",
+      "bytes": 290492,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\juniper-v6-exact-close-shell.png",
+      "sha256": "26fa51da8c38e5950104cf41cbb0e661817cb183a5e90d7f68ce71ca382001bc",
+      "bytes": 106158,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\juniper-v6-exact-garden-seams.png",
+      "sha256": "8c0c937df2b4c3b7385c21336317b599e0dc872e79593a8f52f7fb73bfc80bbb",
+      "bytes": 252302,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\craftsman-clear-inspection-v3.png",
+      "sha256": "5e9c780e1ca580a7c9128114b9b53aa987d04e5a3ab4ce749211404873af7d08",
+      "bytes": 104068,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\prairie-clear-inspection-v3.png",
+      "sha256": "f3aaa075d20644b34b4fd06b86af5dadff5b57819fd80123d4808185d6d930b7",
+      "bytes": 119974,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\porchlight-clear-inspection-v2.png",
+      "sha256": "1da9221e177ea9ad4ed5a5f3a0186c178860b7b57e859c83167f8229a8a63985",
+      "bytes": 121340,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\retail-inspection-start-v3.png",
+      "sha256": "d548105df99c2ce97be8aa2763c52baeaac8728cfad6dee2c1b4cff27fe4d8c6",
+      "bytes": 102358,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\brick-row-inspection-start-v3.png",
+      "sha256": "6e6dbf33575bbe7ccd96b65e9517f78be37eef3b4dd13dfb3c38bfe43d047ddb",
+      "bytes": 110553,
+      "width": 1420,
+      "height": 1110,
+      "decoded_format": "JPEG",
+      "kind": "browser_screenshot",
+      "direct_original_resolution_pixel_inspection": true
+    }
+  ],
+  "saved_state_evidence": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\corten_timber_equipment_yard-saved-state.json",
+      "sha256": "41b97f85d675bbacf26d3fdd5eb467f27a802dbe67e34fdc3c2b15c7ea6d2689",
+      "bytes": 8273,
+      "candidate": "contractor-storage-yard-clay-v003",
+      "compiled_model_url": "/api/v1/files/library/rlasm-architectural-clay/contractor-storage-yard-clay-v003.glb",
+      "model_revision": "contractor-storage-yard-clay-v003",
+      "native_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "compiled_at": "2026-10-06T22:25:57.142927+00:00",
+      "zone": "aadcc198-c150-4fe9-9996-f92110721b3f"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\yard-v3-exact-binding.log",
+      "sha256": "d1f6a859305cb0186b64b728e49ebe8e14a939ece218f842fcc5a0345ca292a9",
+      "bytes": 1785,
+      "kind": "supplied_saved_binding_log"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\rndsqr_townhome_scandinavian_peaks-saved-state.json",
+      "sha256": "56224f129aed70b9cc48cfc7e602a775efab1c13d07e576bb7547432480352db",
+      "bytes": 8963,
+      "candidate": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "compiled_model_url": "/api/v1/files/library/rlasm-architectural-clay/rndsqr-scandinavian-peaks-row-clay-v006.glb",
+      "model_revision": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "native_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "compiled_at": "2026-10-06T22:27:40.661385+00:00",
+      "zone": "aadcc198-c150-4fe9-9996-f92110721b3f"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\peaks-v6-exact-binding.log",
+      "sha256": "6624429588f1ef94cd495f880c615f07277d225a977dc8b036157450e5499268",
+      "bytes": 1849,
+      "kind": "supplied_saved_binding_log"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\affordable_juniper_original-saved-state.json",
+      "sha256": "d352ca333d5ae3b77d051991774388adbece740aa871758051113075c207d855",
+      "bytes": 8600,
+      "candidate": "affordable-juniper-clay-v006",
+      "compiled_model_url": "/api/v1/files/library/rlasm-architectural-clay/affordable-juniper-clay-v006.glb",
+      "model_revision": "affordable-juniper-clay-v006",
+      "native_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "compiled_at": "2026-10-06T22:28:56.033026+00:00",
+      "zone": "aadcc198-c150-4fe9-9996-f92110721b3f"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\browser\\juniper-v6-exact-binding.log",
+      "sha256": "6e57976c95f517c9340916fc51fc61a63f59993877665e5e5f349d63cab8c2a9",
+      "bytes": 1745,
+      "kind": "supplied_saved_binding_log"
+    }
+  ],
+  "revalidated_candidate_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\yard-v003\\contractor-storage-yard-clay-v003.glb",
+      "sha256": "7f5159f27adc5a50bbafd5f441d0c62240f56b03910c837d6699ad6ceb8a8ac3",
+      "bytes": 1667392
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\repairs\\peaks-v006\\rndsqr-scandinavian-peaks-row-clay-v006.glb",
+      "sha256": "7e4b536479dc7cae6faa0d7930bff92384258d4a70c2a0b46b17932a57ad3e86",
+      "bytes": 4922684
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\affordable-juniper-clay-v006.glb",
+      "sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+      "bytes": 1332996
+    }
+  ],
+  "exact_offline_candidate_authorities": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\contractor-storage-yard-clay-v003-independent-review-2026-10-06-v001.json",
+      "sha256": "dca3c75a8c60c7ada43b70f1fcea979ec8ea5146da9bad56f2636701e0321f77",
+      "bytes": 30005,
+      "candidate": "contractor-storage-yard-clay-v003",
+      "model_sha256": "7f5159f27adc5a50bbafd5f441d0c62240f56b03910c837d6699ad6ceb8a8ac3",
+      "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\rndsqr-scandinavian-peaks-row-clay-v006-independent-review-2026-10-06-v001.json",
+      "sha256": "ed480f3eb1a24ba3088670b84c3a518b769ac367e07cf3da7fdfa3f26424bcaa",
+      "bytes": 31387,
+      "candidate": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "model_sha256": "7e4b536479dc7cae6faa0d7930bff92384258d4a70c2a0b46b17932a57ad3e86",
+      "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\affordable-juniper-clay-v006-independent-review-2026-10-06-v001.json",
+      "sha256": "083da511377150a95e507232ab3df6ca770928e2d85fc5608d6e294b76571c58",
+      "bytes": 29536,
+      "candidate": "affordable-juniper-clay-v006",
+      "model_sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+      "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW"
+    }
+  ],
+  "observations": [
+    "All three whole-scene images show coherent authored forms placed within the scene; no gross detached shell or obvious floating assembly is seen. Detailed perimeter grounding is only assessed where the close frames expose it.",
+    "Regular siding ribs, thin roof seams and ordinary raster edge aliasing are not classified as the previously confirmed duplicate-surface fragments.",
+    "The historical v003 invalidated test record remains preserved. Its old three-model screenshots are not reused to establish exact repaired geometry in this report.",
+    "All screenshot dimensions are decoded with Pillow; JPEG content is preserved despite .png filename extensions."
+  ],
+  "limitations": [
+    "This reviewer did not operate the browser or independently capture live network/database data. Saved-state JSON and binding logs were supplied by the parent and read directly.",
+    "Parent reports small-plot, larger-plot, rotation and reload trials. This addendum verifies the supplied static pixels and state content, not the entire interaction sequence or timing.",
+    "Compiled URL identity plus rehashed local candidate bytes supports exact revision attribution; the reviewer did not fetch and hash the served HTTP response independently.",
+    "Static screenshots cannot prove absence of temporal flicker under every camera or certify full collision behavior.",
+    "No universal camera-start approval, frame-rate/concurrency/hosting claim, legal zoning/code/structural/accessibility approval, textured/PBR approval or final human keeper decision.",
+    "No source, runtime, candidate or previous review bytes modified."
+  ]
+}

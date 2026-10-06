@@ -1,0 +1,693 @@
+{
+  "schema": "cityprompt.rlasm.prior-review-supplemental-attestation@1",
+  "candidate": "garden-mews-courtyard-housing-clay-v003",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003",
+  "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\garden-mews-courtyard-housing-clay-v003.glb",
+  "model_sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "attested_utc": "2026-10-06T20:05:13.665388+00:00",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "holistic_review_basis": "Cited original independent full holistic review, not new pixels in this attestation.",
+  "fresh_holistic_pixel_review_performed": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "decision": "PASS_PRIOR_ARCHITECTURAL_CLAY_REVIEW_REVALIDATED",
+  "scope": "Machine-schema normalization of an existing holistic architectural-clay pass plus fresh exact-byte integrity revalidation. No new visual, runtime, textured-keeper or zoning approval.",
+  "prior_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\garden-mews-courtyard-housing-clay-v003-independent-review-2026-10-06-v001.json",
+    "sha256": "2482f18bf0e607b3fd587994c2868a40661091561659a60612c86ec6ced69a0a",
+    "reviewer": "independent agent /root/rlasm_independent_review",
+    "date": "2026-10-06T18:35:28.199251+00:00",
+    "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+    "original_bytes_preserved": true
+  },
+  "readiness_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\recent-twenty-readiness-audit-2026-10-06-v001.json",
+    "sha256": "7ebc72a2577a4e7194e3691cdc32f977e08958321bec9ac02fa02fabb16bd362",
+    "no_readiness_hold": true
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0.png",
+      "sha256": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67",
+      "bytes": 3215101,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "f46549541102072d1acfa6bf430eb187900fd17309f52deccba5182389016288",
+      "bytes": 3479453,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "fa077b77b88bbeddce308d5077c9f9507c8467323b7e39d03278eafca02f11b7",
+      "bytes": 3268862,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\aerial.png",
+      "sha256": "cb8696f819b4eb550aa8aa2ba1a1321307f624c395f8290dbabe07b35c8290da",
+      "bytes": 1558229,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\architecture_close.png",
+      "sha256": "4e2c4d26ab1ffaab15cebe4281ffc5ec163a276adec4f70efd4b3408dd3ddad0",
+      "bytes": 1367426,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bathroom.png",
+      "sha256": "5c7661cf4a8c295acd9dca7e0e4b6cf09a83951a4bc28f0fbf61ed6d8900d6c0",
+      "bytes": 1364456,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bed_contact.png",
+      "sha256": "65af097dcb0eb54b24d06f410b920fa5d3cbac6a0c286fb7ba6f5555bc271aef",
+      "bytes": 1291479,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bedroom.png",
+      "sha256": "3843644391307f647bc4e2ecd4e7ed0863a309e9daaff05026955644784b2aec",
+      "bytes": 1411647,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\court.png",
+      "sha256": "80c986c772466d8dd70152133f60cd78196cd2e3b22414c8ec40ef073e8c36c0",
+      "bytes": 1620658,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\facade_close.png",
+      "sha256": "3bfd22d15f975375e5acd9e65d5d01a9d4d2ce123346380a52db5be6cb20a204",
+      "bytes": 1578168,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\front.png",
+      "sha256": "d8e0381dda1f921c66f78d89fda03acce0d19d46f9d824ccecf2207103eb380c",
+      "bytes": 1393729,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\front_corner.png",
+      "sha256": "582af33140e3b7ceb0da46e55c2d318e076c50604c671a39e5ddcc86d5525a34",
+      "bytes": 1598226,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\glass_close.png",
+      "sha256": "579901c5c4c4efafbb1ed1be76b2a1e0eb609fbdd18d1fb13c4a2267911301ba",
+      "bytes": 1386018,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\interior.png",
+      "sha256": "2e06ee640bc965d09dca0238984d850c35f9593dea49c7bc40bba5dfe1f62d63",
+      "bytes": 1339481,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\left_side.png",
+      "sha256": "53190deb9c5989d40812cebf337c477f0cf5f32eee56c7b71815960a0b92cb39",
+      "bytes": 1383264,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\rear.png",
+      "sha256": "6b45915b96fbbbf7136226c6abceade987677b676e10a71ddee56cfcf5e27ff1",
+      "bytes": 1392824,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\rear_side.png",
+      "sha256": "89605f64d7ce31f5ef82068e33a9b3932683d1a617efbc1d1879b6c01ce922ed",
+      "bytes": 1585165,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\right_side.png",
+      "sha256": "d34a8382b459cd001b8471074d4a6d33f219dff1ec08f6270af0b91338046baa",
+      "bytes": 1382367,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\roof_contact.png",
+      "sha256": "1ba627ea70f41116a65d0f9ad4abc14c42bb3dce41b3865ea8ca96f0809e26fa",
+      "bytes": 1821043,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\side_projection.png",
+      "sha256": "26dabf865d3ce70d90beb93cfaa6e27bfae44894577f5e9012a8aa3c41b2faea",
+      "bytes": 1734200,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\stair_contact.png",
+      "sha256": "2ce69932b863127629bde1e8e462308ebae77b5b2e2cf94f30ee76cd8850bcd1",
+      "bytes": 1427739,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\stairs.png",
+      "sha256": "f4506328dff09bd2073c9e4585e74b5fdc2be4e0cd2ad3727f6692e876057a2f",
+      "bytes": 1527857,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\top.png",
+      "sha256": "8e82c72a4780687f2deaca73425d5e0aa49873844aa5f8e7eed901d647f01ac7",
+      "bytes": 1438159,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\upper_landing.png",
+      "sha256": "79103a259530f6af2b646b98d6dacce7b64a628418e65ebcb3b74abab8d5570a",
+      "bytes": 1654440,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\boards\\all-views-contact.png",
+      "sha256": "14702e1a62028f4dba17d42cdcf5457be9c05cc297776de883dce965d06c9abf",
+      "bytes": 2998952,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\boards\\locked-source-board.png",
+      "sha256": "a576cab2d943738fc834d01450cf5f999b160052fa4239eb0248e7f5f294f60f",
+      "bytes": 1501944,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\boards\\phone-construction.png",
+      "sha256": "e354ff8c6469b98ae44913c2fbda9c03db11785b5e617c0f55fbeed5ef20bdba",
+      "bytes": 1152282,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\boards\\phone-source-comparison.png",
+      "sha256": "6a774812c80ee862f523d32306fe8e9d323c13b80350390ae1cfd541546a4fc8",
+      "bytes": 1878940,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    }
+  ],
+  "sources_current_exact": [
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\garden-mews-courtyard-housing\\variant_0.png",
+      "sha256": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\garden-mews-courtyard-housing\\variant_0_angle_60.png",
+      "sha256": "f46549541102072d1acfa6bf430eb187900fd17309f52deccba5182389016288",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\garden-mews-courtyard-housing\\variant_0_angle_90.png",
+      "sha256": "fa077b77b88bbeddce308d5077c9f9507c8467323b7e39d03278eafca02f11b7",
+      "passed": true
+    }
+  ],
+  "integrity_checks": [
+    {
+      "kind": "build model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\garden-mews-courtyard-housing-clay-v003.glb",
+      "sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6",
+      "passed": true
+    },
+    {
+      "kind": "gallery model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\garden-mews-courtyard-housing-clay-v003.glb",
+      "sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6",
+      "passed": true
+    },
+    {
+      "kind": "review model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\garden-mews-courtyard-housing-clay-v003.glb",
+      "sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6",
+      "passed": true
+    },
+    {
+      "kind": "gallery review",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\garden-mews-courtyard-housing-clay-v003-independent-review-2026-10-06-v001.json",
+      "sha256": "2482f18bf0e607b3fd587994c2868a40661091561659a60612c86ec6ced69a0a",
+      "passed": true
+    },
+    {
+      "kind": "authoring blend",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\garden-mews-courtyard-housing-clay-v003-authoring.blend",
+      "sha256": "2d47408fab65fad88c6c4ecfdc7804603e7d29a1ea07ad38597d790406747ba3",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0.png",
+      "sha256": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\garden-mews-courtyard-housing\\variant_0.png",
+      "sha256": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "f46549541102072d1acfa6bf430eb187900fd17309f52deccba5182389016288",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\garden-mews-courtyard-housing\\variant_0_angle_60.png",
+      "sha256": "f46549541102072d1acfa6bf430eb187900fd17309f52deccba5182389016288",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "fa077b77b88bbeddce308d5077c9f9507c8467323b7e39d03278eafca02f11b7",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\garden-mews-courtyard-housing\\variant_0_angle_90.png",
+      "sha256": "fa077b77b88bbeddce308d5077c9f9507c8467323b7e39d03278eafca02f11b7",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\scripts\\clay_core.py",
+      "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\scripts\\build.py",
+      "sha256": "d0f7bb476153c83d4cffcb8466553b2b75fc16277bec614768c04c9fa3b46eca",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\scripts\\assemblies.py",
+      "sha256": "b5fa2a595d3dc5e7bf2bb2130c73760e2f2c453539bf423305dd9af53b2093b8",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\scripts\\plan.py",
+      "sha256": "8dcbf7921d91d7c96784e7a9212f3f366ebb1e5e2ef6104cad1a9555ac4c5e47",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\scripts\\designs.json",
+      "sha256": "3407fff0d60c40291d8df7eadd9c1de355693eab7d44e95fbecb10ed07af1971",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0.png",
+      "sha256": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "f46549541102072d1acfa6bf430eb187900fd17309f52deccba5182389016288",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "fa077b77b88bbeddce308d5077c9f9507c8467323b7e39d03278eafca02f11b7",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\aerial.png",
+      "sha256": "cb8696f819b4eb550aa8aa2ba1a1321307f624c395f8290dbabe07b35c8290da",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\architecture_close.png",
+      "sha256": "4e2c4d26ab1ffaab15cebe4281ffc5ec163a276adec4f70efd4b3408dd3ddad0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bathroom.png",
+      "sha256": "5c7661cf4a8c295acd9dca7e0e4b6cf09a83951a4bc28f0fbf61ed6d8900d6c0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bed_contact.png",
+      "sha256": "65af097dcb0eb54b24d06f410b920fa5d3cbac6a0c286fb7ba6f5555bc271aef",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bedroom.png",
+      "sha256": "3843644391307f647bc4e2ecd4e7ed0863a309e9daaff05026955644784b2aec",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\court.png",
+      "sha256": "80c986c772466d8dd70152133f60cd78196cd2e3b22414c8ec40ef073e8c36c0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\facade_close.png",
+      "sha256": "3bfd22d15f975375e5acd9e65d5d01a9d4d2ce123346380a52db5be6cb20a204",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\front.png",
+      "sha256": "d8e0381dda1f921c66f78d89fda03acce0d19d46f9d824ccecf2207103eb380c",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\front_corner.png",
+      "sha256": "582af33140e3b7ceb0da46e55c2d318e076c50604c671a39e5ddcc86d5525a34",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\glass_close.png",
+      "sha256": "579901c5c4c4efafbb1ed1be76b2a1e0eb609fbdd18d1fb13c4a2267911301ba",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\interior.png",
+      "sha256": "2e06ee640bc965d09dca0238984d850c35f9593dea49c7bc40bba5dfe1f62d63",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\left_side.png",
+      "sha256": "53190deb9c5989d40812cebf337c477f0cf5f32eee56c7b71815960a0b92cb39",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\rear.png",
+      "sha256": "6b45915b96fbbbf7136226c6abceade987677b676e10a71ddee56cfcf5e27ff1",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\rear_side.png",
+      "sha256": "89605f64d7ce31f5ef82068e33a9b3932683d1a617efbc1d1879b6c01ce922ed",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\right_side.png",
+      "sha256": "d34a8382b459cd001b8471074d4a6d33f219dff1ec08f6270af0b91338046baa",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\roof_contact.png",
+      "sha256": "1ba627ea70f41116a65d0f9ad4abc14c42bb3dce41b3865ea8ca96f0809e26fa",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\side_projection.png",
+      "sha256": "26dabf865d3ce70d90beb93cfaa6e27bfae44894577f5e9012a8aa3c41b2faea",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\stair_contact.png",
+      "sha256": "2ce69932b863127629bde1e8e462308ebae77b5b2e2cf94f30ee76cd8850bcd1",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\stairs.png",
+      "sha256": "f4506328dff09bd2073c9e4585e74b5fdc2be4e0cd2ad3727f6692e876057a2f",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\top.png",
+      "sha256": "8e82c72a4780687f2deaca73425d5e0aa49873844aa5f8e7eed901d647f01ac7",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\upper_landing.png",
+      "sha256": "79103a259530f6af2b646b98d6dacce7b64a628418e65ebcb3b74abab8d5570a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\boards\\all-views-contact.png",
+      "sha256": "14702e1a62028f4dba17d42cdcf5457be9c05cc297776de883dce965d06c9abf",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\boards\\locked-source-board.png",
+      "sha256": "a576cab2d943738fc834d01450cf5f999b160052fa4239eb0248e7f5f294f60f",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\boards\\phone-construction.png",
+      "sha256": "e354ff8c6469b98ae44913c2fbda9c03db11785b5e617c0f55fbeed5ef20bdba",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\boards\\phone-source-comparison.png",
+      "sha256": "6a774812c80ee862f523d32306fe8e9d323c13b80350390ae1cfd541546a4fc8",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\evidence\\builder-evidence.json",
+      "sha256": "cd39e6bcf3d7a2270aa74bd78eeb9e380fda2203e5999d5dc734d990d2fedc09",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\evidence\\carrier-aperture-audit.json",
+      "sha256": "9c8652942949bd99bee801a70a109a712ec9089e008df6b7e913f977a0e89f48",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\evidence\\delivery-verification.json",
+      "sha256": "190d3c018350425ad01d10605831843e5833f82d79779906ccb941f6be7394c1",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\evidence\\runtime-review.md",
+      "sha256": "f1d26eee4f355d90215eecf0fcd907d28063463e1173525f54ed2efd07cd72c3",
+      "passed": true
+    },
+    {
+      "kind": "source_manifest_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\prework-manifest.json",
+      "sha256": "ead2bd07059ad01355394639133e9237a83eb57dc7df0c2e1a123d8410f55ce8",
+      "passed": true
+    },
+    {
+      "kind": "build_report_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\build-report.json",
+      "sha256": "34c043723e55394adec9f968a72daeadac11541fb4dfdd377886c0af77b954b0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0.png",
+      "sha256": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "f46549541102072d1acfa6bf430eb187900fd17309f52deccba5182389016288",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "fa077b77b88bbeddce308d5077c9f9507c8467323b7e39d03278eafca02f11b7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\aerial.png",
+      "sha256": "cb8696f819b4eb550aa8aa2ba1a1321307f624c395f8290dbabe07b35c8290da",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\architecture_close.png",
+      "sha256": "4e2c4d26ab1ffaab15cebe4281ffc5ec163a276adec4f70efd4b3408dd3ddad0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bathroom.png",
+      "sha256": "5c7661cf4a8c295acd9dca7e0e4b6cf09a83951a4bc28f0fbf61ed6d8900d6c0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bed_contact.png",
+      "sha256": "65af097dcb0eb54b24d06f410b920fa5d3cbac6a0c286fb7ba6f5555bc271aef",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\bedroom.png",
+      "sha256": "3843644391307f647bc4e2ecd4e7ed0863a309e9daaff05026955644784b2aec",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\court.png",
+      "sha256": "80c986c772466d8dd70152133f60cd78196cd2e3b22414c8ec40ef073e8c36c0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\facade_close.png",
+      "sha256": "3bfd22d15f975375e5acd9e65d5d01a9d4d2ce123346380a52db5be6cb20a204",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\front.png",
+      "sha256": "d8e0381dda1f921c66f78d89fda03acce0d19d46f9d824ccecf2207103eb380c",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\front_corner.png",
+      "sha256": "582af33140e3b7ceb0da46e55c2d318e076c50604c671a39e5ddcc86d5525a34",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\glass_close.png",
+      "sha256": "579901c5c4c4efafbb1ed1be76b2a1e0eb609fbdd18d1fb13c4a2267911301ba",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\interior.png",
+      "sha256": "2e06ee640bc965d09dca0238984d850c35f9593dea49c7bc40bba5dfe1f62d63",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\left_side.png",
+      "sha256": "53190deb9c5989d40812cebf337c477f0cf5f32eee56c7b71815960a0b92cb39",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\rear.png",
+      "sha256": "6b45915b96fbbbf7136226c6abceade987677b676e10a71ddee56cfcf5e27ff1",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\rear_side.png",
+      "sha256": "89605f64d7ce31f5ef82068e33a9b3932683d1a617efbc1d1879b6c01ce922ed",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\right_side.png",
+      "sha256": "d34a8382b459cd001b8471074d4a6d33f219dff1ec08f6270af0b91338046baa",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\roof_contact.png",
+      "sha256": "1ba627ea70f41116a65d0f9ad4abc14c42bb3dce41b3865ea8ca96f0809e26fa",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\side_projection.png",
+      "sha256": "26dabf865d3ce70d90beb93cfaa6e27bfae44894577f5e9012a8aa3c41b2faea",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\stair_contact.png",
+      "sha256": "2ce69932b863127629bde1e8e462308ebae77b5b2e2cf94f30ee76cd8850bcd1",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\stairs.png",
+      "sha256": "f4506328dff09bd2073c9e4585e74b5fdc2be4e0cd2ad3727f6692e876057a2f",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\top.png",
+      "sha256": "8e82c72a4780687f2deaca73425d5e0aa49873844aa5f8e7eed901d647f01ac7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\renders\\upper_landing.png",
+      "sha256": "79103a259530f6af2b646b98d6dacce7b64a628418e65ebcb3b74abab8d5570a",
+      "passed": true
+    }
+  ],
+  "canonical_validator": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "mandatory_view_count": 21,
+  "all_mandatory_views_covered_by_original_review": true,
+  "requires_fresh_review": false,
+  "runtime_approved": false,
+  "textured_keeper_approved": false,
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval."
+  ]
+}

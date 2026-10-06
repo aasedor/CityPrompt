@@ -72,7 +72,13 @@ export function matchBuilding(asset: PlaceAsset, zone: ZoneInspection,
     result.reasons.push(program.review ?? program.siteReview ?? 'The building program needs review.'); return result;
   }
   const { rule } = district;
-  matchUses(result, program, rule, 'building');
+  const districtComponents = program.districtUseGroups?.[district.code];
+  if (program.districtUseGroups && !districtComponents) {
+    result.reasons.push('This exact building arrangement has not been screened for this district.');
+    return result;
+  }
+  matchUses(result, districtComponents ? { ...program, components: districtComponents } : program, rule, 'building');
+  if (program.districtReview?.[district.code]) result.reasons.push(program.districtReview[district.code]);
   if (program.siteReview) result.reasons.push(program.siteReview);
   const h = rule.height;
   const limit = h.mode === 'mapped' ? district.height ?? h.metres : h.metres;

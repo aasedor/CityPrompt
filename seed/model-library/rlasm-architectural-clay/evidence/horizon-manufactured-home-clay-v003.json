@@ -1,0 +1,657 @@
+{
+  "schema": "cityprompt.rlasm.prior-review-supplemental-attestation@1",
+  "candidate": "horizon-manufactured-home-clay-v003",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003",
+  "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\horizon-manufactured-home-clay-v003.glb",
+  "model_sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "attested_utc": "2026-10-06T20:05:12.985591+00:00",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "holistic_review_basis": "Cited original independent full holistic review, not new pixels in this attestation.",
+  "fresh_holistic_pixel_review_performed": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "decision": "PASS_PRIOR_ARCHITECTURAL_CLAY_REVIEW_REVALIDATED",
+  "scope": "Machine-schema normalization of an existing holistic architectural-clay pass plus fresh exact-byte integrity revalidation. No new visual, runtime, textured-keeper or zoning approval.",
+  "prior_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\horizon-manufactured-home-clay-v003-independent-review-2026-10-06-v001.json",
+    "sha256": "5ada462ac87b0656a09573954ecd17d2bd498cce40179cb0e4619b6489fbaa59",
+    "reviewer": "independent agent /root/rlasm_independent_review",
+    "date": "2026-10-06T17:45:12.926435+00:00",
+    "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+    "original_bytes_preserved": true
+  },
+  "readiness_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\recent-twenty-readiness-audit-2026-10-06-v001.json",
+    "sha256": "7ebc72a2577a4e7194e3691cdc32f977e08958321bec9ac02fa02fabb16bd362",
+    "no_readiness_hold": true
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0.png",
+      "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d",
+      "bytes": 3036322,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "1caf71ec52c5515181677c8c966b60ba0fb27e6b73ce9b55fc5b5689e8da21b3",
+      "bytes": 3201466,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "50b8e4ad1577a7451c78cd2d753d9221184df2258afbcb747aead6bf2c978681",
+      "bytes": 3421837,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\aerial.png",
+      "sha256": "05a26348031adac2fcf466772af18b402ee3e93e17e1694ef1585f4733cbf4e0",
+      "bytes": 1497540,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\architecture_close.png",
+      "sha256": "7ab1929db2d4cd0f17ef9af41719d39a117477c2da61abb209db85c8246acb3b",
+      "bytes": 1407259,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\bed_contact.png",
+      "sha256": "58057dfd372a54970ba7e81247a32ddf8af67075f765ecf9219fa2d7ae6bc1d0",
+      "bytes": 1306560,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\bedroom.png",
+      "sha256": "ccdfae9c99191971476ca6987b5a2e74cc06eca56e0b974bc3995c85afa58c21",
+      "bytes": 1409137,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\chassis.png",
+      "sha256": "bb356b818a8c30e0a6486dc3f7ce508ea6ca5e359ece5e0775a8ae348544aa00",
+      "bytes": 1297166,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\clerestory_inside.png",
+      "sha256": "4430bdfba737372c7a49d00f21a40ea621611d16fd4907ef338a521ee563abed",
+      "bytes": 1348830,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\corridor.png",
+      "sha256": "b2f6d8c24014884bc30d87cd2f30e3a7bf91e674c69bffe0bb2c255b4259b7d7",
+      "bytes": 1357550,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\facade_close.png",
+      "sha256": "fc49401834a6e92ee97e420d44f662a59b3e41613dae640abfd26b9d4594bca9",
+      "bytes": 1494729,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\front.png",
+      "sha256": "1e5aa28b0925e4fa6ff991a2676067294a1634a375aad1712da0a28183ce436e",
+      "bytes": 1367147,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\front_corner.png",
+      "sha256": "ec3ee95d443e5cb7501169a02d8c4e6f762e17c49d353ed0fd8a3665841e1048",
+      "bytes": 1504006,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\glass_close.png",
+      "sha256": "a7dde0585c0173d2b3a8fefc398a548b113b7f0856f5bd49fe24e53a759d6dc4",
+      "bytes": 1350042,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\interior.png",
+      "sha256": "19b760c396583d350d3cf5214f73088549c0620f52a3268e58e327fc33ad5947",
+      "bytes": 1389824,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\left_side.png",
+      "sha256": "bb8e69ee42624f07d3931d900c4ccfc4dd5cabd6702ed727bb04b77eeaab8663",
+      "bytes": 1284357,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\rear.png",
+      "sha256": "69036e2ad21413806c136974db9fb849aba5f495176cbd8b9832d8c9838561eb",
+      "bytes": 1286924,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\rear_side.png",
+      "sha256": "069dea6c959df489014a95c10ecd09b3173400707147d9adabf0740fd5aed6ff",
+      "bytes": 1404145,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\right_side.png",
+      "sha256": "a1469d949b25e312a6ae9832d327dcb4f0f4c501c9ed514471c562036f1f2760",
+      "bytes": 1286915,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\roof_contact.png",
+      "sha256": "5a32aff174418b1e2f2dd7e4a94572ae9addcc918e313808c89ab7743e6bd3a3",
+      "bytes": 1548812,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\side_projection.png",
+      "sha256": "c1a14cff2b9e12963e01a3fa9ca399d9dd6c12f82961238e864901133b67f173",
+      "bytes": 1444847,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\top.png",
+      "sha256": "56fc44dcf1d65614287db8806763e2b26eb26ded8836f5d8e4be94b20f2125d4",
+      "bytes": 1326064,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\boards\\all-views-contact.png",
+      "sha256": "8f6447b5273ba10c3f6b9a227320054ebfd354af7520bc12a522c22a2e88c32e",
+      "bytes": 2331078,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\boards\\locked-source-board.png",
+      "sha256": "58cf240d411a8c8984789b89d3c19a35971c4579a77a278ec9e96c7208eba90a",
+      "bytes": 1301810,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\boards\\phone-construction.png",
+      "sha256": "ae3335680bfcceb5b241f4b6ca3b362f7ac758e3ecd6d8bca8c961f9521c56e1",
+      "bytes": 969547,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\boards\\phone-source-comparison.png",
+      "sha256": "72bd0feb7df1c750f898e9f9e4f594067c31df981f35027f57611a4fc5b0a30b",
+      "bytes": 1482628,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    }
+  ],
+  "sources_current_exact": [
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\horizon-manufactured-home\\variant_0.png",
+      "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\horizon-manufactured-home\\variant_0_angle_60.png",
+      "sha256": "1caf71ec52c5515181677c8c966b60ba0fb27e6b73ce9b55fc5b5689e8da21b3",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\horizon-manufactured-home\\variant_0_angle_90.png",
+      "sha256": "50b8e4ad1577a7451c78cd2d753d9221184df2258afbcb747aead6bf2c978681",
+      "passed": true
+    }
+  ],
+  "integrity_checks": [
+    {
+      "kind": "build model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\horizon-manufactured-home-clay-v003.glb",
+      "sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42",
+      "passed": true
+    },
+    {
+      "kind": "gallery model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\horizon-manufactured-home-clay-v003.glb",
+      "sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42",
+      "passed": true
+    },
+    {
+      "kind": "review model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\horizon-manufactured-home-clay-v003.glb",
+      "sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42",
+      "passed": true
+    },
+    {
+      "kind": "gallery review",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\horizon-manufactured-home-clay-v003-independent-review-2026-10-06-v001.json",
+      "sha256": "5ada462ac87b0656a09573954ecd17d2bd498cce40179cb0e4619b6489fbaa59",
+      "passed": true
+    },
+    {
+      "kind": "authoring blend",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\horizon-manufactured-home-clay-v003-authoring.blend",
+      "sha256": "a9a6a74e53666b20218c499297d2928356a00596a2b08907fd85886b5ff6be91",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0.png",
+      "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\horizon-manufactured-home\\variant_0.png",
+      "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "1caf71ec52c5515181677c8c966b60ba0fb27e6b73ce9b55fc5b5689e8da21b3",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\horizon-manufactured-home\\variant_0_angle_60.png",
+      "sha256": "1caf71ec52c5515181677c8c966b60ba0fb27e6b73ce9b55fc5b5689e8da21b3",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "50b8e4ad1577a7451c78cd2d753d9221184df2258afbcb747aead6bf2c978681",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\horizon-manufactured-home\\variant_0_angle_90.png",
+      "sha256": "50b8e4ad1577a7451c78cd2d753d9221184df2258afbcb747aead6bf2c978681",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\scripts\\clay_core.py",
+      "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\scripts\\build.py",
+      "sha256": "4b83f80360275f9b7344245704b7643081906092419f45e7eeaa4df9c611aab4",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\scripts\\assemblies.py",
+      "sha256": "a4f80c22c551f57c9dee818474fdff4f95fca9d28d261892dc9f2ba3001ddf1a",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\scripts\\plan.py",
+      "sha256": "8dcbf7921d91d7c96784e7a9212f3f366ebb1e5e2ef6104cad1a9555ac4c5e47",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\scripts\\designs.json",
+      "sha256": "3d0270693ccf6b44907b10f8a802b593fa5a4164904794d099fc9939a792b60a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0.png",
+      "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "1caf71ec52c5515181677c8c966b60ba0fb27e6b73ce9b55fc5b5689e8da21b3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "50b8e4ad1577a7451c78cd2d753d9221184df2258afbcb747aead6bf2c978681",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\aerial.png",
+      "sha256": "05a26348031adac2fcf466772af18b402ee3e93e17e1694ef1585f4733cbf4e0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\architecture_close.png",
+      "sha256": "7ab1929db2d4cd0f17ef9af41719d39a117477c2da61abb209db85c8246acb3b",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\bed_contact.png",
+      "sha256": "58057dfd372a54970ba7e81247a32ddf8af67075f765ecf9219fa2d7ae6bc1d0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\bedroom.png",
+      "sha256": "ccdfae9c99191971476ca6987b5a2e74cc06eca56e0b974bc3995c85afa58c21",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\chassis.png",
+      "sha256": "bb356b818a8c30e0a6486dc3f7ce508ea6ca5e359ece5e0775a8ae348544aa00",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\clerestory_inside.png",
+      "sha256": "4430bdfba737372c7a49d00f21a40ea621611d16fd4907ef338a521ee563abed",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\corridor.png",
+      "sha256": "b2f6d8c24014884bc30d87cd2f30e3a7bf91e674c69bffe0bb2c255b4259b7d7",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\facade_close.png",
+      "sha256": "fc49401834a6e92ee97e420d44f662a59b3e41613dae640abfd26b9d4594bca9",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\front.png",
+      "sha256": "1e5aa28b0925e4fa6ff991a2676067294a1634a375aad1712da0a28183ce436e",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\front_corner.png",
+      "sha256": "ec3ee95d443e5cb7501169a02d8c4e6f762e17c49d353ed0fd8a3665841e1048",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\glass_close.png",
+      "sha256": "a7dde0585c0173d2b3a8fefc398a548b113b7f0856f5bd49fe24e53a759d6dc4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\interior.png",
+      "sha256": "19b760c396583d350d3cf5214f73088549c0620f52a3268e58e327fc33ad5947",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\left_side.png",
+      "sha256": "bb8e69ee42624f07d3931d900c4ccfc4dd5cabd6702ed727bb04b77eeaab8663",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\rear.png",
+      "sha256": "69036e2ad21413806c136974db9fb849aba5f495176cbd8b9832d8c9838561eb",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\rear_side.png",
+      "sha256": "069dea6c959df489014a95c10ecd09b3173400707147d9adabf0740fd5aed6ff",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\right_side.png",
+      "sha256": "a1469d949b25e312a6ae9832d327dcb4f0f4c501c9ed514471c562036f1f2760",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\roof_contact.png",
+      "sha256": "5a32aff174418b1e2f2dd7e4a94572ae9addcc918e313808c89ab7743e6bd3a3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\side_projection.png",
+      "sha256": "c1a14cff2b9e12963e01a3fa9ca399d9dd6c12f82961238e864901133b67f173",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\top.png",
+      "sha256": "56fc44dcf1d65614287db8806763e2b26eb26ded8836f5d8e4be94b20f2125d4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\boards\\all-views-contact.png",
+      "sha256": "8f6447b5273ba10c3f6b9a227320054ebfd354af7520bc12a522c22a2e88c32e",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\boards\\locked-source-board.png",
+      "sha256": "58cf240d411a8c8984789b89d3c19a35971c4579a77a278ec9e96c7208eba90a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\boards\\phone-construction.png",
+      "sha256": "ae3335680bfcceb5b241f4b6ca3b362f7ac758e3ecd6d8bca8c961f9521c56e1",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\boards\\phone-source-comparison.png",
+      "sha256": "72bd0feb7df1c750f898e9f9e4f594067c31df981f35027f57611a4fc5b0a30b",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\evidence\\builder-evidence.json",
+      "sha256": "f8b832a7332dc1a065aee5aae2cbe60694f6eaf1edcf751a7bd82ad779aca96e",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\evidence\\carrier-aperture-audit.json",
+      "sha256": "28f1d443c1fc3740d6b5e6234a71dcd5b15502f2534291e09a2ca8ca08c986b6",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\evidence\\delivery-verification.json",
+      "sha256": "a632e3bff3ec990a2c4ec842b3e95568bc64158c02293564c8e79928ecc960fd",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\evidence\\runtime-review.md",
+      "sha256": "de08ba26f2739472db7484f44f1bb57c05fc39568f8fca1afd273deb3e558dfc",
+      "passed": true
+    },
+    {
+      "kind": "source_manifest_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\prework-manifest.json",
+      "sha256": "5bf7c4918edb3ba7b7f1964eca31c399a2e1a40528ff8596d3b0b1c0e173c12d",
+      "passed": true
+    },
+    {
+      "kind": "build_report_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\build-report.json",
+      "sha256": "1b64bea43fc07d677e8327c64b65cdd229ca852671a18aacc461a60e9c41eb6d",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0.png",
+      "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "1caf71ec52c5515181677c8c966b60ba0fb27e6b73ce9b55fc5b5689e8da21b3",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "50b8e4ad1577a7451c78cd2d753d9221184df2258afbcb747aead6bf2c978681",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\aerial.png",
+      "sha256": "05a26348031adac2fcf466772af18b402ee3e93e17e1694ef1585f4733cbf4e0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\architecture_close.png",
+      "sha256": "7ab1929db2d4cd0f17ef9af41719d39a117477c2da61abb209db85c8246acb3b",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\bed_contact.png",
+      "sha256": "58057dfd372a54970ba7e81247a32ddf8af67075f765ecf9219fa2d7ae6bc1d0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\bedroom.png",
+      "sha256": "ccdfae9c99191971476ca6987b5a2e74cc06eca56e0b974bc3995c85afa58c21",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\chassis.png",
+      "sha256": "bb356b818a8c30e0a6486dc3f7ce508ea6ca5e359ece5e0775a8ae348544aa00",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\clerestory_inside.png",
+      "sha256": "4430bdfba737372c7a49d00f21a40ea621611d16fd4907ef338a521ee563abed",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\corridor.png",
+      "sha256": "b2f6d8c24014884bc30d87cd2f30e3a7bf91e674c69bffe0bb2c255b4259b7d7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\facade_close.png",
+      "sha256": "fc49401834a6e92ee97e420d44f662a59b3e41613dae640abfd26b9d4594bca9",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\front.png",
+      "sha256": "1e5aa28b0925e4fa6ff991a2676067294a1634a375aad1712da0a28183ce436e",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\front_corner.png",
+      "sha256": "ec3ee95d443e5cb7501169a02d8c4e6f762e17c49d353ed0fd8a3665841e1048",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\glass_close.png",
+      "sha256": "a7dde0585c0173d2b3a8fefc398a548b113b7f0856f5bd49fe24e53a759d6dc4",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\interior.png",
+      "sha256": "19b760c396583d350d3cf5214f73088549c0620f52a3268e58e327fc33ad5947",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\left_side.png",
+      "sha256": "bb8e69ee42624f07d3931d900c4ccfc4dd5cabd6702ed727bb04b77eeaab8663",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\rear.png",
+      "sha256": "69036e2ad21413806c136974db9fb849aba5f495176cbd8b9832d8c9838561eb",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\rear_side.png",
+      "sha256": "069dea6c959df489014a95c10ecd09b3173400707147d9adabf0740fd5aed6ff",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\right_side.png",
+      "sha256": "a1469d949b25e312a6ae9832d327dcb4f0f4c501c9ed514471c562036f1f2760",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\roof_contact.png",
+      "sha256": "5a32aff174418b1e2f2dd7e4a94572ae9addcc918e313808c89ab7743e6bd3a3",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\side_projection.png",
+      "sha256": "c1a14cff2b9e12963e01a3fa9ca399d9dd6c12f82961238e864901133b67f173",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\renders\\top.png",
+      "sha256": "56fc44dcf1d65614287db8806763e2b26eb26ded8836f5d8e4be94b20f2125d4",
+      "passed": true
+    }
+  ],
+  "canonical_validator": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "mandatory_view_count": 19,
+  "all_mandatory_views_covered_by_original_review": true,
+  "requires_fresh_review": false,
+  "runtime_approved": false,
+  "textured_keeper_approved": false,
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval."
+  ]
+}

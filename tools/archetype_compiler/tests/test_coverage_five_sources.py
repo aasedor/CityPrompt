@@ -52,6 +52,10 @@ def test_office_does_not_lose_small_use_area_design():
 
 def test_distinct_fixed_ids_do_not_overwrite_catalogue():
     a=json.loads((ROOT/'frontend/src/data/buildingArchetypes.json').read_text(encoding='utf-8'))
-    existing={x['id'] for x in a['archetypes']}
+    existing=[x['id'] for x in a['archetypes']]
     assert len({s['id'] for s in SPECS.values()})==5
-    assert not existing.intersection(s['id'] for s in SPECS.values())
+    for spec in SPECS.values():
+        assert existing.count(spec['id']) <= 1
+        registered=[x for x in a['archetypes'] if x['id']==spec['id']]
+        if registered:
+            assert spec['variant'] in {v['id'] for v in registered[0]['variants']}

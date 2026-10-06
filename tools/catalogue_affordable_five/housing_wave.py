@@ -65,7 +65,9 @@ def juniper():
                 if abs(xx-sign*1.3)>.9:shrub(cx+xx,cy-4.2,.07,.46)
             C.CONTACTS.append(dict(name='Independent cottage',centre=[cx,cy],storeys=1,units=1,private_patio_m2=12))
     C.box('Shared garden lawn',(0,0,.035),(8,22,.07),'planting','common outdoor space')
-    for x in (-7.5,7.5):C.box('Side common lawn',(x,0,.035),(7,8,.07),'planting','common outdoor space')
+    # End at the rear cottage garden edge. Overlapping upward lawn/bed faces
+    # at z=.07 produced pale streaks in the actual globe renderer.
+    for x in (-7.5,7.5):C.box('Side common lawn',(x,-.8,.035),(7,6.4,.07),'planting','common outdoor space')
     C.box('Central garden spine',(0,0,.065),(1.15,24,.07),'pale','paths')
     C.box('Cross garden walk',(0,0,.065),(22,1.1,.07),'pale','paths')
     for x in (-8.8,8.8):C.box('Rear cottage door connector',(x,1.4,.04),(1.25,2.8,.08),'pale','paths')

@@ -1,0 +1,804 @@
+{
+  "schema": "cityprompt.rlasm.independent-clay-review@1",
+  "candidate": "affordable-aspen-clay-v003",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "reviewed_utc": "2026-10-06T21:41:19.236757+00:00",
+  "review_date_local": "2026-10-06",
+  "scope": "Holistic source-locked architectural-clay review of supplied mandatory evidence.",
+  "holistic": true,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "promotion_allowed": false,
+  "inspected_files": [
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "38aef23b99fe01a55e8396a3651d4757a73af067aaff605db7c55555ca9a1e05",
+      "bytes": 2658804,
+      "dimensions_px": [
+        1705,
+        922
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\sources\\variant_0.png"
+    },
+    {
+      "path": "sources/variant_0_angle_60.png",
+      "sha256": "d84a5665f337896bdeb1fa89eb29e7085691ce31ca42cea16f648fd7c8b1a851",
+      "bytes": 3056106,
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\sources\\variant_0_angle_60.png"
+    },
+    {
+      "path": "sources/variant_0_angle_90.png",
+      "sha256": "088704543c7c9af7f57631d873daf28eade9159c3fd24606a1196198ae6e2616",
+      "bytes": 3414053,
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\sources\\variant_0_angle_90.png"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "6344cb451631a0756ea2a80df5679617c4fa849c8b1b525e15c2c604056dcddd",
+      "bytes": 1476668,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\aerial.png"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "9db70f73a7a2cac7d6832a3da78edb4b730f69100d551e985910ff92438b3409",
+      "bytes": 1477716,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\architecture_close.png"
+    },
+    {
+      "path": "renders/bathroom.png",
+      "sha256": "a89bbcbda2dc4d71daf843c784d4c15f49d9abd81ffc5aa56308ec5192eb95e2",
+      "bytes": 1326055,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\bathroom.png"
+    },
+    {
+      "path": "renders/bedroom.png",
+      "sha256": "cc6522fe49431d273344d9aaf0a03ce05c6069295ee69bdcfc8e70c7c5f9afd2",
+      "bytes": 1428663,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\bedroom.png"
+    },
+    {
+      "path": "renders/corridor.png",
+      "sha256": "376fa683cb3e4924bb32ed87ee8eec24e991c53fbc44ce8a34dcb01327bd835e",
+      "bytes": 1323278,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\corridor.png"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "8aae9349a799c41968964d3439909cf05d21dc5bece3a32ab57ca8902812b385",
+      "bytes": 1496483,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\facade_close.png"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "e357b370cbd284061e9e9986e2ca87b048f058611fcea227ee30112e6b1c070d",
+      "bytes": 1357695,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\front.png"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "fe2f74a7f6ee66689780bece955d4742baf7b6a8df237655367980406c6f9d95",
+      "bytes": 1462651,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\front_corner.png"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "7691ae06b5f97a667199c172b50d1144ac6625cca0bcbce7c534bc52414a4ab5",
+      "bytes": 1301945,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\glass_close.png"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "c2b98ced5b66ea5e2bd0cb8aa4517509017fe84cc42af24eb855633f7d85fb70",
+      "bytes": 1336375,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\interior.png"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "58c30a188a7b80b42ce6113a112af3b4853815f619936edcb0ba890122e111c7",
+      "bytes": 1258979,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\left_side.png"
+    },
+    {
+      "path": "renders/lift.png",
+      "sha256": "ff819ed0831197eeb8d28f39d2ec8be7c6e8f8280ec721424441e4fcf6cb7b19",
+      "bytes": 1326205,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\lift.png"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "b795cd6d182d83c67db68186b1bedc3d52ffd82f8da4faf41b2cc9f641e66644",
+      "bytes": 1339916,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\rear.png"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "978b7e54a8066bd34dd1afa799ea0e57c7d6e6f02cac2665c74c7917b815ff4d",
+      "bytes": 1446507,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\rear_side.png"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "8a7c2dee3cb752ce308aa1defb545f7b2f843c168552087d9604295354ca9534",
+      "bytes": 1268539,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\right_side.png"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "021a1c7a697e2ea55c2f3ab1ccf6ae452df67d3fd9fe7e6768b305a1c8b5c009",
+      "bytes": 1511366,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\roof_contact.png"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "17550b4aeb8de5f72fd1689a2280df94133a2bfab8513f5be5816d6e01d7b18c",
+      "bytes": 1291565,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\side_projection.png"
+    },
+    {
+      "path": "renders/stair_contact.png",
+      "sha256": "306cb3a41ad074ca469e30c2002c9fee161fba4f45fa5c37541264bf8c20d9c8",
+      "bytes": 1423732,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\stair_contact.png"
+    },
+    {
+      "path": "renders/stair_headroom.png",
+      "sha256": "927d4e5404a2bc632a0e5cf145708aa9e4467784379bf34d6443fd75cf09f1c2",
+      "bytes": 1588926,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\stair_headroom.png"
+    },
+    {
+      "path": "renders/stairs.png",
+      "sha256": "a238f7591fad5cf97294174831aa9bee3fbaeb7c327436a85532e0e1ae7a5153",
+      "bytes": 1542156,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\stairs.png"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "163f9541b7dd44d9fe0ba75b34db074bb8758bc37dcc6ccf75b1f396a1b52a93",
+      "bytes": 1282150,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\top.png"
+    },
+    {
+      "path": "renders/upper_landing.png",
+      "sha256": "91c5cff684fb5def85bc6d6cd27c82bba688b5b32ec0aefd68bfcb26a041b78d",
+      "bytes": 1639406,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\renders\\upper_landing.png"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "6a8396c4b918fd63cba2e5fcc7ef2b9d5ddfa0ff49d9616afade6d4dbbf993d5",
+      "bytes": 2826719,
+      "dimensions_px": [
+        1920,
+        2500
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\boards\\all-views-contact.png"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "f34934c440a4f38c01780191e7aaf8e1e6116f4122f8cdc1d1d5dc2ed684b76d",
+      "bytes": 1196190,
+      "dimensions_px": [
+        1800,
+        570
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\boards\\locked-source-board.png"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "1efcfb04a77fa03a7a12ccceca5d6e6582565f29472c789c8d59d863e87d2d17",
+      "bytes": 940383,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\boards\\phone-construction.png"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "1a2397c190ebf967084f8a042e3eb5c1e36113ffba5d3860bcf3da4b612057c4",
+      "bytes": 1376396,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003\\boards\\phone-source-comparison.png"
+    }
+  ],
+  "mandatory_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "interior",
+    "bedroom",
+    "bathroom",
+    "corridor",
+    "stairs",
+    "upper_landing",
+    "stair_contact",
+    "lift",
+    "stair_headroom"
+  ],
+  "complete_evidence_opened": true,
+  "integrity": {
+    "checks": [
+      {
+        "kind": "source",
+        "path": "sources/variant_0.png",
+        "sha256": "38aef23b99fe01a55e8396a3651d4757a73af067aaff605db7c55555ca9a1e05",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\affordable-housing-batch\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-aspen\\variant_0.png",
+        "authoritative_sha256": "38aef23b99fe01a55e8396a3651d4757a73af067aaff605db7c55555ca9a1e05",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_0_angle_60.png",
+        "sha256": "d84a5665f337896bdeb1fa89eb29e7085691ce31ca42cea16f648fd7c8b1a851",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\affordable-housing-batch\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-aspen\\variant_0_angle_60.png",
+        "authoritative_sha256": "d84a5665f337896bdeb1fa89eb29e7085691ce31ca42cea16f648fd7c8b1a851",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_0_angle_90.png",
+        "sha256": "088704543c7c9af7f57631d873daf28eade9159c3fd24606a1196198ae6e2616",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\affordable-housing-batch\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-aspen\\variant_0_angle_90.png",
+        "authoritative_sha256": "088704543c7c9af7f57631d873daf28eade9159c3fd24606a1196198ae6e2616",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/build.py",
+        "sha256": "8c822569eda48a9e7072aa1632f71eae1a1a537ca3f9af744091856184eb1d81",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/assemblies.py",
+        "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/geometry.py",
+        "sha256": "fe900d6f7b7798ce80ef4d3e7387c704bf2e1830fbe48c0e13428aa36fc81889",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/housing_wave.py",
+        "sha256": "3d5a1399af18f9452f68d13bf7b8879128764379599b01682e8654a337183463",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/plan.py",
+        "sha256": "900382e47473657f64738be777f846a8e593f78f96e4c476090f62a8b0370314",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/designs.json",
+        "sha256": "662d1a783bd1ad5f484acb454c64d10a067fe560e789c750a2e88354d56d7718",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0.png",
+        "sha256": "38aef23b99fe01a55e8396a3651d4757a73af067aaff605db7c55555ca9a1e05",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0_angle_60.png",
+        "sha256": "d84a5665f337896bdeb1fa89eb29e7085691ce31ca42cea16f648fd7c8b1a851",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0_angle_90.png",
+        "sha256": "088704543c7c9af7f57631d873daf28eade9159c3fd24606a1196198ae6e2616",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\aerial.png",
+        "sha256": "6344cb451631a0756ea2a80df5679617c4fa849c8b1b525e15c2c604056dcddd",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\architecture_close.png",
+        "sha256": "9db70f73a7a2cac7d6832a3da78edb4b730f69100d551e985910ff92438b3409",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\bathroom.png",
+        "sha256": "a89bbcbda2dc4d71daf843c784d4c15f49d9abd81ffc5aa56308ec5192eb95e2",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\bedroom.png",
+        "sha256": "cc6522fe49431d273344d9aaf0a03ce05c6069295ee69bdcfc8e70c7c5f9afd2",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\corridor.png",
+        "sha256": "376fa683cb3e4924bb32ed87ee8eec24e991c53fbc44ce8a34dcb01327bd835e",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\facade_close.png",
+        "sha256": "8aae9349a799c41968964d3439909cf05d21dc5bece3a32ab57ca8902812b385",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front.png",
+        "sha256": "e357b370cbd284061e9e9986e2ca87b048f058611fcea227ee30112e6b1c070d",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front_corner.png",
+        "sha256": "fe2f74a7f6ee66689780bece955d4742baf7b6a8df237655367980406c6f9d95",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\glass_close.png",
+        "sha256": "7691ae06b5f97a667199c172b50d1144ac6625cca0bcbce7c534bc52414a4ab5",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\interior.png",
+        "sha256": "c2b98ced5b66ea5e2bd0cb8aa4517509017fe84cc42af24eb855633f7d85fb70",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\left_side.png",
+        "sha256": "58c30a188a7b80b42ce6113a112af3b4853815f619936edcb0ba890122e111c7",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\lift.png",
+        "sha256": "ff819ed0831197eeb8d28f39d2ec8be7c6e8f8280ec721424441e4fcf6cb7b19",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear.png",
+        "sha256": "b795cd6d182d83c67db68186b1bedc3d52ffd82f8da4faf41b2cc9f641e66644",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear_side.png",
+        "sha256": "978b7e54a8066bd34dd1afa799ea0e57c7d6e6f02cac2665c74c7917b815ff4d",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\right_side.png",
+        "sha256": "8a7c2dee3cb752ce308aa1defb545f7b2f843c168552087d9604295354ca9534",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\roof_contact.png",
+        "sha256": "021a1c7a697e2ea55c2f3ab1ccf6ae452df67d3fd9fe7e6768b305a1c8b5c009",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\side_projection.png",
+        "sha256": "17550b4aeb8de5f72fd1689a2280df94133a2bfab8513f5be5816d6e01d7b18c",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\stair_contact.png",
+        "sha256": "306cb3a41ad074ca469e30c2002c9fee161fba4f45fa5c37541264bf8c20d9c8",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\stair_headroom.png",
+        "sha256": "927d4e5404a2bc632a0e5cf145708aa9e4467784379bf34d6443fd75cf09f1c2",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\stairs.png",
+        "sha256": "a238f7591fad5cf97294174831aa9bee3fbaeb7c327436a85532e0e1ae7a5153",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\top.png",
+        "sha256": "163f9541b7dd44d9fe0ba75b34db074bb8758bc37dcc6ccf75b1f396a1b52a93",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\upper_landing.png",
+        "sha256": "91c5cff684fb5def85bc6d6cd27c82bba688b5b32ec0aefd68bfcb26a041b78d",
+        "passed": true
+      }
+    ],
+    "glb_checks": {
+      "header": true,
+      "json_chunk": true,
+      "hash_match": true,
+      "bytes_match": true,
+      "texture_free": true,
+      "self_contained": true,
+      "no_cameras": true,
+      "no_lights": true
+    },
+    "glb_sha256": "8294af1f246c5ad812a6c3783d4b0fc9e309b627fcab5c5acdd1e09d219fe09c",
+    "glb_path": "affordable-aspen-clay-v003.glb",
+    "glb_bytes": 1785272,
+    "meshes": 12,
+    "materials": 12,
+    "images": 0,
+    "textures": 0,
+    "source_manifest_sha256": "9d717b7bc22a7cc4e55a50d6feacc8084c044abfb745c01d21edf46418ed036b",
+    "build_report_sha256": "754db3d916fa9ad2c71235e9115675e0f7daf0f8a5057f937553edf964dff3ac",
+    "build_report_bounds_m": [
+      [
+        -12.180000305175781,
+        -8.402999877929688,
+        0.0
+      ],
+      [
+        12.180000305175781,
+        7.75,
+        10.449999809265137
+      ]
+    ],
+    "build_report_roundtrip_delta_m": 0.0,
+    "evidence_files": [
+      {
+        "path": "evidence/builder-evidence.json",
+        "sha256": "19d1e6b31b731f5bf41186929e9e4a14d205548e17395192a68971ae4830f261",
+        "bytes": 174106
+      },
+      {
+        "path": "evidence/carrier-aperture-audit.json",
+        "sha256": "9918c3a1cd824ed3517c67b6d702247d3128e502294c95277a851f796b7155e5",
+        "bytes": 14567
+      },
+      {
+        "path": "evidence/delivery-verification.json",
+        "sha256": "672b24ca1de5e0a457e10f7b197c68c530a69b1e7f444c6cd56114347105d417",
+        "bytes": 1950
+      },
+      {
+        "path": "evidence/runtime-review.md",
+        "sha256": "35439b0c04b72c93ccd8146fd0c37ae9a468020b90a0077152ec6947c8a8092d",
+        "bytes": 17229
+      }
+    ]
+  },
+  "deterministic_preflight": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\aspen-v003",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "delivery_check_report": {
+    "status": "PASS_DELIVERY_CHECKS",
+    "checks": {
+      "source front": true,
+      "source oblique": true,
+      "source top": true,
+      "script scripts/clay_core.py": true,
+      "script scripts/build.py": true,
+      "script scripts/assemblies.py": true,
+      "script scripts/geometry.py": true,
+      "script scripts/housing_wave.py": true,
+      "script scripts/plan.py": true,
+      "script scripts/designs.json": true,
+      "glb header": true,
+      "model hash": true,
+      "texture-free": true,
+      "self-contained": true,
+      "no QA camera or light": true,
+      "native grade zero": true,
+      "bounds roundtrip": true,
+      "carrier apertures": true,
+      "finite geometry": true,
+      "nonzero triangles": true,
+      "render front": true,
+      "render front_corner": true,
+      "render aerial": true,
+      "render top": true,
+      "render left_side": true,
+      "render right_side": true,
+      "render rear": true,
+      "render rear_side": true,
+      "render facade_close": true,
+      "render architecture_close": true,
+      "render glass_close": true,
+      "render roof_contact": true,
+      "render side_projection": true,
+      "render interior": true,
+      "render bedroom": true,
+      "render bathroom": true,
+      "render corridor": true,
+      "render stairs": true,
+      "render upper_landing": true,
+      "render stair_contact": true,
+      "render lift": true,
+      "render stair_headroom": true,
+      "camera margin front": true,
+      "camera margin front_corner": true,
+      "camera margin aerial": true,
+      "camera margin top": true,
+      "camera margin left_side": true,
+      "camera margin right_side": true,
+      "camera margin rear": true,
+      "camera margin rear_side": true,
+      "phone-source-comparison.png": true,
+      "phone-construction.png": true
+    },
+    "model_sha256": "8294af1f246c5ad812a6c3783d4b0fc9e309b627fcab5c5acdd1e09d219fe09c",
+    "runtime_approved": false,
+    "independent_visual_review": "pending"
+  },
+  "provenance_scope": "Preserved build script inspected: exported GLB replaces authored meshes before rendering without material override. Reviewer did not independently rerender Blender or test runtime.",
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval.",
+    "Original generated teaching concept, not an Attainable Homes replica.",
+    "Reserved lift is static illustrative geometry; no operation or accessibility certification.",
+    "No structural, complete habitable-plan or zoning approval."
+  ],
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "model_sha256": "8294af1f246c5ad812a6c3783d4b0fc9e309b627fcab5c5acdd1e09d219fe09c",
+  "blockers": [],
+  "closed_prior_findings": [
+    {
+      "id": "ASPEN-01",
+      "result": "closed",
+      "observation": "Entry planting remains clear of the paired main doorway, canopy posts and seated approach."
+    },
+    {
+      "id": "ASPEN-02",
+      "result": "closed",
+      "observation": "Thin open treads on continuous stringers replace solid wedges; lower flight, interstorey headroom and full top arrival remain visible and unobstructed."
+    },
+    {
+      "id": "ASPEN-03",
+      "result": "closed",
+      "observation": "Actual suite bedroom and sanitary-room views prove usable room approaches; metadata explicitly twelve one-bedroom units. New 18mm lift view shows full door head, threshold and continuous landing, resolving the remaining v002 proof crop."
+    },
+    {
+      "id": "ASPEN-04",
+      "result": "closed",
+      "observation": "Cedar joints stop clear of aperture head/sill; no previous projecting nubs visible."
+    }
+  ],
+  "findings": [
+    {
+      "category": "whole source identity",
+      "result": "pass",
+      "observation": "Three storeys, four broad front windows per level with central/end cedar axes, three side windows per floor, closed flat parapet roof and two-post central canopy. Exact generated source form and authored ratios retained; rear and internal layout inferred."
+    },
+    {
+      "category": "envelope and contacts",
+      "result": "pass",
+      "observation": "All whole elevations and construction views show closed roof/wall interfaces, through-carrier openings, physical panes and interior depth, seated sills, canopy posts and door thresholds. No visible envelope holes or floating components found."
+    },
+    {
+      "category": "programme and circulation",
+      "result": "pass within illustrative scope",
+      "observation": "Twelve one-bedroom homes across three levels; room views show supported furniture and clear bedroom/bath routes. Common corridor, two end stairs with continuous stringers, genuine floor holes and seated guard plates, complete terminal arrival and static reserved lift shaft all evidenced. Native bounds24.36x16.153x10.45m include projecting approach outside authored24x13m body."
+    },
+    {
+      "category": "clay finish scope",
+      "severity": "P2",
+      "observation": "Cream masonry is represented by untextured clay carriers, with simplified shallow facade offsets and landscape. Tiny tonal coping lap is nonblocking local trim polish. Source-specific textured material fidelity is not approved."
+    },
+    {
+      "category": "complete fresh review",
+      "result": "pass",
+      "observation": "All3 exact sources,22 mandatory renders and4 boards opened at original resolution. Exact immutable source/script/GLB/render/board hashes and canonical validator checked. Same GLB hash asv002 is expected for camera-only change; no inherited pixel pass."
+    }
+  ]
+}

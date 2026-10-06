@@ -288,6 +288,7 @@ export function ProjectViewPage() {
   const [zoningSelection, setZoningSelection] = useState<{ projectId?: string; zone: ZoneInspection | null } | null>(null);
   const selectZoning = useCallback((zone: ZoneInspection | null) => setZoningSelection({ projectId: id, zone }), [id]);
   const inspectZoningLegend = (zoneId: string) => {
+    setShowReferenceLayers(false);
     localPolicy.clearSelection(); cityPolicyMaps.clearSelection();
     selectZone(null);
     selectZoning({ id: zoneId, label: '', source: '' });
@@ -295,9 +296,11 @@ export function ProjectViewPage() {
   const selectedZoning = useMemo(() => resolveZoneInspection(zoningSelection && zoningSelection.projectId === id ? zoningSelection.zone : null,
     zoningLabels, references.visibleLayers), [id, zoningSelection, zoningLabels, references.visibleLayers]);
   const localPolicyPanel = { ...localPolicy, selectCategory: (category: string) => {
+    setShowReferenceLayers(false); selectZone(null);
     selectZoning(null); cityPolicyMaps.clearSelection(); localPolicy.selectCategory(category);
   } };
   const cityPolicyPanel = { ...cityPolicyMaps, inspect: (mapId: string) => {
+    setShowReferenceLayers(false); selectZone(null);
     selectZoning(null); localPolicy.clearSelection(); cityPolicyMaps.inspect(mapId);
   } };
   const studyMap = useStudyMapDrawing(id);

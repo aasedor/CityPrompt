@@ -1,0 +1,815 @@
+{
+  "schema": "cityprompt.rlasm.independent-clay-review@1",
+  "candidate": "affordable-porchlight-clay-v004",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "reviewed_utc": "2026-10-06T20:17:15.064539+00:00",
+  "review_date_local": "2026-10-06",
+  "scope": "Holistic source-locked architectural-clay review of supplied mandatory evidence.",
+  "holistic": true,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "promotion_allowed": false,
+  "inspected_files": [
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "0c007771825a58b3908cb52177532172561cae418bc718b20f2aede07bdc2a68",
+      "bytes": 1992647,
+      "dimensions_px": [
+        1774,
+        887
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\sources\\variant_0.png"
+    },
+    {
+      "path": "sources/variant_0_angle_60.png",
+      "sha256": "ac9d7f793cd96fdc38d43a6c23cacdd3ec81c17ce18cc85407745f538c31d2c9",
+      "bytes": 2041517,
+      "dimensions_px": [
+        1774,
+        887
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\sources\\variant_0_angle_60.png"
+    },
+    {
+      "path": "sources/variant_0_angle_90.png",
+      "sha256": "b693b185f66951c8d46a112613992cdbe22df92830149293b9e050112e55ad31",
+      "bytes": 1991738,
+      "dimensions_px": [
+        1774,
+        887
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\sources\\variant_0_angle_90.png"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "bb2dec3d21fb1519be2b1e249d3ec887731a1c353d3fa8e216c82eafee6118f6",
+      "bytes": 1495539,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\aerial.png"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "709862fca5b1e408c0b19bcaac45825f55a74dcdcd73ee3db7cb005444148b67",
+      "bytes": 1334701,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\architecture_close.png"
+    },
+    {
+      "path": "renders/bathroom.png",
+      "sha256": "5d5dd8f05c6bd62d69f9b6ec8ce934bafeaa57c94ba2d77b100018589973f3b1",
+      "bytes": 1358425,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\bathroom.png"
+    },
+    {
+      "path": "renders/bedroom.png",
+      "sha256": "71e3e6257e9163978dcd44c61713fbf6c73fa0de4d1ce7289901375f7af23843",
+      "bytes": 1342912,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\bedroom.png"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "422e2566579fc361794a706efff23a43c201f68f65f78f42e1700f02da45d2f8",
+      "bytes": 1504750,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\facade_close.png"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "ed23022cd921eb50f0326bf3524aa556495b8dbd27dc833056e9ad575bbed3b0",
+      "bytes": 1363426,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\front.png"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "e01bd6b1cb70edfd7319f4d17a7ecdd8f32aac4db4d920482d0e19d4b3bd0c95",
+      "bytes": 1453940,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\front_corner.png"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "fd9e9b3c23efece71dd85535237b08c8ae619121eac00ea97c595043a49b1613",
+      "bytes": 1397966,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\glass_close.png"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "83b88c11c12c78c8150293f45bd32d49b13ec3344ccae12aaa32e6000c648858",
+      "bytes": 1460120,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\interior.png"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "84d311068c32866bd49de3e26569cf230d4f211d9fcc8f7e36d99206ca5d5abc",
+      "bytes": 1278738,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\left_side.png"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "6c37d39bc265e2a718866682d6711913ca4561d33d55f266cfe600db431a2917",
+      "bytes": 1350535,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\rear.png"
+    },
+    {
+      "path": "renders/rear_entry.png",
+      "sha256": "c1a2743ce2ca01bc1cdc0095dd74049244b9bc883989de8d0fb94dfc7753a8af",
+      "bytes": 1358224,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\rear_entry.png"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "64262ed2f64e6eb1a5fa69f68162ef626d35b82a6e44b3e26b2b415a7110a12d",
+      "bytes": 1463809,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\rear_side.png"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "f2ccc0031411421b0375a89eb5ab51c7f18d9293e69dbfd059146ada90ab8faf",
+      "bytes": 1283050,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\right_side.png"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "966819a16c210eaae85d4c931b8c0ee8a7c1b1a1f471133de4e8c68cb8e3d5a8",
+      "bytes": 1483337,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\roof_contact.png"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "cada4912a8bc232dc63cd318f9059b8b22735d44637d47dc7a30d2b95de44e6d",
+      "bytes": 1346480,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\side_projection.png"
+    },
+    {
+      "path": "renders/stair_contact.png",
+      "sha256": "90d87873b979b6f3762f21d861872478d7a445cfe658f5e2d3224aa532662f37",
+      "bytes": 1443206,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\stair_contact.png"
+    },
+    {
+      "path": "renders/stairs.png",
+      "sha256": "501137ed5722746e2888e62c4ae920d990e3aa55f7c624efb6b032251bec8e3b",
+      "bytes": 1504027,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\stairs.png"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "634a7df4f711ae672ae5227f134351c63a840fe282097ab86d60326a22b00c38",
+      "bytes": 1333693,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\top.png"
+    },
+    {
+      "path": "renders/upper_landing.png",
+      "sha256": "7baf8e35b1d76af4f964c5f8f613785da92f827233abd22bcd6d48ca1ae71b49",
+      "bytes": 1633880,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\renders\\upper_landing.png"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "e20267a47d33ec618b6c5ea0b30270fcd781377f7c901a2e8e5db1e5f2da4e95",
+      "bytes": 2567969,
+      "dimensions_px": [
+        1920,
+        2095
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\boards\\all-views-contact.png"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "933970cf567ca9da6b9581b85c6fe0c40327f7d992c298d11954a3bbed635ad1",
+      "bytes": 633719,
+      "dimensions_px": [
+        1800,
+        570
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\boards\\locked-source-board.png"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "eef283405927741ae50a121df9417b656d6f63c48111066cfb66fd503bf958c6",
+      "bytes": 936881,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\boards\\phone-construction.png"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "0ad1eb09044e434c2468f57a1c885a07ef3d9e9b652d63f502a3641200b3828b",
+      "bytes": 960295,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004\\boards\\phone-source-comparison.png"
+    }
+  ],
+  "mandatory_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "interior",
+    "bedroom",
+    "stairs",
+    "upper_landing",
+    "stair_contact",
+    "rear_entry",
+    "bathroom"
+  ],
+  "complete_evidence_opened": true,
+  "integrity": {
+    "checks": [
+      {
+        "kind": "source",
+        "path": "sources/variant_0.png",
+        "sha256": "0c007771825a58b3908cb52177532172561cae418bc718b20f2aede07bdc2a68",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\affordable-housing-batch\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-porchlight\\variant_0.png",
+        "authoritative_sha256": "0c007771825a58b3908cb52177532172561cae418bc718b20f2aede07bdc2a68",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_0_angle_60.png",
+        "sha256": "ac9d7f793cd96fdc38d43a6c23cacdd3ec81c17ce18cc85407745f538c31d2c9",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\affordable-housing-batch\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-porchlight\\variant_0_angle_60.png",
+        "authoritative_sha256": "ac9d7f793cd96fdc38d43a6c23cacdd3ec81c17ce18cc85407745f538c31d2c9",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_0_angle_90.png",
+        "sha256": "b693b185f66951c8d46a112613992cdbe22df92830149293b9e050112e55ad31",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\affordable-housing-batch\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-porchlight\\variant_0_angle_90.png",
+        "authoritative_sha256": "b693b185f66951c8d46a112613992cdbe22df92830149293b9e050112e55ad31",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/build.py",
+        "sha256": "030157016480d040bbd5786c826fdebd317a5b04907b68d97ddc5dcf16091a69",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/assemblies.py",
+        "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/geometry.py",
+        "sha256": "fe900d6f7b7798ce80ef4d3e7387c704bf2e1830fbe48c0e13428aa36fc81889",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/plan.py",
+        "sha256": "806619ce58a60f903f8ba9c71dac961914583ed493a4602b547a966fd8f1824c",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/designs.json",
+        "sha256": "000d3c61746741f67db99182ced8c2c5d8fd4c8da09794fa05fb5cd2c64a2c74",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0.png",
+        "sha256": "0c007771825a58b3908cb52177532172561cae418bc718b20f2aede07bdc2a68",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0_angle_60.png",
+        "sha256": "ac9d7f793cd96fdc38d43a6c23cacdd3ec81c17ce18cc85407745f538c31d2c9",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0_angle_90.png",
+        "sha256": "b693b185f66951c8d46a112613992cdbe22df92830149293b9e050112e55ad31",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\aerial.png",
+        "sha256": "bb2dec3d21fb1519be2b1e249d3ec887731a1c353d3fa8e216c82eafee6118f6",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\architecture_close.png",
+        "sha256": "709862fca5b1e408c0b19bcaac45825f55a74dcdcd73ee3db7cb005444148b67",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\bathroom.png",
+        "sha256": "5d5dd8f05c6bd62d69f9b6ec8ce934bafeaa57c94ba2d77b100018589973f3b1",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\bedroom.png",
+        "sha256": "71e3e6257e9163978dcd44c61713fbf6c73fa0de4d1ce7289901375f7af23843",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\facade_close.png",
+        "sha256": "422e2566579fc361794a706efff23a43c201f68f65f78f42e1700f02da45d2f8",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front.png",
+        "sha256": "ed23022cd921eb50f0326bf3524aa556495b8dbd27dc833056e9ad575bbed3b0",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front_corner.png",
+        "sha256": "e01bd6b1cb70edfd7319f4d17a7ecdd8f32aac4db4d920482d0e19d4b3bd0c95",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\glass_close.png",
+        "sha256": "fd9e9b3c23efece71dd85535237b08c8ae619121eac00ea97c595043a49b1613",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\interior.png",
+        "sha256": "83b88c11c12c78c8150293f45bd32d49b13ec3344ccae12aaa32e6000c648858",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\left_side.png",
+        "sha256": "84d311068c32866bd49de3e26569cf230d4f211d9fcc8f7e36d99206ca5d5abc",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear.png",
+        "sha256": "6c37d39bc265e2a718866682d6711913ca4561d33d55f266cfe600db431a2917",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear_entry.png",
+        "sha256": "c1a2743ce2ca01bc1cdc0095dd74049244b9bc883989de8d0fb94dfc7753a8af",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear_side.png",
+        "sha256": "64262ed2f64e6eb1a5fa69f68162ef626d35b82a6e44b3e26b2b415a7110a12d",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\right_side.png",
+        "sha256": "f2ccc0031411421b0375a89eb5ab51c7f18d9293e69dbfd059146ada90ab8faf",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\roof_contact.png",
+        "sha256": "966819a16c210eaae85d4c931b8c0ee8a7c1b1a1f471133de4e8c68cb8e3d5a8",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\side_projection.png",
+        "sha256": "cada4912a8bc232dc63cd318f9059b8b22735d44637d47dc7a30d2b95de44e6d",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\stair_contact.png",
+        "sha256": "90d87873b979b6f3762f21d861872478d7a445cfe658f5e2d3224aa532662f37",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\stairs.png",
+        "sha256": "501137ed5722746e2888e62c4ae920d990e3aa55f7c624efb6b032251bec8e3b",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\top.png",
+        "sha256": "634a7df4f711ae672ae5227f134351c63a840fe282097ab86d60326a22b00c38",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\upper_landing.png",
+        "sha256": "7baf8e35b1d76af4f964c5f8f613785da92f827233abd22bcd6d48ca1ae71b49",
+        "passed": true
+      }
+    ],
+    "glb_checks": {
+      "header": true,
+      "json_chunk": true,
+      "hash_match": true,
+      "bytes_match": true,
+      "texture_free": true,
+      "self_contained": true,
+      "no_cameras": true,
+      "no_lights": true
+    },
+    "glb_sha256": "61543f9f882065a7743953146ddb23568eb7dacb75903e9630479c02fd7ff7bc",
+    "glb_path": "affordable-porchlight-clay-v004.glb",
+    "glb_bytes": 1304672,
+    "meshes": 12,
+    "materials": 12,
+    "images": 0,
+    "textures": 0,
+    "source_manifest_sha256": "4354892473337ef90735e935bff8763fc572d6434ebf7dc730191fddb1a47925",
+    "build_report_sha256": "2e895b9e400705b201418e20625e95ddfdc092e38a0ecc2c315d7568d963b061",
+    "build_report_bounds_m": [
+      [
+        -11.294999122619629,
+        -6.650000095367432,
+        0.0
+      ],
+      [
+        11.294998168945312,
+        7.3641533851623535,
+        7.699999809265137
+      ]
+    ],
+    "build_report_roundtrip_delta_m": 9.5367431640625e-07,
+    "evidence_files": [
+      {
+        "path": "evidence/builder-evidence.json",
+        "sha256": "ef94c66b7b9e8e235ad855012a3369f9c5aeafe607cfd4cff5195f715de36595",
+        "bytes": 117040
+      },
+      {
+        "path": "evidence/carrier-aperture-audit.json",
+        "sha256": "f8e001d144a92dd0d71fb39a269048b3f71e1ca2ce14f3bd9317b2d240036b31",
+        "bytes": 7113
+      },
+      {
+        "path": "evidence/delivery-verification.json",
+        "sha256": "a5064d05a52be2550705b22a3d230e139066856b650cc836775df5603541dc58",
+        "bytes": 1845
+      },
+      {
+        "path": "evidence/runtime-review.md",
+        "sha256": "1e52bb1ab664987c3c4a170c8602f6338ea1fa35f819b59042967b72e2e65995",
+        "bytes": 17237
+      }
+    ]
+  },
+  "deterministic_preflight": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\porchlight-v004",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "delivery_check_report": {
+    "status": "PASS_DELIVERY_CHECKS",
+    "checks": {
+      "source front": true,
+      "source oblique": true,
+      "source top": true,
+      "script scripts/clay_core.py": true,
+      "script scripts/build.py": true,
+      "script scripts/assemblies.py": true,
+      "script scripts/geometry.py": true,
+      "script scripts/plan.py": true,
+      "script scripts/designs.json": true,
+      "glb header": true,
+      "model hash": true,
+      "texture-free": true,
+      "self-contained": true,
+      "no QA camera or light": true,
+      "native grade zero": true,
+      "bounds roundtrip": true,
+      "carrier apertures": true,
+      "finite geometry": true,
+      "nonzero triangles": true,
+      "render front": true,
+      "render front_corner": true,
+      "render aerial": true,
+      "render top": true,
+      "render left_side": true,
+      "render right_side": true,
+      "render rear": true,
+      "render rear_side": true,
+      "render facade_close": true,
+      "render architecture_close": true,
+      "render glass_close": true,
+      "render roof_contact": true,
+      "render side_projection": true,
+      "render interior": true,
+      "render bedroom": true,
+      "render stairs": true,
+      "render upper_landing": true,
+      "render stair_contact": true,
+      "render rear_entry": true,
+      "render bathroom": true,
+      "camera margin front": true,
+      "camera margin front_corner": true,
+      "camera margin aerial": true,
+      "camera margin top": true,
+      "camera margin left_side": true,
+      "camera margin right_side": true,
+      "camera margin rear": true,
+      "camera margin rear_side": true,
+      "phone-source-comparison.png": true,
+      "phone-construction.png": true
+    },
+    "model_sha256": "61543f9f882065a7743953146ddb23568eb7dacb75903e9630479c02fd7ff7bc",
+    "runtime_approved": false,
+    "independent_visual_review": "pending"
+  },
+  "provenance_scope": "Preserved build script inspected: exported GLB replaces authored meshes before rendering without material override. Reviewer did not independently rerender Blender or test runtime.",
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval.",
+    "Original generated teaching concept, not an Attainable Homes project replica or endorsed design.",
+    "Affordability is not proven by architectural form; financial/operating programme and actual parcel approvals remain separate.",
+    "Architectural-clay pilot pass permits the stated finite production workflow to proceed; it is not a runtime, textured-keeper or legal-zoning approval."
+  ],
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "blockers": [],
+  "model_sha256": "61543f9f882065a7743953146ddb23568eb7dacb75903e9630479c02fd7ff7bc",
+  "findings": [
+    {
+      "category": "source identity, ratios and roof graph",
+      "result": "pass",
+      "evidence": [
+        "sources/variant_0.png",
+        "sources/variant_0_angle_60.png",
+        "sources/variant_0_angle_90.png",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png"
+      ],
+      "observation": "Fresh comparison preserves four equal two-storey homes under one continuous shallow standing-seam gable, four timber two-post entrance porches, two upper-front windows per home and source-palette terracotta door bands. High-angle generated top remains an uncalibrated design reference, not survey."
+    },
+    {
+      "category": "PORCH-01 closure and all elevations",
+      "result": "pass",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/roof_contact.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "scripts/build.py"
+      ],
+      "observation": "Terracotta strip now starts at localu1.60; front and facade_close clearly show pale separation from the upper-right frame instead of cutting into it. This closes the v003 source-rhythm defect. Each end has one sash per occupied floor; inferred rear entries and paired upper windows remain consistent. No reopened carrier gap or blocked aperture observed."
+    },
+    {
+      "category": "construction and optics",
+      "result": "pass",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/roof_contact.png",
+        "renders/side_projection.png"
+      ],
+      "observation": "Porch feet/posts/soffits and shallow weathering caps connect physically. Windows have inset frames, sills and visible room depth. Roof slopes/ridge/edge trim form a closed envelope. There is no visible carrier clipping, floating trim or broken gable edge."
+    },
+    {
+      "category": "occupied programme and circulation",
+      "result": "pass_with_scope_limits",
+      "evidence": [
+        "renders/interior.png",
+        "renders/bedroom.png",
+        "renders/stairs.png",
+        "renders/upper_landing.png",
+        "renders/stair_contact.png",
+        "renders/bathroom.png"
+      ],
+      "observation": "Grounded living and bedroom furniture, kitchen and illustrative sanitary fixtures remain clear in evidence. Stair runs through an actual floor opening to connected upper landing; guard structural posts reach seated plates on the floor, and end guard protects the opening. Door approaches and room floor remain connected. Inferred layouts do not establish complete habitable-plan or accessibility/code compliance."
+    },
+    {
+      "category": "landscape and rear amenity",
+      "result": "pass_with_scope_limits",
+      "evidence": [
+        "renders/top.png",
+        "renders/rear_entry.png",
+        "renders/rear.png",
+        "renders/rear_side.png"
+      ],
+      "observation": "Four seated private patios, garden chairs, low divisions and planting strips remain clear. Patio geometry3.1x2.5m=7.75m2 is verified as authored model geometry, not a parcel-level legal amenity finding. Rear landing connects to garden surface."
+    },
+    {
+      "category": "scope of finishing",
+      "severity": "P2",
+      "result": "nonblocking_clay_simplification",
+      "observation": "Rainwater gutters/downpipes, small wall-panel joints, detailed planting and final material morphology are simplified in semantic clay. They remain future detailed/textured-stage work, not evidence of a finished material/drainage design."
+    },
+    {
+      "category": "full evidence and phone boards",
+      "result": "pass",
+      "evidence": [
+        "boards/locked-source-board.png",
+        "boards/all-views-contact.png",
+        "boards/phone-construction.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "observation": "All3 exact source originals, all20 mandatory original-resolution renders and all4 original-resolution boards inspected afresh. Phone boards retain source/clay separation and explicit scope. Every original render was opened individually; no prior visual approval was inherited."
+    }
+  ],
+  "closed_prior_blockers": [
+    {
+      "id": "PORCH-01",
+      "prior_review": "C:/dev-artifacts/CityPrompt/affordable-housing-2026-10-06/reviews/affordable-porchlight-clay-v003-independent-review-2026-10-06-v001.json",
+      "disposition": "Closed by v004 geometry and complete fresh holistic evidence; v003 remains failed and unchanged."
+    }
+  ],
+  "additional_read_files": [
+    {
+      "path": "scripts/build.py",
+      "sha256": "030157016480d040bbd5786c826fdebd317a5b04907b68d97ddc5dcf16091a69"
+    },
+    {
+      "path": "scripts/assemblies.py",
+      "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3"
+    },
+    {
+      "path": "scripts/designs.json",
+      "sha256": "000d3c61746741f67db99182ced8c2c5d8fd4c8da09794fa05fb5cd2c64a2c74"
+    },
+    {
+      "path": "sources/generation-provenance.json",
+      "sha256": "f263ec255066f7997026ccde0d9ddd81fd7c15e46cbc540e98daedf08884bb5f"
+    }
+  ]
+}

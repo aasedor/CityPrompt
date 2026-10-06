@@ -1,0 +1,317 @@
+[
+  {
+    "name": "Classic retail strip",
+    "small": [
+      36,
+      22,
+      0
+    ],
+    "large": [
+      54,
+      40,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Corten & Timber Equipment Yard",
+    "large": [
+      60,
+      52,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Meadow Court Childcare Centre",
+    "large": [
+      50,
+      48,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Daylight sawtooth factory",
+    "large": [
+      76,
+      54,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Folded-Roof Materials Recovery Hall",
+    "large": [
+      58,
+      47,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Garden Mews Courtyard Housing",
+    "large": [
+      44,
+      44,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Horizon Manufactured Home",
+    "large": [
+      36,
+      31,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Industrial shed",
+    "large": [
+      35,
+      43,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Tilt-up industrial building",
+    "large": [
+      76,
+      61,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Maple Porch Manufactured Cottage",
+    "large": [
+      36,
+      29,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Copperline Municipal Works Depot",
+    "large": [
+      67,
+      46,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Narrow-lot Craftsman Cottage",
+    "large": [
+      31,
+      38,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Prairie Fold Manufactured Home",
+    "large": [
+      38,
+      28,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "RNDSQR contextual townhouses",
+    "large": [
+      46,
+      37,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Tilt-wall logistics warehouse",
+    "large": [
+      172,
+      110,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Provincial Brick school",
+    "large": [
+      54,
+      62,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Scandinavian townhouse row",
+    "large": [
+      56,
+      45,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Scandinavian townhouse row",
+    "large": [
+      56,
+      45,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Porchlight Townhouse Row",
+    "large": [
+      44,
+      36,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Juniper Courtyard Cottages",
+    "large": [
+      49,
+      46,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Stackyard Stacked Townhomes",
+    "large": [
+      45,
+      41,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Aspen Walk Apartments",
+    "large": [
+      47,
+      42,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Switchback Modular Studios",
+    "large": [
+      47,
+      40,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Corten & Timber Equipment Yard",
+    "large": [
+      60,
+      52,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Scandinavian townhouse row",
+    "large": [
+      56,
+      45,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Juniper Courtyard Cottages",
+    "large": [
+      49,
+      46,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Corten & Timber Equipment Yard",
+    "large": [
+      60,
+      52,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Scandinavian townhouse row",
+    "large": [
+      56,
+      45,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Juniper Courtyard Cottages",
+    "large": [
+      49,
+      46,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Brick-and-bronze faculty office",
+    "large": [
+      52,
+      53,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  },
+  {
+    "name": "Brick-and-timber Courtyard Office",
+    "large": [
+      36,
+      34,
+      27
+    ],
+    "reload": true,
+    "errors": []
+  }
+]

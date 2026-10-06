@@ -1,6 +1,8 @@
 import { nativeParkLayouts } from '@/features/parks/nativeParkRegistry';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
+import october from '@/data/catalogueOctober2026.json';
+import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
@@ -252,7 +254,15 @@ export function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
   };
 }
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS].map((asset): CatalogueAsset => {
+/** Explicit finite additions; existing saved placements keep their own binding. */
+export const OCTOBER_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset =>
+  october.entries.some(entry => entry.archetype_id === asset.properties.development_archetype_id
+    && entry.variant_id === asset.model.variantId)
+  && ![...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[]].some(existing =>
+    existing.properties.development_archetype_id === asset.properties.development_archetype_id
+    && existing.model.variantId === asset.model.variantId));
+
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...MANUAL_STREET_ASSETS].map((asset): CatalogueAsset => {
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.

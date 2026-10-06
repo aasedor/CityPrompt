@@ -7,6 +7,8 @@ import sys
 HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE));sys.path.append(str(HERE.parent/'catalogue_services_batch'))
 import clay_core as C
+sys.path.append(str(HERE.parent/'catalogue_runtime_preparation'))
+from guards import seated_guard
 from plan import SPECS,source_entry
 
 PALETTE=dict(wall=(.58,.56,.50),trim=(.66,.63,.54),roof=(.46,.49,.48),foundation=(.45,.44,.40),
@@ -160,10 +162,10 @@ def stair(x,y,z,rise,run=2.7,n=10,terminal=True):
         for j in range(6):
             yy=y+j*run/5;zz=z0+(z1-z0)*j/5
             C.rod('Stair baluster',(xx,yy,zz),(xx,yy,zz+.98),.018,'hardware','stairs',8)
-    C.railing('Midlanding rear guard',(x-1.30,y+run+.67,z+half),(x+1.30,y+run+.67,z+half),spacing=.15,role='hardware')
-    for xx in (x-1.37,x+1.37):C.railing('Upper well guard',(xx,y,z+rise),(xx,y+run+.8,z+rise),spacing=.16,role='hardware')
-    C.railing('Upper rear well guard',(x-1.37,y+run+.8,z+rise),(x+1.37,y+run+.8,z+rise),spacing=.16,role='hardware')
-    if terminal:C.railing('Upper front half well guard',(x-1.37,y-.10,z+rise),(x-.10,y-.10,z+rise),spacing=.14,role='hardware')
+    seated_guard('Midlanding rear guard',(x-1.24,y+run+.61,z+half),(x+1.24,y+run+.61,z+half),spacing=.15,role='hardware')
+    for xx in (x-1.44,x+1.44):seated_guard('Upper well guard',(xx,y-.14,z+rise),(xx,y+run+.89,z+rise),spacing=.16,role='hardware')
+    seated_guard('Upper rear well guard',(x-1.44,y+run+.89,z+rise),(x+1.44,y+run+.89,z+rise),spacing=.16,role='hardware')
+    if terminal:seated_guard('Upper front half well guard',(x-1.44,y-.14,z+rise),(x-.10,y-.14,z+rise),spacing=.14,role='hardware')
     C.qa_room_light('stair',(x,y+run/2,z+rise+.8),220,2)
 
 def tiltup():
@@ -201,7 +203,7 @@ def tiltup():
             C.box('Raised corner side',(x,y,9.82),(.3,7.5,1.26),'wall','raised corners')
             C.box('Raised corner side cap',(x,y,10.49),(.44,7.62,.12),'hardware','raised corners')
     # Office floor and corridor partition; high-bay hall remains undivided.
-    slab=C.box('Office upper floor',(-7.35,-13.85,4.28),(38.7,7.7,.20),'floor','office floors',0);stair_cut(slab,-8,-15.4,2.4)
+    slab=C.box('Office upper floor',(-7.35,-13.895,4.28),(38.7,7.61,.20),'floor','office floors',0);stair_cut(slab,-8,-15.4,2.4)
     part=C.Face((-7,-10,0),(1,0,0),(0,-1,0),'office rear partition')
     hs=[hole('Office hall access',15,.2,1.5,2.5),hole('Upper internal office window',0,5.3,5,1.8)]
     part.wall('Office hall separation',-19.7,19,.2,8.8,holes=hs,depth=.18,role='interior')
@@ -478,9 +480,12 @@ def peaks():
     C.box('Row continuous foundation',(0,0,.1),(W,D,.2),'foundation','foundation',0)
     centers=[-14+5.6*i for i in range(6)]
     for lev,z in enumerate(floorzs):
+        # The foundation is the ground floor. A second slab at exactly .2m
+        # introduced duplicate upward faces and visible browser z-fighting.
+        if lev == 0: continue
         slab=C.box('Row connected floor '+str(lev),(0,0,z-.09),(W-.36,D-.36,.18),'floor','floors',0)
         if lev:
-            for cx in centers:stair_cut(slab,cx,-1.5,2.2)
+            for cx in centers:stair_cut(slab,cx,-2.3,2.2)
     for i,cx in enumerate(centers):
         role='pale';style='timber' if i in (2,4) else 'ribbed' if i in (1,5) else 'white'
         f=C.Face((cx,-11,0),(1,0,0),(0,1,0),'Home '+str(i)+' front')
@@ -519,7 +524,7 @@ def peaks():
                 for a,b in intervals:
                     if b>a:f.part('Pale vertical rib',u,-.04,(a+b)/2,.034,.09,b-a,'trim','vertical cladding')
         # Three continuous stairs serve the fourth-level room, through real floor cuts.
-        for lev,z in enumerate(floorzs[:3]):stair(cx,-1.5,z,3.2,2.2,9,terminal=lev==2)
+        for lev,z in enumerate(floorzs[:3]):stair(cx,-2.3,z,3.2,2.2,9,terminal=lev==2)
         for lev,z in enumerate(floorzs[:3]):
             C.qa_room_light('Home '+str(i)+' level '+str(lev),(cx,-5,z+2.8),180,3)
             desk(cx+.4,-7,z)
@@ -610,7 +615,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--kind',choices=list(SPECS),required=True);p.add_argument('--source-root',type=Path,required=True)
     p.add_argument('--output',required=True);p.add_argument('--version',type=int,default=1);p.add_argument('--resolution',type=int,default=1440);p.add_argument('--dry-run',action='store_true')
     a=p.parse_args(sys.argv[sys.argv.index('--')+1:]);m=manifest(a.kind,a.version)
-    out=C.prepare_candidate(a,source_entry(a.kind,a.source_root),m,__file__,extra_scripts=[HERE/'plan.py',HERE/'warehouse.py'])
+    out=C.prepare_candidate(a,source_entry(a.kind,a.source_root),m,__file__,extra_scripts=[HERE/'plan.py',HERE/'warehouse.py',HERE.parent/'catalogue_runtime_preparation/guards.py'])
     if out is None:return
     palette=PALETTE.copy()
     if a.kind=='warehouse':palette.update(wall=(.58,.54,.43),joint=(.34,.33,.29),trim=(.32,.33,.30),roof=(.64,.65,.62),floor=(.46,.44,.39))

@@ -24,7 +24,7 @@ def warehouse(stair,stair_cut,desk):
         f=C.Face((0,sign*D/2,0),(1,0,0),(0,-sign,0),label)
         hs=[dict(id=f'Dock {i}',u=-66+i*4.6,z=1.2,w=3.1,h=3.6) for i in range(26)]
         if sign==-1:
-            hs += [dict(id='Office lobby',u=63,z=.3,w=15,h=3.5),dict(id='Two-level office glass',u=63,z=4.3,w=15,h=7.5)]
+            hs += [dict(id='Office lobby',u=63,z=.3,w=15,h=3.5),dict(id='Office middle glass',u=63,z=4.3,w=15,h=3.65),dict(id='Office upper glass',u=63,z=8.45,w=15,h=3.35)]
         f.wall('Tilt wall long elevation',-72,72,.3,H,depth=.32,holes=hs)
         for h in hs:
             if 'Office' in h['id'] or 'office' in h['id']:
@@ -47,7 +47,7 @@ def warehouse(stair,stair_cut,desk):
         f=C.Face((sign*72,0,0),(0,1,0),(-sign,0,0),label)
         hs=[]
         if sign==1:
-            hs=[dict(id='Corner office return',u=-35,z=.3,w=16,h=3.5),dict(id='Office upper return',u=-35,z=4.3,w=16,h=7.5)]
+            hs=[dict(id='Corner office return',u=-35,z=.3,w=16,h=3.5),dict(id='Office middle return',u=-35,z=4.3,w=16,h=3.65),dict(id='Office upper return',u=-35,z=8.45,w=16,h=3.35)]
             hs += [dict(id=f'Office punched {u} {z}',u=u,z=z,w=1.4,h=2.3) for u in (-22,-18) for z in (.6,4.6,8.6)]
         hs += [dict(id='Side service exit',u=28,z=1.2,w=1.2,h=2.4)]
         f.wall('Tilt wall short elevation',-43,43,.3,H,depth=.32,holes=hs)
@@ -83,7 +83,8 @@ def warehouse(stair,stair_cut,desk):
         C.box('Entry canopy column',(x,-45.2,2.05),(.18,.18,3.5),'trim','office entrance')
         C.box('Grounded canopy plinth',(x,-45.2,.15),(.4,.4,.30),'foundation','office entrance',0)
     for lev,z in enumerate((.5,4.3,8.3)):
-        slab=C.box('Office floor',(63,-34,z-.10),(17.84,17.86,.20),'floor','office programme',0)
+        # Edges embed in opaque carriers; the z=8.3 floor sits behind the 7.95..8.45 spandrel.
+        slab=C.box('Office floor',(62.92,-33.915,z-.10),(17.68,17.69,.20),'floor','office programme',0)
         if lev:stair_cut(slab,58,-31.5,2.8)
         for x in (58,65):desk(x,-40,z)
         if lev<2:stair(58,-31.5,z,3.8 if lev==0 else 4.0,2.8,11,terminal=lev==1)

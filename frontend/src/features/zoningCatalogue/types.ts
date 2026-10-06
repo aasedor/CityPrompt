@@ -19,6 +19,10 @@ export interface CatalogueProgram {
   classification?: { basis: 'model' | 'teaching'; evidence: string };
   /** Conditions of the stated program; candidates still require normal site assessment. */
   conditions?: string[];
+  /** Researched uses for this exact arrangement; absent districts remain unreviewed. */
+  districtUseGroups?: Record<string, string[][]>;
+  /** A known district-specific configuration conflict needs explicit assessment. */
+  districtReview?: Record<string, string>;
   /** Known program whose approval depends on information outside this model. Blocks confirmation. */
   siteReview?: string;
   /** Unresolved catalogue classification, distinct from a known site dependency. */

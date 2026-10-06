@@ -37782,6 +37782,542 @@
         "suggestedAreaSqm": 450,
         "palette": {"primary": "#30363A"}
       }]
+    },
+    {
+      "id": "prairie_manufactured_home",
+      "title": "Prairie Fold Manufactured Home",
+      "aestheticCategory": "scandinavian_nordic",
+      "description": "One factory-built dwelling on a permanent transportable chassis; two bedrooms and one accessible-from-front living/kitchen zone. Manufactured-home certification and transport permits are not established by an architectural model.",
+      "developmentType": "residential_single_family",
+      "generationTags": [
+        "Scandinavian",
+        "Prairie contemporary",
+        "Manufactured Home",
+        "Prairie Fold Manufactured Home",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/prairie-manufactured-home/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 4.4,
+      "suggestedWidth_m": 16,
+      "suggestedDepth_m": 4.6,
+      "minWidth_m": 16,
+      "maxWidth_m": 16,
+      "minDepth_m": 4.6,
+      "maxDepth_m": 4.6,
+      "variants": [
+        {
+          "id": "prairie_cedar_chassis_home",
+          "label": "Prairie Fold Manufactured Home",
+          "description": "One factory-built dwelling on a permanent transportable chassis; two bedrooms and one accessible-from-front living/kitchen zone. Manufactured-home certification and transport permits are not established by an architectural model.",
+          "thumbnailUrl": "/archetypes/buildings/prairie-manufactured-home/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "municipal_works_depot",
+      "title": "Copperline Municipal Works Depot",
+      "aestheticCategory": "modernist",
+      "description": "Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office.",
+      "developmentType": "institutional",
+      "generationTags": [
+        "Civic industrial",
+        "Prairie modern",
+        "Municipal Works Depot",
+        "Copperline Municipal Works Depot",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/municipal-works-depot/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 7.65,
+      "suggestedWidth_m": 45.5,
+      "suggestedDepth_m": 22,
+      "minWidth_m": 45.5,
+      "maxWidth_m": 45.5,
+      "minDepth_m": 22,
+      "maxDepth_m": 22,
+      "variants": [
+        {
+          "id": "copperline_four_bay_depot",
+          "label": "Copperline Municipal Works Depot",
+          "description": "Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office.",
+          "thumbnailUrl": "/archetypes/buildings/municipal-works-depot/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "enclosed_materials_recovery",
+      "title": "Folded-Roof Materials Recovery Hall",
+      "aestheticCategory": "modernist",
+      "description": "Enclosed sorting, baling and shipping of non-hazardous dry recyclables, with all operations indoors; no external processing, escaped dust/vibration, waste incineration or landfill.",
+      "developmentType": "industrial",
+      "generationTags": [
+        "Industrial expressionism",
+        "Sustainable industrial",
+        "General Industrial – Light",
+        "Folded-Roof Materials Recovery Hall",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/enclosed-materials-recovery/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 9.0,
+      "suggestedWidth_m": 36,
+      "suggestedDepth_m": 24,
+      "minWidth_m": 36,
+      "maxWidth_m": 36,
+      "minDepth_m": 24,
+      "maxDepth_m": 24,
+      "variants": [
+        {
+          "id": "folded_roof_recovery_hall",
+          "label": "Folded-Roof Materials Recovery Hall",
+          "description": "Enclosed sorting, baling and shipping of non-hazardous dry recyclables, with all operations indoors; no external processing, escaped dust/vibration, waste incineration or landfill.",
+          "thumbnailUrl": "/archetypes/buildings/enclosed-materials-recovery/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "contractor_storage_yard",
+      "title": "Corten & Timber Equipment Yard",
+      "aestheticCategory": "modernist",
+      "description": "Screened outdoor storage of contractor equipment and materials, with ancillary servicing of stored equipment and a compact dispatch office. No separate retail or independent manufacturing use.",
+      "developmentType": "industrial",
+      "generationTags": [
+        "Industrial vernacular",
+        "Warm contemporary",
+        "Storage Yard",
+        "Corten & Timber Equipment Yard",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/contractor-storage-yard/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 6.5,
+      "suggestedWidth_m": 38,
+      "suggestedDepth_m": 30,
+      "minWidth_m": 38,
+      "maxWidth_m": 38,
+      "minDepth_m": 30,
+      "maxDepth_m": 30,
+      "variants": [
+        {
+          "id": "corten_timber_equipment_yard",
+          "label": "Corten & Timber Equipment Yard",
+          "description": "Screened outdoor storage of contractor equipment and materials, with ancillary servicing of stored equipment and a compact dispatch office. No separate retail or independent manufacturing use.",
+          "thumbnailUrl": "/archetypes/buildings/contractor-storage-yard/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "courtyard_childcare_centre",
+      "title": "Meadow Court Childcare Centre",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Purpose-built daytime childcare study with three activity rooms, a rear circulation spine and staff service counter, and a screened secure courtyard play area. Separate reception, toilets and other support rooms are not resolved in this clay layout. No school or overnight care assumed. Teaching capacity: 30 children aged 3-5, with three pick-up/drop-off spaces to be provided in the project site design.",
+      "developmentType": "institutional_education",
+      "generationTags": [
+        "Scandinavian civic",
+        "Timber contemporary",
+        "Child Care Service",
+        "Meadow Court Childcare Centre",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/courtyard-childcare-centre/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 6.3,
+      "suggestedWidth_m": 28,
+      "suggestedDepth_m": 26,
+      "minWidth_m": 28,
+      "maxWidth_m": 28,
+      "minDepth_m": 26,
+      "maxDepth_m": 26,
+      "variants": [
+        {
+          "id": "meadow_three_gable_childcare",
+          "label": "Meadow Court Childcare Centre",
+          "description": "Purpose-built daytime childcare study with three activity rooms, a rear circulation spine and staff service counter, and a screened secure courtyard play area. Separate reception, toilets and other support rooms are not resolved in this clay layout. No school or overnight care assumed. Teaching capacity: 30 children aged 3-5, with three pick-up/drop-off spaces to be provided in the project site design.",
+          "thumbnailUrl": "/archetypes/buildings/courtyard-childcare-centre/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "maple_porch_manufactured_home",
+      "title": "Maple Porch Manufactured Cottage",
+      "aestheticCategory": "historical",
+      "description": "One year-round dwelling on a permanent steel chassis, two bedrooms, kitchen and living room. A supported low front porch has one central entrance. Fabrication, transport and certification remain specialist design matters.",
+      "developmentType": "residential_single_family",
+      "generationTags": [
+        "Maple Porch Manufactured Cottage",
+        "Canadian vernacular",
+        "Traditional",
+        "Manufactured Home",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/maple-porch-manufactured-cottage/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 4.55,
+      "suggestedWidth_m": 14,
+      "suggestedDepth_m": 4.8,
+      "minWidth_m": 14,
+      "maxWidth_m": 14,
+      "minDepth_m": 4.8,
+      "maxDepth_m": 4.8,
+      "variants": [
+        {
+          "id": "maple_porch_sage",
+          "label": "Maple Porch Manufactured Cottage",
+          "description": "One year-round dwelling on a permanent steel chassis, two bedrooms, kitchen and living room. A supported low front porch has one central entrance. Fabrication, transport and certification remain specialist design matters.",
+          "thumbnailUrl": "/archetypes/buildings/maple-porch-manufactured-cottage/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "horizon_manufactured_home",
+      "title": "Horizon Manufactured Home",
+      "aestheticCategory": "modernist",
+      "description": "One dwelling assembled from two permanent-chassis transport sections, with three bedrooms and one open living/kitchen space. Clerestory roof step is unoccupied; no second storey.",
+      "developmentType": "residential_single_family",
+      "generationTags": [
+        "Horizon Manufactured Home",
+        "Mid-century modern",
+        "Contemporary",
+        "Manufactured Home",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/horizon-manufactured-home/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 4.65,
+      "suggestedWidth_m": 13.6,
+      "suggestedDepth_m": 7.2,
+      "minWidth_m": 13.6,
+      "maxWidth_m": 13.6,
+      "minDepth_m": 7.2,
+      "maxDepth_m": 7.2,
+      "variants": [
+        {
+          "id": "horizon_double_section",
+          "label": "Horizon Manufactured Home",
+          "description": "One dwelling assembled from two permanent-chassis transport sections, with three bedrooms and one open living/kitchen space. Clerestory roof step is unoccupied; no second storey.",
+          "thumbnailUrl": "/archetypes/buildings/horizon-manufactured-home/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "narrow_lot_craftsman_cottage",
+      "title": "Narrow-lot Craftsman Cottage",
+      "aestheticCategory": "historical",
+      "description": "One single-storey detached dwelling with two bedrooms and a separate front porch. Tall gabled roof encloses an unoccupied attic. One main front entrance and rear garden exit. No secondary suite.",
+      "developmentType": "residential_single_family",
+      "generationTags": [
+        "Narrow-lot Craftsman Cottage",
+        "Arts and Crafts",
+        "Canadian Craftsman",
+        "Single Detached Dwelling",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 6.3,
+      "suggestedWidth_m": 7.2,
+      "suggestedDepth_m": 12.8,
+      "minWidth_m": 7.2,
+      "maxWidth_m": 7.2,
+      "minDepth_m": 12.8,
+      "maxDepth_m": 12.8,
+      "variants": [
+        {
+          "id": "brick_timber_craftsman",
+          "label": "Narrow-lot Craftsman Cottage",
+          "description": "One single-storey detached dwelling with two bedrooms and a separate front porch. Tall gabled roof encloses an unoccupied attic. One main front entrance and rear garden exit. No secondary suite.",
+          "thumbnailUrl": "/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "garden_mews_courtyard_housing",
+      "title": "Garden Mews Courtyard Housing",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Six unstacked two-storey homes in two parallel blocks of three, facing one open shared garden court. Each home has an individual front door directly to grade and its own internal stair. No common indoor access corridor.",
+      "developmentType": "residential_multifamily",
+      "generationTags": [
+        "Garden Mews Courtyard Housing",
+        "Contemporary courtyard",
+        "Warm brick and timber",
+        "Dwelling Unit",
+        "Multi-Residential Development",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/garden-mews-courtyard-housing/variant_0.png",
+      "minFloors": 2,
+      "maxFloors": 2,
+      "suggestedFloorHeight": 4.35,
+      "suggestedWidth_m": 23,
+      "suggestedDepth_m": 23,
+      "minWidth_m": 23,
+      "maxWidth_m": 23,
+      "minDepth_m": 23,
+      "maxDepth_m": 23,
+      "variants": [
+        {
+          "id": "garden_mews_six_homes",
+          "label": "Garden Mews Courtyard Housing",
+          "description": "Six unstacked two-storey homes in two parallel blocks of three, facing one open shared garden court. Each home has an individual front door directly to grade and its own internal stair. No common indoor access corridor.",
+          "thumbnailUrl": "/archetypes/buildings/garden-mews-courtyard-housing/variant_0.png",
+          "minFloors": 2,
+          "maxFloors": 2
+        }
+      ]
+    },
+    {
+      "id": "courtyard_lowrise_office",
+      "title": "Brick-and-timber Courtyard Office",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Compact two-storey U-shaped professional office in a 14m by 12m envelope around an open central court. Two 3.5m by 12m side wings and one 7m by 4m rear connector give an authored 112m² footprint and approximately 224m² gross floor area over two storeys, including circulation. One main entrance, reception, work areas, meeting room, stair and reserved lift core. No medical, counselling, retail or laboratory programme inferred.",
+      "developmentType": "commercial_office",
+      "generationTags": [
+        "Brick-and-timber Courtyard Office",
+        "Contemporary brick",
+        "Timber modernism",
+        "Office",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/brick-timber-courtyard-office/variant_0.png",
+      "minFloors": 2,
+      "maxFloors": 2,
+      "suggestedFloorHeight": 3.7,
+      "suggestedWidth_m": 14,
+      "suggestedDepth_m": 12,
+      "minWidth_m": 14,
+      "maxWidth_m": 14,
+      "minDepth_m": 12,
+      "maxDepth_m": 12,
+      "variants": [
+        {
+          "id": "brick_timber_two_storey_office",
+          "label": "Brick-and-timber Courtyard Office",
+          "description": "Compact two-storey U-shaped professional office in a 14m by 12m envelope around an open central court. Two 3.5m by 12m side wings and one 7m by 4m rear connector give an authored 112m² footprint and approximately 224m² gross floor area over two storeys, including circulation. One main entrance, reception, work areas, meeting room, stair and reserved lift core. No medical, counselling, retail or laboratory programme inferred.",
+          "thumbnailUrl": "/archetypes/buildings/brick-timber-courtyard-office/variant_0.png",
+          "minFloors": 2,
+          "maxFloors": 2
+        }
+      ]
+    },
+    {
+      "id": "affordable_porchlight",
+      "title": "Porchlight Townhouse Row",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Four two-storey two-bedroom homes; independent street entrances, internal stairs, kitchen/living rooms and private rear patios. Repeated simple envelope for an attainable homeownership teaching programme.",
+      "developmentType": "residential_multifamily",
+      "generationTags": [
+        "Porchlight Townhouse Row",
+        "Contemporary Canadian",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/affordable-porchlight/variant_0.png",
+      "minFloors": 2,
+      "maxFloors": 2,
+      "suggestedFloorHeight": 3.88,
+      "suggestedWidth_m": 22,
+      "suggestedDepth_m": 9,
+      "minWidth_m": 22,
+      "maxWidth_m": 22,
+      "minDepth_m": 9,
+      "maxDepth_m": 9,
+      "variants": [
+        {
+          "id": "affordable_porchlight_original",
+          "label": "Porchlight Townhouse Row",
+          "description": "Four two-storey two-bedroom homes; independent street entrances, internal stairs, kitchen/living rooms and private rear patios. Repeated simple envelope for an attainable homeownership teaching programme.",
+          "thumbnailUrl": "/archetypes/buildings/affordable-porchlight/variant_0.png",
+          "minFloors": 2,
+          "maxFloors": 2
+        }
+      ]
+    },
+    {
+      "id": "affordable_juniper",
+      "title": "Juniper Courtyard Cottages",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Four single-level 49 mÂ² one-bedroom cottages, a 22 Ã— 22 m body cluster, an 8 Ã— 8 m shared garden and four private 12 mÂ² outboard patios. Front cottages face the street; rear cottages face the garden. Authored 6 m roof ridge with no attic dwelling. Site and accessibility approval required.",
+      "developmentType": "residential_multifamily",
+      "generationTags": [
+        "Juniper Courtyard Cottages",
+        "Scandinavian",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/affordable-juniper/variant_0.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 6.1,
+      "suggestedWidth_m": 28,
+      "suggestedDepth_m": 24.9,
+      "minWidth_m": 28,
+      "maxWidth_m": 28,
+      "minDepth_m": 24.9,
+      "maxDepth_m": 24.9,
+      "variants": [
+        {
+          "id": "affordable_juniper_original",
+          "label": "Juniper Courtyard Cottages",
+          "description": "Four single-level 49 mÂ² one-bedroom cottages, a 22 Ã— 22 m body cluster, an 8 Ã— 8 m shared garden and four private 12 mÂ² outboard patios. Front cottages face the street; rear cottages face the garden. Authored 6 m roof ridge with no attic dwelling. Site and accessibility approval required.",
+          "thumbnailUrl": "/archetypes/buildings/affordable-juniper/variant_0.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "affordable_stackyard",
+      "title": "Stackyard Stacked Townhomes",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Six two-bedroom homes stacked as three ground and three upper dwellings. Upper outdoor gallery with two end stairs; private lower patios.",
+      "developmentType": "residential_multifamily",
+      "generationTags": [
+        "Stackyard Stacked Townhomes",
+        "Contemporary",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/affordable-stackyard/variant_0.png",
+      "minFloors": 2,
+      "maxFloors": 2,
+      "suggestedFloorHeight": 3.6,
+      "suggestedWidth_m": 21,
+      "suggestedDepth_m": 11,
+      "minWidth_m": 21,
+      "maxWidth_m": 21,
+      "minDepth_m": 11,
+      "maxDepth_m": 11,
+      "variants": [
+        {
+          "id": "affordable_stackyard_original",
+          "label": "Stackyard Stacked Townhomes",
+          "description": "Six two-bedroom homes stacked as three ground and three upper dwellings. Upper outdoor gallery with two end stairs; private lower patios.",
+          "thumbnailUrl": "/archetypes/buildings/affordable-stackyard/variant_0.png",
+          "minFloors": 2,
+          "maxFloors": 2
+        }
+      ]
+    },
+    {
+      "id": "affordable_aspen",
+      "title": "Aspen Walk Apartments",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Twelve compact one-bedroom rental apartments, shared interior circulation, two stairs and a reserved lift core.",
+      "developmentType": "residential_multifamily",
+      "generationTags": [
+        "Aspen Walk Apartments",
+        "Canadian modern",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/affordable-aspen/variant_0.png",
+      "minFloors": 3,
+      "maxFloors": 3,
+      "suggestedFloorHeight": 3.57,
+      "suggestedWidth_m": 24,
+      "suggestedDepth_m": 13,
+      "minWidth_m": 24,
+      "maxWidth_m": 24,
+      "minDepth_m": 13,
+      "maxDepth_m": 13,
+      "variants": [
+        {
+          "id": "affordable_aspen_original",
+          "label": "Aspen Walk Apartments",
+          "description": "Twelve compact one-bedroom rental apartments, shared interior circulation, two stairs and a reserved lift core.",
+          "thumbnailUrl": "/archetypes/buildings/affordable-aspen/variant_0.png",
+          "minFloors": 3,
+          "maxFloors": 3
+        }
+      ]
+    },
+    {
+      "id": "affordable_switchback",
+      "title": "Switchback Modular Studios",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Twenty-four permanent studio dwellings in an authored modular apartment assembly, six per floor, common corridor, two stairs and lift core. Prefabricated construction, no permanent transport chassis.",
+      "developmentType": "residential_multifamily",
+      "generationTags": [
+        "Switchback Modular Studios",
+        "Contemporary modular",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "modular",
+        "original design",
+        "RLASM 6.1"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/affordable-switchback/variant_0.png",
+      "minFloors": 4,
+      "maxFloors": 4,
+      "suggestedFloorHeight": 3.45,
+      "suggestedWidth_m": 24,
+      "suggestedDepth_m": 14,
+      "minWidth_m": 24,
+      "maxWidth_m": 24,
+      "minDepth_m": 14,
+      "maxDepth_m": 14,
+      "variants": [
+        {
+          "id": "affordable_switchback_original",
+          "label": "Switchback Modular Studios",
+          "description": "Twenty-four permanent studio dwellings in an authored modular apartment assembly, six per floor, common corridor, two stairs and lift core. Prefabricated construction, no permanent transport chassis.",
+          "thumbnailUrl": "/archetypes/buildings/affordable-switchback/variant_0.png",
+          "minFloors": 4,
+          "maxFloors": 4
+        }
+      ]
     }
   ]
 }

@@ -59,9 +59,11 @@ def test_missing_role_or_unreviewed_extra_fails(home_sources):
 def test_new_programmes_do_not_claim_zoning_or_runtime_approval():
     assert len(SPECS) == 5
     catalogue = json.loads((ROOT / 'frontend/src/data/buildingArchetypes.json').read_text(encoding='utf-8'))
-    existing = {a['id'] for a in catalogue['archetypes']}
+    existing = [a['id'] for a in catalogue['archetypes']]
     for spec in SPECS.values():
-        assert spec['id'] not in existing
+        # A reviewed runtime release may enroll this original design once.
+        # Its research template still must not imply zoning approval.
+        assert existing.count(spec['id']) <= 1
         assert spec['zoning_research']['approval'] is False
         assert spec['lifecycle']['runtime_enabled'] is False
         assert spec['storey_program']['minimum'] == spec['storey_program']['maximum']

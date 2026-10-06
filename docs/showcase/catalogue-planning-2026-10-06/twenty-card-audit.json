@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Neoclassical office",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Neoclassical office Neoclassical office; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Neoclassical office\n        - generic: Neoclassical office; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 33 × 36 m · 1,188 m²\n      - paragraph: Contemporary Urban\n      - text: Design variant\n      - combobox \"Variant for Neoclassical office\":\n        - option \"Neoclassical office\" [selected]\n      - generic \"Calgary guide · Offices\""
+  },
+  {
+    "name": "Brick-and-bronze faculty office",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Brick-and-bronze faculty office Brick-and-bronze faculty office; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Brick-and-bronze faculty office\n        - generic: Brick-and-bronze faculty office; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 38 × 39 m · 1,482 m²\n      - paragraph: Contemporary Urban\n      - text: Design variant\n      - combobox \"Variant for Brick-and-bronze faculty office\":\n        - option \"Brick-and-bronze faculty office\" [selected]\n      - generic \"Calgary guide · Offices\""
+  },
+  {
+    "name": "Brick-and-timber Courtyard Office",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Brick-and-timber Courtyard Office Compact two-storey U-shaped professional office in a 14m by 12m envelope around an open central court. Two 3.5m by 12m side wings and one 7m by 4m rear connector give an authored 112m² footprint and approximately 224m² gross floor area over two storeys, including circulation. One main entrance, reception, work areas, meeting room, stair and reserved lift core. No medical, counselling, retail or laboratory programme inferred. Detailed 3D Choose & place\":\n        - generic: Brick-and-timber Courtyard Office\n        - generic: Compact two-storey U-shaped professional office in a 14m by 12m envelope around an open central court. Two 3.5m by 12m side wings and one 7m by 4m rear connector give an authored 112m² footprint and approximately 224m² gross floor area over two storeys, including circulation. One main entrance, reception, work areas, meeting room, stair and reserved lift core. No medical, counselling, retail or laboratory programme inferred.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 18 × 16 m · 288 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Brick-and-timber Courtyard Office\":\n        - option \"Brick-and-timber Courtyard Office\" [selected]\n      - generic \"Calgary guide · Offices\""
+  },
+  {
+    "name": "Classic retail strip",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Classic retail strip Classic retail strip; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Classic retail strip\n        - generic: Classic retail strip; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 36 × 22 m · 792 m²\n      - paragraph: Roadside Commercial\n      - text: Design variant\n      - combobox \"Variant for Classic retail strip\":\n        - option \"Classic retail strip\" [selected]\n      - generic \"Calgary guide · Shops & services\""
+  },
+  {
+    "name": "Corten & Timber Equipment Yard",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Corten & Timber Equipment Yard Screened outdoor storage of contractor equipment and materials, with ancillary servicing of stored equipment and a compact dispatch office. No separate retail or independent manufacturing use. Detailed 3D Choose & place\":\n        - generic: Corten & Timber Equipment Yard\n        - generic: Screened outdoor storage of contractor equipment and materials, with ancillary servicing of stored equipment and a compact dispatch office. No separate retail or independent manufacturing use.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 42 × 34 m · 1,428 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Corten & Timber Equipment Yard\":\n        - option \"Corten & Timber Equipment Yard\" [selected]\n      - generic \"Calgary guide · Industry & warehouses\""
+  },
+  {
+    "name": "Meadow Court Childcare Centre",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - 'button \"Meadow Court Childcare Centre Purpose-built daytime childcare study with three activity rooms, a rear circulation spine and staff service counter, and a screened secure courtyard play area. Separate reception, toilets and other support rooms are not resolved in this clay layout. No school or overnight care assumed. Teaching capacity: 30 children aged 3-5, with three pick-up/drop-off spaces to be provided in the project site design. Detailed 3D Choose & place\"':\n        - generic: Meadow Court Childcare Centre\n        - generic: \"Purpose-built daytime childcare study with three activity rooms, a rear circulation spine and staff service counter, and a screened secure courtyard play area. Separate reception, toilets and other support rooms are not resolved in this clay layout. No school or overnight care assumed. Teaching capacity: 30 children aged 3-5, with three pick-up/drop-off spaces to be provided in the project site design.\"\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 32 × 30 m · 960 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Meadow Court Childcare Centre\":\n        - option \"Meadow Court Childcare Centre\" [selected]\n      - generic \"Calgary guide · Schools, civic & recreation\""
+  },
+  {
+    "name": "Daylight sawtooth factory",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Daylight sawtooth factory Daylight sawtooth factory; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Daylight sawtooth factory\n        - generic: Daylight sawtooth factory; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 58 × 36 m · 2,088 m²\n      - paragraph: Daylight Factory\n      - text: Design variant\n      - combobox \"Variant for Daylight sawtooth factory\":\n        - option \"Daylight sawtooth factory\" [selected]\n      - generic \"Calgary guide · Industry & warehouses\""
+  },
+  {
+    "name": "Folded-Roof Materials Recovery Hall",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Folded-Roof Materials Recovery Hall Enclosed sorting, baling and shipping of non-hazardous dry recyclables, with all operations indoors; no external processing, escaped dust/vibration, waste incineration or landfill. Detailed 3D Choose & place\":\n        - generic: Folded-Roof Materials Recovery Hall\n        - generic: Enclosed sorting, baling and shipping of non-hazardous dry recyclables, with all operations indoors; no external processing, escaped dust/vibration, waste incineration or landfill.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 40 × 29 m · 1,160 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Folded-Roof Materials Recovery Hall\":\n        - option \"Folded-Roof Materials Recovery Hall\" [selected]\n      - generic \"Calgary guide · Industry & warehouses\""
+  },
+  {
+    "name": "Garden Mews Courtyard Housing",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Garden Mews Courtyard Housing Six unstacked two-storey homes in two parallel blocks of three, facing one open shared garden court. Each home has an individual front door directly to grade and its own internal stair. No common indoor access corridor. Detailed 3D Choose & place\":\n        - generic: Garden Mews Courtyard Housing\n        - generic: Six unstacked two-storey homes in two parallel blocks of three, facing one open shared garden court. Each home has an individual front door directly to grade and its own internal stair. No common indoor access corridor.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 26 × 26 m · 676 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Garden Mews Courtyard Housing\":\n        - option \"Garden Mews Courtyard Housing\" [selected]\n      - generic \"Calgary guide · Rowhouses & townhomes\""
+  },
+  {
+    "name": "Horizon Manufactured Home",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Horizon Manufactured Home One dwelling assembled from two permanent-chassis transport sections, with three bedrooms and one open living/kitchen space. Clerestory roof step is unoccupied; no second storey. Detailed 3D Choose & place\":\n        - generic: Horizon Manufactured Home\n        - generic: One dwelling assembled from two permanent-chassis transport sections, with three bedrooms and one open living/kitchen space. Clerestory roof step is unoccupied; no second storey.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 18 × 13 m · 234 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Horizon Manufactured Home\":\n        - option \"Horizon Manufactured Home\" [selected]\n      - generic \"Calgary guide · Detached homes\""
+  },
+  {
+    "name": "Industrial shed",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Industrial shed Industrial shed; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Industrial shed\n        - generic: Industrial shed; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 17 × 25 m · 425 m²\n      - paragraph: Corrugated Vernacular\n      - text: Design variant\n      - combobox \"Variant for Industrial shed\":\n        - option \"Industrial shed\" [selected]\n      - generic \"Calgary guide · Industry & warehouses\""
+  },
+  {
+    "name": "Tilt-up industrial building",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Tilt-up industrial building Tilt-up industrial building; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Tilt-up industrial building\n        - generic: Tilt-up industrial building; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 58 × 43 m · 2,494 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Tilt-up industrial building\":\n        - option \"Tilt-up industrial building\" [selected]\n      - generic \"Calgary guide · Industry & warehouses\""
+  },
+  {
+    "name": "Maple Porch Manufactured Cottage",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Maple Porch Manufactured Cottage One year-round dwelling on a permanent steel chassis, two bedrooms, kitchen and living room. A supported low front porch has one central entrance. Fabrication, transport and certification remain specialist design matters. Detailed 3D Choose & place\":\n        - generic: Maple Porch Manufactured Cottage\n        - generic: One year-round dwelling on a permanent steel chassis, two bedrooms, kitchen and living room. A supported low front porch has one central entrance. Fabrication, transport and certification remain specialist design matters.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 18 × 11 m · 198 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Maple Porch Manufactured Cottage\":\n        - option \"Maple Porch Manufactured Cottage\" [selected]\n      - generic \"Calgary guide · Detached homes\""
+  },
+  {
+    "name": "Copperline Municipal Works Depot",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Copperline Municipal Works Depot Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office. Detailed 3D Choose & place\":\n        - generic: Copperline Municipal Works Depot\n        - generic: Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 49 × 28 m · 1,372 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Copperline Municipal Works Depot\":\n        - option \"Copperline Municipal Works Depot\" [selected]\n      - generic \"Calgary guide · Schools, civic & recreation\""
+  },
+  {
+    "name": "Narrow-lot Craftsman Cottage",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Narrow-lot Craftsman Cottage One single-storey detached dwelling with two bedrooms and a separate front porch. Tall gabled roof encloses an unoccupied attic. One main front entrance and rear garden exit. No secondary suite. Detailed 3D Choose & place\":\n        - generic: Narrow-lot Craftsman Cottage\n        - generic: One single-storey detached dwelling with two bedrooms and a separate front porch. Tall gabled roof encloses an unoccupied attic. One main front entrance and rear garden exit. No secondary suite.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 13 × 20 m · 260 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Narrow-lot Craftsman Cottage\":\n        - option \"Narrow-lot Craftsman Cottage\" [selected]\n      - generic \"Calgary guide · Detached homes\""
+  },
+  {
+    "name": "Prairie Fold Manufactured Home",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Prairie Fold Manufactured Home One factory-built dwelling on a permanent transportable chassis; two bedrooms and one accessible-from-front living/kitchen zone. Manufactured-home certification and transport permits are not established by an architectural model. Detailed 3D Choose & place\":\n        - generic: Prairie Fold Manufactured Home\n        - generic: One factory-built dwelling on a permanent transportable chassis; two bedrooms and one accessible-from-front living/kitchen zone. Manufactured-home certification and transport permits are not established by an architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 20 × 10 m · 200 m²\n      - paragraph: Style not catalogued\n      - text: Design variant\n      - combobox \"Variant for Prairie Fold Manufactured Home\":\n        - option \"Prairie Fold Manufactured Home\" [selected]\n      - generic \"Calgary guide · Detached homes\""
+  },
+  {
+    "name": "RNDSQR contextual townhouses",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"RNDSQR contextual townhouses RNDSQR contextual townhouses; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: RNDSQR contextual townhouses\n        - generic: RNDSQR contextual townhouses; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 28 × 19 m · 532 m²\n      - paragraph: Contemporary Urban\n      - text: Design variant\n      - combobox \"Variant for RNDSQR contextual townhouses\":\n        - option \"RNDSQR contextual townhouses\" [selected]\n      - generic \"Calgary guide · Rowhouses & townhomes\""
+  },
+  {
+    "name": "Tilt-wall logistics warehouse",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Tilt-wall logistics warehouse Tilt-wall logistics warehouse; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Tilt-wall logistics warehouse\n        - generic: Tilt-wall logistics warehouse; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 154 × 92 m · 14,168 m²\n      - paragraph: Modern Bigbox\n      - text: Design variant\n      - combobox \"Variant for Tilt-wall logistics warehouse\":\n        - option \"Tilt-wall logistics warehouse\" [selected]\n      - generic \"Calgary guide · Industry & warehouses\""
+  },
+  {
+    "name": "Provincial Brick school",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Provincial Brick school Provincial Brick school; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Provincial Brick school\n        - generic: Provincial Brick school; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 36 × 44 m · 1,584 m²\n      - paragraph: Classical\n      - text: Design variant\n      - combobox \"Variant for Provincial Brick school\":\n        - option \"Provincial Brick school\" [selected]\n      - generic \"Calgary guide · Schools, civic & recreation\""
+  },
+  {
+    "name": "Scandinavian townhouse row",
+    "found": true,
+    "cardText": "generic \"Available objects\":\n    - article:\n      - button \"Scandinavian townhouse row Scandinavian townhouse row; fixed source-locked architectural model. Detailed 3D Choose & place\":\n        - generic: Scandinavian townhouse row\n        - generic: Scandinavian townhouse row; fixed source-locked architectural model.\n        - generic: Detailed 3D\n        - generic: Choose & place\n      - paragraph: Default plot 38 × 27 m · 1,026 m²\n      - paragraph: Contemporary Urban\n      - text: Design variant\n      - combobox \"Variant for Scandinavian townhouse row\":\n        - option \"Scandinavian townhouse row\" [selected]\n      - generic \"Calgary guide · Rowhouses & townhomes\""
+  }
+]

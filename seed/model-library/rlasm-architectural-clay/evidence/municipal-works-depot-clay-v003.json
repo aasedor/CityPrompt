@@ -1,0 +1,615 @@
+{
+  "schema": "cityprompt.rlasm.prior-review-supplemental-attestation@1",
+  "candidate": "municipal-works-depot-clay-v003",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003",
+  "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\municipal-works-depot-clay-v003.glb",
+  "model_sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "attested_utc": "2026-10-06T20:05:11.468105+00:00",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "holistic_review_basis": "Cited original independent full holistic review, not new pixels in this attestation.",
+  "fresh_holistic_pixel_review_performed": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "decision": "PASS_PRIOR_ARCHITECTURAL_CLAY_REVIEW_REVALIDATED",
+  "scope": "Machine-schema normalization of an existing holistic architectural-clay pass plus fresh exact-byte integrity revalidation. No new visual, runtime, textured-keeper or zoning approval.",
+  "prior_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\municipal-works-depot-clay-v003-independent-review-2026-10-06-v001.json",
+    "sha256": "4d86d147f536b7271b1ce50ffbcb29b4ffae12b9037c248ecbc250dd5b30320c",
+    "reviewer": "independent agent /root/rlasm_independent_review",
+    "date": "2026-10-06T16:20:05.563868+00:00",
+    "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+    "original_bytes_preserved": true
+  },
+  "readiness_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\recent-twenty-readiness-audit-2026-10-06-v001.json",
+    "sha256": "7ebc72a2577a4e7194e3691cdc32f977e08958321bec9ac02fa02fabb16bd362",
+    "no_readiness_hold": true
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0.png",
+      "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34",
+      "bytes": 2467808,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13",
+      "bytes": 2805302,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a",
+      "bytes": 2780834,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\aerial.png",
+      "sha256": "0f1329aafdf8ee42a44fc5a2eeaf3ec91f28c808528adbfdd9f4e4ca5a0e62e4",
+      "bytes": 1373206,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\architecture_close.png",
+      "sha256": "61fee13df8e82ce4ae4f5f348d58ab83d55279ee0416717757bdddfba00500d0",
+      "bytes": 1359134,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\facade_close.png",
+      "sha256": "7493fe52b9527aa38d1677f934e0532926ead89378e05428f8bc78a8c9aeca98",
+      "bytes": 1467018,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\front.png",
+      "sha256": "f8b21c834a38f723acd8f39279b2355bb50458db72997556b2c8dec088820009",
+      "bytes": 1309654,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\front_corner.png",
+      "sha256": "c451e1e5f47533170a8db4ca9456961657c91d4fe89739a251b5a6cbfded7b7d",
+      "bytes": 1392976,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\glass_close.png",
+      "sha256": "1ca009651cdbb75708a366180fbef8e104f3fef0c65844890d48a14ce4031713",
+      "bytes": 1347282,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\interior.png",
+      "sha256": "523839f240ff172a4380d4afa554edeecf604197b448fd9f5cedd111662d476b",
+      "bytes": 1369907,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\left_side.png",
+      "sha256": "33a4e0120d7b0ff0d64eb496f022ee7aed8f14b2837dc48f73cd6a555ebd0df8",
+      "bytes": 1286381,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\office.png",
+      "sha256": "a5c95c7a2779f35daedf313b0b12cefbbb6f793892c8c9a0c63a87407989df19",
+      "bytes": 1321632,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\rear.png",
+      "sha256": "697eacfd808e50b0853ce101443edc0641d6760fbb93cf8cdc9da3ec5d6fc266",
+      "bytes": 1271663,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\rear_side.png",
+      "sha256": "d8614c689db7fc4282ad954d5a7335b4e58e9ddf72bf923c0efeebc0dcad9430",
+      "bytes": 1358944,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\right_side.png",
+      "sha256": "0257731d31e6797499694df4477248d35a7783df069ec159adc449ac2d755708",
+      "bytes": 1273786,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\roof_contact.png",
+      "sha256": "3f656dbea6fc8bcceb2d5abe238a53fa41e6f2839537b9433dad383480395ef3",
+      "bytes": 1587552,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\service_lift.png",
+      "sha256": "8103961af5a5d8d9d03091a7c384c261f9c8b5464987254b20ff92f33392a934",
+      "bytes": 1338014,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\side_projection.png",
+      "sha256": "1d22567fa88ebf13f64b2f589c0b42076c925006470356352300605d23fce532",
+      "bytes": 1332123,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\staff_connection.png",
+      "sha256": "ddd8c99fe4d5468310bac529b2dca78510400e48e2b5e37b02303c5241574653",
+      "bytes": 1272028,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\top.png",
+      "sha256": "d23d18a094f1b8310d0ead825e231bd08ca3d8629a2d51c9eff6301051748bd4",
+      "bytes": 1275181,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\boards\\all-views-contact.png",
+      "sha256": "e4beb74876c25bbc38c9e2c4d6c204b25c95c88cf17d7a2ce5c2bec1a202566d",
+      "bytes": 1866138,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\boards\\locked-source-board.png",
+      "sha256": "9f6aa3e9014d5528b64ec3a1528d039a2d54732ed5d3f51617dba1b45be753a3",
+      "bytes": 1108582,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\boards\\phone-construction.png",
+      "sha256": "c02c5183f3106edcde26912880ca83a2ea245bfd4cc5c14e98b58728a1619ca3",
+      "bytes": 897804,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\boards\\phone-source-comparison.png",
+      "sha256": "e0c60394e8f70040a22bedf2ae25f615418e0c2078f5b2e8e16acb3a547291d3",
+      "bytes": 1277106,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    }
+  ],
+  "sources_current_exact": [
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\municipal-works-depot\\variant_0.png",
+      "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\municipal-works-depot\\variant_0_angle_60.png",
+      "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\municipal-works-depot\\variant_0_angle_90.png",
+      "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a",
+      "passed": true
+    }
+  ],
+  "integrity_checks": [
+    {
+      "kind": "build model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\municipal-works-depot-clay-v003.glb",
+      "sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b",
+      "passed": true
+    },
+    {
+      "kind": "gallery model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\municipal-works-depot-clay-v003.glb",
+      "sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b",
+      "passed": true
+    },
+    {
+      "kind": "review model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\municipal-works-depot-clay-v003.glb",
+      "sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b",
+      "passed": true
+    },
+    {
+      "kind": "gallery review",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\municipal-works-depot-clay-v003-independent-review-2026-10-06-v001.json",
+      "sha256": "4d86d147f536b7271b1ce50ffbcb29b4ffae12b9037c248ecbc250dd5b30320c",
+      "passed": true
+    },
+    {
+      "kind": "authoring blend",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\municipal-works-depot-clay-v003-authoring.blend",
+      "sha256": "6da0ec373677ab57c8895fe3912c07161ffef8b9168b8d5055069c70bf4cc524",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0.png",
+      "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\municipal-works-depot\\variant_0.png",
+      "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\municipal-works-depot\\variant_0_angle_60.png",
+      "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\municipal-works-depot\\variant_0_angle_90.png",
+      "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\scripts\\clay_core.py",
+      "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\scripts\\build.py",
+      "sha256": "9a8cc16c5cb0110c7bd475d684e06f8492e18cb90ca1c7f118a6153086754e36",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\scripts\\plan.py",
+      "sha256": "8dcbf7921d91d7c96784e7a9212f3f366ebb1e5e2ef6104cad1a9555ac4c5e47",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\scripts\\designs.json",
+      "sha256": "ac3ffeb801f6a1c8681a239aa8ac312cd4b6bade945781d7466d506708a41cf0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0.png",
+      "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\aerial.png",
+      "sha256": "0f1329aafdf8ee42a44fc5a2eeaf3ec91f28c808528adbfdd9f4e4ca5a0e62e4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\architecture_close.png",
+      "sha256": "61fee13df8e82ce4ae4f5f348d58ab83d55279ee0416717757bdddfba00500d0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\facade_close.png",
+      "sha256": "7493fe52b9527aa38d1677f934e0532926ead89378e05428f8bc78a8c9aeca98",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\front.png",
+      "sha256": "f8b21c834a38f723acd8f39279b2355bb50458db72997556b2c8dec088820009",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\front_corner.png",
+      "sha256": "c451e1e5f47533170a8db4ca9456961657c91d4fe89739a251b5a6cbfded7b7d",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\glass_close.png",
+      "sha256": "1ca009651cdbb75708a366180fbef8e104f3fef0c65844890d48a14ce4031713",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\interior.png",
+      "sha256": "523839f240ff172a4380d4afa554edeecf604197b448fd9f5cedd111662d476b",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\left_side.png",
+      "sha256": "33a4e0120d7b0ff0d64eb496f022ee7aed8f14b2837dc48f73cd6a555ebd0df8",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\office.png",
+      "sha256": "a5c95c7a2779f35daedf313b0b12cefbbb6f793892c8c9a0c63a87407989df19",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\rear.png",
+      "sha256": "697eacfd808e50b0853ce101443edc0641d6760fbb93cf8cdc9da3ec5d6fc266",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\rear_side.png",
+      "sha256": "d8614c689db7fc4282ad954d5a7335b4e58e9ddf72bf923c0efeebc0dcad9430",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\right_side.png",
+      "sha256": "0257731d31e6797499694df4477248d35a7783df069ec159adc449ac2d755708",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\roof_contact.png",
+      "sha256": "3f656dbea6fc8bcceb2d5abe238a53fa41e6f2839537b9433dad383480395ef3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\service_lift.png",
+      "sha256": "8103961af5a5d8d9d03091a7c384c261f9c8b5464987254b20ff92f33392a934",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\side_projection.png",
+      "sha256": "1d22567fa88ebf13f64b2f589c0b42076c925006470356352300605d23fce532",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\staff_connection.png",
+      "sha256": "ddd8c99fe4d5468310bac529b2dca78510400e48e2b5e37b02303c5241574653",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\top.png",
+      "sha256": "d23d18a094f1b8310d0ead825e231bd08ca3d8629a2d51c9eff6301051748bd4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\boards\\all-views-contact.png",
+      "sha256": "e4beb74876c25bbc38c9e2c4d6c204b25c95c88cf17d7a2ce5c2bec1a202566d",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\boards\\locked-source-board.png",
+      "sha256": "9f6aa3e9014d5528b64ec3a1528d039a2d54732ed5d3f51617dba1b45be753a3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\boards\\phone-construction.png",
+      "sha256": "c02c5183f3106edcde26912880ca83a2ea245bfd4cc5c14e98b58728a1619ca3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\boards\\phone-source-comparison.png",
+      "sha256": "e0c60394e8f70040a22bedf2ae25f615418e0c2078f5b2e8e16acb3a547291d3",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\evidence\\builder-evidence.json",
+      "sha256": "1763f31988abc83093fd74a9d1bf3eb8c2f6d4e3135150f51451856c4b7820de",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\evidence\\carrier-aperture-audit.json",
+      "sha256": "dac71a1f9bebed3f2f3d2164a27d56bf0d16571d2d1d8b6d4ffe62ec2debee3a",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\evidence\\delivery-verification.json",
+      "sha256": "ddb5f3d05a8c3f94a7a2ee4ea94673966bf014f10d45ac2c9c0036594b76fe98",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\evidence\\runtime-review.md",
+      "sha256": "c8af22202d37c6a4f3e8faff497b275f94316df865563e7c8ee7a9d36ce1b021",
+      "passed": true
+    },
+    {
+      "kind": "source_manifest_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\prework-manifest.json",
+      "sha256": "7cca5552bc35fc274203fed1b569bdad7aa0ef8c56d3cc182516e8c121b638ef",
+      "passed": true
+    },
+    {
+      "kind": "build_report_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\build-report.json",
+      "sha256": "f1ffe0c2e456501caabb00a7c198e79c3ee72e10f9fe223ec6ac110bc08aec4b",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0.png",
+      "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\aerial.png",
+      "sha256": "0f1329aafdf8ee42a44fc5a2eeaf3ec91f28c808528adbfdd9f4e4ca5a0e62e4",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\architecture_close.png",
+      "sha256": "61fee13df8e82ce4ae4f5f348d58ab83d55279ee0416717757bdddfba00500d0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\facade_close.png",
+      "sha256": "7493fe52b9527aa38d1677f934e0532926ead89378e05428f8bc78a8c9aeca98",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\front.png",
+      "sha256": "f8b21c834a38f723acd8f39279b2355bb50458db72997556b2c8dec088820009",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\front_corner.png",
+      "sha256": "c451e1e5f47533170a8db4ca9456961657c91d4fe89739a251b5a6cbfded7b7d",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\glass_close.png",
+      "sha256": "1ca009651cdbb75708a366180fbef8e104f3fef0c65844890d48a14ce4031713",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\interior.png",
+      "sha256": "523839f240ff172a4380d4afa554edeecf604197b448fd9f5cedd111662d476b",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\left_side.png",
+      "sha256": "33a4e0120d7b0ff0d64eb496f022ee7aed8f14b2837dc48f73cd6a555ebd0df8",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\office.png",
+      "sha256": "a5c95c7a2779f35daedf313b0b12cefbbb6f793892c8c9a0c63a87407989df19",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\rear.png",
+      "sha256": "697eacfd808e50b0853ce101443edc0641d6760fbb93cf8cdc9da3ec5d6fc266",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\rear_side.png",
+      "sha256": "d8614c689db7fc4282ad954d5a7335b4e58e9ddf72bf923c0efeebc0dcad9430",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\right_side.png",
+      "sha256": "0257731d31e6797499694df4477248d35a7783df069ec159adc449ac2d755708",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\roof_contact.png",
+      "sha256": "3f656dbea6fc8bcceb2d5abe238a53fa41e6f2839537b9433dad383480395ef3",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\service_lift.png",
+      "sha256": "8103961af5a5d8d9d03091a7c384c261f9c8b5464987254b20ff92f33392a934",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\side_projection.png",
+      "sha256": "1d22567fa88ebf13f64b2f589c0b42076c925006470356352300605d23fce532",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\staff_connection.png",
+      "sha256": "ddd8c99fe4d5468310bac529b2dca78510400e48e2b5e37b02303c5241574653",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003\\renders\\top.png",
+      "sha256": "d23d18a094f1b8310d0ead825e231bd08ca3d8629a2d51c9eff6301051748bd4",
+      "passed": true
+    }
+  ],
+  "canonical_validator": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "mandatory_view_count": 17,
+  "all_mandatory_views_covered_by_original_review": true,
+  "requires_fresh_review": false,
+  "runtime_approved": false,
+  "textured_keeper_approved": false,
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval."
+  ]
+}

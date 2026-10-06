@@ -921,6 +921,1006 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 3,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "clay_neoclassical_brick_headquarters",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Neoclassical office",
+    "description": "Neoclassical office; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/corporate-office-campus-headquarters/variant_1.png",
+    "model": {
+      "variantId": "neoclassical_brick_headquarters",
+      "revision": "neoclassical-brick-office-clay-v005",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 33.0,
+    "depth": 36.0,
+    "minWidth": 33.0,
+    "minDepth": 36.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      29.239999771118164,
+      32.519999504089355,
+      20.850000381469727
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "corporate_office_campus_headquarters",
+      "development_archetype_id": "corporate_office_campus_headquarters",
+      "development_selected_variant_id": "neoclassical_brick_headquarters",
+      "development_archetype_label": "Neoclassical office",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_admin_faculty_brick_bronze_fins",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Brick-and-bronze faculty office",
+    "description": "Brick-and-bronze faculty office; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+    "model": {
+      "variantId": "admin_faculty_brick_bronze_fins",
+      "revision": "brick-bronze-faculty-office-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 38.0,
+    "depth": 39.0,
+    "minWidth": 38.0,
+    "minDepth": 39.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      34.4060001373291,
+      35.93000030517578,
+      23.799999237060547
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "administrative_faculty_office_building",
+      "development_archetype_id": "administrative_faculty_office_building",
+      "development_selected_variant_id": "admin_faculty_brick_bronze_fins",
+      "development_archetype_label": "Brick-and-bronze faculty office",
+      "floors": 5,
+      "floor_count": 5,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_brick_timber_two_storey_office",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Brick-and-timber Courtyard Office",
+    "description": "Compact two-storey U-shaped professional office in a 14m by 12m envelope around an open central court. Two 3.5m by 12m side wings and one 7m by 4m rear connector give an authored 112m² footprint and approximately 224m² gross floor area over two storeys, including circulation. One main entrance, reception, work areas, meeting room, stair and reserved lift core. No medical, counselling, retail or laboratory programme inferred.",
+    "thumbnail": "/archetypes/buildings/brick-timber-courtyard-office/variant_0.png",
+    "model": {
+      "variantId": "brick_timber_two_storey_office",
+      "revision": "brick-timber-courtyard-office-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 18.0,
+    "depth": 16.0,
+    "minWidth": 18.0,
+    "minDepth": 16.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      14.359999656677246,
+      12.359999656677246,
+      7.400000095367432
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "courtyard_lowrise_office",
+      "development_archetype_id": "courtyard_lowrise_office",
+      "development_selected_variant_id": "brick_timber_two_storey_office",
+      "development_archetype_label": "Brick-and-timber Courtyard Office",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_strip_single_storey_classic",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Classic retail strip",
+    "description": "Classic retail strip; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/commercial-strip-mall/variant_0.png",
+    "model": {
+      "variantId": "strip_single_storey_classic",
+      "revision": "commercial-strip-single-storey-classic-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 36.0,
+    "depth": 22.0,
+    "minWidth": 36.0,
+    "minDepth": 22.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      32.70000076293945,
+      18.65000057220459,
+      6.539999961853027
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "commercial_strip_mall",
+      "development_archetype_id": "commercial_strip_mall",
+      "development_selected_variant_id": "strip_single_storey_classic",
+      "development_archetype_label": "Classic retail strip",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_corten_timber_equipment_yard",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Corten & Timber Equipment Yard",
+    "description": "Screened outdoor storage of contractor equipment and materials, with ancillary servicing of stored equipment and a compact dispatch office. No separate retail or independent manufacturing use.",
+    "thumbnail": "/archetypes/buildings/contractor-storage-yard/variant_0.png",
+    "model": {
+      "variantId": "corten_timber_equipment_yard",
+      "revision": "contractor-storage-yard-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "industry",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 42.0,
+    "depth": 34.0,
+    "minWidth": 42.0,
+    "minDepth": 34.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      38.14999961853027,
+      30.20300006866455,
+      6.333863735198975
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "contractor_storage_yard",
+      "development_archetype_id": "contractor_storage_yard",
+      "development_selected_variant_id": "corten_timber_equipment_yard",
+      "development_archetype_label": "Corten & Timber Equipment Yard",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_meadow_three_gable_childcare",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Meadow Court Childcare Centre",
+    "description": "Purpose-built daytime childcare study with three activity rooms, a rear circulation spine and staff service counter, and a screened secure courtyard play area. Separate reception, toilets and other support rooms are not resolved in this clay layout. No school or overnight care assumed. Teaching capacity: 30 children aged 3-5, with three pick-up/drop-off spaces to be provided in the project site design.",
+    "thumbnail": "/archetypes/buildings/courtyard-childcare-centre/variant_0.png",
+    "model": {
+      "variantId": "meadow_three_gable_childcare",
+      "revision": "courtyard-childcare-centre-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 32.0,
+    "depth": 30.0,
+    "minWidth": 32.0,
+    "minDepth": 30.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      28.149999618530273,
+      26.210000038146973,
+      6.260000228881836
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "courtyard_childcare_centre",
+      "development_archetype_id": "courtyard_childcare_centre",
+      "development_selected_variant_id": "meadow_three_gable_childcare",
+      "development_archetype_label": "Meadow Court Childcare Centre",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_factory_sawtooth_roof",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Daylight sawtooth factory",
+    "description": "Daylight sawtooth factory; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/daylight_factory/variant_0.png",
+    "model": {
+      "variantId": "factory_sawtooth_roof",
+      "revision": "daylight-sawtooth-factory-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "industry",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 58.0,
+    "depth": 36.0,
+    "minWidth": 58.0,
+    "minDepth": 36.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      54.39999961853027,
+      32.53999996185303,
+      25.0
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "daylight_factory",
+      "development_archetype_id": "daylight_factory",
+      "development_selected_variant_id": "factory_sawtooth_roof",
+      "development_archetype_label": "Daylight sawtooth factory",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_folded_roof_recovery_hall",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Folded-Roof Materials Recovery Hall",
+    "description": "Enclosed sorting, baling and shipping of non-hazardous dry recyclables, with all operations indoors; no external processing, escaped dust/vibration, waste incineration or landfill.",
+    "thumbnail": "/archetypes/buildings/enclosed-materials-recovery/variant_0.png",
+    "model": {
+      "variantId": "folded_roof_recovery_hall",
+      "revision": "enclosed-materials-recovery-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "industry",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 40.0,
+    "depth": 29.0,
+    "minWidth": 40.0,
+    "minDepth": 29.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      36.2400016784668,
+      25.980000495910645,
+      9.068168640136719
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "enclosed_materials_recovery",
+      "development_archetype_id": "enclosed_materials_recovery",
+      "development_selected_variant_id": "folded_roof_recovery_hall",
+      "development_archetype_label": "Folded-Roof Materials Recovery Hall",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_garden_mews_six_homes",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Garden Mews Courtyard Housing",
+    "description": "Six unstacked two-storey homes in two parallel blocks of three, facing one open shared garden court. Each home has an individual front door directly to grade and its own internal stair. No common indoor access corridor.",
+    "thumbnail": "/archetypes/buildings/garden-mews-courtyard-housing/variant_0.png",
+    "model": {
+      "variantId": "garden_mews_six_homes",
+      "revision": "garden-mews-courtyard-housing-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "ground_housing",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 26.0,
+    "depth": 26.0,
+    "minWidth": 26.0,
+    "minDepth": 26.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      23.0,
+      23.0,
+      8.699999809265137
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "garden_mews_courtyard_housing",
+      "development_archetype_id": "garden_mews_courtyard_housing",
+      "development_selected_variant_id": "garden_mews_six_homes",
+      "development_archetype_label": "Garden Mews Courtyard Housing",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_horizon_double_section",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Horizon Manufactured Home",
+    "description": "One dwelling assembled from two permanent-chassis transport sections, with three bedrooms and one open living/kitchen space. Clerestory roof step is unoccupied; no second storey.",
+    "thumbnail": "/archetypes/buildings/horizon-manufactured-home/variant_0.png",
+    "model": {
+      "variantId": "horizon_double_section",
+      "revision": "horizon-manufactured-home-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 18.0,
+    "depth": 13.0,
+    "minWidth": 18.0,
+    "minDepth": 13.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      14.180000305175781,
+      9.422999858856201,
+      4.62440824508667
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "horizon_manufactured_home",
+      "development_archetype_id": "horizon_manufactured_home",
+      "development_selected_variant_id": "horizon_double_section",
+      "development_archetype_label": "Horizon Manufactured Home",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_industrial_gabled_metal_shed",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Industrial shed",
+    "description": "Industrial shed; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/corrugated_vernacular_industrial/variant_1.png",
+    "model": {
+      "variantId": "industrial_gabled_metal_shed",
+      "revision": "industrial-gabled-metal-shed-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "industry",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 17.0,
+    "depth": 25.0,
+    "minWidth": 17.0,
+    "minDepth": 25.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      13.369999885559082,
+      21.71500015258789,
+      8.649999618530273
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "corrugated_vernacular_industrial",
+      "development_archetype_id": "corrugated_vernacular_industrial",
+      "development_selected_variant_id": "industrial_gabled_metal_shed",
+      "development_archetype_label": "Industrial shed",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_industrial_tilt_up_concrete",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Tilt-up industrial building",
+    "description": "Tilt-up industrial building; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/industrial_park_modernism/variant_0.png",
+    "model": {
+      "variantId": "industrial_tilt_up_concrete",
+      "revision": "industrial-tilt-up-concrete-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "industry",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 58.0,
+    "depth": 43.0,
+    "minWidth": 58.0,
+    "minDepth": 43.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      54.720001220703125,
+      39.84000015258789,
+      10.550000190734863
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "industrial_park_modernism",
+      "development_archetype_id": "industrial_park_modernism",
+      "development_selected_variant_id": "industrial_tilt_up_concrete",
+      "development_archetype_label": "Tilt-up industrial building",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_maple_porch_sage",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Maple Porch Manufactured Cottage",
+    "description": "One year-round dwelling on a permanent steel chassis, two bedrooms, kitchen and living room. A supported low front porch has one central entrance. Fabrication, transport and certification remain specialist design matters.",
+    "thumbnail": "/archetypes/buildings/maple-porch-manufactured-cottage/variant_0.png",
+    "model": {
+      "variantId": "maple_porch_sage",
+      "revision": "maple-porch-manufactured-cottage-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 18.0,
+    "depth": 11.0,
+    "minWidth": 18.0,
+    "minDepth": 11.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      14.529999732971191,
+      7.442999839782715,
+      4.550000190734863
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "maple_porch_manufactured_home",
+      "development_archetype_id": "maple_porch_manufactured_home",
+      "development_selected_variant_id": "maple_porch_sage",
+      "development_archetype_label": "Maple Porch Manufactured Cottage",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_copperline_four_bay_depot",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Copperline Municipal Works Depot",
+    "description": "Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office.",
+    "thumbnail": "/archetypes/buildings/municipal-works-depot/variant_0.png",
+    "model": {
+      "variantId": "copperline_four_bay_depot",
+      "revision": "municipal-works-depot-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 49.0,
+    "depth": 28.0,
+    "minWidth": 49.0,
+    "minDepth": 28.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      45.86000061035156,
+      24.780000686645508,
+      7.650000095367432
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "municipal_works_depot",
+      "development_archetype_id": "municipal_works_depot",
+      "development_selected_variant_id": "copperline_four_bay_depot",
+      "development_archetype_label": "Copperline Municipal Works Depot",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_brick_timber_craftsman",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Narrow-lot Craftsman Cottage",
+    "description": "One single-storey detached dwelling with two bedrooms and a separate front porch. Tall gabled roof encloses an unoccupied attic. One main front entrance and rear garden exit. No secondary suite.",
+    "thumbnail": "/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0.png",
+    "model": {
+      "variantId": "brick_timber_craftsman",
+      "revision": "narrow-lot-craftsman-cottage-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 13.0,
+    "depth": 20.0,
+    "minWidth": 13.0,
+    "minDepth": 20.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      9.322999954223633,
+      16.1899995803833,
+      6.300000190734863
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "narrow_lot_craftsman_cottage",
+      "development_archetype_id": "narrow_lot_craftsman_cottage",
+      "development_selected_variant_id": "brick_timber_craftsman",
+      "development_archetype_label": "Narrow-lot Craftsman Cottage",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_prairie_cedar_chassis_home",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Prairie Fold Manufactured Home",
+    "description": "One factory-built dwelling on a permanent transportable chassis; two bedrooms and one accessible-from-front living/kitchen zone. Manufactured-home certification and transport permits are not established by an architectural model.",
+    "thumbnail": "/archetypes/buildings/prairie-manufactured-home/variant_0.png",
+    "model": {
+      "variantId": "prairie_cedar_chassis_home",
+      "revision": "prairie-manufactured-home-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 20.0,
+    "depth": 10.0,
+    "minWidth": 20.0,
+    "minDepth": 10.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      16.465999603271484,
+      6.828604698181152,
+      4.409999847412109
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "prairie_manufactured_home",
+      "development_archetype_id": "prairie_manufactured_home",
+      "development_selected_variant_id": "prairie_cedar_chassis_home",
+      "development_archetype_label": "Prairie Fold Manufactured Home",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_rndsqr_townhome_brick_contextual",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "RNDSQR contextual townhouses",
+    "description": "RNDSQR contextual townhouses; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_2.png",
+    "model": {
+      "variantId": "rndsqr_townhome_brick_contextual",
+      "revision": "rndsqr-brick-contextual-row-clay-v005",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "ground_housing",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 28.0,
+    "depth": 19.0,
+    "minWidth": 28.0,
+    "minDepth": 19.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      24.610000610351562,
+      15.179999828338623,
+      12.390000343322754
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "rndsqr_missing_middle_townhomes",
+      "development_archetype_id": "rndsqr_missing_middle_townhomes",
+      "development_selected_variant_id": "rndsqr_townhome_brick_contextual",
+      "development_archetype_label": "RNDSQR contextual townhouses",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_warehouse_tilt_wall_mega",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Tilt-wall logistics warehouse",
+    "description": "Tilt-wall logistics warehouse; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/modern_bigbox_warehouse/variant_1.png",
+    "model": {
+      "variantId": "warehouse_tilt_wall_mega",
+      "revision": "tilt-wall-warehouse-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "industry",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 154.0,
+    "depth": 92.0,
+    "minWidth": 154.0,
+    "minDepth": 92.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      150.32000732421875,
+      89.0,
+      16.350000381469727
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "modern_bigbox_warehouse",
+      "development_archetype_id": "modern_bigbox_warehouse",
+      "development_selected_variant_id": "warehouse_tilt_wall_mega",
+      "development_archetype_label": "Tilt-wall logistics warehouse",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_ecole_republicaine_provincial_brick",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Provincial Brick school",
+    "description": "Provincial Brick school; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/ecole-republicaine/variant_2.png",
+    "model": {
+      "variantId": "ecole-republicaine-provincial-brick",
+      "revision": "provincial-brick-school-clay-v007",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 36.0,
+    "depth": 44.0,
+    "minWidth": 36.0,
+    "minDepth": 44.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      32.900001525878906,
+      40.85000038146973,
+      20.65999984741211
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "ecole_republicaine",
+      "development_archetype_id": "ecole_republicaine",
+      "development_selected_variant_id": "ecole-republicaine-provincial-brick",
+      "development_archetype_label": "Provincial Brick school",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_rndsqr_townhome_scandinavian_peaks",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Scandinavian townhouse row",
+    "description": "Scandinavian townhouse row; fixed source-locked architectural model.",
+    "thumbnail": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_1.png",
+    "model": {
+      "variantId": "rndsqr_townhome_scandinavian_peaks",
+      "revision": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "ground_housing",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 38.0,
+    "depth": 27.0,
+    "minWidth": 38.0,
+    "minDepth": 27.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      34.119998931884766,
+      23.329999923706055,
+      14.137221336364746
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "rndsqr_missing_middle_townhomes",
+      "development_archetype_id": "rndsqr_missing_middle_townhomes",
+      "development_selected_variant_id": "rndsqr_townhome_scandinavian_peaks",
+      "development_archetype_label": "Scandinavian townhouse row",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_affordable_porchlight_original",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Porchlight Townhouse Row",
+    "description": "Four two-storey two-bedroom homes; independent street entrances, internal stairs, kitchen/living rooms and private rear patios. Repeated simple envelope for an attainable homeownership teaching programme.",
+    "thumbnail": "/archetypes/buildings/affordable-porchlight/variant_0.png",
+    "model": {
+      "variantId": "affordable_porchlight_original",
+      "revision": "affordable-porchlight-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "ground_housing",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 26.0,
+    "depth": 18.0,
+    "minWidth": 26.0,
+    "minDepth": 18.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      22.58999729156494,
+      14.014153480529785,
+      7.699999809265137
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "affordable_porchlight",
+      "development_archetype_id": "affordable_porchlight",
+      "development_selected_variant_id": "affordable_porchlight_original",
+      "development_archetype_label": "Porchlight Townhouse Row",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_affordable_juniper_original",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Juniper Courtyard Cottages",
+    "description": "Four single-level 49 m² one-bedroom cottages, a 22 × 22 m body cluster, an 8 × 8 m shared garden and four private 12 m² outboard patios. Front cottages face the street; rear cottages face the garden. Authored 6 m roof ridge with no attic dwelling. Site and accessibility approval required.",
+    "thumbnail": "/archetypes/buildings/affordable-juniper/variant_0.png",
+    "model": {
+      "variantId": "affordable_juniper_original",
+      "revision": "affordable-juniper-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "ground_housing",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 31.0,
+    "depth": 28.0,
+    "minWidth": 31.0,
+    "minDepth": 28.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      28.0,
+      24.899999618530273,
+      6.050000198978445
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "affordable_juniper",
+      "development_archetype_id": "affordable_juniper",
+      "development_selected_variant_id": "affordable_juniper_original",
+      "development_archetype_label": "Juniper Courtyard Cottages",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_affordable_stackyard_original",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Stackyard Stacked Townhomes",
+    "description": "Six two-bedroom homes stacked as three ground and three upper dwellings. Upper outdoor gallery with two end stairs; private lower patios.",
+    "thumbnail": "/archetypes/buildings/affordable-stackyard/variant_0.png",
+    "model": {
+      "variantId": "affordable_stackyard_original",
+      "revision": "affordable-stackyard-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "ground_housing",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 27.0,
+    "depth": 23.0,
+    "minWidth": 27.0,
+    "minDepth": 23.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      23.920000076293945,
+      19.032999515533447,
+      7.090000152587891
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "affordable_stackyard",
+      "development_archetype_id": "affordable_stackyard",
+      "development_selected_variant_id": "affordable_stackyard_original",
+      "development_archetype_label": "Stackyard Stacked Townhomes",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_affordable_aspen_original",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Aspen Walk Apartments",
+    "description": "Twelve compact one-bedroom rental apartments, shared interior circulation, two stairs and a reserved lift core.",
+    "thumbnail": "/archetypes/buildings/affordable-aspen/variant_0.png",
+    "model": {
+      "variantId": "affordable_aspen_original",
+      "revision": "affordable-aspen-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "apartments",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 28.0,
+    "depth": 20.0,
+    "minWidth": 28.0,
+    "minDepth": 20.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      24.360000610351562,
+      16.152999877929688,
+      10.449999809265137
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "affordable_aspen",
+      "development_archetype_id": "affordable_aspen",
+      "development_selected_variant_id": "affordable_aspen_original",
+      "development_archetype_label": "Aspen Walk Apartments",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "clay_affordable_switchback_original",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Switchback Modular Studios",
+    "description": "Twenty-four permanent studio dwellings in an authored modular apartment assembly, six per floor, common corridor, two stairs and lift core. Prefabricated construction, no permanent transport chassis.",
+    "thumbnail": "/archetypes/buildings/affordable-switchback/variant_0.png",
+    "model": {
+      "variantId": "affordable_switchback_original",
+      "revision": "affordable-switchback-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "apartments",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 28.0,
+    "depth": 20.0,
+    "minWidth": 28.0,
+    "minDepth": 20.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      24.360000610351562,
+      16.08299970626831,
+      13.75
+    ],
+    "reshapeDescription": "Resize the surrounding plot; this complete building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "affordable_switchback",
+      "development_archetype_id": "affordable_switchback",
+      "development_selected_variant_id": "affordable_switchback_original",
+      "development_archetype_label": "Switchback Modular Studios",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
   }
 ];
 

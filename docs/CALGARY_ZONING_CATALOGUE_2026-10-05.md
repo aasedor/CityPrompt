@@ -1,5 +1,7 @@
 # Calgary zoning and the classroom catalogue
 
+For the reassessment of all 34 buildings with student height proposals, relaxations and DC, see [the catalogue flexibility assessment](CALGARY_CATALOGUE_FLEXIBILITY_REASSESSMENT_2026-10-05.md). It records proposal routes and revised expansion priorities; the current matching behaviour described below remains unchanged.
+
 Click a coloured City zoning polygon or a saved student study zone to inspect catalogue candidates. Choose **Buildings** or **Parks** in the panel. The district legend provides keyboard-accessible inspection buttons. The drawing studio also shows the same lists for its selected zone, updating immediately when the district changes. Custom zones and Direct Control designations explain why ordinary district matching is unavailable.
 
 This is a **new-building use and model-envelope height screen**, not a development-permit determination. Permitted and discretionary candidates have a listed use route and pass the preliminary height comparison. Missing program details, existing-building prerequisites, contextual rules and unknown mapped heights remain in “More information needed.” A model can match several districts. Every required component of a mixed-use program must have a listed route.

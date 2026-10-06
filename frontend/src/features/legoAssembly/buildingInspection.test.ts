@@ -27,6 +27,36 @@ function placed(up: 'y' | 'z', yaw: number) {
   return { source, material, mesh, geometry, cleanup, local };
 }
 describe('explicit exterior-shell inspection', () => {
+  it('prefers a clear room over open landscape included in model bounds', () => {
+    const f = placed('y', .5);
+    f.cleanup();
+    const landscape = new THREE.Mesh(new THREE.BoxGeometry(28, .05, 32), new THREE.MeshStandardMaterial());
+    landscape.position.set(7, .025, 8); f.source.add(landscape);
+    const cleanup = mountBuildingInspection('landscape', zone, f.source);
+    try {
+      const point = f.local(beginBuildingInspection([zone], zone.id));
+      expect(Math.abs(point.x)).toBeLessThan(4.5);
+      expect(Math.abs(point.z)).toBeLessThan(5.5);
+    } finally {
+      cleanup(); f.geometry.dispose(); f.material.dispose();
+      landscape.geometry.dispose(); (landscape.material as THREE.Material).dispose();
+    }
+  });
+  it.each(['y','z'] as const)('starts away from a central party wall in a rotated %s-up row', up => {
+    const f = placed(up, Math.PI / 3);
+    const partition = new THREE.Mesh(new THREE.BoxGeometry(.24, up === 'y' ? 8 : 12, up === 'y' ? 12 : 8), new THREE.MeshStandardMaterial());
+    partition.position[up] = 4; f.source.add(partition);
+    try {
+      const pose = beginBuildingInspection([zone], zone.id)!;
+      const point = f.local(pose);
+      expect(Math.abs(point.x)).toBeGreaterThan(.8);
+      expect(point[up]).toBeCloseTo(.05, 5);
+      expect(buildingInspectionStart([zone], zone.id)).toEqual(pose);
+    } finally {
+      f.cleanup(); f.geometry.dispose(); f.material.dispose();
+      partition.geometry.dispose(); (partition.material as THREE.Material).dispose();
+    }
+  });
   it.each(['y','z'] as const)('uses the actual %s-up model transform, bounds and base', up => {
     for (const yaw of [0,Math.PI/2,Math.PI,Math.PI*1.5]) {
       const f = placed(up,yaw);

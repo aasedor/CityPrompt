@@ -1,0 +1,803 @@
+{
+  "schema": "cityprompt.rlasm.prior-review-supplemental-attestation@1",
+  "candidate": "industrial-gabled-metal-shed-clay-v002",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002",
+  "model_path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\industrial-gabled-metal-shed-clay-v002.glb",
+  "model_sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "attested_utc": "2026-10-06T20:05:10.268142+00:00",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "holistic_review_basis": "Cited original independent full holistic review, not new pixels in this attestation.",
+  "fresh_holistic_pixel_review_performed": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "decision": "PASS_PRIOR_ARCHITECTURAL_CLAY_REVIEW_REVALIDATED",
+  "scope": "Machine-schema normalization of an existing holistic architectural-clay pass plus fresh exact-byte integrity revalidation. No new visual, runtime, textured-keeper or zoning approval.",
+  "prior_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-five-zoning-gaps-2026-10-05\\independent-review\\industrial-gabled-metal-shed-clay-v002-independent-review-2026-10-05.json",
+    "sha256": "33336acdd9e6b1e37a08bb657267a4880ab2be8cca44411291f39f872a6f7171",
+    "reviewer": "separate agent /root/rlasm_independent_review",
+    "date": "2026-10-05",
+    "decision": "PASS_ARCHITECTURAL_CLAY_ONLY",
+    "original_bytes_preserved": true
+  },
+  "readiness_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\recent-twenty-readiness-audit-2026-10-06-v001.json",
+    "sha256": "7ebc72a2577a4e7194e3691cdc32f977e08958321bec9ac02fa02fabb16bd362",
+    "no_readiness_hold": true
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\aerial.png",
+      "sha256": "64a2236da7abed2923ee745788048b20b620f52ae5fd2e210e0e33a0ba0ad665",
+      "bytes": 1511287,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\architecture_close.png",
+      "sha256": "afbec09acee4507a65d595576fb2db300700d5d7e69808452daf414d24a8e37d",
+      "bytes": 1561855,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_contact.png",
+      "sha256": "bd1d62a0fd5782cd74d213a5c691b3cd0f31ed72a686860e1122a3ee97d41461",
+      "bytes": 1534529,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_outer_anchor.png",
+      "sha256": "3b8749aab356473f41d4aeb8313ad95b337a066777d6ededed68a95e9a0618a3",
+      "bytes": 1384790,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_wall_anchor.png",
+      "sha256": "842f2e20faaf3abef02f6ac0f6027b16dad865baf8b8d420800ce813ebe51f01",
+      "bytes": 1338496,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\cladding_contact.png",
+      "sha256": "ad1fe494933bf91b5484e357d3e41c583c0f28dd6f542e4a5dc3d8cbb5315bc0",
+      "bytes": 1270373,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\downpipe_contact.png",
+      "sha256": "02d628fe6f43f6fab8a4e44c2ec586fa8740b828b0e034c130ed1b901eb81a7e",
+      "bytes": 1548170,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\facade_close.png",
+      "sha256": "bbaac5ba5eaac80e69f4a3fef38883e971bdeaad738cd19a90667dbc42af5129",
+      "bytes": 1546736,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\foundation_contact.png",
+      "sha256": "944dce6785564559cb7480e1af6806e2bf3c2ef59c10076bbe953e291ce98fa2",
+      "bytes": 1395357,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\front.png",
+      "sha256": "69d29eb7555ba3ce86be3301fecf6c018b282681a70e6260ca5a529d26edd795",
+      "bytes": 1320620,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\front_corner.png",
+      "sha256": "45abda358e4830562ff47842aa797d20c880aa77e54f85976c78927ef8c85361",
+      "bytes": 1452182,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\glass_close.png",
+      "sha256": "49846e0522235e1f65970dacfbbf6108018362dbe70bc804dd377d15542cbb10",
+      "bytes": 1357447,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\left_side.png",
+      "sha256": "0d8c3910922122b69fda9ab0c39d058ccb2c919e1ee590b50192b8c098f6b8a7",
+      "bytes": 1355891,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\opposite_aerial.png",
+      "sha256": "73d4105f41659206597244e7965180b5820499dfa7287659bfa3ae6368f73555",
+      "bytes": 1476315,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\plinth_wrap_opposite.png",
+      "sha256": "bece1d3bcdb3c3c1702accfa469f035dc483ed68e2cbb8a30654b145d7b74604",
+      "bytes": 1366357,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\program_interior.png",
+      "sha256": "ee2b71ae475082b86063ce1ecdc0899ecc5c5159b818399d4d867476f0da90f3",
+      "bytes": 1453349,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\rear.png",
+      "sha256": "583a0153cfe1d70a023e4181eefa54716cfc2f74f014acc74ceb6bd768421e12",
+      "bytes": 1323017,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\rear_side.png",
+      "sha256": "484185880677cf5052436610f7aec15aa13f13fa4dbe06acf06b0231fed034c4",
+      "bytes": 1447169,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\ridge_vent_contact.png",
+      "sha256": "74055b238210cdaf4636fc472f974484c4a22aee9d1bf4305b0fb4b53b4b7414",
+      "bytes": 1473708,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\right_gutter_contact.png",
+      "sha256": "5c2cb371be59296ace47841ac7536df7feade76caf51111693925ccdecc9a8f3",
+      "bytes": 1502309,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\right_side.png",
+      "sha256": "cd7cf77dd70021d6a35002af7f6cfd131fb327a41278599bcbb86f15344ee1cc",
+      "bytes": 1362317,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roller_reveal.png",
+      "sha256": "b8fd376b4fac2894255b9aa28af2b737bec0db0b9b18f3a2af52a84b5e836ac1",
+      "bytes": 1433712,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roof_contact.png",
+      "sha256": "60e2f7b1f703362cc5b1857b1eab1da5ceae503614949960217684307d2d7a46",
+      "bytes": 1886059,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roof_structure.png",
+      "sha256": "e439c8151a85f79b5d0b0d5709c34b8470d40aa19b809943da68d28ac863d144",
+      "bytes": 1472138,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\service_interior.png",
+      "sha256": "faff5d429acf371b31cb30e2903b11478a82a4a7b7fe23c4c89c163d96dca0ac",
+      "bytes": 1279708,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\true_top.png",
+      "sha256": "dd8ca5224147e2281009ec79176e6c26707dc270a0af040dd700d21da443b4eb",
+      "bytes": 1338689,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\vent_support_left.png",
+      "sha256": "5a3cf22882c0d55dfc360eace0942c90f97929ec65f2fa97c87ed0f4eca982d0",
+      "bytes": 1342119,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\vent_support_right.png",
+      "sha256": "7ba6c4abc2f1a38ff72fff873674b3669422ae4c95e02ea1cad11533e2cebb65",
+      "bytes": 1335968,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\boards\\all-views-contact.png",
+      "sha256": "f8a1a25a323411a283cde45c394c0455f52ed82d9fd041ad50219c7cdaeed8a3",
+      "bytes": 3517185,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\boards\\locked-source-board.png",
+      "sha256": "ad02335d01ae29528bc5a9d38bdf1561785ecdd288023ce2497de8e15c89ae0a",
+      "bytes": 1346038,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\boards\\phone-construction.png",
+      "sha256": "f5ff5e86fb9a76c90485066ae31fd57440c39f5ba0c6b622f7031aadb4870b3a",
+      "bytes": 1000084,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\boards\\phone-source-comparison.png",
+      "sha256": "01a9b561bc3e71636daff4706cbfdd0896a27ed99fbbd0cdb12ba7f7c0b87d3d",
+      "bytes": 1497965,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1.png",
+      "sha256": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688",
+      "bytes": 1033561,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1_angle_60.jpg",
+      "sha256": "08bf2afccce0bab0ca4ce103a59de03c8964c3cafee16de6c3cf7bc74087e82c",
+      "bytes": 843820,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1_angle_90.jpg",
+      "sha256": "96947f04d1ab0860d0c008f3f00cf7b429d864a248157ee5c7d6d609d0d42680",
+      "bytes": 823950,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    }
+  ],
+  "sources_current_exact": [
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\corrugated_vernacular_industrial\\variant_1.png",
+      "sha256": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\corrugated_vernacular_industrial\\variant_1_angle_60.jpg",
+      "sha256": "08bf2afccce0bab0ca4ce103a59de03c8964c3cafee16de6c3cf7bc74087e82c",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\corrugated_vernacular_industrial\\variant_1_angle_90.jpg",
+      "sha256": "96947f04d1ab0860d0c008f3f00cf7b429d864a248157ee5c7d6d609d0d42680",
+      "passed": true
+    }
+  ],
+  "integrity_checks": [
+    {
+      "kind": "build model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\industrial-gabled-metal-shed-clay-v002.glb",
+      "sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+      "passed": true
+    },
+    {
+      "kind": "gallery model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\industrial-gabled-metal-shed-clay-v002.glb",
+      "sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+      "passed": true
+    },
+    {
+      "kind": "review model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\industrial-gabled-metal-shed-clay-v002.glb",
+      "sha256": "351e93b7b9d5dc4b04801a69979d155199a21da781f6a3247db831f54377ce2d",
+      "passed": true
+    },
+    {
+      "kind": "authoring blend",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\industrial-gabled-metal-shed-clay-v002-authoring.blend",
+      "sha256": "245cbdf47966f4c83c0b81738fad7fcf2b0bf7ed563b3899dd38644e23f89b10",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1.png",
+      "sha256": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\corrugated_vernacular_industrial\\variant_1.png",
+      "sha256": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1_angle_60.jpg",
+      "sha256": "08bf2afccce0bab0ca4ce103a59de03c8964c3cafee16de6c3cf7bc74087e82c",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\corrugated_vernacular_industrial\\variant_1_angle_60.jpg",
+      "sha256": "08bf2afccce0bab0ca4ce103a59de03c8964c3cafee16de6c3cf7bc74087e82c",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1_angle_90.jpg",
+      "sha256": "96947f04d1ab0860d0c008f3f00cf7b429d864a248157ee5c7d6d609d0d42680",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\corrugated_vernacular_industrial\\variant_1_angle_90.jpg",
+      "sha256": "96947f04d1ab0860d0c008f3f00cf7b429d864a248157ee5c7d6d609d0d42680",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\clay_core.py",
+      "sha256": "97682a3f5e5e21c65401a3d1133d3e0d0bf501deb5519aa9da4de4acc77f536a",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\build_industrial_gabled_shed.py",
+      "sha256": "659ac2cbbcd4f3dcc43fe7114c007548da8253956bb1fdce7e90c4df4da5401c",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\clay_components.py",
+      "sha256": "0a2375da8da0c57f6abfcdec1f0ca9f860079ed0bbcb6bb8994ad91c47896379",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\source-preflight-independent.json",
+      "sha256": "a02bade3957f88fba6c5fc87217d0230b274df9856bb8ab0c38ef35a9d29d050",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\industrial-source-clear-opening-measurements.json",
+      "sha256": "8fc45eb393e65e613be2c72def205cfa86bb8586c2f1d630a9cd1cec3a373112",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\industrial-source-plane-measurements.json",
+      "sha256": "f55fb84944e6be4c6110b168aa540243f806e54797b86e2994d43b6c6bb6850c",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\v002-correction-plan.json",
+      "sha256": "e820bf61b401755010152df018f89a3ee3d9fd29397464d748706a0b6962c21a",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\measure_industrial_clear_opening.py",
+      "sha256": "3c6e085acb2fe508dcc85601603a0d6077cdeb8d607fd378d4cf0dc0f1ab7aeb",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\scripts\\measure_industrial_sources.py",
+      "sha256": "598595b61c4acb11a6230c1cdb06c81416b8440f89b8f72e6392753aeae5a9ff",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\aerial.png",
+      "sha256": "64a2236da7abed2923ee745788048b20b620f52ae5fd2e210e0e33a0ba0ad665",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\architecture_close.png",
+      "sha256": "afbec09acee4507a65d595576fb2db300700d5d7e69808452daf414d24a8e37d",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_contact.png",
+      "sha256": "bd1d62a0fd5782cd74d213a5c691b3cd0f31ed72a686860e1122a3ee97d41461",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_outer_anchor.png",
+      "sha256": "3b8749aab356473f41d4aeb8313ad95b337a066777d6ededed68a95e9a0618a3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_wall_anchor.png",
+      "sha256": "842f2e20faaf3abef02f6ac0f6027b16dad865baf8b8d420800ce813ebe51f01",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\cladding_contact.png",
+      "sha256": "ad1fe494933bf91b5484e357d3e41c583c0f28dd6f542e4a5dc3d8cbb5315bc0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\downpipe_contact.png",
+      "sha256": "02d628fe6f43f6fab8a4e44c2ec586fa8740b828b0e034c130ed1b901eb81a7e",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\facade_close.png",
+      "sha256": "bbaac5ba5eaac80e69f4a3fef38883e971bdeaad738cd19a90667dbc42af5129",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\foundation_contact.png",
+      "sha256": "944dce6785564559cb7480e1af6806e2bf3c2ef59c10076bbe953e291ce98fa2",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\front.png",
+      "sha256": "69d29eb7555ba3ce86be3301fecf6c018b282681a70e6260ca5a529d26edd795",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\front_corner.png",
+      "sha256": "45abda358e4830562ff47842aa797d20c880aa77e54f85976c78927ef8c85361",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\glass_close.png",
+      "sha256": "49846e0522235e1f65970dacfbbf6108018362dbe70bc804dd377d15542cbb10",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\left_side.png",
+      "sha256": "0d8c3910922122b69fda9ab0c39d058ccb2c919e1ee590b50192b8c098f6b8a7",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\opposite_aerial.png",
+      "sha256": "73d4105f41659206597244e7965180b5820499dfa7287659bfa3ae6368f73555",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\plinth_wrap_opposite.png",
+      "sha256": "bece1d3bcdb3c3c1702accfa469f035dc483ed68e2cbb8a30654b145d7b74604",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\program_interior.png",
+      "sha256": "ee2b71ae475082b86063ce1ecdc0899ecc5c5159b818399d4d867476f0da90f3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\rear.png",
+      "sha256": "583a0153cfe1d70a023e4181eefa54716cfc2f74f014acc74ceb6bd768421e12",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\rear_side.png",
+      "sha256": "484185880677cf5052436610f7aec15aa13f13fa4dbe06acf06b0231fed034c4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\ridge_vent_contact.png",
+      "sha256": "74055b238210cdaf4636fc472f974484c4a22aee9d1bf4305b0fb4b53b4b7414",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\right_gutter_contact.png",
+      "sha256": "5c2cb371be59296ace47841ac7536df7feade76caf51111693925ccdecc9a8f3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\right_side.png",
+      "sha256": "cd7cf77dd70021d6a35002af7f6cfd131fb327a41278599bcbb86f15344ee1cc",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roller_reveal.png",
+      "sha256": "b8fd376b4fac2894255b9aa28af2b737bec0db0b9b18f3a2af52a84b5e836ac1",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roof_contact.png",
+      "sha256": "60e2f7b1f703362cc5b1857b1eab1da5ceae503614949960217684307d2d7a46",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roof_structure.png",
+      "sha256": "e439c8151a85f79b5d0b0d5709c34b8470d40aa19b809943da68d28ac863d144",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\service_interior.png",
+      "sha256": "faff5d429acf371b31cb30e2903b11478a82a4a7b7fe23c4c89c163d96dca0ac",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\true_top.png",
+      "sha256": "dd8ca5224147e2281009ec79176e6c26707dc270a0af040dd700d21da443b4eb",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\vent_support_left.png",
+      "sha256": "5a3cf22882c0d55dfc360eace0942c90f97929ec65f2fa97c87ed0f4eca982d0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\vent_support_right.png",
+      "sha256": "7ba6c4abc2f1a38ff72fff873674b3669422ae4c95e02ea1cad11533e2cebb65",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\boards\\all-views-contact.png",
+      "sha256": "f8a1a25a323411a283cde45c394c0455f52ed82d9fd041ad50219c7cdaeed8a3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\boards\\locked-source-board.png",
+      "sha256": "ad02335d01ae29528bc5a9d38bdf1561785ecdd288023ce2497de8e15c89ae0a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\boards\\phone-construction.png",
+      "sha256": "f5ff5e86fb9a76c90485066ae31fd57440c39f5ba0c6b622f7031aadb4870b3a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\boards\\phone-source-comparison.png",
+      "sha256": "01a9b561bc3e71636daff4706cbfdd0896a27ed99fbbd0cdb12ba7f7c0b87d3d",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1.png",
+      "sha256": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1_angle_60.jpg",
+      "sha256": "08bf2afccce0bab0ca4ce103a59de03c8964c3cafee16de6c3cf7bc74087e82c",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1_angle_90.jpg",
+      "sha256": "96947f04d1ab0860d0c008f3f00cf7b429d864a248157ee5c7d6d609d0d42680",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1.png",
+      "sha256": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1_angle_60.jpg",
+      "sha256": "08bf2afccce0bab0ca4ce103a59de03c8964c3cafee16de6c3cf7bc74087e82c",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\sources\\variant_1_angle_90.jpg",
+      "sha256": "96947f04d1ab0860d0c008f3f00cf7b429d864a248157ee5c7d6d609d0d42680",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\aerial.png",
+      "sha256": "64a2236da7abed2923ee745788048b20b620f52ae5fd2e210e0e33a0ba0ad665",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\architecture_close.png",
+      "sha256": "afbec09acee4507a65d595576fb2db300700d5d7e69808452daf414d24a8e37d",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_contact.png",
+      "sha256": "bd1d62a0fd5782cd74d213a5c691b3cd0f31ed72a686860e1122a3ee97d41461",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_outer_anchor.png",
+      "sha256": "3b8749aab356473f41d4aeb8313ad95b337a066777d6ededed68a95e9a0618a3",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\canopy_wall_anchor.png",
+      "sha256": "842f2e20faaf3abef02f6ac0f6027b16dad865baf8b8d420800ce813ebe51f01",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\cladding_contact.png",
+      "sha256": "ad1fe494933bf91b5484e357d3e41c583c0f28dd6f542e4a5dc3d8cbb5315bc0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\downpipe_contact.png",
+      "sha256": "02d628fe6f43f6fab8a4e44c2ec586fa8740b828b0e034c130ed1b901eb81a7e",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\facade_close.png",
+      "sha256": "bbaac5ba5eaac80e69f4a3fef38883e971bdeaad738cd19a90667dbc42af5129",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\foundation_contact.png",
+      "sha256": "944dce6785564559cb7480e1af6806e2bf3c2ef59c10076bbe953e291ce98fa2",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\front.png",
+      "sha256": "69d29eb7555ba3ce86be3301fecf6c018b282681a70e6260ca5a529d26edd795",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\front_corner.png",
+      "sha256": "45abda358e4830562ff47842aa797d20c880aa77e54f85976c78927ef8c85361",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\glass_close.png",
+      "sha256": "49846e0522235e1f65970dacfbbf6108018362dbe70bc804dd377d15542cbb10",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\left_side.png",
+      "sha256": "0d8c3910922122b69fda9ab0c39d058ccb2c919e1ee590b50192b8c098f6b8a7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\opposite_aerial.png",
+      "sha256": "73d4105f41659206597244e7965180b5820499dfa7287659bfa3ae6368f73555",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\plinth_wrap_opposite.png",
+      "sha256": "bece1d3bcdb3c3c1702accfa469f035dc483ed68e2cbb8a30654b145d7b74604",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\program_interior.png",
+      "sha256": "ee2b71ae475082b86063ce1ecdc0899ecc5c5159b818399d4d867476f0da90f3",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\rear.png",
+      "sha256": "583a0153cfe1d70a023e4181eefa54716cfc2f74f014acc74ceb6bd768421e12",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\rear_side.png",
+      "sha256": "484185880677cf5052436610f7aec15aa13f13fa4dbe06acf06b0231fed034c4",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\ridge_vent_contact.png",
+      "sha256": "74055b238210cdaf4636fc472f974484c4a22aee9d1bf4305b0fb4b53b4b7414",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\right_gutter_contact.png",
+      "sha256": "5c2cb371be59296ace47841ac7536df7feade76caf51111693925ccdecc9a8f3",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\right_side.png",
+      "sha256": "cd7cf77dd70021d6a35002af7f6cfd131fb327a41278599bcbb86f15344ee1cc",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roller_reveal.png",
+      "sha256": "b8fd376b4fac2894255b9aa28af2b737bec0db0b9b18f3a2af52a84b5e836ac1",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roof_contact.png",
+      "sha256": "60e2f7b1f703362cc5b1857b1eab1da5ceae503614949960217684307d2d7a46",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\roof_structure.png",
+      "sha256": "e439c8151a85f79b5d0b0d5709c34b8470d40aa19b809943da68d28ac863d144",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\service_interior.png",
+      "sha256": "faff5d429acf371b31cb30e2903b11478a82a4a7b7fe23c4c89c163d96dca0ac",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\true_top.png",
+      "sha256": "dd8ca5224147e2281009ec79176e6c26707dc270a0af040dd700d21da443b4eb",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\vent_support_left.png",
+      "sha256": "5a3cf22882c0d55dfc360eace0942c90f97929ec65f2fa97c87ed0f4eca982d0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002\\renders\\vent_support_right.png",
+      "sha256": "7ba6c4abc2f1a38ff72fff873674b3669422ae4c95e02ea1cad11533e2cebb65",
+      "passed": true
+    }
+  ],
+  "canonical_validator": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\2026-09-02_clay-eight-10h\\08-corrugated-vernacular-industrial\\v002",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "mandatory_view_count": 28,
+  "all_mandatory_views_covered_by_original_review": true,
+  "requires_fresh_review": false,
+  "runtime_approved": false,
+  "textured_keeper_approved": false,
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "limitations": [
+    "Fixed native architectural-clay model only; arbitrary resizing and sibling substitution are unapproved.",
+    "Absolute dimensions are authored inferences from uncalibrated generated catalogue images, not a measured real building.",
+    "Hidden elevations and sparse interior fixtures remain explicitly inferred.",
+    "No textured-keeper, detailed operating-program, engineering, zoning compliance, egress, accessibility, terrain-fit or runtime-integration approval.",
+    "Catalogue sources remain selection and render-conditioning authority.",
+    "New runtime activation requires the applicable human approval; this review does not activate or publish anything."
+  ]
+}

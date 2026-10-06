@@ -1,6 +1,6 @@
 {
  "source": "buildingArchetypes.json",
- "count": 224,
+ "count": 239,
  "archetypes": [
   {
    "id": "adaptive_reuse_warehouse_lofts",
@@ -2372,15 +2372,15 @@
    "suggested_area_sqm": 12000.0
   },
   {
-   "id": "corner_d\u00e9panneur",
-   "title": "Corner D\u00e9panneur",
+   "id": "corner_dépanneur",
+   "title": "Corner Dépanneur",
    "development_type": "commercial_retail",
    "aesthetic_category": "historical",
    "district_kit": null,
    "generation_tags": [
     "corner store",
-    "d\u00e9panneur",
-    "qu\u00e9b\u00e9cois vernacular",
+    "dépanneur",
+    "québécois vernacular",
     "mixed-use residential-retail",
     "chamfered corner",
     "main street heritage",
@@ -4761,7 +4761,7 @@
   },
   {
    "id": "montreal_depanneur",
-   "title": "Corner D\u00e9panneur",
+   "title": "Corner Dépanneur",
    "development_type": "commercial_retail",
    "aesthetic_category": "traditional_vernacular",
    "district_kit": "montreal",
@@ -7456,6 +7456,467 @@
    "min_d_m": 15.0,
    "max_d_m": 28.0,
    "suggested_area_sqm": 600.0
+  },
+  {
+   "id": "prairie_manufactured_home",
+   "title": "Prairie Fold Manufactured Home",
+   "development_type": "residential_single_family",
+   "aesthetic_category": "scandinavian_nordic",
+   "district_kit": null,
+   "generation_tags": [
+    "Scandinavian",
+    "Prairie contemporary",
+    "Manufactured Home",
+    "Prairie Fold Manufactured Home",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "prairie_cedar_chassis_home"
+   ],
+   "default_variant_id": "prairie_cedar_chassis_home",
+   "suggested_w_m": 16,
+   "suggested_d_m": 4.6,
+   "min_w_m": 16,
+   "max_w_m": 16,
+   "min_d_m": 4.6,
+   "max_d_m": 4.6,
+   "suggested_area_sqm": 73.6
+  },
+  {
+   "id": "municipal_works_depot",
+   "title": "Copperline Municipal Works Depot",
+   "development_type": "institutional",
+   "aesthetic_category": "modernist",
+   "district_kit": null,
+   "generation_tags": [
+    "Civic industrial",
+    "Prairie modern",
+    "Municipal Works Depot",
+    "Copperline Municipal Works Depot",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "copperline_four_bay_depot"
+   ],
+   "default_variant_id": "copperline_four_bay_depot",
+   "suggested_w_m": 45.5,
+   "suggested_d_m": 22,
+   "min_w_m": 45.5,
+   "max_w_m": 45.5,
+   "min_d_m": 22,
+   "max_d_m": 22,
+   "suggested_area_sqm": 1001.0
+  },
+  {
+   "id": "enclosed_materials_recovery",
+   "title": "Folded-Roof Materials Recovery Hall",
+   "development_type": "industrial",
+   "aesthetic_category": "modernist",
+   "district_kit": null,
+   "generation_tags": [
+    "Industrial expressionism",
+    "Sustainable industrial",
+    "General Industrial – Light",
+    "Folded-Roof Materials Recovery Hall",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "folded_roof_recovery_hall"
+   ],
+   "default_variant_id": "folded_roof_recovery_hall",
+   "suggested_w_m": 36,
+   "suggested_d_m": 24,
+   "min_w_m": 36,
+   "max_w_m": 36,
+   "min_d_m": 24,
+   "max_d_m": 24,
+   "suggested_area_sqm": 864
+  },
+  {
+   "id": "contractor_storage_yard",
+   "title": "Corten & Timber Equipment Yard",
+   "development_type": "industrial",
+   "aesthetic_category": "modernist",
+   "district_kit": null,
+   "generation_tags": [
+    "Industrial vernacular",
+    "Warm contemporary",
+    "Storage Yard",
+    "Corten & Timber Equipment Yard",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "corten_timber_equipment_yard"
+   ],
+   "default_variant_id": "corten_timber_equipment_yard",
+   "suggested_w_m": 38,
+   "suggested_d_m": 30,
+   "min_w_m": 38,
+   "max_w_m": 38,
+   "min_d_m": 30,
+   "max_d_m": 30,
+   "suggested_area_sqm": 1140
+  },
+  {
+   "id": "courtyard_childcare_centre",
+   "title": "Meadow Court Childcare Centre",
+   "development_type": "institutional_education",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Scandinavian civic",
+    "Timber contemporary",
+    "Child Care Service",
+    "Meadow Court Childcare Centre",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "meadow_three_gable_childcare"
+   ],
+   "default_variant_id": "meadow_three_gable_childcare",
+   "suggested_w_m": 28,
+   "suggested_d_m": 26,
+   "min_w_m": 28,
+   "max_w_m": 28,
+   "min_d_m": 26,
+   "max_d_m": 26,
+   "suggested_area_sqm": 728
+  },
+  {
+   "id": "maple_porch_manufactured_home",
+   "title": "Maple Porch Manufactured Cottage",
+   "development_type": "residential_single_family",
+   "aesthetic_category": "historical",
+   "district_kit": null,
+   "generation_tags": [
+    "Maple Porch Manufactured Cottage",
+    "Canadian vernacular",
+    "Traditional",
+    "Manufactured Home",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "maple_porch_sage"
+   ],
+   "default_variant_id": "maple_porch_sage",
+   "suggested_w_m": 14,
+   "suggested_d_m": 4.8,
+   "min_w_m": 14,
+   "max_w_m": 14,
+   "min_d_m": 4.8,
+   "max_d_m": 4.8,
+   "suggested_area_sqm": 67.2
+  },
+  {
+   "id": "horizon_manufactured_home",
+   "title": "Horizon Manufactured Home",
+   "development_type": "residential_single_family",
+   "aesthetic_category": "modernist",
+   "district_kit": null,
+   "generation_tags": [
+    "Horizon Manufactured Home",
+    "Mid-century modern",
+    "Contemporary",
+    "Manufactured Home",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "horizon_double_section"
+   ],
+   "default_variant_id": "horizon_double_section",
+   "suggested_w_m": 13.6,
+   "suggested_d_m": 7.2,
+   "min_w_m": 13.6,
+   "max_w_m": 13.6,
+   "min_d_m": 7.2,
+   "max_d_m": 7.2,
+   "suggested_area_sqm": 97.92
+  },
+  {
+   "id": "narrow_lot_craftsman_cottage",
+   "title": "Narrow-lot Craftsman Cottage",
+   "development_type": "residential_single_family",
+   "aesthetic_category": "historical",
+   "district_kit": null,
+   "generation_tags": [
+    "Narrow-lot Craftsman Cottage",
+    "Arts and Crafts",
+    "Canadian Craftsman",
+    "Single Detached Dwelling",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "brick_timber_craftsman"
+   ],
+   "default_variant_id": "brick_timber_craftsman",
+   "suggested_w_m": 7.2,
+   "suggested_d_m": 12.8,
+   "min_w_m": 7.2,
+   "max_w_m": 7.2,
+   "min_d_m": 12.8,
+   "max_d_m": 12.8,
+   "suggested_area_sqm": 92.16000000000001
+  },
+  {
+   "id": "garden_mews_courtyard_housing",
+   "title": "Garden Mews Courtyard Housing",
+   "development_type": "residential_multifamily",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Garden Mews Courtyard Housing",
+    "Contemporary courtyard",
+    "Warm brick and timber",
+    "Dwelling Unit",
+    "Multi-Residential Development",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 2,
+   "max_floors": 2,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "garden_mews_six_homes"
+   ],
+   "default_variant_id": "garden_mews_six_homes",
+   "suggested_w_m": 23,
+   "suggested_d_m": 23,
+   "min_w_m": 23,
+   "max_w_m": 23,
+   "min_d_m": 23,
+   "max_d_m": 23,
+   "suggested_area_sqm": 529
+  },
+  {
+   "id": "courtyard_lowrise_office",
+   "title": "Brick-and-timber Courtyard Office",
+   "development_type": "commercial_office",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Brick-and-timber Courtyard Office",
+    "Contemporary brick",
+    "Timber modernism",
+    "Office",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 2,
+   "max_floors": 2,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "brick_timber_two_storey_office"
+   ],
+   "default_variant_id": "brick_timber_two_storey_office",
+   "suggested_w_m": 14,
+   "suggested_d_m": 12,
+   "min_w_m": 14,
+   "max_w_m": 14,
+   "min_d_m": 12,
+   "max_d_m": 12,
+   "suggested_area_sqm": 168
+  },
+  {
+   "id": "affordable_porchlight",
+   "title": "Porchlight Townhouse Row",
+   "development_type": "residential_multifamily",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Porchlight Townhouse Row",
+    "Contemporary Canadian",
+    "Affordable housing",
+    "non-market",
+    "residential",
+    "compact housing",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 2,
+   "max_floors": 2,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "affordable_porchlight_original"
+   ],
+   "default_variant_id": "affordable_porchlight_original",
+   "suggested_w_m": 22,
+   "suggested_d_m": 9,
+   "min_w_m": 22,
+   "max_w_m": 22,
+   "min_d_m": 9,
+   "max_d_m": 9,
+   "suggested_area_sqm": 198
+  },
+  {
+   "id": "affordable_juniper",
+   "title": "Juniper Courtyard Cottages",
+   "development_type": "residential_multifamily",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Juniper Courtyard Cottages",
+    "Scandinavian",
+    "Affordable housing",
+    "non-market",
+    "residential",
+    "compact housing",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "affordable_juniper_original"
+   ],
+   "default_variant_id": "affordable_juniper_original",
+   "suggested_w_m": 28,
+   "suggested_d_m": 24.9,
+   "min_w_m": 28,
+   "max_w_m": 28,
+   "min_d_m": 24.9,
+   "max_d_m": 24.9,
+   "suggested_area_sqm": 697.1999999999999
+  },
+  {
+   "id": "affordable_stackyard",
+   "title": "Stackyard Stacked Townhomes",
+   "development_type": "residential_multifamily",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Stackyard Stacked Townhomes",
+    "Contemporary",
+    "Affordable housing",
+    "non-market",
+    "residential",
+    "compact housing",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 2,
+   "max_floors": 2,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "affordable_stackyard_original"
+   ],
+   "default_variant_id": "affordable_stackyard_original",
+   "suggested_w_m": 21,
+   "suggested_d_m": 11,
+   "min_w_m": 21,
+   "max_w_m": 21,
+   "min_d_m": 11,
+   "max_d_m": 11,
+   "suggested_area_sqm": 231
+  },
+  {
+   "id": "affordable_aspen",
+   "title": "Aspen Walk Apartments",
+   "development_type": "residential_multifamily",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Aspen Walk Apartments",
+    "Canadian modern",
+    "Affordable housing",
+    "non-market",
+    "residential",
+    "compact housing",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 3,
+   "max_floors": 3,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "affordable_aspen_original"
+   ],
+   "default_variant_id": "affordable_aspen_original",
+   "suggested_w_m": 24,
+   "suggested_d_m": 13,
+   "min_w_m": 24,
+   "max_w_m": 24,
+   "min_d_m": 13,
+   "max_d_m": 13,
+   "suggested_area_sqm": 312
+  },
+  {
+   "id": "affordable_switchback",
+   "title": "Switchback Modular Studios",
+   "development_type": "residential_multifamily",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Switchback Modular Studios",
+    "Contemporary modular",
+    "Affordable housing",
+    "non-market",
+    "residential",
+    "modular",
+    "original design",
+    "RLASM 6.1"
+   ],
+   "min_floors": 4,
+   "max_floors": 4,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "affordable_switchback_original"
+   ],
+   "default_variant_id": "affordable_switchback_original",
+   "suggested_w_m": 24,
+   "suggested_d_m": 14,
+   "min_w_m": 24,
+   "max_w_m": 24,
+   "min_d_m": 14,
+   "max_d_m": 14,
+   "suggested_area_sqm": 336
   }
  ]
 }

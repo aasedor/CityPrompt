@@ -12,6 +12,8 @@ HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE))
 sys.path.append(str(HERE.parent/'catalogue_services_batch'))
 import clay_core as C
+sys.path.append(str(HERE.parent/'catalogue_runtime_preparation'))
+from guards import seated_guard
 from plan import SPECS, source_entry
 
 PALETTE=dict(wall=(.40,.21,.14),buff=(.55,.45,.31),trim=(.68,.61,.47),
@@ -164,10 +166,10 @@ def office():
         for t in (0,.33,.66,1):
             y=ys+(ye-ys)*t;z=zs+(ze-zs)*t
             C.rod('Stair rail post',(x,y,z),(x,y,z+.95),.022,'hardware','stair rails',10)
-    for x in (-1.61,1.61):C.railing('Stairwell guard',(x,1.7,5.78),(x,8.4,5.78),role='hardware')
-    C.railing('Landing rear guard',(-1.52,6.02,3.18),(1.52,6.02,3.18),role='hardware')
-    C.railing('Upper well back guard',(-1.61,8.32,5.78),(1.61,8.32,5.78),role='hardware')
-    C.railing('Upper well front guard',(-1.61,1.62,5.78),(.20,1.62,5.78),role='hardware')
+    for x in (-1.79,1.79):seated_guard('Stairwell guard',(x,1.51,5.78),(x,8.49,5.78),role='hardware')
+    seated_guard('Landing rear guard',(-1.52,6.02,3.18),(1.52,6.02,3.18),role='hardware')
+    seated_guard('Upper well back guard',(-1.79,8.49,5.78),(1.79,8.49,5.78),role='hardware')
+    seated_guard('Upper well front guard',(-1.79,1.51,5.78),(.20,1.51,5.78),role='hardware')
     # Four full-height columns, seated bases, conservative Corinthian capital relief.
     C.box('Portico landing',(0,-15.4,.2),(10.2,2.8,.4),'trim','portico',0)
     for i in range(3):C.box('Entrance step',(0,-17.08+i*.30,.067*(i+1)),(9.6,.64,.134*(i+1)),'trim','entrance steps')
@@ -340,8 +342,8 @@ def row():
         C.qa_room_light(f'roof access {i}',(px+.4,py,12.0),180,2)
         for level,z in enumerate((3.66,6.70,9.74)):
             # Rails guard the long well edges; both flight ends stay open.
-            for xx in (x-2.31,x-1.0):C.railing('Stairwell edge guard',(xx,-1.6,z),(xx,2.9,z),height=.94,spacing=.14,role='hardware')
-        for yy in (-6.2,6.2):C.railing('Roof deck rail',(x-2.94,yy,9.76),(x+2.94,yy,9.76),height=.98,role='hardware')
+            for xx in (x-2.37,x-.93):seated_guard('Stairwell edge guard',(xx,-1.6,z),(xx,2.9,z),height=.94,spacing=.14,role='hardware')
+        for yy in (-6.2,6.2):seated_guard('Roof deck rail',(x-2.94,yy,9.76),(x+2.94,yy,9.76),height=.98,role='hardware')
         if i<3:
             for a,b in [(-6.2,-2.7),(3.4,6.2)]:C.box('Private deck divider',(x+3,(a+b)/2,10.38),(.11,b-a,1.26),'timber','privacy screens')
         C.CONTACTS.append(dict(name=f'Unit {i+1} entrance',door=[x-1.9,-6.5,.55],approach=[x-1.9,-8.2,0],roof_access=True))
@@ -362,7 +364,7 @@ def row():
             for z,ht in ((9.3,.20),(6.75,.15)):ret.part('Corner pale horizontal return',-5.33,-.10,z,2.62,.25,ht,'trim','upper surrounds')
             ret.part('Corner pale side jamb',-4.05,-.10,8.02,.19,.25,2.55,'trim','upper surrounds')
         for h in hs:f.window(h['id'],h['u'],h['z'],h['w'],h['h'],cols=2,frame='hardware')
-        C.railing('End roof deck rail',(-12 if sign<0 else 12,-6.2,9.76),(-12 if sign<0 else 12,6.2,9.76),height=.98,role='hardware')
+        seated_guard('End roof deck rail',(-12 if sign<0 else 12,-6.2,9.76),(-12 if sign<0 else 12,6.2,9.76),height=.98,role='hardware')
     for y in (-6.5,6.5):C.box('Continuous roof coping',(0,y,9.66),(24.15,.24,.18),'dark','parapet cap')
 
 def arch_ring(face,name,u,z,r,width,d0,d1,role='trim',segments=24):
@@ -395,7 +397,8 @@ def school():
     zfloors=(.36,4.0,7.64);top=11.28
     for x in (-12.5,12.5):
         for level,z in enumerate(zfloors):
-            C.qa_room_light(f'school wing {x} floor {level}',(x,0,z+3.25),900,9)
+            for light_y in (-13,0,9):
+                C.qa_room_light(f'school wing {x} floor {level}',(x,light_y,z+3.25),300,4.5)
             slab=C.box('Teaching floor',(x,0,z+.08),(6.48,39.48,.16),'floor','school floors',0)
             if level>0:C.cut_box(slab,'Teaching stairwell',(x,15,z),(2.9,5.4,1))
         C.box('Teaching ceiling',(x,0,11.18),(6.48,39.48,.20),'interior','ceiling',0)
@@ -446,15 +449,21 @@ def school():
                         yy=13+q*2.25;zz=lo+q*(hi-lo)
                         C.rod('School stair upright',(x+dx,yy,zz),(x+dx,yy,zz+.95),.019,'hardware','school rails',10)
                 for dx in (-1.30,1.30):C.box('School landing support',(x+dx,16.1,z+1.0),(.12,.12,1.84),'trim','school stairs')
-                C.railing('School landing guard',(x-1.35,16.30,z+1.98),(x+1.35,16.30,z+1.98),height=.95,role='hardware')
+                seated_guard('School landing guard',(x-1.35,16.30,z+1.98),(x+1.35,16.30,z+1.98),height=.95,role='hardware')
             if level>0:
                 C.box('School continuous arrival landing',(x,12.57,z+.08),(2.9,.72,.16),'floor','school stairs',0)
-                for dx in (-1.50,1.50):C.railing('School well edge',(x+dx,12.35,z+.16),(x+dx,17.70,z+.16),height=1.02,role='hardware')
-                C.railing('School well rear edge',(x-1.5,17.70,z+.16),(x+1.5,17.70,z+.16),height=1.02,role='hardware')
+                for dx in (-1.54,1.54):seated_guard('School well edge',(x+dx,12.21,z+.16),(x+dx,17.79,z+.16),height=1.02,role='hardware')
+                seated_guard('School well rear edge',(x-1.54,17.79,z+.16),(x+1.54,17.79,z+.16),height=1.02,role='hardware')
     # Rear cross wing, retaining the clear courtyard in front of it.
     for z in zfloors:C.box('Rear classroom floor',(0,13.5,z+.08),(18,6.5,.16),'floor','rear wing',0)
     C.box('Rear classroom ceiling',(0,13.5,11.2),(18,6.5,.16),'interior','rear wing',0)
     C.box('Rear wing closed eaves crown',(0,13.5,11.43),(18,7.06,.36),'trim','roof bearing',0)
+    # Both exterior doors meet their occupied floor through grounded approaches.
+    for wall_y, direction, grade, count in ((10,-1,.16,2),(17,1,0,3)):
+        C.box('School doorway landing',(0,wall_y+direction*.58,(grade+.52)/2),(3.1,1.20,.52-grade),'foundation','door approaches',0)
+        for step in range(count):
+            height=(.52-grade)*(count-step)/count
+            C.box('School grounded approach step',(0,wall_y+direction*(1.20+(step+.5)*.35),grade+height/2),(3.1,.356,height),'foundation','door approaches',0)
     for y,normal in ((10,1),(17,-1)):
         f=C.Face((0,y,0),(1,0,0),(0,normal,0),'rear cross wing '+str(y))
         hs=[dict(id=f'Rear wing window {j} {u}',u=u,z=z+1,w=3.2,h=2.1) for j,z in enumerate(zfloors) for u in (-6,0,6)]
@@ -492,7 +501,8 @@ def school():
         for xx in (a,b):C.box('Entry rear roof pier',(xx,-17.55,2.25),(.35,.35,4.5),'trim','entry roof support')
     for u in (-2.38,2.38):gate.part('Main arch pier',u,.25,1.625,.36,.7,3.25,'trim','gateway')
     for a,b in [(-7.7,-5.7),(-5.2,-3.2),(3.2,5.2),(5.7,7.7)]:
-        C.railing('Street grille',(a,-19.82,.18),(b,-19.82,.18),height=3.65,spacing=.13,role='hardware')
+        C.box('Street grille grounded sill',((a+b)/2,-19.82,.09),(b-a,.42,.18),'trim','gate foundation',0)
+        seated_guard('Street grille',(a,-19.82,.18),(b,-19.82,.18),height=3.65,spacing=.13,role='hardware')
     # Roof envelope from explicitly joined outer/ridge/inner contours.
     outer=[(-16.45,-20.45,11.45),(16.45,-20.45,11.45),(16.45,17.45,11.45),(-16.45,17.45,11.45)]
     ridges=[(-12.5,-16.5,14),(12.5,-16.5,14),(12.5,13.5,14),(-12.5,13.5,14)]
@@ -615,7 +625,7 @@ def main():
     p.add_argument('--version',type=int,default=1);p.add_argument('--resolution',type=int,default=1440)
     p.add_argument('--dry-run',action='store_true');a=p.parse_args(sys.argv[sys.argv.index('--')+1:])
     entry=source_entry(a.kind,a.source_root);m=manifest(a.kind,a.version)
-    out=C.prepare_candidate(a,entry,m,__file__,extra_scripts=[HERE/'plan.py'])
+    out=C.prepare_candidate(a,entry,m,__file__,extra_scripts=[HERE/'plan.py',HERE.parent/'catalogue_runtime_preparation/guards.py'])
     if out is None:return
     cams=C.setup(PALETTE,m['camera_roster'],a.resolution)
     # Fine edge microbevels are outside this clay scope. Applying thousands of

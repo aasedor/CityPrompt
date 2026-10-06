@@ -1,0 +1,775 @@
+{
+  "schema": "cityprompt.rlasm.independent-clay-review@1",
+  "candidate": "affordable-juniper-clay-v006",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "reviewed_utc": "2026-10-06T22:14:00.563979+00:00",
+  "review_date_local": "2026-10-06",
+  "scope": "Holistic source-locked architectural-clay review of supplied mandatory evidence.",
+  "holistic": true,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "promotion_allowed": false,
+  "inspected_files": [
+    {
+      "path": "sources/variant_0.png",
+      "sha256": "e896808e3cf7b8015395e63a72b2b4ea48c2cec8af0154a3d5688cdefaedfdb5",
+      "bytes": 3482961,
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\sources\\variant_0.png"
+    },
+    {
+      "path": "sources/variant_0_angle_60.png",
+      "sha256": "03562559f39caba6a366419fe2ebbb3a155d3ecbc9f47be355e81edbf442cbc1",
+      "bytes": 3907515,
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\sources\\variant_0_angle_60.png"
+    },
+    {
+      "path": "sources/variant_0_angle_90.png",
+      "sha256": "23daf76d60a9bb1ec4e4a9c2ac64fe886755a5b6823a8003e9dc7accd847de0c",
+      "bytes": 3973403,
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\sources\\variant_0_angle_90.png"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "ed6c985e406ae581a092f0879a0697723d2b371ab6b3e174b73fb8f974746e51",
+      "bytes": 1492981,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\aerial.png"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "696005641c34993abb37a91faf23af6c0e5bc6b9c69baa5caf7d147c6af0f4dd",
+      "bytes": 1436716,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\architecture_close.png"
+    },
+    {
+      "path": "renders/bathroom.png",
+      "sha256": "56ddff741697b7268227f92410d33eaf0796cc6f9bcd9cf3e95f616c9362dcb8",
+      "bytes": 1321712,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\bathroom.png"
+    },
+    {
+      "path": "renders/bedroom.png",
+      "sha256": "5fff635b8cdd722125e3f075b00afcc4ed4b41431cf43987e5853e8077d934e1",
+      "bytes": 1375382,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\bedroom.png"
+    },
+    {
+      "path": "renders/courtyard.png",
+      "sha256": "8753904153acc0d413308a0ecbf92d5cfe0c2bafb1481118354f2a3b5ee98e74",
+      "bytes": 1491863,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\courtyard.png"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "5ef5c2146b936b8d810c41c138c026356254d283bc3178e6fb989fa52cd52835",
+      "bytes": 1470227,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\facade_close.png"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "568413024c539adcea15d78f161be00b5874c8b385e486a5781318ffacf07f69",
+      "bytes": 1373113,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\front.png"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "ed4e203440c07ed869c1d4d654ffb41b51eb69d373744ccf4e470a16d1e0f09a",
+      "bytes": 1496574,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\front_corner.png"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "c9769996fa1155181fd8d429646e050afda38198577bac4c659321e31e07fd83",
+      "bytes": 1323648,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\glass_close.png"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "a0514e437d357b5d5419b8ee292234cbf743c632a8d476ca367e785bb50fc2d9",
+      "bytes": 1372801,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\interior.png"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "e3a9f7b2498b33f263ccf92f670a3ccc16263aec5b5b833fd57934dccca475d0",
+      "bytes": 1326632,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\left_side.png"
+    },
+    {
+      "path": "renders/private_patio.png",
+      "sha256": "eccfd7835615b855eb5c2a28943f9e130f9293838fa736bd064816d2fb788715",
+      "bytes": 1443182,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\private_patio.png"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "7de3c6a9502674e342b1b4ce38404f57066f61d52539d9fafdcfe20b71f166c1",
+      "bytes": 1356336,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\rear.png"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "f00d8d295027a58e6a6f03650006adf29b0689ac45172575aaadb1dc1e29f9cd",
+      "bytes": 1463720,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\rear_side.png"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "1d8f704cced3a116684ed2bfb935a745b03b0e21c8ff6649a7b74b451b882d80",
+      "bytes": 1324049,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\right_side.png"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "632546daef8e2dc8baf95176437e4ba4e09df7925d69b4179151867642300952",
+      "bytes": 1497451,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\roof_contact.png"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "6f70ddd41d1fb169037076b44346996cb77cf2099ea1e3832d2088ddd224591d",
+      "bytes": 1587381,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\side_projection.png"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "c4eb9292c7ab4c066de93c352b7580f4152a664f044913bb8842cbf9814d66a6",
+      "bytes": 1327728,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\renders\\top.png"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "c9639d7ec77a91a1518fe61a0be2cca542c9841971a8ba401fd9da23473ac903",
+      "bytes": 2345331,
+      "dimensions_px": [
+        1920,
+        2095
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\boards\\all-views-contact.png"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "64ec850266572838ad0adf0c896a044226761335baf761af204fe2aa655aa86a",
+      "bytes": 1529330,
+      "dimensions_px": [
+        1800,
+        570
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\boards\\locked-source-board.png"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "4160d7894cc5a23862660b6a55401bc5f444d9c2f85d4922cfc52d911fa52cff",
+      "bytes": 1032905,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\boards\\phone-construction.png"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "c845a707bc25209a5f764d97554d38a442bc95ccdb006824be73b72b619c295c",
+      "bytes": 1652976,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "direct_pixel_inspection": true,
+      "inspection_resolution": "original",
+      "absolute_path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\boards\\phone-source-comparison.png"
+    }
+  ],
+  "mandatory_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "courtyard",
+    "private_patio",
+    "interior",
+    "bedroom",
+    "bathroom"
+  ],
+  "complete_evidence_opened": true,
+  "integrity": {
+    "checks": [
+      {
+        "kind": "source",
+        "path": "sources/variant_0.png",
+        "sha256": "e896808e3cf7b8015395e63a72b2b4ea48c2cec8af0154a3d5688cdefaedfdb5",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-juniper\\variant_0.png",
+        "authoritative_sha256": "e896808e3cf7b8015395e63a72b2b4ea48c2cec8af0154a3d5688cdefaedfdb5",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_0_angle_60.png",
+        "sha256": "03562559f39caba6a366419fe2ebbb3a155d3ecbc9f47be355e81edbf442cbc1",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-juniper\\variant_0_angle_60.png",
+        "authoritative_sha256": "03562559f39caba6a366419fe2ebbb3a155d3ecbc9f47be355e81edbf442cbc1",
+        "passed": true
+      },
+      {
+        "kind": "source",
+        "path": "sources/variant_0_angle_90.png",
+        "sha256": "23daf76d60a9bb1ec4e4a9c2ac64fe886755a5b6823a8003e9dc7accd847de0c",
+        "authoritative_path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\affordable-juniper\\variant_0_angle_90.png",
+        "authoritative_sha256": "23daf76d60a9bb1ec4e4a9c2ac64fe886755a5b6823a8003e9dc7accd847de0c",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/build.py",
+        "sha256": "341e472489e6a861e84f2eb908035b3f692f5da16ec473beaf5d2e049fc6ce3e",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/assemblies.py",
+        "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/geometry.py",
+        "sha256": "fe900d6f7b7798ce80ef4d3e7387c704bf2e1830fbe48c0e13428aa36fc81889",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/housing_wave.py",
+        "sha256": "d4658a9ffff8d9c505a6fb8762b4f57aee46c0f6504c168cc779deb57b850c3c",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/plan.py",
+        "sha256": "0e4b744d394ae5245cc1ca211f52063b676814246e625442234b6dcee62ecea9",
+        "passed": true
+      },
+      {
+        "kind": "script",
+        "path": "scripts/designs.json",
+        "sha256": "662d1a783bd1ad5f484acb454c64d10a067fe560e789c750a2e88354d56d7718",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0.png",
+        "sha256": "e896808e3cf7b8015395e63a72b2b4ea48c2cec8af0154a3d5688cdefaedfdb5",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0_angle_60.png",
+        "sha256": "03562559f39caba6a366419fe2ebbb3a155d3ecbc9f47be355e81edbf442cbc1",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "sources\\variant_0_angle_90.png",
+        "sha256": "23daf76d60a9bb1ec4e4a9c2ac64fe886755a5b6823a8003e9dc7accd847de0c",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\aerial.png",
+        "sha256": "ed6c985e406ae581a092f0879a0697723d2b371ab6b3e174b73fb8f974746e51",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\architecture_close.png",
+        "sha256": "696005641c34993abb37a91faf23af6c0e5bc6b9c69baa5caf7d147c6af0f4dd",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\bathroom.png",
+        "sha256": "56ddff741697b7268227f92410d33eaf0796cc6f9bcd9cf3e95f616c9362dcb8",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\bedroom.png",
+        "sha256": "5fff635b8cdd722125e3f075b00afcc4ed4b41431cf43987e5853e8077d934e1",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\courtyard.png",
+        "sha256": "8753904153acc0d413308a0ecbf92d5cfe0c2bafb1481118354f2a3b5ee98e74",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\facade_close.png",
+        "sha256": "5ef5c2146b936b8d810c41c138c026356254d283bc3178e6fb989fa52cd52835",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front.png",
+        "sha256": "568413024c539adcea15d78f161be00b5874c8b385e486a5781318ffacf07f69",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\front_corner.png",
+        "sha256": "ed4e203440c07ed869c1d4d654ffb41b51eb69d373744ccf4e470a16d1e0f09a",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\glass_close.png",
+        "sha256": "c9769996fa1155181fd8d429646e050afda38198577bac4c659321e31e07fd83",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\interior.png",
+        "sha256": "a0514e437d357b5d5419b8ee292234cbf743c632a8d476ca367e785bb50fc2d9",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\left_side.png",
+        "sha256": "e3a9f7b2498b33f263ccf92f670a3ccc16263aec5b5b833fd57934dccca475d0",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\private_patio.png",
+        "sha256": "eccfd7835615b855eb5c2a28943f9e130f9293838fa736bd064816d2fb788715",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear.png",
+        "sha256": "7de3c6a9502674e342b1b4ce38404f57066f61d52539d9fafdcfe20b71f166c1",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\rear_side.png",
+        "sha256": "f00d8d295027a58e6a6f03650006adf29b0689ac45172575aaadb1dc1e29f9cd",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\right_side.png",
+        "sha256": "1d8f704cced3a116684ed2bfb935a745b03b0e21c8ff6649a7b74b451b882d80",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\roof_contact.png",
+        "sha256": "632546daef8e2dc8baf95176437e4ba4e09df7925d69b4179151867642300952",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\side_projection.png",
+        "sha256": "6f70ddd41d1fb169037076b44346996cb77cf2099ea1e3832d2088ddd224591d",
+        "passed": true
+      },
+      {
+        "kind": "board input",
+        "path": "renders\\top.png",
+        "sha256": "c4eb9292c7ab4c066de93c352b7580f4152a664f044913bb8842cbf9814d66a6",
+        "passed": true
+      }
+    ],
+    "glb_checks": {
+      "header": true,
+      "json_chunk": true,
+      "hash_match": true,
+      "bytes_match": true,
+      "texture_free": true,
+      "self_contained": true,
+      "no_cameras": true,
+      "no_lights": true
+    },
+    "glb_sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+    "glb_path": "affordable-juniper-clay-v006.glb",
+    "glb_bytes": 1332996,
+    "meshes": 11,
+    "materials": 11,
+    "images": 0,
+    "textures": 0,
+    "source_manifest_sha256": "ddf34bd9e275f36588247a3cbad63895a1042a5d3ee94d08f80afc8adfe1098f",
+    "build_report_sha256": "4433d74642d5db1124e569de3a1c1aaff7b58470d98ee8597140e2cfa231467e",
+    "build_report_bounds_m": [
+      [
+        -14.0,
+        -12.899999618530273,
+        0.0
+      ],
+      [
+        14.0,
+        12.0,
+        6.050000190734863
+      ]
+    ],
+    "build_report_roundtrip_delta_m": 0.0,
+    "evidence_files": [
+      {
+        "path": "evidence/builder-evidence.json",
+        "sha256": "e6094480682b01b5f5dfeb973618f2b0ed5e1ef153a678cf72dc73ea4ef2f513",
+        "bytes": 97369
+      },
+      {
+        "path": "evidence/carrier-aperture-audit.json",
+        "sha256": "06d01ebae74a5687959697f230db5bc98267546cdb46a2c568139c45d88e91e2",
+        "bytes": 5217
+      },
+      {
+        "path": "evidence/delivery-verification.json",
+        "sha256": "8ab82c72bf14d463203a5fdf18129470207c54c96e38691d59ad233b802eb33b",
+        "bytes": 1826
+      },
+      {
+        "path": "evidence/runtime-review.md",
+        "sha256": "070a39903998a4ed134b38bd066c570843f1fa646ea6f24b9216552bc5011d58",
+        "bytes": 17218
+      }
+    ]
+  },
+  "deterministic_preflight": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "delivery_check_report": {
+    "status": "PASS_DELIVERY_CHECKS",
+    "checks": {
+      "source front": true,
+      "source oblique": true,
+      "source top": true,
+      "script scripts/clay_core.py": true,
+      "script scripts/build.py": true,
+      "script scripts/assemblies.py": true,
+      "script scripts/geometry.py": true,
+      "script scripts/housing_wave.py": true,
+      "script scripts/plan.py": true,
+      "script scripts/designs.json": true,
+      "glb header": true,
+      "model hash": true,
+      "texture-free": true,
+      "self-contained": true,
+      "no QA camera or light": true,
+      "native grade zero": true,
+      "bounds roundtrip": true,
+      "carrier apertures": true,
+      "finite geometry": true,
+      "nonzero triangles": true,
+      "render front": true,
+      "render front_corner": true,
+      "render aerial": true,
+      "render top": true,
+      "render left_side": true,
+      "render right_side": true,
+      "render rear": true,
+      "render rear_side": true,
+      "render facade_close": true,
+      "render architecture_close": true,
+      "render glass_close": true,
+      "render roof_contact": true,
+      "render side_projection": true,
+      "render courtyard": true,
+      "render private_patio": true,
+      "render interior": true,
+      "render bedroom": true,
+      "render bathroom": true,
+      "camera margin front": true,
+      "camera margin front_corner": true,
+      "camera margin aerial": true,
+      "camera margin top": true,
+      "camera margin left_side": true,
+      "camera margin right_side": true,
+      "camera margin rear": true,
+      "camera margin rear_side": true,
+      "phone-source-comparison.png": true,
+      "phone-construction.png": true
+    },
+    "model_sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+    "runtime_approved": false,
+    "independent_visual_review": "pending"
+  },
+  "provenance_scope": "Preserved build script inspected: exported GLB replaces authored meshes before rendering without material override. Reviewer did not independently rerender Blender or test runtime.",
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval.",
+    "This report approves only the exact offline architectural-clay candidate. New browser screenshots of v006 have not been inspected here.",
+    "Shared shell-camera start changes and exact runtime asset binding/persistence require separate browser evidence."
+  ],
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "model_sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+  "blockers": [],
+  "closed_prior_findings": [
+    {
+      "id": "BROWSER-JUNIPER-01",
+      "result": "geometry cause closed; browser retest separate",
+      "observation": "Side lawns now occupy y[-4,2.4], exactly terminating at rear cottage garden front edge. The prior 22.4 square metres of same-height lawn/bed overlap is removed. Actual exported GLB upward planting area at z.07 is 265.6 square metres instead of 288; saved authored geometry confirms narrowed side extents. Full top, aerial and courtyard views are clean."
+    }
+  ],
+  "surface_plane_diagnostics": [
+    {
+      "glb": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\juniper-v006\\affordable-juniper-clay-v006.glb",
+      "sha256": "10a0b67d0d968b7d9f84851d05f8e6abd7c62a3d9c19a89bc317cb4b7bcb8402",
+      "blender_axis": 2,
+      "plane_m": 0.07,
+      "surfaces": [
+        {
+          "mesh": "Cottage foundation mesh",
+          "material": "CLAY_FOUNDATION",
+          "triangles": 8,
+          "area_m2": 44.800010681152344,
+          "bounds_min": [
+            -11.0,
+            -12.600000381469727,
+            0.07000000029802322
+          ],
+          "bounds_max": [
+            11.0,
+            4.0,
+            0.07000000029802322
+          ],
+          "normal_signs": [
+            1.0
+          ]
+        },
+        {
+          "mesh": "Icosphere",
+          "material": "CLAY_PLANTING",
+          "triangles": 6,
+          "area_m2": 265.5999574260732,
+          "bounds_min": [
+            -10.999998913109323,
+            -10.999999519735582,
+            0.06999997633695543
+          ],
+          "bounds_max": [
+            11.000000900328132,
+            10.999998462647227,
+            0.06999997633695543
+          ],
+          "normal_signs": [
+            1.0
+          ]
+        },
+        {
+          "mesh": "Cottage front door recessed leaf mesh",
+          "material": "CLAY_TIMBER",
+          "triangles": 160,
+          "area_m2": 0.029999879418028286,
+          "bounds_min": [
+            -10.024999618530273,
+            -11.72499942779541,
+            0.07000000029802322
+          ],
+          "bounds_max": [
+            10.224998474121094,
+            3.3249998092651367,
+            0.07000000029802322
+          ],
+          "normal_signs": [
+            -1.0
+          ]
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "category": "source identity and ratios",
+      "result": "pass",
+      "observation": "Four detached steep-gabled single-storey cottages retain two-by-two arrangement, common garden, all entrance gables facing the same direction and mirrored left/right door/window positions. Sage physical vertical cladding, dark standing-seam roofs, warm entrance doors and bracketed canopies match the three locked generated sources. Authored metric envelope and 6m ridge are disclosed rather than inferred as a survey."
+    },
+    {
+      "category": "roof envelope openings and contact",
+      "result": "pass",
+      "observation": "Whole elevations, both side views, roof_contact, facade_close and architecture_close show enclosed gables, joined roof/fascia edges, physical supported entrance covers and bounded cladding ribs. Glazing is recessed into actual carrier holes and reveals interior depth. No floating primary envelope component or new roof aperture found."
+    },
+    {
+      "category": "circulation and prior correction regression",
+      "result": "pass within indicative scope",
+      "observation": "The bedroom side approach remains clear, kitchen counter ends before the bedroom approach and bathroom opens onto a separate clear living-room approach. Four private patios carry their door thresholds across full width. Furniture and patio chairs are seated, continuous outdoor paths connect all four cottages, and tree foliage remains outside occupied interiors."
+    },
+    {
+      "category": "programme and detail limits",
+      "result": "pass architectural clay only",
+      "observation": "One-bedroom illustrative cottage interiors, simplified bathroom fixtures and basic kitchen furniture are present. No attic dwelling, stair or manufactured chassis is claimed. Habitable-plan, accessibility, plumbing, fire separation and legal zoning certification remain outside review. Photographed planting, fence and interior decoration are abstracted for clay, not presented as finished textured fidelity."
+    },
+    {
+      "category": "complete fresh evidence",
+      "result": "pass",
+      "observation": "All three locked original sources,18 mandatory full-resolution renders and all four boards directly opened in this fresh review. Current authoritative source hashes, immutable builder scripts, exact GLB, board inputs and canonical validator revalidated. No inherited visual approval was substituted."
+    }
+  ]
+}

@@ -1,0 +1,609 @@
+{
+  "schema": "cityprompt.rlasm.prior-review-supplemental-attestation@1",
+  "candidate": "daylight-sawtooth-factory-clay-v003",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003",
+  "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\daylight-sawtooth-factory-clay-v003.glb",
+  "model_sha256": "db0d255c0f987f6738cbd4eb0340eddc5143fc497145089fb819c4e32c8fa09d",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "attested_utc": "2026-10-06T20:05:10.877777+00:00",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "holistic_review_basis": "Cited original independent full holistic review, not new pixels in this attestation.",
+  "fresh_holistic_pixel_review_performed": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "decision": "PASS_PRIOR_ARCHITECTURAL_CLAY_REVIEW_REVALIDATED",
+  "scope": "Machine-schema normalization of an existing holistic architectural-clay pass plus fresh exact-byte integrity revalidation. No new visual, runtime, textured-keeper or zoning approval.",
+  "prior_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\reviews\\daylight-sawtooth-factory-clay-v003-independent-review-2026-10-06.json",
+    "sha256": "af4afc2c5e6e40dfa067014f8d44a4f9a31f7c5df09ebb37293f90de0c58d1b8",
+    "reviewer": "independent agent /root/rlasm_independent_review",
+    "date": "2026-10-06T13:39:43.766391+00:00",
+    "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+    "original_bytes_preserved": true
+  },
+  "readiness_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\recent-twenty-readiness-audit-2026-10-06-v001.json",
+    "sha256": "7ebc72a2577a4e7194e3691cdc32f977e08958321bec9ac02fa02fabb16bd362",
+    "no_readiness_hold": true
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0.png",
+      "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96",
+      "bytes": 1376693,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0_angle_60.jpg",
+      "sha256": "734ae95f07271be05506eafdc1495ccdbbd0b2d3b9765343fd0c56059e870180",
+      "bytes": 866062,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0_angle_90.jpg",
+      "sha256": "4bb6bb58b8bd3a7455b07220a5df3bdb0391b2158a183a4244b831c56bfa8d40",
+      "bytes": 848396,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\aerial.png",
+      "sha256": "96282f565581a1ce3142af83d268f188e19299d6d9af3e586ad9bc6e4dd7542c",
+      "bytes": 1615649,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\architecture_close.png",
+      "sha256": "5a4734c7aa953c7fe6396c1999fbd2b4dec78c1946db73c6f1f8c987cb4e8414",
+      "bytes": 1382181,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\chimney_close.png",
+      "sha256": "7b234fe8b3efcbdc7bd2417b7ef8575fb629f6e579a7de8ad8a7d1542bb105c6",
+      "bytes": 1875789,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\facade_close.png",
+      "sha256": "6ca46f0489120d9b12569966cdef29983e91a20a9a286660f3210da3beb754ce",
+      "bytes": 1619000,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\front.png",
+      "sha256": "c8420a1102f846df786806e197d8f2a0318faaea3c45bc000d53f26bf43fe7d1",
+      "bytes": 1373615,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\front_corner.png",
+      "sha256": "464f1d128f906154aab261bcd2e469bd0dcac738f4e33996dd146ba2d58dec76",
+      "bytes": 1575988,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\glass_close.png",
+      "sha256": "c1787390e46983e48e87db78cf4e9288455b84f846770c9057d0bf6c6363a008",
+      "bytes": 1389281,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\interior.png",
+      "sha256": "6ee6ba06e612134fbaaf0220eae812ed49953c2ce83a5833d15fe88626a2de06",
+      "bytes": 1485475,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\left_side.png",
+      "sha256": "d3c2bdbb0ab4c98519ea4c90cc9294701d9f37f6a735f8807fd96cd226c82731",
+      "bytes": 1305453,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\loading_access.png",
+      "sha256": "a5026d37d6610fed91a067fd3aa3fd325f02b43c3003e3ed138822b4bc01bc63",
+      "bytes": 1398259,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\rear.png",
+      "sha256": "330d9f542aff93fe3af64d6c6280c5b405656ff69b87929f63e1623a1a81a34f",
+      "bytes": 1360751,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\rear_side.png",
+      "sha256": "ed1b9541ec79ec08deb1ae6f789867dcfc0f41bdf2694fe995773677f854a92b",
+      "bytes": 1399603,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\right_side.png",
+      "sha256": "4acddd49bb7f142682c221841439e7a92399f02de7235b865317139086ca49a2",
+      "bytes": 1340411,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\roof_contact.png",
+      "sha256": "cf26f56586909553cdb49f1142ee7566c47beaba0f7703aafb746c4e8dfa3fe7",
+      "bytes": 1749229,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\roof_inside.png",
+      "sha256": "2cc88d75d734b0532fa056c598874369dd35d51c6423e2d8a39b6b7936259e14",
+      "bytes": 1565240,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\side_projection.png",
+      "sha256": "dab686ad19b635cf90efc181018ca2f1c8b4bdf353b94079718d5738b95df876",
+      "bytes": 1661101,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\top.png",
+      "sha256": "e1d93b40262beb7597fb722034af2fe994ca79eb17ad82a3cbc70e9fd6fd7e74",
+      "bytes": 1383590,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\boards\\all-views-contact.png",
+      "sha256": "88e68bad51a37ec5d3dbae13b026191866a62902e823f7a91c6bfe0352e33512",
+      "bytes": 2493462,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\boards\\locked-source-board.png",
+      "sha256": "a77a297e600cd9955a72d025ec61fcd4ea44e871a1219310d7e961597d5d504d",
+      "bytes": 1450590,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\boards\\phone-construction.png",
+      "sha256": "762632d08dee9ff8f0ee371d62b4805e7bd116646eef521b055ec6b108c65de4",
+      "bytes": 1131584,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\boards\\phone-source-comparison.png",
+      "sha256": "91cd898dff2d942b1e592abfa16b30c9f23820b3c9855bb73c1be79a862a10a2",
+      "bytes": 1653905,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    }
+  ],
+  "sources_current_exact": [
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\daylight_factory\\variant_0.png",
+      "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\daylight_factory\\variant_0_angle_60.jpg",
+      "sha256": "734ae95f07271be05506eafdc1495ccdbbd0b2d3b9765343fd0c56059e870180",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\daylight_factory\\variant_0_angle_90.jpg",
+      "sha256": "4bb6bb58b8bd3a7455b07220a5df3bdb0391b2158a183a4244b831c56bfa8d40",
+      "passed": true
+    }
+  ],
+  "integrity_checks": [
+    {
+      "kind": "build model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\daylight-sawtooth-factory-clay-v003.glb",
+      "sha256": "db0d255c0f987f6738cbd4eb0340eddc5143fc497145089fb819c4e32c8fa09d",
+      "passed": true
+    },
+    {
+      "kind": "gallery model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\daylight-sawtooth-factory-clay-v003.glb",
+      "sha256": "db0d255c0f987f6738cbd4eb0340eddc5143fc497145089fb819c4e32c8fa09d",
+      "passed": true
+    },
+    {
+      "kind": "review model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\daylight-sawtooth-factory-clay-v003.glb",
+      "sha256": "db0d255c0f987f6738cbd4eb0340eddc5143fc497145089fb819c4e32c8fa09d",
+      "passed": true
+    },
+    {
+      "kind": "authoring blend",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\daylight-sawtooth-factory-clay-v003-authoring.blend",
+      "sha256": "a16911f685c0c494037354c39726f3be24eb0aefcbcf3419e9679bb85786ebe1",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0.png",
+      "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\daylight_factory\\variant_0.png",
+      "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0_angle_60.jpg",
+      "sha256": "734ae95f07271be05506eafdc1495ccdbbd0b2d3b9765343fd0c56059e870180",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\daylight_factory\\variant_0_angle_60.jpg",
+      "sha256": "734ae95f07271be05506eafdc1495ccdbbd0b2d3b9765343fd0c56059e870180",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0_angle_90.jpg",
+      "sha256": "4bb6bb58b8bd3a7455b07220a5df3bdb0391b2158a183a4244b831c56bfa8d40",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\frontend\\public\\archetypes\\buildings\\daylight_factory\\variant_0_angle_90.jpg",
+      "sha256": "4bb6bb58b8bd3a7455b07220a5df3bdb0391b2158a183a4244b831c56bfa8d40",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\scripts\\clay_core.py",
+      "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\scripts\\build.py",
+      "sha256": "bccd526579f2140649a37d4c279064162aff4856629542687f9d654b980b0a70",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\scripts\\plan.py",
+      "sha256": "ffab4da485f4b43dca96e3d839d52fa41d93213edecc79b87ff7a01d25a6db0f",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\scripts\\warehouse.py",
+      "sha256": "c051b2454457381cb145fc150b11d8c259f9ddf2e83f368f36156fbc0542903e",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0.png",
+      "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0_angle_60.jpg",
+      "sha256": "734ae95f07271be05506eafdc1495ccdbbd0b2d3b9765343fd0c56059e870180",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0_angle_90.jpg",
+      "sha256": "4bb6bb58b8bd3a7455b07220a5df3bdb0391b2158a183a4244b831c56bfa8d40",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\aerial.png",
+      "sha256": "96282f565581a1ce3142af83d268f188e19299d6d9af3e586ad9bc6e4dd7542c",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\architecture_close.png",
+      "sha256": "5a4734c7aa953c7fe6396c1999fbd2b4dec78c1946db73c6f1f8c987cb4e8414",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\chimney_close.png",
+      "sha256": "7b234fe8b3efcbdc7bd2417b7ef8575fb629f6e579a7de8ad8a7d1542bb105c6",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\facade_close.png",
+      "sha256": "6ca46f0489120d9b12569966cdef29983e91a20a9a286660f3210da3beb754ce",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\front.png",
+      "sha256": "c8420a1102f846df786806e197d8f2a0318faaea3c45bc000d53f26bf43fe7d1",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\front_corner.png",
+      "sha256": "464f1d128f906154aab261bcd2e469bd0dcac738f4e33996dd146ba2d58dec76",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\glass_close.png",
+      "sha256": "c1787390e46983e48e87db78cf4e9288455b84f846770c9057d0bf6c6363a008",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\interior.png",
+      "sha256": "6ee6ba06e612134fbaaf0220eae812ed49953c2ce83a5833d15fe88626a2de06",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\left_side.png",
+      "sha256": "d3c2bdbb0ab4c98519ea4c90cc9294701d9f37f6a735f8807fd96cd226c82731",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\loading_access.png",
+      "sha256": "a5026d37d6610fed91a067fd3aa3fd325f02b43c3003e3ed138822b4bc01bc63",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\rear.png",
+      "sha256": "330d9f542aff93fe3af64d6c6280c5b405656ff69b87929f63e1623a1a81a34f",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\rear_side.png",
+      "sha256": "ed1b9541ec79ec08deb1ae6f789867dcfc0f41bdf2694fe995773677f854a92b",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\right_side.png",
+      "sha256": "4acddd49bb7f142682c221841439e7a92399f02de7235b865317139086ca49a2",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\roof_contact.png",
+      "sha256": "cf26f56586909553cdb49f1142ee7566c47beaba0f7703aafb746c4e8dfa3fe7",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\roof_inside.png",
+      "sha256": "2cc88d75d734b0532fa056c598874369dd35d51c6423e2d8a39b6b7936259e14",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\side_projection.png",
+      "sha256": "dab686ad19b635cf90efc181018ca2f1c8b4bdf353b94079718d5738b95df876",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\top.png",
+      "sha256": "e1d93b40262beb7597fb722034af2fe994ca79eb17ad82a3cbc70e9fd6fd7e74",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\boards\\all-views-contact.png",
+      "sha256": "88e68bad51a37ec5d3dbae13b026191866a62902e823f7a91c6bfe0352e33512",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\boards\\locked-source-board.png",
+      "sha256": "a77a297e600cd9955a72d025ec61fcd4ea44e871a1219310d7e961597d5d504d",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\boards\\phone-construction.png",
+      "sha256": "762632d08dee9ff8f0ee371d62b4805e7bd116646eef521b055ec6b108c65de4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\boards\\phone-source-comparison.png",
+      "sha256": "91cd898dff2d942b1e592abfa16b30c9f23820b3c9855bb73c1be79a862a10a2",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\evidence\\builder-evidence.json",
+      "sha256": "8854414d4ab2c72f1646e567c997af0b87cd13c5f627e956a95f28cefe4e6e11",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\evidence\\carrier-aperture-audit.json",
+      "sha256": "f4daa1763900efa5c63c9707dbbd25e4d33124996152deb46056ef42a8937253",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\evidence\\delivery-verification.json",
+      "sha256": "ae34d7f9a3aba382863edc237f2a1deda0981021f93200de6577460c5ecab0ef",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\evidence\\runtime-review.md",
+      "sha256": "5f7fc029d36e5986f23204bdd03fa5d9bf4d1ea708eab405a3f6b5f410fed1ea",
+      "passed": true
+    },
+    {
+      "kind": "source_manifest_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\prework-manifest.json",
+      "sha256": "a3f3ced6e9af224b29d786f05629be4a704c8167def50c6a39f35818f2ca4de9",
+      "passed": true
+    },
+    {
+      "kind": "build_report_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\build-report.json",
+      "sha256": "24bd7a6ee19ac7ebce587cce04776971fef26a1da02eccb61865ae2890b64b89",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0.png",
+      "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0_angle_60.jpg",
+      "sha256": "734ae95f07271be05506eafdc1495ccdbbd0b2d3b9765343fd0c56059e870180",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\sources\\variant_0_angle_90.jpg",
+      "sha256": "4bb6bb58b8bd3a7455b07220a5df3bdb0391b2158a183a4244b831c56bfa8d40",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\aerial.png",
+      "sha256": "96282f565581a1ce3142af83d268f188e19299d6d9af3e586ad9bc6e4dd7542c",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\architecture_close.png",
+      "sha256": "5a4734c7aa953c7fe6396c1999fbd2b4dec78c1946db73c6f1f8c987cb4e8414",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\chimney_close.png",
+      "sha256": "7b234fe8b3efcbdc7bd2417b7ef8575fb629f6e579a7de8ad8a7d1542bb105c6",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\facade_close.png",
+      "sha256": "6ca46f0489120d9b12569966cdef29983e91a20a9a286660f3210da3beb754ce",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\front.png",
+      "sha256": "c8420a1102f846df786806e197d8f2a0318faaea3c45bc000d53f26bf43fe7d1",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\front_corner.png",
+      "sha256": "464f1d128f906154aab261bcd2e469bd0dcac738f4e33996dd146ba2d58dec76",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\glass_close.png",
+      "sha256": "c1787390e46983e48e87db78cf4e9288455b84f846770c9057d0bf6c6363a008",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\interior.png",
+      "sha256": "6ee6ba06e612134fbaaf0220eae812ed49953c2ce83a5833d15fe88626a2de06",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\left_side.png",
+      "sha256": "d3c2bdbb0ab4c98519ea4c90cc9294701d9f37f6a735f8807fd96cd226c82731",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\loading_access.png",
+      "sha256": "a5026d37d6610fed91a067fd3aa3fd325f02b43c3003e3ed138822b4bc01bc63",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\rear.png",
+      "sha256": "330d9f542aff93fe3af64d6c6280c5b405656ff69b87929f63e1623a1a81a34f",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\rear_side.png",
+      "sha256": "ed1b9541ec79ec08deb1ae6f789867dcfc0f41bdf2694fe995773677f854a92b",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\right_side.png",
+      "sha256": "4acddd49bb7f142682c221841439e7a92399f02de7235b865317139086ca49a2",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\roof_contact.png",
+      "sha256": "cf26f56586909553cdb49f1142ee7566c47beaba0f7703aafb746c4e8dfa3fe7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\roof_inside.png",
+      "sha256": "2cc88d75d734b0532fa056c598874369dd35d51c6423e2d8a39b6b7936259e14",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\side_projection.png",
+      "sha256": "dab686ad19b635cf90efc181018ca2f1c8b4bdf353b94079718d5738b95df876",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003\\renders\\top.png",
+      "sha256": "e1d93b40262beb7597fb722034af2fe994ca79eb17ad82a3cbc70e9fd6fd7e74",
+      "passed": true
+    }
+  ],
+  "canonical_validator": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\rlasm-next-five-zoning-gaps-2026-10-06\\factory-v003",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "mandatory_view_count": 17,
+  "all_mandatory_views_covered_by_original_review": true,
+  "requires_fresh_review": false,
+  "runtime_approved": false,
+  "textured_keeper_approved": false,
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval."
+  ]
+}
