@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-b19a7546-62f2-4d6e-a22a-597331e56af4.png",
+      "prompt": "Create ONE beautiful original architectural reference photograph of a very compact two-storey professional office building, called Brick-and-timber Courtyard Office. The building is a SINGLE U-SHAPED continuous building,14metres wide overall and12metres deep. Two narrow side wings, each3.5m wide by12m long, and a rear connecting bar7m wide by4m deep make an open central courtyard7m wide by8m deep; approximately112m2 footprint and224m2 across exactly two floors. This compact scale is essential, NOT a sprawling campus or large corporate headquarters. Two office storeys, no roof terrace or third floor; totalheight approximately8.8m with a flat roof and finely detailed parapets. Rich warm reddish-brown brick walls, dark slender recessed window frames, natural golden timber soffits and vertical fins at selected courtyard glazing. Each wing's front end has ONE generous wide window per floor. Each long courtyard elevation has TWO broad window bays per floor. Rear court facade has a central glazed double entrance door on ground floor, one window on each side, and three simple windows upstairs; connected interiors visible with restrained desks and chairs. Flat continuous U-shaped roof, no separate pavilions, no bridges across the court. Central paved entrance walk from open foreground to rear entry, two modest planted beds and one small serviceberry tree to one side, two grounded timber benches. Visible roof-wall contacts, solid brick piers, restrained timber accents, exceptionally calm contemporary Canadian civic-commercial architecture. Camera slightly elevated front-right three-quarter, the entire complete U-shape visible with generous uncropped margins. Soft clear daylight, realistic tangible materials, neutral surrounding sidewalk/gravel, minimal distracting surroundings. No people, text, signs, logos, cars, tall trees hiding facade, collage or aerial plan drawing.",
+      "input_roles": [],
+      "sha256": "29dc3deeab0693872b3e1bbcc9c60356fdfd94e2b9cbfa2deb9bbf113d9e6348",
+      "bytes": 3142357,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-036b9424-f3a8-4e21-9aa7-6de46891a86d.png",
+      "prompt": "Create ONE matching front-LEFT elevated architectural reference photograph of EXACTLY the compact U-shaped two-storey office in the attached source. Camera high enough to reveal all three continuous flat-roof wings, while still seeing the courtyard and facade. Whole building uncropped with generous ground margin. Preserve the exact front brick piers, warm reddish-brown brick, dark window frames, golden vertical timber fins on courtyard facades, one front-end window per storey on each side wing, two glazing bays per floor on each long inner courtyard wall, central rear glazed entrance door flanked by two windows, three upper rear-court windows, the same planted courtyard, one little tree left, two benches and central approach. Continuous single U-shaped building, not separate pavilions; exactly two floors, no balconies, no third floor. Main outside footprint14m wide by12m deep, each side wing3.5m wide and rear connector4m deep, courtyard7m wide by8m deep. Preserve source proportions and modest professional-office scale. Show previously unseen outside left elevation with a coherent sparse rhythm of three simple windows per floor; use the same brick and dark trim. Flat parapet roof with realistic sealed corners; no added rooftop equipment or extensions. Soft photographic daylight, no people, labels, text, signage, collage or redesign.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "ef755dc9aca321e273dcca047a6a255d3e1d233e3b5f010e5e89f1b4e706db78",
+      "bytes": 3400169,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-f9999ce0-4ff6-4d6a-aade-b79b81b23a30.png",
+      "prompt": "Create ONE near-vertical overhead architectural reference photograph of EXACTLY the compact brick-and-timber office in the attached two views. Show the entire U-shaped building and its central courtyard with clear margins, without crop. Overall main building envelope14m wide and12m deep. TWO side wings each3.5m wide extending the12m depth, one rear crossbar spanning the7m gap and4m deep: a single continuous flat U-shaped roof around a7m by8m open courtyard. Exactly two floors, matching attached proportions, no roof terraces, roof pavilions, skylights, extra storeys or HVAC objects. Membrane roof in quiet charcoal-grey with low continuous parapets and metal coping only around the outside and courtyard edges, no parapet across connections. Warm brick outside, restrained golden timber fins on court walls, central rear entrance, same two benches, one little left tree, planting beds and straight central paved approach. Roof and courtyard topology must be unmistakable and physically plausible. Photographic soft neutral daylight and realistic materials, no labels, numbers, signs, text, diagrams, collage, people or vehicles. Preserve the exact source building identity.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "ee83a704c6068ab75383968b34b6921b11f97b9afc3ed488deb2d8c3258ff83a",
+      "bytes": 3569374,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

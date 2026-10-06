@@ -1,0 +1,126 @@
+{
+  "schema": "cityprompt.coverage-five.checkpoint@1",
+  "created_utc": "2026-10-06T18:43:34.786581+00:00",
+  "initiative": "five-original-zoning-coverage-studies",
+  "method": "RLASM v6.1",
+  "state": "PASS_OFFLINE_ARCHITECTURAL_CLAY_REVIEW",
+  "branch": "codex/rlasm-five-zoning-gaps-2026-10-05",
+  "candidates": [
+    {
+      "kind": "maple",
+      "title": "Maple Porch Manufactured Cottage",
+      "candidate": "maple-porch-manufactured-cottage-clay-v004",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\maple-v004\\maple-porch-manufactured-cottage-clay-v004.glb",
+      "model_sha256": "0e55ef41aba5a5216a39218a381cd1aad15b94fc4257b14b51503852738d7f5a",
+      "bytes": 530768,
+      "triangles": 9750,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\maple-porch-manufactured-cottage-clay-v004-independent-review-2026-10-06-v001.json",
+      "review_sha256": "278e6b9ac3775e15a5a6f3fea6b52163b4a21780c373a59109a8b2ef6cbb382e",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "native_dimensions_m": {
+        "width": 14.529999732971191,
+        "depth": 7.442999839782715,
+        "height": 4.550000190734863
+      }
+    },
+    {
+      "kind": "horizon",
+      "title": "Horizon Manufactured Home",
+      "candidate": "horizon-manufactured-home-clay-v003",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\horizon-v003\\horizon-manufactured-home-clay-v003.glb",
+      "model_sha256": "54746a0647427bbb03c6bdf538db599a6ef2a06022680b61e94f5f3e13ce4d42",
+      "bytes": 349384,
+      "triangles": 6416,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\horizon-manufactured-home-clay-v003-independent-review-2026-10-06-v001.json",
+      "review_sha256": "5ada462ac87b0656a09573954ecd17d2bd498cce40179cb0e4619b6489fbaa59",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "native_dimensions_m": {
+        "width": 14.180000305175781,
+        "depth": 9.422999858856201,
+        "height": 4.62440824508667
+      }
+    },
+    {
+      "kind": "craftsman",
+      "title": "Narrow-lot Craftsman Cottage",
+      "candidate": "narrow-lot-craftsman-cottage-clay-v003",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\narrow-lot-craftsman-cottage-clay-v003.glb",
+      "model_sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a",
+      "bytes": 714084,
+      "triangles": 13218,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\narrow-lot-craftsman-cottage-clay-v003-independent-review-2026-10-06-v001.json",
+      "review_sha256": "4eccaee9be22505ba18e2b5bd2f2ce91ac09cbfc150091073f6940adb01d85dc",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "native_dimensions_m": {
+        "width": 9.322999954223633,
+        "depth": 16.1899995803833,
+        "height": 6.300000190734863
+      }
+    },
+    {
+      "kind": "mews",
+      "title": "Garden Mews Courtyard Housing",
+      "candidate": "garden-mews-courtyard-housing-clay-v003",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\mews-v003\\garden-mews-courtyard-housing-clay-v003.glb",
+      "model_sha256": "d5876675af0afc5110cffba9b262b7e3e00f54c3de2c92e6ea9a12da08032bb6",
+      "bytes": 4191152,
+      "triangles": 77468,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\garden-mews-courtyard-housing-clay-v003-independent-review-2026-10-06-v001.json",
+      "review_sha256": "2482f18bf0e607b3fd587994c2868a40661091561659a60612c86ec6ced69a0a",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "native_dimensions_m": {
+        "width": 23.0,
+        "depth": 23.0,
+        "height": 8.699999809265137
+      }
+    },
+    {
+      "kind": "office",
+      "title": "Brick-and-timber Courtyard Office",
+      "candidate": "brick-timber-courtyard-office-clay-v004",
+      "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\office-v004\\brick-timber-courtyard-office-clay-v004.glb",
+      "model_sha256": "2338f50857d2ec8365a2fe7854e86d438d33f8bc661187f06f803b112d3acde6",
+      "bytes": 10153324,
+      "triangles": 170610,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\brick-timber-courtyard-office-clay-v004-independent-review-2026-10-06-v001.json",
+      "review_sha256": "85d7a93e731284b6a28afcd3792621dbc99c19955f2b72c253a0933cde0496ed",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "native_dimensions_m": {
+        "width": 14.359999656677246,
+        "depth": 12.359999656677246,
+        "height": 7.400000095367432
+      }
+    }
+  ],
+  "reference_count": 15,
+  "validation": {
+    "pytest_passed": 25,
+    "independent_images_inspected": 135,
+    "canonical_candidates_passed": 5,
+    "source_and_model_hashes_verified": true,
+    "gallery_urls_verified": 67,
+    "browser_report": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\browser-verification.json"
+  },
+  "gallery": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\gallery-v001\\index.html",
+    "url": "http://127.0.0.1:8794/",
+    "manifest_sha256": "5b63ef4a1a2959d37d6cd93ee0a66a9ddb2a528daaedde93ac0c8926a82e6297"
+  },
+  "zoning_audit": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\coverage-five-independent-zoning-audit-2026-10-06-v003.json",
+    "sha256": "33250c2301f59c4eb5d1654e44b008daf7439dacade2c7edd57d31ed28bb1f8f",
+    "parcel_approval": false
+  },
+  "delivery": {
+    "source_changes": "Batch builder, metadata, provenance, tests, gallery packager and15 canonical PNG references under Git LFS.",
+    "generated_output": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06",
+    "generated_models_and_qa_committed": false,
+    "runtime_installed": false,
+    "runtime_acceptance": "NOT TESTED",
+    "textured_keeper_approval": false,
+    "human_visual_activation": false,
+    "git_push": false
+  },
+  "preserved_history": "All failed versions retained. Mews v002 pass was withdrawn by a later independent record; selection uses v003 and gallery rejects superseded reviews.",
+  "next_batch": "Affordable housing inspired by Attainable Homes Calgary. Not started. Modular construction remains distinct from Manufactured Home zoning classification."
+}

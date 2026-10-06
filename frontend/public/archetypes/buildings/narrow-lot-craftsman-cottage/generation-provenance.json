@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-a4fb6817-d7a3-4fbd-a24c-06b90d6cb296.png",
+      "prompt": "Create ONE original architectural reference photograph of an exceptionally charming, credible Canadian Craftsman cottage, a fictional new design for Calgary. Narrow rectangular main house about7.2m wide and12.8m deep, ONE occupied storey with tall unoccupied attic under a steep long gable roof running front-to-back. No dormer or upstairs living space. Main eaves about3.5m, ridge6.2m. Whole house uncropped, generous ground/sky margins, front-right three-quarter eye-level view showing main front gable and long right side. Refined blue-grey horizontal clapboard, natural honey-brown timber details, weathered reddish brick low base, charcoal shingle roof. A lower full-width front gabled porch projects2m, its ridge aligned with the main roof behind but considerably lower. Porch has two substantial square tapered timber posts seated on tall brick piers, simple knee braces bearing roof, deep timber fascia and exposed rafter tails. Main front: one wide three-part Craftsman window LEFT with slender divided upper lights; one rich timber main door RIGHT with small upper glazed panes. Three or four broad brick/timber front steps centered at the right-side door; low open timber rail across left portion only. Main upper gable has cedar shingles and a small horizontal slatted attic vent, not a bedroom window. On long right elevation exactly three well-spaced simple double-hung windows, white/ivory casings. One small rear garden exit can be unseen. A genuine modest home with precise roof intersections, post-to-pier contacts and intimate proportions. Soft bright Alberta daylight, quiet low prairie planting, gravel/walk apron. No people, cars, garage, text, logos, signage, collage or unrealistic ornament. Photographic realism, warm tactile materials, restrained high-quality architecture.",
+      "input_roles": [],
+      "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39",
+      "bytes": 2913125,
+      "dimensions_px": [
+        1374,
+        1145
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-200d87da-8b2d-4f09-883c-d0bdd2f43030.png",
+      "prompt": "Make ONE matching architectural photograph of EXACTLY the fictional Craftsman cottage in the attached image, now seen from a higher front-LEFT three-quarter angle revealing its long left side and roof. Preserve exact house design, not a reinterpretation: narrow7.2m main body and12.8m depth, one occupied storey, tall steep charcoal-shingle front-to-back main gable with cedar-shingle front triangle and one small centered louvered attic vent; lower shallow full-width front-gabled porch, blue-grey clapboard body, ivory window trim, warm timber fascia/braces. Porch has TWO tapered timber posts on the outer brick piers and a THIRD shorter brick pier ending the left handrail beside the broad right-side entry steps. Large left three-part window with finely divided upper lights, right timber door with small upper lights. Four brick-front steps rise0.6m to porch. Exactly the same front opening sizes and positions. Infer left side with three simple sash windows matching the right, no side projections, no dormers, no new story, no chimney. Entire house with margins, clear daylight, grounded construction, unobtrusive low garden. Photorealistic, no people, labels, diagrams, text or collage.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "1540cda4637310dc81f489e65dd06e7e1bcc872aea84ff21a86315ac6bf39f39",
+      "bytes": 2932943,
+      "dimensions_px": [
+        1374,
+        1145
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-2fc05d9a-bfa8-48dc-b5ae-e0f79e1d8cbd.png",
+      "prompt": "Create ONE high aerial overhead photograph of EXACTLY the cottage in these two attached original views. Camera elevated60degrees looking down from front-right, entire rectangular house and attached front porch visible with margins. Preserve roof geometry: a single long steep charcoal-shingle gable running the12.8m front-to-back length of the7.2m-wide main body, then an attached full-width LOWER and shallower-pitch porch gable projecting2m from the front. Both ridges align front-to-back. Main gable unoccupied attic, no dormers, no chimney, no extra roof extensions or second floor. Preserve warm timber fascia, blue-grey cladding, brick porch piers, two posts, left handrail and right-side four steps, front window left and door right. One discreet small rear garden step/door may be seen. High architectural reference camera reveals exact main roof and porch relationship without cutting off the footings or roof corners. Same restrained low landscape, photorealistic natural daylight, no people, text, arrows, labels, diagram, collage or redesign.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "6da001c3a743418f18afab6bdc8ad0987a3b5abb047c110f1186c892083c7d6e",
+      "bytes": 3558530,
+      "dimensions_px": [
+        1374,
+        1145
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}
