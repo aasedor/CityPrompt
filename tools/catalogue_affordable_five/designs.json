@@ -1,0 +1,272 @@
+{
+  "schema": "cityprompt.original-reference-batch@1",
+  "created": "2026-10-06",
+  "method": "RLASM v6.1",
+  "source_origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "runtime_activation": false,
+  "scope": "Five original affordable-housing teaching concepts, independently reviewed then trialled in City Prompt. Inspired by AHC's programme, not replicas or endorsed AHC projects.",
+  "inspiration_sources": [
+    {
+      "url": "https://attainyourhome.com/",
+      "note": "Below-market ownership and rental programmes; townhomes and factory-built studio apartments."
+    },
+    {
+      "url": "https://attainyourhome.com/wp-content/uploads/2025/06/AHC-Financial-Statements-2024-Final.pdf",
+      "note": "605 modular studio programme; design dimensions below are original authored concepts, not copied AHC project specifications."
+    }
+  ],
+  "affordability": "Proposed non-market tenure programme. No rents, construction costs, subsidy or eligibility certification inferred from architectural appearance.",
+  "candidates": [
+    {
+      "kind": "porchlight",
+      "id": "affordable_porchlight",
+      "variant": "affordable_porchlight_original",
+      "title": "Porchlight Townhouse Row",
+      "slug": "affordable-porchlight",
+      "styles": [
+        "Contemporary Canadian",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Dwelling Unit"
+      ],
+      "storeys": 2,
+      "units": 4,
+      "dimensions_m": {
+        "width": 22,
+        "depth": 9,
+        "height": 7.75
+      },
+      "program": "Four two-storey two-bedroom homes; independent street entrances, internal stairs, kitchen/living rooms and private rear patios. Repeated simple envelope for an attainable homeownership teaching programme.",
+      "search_tags": [
+        "Porchlight Townhouse Row",
+        "Contemporary Canadian",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 2,
+        "native": 2,
+        "maximum": 2,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "Independent use-route research pending",
+        "district_candidates": [],
+        "approval": false,
+        "verification_limits": "Affordability and prefabrication are not zoning uses. No automatic DC, height relaxation or manufactured-home classification."
+      }
+    },
+    {
+      "kind": "juniper",
+      "id": "affordable_juniper",
+      "variant": "affordable_juniper_original",
+      "title": "Juniper Courtyard Cottages",
+      "slug": "affordable-juniper",
+      "styles": [
+        "Scandinavian",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Dwelling Unit"
+      ],
+      "storeys": 1,
+      "units": 4,
+      "dimensions_m": {
+        "width": 22,
+        "depth": 17,
+        "height": 4.4
+      },
+      "program": "Four single-level one-bedroom courtyard homes with individual entrances. Step-free intent requires site and accessibility review.",
+      "search_tags": [
+        "Juniper Courtyard Cottages",
+        "Scandinavian",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "Independent use-route research pending",
+        "district_candidates": [],
+        "approval": false,
+        "verification_limits": "Affordability and prefabrication are not zoning uses. No automatic DC, height relaxation or manufactured-home classification."
+      }
+    },
+    {
+      "kind": "stackyard",
+      "id": "affordable_stackyard",
+      "variant": "affordable_stackyard_original",
+      "title": "Stackyard Stacked Townhomes",
+      "slug": "affordable-stackyard",
+      "styles": [
+        "Contemporary",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Dwelling Unit"
+      ],
+      "storeys": 2,
+      "units": 6,
+      "dimensions_m": {
+        "width": 21,
+        "depth": 11,
+        "height": 7.2
+      },
+      "program": "Six two-bedroom homes stacked as three ground and three upper dwellings. Upper outdoor gallery with two end stairs; private lower patios.",
+      "search_tags": [
+        "Stackyard Stacked Townhomes",
+        "Contemporary",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 2,
+        "native": 2,
+        "maximum": 2,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "Independent use-route research pending",
+        "district_candidates": [],
+        "approval": false,
+        "verification_limits": "Affordability and prefabrication are not zoning uses. No automatic DC, height relaxation or manufactured-home classification."
+      }
+    },
+    {
+      "kind": "aspen",
+      "id": "affordable_aspen",
+      "variant": "affordable_aspen_original",
+      "title": "Aspen Walk Apartments",
+      "slug": "affordable-aspen",
+      "styles": [
+        "Canadian modern",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Dwelling Unit"
+      ],
+      "storeys": 3,
+      "units": 12,
+      "dimensions_m": {
+        "width": 24,
+        "depth": 13,
+        "height": 10.7
+      },
+      "program": "Twelve compact one- and two-bedroom rental apartments, shared interior circulation, two stairs and reserved lift core.",
+      "search_tags": [
+        "Aspen Walk Apartments",
+        "Canadian modern",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 3,
+        "native": 3,
+        "maximum": 3,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "Independent use-route research pending",
+        "district_candidates": [],
+        "approval": false,
+        "verification_limits": "Affordability and prefabrication are not zoning uses. No automatic DC, height relaxation or manufactured-home classification."
+      }
+    },
+    {
+      "kind": "switchback",
+      "id": "affordable_switchback",
+      "variant": "affordable_switchback_original",
+      "title": "Switchback Modular Studios",
+      "slug": "affordable-switchback",
+      "styles": [
+        "Contemporary modular",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Dwelling Unit"
+      ],
+      "storeys": 4,
+      "units": 24,
+      "dimensions_m": {
+        "width": 24,
+        "depth": 14,
+        "height": 13.8
+      },
+      "program": "Twenty-four permanent studio dwellings in an authored modular apartment assembly, six per floor, common corridor, two stairs and lift core. Prefabricated construction, no permanent transport chassis.",
+      "search_tags": [
+        "Switchback Modular Studios",
+        "Contemporary modular",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "modular"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 4,
+        "native": 4,
+        "maximum": 4,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "Independent use-route research pending",
+        "district_candidates": [],
+        "approval": false,
+        "verification_limits": "Affordability and prefabrication are not zoning uses. No automatic DC, height relaxation or manufactured-home classification."
+      }
+    }
+  ]
+}
