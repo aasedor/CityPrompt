@@ -72,19 +72,22 @@ const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
   { id: 'internal_enhance', name: 'Internal Enhance', detail: 'Self-hosted · exact skins · $0' },
 ];
 
-function providerName(provider?: VideoProvider): string {
+function providerName(provider?: VideoProvider | 'kling'): string {
+  if (provider === 'kling') return 'Kling';
   if (provider === 'seedance_mini') return 'Seedance Mini';
   if (provider === 'internal_enhance') return 'Internal Enhance';
   return 'Omni';
 }
 
-function providerSlug(provider?: VideoProvider): string {
+function providerSlug(provider?: VideoProvider | 'kling'): string {
+  if (provider === 'kling') return 'kling-animation';
   if (provider === 'seedance_mini') return 'seedance-mini';
   if (provider === 'internal_enhance') return 'internal-enhance';
   return 'omni';
 }
 
-function providerOrigin(provider?: VideoProvider): string {
+function providerOrigin(provider?: VideoProvider | 'kling'): string {
+  if (provider === 'kling') return 'fal Kling · animated still';
   if (provider === 'seedance_mini') return 'fal Seedance Mini';
   if (provider === 'internal_enhance') return 'City Prompt local pipeline';
   return 'Gemini Omni';
@@ -108,7 +111,10 @@ function sceneClaimsSignature(
 export interface VideoAttempt {
   id: string;
   request_id: string;
-  provider?: VideoProvider;
+  provider?: VideoProvider | 'kling';
+  mode?: 'route_video' | 'saved_render_animation';
+  source_render_id?: string | null;
+  recoverable?: boolean;
   model?: string | null;
   seedance_reference_mode?: SeedanceReferenceMode | null;
   internal_enhance_quality?: InternalEnhanceQuality | null;
@@ -150,6 +156,7 @@ function fidelityTone(status: VideoAttempt['fidelity_status']): string {
 }
 
 function videoAttemptLabel(attempt: VideoAttempt): string {
+  if (attempt.mode === 'saved_render_animation') return 'Kling · animated still · slow push-in';
   const provider = providerName(attempt.provider);
   const motion = attempt.camera_motion.split('_').join(' ');
   const control = attempt.provider === 'seedance_mini'
@@ -1141,7 +1148,7 @@ export function VideoGeneratePanel({
                         )}
                       </div>
                       <p className="text-[9px] text-[#151515]/45">
-                        8 sec · {selectedAttempt.render_quality === 'high' ? '1080p HQ source' : '720p source'} · {providerOrigin(selectedAttempt.provider)} · saved to project
+                        {selectedAttempt.duration_seconds} sec · {selectedAttempt.mode === 'saved_render_animation' ? 'Finished render source' : selectedAttempt.render_quality === 'high' ? '1080p HQ source' : '720p source'} · {providerOrigin(selectedAttempt.provider)} · saved to project
                         {selectedAttempt.scene_revision_sha256
                           ? ` · scene ${selectedAttempt.scene_revision_sha256.slice(0, 10)}`
                           : ''}

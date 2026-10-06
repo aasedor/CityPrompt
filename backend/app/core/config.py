@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import List
 
 from dotenv import dotenv_values
-from pydantic import model_validator
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _BACKEND_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -200,6 +200,11 @@ class Settings(BaseSettings):
     omni_video_model: str = "gemini-omni-flash-preview"
     omni_video_timeout_seconds: int = 600
     seedance_video_timeout_seconds: int = 900
+    kling_animation_enabled: bool = False
+    kling_animation_endpoint: str = "fal-ai/kling-video/v3/pro/image-to-video"
+    # fal list price checked 2026-10-06: silent Pro video $0.112 / second.
+    kling_animation_cost_per_second_usd: float = Field(default=0.112, gt=0)
+    kling_animation_credit_cost: int = Field(default=50, gt=0)
     google_maps_api_key: str = ""
     fal_key: str = ""
     fal_style_model: str = "fal-ai/fast-sdxl/image-to-image"

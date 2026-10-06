@@ -97,6 +97,7 @@ import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { savedRenderNotice } from '@/utils/renderPresentation';
 import { SavedRenderCard } from './SavedRenderCard';
+import { AnimateRenderButton } from '@/components/viewer/AnimateRenderButton';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
@@ -1608,6 +1609,7 @@ export function ProjectViewPage() {
                 <RenderSourceNote render={renderLightbox} />
               </div>
               <div className="absolute top-3 right-3 flex gap-2">
+                <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} />
                 <button
                   type="button"
                   onClick={() => handleEditRender(renderLightbox)}
@@ -1655,7 +1657,7 @@ export function ProjectViewPage() {
                 <Video size={18} className="text-[#c9ff3d]" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold capitalize">{videoRenderLabel(videoLightbox)}</p>
-                  <p className="text-xs text-white/50">8 sec · {videoProviderOrigin(videoLightbox)} · saved to project</p>
+                  <p className="text-xs text-white/50">{videoLightbox.duration_seconds} sec · {videoProviderOrigin(videoLightbox)} · saved to project</p>
                 </div>
                 <a
                   href={videoDownloadUrl(videoLightbox)}
@@ -1840,6 +1842,7 @@ export function ProjectViewPage() {
               onLightboxOpenChange={setAiPanelLightboxOpen}
               onStyleChange={setActiveAIStyle}
               onRenderSaved={rememberSavedRender}
+              onVideoSaved={rememberSavedVideo}
             />
           )}
 
@@ -2086,6 +2089,7 @@ export function ProjectViewPage() {
               <RenderSourceNote render={renderLightbox} />
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
+              <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} />
               <button
                 type="button"
                 onClick={() => handleEditRender(renderLightbox)}
@@ -2184,7 +2188,7 @@ function RenderSourceNote({ render }: { render: SavedRender }) {
 function videoDownloadUrl(video: VideoAttempt): string {
   const source = resolveApiFileUrl(video.video_url ?? '');
   const separator = source.includes('?') ? '&' : '?';
-  const provider = video.provider === 'seedance_mini'
+  const provider = video.provider === 'kling' ? 'kling-animation' : video.provider === 'seedance_mini'
     ? 'seedance-mini'
     : video.provider === 'internal_enhance'
       ? 'internal-enhance'
@@ -2194,12 +2198,14 @@ function videoDownloadUrl(video: VideoAttempt): string {
 }
 
 function videoProviderOrigin(video: VideoAttempt): string {
+  if (video.provider === 'kling') return 'fal Kling · animated still';
   if (video.provider === 'seedance_mini') return 'Seedance Mini';
   if (video.provider === 'internal_enhance') return 'City Prompt local pipeline';
   return 'Gemini Omni';
 }
 
 function videoRenderLabel(video: VideoAttempt): string {
+  if (video.mode === 'saved_render_animation') return 'Kling · animated still · slow push-in';
   const motion = video.camera_motion.split('_').join(' ');
   const provider = video.provider === 'seedance_mini'
     ? 'Seedance Mini'

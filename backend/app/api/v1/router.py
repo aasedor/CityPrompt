@@ -40,6 +40,7 @@ from app.api.v1 import (
     lego_assembly,
     site_landscape,
     video,
+    render_animation,
 )
 
 api_router = APIRouter(dependencies=[Depends(require_classroom_scope)])
@@ -66,6 +67,7 @@ api_router.include_router(lego_assembly.router, prefix="/lego-assembly", tags=["
 api_router.include_router(master_plan_2d.router, prefix="/master-plan-2d", tags=["2D Master Plan"])
 api_router.include_router(render.router, prefix="/render", tags=["AI Render"])
 api_router.include_router(video.router, prefix="/video", tags=["Video Render"])
+api_router.include_router(render_animation.router, prefix="/video", tags=["Saved Render Animation"])
 api_router.include_router(direct_3d_render.router, prefix="/render", tags=["Direct 3D Render"])
 api_router.include_router(render_attempts.router, prefix="/render", tags=["Direct 3D Render"])
 api_router.include_router(feedback.router, prefix="/feedback", tags=["Beta Feedback"])

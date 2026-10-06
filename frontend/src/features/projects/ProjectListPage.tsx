@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store';
 import type { CreateProjectRequest, Project, Location, SavedRender, UpdateProjectRequest } from '@/types';
 import { ProjectEditModal } from './ProjectEditModal';
 import { RenderEditModal } from '@/components/viewer/RenderEditModal';
+import { AnimateRenderButton } from '@/components/viewer/AnimateRenderButton';
 import { isTextEntryTarget } from '@/utils/domEvents';
 
 export function ProjectListPage() {
@@ -533,6 +534,7 @@ export function ProjectListPage() {
               </p>
             </div>
             <div className="absolute right-3 top-3 flex gap-2">
+              {expandedRender.project.permission !== 'viewer' && <AnimateRenderButton projectId={expandedRender.project.id} render={expandedRender.render} />}
               <button
                 type="button"
                 onClick={() => {
