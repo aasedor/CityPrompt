@@ -1,0 +1,332 @@
+{
+  "native-park:botanical_garden_v3--native-v1": {
+    "variantId": "botanical_garden_v3",
+    "revision": "8e5447c3b253c3f5842c049948620c67eebe4679f73b72ca84145718f58e4a84",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Garden and conservatory for growing and displaying ornamental plants for education and recreation. Conservatory dimensions and building rules require a separate check; no commercial nursery assumed."
+  },
+  "native-park:sculpture_garden_v0--native-v1": {
+    "variantId": "sculpture_garden_v0",
+    "revision": "5ea667d78cf619fd919494c852c1fe5751f3e951fdc8deccba3904d52500af62",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Outdoor sculpture garden for cultural enjoyment. An enclosed museum is a separate use and is not included in this program."
+  },
+  "native-park:student_neighbourhood_orchard_v1--native-v1": {
+    "variantId": "student_neighbourhood_orchard_v1",
+    "revision": "746f5c3037bef70511e1529b7c7ca536697ea9931798231ca4a2c68306bf80ff",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Community orchard for recreational and educational growing, not commercial food production."
+  },
+  "native-park:amphitheater_lawn_v0--native-v1": {
+    "variantId": "amphitheater_lawn_v0",
+    "revision": "e5bbe20222fe6af93f05c33a8ef4688f57b51b8636d0d5dee5672d1c2840d1ee",
+    "components": [
+      [
+        "Park"
+      ],
+      [
+        "Performing Arts Centre"
+      ]
+    ],
+    "assumption": "Landscaped outdoor performance venue. This program requires both Park and Performing Arts Centre; a lawn with only incidental events needs its own program review."
+  },
+  "native-park:student_garden_square_v1--native-v1": {
+    "variantId": "student_garden_square_v1",
+    "revision": "b0310f14be314d41a61167a5d62627fbadbf65ce37f1d3dc2e3feaef2f8c7400",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Landscaped square for sitting, strolling and informal gathering; no retail or event venue assumed."
+  },
+  "native-park:wetland_rain_garden_v0--native-v1": {
+    "variantId": "wetland_rain_garden_v0",
+    "revision": "95c8676b5de15a86550f632d994a1bebe65efb51ea73ee3ad5acabbac6ba1c54",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Designed wetland garden and boardwalk for recreation and education. Natural Area status and stormwater utility functions are not established by this model."
+  },
+  "native-park:research_garden_teaching_arboretum_variant_3--native-v1": {
+    "variantId": "research_garden_teaching_arboretum_variant_3",
+    "revision": "d76573a0a2a7281b71018a9f75dcee148fb8e401ad547e3053eba4f8a475c38e",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Educational demonstration planting garden, not a commercial research facility or separate school."
+  },
+  "native-park:basketball_court_v1--native-v1": {
+    "variantId": "basketball_court_v1",
+    "revision": "4682d83edf8fee509fbe4f4edae8cd524849743fa613046c358a4a6615a36fa3",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor basketball courts with supporting landscape and seating; screened as Outdoor Recreation Area."
+  },
+  "native-park:student_reading_garden_v2--native-v1": {
+    "variantId": "student_reading_garden_v2",
+    "revision": "5c6a709fb7e69eeeb6de039809c16776bc30645de9614afffab85397c711c50a",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Quiet reading and sitting garden with shade and seating, without an enclosed library use."
+  },
+  "native-park:student_pickleball_garden_v1--native-v1": {
+    "variantId": "student_pickleball_garden_v1",
+    "revision": "ef5762251943079d6a7510f529b4d117a31d2837fe857f11d461ae4cdb47e7e3",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor pickleball courts with supporting garden and seating; screened as Outdoor Recreation Area."
+  },
+  "native-park:student_tennis_garden_v2--native-v1": {
+    "variantId": "student_tennis_garden_v2",
+    "revision": "e2f7e20157f3ad95782137f984524f16f980670bcbdf9caa0034b43bdc063a41",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor tennis court with supporting landscape; screened as Outdoor Recreation Area."
+  },
+  "native-park:student_bocce_garden_v2--native-v1": {
+    "variantId": "student_bocce_garden_v2",
+    "revision": "935250c769cf950991ce35e6ccc4a7fc580c43bbf808bb2d5bc4bbcb25f26fc0",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor bocce courts with supporting pergola and garden; screened as Outdoor Recreation Area."
+  },
+  "native-park:urban_pocket_park_v0--native-v1": {
+    "variantId": "urban_pocket_park_v0",
+    "revision": "aa17f01fdb4a44036d038696728e54ec5b35974f30adae2be7a1258d557eaaad",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Small landscaped park for sitting, walking and informal recreation."
+  },
+  "native-park:linear_park_greenway_v0--native-v1": {
+    "variantId": "linear_park_greenway_v0",
+    "revision": "58be0c48376bb8b565fa8a9449072a542b68ec41d9b793be2018b58683e5d1b1",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Recreational greenway and walking trail. A railway or transportation facility is not part of this program."
+  },
+  "native-park:inclusive_accessible_playground_v0--native-v1": {
+    "variantId": "inclusive_accessible_playground_v0",
+    "revision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Informal playground and woodland park; no organized sports facility assumed."
+  },
+  "native-park:student_woodland_stream_garden_v1--native-v1": {
+    "variantId": "student_woodland_stream_garden_v1",
+    "revision": "e3fff90f005da1a2bb19b49c4cfeaa69a8ec32dca68a4a1a74f0179bc2c81461",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Designed ornamental stream and bridge garden for walking and enjoyment, not a verified Natural Area."
+  },
+  "native-park:student_reflecting_fountain_garden_v1--native-v1": {
+    "variantId": "student_reflecting_fountain_garden_v1",
+    "revision": "eda91f3a08b13efd331753078900f080612d971d3acc14b994f3fea9d2f78b96",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Ornamental fountain garden for sitting and strolling; no swimming facility assumed."
+  },
+  "native-park:student_terraced_cafe_court_v1--native-v1": {
+    "variantId": "student_terraced_cafe_court_v1",
+    "revision": "6f8c9e3f3d67e18da2aef8c65719f5ba0eee9afe7a9613261e36705e8b9a166f",
+    "components": [
+      [
+        "Park"
+      ],
+      [
+        "Outdoor Café"
+      ],
+      [
+        "Restaurant: Food Service Only"
+      ]
+    ],
+    "assumption": "Landscaped court with outdoor food-service seating. The trial program includes Park, Outdoor Café and a supporting food-service restaurant; the actual food operator and facilities still need confirmation.",
+    "review": "Confirm the food-service operator, indoor facilities and approval of the principal food use. Outdoor Café cannot be approved by itself (s.247)."
+  },
+  "native-park:student_urban_splash_plaza_v1--native-v1": {
+    "variantId": "student_urban_splash_plaza_v1",
+    "revision": "274f6fb01e74ae32a5c6764508f50b917866e8bf98b617a7e94aeb5ce2fe6838",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Informal splash-play park and gathering space, not a swimming pool or organized sports facility."
+  },
+  "native-park:student_stone_labyrinth_garden_v1--native-v1": {
+    "variantId": "student_stone_labyrinth_garden_v1",
+    "revision": "c00bd66703707245b469c8c3d120470fc3d8b65aeb34e7918d45ca7e15145f07",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Contemplative walking garden; no separate place of worship assumed."
+  },
+  "native-park:student_sheltered_dog_park_v1--native-v1": {
+    "variantId": "student_sheltered_dog_park_v1",
+    "revision": "2e4db53b86fef7e6451cbfcb77b8b169f4b788fe0e53a974e259ad7b84e54f0c",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Recreational dog park with shelter and seating. Off-leash designation and operating rules need separate confirmation."
+  },
+  "native-park:student_community_allotment_v1--native-v1": {
+    "variantId": "student_community_allotment_v1",
+    "revision": "6b9d56fcc2d84088633503e9cc219ccef60fe79349b4fbc8d2138ce5d345af5a",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Community food-growing garden for recreation, learning and social use; no commercial cultivation assumed."
+  },
+  "native-park:student_forest_adventure_v1--native-v1": {
+    "variantId": "student_forest_adventure_v1",
+    "revision": "84ce02e0cba75ce3faf810e571048d39141a14462184b112e87a144f63de86dd",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Informal nature-play park. A commercial adventure attraction or organized athletic facility would need a different use review."
+  },
+  "native-park:student_spiral_lookout_v1--native-v1": {
+    "variantId": "student_spiral_lookout_v1",
+    "revision": "ba9ecbaafe0f56dd5206faa936951504675f05b4d5640adc25ca5d5aa98c773b",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Recreational park and lookout. The tower and elevated access need separate structure and height checks."
+  },
+  "native-park:student_quarry_garden_v1--native-v1": {
+    "variantId": "student_quarry_garden_v1",
+    "revision": "bae24fb0fc5fb032dfb74a8301789633b0d45f76a04da6971e4d9548eaf38312",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Designed garden in a quarry-inspired landscape; no resource extraction or verified ecological restoration assumed."
+  },
+  "native-park:student_cascade_water_garden_v1--native-v1": {
+    "variantId": "student_cascade_water_garden_v1",
+    "revision": "6b0f4391a5dfad1e21c0e1ca0a53dcd36fc609cf9eb541ac354f09e2ebd3ac4c",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Ornamental water garden for walking and enjoyment; no utility or swimming use assumed."
+  },
+  "native-park:student_treetop_walk_v1--native-v1": {
+    "variantId": "student_treetop_walk_v1",
+    "revision": "aef679e13148ddede9c39e73dbea57d74c23b41400d0363f3a132f93b6e72366",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Recreational park and elevated walking route. Walkway structures and height need separate checks; Natural Area status is not established."
+  },
+  "native-park:student_terraced_rose_v1--native-v1": {
+    "variantId": "student_terraced_rose_v1",
+    "revision": "bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Ornamental rose garden for walking and enjoyment; retaining structures need separate checks."
+  },
+  "flexible_pocket_park_v1": {
+    "variantId": "urban_pocket_park_v0",
+    "revision": "flexible-outline-v1",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Drawable small park with lawn, trees and seating for informal recreation."
+  },
+  "flexible_linear_greenway_v1": {
+    "variantId": "linear_park_greenway_v0",
+    "revision": "flexible-outline-v1",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Drawable recreational trail and landscaped greenway; no separate transportation facility assumed."
+  },
+  "flexible_shade_courtyard_v1": {
+    "variantId": "urban_pocket_park_v1",
+    "revision": "flexible-outline-v1",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Drawable courtyard set aside as a park. A private amenity serving another development needs review with that principal use."
+  },
+  "flexible_meadow_grove_v1": {
+    "variantId": "urban_pocket_park_v2",
+    "revision": "flexible-outline-v1",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Drawable recreational meadow garden. Natural-looking planting alone does not establish the bylaw use Natural Area."
+  }
+}

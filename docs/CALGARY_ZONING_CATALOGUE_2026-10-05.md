@@ -1,8 +1,34 @@
 # Calgary zoning and the classroom catalogue
 
-Click a coloured City zoning polygon or a saved student study zone to inspect catalogue candidates. The district legend provides keyboard-accessible inspection buttons. The drawing studio also shows the same lists for its selected zone, updating immediately when the district changes. Custom zones and Direct Control designations explain why ordinary district matching is unavailable.
+Click a coloured City zoning polygon or a saved student study zone to inspect catalogue candidates. Choose **Buildings** or **Parks** in the panel. The district legend provides keyboard-accessible inspection buttons. The drawing studio also shows the same lists for its selected zone, updating immediately when the district changes. Custom zones and Direct Control designations explain why ordinary district matching is unavailable.
 
 This is a **new-building use and model-envelope height screen**, not a development-permit determination. Permitted and discretionary candidates have a listed use route and pass the preliminary height comparison. Missing program details, existing-building prerequisites, contextual rules and unknown mapped heights remain in “More information needed.” A model can match several districts. Every required component of a mixed-use program must have a listed route.
+
+**Parks use a separate land-use-only screen.** A park assembly's height can be dominated by trees, so it must not be compared with building-height limits. The park panel and every result state that buildings, shelters and elevated structures require separate measurements and site checks. This includes the conservatory, bridges, pergolas and lookouts. A permitted park use is not approval of every object in its model.
+
+## Park programs and land uses
+
+All **32 current park placements** have explicit programs in `parkPrograms.json`: 28 native layouts and four flexible layouts. Records bind placement ID, variant ID and exact revision. Native and flexible pocket parks/greenways share variant IDs, so variant-only deduplication or classification would lose a layout or apply the wrong program. Unknown or changed layouts remain unclassified. No geometry or catalogue eligibility changed.
+
+`parkUseRules.json` adds 129 relevant use routes across the same 68 district records, with section and definition references; the existing building/height snapshot remains intact. The source for each is the corresponding district's `source` in `districtRules.json`. Conditional former-school and existing-building routes remain review-only. The data was checked against the October 5 source retrieval, including the unpunctuated Park entry in R-C1 s.385(1), and M-G s.606.
+
+| Intended use | Catalogue layouts |
+|---|---|
+| Park | Conservatory botanical garden; Museum sculpture court; Neighbourhood orchard; Timber and stone square; Wetland boardwalk; Teaching demonstration garden; Shaded Reading Garden; Rustic Pocket Garden; Railway Meadow Greenway; Inclusive Woodland Playground; Woodland Stream & Bridge Garden; Reflecting Fountain Garden; Urban Splash-Play Plaza; Stone Labyrinth Garden; Sheltered Dog Park; Community Allotment Garden; Forest Adventure Nature Play; Spiral Lookout Park; Quarry Garden; Cascade Water Garden; Treetop Walk Park; Terraced Rose Garden; Flexible pocket park; Flexible linear greenway; Flexible shade courtyard; Flexible meadow grove |
+| Outdoor Recreation Area | Basketball park; Pickleball Social Garden; Garden Tennis Court; Bocce Pergola Garden |
+| Park + Performing Arts Centre | Terraced performance lawn, screened as a programmed performance venue |
+| Park + Outdoor Café + supporting food use (review required) | Terraced Café & Fountain Court; the trial assumes Restaurant: Food Service Only, but the operator and facilities must be established before confirmation |
+
+These are stated teaching programs, not classifications inferred from appearance alone. Each card explains its assumption and links both the district permission and the use definition. Community gardens and orchards assume recreational/social growing rather than commercial production. Ornamental wetland/meadow/woodland designs are not automatically classified as Natural Area; none of the current models establishes an ecological conservation or naturalization program. Private accessory amenity space, off-leash operations, and an incidental event in a park can require a different review.
+
+Relevant definitions and district examples:
+
+- [Park, s.249](https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=P#section249): open space for recreation, education, culture or aesthetics, including qualifying community growing. [Performing Arts Centre, s.255](https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=P#section255) covers public live performance.
+- [Outdoor Recreation Area, s.248; Outdoor Café, s.247](https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=O): sports/athletic activity is screened separately; the café requires an associated qualifying principal food use.
+- [Natural Area, s.243](https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alpha=N#section243): conservation or naturalization must be established, beyond a visual planting style.
+- [S-SPR s.1026](https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=3) lists both Park and Outdoor Recreation Area as permitted. [S-R ss.1042–1043](https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=9&div=5) lists Park as permitted and Outdoor Recreation Area as discretionary. R-CG s.526(1) lists Park; its list does not provide the same standalone outdoor sports route. R-C1's outdoor recreation route depends on the former-school condition in s.386(3).
+
+Expected current park counts: S-SPR 30 permitted, two outside this screen; S-R 26 permitted, five discretionary and one requiring program information; R-CG 26 permitted and six outside. S-UN has no confirmed candidates from these ornamental/recreational teaching programs. S-SPR, S-R and S-UN open on Parks by default; other districts start on Buildings, with Parks one click away. The choice stays selected when rezoning the active study zone.
 
 ## Evidence and scope
 
@@ -19,12 +45,13 @@ Model dimensions are measured envelopes from the runtime registry. They are not 
 
 ## Verification
 
-54 focused Vitest tests passed across matching, panel behaviour, geometry picking, existing zoning and study editing; TypeScript and the production Vite build passed (the existing large-chunk warning remains). The React best-practices checklist was applied to the touched components. Browser verification used the Hillhurst trial project on localhost:5174:
+63 focused Vitest tests passed across building/park matching, panel behaviour, geometry picking, existing zoning and study editing; TypeScript and the production Vite build passed (the existing large-chunk warning remains). The React best-practices checklist was applied to the touched components. Browser verification used the Hillhurst trial project on localhost:5174:
 
 - Native canvas clicks selected an existing M-CGd72 polygon and a proposed R-CG polygon.
 - R-CG showed four discretionary candidates; changing the proposal to R-G showed eight permitted candidates. Undo restored R-CG without saving changes to the project.
 - Tested full C-COR2f2.8h16 designation, DC fallback, custom zone explanation, legend buttons, Escape/focus, layer hiding, zero opacity, reopening opacity, site-boundary review and 768×1024 layout.
 - No uncaught browser errors. Some pre-existing catalogue preview files are missing locally; cards show a neutral building placeholder when an image fails.
+- Park extension: existing S-R showed 26 permitted and five discretionary park candidates; switching R-CG between Parks and Buildings preserved their distinct counts. The proposed S-SPR drawing-studio panel showed 30 permitted parks, changed to five discretionary candidates when rezoned to S-R, and Undo restored S-SPR without saving project changes. A native canvas click on the proposed S-SPR polygon opened the Parks panel (existing study hidden for unambiguous selection); its 768×1024 bounds, no horizontal overflow and Escape dismissal passed. Visibility preferences were restored. No uncaught browser errors. Park cards use a tree placeholder when an existing thumbnail is unavailable.
 - Source/data changes are under this document and `frontend/src/`. Research HTML, test screenshots and the build log stay outside Git at `C:/dev-artifacts/CityPrompt/zoning-catalogue-2026-10-05/`. The build used the existing external build helper and output directory under `C:/dev-artifacts/CityPrompt/local-area-plans-browser-followup-2026-10-05/build/`.
 
 ## Maintenance

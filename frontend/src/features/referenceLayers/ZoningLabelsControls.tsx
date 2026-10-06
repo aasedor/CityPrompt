@@ -42,14 +42,14 @@ export function ZoningLabelsControls({ state, onInspect }: { state: ZoningLabels
       {state.loading && <p role="status" className="text-xs">Loading Calgary zoning…</p>}
       {state.error && <div role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-2 text-xs text-amber-950"><p>{state.error.message}</p><button className="min-h-11 font-semibold underline underline-offset-2" onClick={state.retry}>Retry zoning data</button></div>}
       {state.data && <p role="status" className="text-xs font-semibold">{state.data.districts.length ? `${state.data.districts.length} zoning areas within your site` : 'No published zoning areas intersect this boundary.'}</p>}
-      {state.data?.districts.length ? <p className="text-xs text-[#37594b]">Click a coloured zoning area to explore permitted and discretionary catalogue buildings. Hide policy maps to inspect zoning beneath them.</p> : null}
+      {state.data?.districts.length ? <p className="text-xs text-[#37594b]">Click a coloured zoning area to explore permitted and discretionary catalogue buildings and parks. Hide policy maps to inspect zoning beneath them.</p> : null}
       {guide.length > 0 && <details open className="group rounded-xl border border-[#151515]/15 bg-white/80">
         <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-xl px-3 py-2 text-xs font-semibold hover:bg-[#edf2ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#151515] [&::-webkit-details-marker]:hidden"><span>District legend ({guide.length})</span><ChevronDown aria-hidden="true" size={15} className="shrink-0 group-open:rotate-180" /></summary>
         <dl aria-label="Zoning code guide" tabIndex={0} className="max-h-48 divide-y divide-[#151515]/10 overflow-y-auto overscroll-contain border-t border-[#151515]/10 px-3 text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#151515]">
           {guide.map(([key, entry]) => <div key={key} className="py-2.5">
             <dt className="flex items-center gap-2 font-semibold"><span aria-hidden="true" className="h-3 w-3 shrink-0 rounded-sm border border-black/20" style={{ backgroundColor: entry.color }} /><span className="break-words">{entry.label}</span></dt>
             <dd className="mt-1 pl-5 text-[11px] leading-relaxed text-[#5c554d]">{entry.description}</dd>
-            {onInspect && <dd className="pl-5"><button type="button" disabled={!state.fill || state.fillOpacity <= 0} onClick={() => onInspect(entry.id)} className="min-h-11 text-left text-[11px] font-semibold text-[#37594b] underline disabled:opacity-40">Explore buildings for {entry.label}</button></dd>}
+            {onInspect && <dd className="pl-5"><button type="button" disabled={!state.fill || state.fillOpacity <= 0} onClick={() => onInspect(entry.id)} className="min-h-11 text-left text-[11px] font-semibold text-[#37594b] underline disabled:opacity-40">Explore buildings and parks for {entry.label}</button></dd>}
           </div>)}
         </dl>
       </details>}

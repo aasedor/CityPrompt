@@ -1,0 +1,920 @@
+{
+  "CC-MH": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1123(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "1124(3)",
+      "definition": "248",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    }
+  ],
+  "CC-MHX": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1133(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1134(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "1134(5)",
+      "definition": "248",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    }
+  ],
+  "CC-X": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1163(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1164(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "1164(3)",
+      "definition": "255"
+    }
+  ],
+  "CC-COR": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1180(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1181(3)",
+      "definition": "247"
+    }
+  ],
+  "CC-ET": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1244(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1245(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "1245(3)",
+      "definition": "255"
+    }
+  ],
+  "CC-EIR": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1254(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1255(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "1255(3)",
+      "definition": "255"
+    }
+  ],
+  "CC-EMU": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1260(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1261(3)",
+      "definition": "247"
+    }
+  ],
+  "CC-EPR": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1266(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1267(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "1267(3)",
+      "definition": "248"
+    }
+  ],
+  "CC-ERR": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1272(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1273(1)",
+      "definition": "247"
+    }
+  ],
+  "CC-ER": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1278",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1279(1)",
+      "definition": "247"
+    }
+  ],
+  "CR20-C20/R20": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1306(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1307(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "1307(3)",
+      "definition": "248"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "1307(3)",
+      "definition": "255"
+    }
+  ],
+  "MU-1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1366(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1367(3)",
+      "definition": "247"
+    }
+  ],
+  "MU-2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1376(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1377(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "1377(3)",
+      "definition": "255"
+    }
+  ],
+  "H-GO": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1387",
+      "definition": "249"
+    }
+  ],
+  "R-MH": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "507",
+      "definition": "249"
+    }
+  ],
+  "R-CG": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "526(1)",
+      "definition": "249"
+    }
+  ],
+  "R-CGex": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "526(1)",
+      "definition": "249"
+    }
+  ],
+  "R-G": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "547.1",
+      "definition": "249"
+    }
+  ],
+  "R-Gm": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "547.1",
+      "definition": "249"
+    }
+  ],
+  "R-C1L": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "367",
+      "definition": "249"
+    }
+  ],
+  "R-C1Ls": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "367",
+      "definition": "249"
+    }
+  ],
+  "R-C1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "385(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "386(3)",
+      "definition": "248",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    }
+  ],
+  "R-C1s": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "385(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "386(3)",
+      "definition": "248",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    }
+  ],
+  "R-C1N": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "405",
+      "definition": "249"
+    }
+  ],
+  "R-C2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "425(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "426(3)",
+      "definition": "248",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    }
+  ],
+  "R-1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "445",
+      "definition": "249"
+    }
+  ],
+  "R-1s": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "445",
+      "definition": "249"
+    }
+  ],
+  "R-1N": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "460",
+      "definition": "249"
+    }
+  ],
+  "R-2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "475",
+      "definition": "249"
+    }
+  ],
+  "R-2M": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "490",
+      "definition": "249"
+    }
+  ],
+  "M-H3": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "658",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "659(1)",
+      "definition": "247"
+    }
+  ],
+  "M-X1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "669",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "670(1)",
+      "definition": "247"
+    }
+  ],
+  "M-X2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "679",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "680(1)",
+      "definition": "247"
+    }
+  ],
+  "M-CG": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "577(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "578(3)",
+      "definition": "248",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    }
+  ],
+  "M-C1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "587(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "588(3)",
+      "definition": "248",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    }
+  ],
+  "M-C2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "596(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "597(3)",
+      "definition": "248",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    }
+  ],
+  "M-G": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "606",
+      "definition": "249"
+    }
+  ],
+  "M-1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "617",
+      "definition": "249"
+    }
+  ],
+  "M-2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "626",
+      "definition": "249"
+    }
+  ],
+  "M-H1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "636",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "637(1)",
+      "definition": "247"
+    }
+  ],
+  "M-H2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "647",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "648(1)",
+      "definition": "247"
+    }
+  ],
+  "C-R1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "844(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "845(1)",
+      "definition": "247"
+    }
+  ],
+  "C-R2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "862(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "permitted",
+      "section": "862(2)",
+      "definition": "255",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "863(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "863(1)",
+      "definition": "255"
+    }
+  ],
+  "C-R3": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "881(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "permitted",
+      "section": "881(2)",
+      "definition": "255",
+      "review": "This route depends on an existing building or previous site use; it is not confirmed for a new catalogue development."
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "882(1)",
+      "definition": "255"
+    }
+  ],
+  "C-N1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "702(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "703(3)",
+      "definition": "247"
+    }
+  ],
+  "C-N2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "722(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "723(3)",
+      "definition": "247"
+    }
+  ],
+  "C-C1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "739(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "740(3)",
+      "definition": "247"
+    }
+  ],
+  "C-C2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "758(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "759(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "759(3)",
+      "definition": "255"
+    }
+  ],
+  "C-COR1": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "777(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "778(3)",
+      "definition": "247"
+    }
+  ],
+  "C-COR2": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "797(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "798(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "798(3)",
+      "definition": "255"
+    }
+  ],
+  "C-COR3": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "814(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "815(3)",
+      "definition": "247"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "815(3)",
+      "definition": "255"
+    }
+  ],
+  "C-O": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "829(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "830(4)",
+      "definition": "247"
+    }
+  ],
+  "I-G": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "907(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "908(2)",
+      "definition": "247"
+    }
+  ],
+  "I-B": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "923(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "924(2)",
+      "definition": "247"
+    }
+  ],
+  "I-E": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "938(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "939(2)",
+      "definition": "247"
+    }
+  ],
+  "I-C": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "954(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "955(2)",
+      "definition": "247"
+    }
+  ],
+  "I-R": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "968",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "969",
+      "definition": "247"
+    }
+  ],
+  "I-O": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "983",
+      "definition": "249"
+    }
+  ],
+  "I-H": [],
+  "S-TUC": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1093(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "1094(1)",
+      "definition": "248"
+    }
+  ],
+  "S-UN": [],
+  "S-SPR": [
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "permitted",
+      "section": "1026",
+      "definition": "248"
+    },
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1026",
+      "definition": "249"
+    }
+  ],
+  "S-CS": [
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "permitted",
+      "section": "1034(1)",
+      "definition": "248"
+    },
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1034(1)",
+      "definition": "249"
+    }
+  ],
+  "S-R": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1042",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1043(1)",
+      "definition": "247"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "1043(1)",
+      "definition": "248"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "1043(1)",
+      "definition": "255"
+    }
+  ],
+  "S-CI": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1054",
+      "definition": "249"
+    },
+    {
+      "use": "Performing Arts Centre",
+      "category": "discretionary",
+      "section": "1055(1)",
+      "definition": "255"
+    }
+  ],
+  "S-CRI": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1067(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "1068(1)",
+      "definition": "248"
+    }
+  ],
+  "S-URP": [
+    {
+      "use": "Park",
+      "category": "permitted",
+      "section": "1075(1)",
+      "definition": "249"
+    },
+    {
+      "use": "Outdoor Café",
+      "category": "discretionary",
+      "section": "1076(2)",
+      "definition": "247"
+    }
+  ],
+  "S-FUD": [
+    {
+      "use": "Outdoor Recreation Area",
+      "category": "discretionary",
+      "section": "1087(1)",
+      "definition": "248"
+    }
+  ]
+}

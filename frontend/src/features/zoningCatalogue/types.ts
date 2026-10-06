@@ -10,12 +10,16 @@ export interface ZoneInspection {
   custom?: boolean;
   color?: string;
 }
-export interface BuildingProgram {
+export interface CatalogueProgram {
   revision: string | null;
   /** Each component is required; names within one component are alternative legal forms. */
   components: string[][];
   assumption: string;
   review?: string;
+}
+export interface ParkProgram extends CatalogueProgram {
+  /** Flexible and native layouts can share a variant ID, so bind placement + variant + revision. */
+  variantId: string;
 }
 export interface UseRule {
   use: string;
@@ -36,9 +40,9 @@ export interface DistrictRule {
     note: string;
   };
 }
-export interface BuildingMatch {
+export interface CatalogueMatch {
   asset: PlaceAsset;
-  program?: BuildingProgram;
+  program?: CatalogueProgram;
   status: 'permitted' | 'discretionary' | 'review' | 'outside';
   uses: UseRule[];
   height?: number;

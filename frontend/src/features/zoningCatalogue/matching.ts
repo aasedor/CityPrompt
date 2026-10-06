@@ -1,11 +1,17 @@
 import snapshot from './districtRules.json';
 import programs from './buildingPrograms.json';
-import type { BuildingMatch, BuildingProgram, DistrictRule, ZoneInspection } from './types';
+import parkPrograms from './parkPrograms.json';
+import parkUseRules from './parkUseRules.json';
+import type { CatalogueMatch, CatalogueProgram, DistrictRule, ParkProgram, UseRule, ZoneInspection } from './types';
 import type { PlaceAsset } from '@/features/pickPlace/assetRegistry';
 
 export const RULES_REVIEWED_AT = snapshot.reviewedAt;
-export const DISTRICT_RULES = snapshot.districts as Record<string, DistrictRule>;
-export const BUILDING_PROGRAMS = programs as Record<string, BuildingProgram>;
+export const DISTRICT_RULES: Record<string, DistrictRule> = Object.fromEntries(
+  Object.entries(snapshot.districts as Record<string, DistrictRule>).map(([code, rule]) => [code, { ...rule,
+    rules: [...rule.rules, ...((parkUseRules as Record<string, UseRule[]>)[code] ?? [])] }]),
+);
+export const BUILDING_PROGRAMS = programs as Record<string, CatalogueProgram>;
+export const PARK_PROGRAMS = parkPrograms as Record<string, ParkProgram>;
 const districtCodes = Object.keys(DISTRICT_RULES).sort((a, b) => b.length - a.length);
 const useKey = (use: string) => use.toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -29,10 +35,30 @@ export function rulesForZone(zone: ZoneInspection) {
   return parsed ? { ...parsed, rule: DISTRICT_RULES[parsed.code] } : null;
 }
 
+function matchUses(result: CatalogueMatch, program: CatalogueProgram, rule: DistrictRule, kind: 'building' | 'park') {
+  for (const alternatives of program.components) {
+    const options = rule.rules.filter(r => alternatives.some(use => useKey(use) === useKey(r.use)))
+      .sort((a, b) => Number(Boolean(a.review)) - Number(Boolean(b.review)) || Number(a.category === 'discretionary') - Number(b.category === 'discretionary'));
+    if (!options.length) {
+      result.status = 'outside'; result.reasons.push(`No listed new-${kind} route found for ${alternatives.join(' / ')}.`);
+    } else {
+      result.uses.push(options[0]);
+      if (options[0].review) result.reasons.push(options[0].review);
+    }
+  }
+}
+
+function finishMatch(result: CatalogueMatch) {
+  if (result.status !== 'outside' && !result.reasons.length) {
+    result.status = result.uses.some(r => r.category === 'discretionary') ? 'discretionary' : 'permitted';
+  }
+  return result;
+}
+
 export function matchBuilding(asset: PlaceAsset, zone: ZoneInspection,
-  program: BuildingProgram | undefined = BUILDING_PROGRAMS[asset.model.variantId]): BuildingMatch {
+  program: CatalogueProgram | undefined = BUILDING_PROGRAMS[asset.model.variantId]): CatalogueMatch {
   const height = asset.nativeDimensions?.[2];
-  const result: BuildingMatch = { asset, program, status: 'review', uses: [], reasons: [],
+  const result: CatalogueMatch = { asset, program, status: 'review', uses: [], reasons: [],
     ...(height != null && Number.isFinite(height) && height > 0 ? { height } : {}) };
   const district = rulesForZone(zone);
   if (!district) {
@@ -46,16 +72,7 @@ export function matchBuilding(asset: PlaceAsset, zone: ZoneInspection,
     result.reasons.push(program.review ?? 'The building program needs review.'); return result;
   }
   const { rule } = district;
-  for (const alternatives of program.components) {
-    const options = rule.rules.filter(r => alternatives.some(use => useKey(use) === useKey(r.use)))
-      .sort((a, b) => Number(Boolean(a.review)) - Number(Boolean(b.review)) || Number(a.category === 'discretionary') - Number(b.category === 'discretionary'));
-    if (!options.length) {
-      result.status = 'outside'; result.reasons.push(`No listed new-building route found for ${alternatives.join(' / ')}.`);
-    } else {
-      result.uses.push(options[0]);
-      if (options[0].review) result.reasons.push(options[0].review);
-    }
-  }
+  matchUses(result, program, rule, 'building');
   const h = rule.height;
   const limit = h.mode === 'mapped' ? district.height ?? h.metres : h.metres;
   result.limit = limit;
@@ -71,13 +88,31 @@ export function matchBuilding(asset: PlaceAsset, zone: ZoneInspection,
   if (['M-CG', 'M-G', 'H-GO'].includes(district.code) && result.uses.some(r => /Multi-Residential|Dwelling Unit/.test(r.use))) {
     result.reasons.push('Individual access to grade and the unit arrangement need confirmation for this district.');
   }
-  if (result.status !== 'outside' && !result.reasons.length) {
-    result.status = result.uses.some(r => r.category === 'discretionary') ? 'discretionary' : 'permitted';
+  return finishMatch(result);
+}
+
+/** Park use screening intentionally excludes the model envelope: its tallest
+ * object may be a tree. Buildings, shelters and elevated structures need their
+ * own measurements and site checks, as stated on every park result. */
+export function matchPark(asset: PlaceAsset, zone: ZoneInspection): CatalogueMatch {
+  const candidate = PARK_PROGRAMS[asset.id];
+  const program = candidate?.variantId === asset.model.variantId && candidate.revision === asset.model.revision ? candidate : undefined;
+  const result: CatalogueMatch = { asset, program, status: 'review', uses: [], reasons: [] };
+  const district = rulesForZone(zone);
+  if (!district) {
+    result.reasons.push(zone.custom ? 'Custom zones have no Calgary bylaw rules.' : 'This designation needs its own bylaw review, including any Direct Control bylaw.');
+    return result;
   }
-  return result;
+  if (asset.zoneType !== 'green_space' || !program || !program.components.length) {
+    result.reasons.push('This exact park layout needs a use classification.'); return result;
+  }
+  matchUses(result, program, district.rule, 'park');
+  if (program.review) result.reasons.push(program.review);
+  return finishMatch(result);
 }
 
 export function matchCatalogue(assets: PlaceAsset[], zone: ZoneInspection) {
-  return assets.filter(asset => asset.zoneType === 'building' && ['ready', 'pilot'].includes(asset.readiness))
-    .map(asset => matchBuilding(asset, zone)).sort((a, b) => a.asset.label.localeCompare(b.asset.label));
+  return assets.filter(asset => ['building', 'green_space'].includes(asset.zoneType) && ['ready', 'pilot'].includes(asset.readiness))
+    .map(asset => asset.zoneType === 'green_space' ? matchPark(asset, zone) : matchBuilding(asset, zone))
+    .sort((a, b) => a.asset.label.localeCompare(b.asset.label));
 }
