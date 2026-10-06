@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-320e5605-93e3-4b92-9650-de511384651c.png",
+      "prompt": "Create one excellent photoreal architectural reference of an ORIGINAL affordable six-home stacked housing building. No text. A disciplined TWO-STOREY flat-roof rectangle, three equal7m wide bays across a21m long front,11m depth, wallheight6.55m and low0.45m parapet. Exactly THREE homes on ground floor and THREE directly above; each floor has THREE entry doors and THREE large paired living-room windows, one door/window set per bay. Dark olive-grey fibre-cement wall panels with restrained natural cedar around doors, cream soffits, black recessed window frames. A continuous TWO-METRE-DEEP FRONT OUTDOOR GALLERY on the upper floor serves all three upper doors. Four slim square steel columns run to grade supporting that gallery; fine vertical black baluster guard with grounded posts. Two straightforward external stairs, one at EACH END, ascend towards the two ends of upper gallery, drawn credibly with landings and handrails. Lower homes have private front patios beneath gallery. A calm white neutral ground and tiny low garden strips; all architecture and both stairs visible, no trees hiding count, no people/text/logo. Near straight-on front view at slightly raised street level. Beautiful modest buildable Canadian architecture, realistic material joins, restrained colours, absolutely TWO floors and three equal bays only.",
+      "input_roles": [],
+      "sha256": "224a6ce61e4c964e2fd33d15d9f744d3806a5e0436b7084177ee6d928307a8d1",
+      "bytes": 2142032,
+      "dimensions_px": [
+        1734,
+        907
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-e574f021-f783-4cbd-9e32-ca46a3c1abc2.png",
+      "prompt": "Show this EXACT two-storey three-bay six-home building from elevated front-right three-quarter angle, entire building and both end staircases visible.21m front,11m depth. Preserve all sixfrontdoor/windowsets, oliveverticalpanels, cedararounddoors,blackframesandgallery. Upperfrontgallery2mdeep,fourgroundedposts,metalbalusterguard. Bothendstairsstraightascendingfromfrontground to galleryends. Side/rear residentialwindows alignedtwolevels,closedflatmembraneroofwithshallowparapet,noextrarooms. Sourcebuilding unchanged; no thirdfloor, balconyadditions,labels orpeople. Professional architecture reference photograph.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "f8455e33818fdf9ef0697bbfb29ea34e8f0d073f3370665e677d90a436e968b6",
+      "bytes": 2587640,
+      "dimensions_px": [
+        1734,
+        907
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-90626f4b-c249-484c-8561-84dbdbc5cb3d.png",
+      "prompt": "High aerial near top-down view of this EXACT two-storey six-home olive andcedar stackedhousing.21mfrontrectangle11mdepthplus2mfrontgalleryandendstairs. Singleflatclosedmembraneroofwithlowparapet, roofcontinuesovergallery; fourfrontgroundedcolumnscarrygallery/roof. Twoexternalendstairs rise fromfront toleftandrightgalleryend, neithercoveredbyafloatingmass. Keepthreefrontdoor/windowsetsperfloor,sidewindowsalignedtwofloors. Neutraldaylightarchitecturalreference, fullyvisiblewithclearroofplan, noextrasorlabels.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "c2b6d7a66bf64e4bdb439774220fa105e86a9e75d527facae27f126b86cc1d87",
+      "bytes": 2913134,
+      "dimensions_px": [
+        1734,
+        907
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

@@ -12,6 +12,7 @@ import clay_core as C
 from plan import SPECS,source_entry
 from assemblies import hole,faces,steps,sofa,bed,straight_stair,seated_guard,bathroom,shrub,garden_chair,rotate_new
 from geometry import gable,kitchen
+from housing_wave import juniper,stackyard,aspen,switchback,DETAILS as WAVE_DETAILS
 
 PALETTE=dict(wall=(.73,.71,.65),trim=(.09,.105,.115),roof=(.16,.18,.20),
  foundation=(.42,.43,.41),glass=(.34,.40,.40),hardware=(.065,.075,.08),
@@ -127,18 +128,19 @@ DETAILS={'porchlight':[
  ('stair_contact',(3.3,2.5,3.6),(3.75,1.1,3.18)),
  ('rear_entry',(7.6,9,2.9),(4.4,4.7,1.2)),
  ('bathroom',(4.90,3.16,5.60),(3.90,3.85,3.6))]}
+DETAILS.update(WAVE_DETAILS)
 
 def cameras(kind):
     d=SPECS[kind]['dimensions_m'];scale=max(d['width'],d['depth'])/34
     basic=[('front',(0,-64,12)),('front_corner',(46,-58,32)),('aerial',(39,-49,69)),('top',(0,0,90)),('left_side',(-64,0,12)),('right_side',(64,0,12)),('rear',(0,64,12)),('rear_side',(-46,58,32))]
     out=[dict(name=n,location=tuple(v*scale for v in loc),target=(0,.001 if n=='top' else 0,0 if n=='top' else d['height']*.4),**({'ortho_scale':max(d['width'],d['depth'])*1.25} if n=='top' else {})) for n,loc in basic]
     wide={'interior','stairs','upper_landing','bathroom'}
-    return out+[dict(name=n,location=loc,target=t,whole=False,lens=18 if n in ('bedroom','bathroom') else 24 if n in wide else 42) for n,loc,t in DETAILS[kind]]
+    return out+[dict(name=n,location=loc,target=t,whole=False,lens=18 if n in ('bedroom','bathroom','lift') else 24 if n in wide else 42) for n,loc,t in DETAILS[kind]]
 
 def manifest(kind,version):
     s=SPECS[kind];cams=cameras(kind)
     return dict(candidate=f'{s["slug"]}-clay-v{version:03d}',method=C.METHOD,representation_kind='architectural_clay',archetype_id=s['id'],variant_id=s['variant'],state='prework',keeper_claimed=False,runtime_seed_allowed=False,
-      measurement_contract=dict(dimensions_m=s['dimensions_m'],observed_storeys=s['storeys'],reference_reconciliation=s.get('reference_reconciliation','Original reference topology; front owns bay counts, high top view owns the roof graph. Right end reference has one window per floor; hidden rear and interiors inferred.'),source_measurements=['Four equal 5.5m bays and two front occupied levels in Porchlight.'],hidden_assumptions=['Metric dimensions are authored, not surveyed.','Hidden interiors and rear construction are inferred.','Top reference is high oblique, not a georeferenced orthophoto.']),
+      measurement_contract=dict(dimensions_m=s['dimensions_m'],observed_storeys=s['storeys'],reference_reconciliation=s.get('reference_reconciliation','Original reference topology; front owns bay counts, high top view owns the roof graph. Right end reference has one window per floor; hidden rear and interiors inferred.'),source_measurements=s.get('source_measurements',['Four equal 5.5m bays and two front occupied levels in Porchlight.']),hidden_assumptions=['Metric dimensions are authored, not surveyed.','Hidden interiors and rear construction are inferred.','Top reference is high oblique, not a georeferenced orthophoto.']),
       roof_contract=dict(authority='Locked original pixels; closed supported weathering envelope.'),identity_contract=dict(owner='Source-specific physical geometry',bitmap_stickers='None in architectural clay.'),material_contract=dict(profile='Source-palette untextured clay',limitations='Final textured keeper stage remains separate.'),programme_contract=dict(storeys=s['storeys'],description=s['program'],uses=s['uses'],legal_approval=False),contact_contract=['Grade-zero support.','Through-carrier apertures.','Floor-seated guards.','Complete supported roofs and access.'],runtime_contract=dict(scale='fixed_native_only',resizing=False,installation='not installed',review='NOT TESTED'),camera_roster=cams,mandatory_review_views=[c['name'] for c in cams])
 
 def prepare(a,entry,m):
@@ -150,7 +152,7 @@ def prepare(a,entry,m):
     for s in entry['sources']:
         shutil.copy2(s['original_path'],out/s['path']);assert C.digest(out/s['path'])==s['sha256']
     shutil.copy2(Path(entry['_reference_root'])/'generation-provenance.json',out/'sources/generation-provenance.json')
-    scripts=[Path(C.__file__),Path(__file__),HERE/'assemblies.py',HERE/'geometry.py',HERE/'plan.py',HERE/'designs.json']
+    scripts=[Path(C.__file__),Path(__file__),HERE/'assemblies.py',HERE/'geometry.py',HERE/'housing_wave.py',HERE/'plan.py',HERE/'designs.json']
     for p in scripts:shutil.copy2(p,out/'scripts'/p.name)
     C.write_json(out/'source-entry.json',{k:v for k,v in entry.items() if not k.startswith('_')})
     m['source_contract']=dict(sources=entry['sources'],exact_variant_only=True,origin='original_generated_design',generated_references_explicitly_requested=True,not_surveyed=True)
@@ -161,7 +163,12 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--kind',choices=list(SPECS),required=True);p.add_argument('--source-root',type=Path,required=True);p.add_argument('--output',required=True);p.add_argument('--version',type=int,default=1);p.add_argument('--resolution',type=int,default=1440);p.add_argument('--dry-run',action='store_true')
     a=p.parse_args(sys.argv[sys.argv.index('--')+1:]);m=manifest(a.kind,a.version);out=prepare(a,source_entry(a.kind,a.source_root),m)
     if out is None:return
-    cams=C.setup(PALETTE,m['camera_roster'],a.resolution);C.bevel=lambda *args,**kwargs:None
+    palette=PALETTE.copy()
+    if a.kind=='juniper':palette.update(wall=(.43,.46,.36),joint=(.31,.34,.27))
+    if a.kind=='stackyard':palette.update(wall=(.28,.31,.24),joint=(.20,.22,.18))
+    if a.kind=='aspen':palette.update(wall=(.74,.67,.53),joint=(.52,.45,.33))
+    if a.kind=='switchback':palette.update(wall=(.73,.72,.68),olive=(.39,.43,.27),ochre=(.68,.39,.13),joint=(.38,.36,.29))
+    cams=C.setup(palette,m['camera_roster'],a.resolution);C.bevel=lambda *args,**kwargs:None
     for obj in C.bpy.context.scene.objects:
         if obj.type=='LIGHT':obj.location*=2;obj.data.energy*=4;obj.data.size*=2
         if obj.name=='QA ground - excluded':obj.scale*=6

@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-0ebe6488-2de9-4e9c-8100-667a579acbfb.png",
+      "prompt": "Create one polished architectural reference image for an ORIGINAL affordable-housing teaching concept named Juniper Courtyard Cottages. No text in image. Four separate SMALL ONE-STOREY cottages, each square 7m by 7m, placed at the four corners of a square site. Cottage centres separated by 15m in both axes; eight metres clear between cottages. Two front cottages and two rear cottages: ALL FOUR FRONT ENTRANCES FACE INTO the central shared courtyard. Each cottage has warm pale-sage vertical timber siding, a simple charcoal standing-seam gable roof with gable FACING ITS ENTRANCE, natural wood door and shallow timber entrance canopy, exactly one wide living-room window beside the door and a slim bedroom sash on the side. Low eaves 2.9m and ridge4.4m. A clearly generous square central lawn with crossing narrow paths and one small serviceberry tree, clean low planting. Separate small private paved patios BEHIND each cottage outward from court. Single coherent arrangement, NO connected roof, NO second floor, NO extra homes, no cars or crowds. Camera from street looking straight into the gap between the front two cottages, raised just enough to show the two rear cottages, all four buildings fully visible. Neutral soft day, refined realistic cedar and metal textures, restrained Scandinavian design, warm inviting lived-in windows, no AI swooping geometry, no labels, no collage. Horizontal image.",
+      "input_roles": [],
+      "sha256": "e896808e3cf7b8015395e63a72b2b4ea48c2cec8af0154a3d5688cdefaedfdb5",
+      "bytes": 3482961,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-15cc1036-22d0-419a-bde1-e9b1a16e397a.png",
+      "prompt": "Show THIS exact four-cottage design from elevated front-right oblique 45 degrees, entire square development in frame. Preserve four separate identical one-storey sage-green 7m square cottages at centres x=+-7.5m, y=+-7.5m, all four entrance gables facing the SAME direction towards camera/street as in reference (front cottages face street, rear cottages face central garden). Keep two-by-two arrangement with8m clear gaps,22m overallcluster width/depth. One big window beside wood front door per cottage, charcoal standing-seam gable ridge fromfronttoback,eaves2.9m/ridge4.4m. Central shared eight-metre courtyard lawn, paths and single smallserviceberry. Each cottage side/rear has one small sash, hidden rear inferred consistently. Private3x4m patios outboard on left of leftcottages/right ofrightcottages, not consuming centralgarden. No extra buildings,connectedroofs,floors orchangedpalette. Photoreal reference,neutralday,no text.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "03562559f39caba6a366419fe2ebbb3a155d3ecbc9f47be355e81edbf442cbc1",
+      "bytes": 3907515,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-9331886d-8cb8-4a4d-840d-5f61e1df7769.png",
+      "prompt": "A high aerial almost top-down architectural reference of this EXACT four-cottage site, fully in frame with margins. Four distinct square7m cottages on a2x2grid,centres15mapart,central8mx8msharedgarden. All gable ridges fronttobackparallel. Frontdoorsonstreet-facinggableofallfour; leftcolumndoorsleftofwindow,rightcolumndoorsrightofwindow asreference. Charcoalstandingseamclosedgable roofs, sagewalls. Outboardprivate3x4mpatiosatleftedgeoftheleftcottagesandrightedgeofrightcottages; centralgardenandpathsunobstructed,smallserviceberrytree. Keep22mclusterbodywidth/depthplusoutboardpatios. Exactfourcottages,noextrabuildings,floorsorroofbreaks. Photoreal calmneutralday, no labels ordiagram.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "23daf76d60a9bb1ec4e4a9c2ac64fe886755a5b6823a8003e9dc7accd847de0c",
+      "bytes": 3973403,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-3089d0a4-d8b4-467a-8bb8-8cc5104fcc80.png",
+      "prompt": "Create a beautiful photoreal architectural reference image of an ORIGINAL compact Canadian affordable apartment building: Aspen Walk Apartments. THREE STOREYS, no fourth floor, a24m wide by13m deep simple rectangular volume, 10.7m overallheight. Four dwellings per floor, twelve total. Cream light brick with warm cedar vertical accent bays, dark bronze thin recessed window frames, simple flat membrane roof with restrained stone parapet. The FRONT has two apartment zones left and right of a narrow central recessed entrance axis. Each left and right apartment zone has TWO wide windows per floor (FOUR large windows total on each level); central axis has a double main glazed door at grade and ONE narrow window on each upper floor. End circulation zones occupy the outermost3m each with ONE small vertically aligned stair window per storey at each far end. Quiet rigorous symmetry, clear floor lines, cedar entry canopy seated on two slim posts. Grounded three-storey mass with modest low planting and bicycle racks away from facade. No balconies, towers, bridges, rooftop rooms, huge trees, people or text. Straight front architectural catalogue view, entirebuilding clearly readable with small ground margin. Soft natural light and welcoming materials, refined human design, authentic restrained details, no pasted effects or fantasy forms.",
+      "input_roles": [],
+      "sha256": "38aef23b99fe01a55e8396a3651d4757a73af067aaff605db7c55555ca9a1e05",
+      "bytes": 2658804,
+      "dimensions_px": [
+        1705,
+        922
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-2ecba88e-8a1d-4cec-861b-b63e643da412.png",
+      "prompt": "Show this EXACT three-storey Aspen Walk apartment building from elevatedfront-rightthree-quarter angle, entire building.24mfrontwidth13mdepth10.7mheight. Preserve sourcefourlargefrontwindowsperfloor,centralentrywoodaxiswithoneupperwindowperfloor,smallerendstairwindows,creambrickandcedarstrips, bronze frames. Flat closedroof lowparapet; rear hasfourapartmentwindowsperfloor andendstairwindows;rightsidehasonewindowperflooratthefrontstairsidewithbroadcalmbrickreturn. No extra floors,bays,balconies,roofpavilionsorpeople. Beautiful restrainedrealisticreference,samedesignnotvariation.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "d84a5665f337896bdeb1fa89eb29e7085691ce31ca42cea16f648fd7c8b1a851",
+      "bytes": 3056106,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-6ccb5569-ba59-4ed8-822f-d587ce391ed5.png",
+      "prompt": "High aerial near top-down reference of this EXACT three-storey creambrick andcedar apartment building.24mfrontwidth13mdepthrectangularclosedflatmembraneroofwithlowparapet,nohiddenfourthfloor, roofroomsorsculpture. Frontcentralshorttimbercanopy,twoendstairstrips, exactlyfourlargefrontwindowsandtwosmallendwindowsperfloor pluscentralwindowaboveentry. Rightreturnhasthreewindowsperfloor asobliquesource, rearhasfourapartmentwindowsplusendcorewindows. Keep architectureidentical, restrainedgardenandbikeracks, fullbuildingmargin, daylightphotoreal,noletters.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "088704543c7c9af7f57631d873daf28eade9159c3fd24606a1196198ae6e2616",
+      "bytes": 3414053,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}
