@@ -168,7 +168,8 @@ async def generate(
         "created_at": _now(),
         "interaction_id": job_id,
         "generation_settings": {
-            "workflow_version": 1,
+            "workflow_version": 2 if preset.target_pixels else 1,
+            "target_pixels": preset.target_pixels,
             "width": w,
             "height": h,
             "steps": preset.steps,

@@ -11,8 +11,8 @@ export const OPENAI_IMAGE_MODELS = [
 
 export type OpenAIImageModel = typeof OPENAI_IMAGE_MODELS[number]['id'] | 'gpt-image-2-2026-04-21';
 export const LOCAL_IMAGE_MODELS = [
-  { id: 'flux-klein', label: 'FLUX.2 Klein 4B', option: 'FLUX.2 Klein · Local · Free' },
-  { id: 'qwen-image', label: 'Qwen Image 2.1', option: 'Qwen Image · Local · Free' },
+  { id: 'qwen-image', label: 'Qwen Image 2.1', option: 'Qwen Image 2.1 · High quality · Local · Free' },
+  { id: 'flux-klein', label: 'FLUX.2 Klein 4B', option: 'FLUX.2 Klein · Fast preview · Local · Free' },
 ] as const;
 export type LocalImageModel = typeof LOCAL_IMAGE_MODELS[number]['id'];
 export type ImageEngine = OpenAIImageModel | LocalImageModel;

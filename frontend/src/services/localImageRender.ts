@@ -24,8 +24,9 @@ export async function renderLocalImage(options: {
     job = await comfyTrialsApi.generate({ project_id: options.projectId, source_render_id: source.id,
       request_id: requestId, preset: options.model, prompt: options.prompt });
   }
-  // Fifteen-minute UI wait limit; the durable GPU job survives leaving the view.
-  for (let checks = 0; checks < 180; checks++) {
+  // High-quality local inference may offload to RAM; keep the original job
+  // recoverable throughout a one-hour UI wait, without automatic resubmission.
+  for (let checks = 0; checks < 720; checks++) {
     if (job.status === 'complete' && job.kind === 'image' && job.result && 'image_url' in job.result) {
       writeBrowserPreference(key, null);
       return job.result;

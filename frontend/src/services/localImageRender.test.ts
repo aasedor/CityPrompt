@@ -32,6 +32,16 @@ describe('integrated local image engines', () => {
     await expect(pending).resolves.toEqual(result);
     expect(comfyTrialsApi.generate).not.toHaveBeenCalled();
   });
+  it('keeps recovering a quality render beyond fifteen minutes without resubmitting', async () => {
+    let checks = 0;
+    vi.mocked(comfyTrialsApi.recover).mockImplementation(async () =>
+      ++checks < 192 ? job : {...job,status:'complete',result:result as never});
+    const pending = expect(renderLocalImage(options)).resolves.toEqual(result);
+    await vi.advanceTimersByTimeAsync(16 * 60 * 1000);
+    await pending;
+    expect(comfyTrialsApi.generate).toHaveBeenCalledTimes(1);
+    expect(comfyTrialsApi.recover).toHaveBeenCalledTimes(192);
+  });
   it('reports a failed local job without replacement', async () => {
     vi.mocked(comfyTrialsApi.generate).mockResolvedValue({...job,status:'failed',error:'GPU memory'});
     await expect(renderLocalImage(options)).rejects.toThrow('GPU memory');

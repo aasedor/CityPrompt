@@ -33,7 +33,9 @@ export function ImageModelSelect({ value, onChange, disabled = false, availabili
         </select>
       </label>
       <p className="mt-1 text-[10px] opacity-75">
-        {isLocalImageModel(value)
+        {value === 'qwen-image'
+          ? 'High-quality local render · approximately 4 megapixels · 40 steps · 0 credits. Allow several minutes; compare building details with your 3D view.'
+          : isLocalImageModel(value)
           ? 'Runs on your desktop GPU · 0 credits. Returns the generated image directly, without geometry repair or replacement. Compare it with your 3D view.'
           : value === 'compare-all-three'
           ? 'Three image calls, billed separately. Same source view: GPT Image 2, Flare, then Sunburst. Each result is saved.'

@@ -27,7 +27,8 @@ the backend rejects production submissions even if the flag is enabled.
    ComfyUI URL is accepted. Keep it bound to this computer, not a public network.
 
 3. For a new view, choose **Present > Image > Advanced image controls > Image
-   engine**, then **FLUX.2 Klein · Local · Free** or **Qwen Image · Local · Free**.
+   engine**, then **Qwen Image 2.1 · High quality · Local · Free** or
+   **FLUX.2 Klein · Fast preview · Local · Free**.
    Generate normally. The current full-resolution 3D capture is saved first;
    its durable local job is polled and the generated image enters Project Renders.
    If interrupted, open **Local model trials** on that saved source to recover it.
@@ -45,12 +46,46 @@ the backend rejects production submissions even if the flag is enabled.
    Results can be viewed and downloaded in the panel. Image callbacks refresh
    the gallery; video callbacks use the existing saved-video pattern.
 
+## Quality-focused local rendering (2026-10-06)
+
+Select **Qwen Image 2.1 · High quality · Local · Free** for the quality-first
+trial. It now uses 40 denoising steps and a native output budget up to
+4,194,304 pixels, with a 2752-pixel longest edge. A square output is 2048 x 2048;
+aspect ratio is retained to the model's 32-pixel grid. Smaller source captures
+are resized before diffusion so the model generates the larger output directly.
+This is not a post-generation enlargement. FLUX remains the fast-preview option.
+
+The existing INT8 Qwen model and quantized text encoder fit this desktop through
+CPU/RAM offloading; the full BF16 weights are not installed. Tiled VAE decoding
+limits peak GPU memory. Larger images can take many minutes on the 8 GB card.
+The UI waits up to one hour; closing the view preserves the original job for
+recovery. No automatic lower-resolution substitution or repeat generation occurs.
+
+The [official Qwen model guide](https://github.com/QwenLM/Qwen-Image-2.1) recommends
+40 steps and native 2K-area resolutions. The previous 512-pixel/8-step settings
+were a low-memory connectivity pilot, not a quality benchmark.
+
+### High-resolution pilot
+
+A single 2752 x 1472, 40-step local GPU run completed in 14 minutes 12 seconds
+on this RTX 5060 / 16 GB RAM desktop. The full-resolution street-view source
+and seed matched the earlier Qwen pilot; the prompt was refined to request
+photographic materials and afternoon light, so this is not a settings-only
+controlled comparison. Visual review found sharper brick, paving, foliage and
+reflections while retaining recognizable building masses and window positions.
+It is one reviewed sample, not a guarantee for every scene.
+
+Evidence and the full output remain outside Git:
+`C:/dev-artifacts/CityPrompt/local-quality-2026-10-06/`.
+The source changes require a backend restart. Automatic approval review blocked
+that restart during this turn; the previous server still uses the old preset.
+
 ## Installed model files / bounded defaults
 
 | Preset | Diffusion model | Text encoder | VAE | Default |
 | --- | --- | --- | --- | --- |
 | FLUX.2 Klein 4B | `flux-2-klein-4b-fp8.safetensors` | `qwen_3_4b.safetensors` | `flux2-vae.safetensors` | 768px maximum edge, 4 steps, reference-latent image edit |
-| Qwen Image 2.1 | `qwen_image_2.1_int8_convrot.safetensors` | `qwen3vl_8b_w4a8.safetensors` | `qwen_image_2.1_vae_bf16.safetensors` | 512px maximum edge, 8 steps, native image-edit conditioning |
+| Qwen Image 2.1 | `qwen_image_2.1_int8_convrot.safetensors` | `qwen3vl_8b_w4a8.safetensors` | `qwen_image_2.1_vae_bf16.safetensors` | Up to 4 MP / 2752px longest edge, 40 steps, native image-edit conditioning |
 | Wan 2.2 TI2V 5B | `wan2.2_ti2v_5B_fp16.safetensors` | `umt5_xxl_fp8_e4m3fn_scaled.safetensors` | `wan2.2_vae.safetensors` | 640px maximum edge, 20 steps, 49 frames at 24fps (~2 seconds), silent |
 
 Place diffusion models, encoders and VAEs in ComfyUI's respective
@@ -104,7 +139,7 @@ below, completed the bounded video pilot. Restart ComfyUI between image and
 video trials if this runtime becomes unstable; recover the original job before
 explicitly starting a replacement.
 
-## Measured desktop pilots
+## Original low-resolution desktop pilots
 
 All three presets completed actual local GPU generation, persistent storage and
 browser display on the RTX 5060 / 16 GB RAM desktop. Times below are ComfyUI

@@ -51,6 +51,25 @@ def test_workflows_use_native_reference_conditioning_and_bounded_sizes():
             assert "audio" not in g["18"]["inputs"]
 
 
+@pytest.mark.parametrize("size", [(1920, 1040), (512, 512), (1200, 2400), (4000, 600)])
+def test_quality_preset_preserves_aspect_and_uses_native_output_budget(size):
+    p = service.PRESETS["qwen-image"]
+    source = io.BytesIO()
+    Image.new("RGB", size).save(source, "PNG")
+    _, w, h = service.prepare_source(source.getvalue(), p)
+    assert w * h <= 2048 * 2048
+    assert max(w, h) <= 2752
+    assert abs(w / h - size[0] / size[1]) / (size[0] / size[1]) < .08
+    g = service.workflow(p, "source.png", "Architectural photograph", 42, w, h, "job")
+    assert g["8"]["inputs"]["steps"] == 40
+    assert g["8"]["inputs"]["cfg"] == 1
+    assert g["5"]["inputs"]["resolution"] == 0
+    assert g["8"]["inputs"]["latent_image"] == ["5", 2]
+    assert g["9"]["class_type"] == "VAEDecodeTiled"
+    if size == (512, 512):
+        assert (w, h) == (2048, 2048)
+
+
 @pytest.mark.asyncio
 async def test_native_job_id_submission_and_output_download(monkeypatch):
     job_id = str(uuid.uuid4())

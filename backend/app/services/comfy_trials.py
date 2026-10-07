@@ -25,6 +25,7 @@ class Preset:
     max_edge: int
     steps: int
     prompt: str
+    target_pixels: int | None = None
 
 
 IMAGE_PROMPT = "Refine this architectural view into a realistic architectural photograph. Preserve the camera, buildings, streets and planting. Natural materials, soft daylight and restrained colour."
@@ -33,25 +34,26 @@ PRESETS = {
     p.id: p
     for p in (
         Preset(
+            "qwen-image",
+            "Qwen Image 2.1 · High quality",
+            "image",
+            "qwen_image_2.1_int8_convrot.safetensors",
+            "qwen3vl_8b_w4a8.safetensors",
+            "qwen_image_2.1_vae_bf16.safetensors",
+            2752,
+            40,
+            IMAGE_PROMPT,
+            2048 * 2048,
+        ),
+        Preset(
             "flux-klein",
-            "FLUX.2 Klein 4B · image",
+            "FLUX.2 Klein 4B · Fast preview",
             "image",
             "flux-2-klein-4b-fp8.safetensors",
             "qwen_3_4b.safetensors",
             "flux2-vae.safetensors",
             768,
             4,
-            IMAGE_PROMPT,
-        ),
-        Preset(
-            "qwen-image",
-            "Qwen Image 2.1 · image",
-            "image",
-            "qwen_image_2.1_int8_convrot.safetensors",
-            "qwen3vl_8b_w4a8.safetensors",
-            "qwen_image_2.1_vae_bf16.safetensors",
-            512,
-            8,
             IMAGE_PROMPT,
         ),
         Preset(
@@ -96,7 +98,13 @@ def prepare_source(data: bytes, preset: Preset) -> tuple[bytes, int, int]:
         raise ValueError("Source image exceeds the local trial pixel limit.")
     image = image.convert("RGB")
     scale = min(1, preset.max_edge / max(image.size))
-    w, h = (max(64, round(edge * scale / 32) * 32) for edge in image.size)
+    if preset.target_pixels:
+        # Generate at the model's native pixel budget, including when the source
+        # is smaller. This is diffusion output, not a post-generation upscale.
+        scale = min(preset.max_edge / max(image.size),
+                    (preset.target_pixels / (image.width * image.height)) ** .5)
+    quantize = int if preset.target_pixels else round
+    w, h = (max(64, quantize(edge * scale / 32) * 32) for edge in image.size)
     image = image.resize((w, h), Image.Resampling.LANCZOS)
     output = io.BytesIO()
     image.save(output, "PNG")
