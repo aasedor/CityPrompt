@@ -55,11 +55,10 @@ async def images_ready():
 
 
 async def documents_ready():
-    if not get_settings().classroom_release:
-        return "not_enabled"
     from app.tasks.worker import celery_app
+    required_queue = "classroom-documents" if get_settings().classroom_release else "celery"
     queues = await asyncio.to_thread(lambda: celery_app.control.inspect(timeout=1).active_queues())
-    if not any(queue.get("name") == "classroom-documents" for worker in (queues or {}).values() for queue in worker):
+    if not any(queue.get("name") == required_queue for worker in (queues or {}).values() for queue in worker):
         raise RuntimeError("reference worker")
 
 
@@ -71,6 +70,8 @@ async def assets_ready():
         raise RuntimeError("Classroom release requires durable image attempts")
     roster = json.loads((Path(__file__).parents[1] / "data/classroomStarter.json").read_text(encoding="utf-8"))
     receipt = json.loads(Path(settings.classroom_asset_receipt).read_text(encoding="utf-8"))
+    if not isinstance(roster.get("dependencies"), list):
+        raise RuntimeError("Starter asset/review receipt does not qualify this release")
     roster_hash = hashlib.sha256((json.dumps(roster, indent=2, ensure_ascii=False) + "\n").encode()).hexdigest()
     expected = {row["id"] for row in roster["dependencies"]}
     verified = {row["id"] for row in receipt.get("dependencies", []) if row.get("status") == "verified"}

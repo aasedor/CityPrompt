@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { TRANSPORT_STANDARDS, type TransportStandardEntry } from '@/data/transportStandards';
 import { api, documentsApi, rendersApi, siteZonesApi } from '@/services/api';
-import { ROADWAY_AESTHETIC_OPTIONS_V2 } from '../aestheticCatalog';
+import { SAVED_ROADWAY_AESTHETIC_OPTIONS } from '../aestheticCatalog';
 import { resolveCommunity3DKind } from '@/features/community3d/community3d';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
@@ -214,7 +214,7 @@ const STREET_STANDARD_BY_ARCHETYPE = new Map(
 );
 
 const STREET_AESTHETIC_REFERENCE_BY_ARCHETYPE = new Map(
-  ROADWAY_AESTHETIC_OPTIONS_V2.flatMap((option) => {
+  SAVED_ROADWAY_AESTHETIC_OPTIONS.flatMap((option) => {
     const reference = option.archetypeImages?.find((image) => image.imageUrl.endsWith('.webp'));
     return reference
       ? [[option.id, {

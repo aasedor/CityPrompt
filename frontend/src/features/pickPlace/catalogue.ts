@@ -9,10 +9,12 @@ import { reviewedEntranceForAsset } from './reviewedEntrances';
 import { storeyProgramSupports } from './buildingStoreyProgram';
 import { footprintProgramTarget } from './buildingFootprintProgram';
 import { savedModelRevision } from './savedModelRevision';
+import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 export type { PlaceAsset, PlaceAssetId } from './assetRegistry';
 const OBJECT_ASSETS = CATALOGUE_ASSETS.filter((asset): asset is PlaceAsset => asset.kind === 'object');
 // Resolve older saved IDs without returning those versions to student discovery.
-const LEGACY_OBJECT_LOOKUP = LEGACY_OBJECT_ASSETS.map(asset => individualStarterHome(asset) as PlaceAsset);
+const LEGACY_OBJECT_LOOKUP = [...LEGACY_OBJECT_ASSETS, ...CATALOGUE_BUILDING_ASSETS]
+  .map(asset => individualStarterHome(asset) as PlaceAsset);
 export const PLACE_ASSETS = OBJECT_ASSETS.filter(isPlaceable);
 
 /** Preview and saved compilation share the exact variant and native plot policy. */

@@ -20,7 +20,7 @@ describe('exact local validation catalogue', () => {
     const entries = [...roster.entries, ...expansion.entries];
     for (const entry of entries) {
       expect(CANONICAL_CHOICES.filter(c => c.option.id === entry.archetype_id
-        && c.placements.some(a => a.model.variantId === entry.variant_id)), entry.placement_id).toHaveLength(1);
+        && c.placements.some(a => a.model.variantId === entry.variant_id && a.model.method !== 'public_realm_park_kit')), entry.placement_id).toHaveLength(1);
     }
     const fourplex = CATALOGUE_ASSETS.find(a => a.id === 'validation_reference_charcoal_gable_fourplex_v1');
     expect(fourplex?.model.revision).toBe(roster.entries.find(e => e.placement_id === fourplex?.id)?.sha256);
@@ -51,10 +51,14 @@ describe('exact local validation catalogue', () => {
     const parks=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.zoneType==='green_space');
     expect(parks.length).toBeGreaterThanOrEqual(15);
     for(const park of parks) {
-      expect(['native_park_v2','native_validation_fixture']).toContain(park.model.method);
+      expect(['native_park_v2','native_validation_fixture','public_realm_park_kit']).toContain(park.model.method);
       if (park.model.method === 'native_park_v2') {
         expect(park.reshapeMode).toBe('authored_footprint');
         expect(park.properties.green_space_native_layout_id).toBeTruthy();
+      }
+      if (park.model.method === 'public_realm_park_kit') {
+        expect(park.reshapeMode).toBe('authored_footprint');
+        expect(park.properties.pick_place_flexible_park).toBeTruthy();
       }
       expect(park.properties.validation_fixed_fixture).toBeUndefined();
       expect(park.properties.public_realm_trial_asset).toBeUndefined();

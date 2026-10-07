@@ -20,6 +20,6 @@ it('does not distort a near-end gesture when a full-width junction cannot fit', 
   const controls = main.properties!.plan_route_controls as number[][];
   const snapped = snapStreetEnds(controls, zones, main.id, 23);
   expect(snapped).toBe(controls);
-  const node = detectConnectedStreetIntersections(zones).find(node => node.zoneIds.includes(main.id))!;
-  expect(resolveStreetJunctionLayout(node, zones)).toBeNull();
+  // A near-end gesture without three valid approaches is excluded from the graph.
+  expect(detectConnectedStreetIntersections(zones).find(node => node.zoneIds.includes(main.id))).toBeUndefined();
 });

@@ -5,7 +5,7 @@ import { effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/r
 import { pedestrianAccessBands, resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { corridorInside, corridorOverlaps, pointInside } from '@/components/viewer/globe/parkAccessConnections';
 import { rectangleDimensions } from './geometry';
-import { CATALOGUE_ASSETS } from './assetRegistry';
+import { assetForZone } from './catalogue';
 import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sitePreparationSurface';
 import { buildingPlacementEnvelope } from './buildingPlacementEdges';
 
@@ -66,7 +66,7 @@ export function readBuildingEntrance(zone: SiteZone, zones?: readonly SiteZone[]
   if (!validRing(zone) || zone.coordinates.length !== 4) return null;
   if (v.sourceVariantId && v.sourceVariantId !== zone.properties?.development_selected_variant_id) return null;
   if (v.sourceRevision && (v.sourceRevision !== zone.properties?.pick_place_model_revision
-    || CATALOGUE_ASSETS.find(asset => asset.id === zone.properties?.pick_place_asset)?.model.revision !== v.sourceRevision)) return null;
+    || assetForZone(zone)?.model.revision !== v.sourceRevision)) return null;
   const d = rectangleDimensions(zone.coordinates);
   // Multiple repeated houses need a per-instance entrance contract; do not
   // attach their shared plot centre to an imaginary doorway.

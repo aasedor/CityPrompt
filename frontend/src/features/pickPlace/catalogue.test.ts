@@ -17,8 +17,12 @@ describe('native catalogue placement contracts', () => {
     const fixed = coordinates[2];
     const resized = resizeRectangleCorner(coordinates, 0, fixed, asset);
     const dimensions = rectangleDimensions(resized);
-    expect(dimensions.width).toBeCloseTo(asset.minWidth, 3);
-    expect(dimensions.depth).toBeCloseTo(asset.minDepth, 3);
+    if (asset.properties.validation_fixed_fixture === true) {
+      expect(resized).toEqual(coordinates);
+    } else {
+      expect(dimensions.width).toBeCloseTo(asset.minWidth, 3);
+      expect(dimensions.depth).toBeCloseTo(asset.minDepth, 3);
+    }
     expect(dimensions.width - asset.nativeDimensions![0]).toBeGreaterThanOrEqual(3 - 1e-6);
     expect(dimensions.depth - asset.nativeDimensions![1]).toBeGreaterThanOrEqual(3 - 1e-6);
     expect(resized[2][0]).toBeCloseTo(fixed[0], 7);

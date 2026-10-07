@@ -1,0 +1,681 @@
+# Opt-in full-catalogue staging. See docs/RENDER_RELEASE_2026-10-07.md.
+# Creates paid resources only when applied in Render; does not claim catalogue approval.
+# Use this custom Blueprint path; do not sync the legacy render.yaml for this release.
+databases:
+- name: cityprompt-staging-db
+  region: oregon
+  plan: 0.5c-1g
+  postgresMajorVersion: '16'
+  databaseName: cityprompt_staging
+  diskSizeGB: 15
+  ipAllowList: []
+services:
+- type: keyvalue
+  name: cityprompt-staging-queue
+  region: oregon
+  plan: 256mb
+  maxmemoryPolicy: noeviction
+  ipAllowList: []
+- type: web
+  name: cityprompt-staging-api
+  runtime: docker
+  region: oregon
+  dockerfilePath: ./backend/Dockerfile.render
+  dockerContext: .
+  autoDeployTrigger: 'off'
+  plan: 1c-2g
+  preDeployCommand: python -m scripts.prepare_database
+  dockerCommand: bash scripts/start.sh
+  healthCheckPath: /health
+  envVars:
+  - key: APP_ENV
+    value: production
+  - key: APP_DEBUG
+    value: 'false'
+  - key: CLASSROOM_RELEASE
+    value: 'false'
+  - key: RUN_DATABASE_MIGRATIONS
+    value: 'false'
+  - key: COMFY_TRIALS_ENABLED
+    value: 'false'
+  - key: DIRECT_3D_JOBS_ENABLED
+    value: 'true'
+  - key: DIRECT_3D_IMAGES_ENABLED
+    value: 'true'
+  - key: DIRECT_3D_QUEUE_LIMIT
+    value: '16'
+  - key: DIRECT_3D_PROJECT_QUEUE_LIMIT
+    value: '2'
+  - key: KLING_ANIMATION_ENABLED
+    value: 'true'
+  - key: LOG_LEVEL
+    value: INFO
+  - key: DATABASE_URL
+    fromDatabase:
+      name: cityprompt-staging-db
+      property: connectionString
+  - key: REDIS_URL
+    fromService:
+      name: cityprompt-staging-queue
+      type: keyvalue
+      property: connectionString
+  - key: JWT_SECRET_KEY
+    generateValue: true
+  - key: ALLOWED_ORIGINS
+    sync: false
+  - key: FRONTEND_URL
+    sync: false
+  - key: S3_ENDPOINT_URL
+    sync: false
+  - key: S3_REGION
+    sync: false
+  - key: S3_BUCKET_NAME
+    sync: false
+  - key: S3_ACCESS_KEY
+    sync: false
+  - key: S3_SECRET_KEY
+    sync: false
+  - key: OPENAI_API_KEY
+    sync: false
+  - key: FAL_KEY
+    sync: false
+  - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+    sync: false
+  - key: GIT_LFS_SKIP_SMUDGE
+    value: '1'
+- type: worker
+  name: cityprompt-staging-images
+  runtime: docker
+  region: oregon
+  dockerfilePath: ./backend/Dockerfile.render
+  dockerContext: .
+  autoDeployTrigger: 'off'
+  plan: 1c-2g
+  numInstances: 1
+  dockerCommand: celery -A app.tasks.worker:celery_app worker --pool=prefork --concurrency=2
+    --queues=direct3d --hostname=images@%h --loglevel=warning
+  envVars:
+  - key: APP_ENV
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: APP_ENV
+  - key: APP_DEBUG
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: APP_DEBUG
+  - key: CLASSROOM_RELEASE
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: CLASSROOM_RELEASE
+  - key: COMFY_TRIALS_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: COMFY_TRIALS_ENABLED
+  - key: DIRECT_3D_JOBS_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_JOBS_ENABLED
+  - key: DIRECT_3D_IMAGES_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_IMAGES_ENABLED
+  - key: DIRECT_3D_QUEUE_LIMIT
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_QUEUE_LIMIT
+  - key: DIRECT_3D_PROJECT_QUEUE_LIMIT
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_PROJECT_QUEUE_LIMIT
+  - key: KLING_ANIMATION_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: KLING_ANIMATION_ENABLED
+  - key: LOG_LEVEL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: LOG_LEVEL
+  - key: DATABASE_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DATABASE_URL
+  - key: REDIS_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: REDIS_URL
+  - key: JWT_SECRET_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: JWT_SECRET_KEY
+  - key: ALLOWED_ORIGINS
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: ALLOWED_ORIGINS
+  - key: FRONTEND_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: FRONTEND_URL
+  - key: S3_ENDPOINT_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_ENDPOINT_URL
+  - key: S3_REGION
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_REGION
+  - key: S3_BUCKET_NAME
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_BUCKET_NAME
+  - key: S3_ACCESS_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_ACCESS_KEY
+  - key: S3_SECRET_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_SECRET_KEY
+  - key: OPENAI_API_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: OPENAI_API_KEY
+  - key: FAL_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: FAL_KEY
+  - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: RENDER_GLOBAL_DAILY_TOKEN_CAP
+  - key: GIT_LFS_SKIP_SMUDGE
+    value: '1'
+- type: worker
+  name: cityprompt-staging-maintenance
+  runtime: docker
+  region: oregon
+  dockerfilePath: ./backend/Dockerfile.render
+  dockerContext: .
+  autoDeployTrigger: 'off'
+  plan: 0.5c-512mb
+  numInstances: 1
+  dockerCommand: celery -A app.tasks.worker:celery_app worker --pool=prefork --concurrency=1
+    --queues=direct3d-maintenance --hostname=maintenance@%h --loglevel=warning
+  envVars:
+  - key: APP_ENV
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: APP_ENV
+  - key: APP_DEBUG
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: APP_DEBUG
+  - key: CLASSROOM_RELEASE
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: CLASSROOM_RELEASE
+  - key: COMFY_TRIALS_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: COMFY_TRIALS_ENABLED
+  - key: DIRECT_3D_JOBS_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_JOBS_ENABLED
+  - key: DIRECT_3D_IMAGES_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_IMAGES_ENABLED
+  - key: DIRECT_3D_QUEUE_LIMIT
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_QUEUE_LIMIT
+  - key: DIRECT_3D_PROJECT_QUEUE_LIMIT
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_PROJECT_QUEUE_LIMIT
+  - key: KLING_ANIMATION_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: KLING_ANIMATION_ENABLED
+  - key: LOG_LEVEL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: LOG_LEVEL
+  - key: DATABASE_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DATABASE_URL
+  - key: REDIS_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: REDIS_URL
+  - key: JWT_SECRET_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: JWT_SECRET_KEY
+  - key: ALLOWED_ORIGINS
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: ALLOWED_ORIGINS
+  - key: FRONTEND_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: FRONTEND_URL
+  - key: S3_ENDPOINT_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_ENDPOINT_URL
+  - key: S3_REGION
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_REGION
+  - key: S3_BUCKET_NAME
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_BUCKET_NAME
+  - key: S3_ACCESS_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_ACCESS_KEY
+  - key: S3_SECRET_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_SECRET_KEY
+  - key: OPENAI_API_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: OPENAI_API_KEY
+  - key: FAL_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: FAL_KEY
+  - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: RENDER_GLOBAL_DAILY_TOKEN_CAP
+  - key: GIT_LFS_SKIP_SMUDGE
+    value: '1'
+- type: worker
+  name: cityprompt-staging-general
+  runtime: docker
+  region: oregon
+  dockerfilePath: ./backend/Dockerfile.render
+  dockerContext: .
+  autoDeployTrigger: 'off'
+  plan: 1c-2g
+  numInstances: 1
+  dockerCommand: celery -A app.tasks.worker:celery_app worker --pool=prefork --concurrency=2
+    --queues=celery --hostname=general@%h --loglevel=warning
+  envVars:
+  - key: APP_ENV
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: APP_ENV
+  - key: APP_DEBUG
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: APP_DEBUG
+  - key: CLASSROOM_RELEASE
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: CLASSROOM_RELEASE
+  - key: COMFY_TRIALS_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: COMFY_TRIALS_ENABLED
+  - key: DIRECT_3D_JOBS_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_JOBS_ENABLED
+  - key: DIRECT_3D_IMAGES_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_IMAGES_ENABLED
+  - key: DIRECT_3D_QUEUE_LIMIT
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_QUEUE_LIMIT
+  - key: DIRECT_3D_PROJECT_QUEUE_LIMIT
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_PROJECT_QUEUE_LIMIT
+  - key: KLING_ANIMATION_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: KLING_ANIMATION_ENABLED
+  - key: LOG_LEVEL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: LOG_LEVEL
+  - key: DATABASE_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DATABASE_URL
+  - key: REDIS_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: REDIS_URL
+  - key: JWT_SECRET_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: JWT_SECRET_KEY
+  - key: ALLOWED_ORIGINS
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: ALLOWED_ORIGINS
+  - key: FRONTEND_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: FRONTEND_URL
+  - key: S3_ENDPOINT_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_ENDPOINT_URL
+  - key: S3_REGION
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_REGION
+  - key: S3_BUCKET_NAME
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_BUCKET_NAME
+  - key: S3_ACCESS_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_ACCESS_KEY
+  - key: S3_SECRET_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_SECRET_KEY
+  - key: OPENAI_API_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: OPENAI_API_KEY
+  - key: FAL_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: FAL_KEY
+  - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: RENDER_GLOBAL_DAILY_TOKEN_CAP
+  - key: GIT_LFS_SKIP_SMUDGE
+    value: '1'
+- type: worker
+  name: cityprompt-staging-scheduler
+  runtime: docker
+  region: oregon
+  dockerfilePath: ./backend/Dockerfile.render
+  dockerContext: .
+  autoDeployTrigger: 'off'
+  plan: 0.5c-512mb
+  numInstances: 1
+  dockerCommand: celery -A app.tasks.worker:celery_app beat --schedule=/tmp/celerybeat
+    --loglevel=warning
+  envVars:
+  - key: APP_ENV
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: APP_ENV
+  - key: APP_DEBUG
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: APP_DEBUG
+  - key: CLASSROOM_RELEASE
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: CLASSROOM_RELEASE
+  - key: COMFY_TRIALS_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: COMFY_TRIALS_ENABLED
+  - key: DIRECT_3D_JOBS_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_JOBS_ENABLED
+  - key: DIRECT_3D_IMAGES_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_IMAGES_ENABLED
+  - key: DIRECT_3D_QUEUE_LIMIT
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_QUEUE_LIMIT
+  - key: DIRECT_3D_PROJECT_QUEUE_LIMIT
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_PROJECT_QUEUE_LIMIT
+  - key: KLING_ANIMATION_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: KLING_ANIMATION_ENABLED
+  - key: LOG_LEVEL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: LOG_LEVEL
+  - key: DATABASE_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DATABASE_URL
+  - key: REDIS_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: REDIS_URL
+  - key: JWT_SECRET_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: JWT_SECRET_KEY
+  - key: ALLOWED_ORIGINS
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: ALLOWED_ORIGINS
+  - key: FRONTEND_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: FRONTEND_URL
+  - key: S3_ENDPOINT_URL
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_ENDPOINT_URL
+  - key: S3_REGION
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_REGION
+  - key: S3_BUCKET_NAME
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_BUCKET_NAME
+  - key: S3_ACCESS_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_ACCESS_KEY
+  - key: S3_SECRET_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: S3_SECRET_KEY
+  - key: OPENAI_API_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: OPENAI_API_KEY
+  - key: FAL_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: FAL_KEY
+  - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: RENDER_GLOBAL_DAILY_TOKEN_CAP
+  - key: GIT_LFS_SKIP_SMUDGE
+    value: '1'
+- type: web
+  name: cityprompt-staging-web
+  runtime: static
+  autoDeployTrigger: 'off'
+  buildCommand: npm ci --prefix frontend && python3 scripts/build_hosted_frontend.py
+    --fetch-lfs
+  staticPublishPath: frontend/dist
+  envVars:
+  - key: NODE_VERSION
+    value: 24.14.0
+  - key: PYTHON_VERSION
+    value: '3.12'
+  - key: GIT_LFS_SKIP_SMUDGE
+    value: '1'
+  - key: VITE_API_URL
+    sync: false
+  - key: VITE_GOOGLE_MAPS_API_KEY
+    sync: false
+  headers:
+  - path: /index.html
+    name: Cache-Control
+    value: no-cache
+  - path: /version.json
+    name: Cache-Control
+    value: no-store
+  - path: /sw.js
+    name: Cache-Control
+    value: no-cache
+  - path: /assets/*
+    name: Cache-Control
+    value: public, max-age=31536000, immutable
+  - path: /model-revisions/*
+    name: Cache-Control
+    value: public, max-age=31536000, immutable
+  - path: /reference-images/*
+    name: Cache-Control
+    value: public, max-age=3600
+  - path: /archetypes/*
+    name: Cache-Control
+    value: public, max-age=3600
+  - path: /policy-maps/*
+    name: Cache-Control
+    value: public, max-age=3600
+  routes:
+  - type: rewrite
+    source: /login
+    destination: /index.html
+  - type: rewrite
+    source: /register
+    destination: /index.html
+  - type: rewrite
+    source: /oauth/callback
+    destination: /index.html
+  - type: rewrite
+    source: /forgot-password
+    destination: /index.html
+  - type: rewrite
+    source: /reset-password
+    destination: /index.html
+  - type: rewrite
+    source: /projects
+    destination: /index.html
+  - type: rewrite
+    source: /projects/*
+    destination: /index.html
+  - type: rewrite
+    source: /settings/*
+    destination: /index.html
+  - type: rewrite
+    source: /admin
+    destination: /index.html
+  - type: rewrite
+    source: /admin/*
+    destination: /index.html
+  - type: rewrite
+    source: /shared/*
+    destination: /index.html
+  - type: rewrite
+    source: /invite/*
+    destination: /index.html

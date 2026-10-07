@@ -48,6 +48,33 @@ async def test_schema_mismatch_is_not_ready(monkeypatch):
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("classroom,queue", [(False, "celery"), (True, "classroom-documents")])
+async def test_documents_require_the_queue_for_the_active_profile(monkeypatch, classroom, queue):
+    from app.tasks.worker import celery_app
+
+    monkeypatch.setattr(readiness, "get_settings", lambda: SimpleNamespace(classroom_release=classroom))
+    inspector = MagicMock()
+    monkeypatch.setattr(celery_app.control, "inspect", lambda **_: inspector)
+    inspector.active_queues.return_value = {"unrelated": [{"name": "direct3d"}]}
+    with pytest.raises(RuntimeError, match="reference worker"):
+        await readiness.documents_ready()
+    inspector.active_queues.return_value = {"documents": [{"name": queue}]}
+    assert await readiness.documents_ready() is None
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("commit,expected", [("a" * 40, "a" * 40), ("", None), ("secret-value", None)])
+async def test_health_identifies_release_without_echoing_arbitrary_environment(monkeypatch, commit, expected):
+    from app import main
+    from app.core.config import Settings
+
+    settings = Settings(_env_file=None, render_git_commit=commit)
+    monkeypatch.setattr(main, "settings", settings)
+    report = await main.health_check()
+    assert report == {"status": "healthy", "version": settings.app_version, "commit": expected}
+
+
+@pytest.mark.asyncio
 async def test_unreviewed_starter_receipt_cannot_qualify_classroom_release(monkeypatch, tmp_path):
     receipt = tmp_path / "receipt.json"
     receipt.write_text(json.dumps({"command": "preflight", "errors": [], "dependencies": [], "runtime_reviews_required": True, "roster_sha256": "wrong"}))

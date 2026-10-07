@@ -18,8 +18,9 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, extname } from 'path';
 
-const DIST_DIR = join(process.cwd(), 'dist', 'assets');
-const MANIFEST_PATH = join(process.cwd(), 'dist', '.vite', 'manifest.json');
+const buildRoot = process.env.CITYPROMPT_BUILD_DIR || join(process.cwd(), 'dist');
+const DIST_DIR = join(buildRoot, 'assets');
+const MANIFEST_PATH = join(buildRoot, '.vite', 'manifest.json');
 
 const BUDGETS = {
   initialJs: 600 * 1024,

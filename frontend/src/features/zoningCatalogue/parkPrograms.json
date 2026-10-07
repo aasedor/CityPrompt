@@ -1,4 +1,15 @@
 {
+  "native-park:student_sandy_beach_v1--native-v1": {
+    "variantId": "student_sandy_beach_v1",
+    "revision": "fccfdcc8f5fc403d9731f3a984fa00d5a7cac879b73ee49a8432ebd3491d9252",
+    "components": [["Park"]],
+    "assumption": "Provisional classroom park program for the authored sand, boardwalk and water layout. The geometry alone does not establish a public park or supervised swimming operation.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Sandy Beach & Boardwalk exact native layout in nativeParks.json; runtime scope recorded in docs/CATALOGUE_WALKING_ACCESS_2026-10-04.md. No operating use has been established."
+    },
+    "review": "Confirm the operator, public access and swimming program before assigning a land-use classification; the provisional Park screening is not confirmation of permission."
+  },
   "native-park:botanical_garden_v3--native-v1": {
     "variantId": "botanical_garden_v3",
     "revision": "8e5447c3b253c3f5842c049948620c67eebe4679f73b72ca84145718f58e4a84",

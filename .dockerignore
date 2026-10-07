@@ -1,0 +1,27 @@
+# Repository-root context for backend/Dockerfile.render. Allow only runtime inputs.
+*
+!backend/
+!backend/**
+!seed/
+!seed/model-library/
+!seed/model-library/rlasm-architectural-clay/
+!seed/model-library/rlasm-architectural-clay/house-flex-pilot-v001.json
+backend/.env
+backend/.env.*
+backend/**/.env
+backend/**/.env.*
+backend/.venv/
+backend/venv/
+backend/**/__pycache__/
+backend/.pytest_cache/
+backend/artifacts/
+backend/tests/
+backend/**/*.log
+backend/**/*.dump
+backend/**/*.sqlite*
+backend/**/*.pem
+backend/**/*.key
+backend/**/credentials*.json
+backend/**/service-account*.json
+backend/**/service_account*.json
+backend/**/client_secret*.json

@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
-for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', 'streetPathArchetypes.json', 'nativeParks.json', 'nativeStreetPilots.json']) {
+for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', 'streetPathArchetypes.json', 'nativeParks.json', 'nativeStreetPilots.json', 'archetypeReferenceAvailability.json']) {
   test(`${filename}: browser decoder preserves every catalogue field`, async () => {
     const source = readFileSync(resolve('src/data', filename), 'utf8');
     const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
@@ -19,11 +19,12 @@ for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', '
   });
 }
 
-test('only the five catalogue data modules are packed; other plugin data is preserved', () => {
+test('only the six catalogue data modules are packed; other plugin data is preserved', () => {
   const plugin = packedCatalogue();
   assert.equal(plugin.apply, 'build');
   assert.equal(plugin.enforce, 'post');
   assert.equal(plugin.transform('', '/app/src/data/validationCatalogue.json'), null);
   assert.equal(plugin.transform('', '/app/src/data/classroomExpansion.json'), null);
   assert.equal(plugin.transform('', '/app/src/data/buildingArchetypes.json?raw'), null);
+  assert.notEqual(plugin.transform('', resolve('src/data/archetypeReferenceAvailability.json')), null);
 });

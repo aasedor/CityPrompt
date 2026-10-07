@@ -1,13 +1,13 @@
 import { expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
-import { STREET_ASSETS } from '@/features/pickPlace/assetRegistry';
+import { LEGACY_SECTION_STREET_ASSETS } from '@/features/pickPlace/assetRegistry';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { preparedPublicRoadMasks } from './preparedPublicRoads';
 
 const ll = (x: number, y: number) => [x / 111320, y / 111320];
 const boundary = {id:'site',zone_type:'site_boundary',is_active_boundary:true,
   coordinates:[ll(0,0),ll(100,0),ll(100,100),ll(0,100)],properties:{}} as SiteZone;
-const asset = STREET_ASSETS.find(a => a.id === 'calgary_collector_street')!;
+const asset = LEGACY_SECTION_STREET_ASSETS.find(a => a.id === 'calgary_collector_street')!;
 const road = (line: number[][]): SiteZone => ({id:'road',zone_type:'road',project_id:'p',color:'#888',sort_order:0,created_at:'',updated_at:'',
   coordinates:bufferLineToPolygon(line,20),properties:{...asset.properties,
     plan_centerline:line,connect_to_public_road:true}} as SiteZone);
