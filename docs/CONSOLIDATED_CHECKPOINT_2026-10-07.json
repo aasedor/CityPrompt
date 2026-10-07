@@ -1,0 +1,10 @@
+{
+  "schema": "cityprompt.catalogue-delivery-audit@1",
+  "checked_utc": "2026-10-07T21:13:57.798Z",
+  "metadata_only": false,
+  "choice_count": 133,
+  "distinct_assets": 404,
+  "failures": [],
+  "source_checkpoint": "d405ef7ce",
+  "new_review_assets_verified": 49
+}
