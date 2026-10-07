@@ -794,13 +794,16 @@ export function GlobeLegoAssemblyLayer({
   const [detailedIds, setDetailedIds] = useState<Set<string>>(
     () => selectDetailedIds(camera.position),
   );
-  const lodFrameRef = useRef(0);
+  const lodElapsedRef = useRef(0);
   useEffect(() => {
     setDetailedIds(selectDetailedIds(camera.position));
   }, [camera, selectDetailedIds]);
-  useFrame(() => {
-    lodFrameRef.current += 1;
-    if (lodFrameRef.current % 60 !== 0) return;
+  useFrame((_state, delta) => {
+    // Camera changes must promote nearby models before a street capture.
+    // Counting 60 frames made this take many seconds on a large slow scene.
+    lodElapsedRef.current += delta;
+    if (lodElapsedRef.current < 0.25) return;
+    lodElapsedRef.current = 0;
     const next = selectDetailedIds(camera.position);
     setDetailedIds((previous) => (setsEqual(previous, next) ? previous : next));
   });

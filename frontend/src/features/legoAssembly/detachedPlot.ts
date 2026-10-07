@@ -50,7 +50,9 @@ export function assemblyFootprintCoordinates(
 
 /** A placed home's first edge remains its frontage, even past 90° or when width exceeds depth. */
 export function authoredHomePlotFrame(coordinates: number[][]) {
-  const ring = coordinates.length === 5 ? coordinates.slice(0, 4) : coordinates;
+  const last = coordinates[coordinates.length - 1];
+  const closed = coordinates.length > 3 && coordinates[0][0] === last[0] && coordinates[0][1] === last[1];
+  const ring = closed ? coordinates.slice(0, -1) : coordinates;
   if (ring.length !== 4 || ring.some(point => !point.slice(0, 2).every(Number.isFinite))) return undefined;
   const lat = ring.reduce((sum, point) => sum + point[1], 0) / 4;
   const edge = (i: number) => [(ring[(i+1)%4][0]-ring[i][0])*metersPerDegLon(lat),

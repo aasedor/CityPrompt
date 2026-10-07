@@ -70,7 +70,20 @@ export function preparedSiteContainsZone(boundary: SiteZone, zone: SiteZone): bo
     x: (lng - origin[0]) * east, y: (lat - origin[1]) * 111320,
   })));
   const outer = local(boundary.coordinates), inner = local(zone.coordinates);
-  if (!outer || !inner || !inner.every((point) => pointInTileMaskRing(point, outer))) return false;
+  if (!outer || !inner) return false;
+  // Planner projection round trips can move a shared edge by centimetres.
+  // Keep these objects on the prepared datum without relaxing tile clipping
+  // or allowing meaningful encroachment into unprepared context.
+  const inside = (point: TileMaskPoint) => pointInTileMaskRing(point, outer)
+    || outer.some((a, index) => {
+      const b = outer[(index + 1) % outer.length];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const lengthSquared = dx * dx + dy * dy;
+      const t = lengthSquared === 0 ? 0 : Math.max(0, Math.min(1,
+        ((point.x - a.x) * dx + (point.y - a.y) * dy) / lengthSquared));
+      return (point.x - a.x - t * dx) ** 2 + (point.y - a.y - t * dy) ** 2 <= 0.02 ** 2;
+    });
+  if (!inner.every(inside)) return false;
   const cross = (a: TileMaskPoint, b: TileMaskPoint) => a.x * b.y - a.y * b.x;
   for (let index = 0; index < inner.length; index += 1) {
     const a = inner[index], b = inner[(index + 1) % inner.length];
@@ -87,7 +100,7 @@ export function preparedSiteContainsZone(boundary: SiteZone, zone: SiteZone): bo
     cuts.sort((left, right) => left - right);
     for (let cut = 1; cut < cuts.length; cut += 1) {
       const t = (cuts[cut - 1] + cuts[cut]) / 2;
-      if (!pointInTileMaskRing({ x: a.x + r.x * t, y: a.y + r.y * t }, outer)) return false;
+      if (!inside({ x: a.x + r.x * t, y: a.y + r.y * t })) return false;
     }
   }
   return true;
