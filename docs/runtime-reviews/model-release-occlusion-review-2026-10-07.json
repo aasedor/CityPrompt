@@ -1,0 +1,833 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-07",
+  "reviewer": "independent frontend_release_checks RLASM reviewer",
+  "review_type": "category_closure_only_supplement",
+  "result": "Both remaining camera visibility gaps resolved; all 19 clear/occluded pairs show partial foreground occlusion. No actionable P0/P1 defect observed in this bounded follow-up.",
+  "whole_building_keeper_approval": false,
+  "human_visual_approval_claimed": false,
+  "promotion_flags_changed": false,
+  "source_changes": false,
+  "scope": [
+    "two previously hidden identity features",
+    "visible ground contact in the new side views",
+    "actual partial foreground blocking in 19 close/occluded pairs"
+  ],
+  "evidence_provenance": {
+    "independent": "Inspected both selected side PNGs and all 19 occluded PNGs at original 1280x656 resolution, compared with previously inspected clear close views and exact source references. Independently rehashed all 48 downloaded files against final receipt SHA-256 and byte sizes.",
+    "parent_reported": "Actual runtime model exports/downloads used the ordinary UI. Camera poses used developer debug controls. Occlusion used an explicit synthetic temporary camera-aligned opaque box, removed after each capture and not saved. Instance pixel counts came from the parent runtime capture procedure; this reviewer verified the arithmetic and unique coverage, not the instrument implementation.",
+    "image_limit": "PNG pixels cannot alone prove exact GLB identity, scene fixture removal or saved-project cleanliness. Candidate/model SHA binding is inherited from the earlier exact manifest and runtime provenance."
+  },
+  "verification": {
+    "download_receipt_rows": 48,
+    "download_hash_and_size_matches": 48,
+    "download_dimensions": [
+      1280,
+      656
+    ],
+    "visually_reviewed_new_views": 21,
+    "occlusion_receipt_rows": 20,
+    "occlusion_unique_candidates": 19,
+    "identical_duplicate_receipt": "montreal-plateau-duplex-clay-v004 appears twice with identical fields; counted once.",
+    "all_partial_occlusion": true,
+    "reported_instance_visible_fraction_range": [
+      0.5001249930150962,
+      0.7058053569264332
+    ],
+    "note": "The 48 files include the cropped cinema side-40 attempt. That attempt was hash-verified but is not accepted as the sign-completeness view; side-40-complete is the reviewed replacement."
+  },
+  "receipts": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-downloads-final-verified.json",
+      "sha256": "cb65dbd45868cdbe8ff5c04ffe37385bcd4733ad4e261f39cd6e6d164abee991"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\occlusion-receipts-complete.json",
+      "sha256": "90af2de3cbb48a16a2440cabf9a7396d1eb9540552f16a4978b1d5d935228d3d"
+    }
+  ],
+  "preserved_prior_review": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\independent-scoped-review.json",
+    "sha256": "1e047f378c52ec7d64657a0962651340d029e782a138dda208438d870dffd7d7",
+    "superseded_claims": [
+      "The two finite camera evidence gaps are resolved by the specified side views.",
+      "The lack of reviewed close/occluded pairs is resolved for this explicitly synthetic foreground-box trial."
+    ],
+    "preserved_limits": "Earlier historical snapshots remain unchanged. This supplement does not assert full promotion acceptance."
+  },
+  "unresolved_within_this_bounded_scope": [],
+  "remaining_outside_scope": [
+    "Whole-building keeper quality and human visual approval",
+    "Walking, collision continuity and all interior access",
+    "Hidden contacts and every fine structural attachment",
+    "Natural scene occluders or every possible camera path",
+    "All eight promotion checks and hosted production acceptance"
+  ],
+  "side_views": [
+    {
+      "candidate": "neighbourhood-library-clay-v003",
+      "model_sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+      "view": "side-70",
+      "status": "earlier_camera_evidence_gap_resolved",
+      "observation": "The source-defining glazed gable is now directly visible, including repeated timber V/truss members, glazing divisions and interior bookshelves. Visible timber bases and sill meet the ground without an obvious continuous floating gap. This resolves the earlier hidden-gable evidence gap at architectural-clay scope.",
+      "export": {
+        "candidate": "neighbourhood-library-clay-v003",
+        "view": "side-70",
+        "zone_id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+        "filename": "cityprompt-3d-view-1791415054649.png",
+        "bytes": 303887,
+        "sha256": "9889e50ea37725a3985e7cf0f7f42eb77cdeee73915980f4e962c03733624dd3",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-library-clay-v003-side-70.png"
+      },
+      "references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\university-library\\variant_2.png",
+          "repository_path": "frontend/public/archetypes/buildings/university-library/variant_2.png",
+          "sha256": "dbff795881507ed296a2ca190bf6b6c7218544a98dcdbeef39da25ee19f7ec9b",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\04\\b6\\04b65811fdb3a5472214351a7018405711f13c8f3c89c20947c81e2d1bc5d702",
+          "repository_path": "frontend/public/archetypes/buildings/university-library/variant_2_angle_60.jpg",
+          "sha256": "04b65811fdb3a5472214351a7018405711f13c8f3c89c20947c81e2d1bc5d702",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\50\\37\\5037ce4f6c67f9d06892e64ae8b53be3e85b09875493a083b1039f24f6385969",
+          "repository_path": "frontend/public/archetypes/buildings/university-library/variant_2_angle_90.jpg",
+          "sha256": "5037ce4f6c67f9d06892e64ae8b53be3e85b09875493a083b1039f24f6385969",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "autumn-cinema-clay-v004",
+      "model_sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+      "view": "side-40-complete",
+      "status": "earlier_camera_evidence_gap_resolved",
+      "observation": "The complete projecting vertical CINEMA blade, decorative top, marquee and ground-level entry group are visible together. The blade is no longer edge-on and its top is not cropped. Visible facade/base contact has no obvious continuous gap. This resolves the earlier hidden-sign-face evidence gap; exact lettering fidelity and all sign attachments are outside this bounded review.",
+      "export": {
+        "candidate": "autumn-cinema-clay-v004",
+        "view": "side-40-complete",
+        "zone_id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+        "filename": "cityprompt-3d-view-1791415089602.png",
+        "bytes": 305661,
+        "sha256": "8d5d3ccea8fd1809a7e431af2b2aa35abd1e5a3b0bf82d56a4839004dce2abc8",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-cinema-clay-v004-side-40-complete.png"
+      },
+      "references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\deco_theater_mainstreet\\autumn-v1-front.png",
+          "repository_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+          "sha256": "7d4c6e549afade74d08aad286d72e47dbbfbdf7508d4b4f7442fc3548a10f5a8",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\17\\2b\\172b54afc20efc454225cb5c6ecdda80293200668496f3f0cf58c8c7202aed40",
+          "repository_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-oblique.jpg",
+          "sha256": "172b54afc20efc454225cb5c6ecdda80293200668496f3f0cf58c8c7202aed40",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\91\\74\\91743f99beceeaf2b275a162039513e7ff33d4732f3eb8929e67cd026c014239",
+          "repository_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-top.jpg",
+          "sha256": "91743f99beceeaf2b275a162039513e7ff33d4732f3eb8929e67cd026c014239",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "observed_actionable_P0_P1": []
+    }
+  ],
+  "occlusion_pairs": [
+    {
+      "candidate": "calgary-side-by-side-duplex-clay-v004",
+      "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "clear_export": {
+        "candidate": "calgary-side-by-side-duplex-clay-v004",
+        "view": "close",
+        "zone_id": "69226bd8-9b46-4a5c-86b9-f811f9a1552d",
+        "filename": "cityprompt-3d-view-1791414521541.png",
+        "bytes": 694791,
+        "sha256": "3c8f419bdece88727cf73f9fa90d7ccdf857bbec228f3d48bb5deb398cba527a",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\calgary-side-by-side-duplex-clay-v004-close.png"
+      },
+      "occluded_export": {
+        "candidate": "calgary-side-by-side-duplex-clay-v004",
+        "view": "occluded",
+        "zone_id": "69226bd8-9b46-4a5c-86b9-f811f9a1552d",
+        "filename": "cityprompt-3d-view-1791414876969.png",
+        "bytes": 450541,
+        "sha256": "f85d26bdccf088f5c5dcc089bee10eaf8dd7ef0169aef6f21bb76d526f7cf235",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\calgary-side-by-side-duplex-clay-v004-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "calgary-side-by-side-duplex-clay-v004",
+        "view": "occluded",
+        "zone_id": "69226bd8-9b46-4a5c-86b9-f811f9a1552d",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 124811,
+        "occluded_pixels": 72647,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5820560687759893,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "montreal-plateau-duplex-clay-v004",
+      "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "clear_export": {
+        "candidate": "montreal-plateau-duplex-clay-v004",
+        "view": "close",
+        "zone_id": "c92ef2c1-77ff-4f04-96d8-3ee59e0b8ef2",
+        "filename": "cityprompt-3d-view-1791414676951.png",
+        "bytes": 650090,
+        "sha256": "bb3127b8fa674cdcfd13905141345c90ebcc5228f1712b132ae6b12e391dd14c",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\montreal-plateau-duplex-clay-v004-close.png"
+      },
+      "occluded_export": {
+        "candidate": "montreal-plateau-duplex-clay-v004",
+        "view": "occluded",
+        "zone_id": "c92ef2c1-77ff-4f04-96d8-3ee59e0b8ef2",
+        "filename": "cityprompt-3d-view-1791414914298.png",
+        "bytes": 414734,
+        "sha256": "8b00bc5979db953b2a842a9f1cf93e65a4364b73cb63e8094999f9d9ae3e8800",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\montreal-plateau-duplex-clay-v004-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "montreal-plateau-duplex-clay-v004",
+        "view": "occluded",
+        "zone_id": "c92ef2c1-77ff-4f04-96d8-3ee59e0b8ef2",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 111711,
+        "occluded_pixels": 69642,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.6234121975454521,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "courtyard-brick-modern-clay-v004",
+      "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "clear_export": {
+        "candidate": "courtyard-brick-modern-clay-v004",
+        "view": "close",
+        "zone_id": "f09638ba-3a7b-462b-85b9-41965cbfa81b",
+        "filename": "cityprompt-3d-view-1791414680141.png",
+        "bytes": 690378,
+        "sha256": "a463957760349503beff2795f94fcd486543c0a769d8f99dbc346dea18514ce9",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\courtyard-brick-modern-clay-v004-close.png"
+      },
+      "occluded_export": {
+        "candidate": "courtyard-brick-modern-clay-v004",
+        "view": "occluded",
+        "zone_id": "f09638ba-3a7b-462b-85b9-41965cbfa81b",
+        "filename": "cityprompt-3d-view-1791414920543.png",
+        "bytes": 452830,
+        "sha256": "3499c0dc114ea754e235785ed4af05394246d83c3db8e920b50219c873b76154",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\courtyard-brick-modern-clay-v004-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "courtyard-brick-modern-clay-v004",
+        "view": "occluded",
+        "zone_id": "f09638ba-3a7b-462b-85b9-41965cbfa81b",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 122012,
+        "occluded_pixels": 67198,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.550749106645248,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "showcase-market-clay-v006",
+      "model_sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "clear_export": {
+        "candidate": "showcase-market-clay-v006",
+        "view": "close",
+        "zone_id": "debe026b-67e1-456e-a281-a661d5e6555a",
+        "filename": "cityprompt-3d-view-1791414683415.png",
+        "bytes": 1028279,
+        "sha256": "56e3200f4adf8f86141b99c171509d44ffd9f548397667635cbe23318fa92404",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-market-clay-v006-close.png"
+      },
+      "occluded_export": {
+        "candidate": "showcase-market-clay-v006",
+        "view": "occluded",
+        "zone_id": "debe026b-67e1-456e-a281-a661d5e6555a",
+        "filename": "cityprompt-3d-view-1791414926307.png",
+        "bytes": 656915,
+        "sha256": "490723e71390a7f9a3fd342c0514601b15093d644f67f4db098875f755075f57",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-market-clay-v006-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "showcase-market-clay-v006",
+        "view": "occluded",
+        "zone_id": "debe026b-67e1-456e-a281-a661d5e6555a",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 123188,
+        "occluded_pixels": 70713,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5740250673766926,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "showcase-aquatic-clay-v004",
+      "model_sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "clear_export": {
+        "candidate": "showcase-aquatic-clay-v004",
+        "view": "close",
+        "zone_id": "aebc77d8-5eb4-4df5-9531-834285389d3d",
+        "filename": "cityprompt-3d-view-1791414691203.png",
+        "bytes": 1136226,
+        "sha256": "0833e2458a2a668f7f9c88b667d058737e9317dfb0d3167b86a03dd17dd82549",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-aquatic-clay-v004-close.png"
+      },
+      "occluded_export": {
+        "candidate": "showcase-aquatic-clay-v004",
+        "view": "occluded",
+        "zone_id": "aebc77d8-5eb4-4df5-9531-834285389d3d",
+        "filename": "cityprompt-3d-view-1791414932092.png",
+        "bytes": 740810,
+        "sha256": "8b1f0f8e61d9fa4e5bd5d2e50d22759278f6f2fa50f6ceceeb7cf96508e0293e",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-aquatic-clay-v004-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "showcase-aquatic-clay-v004",
+        "view": "occluded",
+        "zone_id": "aebc77d8-5eb4-4df5-9531-834285389d3d",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 109858,
+        "occluded_pixels": 60740,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.552895556081487,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "showcase-tower-clay-v005",
+      "model_sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "clear_export": {
+        "candidate": "showcase-tower-clay-v005",
+        "view": "close",
+        "zone_id": "fb7a3232-f602-4df7-b427-ff7715a397f9",
+        "filename": "cityprompt-3d-view-1791414695001.png",
+        "bytes": 1140422,
+        "sha256": "d4dfb8a7774157130083405ab3cd9f4f4cc9f17b368c04f14ab6697b9a9b0552",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-tower-clay-v005-close.png"
+      },
+      "occluded_export": {
+        "candidate": "showcase-tower-clay-v005",
+        "view": "occluded",
+        "zone_id": "fb7a3232-f602-4df7-b427-ff7715a397f9",
+        "filename": "cityprompt-3d-view-1791414937784.png",
+        "bytes": 703050,
+        "sha256": "131dc300aa642d811d0f7f2ed9fbca65011deafcceffbf7b61ac7f9c0123984b",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-tower-clay-v005-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "showcase-tower-clay-v005",
+        "view": "occluded",
+        "zone_id": "fb7a3232-f602-4df7-b427-ff7715a397f9",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 41255,
+        "occluded_pixels": 29118,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.7058053569264332,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "autumn-timber-clay-v004",
+      "model_sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+      "clear_export": {
+        "candidate": "autumn-timber-clay-v004",
+        "view": "close",
+        "zone_id": "b69bfc3b-6e9a-4f69-bf5b-434134818966",
+        "filename": "cityprompt-3d-view-1791414698535.png",
+        "bytes": 715815,
+        "sha256": "597711e2dab1f3c5522570ba1d0c8b0691ae01720dcfd3ec5f973a8934dec614",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-timber-clay-v004-close.png"
+      },
+      "occluded_export": {
+        "candidate": "autumn-timber-clay-v004",
+        "view": "occluded",
+        "zone_id": "b69bfc3b-6e9a-4f69-bf5b-434134818966",
+        "filename": "cityprompt-3d-view-1791414943562.png",
+        "bytes": 454080,
+        "sha256": "25925ecf2ea3b93987bdd2b7d334efba88e6123654d3910660abd0866e03a6fb",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-timber-clay-v004-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "autumn-timber-clay-v004",
+        "view": "occluded",
+        "zone_id": "b69bfc3b-6e9a-4f69-bf5b-434134818966",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 150312,
+        "occluded_pixels": 84777,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5640068657193038,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "autumn-villa-clay-v004",
+      "model_sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+      "clear_export": {
+        "candidate": "autumn-villa-clay-v004",
+        "view": "close",
+        "zone_id": "7d491827-1357-4fe5-8427-0a15bb1c9b14",
+        "filename": "cityprompt-3d-view-1791414702230.png",
+        "bytes": 555201,
+        "sha256": "dac787f7bbbf2cf4827ed2ccfeed0b9515acae88f16b8e95a8030554e32f71d6",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-villa-clay-v004-close.png"
+      },
+      "occluded_export": {
+        "candidate": "autumn-villa-clay-v004",
+        "view": "occluded",
+        "zone_id": "7d491827-1357-4fe5-8427-0a15bb1c9b14",
+        "filename": "cityprompt-3d-view-1791414953841.png",
+        "bytes": 361646,
+        "sha256": "7fe2c99621f278752418ed31dc3122ad1b85a840432c97392a0e6697d7a3bbba",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-villa-clay-v004-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "autumn-villa-clay-v004",
+        "view": "occluded",
+        "zone_id": "7d491827-1357-4fe5-8427-0a15bb1c9b14",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 223166,
+        "occluded_pixels": 120202,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5386214745973849,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "autumn-cinema-clay-v004",
+      "model_sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+      "clear_export": {
+        "candidate": "autumn-cinema-clay-v004",
+        "view": "close",
+        "zone_id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+        "filename": "cityprompt-3d-view-1791414705908.png",
+        "bytes": 757857,
+        "sha256": "443e8099e230781835184eebdce72d5313ae7a98c1314fa537f2b49015e0caa9",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-cinema-clay-v004-close.png"
+      },
+      "occluded_export": {
+        "candidate": "autumn-cinema-clay-v004",
+        "view": "occluded",
+        "zone_id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+        "filename": "cityprompt-3d-view-1791414959613.png",
+        "bytes": 488666,
+        "sha256": "87c71e96896fbea77092bf7cf29c05333d435975916b18f98be7e8f8a9805653",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-cinema-clay-v004-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "autumn-cinema-clay-v004",
+        "view": "occluded",
+        "zone_id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 122052,
+        "occluded_pixels": 71642,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5869793202897126,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "neighbourhood-library-clay-v003",
+      "model_sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+      "clear_export": {
+        "candidate": "neighbourhood-library-clay-v003",
+        "view": "close",
+        "zone_id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+        "filename": "cityprompt-3d-view-1791414709629.png",
+        "bytes": 842901,
+        "sha256": "de93cd7ac3273859f964b77ac827a6bc7c5da14634b07d22be99eb374da9ccef",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-library-clay-v003-close.png"
+      },
+      "occluded_export": {
+        "candidate": "neighbourhood-library-clay-v003",
+        "view": "occluded",
+        "zone_id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+        "filename": "cityprompt-3d-view-1791414965398.png",
+        "bytes": 539030,
+        "sha256": "047b03a05df3bc676e27614a5a3367af3d964a04e6550727dccee752021ae66b",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-library-clay-v003-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "neighbourhood-library-clay-v003",
+        "view": "occluded",
+        "zone_id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 184718,
+        "occluded_pixels": 100520,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5441808594722767,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "neighbourhood-corner-cafe-clay-v010",
+      "model_sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+      "clear_export": {
+        "candidate": "neighbourhood-corner-cafe-clay-v010",
+        "view": "close",
+        "zone_id": "135288ed-ef8b-4384-be45-e6c3372fca5c",
+        "filename": "cityprompt-3d-view-1791414716983.png",
+        "bytes": 898565,
+        "sha256": "19914ff775237cbce0f8d6df28da1765695e3fb3b6b12b5d9c476d149621c08a",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-corner-cafe-clay-v010-close.png"
+      },
+      "occluded_export": {
+        "candidate": "neighbourhood-corner-cafe-clay-v010",
+        "view": "occluded",
+        "zone_id": "135288ed-ef8b-4384-be45-e6c3372fca5c",
+        "filename": "cityprompt-3d-view-1791414971100.png",
+        "bytes": 550426,
+        "sha256": "01c5c9f1ab908377fadcb08c664dda3edf669a739c6324315db7094cb76f87cb",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-corner-cafe-clay-v010-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "neighbourhood-corner-cafe-clay-v010",
+        "view": "occluded",
+        "zone_id": "135288ed-ef8b-4384-be45-e6c3372fca5c",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 137193,
+        "occluded_pixels": 75123,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5475716691084822,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "victorian-station-interior-clay-v007",
+      "model_sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+      "clear_export": {
+        "candidate": "victorian-station-interior-clay-v007",
+        "view": "close",
+        "zone_id": "e5cbc560-e995-4882-9603-0c2f457d2d6d",
+        "filename": "cityprompt-3d-view-1791414720646.png",
+        "bytes": 1176833,
+        "sha256": "9aeff2f6bbb42b825bc28b83708200943d3d615f29ef9e9cb420fa668230114a",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\victorian-station-interior-clay-v007-close.png"
+      },
+      "occluded_export": {
+        "candidate": "victorian-station-interior-clay-v007",
+        "view": "occluded",
+        "zone_id": "e5cbc560-e995-4882-9603-0c2f457d2d6d",
+        "filename": "cityprompt-3d-view-1791414976998.png",
+        "bytes": 745489,
+        "sha256": "8f17cbfd732869e189e32fb122b5fca771f8f7fa0d100482f3b248bb54e83709",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\victorian-station-interior-clay-v007-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "victorian-station-interior-clay-v007",
+        "view": "occluded",
+        "zone_id": "e5cbc560-e995-4882-9603-0c2f457d2d6d",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 93627,
+        "occluded_pixels": 55654,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5944225490510217,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "interior-school-clay-v003",
+      "model_sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+      "clear_export": {
+        "candidate": "interior-school-clay-v003",
+        "view": "close",
+        "zone_id": "6a756fa9-e1af-42bf-ae83-7be5cca277da",
+        "filename": "cityprompt-3d-view-1791414724301.png",
+        "bytes": 831382,
+        "sha256": "9d9d0ff9e3c6a5446caba67be81038eb6a1dbfaeda6696bbda16a7443b50e751",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\interior-school-clay-v003-close.png"
+      },
+      "occluded_export": {
+        "candidate": "interior-school-clay-v003",
+        "view": "occluded",
+        "zone_id": "6a756fa9-e1af-42bf-ae83-7be5cca277da",
+        "filename": "cityprompt-3d-view-1791414982840.png",
+        "bytes": 522329,
+        "sha256": "1cd9a62d80f4dbf091b0b8dbe67f8b5a419f6b68112df7f5b44f15f23a74cfd5",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\interior-school-clay-v003-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "interior-school-clay-v003",
+        "view": "occluded",
+        "zone_id": "6a756fa9-e1af-42bf-ae83-7be5cca277da",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 159695,
+        "occluded_pixels": 87706,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5492094304768464,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "interior-hotel-clay-v006",
+      "model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+      "clear_export": {
+        "candidate": "interior-hotel-clay-v006",
+        "view": "close",
+        "zone_id": "ab6aa3ee-8328-49f5-b89f-00941d1d183a",
+        "filename": "cityprompt-3d-view-1791414728049.png",
+        "bytes": 808667,
+        "sha256": "6c8e5993decfcb5704e6fc2052afcc8ddd6d9936a5077f98b6a517beffd1fb7b",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\interior-hotel-clay-v006-close.png"
+      },
+      "occluded_export": {
+        "candidate": "interior-hotel-clay-v006",
+        "view": "occluded",
+        "zone_id": "ab6aa3ee-8328-49f5-b89f-00941d1d183a",
+        "filename": "cityprompt-3d-view-1791415001098.png",
+        "bytes": 524984,
+        "sha256": "7390bde086e3c8cb0b1e5a47a40fbc71c0a30f6c9a9e276cebb607e1ce5549c6",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\interior-hotel-clay-v006-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "interior-hotel-clay-v006",
+        "view": "occluded",
+        "zone_id": "ab6aa3ee-8328-49f5-b89f-00941d1d183a",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 130637,
+        "occluded_pixels": 70114,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5367085894501558,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "brick-corner-grocery-clay-v002",
+      "model_sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462",
+      "clear_export": {
+        "candidate": "brick-corner-grocery-clay-v002",
+        "view": "close",
+        "zone_id": "08944f4c-b5a8-498e-b3ca-411881f1fbae",
+        "filename": "cityprompt-3d-view-1791414731771.png",
+        "bytes": 369948,
+        "sha256": "415fd1ecf6c9a0196e89f90a712de55692c5532590d38c9a5780c90f3308648d",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\brick-corner-grocery-clay-v002-close.png"
+      },
+      "occluded_export": {
+        "candidate": "brick-corner-grocery-clay-v002",
+        "view": "occluded",
+        "zone_id": "08944f4c-b5a8-498e-b3ca-411881f1fbae",
+        "filename": "cityprompt-3d-view-1791415006841.png",
+        "bytes": 253739,
+        "sha256": "e930cb5574e9077e581bc9065adde4220e196bc8b6ee634352523f3c51586755",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\brick-corner-grocery-clay-v002-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "brick-corner-grocery-clay-v002",
+        "view": "occluded",
+        "zone_id": "08944f4c-b5a8-498e-b3ca-411881f1fbae",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 340019,
+        "occluded_pixels": 170052,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5001249930150962,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "clerestory-neighbourhood-hall-clay-v002",
+      "model_sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f",
+      "clear_export": {
+        "candidate": "clerestory-neighbourhood-hall-clay-v002",
+        "view": "close",
+        "zone_id": "20803b21-dfea-4961-ac47-15abeae985d5",
+        "filename": "cityprompt-3d-view-1791414735615.png",
+        "bytes": 734951,
+        "sha256": "48a50afdb4248766a9e6e05b0a4ab207f172501a263c44710cf337bd22e59dfe",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\clerestory-neighbourhood-hall-clay-v002-close.png"
+      },
+      "occluded_export": {
+        "candidate": "clerestory-neighbourhood-hall-clay-v002",
+        "view": "occluded",
+        "zone_id": "20803b21-dfea-4961-ac47-15abeae985d5",
+        "filename": "cityprompt-3d-view-1791415012515.png",
+        "bytes": 477516,
+        "sha256": "7302b0b5af7b656daf12195c4d4a37b1fcc7fc4f74a62b1c85de6639e7565efc",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\clerestory-neighbourhood-hall-clay-v002-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "clerestory-neighbourhood-hall-clay-v002",
+        "view": "occluded",
+        "zone_id": "20803b21-dfea-4961-ac47-15abeae985d5",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 143947,
+        "occluded_pixels": 85236,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5921346050977095,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "log-recreation-cabin-clay-v002",
+      "model_sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e",
+      "clear_export": {
+        "candidate": "log-recreation-cabin-clay-v002",
+        "view": "close",
+        "zone_id": "9873f6df-a4da-4ab6-b32b-c9195e1975e5",
+        "filename": "cityprompt-3d-view-1791414744245.png",
+        "bytes": 511292,
+        "sha256": "dd258c25925e9f9565b65c7ff88358e9025b9d45065d2d9c63ebee34ed9b4ad2",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\log-recreation-cabin-clay-v002-close.png"
+      },
+      "occluded_export": {
+        "candidate": "log-recreation-cabin-clay-v002",
+        "view": "occluded",
+        "zone_id": "9873f6df-a4da-4ab6-b32b-c9195e1975e5",
+        "filename": "cityprompt-3d-view-1791415018513.png",
+        "bytes": 337256,
+        "sha256": "2592ca301a3459e35127b1869e5aaf7e94d28701efda8e0836c21609a1a07756",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\log-recreation-cabin-clay-v002-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "log-recreation-cabin-clay-v002",
+        "view": "occluded",
+        "zone_id": "9873f6df-a4da-4ab6-b32b-c9195e1975e5",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 184104,
+        "occluded_pixels": 100216,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5443445009342546,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "prairie-neighbourhood-shops-clay-v002",
+      "model_sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b",
+      "clear_export": {
+        "candidate": "prairie-neighbourhood-shops-clay-v002",
+        "view": "close",
+        "zone_id": "ef498040-9e1d-4cfb-b7d6-6fbe85ba726c",
+        "filename": "cityprompt-3d-view-1791414748019.png",
+        "bytes": 670912,
+        "sha256": "2dd212db2373e7f066585eb9bde48d2d6afd407b5f77e4acc76368bdc101fc13",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\prairie-neighbourhood-shops-clay-v002-close.png"
+      },
+      "occluded_export": {
+        "candidate": "prairie-neighbourhood-shops-clay-v002",
+        "view": "occluded",
+        "zone_id": "ef498040-9e1d-4cfb-b7d6-6fbe85ba726c",
+        "filename": "cityprompt-3d-view-1791415024480.png",
+        "bytes": 411719,
+        "sha256": "298e1744909ea17b487ef0f97fcf217391699ba7e7567b947ec9946c3982efc2",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\prairie-neighbourhood-shops-clay-v002-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "prairie-neighbourhood-shops-clay-v002",
+        "view": "occluded",
+        "zone_id": "ef498040-9e1d-4cfb-b7d6-6fbe85ba726c",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 105497,
+        "occluded_pixels": 58093,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.5506602083471568,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    },
+    {
+      "candidate": "inglewood-corner-merchants-clay-v003",
+      "model_sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f",
+      "clear_export": {
+        "candidate": "inglewood-corner-merchants-clay-v003",
+        "view": "close",
+        "zone_id": "c71580f9-9594-4195-974a-a4c5849007d6",
+        "filename": "cityprompt-3d-view-1791414751955.png",
+        "bytes": 549137,
+        "sha256": "d462c9467be0df6aa3ec743868c5d3439a7850a3dcd59ebc522e3e6b993b7e3e",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\inglewood-corner-merchants-clay-v003-close.png"
+      },
+      "occluded_export": {
+        "candidate": "inglewood-corner-merchants-clay-v003",
+        "view": "occluded",
+        "zone_id": "c71580f9-9594-4195-974a-a4c5849007d6",
+        "filename": "cityprompt-3d-view-1791415030454.png",
+        "bytes": 351686,
+        "sha256": "756d9c2dea87b9a91ad695f08e0ef88f745c0fa40caea87ba1b4aa8ab13169bf",
+        "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\inglewood-corner-merchants-clay-v003-occluded.png"
+      },
+      "parent_instance_pixel_receipt": {
+        "candidate": "inglewood-corner-merchants-clay-v003",
+        "view": "occluded",
+        "zone_id": "c71580f9-9594-4195-974a-a4c5849007d6",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 223999,
+        "occluded_pixels": 116688,
+        "partial_occlusion": true
+      },
+      "visible_fraction": 0.520930897012933,
+      "independent_pixel_observation": "Opaque brown foreground fixture covers the left/central part of the target; model geometry remains visible to its right. Target is partly blocked rather than missing or fully hidden. No apparent model geometry is drawn through the opaque fixture.",
+      "scoped_status": "partial_foreground_occlusion_observed",
+      "observed_actionable_P0_P1": []
+    }
+  ]
+}

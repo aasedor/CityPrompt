@@ -1,0 +1,3153 @@
+{
+  "schema": "cityprompt.prepared-site-model-trial-completion@1",
+  "date": "2026-10-07",
+  "source_commit": "536b275ea",
+  "status": "bounded_local_technical_checks_complete",
+  "scope": "Nineteen exact architectural-clay models on one flat prepared site; eight local trial checks only. No new keeper or human approval.",
+  "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+  "authoring_provenance": "Original placement: one normal UI duplex, 18 developer/API fixtures. This follow-up edited all 19 through ordinary reshape controls. Camera posing and transient synthetic occluder used developer debug hooks; exports and downloads used normal UI.",
+  "summary": {
+    "models": 19,
+    "checks_per_model": 8,
+    "ui_downloads_byte_verified": 48,
+    "close_occluded_pairs": 19,
+    "low_views": 7,
+    "side_attempts": 3,
+    "successful_ui_size_checks": 38,
+    "all_final_reloads_compiled": true,
+    "all_native_scales_retained": true,
+    "grounding_diagnostics": [],
+    "observed_actionable_p0": 0,
+    "observed_actionable_p1": 0,
+    "geometry_or_application_code_changes": 0
+  },
+  "supersedes": [
+    "Earlier unconfirmed download status: actual Windows download files match preview hashes. The old timeout was not a product download failure.",
+    "Earlier seven camera-limited entrance/contact views: resolved by scoped independent low/side reviews.",
+    "Earlier missing small/large and close/occluded evidence: supplied here without altering historical snapshots."
+  ],
+  "trial_corrections": [
+    "Four initial readings sampled stale rebuild states or compared floating-point scale with strict equality. Successful retries waited for compiled state and used 1e-9 scale tolerance. Original readings retained.",
+    "Maximum square plot at 45 degrees exceeded the site edge for aquatic centre and library. Normal UI rejected this with the boundary message. Their maximum checks passed at zero degrees, then restored minimum plots at 15 degrees. Three rejected attempts retained.",
+    "Montreal occlusion receipt has one identical duplicate from a completed command timeout, counted once.",
+    "Cinema side-40 crops sign top; retained but not accepted for sign closure. side-40-complete supplies the full view."
+  ],
+  "console": {
+    "scope": "Normal export/edit/reload trial on tab 18; errors/warnings queried after final reload",
+    "application_errors_observed": 0,
+    "post_reload_application_warnings_observed": 0,
+    "test_instrumentation_warning": {
+      "timestamp": "2026-10-07T23:14:22.820Z",
+      "message": "WARNING: Multiple instances of Three.js being imported.",
+      "cause": "Direct developer import for temporary foreground occlusion fixture; occurred before reload, fixture removed."
+    },
+    "other_test_instrumentation_events": [
+      "One browser command timeout completed without a download click; repeated bounded capture produced identical Montreal counts.",
+      "One screenshot receiver rejected JPEG bytes labelled PNG; saved successfully with JPEG extension. Not an application endpoint."
+    ]
+  },
+  "evidence_receipts": {
+    "ui-downloads-final-verified.json": {
+      "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/ui-downloads-final-verified.json",
+      "sha256": "cb65dbd45868cdbe8ff5c04ffe37385bcd4733ad4e261f39cd6e6d164abee991",
+      "bytes": 22023
+    },
+    "ui-plot-edit-receipts.json": {
+      "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/ui-plot-edit-receipts.json",
+      "sha256": "6d98f62d5f76782fd1a22ac194abfc0445ff5e8698a3b3bb73dbaaeb5a239aaa",
+      "bytes": 23914
+    },
+    "occlusion-receipts-complete.json": {
+      "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/occlusion-receipts-complete.json",
+      "sha256": "90af2de3cbb48a16a2440cabf9a7396d1eb9540552f16a4978b1d5d935228d3d",
+      "bytes": 5105
+    },
+    "final-reload-receipt.json": {
+      "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/final-reload-receipt.json",
+      "sha256": "354ce66b018f20e79d988268528f3e1f37a5e67b71da162b00c4bd5ebde36af7",
+      "bytes": 8039
+    },
+    "completed-model-trial-library.jpg": {
+      "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/completed-model-trial-library.jpg",
+      "sha256": "0081fec3d63a7bb69a7098869d53dbe61a4eddb2a042d822cb4a99be7ef84d74",
+      "bytes": 105052
+    },
+    "trial-console-scope.json": {
+      "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/trial-console-scope.json",
+      "sha256": "d62acd882168b6be550b529dcfb1ad3902590c218bbca48d808ce87e701e6be5",
+      "bytes": 784
+    },
+    "catalogue-cards-fixed.json": {
+      "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/catalogue-cards-fixed.json",
+      "sha256": "4bfe4a23199d558ae0cd9494ffb30014c2cb6c01c0d9f88de92b4ababb4a6321",
+      "bytes": 2780
+    }
+  },
+  "independent_reviews": [
+    {
+      "path": "docs/runtime-reviews/model-release-download-review-2026-10-07.json",
+      "sha256": "1e047f378c52ec7d64657a0962651340d029e782a138dda208438d870dffd7d7",
+      "bytes": 61571
+    },
+    {
+      "path": "docs/runtime-reviews/model-release-occlusion-review-2026-10-07.json",
+      "sha256": "677dd2261ca29dd804d1379d4232058b1fedc2757d9c94bfcd65ece23b6d97d6",
+      "bytes": 47467
+    }
+  ],
+  "entries": [
+    {
+      "candidate": "calgary-side-by-side-duplex-clay-v004",
+      "label": "Side-by-side duplex",
+      "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "calgary-side-by-side-duplex-clay-v004",
+        "step": "minimum",
+        "expected": {
+          "name": "minimum",
+          "w": 17,
+          "d": 25,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86662631035117,
+            51.08936221343873
+          ],
+          "width": 16.999999999260293,
+          "depth": 25.000000000382165,
+          "degrees": 15.00000000175236
+        },
+        "compiled_state": "compiled",
+        "revision": "calgary-side-by-side-duplex-clay-v004",
+        "native_dimensions": [
+          13.34000015258789,
+          21.472000122070312,
+          9
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "calgary-side-by-side-duplex-clay-v004",
+        "step": "maximum",
+        "expected": {
+          "name": "maximum",
+          "w": 100,
+          "d": 100,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86662631035117,
+            51.08936221343873
+          ],
+          "width": 99.9999999999223,
+          "depth": 99.9999999999223,
+          "degrees": 44.99999999999317
+        },
+        "compiled_state": "compiled",
+        "revision": "calgary-side-by-side-duplex-clay-v004",
+        "native_dimensions": [
+          13.34000015258789,
+          21.472000122070312,
+          9
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "69226bd8-9b46-4a5c-86b9-f811f9a1552d",
+        "candidate": "calgary-side-by-side-duplex-clay-v004",
+        "plot": {
+          "center": [
+            -113.86662631035117,
+            51.08936221343873
+          ],
+          "width": 16.999999999260293,
+          "depth": 25.000000000382165,
+          "degrees": 15.00000000175236
+        },
+        "expected_minimum": [
+          17,
+          25
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          13.34000015258789,
+          21.472000122070312,
+          9
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "calgary-side-by-side-duplex-clay-v004",
+          "view": "close",
+          "zone_id": "69226bd8-9b46-4a5c-86b9-f811f9a1552d",
+          "filename": "cityprompt-3d-view-1791414521541.png",
+          "bytes": 694791,
+          "sha256": "3c8f419bdece88727cf73f9fa90d7ccdf857bbec228f3d48bb5deb398cba527a",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\calgary-side-by-side-duplex-clay-v004-close.png"
+        },
+        {
+          "candidate": "calgary-side-by-side-duplex-clay-v004",
+          "view": "occluded",
+          "zone_id": "69226bd8-9b46-4a5c-86b9-f811f9a1552d",
+          "filename": "cityprompt-3d-view-1791414876969.png",
+          "bytes": 450541,
+          "sha256": "f85d26bdccf088f5c5dcc089bee10eaf8dd7ef0169aef6f21bb76d526f7cf235",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\calgary-side-by-side-duplex-clay-v004-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "calgary-side-by-side-duplex-clay-v004",
+        "view": "occluded",
+        "zone_id": "69226bd8-9b46-4a5c-86b9-f811f9a1552d",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 124811,
+        "occluded_pixels": 72647,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "montreal-plateau-duplex-clay-v004",
+      "label": "Plateau stacked duplex",
+      "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "montreal-plateau-duplex-clay-v004",
+        "step": "minimum",
+        "expected": {
+          "name": "minimum",
+          "w": 16,
+          "d": 23,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86505315517559,
+            51.08936221343874
+          ],
+          "width": 16.00000000038103,
+          "depth": 22.999999999751857,
+          "degrees": 14.999999999166297
+        },
+        "compiled_state": "compiled",
+        "revision": "montreal-plateau-duplex-clay-v004",
+        "native_dimensions": [
+          12.64909839630127,
+          19.320000171661377,
+          8.104999542236328
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "montreal-plateau-duplex-clay-v004",
+        "step": "maximum",
+        "expected": {
+          "name": "maximum",
+          "w": 100,
+          "d": 100,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86505315517559,
+            51.08936221343873
+          ],
+          "width": 99.9999999999223,
+          "depth": 99.9999999999223,
+          "degrees": 44.99999999999317
+        },
+        "compiled_state": "compiled",
+        "revision": "montreal-plateau-duplex-clay-v004",
+        "native_dimensions": [
+          12.64909839630127,
+          19.320000171661377,
+          8.104999542236328
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "c92ef2c1-77ff-4f04-96d8-3ee59e0b8ef2",
+        "candidate": "montreal-plateau-duplex-clay-v004",
+        "plot": {
+          "center": [
+            -113.86505315517559,
+            51.08936221343874
+          ],
+          "width": 16.00000000038103,
+          "depth": 22.999999999751857,
+          "degrees": 14.999999999166297
+        },
+        "expected_minimum": [
+          16,
+          23
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          12.64909839630127,
+          19.320000171661377,
+          8.104999542236328
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "montreal-plateau-duplex-clay-v004",
+          "view": "close",
+          "zone_id": "c92ef2c1-77ff-4f04-96d8-3ee59e0b8ef2",
+          "filename": "cityprompt-3d-view-1791414676951.png",
+          "bytes": 650090,
+          "sha256": "bb3127b8fa674cdcfd13905141345c90ebcc5228f1712b132ae6b12e391dd14c",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\montreal-plateau-duplex-clay-v004-close.png"
+        },
+        {
+          "candidate": "montreal-plateau-duplex-clay-v004",
+          "view": "occluded",
+          "zone_id": "c92ef2c1-77ff-4f04-96d8-3ee59e0b8ef2",
+          "filename": "cityprompt-3d-view-1791414914298.png",
+          "bytes": 414734,
+          "sha256": "8b00bc5979db953b2a842a9f1cf93e65a4364b73cb63e8094999f9d9ae3e8800",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\montreal-plateau-duplex-clay-v004-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "montreal-plateau-duplex-clay-v004",
+        "view": "occluded",
+        "zone_id": "c92ef2c1-77ff-4f04-96d8-3ee59e0b8ef2",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 111711,
+        "occluded_pixels": 69642,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "courtyard-brick-modern-clay-v004",
+      "label": "Brick courtyard entrance building",
+      "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "courtyard-brick-modern-clay-v004",
+        "step": "minimum",
+        "expected": {
+          "name": "minimum",
+          "w": 30,
+          "d": 17,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86348,
+            51.08936221343873
+          ],
+          "width": 29.999999999369145,
+          "depth": 17.000000000402693,
+          "degrees": 14.999999999659245
+        },
+        "compiled_state": "compiled",
+        "revision": "courtyard-brick-modern-clay-v004",
+        "native_dimensions": [
+          25.582000732421875,
+          13.381999969482422,
+          12.27500057220459
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "courtyard-brick-modern-clay-v004",
+        "step": "maximum",
+        "expected": {
+          "name": "maximum",
+          "w": 100,
+          "d": 100,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86348,
+            51.08936221343873
+          ],
+          "width": 99.9999999999223,
+          "depth": 99.9999999999223,
+          "degrees": 44.99999999999317
+        },
+        "compiled_state": "compiled",
+        "revision": "courtyard-brick-modern-clay-v004",
+        "native_dimensions": [
+          25.582000732421875,
+          13.381999969482422,
+          12.27500057220459
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "f09638ba-3a7b-462b-85b9-41965cbfa81b",
+        "candidate": "courtyard-brick-modern-clay-v004",
+        "plot": {
+          "center": [
+            -113.86348,
+            51.08936221343873
+          ],
+          "width": 29.999999999369145,
+          "depth": 17.000000000402693,
+          "degrees": 14.999999999659245
+        },
+        "expected_minimum": [
+          30,
+          17
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          25.582000732421875,
+          13.381999969482422,
+          12.27500057220459
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "courtyard-brick-modern-clay-v004",
+          "view": "close",
+          "zone_id": "f09638ba-3a7b-462b-85b9-41965cbfa81b",
+          "filename": "cityprompt-3d-view-1791414680141.png",
+          "bytes": 690378,
+          "sha256": "a463957760349503beff2795f94fcd486543c0a769d8f99dbc346dea18514ce9",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\courtyard-brick-modern-clay-v004-close.png"
+        },
+        {
+          "candidate": "courtyard-brick-modern-clay-v004",
+          "view": "occluded",
+          "zone_id": "f09638ba-3a7b-462b-85b9-41965cbfa81b",
+          "filename": "cityprompt-3d-view-1791414920543.png",
+          "bytes": 452830,
+          "sha256": "3499c0dc114ea754e235785ed4af05394246d83c3db8e920b50219c873b76154",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\courtyard-brick-modern-clay-v004-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "courtyard-brick-modern-clay-v004",
+        "view": "occluded",
+        "zone_id": "f09638ba-3a7b-462b-85b9-41965cbfa81b",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 122012,
+        "occluded_pixels": 67198,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "showcase-market-clay-v006",
+      "label": "Grand Iron & Glass Market",
+      "model_sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "showcase-market-clay-v006",
+        "step": "minimum",
+        "expected": {
+          "name": "minimum",
+          "w": 39,
+          "d": 52,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86180030384484,
+            51.089262626507555
+          ],
+          "width": 38.999999999647606,
+          "depth": 51.99999999995108,
+          "degrees": 14.999999999595433
+        },
+        "compiled_state": "compiled",
+        "revision": "showcase-market-clay-v006",
+        "native_dimensions": [
+          35.25,
+          48.47999954223633,
+          19.09000015258789
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "showcase-market-clay-v006",
+        "step": "maximum",
+        "expected": {
+          "name": "maximum",
+          "w": 150,
+          "d": 150,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86180030384484,
+            51.089262626507555
+          ],
+          "width": 150.00016149443937,
+          "depth": 150.00016149443937,
+          "degrees": 44.999938313929974
+        },
+        "compiled_state": "compiled",
+        "revision": "showcase-market-clay-v006",
+        "native_dimensions": [
+          35.25,
+          48.47999954223633,
+          19.09000015258789
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "debe026b-67e1-456e-a281-a661d5e6555a",
+        "candidate": "showcase-market-clay-v006",
+        "plot": {
+          "center": [
+            -113.86180030384484,
+            51.089262626507555
+          ],
+          "width": 38.999999999647606,
+          "depth": 51.99999999995108,
+          "degrees": 14.999999999595433
+        },
+        "expected_minimum": [
+          39,
+          52
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          35.25,
+          48.47999954223633,
+          19.09000015258789
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "showcase-market-clay-v006",
+          "view": "close",
+          "zone_id": "debe026b-67e1-456e-a281-a661d5e6555a",
+          "filename": "cityprompt-3d-view-1791414683415.png",
+          "bytes": 1028279,
+          "sha256": "56e3200f4adf8f86141b99c171509d44ffd9f548397667635cbe23318fa92404",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-market-clay-v006-close.png"
+        },
+        {
+          "candidate": "showcase-market-clay-v006",
+          "view": "occluded",
+          "zone_id": "debe026b-67e1-456e-a281-a661d5e6555a",
+          "filename": "cityprompt-3d-view-1791414926307.png",
+          "bytes": 656915,
+          "sha256": "490723e71390a7f9a3fd342c0514601b15093d644f67f4db098875f755075f57",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-market-clay-v006-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "showcase-market-clay-v006",
+        "view": "occluded",
+        "zone_id": "debe026b-67e1-456e-a281-a661d5e6555a",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 123188,
+        "occluded_pixels": 70713,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "showcase-aquatic-clay-v004",
+      "label": "Living-Roof Aquatic Centre",
+      "model_sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "showcase-aquatic-clay-v004",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 42,
+          "d": 60,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86033368964883,
+            51.08936221343873
+          ],
+          "width": 41.999999999843695,
+          "depth": 60.00000000010324,
+          "degrees": 14.999999999170125
+        },
+        "compiled_state": "compiled",
+        "revision": "showcase-aquatic-clay-v004",
+        "native_dimensions": [
+          38.36000061035156,
+          56.73500061035156,
+          16.597248077392578
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "showcase-aquatic-clay-v004",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 150,
+          "d": 150,
+          "r": 0
+        },
+        "actual": {
+          "center": [
+            -113.86033368964883,
+            51.08936221343873
+          ],
+          "width": 149.99999999998866,
+          "depth": 149.99999999949466,
+          "degrees": 0
+        },
+        "compiled_state": "compiled",
+        "revision": "showcase-aquatic-clay-v004",
+        "native_dimensions": [
+          38.36000061035156,
+          56.73500061035156,
+          16.597248077392578
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "aebc77d8-5eb4-4df5-9531-834285389d3d",
+        "candidate": "showcase-aquatic-clay-v004",
+        "plot": {
+          "center": [
+            -113.86033368964883,
+            51.08936221343873
+          ],
+          "width": 41.999999999843695,
+          "depth": 60.00000000010324,
+          "degrees": 14.999999999170125
+        },
+        "expected_minimum": [
+          42,
+          60
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          38.36000061035156,
+          56.73500061035156,
+          16.597248077392578
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "showcase-aquatic-clay-v004",
+          "view": "close",
+          "zone_id": "aebc77d8-5eb4-4df5-9531-834285389d3d",
+          "filename": "cityprompt-3d-view-1791414691203.png",
+          "bytes": 1136226,
+          "sha256": "0833e2458a2a668f7f9c88b667d058737e9317dfb0d3167b86a03dd17dd82549",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-aquatic-clay-v004-close.png"
+        },
+        {
+          "candidate": "showcase-aquatic-clay-v004",
+          "view": "occluded",
+          "zone_id": "aebc77d8-5eb4-4df5-9531-834285389d3d",
+          "filename": "cityprompt-3d-view-1791414932092.png",
+          "bytes": 740810,
+          "sha256": "8b1f0f8e61d9fa4e5bd5d2e50d22759278f6f2fa50f6ceceeb7cf96508e0293e",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-aquatic-clay-v004-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "showcase-aquatic-clay-v004",
+        "view": "occluded",
+        "zone_id": "aebc77d8-5eb4-4df5-9531-834285389d3d",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 109858,
+        "occluded_pixels": 60740,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "showcase-tower-clay-v005",
+      "label": "Gilded Terracotta Tower",
+      "model_sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "showcase-tower-clay-v005",
+        "step": "minimum",
+        "expected": {
+          "name": "minimum",
+          "w": 36,
+          "d": 33,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86639624141203,
+            51.08837407114625
+          ],
+          "width": 35.999999999418314,
+          "depth": 32.99999999956578,
+          "degrees": 15.000000000105784
+        },
+        "compiled_state": "compiled",
+        "revision": "showcase-tower-clay-v005",
+        "native_dimensions": [
+          32.779998779296875,
+          29.31721782684326,
+          68.5999984741211
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "showcase-tower-clay-v005",
+        "step": "maximum",
+        "expected": {
+          "name": "maximum",
+          "w": 150,
+          "d": 150,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86639624141203,
+            51.08837407114625
+          ],
+          "width": 149.99999999995998,
+          "depth": 149.99999999995998,
+          "degrees": 45.00000000017757
+        },
+        "compiled_state": "compiled",
+        "revision": "showcase-tower-clay-v005",
+        "native_dimensions": [
+          32.779998779296875,
+          29.31721782684326,
+          68.5999984741211
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "fb7a3232-f602-4df7-b427-ff7715a397f9",
+        "candidate": "showcase-tower-clay-v005",
+        "plot": {
+          "center": [
+            -113.86639624141203,
+            51.08837407114625
+          ],
+          "width": 35.999999999418314,
+          "depth": 32.99999999956578,
+          "degrees": 15.000000000105784
+        },
+        "expected_minimum": [
+          36,
+          33
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          32.779998779296875,
+          29.31721782684326,
+          68.5999984741211
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "showcase-tower-clay-v005",
+          "view": "close",
+          "zone_id": "fb7a3232-f602-4df7-b427-ff7715a397f9",
+          "filename": "cityprompt-3d-view-1791414695001.png",
+          "bytes": 1140422,
+          "sha256": "d4dfb8a7774157130083405ab3cd9f4f4cc9f17b368c04f14ab6697b9a9b0552",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-tower-clay-v005-close.png"
+        },
+        {
+          "candidate": "showcase-tower-clay-v005",
+          "view": "occluded",
+          "zone_id": "fb7a3232-f602-4df7-b427-ff7715a397f9",
+          "filename": "cityprompt-3d-view-1791414937784.png",
+          "bytes": 703050,
+          "sha256": "131dc300aa642d811d0f7f2ed9fbca65011deafcceffbf7b61ac7f9c0123984b",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\showcase-tower-clay-v005-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "showcase-tower-clay-v005",
+        "view": "occluded",
+        "zone_id": "fb7a3232-f602-4df7-b427-ff7715a397f9",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 41255,
+        "occluded_pixels": 29118,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "autumn-timber-clay-v004",
+      "label": "Nordic Roof-Garden Apartments",
+      "model_sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "autumn-timber-clay-v004",
+        "step": "minimum",
+        "expected": {
+          "name": "minimum",
+          "w": 24,
+          "d": 23,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86466428476507,
+            51.08843952248423
+          ],
+          "width": 23.999999999661263,
+          "depth": 22.99999999961606,
+          "degrees": 15.00000000072605
+        },
+        "compiled_state": "compiled",
+        "revision": "autumn-timber-clay-v004",
+        "native_dimensions": [
+          20.350000381469727,
+          19.475000381469727,
+          22.760000228881836
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "autumn-timber-clay-v004",
+        "step": "maximum",
+        "expected": {
+          "name": "maximum",
+          "w": 150,
+          "d": 150,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86466428476507,
+            51.08843952248423
+          ],
+          "width": 149.99989386508648,
+          "depth": 149.99989386508648,
+          "degrees": 45.000040540756004
+        },
+        "compiled_state": "compiled",
+        "revision": "autumn-timber-clay-v004",
+        "native_dimensions": [
+          20.350000381469727,
+          19.475000381469727,
+          22.760000228881836
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "b69bfc3b-6e9a-4f69-bf5b-434134818966",
+        "candidate": "autumn-timber-clay-v004",
+        "plot": {
+          "center": [
+            -113.86466428476507,
+            51.08843952248423
+          ],
+          "width": 23.999999999661263,
+          "depth": 22.99999999961606,
+          "degrees": 15.00000000072605
+        },
+        "expected_minimum": [
+          24,
+          23
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          20.350000381469727,
+          19.475000381469727,
+          22.760000228881836
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "autumn-timber-clay-v004",
+          "view": "close",
+          "zone_id": "b69bfc3b-6e9a-4f69-bf5b-434134818966",
+          "filename": "cityprompt-3d-view-1791414698535.png",
+          "bytes": 715815,
+          "sha256": "597711e2dab1f3c5522570ba1d0c8b0691ae01720dcfd3ec5f973a8934dec614",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-timber-clay-v004-close.png"
+        },
+        {
+          "candidate": "autumn-timber-clay-v004",
+          "view": "occluded",
+          "zone_id": "b69bfc3b-6e9a-4f69-bf5b-434134818966",
+          "filename": "cityprompt-3d-view-1791414943562.png",
+          "bytes": 454080,
+          "sha256": "25925ecf2ea3b93987bdd2b7d334efba88e6123654d3910660abd0866e03a6fb",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-timber-clay-v004-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "autumn-timber-clay-v004",
+        "view": "occluded",
+        "zone_id": "b69bfc3b-6e9a-4f69-bf5b-434134818966",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 150312,
+        "occluded_pixels": 84777,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "autumn-villa-clay-v004",
+      "label": "Tuscan Arcade Villa",
+      "model_sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "autumn-villa-clay-v004",
+        "step": "minimum",
+        "expected": {
+          "name": "minimum",
+          "w": 23,
+          "d": 18,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86321963503104,
+            51.08821052371422
+          ],
+          "width": 22.99999999975451,
+          "depth": 18.0000000000264,
+          "degrees": 14.999999999568267
+        },
+        "compiled_state": "compiled",
+        "revision": "autumn-villa-clay-v004",
+        "native_dimensions": [
+          19.299999237060547,
+          14.130000114440918,
+          11.779999732971191
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "autumn-villa-clay-v004",
+        "step": "maximum",
+        "expected": {
+          "name": "maximum",
+          "w": 150,
+          "d": 150,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86321963503104,
+            51.08821052371422
+          ],
+          "width": 150.00026520583705,
+          "depth": 150.00026520583705,
+          "degrees": 44.99989869926318
+        },
+        "compiled_state": "compiled",
+        "revision": "autumn-villa-clay-v004",
+        "native_dimensions": [
+          19.299999237060547,
+          14.130000114440918,
+          11.779999732971191
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "7d491827-1357-4fe5-8427-0a15bb1c9b14",
+        "candidate": "autumn-villa-clay-v004",
+        "plot": {
+          "center": [
+            -113.86321963503104,
+            51.08821052371422
+          ],
+          "width": 22.99999999975451,
+          "depth": 18.0000000000264,
+          "degrees": 14.999999999568267
+        },
+        "expected_minimum": [
+          23,
+          18
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          19.299999237060547,
+          14.130000114440918,
+          11.779999732971191
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "autumn-villa-clay-v004",
+          "view": "close",
+          "zone_id": "7d491827-1357-4fe5-8427-0a15bb1c9b14",
+          "filename": "cityprompt-3d-view-1791414702230.png",
+          "bytes": 555201,
+          "sha256": "dac787f7bbbf2cf4827ed2ccfeed0b9515acae88f16b8e95a8030554e32f71d6",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-villa-clay-v004-close.png"
+        },
+        {
+          "candidate": "autumn-villa-clay-v004",
+          "view": "occluded",
+          "zone_id": "7d491827-1357-4fe5-8427-0a15bb1c9b14",
+          "filename": "cityprompt-3d-view-1791414953841.png",
+          "bytes": 361646,
+          "sha256": "7fe2c99621f278752418ed31dc3122ad1b85a840432c97392a0e6697d7a3bbba",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-villa-clay-v004-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "autumn-villa-clay-v004",
+        "view": "occluded",
+        "zone_id": "7d491827-1357-4fe5-8427-0a15bb1c9b14",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 223166,
+        "occluded_pixels": 120202,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "autumn-cinema-clay-v004",
+      "label": "Grand Deco Cinema",
+      "model_sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "autumn-cinema-clay-v004",
+        "step": "minimum",
+        "expected": {
+          "name": "minimum",
+          "w": 28,
+          "d": 46,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.8619068448244,
+            51.08837407114625
+          ],
+          "width": 28.000000000194532,
+          "depth": 45.99999999991164,
+          "degrees": 15.00000000068198
+        },
+        "compiled_state": "compiled",
+        "revision": "autumn-cinema-clay-v004",
+        "native_dimensions": [
+          24.639999389648438,
+          42.290000915527344,
+          21.420000076293945
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "autumn-cinema-clay-v004",
+        "step": "maximum",
+        "expected": {
+          "name": "maximum",
+          "w": 150,
+          "d": 150,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.8619068448244,
+            51.08837407114625
+          ],
+          "width": 149.99999999995998,
+          "depth": 149.99999999995998,
+          "degrees": 45.00000000017757
+        },
+        "compiled_state": "compiled",
+        "revision": "autumn-cinema-clay-v004",
+        "native_dimensions": [
+          24.639999389648438,
+          42.290000915527344,
+          21.420000076293945
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+        "candidate": "autumn-cinema-clay-v004",
+        "plot": {
+          "center": [
+            -113.8619068448244,
+            51.08837407114625
+          ],
+          "width": 28.000000000194532,
+          "depth": 45.99999999991164,
+          "degrees": 15.00000000068198
+        },
+        "expected_minimum": [
+          28,
+          46
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          24.639999389648438,
+          42.290000915527344,
+          21.420000076293945
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "autumn-cinema-clay-v004",
+          "view": "close",
+          "zone_id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+          "filename": "cityprompt-3d-view-1791414705908.png",
+          "bytes": 757857,
+          "sha256": "443e8099e230781835184eebdce72d5313ae7a98c1314fa537f2b49015e0caa9",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-cinema-clay-v004-close.png"
+        },
+        {
+          "candidate": "autumn-cinema-clay-v004",
+          "view": "occluded",
+          "zone_id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+          "filename": "cityprompt-3d-view-1791414959613.png",
+          "bytes": 488666,
+          "sha256": "87c71e96896fbea77092bf7cf29c05333d435975916b18f98be7e8f8a9805653",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\autumn-cinema-clay-v004-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "autumn-cinema-clay-v004",
+        "view": "occluded",
+        "zone_id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 122052,
+        "occluded_pixels": 71642,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "neighbourhood-library-clay-v003",
+      "label": "Mass-timber Library",
+      "model_sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "neighbourhood-library-clay-v003",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 40,
+          "d": 37,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86033368964883,
+            51.08837407114624
+          ],
+          "width": 39.99999999961248,
+          "depth": 36.999999999614,
+          "degrees": 15.000000000267118
+        },
+        "compiled_state": "compiled",
+        "revision": "neighbourhood-library-clay-v003",
+        "native_dimensions": [
+          35.36000061035156,
+          32.599998474121094,
+          15.5018310546875
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "neighbourhood-library-clay-v003",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 140,
+          "d": 140,
+          "r": 0
+        },
+        "actual": {
+          "center": [
+            -113.86033368964883,
+            51.08837407114624
+          ],
+          "width": 139.99999999959056,
+          "depth": 140.0000000002666,
+          "degrees": 0
+        },
+        "compiled_state": "compiled",
+        "revision": "neighbourhood-library-clay-v003",
+        "native_dimensions": [
+          35.36000061035156,
+          32.599998474121094,
+          15.5018310546875
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+        "candidate": "neighbourhood-library-clay-v003",
+        "plot": {
+          "center": [
+            -113.86033368964883,
+            51.08837407114624
+          ],
+          "width": 39.99999999961248,
+          "depth": 36.999999999614,
+          "degrees": 15.000000000267118
+        },
+        "expected_minimum": [
+          40,
+          37
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          35.36000061035156,
+          32.599998474121094,
+          15.5018310546875
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "neighbourhood-library-clay-v003",
+          "view": "close",
+          "zone_id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+          "filename": "cityprompt-3d-view-1791414709629.png",
+          "bytes": 842901,
+          "sha256": "de93cd7ac3273859f964b77ac827a6bc7c5da14634b07d22be99eb374da9ccef",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-library-clay-v003-close.png"
+        },
+        {
+          "candidate": "neighbourhood-library-clay-v003",
+          "view": "occluded",
+          "zone_id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+          "filename": "cityprompt-3d-view-1791414965398.png",
+          "bytes": 539030,
+          "sha256": "047b03a05df3bc676e27614a5a3367af3d964a04e6550727dccee752021ae66b",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-library-clay-v003-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "neighbourhood-library-clay-v003",
+        "view": "occluded",
+        "zone_id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 184718,
+        "occluded_pixels": 100520,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "neighbourhood-corner-cafe-clay-v010",
+      "label": "Corner Café & Apartments",
+      "model_sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "neighbourhood-corner-cafe-clay-v010",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 49,
+          "d": 48,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86668164768702,
+            51.08738592885376
+          ],
+          "width": 48.99999999972607,
+          "depth": 47.99999999919656,
+          "degrees": 15.00000000015633
+        },
+        "compiled_state": "compiled",
+        "revision": "neighbourhood-corner-cafe-clay-v010",
+        "native_dimensions": [
+          44.06293869018555,
+          43.16806359868497,
+          20.64999961555004
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "neighbourhood-corner-cafe-clay-v010",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 140,
+          "d": 140,
+          "r": 0
+        },
+        "actual": {
+          "center": [
+            -113.86668164768702,
+            51.08738592885376
+          ],
+          "width": 139.9999999990631,
+          "depth": 140.0000000002666,
+          "degrees": 0
+        },
+        "compiled_state": "compiled",
+        "revision": "neighbourhood-corner-cafe-clay-v010",
+        "native_dimensions": [
+          44.06293869018555,
+          43.16806359868497,
+          20.64999961555004
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "135288ed-ef8b-4384-be45-e6c3372fca5c",
+        "candidate": "neighbourhood-corner-cafe-clay-v010",
+        "plot": {
+          "center": [
+            -113.86668164768702,
+            51.08738592885376
+          ],
+          "width": 48.99999999972607,
+          "depth": 47.99999999919656,
+          "degrees": 15.00000000015633
+        },
+        "expected_minimum": [
+          49,
+          48
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          44.06293869018555,
+          43.16806359868497,
+          20.64999961555004
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "neighbourhood-corner-cafe-clay-v010",
+          "view": "close",
+          "zone_id": "135288ed-ef8b-4384-be45-e6c3372fca5c",
+          "filename": "cityprompt-3d-view-1791414716983.png",
+          "bytes": 898565,
+          "sha256": "19914ff775237cbce0f8d6df28da1765695e3fb3b6b12b5d9c476d149621c08a",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-corner-cafe-clay-v010-close.png"
+        },
+        {
+          "candidate": "neighbourhood-corner-cafe-clay-v010",
+          "view": "occluded",
+          "zone_id": "135288ed-ef8b-4384-be45-e6c3372fca5c",
+          "filename": "cityprompt-3d-view-1791414971100.png",
+          "bytes": 550426,
+          "sha256": "01c5c9f1ab908377fadcb08c664dda3edf669a739c6324315db7094cb76f87cb",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\neighbourhood-corner-cafe-clay-v010-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "neighbourhood-corner-cafe-clay-v010",
+        "view": "occluded",
+        "zone_id": "135288ed-ef8b-4384-be45-e6c3372fca5c",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 137193,
+        "occluded_pixels": 75123,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "victorian-station-interior-clay-v007",
+      "label": "Victorian Grand Station",
+      "model_sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "victorian-station-interior-clay-v007",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 64,
+          "d": 100,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86505315517559,
+            51.08738592885375
+          ],
+          "width": 63.999999999883606,
+          "depth": 99.99999999996074,
+          "degrees": 14.999999999559819
+        },
+        "compiled_state": "compiled",
+        "revision": "victorian-station-interior-clay-v007",
+        "native_dimensions": [
+          60,
+          96,
+          32.560001373291016
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "victorian-station-interior-clay-v007",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 140,
+          "d": 140,
+          "r": 0
+        },
+        "actual": {
+          "center": [
+            -113.86505315517559,
+            51.08738592885375
+          ],
+          "width": 139.9999999990632,
+          "depth": 140.0000000002666,
+          "degrees": 0
+        },
+        "compiled_state": "compiled",
+        "revision": "victorian-station-interior-clay-v007",
+        "native_dimensions": [
+          60,
+          96,
+          32.560001373291016
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "e5cbc560-e995-4882-9603-0c2f457d2d6d",
+        "candidate": "victorian-station-interior-clay-v007",
+        "plot": {
+          "center": [
+            -113.86505315517559,
+            51.08738592885375
+          ],
+          "width": 63.999999999883606,
+          "depth": 99.99999999996074,
+          "degrees": 14.999999999559819
+        },
+        "expected_minimum": [
+          64,
+          100
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          60,
+          96,
+          32.560001373291016
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "victorian-station-interior-clay-v007",
+          "view": "close",
+          "zone_id": "e5cbc560-e995-4882-9603-0c2f457d2d6d",
+          "filename": "cityprompt-3d-view-1791414720646.png",
+          "bytes": 1176833,
+          "sha256": "9aeff2f6bbb42b825bc28b83708200943d3d615f29ef9e9cb420fa668230114a",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\victorian-station-interior-clay-v007-close.png"
+        },
+        {
+          "candidate": "victorian-station-interior-clay-v007",
+          "view": "occluded",
+          "zone_id": "e5cbc560-e995-4882-9603-0c2f457d2d6d",
+          "filename": "cityprompt-3d-view-1791414976998.png",
+          "bytes": 745489,
+          "sha256": "8f17cbfd732869e189e32fb122b5fca771f8f7fa0d100482f3b248bb54e83709",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\victorian-station-interior-clay-v007-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "victorian-station-interior-clay-v007",
+        "view": "occluded",
+        "zone_id": "e5cbc560-e995-4882-9603-0c2f457d2d6d",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 93627,
+        "occluded_pixels": 55654,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "interior-school-clay-v003",
+      "label": "Timber Art & Design School",
+      "model_sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "interior-school-clay-v003",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 40,
+          "d": 34,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86348,
+            51.087385928853756
+          ],
+          "width": 40.000000000304794,
+          "depth": 34.00000000007923,
+          "degrees": 14.999999998828438
+        },
+        "compiled_state": "compiled",
+        "revision": "interior-school-clay-v003",
+        "native_dimensions": [
+          36,
+          30,
+          16.309999465942383
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "interior-school-clay-v003",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 100,
+          "d": 100,
+          "r": 0
+        },
+        "actual": {
+          "center": [
+            -113.86348,
+            51.087385928853756
+          ],
+          "width": 99.99999999989863,
+          "depth": 100.00000000019043,
+          "degrees": 0
+        },
+        "compiled_state": "compiled",
+        "revision": "interior-school-clay-v003",
+        "native_dimensions": [
+          36,
+          30,
+          16.309999465942383
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "6a756fa9-e1af-42bf-ae83-7be5cca277da",
+        "candidate": "interior-school-clay-v003",
+        "plot": {
+          "center": [
+            -113.86348,
+            51.087385928853756
+          ],
+          "width": 40.000000000304794,
+          "depth": 34.00000000007923,
+          "degrees": 14.999999998828438
+        },
+        "expected_minimum": [
+          40,
+          34
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          36,
+          30,
+          16.309999465942383
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "interior-school-clay-v003",
+          "view": "close",
+          "zone_id": "6a756fa9-e1af-42bf-ae83-7be5cca277da",
+          "filename": "cityprompt-3d-view-1791414724301.png",
+          "bytes": 831382,
+          "sha256": "9d9d0ff9e3c6a5446caba67be81038eb6a1dbfaeda6696bbda16a7443b50e751",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\interior-school-clay-v003-close.png"
+        },
+        {
+          "candidate": "interior-school-clay-v003",
+          "view": "occluded",
+          "zone_id": "6a756fa9-e1af-42bf-ae83-7be5cca277da",
+          "filename": "cityprompt-3d-view-1791414982840.png",
+          "bytes": 522329,
+          "sha256": "1cd9a62d80f4dbf091b0b8dbe67f8b5a419f6b68112df7f5b44f15f23a74cfd5",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\interior-school-clay-v003-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "interior-school-clay-v003",
+        "view": "occluded",
+        "zone_id": "6a756fa9-e1af-42bf-ae83-7be5cca277da",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 159695,
+        "occluded_pixels": 87706,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "interior-hotel-clay-v006",
+      "label": "Mediterranean Courtyard Hotel",
+      "model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "interior-hotel-clay-v006",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 44,
+          "d": 40,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.8619068448244,
+            51.087385928853756
+          ],
+          "width": 44.00000000031346,
+          "depth": 39.999999999881425,
+          "degrees": 15.000000000222276
+        },
+        "compiled_state": "compiled",
+        "revision": "interior-hotel-clay-v006",
+        "native_dimensions": [
+          40,
+          36,
+          13.588971138000488
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1.0000000000000002,
+          0.9999999999999999,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "interior-hotel-clay-v006",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 100,
+          "d": 100,
+          "r": 0
+        },
+        "actual": {
+          "center": [
+            -113.8619068448244,
+            51.087385928853756
+          ],
+          "width": 99.99999999989863,
+          "depth": 100.00000000019043,
+          "degrees": 0
+        },
+        "compiled_state": "compiled",
+        "revision": "interior-hotel-clay-v006",
+        "native_dimensions": [
+          40,
+          36,
+          13.588971138000488
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1.0000000000000002,
+          0.9999999999999999,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "ab6aa3ee-8328-49f5-b89f-00941d1d183a",
+        "candidate": "interior-hotel-clay-v006",
+        "plot": {
+          "center": [
+            -113.8619068448244,
+            51.087385928853756
+          ],
+          "width": 44.00000000031346,
+          "depth": 39.999999999881425,
+          "degrees": 15.000000000222276
+        },
+        "expected_minimum": [
+          44,
+          40
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          40,
+          36,
+          13.588971138000488
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1.0000000000000002,
+          0.9999999999999999,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "interior-hotel-clay-v006",
+          "view": "close",
+          "zone_id": "ab6aa3ee-8328-49f5-b89f-00941d1d183a",
+          "filename": "cityprompt-3d-view-1791414728049.png",
+          "bytes": 808667,
+          "sha256": "6c8e5993decfcb5704e6fc2052afcc8ddd6d9936a5077f98b6a517beffd1fb7b",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\interior-hotel-clay-v006-close.png"
+        },
+        {
+          "candidate": "interior-hotel-clay-v006",
+          "view": "occluded",
+          "zone_id": "ab6aa3ee-8328-49f5-b89f-00941d1d183a",
+          "filename": "cityprompt-3d-view-1791415001098.png",
+          "bytes": 524984,
+          "sha256": "7390bde086e3c8cb0b1e5a47a40fbc71c0a30f6c9a9e276cebb607e1ce5549c6",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\interior-hotel-clay-v006-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "interior-hotel-clay-v006",
+        "view": "occluded",
+        "zone_id": "ab6aa3ee-8328-49f5-b89f-00941d1d183a",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 130637,
+        "occluded_pixels": 70114,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "brick-corner-grocery-clay-v002",
+      "label": "Brick Corner Grocery",
+      "model_sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "brick-corner-grocery-clay-v002",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 16.1,
+          "d": 16.4,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86033368964881,
+            51.08738592885375
+          ],
+          "width": 16.099999999897204,
+          "depth": 16.400000000722056,
+          "degrees": 15.00000000037668
+        },
+        "compiled_state": "compiled",
+        "revision": "brick-corner-grocery-clay-v002",
+        "native_dimensions": [
+          12.069999694824219,
+          12.359999656677246,
+          7.840000152587891
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "brick-corner-grocery-clay-v002",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 60,
+          "d": 60,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86033368964881,
+            51.08738592885375
+          ],
+          "width": 60.00000000015755,
+          "depth": 60.00000000015755,
+          "degrees": 44.9999999997982
+        },
+        "compiled_state": "compiled",
+        "revision": "brick-corner-grocery-clay-v002",
+        "native_dimensions": [
+          12.069999694824219,
+          12.359999656677246,
+          7.840000152587891
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "08944f4c-b5a8-498e-b3ca-411881f1fbae",
+        "candidate": "brick-corner-grocery-clay-v002",
+        "plot": {
+          "center": [
+            -113.86033368964881,
+            51.08738592885375
+          ],
+          "width": 16.099999999897204,
+          "depth": 16.400000000722056,
+          "degrees": 15.00000000037668
+        },
+        "expected_minimum": [
+          16.1,
+          16.4
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          12.069999694824219,
+          12.359999656677246,
+          7.840000152587891
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "brick-corner-grocery-clay-v002",
+          "view": "close",
+          "zone_id": "08944f4c-b5a8-498e-b3ca-411881f1fbae",
+          "filename": "cityprompt-3d-view-1791414731771.png",
+          "bytes": 369948,
+          "sha256": "415fd1ecf6c9a0196e89f90a712de55692c5532590d38c9a5780c90f3308648d",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\brick-corner-grocery-clay-v002-close.png"
+        },
+        {
+          "candidate": "brick-corner-grocery-clay-v002",
+          "view": "occluded",
+          "zone_id": "08944f4c-b5a8-498e-b3ca-411881f1fbae",
+          "filename": "cityprompt-3d-view-1791415006841.png",
+          "bytes": 253739,
+          "sha256": "e930cb5574e9077e581bc9065adde4220e196bc8b6ee634352523f3c51586755",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\brick-corner-grocery-clay-v002-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "brick-corner-grocery-clay-v002",
+        "view": "occluded",
+        "zone_id": "08944f4c-b5a8-498e-b3ca-411881f1fbae",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 340019,
+        "occluded_pixels": 170052,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "clerestory-neighbourhood-hall-clay-v002",
+      "label": "Clerestory Neighbourhood Hall",
+      "model_sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "clerestory-neighbourhood-hall-clay-v002",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 32.2,
+          "d": 31.2,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86662631035115,
+            51.086397786561264
+          ],
+          "width": 32.20000000022142,
+          "depth": 31.200000000229174,
+          "degrees": 15.000000000173094
+        },
+        "compiled_state": "compiled",
+        "revision": "clerestory-neighbourhood-hall-clay-v002",
+        "native_dimensions": [
+          28.1729097366333,
+          27.220212936401367,
+          7.010000228881836
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "clerestory-neighbourhood-hall-clay-v002",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 60,
+          "d": 60,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86662631035115,
+            51.086397786561264
+          ],
+          "width": 59.99999999996913,
+          "depth": 59.99999999996913,
+          "degrees": 44.99999999997814
+        },
+        "compiled_state": "compiled",
+        "revision": "clerestory-neighbourhood-hall-clay-v002",
+        "native_dimensions": [
+          28.1729097366333,
+          27.220212936401367,
+          7.010000228881836
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "20803b21-dfea-4961-ac47-15abeae985d5",
+        "candidate": "clerestory-neighbourhood-hall-clay-v002",
+        "plot": {
+          "center": [
+            -113.86662631035115,
+            51.086397786561264
+          ],
+          "width": 32.20000000022142,
+          "depth": 31.200000000229174,
+          "degrees": 15.000000000173094
+        },
+        "expected_minimum": [
+          32.2,
+          31.2
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          28.1729097366333,
+          27.220212936401367,
+          7.010000228881836
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          0.9999999999999999,
+          1,
+          1.0000000000000002
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "clerestory-neighbourhood-hall-clay-v002",
+          "view": "close",
+          "zone_id": "20803b21-dfea-4961-ac47-15abeae985d5",
+          "filename": "cityprompt-3d-view-1791414735615.png",
+          "bytes": 734951,
+          "sha256": "48a50afdb4248766a9e6e05b0a4ab207f172501a263c44710cf337bd22e59dfe",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\clerestory-neighbourhood-hall-clay-v002-close.png"
+        },
+        {
+          "candidate": "clerestory-neighbourhood-hall-clay-v002",
+          "view": "occluded",
+          "zone_id": "20803b21-dfea-4961-ac47-15abeae985d5",
+          "filename": "cityprompt-3d-view-1791415012515.png",
+          "bytes": 477516,
+          "sha256": "7302b0b5af7b656daf12195c4d4a37b1fcc7fc4f74a62b1c85de6639e7565efc",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\clerestory-neighbourhood-hall-clay-v002-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "clerestory-neighbourhood-hall-clay-v002",
+        "view": "occluded",
+        "zone_id": "20803b21-dfea-4961-ac47-15abeae985d5",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 143947,
+        "occluded_pixels": 85236,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "log-recreation-cabin-clay-v002",
+      "label": "Log Recreation Cabin",
+      "model_sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "log-recreation-cabin-clay-v002",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 16.9,
+          "d": 17.6,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86505315517559,
+            51.086397786561264
+          ],
+          "width": 16.89999999947401,
+          "depth": 17.6000000000965,
+          "degrees": 15.000000000859943
+        },
+        "compiled_state": "compiled",
+        "revision": "log-recreation-cabin-clay-v002",
+        "native_dimensions": [
+          12.920000076293945,
+          13.565999984741211,
+          6.204999923706055
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "log-recreation-cabin-clay-v002",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 60,
+          "d": 60,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86505315517559,
+            51.086397786561264
+          ],
+          "width": 59.99999999996913,
+          "depth": 59.99999999996913,
+          "degrees": 44.99999999997814
+        },
+        "compiled_state": "compiled",
+        "revision": "log-recreation-cabin-clay-v002",
+        "native_dimensions": [
+          12.920000076293945,
+          13.565999984741211,
+          6.204999923706055
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "9873f6df-a4da-4ab6-b32b-c9195e1975e5",
+        "candidate": "log-recreation-cabin-clay-v002",
+        "plot": {
+          "center": [
+            -113.86505315517559,
+            51.086397786561264
+          ],
+          "width": 16.89999999947401,
+          "depth": 17.6000000000965,
+          "degrees": 15.000000000859943
+        },
+        "expected_minimum": [
+          16.9,
+          17.6
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          12.920000076293945,
+          13.565999984741211,
+          6.204999923706055
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1.0000000000000002
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "log-recreation-cabin-clay-v002",
+          "view": "close",
+          "zone_id": "9873f6df-a4da-4ab6-b32b-c9195e1975e5",
+          "filename": "cityprompt-3d-view-1791414744245.png",
+          "bytes": 511292,
+          "sha256": "dd258c25925e9f9565b65c7ff88358e9025b9d45065d2d9c63ebee34ed9b4ad2",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\log-recreation-cabin-clay-v002-close.png"
+        },
+        {
+          "candidate": "log-recreation-cabin-clay-v002",
+          "view": "occluded",
+          "zone_id": "9873f6df-a4da-4ab6-b32b-c9195e1975e5",
+          "filename": "cityprompt-3d-view-1791415018513.png",
+          "bytes": 337256,
+          "sha256": "2592ca301a3459e35127b1869e5aaf7e94d28701efda8e0836c21609a1a07756",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\log-recreation-cabin-clay-v002-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "log-recreation-cabin-clay-v002",
+        "view": "occluded",
+        "zone_id": "9873f6df-a4da-4ab6-b32b-c9195e1975e5",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 184104,
+        "occluded_pixels": 100216,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "prairie-neighbourhood-shops-clay-v002",
+      "label": "Prairie Neighbourhood Shops",
+      "model_sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "prairie-neighbourhood-shops-clay-v002",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 34.7,
+          "d": 26.8,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.86348,
+            51.086397786561264
+          ],
+          "width": 34.70000000059777,
+          "depth": 26.799999999760626,
+          "degrees": 14.999999999157572
+        },
+        "compiled_state": "compiled",
+        "revision": "prairie-neighbourhood-shops-clay-v002",
+        "native_dimensions": [
+          30.700000762939453,
+          22.769999504089355,
+          6.170000076293945
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "prairie-neighbourhood-shops-clay-v002",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 60,
+          "d": 60,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.86348,
+            51.086397786561264
+          ],
+          "width": 59.99999999996913,
+          "depth": 59.99999999996913,
+          "degrees": 44.99999999997814
+        },
+        "compiled_state": "compiled",
+        "revision": "prairie-neighbourhood-shops-clay-v002",
+        "native_dimensions": [
+          30.700000762939453,
+          22.769999504089355,
+          6.170000076293945
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "ef498040-9e1d-4cfb-b7d6-6fbe85ba726c",
+        "candidate": "prairie-neighbourhood-shops-clay-v002",
+        "plot": {
+          "center": [
+            -113.86348,
+            51.086397786561264
+          ],
+          "width": 34.70000000059777,
+          "depth": 26.799999999760626,
+          "degrees": 14.999999999157572
+        },
+        "expected_minimum": [
+          34.7,
+          26.8
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          30.700000762939453,
+          22.769999504089355,
+          6.170000076293945
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "prairie-neighbourhood-shops-clay-v002",
+          "view": "close",
+          "zone_id": "ef498040-9e1d-4cfb-b7d6-6fbe85ba726c",
+          "filename": "cityprompt-3d-view-1791414748019.png",
+          "bytes": 670912,
+          "sha256": "2dd212db2373e7f066585eb9bde48d2d6afd407b5f77e4acc76368bdc101fc13",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\prairie-neighbourhood-shops-clay-v002-close.png"
+        },
+        {
+          "candidate": "prairie-neighbourhood-shops-clay-v002",
+          "view": "occluded",
+          "zone_id": "ef498040-9e1d-4cfb-b7d6-6fbe85ba726c",
+          "filename": "cityprompt-3d-view-1791415024480.png",
+          "bytes": 411719,
+          "sha256": "298e1744909ea17b487ef0f97fcf217391699ba7e7567b947ec9946c3982efc2",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\prairie-neighbourhood-shops-clay-v002-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "prairie-neighbourhood-shops-clay-v002",
+        "view": "occluded",
+        "zone_id": "ef498040-9e1d-4cfb-b7d6-6fbe85ba726c",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 105497,
+        "occluded_pixels": 58093,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    },
+    {
+      "candidate": "inglewood-corner-merchants-clay-v003",
+      "label": "Inglewood Corner Merchants",
+      "model_sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "tested_by": "Codex root, scoped pixel verification by independent frontend_release_checks agent",
+      "tested_at": "2026-10-07",
+      "evidence": [
+        "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_trial": {
+        "candidate": "inglewood-corner-merchants-clay-v003",
+        "step": "minimum_restored",
+        "expected": {
+          "name": "minimum_restored",
+          "w": 20.2,
+          "d": 22.2,
+          "r": 15
+        },
+        "actual": {
+          "center": [
+            -113.8619068448244,
+            51.086397786561264
+          ],
+          "width": 20.200000000378225,
+          "depth": 22.20000000005716,
+          "degrees": 15.000000001015497
+        },
+        "compiled_state": "compiled",
+        "revision": "inglewood-corner-merchants-clay-v003",
+        "native_dimensions": [
+          16.230000019073486,
+          18.229999542236328,
+          11.369999885559082
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "maximum_plot_trial": {
+        "candidate": "inglewood-corner-merchants-clay-v003",
+        "step": "maximum_inside_boundary",
+        "expected": {
+          "name": "maximum_inside_boundary",
+          "w": 60,
+          "d": 60,
+          "r": 45
+        },
+        "actual": {
+          "center": [
+            -113.8619068448244,
+            51.086397786561264
+          ],
+          "width": 59.99999999996913,
+          "depth": 59.99999999996913,
+          "degrees": 44.99999999997814
+        },
+        "compiled_state": "compiled",
+        "revision": "inglewood-corner-merchants-clay-v003",
+        "native_dimensions": [
+          16.230000019073486,
+          18.229999542236328,
+          11.369999885559082
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ],
+        "grounding": [],
+        "passed": true
+      },
+      "reload": {
+        "id": "c71580f9-9594-4195-974a-a4c5849007d6",
+        "candidate": "inglewood-corner-merchants-clay-v003",
+        "plot": {
+          "center": [
+            -113.8619068448244,
+            51.086397786561264
+          ],
+          "width": 20.200000000378225,
+          "depth": 22.20000000005716,
+          "degrees": 15.000000001015497
+        },
+        "expected_minimum": [
+          20.2,
+          22.2
+        ],
+        "compiled_state": "compiled",
+        "native_dimensions": [
+          16.230000019073486,
+          18.229999542236328,
+          11.369999885559082
+        ],
+        "root_scale": [
+          1,
+          1,
+          1
+        ],
+        "model_root_scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "capture_pair": [
+        {
+          "candidate": "inglewood-corner-merchants-clay-v003",
+          "view": "close",
+          "zone_id": "c71580f9-9594-4195-974a-a4c5849007d6",
+          "filename": "cityprompt-3d-view-1791414751955.png",
+          "bytes": 549137,
+          "sha256": "d462c9467be0df6aa3ec743868c5d3439a7850a3dcd59ebc522e3e6b993b7e3e",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\inglewood-corner-merchants-clay-v003-close.png"
+        },
+        {
+          "candidate": "inglewood-corner-merchants-clay-v003",
+          "view": "occluded",
+          "zone_id": "c71580f9-9594-4195-974a-a4c5849007d6",
+          "filename": "cityprompt-3d-view-1791415030454.png",
+          "bytes": 351686,
+          "sha256": "756d9c2dea87b9a91ad695f08e0ef88f745c0fa40caea87ba1b4aa8ab13169bf",
+          "verified_download": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\ui-download-followup\\inglewood-corner-merchants-clay-v003-occluded.png"
+        }
+      ],
+      "occlusion": {
+        "candidate": "inglewood-corner-merchants-clay-v003",
+        "view": "occluded",
+        "zone_id": "c71580f9-9594-4195-974a-a4c5849007d6",
+        "fixture": "temporary opaque foreground box; no saved project changes",
+        "clear_pixels": 223999,
+        "occluded_pixels": 116688,
+        "partial_occlusion": true
+      },
+      "publication_status": "local_trial_only; no activation performed"
+    }
+  ],
+  "remaining_limits": [
+    "Prepared flat site only; natural/sloped ground and every hidden contact are not certified.",
+    "Synthetic occluder tests capture depth behavior; natural tree/building occluders and paid AI fidelity are separate.",
+    "Walking through all interiors, accessibility, low-end laptops/iPads and 40 simultaneous sessions remain broader product trials.",
+    "Existing reviewed GLBs and local-trial publication flags are unchanged; exact-byte human activation and hosted staging remain separate.",
+    "All raw screenshots/downloads remain outside Git; source records retain their hashes and paths. No paid generation or deployment."
+  ],
+  "measurement_tolerances": {
+    "plot_dimension_m": 0.05,
+    "rotation_degrees": 0.05,
+    "unit_scale_absolute": 1e-09,
+    "purpose": "Allow floating-point geographic projection and transform decomposition only; native dimension metadata remains exact."
+  }
+}

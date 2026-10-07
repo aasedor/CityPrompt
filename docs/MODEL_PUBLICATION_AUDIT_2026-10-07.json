@@ -3046,6 +3046,52 @@
         "total_bundle_kib": 8437.9,
         "build_configuration": "Placeholder configuration; not a deployable production artifact claim"
       }
+    },
+    {
+      "id": "completed-bounded-student-controls-trial-2026-10-07",
+      "date": "2026-10-07",
+      "scope": "Nineteen exact architectural-clay models on one flat prepared site; eight local trial checks only. No new keeper or human approval.",
+      "source_commit": "536b275ea",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "historical_entries_unchanged": true,
+      "record": {
+        "path": "docs/runtime-reviews/model-release-trial-completion-2026-10-07.json",
+        "sha256": "04037a5bc40aaa137da1f7505f45edad1ffddd386f11242dd92ba529f841c44a",
+        "bytes": 99547
+      },
+      "summary": {
+        "models": 19,
+        "checks_per_model": 8,
+        "ui_downloads_byte_verified": 48,
+        "close_occluded_pairs": 19,
+        "low_views": 7,
+        "side_attempts": 3,
+        "successful_ui_size_checks": 38,
+        "all_final_reloads_compiled": true,
+        "all_native_scales_retained": true,
+        "grounding_diagnostics": [],
+        "observed_actionable_p0": 0,
+        "observed_actionable_p1": 0,
+        "geometry_or_application_code_changes": 0
+      },
+      "technical_trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "activation_changed": false,
+      "limitations": [
+        "Prepared flat site only; natural/sloped ground and every hidden contact are not certified.",
+        "Synthetic occluder tests capture depth behavior; natural tree/building occluders and paid AI fidelity are separate.",
+        "Walking through all interiors, accessibility, low-end laptops/iPads and 40 simultaneous sessions remain broader product trials.",
+        "Existing reviewed GLBs and local-trial publication flags are unchanged; exact-byte human activation and hosted staging remain separate.",
+        "All raw screenshots/downloads remain outside Git; source records retain their hashes and paths. No paid generation or deployment."
+      ]
     }
   ]
 }
