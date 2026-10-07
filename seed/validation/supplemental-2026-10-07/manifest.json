@@ -1,0 +1,37 @@
+{
+  "schema": "cityprompt.runtime-supplement@1",
+  "catalogue_activation": false,
+  "purpose": "Preserve exact existing runtime bytes absent from the original validation archive",
+  "assets": [
+    {
+      "path": "seed/validation/supplemental-2026-10-07/gothic-community-church-clay-v005/gothic-community-church-clay-v005.glb",
+      "url": "/validation-assets/gothic-community-church-clay-v005/gothic-community-church-clay-v005.glb",
+      "sha256": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+      "bytes": 12172560
+    },
+    {
+      "path": "seed/validation/supplemental-2026-10-07/orchard-v002/reference.png",
+      "url": "/validation-assets/orchard-v002/reference.png",
+      "sha256": "eb3f411793e9618762021261a7e4376d81b8763ccd7e560206636320dbb15b1e",
+      "bytes": 1607913
+    },
+    {
+      "path": "seed/validation/supplemental-2026-10-07/reference-fourplex-v1/reference-fourplex-v1.glb",
+      "url": "/validation-assets/reference-fourplex-v1/reference-fourplex-v1.glb",
+      "sha256": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+      "bytes": 13382484
+    },
+    {
+      "path": "seed/validation/supplemental-2026-10-07/square-v003/reference.png",
+      "url": "/validation-assets/square-v003/reference.png",
+      "sha256": "c5aa7a283b1508b7b3711b0d463196054aebc546f3ceef0f229b907999d09222",
+      "bytes": 1504566
+    },
+    {
+      "path": "seed/validation/supplemental-2026-10-07/timber-sanctuary-church-clay-v002/timber-sanctuary-church-clay-v002.glb",
+      "url": "/validation-assets/timber-sanctuary-church-clay-v002/timber-sanctuary-church-clay-v002.glb",
+      "sha256": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+      "bytes": 1277036
+    }
+  ]
+}

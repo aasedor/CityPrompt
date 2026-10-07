@@ -80,3 +80,5 @@ frontend/public/policy-maps/**/*.webp filter=lfs diff=lfs merge=lfs -text
 
 docs/showcase/ubst-rlasm-2026-10-07/**/*.glb filter=lfs diff=lfs merge=lfs -text
 docs/showcase/ubst-rlasm-2026-10-07/**/*.json -text whitespace=cr-at-eol
+seed/validation/supplemental-2026-10-07/**/*.glb filter=lfs diff=lfs merge=lfs -text
+seed/validation/supplemental-2026-10-07/**/*.png filter=lfs diff=lfs merge=lfs -text
