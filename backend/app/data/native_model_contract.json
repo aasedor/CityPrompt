@@ -444,6 +444,396 @@
       "current": true
     },
     {
+      "asset_id": "clay_neoclassical_brick_headquarters",
+      "variant_id": "neoclassical_brick_headquarters",
+      "revision": "neoclassical-brick-office-clay-v005",
+      "dimensions_m": [
+        29.239999771118164,
+        32.519999504089355,
+        20.850000381469727
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_admin_faculty_brick_bronze_fins",
+      "variant_id": "admin_faculty_brick_bronze_fins",
+      "revision": "brick-bronze-faculty-office-clay-v004",
+      "dimensions_m": [
+        34.4060001373291,
+        35.93000030517578,
+        23.799999237060547
+      ],
+      "storeys": 5,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_brick_timber_two_storey_office",
+      "variant_id": "brick_timber_two_storey_office",
+      "revision": "brick-timber-courtyard-office-clay-v004",
+      "dimensions_m": [
+        14.359999656677246,
+        12.359999656677246,
+        7.400000095367432
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_strip_single_storey_classic",
+      "variant_id": "strip_single_storey_classic",
+      "revision": "commercial-strip-single-storey-classic-clay-v002",
+      "dimensions_m": [
+        32.70000076293945,
+        18.65000057220459,
+        6.539999961853027
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_corten_timber_equipment_yard",
+      "variant_id": "corten_timber_equipment_yard",
+      "revision": "contractor-storage-yard-clay-v003",
+      "dimensions_m": [
+        38.14999961853027,
+        30.20300006866455,
+        6.333863735198975
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_meadow_three_gable_childcare",
+      "variant_id": "meadow_three_gable_childcare",
+      "revision": "courtyard-childcare-centre-clay-v003",
+      "dimensions_m": [
+        28.149999618530273,
+        26.210000038146973,
+        6.260000228881836
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_factory_sawtooth_roof",
+      "variant_id": "factory_sawtooth_roof",
+      "revision": "daylight-sawtooth-factory-clay-v003",
+      "dimensions_m": [
+        54.39999961853027,
+        32.53999996185303,
+        25
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_folded_roof_recovery_hall",
+      "variant_id": "folded_roof_recovery_hall",
+      "revision": "enclosed-materials-recovery-clay-v002",
+      "dimensions_m": [
+        36.2400016784668,
+        25.980000495910645,
+        9.068168640136719
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_garden_mews_six_homes",
+      "variant_id": "garden_mews_six_homes",
+      "revision": "garden-mews-courtyard-housing-clay-v003",
+      "dimensions_m": [
+        23,
+        23,
+        8.699999809265137
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_horizon_double_section",
+      "variant_id": "horizon_double_section",
+      "revision": "horizon-manufactured-home-clay-v003",
+      "dimensions_m": [
+        14.180000305175781,
+        9.422999858856201,
+        4.62440824508667
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_industrial_gabled_metal_shed",
+      "variant_id": "industrial_gabled_metal_shed",
+      "revision": "industrial-gabled-metal-shed-clay-v002",
+      "dimensions_m": [
+        13.369999885559082,
+        21.71500015258789,
+        8.649999618530273
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_industrial_tilt_up_concrete",
+      "variant_id": "industrial_tilt_up_concrete",
+      "revision": "industrial-tilt-up-concrete-clay-v006",
+      "dimensions_m": [
+        54.720001220703125,
+        39.84000015258789,
+        10.550000190734863
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_maple_porch_sage",
+      "variant_id": "maple_porch_sage",
+      "revision": "maple-porch-manufactured-cottage-clay-v004",
+      "dimensions_m": [
+        14.529999732971191,
+        7.442999839782715,
+        4.550000190734863
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_copperline_four_bay_depot",
+      "variant_id": "copperline_four_bay_depot",
+      "revision": "municipal-works-depot-clay-v003",
+      "dimensions_m": [
+        45.86000061035156,
+        24.780000686645508,
+        7.650000095367432
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_brick_timber_craftsman",
+      "variant_id": "brick_timber_craftsman",
+      "revision": "narrow-lot-craftsman-cottage-clay-v003",
+      "dimensions_m": [
+        9.322999954223633,
+        16.1899995803833,
+        6.300000190734863
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_prairie_cedar_chassis_home",
+      "variant_id": "prairie_cedar_chassis_home",
+      "revision": "prairie-manufactured-home-clay-v003",
+      "dimensions_m": [
+        16.465999603271484,
+        6.828604698181152,
+        4.409999847412109
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_rndsqr_townhome_brick_contextual",
+      "variant_id": "rndsqr_townhome_brick_contextual",
+      "revision": "rndsqr-brick-contextual-row-clay-v005",
+      "dimensions_m": [
+        24.610000610351562,
+        15.179999828338623,
+        12.390000343322754
+      ],
+      "storeys": 3,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_warehouse_tilt_wall_mega",
+      "variant_id": "warehouse_tilt_wall_mega",
+      "revision": "tilt-wall-warehouse-clay-v006",
+      "dimensions_m": [
+        150.32000732421875,
+        89,
+        16.350000381469727
+      ],
+      "storeys": 3,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_ecole_republicaine_provincial_brick",
+      "variant_id": "ecole-republicaine-provincial-brick",
+      "revision": "provincial-brick-school-clay-v007",
+      "dimensions_m": [
+        32.900001525878906,
+        40.85000038146973,
+        20.65999984741211
+      ],
+      "storeys": 3,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_rndsqr_townhome_scandinavian_peaks",
+      "variant_id": "rndsqr_townhome_scandinavian_peaks",
+      "revision": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "dimensions_m": [
+        34.119998931884766,
+        23.329999923706055,
+        14.137221336364746
+      ],
+      "storeys": 4,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_affordable_porchlight_original",
+      "variant_id": "affordable_porchlight_original",
+      "revision": "affordable-porchlight-clay-v004",
+      "dimensions_m": [
+        22.58999729156494,
+        14.014153480529785,
+        7.699999809265137
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_affordable_juniper_original",
+      "variant_id": "affordable_juniper_original",
+      "revision": "affordable-juniper-clay-v006",
+      "dimensions_m": [
+        28,
+        24.899999618530273,
+        6.050000198978445
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_affordable_stackyard_original",
+      "variant_id": "affordable_stackyard_original",
+      "revision": "affordable-stackyard-clay-v003",
+      "dimensions_m": [
+        23.920000076293945,
+        19.032999515533447,
+        7.090000152587891
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_affordable_aspen_original",
+      "variant_id": "affordable_aspen_original",
+      "revision": "affordable-aspen-clay-v003",
+      "dimensions_m": [
+        24.360000610351562,
+        16.152999877929688,
+        10.449999809265137
+      ],
+      "storeys": 3,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_affordable_switchback_original",
+      "variant_id": "affordable_switchback_original",
+      "revision": "affordable-switchback-clay-v003",
+      "dimensions_m": [
+        24.360000610351562,
+        16.08299970626831,
+        13.75
+      ],
+      "storeys": 4,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "community_brick_corner_grocery",
+      "variant_id": "montreal_depanneur_modern",
+      "revision": "brick-corner-grocery-clay-v002",
+      "dimensions_m": [
+        12.069999694824219,
+        12.359999656677246,
+        7.840000152587891
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "community_clerestory_neighbourhood_hall",
+      "variant_id": "rec_clerestory_modern",
+      "revision": "clerestory-neighbourhood-hall-clay-v002",
+      "dimensions_m": [
+        28.1729097366333,
+        27.220212936401367,
+        7.010000228881836
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "community_log_recreation_cabin",
+      "variant_id": "rec_log_cabin_vernacular",
+      "revision": "log-recreation-cabin-clay-v002",
+      "dimensions_m": [
+        12.920000076293945,
+        13.565999984741211,
+        6.204999923706055
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "community_prairie_neighbourhood_shops",
+      "variant_id": "strip_weathered_1980s",
+      "revision": "prairie-neighbourhood-shops-clay-v002",
+      "dimensions_m": [
+        30.700000762939453,
+        22.769999504089355,
+        6.170000076293945
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "community_inglewood_corner_merchants",
+      "variant_id": "inglewood_deco_infill",
+      "revision": "inglewood-corner-merchants-clay-v003",
+      "dimensions_m": [
+        16.230000019073486,
+        18.229999542236328,
+        11.369999885559082
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
       "asset_id": "validation_minimalist_infill_brick_monolith",
       "variant_id": "minimalist_infill_brick_monolith",
       "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",

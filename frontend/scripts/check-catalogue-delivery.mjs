@@ -26,7 +26,7 @@ function readPacket(directory) {
   return {directory,receipt};
 }
 const source = name => read(resolve(frontend,'src/data',name));
-const server = await createServer({root:frontend,configFile:resolve(frontend,'vite.config.ts'),logLevel:'silent',
+const server = await createServer({root:frontend,configFile:resolve(frontend,'vite.config.ts'),logLevel:'silent',mode:'test',
   // This SSR-only audit must never re-optimize the scripts of a live preview.
   // node_modules can be shared between worktrees, so put its cache in the
   // checkout's ignored artifact directory rather than that shared dependency tree.

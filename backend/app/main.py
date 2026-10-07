@@ -116,7 +116,7 @@ app.include_router(ws_router)
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "version": settings.app_version}
+    return {"status": "healthy", "version": settings.app_version, "commit": settings.release_commit}
 
 
 @app.get("/ready")

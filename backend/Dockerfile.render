@@ -1,6 +1,7 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+# Build from the repository root. Runtime contracts retain their repository paths.
+WORKDIR /app/backend
 
 # Install system dependencies for OpenCV, PostGIS, Tesseract, and health checks
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -16,15 +17,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY backend/ .
+COPY seed/model-library/rlasm-architectural-clay/house-flex-pilot-v001.json /app/seed/model-library/rlasm-architectural-clay/house-flex-pilot-v001.json
 
 # Copy startup script and make executable
-COPY scripts/start.sh /start.sh
-RUN chmod +x /start.sh
+COPY backend/scripts/start.sh /start.sh
+RUN sed -i 's/\r$//' /start.sh scripts/start.sh && chmod +x /start.sh
 
-EXPOSE ${PORT:-8000}
+EXPOSE 8000
 
 CMD ["/start.sh"]

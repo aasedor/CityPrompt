@@ -52,7 +52,12 @@ export function catalogueRequirements(choices, heroImage, data) {
     const asset = choice.placements[0];
     if (!asset) throw new Error('Unbound catalogue choice: ' + choice.id);
     const entry = data.entries.find(row => row.variant_id === asset.model.variantId && row.archetype_id === choice.option.id);
-    const checks = [{ url: heroImage(asset.id, asset.thumbnail), kind: 'image' }];
+    const variant = choice.option.variants?.find(row => row.id === asset.model.variantId);
+    // Match the card's displayed photograph, including legacy presentation
+    // metadata. Checking only the conditioning image can miss a broken card.
+    const cardImage = choice.option.photoUrl || choice.option.catalogCardImageUrl
+      || variant?.thumbnailUrl || asset.thumbnail;
+    const checks = [{ url: heroImage(asset.id, cardImage), kind: 'image' }];
     // Saved capture/reference paths retain their original technical image even
     // where discovery deliberately uses a source hero override.
     if(asset.thumbnail!==checks[0].url) checks.push({url:asset.thumbnail,kind:'image',sha256:asset.thumbnail.match(/\/([a-f0-9]{64})\.png$/)?.[1]});

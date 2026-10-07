@@ -54,6 +54,7 @@ vi.mock('@/components/viewer/aestheticCatalog', () => ({
     },
   ],
   ROADWAY_AESTHETIC_OPTIONS_V2: [],
+  SAVED_ROADWAY_AESTHETIC_OPTIONS: [],
   GREEN_SPACE_AESTHETIC_OPTIONS_V2: [],
   PLAZA_AESTHETIC_OPTIONS_V2: [],
 }));

@@ -3,8 +3,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
-const directory = new URL('../public/render-style-examples/', import.meta.url);
+const directory = process.env.CITYPROMPT_PUBLIC_DIR
+  ? pathToFileURL(resolve(process.env.CITYPROMPT_PUBLIC_DIR, 'render-style-examples') + '/')
+  : new URL('../public/render-style-examples/', import.meta.url);
 const manifest = JSON.parse(readFileSync(new URL('manifest.json', directory), 'utf8'));
 
 test('saved render examples retain the recorded PNGs and their original 3D sources', () => {

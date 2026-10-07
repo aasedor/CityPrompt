@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
-const root = fileURLToPath(new URL('../public/policy-maps/citywide-2026-v1/', import.meta.url));
+const publicRoot = process.env.CITYPROMPT_PUBLIC_DIR || fileURLToPath(new URL('../public/', import.meta.url));
+const root = path.join(publicRoot, 'policy-maps/citywide-2026-v1');
 const ids = ['mdp-1', 'mdp-2', 'mdp-3', 'mdp-4', 'mdp-5', 'mdp-6', 'ctp-1', 'ctp-2', 'ctp-3', 'ctp-5', 'ctp-6', 'ctp-7'];
 let assets = 0, bytes = 0;
 for (const id of ids) {

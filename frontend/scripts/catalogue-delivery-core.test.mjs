@@ -41,3 +41,11 @@ test('resolves promoted candidate revisions without accepting another variant or
   }
   assert.throws(()=>catalogueRequirements([choice],()=>'/office.png',{...data,entries:[{archetype_id:'office',variant_id:'brick-office',sha256:'b'.repeat(64)}]}),/No executable/);
 });
+
+test('checks the displayed reference image as well as the runtime conditioning image',()=>{
+  const asset={id:'office',label:'Office',thumbnail:'/conditioning.png',model:{variantId:'brick-office',revision:'office-v005'},properties:{}};
+  const choice={id:'office',domain:'building',option:{id:'office',photoUrl:'/shown-reference.png'},placements:[asset]};
+  const data={entries:[],parks:[],streets:[],library:[{archetype_id:'office',variant_id:'brick-office',candidate:'office-v005',model:{path:'models/office.glb',sha256:'a'.repeat(64)}}]};
+  const images=catalogueRequirements([choice],(_id,fallback)=>fallback,data)[0].checks.filter(c=>c.kind==='image').map(c=>c.url);
+  assert.deepEqual(images,['/shown-reference.png','/conditioning.png']);
+});

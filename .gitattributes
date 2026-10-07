@@ -82,3 +82,7 @@ docs/showcase/ubst-rlasm-2026-10-07/**/*.glb filter=lfs diff=lfs merge=lfs -text
 docs/showcase/ubst-rlasm-2026-10-07/**/*.json -text whitespace=cr-at-eol
 seed/validation/supplemental-2026-10-07/**/*.glb filter=lfs diff=lfs merge=lfs -text
 seed/validation/supplemental-2026-10-07/**/*.png filter=lfs diff=lfs merge=lfs -text
+# Preserve exact bytes of the hash-bound local trial records across checkouts.
+docs/runtime-reviews/model-release-download-review-2026-10-07.json -text whitespace=cr-at-eol
+docs/runtime-reviews/model-release-occlusion-review-2026-10-07.json -text whitespace=cr-at-eol
+docs/runtime-reviews/model-release-trial-completion-2026-10-07.json -text whitespace=cr-at-eol

@@ -1,0 +1,11 @@
+# Render readiness for the consolidated City Prompt version
+
+Prepare the current 133-choice experience for a paid Render staging environment for approximately 40 simultaneous students. Preserve Google 3D, walking, zoning/LAP/MDP/CTP layers, exact catalogue models, GPT images and Kling still animation. This work prepares and verifies deployment; it does not switch the live domain, purchase services, or certify unreviewed assets.
+
+1. Reproduce the frontend failures. Repair exact-variant saved-project lookup and other demonstrated regressions; update obsolete expectations without removing behavioral coverage. Verify narrow files, then full Vitest and TypeScript.
+2. Prepare a finite static asset directory from committed public files, the locked validation archive, exact supplemental assets and current seed hashes. No local experiment directories, developer dotenv, unhydrated LFS pointers or backend secrets may enter the build. Audit every current catalogue dependency, city policy map and render-style example, then build a static Vite bundle with Maps/API configuration and a public commit receipt.
+3. Correct the backend Docker context and build identity. Separate migration execution from normal restarts, keep readiness fail-closed, and test durable generation/recovery on an isolated PostGIS database with providers mocked.
+4. Add an opt-in Render staging Blueprint with manual deploys, static CDN hosting, API, separate image/maintenance/general workers, scheduler, private PostGIS/Redis and external private S3 storage. Local ComfyUI stays disabled in hosted configuration. Document credentials, exact assets/model seeding, backups, rollback and classroom rehearsal.
+5. Verify build/config contracts, real backend image build where available, full frontend checks and targeted backend checks. Inventory human catalogue publication gates explicitly instead of claiming approval. Keep live CityPrompt.ca unchanged pending successful staging verification.
+
+Parent owns deployment and asset packaging. Separate agents own frontend/src fixes and backend readiness with disjoint paths. The user has already authorized deployment preparation; no further design confirmation is needed for these existing-flow repairs. Hosting cost is being clarified; no paid infrastructure is provisioned in this pass.

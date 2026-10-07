@@ -5,10 +5,16 @@ import {parkTrioKind, buildParkTrio, rect} from '@/components/viewer/globe/parkT
 import {CATALOGUE_ASSETS, browseAssets} from './assetRegistry';
 
 describe('local park trio catalogue cards',()=>{
-  it('includes all three parks in the normal catalogue without a trial flag',()=>{
+  it('keeps historical trio renderers out of discovery while offering the reviewed native replacements',()=>{
     for(const asset of PARK_TRIO_ASSETS){
-      expect(CATALOGUE_ASSETS).toContain(asset);
-      expect(browseAssets(asset.label)).toContain(asset);
+      expect(CATALOGUE_ASSETS.some(candidate => candidate.id === asset.id)).toBe(false);
+      expect(browseAssets(asset.label).some(candidate => candidate.id === asset.id)).toBe(false);
+
+    }
+    for (const variant of ['basketball_court_v1', 'research_garden_teaching_arboretum_variant_3']) {
+      const current = CATALOGUE_ASSETS.find(candidate => candidate.model.variantId === variant);
+      expect(current?.model.method).toBe('native_park_v2');
+      expect(current?.properties.green_space_native_layout_id).toBeTruthy();
     }
   });
   it('places every pilot in a visible park group with a working exact renderer identity',()=>{

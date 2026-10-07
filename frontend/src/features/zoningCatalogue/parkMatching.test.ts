@@ -9,7 +9,7 @@ const result = (variant: string, code: string) => matchPark(park(variant), zone(
 
 describe('park land-use screening', () => {
   it('classifies every current native and flexible layout by placement, variant and revision', () => {
-    expect(ZONING_CATALOGUE_PARKS).toHaveLength(32);
+    expect(ZONING_CATALOGUE_PARKS).toHaveLength(33);
     expect(Object.keys(PARK_PROGRAMS).sort()).toEqual(ZONING_CATALOGUE_PARKS.map(a => a.id).sort());
     for (const asset of ZONING_CATALOGUE_PARKS) {
       expect(PARK_PROGRAMS[asset.id]).toMatchObject({ variantId: asset.model.variantId, revision: asset.model.revision });
@@ -28,6 +28,12 @@ describe('park land-use screening', () => {
     }
     expect(result('wetland_rain_garden_v0', 'S-UN').status).toBe('outside');
     expect(result('urban_pocket_park_v0', 'S-FUD').status).toBe('outside');
+  });
+  it('keeps sandy beach screening under review until the operating use is established', () => {
+    const match = result('student_sandy_beach_v1', 'S-SPR');
+    expect(match.program).toMatchObject({ variantId: 'student_sandy_beach_v1' });
+    expect(match.status).toBe('review');
+    expect(match.reasons.join(' ')).toMatch(/operator, public access and swimming/);
   });
   it('distinguishes permitted sports, discretionary sports and conditional former-school sites', () => {
     for (const variant of ['basketball_court_v1', 'student_pickleball_garden_v1', 'student_tennis_garden_v2', 'student_bocce_garden_v2']) {

@@ -4,6 +4,7 @@ Loads from environment variables and .env file.
 """
 
 import os
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import List
@@ -95,8 +96,15 @@ class Settings(BaseSettings):
     app_debug: bool = False
     app_name: str = "3D Development Platform"
     app_version: str = "0.1.0"
+    render_git_commit: str = ""
     classroom_release: bool = False
     classroom_asset_receipt: str = ""
+
+    @property
+    def release_commit(self) -> str | None:
+        """Expose only a Git object ID, never arbitrary environment content."""
+        value = self.render_git_commit.strip()
+        return value.lower() if re.fullmatch(r"[0-9a-fA-F]{40}", value) else None
 
     # --- Database ---
     database_url: str = "postgresql+asyncpg://devuser:devpassword@localhost:5432/dev_platform"

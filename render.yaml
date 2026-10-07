@@ -1,5 +1,7 @@
 # Render Blueprint — 3D Development Platform
 # https://render.com/docs/blueprint-spec
+# Legacy deployment. For the current full-catalogue release, use the opt-in
+# render.staging.yaml and docs/RENDER_RELEASE_2026-10-07.md before live cutover.
 
 databases:
   - name: 3d-platform-db
@@ -24,7 +26,7 @@ services:
     runtime: docker
     plan: standard
     dockerfilePath: ./backend/Dockerfile.render
-    dockerContext: ./backend
+    dockerContext: .
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
@@ -60,7 +62,7 @@ services:
     runtime: docker
     plan: standard
     dockerfilePath: ./backend/Dockerfile.render
-    dockerContext: ./backend
+    dockerContext: .
     dockerCommand: celery -A app.tasks.worker:celery_app worker --loglevel=info --concurrency=2
     envVars:
       - key: DATABASE_URL

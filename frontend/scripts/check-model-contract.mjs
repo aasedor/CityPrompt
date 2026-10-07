@@ -6,7 +6,7 @@ import { resolve } from 'node:path';
 const read = relative => JSON.parse(readFileSync(new URL(relative, import.meta.url), 'utf8'));
 const revisions = read('../src/data/savedModelRevisions.json');
 const root = fileURLToPath(new URL('..',import.meta.url));
-const server = await createServer({root,configFile:resolve(root,'vite.config.ts'),logLevel:'silent',
+const server = await createServer({root,configFile:resolve(root,'vite.config.ts'),logLevel:'silent',mode:'test',
   cacheDir:resolve(root,'../artifacts/model-contract-vite-cache'),server:{middlewareMode:true},
   appType:'custom',optimizeDeps:{noDiscovery:true,entries:[]}});
 let rows;

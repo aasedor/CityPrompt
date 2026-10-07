@@ -34,17 +34,17 @@ describe('student asset browsing', () => {
     expect(screen.getByLabelText('Catalogue collection')).toHaveValue('starter');
     expect(screen.getByText(new RegExp(`${catalogue.CLASSROOM_CHOICES.length} exact choices: ${count('building')} buildings, ${count('park_plaza')} parks, ${count('street_pathway')} streets`))).toBeInTheDocument();
     expect(screen.getAllByRole('article')).toHaveLength(12);
-    fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
+    fireEvent.click(screen.getByText('Show more choices', { selector: 'button' }));
     expect(screen.getAllByRole('article')).toHaveLength(24);
-    fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
-    while (screen.queryByRole('button', { name: 'Show more choices' })) {
-      fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
+    fireEvent.click(screen.getByText('Show more choices', { selector: 'button' }));
+    while (screen.queryByText('Show more choices', { selector: 'button' })) {
+      fireEvent.click(screen.getByText('Show more choices', { selector: 'button' }));
     }
     expect(screen.getAllByRole('article')).toHaveLength(count('building'));
     fireEvent.click(screen.getAllByRole('button', { name: 'Parks' })[1]);
     expect(screen.getAllByRole('article')).toHaveLength(12);
-    fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
+    fireEvent.click(screen.getByText('Show more choices', { selector: 'button' }));
+    fireEvent.click(screen.getByText('Show more choices', { selector: 'button' }));
     expect(screen.getAllByRole('article')).toHaveLength(count('park_plaza'));
     expect(catalogue.CLASSROOM_CHOICES.every(choice => choice.placements.length === 1 && choice.option.variants?.length === 1)).toBe(true);
   });

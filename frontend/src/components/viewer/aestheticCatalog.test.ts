@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
 import {
-  BUILDING_AESTHETIC_OPTIONS_V2,
-  OPENSPACE_AESTHETIC_OPTIONS_V2,
-  ROADWAY_AESTHETIC_OPTIONS_V2,
+  SAVED_BUILDING_AESTHETIC_OPTIONS,
+  SAVED_OPENSPACE_AESTHETIC_OPTIONS,
+  SAVED_ROADWAY_AESTHETIC_OPTIONS,
 } from './aestheticCatalog';
 import { TRANSPORT_STANDARDS } from '@/data/transportStandards';
 import archetypeReferenceAvailability from '@/data/archetypeReferenceAvailability.json';
@@ -11,7 +11,7 @@ import stickerMethodPilots from '@/data/stickerMethodPilots.json';
 
 describe('building aesthetic reference assets', () => {
   it('uses authored catalogue folders and the authored hero before generated visual-system paths', () => {
-    const option = BUILDING_AESTHETIC_OPTIONS_V2.find(
+    const option = SAVED_BUILDING_AESTHETIC_OPTIONS.find(
       (candidate) => candidate.id === 'contemporary_midrise_residential',
     );
 
@@ -29,7 +29,7 @@ describe('building aesthetic reference assets', () => {
       string,
       { availableUrls: string[] }
     >;
-    for (const option of BUILDING_AESTHETIC_OPTIONS_V2) {
+    for (const option of SAVED_BUILDING_AESTHETIC_OPTIONS) {
       const availableUrls = new Set(availability[option.id]?.availableUrls ?? []);
       expect(availableUrls.has(option.photoUrl), option.id).toBe(true);
       const thumbnailUrls = option.variants?.map((variant) => variant.thumbnailUrl) ?? [];
@@ -40,7 +40,7 @@ describe('building aesthetic reference assets', () => {
   });
 
   it('gives traditional Machiya an explicit photoreal card render without changing its variant metadata', () => {
-    const option = BUILDING_AESTHETIC_OPTIONS_V2.find(
+    const option = SAVED_BUILDING_AESTHETIC_OPTIONS.find(
       (candidate) => candidate.id === 'japanese_machiya_mixed_use',
     );
     const traditional = option?.variants?.find((variant) => (
@@ -67,7 +67,7 @@ describe('building aesthetic reference assets', () => {
   });
 
   it('advertises the reviewed historic market landmark as exactly two floors', () => {
-    const option = BUILDING_AESTHETIC_OPTIONS_V2.find(
+    const option = SAVED_BUILDING_AESTHETIC_OPTIONS.find(
       (candidate) => candidate.id === 'food_hall_market_hall',
     );
     const historic = option?.variants?.find((variant) => (
@@ -85,7 +85,7 @@ describe('building aesthetic reference assets', () => {
 
   it('keeps every approved Sticker Method pilot on its catalogue-domain variant image', () => {
     for (const pilot of stickerMethodPilots.buildings) {
-      const option = BUILDING_AESTHETIC_OPTIONS_V2.find(
+      const option = SAVED_BUILDING_AESTHETIC_OPTIONS.find(
         (candidate) => candidate.id === pilot.archetypeId,
       );
       const variant = option?.variants?.find((candidate) => candidate.id === pilot.variantId);
@@ -94,7 +94,7 @@ describe('building aesthetic reference assets', () => {
     }
 
     for (const pilot of stickerMethodPilots.parks) {
-      const option = OPENSPACE_AESTHETIC_OPTIONS_V2.find(
+      const option = SAVED_OPENSPACE_AESTHETIC_OPTIONS.find(
         (candidate) => candidate.id === pilot.archetypeId,
       );
       const variant = option?.variants?.find((candidate) => candidate.id === pilot.variantId);
@@ -110,7 +110,7 @@ describe('Calgary Street Manual reference assets', () => {
     expect(standards).toHaveLength(13);
 
     for (const standard of standards) {
-      const option = ROADWAY_AESTHETIC_OPTIONS_V2.find(
+      const option = SAVED_ROADWAY_AESTHETIC_OPTIONS.find(
         (candidate) => candidate.id === standard.archetypeId,
       );
       expect(option, standard.archetypeId).toBeDefined();
@@ -129,7 +129,7 @@ describe('Calgary Street Manual reference assets', () => {
 
 describe('current street catalogue reference assets', () => {
   it('uses the current CityPrompt variants instead of legacy hero images', () => {
-    const option = ROADWAY_AESTHETIC_OPTIONS_V2.find(
+    const option = SAVED_ROADWAY_AESTHETIC_OPTIONS.find(
       (candidate) => candidate.id === 'narrow_residential_street',
     );
 
@@ -146,7 +146,7 @@ describe('current street catalogue reference assets', () => {
   });
 
   it('exposes only the variants authored for each street archetype', () => {
-    const diagram = ROADWAY_AESTHETIC_OPTIONS_V2.find(
+    const diagram = SAVED_ROADWAY_AESTHETIC_OPTIONS.find(
       (candidate) => candidate.id === 'speed_hump_diagram',
     );
 
