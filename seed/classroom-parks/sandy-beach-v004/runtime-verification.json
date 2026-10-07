@@ -1,0 +1,18 @@
+{
+  "model_sha256": "1c74b53d35dbd80286bd1caff819643f1c84fbf5e752b4ea8be9e955f90eced2",
+  "content_revision": "fccfdcc8f5fc403d9731f3a984fa00d5a7cac879b73ee49a8432ebd3491d9252",
+  "project": "a4760281-05f8-4c8e-bd12-e2be147b0389",
+  "human_visual_approval": false,
+  "production_deployed": false,
+  "screenshots": {
+    "browser-aerial.png": "9514a3b8413fae794685183ad0059b9ea671ce49160d7c464fcdfd8c36eddace",
+    "browser-walk.png": "7eb5916d5f0bb0ff3ad3df5558e5c4ad05bfe266267cf89097725789462afb2e"
+  },
+  "checks": {
+    "frontend": 31,
+    "backend": 45,
+    "staging": 4,
+    "typecheck": "PASS"
+  },
+  "runtime_status": "LOCAL_PREPARED_SITE_PILOT_WITH_LIMITS"
+}

@@ -611,6 +611,18 @@
       "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Sandy Beach & Boardwalk",
+      "archetype_id": "urban_beach",
+      "variant_id": "student_sandy_beach_v1",
+      "version": "sandy-beach-v004",
+      "placement_id": "native-park:student_sandy_beach_v1--native-v1",
+      "sha256": "1c74b53d35dbd80286bd1caff819643f1c84fbf5e752b4ea8be9e955f90eced2",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -2466,6 +2478,38 @@
         "pick_place_definition_version": 1,
         "community_3d_mask_existing_tiles": true,
         "road_standard_citation": "City Prompt original elevated rail station concept"
+      }
+    },
+    {
+      "id": "native-park:student_sandy_beach_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Sandy Beach & Boardwalk",
+      "description": "A sandy freshwater crescent with a lagoon, cedar boardwalk, loungers, striped parasols and two picnic shelters. Includes decorative water; prepared level ground.",
+      "thumbnail": "/native-park-assets/798dd2f3c036e1d143163e01d85e3b816d54cb9a7a06f53f7e318cfd1ef0b6ce.png",
+      "calgaryGuide": {
+        "groupId": "water",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 44.0,
+      "depth": 48.0,
+      "minWidth": 44.0,
+      "minDepth": 48.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_sandy_beach_v1",
+        "revision": "fccfdcc8f5fc403d9731f3a984fa00d5a7cac879b73ee49a8432ebd3491d9252",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "urban_beach",
+        "green_space_selected_variant_id": "student_sandy_beach_v1",
+        "green_space_native_layout_id": "student_sandy_beach_v1--native-v1",
+        "pick_place_automatic_3d": true
       }
     }
   ]

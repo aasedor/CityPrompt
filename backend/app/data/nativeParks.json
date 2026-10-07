@@ -47922,6 +47922,124 @@
         "walk_surface"
       ],
       "contentRevision": "bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83"
+    },
+    {
+      "id": "student_sandy_beach_v1--native-v1",
+      "archetypeId": "urban_beach",
+      "variantId": "student_sandy_beach_v1",
+      "title": "Sandy Beach & Boardwalk",
+      "label": "Original layout",
+      "mode": "native_assembly",
+      "widthM": 44,
+      "depthM": 48,
+      "occupiedWidthM": 44.0,
+      "occupiedDepthM": 48.0,
+      "measuredBoundsM": [
+        [
+          -22.0,
+          -24.0,
+          -0.14100000262260437
+        ],
+        [
+          22.0,
+          24.0,
+          5.473210334777832
+        ]
+      ],
+      "sourceRecipeSha256": "f52f8dbf400c7de836d312aaf505beae174ba20eab35a3f4e5f200bb9890e0a2",
+      "sourceRecipePath": "seed/classroom-parks/sandy-beach-v004/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "1c74b53d35dbd80286bd1caff819643f1c84fbf5e752b4ea8be9e955f90eced2",
+          "archivePath": "seed/classroom-parks/sandy-beach-v004/assembly-preview.glb",
+          "url": "/native-park-assets/1c74b53d35dbd80286bd1caff819643f1c84fbf5e752b4ea8be9e955f90eced2.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "798dd2f3c036e1d143163e01d85e3b816d54cb9a7a06f53f7e318cfd1ef0b6ce",
+        "archivePath": "seed/classroom-parks/sandy-beach-v004/preview.png",
+        "url": "/native-park-assets/798dd2f3c036e1d143163e01d85e3b816d54cb9a7a06f53f7e318cfd1ef0b6ce.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            0,
+            -23.9
+          ],
+          "b": [
+            0,
+            -16.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -18,
+            -16.5
+          ],
+          "b": [
+            18,
+            -16.5
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            -7,
+            -16.5
+          ],
+          "b": [
+            -7,
+            -7.6
+          ],
+          "z": 0
+        },
+        {
+          "a": [
+            7,
+            -16.5
+          ],
+          "b": [
+            7,
+            -7.6
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": 0,
+          "y": -24,
+          "widthM": 3,
+          "arrivalY": -21
+        }
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "not_tested",
+      "contentRevision": "fccfdcc8f5fc403d9731f3a984fa00d5a7cac879b73ee49a8432ebd3491d9252",
+      "walkSurfaceMaterials": [
+        "paving.001",
+        "grass",
+        "sand"
+      ]
     }
   ]
 }

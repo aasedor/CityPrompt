@@ -89,6 +89,8 @@ def register(package, *, specs=None, thumbnail_name='renders/aerial.png'):
                   entrances=[spec['entrance']],
                   surfacePalette={'grass': [.21,.28,.105], 'paving': [.53,.50,.43]},
                   status='pilot', visualStatus='agent_native_visual_review_pass', runtimeStatus='not_tested')
+    if spec.get('walk_surface_materials'):
+        layout['walkSurfaceMaterials'] = spec['walk_surface_materials']
     if 'walking' in recipe:
         walking_report = json.loads((package / 'walking-verification.json').read_text())
         if walking_report.get('status') != 'PASS' or walking_report.get('model_sha256') != asset['sha256']:
