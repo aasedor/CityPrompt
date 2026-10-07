@@ -1689,6 +1689,9 @@ export function GlobeSitePlannerMap({
   const contextPresentationRef = useRef(contextPresentation);
   contextPresentationRef.current = contextPresentation;
   const [placementProblemMessage, setPlacementProblemMessage] = useState<string | null>(null);
+  const placementPreviewDegreesRef = useRef<number | null>(null);
+  const rememberPlacementRotation = useCallback((degrees: number | null) => { placementPreviewDegreesRef.current = degrees; }, []);
+  const getPlacementPreviewDegrees = useCallback(() => placementPreviewDegreesRef.current, []);
   const [streetDrawingProblem, setStreetDrawingProblem] = useState<string | null>(null);
   const streetPreparationProblem = activeSitePlannerTool === 'road'
     ? nativeStreetPreparationProblem({properties: activeToolProperties ?? {}}, getActiveSiteBoundary(allSiteZones)) : null;
@@ -4700,7 +4703,7 @@ export function GlobeSitePlannerMap({
           </group>
 
           <group name="siteforge-direct3d-editor-ui" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-            {placementDraft && !placementDraft.inputError && !interactionPaused && !captureOverlaysHidden && <GlobePlacementPreview draft={placementDraft} zones={allSiteZones} onStatusChange={setPlacementProblemMessage} />}
+            {placementDraft && !placementDraft.inputError && !interactionPaused && !captureOverlaysHidden && <GlobePlacementPreview draft={placementDraft} zones={allSiteZones} onStatusChange={setPlacementProblemMessage} onRotationChange={rememberPlacementRotation} />}
             {/* Drawing preview dots */}
             {activeSitePlannerTool === 'road' && !interactionPaused && !captureOverlaysHidden && (
               <GlobeStreetDrawingPreview points={drawingPoints} pointHeights={drawingPointHeights}
@@ -4889,7 +4892,7 @@ export function GlobeSitePlannerMap({
       {placementDraft && !interactionPaused && <>
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 text-3xl font-light text-white drop-shadow sm:hidden">+</div>
         <div className="absolute bottom-6 left-1/2 z-40 w-80 max-w-[90vw] -translate-x-1/2 rounded-xl bg-white p-3 text-center text-sm text-slate-900 shadow-xl sm:bottom-auto sm:left-auto sm:right-4 sm:top-28 sm:w-72 sm:translate-x-0">
-          {onPlacementDraftChange && <PlacementControls key={placementDraft.assetId} draft={placementDraft} onChange={onPlacementDraftChange} />}
+          {onPlacementDraftChange && <PlacementControls key={placementDraft.assetId} draft={placementDraft} onChange={onPlacementDraftChange} getPreviewDegrees={getPlacementPreviewDegrees} />}
           {!placementDraft.inputError && (placementProblemMessage
             ? <p role="status" className="mt-2 text-xs text-red-700">{placementProblemMessage}</p>
             : <><p className="hidden sm:block">Click a clear space to place.</p><p className="sm:hidden">Move the map to position your object.</p></>)}

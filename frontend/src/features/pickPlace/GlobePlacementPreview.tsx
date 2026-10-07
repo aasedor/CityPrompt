@@ -71,7 +71,7 @@ function GeneratedModelPreview({ model, width, depth }: { model: UserGeneratedBu
 }
 
 /** Local preview state avoids rerendering the full globe on every pointer move. */
-export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: PlacementDraft; zones: SiteZone[]; onStatusChange?: (problem: string | null) => void}) {
+export function GlobePlacementPreview({ draft, zones, onStatusChange, onRotationChange }: {draft: PlacementDraft; zones: SiteZone[]; onStatusChange?: (problem: string | null) => void; onRotationChange?: (degrees: number | null) => void}) {
   const {gl,camera,invalidate}=useThree();
   const tiles=useContext(TilesRendererContext);
   const ground = useSharedSiteGround();
@@ -110,6 +110,8 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
     coordinates:rectangleAt([ORIGIN.lng,ORIGIN.lat],draft.width,draft.depth),
     properties:placementDraftProperties(draft)} as SiteZone),[asset,draft]);
   const degrees = surface && draft.faceStreet ? streetFacingDegrees([surface.lng,surface.lat], zones, draft.degrees) : draft.degrees;
+  useEffect(() => { onRotationChange?.(degrees); }, [degrees, onRotationChange]);
+  useEffect(() => () => onRotationChange?.(null), [onRotationChange]);
   const proposed = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,degrees) : null;
   const snapped = proposed
     ? snapPlacement(proposed,zones,getActiveSiteBoundary(zones),undefined,previewZone.properties,previewZone.zone_type)
