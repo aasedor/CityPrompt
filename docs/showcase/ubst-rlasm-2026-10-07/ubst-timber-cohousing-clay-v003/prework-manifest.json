@@ -1,0 +1,476 @@
+{
+  "candidate": "ubst-timber-cohousing-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "ubst-timber-cohousing",
+  "variant_id": "ubst-timber-cohousing-v0",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 24,
+      "depth": 10,
+      "height": 8.05
+    },
+    "observed_storeys": 2,
+    "source_measurements": [
+      "Front1627pxwide536pxhigh: height7.9m abovegrade at24m frontage.",
+      "Four6m bays; eight1.14x2.38m upperwindows; ground3.23x1.95m windows and1.03x2.74m doors.",
+      "Five canopy posts; canopy top4.1m abovegrade; two sideupperwindows,smalllowerwindow,rearwarddoor."
+    ],
+    "hidden_assumptions": [
+      "Depth10m authored.",
+      "Rear, left side, co-housing garden and internal programme inferred."
+    ]
+  },
+  "roof_contract": {
+    "topology": "Single continuous flat main roof plus attached shallow veranda canopy",
+    "authority": "Three compatible locked views"
+  },
+  "identity_contract": {
+    "owner": "Source-specific physical geometry",
+    "bitmap_stickers": "None in architectural-clay profile"
+  },
+  "material_contract": {
+    "profile": "Source-palette architectural clay",
+    "limitation": "Not a textured keeper"
+  },
+  "programme_contract": {
+    "storeys": 2,
+    "dwellings": 4,
+    "uses": [
+      "Townhouse",
+      "Co-housing"
+    ],
+    "legal_approval": false,
+    "description": "Four independently entered homes with connected upper bedrooms, shared veranda and rear garden."
+  },
+  "contact_contract": [
+    "Ground support",
+    "Through-carrier apertures",
+    "Physically open doors",
+    "Occupied rooms",
+    "Closed roof slabs",
+    "Sloped stairs with through-floor holes"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "resizing": false,
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -40,
+        2.4
+      ],
+      "target": [
+        0,
+        0,
+        2.4
+      ],
+      "lens": 42,
+      "shift_y": 0.08
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        23,
+        -42,
+        2.4
+      ],
+      "target": [
+        0,
+        0,
+        2.4
+      ],
+      "lens": 42,
+      "shift_y": 0.08
+    },
+    {
+      "name": "aerial",
+      "location": [
+        23,
+        -46,
+        27
+      ],
+      "target": [
+        0,
+        0,
+        4
+      ],
+      "lens": 42
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        65.52000000000001
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 33.599999999999994
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -50.400000000000006,
+        0,
+        5.635
+      ],
+      "target": [
+        0,
+        0,
+        3.6225000000000005
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        50.400000000000006,
+        0,
+        5.635
+      ],
+      "target": [
+        0,
+        0,
+        3.6225000000000005
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        50.400000000000006,
+        5.635
+      ],
+      "target": [
+        0,
+        0,
+        3.6225000000000005
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -35.28,
+        40.32000000000001,
+        16.1
+      ],
+      "target": [
+        0,
+        0,
+        3.6225000000000005
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -3,
+        -20,
+        5
+      ],
+      "target": [
+        -3,
+        -5,
+        4.5
+      ],
+      "lens": 52,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -3,
+        -12,
+        2.4
+      ],
+      "target": [
+        -1,
+        -5,
+        2
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -4,
+        -7.7,
+        1.9
+      ],
+      "target": [
+        -4.6,
+        -3,
+        1.5
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        15,
+        -10,
+        13
+      ],
+      "target": [
+        10,
+        -5,
+        7.8
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "side_projection",
+      "location": [
+        22,
+        -5,
+        5
+      ],
+      "target": [
+        12,
+        0,
+        4
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -2.7,
+        -4.5,
+        1.8
+      ],
+      "target": [
+        -4.1,
+        1.5,
+        1.4
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "stairs",
+      "location": [
+        -1.1,
+        2.7,
+        5.8
+      ],
+      "target": [
+        -1.1,
+        -2,
+        1.5
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "upper_landing",
+      "location": [
+        -1.9,
+        3.7,
+        5.8
+      ],
+      "target": [
+        -1.1,
+        -1,
+        4.9
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "bedroom",
+      "location": [
+        -2.9,
+        -3.6,
+        5.8
+      ],
+      "target": [
+        -4.4,
+        -1.8,
+        4.9
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "bathroom",
+      "location": [
+        -2.7,
+        3.0,
+        5.8
+      ],
+      "target": [
+        -4.5,
+        4,
+        4.9
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "rear_entry",
+      "location": [
+        -1.2,
+        10,
+        2.5
+      ],
+      "target": [
+        -1.2,
+        5,
+        1.5
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "veranda",
+      "location": [
+        9,
+        -8.6,
+        2
+      ],
+      "target": [
+        0,
+        -5.8,
+        2
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "shared_garden",
+      "location": [
+        0,
+        15,
+        5
+      ],
+      "target": [
+        0,
+        6.8,
+        1.2
+      ],
+      "lens": 35,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "interior",
+    "stairs",
+    "upper_landing",
+    "bedroom",
+    "bathroom",
+    "rear_entry",
+    "veranda",
+    "shared_garden"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-timber-cohousing\\variant_0.png",
+        "path": "sources/variant_0.png",
+        "bytes": 2739322,
+        "sha256": "fc4d971440925f585255ecead5dbc0e246f9dc1334013a7f6cb66efd6ac14d6c",
+        "dimensions_px": [
+          1774,
+          887
+        ]
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-timber-cohousing\\variant_0_angle_60.png",
+        "path": "sources/variant_0_angle_60.png",
+        "bytes": 2862825,
+        "sha256": "e6ea62e41b8f48ced338ee99f7a9fcf9e80eab421815604266821ce67d64da6e",
+        "dimensions_px": [
+          1774,
+          887
+        ]
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-timber-cohousing\\variant_0_angle_90.png",
+        "path": "sources/variant_0_angle_90.png",
+        "bytes": 3470346,
+        "sha256": "988206cafc6a8d4338b00bcd665260a78f08551f524dd67fc12ed0d7bb794c1a",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      }
+    ],
+    "exact_variant_only": true,
+    "origin": "original_generated_design",
+    "generated_references_explicitly_requested": true,
+    "not_surveyed": true
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/batch_build.py",
+        "sha256": "2ca2204d4a5c7eaa58331e566580159663da9f151ef15bc47c684231be516a25"
+      },
+      {
+        "path": "scripts/family_timber.py",
+        "sha256": "602971469a0a9c014cb62f810505b06fefec613d052edac0efb45b239274c10f"
+      },
+      {
+        "path": "scripts/common.py",
+        "sha256": "0db1dc2abcf2bbd30616f42fa474ae5dcbf9e985899db202886ef51c9c5de47b"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "087956b841e15c473d747ae8735c33c8fdcde5a27df5938acb277d6b934a09b9"
+      },
+      {
+        "path": "scripts/references.py",
+        "sha256": "74277ba115affed986f0902a2cb0abcba3c14ecbb9a928b4f18bdffdcffdecea"
+      },
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "fe900d6f7b7798ce80ef4d3e7387c704bf2e1830fbe48c0e13428aa36fc81889"
+      }
+    ],
+    "blender_version": "5.1.2",
+    "python_version": "3.13.9 (main, Jan 16 2026, 12:29:45) [MSC v.1944 64 bit (AMD64)]",
+    "build_started_utc": "2026-10-07T18:34:24.485314+00:00",
+    "generation_api_calls_during_build": 0,
+    "reference_generation": "built-in image_gen; prompts in source provenance",
+    "render_source": "actual optimized GLB reimport only"
+  }
+}

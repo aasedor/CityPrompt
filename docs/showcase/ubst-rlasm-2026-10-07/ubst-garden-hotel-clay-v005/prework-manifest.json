@@ -1,0 +1,476 @@
+{
+  "candidate": "ubst-garden-hotel-clay-v005",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "ubst-garden-hotel",
+  "variant_id": "ubst-garden-hotel-v0",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 24,
+      "depth": 16,
+      "height": 12.9
+    },
+    "observed_storeys": 3,
+    "source_measurements": [
+      "Front-derived height12.4m abovegrade; occupied terraces4.75m and8.55m abovegrade.",
+      "Groundwidth24m; middle22.4m; top21m. Six framed guest bays per upperfloor, three sidewindowcolumns.",
+      "Upper glazed planes recess behind stone post/head frames; main roof covers top loggia."
+    ],
+    "hidden_assumptions": [
+      "16m depth authored, not surveyed.",
+      "Exact setbacks, rear, room interiors and circulation inferred."
+    ]
+  },
+  "roof_contract": {
+    "topology": "Three stepped stages; two covered loggias; single complete top roof",
+    "authority": "Three locked source photographs"
+  },
+  "identity_contract": {
+    "owner": "Source-specific physical geometry",
+    "bitmap_stickers": "None in architectural-clay profile"
+  },
+  "material_contract": {
+    "profile": "Source-palette architectural clay",
+    "limitation": "Not a textured keeper"
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "front_guestrooms": 12,
+    "uses": [
+      "Hotel",
+      "Café",
+      "Lounge"
+    ],
+    "legal_approval": false,
+    "description": "Active lobby and café, two room levels with covered garden loggias and internal stairs."
+  },
+  "contact_contract": [
+    "Ground support",
+    "Through-carrier apertures",
+    "Physically open doors",
+    "Occupied rooms",
+    "Closed roof slabs",
+    "Sloped stairs with through-floor holes"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "resizing": false,
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -42,
+        2.2
+      ],
+      "target": [
+        0,
+        0,
+        2.2
+      ],
+      "lens": 32,
+      "shift_y": 0.12
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        20,
+        -44,
+        22
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ],
+      "lens": 38
+    },
+    {
+      "name": "aerial",
+      "location": [
+        22,
+        -47,
+        32
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ],
+      "lens": 38
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        65.52000000000001
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 33.599999999999994
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -50.400000000000006,
+        0,
+        8.889999999999999
+      ],
+      "target": [
+        0,
+        0,
+        5.715
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        50.400000000000006,
+        0,
+        8.889999999999999
+      ],
+      "target": [
+        0,
+        0,
+        5.715
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        50.400000000000006,
+        8.889999999999999
+      ],
+      "target": [
+        0,
+        0,
+        5.715
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -35.28,
+        40.32000000000001,
+        25.4
+      ],
+      "target": [
+        0,
+        0,
+        5.715
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        2,
+        -27,
+        8
+      ],
+      "target": [
+        0,
+        -5.3,
+        7
+      ],
+      "lens": 52,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        2,
+        -16,
+        2.5
+      ],
+      "target": [
+        0,
+        -8,
+        2.5
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -9.3,
+        -9.5,
+        2
+      ],
+      "target": [
+        -9.7,
+        -6,
+        1.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        18,
+        -5,
+        19
+      ],
+      "target": [
+        9,
+        -4.3,
+        12.5
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "side_projection",
+      "location": [
+        24,
+        -12,
+        10
+      ],
+      "target": [
+        10.5,
+        0,
+        8
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        0,
+        -6.8,
+        1.8
+      ],
+      "target": [
+        -5,
+        -0.2,
+        1.5
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "stairs",
+      "location": [
+        9,
+        -1.1,
+        1.8
+      ],
+      "target": [
+        9,
+        5,
+        4.4
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "upper_landing",
+      "location": [
+        7.7,
+        7.1,
+        6.5
+      ],
+      "target": [
+        8.5,
+        1.7,
+        5.6
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "upper_stairs",
+      "location": [
+        9,
+        -0.3,
+        6.5
+      ],
+      "target": [
+        9,
+        5,
+        8.4
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "bedroom",
+      "location": [
+        -1.15,
+        -0.8,
+        10.3
+      ],
+      "target": [
+        -2,
+        -2.4,
+        9.5
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "bathroom",
+      "location": [
+        -1.7,
+        5.1,
+        10.3
+      ],
+      "target": [
+        -3.1,
+        6.9,
+        9.5
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "terrace",
+      "location": [
+        7,
+        -6.2,
+        6.5
+      ],
+      "target": [
+        -7,
+        -6.3,
+        5.9
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "top_loggia",
+      "location": [
+        7.5,
+        -4.35,
+        10.3
+      ],
+      "target": [
+        -7,
+        -4.3,
+        9.7
+      ],
+      "lens": 28,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "interior",
+    "stairs",
+    "upper_landing",
+    "upper_stairs",
+    "bedroom",
+    "bathroom",
+    "terrace",
+    "top_loggia"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-garden-hotel\\variant_0.png",
+        "path": "sources/variant_0.png",
+        "bytes": 2874324,
+        "sha256": "842edfbb873db093fc6f378f6df4816c6fb5471cc9c43e0367c39e7ad3a00fec",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-garden-hotel\\variant_0_angle_60.png",
+        "path": "sources/variant_0_angle_60.png",
+        "bytes": 3279018,
+        "sha256": "1f238fe23209f8e7bfd045ce4a96aa6424ae96c60889573e30b472dccd000041",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-garden-hotel\\variant_0_angle_90.png",
+        "path": "sources/variant_0_angle_90.png",
+        "bytes": 3595039,
+        "sha256": "413a2fbf7d2b53cf937ed8187954e268a6810587543c49484c809e2ee532bd55",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      }
+    ],
+    "exact_variant_only": true,
+    "origin": "original_generated_design",
+    "generated_references_explicitly_requested": true,
+    "not_surveyed": true
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/batch_build.py",
+        "sha256": "2ca2204d4a5c7eaa58331e566580159663da9f151ef15bc47c684231be516a25"
+      },
+      {
+        "path": "scripts/family_hotel.py",
+        "sha256": "e46196e5ce010a2a5fb85ab1c3ae11022830778ecd61b84edf482e595b5f035d"
+      },
+      {
+        "path": "scripts/common.py",
+        "sha256": "0db1dc2abcf2bbd30616f42fa474ae5dcbf9e985899db202886ef51c9c5de47b"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "087956b841e15c473d747ae8735c33c8fdcde5a27df5938acb277d6b934a09b9"
+      },
+      {
+        "path": "scripts/references.py",
+        "sha256": "74277ba115affed986f0902a2cb0abcba3c14ecbb9a928b4f18bdffdcffdecea"
+      },
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "fe900d6f7b7798ce80ef4d3e7387c704bf2e1830fbe48c0e13428aa36fc81889"
+      }
+    ],
+    "blender_version": "5.1.2",
+    "python_version": "3.13.9 (main, Jan 16 2026, 12:29:45) [MSC v.1944 64 bit (AMD64)]",
+    "build_started_utc": "2026-10-07T19:06:18.826895+00:00",
+    "generation_api_calls_during_build": 0,
+    "reference_generation": "built-in image_gen; prompts in source provenance",
+    "render_source": "actual optimized GLB reimport only"
+  }
+}

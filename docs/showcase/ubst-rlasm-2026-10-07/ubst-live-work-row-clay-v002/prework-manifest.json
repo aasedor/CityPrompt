@@ -1,0 +1,464 @@
+{
+  "candidate": "ubst-live-work-row-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "ubst-live-work-row",
+  "variant_id": "ubst-live-work-row-v0",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 18,
+      "depth": 10,
+      "height": 11.75
+    },
+    "observed_storeys": 3,
+    "source_measurements": [
+      "3 equal attached 6m bays; 12 upper front windows.",
+      "Front pixels x147-1393, grade y850, eave y204, ridges y47-50, brick datum y588.",
+      "At width18: eave9.33m above grade, ridge11.60m, brick3.78m; placed on .15m plinth."
+    ],
+    "hidden_assumptions": [
+      "18x10m footprint authored, not surveyed.",
+      "Rear, left side and internal layouts inferred.",
+      "High oblique reference is not a nadir orthophoto."
+    ]
+  },
+  "roof_contract": {
+    "ridges": 3,
+    "valleys": 2,
+    "pitch_degrees": 37.1,
+    "authority": "Locked generated pixels"
+  },
+  "identity_contract": {
+    "owner": "Source-specific physical geometry",
+    "bitmap_stickers": "None in clay review stage"
+  },
+  "material_contract": {
+    "profile": "Source-palette architectural clay",
+    "limitation": "Textured keeper finish remains separate"
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "dwellings": 3,
+    "ground_workspaces": 3,
+    "uses": [
+      "Live/work",
+      "Townhouse",
+      "Small studio"
+    ],
+    "legal_approval": false,
+    "description": "Three independently entered homes over workspaces; stair-connected occupied floors."
+  },
+  "contact_contract": [
+    "Grade zero support",
+    "Through-carrier apertures",
+    "Open entrance leaves",
+    "Stacked continuous stairs",
+    "Occupied floors with open stairwells",
+    "Closed gable roof with continuous valley drainage"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "resizing": false,
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -43,
+        5.8
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        30,
+        -39,
+        20
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        28,
+        -32,
+        45
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        55
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 24
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -38,
+        0,
+        8
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        38,
+        0,
+        8
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        40,
+        8
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -30,
+        36,
+        20
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        1,
+        -18,
+        7
+      ],
+      "target": [
+        0,
+        -5,
+        5.9
+      ],
+      "lens": 52,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        4,
+        -10,
+        2.3
+      ],
+      "target": [
+        1.7,
+        -4.8,
+        1.9
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -0.5,
+        -8,
+        1.9
+      ],
+      "target": [
+        -0.8,
+        -3.3,
+        1.6
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        5,
+        -12,
+        15
+      ],
+      "target": [
+        3,
+        -4.7,
+        9.6
+      ],
+      "lens": 52,
+      "whole": false
+    },
+    {
+      "name": "side_projection",
+      "location": [
+        15,
+        -9,
+        6
+      ],
+      "target": [
+        9,
+        -1.6,
+        5
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        0.0,
+        -4.55,
+        1.8
+      ],
+      "target": [
+        -1,
+        1.5,
+        1.4
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "stairs",
+      "location": [
+        1.85,
+        -4.5,
+        1.75
+      ],
+      "target": [
+        1.85,
+        0.8,
+        3.4
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "upper_landing",
+      "location": [
+        1,
+        3.8,
+        5.5
+      ],
+      "target": [
+        1.8,
+        -1,
+        4.5
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "upper_stairs",
+      "location": [
+        1.9,
+        -4.45,
+        5.5
+      ],
+      "target": [
+        1.9,
+        0.8,
+        6.1
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "bedroom",
+      "location": [
+        0.15,
+        -3.9,
+        8.3
+      ],
+      "target": [
+        -1.35,
+        -1.8,
+        7.6
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "rear_entry",
+      "location": [
+        3.8,
+        9,
+        2.4
+      ],
+      "target": [
+        1.75,
+        5,
+        1.5
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "living",
+      "location": [
+        0.05,
+        -3.8,
+        5.5
+      ],
+      "target": [
+        -1.25,
+        0.6,
+        4.65
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "bathroom",
+      "location": [
+        0.35,
+        3.0,
+        8.35
+      ],
+      "target": [
+        -1.5,
+        4.0,
+        7.55
+      ],
+      "lens": 20,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "interior",
+    "stairs",
+    "upper_landing",
+    "upper_stairs",
+    "bedroom",
+    "rear_entry",
+    "living",
+    "bathroom"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-live-work-row\\variant_0.png",
+        "path": "sources/variant_0.png",
+        "bytes": 2809110,
+        "sha256": "acbb9061a5431b79372ee03dbe4bba6474fdf18eae1ca7e3c731461ee42a8393",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-live-work-row\\variant_0_angle_60.png",
+        "path": "sources/variant_0_angle_60.png",
+        "bytes": 3194356,
+        "sha256": "cb964a7063afaadcc0d2cc1a6faea51f1f46a6f989b0e6daf86924e1024f4b4c",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-live-work-row\\variant_0_angle_90.png",
+        "path": "sources/variant_0_angle_90.png",
+        "bytes": 3715344,
+        "sha256": "8cb63892ebc592508142d91454fef70d56d680e8793a5df5eecd9c7eedb000a5",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      }
+    ],
+    "exact_variant_only": true,
+    "origin": "original_generated_design",
+    "generated_references_explicitly_requested": true,
+    "not_surveyed": true
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/build.py",
+        "sha256": "087956b841e15c473d747ae8735c33c8fdcde5a27df5938acb277d6b934a09b9"
+      },
+      {
+        "path": "scripts/references.py",
+        "sha256": "b73e19adb44f3b3916e313e7b289d346b9493cdc5deceb2b5aa184c9379d78a4"
+      },
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "fe900d6f7b7798ce80ef4d3e7387c704bf2e1830fbe48c0e13428aa36fc81889"
+      }
+    ],
+    "blender_version": "5.1.2",
+    "python_version": "3.13.9 (main, Jan 16 2026, 12:29:45) [MSC v.1944 64 bit (AMD64)]",
+    "build_started_utc": "2026-10-07T17:30:43.282712+00:00",
+    "generation_api_calls_during_build": 0,
+    "reference_generation": "built-in image_gen; exact prompts in source provenance",
+    "render_source": "actual optimized GLB reimport only"
+  }
+}

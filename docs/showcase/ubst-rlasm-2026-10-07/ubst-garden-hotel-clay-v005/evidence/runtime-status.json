@@ -1,0 +1,9 @@
+{
+  "status": "NOT_TESTED",
+  "limitations": [
+    "No catalogue activation",
+    "No CityPrompt placement, walking or persistence trial yet",
+    "Fixed native scale only",
+    "Architectural clay, not a textured keeper"
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "schema": "cityprompt.ubst-review-archive@1",
+  "runtime_activation": false,
+  "lifecycle": "architectural_clay_review",
+  "files": [
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/ubst-live-work-row-clay-v002.glb",
+      "sha256": "ff09e636bc6a0146eb030cebf794c8840a71510a68fb6c4be2e4e6eb42ad74fd",
+      "bytes": 2072236
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/prework-manifest.json",
+      "sha256": "50bc27094255916cf3c53799dba55116f9ad791847d838c0c9fbdb9b911d15fe",
+      "bytes": 9682
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/source-entry.json",
+      "sha256": "aa82b55d2cc2d5471777c60df04bdc62eb58a4e1572b68e927b478d16d3408f1",
+      "bytes": 1487
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/build-report.json",
+      "sha256": "e480d6ea34ca82497de0c92c90b53a4d7ef73baffa636b48700e5867db9ad23e",
+      "bytes": 170037
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/review/independent-review.json",
+      "sha256": "eecbf108a6d9555b581361fbee8fac961d614d433dccbff51402a5c0d4b31178",
+      "bytes": 20046
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/evidence/delivery-verification.json",
+      "sha256": "e8577901899cdeaedd69d197247e87d9c94a22a52e388d072d0117c3a59e85ac",
+      "bytes": 1836
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/evidence/offline-route-probes.json",
+      "sha256": "c61e57f16952ef090d4cc0f39d9a9132e0b6072db0a8f61768cd97dcd7cb8730",
+      "bytes": 51133
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/evidence/runtime-status.json",
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56",
+      "bytes": 237
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/boards/phone-source-comparison.png",
+      "sha256": "e10b9f269b9c667eb856043ac85cf7fa6c6b283a29f7013a3375cdc4e0c5a4cf",
+      "bytes": 1555733
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/boards/phone-construction.png",
+      "sha256": "b01bd3ca602d60c797de257125f79f1120bdd7c144b643a36f7bdb245a6a4b80",
+      "bytes": 1030251
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/boards/all-views-contact.png",
+      "sha256": "e4e62dbf28db0a95ea65853f876dbd54c01e64924080769649d06d81301646b6",
+      "bytes": 2855278
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-live-work-row-clay-v002/boards/locked-source-board.png",
+      "sha256": "714dff1a65657808ae2b2f293db1e30c9c6d8128cf3e630dfa3472ddfa9c9469",
+      "bytes": 1376474
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/ubst-student-courtyard-clay-v004.glb",
+      "sha256": "6f17a05f7c0d74ccc0c567ba178395d255bdefb2ac08588a1319b85c72ebb2c5",
+      "bytes": 1780968
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/prework-manifest.json",
+      "sha256": "b6cda6776d915344fa0e739b80dee7a13739c8b279a1af0dc73c1fbbc7556ce4",
+      "bytes": 10203
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/source-entry.json",
+      "sha256": "fa73012fb0441dd40732f81f6dafcef57bfa41c50667d8c9d0f564b64e8d461f",
+      "bytes": 1507
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/build-report.json",
+      "sha256": "6d715e143bb5e7423d63c03a2a6fc4dd92623fb45115ecdd2df3e4032aae54b6",
+      "bytes": 215273
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/review/independent-review.json",
+      "sha256": "484d536f9aea48fc82b3b6c62a3e6f8fe01c21e9291a7054ba831c3341b5b2d2",
+      "bytes": 13671
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/evidence/delivery-verification.json",
+      "sha256": "c18e5f97fa425022f31638db41559a0cb25df9fcb913f873aba79dc505a3cfe7",
+      "bytes": 1969
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/evidence/offline-route-probes.json",
+      "sha256": "29bb948b47943c3caeb6fd55b5d308ab67b572f12140b61083a353b31c438465",
+      "bytes": 15473
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/evidence/runtime-status.json",
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56",
+      "bytes": 237
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/boards/phone-source-comparison.png",
+      "sha256": "6f62955c98721b0615b7bb50e4e83d43892c0b1e48ebf59ce4ae966951d23448",
+      "bytes": 1528930
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/boards/phone-construction.png",
+      "sha256": "a63f694796f527d56d9b2b80e37bb3d3d389ed2ab4572ade30003113e29de9c3",
+      "bytes": 964836
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/boards/all-views-contact.png",
+      "sha256": "5b76af5e516cc1f36e8f0b26264fdcc0d4adb584cbfda2c2a730be998d14f3ee",
+      "bytes": 2749037
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-student-courtyard-clay-v004/boards/locked-source-board.png",
+      "sha256": "c62965a114ecc0ed18b290ce8df1f5236cfe23dfac67cb278eda341958b471f8",
+      "bytes": 1385280
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/ubst-timber-cohousing-clay-v003.glb",
+      "sha256": "3ba2e0b773799dc7340bfdeb8ff471c3b54293566e86f75a25c0ecedd36efd67",
+      "bytes": 1754572
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/prework-manifest.json",
+      "sha256": "27fa3c3c93aadcc9ef01bb7a8107dd93550331114d861046d2bd0d6fbe51fa2a",
+      "bytes": 10315
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/source-entry.json",
+      "sha256": "d7dbf22f461834d529f78b197ad85c7941467915b949fbac85f2222197614895",
+      "bytes": 1500
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/build-report.json",
+      "sha256": "aa3c2876d6b6e038f3c5434182559e85dc484ffdbad1725e6744edc47358912e",
+      "bytes": 134216
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/review/independent-review.json",
+      "sha256": "21181f0c561970a5a2c29a020fee4d491696ce629260aec2b2bd7df568d289f1",
+      "bytes": 13818
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/evidence/delivery-verification.json",
+      "sha256": "fee70c7c16b6eafb984a2d9f29703afa3c6d04f4bbe1b735c79014fdc4c26b8c",
+      "bytes": 1967
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/evidence/offline-route-probes.json",
+      "sha256": "86f6b25658a524cb54aa9c1173ffa7be13092ba62f9657da0e47681c41a8c8e4",
+      "bytes": 34683
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/evidence/runtime-status.json",
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56",
+      "bytes": 237
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/boards/phone-source-comparison.png",
+      "sha256": "42d9e7362eed77f56c6941bd1c73d2815c4801755a425eda362168a166dcf2ee",
+      "bytes": 1288615
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/boards/phone-construction.png",
+      "sha256": "c9e24260f61c7ffcdef8a665cbab5667457cf30eb9fb74a3a2cb9ea4696c95a7",
+      "bytes": 1132583
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/boards/all-views-contact.png",
+      "sha256": "6dce66800da04d93e5b72253d08eb8a440de5c7cacdd7158e723f120eaa878b8",
+      "bytes": 2741172
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-timber-cohousing-clay-v003/boards/locked-source-board.png",
+      "sha256": "6c0bdc642acc568fd9495a6c4ccbfd1f59e2b8d66d9b2ae9d43ea91ea0a62f86",
+      "bytes": 1112455
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/ubst-garden-hotel-clay-v005.glb",
+      "sha256": "83328f45d7ab962f829ab0e68792b7bafc2e2c59ff204c098599c519b9466d8f",
+      "bytes": 1911024
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/prework-manifest.json",
+      "sha256": "9e5c348fa76ad61bd86f0690848dfc43bd7e1f27b13ee3133b2cd78fcb0ed761",
+      "bytes": 10290
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/source-entry.json",
+      "sha256": "8141c28e23608cec7bc335c8dcb93019ae1f180609b103a7b79172ec53c3fa65",
+      "bytes": 1482
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/build-report.json",
+      "sha256": "9c623bfb1964040eb93bc05101b5b271c5fead95dbaf67167f49dbccbda1f7dc",
+      "bytes": 152113
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/review/independent-review.json",
+      "sha256": "50ba05021be8419f70a0c61b0a4f8727f67bc96886afdc9195fe529d49b35457",
+      "bytes": 15891
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/evidence/delivery-verification.json",
+      "sha256": "36a6b07aec0ef71069df6920a82b496d37e7dfd3fa1ea7d44dde50c6f9bde359",
+      "bytes": 1965
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/evidence/offline-route-probes.json",
+      "sha256": "4aa68eea8c0dc33e3e77fe9b3a4a2049e305998283cafd33ed95c274d1a08df5",
+      "bytes": 16818
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/evidence/runtime-status.json",
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56",
+      "bytes": 237
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/boards/phone-source-comparison.png",
+      "sha256": "1d1ef33a79aa390167ba1df4e4bef4f5bda18d9876adc1520adbcdc2b497d282",
+      "bytes": 1544607
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/boards/phone-construction.png",
+      "sha256": "d1f8bb5ce63d5200127a0eb128c375c4d600191ed3d561b1e7904420190ed417",
+      "bytes": 938903
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/boards/all-views-contact.png",
+      "sha256": "0d97fd3b8c0872a7548fe98101ce3a6ea12a07dc57866f0e96716cb305e434f5",
+      "bytes": 2594467
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/ubst-garden-hotel-clay-v005/boards/locked-source-board.png",
+      "sha256": "b3c9e5ad573b11e3cf03c995eb8449970dfb7cfb6a17964c44fbf9843866c770",
+      "bytes": 1395069
+    },
+    {
+      "path": "docs/showcase/ubst-rlasm-2026-10-07/round-overview.png",
+      "sha256": "a13a3b077ac63cd665b1d4b22842c7cd191ba0910bff1b93ba6c21ecc41248a3",
+      "bytes": 2025422
+    }
+  ]
+}
