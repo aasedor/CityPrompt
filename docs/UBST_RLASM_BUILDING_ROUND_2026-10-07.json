@@ -1,0 +1,145 @@
+{
+  "schema": "cityprompt.ubst_rlasm_round@1",
+  "date": "2026-10-07",
+  "method": "RLASM v6.1",
+  "branch": "codex/ubst-rlasm-building-pilot-2026-10-07",
+  "artifact_root": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07",
+  "source_checkpoint_excludes_external_artifacts": true,
+  "overview": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\round-overview.png",
+  "candidates": [
+    {
+      "name": "Live/Work Townhouse Row",
+      "candidate": "ubst-live-work-row-clay-v002",
+      "artifact_directory": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\live-work-v002",
+      "lifecycle": "independent_architectural_clay_visual_pass",
+      "model": {
+        "path": "ubst-live-work-row-clay-v002.glb",
+        "bytes": 2072236,
+        "sha256": "ff09e636bc6a0146eb030cebf794c8840a71510a68fb6c4be2e4e6eb42ad74fd",
+        "meshes": 12,
+        "materials": 12,
+        "textures": 0,
+        "images": 0,
+        "mesh_objects": 12,
+        "vertices": 26516,
+        "polygons": 41304,
+        "triangles": 41304
+      },
+      "review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\live-work-v002\\review\\independent-review.json",
+        "sha256": "eecbf108a6d9555b581361fbee8fac961d614d433dccbff51402a5c0d4b31178"
+      },
+      "unresolved_P0": 0,
+      "unresolved_P1": 0,
+      "offline_route_samples": 171,
+      "runtime_tested": false,
+      "textured_keeper": false
+    },
+    {
+      "name": "Student Courtyard Residence",
+      "candidate": "ubst-student-courtyard-clay-v004",
+      "artifact_directory": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\student-v004",
+      "lifecycle": "independent_architectural_clay_visual_pass",
+      "model": {
+        "path": "ubst-student-courtyard-clay-v004.glb",
+        "bytes": 1780968,
+        "sha256": "6f17a05f7c0d74ccc0c567ba178395d255bdefb2ac08588a1319b85c72ebb2c5",
+        "meshes": 12,
+        "materials": 12,
+        "textures": 0,
+        "images": 0,
+        "mesh_objects": 12,
+        "vertices": 21779,
+        "polygons": 34826,
+        "triangles": 34826
+      },
+      "review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\student-v004\\review\\independent-review.json",
+        "sha256": "484d536f9aea48fc82b3b6c62a3e6f8fe01c21e9291a7054ba831c3341b5b2d2"
+      },
+      "unresolved_P0": 0,
+      "unresolved_P1": 0,
+      "offline_route_samples": 52,
+      "runtime_tested": false,
+      "textured_keeper": false
+    },
+    {
+      "name": "Timber Co-housing Terrace",
+      "candidate": "ubst-timber-cohousing-clay-v003",
+      "artifact_directory": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\timber-v003",
+      "lifecycle": "independent_architectural_clay_visual_pass",
+      "model": {
+        "path": "ubst-timber-cohousing-clay-v003.glb",
+        "bytes": 1754572,
+        "sha256": "3ba2e0b773799dc7340bfdeb8ff471c3b54293566e86f75a25c0ecedd36efd67",
+        "meshes": 12,
+        "materials": 12,
+        "textures": 0,
+        "images": 0,
+        "mesh_objects": 12,
+        "vertices": 21996,
+        "polygons": 34360,
+        "triangles": 34360
+      },
+      "review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\timber-v003\\review\\independent-review.json",
+        "sha256": "21181f0c561970a5a2c29a020fee4d491696ce629260aec2b2bd7df568d289f1"
+      },
+      "unresolved_P0": 0,
+      "unresolved_P1": 0,
+      "offline_route_samples": 116,
+      "runtime_tested": false,
+      "textured_keeper": false
+    },
+    {
+      "name": "Garden Hotel",
+      "candidate": "ubst-garden-hotel-clay-v005",
+      "artifact_directory": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\hotel-v005",
+      "lifecycle": "independent_architectural_clay_visual_pass",
+      "model": {
+        "path": "ubst-garden-hotel-clay-v005.glb",
+        "bytes": 1911024,
+        "sha256": "83328f45d7ab962f829ab0e68792b7bafc2e2c59ff204c098599c519b9466d8f",
+        "meshes": 11,
+        "materials": 11,
+        "textures": 0,
+        "images": 0,
+        "mesh_objects": 11,
+        "vertices": 23047,
+        "polygons": 36846,
+        "triangles": 36846
+      },
+      "review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\hotel-v005\\review\\independent-review.json",
+        "sha256": "50ba05021be8419f70a0c61b0a4f8727f67bc96886afdc9195fe529d49b35457"
+      },
+      "unresolved_P0": 0,
+      "unresolved_P1": 0,
+      "offline_route_samples": 57,
+      "runtime_tested": false,
+      "textured_keeper": false
+    },
+    {
+      "name": "Neighbourhood Courtyard Block",
+      "lifecycle": "source_blocked",
+      "artifact_directory": "C:\\dev-artifacts\\CityPrompt\\ubst-rlasm-buildings-2026-10-07\\courtyard-source-blocked",
+      "reason": "Four bounded top-view attempts disagree with front/oblique references about floor count or courtyard grade.",
+      "generated_model": false
+    }
+  ],
+  "checks": {
+    "reference_tests_passed": 4,
+    "python_compile": true,
+    "full_resolution_model_views": 84,
+    "comparison_boards": 16,
+    "offline_route_samples": 396
+  },
+  "remaining": [
+    "Source-conditioned materials and landscape polish",
+    "Complete independent textured visual review",
+    "CityPrompt placement, walking, save/reload and performance trial",
+    "Resolve courtyard-block reference contradictions"
+  ],
+  "catalogue_activated": false,
+  "pushed": false
+}

@@ -1,0 +1,52 @@
+{
+  "slug": "ubst-student-courtyard",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-90a6692e-fbfa-4b2e-a37f-895d27d0d41d.png",
+      "prompt": "Photoreal architectural street photograph of an original modest Calgary STUDENT COURTYARD RESIDENCE. EXACTLY THREE occupied floors, all same3.2m height, flat roofs and low parapets. U-shaped plan30m wide x24m deep: two7m-wide side wings extending towards the street, joined by a7m-deep rear wing; a16m-wide x17m-deep planted courtyard is OPEN at the front with no front building connecting the wings. Camera from street nearly straight on, slightly elevated to see open courtyard and whole rear connecting wing, full building with margins. Warm muted red brick side wings, pale sage-green panel accents, charcoal windows. Each of the two forward wing end facades has EXACTLY TWO window columns and THREE rows (one row per storey). Inner long courtyard walls have five window columns and three rows. Rear wing at back of court has a central glazed common-room entry at ground floor, shared study lounge windows beside it, and four evenly spaced window columns on each of two upper floors. Main entry through courtyard. Small tree, seating ledges, bike racks, short paved path and useful planted gathering space; modest well designed university housing, no towers, no balconies, no gables. Beautiful realistic brick, occupied interiors, subtle material weathering, bright overcast, precise coherent building geometry. No words, logos, diagrams or cutaways.",
+      "input_paths": [],
+      "sha256": "85389303bbb993ef809d8cdf76bdc4161c7de696bfd26f3409a10b482f8f4686",
+      "bytes": 2977231,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-89240991-bfc3-4060-8297-8e6ee96f6222.png",
+      "prompt": "Show the EXACT three-storey student residence from the attached image from an elevated FRONT RIGHT oblique architectural photography view, complete building all sides and roof with margin. Preserve U-shaped plan, TWO side wings pointing toward street, one rear connecting wing, open courtyard with no front connecting building. All wings exactly THREE occupied floors under flat roofs. Red-brown brick, paired vertical windows and pale sage panels between floors. Each forward end has two window columns and three rows. Right OUTSIDE long elevation has six evenly spaced window columns and three rows. Courtyard-facing side walls have five columns and three rows; rear common-room wall has four upper columns, two upper rows over glazed ground lounge and entry. No extra floors, no roof terrace, no balconies. The garden is at STREET GROUND LEVEL, connected directly from pavement to the common-room doorway. Same exact proportions, planted courtyard and material finish. Bright overcast, photoreal detail, no words or diagrams.",
+      "input_paths": [
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-90a6692e-fbfa-4b2e-a37f-895d27d0d41d.png"
+      ],
+      "sha256": "2d845bcef2d4c967365848bec75a04305fe5202e7f561e3a279605fb6d56e120",
+      "bytes": 3426660,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-f157f537-fdd0-4078-b7ea-7527534105c3.png",
+      "prompt": "Create a high elevated front-right aerial architectural photograph of this EXACT three-storey U-shaped student residence. Both supplied pictures depict the same design. Preserve three floors on all exterior AND courtyard walls, two parallel side wings and a rear connecting wing, open street-facing courtyard with no front wing. The garden is at street ground level. Reveal the complete U-shaped flat roof, courtyard paving and small plants, and the connected rear wing. Keep the paired windows, warm red-brown brick and muted pale sage vertical panels. Each front wing end has two window columns and three rows. No extra floors, no podium, no raised courtyard, no roof garden. Full building framed with clear margin, neutral bright overcast realism. No labels, text or diagrams.",
+      "input_paths": [
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-90a6692e-fbfa-4b2e-a37f-895d27d0d41d.png",
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-89240991-bfc3-4060-8297-8e6ee96f6222.png"
+      ],
+      "sha256": "4fc8e0a44e817dc6a6d74614caece4a2fcbe1dcf8f105da91c66b1036c188d56",
+      "bytes": 3503201,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "origin": "original_generated_design",
+  "generation_tool": "built-in image_gen",
+  "date": "2026-10-07"
+}

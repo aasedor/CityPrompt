@@ -1,0 +1,52 @@
+{
+  "slug": "ubst-garden-hotel",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-69e077d7-a196-4713-ab2b-0755313500da.png",
+      "prompt": "Photoreal street-level architectural photograph of an original intimate three-storey garden hotel in Calgary, complete front elevation nearly straight-on with whole building and margin. Width24 metres, depth16metres, groundfloor4metres tall, two upperfloors3.2metres each. Front upper floors step back exactly2metres per floor, creating TWO long planted front terraces, one at each upper floor. Rear wall stays vertically aligned. Pale warm limestone facade, slim bronze-dark window frames, generous continuous full-height glazing. SIX evenly spaced hotel room glazing bays per upper floor, each bay a large window and narrow glazed terrace door. Groundfront six bays: central two bays form welcoming glazed lobby with wide entrance, outer four bays restaurant/library windows. Low masonry planters and fine dark vertical guardrails run along both terrace edges, green grasses and small shrubs. Warm wood soffits, complete flat roof parapets. No tower, no pitched roofs, no side wings. Small caf\u00c3\u00a9 tables at ground left, entry canopy between ground and first floor, a couple guests at entrance. Elegant restrained modern architecture with rich believable materials, overcast daylight, no signs, letters or collage.",
+      "input_paths": [],
+      "sha256": "842edfbb873db093fc6f378f6df4816c6fb5471cc9c43e0367c39e7ad3a00fec",
+      "bytes": 2874324,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-254c2c12-ce43-416e-84a1-9bd346f2dd5b.png",
+      "prompt": "Photograph the EXACT three-storey garden hotel from the supplied image from an elevated FRONT RIGHT oblique viewpoint, showing whole building including roof with margins. Same six room bays per upper floor, central ground lobby and flanking restaurant windows, pale warm stone frames, bronze dark glazing, wood soffits and TWO planted recessed terrace strips with thin dark vertical railings. Each higher floor steps back 2metres from front, rear wall is aligned. Ground footprint24wide16deep; floor heights should match input photograph's proportions exactly. Side of hotel continues stone/window grammar with three tall windows per floor. Preserve substantial stone fascia beams framing terraces, all terraces' floor slabs, planters seated on actual floors and columns at room divisions. A single flat roof with parapet over top floor. No additional storeys or roof terrace. Photoreal image in same overcast lighting, no words or diagrams.",
+      "input_paths": [
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-69e077d7-a196-4713-ab2b-0755313500da.png"
+      ],
+      "sha256": "1f238fe23209f8e7bfd045ce4a96aa6424ae96c60889573e30b472dccd000041",
+      "bytes": 3279018,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-f624fb4a-18b6-4429-9944-66455ef7c19d.png",
+      "prompt": "High front-right aerial photograph of the EXACT three-storey garden hotel in the two supplied photographs. Keep the same six upper room glazing bays on each of two planted front terrace levels, central ground lobby, pale stone deep fascia beams and columns, bronze glazing, wood soffits. Three occupied storeys total, two stepped front terraces, each front facade moves inward 2m per upper level. Reveal the whole rectangular flat membrane roof and side elevations; three tall side windows per level, same proportions. No roof garden or extra floors, no new wing. Small service caps may sit on the flat roof. All terrace planters and fine dark railings seated on continuous floor edges, realistic vegetation. Entire building framed with ample margins and same materials and light. No text, no diagram, no change to building.",
+      "input_paths": [
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-69e077d7-a196-4713-ab2b-0755313500da.png",
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-254c2c12-ce43-416e-84a1-9bd346f2dd5b.png"
+      ],
+      "sha256": "413a2fbf7d2b53cf937ed8187954e268a6810587543c49484c809e2ee532bd55",
+      "bytes": 3595039,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "origin": "original_generated_design",
+  "generation_tool": "built-in image_gen",
+  "date": "2026-10-07"
+}

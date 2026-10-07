@@ -1,0 +1,50 @@
+{
+  "origin": "original_generated_design",
+  "provider": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-d54b0616-354d-47ea-a0fc-17390e6c5ab8.png",
+      "prompt": "Create a photorealistic architectural catalogue reference image of an original Calgary live/work townhouse row. One single building comprising EXACTLY THREE equal attached bays in a straight row, each 6 metres wide, total 18 metres wide and 10 metres deep. EXACTLY THREE occupied storeys: 3.6m tall ground-floor studio/shop and TWO residential storeys above at 3m each. Each bay has its own simple symmetrical gable roof with ridge running front-to-back, dark standing seam zinc; three separate parallel gables across the front. Warm buff brick ground floor, upper floors in warm cedar vertical boards, charcoal metal window frames. Each gable front has two large rectangular windows on EACH residential floor, vertically aligned, no attic window. EACH ground bay has a wide glazed shopfront at left and a separate narrower glazed residential entrance at right. Deep real window reveals, restrained beautiful joinery, no balconies, no upper storey setbacks, no unsupported canopy. Front faces a narrow planted pedestrian pavement with a small cafe table beside one studio, not blocking entrances. Contemporary modest but exceptionally beautiful attainable urban architecture, precise buildable details. View is an almost straight-on front street architectural photograph, level horizon, 50mm lens from across the street, full building base and all three gables with ample margin. Bright overcast daylight, realistic subtle textures and interiors through windows, no text/logos/watermarks, no other foreground buildings, no cropped roofs. The clear exact three-storey three-gable topology is essential.",
+      "input_roles": [],
+      "sha256": "acbb9061a5431b79372ee03dbe4bba6474fdf18eae1ca7e3c731461ee42a8393",
+      "bytes": 2809110,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-7cd6781e-a2bb-41b3-8c62-fea5ecd2571d.png",
+      "prompt": "Make a second architectural reference photograph of the EXACT SAME three-bay live/work townhouse building in the supplied reference, now from the FRONT RIGHT CORNER at an elevated 45-degree oblique view so the entire right side and front and three parallel gabled roofs are clearly visible. Preserve all front windows, exact THREE occupied storeys (ground shop plus two residential), EXACTLY THREE adjacent front gables, buff brick shop floor and cedar upper walls, flat rectangular windows with black frames, front doors and all proportions. No redesign. The building is 18m wide, 10m deep; each of the three equal attached bays is 6m wide. Each ridge runs 10m from front to rear. Right side elevation is a simple straight wall with TWO evenly spaced windows per residential floor and a rear ground service door, same materials. Sidewall eave must remain above top-floor windows. No extra floors, no roof dormers, no fourth gable, no balconies or extra wings. Simple rear gardens, suburban Calgary surroundings recede. Full building footprint and highest roof in frame with neutral margins. Photoreal restrained warm contemporary architecture, bright overcast neutral light, realistic materials, high detail, no text, no collage.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "cb964a7063afaadcc0d2cc1a6faea51f1f46a6f989b0e6daf86924e1024f4b4c",
+      "bytes": 3194356,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-c1eafe59-77cf-4aba-92da-4e4b64e1108d.png",
+      "prompt": "Create a high overhead architectural reference photograph of the EXACT same three-gable live/work row shown in BOTH supplied images. Camera from high above the FRONT RIGHT, elevation 75 degrees, nearly top-down, showing the complete rectangular roof footprint and a little front and right facade. Exact invariant topology: one 18m wide by 10m deep rectangular row, THREE equal 6m wide attached bays, THREE parallel simple pitched gabled roofs with ridges running front-to-back, shared straight recessed valley gutters BETWEEN the roofs; front gables face the street at bottom of image. Roof dark standing-seam zinc, no attic dormers, no skylights, no chimneys, no extra wings or roof levels. Ground is buff brick, TWO upper residential floors clad cedar: exactly THREE occupied floors. Front window and door layout unchanged from references. At rear show three small individual garden patios with low separators, not additional buildings. Side reference door near front, four side windows in two rows. Full footprint with generous margin, bright neutral daylight, clear construction, realistic photograph, no labels, no text, no collage, no redesign.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "8cb63892ebc592508142d91454fef70d56d680e8793a5df5eecd9c7eedb000a5",
+      "bytes": 3715344,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ]
+}
