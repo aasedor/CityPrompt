@@ -1,0 +1,3051 @@
+{
+  "schema": "cityprompt.model-publication-audit@1",
+  "date": "2026-10-07",
+  "source_commit": "dfa104ec2b254c4775ec6ce99494238f2b28d870",
+  "scope": "Read-only evidence audit of 19 selected local_trial_only entries; audit artifacts only. No new runtime tests or visual approvals.",
+  "authorization_scope": "Latest request authorizes resolving/testing release blockers; it is not a new human visual/keeper/publication approval.",
+  "library_path": "seed/model-library/rlasm-architectural-clay/library.json",
+  "library_sha256": "9f05685b28b4677b5d24fb64b4930438fdd9155bdd73a20f0518f695e7e4a3d8",
+  "promotion_contract": {
+    "source": "tools/catalogue_promotion.py",
+    "required_checks": [
+      "catalogue_card",
+      "exact_variant",
+      "ground_contact",
+      "small_and_large_plot",
+      "rotation",
+      "save_reload",
+      "close_and_occluded_capture",
+      "no_console_errors"
+    ],
+    "required_trial_fields": [
+      "model_sha256",
+      "project_url",
+      "tested_by",
+      "tested_at",
+      "evidence"
+    ],
+    "separate_activation_fields": [
+      "authorized_by=human_user",
+      "quote",
+      "date",
+      "model_sha256"
+    ],
+    "note": "A boolean validator is not a specification of exhaustive terrain, walking, performance or accessibility certification. The next-test matrix below is a concrete proposed bounded interpretation of its eight names; do not expand historical evidence scopes."
+  },
+  "status_definitions": {
+    "supported_historical": "Inspected exact-candidate evidence supports this bounded past check; reconciliation possible without a new live test. Not a fresh deployment pass.",
+    "partial": "Some relevant evidence exists, but the required check is incomplete or scope ambiguous.",
+    "not_tested": "No sufficient live check found in inspected evidence. This is not a claim that no evidence exists anywhere."
+  },
+  "minimum_test_matrix": {
+    "catalogue_card": "Search the exact candidate in the normal catalogue; verify label, photographic reference hero and successful selection. Save a screenshot and selected identity.",
+    "exact_variant": "Place it once; record candidate/variant, mounted revision and downloaded GLB SHA-256 against this audit. Compare visible silhouette with the locked reference and retain mounted native scale.",
+    "ground_contact": "On a disposable prepared-level site, inspect the complete envelope at low and oblique views, including projecting steps/porches; retain ground-support diagnostics and screenshots. This establishes prepared-site scope only.",
+    "small_and_large_plot": "On a vacant site large enough for the candidate, place at picker minimum width/depth and enlarge to the supported maximum. Verify complete unchanged native geometry and identity at both sizes. Record dimensions, scale and screenshots; also record clean rejection below the supported minimum without replacing the saved model.",
+    "rotation": "Rotate the selected native model by 15 degrees through ordinary controls; verify model and plot rotate together with unchanged scale and supported ground contact. Record before/after and persisted rotation.",
+    "save_reload": "Save after the size and rotation edits; cold-reload/reopen the project and compare candidate, exact revision, transform and footprint. Record the saved binding and mounted model SHA.",
+    "close_and_occluded_capture": "Create a free exact 3D capture of the model close up and a second with partial foreground occlusion. Complete both downloads, open the files, and compare framing, visible model identity and silhouette with their same-camera scene views. Record paths/hashes and screenshot evidence; preview alone is insufficient.",
+    "no_console_errors": "Capture browser console and failed application requests across selection, placement, both size cases, rotation, save/reload and captures; explain unrelated environmental messages and retain zero unexplained application errors."
+  },
+  "execution_plan": [
+    "Reconcile only supported historical checks with exact SHA, project, date, tester and evidence. Preserve superseded failures with explicit links.",
+    "Run one browser session per candidate in a disposable prepared-level site sized for its maximum plot. Cover all remaining checks; reuse placement across minimum/maximum, rotation, reload and capture steps.",
+    "Retain mounted/downloaded model SHA, saved binding and evidence file hashes. Console collection spans the complete session. No paid image generation is needed.",
+    "Stop after the bounded 19-candidate matrix. Re-evaluate remaining failures without marking unrun checks passed. Human activation remains separate."
+  ],
+  "broader_gates_not_independent_promotion_booleans": [
+    "Natural/sloped/exposed-edge terrain beyond claimed prepared-site support",
+    "Complete walking routes, all entrances, upper floors and street-to-door continuity (still relevant to the user walking requirement)",
+    "Accessibility design, touch input and multi-entrance recovery",
+    "Adverse-network/concurrent-save recovery",
+    "Dense scenes and low-end performance",
+    "Fresh empty DB/bucket install (separate hosted-release workstream)",
+    "Human visual/keeper approval and publication authorization (separate activation requirement)"
+  ],
+  "evidence_index": {
+    "W": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+    "L": "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json",
+    "R": "C:/dev-artifacts/CityPrompt/building-runtime-retest-2026-09-27/retest-report.md",
+    "N": "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+    "NM": "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+    "S": "docs/STATION_INTERIOR_PILOT_2026-10-01.json",
+    "I": "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json",
+    "C": "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+    "API": "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json",
+    "SHOW": "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md",
+    "AUT": "docs/AUTUMN_BUILDING_TRIO_2026-09-30.md",
+    "NC": "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+  },
+  "entries": [
+    {
+      "candidate": "calgary-side-by-side-duplex-clay-v004",
+      "label": "Side-by-side duplex",
+      "variant_id": "infill_duplex",
+      "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "model_bytes": 3110128,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/calgary-side-by-side-duplex-clay-v004.json",
+        "sha256": "529c7634a7173473532418be47a163c4c081264856f598f57ee56684b73649e1",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {
+          "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+          "project_url": "http://127.0.0.1:5174/projects/0f3f2efd-ea57-400c-a754-6778939adc8e",
+          "tested_by": "Codex local runtime trial",
+          "tested_at": "2026-09-24",
+          "evidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+          "checks": {
+            "catalogue_card": true,
+            "exact_variant": true,
+            "ground_contact": true,
+            "small_and_large_plot": false,
+            "rotation": true,
+            "save_reload": true,
+            "close_and_occluded_capture": false,
+            "no_console_errors": true
+          },
+          "scope": "Prepared-ground local trial. Plot enlargement tested, not full size extremes. See runtime review for open gates."
+        }
+      },
+      "minimum_plot_m": {
+        "width": 17,
+        "depth": 25
+      },
+      "maximum_plot_dimension_m": 100,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Plot enlargement checked; supported size extremes and insufficient-fit case remain open.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "partial",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Scene export/close-view evidence exists, but complete close plus occluded capture delivery for this exact model is not established.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\duplex-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        }
+      },
+      "supersession": [
+        {
+          "stale_evidence": "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json",
+          "fields": [
+            "isolated_browser_checks.identity",
+            "isolated_browser_checks.reopen"
+          ],
+          "old_status": "FAIL",
+          "superseding_evidence": "C:/dev-artifacts/CityPrompt/building-runtime-retest-2026-09-27/retest-report.md",
+          "new_scoped_result": "PASS: exact Side-by-side duplex editor identity persisted after full project reload. Textual CUA observations only; no saved new close screenshot."
+        }
+      ],
+      "additional_gaps": [
+        "Full secondary-entrance/upper-floor traversal",
+        "External street-to-door continuity",
+        "Same-camera release visual review"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.6000000000000014,
+        "outward_distance_m": 1.5999999999999899,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": false
+      },
+      "required_next_checks": [
+        "small_and_large_plot",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "montreal-plateau-duplex-clay-v004",
+      "label": "Plateau stacked duplex",
+      "variant_id": "montreal_duplex_plateau",
+      "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "model_bytes": 2148056,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/montreal-plateau-duplex-clay-v004.json",
+        "sha256": "722075ca8076a2c3bd75641e3db42b7db5549da96fe1676c0719e0efbb357aa7",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {
+          "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+          "project_url": "http://127.0.0.1:5174/projects/0f3f2efd-ea57-400c-a754-6778939adc8e",
+          "tested_by": "Codex local runtime trial",
+          "tested_at": "2026-09-24",
+          "evidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+          "checks": {
+            "catalogue_card": true,
+            "exact_variant": true,
+            "ground_contact": true,
+            "small_and_large_plot": false,
+            "rotation": true,
+            "save_reload": true,
+            "close_and_occluded_capture": false,
+            "no_console_errors": true
+          },
+          "scope": "Prepared-ground local trial. Plot enlargement tested, not full size extremes. See runtime review for open gates."
+        }
+      },
+      "minimum_plot_m": {
+        "width": 16,
+        "depth": 23
+      },
+      "maximum_plot_dimension_m": 100,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Plot enlargement checked; supported size extremes and insufficient-fit case remain open.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "partial",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Scene export/close-view evidence exists, but complete close plus occluded capture delivery for this exact model is not established.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\montreal-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Full secondary-entrance/upper-floor traversal",
+        "External street-to-door continuity",
+        "Same-camera release visual review"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.6000000000000014,
+        "outward_distance_m": 1.6000000000000014,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": false
+      },
+      "required_next_checks": [
+        "small_and_large_plot",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "courtyard-brick-modern-clay-v004",
+      "label": "Brick courtyard entrance building",
+      "variant_id": "courtyard_family_brick_modern",
+      "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "model_bytes": 4422584,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/courtyard-brick-modern-clay-v004.json",
+        "sha256": "d80f69e3bb72c567a72f419dfedf888ef42dc5d9f62d2fe7a524d8be9fa14d5a",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {
+          "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+          "project_url": "http://127.0.0.1:5174/projects/0f3f2efd-ea57-400c-a754-6778939adc8e",
+          "tested_by": "Codex local runtime trial",
+          "tested_at": "2026-09-24",
+          "evidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+          "checks": {
+            "catalogue_card": true,
+            "exact_variant": true,
+            "ground_contact": true,
+            "small_and_large_plot": false,
+            "rotation": true,
+            "save_reload": true,
+            "close_and_occluded_capture": false,
+            "no_console_errors": true
+          },
+          "scope": "Prepared-ground local trial. Plot enlargement tested, not full size extremes. See runtime review for open gates."
+        }
+      },
+      "minimum_plot_m": {
+        "width": 30,
+        "depth": 17
+      },
+      "maximum_plot_dimension_m": 100,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Plot enlargement checked; supported size extremes and insufficient-fit case remain open.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "partial",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Scene export/close-view evidence exists, but complete close plus occluded capture delivery for this exact model is not established.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "C:\\dev-artifacts\\CityPrompt\\catalogue-expansion-2026-09-24\\courtyard-runtime-review.md",
+            "C:/dev-artifacts/CityPrompt/catalogue-visual-review-2026-09-27/exact-variant-ledger.json"
+          ],
+          "scope": "Exact-SHA Sep24 prepared-site trial; Sep27 isolated placement/edit/reopen evidence supplements it. Does not establish current hosted operation.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Full secondary-entrance/upper-floor traversal",
+        "External street-to-door continuity",
+        "Same-camera release visual review"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.6000000000000014,
+        "outward_distance_m": 1.6000000000000014,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": false
+      },
+      "required_next_checks": [
+        "small_and_large_plot",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "showcase-market-clay-v006",
+      "label": "Grand Iron & Glass Market",
+      "variant_id": "market_historic_iron_glass",
+      "model_sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "model_bytes": 5900052,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-market-clay-v006.json",
+        "sha256": "6e8ac57694913bcc5b42864df204274da1ab7cf03294efa3c26923c182e5ff76",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 39,
+        "depth": 52
+      },
+      "maximum_plot_dimension_m": 150,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Photographic heroes and metadata exist; exact live card acceptance is not recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Exact model/source/review and storage or compile evidence; record mounted browser identity for publication trial.",
+          "next_test": "exact_variant"
+        },
+        "ground_contact": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Focused native compilation tests cover enlarged plots and undersized rejection; browser extremes remain untested.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "save_reload"
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "no_console_errors"
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Individual browser lifecycle acceptance",
+        "Full interior/upper-floor routes",
+        "Oct6 narrative market-walking observation lacks an exact-SHA browser receipt; do not use it to complete a publication check."
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.599999999999966,
+        "outward_distance_m": 0.5500000000000007,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": true
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "exact_variant",
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "save_reload",
+        "close_and_occluded_capture",
+        "no_console_errors"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "showcase-aquatic-clay-v004",
+      "label": "Living-Roof Aquatic Centre",
+      "variant_id": "biophilic_mass_timber_pool",
+      "model_sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "model_bytes": 8005836,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-aquatic-clay-v004.json",
+        "sha256": "a7527b0e4a5f94f184e67bfec3f5f21e551371b9aa1475d62008551e64679f63",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 42,
+        "depth": 60
+      },
+      "maximum_plot_dimension_m": 150,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Photographic heroes and metadata exist; exact live card acceptance is not recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Exact model/source/review and storage or compile evidence; record mounted browser identity for publication trial.",
+          "next_test": "exact_variant"
+        },
+        "ground_contact": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Focused native compilation tests cover enlarged plots and undersized rejection; browser extremes remain untested.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "save_reload"
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "no_console_errors"
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Individual browser lifecycle acceptance",
+        "Full interior/upper-floor routes"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.599999999999966,
+        "outward_distance_m": 1.599999999999966,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": false
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "exact_variant",
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "save_reload",
+        "close_and_occluded_capture",
+        "no_console_errors"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "showcase-tower-clay-v005",
+      "label": "Gilded Terracotta Tower",
+      "variant_id": "art_deco_cream_terracotta",
+      "model_sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "model_bytes": 13166820,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/showcase-tower-clay-v005.json",
+        "sha256": "95198fa5d0744dc68c9f26810314e6f5388206853caf68636916db6c2bbf8f54",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 36,
+        "depth": 33
+      },
+      "maximum_plot_dimension_m": 150,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Photographic heroes and metadata exist; exact live card acceptance is not recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Exact model/source/review and storage or compile evidence; record mounted browser identity for publication trial.",
+          "next_test": "exact_variant"
+        },
+        "ground_contact": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "docs/SHOWCASE_BUILDING_TRIO_2026-09-28.md"
+          ],
+          "scope": "Focused native compilation tests cover enlarged plots and undersized rejection; browser extremes remain untested.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "save_reload"
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "no_console_errors"
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Individual browser lifecycle acceptance",
+        "Full interior/upper-floor routes"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.599999999999966,
+        "outward_distance_m": 0.5500000000000007,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": true
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "exact_variant",
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "save_reload",
+        "close_and_occluded_capture",
+        "no_console_errors"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "autumn-timber-clay-v004",
+      "label": "Nordic Roof-Garden Apartments",
+      "variant_id": "nordic_timber_mass_timber",
+      "model_sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+      "model_bytes": 48163508,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-timber-clay-v004.json",
+        "sha256": "7441406609d1b179bb35a732c793fae955153750fa24c70d7adaf8e69c0773b2",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 24,
+        "depth": 23
+      },
+      "maximum_plot_dimension_m": 150,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/AUTUMN_BUILDING_TRIO_2026-09-30.md"
+          ],
+          "scope": "Photographic heroes and metadata exist; exact live card acceptance is not recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "partial",
+          "evidence": [
+            "docs/AUTUMN_BUILDING_TRIO_2026-09-30.md"
+          ],
+          "scope": "Exact model/source/review and storage or compile evidence; record mounted browser identity for publication trial.",
+          "next_test": "exact_variant"
+        },
+        "ground_contact": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "save_reload"
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "no_console_errors"
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Individual browser lifecycle acceptance",
+        "Full interior/upper-floor routes",
+        "48.2 MB model: dense-scene/low-end performance unbenchmarked"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 0.4799999999999951,
+        "outward_distance_m": 1.599999999999966,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": false
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "exact_variant",
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "save_reload",
+        "close_and_occluded_capture",
+        "no_console_errors"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "autumn-villa-clay-v004",
+      "label": "Tuscan Arcade Villa",
+      "variant_id": "med_villa_tuscan",
+      "model_sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+      "model_bytes": 2401440,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-villa-clay-v004.json",
+        "sha256": "d6f07fb315213822c4a8ead5efc7195da6c7d94aa697c65163a80d80b28b323e",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 23,
+        "depth": 18
+      },
+      "maximum_plot_dimension_m": 150,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/AUTUMN_BUILDING_TRIO_2026-09-30.md"
+          ],
+          "scope": "Photographic heroes and metadata exist; exact live card acceptance is not recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "partial",
+          "evidence": [
+            "docs/AUTUMN_BUILDING_TRIO_2026-09-30.md"
+          ],
+          "scope": "Exact model/source/review and storage or compile evidence; record mounted browser identity for publication trial.",
+          "next_test": "exact_variant"
+        },
+        "ground_contact": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "save_reload"
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "no_console_errors"
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Individual browser lifecycle acceptance",
+        "Full interior/upper-floor routes"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.6000000000000014,
+        "outward_distance_m": 1.6000000000000014,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": false
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "exact_variant",
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "save_reload",
+        "close_and_occluded_capture",
+        "no_console_errors"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "autumn-cinema-clay-v004",
+      "label": "Grand Deco Cinema",
+      "variant_id": "deco_theater_movie_palace",
+      "model_sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+      "model_bytes": 994708,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/autumn-cinema-clay-v004.json",
+        "sha256": "0322fbc1407417d16d9c9ba5ae2711db8699a6b42633b0059d7040ac921eff1d",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 28,
+        "depth": 46
+      },
+      "maximum_plot_dimension_m": 150,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/AUTUMN_BUILDING_TRIO_2026-09-30.md"
+          ],
+          "scope": "Photographic heroes and metadata exist; exact live card acceptance is not recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "partial",
+          "evidence": [
+            "docs/AUTUMN_BUILDING_TRIO_2026-09-30.md"
+          ],
+          "scope": "Exact model/source/review and storage or compile evidence; record mounted browser identity for publication trial.",
+          "next_test": "exact_variant"
+        },
+        "ground_contact": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "save_reload"
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "no_console_errors"
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Individual browser lifecycle acceptance",
+        "Full interior/upper-floor routes"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.599999999999966,
+        "outward_distance_m": 1.2500007629394538,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": true
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "exact_variant",
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "save_reload",
+        "close_and_occluded_capture",
+        "no_console_errors"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "neighbourhood-library-clay-v003",
+      "label": "Mass-timber Library",
+      "variant_id": "mass_timber_biophilic_barn",
+      "model_sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+      "model_bytes": 11996768,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/neighbourhood-library-clay-v003.json",
+        "sha256": "5daca8e47e64fef3e6506f574a7835b3e8b60bc760b055d51fa02b3c42ae762c",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 40,
+        "depth": 37
+      },
+      "maximum_plot_dimension_m": 140,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md"
+          ],
+          "scope": "Library resized to 48x43m; cafe to 52x52m. Supported minimum/maximum matrix is not complete.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Public-street approach not exercised",
+        "Full interior/upper-floor walking",
+        "Broader terrain support"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 0.7199999999999847,
+        "outward_distance_m": 1.599999999999966,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": false
+      },
+      "required_next_checks": [
+        "small_and_large_plot",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "neighbourhood-corner-cafe-clay-v010",
+      "label": "Corner Café & Apartments",
+      "variant_id": "parisian_corner_cafe_culture",
+      "model_sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+      "model_bytes": 16430728,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/neighbourhood-corner-cafe-clay-v010.json",
+        "sha256": "b6980f2240b1a9996aabce5369f71a645290c191488fbc1aad76846d569904e0",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 49,
+        "depth": 48
+      },
+      "maximum_plot_dimension_m": 140,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md"
+          ],
+          "scope": "Library resized to 48x43m; cafe to 52x52m. Supported minimum/maximum matrix is not complete.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.json",
+            "docs/NEIGHBOURHOOD_BUILDINGS_2026-10-01.md",
+            "C:/dev-artifacts/CityPrompt/neighbourhood-four-2026-10-01/combined-runtime-final.json"
+          ],
+          "scope": "Exact storage SHA and native-scale prepared-site browser placement/edit/reopen; combined scene has no grounding issues or browser errors.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Public-street approach not exercised",
+        "Full interior/upper-floor walking",
+        "Broader terrain support"
+      ],
+      "walking_evidence": {
+        "path": "C:/dev-artifacts/CityPrompt/student-community-trial-2026-10-04/walking-access-results.json",
+        "model_sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+        "status": "PASS",
+        "scope": "Primary doorway geometry, short interior connected route and outward movement; not individual browser or full-building traversal. Predates Oct6 continuous walking change.",
+        "straight_interior_distance_m": 1.599999999999966,
+        "outward_distance_m": 0.5500000000000007,
+        "connected": true,
+        "portal_clear": true,
+        "site_transition": true
+      },
+      "required_next_checks": [
+        "small_and_large_plot",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "victorian-station-interior-clay-v007",
+      "label": "Victorian Grand Station",
+      "variant_id": "station_victorian_iron_glass",
+      "model_sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+      "model_bytes": 12906244,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/victorian-station-interior-clay-v007.json",
+        "sha256": "e0b39dbc4db094696d799b7c35c166035b92dbd1d3477165dfe7b3045b1ff06b",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 64,
+        "depth": 100
+      },
+      "maximum_plot_dimension_m": 140,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/STATION_INTERIOR_PILOT_2026-10-01.json"
+          ],
+          "scope": "Model placed with exact saved binding; live photographic card acceptance not explicitly recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/STATION_INTERIOR_PILOT_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/STATION_INTERIOR_PILOT_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "partial",
+          "evidence": [
+            "docs/STATION_INTERIOR_PILOT_2026-10-01.json"
+          ],
+          "scope": "Native station tested at 90 degrees; ordinary rotation edit and unchanged-scale before/after acceptance not explicitly recorded.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/STATION_INTERIOR_PILOT_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/STATION_INTERIOR_PILOT_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "External street approaches",
+        "Adverse-network save recovery",
+        "Touch input",
+        "Natural/sloped terrain"
+      ],
+      "walking_evidence": {
+        "path": "docs/STATION_INTERIOR_PILOT_2026-10-01.json",
+        "model_sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+        "status": "PASS_LOCAL_PREPARED_SITE",
+        "scope": "Exact-SHA geometry routes and normal keyboard occupied-level traversal, including after reload; bounded historical evidence predates Oct6 continuous walking change."
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "small_and_large_plot",
+        "rotation",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "interior-school-clay-v003",
+      "label": "Timber Art & Design School",
+      "variant_id": "biophilic_mass_timber_campus",
+      "model_sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+      "model_bytes": 10306868,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/interior-school-clay-v003.json",
+        "sha256": "28c7ddfb97fa9dd3699ac470ea53dd31e54a2e9bcbc42ffff5c839f5fcb4a53c",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 40,
+        "depth": 34
+      },
+      "maximum_plot_dimension_m": 100,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Model placed with exact saved binding; live photographic card acceptance not explicitly recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "External street approaches",
+        "Adverse-network save recovery",
+        "Touch input",
+        "Natural/sloped terrain"
+      ],
+      "walking_evidence": {
+        "path": "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json",
+        "model_sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+        "status": "PASS_LOCAL_PREPARED_SITE",
+        "scope": "Exact-SHA geometry routes and normal keyboard occupied-level traversal, including after reload; bounded historical evidence predates Oct6 continuous walking change."
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "small_and_large_plot",
+        "rotation",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "interior-hotel-clay-v006",
+      "label": "Mediterranean Courtyard Hotel",
+      "variant_id": "mediterranean_resort_courtyard",
+      "model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+      "model_bytes": 31885072,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/interior-hotel-clay-v006.json",
+        "sha256": "7ff2ccb8bfca64bc3b83fa23f822287a4251d457f94fa391cac22d787806b190",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 44,
+        "depth": 40
+      },
+      "maximum_plot_dimension_m": 100,
+      "checks": {
+        "catalogue_card": {
+          "status": "partial",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Model placed with exact saved binding; live photographic card acceptance not explicitly recorded.",
+          "next_test": "catalogue_card"
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json"
+          ],
+          "scope": "Exact-SHA prepared-site native placement and reload; browser walking has zero recorded errors/grounding issues. Scope excludes hosted release.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "External street approaches",
+        "Adverse-network save recovery",
+        "Touch input",
+        "Natural/sloped terrain",
+        "Approximately 32 MB model: dense-scene/low-end performance unbenchmarked"
+      ],
+      "walking_evidence": {
+        "path": "docs/INTERIOR_BUILDING_PAIR_2026-10-01.json",
+        "model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+        "status": "PASS_LOCAL_PREPARED_SITE",
+        "scope": "Exact-SHA geometry routes and normal keyboard occupied-level traversal, including after reload; bounded historical evidence predates Oct6 continuous walking change."
+      },
+      "required_next_checks": [
+        "catalogue_card",
+        "small_and_large_plot",
+        "rotation",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "brick-corner-grocery-clay-v002",
+      "label": "Brick Corner Grocery",
+      "variant_id": "montreal_depanneur_modern",
+      "model_sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462",
+      "model_bytes": 625280,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/brick-corner-grocery-clay-v002.json",
+        "sha256": "845aaedc9269980258e7715042a7babc51a558d974459cb463bbe405fbea1980",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 16.1,
+        "depth": 16.4
+      },
+      "maximum_plot_dimension_m": 60,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Prepared-site placement and native model dimensions established; explicit complete-envelope ground-support inspection per candidate not recorded.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json"
+          ],
+          "scope": "Grocery enlargement 20x20m verified; full minimum/maximum matrix open.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json"
+          ],
+          "scope": "Grocery rotation 15 degrees, Undo/Redo/reload verified on prepared site.",
+          "next_test": null
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json"
+          ],
+          "scope": "Grocery pilot free exact capture preview only; download timed out. No complete per-candidate close/occluded download evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Continuous entrance/stair traversal",
+        "Approach authoring and multiple-entrance recovery",
+        "Natural/sloped/exposed-edge terrain",
+        "Touch input",
+        "Adverse-network recovery",
+        "Fresh empty DB/bucket installation"
+      ],
+      "walking_evidence": {
+        "path": "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+        "status": "not_tested",
+        "scope": "Close exterior Walk view only; continuous entrance/stair traversal unverified."
+      },
+      "required_next_checks": [
+        "ground_contact",
+        "small_and_large_plot",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "clerestory-neighbourhood-hall-clay-v002",
+      "label": "Clerestory Neighbourhood Hall",
+      "variant_id": "rec_clerestory_modern",
+      "model_sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f",
+      "model_bytes": 391756,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/clerestory-neighbourhood-hall-clay-v002.json",
+        "sha256": "d312e91fdd1464b5ad0bf91d3dd3febac9144b55735c1165172399169899ffa6",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 32.2,
+        "depth": 31.2
+      },
+      "maximum_plot_dimension_m": 60,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Prepared-site placement and native model dimensions established; explicit complete-envelope ground-support inspection per candidate not recorded.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json"
+          ],
+          "scope": "Grocery pilot free exact capture preview only; download timed out. No complete per-candidate close/occluded download evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Continuous entrance/stair traversal",
+        "Approach authoring and multiple-entrance recovery",
+        "Natural/sloped/exposed-edge terrain",
+        "Touch input",
+        "Adverse-network recovery",
+        "Fresh empty DB/bucket installation"
+      ],
+      "walking_evidence": {
+        "path": "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+        "status": "not_tested",
+        "scope": "Close exterior Walk view only; continuous entrance/stair traversal unverified."
+      },
+      "required_next_checks": [
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "log-recreation-cabin-clay-v002",
+      "label": "Log Recreation Cabin",
+      "variant_id": "rec_log_cabin_vernacular",
+      "model_sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e",
+      "model_bytes": 300056,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/log-recreation-cabin-clay-v002.json",
+        "sha256": "b310cdb5db04aff8900635488a791c548ed34d5abb22c82c7fd36b99884be677",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 16.9,
+        "depth": 17.6
+      },
+      "maximum_plot_dimension_m": 60,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Prepared-site placement and native model dimensions established; explicit complete-envelope ground-support inspection per candidate not recorded.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json"
+          ],
+          "scope": "Grocery pilot free exact capture preview only; download timed out. No complete per-candidate close/occluded download evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Continuous entrance/stair traversal",
+        "Approach authoring and multiple-entrance recovery",
+        "Natural/sloped/exposed-edge terrain",
+        "Touch input",
+        "Adverse-network recovery",
+        "Fresh empty DB/bucket installation"
+      ],
+      "walking_evidence": {
+        "path": "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+        "status": "not_tested",
+        "scope": "Close exterior Walk view only; continuous entrance/stair traversal unverified."
+      },
+      "required_next_checks": [
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "prairie-neighbourhood-shops-clay-v002",
+      "label": "Prairie Neighbourhood Shops",
+      "variant_id": "strip_weathered_1980s",
+      "model_sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b",
+      "model_bytes": 1332120,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/prairie-neighbourhood-shops-clay-v002.json",
+        "sha256": "1a5a4c65ca1559ac285141effd56048c5ccc8b3de02952a00a8110f4c0f66e50",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 34.7,
+        "depth": 26.8
+      },
+      "maximum_plot_dimension_m": 60,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Prepared-site placement and native model dimensions established; explicit complete-envelope ground-support inspection per candidate not recorded.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json"
+          ],
+          "scope": "Grocery pilot free exact capture preview only; download timed out. No complete per-candidate close/occluded download evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Continuous entrance/stair traversal",
+        "Approach authoring and multiple-entrance recovery",
+        "Natural/sloped/exposed-edge terrain",
+        "Touch input",
+        "Adverse-network recovery",
+        "Fresh empty DB/bucket installation",
+        "Liquor tenancy absent from screened zoning snapshot; existing needs-review classification must remain"
+      ],
+      "walking_evidence": {
+        "path": "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+        "status": "not_tested",
+        "scope": "Close exterior Walk view only; continuous entrance/stair traversal unverified."
+      },
+      "required_next_checks": [
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    },
+    {
+      "candidate": "inglewood-corner-merchants-clay-v003",
+      "label": "Inglewood Corner Merchants",
+      "variant_id": "inglewood_deco_infill",
+      "model_sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f",
+      "model_bytes": 1354088,
+      "review": {
+        "path": "seed/model-library/rlasm-architectural-clay/evidence/inglewood-corner-merchants-clay-v003.json",
+        "sha256": "533b7c3b88b1d5581fa9946ca2ec0e0c66ee16aef6bb2d0891269bb3f96dd0a3",
+        "hash_verified": true,
+        "model_hash_matches": true,
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "source_flags": {
+        "local_trial_only": true,
+        "runtime_enabled": true,
+        "activation": {},
+        "local_trial": {}
+      },
+      "minimum_plot_m": {
+        "width": 20.2,
+        "depth": 22.2
+      },
+      "maximum_plot_dimension_m": 60,
+      "checks": {
+        "catalogue_card": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "exact_variant": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "ground_contact": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Prepared-site placement and native model dimensions established; explicit complete-envelope ground-support inspection per candidate not recorded.",
+          "next_test": "ground_contact"
+        },
+        "small_and_large_plot": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "small_and_large_plot"
+        },
+        "rotation": {
+          "status": "not_tested",
+          "evidence": [],
+          "scope": "No sufficient exact-candidate live receipt found in inspected evidence.",
+          "next_test": "rotation"
+        },
+        "save_reload": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        },
+        "close_and_occluded_capture": {
+          "status": "partial",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json"
+          ],
+          "scope": "Grocery pilot free exact capture preview only; download timed out. No complete per-candidate close/occluded download evidence.",
+          "next_test": "close_and_occluded_capture"
+        },
+        "no_console_errors": {
+          "status": "supported_historical",
+          "evidence": [
+            "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+            "C:/dev-artifacts/CityPrompt/community-buildings-five-2026-10-07/five-model-api-check.json"
+          ],
+          "scope": "Five exact API model hashes and native scale verified; all five placed via ordinary controls and present after reload; browser errors empty.",
+          "next_test": null
+        }
+      },
+      "supersession": [],
+      "additional_gaps": [
+        "Continuous entrance/stair traversal",
+        "Approach authoring and multiple-entrance recovery",
+        "Natural/sloped/exposed-edge terrain",
+        "Touch input",
+        "Adverse-network recovery",
+        "Fresh empty DB/bucket installation"
+      ],
+      "walking_evidence": {
+        "path": "docs/COMMUNITY_BUILDINGS_FIVE_2026-10-07.json",
+        "status": "not_tested",
+        "scope": "Close exterior Walk view only; continuous entrance/stair traversal unverified."
+      },
+      "required_next_checks": [
+        "ground_contact",
+        "small_and_large_plot",
+        "rotation",
+        "close_and_occluded_capture"
+      ],
+      "can_close_all_eight_from_existing_evidence": false
+    }
+  ],
+  "verification": {
+    "selected_candidates": 19,
+    "review_file_hashes_verified": 19,
+    "embedded_review_model_hashes_verified": 19,
+    "exact_sha_primary_entry_geometry_receipts": 11,
+    "fresh_browser_runs": 0,
+    "flags_modified": false
+  },
+  "frontend_contract_verification": {
+    "date": "2026-10-07",
+    "test_file": "frontend/src/features/pickPlace/releaseCandidateContracts.test.ts",
+    "command": "cd frontend && npx vitest run src/features/pickPlace/releaseCandidateContracts.test.ts --maxWorkers=2",
+    "result": "PASS",
+    "tests": 77,
+    "candidates": 19,
+    "scope": [
+      "Real placement controls accept default/minimum/maximum plots and reject undersized width/depth independently",
+      "Exact native compiler request identity with no forced fit and unchanged native metadata",
+      "ReshapePanel rotates minimum plots without rounding fractional dimensions below limits",
+      "Saved JSON restores exact revision; unavailable saved revisions are refused"
+    ],
+    "limits": [
+      "JSDOM component/contract tests, not browser acceptance",
+      "Does not load or render GLBs or prove compiled instance scales",
+      "No ground/capture/walking/console acceptance inferred",
+      "All eight per-candidate promotion check statuses and library flags remain unchanged"
+    ]
+  },
+  "later_runtime_followups": [
+    {
+      "id": "bounded-runtime-followup-2026-10-07",
+      "date": "2026-10-07",
+      "sequence": "Later than original read-only historical audit and frontend component-contract verification",
+      "project_url": "http://127.0.0.1:5183/projects/ca33c3b0-1cde-448d-aea8-85a270b222cd",
+      "executor": "root agent; independent scoped visual review by frontend_release_checks agent",
+      "historical_entries_unchanged": true,
+      "scope": "Local runtime and delivery repair/verification. Not a live Render deployment or activation.",
+      "file_receipts": {
+        "cards": {
+          "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/catalogue-cards-fixed.json",
+          "sha256": "4bfe4a23199d558ae0cd9494ffb30014c2cb6c01c0d9f88de92b4ababb4a6321",
+          "bytes": 2780
+        },
+        "card_screenshot": {
+          "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/market-card-fixed.jpg",
+          "sha256": "99064ec2251ffbf0f1c08102704ced1df55111459316cd88845424e02ffba8dd",
+          "bytes": 76369
+        },
+        "captures": {
+          "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/close-capture-receipts.json",
+          "sha256": "a71844bcd5e87e16f7524cc23055a4360705085289a24f9dcd70c8eaed6f769c",
+          "bytes": 18969
+        },
+        "visual_review": {
+          "path": "docs/runtime-reviews/model-release-2026-10-07.json",
+          "sha256": "c9d061d5c850f9b127bb55c19c0816b579f90023779dce0afa65cd2d6136e72a",
+          "bytes": 80443
+        },
+        "packet": {
+          "path": "C:/dev-artifacts/CityPrompt/render-readiness-2026-10-07/assets-model-fix/assets.json",
+          "sha256": "787951523cee29f5e760f0d83a23dee05abd9c7a460e17fa89a061bf0a40978d",
+          "bytes": 997413
+        },
+        "packet_audit": {
+          "path": "C:/dev-artifacts/CityPrompt/render-readiness-2026-10-07/assets-model-fix/catalogue-audit.json",
+          "sha256": "a5c6bce665d111af068332ec1cd49ef4a6c8cd9a0fd7c33334c328b9d7f0d41a",
+          "bytes": 191984
+        },
+        "final_delivery": {
+          "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/final-delivery.json",
+          "sha256": "6cb3984f0db94a63667fb4a0cab70200536f3f110c995dd9e2297b6b4d006397",
+          "bytes": 191984
+        },
+        "private_readback": {
+          "path": "C:/dev-artifacts/CityPrompt/hosted-catalogue-local-readback-2026-10-07.json",
+          "sha256": "69213ea1fbd840e36e3a98ae15050af2dd7ce7006b14b521e194ed92aeb26247",
+          "bytes": 26590
+        }
+      },
+      "root_transcript_observations": {
+        "evidence_kind": "root agent tool transcript; no separate fuller JSON receipt exists",
+        "candidates_mounted": 19,
+        "compiled_kind": "lego_assembly",
+        "rotation_degrees": 15,
+        "normal_save_reload_candidates": 19,
+        "grounding_diagnostics": [],
+        "ordinary_ui_placement_candidates": [
+          "calgary-side-by-side-duplex-clay-v004"
+        ],
+        "developer_api_fixture_candidates": 18,
+        "duplex_ordinary_controls": "Placed via normal UI, resized to 100x100m and rotated 15 degrees, then restored minimum plot.",
+        "compiler_request_count": 57,
+        "compiler_matrix": "19 candidates x minimum plot, maximum plot and 1x1m too-small request",
+        "unexpected_compiler_failures": 0,
+        "native_instance_scale": [
+          1,
+          1,
+          1
+        ],
+        "fresh_browser_errors": [],
+        "fresh_browser_warnings": [],
+        "console_scope": "Fresh browser state after fixed-hero catalogue searches; not a complete retained log over every earlier action."
+      },
+      "file_backed_results": {
+        "catalogue_cards": {
+          "count": 19,
+          "normal_ui_search": true,
+          "all_images_decoded_nonzero": true,
+          "stale_hero_references_fixed": 6,
+          "scope": "Card receipt records labels, image URLs and dimensions. Six-reference repair count is reported by root; the receipt independently records successful final image decoding."
+        },
+        "captures": {
+          "close_images_saved": 19,
+          "dimensions": [
+            1280,
+            656
+          ],
+          "collection_receipt_count": 18,
+          "duplex_receipt": {
+            "path": "C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/calgary-side-by-side-duplex-clay-v004.png",
+            "bytes": 717853,
+            "sha256": "9687a78fc65796005666f56edc519a2cb2533f55942a53371e352eb763c584fb"
+          },
+          "student_download": "NOT_VERIFIED: browser download event timed out; external saved close PNGs are not a student-download pass",
+          "occluded_pair": "NOT_VERIFIED"
+        },
+        "visual_review": {
+          "decision": "category_closure_only",
+          "observed_p0": 0,
+          "observed_p1": 0,
+          "scope": "Visible native identity/massing, visible ground contact, and obvious runtime regression in 19 supplied app captures compared with 57 exact locked references. Category closure only.",
+          "camera_limited_followups": 7
+        },
+        "hosted_packet": {
+          "path": "C:/dev-artifacts/CityPrompt/render-readiness-2026-10-07/assets-model-fix",
+          "files": 2471,
+          "bytes": 879155156,
+          "choices": 133,
+          "dependencies": 437,
+          "failures": 0,
+          "activation": false,
+          "scope": "Fresh local hosted-asset packet; no Render deployment implied."
+        },
+        "private_model_readback": {
+          "expected": 49,
+          "private_storage_verified": 49,
+          "overall_status": "failed",
+          "publication_gate_failures": 19,
+          "failure_reason": "local_trial_only only",
+          "technical_errors": 0,
+          "scope": "Local DB/private-object exact verification; overall result intentionally remains failed while 19 entries are local-only."
+        }
+      },
+      "required_check_progress": {
+        "catalogue_card": "New normal UI searches with 19 successfully decoded exact-card images; six stale hero references repaired.",
+        "exact_variant": "All 19 mounted compiled models reported by root;19 expected hashes independently match private readback rows; visible identity review is scoped.",
+        "ground_contact": "No grounding diagnostics reported; limited visible-contact review found no obvious P0/P1. Hidden/full-footprint and terrain coverage not inferred.",
+        "small_and_large_plot": "All 19 min/max/1x1 compiler contracts reported correct; only duplex has ordinary UI minimum/100x100 size-edit evidence. Other 18 fixture setup does not prove their normal authoring path.",
+        "rotation": "All 19 recorded at 15 degrees with reload; only duplex has explicit normal UI rotation-edit evidence.",
+        "save_reload": "Root reports normal save/reload for all 19 mounted models; initial placement of 18 was developer/API fixture setup.",
+        "close_and_occluded_capture": "19 external close images exist and were scoped-reviewed. Student download timed out and occluded pairs are absent, so this check remains open for every candidate.",
+        "no_console_errors": "Fresh browser errors/warnings empty after repaired-card search; do not claim an all-actions retained clean-console receipt."
+      },
+      "remaining_blockers": [
+        "Student-facing exact-capture download completion",
+        "Close and occluded capture pair for each candidate",
+        "Normal authoring/size/rotation coverage for the 18 fixture-inserted candidates where required evidence remains incomplete",
+        "Any unclosed scope in the original eight-check matrix; no automatic promotion from compiler or scoped visual results",
+        "Explicit exact-byte activation remains separate; preserve local_trial_only flags"
+      ],
+      "per_candidate": [
+        {
+          "candidate": "calgary-side-by-side-duplex-clay-v004",
+          "model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+          "initial_placement_mode": "ordinary_ui",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": {
+            "maximum_plot_m": [
+              100,
+              100
+            ],
+            "restored_minimum": true
+          },
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\calgary-side-by-side-duplex-clay-v004.png",
+            "sha256": "9687a78fc65796005666f56edc519a2cb2533f55942a53371e352eb763c584fb",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "montreal-plateau-duplex-clay-v004",
+          "model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\montreal-plateau-duplex-clay-v004.png",
+            "sha256": "dc7fcf575e5c8148305cac30e2f2cf87fd2816459c60fc78d73be3ecb3e7d962",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "courtyard-brick-modern-clay-v004",
+          "model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\courtyard-brick-modern-clay-v004.png",
+            "sha256": "8ea3f55cc041457d4eba0a8cda290af81f6f3385ca7971321386df6ec9f2e7f1",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "showcase-market-clay-v006",
+          "model_sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\showcase-market-clay-v006.png",
+            "sha256": "c833cf229aee9d96f6120980aa193612220d1fc7de6f49c26622fe55dc59b13c",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "showcase-aquatic-clay-v004",
+          "model_sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\showcase-aquatic-clay-v004.png",
+            "sha256": "0833e2458a2a668f7f9c88b667d058737e9317dfb0d3167b86a03dd17dd82549",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "showcase-tower-clay-v005",
+          "model_sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\showcase-tower-clay-v005.png",
+            "sha256": "726efc071fe46b82156bed3512ff45e4afb5e049056505ea34e98b2b5f06ba7c",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "autumn-timber-clay-v004",
+          "model_sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\autumn-timber-clay-v004.png",
+            "sha256": "08e2bacd1b853ef63bd4006147300ff43992e4ca6703db25e09d865c00b857c9",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "autumn-villa-clay-v004",
+          "model_sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\autumn-villa-clay-v004.png",
+            "sha256": "04760761ad7df71e2dc1c6b47bf86f6f64ca7778b98f1246de2d233da57e0eed",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "autumn-cinema-clay-v004",
+          "model_sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\autumn-cinema-clay-v004.png",
+            "sha256": "443e8099e230781835184eebdce72d5313ae7a98c1314fa537f2b49015e0caa9",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "neighbourhood-library-clay-v003",
+          "model_sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\neighbourhood-library-clay-v003.png",
+            "sha256": "567e3683d0fc7d6d0235e0cb67ecd43de51ec2601cf9153cc4f8a394d11f176d",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "neighbourhood-corner-cafe-clay-v010",
+          "model_sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\neighbourhood-corner-cafe-clay-v010.png",
+            "sha256": "19914ff775237cbce0f8d6df28da1765695e3fb3b6b12b5d9c476d149621c08a",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "victorian-station-interior-clay-v007",
+          "model_sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\victorian-station-interior-clay-v007.png",
+            "sha256": "9aeff2f6bbb42b825bc28b83708200943d3d615f29ef9e9cb420fa668230114a",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "interior-school-clay-v003",
+          "model_sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\interior-school-clay-v003.png",
+            "sha256": "b537a84d792de2f31fd0d32cf44ced361fbf5b4364d6ae36098cbe741d21609b",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "interior-hotel-clay-v006",
+          "model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\interior-hotel-clay-v006.png",
+            "sha256": "f6ddb595ed8255f2f9a7e291d4faeb39ddc6166cd03cd1cb184fa524aa77f320",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "brick-corner-grocery-clay-v002",
+          "model_sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\brick-corner-grocery-clay-v002.png",
+            "sha256": "415fd1ecf6c9a0196e89f90a712de55692c5532590d38c9a5780c90f3308648d",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "clerestory-neighbourhood-hall-clay-v002",
+          "model_sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\clerestory-neighbourhood-hall-clay-v002.png",
+            "sha256": "48a50afdb4248766a9e6e05b0a4ab207f172501a263c44710cf337bd22e59dfe",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "log-recreation-cabin-clay-v002",
+          "model_sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\log-recreation-cabin-clay-v002.png",
+            "sha256": "bc828403f98829540796f0b5d548988cb660ee6593b1dd00ec33564698f020b1",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "prairie-neighbourhood-shops-clay-v002",
+          "model_sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\prairie-neighbourhood-shops-clay-v002.png",
+            "sha256": "d655dcb8a9115efefc518292b9a893f8068d24008535e80fa7dca7b059a25697",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        },
+        {
+          "candidate": "inglewood-corner-merchants-clay-v003",
+          "model_sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f",
+          "initial_placement_mode": "developer_api_fixture",
+          "runtime_mount": "root_observed_compiled_lego_assembly",
+          "rotation_degrees": 15,
+          "save_reload": "root_observed_normal_save_and_reload",
+          "grounding_diagnostics": "root_observed_empty",
+          "compiler_requests": [
+            "minimum_plot",
+            "maximum_plot",
+            "1m_x_1m_too_small"
+          ],
+          "compiler_result": "root_observed_zero_unexpected_failures_and_native_scale_1",
+          "ordinary_ui_size_test": null,
+          "close_capture": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\inglewood-corner-merchants-clay-v003.png",
+            "sha256": "d462c9467be0df6aa3ec743868c5d3439a7850a3dcd59ebc522e3e6b993b7e3e",
+            "dimensions": [
+              1280,
+              656
+            ]
+          },
+          "visual_review": "category_closure_only",
+          "student_download_verified": false,
+          "occluded_capture_pair_verified": false,
+          "all_eight_checks_closed": false
+        }
+      ],
+      "all_eight_closed": false,
+      "approval_or_asset_flags_modified": false,
+      "root_reported_final_validation": {
+        "evidence_kind": "root agent reported validation results; not independently rerun by this audit writer",
+        "frontend_focused_passed": 79,
+        "node_delivery_passed": 17,
+        "verifier_passed": 21,
+        "ruff": "PASS",
+        "typescript": "PASS",
+        "eslint": "PASS",
+        "production_build_budgets": "PASS",
+        "initial_bundle_kib": 470.6,
+        "total_bundle_kib": 8437.9,
+        "build_configuration": "Placeholder configuration; not a deployable production artifact claim"
+      }
+    }
+  ]
+}

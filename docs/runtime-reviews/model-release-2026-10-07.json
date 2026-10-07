@@ -1,0 +1,1664 @@
+{
+  "schema": "cityprompt.scoped-runtime-visual-review@1",
+  "date": "2026-10-07",
+  "source_commit_at_review": "dfa104ec2b254c4775ec6ce99494238f2b28d870",
+  "method": "RLASM v6.1 architectural-clay scoped review",
+  "review_contract": "C:/Users/andre/.codex/skills/rlasm-expert/references/review-contract.md",
+  "reviewer": "Codex independent frontend_release_checks agent",
+  "independence": "Reviewer did not author the 19 building GLBs or capture this runtime scene. Earlier frontend contract tests and evidence audit are separate work.",
+  "scope": "Visible native identity/massing, visible ground contact, and obvious runtime regression in 19 supplied app captures compared with 57 exact locked references. Category closure only.",
+  "decision": "category_closure_only",
+  "summary": {
+    "candidates_reviewed": 19,
+    "capture_hashes_verified": 19,
+    "reference_hashes_verified": 57,
+    "original_pngs_reopened": 7,
+    "observed_p0": 0,
+    "observed_p1": 0,
+    "model_rework_required_by_this_review": false,
+    "camera_limited_supplemental_views_recommended": 7
+  },
+  "provenance": {
+    "capture_root": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07",
+    "capture_receipts": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\close-capture-receipts.json",
+    "capture_receipts_sha256": "a71844bcd5e87e16f7524cc23055a4360705085289a24f9dcd70c8eaed6f769c",
+    "receipt_count": 18,
+    "duplex_separate_receipt": {
+      "name": "calgary-side-by-side-duplex-clay-v004.png",
+      "bytes": 717853,
+      "sha256": "9687a78fc65796005666f56edc519a2cb2533f55942a53371e352eb763c584fb"
+    },
+    "reference_resolution": "Exact SHA-matching bytes resolved from assets-final/public, repository, Git LFS cache or immutable candidate sources; no pointer file treated as an image.",
+    "model_binding_limit": "Expected model hashes copied from selected seed identities. Capture/model binding is supplied by the runtime capture owner; this visual review did not independently download/re-hash mounted GLBs."
+  },
+  "limitations": [
+    "Not a holistic review of every model view or keeper-quality materials. Architectural-clay simplification is the declared delivery profile.",
+    "Single elevated/front captures cannot prove hidden or partly obscured relationships. Candidate-specific unproven relationships remain open.",
+    "No obvious floating/sunk base in visible pixels does not establish complete footprint, slopes or measured ground support.",
+    "This review does not test keyboard walking, app controls, download completion or runtime scale numerically.",
+    "Comparison boards preserve the full capture at native pixel dimensions but are JPEG derivatives. All 19 boards were directly inspected; seven flagged views were additionally reopened as original PNGs. References were compared in uncropped scaled panels.",
+    "No library flags, lifecycle records, prior reviews or human approvals were changed."
+  ],
+  "generated_artifacts": {
+    "directory": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards",
+    "manifest": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\manifest.json",
+    "policy": "External analytical comparison boards; original captures and sources preserved."
+  },
+  "entries": [
+    {
+      "candidate": "calgary-side-by-side-duplex-clay-v004",
+      "expected_model_sha256": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Two-storey paired facade, central split, twin timber entrance recesses, outer large window bays and flat divided roof remain recognizable against all three locked references.",
+        "Both stair/approach strips reach the visible prepared ground; facade base shows no continuous air gap or severe burial."
+      ],
+      "unproven_relationships": [
+        "Side/rear facade and contacts behind the front are hidden."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\calgary-side-by-side-duplex-clay-v004.png",
+        "sha256": "9687a78fc65796005666f56edc519a2cb2533f55942a53371e352eb763c584fb",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": null,
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\calgary-modern-infill-house\\variant_2.png",
+          "repository_path": "frontend/public/archetypes/buildings/calgary-modern-infill-house/variant_2.png",
+          "sha256": "e5a2f4d6f6836643c65b5ee740c2b08f12e3ba9f8c52ac991eadf00d2a5447dc",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\b9\\b6\\b9b67f5f53d507681994c506213a73986c8e55553576cf5da997ff7e6376b74f",
+          "repository_path": "frontend/public/archetypes/buildings/calgary-modern-infill-house/variant_2_angle_60.jpg",
+          "sha256": "b9b67f5f53d507681994c506213a73986c8e55553576cf5da997ff7e6376b74f",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\74\\7c\\747c1802087cf9ace4c2ded7aee7af91f11f3c0b94257d9c772117c612078002",
+          "repository_path": "frontend/public/archetypes/buildings/calgary-modern-infill-house/variant_2_angle_90.jpg",
+          "sha256": "747c1802087cf9ace4c2ded7aee7af91f11f3c0b94257d9c772117c612078002",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\calgary-side-by-side-duplex-clay-v004.jpg",
+        "comparison_board_sha256": "e2328f1e391f54c457927701b017737d0b68b25ecfce75385b5ed4d983222f43",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "montreal-plateau-duplex-clay-v004",
+      "expected_model_sha256": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Projecting twin facade bays, flat parapet roof and curved exterior stair to the upper landing match the defining source arrangement.",
+        "Visible lower wall, stair foot and front approach meet ground without an obvious float or severed stair assembly."
+      ],
+      "unproven_relationships": [
+        "Pale clay reduces stone contrast; doorway clearance and upper landing traversal are not proved by this still."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\montreal-plateau-duplex-clay-v004.png",
+        "sha256": "dc7fcf575e5c8148305cac30e2f2cf87fd2816459c60fc78d73be3ecb3e7d962",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "c92ef2c1-77ff-4f04-96d8-3ee59e0b8ef2",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\montreal-duplex\\variant_0.png",
+          "repository_path": "frontend/public/archetypes/buildings/montreal-duplex/variant_0.png",
+          "sha256": "ceb646a88b05e64efc00199e3e2cb07bd93c3d254a718db0f437b8ae26516671",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\5b\\99\\5b99389489aaff656b0d78d7fa67019b11f80f23c42da564578201aef56186ca",
+          "repository_path": "frontend/public/archetypes/buildings/montreal-duplex/variant_0_angle_60.jpg",
+          "sha256": "5b99389489aaff656b0d78d7fa67019b11f80f23c42da564578201aef56186ca",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\8c\\08\\8c08fa902611ecb027b7c5c6e67360d2624dcd10d5fcc4f44df80cdc240f4114",
+          "repository_path": "frontend/public/archetypes/buildings/montreal-duplex/variant_0_angle_90.jpg",
+          "sha256": "8c08fa902611ecb027b7c5c6e67360d2624dcd10d5fcc4f44df80cdc240f4114",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\montreal-plateau-duplex-clay-v004.jpg",
+        "comparison_board_sha256": "db918509ba1e3598b3b0ecfc84258be2b829a69102779513a0620bd9933b7e6f",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "courtyard-brick-modern-clay-v004",
+      "expected_model_sha256": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Long pitched roof with three visible rooflights, three-level brick-colored front, paired balcony stacks and central ground arches retain the source identity.",
+        "Visible piers and front wall edges meet the ground; no whole-building float or generic replacement prism is apparent."
+      ],
+      "unproven_relationships": [
+        "The view does not prove courtyard passage traversal, rear connections or the full rear topology."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\courtyard-brick-modern-clay-v004.png",
+        "sha256": "8ea3f55cc041457d4eba0a8cda290af81f6f3385ca7971321386df6ec9f2e7f1",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "f09638ba-3a7b-462b-85b9-41965cbfa81b",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\courtyard_family_housing\\variant_2.png",
+          "repository_path": "frontend/public/archetypes/buildings/courtyard_family_housing/variant_2.png",
+          "sha256": "a057771c31ead869c761723196c301bcce621f61db1fd6dd057a78f409711227",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\04\\45\\04459d4d3ef3be7623609d75a59a651935fff05807502a8ec672ab7621d35139",
+          "repository_path": "frontend/public/archetypes/buildings/courtyard_family_housing/variant_2_angle_60.jpg",
+          "sha256": "04459d4d3ef3be7623609d75a59a651935fff05807502a8ec672ab7621d35139",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\28\\71\\2871df00a87cee034e7cde10e1f540665116fed04ed7ef34b685dea4334d5599",
+          "repository_path": "frontend/public/archetypes/buildings/courtyard_family_housing/variant_2_angle_90.jpg",
+          "sha256": "2871df00a87cee034e7cde10e1f540665116fed04ed7ef34b685dea4334d5599",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\courtyard-brick-modern-clay-v004.jpg",
+        "comparison_board_sha256": "ab9802601f7a27ac2a7dd2b64afe8c05ec49de9b4b0bb6216210be9fe94c252d",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "showcase-market-clay-v006",
+      "expected_model_sha256": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Green iron barrel-vault frame, raised longitudinal monitor, lower side roofs and front posts/balcony bands remain consistent with the exact market source.",
+        "Visible corner bases and front post feet meet the prepared ground with no obvious detached assembly."
+      ],
+      "unproven_relationships": [
+        "High angle and subdued clay/transparent surfaces do not establish all stalls, glazed optical quality or interior access. A lower front-corner view would expose those relationships."
+      ],
+      "recommended_supplemental_view": "Lower front-corner capture showing stalls/entry under the balcony; only needed to close interior programme/entry visibility beyond this scope.",
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\showcase-market-clay-v006.png",
+        "sha256": "c833cf229aee9d96f6120980aa193612220d1fc7de6f49c26622fe55dc59b13c",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "debe026b-67e1-456e-a281-a661d5e6555a",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\food_hall_market_hall\\showcase-v1-front.png",
+          "repository_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+          "sha256": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659",
+          "dimensions": [
+            2752,
+            1536
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\e5\\04\\e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a",
+          "repository_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-oblique.jpg",
+          "sha256": "e504ab5a6c2af9141b0445d560a77d560d96b5e826949fec9be380f4d58d4c6a",
+          "dimensions": [
+            1376,
+            768
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\af\\24\\af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0",
+          "repository_path": "frontend/public/archetypes/buildings/food_hall_market_hall/showcase-v1-top.jpg",
+          "sha256": "af24f5150a12d417f07ae2fd5eab1c0037b984266b70ebb763fd60880dfa6be0",
+          "dimensions": [
+            1376,
+            768
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\showcase-market-clay-v006.jpg",
+        "comparison_board_sha256": "69c7f72817e5ec8fadd376ba664b4a412a90bf0bbcaabda589bc86cc4eb7ec72",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": true,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "showcase-aquatic-clay-v004",
+      "expected_model_sha256": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Grass-covered curved hall roof, lower straight side wing, rooflights, solar strips and projecting timber arch remain recognizable against the locked source.",
+        "Visible arch feet and front/side-wing bases meet ground without a large gap."
+      ],
+      "unproven_relationships": [
+        "Pool/interior programme and contacts on hidden long elevations are not established."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\showcase-aquatic-clay-v004.png",
+        "sha256": "0833e2458a2a668f7f9c88b667d058737e9317dfb0d3167b86a03dd17dd82549",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "aebc77d8-5eb4-4df5-9531-834285389d3d",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\aquatic-natatorium-complex\\showcase-v1-front.png",
+          "repository_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+          "sha256": "06810b6ee8ed0f3a58588be35c41cb9945eadfa49efe62a1cc3b4e9f8892882c",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\8a\\18\\8a18d105da76d96e3548f04f5cea66130111845365079d4bf7817fa50344e67e",
+          "repository_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-oblique.jpg",
+          "sha256": "8a18d105da76d96e3548f04f5cea66130111845365079d4bf7817fa50344e67e",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\77\\e1\\77e193aa06682532fe8aa654224810f4e944bd1b91c8336487aba69e8b619dcf",
+          "repository_path": "frontend/public/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-top.jpg",
+          "sha256": "77e193aa06682532fe8aa654224810f4e944bd1b91c8336487aba69e8b619dcf",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\showcase-aquatic-clay-v004.jpg",
+        "comparison_board_sha256": "7cd32c61ec4ad2ce65e5c6ca9cc1823a92902ecc097efaa7178c25c7977d0217",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "showcase-tower-clay-v005",
+      "expected_model_sha256": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Tiered cream tower, repeated vertical bays, dark lower plinth and gold lantern crown preserve the source silhouette.",
+        "The front plinth appears seated on ground; there is no visible hovering tower or lost crown."
+      ],
+      "unproven_relationships": [
+        "The tower occupies a small portion of this frame. Fine base/entry and crown-contact review requires closer views."
+      ],
+      "recommended_supplemental_view": "Closer lower-front view for base/entrance contact; separate crown close for fine support detail.",
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\showcase-tower-clay-v005.png",
+        "sha256": "726efc071fe46b82156bed3512ff45e4afb5e049056505ea34e98b2b5f06ba7c",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "fb7a3232-f602-4df7-b427-ff7715a397f9",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\art_deco_setback_tower\\showcase-v1-front.png",
+          "repository_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+          "sha256": "cbfa6ffaf90e040b2ef9f631f438cc1184993ceec74de95be8943dd85804e40b",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\82\\d0\\82d0cd1caf3cb7141de20e91e6960263745010d017ec971db623eff8fa64a9e9",
+          "repository_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-oblique.jpg",
+          "sha256": "82d0cd1caf3cb7141de20e91e6960263745010d017ec971db623eff8fa64a9e9",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\05\\e1\\05e11751364bfa854b7ea4d9da46a70f262c3424ea15498395e0bb4fe9e109cb",
+          "repository_path": "frontend/public/archetypes/buildings/art_deco_setback_tower/showcase-v1-top.jpg",
+          "sha256": "05e11751364bfa854b7ea4d9da46a70f262c3424ea15498395e0bb4fe9e109cb",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\showcase-tower-clay-v005.jpg",
+        "comparison_board_sha256": "ce9a3b4caab2fe9ba540e605945278460af8d417701c9cf64ae207cb28c56d22",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": true,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "autumn-timber-clay-v004",
+      "expected_model_sha256": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Timber grid, stacked recessed balcony/window bays, planted roof perimeter and raised roof pavilion preserve the exact source family and massing.",
+        "Visible front base and entrance pad meet the prepared surface; no gross vertical separation appears."
+      ],
+      "unproven_relationships": [
+        "Source screens and recesses are materially simplified in the clay profile. This view does not prove room/stair routes or roof garden detail."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\autumn-timber-clay-v004.png",
+        "sha256": "08e2bacd1b853ef63bd4006147300ff43992e4ca6703db25e09d865c00b857c9",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "b69bfc3b-6e9a-4f69-bf5b-434134818966",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\nordic_timber_midrise\\autumn-v1-front.png",
+          "repository_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
+          "sha256": "646f3e4d0a5ce0bc4f0d37c1a380d6e1d8ee9139e457cdbb12addc1a0e09eed1",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\e9\\6c\\e96cee6e9555300b794e2f31e6db1f88489a983892f6437219f804760d6f95f7",
+          "repository_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-oblique.jpg",
+          "sha256": "e96cee6e9555300b794e2f31e6db1f88489a983892f6437219f804760d6f95f7",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\34\\f7\\34f7dc172e5900615b6a32da2d450767154ffc13e29a19e0a122f02b02bf992b",
+          "repository_path": "frontend/public/archetypes/buildings/nordic_timber_midrise/autumn-v1-top.jpg",
+          "sha256": "34f7dc172e5900615b6a32da2d450767154ffc13e29a19e0a122f02b02bf992b",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\autumn-timber-clay-v004.jpg",
+        "comparison_board_sha256": "e05fbe1ab642f615396bf852e7b48809c18284893aa06895c8498e4e17f28cb4",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "autumn-villa-clay-v004",
+      "expected_model_sha256": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Three ground arches, shuttered middle-storey windows, smaller attic windows and tiled pitched roof retain the defining Tuscan villa arrangement.",
+        "Arcade piers and the visible arcade floor sit at grade without an obvious detached platform."
+      ],
+      "unproven_relationships": [
+        "Side/rear walls and hidden arcade openings are not fully visible."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\autumn-villa-clay-v004.png",
+        "sha256": "04760761ad7df71e2dc1c6b47bf86f6f64ca7778b98f1246de2d233da57e0eed",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "7d491827-1357-4fe5-8427-0a15bb1c9b14",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\mediterranean_villa_estate\\autumn-v1-front.png",
+          "repository_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
+          "sha256": "a69fed88b5478ee2902ef21fffcc3c643f114f70ae9bdccf4f93da1a8863507d",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\47\\9c\\479cba141aaee286d33fc1e48a05483c2871db299a59833db8e86ce89c4aa03b",
+          "repository_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-oblique.jpg",
+          "sha256": "479cba141aaee286d33fc1e48a05483c2871db299a59833db8e86ce89c4aa03b",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\93\\a8\\93a8889f117f37693d8d97c69d9b0740f5ece304b18ae7f692c5dc1f704abe25",
+          "repository_path": "frontend/public/archetypes/buildings/mediterranean_villa_estate/autumn-v1-top.jpg",
+          "sha256": "93a8889f117f37693d8d97c69d9b0740f5ece304b18ae7f692c5dc1f704abe25",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\autumn-villa-clay-v004.jpg",
+        "comparison_board_sha256": "a7fc947a528e52af1d682d1f7d59471e640bc46aeb3553369026dcc61c9c6527",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "autumn-cinema-clay-v004",
+      "expected_model_sha256": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Stepped central facade, paired arched upper windows, projecting marquee and long roof with rear raised volume match the source massing.",
+        "No entire-base air gap is visible, but the marquee masks much of the lower entrance line."
+      ],
+      "unproven_relationships": [
+        "The projecting vertical sign is edge-on and lower doors are obscured. The photograph-facing sign text and entrance contact need a lower oblique view before those details can be closed."
+      ],
+      "recommended_supplemental_view": "Lower front oblique exposing vertical sign face and doors beneath the marquee.",
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\autumn-cinema-clay-v004.png",
+        "sha256": "443e8099e230781835184eebdce72d5313ae7a98c1314fa537f2b49015e0caa9",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "339d1850-74ce-41e8-b1bb-f1a0d5ebba2a",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\deco_theater_mainstreet\\autumn-v1-front.png",
+          "repository_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+          "sha256": "7d4c6e549afade74d08aad286d72e47dbbfbdf7508d4b4f7442fc3548a10f5a8",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\17\\2b\\172b54afc20efc454225cb5c6ecdda80293200668496f3f0cf58c8c7202aed40",
+          "repository_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-oblique.jpg",
+          "sha256": "172b54afc20efc454225cb5c6ecdda80293200668496f3f0cf58c8c7202aed40",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\91\\74\\91743f99beceeaf2b275a162039513e7ff33d4732f3eb8929e67cd026c014239",
+          "repository_path": "frontend/public/archetypes/buildings/deco_theater_mainstreet/autumn-v1-top.jpg",
+          "sha256": "91743f99beceeaf2b275a162039513e7ff33d4732f3eb8929e67cd026c014239",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\autumn-cinema-clay-v004.jpg",
+        "comparison_board_sha256": "5c51ef65f5bcc5d1726662cb97d74ebd540938872574784b1a609a908fdc2039",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": true,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "neighbourhood-library-clay-v003",
+      "expected_model_sha256": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Dark low envelope, broad planted roof, paired curved clerestory ridges and rooflights remain consistent with the exact library source.",
+        "Visible front base and entrance apron meet grade without a large gap."
+      ],
+      "unproven_relationships": [
+        "This camera faces the dark side; the defining timber-truss glazed gable is hidden. Its identity/contact relationship remains unreviewed in this capture."
+      ],
+      "recommended_supplemental_view": "Low oblique facing the large timber-truss glazed gable and its grade edge.",
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\neighbourhood-library-clay-v003.png",
+        "sha256": "567e3683d0fc7d6d0235e0cb67ecd43de51ec2601cf9153cc4f8a394d11f176d",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "044d13d4-4088-49e9-ad7a-4ba99d68aa5a",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\university-library\\variant_2.png",
+          "repository_path": "frontend/public/archetypes/buildings/university-library/variant_2.png",
+          "sha256": "dbff795881507ed296a2ca190bf6b6c7218544a98dcdbeef39da25ee19f7ec9b",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\04\\b6\\04b65811fdb3a5472214351a7018405711f13c8f3c89c20947c81e2d1bc5d702",
+          "repository_path": "frontend/public/archetypes/buildings/university-library/variant_2_angle_60.jpg",
+          "sha256": "04b65811fdb3a5472214351a7018405711f13c8f3c89c20947c81e2d1bc5d702",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\50\\37\\5037ce4f6c67f9d06892e64ae8b53be3e85b09875493a083b1039f24f6385969",
+          "repository_path": "frontend/public/archetypes/buildings/university-library/variant_2_angle_90.jpg",
+          "sha256": "5037ce4f6c67f9d06892e64ae8b53be3e85b09875493a083b1039f24f6385969",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\neighbourhood-library-clay-v003.jpg",
+        "comparison_board_sha256": "aa41ff357f79834c536eecc7fbe6f46dc900ca05ff1583dfa0caefad35d0cc9a",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": true,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "neighbourhood-corner-cafe-clay-v010",
+      "expected_model_sha256": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Chamfered corner, courtyard opening, two dormer tiers, chimney groups, pale courses and continuous green ground awning retain the source identity.",
+        "Visible front/corner base and ground-floor furnishings have no obvious whole-model floating or burial."
+      ],
+      "unproven_relationships": [
+        "The courtyard floor, rear contacts, awning underside and all roof junctions are not proved by this single view."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\neighbourhood-corner-cafe-clay-v010.png",
+        "sha256": "19914ff775237cbce0f8d6df28da1765695e3fb3b6b12b5d9c476d149621c08a",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "135288ed-ef8b-4384-be45-e6c3372fca5c",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\parisian_boulevard_corner\\variant_1.png",
+          "repository_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+          "sha256": "44a33ec2b53dd2e4eab9cbf9f14dd2f24db938a31fcd2d58cd14206501378fde",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\52\\37\\52376c0bbf60f5fd01c3628debf642318ee9fd4390202c44f81b97088145917c",
+          "repository_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1_angle_60.jpg",
+          "sha256": "52376c0bbf60f5fd01c3628debf642318ee9fd4390202c44f81b97088145917c",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\fc\\db\\fcdb62bcf9d787a973279e4b3beaa495e07f700e3aa75cdaf0b3a21d0ba023ab",
+          "repository_path": "frontend/public/archetypes/buildings/parisian_boulevard_corner/variant_1_angle_90.jpg",
+          "sha256": "fcdb62bcf9d787a973279e4b3beaa495e07f700e3aa75cdaf0b3a21d0ba023ab",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\neighbourhood-corner-cafe-clay-v010.jpg",
+        "comparison_board_sha256": "a95b1722fce3dc5ffcc77ffb5a539f53021a1242cf7e1c757d0ecfa138606ac4",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "victorian-station-interior-clay-v007",
+      "expected_model_sha256": "fd009321f395d1d17410997c392805a0bcb5c199f22038377d8cb7e39019faa7",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Long transparent iron barrel shed, occupied track/platform bands, low arcade frontage, paired gables and offset clock tower identify the selected station.",
+        "Visible front podium and arcade bases meet the prepared ground without an obvious suspended frontage."
+      ],
+      "unproven_relationships": [
+        "Clay transparency is visibly simpler than the reference; this overview is not a glazing-quality or full platform/stair-access review."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\victorian-station-interior-clay-v007.png",
+        "sha256": "9aeff2f6bbb42b825bc28b83708200943d3d615f29ef9e9cb420fa668230114a",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "e5cbc560-e995-4882-9603-0c2f457d2d6d",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\historic_grand_station\\variant_1.png",
+          "repository_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1.png",
+          "sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\99\\5b\\995b11e41e157ce95cce34c91a9b23b633f4f7058efad6c7a59d16d06e42c784",
+          "repository_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1_angle_60.jpg",
+          "sha256": "995b11e41e157ce95cce34c91a9b23b633f4f7058efad6c7a59d16d06e42c784",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\a3\\1e\\a31e8f92c8c0d20881a765642e489bd782238880a8fbe9c8bdf75739dcd7608e",
+          "repository_path": "frontend/public/archetypes/buildings/historic_grand_station/variant_1_angle_90.jpg",
+          "sha256": "a31e8f92c8c0d20881a765642e489bd782238880a8fbe9c8bdf75739dcd7608e",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\victorian-station-interior-clay-v007.jpg",
+        "comparison_board_sha256": "18709ba768b98dcb901a763adfcb1f512bf0db2e6e107897ef54d3689836257f",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "interior-school-clay-v003",
+      "expected_model_sha256": "179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Timber-framed facade, vertical planted strips, stepped planted terraces and smaller rooftop level match the selected school source arrangement.",
+        "Visible front apron and facade supports meet grade without an obvious air gap."
+      ],
+      "unproven_relationships": [
+        "The dark side elevation and interior occupied-level circulation are outside this view."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\interior-school-clay-v003.png",
+        "sha256": "b537a84d792de2f31fd0d32cf44ced361fbf5b4364d6ae36098cbe741d21609b",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "6a756fa9-e1af-42bf-ae83-7be5cca277da",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\university-academic-complex\\variant_2.png",
+          "repository_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2.png",
+          "sha256": "1d66a10b13ffc137e6cec7ce6c4f31a23c5d8e1f64bffa015729059d9398eab3",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\e4\\2a\\e42a6950bd166377be73ac393fbff42604dcf5742ff9d8f2ac4fbbc2693d5400",
+          "repository_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2_angle_60.jpg",
+          "sha256": "e42a6950bd166377be73ac393fbff42604dcf5742ff9d8f2ac4fbbc2693d5400",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\2b\\cb\\2bcb1121c2703848c0de19c6b0017c1cdc753decd554c64ebc6b7e3bc1caec6a",
+          "repository_path": "frontend/public/archetypes/buildings/university-academic-complex/variant_2_angle_90.jpg",
+          "sha256": "2bcb1121c2703848c0de19c6b0017c1cdc753decd554c64ebc6b7e3bc1caec6a",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\interior-school-clay-v003.jpg",
+        "comparison_board_sha256": "b64e2a30dca080a60537798836e2e9e742cc94164e44453a21fde2f7cb25fc5a",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "interior-hotel-clay-v006",
+      "expected_model_sha256": "dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Light courtyard block, terracotta roof, open roof/loggia cutouts, balcony bands, planting and pool edge remain consistent with the locked hotel source.",
+        "Visible front apron and columns/wall bases meet ground; the visible pool edge is attached to the model."
+      ],
+      "unproven_relationships": [
+        "Roof cutouts are consistent with the source top image; their hidden contact details and all interior/upper-floor routes remain unreviewed here."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\interior-hotel-clay-v006.png",
+        "sha256": "f6ddb595ed8255f2f9a7e291d4faeb39ddc6166cd03cd1cb184fa524aa77f320",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "ab6aa3ee-8328-49f5-b89f-00941d1d183a",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\boutique-hotel\\variant_1.png",
+          "repository_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1.png",
+          "sha256": "1f126e400d9312467d5fc7febe0eb29a7a9471b001e424472814b4acfe08eee4",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\b6\\11\\b611dfd6dec268171bdd8f7c3f9493712f3d7a4dea349105fcbb6fbaf1532c82",
+          "repository_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1_angle_60.jpg",
+          "sha256": "b611dfd6dec268171bdd8f7c3f9493712f3d7a4dea349105fcbb6fbaf1532c82",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\46\\61\\46610892dfcc44d36f036ba84709abcb8f81b06945f1a8bd439fa15076180de7",
+          "repository_path": "frontend/public/archetypes/buildings/boutique-hotel/variant_1_angle_90.jpg",
+          "sha256": "46610892dfcc44d36f036ba84709abcb8f81b06945f1a8bd439fa15076180de7",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\interior-hotel-clay-v006.jpg",
+        "comparison_board_sha256": "ed6fc7349e0b12fa02be6729e16fab14ba0249132a98168fb454f83e6eed0bb1",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "brick-corner-grocery-clay-v002",
+      "expected_model_sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Two-storey brick-colored shop, three upper windows on the viewed elevation, large lower glazing and Depanneur Lalonde sign retain the exact store identity.",
+        "Visible door thresholds and storefront base meet ground without an obvious float or buried lower storey."
+      ],
+      "unproven_relationships": [
+        "The head-on camera limits the chamfered corner-entry and second storefront elevation review."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\brick-corner-grocery-clay-v002.png",
+        "sha256": "415fd1ecf6c9a0196e89f90a712de55692c5532590d38c9a5780c90f3308648d",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "08944f4c-b5a8-498e-b3ca-411881f1fbae",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\montreal-depanneur\\variant_3.png",
+          "repository_path": "frontend/public/archetypes/buildings/montreal-depanneur/variant_3.png",
+          "sha256": "0f8ad0364ecc686bf632e49544efd4f7a3192294dab8cb1f7d149e23eaf53e8b",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\fe\\43\\fe4317678836b834a283e3bafdb7d93622ec69463e7f4b11d4fad10c365de6f1",
+          "repository_path": "frontend/public/archetypes/buildings/montreal-depanneur/variant_3_angle_60.jpg",
+          "sha256": "fe4317678836b834a283e3bafdb7d93622ec69463e7f4b11d4fad10c365de6f1",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\bf\\1b\\bf1bde53274f4853992fe8d50000998af1c6a1802b8af3ff52644b0e60c1c922",
+          "repository_path": "frontend/public/archetypes/buildings/montreal-depanneur/variant_3_angle_90.jpg",
+          "sha256": "bf1bde53274f4853992fe8d50000998af1c6a1802b8af3ff52644b0e60c1c922",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\brick-corner-grocery-clay-v002.jpg",
+        "comparison_board_sha256": "eed441095a19417538c4304eaf8f5d54179383357a48008cb82b65928099d961",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "clerestory-neighbourhood-hall-clay-v002",
+      "expected_model_sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Broad projecting roof, slender dark posts, light wall volume and attached lower wing are consistent with the source hall.",
+        "Visible posts terminate on the apron and the apron meets the prepared ground; no disconnected supports are apparent."
+      ],
+      "unproven_relationships": [
+        "High roof-facing camera masks the clerestory band and main lobby. Positive closure of those signature features needs a lower entrance-corner view."
+      ],
+      "recommended_supplemental_view": "Lower entrance-corner view exposing clerestory glazing, lobby and post feet together.",
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\clerestory-neighbourhood-hall-clay-v002.png",
+        "sha256": "48a50afdb4248766a9e6e05b0a4ab207f172501a263c44710cf337bd22e59dfe",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "20803b21-dfea-4961-ac47-15abeae985d5",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\civic_modernism_rec_centre\\variant_2.png",
+          "repository_path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_2.png",
+          "sha256": "fa24826d3490cefbf1bc41c3afe686a9d8f9f402bcf6977c05def4f3476864d4",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\6e\\d4\\6ed4d4b0837b081149f9acd70be63e453815241e96beaca5d569bfb25c5626de",
+          "repository_path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_2_angle_60.jpg",
+          "sha256": "6ed4d4b0837b081149f9acd70be63e453815241e96beaca5d569bfb25c5626de",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\ca\\c2\\cac22164b514e6229742c1dc04803897ce9750b8c512d6aead2814108eb7aa7d",
+          "repository_path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_2_angle_90.jpg",
+          "sha256": "cac22164b514e6229742c1dc04803897ce9750b8c512d6aead2814108eb7aa7d",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\clerestory-neighbourhood-hall-clay-v002.jpg",
+        "comparison_board_sha256": "4c5b6c43294417f089d757dba09af9474b49a1ee992d9581d42a5063039314a7",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": true,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "log-recreation-cabin-clay-v002",
+      "expected_model_sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Broad flared pitched roof, offset chimney, full-width porch, four front posts and central steps preserve the cabin massing.",
+        "Visible post feet sit on the porch, and the central steps appear to join the prepared ground."
+      ],
+      "unproven_relationships": [
+        "The roof hides the log front wall, windows and door. A low front-corner view is needed to inspect that signature facade and porch-to-door contact."
+      ],
+      "recommended_supplemental_view": "Low front-corner view below the porch roof showing log wall, door, post feet and complete stair.",
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\log-recreation-cabin-clay-v002.png",
+        "sha256": "bc828403f98829540796f0b5d548988cb660ee6593b1dd00ec33564698f020b1",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "9873f6df-a4da-4ab6-b32b-c9195e1975e5",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\parkitecture_recreational\\variant_1.png",
+          "repository_path": "frontend/public/archetypes/buildings/parkitecture_recreational/variant_1.png",
+          "sha256": "bd7a456bb9d485ea5138ce38a3740d25556b6557bb1d25eba03c330a116b65b6",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\73\\c3\\73c3539683ebc6a8bbbe565bd56adbe1750624508b1741ec68f48af7b649c2cd",
+          "repository_path": "frontend/public/archetypes/buildings/parkitecture_recreational/variant_1_angle_60.jpg",
+          "sha256": "73c3539683ebc6a8bbbe565bd56adbe1750624508b1741ec68f48af7b649c2cd",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\b8\\f9\\b8f917cf97105c5a5ca851a00c0a7186a5d0c705a1d09ebbd96e9d0af2900630",
+          "repository_path": "frontend/public/archetypes/buildings/parkitecture_recreational/variant_1_angle_90.jpg",
+          "sha256": "b8f917cf97105c5a5ca851a00c0a7186a5d0c705a1d09ebbd96e9d0af2900630",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\log-recreation-cabin-clay-v002.jpg",
+        "comparison_board_sha256": "17d205443f9663af3e4948041c1cf0d08dda511e4b2168eac68dea22033bbc74",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": true,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "prairie-neighbourhood-shops-clay-v002",
+      "expected_model_sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Long one-storey strip, sloped perimeter fascia, four storefront bays and rooftop equipment preserve the source shops arrangement.",
+        "Visible storefront bases meet grade without a continuous floating edge or gross burial."
+      ],
+      "unproven_relationships": [
+        "High camera hides most tenant signs beneath the eave and gives limited entrance detail. A lower frontage view is needed for sign/door review."
+      ],
+      "recommended_supplemental_view": "Low frontage view showing all four signs and door thresholds beneath the eave.",
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\prairie-neighbourhood-shops-clay-v002.png",
+        "sha256": "d655dcb8a9115efefc518292b9a893f8068d24008535e80fa7dca7b059a25697",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "ef498040-9e1d-4cfb-b7d6-6fbe85ba726c",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\commercial-strip-mall\\variant_3.png",
+          "repository_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_3.png",
+          "sha256": "eab9758532974146e926c9e26339d5659fa669ec57f3b5182e584a1ee6bb83eb",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\87\\f8\\87f88777fbe5aa1af1785e8335c4cc7a71325cc8c1c07f18c20fe56b8790c7f6",
+          "repository_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_3_angle_60.jpg",
+          "sha256": "87f88777fbe5aa1af1785e8335c4cc7a71325cc8c1c07f18c20fe56b8790c7f6",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\13\\f9\\13f9fc6460fe11f9394d4cee99f7e4ddb27d2de07ab8b2639b8e81faf015cb32",
+          "repository_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_3_angle_90.jpg",
+          "sha256": "13f9fc6460fe11f9394d4cee99f7e4ddb27d2de07ab8b2639b8e81faf015cb32",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\prairie-neighbourhood-shops-clay-v002.jpg",
+        "comparison_board_sha256": "b4d35959a22196b60ce7570d27e4ef90534136eb402dd6060efdca9aca6b5863",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": true,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    },
+    {
+      "candidate": "inglewood-corner-merchants-clay-v003",
+      "expected_model_sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f",
+      "reviewer": "Codex independent frontend_release_checks agent",
+      "review_date": "2026-10-07",
+      "review_type": "scoped_runtime_visual",
+      "decision": "category_closure_only",
+      "observed_p0": 0,
+      "observed_p1": 0,
+      "blockers": [],
+      "category_results": {
+        "visible_source_massing": "consistent_with_locked_references",
+        "visible_ground_contact": "no_obvious_gap_or_burial_in_visible_area",
+        "obvious_runtime_regression": "none_observed"
+      },
+      "pixel_observations": [
+        "Two-storey red-brick-colored commercial frontage, central upper balcony, arched openings, merchandise sign band and parapet posts preserve the source identity.",
+        "Visible ground-storey facade base meets ground; balcony supports remain connected in the visible projection."
+      ],
+      "unproven_relationships": [
+        "The second corner elevation, rear entry and roof parapet detail are not fully proved by this front view."
+      ],
+      "recommended_supplemental_view": null,
+      "capture": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\inglewood-corner-merchants-clay-v003.png",
+        "sha256": "d462c9467be0df6aa3ec743868c5d3439a7850a3dcd59ebc522e3e6b993b7e3e",
+        "dimensions": [
+          1280,
+          656
+        ]
+      },
+      "zone_id": "c71580f9-9594-4195-974a-a4c5849007d6",
+      "locked_references": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\render-readiness-2026-10-07\\assets-final\\public\\archetypes\\buildings\\inglewood-heritage-brick-commercial\\variant_2.png",
+          "repository_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2.png",
+          "sha256": "5a00e70334f19ac624228547cadec8cebc412846f9adc5fd15c8171fde553921",
+          "dimensions": [
+            1024,
+            768
+          ]
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\18\\5f\\185fad19db2063758faeb94acfce91cf6896a739a04340c7a981f26cd6e5ba57",
+          "repository_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2_angle_60.jpg",
+          "sha256": "185fad19db2063758faeb94acfce91cf6896a739a04340c7a981f26cd6e5ba57",
+          "dimensions": [
+            1195,
+            896
+          ]
+        },
+        {
+          "role": "top",
+          "path": "C:\\Users\\andre\\OneDrive\\Documents\\CityPrompt\\.git\\lfs\\objects\\2b\\0f\\2b0fe2c8d0443c0a90aaae5af1459c58a908f01b81e76bfb9f38f9d7e4a4fbe1",
+          "repository_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2_angle_90.jpg",
+          "sha256": "2b0fe2c8d0443c0a90aaae5af1459c58a908f01b81e76bfb9f38f9d7e4a4fbe1",
+          "dimensions": [
+            1195,
+            896
+          ]
+        }
+      ],
+      "inspection": {
+        "comparison_board": "C:\\dev-artifacts\\CityPrompt\\model-release-trial-2026-10-07\\independent-review-boards\\inglewood-corner-merchants-clay-v003.jpg",
+        "comparison_board_sha256": "bcd56fe100e9f7511739366e9c8918099449fba6666540b29a9a4b33b5f1d6ea",
+        "capture_panel_dimensions": [
+          1280,
+          656
+        ],
+        "reference_panels": "All three exact source images scaled to fit 422x420 comparison cells without cropping",
+        "original_png_reopened_at_native_resolution": false,
+        "board_inspected": true
+      },
+      "scope_exclusions": [
+        "hidden contacts and elevations",
+        "whole-building keeper fidelity",
+        "walking and circulation",
+        "actual download action",
+        "occluded-capture pair",
+        "full ground-support or terrain certification",
+        "activation/publication approval"
+      ]
+    }
+  ]
+}

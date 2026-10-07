@@ -98,6 +98,16 @@ Run one reviewed pilot first, verify remote bytes, placement and save/reload, th
 
 Do not use `scripts/validation_runtime.py` or the loopback-only classroom seed scripts against Render. A `/ready` success verifies dependencies and workers, but deliberately does not certify every private Model Library asset in this full-catalogue profile. Read back each selected remote GLB and compare its hash and model row explicitly.
 
+The read-only verifier now automates that check for every current base Model Library selection. Run it from the reviewed checkout with explicit target `DATABASE_URL`, `S3_ENDPOINT_URL`, `S3_BUCKET_NAME`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`, and optionally `S3_REGION` environment variables. It does not infer a target from desktop dotenv files, seed data, change publication flags, or write to the database/bucket.
+
+```sh
+python backend/scripts/verify_hosted_catalogue.py --metadata-only --report roster.json
+python backend/scripts/verify_hosted_catalogue.py --verify-target --report private-models.json
+node frontend/scripts/check-catalogue-delivery.mjs --base-url=https://YOUR-STAGING-FRONTEND --model-library-report=private-models.json --report=delivery.json
+```
+
+Run the delivery audit within ten minutes of the storage verification. The verifier checks every eligible public assembly alias, exact model bytes, native dimensions and anonymous-access denial. It fails closed for missing/stale bindings and `local_trial_only` selections. A good private-object hash does not close a publication review. Native frontend GLBs are checked by the delivery audit; optional alternate-storey modules require their separate checks. The Docker image does not include the seed library manifest: use this checkout, or pass an explicitly mounted reviewed manifest with `--library`.
+
 Existing student accounts/projects and private media need a separate, backed-up migration or use of the existing production database/bucket during the eventual coordinated upgrade. Deploying Git alone does not transfer local projects, reference photos or user balances. Staging uses separate data.
 
 ## Staging acceptance and live cutover
@@ -154,3 +164,13 @@ Evidence and generated builds are outside Git under `C:/dev-artifacts/CityPrompt
 | Inglewood Corner Merchants | `inglewood-corner-merchants-clay-v003` |
 
 This list is a source-record inventory, not a new visual quality judgment. Reconcile each existing review before remote publication.
+
+## Model and image follow-up
+
+Six landmark catalogue cards referenced obsolete parent photographs while the delivery audit checked different conditioning images. Exact RLASM cards now select the current candidate's locked reference; the audit checks the photograph actually displayed and retains the separate conditioning-image check. The corrected asset packet includes **133 choices, 437 distinct dependencies and 2,471 public files (879,155,156 bytes)**. All delivery checks pass. These figures supersede the earlier 404-dependency packet above.
+
+Fresh verification: 79 focused frontend tests, 17 Node delivery tests, 21 verifier tests, TypeScript and touched-file ESLint/Ruff passed. Independent source review found no actionable regression. The production build and existing bundle budgets also pass (initial JS 470.6 KiB, total JS 8,437.9 KiB). This build used placeholder browser configuration and reports dirty source; it is a build rehearsal, not a deployable production artifact. Rebuild the clean release commit with actual staging configuration.
+
+All 49 current private models passed exact local DB/storage readback; 19 remain publication-blocked solely by their local-trial flags. All 19 candidate photographs decoded in the app. A disposable local project mounted, saved and reopened all 19; 57 live compiler requests covered minimum, maximum and rejected undersized plots with native scale retained. Nineteen close captures received a bounded independent visual review. The test scene was assembled partly with developer/API fixtures, not entirely through student controls.
+
+The [publication audit](MODEL_PUBLICATION_AUDIT_2026-10-07.md) and [scoped visual review](runtime-reviews/model-release-2026-10-07.json) record exact evidence and remaining limits. Download automation did not confirm completion, close/occluded pairs and some ground/entrance angles remain open, and this pass does not certify walking everywhere or classroom performance. Publication flags and model geometry were not changed. Local evidence is under `C:/dev-artifacts/CityPrompt/model-release-trial-2026-10-07/`; the corrected packet and build are `assets-model-fix` and `dist-model-fix` under the Render readiness evidence directory.
