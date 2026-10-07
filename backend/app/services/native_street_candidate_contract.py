@@ -24,6 +24,11 @@ from app.services.public_realm_lego import (
 
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 _ID = re.compile(r"[a-z][a-z0-9_]*\Z")
+_SURFACE_PATH_WIDTHS = {
+    'garden_gravel_path_v1': 1.5, 'concrete_neighbourhood_walk_v1': 1.8,
+    'brick_courtyard_path_v1': 2.0, 'timber_garden_walk_v1': 2.0,
+    'asphalt_shared_path_v1': 3.0,
+}
 _APPEARANCE_BY_FINISH = {
     "pavers": "heritage_brick_stone",
     "brick": "heritage_brick_stone",
@@ -69,7 +74,12 @@ def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canal
             raise ValueError(f"{pilot_id} is not an unpublished candidate with a trusted street parent")
         width = float(row["widthM"])
         sections = row["sections"]
-        if not 5 <= width <= 60 or not isinstance(sections, list) or not sections:
+        surface_path = pilot_id in _SURFACE_PATH_WIDTHS
+        if surface_path and (width != _SURFACE_PATH_WIDTHS[pilot_id]
+                            or row.get('program', {}).get('adapter') != 'narrow-pathway-v1'
+                            or row.get('placements') != []):
+            raise ValueError(f'{pilot_id} has an invalid surface-only pathway contract')
+        if not (width == _SURFACE_PATH_WIDTHS[pilot_id] if surface_path else 5 <= width <= 60) or not isinstance(sections, list) or not sections:
             raise ValueError(f"{pilot_id} has an invalid metric section")
         edge = -width / 2
         for band in sections:
@@ -96,7 +106,7 @@ def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canal
                 raise ValueError(f'{pilot_id} has a changed executable program')
             locks.append(('program', digest))
         modules = row["modules"]
-        if not isinstance(modules, dict) or not modules:
+        if not isinstance(modules, dict) or (not modules and not surface_path):
             raise ValueError(f"{pilot_id} has no native modules")
         for kind, module in sorted(modules.items()):
             if not _ID.fullmatch(kind) or module["url"] != f"/street-kits/pilots/{pilot_id}/{kind}.glb":

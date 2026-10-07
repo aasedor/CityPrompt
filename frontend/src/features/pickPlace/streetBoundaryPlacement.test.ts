@@ -4,7 +4,7 @@ import { metersPerDegLon,METERS_PER_DEG_LAT } from '@/components/viewer/mapEngin
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { placementProblem,rectangleAt } from './geometry';
 import { CALGARY_LOCAL_PLACEMENT } from './streetPlacement';
-import { snapStreetBoundaryPlacement } from './streetBoundaryPlacement';
+import { snapStreetBoundaryPlacement, streetBoundaryEditCoordinates } from './streetBoundaryPlacement';
 import { streetDrawingGeometry } from './streetDrawingGeometry';
 import { streetCoordinateUpdate } from './streetPlacement';
 const ll=(x:number,y:number)=>[-114+x/metersPerDegLon(51),51+y/METERS_PER_DEG_LAT];
@@ -12,6 +12,18 @@ const site={id:'site',zone_type:'site_boundary',coordinates:rectangleAt(ll(0,0),
 const asset=CALGARY_LOCAL_PLACEMENT,width=asset.sectionWidth;
 const street=(x:number):SiteZone=>{const points=[ll(x,-40),ll(x,40)];return {id:'road',zone_type:'road',project_id:'',color:'',sort_order:0,created_at:'',updated_at:'',coordinates:bufferLineToPolygon(points,width),properties:{...asset.properties,plan_centerline:points,plan_route_controls:points}};};
 describe('street full-width boundary placement',()=>{
+ it('preserves sparse bend handles through boundary validation and the coordinate-save pipeline',()=>{
+  const original=street(0);
+  const controls=[ll(0,-40),ll(5,-15),ll(0,10),ll(10,40)];
+  const edited=streetCoordinateUpdate(original,bufferLineToPolygon(controls,width));
+  const preview=snapStreetBoundaryPlacement({...original,...edited},[original],site);
+  const saved=streetCoordinateUpdate(original,streetBoundaryEditCoordinates(original,preview));
+  expect(preview.problem).toBeNull();
+  expect(saved.properties?.plan_route_controls).toEqual(edited.properties?.plan_route_controls);
+  expect(saved.properties?.plan_centerline).toEqual(edited.properties?.plan_centerline);
+  expect((saved.properties?.plan_route_controls as number[][]).length).toBe(4);
+  expect((saved.properties?.plan_centerline as number[][]).length).toBeGreaterThan(4);
+ });
  it.each([2,-1])('snaps a side edge with signed gap %s and carries both route records',gap=>{
   const zone=street(100-width/2-gap),before=JSON.stringify(zone),result=snapStreetBoundaryPlacement(zone,[zone],site);
   expect(result.problem).toBeNull();expect(placementProblem(result.coordinates,[],site)).toBeNull();

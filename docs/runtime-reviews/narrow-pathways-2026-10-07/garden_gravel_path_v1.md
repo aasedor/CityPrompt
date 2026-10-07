@@ -1,23 +1,23 @@
-# Runtime integration review — <archetype / exact variant>
+# Runtime integration review — Garden gravel path / garden_gravel_path_v1
 
 Copy this template into the candidate evidence package. Complete it using
-[Runtime integration for every archetype](ARCHETYPE_RUNTIME_INTEGRATION.md).
-The [Currie three-type rehearsal](CLASSROOM_CATALOGUE_ENTRY_REHEARSAL_2026-09-20.md)
+[Runtime integration for every archetype](../../ARCHETYPE_RUNTIME_INTEGRATION.md).
+The [Currie three-type rehearsal](../../CLASSROOM_CATALOGUE_ENTRY_REHEARSAL_2026-09-20.md)
 shows how to keep scene-level passes separate from exact-variant untested gates.
 Replace this relative link with the repository document path if copied elsewhere.
-Default status is NOT TESTED. Do not prefill a pass from another archetype.
+Unfilled gates remain NOT TESTED. Shared automated evidence is separated from live exact-variant checks. See ../../NARROW_PATHWAYS_2026-10-07.md for the bounded live scope.
 
 ## Candidate and scope
 
-- Kind: building / street or path / park or open space
-- Archetype ID and exact variant ID:
-- Model SHA-256 or procedural recipe ID/revision/hash:
-- Runtime source commit and integration-checklist version:
-- Reviewer, date, project URL, viewport/device/input:
+- Kind: street or path; surface-only pedestrian concept
+- Archetype ID and exact variant ID: multi_use_trail / garden_gravel_path_v1
+- Model SHA-256 or procedural recipe ID/revision/hash: program 766febb0811916ff3f5cd8d84c93c7812ba60f74107f7a81a3c631259be9eda5; assembly/source 53d98bede5cadbf62fe5c36d2d7232291565fae3aaee44c313564695e4f087fd (procedural JSON, no GLB).
+- Runtime source commit and integration-checklist version: base 3612e1cac + codex/five-narrow-pathways-2026-10-07; checklist updated 2026-10-07.
+- Reviewer, date, project URL, viewport/device/input: Codex agent simulation; 2026-10-07; http://127.0.0.1:5181/projects/d7eb67d6-11a5-41ad-84d8-c48872fbb465; Windows Chromium 1280x720, mouse/keyboard.
 - Vacant test site, protected reference, disposable test project:
 - Mixed-scene project and separate oversized-candidate project, if applicable:
-- Supported plot dimensions, axes/base datum, reshape/repetition behavior:
-- Supported terrain modes and connection capabilities:
+- Supported plot dimensions, axes/base datum, reshape/repetition behavior: fixed 1.5 m clear width; UI minimum 2 m, maximum 300 m route. X across, Y along, Z up; 0.025 m surface lift; 6 m repeat fixture; drawn centreline bends.
+- Supported terrain modes and connection capabilities: prepared level only. Automated perpendicular T-junction checks for this exact variant passed. Slopes and mapped public-road joins are NOT TESTED.
 - Public-realm detail: metric plant height/footprint, paving scale, instance/texture budgets, and native close/aerial evidence:
 - Replacement furniture: complete mesh envelope/base datum, legacy-asset flag independence, component and in-site evidence:
 - Vegetation: canopy envelope, seeded prototype/triangle budget, furniture-scale comparison and route/entrance visibility:
@@ -25,10 +25,10 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 - Sports: sourced playing dimensions, full run-off/equipment reserve, measured net/rim heights, open gates, crown clearance and non-coplanar floor finishes; separate recreational adaptations:
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules:
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations:
-- Asset review status and separate publication/activation status:
-- Model Library storage check, configured bucket and result (building GLBs):
+- Asset review status and separate publication/activation status: candidate; local trial active as requested; human visual decision pending; not published.
+- Model Library storage check, configured bucket and result (building GLBs): N/A, procedural surface recipe; no building GLB/bucket.
 - Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence:
-- Evidence manifest location and hashes; durable shared location for delivery:
+- Evidence manifest location and hashes; durable shared location for delivery: ../../NARROW_PATHWAYS_2026-10-07.json; screenshots/API readbacks remain local external evidence, not published.
 
 ## Gates
 
@@ -37,7 +37,7 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 
 | Gate | Status | Evidence / limitation / next action |
 | --- | --- | --- |
-| C1 Exact identity | NOT TESTED | |
+| C1 Exact identity | PASS | Exact catalogue option, recipe locks, HTTP hero hash, saved variant and reload inspected; manifest records hashes. |
 | C2 Dimensions and transformations | NOT TESTED | |
 | C3 Full footprint ground support | NOT TESTED | |
 | C4 Freshness and late results | NOT TESTED | |
@@ -46,19 +46,19 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 | C7 Failure and recovery | NOT TESTED | |
 | C8 Low/aerial views, exact capture and any AI-image comparison | NOT TESTED | Same-camera source/output; count, outline, location, scale, access, material/function, additions; pass/review/fallback |
 | C9 Student controls and supported inputs | NOT TESTED | |
-| B1 Native placement | NOT TESTED | |
-| B2 Measured entrance evidence | NOT TESTED | |
-| B3 Entrance authoring | NOT TESTED | |
-| B4 Approach and setback recovery | NOT TESTED | |
-| B5 Foundation/stair/access design review | NOT TESTED | |
-| S1 Metric section | NOT TESTED | |
+| B1 Native placement | N/A | Surface-only path; no building or park programme. |
+| B2 Measured entrance evidence | N/A | Surface-only path; no building or park programme. |
+| B3 Entrance authoring | N/A | Surface-only path; no building or park programme. |
+| B4 Approach and setback recovery | N/A | Surface-only path; no building or park programme. |
+| B5 Foundation/stair/access design review | N/A | Surface-only path; no building or park programme. |
+| S1 Metric section | PASS | 1.5 m section, graph and footprint width; zero motor lanes/curbs/modules; automated exact-variant geometry checks. |
 | S2 Route and junction topology | NOT TESTED | |
 | S3 Shared grade and public connection | NOT TESTED | |
 | S4 Clearance and target identity | NOT TESTED | |
-| P1 Exact program and rigid amenities | NOT TESTED | |
-| P2 Shared park terrain | NOT TESTED | |
-| P3 Automatic remeasurement | NOT TESTED | |
-| P4 Park access and grade review | NOT TESTED | |
+| P1 Exact program and rigid amenities | N/A | Surface-only path; no building or park programme. |
+| P2 Shared park terrain | N/A | Surface-only path; no building or park programme. |
+| P3 Automatic remeasurement | N/A | Surface-only path; no building or park programme. |
+| P4 Park access and grade review | N/A | Surface-only path; no building or park programme. |
 
 ## Bounded live matrix
 
@@ -91,7 +91,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Interrupted navigation or measurement | NOT TESTED | |
 | Failed/conflicting save; retry without lost edits | NOT TESTED | |
 | Boundary exclusion: readable object labels and unchanged saved geometry | NOT TESTED | |
-| Save/reload/reopen; exact persisted identity | NOT TESTED | |
+| Save/reload/reopen; exact persisted identity | PASS | Drawn using catalogue; all five persisted and reappeared after browser reload. API readback in five-paths-after-edit.json. |
 | Generate to 3D: panel recipe matches locked compiler; reload and inspect visible models | NOT TESTED | |
 | Capture blocked while stale, then succeeds | NOT TESTED | |
 | Site landscape compatibility | NOT TESTED | Continuous custom base stays below the archetype; trees respect complete plot and access. Move or route/variant edit invalidates; Undo/Redo/reload/export retain the correct result. Verify surrounding-tile colour feathering and ground-height seams separately. Custom artwork cannot cover objects or export before loading. |
@@ -144,9 +144,9 @@ access to the native door. These design checks remain open after export.
 
 ## Classroom impact
 
-- Participant: actual novice / instructor / agent simulation:
+- Participant: actual novice / instructor / agent simulation: agent simulation only; no student acceptance claim.
 - Empty-project UI authoring, retries, save waits and ordinary recovery:
-- Developer/API intervention (read-only verification separately):
+- Developer/API intervention (read-only verification separately): server setup/catalogue installation; QA login recovery; read-only zone API verification. All path geometry authored using normal UI controls.
 - Prerequisites discoverable using actual control labels:
 
 An agent simulation is a provisional prototype checkpoint while students are
@@ -179,8 +179,8 @@ recipes and the preview assembly separately. Record material-aware route ray
 checks on the reimported GLB, full-envelope bounds and static/instance budgets.
 These checks cannot prefill runtime terrain, access or edit/recovery passes.
 
-- Focused test commands/results and reused shared-test evidence:
-- Type-check/lint or relevant backend/compiler checks for source changes:
+- Focused test commands/results and reused shared-test evidence: 163 frontend tests, 21 backend tests; exact variants covered in narrowPathways.test.ts and test_narrow_pathways.py.
+- Type-check/lint or relevant backend/compiler checks for source changes: npm run type-check PASS; native street registry parity check PASS.
 - Console/network failures and recovery:
 - Original fixture preservation and final disposable-project state:
 - Oblique sky/ground-gap distinction; fallback excluded from picking/support:
@@ -191,10 +191,14 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Report route evidence matches the scene; stale evidence rejected; absent evidence remains uncertain:
 - Connected bend/body/section edit retains every renderable T/X patch; neighbours unchanged:
 - Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
-- Open failures, untested advertised features, owner and next bounded action:
-- Runtime integration decision: NOT REVIEWED
-- Asset visual decision (separate): NOT REVIEWED
-- Publication/activation authorization (separate; cite actual authorization):
+- Open failures, untested advertised features, owner and next bounded action: see batch report. Next bounded instructor trial: slopes only after support is implemented, failed-save recovery, full walk traversal and actual export download. No slope support advertised.
+- Runtime integration decision: provisional local prepared-level trial; full classroom matrix remains open.
+- Asset visual decision (separate): agent reviewed native overview; instructor review pending.
+- Publication/activation authorization (separate; cite actual authorization): user requested five pathways in Streets; local implementation only. No push or publication requested.
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot
 alone is not student-ready acceptance. Do not invent a review or approval.
+
+## Exact-variant observation
+
+One-path pilot visually reviewed before adding the other four. Joined to planted shared lane, then concrete joined to this path. Initial pre-fix bend edit expanded six control handles into sampled points. That fixture remains saved with 19 sampled points; the subsequent sparse-control fix is verified on concrete, not retroactively claimed for this fixture.

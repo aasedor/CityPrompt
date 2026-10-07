@@ -364,6 +364,46 @@
       "variantId": "elevated_rail_transit_corridor_v0",
       "revision": "4192e4b060c89bb0cd5b867321f0061cb4f594c880fc3e25c54d82a5fc3762a7",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "multi_use_trail",
+      "variantId": "garden_gravel_path_v1",
+      "revision": "53d98bede5cadbf62fe5c36d2d7232291565fae3aaee44c313564695e4f087fd",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "campus_pedestrian_spine",
+      "variantId": "concrete_neighbourhood_walk_v1",
+      "revision": "cbfa6d72b1b1b7aac8c842fcca64e78a122da99625ed675fa5e447ff88002e9c",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "campus_pedestrian_spine",
+      "variantId": "brick_courtyard_path_v1",
+      "revision": "987de3477b8a9bc658c9456ee4b5593a5e07648a118c620506be518ea7cab575",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "halifax_waterfront_boardwalk",
+      "variantId": "timber_garden_walk_v1",
+      "revision": "cdd6ef784f8c1351018ec472e5464f10f0e9f4caeae62237743095b0b4aa6634",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "multi_use_trail",
+      "variantId": "asphalt_shared_path_v1",
+      "revision": "d09c9368796449954516e0c5e6790857a84bb6465525cb60a14de789bb42d6e3",
+      "status": "local-pilot-runtime-pending"
     }
   ],
   "dependencies": [

@@ -5,7 +5,7 @@ import {
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
@@ -109,6 +109,15 @@ function registeredSupplement(asset: CatalogueAsset): CatalogueAsset {
 }
 export const CANONICAL_CHOICES: CanonicalChoice[] = [
   ...resolvedRoster.choices,
+  ...PATHWAY_ASSETS.map(registeredSupplement).map(asset => ({
+    id: `street_pathway:${asset.properties.road_archetype_id}:${asset.model.variantId}`,
+    domain: 'street_pathway' as const, placements: [asset], option: {
+      id: String(asset.properties.road_archetype_id), label: asset.label,
+      description: asset.description, photoUrl: asset.thumbnail,
+      calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+      variants: [{ id: asset.model.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }],
+    },
+  })),
   ...FLEXIBLE_PARK_ASSETS.map(registeredSupplement).map(asset => {
     const source = CANONICAL_DOMAINS.park_plaza.find(option => option.id === asset.properties.green_space_archetype_id);
     if (!source) throw new Error(`Missing park reference for ${asset.id}`);

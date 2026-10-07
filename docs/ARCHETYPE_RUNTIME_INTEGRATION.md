@@ -127,6 +127,14 @@ oversized → valid transitions and retry/edit recovery. The BRT crash reproduce
 and repaired on 1 October 2026 also applies to canal, bridge, tram and elevated
 rail previews; their authored length and station limits remain in force.
 
+Surface-only pedestrian routes must explicitly declare zero motor lanes. Verify
+the same narrow width in the footprint, graph, section and capture; a missing
+lane count can silently widen a non-trail parent to two vehicle lanes. After a
+bend passes boundary snapping, preserve its sparse editing controls through the
+coordinate-save pipeline rather than feeding the sampled curve back as handles.
+The October 7 narrow-pathway pilot verifies these two cases, including a path
+junction and concrete-path bend edit/Undo/Redo/reload.
+
 For local natural-ground recovery, a ready interactive snapshot may include
 `excludedCells`. All variants must use shared `heightAt` and reject null throughout
 their footprint/face; never interpolate `snapshot.heights` directly, span an

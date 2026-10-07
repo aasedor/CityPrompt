@@ -40,7 +40,7 @@ import { specialistConnectionProblem } from '@/features/pickPlace/specialistConn
 import { snapConnectedStreetEdit, streetEditConnectionCheck } from '@/features/pickPlace/streetEditConnections';
 import { isAxiosError } from 'axios';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
-import { snapStreetBoundaryPlacement } from '@/features/pickPlace/streetBoundaryPlacement';
+import { snapStreetBoundaryPlacement, streetBoundaryEditCoordinates } from '@/features/pickPlace/streetBoundaryPlacement';
 import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
 import type { PlacementDraft } from '@/features/pickPlace/GlobePlacementPreview';
 import { generatedPlacementDraft, placementDraftProperties } from '@/features/pickPlace/generatedPlacement';
@@ -367,7 +367,7 @@ export function ProjectViewPage() {
     if (zone?.zone_type === 'road') {
       const snapped = snapStreetBoundaryPlacement({ ...zone, ...streetCoordinateUpdate(zone, coordinates) }, siteZones, getActiveSiteBoundary(siteZones));
       if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
-      coordinates = snapped.coordinates;
+      coordinates = streetBoundaryEditCoordinates(zone, snapped);
     }
     if (zone && ['building', 'residential', 'green_space'].includes(zone.zone_type)) {
       const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId,zone.properties);

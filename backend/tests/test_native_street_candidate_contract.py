@@ -77,6 +77,8 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         'student_elevated_garden_rail_v1',
         'skytrain_elevated_corridor_v0',
         'elevated_rail_transit_corridor_v0',
+        'garden_gravel_path_v1', 'concrete_neighbourhood_walk_v1',
+        'brick_courtyard_path_v1', 'timber_garden_walk_v1', 'asphalt_shared_path_v1',
     }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()

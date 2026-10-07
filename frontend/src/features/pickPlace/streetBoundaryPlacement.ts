@@ -1,9 +1,19 @@
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { parsePersistedCenterline } from '@/utils/roadGeometry';
+import { bufferLineToPolygon, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { placementProblem } from './geometry';
 import { snapFootprintToSiteBoundary } from './siteBoundarySnapping';
 import { streetConnectionProblem } from './streetConnectionProblem';
 import { streetEditConnectionCheck } from './streetEditConnections';
+import { isFixedSectionStreet, streetSectionWidth } from './streetPlacement';
+
+/** The coordinate-save pipeline samples editing controls itself. Passing an
+ * already sampled boundary result back through it discards the small handle
+ * array after a bend edit. Carry the translated controls to that pipeline. */
+export function streetBoundaryEditCoordinates(zone: SiteZone, snapped: ReturnType<typeof snapStreetBoundaryPlacement>) {
+  const controls = parsePersistedCenterline(snapped.properties.plan_route_controls);
+  return isFixedSectionStreet(zone) && controls
+    ? bufferLineToPolygon(controls, streetSectionWidth(zone)) : snapped.coordinates;
+}
 
 /** Carry the rigid shift into both route representations as one saved edit. */
 function translatedProperties(properties: SiteZoneProperties, before: number[][], after: number[][]) {

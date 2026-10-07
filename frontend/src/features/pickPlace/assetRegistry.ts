@@ -194,6 +194,13 @@ const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
     road_standard_citation: 'City Prompt native-module teaching section' },
 }));
 
+/** Surface-only paths keep a complete clear walking width, with no road kit. */
+export const PATHWAY_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS
+  .filter(asset => nativeStreets.find(row => row.id === asset.model.variantId)?.program?.adapter === 'narrow-pathway-v1')
+  .map(asset => ({ ...asset, description: `${asset.sectionWidth} m clear width · draw a winding path · ${Math.max(2, asset.sectionWidth)}–300 m long · prepared level site`,
+    calgaryGuide: { groupId: 'active', basis: 'design_reference' },
+    properties: { ...asset.properties, lane_count: 0, road_standard_citation: 'City Prompt conceptual pathway; not a Calgary standard section' } }));
+
 export const ALL_MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street => ({
   id: street.variantId, kind: 'street', definitionVersion: 1, readiness: 'pilot',
   reshapeMode: 'fixed_section_route', label: street.title,
@@ -210,7 +217,7 @@ export const ALL_MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street 
 }));
 const supersededManualVariants = new Set(manualStreets.filter(street => !street.sourceEdition).map(street => street.variantId));
 export const MANUAL_STREET_ASSETS = ALL_MANUAL_STREET_ASSETS.filter(asset => !supersededManualVariants.has(asset.model.variantId));
-export const STREET_ASSETS: StreetAsset[] = [...NATIVE_STREET_ASSETS, ...MANUAL_STREET_ASSETS];
+export const STREET_ASSETS: StreetAsset[] = [...NATIVE_STREET_ASSETS.map(asset => PATHWAY_ASSETS.find(path => path.id === asset.id) ?? asset), ...MANUAL_STREET_ASSETS];
 // Saved metric streets stay editable without adding them to the seven candidates.
 export const LEGACY_SECTION_STREET_ASSETS: StreetAsset[] = [
   ...ALL_MANUAL_STREET_ASSETS.filter(asset => supersededManualVariants.has(asset.model.variantId)), LOCAL_STREET_ASSET,
@@ -268,7 +275,7 @@ export const COMMUNITY_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset 
   communityBatch.entries.some(entry => entry.archetype_id === asset.properties.development_archetype_id
     && entry.variant_id === asset.model.variantId && entry.candidate === asset.model.revision));
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...MANUAL_STREET_ASSETS].map((asset): CatalogueAsset => {
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.
