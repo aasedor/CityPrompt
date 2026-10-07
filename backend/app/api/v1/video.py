@@ -203,7 +203,7 @@ class VideoPreflightResponse(BaseModel):
 class VideoAttemptResponse(BaseModel):
     id: str
     request_id: str
-    provider: VideoProvider | Literal["kling"] = "omni"
+    provider: VideoProvider | Literal["kling", "comfyui"] = "omni"
     mode: Literal["route_video", "saved_render_animation"] = "route_video"
     source_render_id: str | None = None
     generation_settings: dict | None = None

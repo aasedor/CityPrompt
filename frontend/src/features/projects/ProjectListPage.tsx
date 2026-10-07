@@ -534,7 +534,8 @@ export function ProjectListPage() {
               </p>
             </div>
             <div className="absolute right-3 top-3 flex gap-2">
-              {expandedRender.project.permission !== 'viewer' && <AnimateRenderButton projectId={expandedRender.project.id} render={expandedRender.render} />}
+              {expandedRender.project.permission !== 'viewer' && <AnimateRenderButton projectId={expandedRender.project.id} render={expandedRender.render}
+                onImageSaved={() => { void queryClient.invalidateQueries({ queryKey: ['projects', currentUser?.id, 'saved-renders'] }); }} />}
               <button
                 type="button"
                 onClick={() => {

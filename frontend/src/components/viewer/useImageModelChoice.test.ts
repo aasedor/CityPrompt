@@ -3,8 +3,24 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import { rendersApi } from '@/services/api';
 import { useImageModelChoice } from './useImageModelChoice';
 import { useRenderDraft } from './globe/useRenderDraft';
+import { comfyTrialsApi } from '@/services/comfyTrials';
 vi.mock('@/services/api', () => ({rendersApi:{imageModels:vi.fn()}}));
+vi.mock('@/services/comfyTrials', () => ({comfyTrialsApi:{presets:vi.fn().mockResolvedValue({presets:[]})}}));
 beforeEach(() => sessionStorage.clear());
+it('adds local images beside GPT, remembers the selection, and excludes local video', async () => {
+  vi.mocked(rendersApi.imageModels).mockResolvedValue({ default_model: 'gpt-image-2', models: [{ id: 'gpt-image-2', available: true }] });
+  vi.mocked(comfyTrialsApi.presets).mockResolvedValue({ credit_cost: 0, presets: [
+    { id: 'flux-klein', kind: 'image', available: true }, { id: 'qwen-image', kind: 'image', available: false }, { id: 'wan-video', kind: 'video', available: true },
+  ] as never });
+  const first = renderHook(() => useImageModelChoice({projectId:'local'}));
+  await waitFor(() => expect(first.result.current.availability?.models).toHaveLength(3));
+  act(() => first.result.current.setImageModel('flux-klein'));
+  first.unmount();
+  const reopened = renderHook(() => useImageModelChoice({projectId:'local'}));
+  expect(reopened.result.current.imageModel).toBe('flux-klein');
+  const masked = renderHook(() => useImageModelChoice({projectId:'local',allowLocal:false,compareByDefault:false}));
+  expect(masked.result.current.imageModel).toBe('gpt-image-2');
+});
 it('requests one discovered default engine unless the user explicitly selects comparison', async () => {
   vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2.5-flare',models:['gpt-image-2','gpt-image-2.5-flare','gpt-image-2.5-sunburst'].map(id=>({id,available:true}))} as Awaited<ReturnType<typeof rendersApi.imageModels>>);
   const hook=renderHook(()=>useImageModelChoice({compareByDefault:false}));

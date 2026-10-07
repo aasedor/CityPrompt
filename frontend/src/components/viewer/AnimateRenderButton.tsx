@@ -7,6 +7,7 @@ import type { SavedRender } from '@/types';
 import { savedRenderIsSource } from '@/utils/renderPresentation';
 import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
 import type { VideoAttempt } from './VideoGeneratePanel';
+import { LocalComfyTrialButton } from './LocalComfyTrialButton';
 
 export interface AnimationPreflight {
   ready: true;
@@ -26,11 +27,16 @@ interface Props {
   projectId: string;
   render: SavedRender;
   onSaved?: (attempt: VideoAttempt) => void;
+  onImageSaved?: (render: SavedRender) => void;
 }
 
 /** Only a saved, finished image can be chosen; the request carries IDs, never
  * the displayed preview URL, a viewport capture or client-supplied pixels. */
 export function AnimateRenderButton(props: Props) {
+  return <><LocalComfyTrialButton {...props} /><KlingAnimateRenderButton {...props} /></>;
+}
+
+function KlingAnimateRenderButton(props: Props) {
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
   if (savedRenderIsSource(props.render)) return null;
@@ -70,7 +76,7 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
 
   const loadHistory = useCallback(async () => {
     const state = await videoRenderApi.list(projectId) as { attempts: VideoAttempt[] };
-    const existing = state.attempts.find(item => item.mode === 'saved_render_animation' && item.source_render_id === render.id);
+    const existing = state.attempts.find(item => item.provider === 'kling' && item.mode === 'saved_render_animation' && item.source_render_id === render.id);
     if (existing) acceptAttempt(existing);
     return existing;
   }, [acceptAttempt, projectId, render.id]);

@@ -270,7 +270,7 @@ export function GlobeAIRenderPanel({
   const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelAvailability !== null
     && !imageModelAvailability.models.some(entry => entry.id === model && entry.available !== false));
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
-  const directPreviewMetadata = useRef(new Map<string, { diagnostics: Direct3DRenderDiagnostics; review: Direct3DReview | null }>());
+  const directPreviewMetadata = useRef(new Map<string, { diagnostics: Direct3DRenderDiagnostics | null; review: Direct3DReview | null }>());
   // Development mode gate: at least one zone in the scene is backed by real
   // massing (placed LEGO stack or mounted 3D model) that the capture shows.
   const hasPlacedMassing = useMemo(

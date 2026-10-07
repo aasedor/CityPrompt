@@ -72,21 +72,24 @@ const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
   { id: 'internal_enhance', name: 'Internal Enhance', detail: 'Self-hosted · exact skins · $0' },
 ];
 
-function providerName(provider?: VideoProvider | 'kling'): string {
+function providerName(provider?: VideoProvider | 'kling' | 'comfyui'): string {
+  if (provider === 'comfyui') return 'Wan · local';
   if (provider === 'kling') return 'Kling';
   if (provider === 'seedance_mini') return 'Seedance Mini';
   if (provider === 'internal_enhance') return 'Internal Enhance';
   return 'Omni';
 }
 
-function providerSlug(provider?: VideoProvider | 'kling'): string {
+function providerSlug(provider?: VideoProvider | 'kling' | 'comfyui'): string {
+  if (provider === 'comfyui') return 'comfy-animation';
   if (provider === 'kling') return 'kling-animation';
   if (provider === 'seedance_mini') return 'seedance-mini';
   if (provider === 'internal_enhance') return 'internal-enhance';
   return 'omni';
 }
 
-function providerOrigin(provider?: VideoProvider | 'kling'): string {
+function providerOrigin(provider?: VideoProvider | 'kling' | 'comfyui'): string {
+  if (provider === 'comfyui') return 'Local ComfyUI · animated still';
   if (provider === 'kling') return 'fal Kling · animated still';
   if (provider === 'seedance_mini') return 'fal Seedance Mini';
   if (provider === 'internal_enhance') return 'City Prompt local pipeline';
@@ -111,7 +114,7 @@ function sceneClaimsSignature(
 export interface VideoAttempt {
   id: string;
   request_id: string;
-  provider?: VideoProvider | 'kling';
+  provider?: VideoProvider | 'kling' | 'comfyui';
   mode?: 'route_video' | 'saved_render_animation';
   source_render_id?: string | null;
   recoverable?: boolean;
@@ -156,7 +159,7 @@ function fidelityTone(status: VideoAttempt['fidelity_status']): string {
 }
 
 function videoAttemptLabel(attempt: VideoAttempt): string {
-  if (attempt.mode === 'saved_render_animation') return 'Kling · animated still · slow push-in';
+  if (attempt.mode === 'saved_render_animation') return `${providerName(attempt.provider)} · animated still · slow push-in`;
   const provider = providerName(attempt.provider);
   const motion = attempt.camera_motion.split('_').join(' ');
   const control = attempt.provider === 'seedance_mini'

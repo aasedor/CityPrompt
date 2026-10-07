@@ -86,7 +86,7 @@ def _configured(settings):
         raise HTTPException(503, str(exc)) from exc
 
 
-def _source_render(project, render_id: uuid.UUID) -> tuple[dict, str]:
+def _source_render(project, render_id: uuid.UUID, *, require_finished: bool = True) -> tuple[dict, str]:
     render = next(
         (
             item
@@ -102,8 +102,9 @@ def _source_render(project, render_id: uuid.UUID) -> tuple[dict, str]:
         or str(render.get("outcome") or "").partition("·")[2].strip()
     )
     if (
-        render.get("variant") != "provider_original"
-        and strategy == "authoritative_source"
+        require_finished
+        and render.get("variant") != "provider_original"
+        and (strategy == "authoritative_source" or render.get("model") == "3d-capture")
     ):
         raise HTTPException(
             400,

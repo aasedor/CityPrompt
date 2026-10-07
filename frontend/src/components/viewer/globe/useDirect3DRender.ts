@@ -12,7 +12,8 @@ import {
 import type { Direct3DCaptureBundle, Direct3DProposalRole } from './direct3dCapture';
 import type { ResidualLandscapeClaim } from './residualLandscape';
 
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, type OpenAIImageModel } from '@/config/imageModels';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, isLocalImageModel, type ImageEngine } from '@/config/imageModels';
+import { renderLocalImage } from '@/services/localImageRender';
 
 export type Direct3DPresentationMode = 'source_anchored' | 'scene' | 'reproject';
 export type Direct3DActivePresentationMode = Exclude<Direct3DPresentationMode, 'source_anchored'>;
@@ -295,7 +296,7 @@ export interface Direct3DRenderDiagnostics {
 export interface Direct3DRenderResult {
   render: GlobeRenderResult;
   providerOriginalRender?: SavedRender;
-  diagnostics: Direct3DRenderDiagnostics;
+  diagnostics: Direct3DRenderDiagnostics | null;
   captureFingerprint: string;
   outputFingerprint: string;
   outcome: 'accepted' | 'review_required';
@@ -339,7 +340,7 @@ export function useDirect3DRender() {
     capture: Direct3DCaptureBundle,
     options: {
       style: string;
-      model?: OpenAIImageModel;
+      model?: ImageEngine;
       fidelityPolicy?: Direct3DFidelityPolicy;
       customPrompt?: string;
       addPeople?: boolean;
@@ -368,6 +369,24 @@ export function useDirect3DRender() {
     }
     const fidelityPolicy = options.fidelityPolicy
       ?? resolveDirect3DFidelityPolicy(options.style);
+    if (options.model && isLocalImageModel(options.model)) {
+      // Local finishes bypass the paid geometry-repair/fallback pipeline and
+      // use a short aesthetic prompt instead of its lengthy constraint text.
+      const localPrompt = [DIRECT_3D_DEFAULT_ART_DIRECTIONS[options.style], options.customPrompt?.trim(),
+        options.addPeople ? 'Include a few naturally posed pedestrians.' : '',
+        options.addVehicles ? 'Include a few vehicles on the streets.' : '',
+      ].filter(Boolean).join(' ').slice(0, 1500);
+      const savedRender = await renderLocalImage({ projectId: options.projectId, model: options.model,
+        imageBase64: capture.beautyImageBase64, prompt: localPrompt });
+      return {
+        render: { imageUrl: resolveApiFileUrl(savedRender.image_url), prompt: localPrompt,
+          model: options.model, savedRender, providerLabel: `${imageModelLabel(options.model)} · Local` },
+        diagnostics: null, captureFingerprint: capture.fingerprint, outputFingerprint: savedRender.id,
+        outcome: 'review_required', warnings: ['Local model output is shown directly. Compare its geometry with the captured 3D view.'],
+        sourceImageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,
+        fidelityPolicy,
+      };
+    }
     const prompt = buildDirect3DVisualPrompt(
       options.style,
       options.customPrompt,

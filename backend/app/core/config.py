@@ -200,6 +200,9 @@ class Settings(BaseSettings):
     omni_video_model: str = "gemini-omni-flash-preview"
     omni_video_timeout_seconds: int = 600
     seedance_video_timeout_seconds: int = 900
+    comfy_trials_enabled: bool = False
+    comfy_trials_base_url: str = "http://127.0.0.1:8188"
+
     kling_animation_enabled: bool = False
     kling_animation_endpoint: str = "fal-ai/kling-video/v3/pro/image-to-video"
     # fal list price checked 2026-10-06: silent Pro video $0.112 / second.

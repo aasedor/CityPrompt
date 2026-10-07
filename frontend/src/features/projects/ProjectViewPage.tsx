@@ -1609,7 +1609,7 @@ export function ProjectViewPage() {
                 <RenderSourceNote render={renderLightbox} />
               </div>
               <div className="absolute top-3 right-3 flex gap-2">
-                <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} />
+                <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} onImageSaved={rememberSavedRender} />
                 <button
                   type="button"
                   onClick={() => handleEditRender(renderLightbox)}
@@ -2089,7 +2089,7 @@ export function ProjectViewPage() {
               <RenderSourceNote render={renderLightbox} />
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
-              <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} />
+              <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} onImageSaved={rememberSavedRender} />
               <button
                 type="button"
                 onClick={() => handleEditRender(renderLightbox)}
@@ -2198,6 +2198,7 @@ function videoDownloadUrl(video: VideoAttempt): string {
 }
 
 function videoProviderOrigin(video: VideoAttempt): string {
+  if (video.provider === 'comfyui') return 'Local ComfyUI · animated still';
   if (video.provider === 'kling') return 'fal Kling · animated still';
   if (video.provider === 'seedance_mini') return 'Seedance Mini';
   if (video.provider === 'internal_enhance') return 'City Prompt local pipeline';
@@ -2205,7 +2206,7 @@ function videoProviderOrigin(video: VideoAttempt): string {
 }
 
 function videoRenderLabel(video: VideoAttempt): string {
-  if (video.mode === 'saved_render_animation') return 'Kling · animated still · slow push-in';
+  if (video.mode === 'saved_render_animation') return `${video.provider === 'comfyui' ? 'Wan · local' : 'Kling'} · animated still · slow push-in`;
   const motion = video.camera_motion.split('_').join(' ');
   const provider = video.provider === 'seedance_mini'
     ? 'Seedance Mini'

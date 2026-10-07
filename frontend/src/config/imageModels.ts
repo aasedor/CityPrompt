@@ -10,18 +10,27 @@ export const OPENAI_IMAGE_MODELS = [
 ] as const;
 
 export type OpenAIImageModel = typeof OPENAI_IMAGE_MODELS[number]['id'] | 'gpt-image-2-2026-04-21';
-export type ImageModelChoice = OpenAIImageModel | 'compare-all-three';
+export const LOCAL_IMAGE_MODELS = [
+  { id: 'flux-klein', label: 'FLUX.2 Klein 4B', option: 'FLUX.2 Klein · Local · Free' },
+  { id: 'qwen-image', label: 'Qwen Image 2.1', option: 'Qwen Image · Local · Free' },
+] as const;
+export type LocalImageModel = typeof LOCAL_IMAGE_MODELS[number]['id'];
+export type ImageEngine = OpenAIImageModel | LocalImageModel;
+export function isLocalImageModel(model: string): model is LocalImageModel {
+  return LOCAL_IMAGE_MODELS.some(entry => entry.id === model);
+}
+export type ImageModelChoice = ImageEngine | 'compare-all-three';
 export type ImageModelAvailability = {
   default_model: OpenAIImageModel;
-  models: Array<{ id: OpenAIImageModel; available: boolean | null }>;
+  models: Array<{ id: ImageEngine; available: boolean | null }>;
 };
 
-export function imageModelsForChoice(choice: ImageModelChoice): OpenAIImageModel[] {
+export function imageModelsForChoice(choice: ImageModelChoice): ImageEngine[] {
   return choice === 'compare-all-three'
     ? ['gpt-image-2', 'gpt-image-2.5-flare', 'gpt-image-2.5-sunburst']
     : [choice];
 }
 
 export function imageModelLabel(model: string): string {
-  return OPENAI_IMAGE_MODELS.find((entry) => entry.id === model)?.label ?? model;
+  return [...OPENAI_IMAGE_MODELS, ...LOCAL_IMAGE_MODELS].find((entry) => entry.id === model)?.label ?? model;
 }

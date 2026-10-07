@@ -85,7 +85,7 @@ describe('saved finished render animation', () => {
 
   it('never offers animation for an authoritative viewport fallback', () => {
     render(<AnimateRenderButton projectId="p" render={{ ...still, presentation_strategy: 'authoritative_source' }} />);
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Animate this render' })).not.toBeInTheDocument();
     expect(renderAnimationApi.preflight).not.toHaveBeenCalled();
   });
 

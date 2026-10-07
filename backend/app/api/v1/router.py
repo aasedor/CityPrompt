@@ -3,6 +3,7 @@ API v1 router - aggregates all endpoint routers.
 """
 
 from fastapi import APIRouter, Depends
+from app.api.v1 import comfy_trials
 from app.core.classroom_scope import require_classroom_scope
 
 from app.api.v1 import (
@@ -44,6 +45,7 @@ from app.api.v1 import (
 )
 
 api_router = APIRouter(dependencies=[Depends(require_classroom_scope)])
+api_router.include_router(comfy_trials.router, prefix="/local-render", tags=["Local model trials"])
 
 api_router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 api_router.include_router(oauth.router, prefix="/auth/oauth", tags=["OAuth2 Social Login"])
