@@ -73,7 +73,7 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
           try {
             const source = (native.layout as typeof native.layout & { walking?: ParkWalkingNetwork }).walking;
             const walking = source && stepFreeParkWalkingNetwork(native.layout.variantId, source);
-            const height = walking ? parkWalkHeight(walking, local[0], local[1], walking.version===2?measured-level:undefined) : nativePavingProbe(native.layout, true)(local);
+            const height = walking ? parkWalkHeight(walking, local[0], local[1], walking.version===2?measured-level:undefined, true) : nativePavingProbe(native.layout, true)(local);
             if (height !== null) return level + height;
           } catch {
             // Loading/errors remain owned by NativeParkLayer and its capture guard.

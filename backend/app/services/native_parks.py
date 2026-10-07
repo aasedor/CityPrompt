@@ -17,7 +17,7 @@ def registry() -> dict:
 
 
 def layout_for(layout_id: str, revision: str) -> dict:
-    layout = next((p for p in registry()['layouts'] if p['id'] == layout_id and p['contentRevision'] == revision), None)
+    layout = next((p for p in [*registry()['layouts'], *registry().get('archivedLayouts', [])] if p['id'] == layout_id and p['contentRevision'] == revision), None)
     if layout is None:
         raise ValueError('This park layout revision is unavailable. Keep the previous layout.')
     return layout

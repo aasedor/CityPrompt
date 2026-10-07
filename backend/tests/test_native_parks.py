@@ -27,7 +27,7 @@ def test_shared_registry_is_byte_identical():
     assert (root/'backend/app/data/nativeParks.json').read_bytes()==(root/'frontend/src/data/nativeParks.json').read_bytes()
 
 
-@pytest.mark.parametrize('layout', registry()['layouts'], ids=lambda p: p['id'])
+@pytest.mark.parametrize('layout', [*registry()['layouts'], *registry().get('archivedLayouts', [])], ids=lambda p: p['id'])
 def test_every_registered_layout_keeps_identity_when_rotated_in_a_larger_parcel(layout):
     lon, lat, yaw = -114.05, 51.04, 1.2
     east = 111320 * math.cos(math.radians(lat))

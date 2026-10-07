@@ -118,8 +118,8 @@ export function buildingWalkEntry(zones: SiteZone[], pose: WalkPose): WalkPose {
 export function buildingWalkGround(zones: SiteZone[], pose: WalkPose): number | null {
   const ctx = context(zones, pose);
   if (!ctx) return null;
-  const z = parkWalkHeight(ctx.record.network, ctx.p[0], ctx.p[1], ctx.p[2]);
-  return z === null ? (parkWalkHeight(ctx.record.network, ctx.p[0], ctx.p[1], ctx.p[2], true) === null ? null : pose.groundHeight)
+  const z = parkWalkHeight(ctx.record.network, ctx.p[0], ctx.p[1], ctx.p[2], true);
+  return z === null ? null
     : world(ctx.record, [ctx.p[0], ctx.p[1], z], pose.heading).groundHeight;
 }
 export function constrainBuildingWalk(zones: SiteZone[], previous: WalkPose, next: WalkPose): WalkPose {

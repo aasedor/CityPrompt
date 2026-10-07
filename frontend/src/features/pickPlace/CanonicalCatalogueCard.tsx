@@ -27,9 +27,9 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
   const placement = placements.find(a => a.model.variantId === variantId);
   const variantGuide = classifyCalgaryVariant(option.id, variantId);
   const thumbnail = pickerHeroImage(placement?.id,
-    placement?.thumbnail ?? variant?.thumbnailUrl ?? option.catalogCardImageUrl ?? option.photoUrl);
+    option.photoUrl || option.catalogCardImageUrl || variant?.thumbnailUrl || placement?.thumbnail || '');
   const label = placement?.label ?? option.label;
-  const imageSources = [...new Set([thumbnail, placement?.thumbnail, variant?.thumbnailUrl].filter((url): url is string => Boolean(url)))];
+  const imageSources = [...new Set([thumbnail, option.photoUrl, variant?.thumbnailUrl].filter((url): url is string => Boolean(url)))];
   return <article className="overflow-hidden rounded-xl border border-slate-300 bg-white">
     <button type="button" aria-pressed={placement ? (placement.kind === 'street' ? activeStreetVariant === variantId : selected === placement.id) : false}
       onClick={() => placement ? onPlacement(placement) : onDraw({ choice, variant })}

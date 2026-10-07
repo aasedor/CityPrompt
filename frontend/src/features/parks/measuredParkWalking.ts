@@ -3,7 +3,7 @@ import type { NativeParkLayout } from './nativeParkRegistry';
 import { verifiedScene } from './nativeParkAssets';
 import { nearestParkWalkPoint, type ParkWalkingNetwork } from './parkWalking';
 
-const cache = new WeakMap<THREE.Group, ParkWalkingNetwork | null>();
+const cache = new WeakMap<THREE.Group, Map<string, ParkWalkingNetwork | null>>();
 /** Flat park routes use the verified assembly's actual dry surface faces.
  * Authored multi-level networks continue to own stairs, bridges and lifts. */
 export function measuredParkWalking(layout: NativeParkLayout, loadedScene?: THREE.Group): ParkWalkingNetwork | null {
@@ -19,10 +19,12 @@ export function measuredParkWalking(layout: NativeParkLayout, loadedScene?: THRE
       hazards: layout.surfaceRegions.filter(r => /water/i.test(r.material ?? '')).flatMap(r => rectangle(r.x, r.y, r.width, r.depth)) };
   }
   const scene = loadedScene ?? verifiedScene(layout.assets.assembly!);
-  if (cache.has(scene)) return cache.get(scene)!;
+  const cacheKey = JSON.stringify([layout.contentRevision, layout.walkSurfaceMaterials]);
+  const cached = cache.get(scene);
+  if (cached?.has(cacheKey)) return cached.get(cacheKey)!;
   scene.updateWorldMatrix(true, true);
   const inverse = scene.matrixWorld.clone().invert(), triangles: number[][][] = [], hazards: number[][][] = [], barriers: number[][] = [];
-  const surfaces = new Set(layout.walkSurfaceMaterials ?? ['paving', 'grass']);
+  const surfaces = new Set(layout.walkSurfaceMaterials ?? ['paving', 'grass', 'sand']);
   const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3(), normal = new THREE.Vector3(), edge = new THREE.Vector3();
   scene.traverse(object => {
     if (!(object instanceof THREE.Mesh)) return;
@@ -41,7 +43,7 @@ export function measuredParkWalking(layout: NativeParkLayout, loadedScene?: THRE
       if (normal.y > .8 && /water/i.test(name))
         hazards.push(points.map(p => [p[0], p[1], Math.max(0, p[2])]));
       if (low > 2 || high < -.4) continue;
-      if (normal.y > .8 && surfaces.has(name) && high <= .45 && !/roof|bench|table/i.test(object.name)) triangles.push(points);
+      if (normal.y > .8 && (surfaces.has(name) || (!layout.walkSurfaceMaterials && surfaces.has(name.replace(/\.\d{3}$/, '')))) && high <= .45 && !/roof|bench|table/i.test(object.name)) triangles.push(points);
       if (Math.abs(normal.y) > .7 || high - low < .025 || /leaf|foliage|flower|grass|water/i.test(name)) continue;
       const pairs = [[a, b], [b, c], [c, a]].sort(([p, q], [r, s]) => Math.hypot(r.x - s.x, r.z - s.z) - Math.hypot(p.x - q.x, p.z - q.z));
       const [p, q] = pairs[0];
@@ -51,5 +53,6 @@ export function measuredParkWalking(layout: NativeParkLayout, loadedScene?: THRE
   const n: ParkWalkingNetwork = { version: 2, groundFloorOnly: true, waterClearanceM: .02, triangles, hazards, barriers, obstacles: [], routes: [], entrance: [], maxStepM: .2 };
   const entry = nearestParkWalkPoint(n, 0, -layout.depthM / 2 + .6);
   const result = entry ? { ...n, entrance: entry } : null;
-  cache.set(scene, result); return result;
+  const entries = cached ?? new Map();
+  entries.set(cacheKey, result); cache.set(scene, entries); return result;
 }

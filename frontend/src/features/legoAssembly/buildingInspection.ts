@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import type { WalkPose } from '@/components/viewer/globe/walkNavigation';
-import { buildingWalkRevision } from './buildingWalking';
+import { buildingWalkEntrance, buildingWalkRevision } from './buildingWalking';
 
 type UpAxis = 'y' | 'z';
 interface Inspection {
@@ -14,8 +14,8 @@ interface Inspection {
 const mounted = new Map<string, Inspection>();
 let active: Inspection | null = null;
 
-/** Exterior-only models have no signed circulation. This explicitly separate
- * inspection camera adds no rooms/floors and does not authorize a walking route. */
+/** Register actual model geometry for continuous exploration. No inferred
+ * rooms or floors are added to exterior-only models. */
 export function mountBuildingInspection(id: string, zone: SiteZone, object: THREE.Object3D, up: UpAxis = 'y') {
   if (!object.isObject3D) return () => {};
   object.updateWorldMatrix(true, true);
@@ -165,4 +165,50 @@ export function constrainBuildingInspection(zones: SiteZone[], zoneId: string, p
       : THREE.MathUtils.clamp(point[axis], record.bounds.min[axis] + .2, record.bounds.max[axis] - .2);
   }
   return world(record, point, pose.heading);
+}
+
+/** Follow existing steps/slopes without jumping onto a roof above the walker.
+ * Downward-facing undersides and vertical walls are not ground surfaces. */
+function explorationGround(record: Inspection, point: THREE.Vector3): number {
+  const up = new THREE.Vector3(); up[record.up] = 1;
+  up.transformDirection(record.object.matrixWorld);
+  const origin = point.clone(); origin[record.up] += .65;
+  record.object.localToWorld(origin);
+  const ray = new THREE.Raycaster(origin, up.clone().negate());
+  const normalMatrix = new THREE.Matrix3();
+  for (const hit of ray.intersectObject(record.object, true)) {
+    if (!hit.face || !hit.object.visible) continue;
+    const normal = hit.face.normal.clone().applyNormalMatrix(normalMatrix.getNormalMatrix(hit.object.matrixWorld));
+    if (normal.dot(up) < .45) continue;
+    const surface = record.object.worldToLocal(hit.point.clone())[record.up];
+    return Math.max(record.bounds.min[record.up] + .05, surface + .02);
+  }
+  return record.bounds.min[record.up] + .05;
+}
+
+/** Walking across a model boundary is enough to show its inside faces. Keep
+ * the same horizontal position and heading, and release the model immediately
+ * on exit. Models with verified circulation retain their own floors/doors.
+ * This supports exploration of existing geometry; it does not invent rooms. */
+export function updateWalkBuildingInspection(zones: SiteZone[], pose: WalkPose): { zoneId: string; pose: WalkPose } | null {
+  if (buildingWalkEntrance(zones, pose)) { endBuildingInspection(); return null; }
+  for (const record of mounted.values()) {
+    if (current(zones, record.zoneId) !== record) continue;
+    const point = new THREE.Vector3();
+    WGS84_ELLIPSOID.getCartographicToPosition(pose.lat * Math.PI / 180, pose.lng * Math.PI / 180, pose.groundHeight, point);
+    record.object.updateWorldMatrix(true, false); record.object.worldToLocal(point);
+    const depth = record.up === 'y' ? 'z' : 'y';
+    if (point.x < record.bounds.min.x || point.x > record.bounds.max.x
+      || point[depth] < record.bounds.min[depth] || point[depth] > record.bounds.max[depth]
+      || point[record.up] > record.bounds.max[record.up] + 1) continue;
+    if (active !== record) {
+      endBuildingInspection(); active = record;
+      record.restore = showInteriorSides(record);
+    }
+    point[record.up] = explorationGround(record, point);
+    const groundHeight = world(record, point, pose.heading).groundHeight;
+    return { zoneId: record.zoneId, pose: { ...pose, groundHeight } };
+  }
+  endBuildingInspection();
+  return null;
 }

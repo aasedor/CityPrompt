@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
-import { beginBuildingInspection, buildingInspectionStart, constrainBuildingInspection, endBuildingInspection, mountBuildingInspection } from './buildingInspection';
+import { updateWalkBuildingInspection, beginBuildingInspection, buildingInspectionStart, constrainBuildingInspection, endBuildingInspection, mountBuildingInspection } from './buildingInspection';
 
 const zone = { id: 'shell', coordinates: [[0,0],[1,0],[1,1]], properties: {}, updated_at: 'first' } as unknown as SiteZone;
 afterEach(endBuildingInspection);
@@ -26,6 +26,47 @@ function placed(up: 'y' | 'z', yaw: number) {
   };
   return { source, material, mesh, geometry, cleanup, local };
 }
+describe('continuous building exploration', () => {
+  it.each(['y','z'] as const)('follows actual steps in a rotated %s-up model without jumping to its roof', up => {
+    const f=placed(up,.7);
+    const step=new THREE.Mesh(new THREE.BoxGeometry(2,up==='y'?.3:2,up==='y'?2:.3),new THREE.MeshStandardMaterial());
+    step.position[up]=.15; f.source.add(step); f.source.updateWorldMatrix(true,true);
+    const point=new THREE.Vector3(); point[up]=.05; f.source.localToWorld(point);
+    const g=WGS84_ELLIPSOID.getPositionToCartographic(point,{lat:0,lon:0,height:0});
+    const pose={lat:g.lat*180/Math.PI,lng:g.lon*180/Math.PI,groundHeight:g.height,heading:0};
+    try {
+      const entered=updateWalkBuildingInspection([zone],pose)!;
+      expect(f.local(entered.pose)[up]).toBeCloseTo(.32,4);
+      expect(entered.pose.lng).toBe(pose.lng); expect(entered.pose.lat).toBe(pose.lat);
+      step.position[up]=.4; f.source.updateWorldMatrix(true,true);
+      const climbed=updateWalkBuildingInspection([zone],entered.pose)!;
+      expect(f.local(climbed.pose)[up]).toBeCloseTo(.57,4);
+      step.position[up]=.15; f.source.updateWorldMatrix(true,true);
+      expect(f.local(updateWalkBuildingInspection([zone],climbed.pose)!.pose)[up]).toBeCloseTo(.32,4);
+    } finally { f.cleanup(); f.geometry.dispose(); f.material.dispose(); step.geometry.dispose(); (step.material as THREE.Material).dispose(); }
+  });
+
+  it.each(['y','z'] as const)('enters and leaves a rotated %s-up model without teleporting or a separate control', up => {
+    const f=placed(up,.7);
+    try {
+      const inside=beginBuildingInspection([zone],zone.id)!;
+      endBuildingInspection();
+      const entered=updateWalkBuildingInspection([zone], {...inside,heading:43})!;
+      expect(entered.zoneId).toBe(zone.id);
+      expect(entered.pose.lng).toBe(inside.lng);
+      expect(entered.pose.lat).toBe(inside.lat);
+      expect(entered.pose.heading).toBe(43);
+      expect(f.local(entered.pose)[up]).toBeCloseTo(.05,4);
+      expect(f.mesh.material).not.toBe(f.material);
+      expect(updateWalkBuildingInspection([zone],{...inside,lng:inside.lng+.001})).toBeNull();
+      expect(f.mesh.material).toBe(f.material);
+      expect(updateWalkBuildingInspection([zone],inside)).not.toBeNull();
+      expect(updateWalkBuildingInspection([{...zone,updated_at:'changed'}],inside)).toBeNull();
+      expect(f.mesh.material).toBe(f.material);
+    } finally { f.cleanup(); f.geometry.dispose(); f.material.dispose(); }
+  });
+});
+
 describe('explicit exterior-shell inspection', () => {
   it('prefers a clear room over open landscape included in model bounds', () => {
     const f = placed('y', .5);

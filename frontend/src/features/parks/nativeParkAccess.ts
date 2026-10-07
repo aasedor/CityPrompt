@@ -10,7 +10,7 @@ const pavingMeshes = new WeakMap<THREE.Group, Map<string, THREE.Mesh[]>>();
 /** Read the verified assembly's actual paving; never infer a path from its bbox. */
 export function nativePavingProbe(layout: SurfaceLayout, includeLawn = false): PavingProbe {
   const materials = new Set(layout.walkSurfaceMaterials ?? ['paving']);
-  if (includeLawn) materials.add('grass');
+  if (includeLawn) { materials.add('grass'); materials.add('sand'); materials.add('paving.001'); }
   const materialKey = [...materials].sort().join('|');
   if (layout.mode === 'module_assembly') return ([x, y]) => {
     let material: string | null = 'grass';

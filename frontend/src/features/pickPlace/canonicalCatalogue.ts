@@ -1,5 +1,5 @@
 import {
-  BUILDING_AESTHETIC_OPTIONS_V2, OPENSPACE_AESTHETIC_OPTIONS_V2, ROADWAY_AESTHETIC_OPTIONS_V2, SAVED_BUILDING_AESTHETIC_OPTIONS,
+  BUILDING_AESTHETIC_OPTIONS_V2, OPENSPACE_AESTHETIC_OPTIONS_V2, ROADWAY_AESTHETIC_OPTIONS_V2, SAVED_BUILDING_AESTHETIC_OPTIONS, SAVED_OPENSPACE_AESTHETIC_OPTIONS, SAVED_ROADWAY_AESTHETIC_OPTIONS,
   type AestheticOption, type ArchetypeVariant,
 } from '@/components/viewer/aestheticCatalog';
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
@@ -20,6 +20,20 @@ export const CANONICAL_DOMAINS = {
   park_plaza: OPENSPACE_AESTHETIC_OPTIONS_V2,
   street_pathway: ROADWAY_AESTHETIC_OPTIONS_V2,
 };
+
+/** Reference photography is presentation metadata; it cannot change which
+ * exact model, dimensions, or revision is placed. Preserve the full reference
+ * lookup before the inspector's validation-only variant filtering. */
+const REFERENCE_DOMAINS = {
+  building: SAVED_BUILDING_AESTHETIC_OPTIONS,
+  park_plaza: SAVED_OPENSPACE_AESTHETIC_OPTIONS,
+  street_pathway: SAVED_ROADWAY_AESTHETIC_OPTIONS,
+};
+function referenceImage(domain: CatalogueDomain, archetypeId: string, variantId: string, fallback: string) {
+  const source = REFERENCE_DOMAINS[domain].find(option => option.id === archetypeId);
+  return source?.variants?.find(variant => variant.id === variantId)?.thumbnailUrl
+    || source?.catalogCardImageUrl || source?.photoUrl || fallback;
+}
 
 /** References own discovery; the runtime registry alone owns detailed placement readiness. */
 export function catalogueChoices(domains = CANONICAL_DOMAINS, assets = CATALOGUE_ASSETS): CanonicalChoice[] {
@@ -73,8 +87,8 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
     choices.push({ id: `${domain}:${entry.archetype_id}:${entry.variant_id}`, domain, placements: [asset], option: {
       ...source, categoryId: styleSource?.categoryId, generationTags: styleSource?.generationTags,
       id: entry.archetype_id, label: asset.label, description: asset.description,
-      photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
-      variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }],
+      photoUrl: referenceImage(domain, entry.archetype_id, entry.variant_id, asset.thumbnail), calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+      variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: referenceImage(domain, entry.archetype_id, entry.variant_id, asset.thumbnail) }],
     } });
   }
   return { choices, unavailable };
@@ -99,7 +113,7 @@ export const CANONICAL_CHOICES: CanonicalChoice[] = [
     const source = CANONICAL_DOMAINS.park_plaza.find(option => option.id === asset.properties.green_space_archetype_id);
     if (!source) throw new Error(`Missing park reference for ${asset.id}`);
     return { id: `park_plaza:${source.id}:flexible:${asset.id}`, domain: 'park_plaza' as const, placements: [asset], option: {
-      ...source, label: asset.label, description: asset.description, photoUrl: asset.thumbnail,
+      ...source, label: asset.label, description: asset.description, photoUrl: referenceImage('park_plaza', source.id, asset.model.variantId, asset.thumbnail),
       calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
       variants: [{ id: asset.model.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }],
     } };
@@ -124,7 +138,7 @@ CANONICAL_CHOICES.push(...MANUAL_STREET_ASSETS.map(registeredSupplement).map(ass
   domain: 'street_pathway' as const, placements: [asset], option: {
     ...CANONICAL_DOMAINS.street_pathway.find(o => o.id === asset.properties.road_archetype_id),
     id: String(asset.properties.road_archetype_id), label: asset.label, description: asset.description,
-    photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+    photoUrl: referenceImage('street_pathway', String(asset.properties.road_archetype_id), asset.model.variantId, asset.thumbnail), calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
     variants: [{ id: asset.model.variantId, label: 'Street Manual | metric 3D', thumbnailUrl: asset.thumbnail }],
   },
 })));

@@ -6,13 +6,13 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import registry from '@/data/nativeParks.json';
 import { nativeParkLayouts } from './nativeParkRegistry';
 import { measuredParkWalking } from './measuredParkWalking';
 import { parkWalkHeight } from './parkWalking';
 
 describe('delivered sandy beach walking surfaces', () => {
-  it('supports the real entry, boardwalk and dry sand while excluding the lagoon', async () => {
-    const layout = nativeParkLayouts.find(p => p.variantId === 'student_sandy_beach_v1')!;
+  it.each([nativeParkLayouts.find(p => p.variantId === 'student_sandy_beach_v1')!, ...registry.archivedLayouts])('supports dry entry and sand for saved revision $contentRevision', async (layout) => {
     const data = readFileSync(resolve('..', layout.assets.assembly!.archivePath));
     const buffer = new ArrayBuffer(data.byteLength);
     new Uint8Array(buffer).set(data);

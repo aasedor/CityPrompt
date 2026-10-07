@@ -1,5 +1,26 @@
 # Catalogue entrance walking
 
+## Current behavior (2026-10-06)
+
+Ordinary Walk mode now allows continuous exploration across buildings, parks,
+beaches and water. There is no Walk inside control and horizontal movement is
+not rejected by wall, planting, water or parcel barriers. Existing authored
+floors, stairs and slopes determine camera height. Models without circulation
+metadata expose their existing inside faces automatically and probe actual
+upward-facing geometry near the walker for steps; no rooms are invented.
+
+Saved beach placements retain their original exact revision through an archived
+registry binding. New placements use the current revision. Sand is recognized
+as a ground surface, including older Blender material aliases.
+
+Verified in the separate Quality repair QA - canal project on port 5181:
+beach movement, market interior movement, full curved canal water opening,
+and photographic catalogue cards. 108 focused frontend tests and 50 backend
+park/staging tests passed; screenshots are outside Git in
+`C:/dev-artifacts/CityPrompt/`.
+
+## Historical behavior (2026-10-04)
+
 The local City Prompt app on port 5176 now offers **Walk inside** for selected
 buildings and **Walk in park** for selected parks. WASD moves, dragging turns,
 Return to entrance recovers the camera, and Exit walk restores the design view.

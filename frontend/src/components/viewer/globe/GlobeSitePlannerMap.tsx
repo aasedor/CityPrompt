@@ -112,10 +112,10 @@ import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
-import { constrainElevatedRailWalk, elevatedRailLiftDestination } from './elevatedRailWalking';
-import { constrainNativeParkWalk, nativeParkLiftDestination, nativeParkWalkEntry, nativeParkWalkEntrance, nativeParkWalkStartForZone } from '@/features/parks/nativeParkWalking';
-import { buildingWalkEntry, buildingWalkEntrance, buildingWalkStartForZone, constrainBuildingWalk, setBuildingWalkingDoorsOpen } from '@/features/legoAssembly/buildingWalking';
-import { beginBuildingInspection, buildingInspectionStart, constrainBuildingInspection, endBuildingInspection } from '@/features/legoAssembly/buildingInspection';
+import { elevatedRailLiftDestination } from './elevatedRailWalking';
+import { nativeParkLiftDestination, nativeParkWalkEntrance, nativeParkWalkStartForZone } from '@/features/parks/nativeParkWalking';
+import { buildingWalkEntrance, setBuildingWalkingDoorsOpen } from '@/features/legoAssembly/buildingWalking';
+import { updateWalkBuildingInspection, endBuildingInspection } from '@/features/legoAssembly/buildingInspection';
 import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
@@ -1633,8 +1633,6 @@ export function GlobeSitePlannerMap({
   const [walkLiftLabel, setWalkLiftLabel] = useState<string|null>(null);
   const [walkHasBuildingEntrance, setWalkHasBuildingEntrance] = useState(false);
   const [walkBuildingZoneId, setWalkBuildingZoneId] = useState<string | null>(null);
-  const [walkShellInspection, setWalkShellInspection] = useState(false);
-  const inspectionZoneRef = useRef<string | null>(null);
   const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
   const interactionPaused = externalInteractionPaused || Boolean(entrancePick) || walkMode !== null;
@@ -2336,12 +2334,9 @@ export function GlobeSitePlannerMap({
   const applyWalkPose = useCallback((next: WalkPose) => {
     const camera = cameraRef.current;
     if (!camera) return;
-    const inspectionPose = inspectionZoneRef.current
-      ? constrainBuildingInspection(terrainZonesRef.current, inspectionZoneRef.current, next) : null;
-    if (inspectionZoneRef.current && !inspectionPose) {
-      setWalkPickError('The model or its ground changed. Exit walk and select the building again.');
-      return;
-    }
+    const inspection = updateWalkBuildingInspection(terrainZonesRef.current, next);
+    const inspectionPose = inspection?.pose;
+    setWalkBuildingZoneId(inspection?.zoneId ?? null);
     if (import.meta.env.DEV && walkPoseRef.current) {
       if(sceneRef.current?.userData.roadTerrainRebuilding)
         next={...next,lng:walkPoseRef.current.lng,lat:walkPoseRef.current.lat};
@@ -2384,8 +2379,6 @@ export function GlobeSitePlannerMap({
 
   const leaveWalk = useCallback(() => {
     endBuildingInspection();
-    inspectionZoneRef.current = null;
-    setWalkShellInspection(false);
     setWalkBuildingZoneId(null);
     setWalkPickError('');
     setBuildingWalkingDoorsOpen(false);
@@ -2409,14 +2402,11 @@ export function GlobeSitePlannerMap({
 
   useEffect(() => () => { setBuildingWalkingDoorsOpen(false); endBuildingInspection(); }, []);
 
-  const activateWalkAtPose = useCallback((pose: WalkPose, buildingZoneId?: string, shellInspection = false) => {
+  const activateWalkAtPose = useCallback((pose: WalkPose) => {
     const camera = cameraRef.current;
     if (!camera) { endBuildingInspection(); return; }
-    inspectionZoneRef.current = shellInspection ? buildingZoneId ?? null : null;
-    setWalkShellInspection(shellInspection);
-    setWalkBuildingZoneId(buildingZoneId ?? null);
-    if (!shellInspection) endBuildingInspection();
-    setBuildingWalkingDoorsOpen(!shellInspection);
+    endBuildingInspection();
+    setBuildingWalkingDoorsOpen(true);
     walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
       up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
     if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
@@ -2452,8 +2442,7 @@ export function GlobeSitePlannerMap({
       { east: forward.dot(east), north: forward.dot(north) },
       { east: mapUp.dot(east), north: mapUp.dot(north) },
     );
-    activateWalkAtPose(buildingWalkEntry(terrainZonesRef.current, nativeParkWalkEntry(terrainZonesRef.current,
-      { lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading })));
+    activateWalkAtPose({ lng: hit.lngLat[0], lat: hit.lngLat[1], groundHeight: expectedGround, heading });
   }, [activateWalkAtPose]);
 
   const renderWalkView = useCallback(() => {
@@ -2500,10 +2489,9 @@ export function GlobeSitePlannerMap({
       if (current && pressed.size) {
         const next = advanceWalkPose(current, pressed, (time - lastTime) / 1000);
         if (next !== current) {
-          // A building zone is a planning plot, not a solid collision mesh.
-          // It can contain open courts, arcades and paved passages.
-          applyWalkPose(inspectionZoneRef.current ? next
-            : constrainBuildingWalk(terrainZonesRef.current, current, constrainNativeParkWalk(terrainZonesRef.current, current, constrainElevatedRailWalk(terrainZonesRef.current, current, next))));
+          // Free exploration never rejects a horizontal step. Authored ground
+          // supplies the camera height on sand, slopes, stairs and interiors.
+          applyWalkPose(next);
         }
       }
       lastTime = time;
@@ -4790,7 +4778,7 @@ export function GlobeSitePlannerMap({
           }
         }}>
         <p role="status" className="pointer-events-none absolute bottom-24 left-1/2 max-w-[90vw] -translate-x-1/2 rounded-lg bg-slate-950/90 px-4 py-2 text-center text-sm font-semibold text-white shadow-lg">
-          {walkPickError || 'Click a clear ground spot to start walking · Esc to cancel'}
+          {walkPickError || 'Click the ground to start · Walk through building entrances to explore · Esc to cancel'}
         </p>
       </div>}
       {walkMode === 'active' && <>
@@ -4810,12 +4798,7 @@ export function GlobeSitePlannerMap({
           onPointerCancel={() => { walkPointerRef.current = null; }} />
         <div className="absolute bottom-20 left-1/2 z-30 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-xl border border-slate-950 bg-white/95 p-2 text-xs font-semibold text-slate-950 shadow-xl">
           <span className="px-2">WASD move · Drag to turn · Shift faster · Esc exit</span>
-          {walkShellInspection && <span role="status" className="px-2">Shell inspection · No authored interior</span>}
           {walkPickError && <span role="alert" className="px-2 text-red-800">{walkPickError}</span>}
-          {walkShellInspection && <button type="button" onClick={() => {
-            const start = inspectionZoneRef.current && buildingInspectionStart(terrainZonesRef.current, inspectionZoneRef.current);
-            if (start) applyWalkPose(start);
-          }} className="min-h-11 rounded-lg border border-slate-700 px-3">Return to inspection start</button>}
           {walkHasParkEntrance &&
             <button type="button" onClick={() => {
               const pose = walkPoseRef.current;
@@ -5159,19 +5142,6 @@ export function GlobeSitePlannerMap({
             title="Hide planning polygons and focus on the selected building"
           >
             Focus building
-          </button>
-        )}
-        {!walkMode && selectedInspectionZone && isBuildingZoneType(selectedInspectionZone.zone_type) && (
-          <button type="button" onClick={() => {
-            const authored = buildingWalkStartForZone(terrainZonesRef.current, selectedInspectionZone.id);
-            const start = authored ?? beginBuildingInspection(terrainZonesRef.current, selectedInspectionZone.id);
-            if (start) {
-              onZoneSelected(null); setSelectedBuildingId(null);
-              activateWalkAtPose(start, selectedInspectionZone.id, !authored);
-            } else { setWalkPickError('Turn on 3D models and let this building and its ground finish loading, then select Walk inside again.'); setWalkMode('pick'); }
-          }} className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] hover:bg-[#dcff81]"
-            title="Enter this building's walking route or inspect its 3D shell">
-            Walk inside
           </button>
         )}
         {!walkMode && selectedInspectionZone?.zone_type === 'green_space' && (
