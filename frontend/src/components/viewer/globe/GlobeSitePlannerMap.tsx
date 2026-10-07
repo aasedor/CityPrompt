@@ -25,6 +25,8 @@ import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats 
  */
 
 import { useContext, useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
+import { Footprints } from 'lucide-react';
 import * as THREE from 'three';
 import { GlobePlacementPreview } from '@/features/pickPlace/GlobePlacementPreview';
 import { GlobeStreetDrawingPreview } from '@/features/pickPlace/GlobeStreetDrawingPreview';
@@ -1480,6 +1482,8 @@ function MeasurementOverlay({
 }
 
 interface GlobeSitePlannerMapProps {
+  walkControlTarget?: HTMLElement | null;
+  mapToolsTarget?: HTMLElement | null;
   entrancePick?: import('@/features/pickPlace/pickBuildingEntrance').EntrancePickRequest | null;
   onPrepareGround?: (zoneId: string, clear: boolean, height?: number, edges?: import('./preparedSiteEdges').PreparedEdgeProfile | null) => Promise<void>;
   onFollowParkTerrain?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
@@ -1586,6 +1590,8 @@ export interface GlobeAIRenderViewport {
 }
 
 export function GlobeSitePlannerMap({
+  walkControlTarget,
+  mapToolsTarget,
   entrancePick,
   placementDraft,
   onPlacementDraftChange,
@@ -5118,13 +5124,23 @@ export function GlobeSitePlannerMap({
         >
           {cameraElevation >= 85 ? '3D view' : 'Top view'}
         </button>
-        {!walkMode && !entrancePick && !placementDraft && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
+        {walkControlTarget !== undefined ? (walkControlTarget && createPortal(
+          <button type="button" data-tour="walk-btn"
+            disabled={Boolean(entrancePick || placementDraft || hasDrawingTool || streetViewPegman || measureModeActive)}
+            onClick={() => {
+              if (walkMode === 'active') leaveWalk();
+              else if (walkMode === 'pick') setWalkMode(null);
+              else { onZoneSelected(null); setWalkPickError(''); setWalkMode('pick'); }
+            }}
+            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950 hover:bg-lime-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            title="Explore your community at walking height">
+            <Footprints size={20} aria-hidden="true" />
+            {walkMode === 'active' ? 'Exit walk' : walkMode === 'pick' ? 'Cancel walk' : 'Walk'}
+          </button>, walkControlTarget)) : (!walkMode && !entrancePick && !placementDraft && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
           <button type="button" onClick={() => { onZoneSelected(null); setWalkPickError(''); setWalkMode('pick'); }}
             className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 text-[11px] font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] hover:bg-[#dcff81]"
-            title="Explore the development at walking height">
-            Walk
-          </button>
-        )}
+            title="Explore the development at walking height">Walk</button>
+        ))}
         {!areTilesDisplayReady && (
           <div className="flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
             <div className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
@@ -5171,12 +5187,13 @@ export function GlobeSitePlannerMap({
             Focus plan
           </button>
         )}
+        {mapToolsTarget && createPortal(<>
         {hasPlaceableModels && (
           <button
             type="button"
             onClick={handleBuildingModelsVisibilityToggle}
             aria-pressed={buildingModelsVisible}
-            className={`rounded-full border-2 border-[#151515] px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition ${
+            className={`min-h-11 w-full rounded-lg border-2 border-[#151515] px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
               buildingModelsVisible
                 ? 'bg-[#c9ff3d] text-[#151515]'
                 : 'bg-[#fff9ec]/95 text-[#151515]/50'
@@ -5190,7 +5207,7 @@ export function GlobeSitePlannerMap({
           <button
             type="button"
             onClick={() => setZoneOverlaysVisible((visible) => !visible)}
-            className={`rounded-full border-2 border-[#151515] px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition ${
+            className={`min-h-11 w-full rounded-lg border-2 border-[#151515] px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
               zoneOverlaysVisible
                 ? 'bg-[#fff9ec]/95 text-[#151515]'
                 : 'bg-[#c9ff3d] text-[#151515]'
@@ -5200,9 +5217,10 @@ export function GlobeSitePlannerMap({
             {zoneOverlaysVisible ? 'Plan Overlay' : 'Clean 3D'}
           </button>
         )}
-        {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold" onClick={() => setShowGroundReview(true)}>Review ground</button>}
-        {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 rounded-full border-2 border-[#151515] bg-[#fff9ec] px-3 text-xs font-bold"
+        {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" onClick={() => setShowGroundReview(true)}>Review ground</button>}
+        {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           onClick={()=>setShowEntranceReview(true)}>Review entrances</button>}
+        </>, mapToolsTarget)}
         {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable' || Boolean(sharedGroundState.snapshot?.excludedCells?.length)) && (
           <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
             {groundReadinessMessage(sharedGroundState)}

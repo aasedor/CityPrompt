@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
-import { CATALOGUE_ASSETS, STREET_ASSETS, type StreetAsset } from './assetRegistry';
+import { STREET_ASSETS, type StreetAsset } from './assetRegistry';
 import { CANONICAL_CHOICES, CLASSROOM_CHOICES, UNAVAILABLE_CATALOGUE_ENTRIES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
 import { availablePickerCategories, pickerCategory } from './pickerCategories';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
@@ -16,13 +16,13 @@ const sections = [
   { id: 'park_plaza', label: 'Parks', icon: Trees },
   { id: 'street_pathway', label: 'Streets', icon: Route },
 ] as const;
-const DRAWABLE_STREETS = CATALOGUE_ASSETS.filter((asset): asset is StreetAsset => asset.kind === 'street');
 const classroomCount = (domain: typeof sections[number]['id']) => CLASSROOM_CHOICES.filter(choice => choice.domain === domain).length;
 const classroomSummary = `${CLASSROOM_CHOICES.length} exact choices: ${classroomCount('building')} buildings, ${classroomCount('park_plaza')} parks, ${classroomCount('street_pathway')} streets. App validation in progress; fixed review models have explicit limits.`;
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
-export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, canRefreshDetail, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated }: {
+export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, canRefreshDetail, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated, primaryAction }: {
+  primaryAction?: ReactNode;
   selected: PlaceAssetId | null; onPick: (id: PlaceAssetId) => void; onCancel: () => void;
   status: string; message: string; onRetry: () => void; canRefreshDetail?: boolean;
   onPickStreet?: (asset: StreetAsset) => void; activeStreetVariant?: string;
@@ -63,10 +63,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         <Icon size={22} />{label}
       </button>)}
     </div>
-    {onPickStreet && DRAWABLE_STREETS[0] && <button type="button" onClick={() => onPickStreet(DRAWABLE_STREETS[0])}
-      className="min-h-11 w-full rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950">
-      Draw a road route
-    </button>}
+    {primaryAction}
     {activeStreet && <p className="rounded-lg border border-lime-400 bg-lime-50 px-2 py-2 text-xs text-slate-900">
       <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />{activeStreet.model.variantId === 'amsterdam_gracht_v1'
         ? 'Draw the canal to fit your site. Click route points to bend or extend it, then press Enter to finish. The banks stay 36 m wide; the arch stays its original size and fits on a straight stretch.'

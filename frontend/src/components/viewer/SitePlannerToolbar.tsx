@@ -30,6 +30,7 @@ interface SitePlannerToolbarProps {
   masterPlanActive?: boolean;
   onSiteBoundary?: () => void;
   placementSlot?: ReactNode;
+  advancedSlot?: ReactNode;
   onLeavePlacement?: () => void;
   streetInPlacement?: boolean;
   streetPlacement?: { label: string; description: string; properties: SiteZoneProperties };
@@ -43,7 +44,7 @@ function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
 }
 export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, measureActive = false,
   onMeasureModeChange, isGlobeMode = false, layout = 'default', bottomSlot, uploadSlot,
-  onMasterPlan, masterPlanActive = false, onSiteBoundary, placementSlot, onLeavePlacement, streetPlacement, streetInPlacement = false }: SitePlannerToolbarProps) {
+  onMasterPlan, masterPlanActive = false, onSiteBoundary, placementSlot, advancedSlot, onLeavePlacement, streetPlacement, streetInPlacement = false }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive,
     settings, updateSettings } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
@@ -111,6 +112,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
 
     {showAdvanced && <div id="site-planner-advanced-tools" className="site-planner-advanced-row space-y-2 rounded-lg border border-slate-300 bg-white p-2">
       <p className="text-sm font-semibold text-slate-800">Optional tools</p>
+      {advancedSlot}
       {placementSlot && <div className="grid gap-2"><button className={buttonStyle()} onClick={()=>activateAdvanced('building')}>Draw custom building</button><button className={buttonStyle()} onClick={()=>activateAdvanced('green_space')}>Draw custom park</button></div>}
       <p className="text-xs leading-relaxed text-slate-600">You can start drawing without a site boundary or imported data.</p>
       <div className={['grid gap-2', isSidebar ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-3'].join(' ')}>

@@ -157,6 +157,8 @@ export function ProjectViewPage() {
   const [showProjectRenders, setShowProjectRenders] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [showCatalogue, setShowCatalogue] = useState(false);
+  const [walkControlTarget, setWalkControlTarget] = useState<HTMLDivElement | null>(null);
+  const [mapToolsTarget, setMapToolsTarget] = useState<HTMLDivElement | null>(null);
   const [studentStep, setStudentStep] = useState<StudentStep | null>(null);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
   const [showVideoRender, setShowVideoRender] = useState(false);
@@ -1160,6 +1162,8 @@ export function ProjectViewPage() {
       <div className="fixed inset-x-0 bottom-0 top-16 z-50 bg-black">
         <Suspense fallback={<MapLoadingFallback mode="3D" />}>
           <GlobeSitePlannerMap
+            walkControlTarget={walkControlTarget}
+            mapToolsTarget={mapToolsTarget}
             entrancePick={entrancePick}
             placementDraft={placementDraft}
             onPlacementDraftChange={setPlacementDraft}
@@ -1272,7 +1276,8 @@ export function ProjectViewPage() {
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
               streetInPlacement
-              placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
+              advancedSlot={<div ref={setMapToolsTarget} className="grid gap-2" aria-label="3D viewing tools" />}
+              placementSlot={<PlacementPalette primaryAction={<div ref={setWalkControlTarget} />} selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} canRefreshDetail={automatic3D.canRefreshDetail}
                 onBrowseChange={setShowCatalogue}
                 onPickGenerated={model => {
