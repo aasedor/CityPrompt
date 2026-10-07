@@ -77,8 +77,9 @@ It is one reviewed sample, not a guarantee for every scene.
 
 Evidence and the full output remain outside Git:
 `C:/dev-artifacts/CityPrompt/local-quality-2026-10-06/`.
-The source changes require a backend restart. Automatic approval review blocked
-that restart during this turn; the previous server still uses the old preset.
+After user approval, the local backend was restarted. Both the backend and
+frontend proxy returned Qwen as ready with a 2752-pixel maximum edge and 40
+steps; ComfyUI was reachable with an empty queue. The quality preset is active.
 
 ## Installed model files / bounded defaults
 
