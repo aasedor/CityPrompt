@@ -1,0 +1,199 @@
+{
+  "candidate": "prairie-neighbourhood-shops-clay-v002",
+  "model_sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b",
+  "reviewer": "independent RLASM source_review agent",
+  "reviewed_at": "2026-10-07T13:57:48.917863+00:00",
+  "scope": "Fresh holistic source-locked untextured architectural-clay review; no textured keeper, runtime, engineering or publication approval.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "lifecycle_recommendation": "architectural_clay_review_passed",
+  "previous_review": "../shops-v001/review/independent.json",
+  "inspected_files": [
+    {
+      "path": "prairie-neighbourhood-shops-clay-v002.glb",
+      "sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "89fb9ec3d672809b2ce6024bfdd9d6f47448247697a596479fb079a39542f9c2"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "be0c4b3db6c400c5fbc2839415bdd0147ca00b8f00f1e5017761434a3b8f266f"
+    },
+    {
+      "path": "scripts/designs.py",
+      "sha256": "20ef023309ca6900b6afb018a1c39eaca63b6d5a4e4f566245551fa94f458558"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "10c7e66e0e0d963ec1f0e40b660280fe657d8d6111b94fda9a4786d4450b3435"
+    },
+    {
+      "path": "sources/variant_3.png",
+      "sha256": "eab9758532974146e926c9e26339d5659fa669ec57f3b5182e584a1ee6bb83eb"
+    },
+    {
+      "path": "sources/variant_3_angle_60.jpg",
+      "sha256": "87f88777fbe5aa1af1785e8335c4cc7a71325cc8c1c07f18c20fe56b8790c7f6"
+    },
+    {
+      "path": "sources/variant_3_angle_90.jpg",
+      "sha256": "13f9fc6460fe11f9394d4cee99f7e4ddb27d2de07ab8b2639b8e81faf015cb32"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "c6628cbf25528d1f996b52fc8f7c950139429222284b2a2b9b15310b7a07d0e5"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "bdae642417284af843eafc8f9b0a822597c8f3495722a63f8e53a561d49070da"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "fa165720c45b62351ae91836cf13a1d8cd9b4c8165a506bfe3b82445aa231447"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "24aee06065022b142f18d8b6635df85bd7455af2f5ba8c63c9ce766135576ad9"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "ca04bce7490552ca5a522d4274728e54fcb1a3da1b32df815ab5cc6f1491a552"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "4866b9a4371bae637ea82b33e90994bbb5f0f1593384a06a91c8bcf145065f7a"
+    },
+    {
+      "path": "renders/hardware_interior.png",
+      "sha256": "bf81ec1f98e1976d346c882ed3bf01f09750147e170041e431e62faf38d4a6a2"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "1930c38e51bc30a075e2a0f917de91dcd39cf793806957c24bd7beb0c1ac791a"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "d0d875fff98864993e334a18a1c80504d91c13b76e547856a8ed1373d48f6813"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "aa8dbaae8c55d974c9f37bfa324cf7dc75b3b13b1b2fbe0daa19e49d818933c4"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "6e0ef832400b2deb2f4994adaef7a3ceb03c3e432655d706449fac24f1e1c94a"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "2ea335dfcdb7653ab58a2da7c3de4faea25f20f2c54f40b8948eac79f28f41dd"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "529748cdf1074ed362859b8875b38075901c620e776df56dbfbc45101ba64f93"
+    },
+    {
+      "path": "renders/roof_services.png",
+      "sha256": "519e9ae45e128c80a4f308519c7576865e2151dff58193f5c420099cb467de9d"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "9983ad77e0b5867b5cf6389f4758bdd63477752585d072e8e8368c4e0c2dc896"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "3e259a5f4c055e7049b34f3febe0be9a9de79657529de69cd01c122fd876ad53"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "5c39ddd1970ae4bacd934ee316b91aeec703241954b798addf865435c652adc0"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "4a18706dd1537b6c6a2d58d7ffed1dadcc7380aec123704ca96ca770973a5aa4"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "5433915f7842b95ba8c963de7eab86880e3d9612f4adac13b927c2ee93c3e7c0"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "bdabe8a78ccbe049ba219010b063c3529408429ab2af1ddfbf861054c9b1d7c4"
+    }
+  ],
+  "findings": [
+    {
+      "id": "SHOPS-01",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/front.png",
+        "renders/architecture_close.png",
+        "renders/right_side.png"
+      ],
+      "finding": "All four source-specific tenant names and the right-return gift-store sign are now visible and seated on physical sign panels."
+    },
+    {
+      "id": "SHOPS-02",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/roof_contact.png",
+        "renders/top.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "scripts/designs.py"
+      ],
+      "finding": "The front mansard and both returns now share coherent mitred edges, with closed soffit/end/back assembly. Roof/upstands terminate behind the mansard rather than cutting through it; no former hollow corner cavity remains visible."
+    },
+    {
+      "id": "SHOPS-03",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/front.png"
+      ],
+      "finding": "Front apertures now contain credible single-leaf glazed shop doors with single pulls and connected thresholds."
+    },
+    {
+      "id": "SHOPS-04",
+      "severity": "P2",
+      "status": "nonblocking_clay_simplification",
+      "evidence": [
+        "renders/interior.png",
+        "renders/hardware_interior.png"
+      ],
+      "finding": "Four tenants retain repeated generic shelving, rather than distinct deli/hardware/liquor/gift fitouts. These are inferred simplified clay interiors.",
+      "finite_correction": "Optional later refinement: vary stock and fixtures by tenant while keeping the visible walking aisles free."
+    },
+    {
+      "id": "SHOPS-05",
+      "severity": "P2",
+      "status": "nonblocking_clay_simplification",
+      "evidence": [
+        "sources/variant_3.png",
+        "renders/front.png"
+      ],
+      "finding": "Door/window handedness is regularized across the four storefronts and sign colours/weathering are simplified. The four-tenant building identity remains legible in this clay scope.",
+      "finite_correction": "Source-specific finish phase may restore alternating storefront handedness and individual sign colour treatment."
+    }
+  ],
+  "positive_findings": [
+    "Fresh review covered all three source images, all 16 actual-GLB reimport renders and all four boards at original resolution, beyond only the prior corrections.",
+    "Source rectangular single-storey commercial mass, wrap mansard, four front tenants, side metal cladding and rooftop service distribution are retained.",
+    "Actual recessed glazing, partitioned room depth, supported shelves/counters and suspended fixtures are visible.",
+    "All front/rear entry thresholds are near grade, with no large unsupported access drop observed.",
+    "Independent hash matches reported runtime GLB; no embedded images or textures."
+  ],
+  "limitations": [
+    "Architectural-clay decision only; no textured keeper or CityPrompt runtime approval.",
+    "No independent application walking, placement, persistence or billing testing in this review.",
+    "Hidden rear doors and interiors remain inferred."
+  ]
+}

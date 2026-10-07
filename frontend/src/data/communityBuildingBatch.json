@@ -1,0 +1,30 @@
+{
+  "scope": "Five community buildings, local student trial, October 7 2026",
+  "entries": [
+    {
+      "archetype_id": "montreal_depanneur",
+      "variant_id": "montreal_depanneur_modern",
+      "candidate": "brick-corner-grocery-clay-v002"
+    },
+    {
+      "archetype_id": "civic_modernism_rec_centre",
+      "variant_id": "rec_clerestory_modern",
+      "candidate": "clerestory-neighbourhood-hall-clay-v002"
+    },
+    {
+      "archetype_id": "parkitecture_recreational",
+      "variant_id": "rec_log_cabin_vernacular",
+      "candidate": "log-recreation-cabin-clay-v002"
+    },
+    {
+      "archetype_id": "commercial_strip_mall",
+      "variant_id": "strip_weathered_1980s",
+      "candidate": "prairie-neighbourhood-shops-clay-v002"
+    },
+    {
+      "archetype_id": "inglewood_heritage_brick_commercial",
+      "variant_id": "inglewood_deco_infill",
+      "candidate": "inglewood-corner-merchants-clay-v003"
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "schema": "cityprompt.community-buildings-trial@1",
+  "date": "2026-10-07",
+  "branch": "codex/community-buildings-five-2026-10-07",
+  "base_commit": "6c380bfa71a1591167757f10b9fb116f53970063",
+  "entries": [
+    {
+      "archetype_id": "montreal_depanneur",
+      "variant_id": "montreal_depanneur_modern",
+      "candidate": "brick-corner-grocery-clay-v002",
+      "label": "Brick Corner Grocery",
+      "model_sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462",
+      "bytes": 625280,
+      "triangles": 13846,
+      "native_dimensions_m": {
+        "width": 12.069999694824219,
+        "height": 7.840000152587891,
+        "depth": 12.359999656677246
+      },
+      "reference_hashes": {
+        "front": "0f8ad0364ecc686bf632e49544efd4f7a3192294dab8cb1f7d149e23eaf53e8b",
+        "oblique": "fe4317678836b834a283e3bafdb7d93622ec69463e7f4b11d4fad10c365de6f1",
+        "top": "bf1bde53274f4853992fe8d50000998af1c6a1802b8af3ff52644b0e60c1c922"
+      },
+      "visual_review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "p0": 0,
+        "p1": 0,
+        "views": 17,
+        "record": "seed/model-library/rlasm-architectural-clay/evidence/brick-corner-grocery-clay-v002.json"
+      },
+      "runtime": "local_trial",
+      "keeper_approved": false
+    },
+    {
+      "archetype_id": "civic_modernism_rec_centre",
+      "variant_id": "rec_clerestory_modern",
+      "candidate": "clerestory-neighbourhood-hall-clay-v002",
+      "label": "Clerestory Neighbourhood Hall",
+      "model_sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f",
+      "bytes": 391756,
+      "triangles": 7256,
+      "native_dimensions_m": {
+        "width": 28.1729097366333,
+        "height": 7.010000228881836,
+        "depth": 27.220212936401367
+      },
+      "reference_hashes": {
+        "front": "fa24826d3490cefbf1bc41c3afe686a9d8f9f402bcf6977c05def4f3476864d4",
+        "oblique": "6ed4d4b0837b081149f9acd70be63e453815241e96beaca5d569bfb25c5626de",
+        "top": "cac22164b514e6229742c1dc04803897ce9750b8c512d6aead2814108eb7aa7d"
+      },
+      "visual_review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "p0": 0,
+        "p1": 0,
+        "views": 16,
+        "record": "seed/model-library/rlasm-architectural-clay/evidence/clerestory-neighbourhood-hall-clay-v002.json"
+      },
+      "runtime": "local_trial",
+      "keeper_approved": false
+    },
+    {
+      "archetype_id": "parkitecture_recreational",
+      "variant_id": "rec_log_cabin_vernacular",
+      "candidate": "log-recreation-cabin-clay-v002",
+      "label": "Log Recreation Cabin",
+      "model_sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e",
+      "bytes": 300056,
+      "triangles": 5512,
+      "native_dimensions_m": {
+        "width": 12.920000076293945,
+        "height": 6.204999923706055,
+        "depth": 13.565999984741211
+      },
+      "reference_hashes": {
+        "front": "bd7a456bb9d485ea5138ce38a3740d25556b6557bb1d25eba03c330a116b65b6",
+        "oblique": "73c3539683ebc6a8bbbe565bd56adbe1750624508b1741ec68f48af7b649c2cd",
+        "top": "b8f917cf97105c5a5ca851a00c0a7186a5d0c705a1d09ebbd96e9d0af2900630"
+      },
+      "visual_review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "p0": 0,
+        "p1": 0,
+        "views": 16,
+        "record": "seed/model-library/rlasm-architectural-clay/evidence/log-recreation-cabin-clay-v002.json"
+      },
+      "runtime": "local_trial",
+      "keeper_approved": false
+    },
+    {
+      "archetype_id": "commercial_strip_mall",
+      "variant_id": "strip_weathered_1980s",
+      "candidate": "prairie-neighbourhood-shops-clay-v002",
+      "label": "Prairie Neighbourhood Shops",
+      "model_sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b",
+      "bytes": 1332120,
+      "triangles": 28606,
+      "native_dimensions_m": {
+        "width": 30.700000762939453,
+        "height": 6.170000076293945,
+        "depth": 22.769999504089355
+      },
+      "reference_hashes": {
+        "front": "eab9758532974146e926c9e26339d5659fa669ec57f3b5182e584a1ee6bb83eb",
+        "oblique": "87f88777fbe5aa1af1785e8335c4cc7a71325cc8c1c07f18c20fe56b8790c7f6",
+        "top": "13f9fc6460fe11f9394d4cee99f7e4ddb27d2de07ab8b2639b8e81faf015cb32"
+      },
+      "visual_review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "p0": 0,
+        "p1": 0,
+        "views": 16,
+        "record": "seed/model-library/rlasm-architectural-clay/evidence/prairie-neighbourhood-shops-clay-v002.json"
+      },
+      "runtime": "local_trial",
+      "keeper_approved": false
+    },
+    {
+      "archetype_id": "inglewood_heritage_brick_commercial",
+      "variant_id": "inglewood_deco_infill",
+      "candidate": "inglewood-corner-merchants-clay-v003",
+      "label": "Inglewood Corner Merchants",
+      "model_sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f",
+      "bytes": 1354088,
+      "triangles": 28454,
+      "native_dimensions_m": {
+        "width": 16.230000019073486,
+        "height": 11.369999885559082,
+        "depth": 18.229999542236328
+      },
+      "reference_hashes": {
+        "front": "5a00e70334f19ac624228547cadec8cebc412846f9adc5fd15c8171fde553921",
+        "oblique": "185fad19db2063758faeb94acfce91cf6896a739a04340c7a981f26cd6e5ba57",
+        "top": "2b0fe2c8d0443c0a90aaae5af1459c58a908f01b81e76bfb9f38f9d7e4a4fbe1"
+      },
+      "visual_review": {
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "p0": 0,
+        "p1": 0,
+        "views": 19,
+        "record": "seed/model-library/rlasm-architectural-clay/evidence/inglewood-corner-merchants-clay-v003.json"
+      },
+      "runtime": "local_trial",
+      "keeper_approved": false
+    }
+  ],
+  "total_model_bytes": 4003300,
+  "checks": {
+    "frontend": {
+      "passed": 44,
+      "files": 6,
+      "note": "Five files passed in final combined run; remaining seven panel tests passed after stale count correction."
+    },
+    "compiler_and_promotion": {
+      "passed": 22,
+      "files": [
+        "test_catalogue_promotion.py",
+        "test_rlasm_delivery_contract.py"
+      ]
+    },
+    "typescript": "PASS",
+    "rlasm_preflight": "PASS all five",
+    "local_trial_library": "PASS",
+    "existing_records_preserved": "PASS semantic equality against HEAD for all old building programmes and clay library entries",
+    "model_api": "PASS 5 native plans, 5 exact GLB hashes, 15 reference-image hashes",
+    "storage": "PASS 52 of 52 current Model Library objects present"
+  },
+  "browser": {
+    "url": "http://127.0.0.1:5181/projects/d7eb67d6-11a5-41ad-84d8-c48872fbb465",
+    "viewport": [
+      1280,
+      720
+    ],
+    "placed_via_ordinary_controls": 5,
+    "reload": "All five present; 3D saved",
+    "mixed_scene": [
+      "Planted Shared Lane",
+      "Shaded Reading Garden"
+    ],
+    "grocery_plot_edit": "20 x 20 m, rotation 15 degrees, Undo/Redo/reload verified",
+    "console_errors": [],
+    "capture": "Free exact preview verified; download completion not verified",
+    "walking": "Close exterior view via Walk; continuous entrance/stair traversal not verified"
+  },
+  "open_runtime_gates": [
+    "Natural/sloped/exposed-edge terrain",
+    "Continuous walking through each entrance and stair",
+    "Automatic or manually authored approaches and multi-entrance recovery",
+    "Touch input",
+    "Adverse-network recovery",
+    "Fresh empty DB/bucket install",
+    "Exact-capture download completion"
+  ],
+  "zoning_review": [
+    "Prairie Neighbourhood Shops liquor tenancy missing from screened use snapshot; marked review"
+  ],
+  "artifacts": {
+    "five-buildings-in-cityprompt.png": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\five-buildings-in-cityprompt.png",
+      "sha256": "9977567061e19124513fd06664467a45bdca6b639698b9a37434f66f2258bd29"
+    },
+    "five-building-overview.jpg": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\five-building-overview.jpg",
+      "sha256": "992dc87e63a6b08349497e51678b282520b5c66e39d94ad51b46c535aa623205"
+    },
+    "cabin-catalogue.png": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\cabin-catalogue.png",
+      "sha256": "6a5749afbfbf3c3168b271ac4b95a872358ff369e4bc137677ede734506150ec"
+    },
+    "pilot-export-browser.png": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\pilot-export-browser.png",
+      "sha256": "1d69d6de1ac3c570e100f7ca5f0d2a60491023661f2f212457c5e99a53ccf983"
+    },
+    "five-model-api-check.json": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\five-model-api-check.json",
+      "sha256": "42de5a21f5744da662836ae9dcbabd825bce98eacde78fbb18ece490fe1477cf"
+    },
+    "final-storage-check.json": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\final-storage-check.json",
+      "sha256": "2d290ebc37377e1137b0174f8d7843b87999986cca44290538ff149d5f9444b9"
+    }
+  },
+  "delivery": {
+    "source_changes": "Additive five-building local trial and focused metadata/tests/tools",
+    "heavy_output": "External candidate directories and logs, not staged",
+    "models": "Five explicit Git LFS deliverables",
+    "pushed": false,
+    "production_deployed": false
+  }
+}

@@ -1184,5 +1184,83 @@
     "districtReview": {
       "M-C1": "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions. Density<=148units/ha or lower mapped d; at12m cross-section<=40% of maximum area0–10m, plus neighbour/street envelopes (590,594). 13.8m full-width fourth floor likely exceeds594(4) area at12m; being below14m total is insufficient. Do not show an unconditional height match."
     }
+  },
+  "montreal_depanneur_modern": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ],
+      [
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Small grocery at ground level and one conceptual dwelling upstairs. No liquor, tobacco, restaurant or additional suite assumed.",
+    "revision": "brick-corner-grocery-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    }
+  },
+  "rec_clerestory_modern": {
+    "components": [
+      [
+        "Community Recreation Facility"
+      ]
+    ],
+    "assumption": "Teaching programme: community recreation and meeting hall operated by a non-profit community organization. No commercial fitness, spectator venue or overnight accommodation assumed.",
+    "revision": "clerestory-neighbourhood-hall-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    }
+  },
+  "rec_log_cabin_vernacular": {
+    "components": [
+      [
+        "Community Recreation Facility"
+      ]
+    ],
+    "assumption": "Teaching programme: day-use recreation cabin operated by a non-profit community organization. No overnight accommodation or restaurant assumed.",
+    "revision": "log-recreation-cabin-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    }
+  },
+  "inglewood_deco_infill": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ],
+      [
+        "Office"
+      ]
+    ],
+    "assumption": "Ground-floor shops and upper offices; no dwelling or restaurant assumed. Service roof access is not a public terrace.",
+    "revision": "inglewood-corner-merchants-clay-v003",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    }
+  },
+  "strip_weathered_1980s": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ],
+      [
+        "Restaurant: Food Service Only"
+      ],
+      [
+        "Liquor Store"
+      ]
+    ],
+    "assumption": "Four teaching tenants follow the reference signs: deli, hardware, liquor retail and gifts. Deli assumes food preparation; occupancy and licensing require confirmation.",
+    "revision": "prairie-neighbourhood-shops-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    },
+    "review": "The liquor tenant has not yet been screened against the district-use snapshot. Review each tenancy before treating this mixed shop row as a permitted or discretionary candidate."
   }
 }

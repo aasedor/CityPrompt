@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-10-06",
+  "updated_at": "2026-10-07",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -4243,6 +4243,356 @@
       "review": {
         "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/affordable-switchback-clay-v003.json",
         "sha256": "b8135d825686b3a50d674941ec1b50f2c9063df3be17f2ce90d06fd7b13019d2",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "brick-corner-grocery-clay-v002",
+      "family": "rlasm-clay-brick-corner-grocery",
+      "archetype_id": "montreal_depanneur",
+      "variant_id": "montreal_depanneur_modern",
+      "archetype_label": "Brick Corner Grocery",
+      "variant_label": "Brick Corner Grocery",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 11.4,
+        "depth": 12.4,
+        "height": 7.9
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-depanneur/variant_3.png",
+          "bytes": 1400746,
+          "sha256": "0f8ad0364ecc686bf632e49544efd4f7a3192294dab8cb1f7d149e23eaf53e8b"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-depanneur/variant_3_angle_60.jpg",
+          "bytes": 963983,
+          "sha256": "fe4317678836b834a283e3bafdb7d93622ec69463e7f4b11d4fad10c365de6f1"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-depanneur/variant_3_angle_90.jpg",
+          "bytes": 887306,
+          "sha256": "bf1bde53274f4853992fe8d50000998af1c6a1802b8af3ff52644b0e60c1c922"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\grocer-v002",
+      "picker": {
+        "id": "community_brick_corner_grocery",
+        "description": "Corner grocery with one home above and an internal stair.",
+        "group_id": "mixed",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+        "width": 16.1,
+        "depth": 16.4,
+        "max_size": 60
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/brick-corner-grocery-clay-v002.glb",
+        "bytes": 625280,
+        "sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462",
+        "native_dimensions_m": {
+          "width": 12.069999694824219,
+          "height": 7.840000152587891,
+          "depth": 12.359999656677246
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/brick-corner-grocery-clay-v002.json",
+        "sha256": "845aaedc9269980258e7715042a7babc51a558d974459cb463bbe405fbea1980",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clerestory-neighbourhood-hall-clay-v002",
+      "family": "rlasm-clay-clerestory-neighbourhood-hall",
+      "archetype_id": "civic_modernism_rec_centre",
+      "variant_id": "rec_clerestory_modern",
+      "archetype_label": "Clerestory Neighbourhood Hall",
+      "variant_label": "Clerestory Neighbourhood Hall",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 26,
+        "depth": 27,
+        "height": 7.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_2.png",
+          "bytes": 1007802,
+          "sha256": "fa24826d3490cefbf1bc41c3afe686a9d8f9f402bcf6977c05def4f3476864d4"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_2_angle_60.jpg",
+          "bytes": 874826,
+          "sha256": "6ed4d4b0837b081149f9acd70be63e453815241e96beaca5d569bfb25c5626de"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/civic_modernism_rec_centre/variant_2_angle_90.jpg",
+          "bytes": 834916,
+          "sha256": "cac22164b514e6229742c1dc04803897ce9750b8c512d6aead2814108eb7aa7d"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\hall-v002",
+      "picker": {
+        "id": "community_clerestory_neighbourhood_hall",
+        "description": "High clerestory windows, a covered entrance and community activity rooms.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+        "width": 32.2,
+        "depth": 31.2,
+        "max_size": 60
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/clerestory-neighbourhood-hall-clay-v002.glb",
+        "bytes": 391756,
+        "sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f",
+        "native_dimensions_m": {
+          "width": 28.1729097366333,
+          "height": 7.010000228881836,
+          "depth": 27.220212936401367
+        },
+        "mesh_count": 10,
+        "material_count": 10,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clerestory-neighbourhood-hall-clay-v002.json",
+        "sha256": "d312e91fdd1464b5ad0bf91d3dd3febac9144b55735c1165172399169899ffa6",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "log-recreation-cabin-clay-v002",
+      "family": "rlasm-clay-log-recreation-cabin",
+      "archetype_id": "parkitecture_recreational",
+      "variant_id": "rec_log_cabin_vernacular",
+      "archetype_label": "Log Recreation Cabin",
+      "variant_label": "Log Recreation Cabin",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 12,
+        "depth": 11.5,
+        "height": 6.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parkitecture_recreational/variant_1.png",
+          "bytes": 1545747,
+          "sha256": "bd7a456bb9d485ea5138ce38a3740d25556b6557bb1d25eba03c330a116b65b6"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parkitecture_recreational/variant_1_angle_60.jpg",
+          "bytes": 1022058,
+          "sha256": "73c3539683ebc6a8bbbe565bd56adbe1750624508b1741ec68f48af7b649c2cd"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parkitecture_recreational/variant_1_angle_90.jpg",
+          "bytes": 1006182,
+          "sha256": "b8f917cf97105c5a5ca851a00c0a7186a5d0c705a1d09ebbd96e9d0af2900630"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\cabin-v002",
+      "picker": {
+        "id": "community_log_recreation_cabin",
+        "description": "Log recreation shelter with a covered porch and shared activity room.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+        "width": 16.9,
+        "depth": 17.6,
+        "max_size": 60
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/log-recreation-cabin-clay-v002.glb",
+        "bytes": 300056,
+        "sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e",
+        "native_dimensions_m": {
+          "width": 12.920000076293945,
+          "height": 6.204999923706055,
+          "depth": 13.565999984741211
+        },
+        "mesh_count": 10,
+        "material_count": 10,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/log-recreation-cabin-clay-v002.json",
+        "sha256": "b310cdb5db04aff8900635488a791c548ed34d5abb22c82c7fd36b99884be677",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "prairie-neighbourhood-shops-clay-v002",
+      "family": "rlasm-clay-prairie-neighbourhood-shops",
+      "archetype_id": "commercial_strip_mall",
+      "variant_id": "strip_weathered_1980s",
+      "archetype_label": "Prairie Neighbourhood Shops",
+      "variant_label": "Prairie Neighbourhood Shops",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 30,
+        "depth": 22,
+        "height": 5.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_3.png",
+          "bytes": 1176865,
+          "sha256": "eab9758532974146e926c9e26339d5659fa669ec57f3b5182e584a1ee6bb83eb"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_3_angle_60.jpg",
+          "bytes": 808671,
+          "sha256": "87f88777fbe5aa1af1785e8335c4cc7a71325cc8c1c07f18c20fe56b8790c7f6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_3_angle_90.jpg",
+          "bytes": 915767,
+          "sha256": "13f9fc6460fe11f9394d4cee99f7e4ddb27d2de07ab8b2639b8e81faf015cb32"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\shops-v002",
+      "picker": {
+        "id": "community_prairie_neighbourhood_shops",
+        "description": "Four neighbourhood shops, each with its own entrance.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+        "width": 34.7,
+        "depth": 26.8,
+        "max_size": 60
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/prairie-neighbourhood-shops-clay-v002.glb",
+        "bytes": 1332120,
+        "sha256": "c956b8c73d7e09c712e738a1e7ef0c5322a73fe7bab576410a8b80a16cb6753b",
+        "native_dimensions_m": {
+          "width": 30.700000762939453,
+          "height": 6.170000076293945,
+          "depth": 22.769999504089355
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/prairie-neighbourhood-shops-clay-v002.json",
+        "sha256": "1a5a4c65ca1559ac285141effd56048c5ccc8b3de02952a00a8110f4c0f66e50",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "inglewood-corner-merchants-clay-v003",
+      "family": "rlasm-clay-inglewood-corner-merchants",
+      "archetype_id": "inglewood_heritage_brick_commercial",
+      "variant_id": "inglewood_deco_infill",
+      "archetype_label": "Inglewood Corner Merchants",
+      "variant_label": "Inglewood Corner Merchants",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 14.5,
+        "depth": 17.5,
+        "height": 11.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2.png",
+          "bytes": 1425788,
+          "sha256": "5a00e70334f19ac624228547cadec8cebc412846f9adc5fd15c8171fde553921"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2_angle_60.jpg",
+          "bytes": 863755,
+          "sha256": "185fad19db2063758faeb94acfce91cf6896a739a04340c7a981f26cd6e5ba57"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2_angle_90.jpg",
+          "bytes": 760479,
+          "sha256": "2b0fe2c8d0443c0a90aaae5af1459c58a908f01b81e76bfb9f38f9d7e4a4fbe1"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\community-buildings-five-2026-10-07\\inglewood-v003",
+      "picker": {
+        "id": "community_inglewood_corner_merchants",
+        "description": "Brick corner shops with upstairs offices and supported balconies.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+        "width": 20.2,
+        "depth": 22.2,
+        "max_size": 60
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/inglewood-corner-merchants-clay-v003.glb",
+        "bytes": 1354088,
+        "sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f",
+        "native_dimensions_m": {
+          "width": 16.230000019073486,
+          "height": 11.369999885559082,
+          "depth": 18.229999542236328
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/inglewood-corner-merchants-clay-v003.json",
+        "sha256": "533b7c3b88b1d5581fa9946ca2ec0e0c66ee16aef6bb2d0891269bb3f96dd0a3",
         "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
         "unresolved_p0": 0,
         "unresolved_p1": 0

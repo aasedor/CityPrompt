@@ -3,7 +3,7 @@ import { BUILDING_PROGRAMS, DISTRICT_RULES, matchBuilding, matchCatalogue, parse
 import { ZONING_CATALOGUE_BUILDINGS } from './ZoningCatalogueCard';
 import type { ZoneInspection } from './types';
 import catalogue from '@/features/referenceLayers/calgaryBylawCatalogue.json';
-import { OCTOBER_BUILDING_ASSETS } from '@/features/pickPlace/assetRegistry';
+import { OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS } from '@/features/pickPlace/assetRegistry';
 
 const zone = (designation: string): ZoneInspection => ({ id: 'z', label: designation, source: 'Test', district: { designation } });
 const model = (variant: string) => ZONING_CATALOGUE_BUILDINGS.find(a => a.model.variantId === variant)!;
@@ -11,7 +11,7 @@ const result = (variant: string, designation: string) => matchBuilding(model(var
 
 describe('catalogue zoning screening', () => {
   it('reviews every exact current building revision without reviving legacy models', () => {
-    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length);
+    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length);
     expect(Object.keys(BUILDING_PROGRAMS).sort()).toEqual(ZONING_CATALOGUE_BUILDINGS.map(a => a.model.variantId).sort());
     for (const a of ZONING_CATALOGUE_BUILDINGS) expect(BUILDING_PROGRAMS[a.model.variantId].revision).toBe(a.model.revision);
     expect(Object.keys(DISTRICT_RULES).sort()).toEqual(catalogue.districts.map(d => d.code).sort());

@@ -1,0 +1,182 @@
+{
+  "candidate": "brick-corner-grocery-clay-v002",
+  "model_sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462",
+  "reviewer": "independent RLASM source_review agent",
+  "reviewed_at": "2026-10-07T13:23:27.380577+00:00",
+  "scope": "Fresh holistic source-locked untextured architectural-clay asset review; no textured keeper, runtime, engineering or publication approval.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "previous_review": "../grocer-v001/review/independent.json",
+  "inspected_files": [
+    {
+      "path": "sources/variant_3.png",
+      "sha256": "0f8ad0364ecc686bf632e49544efd4f7a3192294dab8cb1f7d149e23eaf53e8b"
+    },
+    {
+      "path": "sources/variant_3_angle_60.jpg",
+      "sha256": "fe4317678836b834a283e3bafdb7d93622ec69463e7f4b11d4fad10c365de6f1"
+    },
+    {
+      "path": "sources/variant_3_angle_90.jpg",
+      "sha256": "bf1bde53274f4853992fe8d50000998af1c6a1802b8af3ff52644b0e60c1c922"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "442a284fce410011e9a7bbb152a889dde2f353b8c494746c32c7c9cd0de711ae"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "a0d2655d3e87137196d3bc0cf4cf7e00b4038fb3257f2f43c315783e7ba5783a"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "74160bbed33c2e457869b0e8d864bfdd9cfb1a5b93763083518bd98b9240181b"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "bcd78daa83c1fa77f6355ac6fcb3974a2a8d336588a4d7f11197d06ee52ff3d7"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "69a1a69a16d44d07464ec60cb4c509b5cd85e0031107d5e325b0499edd4316ca"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "276f3bf95ad045a5b79d979c17138176aa2fcb4f75c8a88c0914df745bdeea6c"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "8e1260933f1ad583189292926271f2f2eb75ad4f8f7e365a4a77b2d24805ed8d"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "728d1411a5a271fdba6df79e451d2b9d0bf9429492437c4a83d6507b57784317"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "ced45bb13bc1ea4bc02f66d85216c30dfe6f313246052e75eff2f872d889b1f4"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "5f72389e12c79c0b7be416346d9df88901f07231515e43ffacd15cac387645db"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "8cb54ade8bbc8d12f5c4d11722d395e6956f653a69ff42620fef7284bee6d703"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "8c9c7ed1fbf0be67e241adddfb38afaf874311f3196627efeb6286b9633b86e4"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "6cdcc82cae2d445da3ddfcd60ea83c497a8f959f58e9121d8be732cee2af8a41"
+    },
+    {
+      "path": "renders/stair_arrival.png",
+      "sha256": "c5b88367cde4a575e936b50822d7d5e28e338841dc0e390289d9d268f5fbd597"
+    },
+    {
+      "path": "renders/stair_contact.png",
+      "sha256": "4a0c38be32b48075b1b9059c45bc79c9e215c220a31f54673c1173a179aaa5d4"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "91d60ac474bb71ee20ef3ef87953c7c316bc2831d2450f484b23f8906ebbe4de"
+    },
+    {
+      "path": "renders/upper_room.png",
+      "sha256": "7abc58629eae9fd2b08cca61dfdee1113447f08cba23926cbfa8231c56dfbece"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "5290a44287cc300c61aecc67dd76e78a92316fa4c492358ee1edc27c0c5fab4b"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "3871284ca55c2af4eb06b2b6ae1fe83f9291b0797931e3835c9a31dcf87ea813"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "c22172864131e9ab4ff79ba5a33402ec3ad90bb85b6a0d9522dbd1d6b4852301"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "c534e03d26deeeb5a2f25388a5f9aa025f51b01c43d4d72545258307dbb86211"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "59be6f255eb4cbf16d223d5b75a5fd2445b3efc181d20246f7ddba7813fc8d86"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "34d09411152a5e12fe04e80e72fb266236062bb2fcabb590d7aebc602cd1bf20"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "09e3feae60fb33bfe56b1a101f6aa6c1c50745e0e9afbc23da5ed609dc05a50b"
+    },
+    {
+      "path": "scripts/build.py",
+      "sha256": "0f2911cc49fa8cd52f08491e44db5dbdc45b0f952073c7f35459b54a196f5421"
+    },
+    {
+      "path": "brick-corner-grocery-clay-v002.glb",
+      "sha256": "81134899b4385206676907ef9258a37f896c6a79a4ec03ad4380fd59230ce462"
+    }
+  ],
+  "findings": [
+    {
+      "id": "v001-P0-01",
+      "severity": "P0",
+      "status": "closed",
+      "evidence": [
+        "renders/stair_arrival.png",
+        "renders/stair_contact.png",
+        "renders/interior.png",
+        "renders/upper_room.png"
+      ],
+      "finding": "The previous open slot is gone: final stair tread now meets the upper floor, with a clear opening between side guard ends. Supported rise and clear overhead aperture remain visible. Code corroborates the shared y=3.7 datum; rendered contact is the primary evidence."
+    },
+    {
+      "id": "v001-P1-01",
+      "severity": "P1",
+      "status": "closed",
+      "evidence": [
+        "renders/front_corner.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "finding": "Shop window transom divisions, connected fascia turning the square upper corner, and a supported blade-sign silhouette restore the source-specific storefront hierarchy. Clear entry, returns, glass depth and occupied shop remain intact."
+    },
+    {
+      "id": "P2-01",
+      "severity": "P2",
+      "status": "non_blocking_polish",
+      "evidence": [
+        "renders/architecture_close.png",
+        "sources/variant_3.png"
+      ],
+      "finding": "The entrance leaf remains a simplified full-height glazed pane rather than repeating the source door transom detailing. The flanking storefront transom band and source corner identity are present; this is minor clay-detail polish, not a massing, entry, contact or programme defect."
+    }
+  ],
+  "positive_findings": [
+    "All 17 render images, all three locked source images and all four boards directly inspected at original resolution afresh, including unchanged sides/rear and upper programme.",
+    "Source-matching two-storey envelope, near-square plan, flat roof and low parapet are preserved. Three tall upper windows per street face and ground-only chamfer remain coherent.",
+    "Whole-view cameras retain footprint, roof and sign with margins; roof cap and wall contact remain closed.",
+    "Physical openings show carrier returns, recessed frames/optical panes and visible occupied-room depth. Retail shelving, checkout and a separately occupied upper room prevent an empty glass-shell reading.",
+    "Ground, stair and upper-floor programme are connected geometrically; this does not certify the app walking implementation.",
+    "Hidden rear/party-wall elevations and interiors remain explicitly inferred. Concept furnishings and clay palette are appropriate to this untextured scope.",
+    "Actual delivered GLB SHA matches report and contains no images or textures; technical checks corroborate, but do not replace, the pixel review."
+  ],
+  "limitations": [
+    "No runtime terrain, placement, save/reload or app walking acceptance performed by reviewer.",
+    "Metric dimensions are inferred, not surveyed.",
+    "This grants architectural-clay asset review only; no keeper_approved state or publication/human activation."
+  ]
+}

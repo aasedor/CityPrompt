@@ -1,0 +1,221 @@
+{
+  "candidate": "inglewood-corner-merchants-clay-v003",
+  "model_sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f",
+  "reviewer": "independent RLASM source_review agent",
+  "reviewed_at": "2026-10-07T14:08:25.342782+00:00",
+  "scope": "Fresh holistic source-locked untextured architectural-clay review; no textured keeper, runtime, engineering or publication approval.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "lifecycle_recommendation": "architectural_clay_review_passed",
+  "previous_review": "../inglewood-v002/review/independent.json",
+  "inspected_files": [
+    {
+      "path": "sources/variant_2.png",
+      "sha256": "5a00e70334f19ac624228547cadec8cebc412846f9adc5fd15c8171fde553921"
+    },
+    {
+      "path": "sources/variant_2_angle_60.jpg",
+      "sha256": "185fad19db2063758faeb94acfce91cf6896a739a04340c7a981f26cd6e5ba57"
+    },
+    {
+      "path": "sources/variant_2_angle_90.jpg",
+      "sha256": "2b0fe2c8d0443c0a90aaae5af1459c58a908f01b81e76bfb9f38f9d7e4a4fbe1"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "ad96e518321b0dc645e7e4241c840a3e45efd9b780c4bcbf3e7ac9ad7750dbb8"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "84992e47ddd583aa36f8aaea9d979c5d678d4d60871e498dd4ba8719affbe6ae"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "8d9bc405e69e25d1557385a186bcae240388c82a761f5ed19ff7ad7fd15f8d0c"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "0edc3ef46da61a4a15487fbb1d83f49ed9934297e33533e21baf7991207f52cf"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "246d061e8dd6333d5a9ffa6162961c39285b2f9e4aa20223f03d510c074c1426"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "aa1260667c23cc4e8beba4d24e40fa207661ec45c1490979ac888e91ae42f5c8"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "283bca3b59be0dbab1fce721facb9e1085e71209886cb84b16480a389ebd0616"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "11aa422328ab0cd13c90a972f3d69b6fedd12a4b28db9a3a140b14af724a2d56"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "955da678daedd13d7327cdfe16eb0cf4ce5a7d80e930637e045acf21d2e26410"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "4fcf6eb77607353f0649f810c0174a9e9e4168a9211ff4a4c2073d31f690f238"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "96fafacd19491db490a6d22f667b1b0c0bf67ca4ccf4214d1acdba579ab348dc"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "ae2f7f00c9b8dced8eba58b58d148f02b1066302e1311e9a12da15dce21170aa"
+    },
+    {
+      "path": "renders/roof_exit.png",
+      "sha256": "30fb849e6147a409adad701dfc4a8776d8ea2323f13cd2aec1940cb1b68aaa7a"
+    },
+    {
+      "path": "renders/roof_half_landing.png",
+      "sha256": "d1a641b0355501028373181682a4ea7fc9c94cb1c0657ea37f663fb2492c3fdd"
+    },
+    {
+      "path": "renders/roof_stair.png",
+      "sha256": "a426ca6c2a0e4d91e43c04a1c8b3d4b8a00842561f5dd2a8738c1c29ced432bf"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "6e0c84ace57d6a218b796c13c52105cd254da043fcde3ae6ba19766a7120ab2f"
+    },
+    {
+      "path": "renders/stair_arrival.png",
+      "sha256": "822ab2cf94e457e6f95992570baa62d309fa688494022e3bead8c94bfd0ac6f4"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "79605d9262005015fdb0aecd33a54a218b7808a6a7a17444a3943abac15478f6"
+    },
+    {
+      "path": "renders/upper_room.png",
+      "sha256": "f0153d375477c4c4ccd2aa6f6975b41d14ae7a8b18dc6e5fefaea4ea619fe235"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "a47a5de03d06b4061ff4691ca5b1899d1f76a7f154a9bf5243ba234d195aa9e1"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "e48d84710ce53c375e68cdb6ad27aaa4914602ab3f2971fe92cab219e7b24fb9"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "4e16733de2faafacb63ec02c75918068cb0637b294d6ddc646804f99b9ca8991"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "676c3207fa316fb30b488b10406c7cd84386a807cec7d11a63b5acf0d613ffd0"
+    },
+    {
+      "path": "inglewood-corner-merchants-clay-v003.glb",
+      "sha256": "f907f31e1f2e64e1c3b2d76261d6c4695b9fdd2b743dff5abd635496540f940f"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "f9aea7f958dd5c767c47f20127b5c45b3a09e05e25b7a0fe8b48c2e7336f4b29"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "01aab2270983e59fead4e6ce23cbae6ad72206e99bbce8fa1c7e9bd959ebc497"
+    },
+    {
+      "path": "scripts/designs.py",
+      "sha256": "c2331a67c9bb12f0e110f4600412ee0bd8bcddcd95b1a113988db8462c0a877f"
+    },
+    {
+      "path": "scripts/assemblies.py",
+      "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "4c1d478ad66d7585a38509b9cfb1b9215c0487a811c743d40ffe8a341c6251a1"
+    }
+  ],
+  "findings": [
+    {
+      "id": "INGLEWOOD-V2-01",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/roof_half_landing.png",
+        "renders/roof_stair.png"
+      ],
+      "finding": "Repositioned camera now visibly proves the two flights meet the continuous half landing, the U turn is unobstructed, and the head region is open. No black mandatory proof remains.",
+      "finite_correction": "None."
+    },
+    {
+      "id": "INGLEWOOD-V2-02",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/roof_stair.png",
+        "renders/roof_exit.png",
+        "renders/roof_contact.png",
+        "scripts/designs.py"
+      ],
+      "finding": "Room front moved to y=1.7 with inner wall at y=1.9, leaving 1.1 m between it and stair aperture beginning y=3.0. Skylight rear curb now ends at y=0.06, leaving 1.64 m outside the door. The images show continuous supported arrival and a usable exterior path.",
+      "finite_correction": "None."
+    },
+    {
+      "id": "INGLEWOOD-V2-03",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/roof_half_landing.png",
+        "renders/roof_stair.png",
+        "renders/upper_room.png"
+      ],
+      "finding": "Half-landing rear and side guards are seated on the supported platform and protect outer edges while leaving the U-turn connection open.",
+      "finite_correction": "None."
+    },
+    {
+      "id": "INGLEWOOD-01",
+      "severity": "P0",
+      "status": "resolved",
+      "evidence": [
+        "renders/upper_room.png",
+        "scripts/designs.py"
+      ],
+      "finding": "Desk at (4,5) remains clear of lower roof-service flight and approach.",
+      "finite_correction": "None."
+    },
+    {
+      "id": "INGLEWOOD-V3-01",
+      "severity": "P2",
+      "status": "nonblocking",
+      "evidence": [
+        "sources/variant_2.png",
+        "sources/variant_2_angle_90.jpg",
+        "renders/facade_close.png",
+        "renders/top.png"
+      ],
+      "finding": "Architectural clay simplifies brick and masonry relief, source sign date/blade lettering, parapet medallion, sash subdivisions and cornice corner termination. Roof access enclosure is enlarged relative to the source to house the inferred service stair, and the skylight remains larger than the source. Core corner-commercial silhouette, two storeys, arches, paired upper openings, balconies and roof feature identities are retained.",
+      "finite_correction": "Keep these as explicit inferred/simplified aspects. Refine source-specific surface/lettering/detail and roof proportions before any future textured exact-keeper claim; no further architectural-clay blocker identified."
+    }
+  ],
+  "positive_findings": [
+    "Fresh full-resolution inspection of all three locked source images, all 19 actual-GLB renders and four boards, not only changed views.",
+    "Joined ground-to-office stair, side/end aperture guards and clear upper arrival remain coherent.",
+    "Roof-service lower and return flights, supported guarded half landing, top arrival and exterior exit now form a visually credible continuous circulation sequence.",
+    "Street-facing physical openings, single active shop door with sidelights, paired balcony doors, transoms and pull hardware remain legible; glass reveals real interior geometry.",
+    "Balcony slabs, brackets, guard feet, roof enclosure/cap joints, parapets and cornice are seated without visible major floating contacts or shell gaps.",
+    "Independently computed GLB hash matches report: 1354088 bytes, 12 meshes, 12 materials, zero images/textures."
+  ],
+  "limitations": [
+    "No CityPrompt runtime placement, walking, scaling or catalogue checks performed by this reviewer.",
+    "Metric dimensions, interior programme, rear elevations and service-stair arrangement are inferred; roof access enclosure was adapted for usable circulation.",
+    "This is a clay-stage acceptance with retained P2 source-detail simplifications, not textured keeper quality.",
+    "No engineering, accessibility or building-code certification."
+  ]
+}

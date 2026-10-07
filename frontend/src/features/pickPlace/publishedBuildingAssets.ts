@@ -1921,6 +1921,206 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 4,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "community_brick_corner_grocery",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Brick Corner Grocery",
+    "description": "Corner grocery with one home above and an internal stair.",
+    "thumbnail": "/archetypes/buildings/montreal-depanneur/variant_3.png",
+    "model": {
+      "variantId": "montreal_depanneur_modern",
+      "revision": "brick-corner-grocery-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "mixed",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 16.1,
+    "depth": 16.4,
+    "minWidth": 16.1,
+    "minDepth": 16.4,
+    "maxSize": 60.0,
+    "nativeDimensions": [
+      12.069999694824219,
+      12.359999656677246,
+      7.840000152587891
+    ],
+    "reshapeDescription": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "montreal_depanneur",
+      "development_archetype_id": "montreal_depanneur",
+      "development_selected_variant_id": "montreal_depanneur_modern",
+      "development_archetype_label": "Brick Corner Grocery",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "community_clerestory_neighbourhood_hall",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Clerestory Neighbourhood Hall",
+    "description": "High clerestory windows, a covered entrance and community activity rooms.",
+    "thumbnail": "/archetypes/buildings/civic_modernism_rec_centre/variant_2.png",
+    "model": {
+      "variantId": "rec_clerestory_modern",
+      "revision": "clerestory-neighbourhood-hall-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 32.2,
+    "depth": 31.2,
+    "minWidth": 32.2,
+    "minDepth": 31.2,
+    "maxSize": 60.0,
+    "nativeDimensions": [
+      28.1729097366333,
+      27.220212936401367,
+      7.010000228881836
+    ],
+    "reshapeDescription": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "civic_modernism_rec_centre",
+      "development_archetype_id": "civic_modernism_rec_centre",
+      "development_selected_variant_id": "rec_clerestory_modern",
+      "development_archetype_label": "Clerestory Neighbourhood Hall",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "community_log_recreation_cabin",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Log Recreation Cabin",
+    "description": "Log recreation shelter with a covered porch and shared activity room.",
+    "thumbnail": "/archetypes/buildings/parkitecture_recreational/variant_1.png",
+    "model": {
+      "variantId": "rec_log_cabin_vernacular",
+      "revision": "log-recreation-cabin-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 16.9,
+    "depth": 17.6,
+    "minWidth": 16.9,
+    "minDepth": 17.6,
+    "maxSize": 60.0,
+    "nativeDimensions": [
+      12.920000076293945,
+      13.565999984741211,
+      6.204999923706055
+    ],
+    "reshapeDescription": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "parkitecture_recreational",
+      "development_archetype_id": "parkitecture_recreational",
+      "development_selected_variant_id": "rec_log_cabin_vernacular",
+      "development_archetype_label": "Log Recreation Cabin",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "community_prairie_neighbourhood_shops",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Prairie Neighbourhood Shops",
+    "description": "Four neighbourhood shops, each with its own entrance.",
+    "thumbnail": "/archetypes/buildings/commercial-strip-mall/variant_3.png",
+    "model": {
+      "variantId": "strip_weathered_1980s",
+      "revision": "prairie-neighbourhood-shops-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 34.7,
+    "depth": 26.8,
+    "minWidth": 34.7,
+    "minDepth": 26.8,
+    "maxSize": 60.0,
+    "nativeDimensions": [
+      30.700000762939453,
+      22.769999504089355,
+      6.170000076293945
+    ],
+    "reshapeDescription": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "commercial_strip_mall",
+      "development_archetype_id": "commercial_strip_mall",
+      "development_selected_variant_id": "strip_weathered_1980s",
+      "development_archetype_label": "Prairie Neighbourhood Shops",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "community_inglewood_corner_merchants",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Inglewood Corner Merchants",
+    "description": "Brick corner shops with upstairs offices and supported balconies.",
+    "thumbnail": "/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2.png",
+    "model": {
+      "variantId": "inglewood_deco_infill",
+      "revision": "inglewood-corner-merchants-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 20.2,
+    "depth": 22.2,
+    "minWidth": 20.2,
+    "minDepth": 22.2,
+    "maxSize": 60.0,
+    "nativeDimensions": [
+      16.230000019073486,
+      18.229999542236328,
+      11.369999885559082
+    ],
+    "reshapeDescription": "One complete building. Enlarge or rotate its plot; the building keeps its authored dimensions.",
+    "properties": {
+      "building_archetype_id": "inglewood_heritage_brick_commercial",
+      "development_archetype_id": "inglewood_heritage_brick_commercial",
+      "development_selected_variant_id": "inglewood_deco_infill",
+      "development_archetype_label": "Inglewood Corner Merchants",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
   }
 ];
 

@@ -56,7 +56,7 @@ describe('zoning catalogue panel', () => {
   });
   it('opens park districts on the park list with cited use definitions and an explicit height scope', () => {
     render(<CatalogueMatches zone={zone('S-SPR')} />);
-    expect(screen.getByRole('button', { name: 'Parks (32)' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Parks (33)' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('heading', { name: 'Permitted use candidates (30)' })).toBeInTheDocument();
     expect(screen.getByText(/Land use only\. Buildings, shelters/)).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'What “Park” means · s.249' })[0]).toHaveAttribute('href', expect.stringContaining('&alpha=P#section249'));
@@ -65,7 +65,7 @@ describe('zoning catalogue panel', () => {
   });
   it('updates park permission lists on rezoning and keeps buildings separately selectable', () => {
     const { rerender } = render(<CatalogueMatches zone={zone('R-CG')} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Parks (32)' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Parks (33)' }));
     expect(screen.getByRole('heading', { name: 'Permitted use candidates (26)' })).toBeInTheDocument();
     rerender(<CatalogueMatches zone={zone('S-R')} />);
     expect(screen.getByRole('heading', { name: 'Discretionary use candidates (5)' })).toBeInTheDocument();

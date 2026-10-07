@@ -1,0 +1,181 @@
+{
+  "candidate": "clerestory-neighbourhood-hall-clay-v002",
+  "model_sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f",
+  "reviewer": "independent RLASM source_review agent",
+  "reviewed_at": "2026-10-07T13:38:25.185038+00:00",
+  "scope": "Fresh holistic source-locked untextured architectural-clay review; no textured keeper, runtime, engineering or publication approval.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "previous_review": "../hall-v001/review/independent.json",
+  "inspected_files": [
+    {
+      "path": "clerestory-neighbourhood-hall-clay-v002.glb",
+      "sha256": "187a30c9057bb87a86c1dec1e58d42a63e1c6f4e364be2a50a72b1f2cb1c792f"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "badfaff54ab44081e12f64660a5b8ccb4b20c0b57a08549256257d64f207f756"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "b905f4f96f45dff537cd8cea9c5928153bc3645be134babc0aabcb18391c2bd4"
+    },
+    {
+      "path": "scripts/designs.py",
+      "sha256": "cfd01b452beeae9293a83b84e5972b855aca51033be0315712e363fc921e1906"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "ce5b46b2981d767aa9880cab13466a0211b83e059daf5035ffc8957001c0bcb2"
+    },
+    {
+      "path": "sources/variant_2.png",
+      "sha256": "fa24826d3490cefbf1bc41c3afe686a9d8f9f402bcf6977c05def4f3476864d4"
+    },
+    {
+      "path": "sources/variant_2_angle_60.jpg",
+      "sha256": "6ed4d4b0837b081149f9acd70be63e453815241e96beaca5d569bfb25c5626de"
+    },
+    {
+      "path": "sources/variant_2_angle_90.jpg",
+      "sha256": "cac22164b514e6229742c1dc04803897ce9750b8c512d6aead2814108eb7aa7d"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "7a970c832ef635a33ae13768c658f897681a8b62d424c691196571aafcda923a"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "a1bd02f3898b694278b0b8286d44f82b74880584a9cca1d8e39e1f9a31cb272f"
+    },
+    {
+      "path": "renders/entry_connection.png",
+      "sha256": "0a8842cbab2d0caf8136f55f50e1dcf870d4c57d53d92b067ed12325fe237ece"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "7f8cbb32743dc942e56d9aaad2ca053739e004910886fd32151bc1ab0e2bce75"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "a642481e4ed034eb6d127d408d1d49fe98d9cbc93d5396e41820ec6f5ed88867"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "53925fe20789039218c99dc23ba38735215df3320522539edfc4fc0404a180ce"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "056631560deef79123e7c5b7cac71086da738a772160b8e3abca8932344e456b"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "17129d65b30ee9122c2b37e08d5b931c4df6ad4e77abfe41cf83d69a2b234bac"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "6eeab910065565d3aee68b4f43893c8d8e3794e8f5a263dda1d5f4859111a2bb"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "2ba0898a255dbb685ecf117b5e9de6575c3a58840fd81671be5aff73d67b8b77"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "dd00bbdd0f65f98d9864018e1e2e3caf6961aa31e765bd8abbd9bf9e698bff9c"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "084e3e2ab4fdfe454e7d67b3ac7dc03b89757578f395986c9c6be633fb83a753"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "25c163aefc69c56ca458335e76644413b62661a8248e56b0db8db8af16371290"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "7527cb46e09f7bb7874eabc72a4f2acf383ed6b835f84dad8dc50aa53cfdab5e"
+    },
+    {
+      "path": "renders/support_room.png",
+      "sha256": "aea1ad5234a5f8fb9a025dbbeb0163c0d590c012a3f1519a743c0bf43e8cdde5"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "b6b6562995482da820754528bb66a4a373a43265f40554bedd32e43a98d942cd"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "95c766913443d6302d27f4f56daa5d00700d2198f94c2ecdd7568d05ea7c94ea"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "ff0c6271b50440743b5e9712dc1e88e7a3dbaa22e0d300e170360c23d9528791"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "37fb26aba3fc8792f7bb41ae995391b8dacc02c08d31ac71b5e6bd13d089918f"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "954609834cb72c95688acc5dc7433ec0c39cc4f8873f8c1ea6671f69a8f859dc"
+    }
+  ],
+  "findings": [
+    {
+      "id": "HALL-01",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/architecture_close.png",
+        "sources/variant_2.png",
+        "sources/variant_2_angle_60.jpg"
+      ],
+      "finding": "Source entrance facade asymmetry is restored with a single tall divided opening near the lobby and the broad blank corner wall. Lobby now has physical transom and four vertical glazing divisions."
+    },
+    {
+      "id": "HALL-02",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/top.png",
+        "renders/rear_side.png",
+        "renders/left_side.png",
+        "sources/variant_2_angle_90.jpg",
+        "scripts/designs.py"
+      ],
+      "finding": "Lower L-wing roof now has physical shallow closed roof fields meeting on a diagonal seam and raised perimeter upstands, visible in top and rear proofs."
+    },
+    {
+      "id": "HALL-03",
+      "severity": "P2",
+      "status": "nonblocking_scope_note",
+      "evidence": [
+        "renders/architecture_close.png",
+        "sources/variant_2.png"
+      ],
+      "finding": "Lobby hardware reads as a single right-hand active leaf rather than the more central door grouping in the front source. Entrance aperture and primary glazed bay/transom identity are preserved; door operation and circulation should be confirmed in runtime."
+    }
+  ],
+  "positive_findings": [
+    "All 16 actual-GLB renders, three locked source images and four boards freshly inspected at original resolution; review not limited to previous fixes.",
+    "Independently computed exact GLB hash matches report and embedded JSON confirms no textures or images.",
+    "Distinct tall hall, continuous clerestory, deep timber soffit, inclined columns and dark lower L-wing remain recognizable in every overall view.",
+    "Exterior envelope, deep openings, glazed interiors and roof/wall contacts show no visible major construction defect.",
+    "Inclined supports meet their bearing pads and roof/rafter system; no visibly floating components.",
+    "Main hall and lower support spaces are enclosed and linked by physically open passages at a common floor level; furniture is grounded and routes remain available around it.",
+    "All whole-building proof cameras contain the asset; detail and interior proofs expose construction rather than hiding it."
+  ],
+  "limitations": [
+    "Metres, hidden rear openings and interior programme are inferred, not measured survey evidence.",
+    "Architectural clay intentionally omits final source-specific textures, sheet seams and photoreal material treatment.",
+    "Actual CityPrompt walking, door traversal, terrain contact, resizing and project persistence still require runtime verification for this exact asset.",
+    "No engineering, code-compliance, textured keeper or publication approval."
+  ]
+}
