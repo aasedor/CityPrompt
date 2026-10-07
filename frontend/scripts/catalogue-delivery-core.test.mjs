@@ -25,3 +25,19 @@ test('rejects path escape and catalogue entries without executable geometry',()=
   assert.throws(()=>containedPath('/public','/../secret.glb'),/escapes/);
   assert.throws(()=>catalogueRequirements([{id:'missing',option:{id:'missing'},placements:[{id:'missing',thumbnail:'/hero.png',model:{variantId:'missing'},properties:{}}]}],()=>'/hero.png',{entries:[],parks:[],streets:[],library:[]}),/No executable/);
 });
+
+test('resolves promoted candidate revisions without accepting another variant or stale hash',()=>{
+  const hash='a'.repeat(64);
+  const choice={id:'office',domain:'building',option:{id:'office'},placements:[{
+    id:'office',label:'Office',thumbnail:'/office.png',model:{variantId:'brick-office',revision:'office-v005'},properties:{},
+  }]};
+  const row={archetype_id:'office',variant_id:'brick-office',candidate:'office-v005',model:{path:'models/office.glb',sha256:hash}};
+  const data={entries:[],parks:[],streets:[],library:[row]};
+  const result=catalogueRequirements([choice],()=>'/office.png',data);
+  assert.equal(result[0].representation,'model_library');
+  assert.equal(result[0].checks[1].sha256,hash);
+  for(const changed of [{archetype_id:'other'},{variant_id:'other'},{candidate:'office-v004'}]) {
+    assert.throws(()=>catalogueRequirements([choice],()=>'/office.png',{...data,library:[{...row,...changed}]}),/No executable/);
+  }
+  assert.throws(()=>catalogueRequirements([choice],()=>'/office.png',{...data,entries:[{archetype_id:'office',variant_id:'brick-office',sha256:'b'.repeat(64)}]}),/No executable/);
+});

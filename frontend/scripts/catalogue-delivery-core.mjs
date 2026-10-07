@@ -59,7 +59,13 @@ export function catalogueRequirements(choices, heroImage, data) {
     let representation = '';
     const park = data.parks.find(row => row.id === asset.properties.green_space_native_layout_id);
     const street = data.streets.find(row => row.id === asset.model.variantId);
-    const library = data.library.find(row => row.variant_id === asset.model.variantId && row.model.sha256 === (entry?.sha256 || asset.model.revision));
+    // Promoted buildings use the library's reviewed candidate name as their
+    // saved revision. Resolve it only with the matching archetype and variant;
+    // an explicit hash always takes precedence over the candidate alias.
+    const library = data.library.find(row => row.variant_id === asset.model.variantId
+      && row.archetype_id === choice.option.id
+      && (entry?.sha256 ? row.model.sha256 === entry.sha256
+        : row.model.sha256 === asset.model.revision || row.candidate === asset.model.revision));
     if (park) {
       representation = 'native_park';
       checks.push(...Object.values(park.assets).map(row => ({url:row.url,kind:'glb',sha256:row.sha256})));

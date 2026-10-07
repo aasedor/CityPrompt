@@ -6,6 +6,7 @@ import path from 'path';
 import { selectViteEnvDir } from './src/config/viteEnvDir';
 import { catalogueAssetGuard } from './scripts/catalogue-asset-guard.mjs';
 import { packedCatalogue } from './scripts/packed-catalogue.mjs';
+import { applyLocalRuntimeProfile, localRuntimeGuard } from './scripts/local-runtime-guard.mjs';
 
 function gitCommonDir(projectRoot: string): string | null {
   const dotGit = path.join(projectRoot, '.git');
@@ -63,7 +64,10 @@ function resolveEnvDir(): string {
   });
 }
 
-export default defineConfig({
+export default defineConfig(({ command, mode }) => {
+  const localRuntime = command === 'serve' && mode !== 'test'
+    ? applyLocalRuntimeProfile(path.resolve(__dirname, '..')) : null;
+  return {
   // Dependencies may be junctioned across worktrees. Keep optimized browser
   // scripts in this checkout so another preview cannot invalidate live chunks.
   cacheDir: path.resolve(__dirname, '../artifacts/vite-cache'),
@@ -74,7 +78,7 @@ export default defineConfig({
   // common directory. VITE_ENV_DIR and a worktree-root .env remain explicit
   // overrides for unusual local or CI setups.
   envDir: resolveEnvDir(),
-  plugins: [react(), catalogueAssetGuard(), packedCatalogue(), {
+  plugins: [react(), catalogueAssetGuard(), packedCatalogue(), localRuntimeGuard(), {
     name: 'local-terrain-rehearsal-data',
     apply: 'serve',
     configureServer(server) {
@@ -99,7 +103,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5174,
+    port: localRuntime?.port || 5174,
     watch: {
       usePolling: true,
       interval: 1000,
@@ -151,4 +155,5 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     css: false,
   },
+  };
 });
