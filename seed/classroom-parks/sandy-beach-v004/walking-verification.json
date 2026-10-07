@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "model_sha256": "1c74b53d35dbd80286bd1caff819643f1c84fbf5e752b4ea8be9e955f90eced2",
+  "test": "frontend/src/features/parks/sandyBeach.test.ts",
+  "checks": [
+    "Actual GLB parsed in Three.js",
+    "Entry and boardwalk at 0.012m",
+    "Dry sand walkable",
+    "Lagoon, shallows and outside plot rejected"
+  ],
+  "browser": "Walk in park opens at a dry entry; sustained keyboard travel not established by automation."
+}

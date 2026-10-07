@@ -1,0 +1,102 @@
+{
+  "variant_id": "hall_timber_park_edge",
+  "archetype_id": "community_association_hall",
+  "method": "RLASM v6.1",
+  "state": "source_locked_only",
+  "sources": [
+    {
+      "role": "front",
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1.png",
+      "bytes": 2791843,
+      "sha256": "6625e74a7cfe40790cb52742dd6f55c0c4bc449c8b60713429d2a8105ac21953",
+      "source_attempt": "source-attempts\\hall_timber_park_edge\\front-001.png",
+      "authority": "Primary design identity and frontage cadence. One occupied floor; long glazed park-facing frontage; six outer veranda columns on brick pedestals with knee braces; recessed glazing-line supports; main public double entry toward the left and secondary glazed exit toward the right; cedar ends and low planting/bicycle approach. Trace the projected individual members rather than inferring an evenly spaced seven-post row."
+    },
+    {
+      "role": "oblique",
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1_oblique.png",
+      "bytes": 2800553,
+      "sha256": "201c869868dfd99e2df7e209ffaaefc54d2a0d7a81840141a9978fc0276371a2",
+      "source_attempt": "source-attempts\\hall_timber_park_edge\\oblique-001.png",
+      "authority": "Corroborates the continuous front veranda, exposed right gable, right-end three narrow windows, timber framing/brick pedestal relationships and front-to-back roof arrangement. The front view remains primary for facade placement."
+    },
+    {
+      "role": "topology",
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1_roof-study.png",
+      "bytes": 3148972,
+      "sha256": "d11dc3c03947bbc83dd9f6eca7445e61ea63b8aa9f64145dcdb6d2b5cd00a5bf",
+      "source_attempt": "source-attempts\\hall_timber_park_edge\\top-002.png",
+      "authority": "Topology corroboration only: one rectangular common roof with two pitched planes meeting one continuous long ridge parallel to the front, extending forward over the veranda. No extra rear bar, roofbox, dormer or valley. Still elevated oblique rather than requested near-nadir; not metric footprint, bay spacing or hidden rear-fenestration authority."
+    }
+  ],
+  "roof_graph": {
+    "body": "One rectangular single-storey enclosed hall, with an open veranda across its park-facing long edge.",
+    "ridge": "One continuous ridge parallel to the glazed long front.",
+    "planes": "One rear slope and one forward slope. Forward roof continues above the veranda and its outer support row.",
+    "ends": "Two cedar gable ends under the common roof; no intersecting wing or separate veranda roof volume.",
+    "lines": "Standing seams, ridge/eave trim and front slope snow-retention lines are surface hardware, not additional ridges or folds.",
+    "rear": "Rear wall belongs beneath the same rear eave. Its exact fenestration and dimensions remain inferred."
+  },
+  "column_count_reconciliation": {
+    "outer_veranda_columns": 6,
+    "front_approx_column_centres_px": [
+      375,
+      728,
+      982,
+      1209,
+      1401,
+      1595
+    ],
+    "oblique_approx_column_centres_px": [
+      126,
+      378,
+      543,
+      730,
+      956,
+      1220
+    ],
+    "top002_approx_column_centres_px": [
+      347,
+      657,
+      875,
+      1097,
+      1296,
+      1499
+    ],
+    "explanation": "The apparent seventh column results from counting a recessed timber/brick support at the glazing plane as part of the outer row. In front001 the right support near x1502 is behind the outer row; the entrance/glazing line also has additional brick-based supports. In oblique001 the apparent extra near x239 is recessed. Top002's six outer supports therefore do not constitute a six-versus-seven contradiction.",
+    "limits": "Approximate image x coordinates identify visible members, not metric spacing. Do not author seven evenly spaced outer columns from the total count of all visible pedestals. Recessed glazing-plane supports must be classified separately."
+  },
+  "remaining_inferences": [
+    "Exact 32 x 22 m interpretation: whether depth includes the veranda, enclosed depth, veranda depth and roof overhangs must be stated before construction.",
+    "Eave/ridge heights, slope, member sizes, pedestal dimensions, support spacing and exact roof-to-frame contacts.",
+    "Complete internal glulam frame arrangement and roof lining; visible references do not prove a load-path calculation.",
+    "Multipurpose, smaller meeting rooms, kitchen, storage and toilets, with their partitions, fixtures, private/public entries and window-carrier relationships.",
+    "Rear and obscured side fenestration, mechanical/service details, drainage and landscape extent.",
+    "Grounded public approach, porch edge/threshold transitions, authored walking network and actual-GLB clearances."
+  ],
+  "source_limits": [
+    {
+      "id": "projection_limit",
+      "severity": "scope_limit",
+      "symptom": "Top002 does not achieve the requested near-nadir camera; front glazing and posts remain prominently visible.",
+      "resolution": "Limit it to corroborated roof topology; use front/oblique for elevation identity and explicitly inferred dimensions."
+    },
+    {
+      "id": "minor_source_variation",
+      "severity": "scope_limit",
+      "symptom": "The views vary in projected window/mullion details, planting, door presentation and apparent spacing. They are generated architectural references rather than surveyed orthographic drawings.",
+      "resolution": "Do not blend conflicting projected measurements. Freeze front-driven frontage and record hidden side/rear details as inferences."
+    }
+  ],
+  "independent_source_review": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\hall-park-source-review.json",
+    "sha256": "d1c68245fee94a9cd6f65ea7ea1cd74a1804251f0144da46acc614d7330a5e1d",
+    "scope": "Source compatibility only: direct full-resolution front001, oblique001, top002 and retained top001 comparison, generation provenance and progress brief. No hall geometry, materials, programme realization, walking, model or keeper assessment."
+  },
+  "generation_provenance": "hall-park-locked-generation.json",
+  "generation_provenance_sha256": "925f4557e705316b26933175cbf832c6ad5d186b714e70def96acb1682803be8",
+  "created_utc": "2026-10-03T22:33:11.246680+00:00",
+  "keeper_approved": false,
+  "catalogue_activated": false,
+  "next_step": "Lock conditioned cedar category; measured prework with32x22 envelope interpretation, exactlysix outer veranda supports plus recessed supports, complete programme/routes/cameras, dedicated constructor dryrun and unusedpilot. No hall geometry exists."
+}

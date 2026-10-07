@@ -1,0 +1,99 @@
+{
+  "crs": "EPSG:26911",
+  "matrix": [
+    [
+      5.526120919892931,
+      0.22602711155919028
+    ],
+    [
+      0.22534165198385672,
+      -5.526363441709377
+    ]
+  ],
+  "translation": [
+    700557.1581610905,
+    5662245.982553674
+  ],
+  "calibration_rmse_m": 0.1373171979734295,
+  "calibration_percentiles_m": [
+    0.09686348788653934,
+    0.22577941387374434,
+    0.2381704367121169,
+    0.8792005845507811
+  ],
+  "source_sha256": "21e0dc7f0652960b99ef2695a00e16846e5a01fa6216b495b9f7a98aaf68ac85",
+  "source_url": "https://www.calgary.ca/content/dam/www/pda/pd/publishingimages/riley-communities-local-area-plan/Riley-Communities-Local-Area-Plan.pdf",
+  "pdf_bounds": [
+    102.19989013671875,
+    194.37139892578125,
+    942.7998657226562,
+    595.9713745117188
+  ],
+  "calibration_source": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Policy_Plan_Boundary/FeatureServer/0",
+  "calibration_feature_objectid": 323,
+  "calibration_boundary_sha256": "156ac78fd62b16581ffd60b4786e5b165b6575b1a2901dcf22983599352d6eab",
+  "method": "Affine fit in NAD83 / UTM zone 11N, robust point-to-boundary least squares, 1600 perimeter samples. Residuals are calibration diagnostics, not independent accuracy.",
+  "independent_checks_source": "https://data.calgary.ca/Transportation-Transit/Street-Centreline/4dx8-rtm5",
+  "independent_checks": [
+    {
+      "name": "21 ST NW / 5 AV NW",
+      "pdf_point": [
+        333.6,
+        390.471
+      ],
+      "city_lon_lat": [
+        -114.1105075,
+        51.0572362
+      ],
+      "residual_m": 2.0675093168967758
+    },
+    {
+      "name": "27 ST NW / 5 AV NW",
+      "pdf_point": [
+        144.5,
+        396.671
+      ],
+      "city_lon_lat": [
+        -114.1253902,
+        51.0569095
+      ],
+      "residual_m": 1.1053630431619677
+    },
+    {
+      "name": "14 ST NW / KENSINGTON RD NW",
+      "pdf_point": [
+        533.4,
+        485.671
+      ],
+      "city_lon_lat": [
+        -114.0947104,
+        51.0525233
+      ],
+      "residual_m": 0.0949444057900294
+    },
+    {
+      "name": "22 ST NW / 14 AV NW",
+      "pdf_point": [
+        293.3,
+        230.971
+      ],
+      "city_lon_lat": [
+        -114.1136691,
+        51.0651445
+      ],
+      "residual_m": 2.764682316646799
+    },
+    {
+      "name": "7 ST NW / 2 AV NW",
+      "pdf_point": [
+        724.2,
+        393.371
+      ],
+      "city_lon_lat": [
+        -114.0796297,
+        51.0570988
+      ],
+      "residual_m": 3.982146775547718
+    }
+  ]
+}

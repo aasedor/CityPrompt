@@ -6,6 +6,7 @@ import { snapStreetEnds } from './streetSnapping';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { snapStreetToBoundary } from './streetBoundarySnapping';
 import { suggestPublicRoad, type PublicRoadContext, type PublicRoadSuggestion } from './publicRoadSuggestions';
+import { snapStreetBoundaryPlacement } from './streetBoundaryPlacement';
 
 /** One geometry path for the unsaved preview and the final authored road. */
 export function streetDrawingGeometry(points: number[][], properties: SiteZoneProperties, zones: SiteZone[], options: {
@@ -20,10 +21,16 @@ export function streetDrawingGeometry(points: number[][], properties: SiteZonePr
     ? snapStreetEnds(bounded, zones, undefined, width)
     : snapRoadEndpoints(bounded, zones, properties.road_level);
   const centerline = roundAuthoredStreetRoute(authored, width, properties);
-  return { coordinates: bufferLineToPolygon(centerline, width), properties: {
+  const geometry = { coordinates: bufferLineToPolygon(centerline, width), properties: {
     ...properties, plan_centerline: centerline,
     ...(properties.pick_place_street_section ? { plan_route_controls: authored } : { procedural_road: 1 }),
   } };
+  if (options.skipSnapping) return geometry;
+  const snapped = snapStreetBoundaryPlacement({
+    id: 'boundary-street-preview', zone_type: 'road', project_id: '', color: '',
+    sort_order: 0, created_at: '', updated_at: '', ...geometry,
+  }, zones, boundary);
+  return { coordinates: snapped.coordinates, properties: snapped.properties };
 }
 
 export function streetPreviewPoints(points: number[][], cursor: number[] | null) {

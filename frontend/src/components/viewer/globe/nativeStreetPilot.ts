@@ -1,4 +1,5 @@
-import pilots from '@/data/nativeStreetPilots.json';
+import sourcePilots from '@/data/nativeStreetPilots.json';
+import { CANAL_ROUTE_POLICY } from './canalRoute';
 import bounds from '@/data/nativeStreetModuleBounds.json';
 import type { NativeStreetProgram } from './nativeStreetProgram';
 import { BRT_VARIANT, brtRouteProblem, brtStreetLayout, type BrtStop } from './brtStreetProgram';
@@ -13,6 +14,10 @@ import {
   PUBLIC_REALM_STREET_SHARED_SURFACE_LIFT_METERS,
   PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS,
 } from './publicRealmDepthPolicy';
+
+// Source programme hashes continue to identify the original 80 m study.
+// The independent authoring policy expands its executable route envelope.
+const pilots = sourcePilots.map(p => p.id === 'amsterdam_gracht_v1' ? { ...p, program: { ...p.program!, ...CANAL_ROUTE_POLICY, straightOnly: false } } : p);
 
 export type NativeStreetPilot = typeof pilots[number] & {program?:NativeStreetProgram;programSha256?:string};
 export interface StreetRouteStation { x: number; y: number; z?: number }
@@ -135,7 +140,7 @@ export function placeNativeStreetModules(
   const isTram = pilot.id===TRAM_VARIANT;
   const specialist = isSpecialistStreet(pilot.id);
   const source = isElevatedRail(pilot.id) ? elevatedRailFixtures(pilot.placements,totalM,hasElevatedStation(pilot.id)?stops:[]).map(p=>({...p,y:p.y-totalM/2}))
-    : isTram ? tramFixtures(pilot.placements,pilot.fixtureLengthM,totalM,stops) : specialist ? specialistFixtures(pilot.id,totalM).map(p=>({...p,y:p.y-totalM/2}))
+    : isTram ? tramFixtures(pilot.placements,pilot.fixtureLengthM,totalM,stops) : specialist ? specialistFixtures(pilot.id,totalM,route).map(p=>({...p,y:p.y-totalM/2}))
     : isBrt ? brtStreetLayout(totalM,stops).fixtures.map(p=>({...p,y:p.y-totalM/2})) : pilot.placements;
   const modules:Record<string,{url:string;sha256:string}|undefined>=pilot.modules;
   const centers = specialist || isBrt || isTram || totalM <= pilot.fixtureLengthM
@@ -163,14 +168,15 @@ export function placeNativeStreetModules(
         ({x:(x*c-y*s)*other.scale,y:(x*s+y*c)*other.scale})));
     });
     if (corners.some(corner => stationM+corner.y < -1e-5 || stationM+corner.y > totalM+1e-5)) continue;
-    const segment = segments.find(segment => stationM <= segment.startM + segment.lengthM + 1e-6)
+    const anchorM = 'anchorM' in item && typeof item.anchorM === 'number' ? item.anchorM : stationM;
+    const segment = segments.find(segment => anchorM <= segment.startM + segment.lengthM + 1e-6)
       ?? last;
-    const t = Math.max(0, Math.min(1, (stationM - segment.startM) / segment.lengthM));
+    const t = Math.max(0, Math.min(1, (anchorM - segment.startM) / segment.lengthM));
     const routeX = segment.from.x + (segment.to.x - segment.from.x) * t;
     const routeY = segment.from.y + (segment.to.y - segment.from.y) * t;
     const routeZ = (segment.from.z ?? 0) + ((segment.to.z ?? 0) - (segment.from.z ?? 0)) * t;
-    const x = routeX + Math.sin(segment.angle) * item.x;
-    const y = routeY - Math.cos(segment.angle) * item.x;
+    const x = routeX + Math.sin(segment.angle) * item.x + Math.cos(segment.angle) * (stationM-anchorM);
+    const y = routeY - Math.cos(segment.angle) * item.x + Math.sin(segment.angle) * (stationM-anchorM);
     // Circle against the complete rigid occupied rectangle, including crowns
     // and roof overhangs. A centre-only test can leave a canopy in a junction.
     const minX=Math.min(...corners.map(p=>p.x)), maxX=Math.max(...corners.map(p=>p.x));

@@ -22,23 +22,54 @@ describe('classroom picker hero views', () => {
     expect(onPlacement).toHaveBeenCalledWith(choice.placements[0]);
   });
   it('replaces the twelve technical thumbnails with real, staged photographic images', () => {
-    expect(Object.keys(PICKER_HERO_IMAGES)).toHaveLength(12);
+    const classroomHeroes = Object.entries(PICKER_HERO_IMAGES).filter(([, url]) => url.includes('/classroom-heroes/'));
+    expect(classroomHeroes).toHaveLength(12);
     const placements = new Set(CANONICAL_CHOICES.flatMap(choice => choice.placements.map(asset => asset.id)));
-    expect(Object.keys(PICKER_HERO_IMAGES).filter(id => !placements.has(id))).toEqual([]);
-    for (const [id, url] of Object.entries(PICKER_HERO_IMAGES)) {
+    expect(classroomHeroes.filter(([id]) => !placements.has(id))).toEqual([]);
+    for (const [id, url] of classroomHeroes) {
       expect(url).toMatch(/^\/archetypes\/(buildings|openspaces|streets)\/classroom-heroes\/[^/]+\.webp$/);
       expect(pickerHeroImage(id, 'fallback')).toBe(url);
     }
     const unchanged = CANONICAL_CHOICES.filter(choice => !PICKER_HERO_IMAGES[choice.placements[0].id]);
-    expect(unchanged).toHaveLength(CANONICAL_CHOICES.length - Object.keys(PICKER_HERO_IMAGES).length);
+    expect(unchanged).toHaveLength(CANONICAL_CHOICES.length - 22);
     for (const choice of unchanged) {
       const asset = choice.placements[0];
       expect(pickerHeroImage(asset.id, asset.thumbnail)).toBe(asset.thumbnail);
     }
   });
 
+  it('uses the eight native parks’ locked source-front images instead of absent archive URLs', () => {
+    const sourceFronts = Object.entries(PICKER_HERO_IMAGES).filter(([, url]) =>
+      url.startsWith('/archetypes/openspaces/') && !url.includes('/classroom-heroes/'));
+    expect(sourceFronts).toHaveLength(8);
+    for (const [id, url] of sourceFronts) {
+      const choice = CANONICAL_CHOICES.find(item => item.placements[0]?.id === id)!;
+      expect(choice).toBeDefined();
+      expect(choice.placements[0].thumbnail).toMatch(/^\/native-park-assets\/[a-f0-9]{64}\.png$/);
+      expect(pickerHeroImage(id, choice.placements[0].thumbnail)).toBe(url);
+    }
+  });
+
+  it('uses the locked source heroes for the main and market streets', () => {
+    for (const id of ['validation_student_main_street_v1', 'validation_student_market_street_v1']) {
+      const choice = CANONICAL_CHOICES.find(item => item.placements[0]?.id === id)!;
+      expect(choice).toBeDefined();
+      expect(pickerHeroImage(id, choice.placements[0].thumbnail)).toMatch(/^\/archetypes\/streets\/[^/]+\/hero\.png$/);
+    }
+  });
+
+  it('uses source-front hero art for the ten local review choices without changing their GLB thumbnails', () => {
+    const trial = Object.entries(PICKER_HERO_IMAGES).filter(([id]) => id.startsWith('trial_neighborhood20_'));
+    expect(trial).toHaveLength(10);
+    for (const [id, url] of trial) {
+      expect(url).toMatch(/^\/validation-assets\/neighborhood20\/[^/]+\/hero\.png$/);
+      expect(pickerHeroImage(id, '/technical-front.png')).toBe(url);
+    }
+  });
+
   it.each(['validation_machiya_cafe_gallery',
     'native-park:student_reading_garden_v2--native-v1',
+    'native-park:student_urban_splash_plaza_v1--native-v1',
     'student_quiet_residential_street_v1'])('shows the hero on the actual picker card for %s', id => {
     const choice = CANONICAL_CHOICES.find(item => item.placements[0]?.id === id)!;
     const { container } = render(<CanonicalCatalogueCard choice={choice} selected={null}

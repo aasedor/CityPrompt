@@ -12,10 +12,12 @@ describe('native specialist streets',()=>{
     expect(long.every(p=>p.scale===1)).toBe(true);
   });
   it('rejects short, bent and reversed-back-on-itself routes',()=>{
-    expect(specialistRouteProblem(C,route(79))).toMatch(/80/);
+    expect(specialistRouteProblem(C,route(35))).toMatch(/36/);
+    expect(specialistRouteProblem(C,route(79))).toBeNull();
+    expect(specialistRouteProblem(C,route(334))).toBeNull();
     expect(specialistRouteProblem(B,route(259))).toMatch(/260/);
-    expect(specialistRouteProblem(C,[{x:0,y:0},{x:2,y:40},{x:0,y:80}])).toMatch(/straight/);
-    expect(specialistRouteProblem(C,[{x:0,y:0},{x:0,y:90},{x:0,y:80}])).toMatch(/straight/);
+    expect(specialistRouteProblem(C,[{x:0,y:0},{x:2,y:40},{x:0,y:80}])).toBeNull();
+    expect(specialistRouteProblem(C,[{x:0,y:0},{x:0,y:90},{x:0,y:80}])).toMatch(/gentler/);
     expect(specialistRouteProblem(C,route(80).reverse())).toBeNull();
   });
   it('keeps canal water level and extension geometry out of the original 80 metres',()=>{

@@ -11,6 +11,7 @@ describe('district zoning labels without parcel data', () => {
     const result = await districtLabels([{ label: 'R-CG', multipolygon: geometry }], site);
     expect(result).toHaveLength(1);
     expect(result[0].label).toBe('R-CG');
+    expect(result[0].polygon).toEqual([[...site, site[0]]]);
     expect(booleanPointInPolygon(result[0].anchor, { type: 'Polygon', coordinates: [[...site, site[0]]] })).toBe(true);
     expect(site).toHaveLength(4);
   });
@@ -24,6 +25,7 @@ describe('district zoning labels without parcel data', () => {
       { label: 'DC48Z84', lu_code: 'DC', multipolygon: geometry },
       { lu_code: 'H-GO', description: null, multipolygon: geometry },
     ], site);
+    expect(result.map(zone=>zone.code)).toEqual(['M-C1','DC','H-GO']);
     expect(result.map(({ label, description }) => ({ label, description }))).toEqual([
       { label: 'M-C1 d75', description: 'Multi-Residential - Contextual Low Profile' },
       { label: 'DC48Z84', description: undefined },

@@ -1,3 +1,5 @@
+import { resampleVideoRoute } from './videoRouteControls';
+
 export interface VideoRoutePoint {
   x: number;
   y: number;
@@ -29,12 +31,7 @@ export function appendRoutePoint(
 /** Keep route shape while limiting prompt/API payload complexity. */
 export function resampleRoute(points: VideoRoutePoint[], maxPoints = 12): VideoRoutePoint[] {
   if (points.length <= maxPoints) return points;
-  const result: VideoRoutePoint[] = [];
-  for (let index = 0; index < maxPoints; index += 1) {
-    const sourceIndex = Math.round((index / (maxPoints - 1)) * (points.length - 1));
-    result.push(points[sourceIndex]);
-  }
-  return result;
+  return resampleVideoRoute(points, maxPoints);
 }
 
 export function routeSignature(points: VideoRoutePoint[]): string {

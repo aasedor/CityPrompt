@@ -3,6 +3,18 @@ import { computeFootprintFrame } from '@/components/viewer/globe/buildingPlaceme
 import { assemblyFootprintCoordinates, authoredHomePlotFrame, detachedPlotCoordinates, isDetachedArchetype, preservesAuthoredPlotAxes } from './detachedPlot';
 import { rectangleAt } from '@/features/pickPlace/geometry';
 
+it('strips a repeated closure without discarding a unique fifth vertex', () => {
+  const rectangle = rectangleAt([-114, 51], 36, 16, 25);
+  expect(authoredHomePlotFrame([...rectangle, rectangle[0]])).toEqual(authoredHomePlotFrame(rectangle));
+  const pentagon = [rectangle[0], rectangle[1], rectangle[2],
+    [(rectangle[2][0] + rectangle[3][0]) / 2, rectangle[2][1] + 0.00005], rectangle[3]];
+  expect(authoredHomePlotFrame(pentagon)).toBeUndefined();
+  expect(authoredHomePlotFrame([...pentagon, pentagon[0]])).toBeUndefined();
+  const target = { width_m: 36, depth_m: 22 };
+  expect(assemblyFootprintCoordinates(pentagon, target, true)).toHaveLength(5);
+  expect(assemblyFootprintCoordinates(pentagon, target, true)).toEqual(assemblyFootprintCoordinates(pentagon, target));
+});
+
 it('retains a rotated concave plot in the actual globe instance frame', () => {
   const angle = 0.46;
   const ring = [[-60, -30], [60, -30], [60, 0], [0, 0], [0, 30], [-60, 30]].map(([x, y]) => {

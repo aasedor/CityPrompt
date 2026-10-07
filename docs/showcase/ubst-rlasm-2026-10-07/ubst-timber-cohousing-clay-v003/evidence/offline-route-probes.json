@@ -1,0 +1,1516 @@
+{
+  "status": "PASS_OFFLINE_ROUTE_PROBES",
+  "model_sha256": "3ba2e0b773799dc7340bfdeb8ff471c3b54293566e86f75a25c0ecedd36efd67",
+  "scope": "Family-specific prescribed centrelines, floor support and 1.85m vertical clearance only; not continuous body collision, runtime or code approval.",
+  "samples": 116,
+  "checks": [
+    {
+      "route": "home-1-entry",
+      "index": 0,
+      "point": [
+        -7.0600000000000005,
+        -5.4,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-entry",
+      "index": 1,
+      "point": [
+        -7.0600000000000005,
+        -4.9,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-entry",
+      "index": 2,
+      "point": [
+        -7.0600000000000005,
+        -4.4,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-entry",
+      "index": 3,
+      "point": [
+        -7.0600000000000005,
+        -3.8,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-entry",
+      "index": 0,
+      "point": [
+        -1.06,
+        -5.4,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-entry",
+      "index": 1,
+      "point": [
+        -1.06,
+        -4.9,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-entry",
+      "index": 2,
+      "point": [
+        -1.06,
+        -4.4,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-entry",
+      "index": 3,
+      "point": [
+        -1.06,
+        -3.8,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.14999999105930328,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-entry",
+      "index": 0,
+      "point": [
+        4.9399999999999995,
+        -5.4,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-entry",
+      "index": 1,
+      "point": [
+        4.9399999999999995,
+        -4.9,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-entry",
+      "index": 2,
+      "point": [
+        4.9399999999999995,
+        -4.4,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.14999999105930328,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-entry",
+      "index": 3,
+      "point": [
+        4.9399999999999995,
+        -3.8,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-entry",
+      "index": 0,
+      "point": [
+        10.94,
+        -5.4,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-entry",
+      "index": 1,
+      "point": [
+        10.94,
+        -4.9,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-entry",
+      "index": 2,
+      "point": [
+        10.94,
+        -4.4,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-entry",
+      "index": 3,
+      "point": [
+        10.94,
+        -3.8,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 0,
+      "point": [
+        -7.1,
+        -3.67,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 1,
+      "point": [
+        -7.1,
+        -3.431304347826087,
+        0.3239130434782609
+      ],
+      "support": true,
+      "measured_floor_z": 0.323913037776947,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 2,
+      "point": [
+        -7.1,
+        -3.1939130434782608,
+        0.49782608695652175
+      ],
+      "support": true,
+      "measured_floor_z": 0.49782609939575195,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 3,
+      "point": [
+        -7.1,
+        -2.9565217391304346,
+        0.6717391304347826
+      ],
+      "support": true,
+      "measured_floor_z": 0.6717391014099121,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 4,
+      "point": [
+        -7.1,
+        -2.7191304347826084,
+        0.8456521739130435
+      ],
+      "support": true,
+      "measured_floor_z": 0.845652163028717,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 5,
+      "point": [
+        -7.1,
+        -2.4817391304347822,
+        1.0195652173913043
+      ],
+      "support": true,
+      "measured_floor_z": 1.019565224647522,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 6,
+      "point": [
+        -7.1,
+        -2.2443478260869565,
+        1.193478260869565
+      ],
+      "support": true,
+      "measured_floor_z": 1.1934782266616821,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 7,
+      "point": [
+        -7.1,
+        -2.00695652173913,
+        1.367391304347826
+      ],
+      "support": true,
+      "measured_floor_z": 1.3673913478851318,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 8,
+      "point": [
+        -7.1,
+        -1.7695652173913041,
+        1.5413043478260868
+      ],
+      "support": true,
+      "measured_floor_z": 1.541304349899292,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 9,
+      "point": [
+        -7.1,
+        -1.5321739130434784,
+        1.7152173913043478
+      ],
+      "support": true,
+      "measured_floor_z": 1.7152173519134521,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 10,
+      "point": [
+        -7.1,
+        -1.2947826086956522,
+        1.8891304347826086
+      ],
+      "support": true,
+      "measured_floor_z": 1.8891304731369019,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 11,
+      "point": [
+        -7.1,
+        -1.057391304347826,
+        2.0630434782608695
+      ],
+      "support": true,
+      "measured_floor_z": 2.0630435943603516,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 12,
+      "point": [
+        -7.1,
+        -0.8199999999999998,
+        2.2369565217391303
+      ],
+      "support": true,
+      "measured_floor_z": 2.2369565963745117,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 13,
+      "point": [
+        -7.1,
+        -0.5826086956521737,
+        2.410869565217391
+      ],
+      "support": true,
+      "measured_floor_z": 2.410869598388672,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 14,
+      "point": [
+        -7.1,
+        -0.3452173913043479,
+        2.5847826086956522
+      ],
+      "support": true,
+      "measured_floor_z": 2.584782600402832,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 15,
+      "point": [
+        -7.1,
+        -0.1078260869565213,
+        2.758695652173913
+      ],
+      "support": true,
+      "measured_floor_z": 2.758695602416992,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 16,
+      "point": [
+        -7.1,
+        0.12956521739130444,
+        2.9326086956521737
+      ],
+      "support": true,
+      "measured_floor_z": 2.9326086044311523,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 17,
+      "point": [
+        -7.1,
+        0.3669565217391306,
+        3.1065217391304345
+      ],
+      "support": true,
+      "measured_floor_z": 3.1065218448638916,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 18,
+      "point": [
+        -7.1,
+        0.6043478260869568,
+        3.2804347826086957
+      ],
+      "support": true,
+      "measured_floor_z": 3.2804348468780518,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 19,
+      "point": [
+        -7.1,
+        0.8417391304347834,
+        3.4543478260869565
+      ],
+      "support": true,
+      "measured_floor_z": 3.454347848892212,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 20,
+      "point": [
+        -7.1,
+        1.0791304347826092,
+        3.628260869565217
+      ],
+      "support": true,
+      "measured_floor_z": 3.628260850906372,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 21,
+      "point": [
+        -7.1,
+        1.316521739130435,
+        3.802173913043478
+      ],
+      "support": true,
+      "measured_floor_z": 3.8021738529205322,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 22,
+      "point": [
+        -7.1,
+        1.5539130434782606,
+        3.976086956521739
+      ],
+      "support": true,
+      "measured_floor_z": 3.9760868549346924,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 23,
+      "point": [
+        -7.1,
+        1.7913043478260873,
+        4.15
+      ],
+      "support": true,
+      "measured_floor_z": 4.150000095367432,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-1-stair",
+      "index": 24,
+      "point": [
+        -7.1,
+        2.14,
+        4.15
+      ],
+      "support": true,
+      "measured_floor_z": 4.150000095367432,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 0,
+      "point": [
+        -1.1,
+        -3.67,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.14999999105930328,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 1,
+      "point": [
+        -1.1,
+        -3.431304347826087,
+        0.3239130434782609
+      ],
+      "support": true,
+      "measured_floor_z": 0.323913037776947,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 2,
+      "point": [
+        -1.1,
+        -3.1939130434782608,
+        0.49782608695652175
+      ],
+      "support": true,
+      "measured_floor_z": 0.49782609939575195,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 3,
+      "point": [
+        -1.1,
+        -2.9565217391304346,
+        0.6717391304347826
+      ],
+      "support": true,
+      "measured_floor_z": 0.6717391014099121,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 4,
+      "point": [
+        -1.1,
+        -2.7191304347826084,
+        0.8456521739130435
+      ],
+      "support": true,
+      "measured_floor_z": 0.845652163028717,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 5,
+      "point": [
+        -1.1,
+        -2.4817391304347822,
+        1.0195652173913043
+      ],
+      "support": true,
+      "measured_floor_z": 1.019565224647522,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 6,
+      "point": [
+        -1.1,
+        -2.2443478260869565,
+        1.193478260869565
+      ],
+      "support": true,
+      "measured_floor_z": 1.1934782266616821,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 7,
+      "point": [
+        -1.1,
+        -2.00695652173913,
+        1.367391304347826
+      ],
+      "support": true,
+      "measured_floor_z": 1.3673913478851318,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 8,
+      "point": [
+        -1.1,
+        -1.7695652173913041,
+        1.5413043478260868
+      ],
+      "support": true,
+      "measured_floor_z": 1.541304349899292,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 9,
+      "point": [
+        -1.1,
+        -1.5321739130434784,
+        1.7152173913043478
+      ],
+      "support": true,
+      "measured_floor_z": 1.7152173519134521,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 10,
+      "point": [
+        -1.1,
+        -1.2947826086956522,
+        1.8891304347826086
+      ],
+      "support": true,
+      "measured_floor_z": 1.8891304731369019,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 11,
+      "point": [
+        -1.1,
+        -1.057391304347826,
+        2.0630434782608695
+      ],
+      "support": true,
+      "measured_floor_z": 2.0630435943603516,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 12,
+      "point": [
+        -1.1,
+        -0.8199999999999998,
+        2.2369565217391303
+      ],
+      "support": true,
+      "measured_floor_z": 2.2369565963745117,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 13,
+      "point": [
+        -1.1,
+        -0.5826086956521737,
+        2.410869565217391
+      ],
+      "support": true,
+      "measured_floor_z": 2.410869598388672,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 14,
+      "point": [
+        -1.1,
+        -0.3452173913043479,
+        2.5847826086956522
+      ],
+      "support": true,
+      "measured_floor_z": 2.584782600402832,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 15,
+      "point": [
+        -1.1,
+        -0.1078260869565213,
+        2.758695652173913
+      ],
+      "support": true,
+      "measured_floor_z": 2.758695602416992,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 16,
+      "point": [
+        -1.1,
+        0.12956521739130444,
+        2.9326086956521737
+      ],
+      "support": true,
+      "measured_floor_z": 2.9326086044311523,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 17,
+      "point": [
+        -1.1,
+        0.3669565217391306,
+        3.1065217391304345
+      ],
+      "support": true,
+      "measured_floor_z": 3.1065218448638916,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 18,
+      "point": [
+        -1.1,
+        0.6043478260869568,
+        3.2804347826086957
+      ],
+      "support": true,
+      "measured_floor_z": 3.2804348468780518,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 19,
+      "point": [
+        -1.1,
+        0.8417391304347834,
+        3.4543478260869565
+      ],
+      "support": true,
+      "measured_floor_z": 3.454347848892212,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 20,
+      "point": [
+        -1.1,
+        1.0791304347826092,
+        3.628260869565217
+      ],
+      "support": true,
+      "measured_floor_z": 3.628260850906372,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 21,
+      "point": [
+        -1.1,
+        1.316521739130435,
+        3.802173913043478
+      ],
+      "support": true,
+      "measured_floor_z": 3.8021738529205322,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 22,
+      "point": [
+        -1.1,
+        1.5539130434782606,
+        3.976086956521739
+      ],
+      "support": true,
+      "measured_floor_z": 3.9760868549346924,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 23,
+      "point": [
+        -1.1,
+        1.7913043478260873,
+        4.15
+      ],
+      "support": true,
+      "measured_floor_z": 4.150000095367432,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-2-stair",
+      "index": 24,
+      "point": [
+        -1.1,
+        2.14,
+        4.15
+      ],
+      "support": true,
+      "measured_floor_z": 4.150000095367432,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 0,
+      "point": [
+        4.9,
+        -3.67,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.14999999105930328,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 1,
+      "point": [
+        4.9,
+        -3.431304347826087,
+        0.3239130434782609
+      ],
+      "support": true,
+      "measured_floor_z": 0.323913037776947,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 2,
+      "point": [
+        4.9,
+        -3.1939130434782608,
+        0.49782608695652175
+      ],
+      "support": true,
+      "measured_floor_z": 0.49782609939575195,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 3,
+      "point": [
+        4.9,
+        -2.9565217391304346,
+        0.6717391304347826
+      ],
+      "support": true,
+      "measured_floor_z": 0.6717391014099121,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 4,
+      "point": [
+        4.9,
+        -2.7191304347826084,
+        0.8456521739130435
+      ],
+      "support": true,
+      "measured_floor_z": 0.845652163028717,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 5,
+      "point": [
+        4.9,
+        -2.4817391304347822,
+        1.0195652173913043
+      ],
+      "support": true,
+      "measured_floor_z": 1.019565224647522,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 6,
+      "point": [
+        4.9,
+        -2.2443478260869565,
+        1.193478260869565
+      ],
+      "support": true,
+      "measured_floor_z": 1.1934782266616821,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 7,
+      "point": [
+        4.9,
+        -2.00695652173913,
+        1.367391304347826
+      ],
+      "support": true,
+      "measured_floor_z": 1.3673913478851318,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 8,
+      "point": [
+        4.9,
+        -1.7695652173913041,
+        1.5413043478260868
+      ],
+      "support": true,
+      "measured_floor_z": 1.541304349899292,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 9,
+      "point": [
+        4.9,
+        -1.5321739130434784,
+        1.7152173913043478
+      ],
+      "support": true,
+      "measured_floor_z": 1.7152173519134521,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 10,
+      "point": [
+        4.9,
+        -1.2947826086956522,
+        1.8891304347826086
+      ],
+      "support": true,
+      "measured_floor_z": 1.8891304731369019,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 11,
+      "point": [
+        4.9,
+        -1.057391304347826,
+        2.0630434782608695
+      ],
+      "support": true,
+      "measured_floor_z": 2.0630435943603516,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 12,
+      "point": [
+        4.9,
+        -0.8199999999999998,
+        2.2369565217391303
+      ],
+      "support": true,
+      "measured_floor_z": 2.2369565963745117,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 13,
+      "point": [
+        4.9,
+        -0.5826086956521737,
+        2.410869565217391
+      ],
+      "support": true,
+      "measured_floor_z": 2.410869598388672,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 14,
+      "point": [
+        4.9,
+        -0.3452173913043479,
+        2.5847826086956522
+      ],
+      "support": true,
+      "measured_floor_z": 2.584782600402832,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 15,
+      "point": [
+        4.9,
+        -0.1078260869565213,
+        2.758695652173913
+      ],
+      "support": true,
+      "measured_floor_z": 2.758695602416992,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 16,
+      "point": [
+        4.9,
+        0.12956521739130444,
+        2.9326086956521737
+      ],
+      "support": true,
+      "measured_floor_z": 2.9326086044311523,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 17,
+      "point": [
+        4.9,
+        0.3669565217391306,
+        3.1065217391304345
+      ],
+      "support": true,
+      "measured_floor_z": 3.1065218448638916,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 18,
+      "point": [
+        4.9,
+        0.6043478260869568,
+        3.2804347826086957
+      ],
+      "support": true,
+      "measured_floor_z": 3.2804348468780518,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 19,
+      "point": [
+        4.9,
+        0.8417391304347834,
+        3.4543478260869565
+      ],
+      "support": true,
+      "measured_floor_z": 3.454347848892212,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 20,
+      "point": [
+        4.9,
+        1.0791304347826092,
+        3.628260869565217
+      ],
+      "support": true,
+      "measured_floor_z": 3.628260850906372,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 21,
+      "point": [
+        4.9,
+        1.316521739130435,
+        3.802173913043478
+      ],
+      "support": true,
+      "measured_floor_z": 3.8021738529205322,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 22,
+      "point": [
+        4.9,
+        1.5539130434782606,
+        3.976086956521739
+      ],
+      "support": true,
+      "measured_floor_z": 3.9760868549346924,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 23,
+      "point": [
+        4.9,
+        1.7913043478260873,
+        4.15
+      ],
+      "support": true,
+      "measured_floor_z": 4.150000095367432,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-3-stair",
+      "index": 24,
+      "point": [
+        4.9,
+        2.14,
+        4.15
+      ],
+      "support": true,
+      "measured_floor_z": 4.150000095367432,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 0,
+      "point": [
+        10.9,
+        -3.67,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 1,
+      "point": [
+        10.9,
+        -3.431304347826087,
+        0.3239130434782609
+      ],
+      "support": true,
+      "measured_floor_z": 0.323913037776947,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 2,
+      "point": [
+        10.9,
+        -3.1939130434782608,
+        0.49782608695652175
+      ],
+      "support": true,
+      "measured_floor_z": 0.49782609939575195,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 3,
+      "point": [
+        10.9,
+        -2.9565217391304346,
+        0.6717391304347826
+      ],
+      "support": true,
+      "measured_floor_z": 0.6717391014099121,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 4,
+      "point": [
+        10.9,
+        -2.7191304347826084,
+        0.8456521739130435
+      ],
+      "support": true,
+      "measured_floor_z": 0.845652163028717,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 5,
+      "point": [
+        10.9,
+        -2.4817391304347822,
+        1.0195652173913043
+      ],
+      "support": true,
+      "measured_floor_z": 1.019565224647522,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 6,
+      "point": [
+        10.9,
+        -2.2443478260869565,
+        1.193478260869565
+      ],
+      "support": true,
+      "measured_floor_z": 1.1934782266616821,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 7,
+      "point": [
+        10.9,
+        -2.00695652173913,
+        1.367391304347826
+      ],
+      "support": true,
+      "measured_floor_z": 1.3673913478851318,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 8,
+      "point": [
+        10.9,
+        -1.7695652173913041,
+        1.5413043478260868
+      ],
+      "support": true,
+      "measured_floor_z": 1.541304349899292,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 9,
+      "point": [
+        10.9,
+        -1.5321739130434784,
+        1.7152173913043478
+      ],
+      "support": true,
+      "measured_floor_z": 1.7152173519134521,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 10,
+      "point": [
+        10.9,
+        -1.2947826086956522,
+        1.8891304347826086
+      ],
+      "support": true,
+      "measured_floor_z": 1.8891304731369019,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 11,
+      "point": [
+        10.9,
+        -1.057391304347826,
+        2.0630434782608695
+      ],
+      "support": true,
+      "measured_floor_z": 2.0630435943603516,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 12,
+      "point": [
+        10.9,
+        -0.8199999999999998,
+        2.2369565217391303
+      ],
+      "support": true,
+      "measured_floor_z": 2.2369565963745117,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 13,
+      "point": [
+        10.9,
+        -0.5826086956521737,
+        2.410869565217391
+      ],
+      "support": true,
+      "measured_floor_z": 2.410869598388672,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 14,
+      "point": [
+        10.9,
+        -0.3452173913043479,
+        2.5847826086956522
+      ],
+      "support": true,
+      "measured_floor_z": 2.584782600402832,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 15,
+      "point": [
+        10.9,
+        -0.1078260869565213,
+        2.758695652173913
+      ],
+      "support": true,
+      "measured_floor_z": 2.758695602416992,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 16,
+      "point": [
+        10.9,
+        0.12956521739130444,
+        2.9326086956521737
+      ],
+      "support": true,
+      "measured_floor_z": 2.9326086044311523,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 17,
+      "point": [
+        10.9,
+        0.3669565217391306,
+        3.1065217391304345
+      ],
+      "support": true,
+      "measured_floor_z": 3.1065218448638916,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 18,
+      "point": [
+        10.9,
+        0.6043478260869568,
+        3.2804347826086957
+      ],
+      "support": true,
+      "measured_floor_z": 3.2804348468780518,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 19,
+      "point": [
+        10.9,
+        0.8417391304347834,
+        3.4543478260869565
+      ],
+      "support": true,
+      "measured_floor_z": 3.454347848892212,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 20,
+      "point": [
+        10.9,
+        1.0791304347826092,
+        3.628260869565217
+      ],
+      "support": true,
+      "measured_floor_z": 3.628260850906372,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 21,
+      "point": [
+        10.9,
+        1.316521739130435,
+        3.802173913043478
+      ],
+      "support": true,
+      "measured_floor_z": 3.8021738529205322,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 22,
+      "point": [
+        10.9,
+        1.5539130434782606,
+        3.976086956521739
+      ],
+      "support": true,
+      "measured_floor_z": 3.9760868549346924,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 23,
+      "point": [
+        10.9,
+        1.7913043478260873,
+        4.15
+      ],
+      "support": true,
+      "measured_floor_z": 4.150000095367432,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "home-4-stair",
+      "index": 24,
+      "point": [
+        10.9,
+        2.14,
+        4.15
+      ],
+      "support": true,
+      "measured_floor_z": 4.150000095367432,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    }
+  ]
+}

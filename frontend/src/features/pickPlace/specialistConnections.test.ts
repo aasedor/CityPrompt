@@ -8,6 +8,12 @@ function street(id:string,line:number[][],variant:string,width=36):SiteZone{
   return {id,project_id:'test',color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',zone_type:'road',coordinates:bufferLineToPolygon(coords,width),properties:{width,plan_centerline:coords,road_selected_variant_id:variant}} as SiteZone;
 }
 describe('specialist topology',()=>{
+  it('protects both arms of a bent canal rather than an imaginary endpoint chord',()=>{
+    const bent=street('c',[[0,0],[0,100],[100,100]],CANAL_VARIANT);
+    expect(specialistConnectionProblem(street('r',[[60,160],[60,118]],'local',8),[bent])).toBeNull();
+    expect(specialistConnectionProblem(street('r',[[60,160],[60,100]],'local',8),[bent])).toMatch(/outer bank/);
+    expect(specialistConnectionProblem(street('r',[[60,60],[70,60]],'local',8),[bent])).toBeNull();
+  });
   const canal=street('c',[[0,0],[0,160]],CANAL_VARIANT),bridge=street('b',[[0,0],[0,260]],BRIDGE_VARIANT);
   it('permits outer bank edge access and rejects an asphalt crossing',()=>{
     expect(specialistConnectionProblem(street('r',[[60,90],[18,90]],'local',8),[canal])).toBeNull();

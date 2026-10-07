@@ -1,0 +1,65 @@
+{
+  "variant_id": "sixplex_two_storey_garden",
+  "archetype_id": "neighborhood_sixplex",
+  "method": "RLASM v6.1",
+  "state": "source_locked_only",
+  "sources": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_1.png",
+      "source_attempt": "source-attempts/sixplex_two_storey_garden/front-001.png",
+      "bytes": 2886468,
+      "sha256": "def791f606d4ac4914d294610d9fbe60b42abacfa297e563d1b0a28d88affffd",
+      "role": "front",
+      "authority": "Primary front identity and relative facade proportions: exactly three repeated front gables, three recessed upper balconies, three ground living-window bays and six distinct door leaves in three pairs. First two bays place the window left and door pair right; right bay mirrors that arrangement. Buff brick, cream recess soffits, dark railings/glazing and warm timber entries; planted walks and bicycle hoops.",
+      "limits": "No invisible depth, rear facade, unit/stair layout or surveyed roof heights can be derived from this single projection."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_1_oblique.png",
+      "source_attempt": "source-attempts/sixplex_two_storey_garden/oblique-001.png",
+      "bytes": 3420771,
+      "sha256": "dfb250d2ecd9f851fc19615cffdf32c6656c86a3853282ab1766a7f77d8ede88",
+      "role": "oblique",
+      "authority": "Exposed left flank, real balcony recess, two occupied storeys and roof depth relationship. Four visible side-window positions per storey, broad main-roof gable on the left side, common ridge parallel to front, and three front cross-gables intersecting its forward slope.",
+      "limits": "Perspective lengths and partly occluded garden/ground windows are not metric authority; hidden right/rear details remain inferred."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\neighborhood-sixplex\\variant_1_roof-study.png",
+      "source_attempt": "source-attempts/sixplex_two_storey_garden/top-001.png",
+      "bytes": 3578634,
+      "sha256": "846c0b1c1b072cefe3d3ff15cf3ad88a8beff46cc70e3614ee75e82c3a8fc5f6",
+      "role": "topology",
+      "authority": "Topology corroboration only: a continuous transverse main ridge, rear roof plane, three short front cross-ridges and diagonal valley boundaries on the main forward plane. Confirms common rectangular body, three front bays and rear garden.",
+      "limits": "This remains elevated oblique rather than nadir. Do not use apparent footprint depth, repeated-seam spacing, exact valley nodes, shadow lines or minor planting shifts as surveyed dimensions."
+    }
+  ],
+  "roof_graph": {
+    "principal_mass": "One common two-storey rectangular body under a main gable whose ridge runs parallel to the front facade.",
+    "main_roof": "Two principal slopes, front and rear, meeting along one transverse ridge; broad main gable closes the left end and an inferred matching right end.",
+    "front_cross_gables": "Three short ridges perpendicular to the front, one above each balcony bay. Each cross-ridge terminates against the main front slope below the higher main ridge.",
+    "junctions": "Each cross-gable has two diagonal valley intersections with the main front plane, converging at its ridge termination. Adjacent valleys discharge toward the two bay-divider gutter/downpipe positions and outer front eave ends. Solve continuous watertight plane intersections; do not overlap complete hidden roof fields.",
+    "not_supported": [
+      "Three independent full-depth parallel front-to-back ridges.",
+      "A fourth roof bay or a separate rear roofbox.",
+      "Extending all three front cross-ridges to the main ridge at equal height.",
+      "Treating every heavy straight standing-seam/flash line in top001 as an additional valley or fold."
+    ]
+  },
+  "remaining_inferences": [
+    "Exact wall/roof heights, roof pitch, eave depth, cross-gable run and watertight junction coordinates.",
+    "Detailed balcony slab/recess depth, guard connections and cedar-screen construction.",
+    "Six separate dwelling plans, three enclosed upper-home stairs, fire/structure/MEP and room fixtures.",
+    "Hidden right/rear fenestration and circulation; no source image shows a complete rear elevation.",
+    "Walkable public approaches, stair and balcony guards, route/collision metadata and actual-GLB physical contact.",
+    "Texture, glass, metal, wood, lighting and landscape finish are unapproved future work."
+  ],
+  "keeper_approved": false,
+  "catalogue_activated": false,
+  "independent_source_review": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\sixplex-garden-source-review.json",
+    "sha256": "5d3abdd14b98e4a7b2fa6d556459810b5a3ee6801345e459433272d01b0a5e7d",
+    "scope": "Source compatibility only: direct full-resolution front001, oblique001 and top001 pixels; generation provenance and progress brief. No geometry, material, model, walking, keeper or catalogue assessment."
+  },
+  "generation_provenance": "sixplex-garden-locked-generation.json",
+  "generation_provenance_sha256": "a38e3550c7519ad43f56037e2b9b412e2012f6973908090efe0d56cd0ccf590b",
+  "next_step": "Measured source-specific prework, six dwelling plans and three enclosed upper-home stairs, roof intersections, source-conditioned material and dedicated constructor. No geometry or material exists."
+}

@@ -1,0 +1,365 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "independent RLASM verifier /root/ubst_pilot_review",
+  "review_date": "2026-10-07",
+  "candidate": "ubst-garden-hotel-clay-v005",
+  "method": "RLASM v6.1",
+  "review_type": "fresh holistic architectural-clay review",
+  "scope": "Exact delivered GLB reimport renders at native dimensions. All 21 full-resolution renders, four boards and three locked source copies directly inspected for identity, ratios, topology, every elevation, openings, optics, construction contacts, program, circulation, landscape, cameras and regressions. This is a complete new review, not contact closure alone.",
+  "decision": "architectural_clay_visual_pass",
+  "architectural_clay_approved": true,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "model": {
+    "path": "ubst-garden-hotel-clay-v005.glb",
+    "sha256": "83328f45d7ab962f829ab0e68792b7bafc2e2c59ff204c098599c519b9466d8f"
+  },
+  "unresolved_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 2
+  },
+  "unresolved_blockers": [],
+  "findings": [
+    {
+      "id": "HOT-005-01",
+      "priority": "P2",
+      "category": "clay landscape and furnishing",
+      "finding": "Planted strips, cafe seating and furnishings establish the intended program but remain schematic. Source trees, grasses, stone texture and detailed interior finishes are outside this architectural-clay profile.",
+      "evidence": [
+        "renders/front.png",
+        "renders/terrace.png",
+        "renders/interior.png"
+      ]
+    },
+    {
+      "id": "HOT-005-02",
+      "priority": "P2",
+      "category": "comparison presentation",
+      "finding": "Phone comparisons pair appropriate frontal, oblique and roof-bearing views. Model crops are smaller than source crops and camera registration remains approximate. Tightening framing would improve presentation; complete full-resolution evidence makes the relevant geometry inspectable.",
+      "evidence": [
+        "boards/phone-source-comparison.png"
+      ]
+    }
+  ],
+  "previous_findings": [
+    {
+      "id": "HOT-003-01",
+      "status": "closed",
+      "category": "front frame / side-wall overlap",
+      "closure": "End-column and head faces now meet the side carrier cleanly. Tall gray strips and cap patches are absent in both side elevations, side_projection and roof_contact.",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/side_projection.png",
+        "renders/roof_contact.png"
+      ]
+    },
+    {
+      "id": "HOT-004-CONTACT-01",
+      "status": "closed",
+      "category": "redundant fascia overlaps head and slab",
+      "closure": "The redundant fascia is removed. Front bands and side ends now read as uniform seated construction, without rectangular tone patches or duplicate layers. Ground-level slab and carrier junction also reads cleanly.",
+      "evidence": [
+        "renders/front.png",
+        "renders/facade_close.png",
+        "renders/side_projection.png",
+        "renders/architecture_close.png"
+      ]
+    },
+    {
+      "id": "HOT-004-CONTACT-02",
+      "status": "closed",
+      "category": "top roof/head front step",
+      "closure": "Roof and perimeter extend across the complete front-frame envelope. The former top-corner notch is absent; membrane and coping form a continuous closed perimeter.",
+      "evidence": [
+        "renders/top.png",
+        "renders/roof_contact.png",
+        "renders/front_corner.png"
+      ]
+    },
+    {
+      "category": "earlier roof membrane band and coping overlap",
+      "status": "remains closed",
+      "closure": "Fresh roof views show no mottled band, doubled coping corner or exposed gray slab stripe.",
+      "evidence": [
+        "renders/top.png",
+        "renders/roof_contact.png",
+        "renders/rear_side.png"
+      ]
+    },
+    {
+      "category": "middle landing guard blocks upper stair",
+      "status": "remains closed",
+      "closure": "Both stair views show clear continuous flights; upper landing connects to the corridor. Exact-model 57-sample audit reports no support or 1.85m headroom failure.",
+      "evidence": [
+        "renders/stairs.png",
+        "renders/upper_stairs.png",
+        "renders/upper_landing.png",
+        "evidence/offline-route-probes.json"
+      ]
+    },
+    {
+      "category": "single broad public entry leaf",
+      "status": "remains closed",
+      "closure": "Paired glazed leaves, central division and transom remain present; the open leaf provides a visible public entrance.",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/front.png"
+      ]
+    },
+    {
+      "category": "glass camera and source comparison blocker",
+      "status": "remains closed with P2 presentation residual",
+      "closure": "Glass close shows actual glazing and furnished interior. Comparison angles show the relevant facade, terraces and roof; approximate registration is recorded as nonblocking polish.",
+      "evidence": [
+        "renders/glass_close.png",
+        "boards/phone-source-comparison.png"
+      ]
+    }
+  ],
+  "holistic_checks": {
+    "source_identity_and_ratios": "Three occupied floors with a tall active lobby below two six-bay guest floors. Source-led height, stepped 24m/22.4m/21m widths and frame rhythm remain coherent with the exact references.",
+    "roof_and_terraces": "Single complete top roof covers the upper loggia to its outer column/head frame. Glazing remains recessed behind that frame. Both planted terraces have continuous walking strips and seated edge/return guards. No roof, soffit or envelope gap is visible.",
+    "all_elevations_and_openings": "Three side-window columns, complete inferred rear, rear service entry, recessed windows, guest terrace exits, paired public entrance and consistent front counts remain legible. Carrier apertures are visible through to occupied rooms.",
+    "contacts_and_load_paths": "Front bands, loggia columns/heads, side corners, roof perimeter, vent curbs, canopy, ground plinth and planting bases are seated and visually coherent. Corrected intersections show no remaining visible P0/P1 defect.",
+    "program_and_circulation": "Lobby reception/lounge, cafe frontage, guest rooms, bathroom, both stair flights, corridor and landings are represented. Dedicated program views and matching-model offline samples support the prescribed routes within the stated evidence limits.",
+    "materials_and_optics": "Pale stone carrier, dark frames/guards, warm soffit and transparent recessed glazing preserve source material zoning in clay. Rooms have depth and visible furniture. No textured realism claim.",
+    "landscape_and_visibility": "Planted terrace strips, front garden and cafe seating are grounded. Every mandatory view shows its intended subject; contact and phone boards consistently identify the exact v005 candidate.",
+    "regressions": "Fresh complete review found no new P0/P1 after the final contact corrections. Earlier v003 failed review and v004 scoped diagnostic remain preserved as historical records."
+  },
+  "delivery_evidence": {
+    "status": "PASS_DELIVERY_CHECKS",
+    "path": "evidence/delivery-verification.json",
+    "failed_checks": 0,
+    "model_hash_matches": true
+  },
+  "route_evidence": {
+    "status": "PASS_OFFLINE_ROUTE_PROBES",
+    "path": "evidence/offline-route-probes.json",
+    "samples": 57,
+    "failures": 0,
+    "model_hash_matches": true,
+    "scope": "Family-specific prescribed centrelines, floor support and 1.85m vertical clearance only."
+  },
+  "limitations": [
+    "Runtime placement, walking, collision, persistence and catalogue activation are NOT_TESTED.",
+    "Offline ray probes do not establish continuous body collision or building-code compliance.",
+    "Approval is architectural clay at the exact delivered native dimensions only. No textured keeper, runtime catalogue or arbitrary-scaling approval."
+  ],
+  "inspected_files": [
+    {
+      "sha256": "0d97fd3b8c0872a7548fe98101ce3a6ea12a07dc57866f0e96716cb305e434f5",
+      "path": "boards/all-views-contact.png",
+      "direct_visual_inspection": true,
+      "bytes": 2594467
+    },
+    {
+      "sha256": "b3c9e5ad573b11e3cf03c995eb8449970dfb7cfb6a17964c44fbf9843866c770",
+      "path": "boards/locked-source-board.png",
+      "direct_visual_inspection": true,
+      "bytes": 1395069
+    },
+    {
+      "sha256": "d1f8bb5ce63d5200127a0eb128c375c4d600191ed3d561b1e7904420190ed417",
+      "path": "boards/phone-construction.png",
+      "direct_visual_inspection": true,
+      "bytes": 938903
+    },
+    {
+      "sha256": "1d1ef33a79aa390167ba1df4e4bef4f5bda18d9876adc1520adbcdc2b497d282",
+      "path": "boards/phone-source-comparison.png",
+      "direct_visual_inspection": true,
+      "bytes": 1544607
+    },
+    {
+      "sha256": "f67d3860e49bcc470c8600a7f38f54c394d3e3b5e7fbbe522ce3cdf7fd4d25c8",
+      "path": "renders/aerial.png",
+      "direct_visual_inspection": true,
+      "bytes": 1484608
+    },
+    {
+      "sha256": "679fc7e8f81bb831ee14125ed9b13739b230b5831e89079439a4b0c500499f48",
+      "path": "renders/architecture_close.png",
+      "direct_visual_inspection": true,
+      "bytes": 1452256
+    },
+    {
+      "sha256": "e7f0e637fa15c2dfcc913545256662cfc618715140588b5f49f45d567a72dc68",
+      "path": "renders/bathroom.png",
+      "direct_visual_inspection": true,
+      "bytes": 1285345
+    },
+    {
+      "sha256": "90d2a591ad801829950b99d9463295eac9e53486c57c6c1ef49fff53e149f8b5",
+      "path": "renders/bedroom.png",
+      "direct_visual_inspection": true,
+      "bytes": 1361352
+    },
+    {
+      "sha256": "605d53357256b0d378e5e8ebf207351858b2de671d9b0755797245b75b87d620",
+      "path": "renders/facade_close.png",
+      "direct_visual_inspection": true,
+      "bytes": 1557871
+    },
+    {
+      "sha256": "8bcb21edc3a79924a879c5584a309e4d7c5549dda9ef1440a23db6f8ac028bb9",
+      "path": "renders/front_corner.png",
+      "direct_visual_inspection": true,
+      "bytes": 1494672
+    },
+    {
+      "sha256": "33ec1aa578f9c6ab27c7a7fa46e82f351faf823877579be7425f58dca1d798f6",
+      "path": "renders/front.png",
+      "direct_visual_inspection": true,
+      "bytes": 1385342
+    },
+    {
+      "sha256": "04fe1a593f979e5ad8062ef5aa0cff8f35f4d08bfcaa71215dd0feae1a441d2a",
+      "path": "renders/glass_close.png",
+      "direct_visual_inspection": true,
+      "bytes": 1324724
+    },
+    {
+      "sha256": "2f78da30d5a037ced71418fd9c6157a0b83f5bc5710a67fdfc708cde9e570136",
+      "path": "renders/interior.png",
+      "direct_visual_inspection": true,
+      "bytes": 1321219
+    },
+    {
+      "sha256": "7d35ae3d063c559a1d97172aa52b83a0a9f6b349051251c29c3577906be3840c",
+      "path": "renders/left_side.png",
+      "direct_visual_inspection": true,
+      "bytes": 1323780
+    },
+    {
+      "sha256": "cc351e66c37ee349fe7fdc4b1f4a945c074f6f5775d1c27751e20ff8e83ce080",
+      "path": "renders/rear_side.png",
+      "direct_visual_inspection": true,
+      "bytes": 1424219
+    },
+    {
+      "sha256": "ff7c867106be035b09e1e6d693114f929987d5a45b69e9a94ad37a0107fcdd61",
+      "path": "renders/rear.png",
+      "direct_visual_inspection": true,
+      "bytes": 1302600
+    },
+    {
+      "sha256": "c9b383382fc3c500a1f425b6b141add812ae72e54f098b75f72b62d09d048ab4",
+      "path": "renders/right_side.png",
+      "direct_visual_inspection": true,
+      "bytes": 1330360
+    },
+    {
+      "sha256": "0624f911f3c08087d8d0c36efb38dc906095a628d86ae0c1a3f88b51d4b281f2",
+      "path": "renders/roof_contact.png",
+      "direct_visual_inspection": true,
+      "bytes": 1448440
+    },
+    {
+      "sha256": "fc9dca67db91c4998df8ee7f44b3405e385891de90bb3e68a8d65e2b29cca36e",
+      "path": "renders/side_projection.png",
+      "direct_visual_inspection": true,
+      "bytes": 1450463
+    },
+    {
+      "sha256": "22fd0a51e0b3528127e4511416721dc49ec27cbb59d9ad66e95544d88c19d15c",
+      "path": "renders/stairs.png",
+      "direct_visual_inspection": true,
+      "bytes": 1476577
+    },
+    {
+      "sha256": "689e9fc9ddc7313fc5bafc35559a02b2b92163d6abcb46f34eea3de7389da671",
+      "path": "renders/terrace.png",
+      "direct_visual_inspection": true,
+      "bytes": 1427839
+    },
+    {
+      "sha256": "7974ec0c65e4e180a7a6037572a2467f7014e82583b783bc6560a070cf912016",
+      "path": "renders/top_loggia.png",
+      "direct_visual_inspection": true,
+      "bytes": 1357345
+    },
+    {
+      "sha256": "d7028ac384cb10449d048948934134b4df0186d084b384e815f859f7388e0265",
+      "path": "renders/top.png",
+      "direct_visual_inspection": true,
+      "bytes": 1346912
+    },
+    {
+      "sha256": "9cdc6bd4009ffc2f5f77f8a70d8683134c0c42a959f5c5d3dc293f65f5b1043d",
+      "path": "renders/upper_landing.png",
+      "direct_visual_inspection": true,
+      "bytes": 1529314
+    },
+    {
+      "sha256": "85e7ea85b3cf81bbb923484c88dd6b61c4906c9156373a4d1fcc8c26fb98ac92",
+      "path": "renders/upper_stairs.png",
+      "direct_visual_inspection": true,
+      "bytes": 1523380
+    },
+    {
+      "sha256": "1f238fe23209f8e7bfd045ce4a96aa6424ae96c60889573e30b472dccd000041",
+      "path": "sources/variant_0_angle_60.png",
+      "direct_visual_inspection": true,
+      "bytes": 3279018
+    },
+    {
+      "sha256": "413a2fbf7d2b53cf937ed8187954e268a6810587543c49484c809e2ee532bd55",
+      "path": "sources/variant_0_angle_90.png",
+      "direct_visual_inspection": true,
+      "bytes": 3595039
+    },
+    {
+      "sha256": "842edfbb873db093fc6f378f6df4816c6fb5471cc9c43e0367c39e7ad3a00fec",
+      "path": "sources/variant_0.png",
+      "direct_visual_inspection": true,
+      "bytes": 2874324
+    }
+  ],
+  "metadata_files": [
+    {
+      "sha256": "9e5c348fa76ad61bd86f0690848dfc43bd7e1f27b13ee3133b2cd78fcb0ed761",
+      "path": "prework-manifest.json"
+    },
+    {
+      "sha256": "36a6b07aec0ef71069df6920a82b496d37e7dfd3fa1ea7d44dde50c6f9bde359",
+      "path": "evidence/delivery-verification.json"
+    },
+    {
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56",
+      "path": "evidence/runtime-status.json"
+    },
+    {
+      "sha256": "4aa68eea8c0dc33e3e77fe9b3a4a2049e305998283cafd33ed95c274d1a08df5",
+      "path": "evidence/offline-route-probes.json"
+    },
+    {
+      "sha256": "049ddee6039ea42a221d36d8b4d981dc123e72d1bf1ba20cfe34fc0204691698",
+      "path": "review/builder-review.json"
+    }
+  ],
+  "source_hash_checks": [
+    {
+      "copy": "sources/variant_0.png",
+      "copy_sha256": "842edfbb873db093fc6f378f6df4816c6fb5471cc9c43e0367c39e7ad3a00fec",
+      "identical": true,
+      "original": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-69e077d7-a196-4713-ab2b-0755313500da.png",
+      "original_sha256": "842edfbb873db093fc6f378f6df4816c6fb5471cc9c43e0367c39e7ad3a00fec"
+    },
+    {
+      "copy": "sources/variant_0_angle_60.png",
+      "copy_sha256": "1f238fe23209f8e7bfd045ce4a96aa6424ae96c60889573e30b472dccd000041",
+      "identical": true,
+      "original": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-254c2c12-ce43-416e-84a1-9bd346f2dd5b.png",
+      "original_sha256": "1f238fe23209f8e7bfd045ce4a96aa6424ae96c60889573e30b472dccd000041"
+    },
+    {
+      "copy": "sources/variant_0_angle_90.png",
+      "copy_sha256": "413a2fbf7d2b53cf937ed8187954e268a6810587543c49484c809e2ee532bd55",
+      "identical": true,
+      "original": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-f624fb4a-18b6-4429-9944-66455ef7c19d.png",
+      "original_sha256": "413a2fbf7d2b53cf937ed8187954e268a6810587543c49484c809e2ee532bd55"
+    }
+  ]
+}

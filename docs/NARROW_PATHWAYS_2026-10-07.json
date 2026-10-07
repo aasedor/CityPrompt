@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-07",
+  "scope": "local prepared-level concept trial; not human visual approval or publication",
+  "baseCommit": "3612e1cac",
+  "projectUrl": "http://127.0.0.1:5181/projects/d7eb67d6-11a5-41ad-84d8-c48872fbb465",
+  "tests": {
+    "vitest": 163,
+    "pytest": 21,
+    "typecheck": "PASS"
+  },
+  "variants": [
+    {
+      "id": "garden_gravel_path_v1",
+      "title": "Garden gravel path",
+      "widthM": 1.5,
+      "sourceRecipeSha256": "53d98bede5cadbf62fe5c36d2d7232291565fae3aaee44c313564695e4f087fd",
+      "sourceAssemblySha256": "53d98bede5cadbf62fe5c36d2d7232291565fae3aaee44c313564695e4f087fd",
+      "programSha256": "766febb0811916ff3f5cd8d84c93c7812ba60f74107f7a81a3c631259be9eda5",
+      "referenceSha256": "e2d09b0305bcfa4991300b0088a18d63793c5442293eb4f50c9fb7dc4f864ac0",
+      "thumbnailUrl": "/archetypes/streets/narrow-pathways/garden_gravel_path_v1.png"
+    },
+    {
+      "id": "concrete_neighbourhood_walk_v1",
+      "title": "Concrete neighbourhood walk",
+      "widthM": 1.8,
+      "sourceRecipeSha256": "cbfa6d72b1b1b7aac8c842fcca64e78a122da99625ed675fa5e447ff88002e9c",
+      "sourceAssemblySha256": "cbfa6d72b1b1b7aac8c842fcca64e78a122da99625ed675fa5e447ff88002e9c",
+      "programSha256": "6e234a133c2aac60f70537e3e20cb402fd1f727a8bde5f3b07c7d9f7c93bd6bc",
+      "referenceSha256": "64b9fa0eaf3d32dbc3bb25cc1b4543a1a79036a478b42dd5d226e6ac92f64211",
+      "thumbnailUrl": "/archetypes/streets/narrow-pathways/concrete_neighbourhood_walk_v1.png"
+    },
+    {
+      "id": "brick_courtyard_path_v1",
+      "title": "Brick courtyard path",
+      "widthM": 2.0,
+      "sourceRecipeSha256": "987de3477b8a9bc658c9456ee4b5593a5e07648a118c620506be518ea7cab575",
+      "sourceAssemblySha256": "987de3477b8a9bc658c9456ee4b5593a5e07648a118c620506be518ea7cab575",
+      "programSha256": "8853dbff75b53eab6a25d5df7988110b48d4388dc75583f50c1bb2c58ffd6527",
+      "referenceSha256": "7df386a09174b40c94fe4d2f4aeb9077f5d406ffce9558035cd94c73376d0b61",
+      "thumbnailUrl": "/archetypes/streets/narrow-pathways/brick_courtyard_path_v1.png"
+    },
+    {
+      "id": "timber_garden_walk_v1",
+      "title": "Timber garden walk",
+      "widthM": 2.0,
+      "sourceRecipeSha256": "cdd6ef784f8c1351018ec472e5464f10f0e9f4caeae62237743095b0b4aa6634",
+      "sourceAssemblySha256": "cdd6ef784f8c1351018ec472e5464f10f0e9f4caeae62237743095b0b4aa6634",
+      "programSha256": "1e077e391dc0bba73f3115dee7602b4de4fc694a572c233eee4f3a3245a4f5a5",
+      "referenceSha256": "b14d8af753e8a407c3bede105710e036a262f8695df4922b730d7b02920a7235",
+      "thumbnailUrl": "/archetypes/streets/narrow-pathways/timber_garden_walk_v1.png"
+    },
+    {
+      "id": "asphalt_shared_path_v1",
+      "title": "Asphalt shared path",
+      "widthM": 3.0,
+      "sourceRecipeSha256": "d09c9368796449954516e0c5e6790857a84bb6465525cb60a14de789bb42d6e3",
+      "sourceAssemblySha256": "d09c9368796449954516e0c5e6790857a84bb6465525cb60a14de789bb42d6e3",
+      "programSha256": "d0e571e99c93615a82fef53fdf44af9838f21d7ea54eb0674e3eb6124d6fa042",
+      "referenceSha256": "3bd8c3eb2c626ef3d60f7e0241bf271280d8c0badc1f684caaaf8ead45050005",
+      "thumbnailUrl": "/archetypes/streets/narrow-pathways/asphalt_shared_path_v1.png"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "C:\\dev-artifacts\\CityPrompt\\narrow-pathways-2026-10-07\\five-paths-after-edit.json",
+      "sha256": "e3a152fbf4ed0434d14bd0c9747bbf9c458ff25b5c4d98808f311355d41854d4"
+    },
+    {
+      "file": "C:\\dev-artifacts\\CityPrompt\\narrow-pathways-2026-10-07\\five-paths-before-edit.json",
+      "sha256": "df117359cee275d2ce728acd8628ff126afcc196e72dc9bc6c0fd8f8a7ca7518"
+    },
+    {
+      "file": "C:\\dev-artifacts\\CityPrompt\\narrow-pathways-2026-10-07\\five-pathways-overview.png",
+      "sha256": "f6264262f408a5de2cdd2d650ddacd2611e13c8a44cb07f698eb77a8d1d9639e"
+    },
+    {
+      "file": "C:\\dev-artifacts\\CityPrompt\\narrow-pathways-2026-10-07\\five-pathways-plan.png",
+      "sha256": "a0144d7cce713cad3e8955d2bd5ab8bb1f7984173dfe36dc506a0b8d0761ed3c"
+    },
+    {
+      "file": "C:\\dev-artifacts\\CityPrompt\\narrow-pathways-2026-10-07\\gravel-pilot.png",
+      "sha256": "a24d3bc79658d05516ecfbb3532d0eebc69d7f8184e81c6665eed8d1724d52a4"
+    },
+    {
+      "file": "C:\\dev-artifacts\\CityPrompt\\narrow-pathways-2026-10-07\\pathway-catalogue.png",
+      "sha256": "61f44d62e6a61e6ca9d5e126a6d2756ca260c027176b7e710c94b0c0e0a2c6c6"
+    },
+    {
+      "file": "C:\\dev-artifacts\\CityPrompt\\narrow-pathways-2026-10-07\\pilot-zones.json",
+      "sha256": "877eaa379f06edd7e15d843f8c67aef193d60f26bb893657a69e517f611cc5e1"
+    },
+    {
+      "file": "C:\\dev-artifacts\\CityPrompt\\narrow-pathways-2026-10-07\\timber-walking-view.png",
+      "sha256": "306def1e6350a7e485677cd582d4004824df5e62bbe2db2cef49e93f8ca9a428"
+    }
+  ]
+}

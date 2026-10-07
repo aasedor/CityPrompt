@@ -1,0 +1,7 @@
+{
+  "minLengthM": 36,
+  "maxLengthM": 2000,
+  "crossingHalfLengthM": 12.1,
+  "bankWidthM": 9,
+  "channelHalfWidthM": 9
+}

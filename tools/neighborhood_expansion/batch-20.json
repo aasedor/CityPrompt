@@ -1,0 +1,1980 @@
+{
+  "schema": "cityprompt.neighborhood-expansion-20@1",
+  "requested_on": "2026-10-03",
+  "user_request": "Build 20 more normal buildings while I am away.",
+  "method": "RLASM v6.1",
+  "scope": "Exactly20 additional distinct original everyday-building variants at the prior local textured prototype standard, with furnished program, traversable circulation, landscaping and independent architecture/walking review. Full keeper approval is separately assessed.",
+  "worktree": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt",
+  "branch": "codex/neighborhood-refinement",
+  "artifact_root": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03",
+  "reference_root": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings",
+  "source_brief": {
+    "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-essentials\\CityPrompt\\tools\\catalogue\\neighborhood_essentials.json",
+    "sha256": "34ea11c195d30ca6a760f3c4f464d7bbecf136b287bfdaf4785a1c8d54669f39"
+  },
+  "prior_prototypes": [
+    "school-v006",
+    "fourplex-v005"
+  ],
+  "excluded_from_this_batch": [
+    "childcare_housing_integrated",
+    "library_housing_integrated"
+  ],
+  "pilot": "childcare_garden_pavilion",
+  "batch_size_after_pilot": 4,
+  "checkpoint_after_each_candidate": true,
+  "max_repair_versions_per_candidate_per_pass": 3,
+  "publication_authorized": false,
+  "external_paid_image_apis_authorized": false,
+  "items": [
+    {
+      "archetype_id": "neighborhood_childcare_centre",
+      "family": "Childcare / Early-Learning Centre",
+      "variant_id": "childcare_garden_pavilion",
+      "variant_index": 0,
+      "brief": {
+        "id": "childcare_garden_pavilion",
+        "label": "Garden Pavilion",
+        "width": 26,
+        "depth": 20,
+        "floors": 1,
+        "floorHeight": 3.6,
+        "primary": "warm pale brick",
+        "secondary": "cedar screens and muted sage-green door frames",
+        "roof": "two shallow gabled roofs with deep protective eaves",
+        "roofMaterial": "grey standing-seam metal",
+        "description": "A single-storey early-learning centre composed of two modest gabled classroom volumes joined by a recessed glazed entrance. Low windows overlook a secure side garden with timber play equipment, a sand area and a shade tree. A planted low fence and controlled gate separate the garden from the public sidewalk. Covered stroller parking sits beside the supervised entrance.",
+        "siteNote": "Reserve a secure contiguous outdoor play yard with clear staff sightlines; do not substitute an exposed public plaza."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "childcare-garden-v001",
+          "state": "visual_rework_required",
+          "walking_routes_passed": 8,
+          "physical_samples_passed": 515,
+          "blockers": [
+            "Primary front calibration: eave/ridge height too low. Corrected source constructor for v002; preserve v001."
+          ],
+          "renders_expected": 20
+        },
+        {
+          "candidate": "childcare-garden-v002",
+          "state": "visual_rework_required",
+          "walking_routes_passed": 8,
+          "physical_samples_passed": 515,
+          "browser_checks": "8 routes, entrance step, model switching, toggle, interior and reload passed",
+          "blockers": [
+            "Connector roof topology",
+            "Cedar stroller shelter and glazed entrance leaves",
+            "Washroom proof camera",
+            "Low climbing/slide equipment"
+          ],
+          "keeper_approved": false
+        },
+        {
+          "candidate": "childcare-garden-v003",
+          "state": "visual_rework_required",
+          "mandatory_views": 22,
+          "keeper_approved": false,
+          "blockers": [
+            "Garden props missing native navigation obstacles",
+            "Play steps stop85mm before platform"
+          ],
+          "walking_routes_passed": 8,
+          "physical_samples_passed": 515
+        },
+        {
+          "candidate": "childcare-garden-v004",
+          "state": "local_prototype_pass",
+          "mandatory_views": 22,
+          "keeper_approved": false,
+          "review": "childcare-garden-v004/review/independent-visual-review.json"
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_manifest": "prework/childcare_garden_pavilion.json",
+      "current_candidate": "childcare-garden-v004",
+      "local_review": {
+        "candidate": "childcare-garden-v004",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "childcare-garden-v004/review/independent-visual-review.json",
+        "glb_sha256": "f509d4a1c235cb3ea12d2ec7d4d72e0d32f567dbcba4a75fb7c116ef981174ca",
+        "routes": 8,
+        "physical_samples": 515,
+        "garden_probes": 4,
+        "mandatory_views": 22,
+        "browser_verified": true,
+        "review_sha256": "a22dcca0b6c36e06f8cc24d9155bef76d4139f0fd060a0ed8254969619010be0",
+        "review_pin_provenance": "prework/main-app-ten-fixture-helper-preflight-v002.json; independently verified original review without changing decisions"
+      }
+    },
+    {
+      "archetype_id": "neighborhood_fourplex",
+      "family": "Neighborhood Fourplex",
+      "variant_id": "fourplex_corner_entries",
+      "variant_index": 1,
+      "brief": {
+        "id": "fourplex_corner_entries",
+        "label": "Corner-Lot Fourplex",
+        "width": 17,
+        "depth": 15,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "warm grey brick",
+        "secondary": "cedar entrance recesses and dark metal window frames",
+        "roof": "two shallow pitched roof volumes meeting at a simple valley",
+        "roofMaterial": "charcoal standing seam",
+        "description": "A two-storey fourplex on a neighborhood corner, containing two flats per floor. Two sheltered shared entrances each serve one lower and one upper apartment, with one entrance facing each street. The building turns the corner with living-room glazing and a low planted setback. Keep the four-home scale legible; no retail unit or extra attic storey.",
+        "siteNote": "Two street frontages allow distributed access while the building still contains exactly four homes."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "fourplex-corner-v001",
+          "state": "rework_required",
+          "walking_routes_passed": 16,
+          "walking_routes_total": 18,
+          "physical_samples_failed": 18,
+          "aperture_audit": "failed: bath perimeter liner blocked west windows",
+          "repairs": "Outward public doors; exact landing/tread edges; flat-open bath doors; perimeter bathroom windows clear"
+        },
+        {
+          "candidate": "fourplex-corner-v002",
+          "state": "independent_visual_rework_required",
+          "source_locked": true,
+          "planned_render_count": 29,
+          "log": "fourplex-corner-v002.log",
+          "review_findings": [
+            "Missing inner stair/lower-flight lip guards",
+            "Bike racks intersect rear bed",
+            "Left bedroom door occlusion and shower-head camera crop"
+          ]
+        },
+        {
+          "candidate": "fourplex-corner-v003",
+          "state": "walking_rework_required",
+          "source_locked": true,
+          "planned_render_count": 33,
+          "log": "fourplex-corner-v003.log",
+          "review_findings": [
+            "New inner guards require landing route at y+-2.4",
+            "Bike hardware must be explicitly included in obstacles",
+            "Revised room proof and upper lip guards visually confirmed"
+          ]
+        },
+        {
+          "candidate": "fourplex-corner-v004",
+          "state": "local_prototype_pass",
+          "source_locked": true,
+          "planned_render_count": 33,
+          "log": "fourplex-corner-v004.log",
+          "final_repair_in_pass": true
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_manifest": "prework/fourplex_corner_entries.json",
+      "current_candidate": "fourplex-corner-v004",
+      "local_review": {
+        "candidate": "fourplex-corner-v004",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "fourplex-corner-v004/review/independent-visual-review.json",
+        "review_sha256": "8d0ece9bbb7e593a0bd2cff864faa62c3b633bb3cd5e6d80aa31d9c990c8c35a",
+        "glb_sha256": "5ceb78ae61cfa21aaa6ec88b321ac147620fbb628985e3d90cc043be2c79aed4",
+        "routes": 20,
+        "physical_samples": 840,
+        "garden_probes": 3,
+        "mandatory_views": 33,
+        "browser_verified": true
+      }
+    },
+    {
+      "archetype_id": "neighborhood_sixplex",
+      "family": "Neighborhood Sixplex",
+      "variant_id": "sixplex_brick_walk_up",
+      "variant_index": 0,
+      "brief": {
+        "id": "sixplex_brick_walk_up",
+        "label": "Three-Storey Brick Walk-Up",
+        "width": 17,
+        "depth": 15,
+        "floors": 3,
+        "floorHeight": 3.1,
+        "primary": "warm red-brown brick",
+        "secondary": "pale stone sills and bronze metal window frames",
+        "roof": "flat parapet roof with a simple capped cornice",
+        "roofMaterial": "membrane",
+        "description": "A modest three-storey sixplex with exactly two apartments per floor. Two generous window bays flank a recessed central entrance and vertically stacked stair windows. The ground floor meets a landscaped front walk with a low entrance canopy; a side path reaches bicycle storage and a shared rear garden. No commercial base, tower massing or fourth floor.",
+        "siteNote": "Exactly six flats, two per floor; evaluate upper-floor accessibility separately from the exterior reference."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "sixplex-brick-v001",
+          "state": "failed_local_routes",
+          "source_locked": true,
+          "planned_render_count": 40,
+          "log": "sixplex-brick-v001.log",
+          "blockers": [
+            "Six flat-entry paths obstructed by bookcase protrusions;19/25routes pass. Physical checks cover reached samples only."
+          ],
+          "renders": 40
+        },
+        {
+          "candidate": "sixplex-brick-v002",
+          "state": "failed_local_fixture",
+          "repairs": [
+            "Offset entry aisles to x +/-2.70 and reconnect at +/-2.50",
+            "Add two kitchen sink/contact cameras"
+          ],
+          "render_count": 42,
+          "blockers": [
+            "Uncut cabinet base fills all six sink bowls, independently confirmed in close views."
+          ],
+          "checks": {
+            "routes_passed": 25,
+            "physical_samples_passed": 1024,
+            "garden_probes_passed": 4,
+            "furniture_probes_passed": 20
+          }
+        },
+        {
+          "candidate": "sixplex-brick-v003",
+          "state": "local_prototype_pass",
+          "repairs": [
+            "Cut cabinet base around each sink bowl, retaining surrounding support"
+          ],
+          "render_count": 42,
+          "source_locked": true,
+          "log": "sixplex-brick-v003.log"
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_attempt": {
+        "path": "source-attempts/sixplex_brick_walk_up/front-001.png",
+        "sha256": "463d0faab14633398d881b9b33e2972bb538f6e400c50fc43fe4183072a9573e",
+        "provenance": "sixplex-reference-generation.json",
+        "locked": false,
+        "next": "Historical rejected narrow front; superseded by locked front in source_manifest.",
+        "status": "superseded_by_widened_locked_front"
+      },
+      "source_manifest": "prework/sixplex_brick_walk_up.json",
+      "source_generation": "sixplex-locked-generation.json",
+      "current_candidate": "sixplex-brick-v003",
+      "local_review": {
+        "candidate": "sixplex-brick-v003",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "sixplex-brick-v003/review/independent-visual-review.json",
+        "review_sha256": "a08656afca79cf90eec1832196707bcc9978f58f2b705dcc9f42bbbc551e3ce9",
+        "glb_sha256": "e3f1614dc9409878b0b19e01a05cff848485241f6a04df6e0cc85b8339f42841",
+        "routes": 25,
+        "physical_samples": 1024,
+        "garden_probes": 4,
+        "mandatory_views": 42,
+        "browser_verified": true
+      }
+    },
+    {
+      "archetype_id": "neighborhood_branch_library",
+      "family": "Neighborhood Branch Library",
+      "variant_id": "library_neighborhood_pavilion",
+      "variant_index": 0,
+      "brief": {
+        "id": "library_neighborhood_pavilion",
+        "label": "Neighborhood Reading Pavilion",
+        "width": 32,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 4.2,
+        "primary": "warm brick",
+        "secondary": "glulam roof beams, timber soffit and clear glazing",
+        "roof": "one shallow asymmetrical pitched roof with a clerestory",
+        "roofMaterial": "standing-seam zinc",
+        "description": "A single-storey neighborhood branch library with a welcoming glazed reading room beneath one shallow pitched roof. Warm brick encloses the quieter book stacks and service rooms; timber beams and a narrow clerestory light the main hall. The entrance faces a small planted forecourt with benches and bicycle parking. Bookshelves and reading tables are visible through clear glass.",
+        "siteNote": "Pair with a walking route and a small public forecourt; keep the branch modest rather than a central-library landmark."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "library-pavilion-v001",
+          "state": "independent_rework_required",
+          "source_locked": true,
+          "planned_render_count": 26,
+          "log": "library-pavilion-v001.log",
+          "checks": {
+            "routes_passed": 13,
+            "routes_total": 14,
+            "furniture_passed": 20,
+            "garden_passed": 4,
+            "physical_reached_samples_passed": 1063
+          },
+          "blockers": [
+            "Children route hits front chairs",
+            "Taps and terminal support gaps",
+            "Gable brick coplanar with zinc roof",
+            "Dormer pendants end below removed roof support",
+            "Fridge/display obscure sidewindows",
+            "Clerestory interior camera hides glass"
+          ]
+        },
+        {
+          "candidate": "library-pavilion-v002",
+          "state": "public_approach_rework_required",
+          "source_locked": true,
+          "planned_render_count": 26,
+          "log": "library-pavilion-v002.log",
+          "repairs": [
+            "Offset children crossaisle",
+            "Connect taps,monitorstand and wallmounteditems",
+            "Lower brick top to roof lining underside",
+            "Extendpendants toactualdormercap",
+            "Movefridge/display tosolidwall",
+            "Camera behind clerestory front"
+          ],
+          "checks": {
+            "routes_passed": 14,
+            "furniture_passed": 20,
+            "garden_passed": 4,
+            "physical_samples_passed": 1177
+          },
+          "blockers": [
+            "Native route starts on raisedapron;10cmkerb atsiteboundary contradictsstepfreeprogramme."
+          ]
+        },
+        {
+          "candidate": "library-pavilion-v003",
+          "state": "site_contact_rework_required",
+          "source_locked": true,
+          "planned_render_count": 27,
+          "log": "library-pavilion-v003.log",
+          "repairs": [
+            "Realground-to-floor slope withmatchingnavtriangles androutefrompublicground",
+            "Additional close approach view"
+          ],
+          "checks": {
+            "routes_passed": 14,
+            "furniture_passed": 20,
+            "garden_passed": 4,
+            "physical_samples_passed": 1176
+          },
+          "blockers": [
+            "Lawn overlaps ramp left edge",
+            "Constant-thickness ramp has unsupported void beneath high end"
+          ]
+        },
+        {
+          "candidate": "library-pavilion-v004",
+          "state": "local_prototype_pass",
+          "source_locked": true,
+          "planned_render_count": 27,
+          "log": "library-pavilion-v004.log",
+          "final_repair_in_pass": true,
+          "repairs": [
+            "Trim right lawn clear of ramp",
+            "Solid ramp prism embedded in ground, same proven upper slope/nav"
+          ]
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\front-001.png",
+          "bytes": 3253508,
+          "sha256": "fcf5e708692ff8e02331247f5f33d66645afabe537c73d031aa27b22147cc942"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\front-002.png",
+          "bytes": 2962005,
+          "sha256": "22d99056c52a868f7799858a2a63928a8dba133698495f57347f91d73172d4d9"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\oblique-001.png",
+          "bytes": 3354508,
+          "sha256": "46cb9c62a9d23b0b2b7fa8db219287a5ec1e94fb6c8f4c47bec969454f7f730b"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\oblique-002.png",
+          "bytes": 3093698,
+          "sha256": "d87c2aa1163cb6bede3fd317e2376a3270a480112604d785347e19ef4023efc6"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\library_neighborhood_pavilion\\top-001.png",
+          "bytes": 2533597,
+          "sha256": "3ea1d4d4f8ac5c2e8caa4a36cdc12e9b4dbea92a04c6f74d560671f85c253edb"
+        }
+      ],
+      "source_next_action": "Source lock complete; original narrow/notched attempts preserved.",
+      "source_manifest": "prework/library_neighborhood_pavilion.json",
+      "source_generation": "library-locked-generation.json",
+      "source_review": "prework/library-source-review.json",
+      "current_candidate": "library-pavilion-v004",
+      "local_review": {
+        "candidate": "library-pavilion-v004",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "library-pavilion-v004/review/independent-visual-review.json",
+        "review_sha256": "6cd30d05cecfa51542e27cfcb31605c022c96d3a857130612054135946dce84d",
+        "glb_sha256": "b942086fe0569e99f97e5a3f2040d98495a9a7ffeb8782f0cd647412030aadfa",
+        "routes": 14,
+        "physical_samples": 1176,
+        "garden_probes": 4,
+        "mandatory_views": 27,
+        "browser_verified": true
+      }
+    },
+    {
+      "archetype_id": "community_association_hall",
+      "family": "Community Association Hall",
+      "variant_id": "hall_prairie_community_league",
+      "variant_index": 0,
+      "brief": {
+        "id": "hall_prairie_community_league",
+        "label": "Prairie Community Hall",
+        "width": 30,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 4.5,
+        "primary": "buff brick on a durable concrete base",
+        "secondary": "cedar entry canopy and dark metal windows",
+        "roof": "one broad low gable over the hall and a lower side service wing",
+        "roofMaterial": "grey standing-seam metal",
+        "description": "A practical single-storey Canadian community association hall with a broad gabled multipurpose room and a lower kitchen-and-meeting-room wing. A sheltered entrance faces a modest planted forecourt with benches and bicycles. Large hall windows open toward a side lawn suitable for neighborhood gatherings. The building is welcoming, inexpensive-looking and well maintained.",
+        "siteNote": "Reserve space for outdoor gatherings and a separate service door to the kitchen; parking can be shared with nearby uses."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "hall-prairie-v001",
+          "state": "visual_rework_required",
+          "log": "hall-v001-build.log",
+          "session_id": 7879,
+          "walking_routes_passed": 13,
+          "walking_routes_total": 15,
+          "physical_samples_passed": 972,
+          "glb_sha256": "deb4a727adabe80f18196b0fb437ff2dd9784a2be894fec975a159f030219fdc",
+          "blockers": [
+            "2 blocked outdoor routes",
+            "Unclosed stepped roof eaves and partition attic gap",
+            "Rear noticeboard covers window",
+            "Wing lamp/duct supports",
+            "Canopy crosses transom",
+            "Coplanar grass/sidewalk",
+            "Service camera obscured by open leaf"
+          ],
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\hall-prairie-v001\\review\\independent-visual-review.json",
+          "review_sha256": "1fdb6b5131caf33a9889bbfb7857ba6f79a77e4f3b82212490164f3726a9f0c7"
+        },
+        {
+          "candidate": "hall-prairie-v002",
+          "state": "visual_rework_required",
+          "session_id": 45372,
+          "log": "hall-v002-build.log",
+          "walking_routes_passed": 14,
+          "walking_routes_total": 15,
+          "physical_samples_passed": 1086,
+          "glb_sha256": "b7533a2c2c9b555b728fc93997e5215812384cc3162b1e320c06489eb1d17eb8",
+          "blockers": [
+            "Lawnbenchrouteendpoint .12m short under CLIclearance; browser reports.10m, doesnot override fail",
+            "Stepped roof cheek needs front/rear end returns"
+          ],
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\hall-prairie-v002\\review\\independent-visual-review.json",
+          "review_sha256": "5bb7b8c51fa2c381f5bdd86999a0d506a2c1fe9f86fd935d02d5c0690adf86ff"
+        },
+        {
+          "candidate": "hall-prairie-v003",
+          "state": "local_prototype_pass",
+          "session_id": 86524,
+          "log": "hall-v003-build.log",
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\hall-prairie-v003\\review\\independent-visual-review.json",
+          "review_sha256": "fd35001ca07739e631b53a97f1d5967f60f450064956d7ec1d3fcef1625ea7ae",
+          "walking_routes_passed": 15,
+          "walking_routes_total": 15,
+          "physical_samples_passed": 1088,
+          "glb_sha256": "cfa3ea6aaec31aabe579afafa17978a2d9674ff133cbf026f992bc5d41c9b824",
+          "mandatory_views": 26,
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2,
+          "browser_checks": "15routes withzeroerror;manualpublicgroundtohall;model switch;interior/exterior;hide/show;reload;no consoleerrors"
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_attempt": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\hall_prairie_community_league\\front-001.png",
+        "sha256": "7fa69e7ba1e4ec07c7237089759bca75c732782ba5b7e5c799dc34e6b9de5ca4",
+        "provenance": "hall-reference-generation.json",
+        "locked": false,
+        "next": "Front and oblique are broadly compatible: nearly flush lower hip-roof wing fits user brief. Reconcile top001 altered wing width/depth and junction before source lock; original shed/setback prompt details were design assumptions."
+      },
+      "oblique_attempt": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\hall_prairie_community_league\\oblique-001.png",
+        "sha256": "6647b8876e31131720b1b3183cef18d15658d950c0c23760a7a81e0c97ba78ac",
+        "provenance": "hall-oblique-generation.json",
+        "locked": false
+      },
+      "top_attempt": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\hall_prairie_community_league\\top-001.png",
+        "sha256": "ae35830ec96589b11be3b3b101bb3aefa1de8fd364e03d58aaa5a67aff295d51",
+        "provenance": "hall-top-generation.json",
+        "locked": false
+      },
+      "sources": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0.png",
+          "role": "front",
+          "bytes": 2771603,
+          "sha256": "7fa69e7ba1e4ec07c7237089759bca75c732782ba5b7e5c799dc34e6b9de5ca4"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0_oblique.png",
+          "role": "oblique",
+          "bytes": 3047096,
+          "sha256": "6647b8876e31131720b1b3183cef18d15658d950c0c23760a7a81e0c97ba78ac"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0_roof-study.png",
+          "role": "topology",
+          "bytes": 2703371,
+          "sha256": "e988df8771437a22073888775dc97c803d8d00eacfe4fada8c7c66aaa70ecedd"
+        }
+      ],
+      "source_review": "prework/hall-source-review.json",
+      "source_attempts_preserved": "source-attempts/hall_prairie_community_league",
+      "current_candidate": "hall-prairie-v003",
+      "source_next_action": "Source lock complete; incompatible tops retained.",
+      "source_generation": "hall-locked-generation.json",
+      "source_manifest": "prework/hall_prairie_community_league.json",
+      "local_review": {
+        "candidate": "hall-prairie-v003",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "hall-prairie-v003/review/independent-visual-review.json",
+        "review_sha256": "fd35001ca07739e631b53a97f1d5967f60f450064956d7ec1d3fcef1625ea7ae",
+        "glb_sha256": "cfa3ea6aaec31aabe579afafa17978a2d9674ff133cbf026f992bc5d41c9b824",
+        "routes": 15,
+        "physical_samples": 1088,
+        "garden_probes": 4,
+        "mandatory_views": 26,
+        "browser_verified": true
+      }
+    },
+    {
+      "archetype_id": "neighborhood_elementary_school",
+      "family": "Neighborhood Elementary School",
+      "variant_id": "school_shared_community_campus",
+      "variant_index": 1,
+      "brief": {
+        "id": "school_shared_community_campus",
+        "label": "Shared Community Campus",
+        "width": 64,
+        "depth": 42,
+        "floors": 2,
+        "floorHeight": 3.8,
+        "primary": "buff brick",
+        "secondary": "blue-grey fibre cement and exposed timber canopy",
+        "roof": "flat roofs over classroom bars and a slightly taller gym volume",
+        "roofMaterial": "membrane with a bounded solar panel array",
+        "description": "A two-storey Canadian suburban elementary school with two classroom wings and a central entrance commons. A gym wing has its own visible after-hours door for community use. Covered bicycle parking and a broad walking path lead to the entrance; grass playing fields extend behind the school. Vehicle access stays at the side, separated from the pedestrian forecourt.",
+        "siteNote": "Reserve shared playing fields outside the building polygon; model drop-off and service access separately."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "school-campus-v001",
+          "state": "build_failed",
+          "reason": "Grounding assertion: slab bottoms extended to z=-0.04m. No GLB or renders exported. Preserved source snapshot and log.",
+          "log": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v001-build.log"
+        },
+        {
+          "candidate": "school-campus-v002",
+          "state": "visual_rework_required",
+          "glb_sha256": "90db9d474453d5952cdcfd2bd88ece19969df787bd7edab21ee2897dbb9f5ae8",
+          "renders": 38,
+          "native_routes_passed": 23,
+          "native_routes_total": 25,
+          "physical_samples_checked": 3114,
+          "physical_failures": 0,
+          "reason": "Two teaching-board doorway obstructions; staff window lining carrier failures; paving support; forecourt tree missing collision; reverse classroom/resource evidence missing. Independent review record pending.",
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v002\\review\\independent-visual-review.json",
+          "review_sha256": "489e2b95d31cde419d3266e3054f6465e785c3122d5030dce4299ea4dd880a67"
+        },
+        {
+          "candidate": "school-campus-v003",
+          "state": "visual_rework_required",
+          "glb_sha256": "852c79ae7e35d6d75ba339fcba2d7dfcefe115dbe5894e440ed055c58b430b95",
+          "renders": 42,
+          "native_routes_passed": 25,
+          "native_routes_total": 25,
+          "physical_samples_checked": 3225,
+          "physical_failures": 0,
+          "carrier_apertures": "pass",
+          "furniture_probes": 20,
+          "garden_probes": 5,
+          "reason": "Reverse teaching view reveals flat open leaf intersecting board; small canopy hanger end gaps. Independent review being finalized.",
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v003\\review\\independent-visual-review.json",
+          "review_sha256": "a418d4a9c46bed6a79db05a7bc198959a33619f147326b034d4fedc0566c43bd"
+        },
+        {
+          "candidate": "school-campus-v004",
+          "state": "visual_rework_required",
+          "glb_sha256": "8206c6474e046c23f4774ff47279efd00e711eac5be96fb468d136c4447d3172",
+          "renders": 42,
+          "native_routes_passed": 25,
+          "native_routes_total": 25,
+          "physical_samples_checked": 3225,
+          "physical_failures": 0,
+          "carrier_apertures": "pass",
+          "furniture_probes": 20,
+          "garden_probes": 5,
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-campus-v004\\review\\independent-visual-review.json",
+          "review_sha256": "6f59b5b4e21754c174d6015189acdf6876bc3b01229bcdd25cdc80bb987e55f4",
+          "local_p0": 0,
+          "local_p1": 2,
+          "reason": "Missing half-landing side guards and teaching boards buried inside reversed rear-wall carriers. Last repair in this pass; not counted complete."
+        },
+        {
+          "candidate": "school-campus-v005",
+          "state": "local_prototype_pass",
+          "log": "school-campus-v005-build.log",
+          "pass_number": 2,
+          "native_routes_passed": 25,
+          "native_routes_total": 25,
+          "physical_samples_checked": 3225,
+          "physical_failures": 0,
+          "furniture_probes": 20,
+          "garden_probes": 5,
+          "circulation_guard_probes": 2,
+          "glb_sha256": "7746db3ce144518ecb50ddb35e72cc7124f25e97df45422114c6166d4b1795ef",
+          "renders": 44,
+          "carrier_apertures": "pass",
+          "max_roundtrip_delta_m": 0.0,
+          "independent_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/school-campus-v005/review/independent-visual-review.json",
+          "review_sha256": "979f85b434ec889152b3e917422956f9d7260cbcbe020cba7d9eae15ccd2376e",
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2,
+          "browser_verified": true,
+          "browser_screenshots": 9
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\school_shared_community_campus\\front-001.png",
+          "bytes": 2152364,
+          "sha256": "2edf6ea01541b64e4967ef87190b25bc385926e4c1e4f941cb103aeec2e86e91"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\school_shared_community_campus\\oblique-001.png",
+          "bytes": 2659020,
+          "sha256": "415fd0ee375e4feafc9b01ec6d096bfa2d7eec63c3d1483d707924fd61729100"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\school_shared_community_campus\\top-001.png",
+          "bytes": 2607434,
+          "sha256": "7294ff1af40c2afb9b3b4b987931447b1eb21f131794684fc42fe17712700e1c"
+        }
+      ],
+      "prework": "tools/neighborhood_expansion/school-campus-prework.json",
+      "source_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\school-campus-source-review.json",
+        "sha256": "94d401cd64184847e079fd054ee817c160ef1cec6b5dfa8ce8f5101296f28dcb",
+        "scope": "Source category only; not geometry or keeper approval"
+      },
+      "generation_provenance": "school-campus-locked-generation.json",
+      "current_candidate": "school-campus-v005",
+      "local_review": {
+        "candidate": "school-campus-v005",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "school-campus-v005/review/independent-visual-review.json",
+        "review_sha256": "979f85b434ec889152b3e917422956f9d7260cbcbe020cba7d9eae15ccd2376e",
+        "glb_sha256": "7746db3ce144518ecb50ddb35e72cc7124f25e97df45422114c6166d4b1795ef",
+        "routes": 25,
+        "physical_samples": 3225,
+        "garden_probes": 5,
+        "circulation_guard_probes": 2,
+        "mandatory_views": 44,
+        "browser_verified": true
+      },
+      "next_pass_plan": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\school-campus-next-pass.md",
+      "bounded_repair_pass": {
+        "pass_number": 2,
+        "start_version": "v005",
+        "max_repair_versions": 3,
+        "trigger": "Childcare courtyard v003 independently locally complete; concrete deferred two-fix plan"
+      },
+      "code_preflight": "prework/school-campus-v005-code-preflight.json"
+    },
+    {
+      "archetype_id": "neighborhood_childcare_centre",
+      "family": "Childcare / Early-Learning Centre",
+      "variant_id": "childcare_sheltered_courtyard",
+      "variant_index": 1,
+      "brief": {
+        "id": "childcare_sheltered_courtyard",
+        "label": "Sheltered Play Courtyard",
+        "width": 30,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 3.6,
+        "primary": "terracotta brick",
+        "secondary": "warm timber porch structure and cream window reveals",
+        "roof": "low mono-pitch roofs enclosing three sides of a play court",
+        "roofMaterial": "dark grey standing seam",
+        "description": "A single-storey U-shaped childcare centre with three classroom wings around a secure garden courtyard. A low front gate and sheltered entrance reveal the courtyard without exposing it directly to traffic. Deep timber verandas provide shade and rain shelter; classroom doors open directly to the enclosed play area. Keep the scale domestic and the landscape low enough for supervision.",
+        "siteNote": "Outer dimensions include the courtyard envelope; the courtyard itself must remain open."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "childcare-courtyard-v001",
+          "state": "visual_rework_required",
+          "build": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v001\\build-report.json",
+            "sha256": "b4190df1ed4ab3abe3fa3d2d037bf8faa87a43d2781ec5f1dea347aea5c97a74"
+          },
+          "glb_sha256": "4b4bd9f1b0334ce6459be33b5da433e77d30e95a377019c32f82091f5b14b407",
+          "walking": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v001\\evidence\\walking-solver-review.json",
+            "sha256": "39067802703035677011826954c0c459c5f163409742461dd17408633ddba7ed"
+          },
+          "routes_passed": 14,
+          "routes_total": 22,
+          "garden": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v001\\evidence\\garden-collision-review.json",
+            "sha256": "6e7fadb038dca133402d6ffc292e4949f93f00facb496f755beb78e8c66c1840"
+          },
+          "physical": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v001\\evidence\\physical-walking-review.json",
+            "sha256": "f8c84ff9554f7b4c317d43630f19fa0d7a8608bf2892f9e17874a19dfcea929d"
+          },
+          "independent_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/childcare-courtyard-v001/review/independent-visual-review.json",
+          "review_sha256": "77546d0f0c16202b9f64ecd72cc4753521060c760a2ba531f3070617620b27ef",
+          "local_p0": 0,
+          "local_p1": 7,
+          "keeper_p1": 0
+        },
+        {
+          "candidate": "childcare-courtyard-v002",
+          "state": "visual_rework_required",
+          "build": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v002\\build-report.json",
+            "sha256": "669a95a1b23d6fd02d22dc7cffc901fbabe3c6077ae48d32651cae7a055e361c"
+          },
+          "glb_sha256": "122edd60a33831596d03c65e9946906c6310823b521018afd322a3e5dc96794f",
+          "walking": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v002\\evidence\\walking-solver-review.json",
+            "sha256": "adc307415642e948b131d47e9b8da884b44759d711d001a97027a852102750a5"
+          },
+          "routes_passed": 21,
+          "routes_total": 22,
+          "garden": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v002\\evidence\\garden-collision-review.json",
+            "sha256": "6e7fadb038dca133402d6ffc292e4949f93f00facb496f755beb78e8c66c1840"
+          },
+          "physical": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v002\\evidence\\physical-walking-review.json",
+            "sha256": "bb21f4f01c3a400be587e031543af3c5d0d513ed05290e9569fccc9b0230edab"
+          },
+          "independent_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/childcare-courtyard-v002/review/independent-visual-review.json",
+          "review_sha256": "bd62ade236ea7f0e09b9dcb5a3bbae5f7b98ede7a2aca2392cf01a78d6f69cfc",
+          "local_p0": 0,
+          "local_p1": 3,
+          "keeper_p1": 2
+        },
+        {
+          "candidate": "childcare-courtyard-v003",
+          "state": "local_prototype_pass",
+          "build": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v003\\build-report.json",
+            "sha256": "7095f399c6d89891ab96f1f39d90b04fbccda93d2cc5949a4849395007817549"
+          },
+          "glb_sha256": "91b265f8cfd9d1bd9e229e01d4bbfdc1a8ca042afea2732fc3d16023183f660f",
+          "walking": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v003\\evidence\\walking-solver-review.json",
+            "sha256": "bbcfa5a3352088e969dc40049acc127b19d24451d99f10fea85dc886134a42d7"
+          },
+          "routes_passed": 22,
+          "routes_total": 22,
+          "garden": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v003\\evidence\\garden-collision-review.json",
+            "sha256": "6e7fadb038dca133402d6ffc292e4949f93f00facb496f755beb78e8c66c1840"
+          },
+          "physical": {
+            "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-v003\\evidence\\physical-walking-review.json",
+            "sha256": "dad99e5d19c1893089054d41167d0726ba95f60710eafe7b764b56fac0532333"
+          },
+          "independent_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/childcare-courtyard-v003/review/independent-visual-review.json",
+          "review_sha256": "f20ead8a4f58f2fbc6dc7e930cd68893ed045832267da7fb14c77da907c7b725",
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\childcare_sheltered_courtyard\\front-001.png",
+          "bytes": 3268013,
+          "sha256": "de9b3cd2e564ed8f3933948262307b5bc3c2dd2fe8cd03c501823b101750b8b3"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\childcare_sheltered_courtyard\\oblique-001.png",
+          "bytes": 3379664,
+          "sha256": "ca96f1232f20b3f5fa0d81da08bdbedc46916aaa2090266a4ee4a9bbb7723f62"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\childcare_sheltered_courtyard\\oblique-002.png",
+          "bytes": 3568230,
+          "sha256": "e6541d58262992fc9ae3b1aa5d70d0cdfeade9d7fe496ece3d8a6ab74c42cb7e"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\source-attempts\\childcare_sheltered_courtyard\\top-001.png",
+          "bytes": 3070435,
+          "sha256": "8fa9386b09497961bb89abf188d088e4112c0052b7a7f38461acac865cdd4dd1"
+        }
+      ],
+      "generation_records": [
+        "childcare-courtyard-front-generation.json",
+        "childcare-courtyard-oblique-generation.json",
+        "childcare-courtyard-top-generation.json",
+        "childcare-courtyard-oblique-repair-generation.json",
+        "childcare-courtyard-material-generation.json"
+      ],
+      "source_note": "Front001, corrected oblique002 and top001 independently compatible and locked. Oblique001 and initial rejection preserved. Source categories only; no geometry, material or keeper approval.",
+      "source_lock": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\childcare-courtyard-source-lock.json",
+      "source_lock_sha256": "375c1cbad1d3b416919ada6eaaeb3110b2bf2c939fc1eff8a9d470235847b3db",
+      "source_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\childcare-courtyard-source-review-v2.json",
+        "sha256": "6a5143270967522d304055a97772ffbd02e4d0b938a4da683dc09403d9b0c799",
+        "decision": "category_closure_only",
+        "scope": "Source compatibility and roof graph only. Direct full-pixel comparison of front-001, repaired oblique-002 and top-001, with brief and generation provenance. No model, material, optical, circulation or keeper approval."
+      },
+      "prework": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\childcare-courtyard-prework.json",
+      "material_record": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\childcare-courtyard-material-generation.json",
+      "current_candidate": "childcare-courtyard-v003",
+      "local_review": {
+        "candidate": "childcare-courtyard-v003",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "childcare-courtyard-v003/review/independent-visual-review.json",
+        "review_sha256": "f20ead8a4f58f2fbc6dc7e930cd68893ed045832267da7fb14c77da907c7b725",
+        "glb_sha256": "91b265f8cfd9d1bd9e229e01d4bbfdc1a8ca042afea2732fc3d16023183f660f",
+        "routes": 22,
+        "physical_samples": 1018,
+        "garden_probes": 7,
+        "mandatory_views": 41,
+        "browser_verified": true
+      }
+    },
+    {
+      "archetype_id": "neighborhood_sixplex",
+      "family": "Neighborhood Sixplex",
+      "variant_id": "sixplex_two_storey_garden",
+      "variant_index": 1,
+      "brief": {
+        "id": "sixplex_two_storey_garden",
+        "label": "Two-Storey Garden Sixplex",
+        "width": 25,
+        "depth": 15,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "buff brick",
+        "secondary": "cedar screens and cream balcony soffits",
+        "roof": "three linked shallow gable roofs",
+        "roofMaterial": "muted grey standing seam",
+        "description": "A wider two-storey sixplex with exactly three flats per floor. Three paired entrance bays each serve a lower and upper apartment. Upper-floor recessed balconies overlook a small shared front garden, with more generous common landscape behind. The three gables and three repeated apartment bays explain the wider footprint while keeping a quiet residential street edge.",
+        "siteNote": "Compare its larger footprint with the three-storey sixplex while holding the total at six homes."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "sixplex-garden-v001",
+          "state": "visual_rework_required",
+          "started_utc": "2026-10-03T16:13:22.445535-06:00",
+          "keeper_approved": false,
+          "catalogue_activated": false,
+          "glb_sha256": "3102c2ab403a1690e42af35275a5cec9d45df9b22513806d66e8e39ae684018d",
+          "required_renders": 61,
+          "renders_completed": 61,
+          "native_routes_passed": 35,
+          "native_routes_total": 41,
+          "physical_samples": 1561,
+          "physical_failures": 2,
+          "stair_boundary_probes_passed": 102,
+          "independent_review": "sixplex-garden-v001/review/independent-visual-review.json",
+          "independent_review_sha256": "ab8157abd3928b25ad63a47370cbf424a075e73a237773789ed8ed34a1038a6f",
+          "local_p0": 0,
+          "local_p1": 3,
+          "keeper_p1": 2
+        },
+        {
+          "candidate": "sixplex-garden-v002",
+          "state": "local_prototype_pass",
+          "started_utc": "2026-10-03T16:25:01.57579-06:00",
+          "keeper_approved": false,
+          "catalogue_activated": false,
+          "glb_sha256": "31499e365aa764aa5cc3b0e0cec47b7fa89439e6648a3c97bf17b5586b0221d7",
+          "required_renders": 61,
+          "renders_completed": 61,
+          "native_routes_passed": 41,
+          "native_routes_total": 41,
+          "physical_samples": 1626,
+          "physical_failures": 0,
+          "stair_boundary_probes_passed": 102,
+          "independent_review": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\sixplex-garden-v002\\review\\independent-visual-review.json",
+          "review_sha256": "3c2c9fc495aba9bf7e81f2eb7ea31235ae997a2fa9b26759d83942de4167f1b2",
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2,
+          "browser_verified": true,
+          "browser_screenshots": 13,
+          "carrier_apertures": "pass",
+          "max_roundtrip_delta_m": 0
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_lock": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\sixplex-garden-source-lock.json",
+      "source_lock_sha256": "9f8da578542638c6c987e0667b3084d7dcede8fc7e8284dbafc7b8804540315f",
+      "source_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\sixplex-garden-source-review.json",
+        "sha256": "5d3abdd14b98e4a7b2fa6d556459810b5a3ee6801345e459433272d01b0a5e7d",
+        "scope": "Source compatibility only: direct full-resolution front001, oblique001 and top001 pixels; generation provenance and progress brief. No geometry, material, model, walking, keeper or catalogue assessment."
+      },
+      "source_attempts": [
+        {
+          "path": "source-attempts/sixplex_two_storey_garden/front-001.png",
+          "full_pixels_inspected": true,
+          "bytes": 2886468,
+          "sha256": "def791f606d4ac4914d294610d9fbe60b42abacfa297e563d1b0a28d88affffd"
+        },
+        {
+          "path": "source-attempts/sixplex_two_storey_garden/oblique-001.png",
+          "full_pixels_inspected": true,
+          "bytes": 3420771,
+          "sha256": "dfb250d2ecd9f851fc19615cffdf32c6656c86a3853282ab1766a7f77d8ede88"
+        },
+        {
+          "path": "source-attempts/sixplex_two_storey_garden/top-001.png",
+          "full_pixels_inspected": true,
+          "bytes": 3578634,
+          "sha256": "846c0b1c1b072cefe3d3ff15cf3ad88a8beff46cc70e3614ee75e82c3a8fc5f6"
+        }
+      ],
+      "generation_records": [
+        "sixplex-garden-front-generation.json",
+        "sixplex-garden-oblique-generation.json",
+        "sixplex-garden-top-generation.json"
+      ],
+      "source_note": "Compatible front001/oblique001/top001 locked. Use actual transverse main roof and three short front cross-gables terminating below main ridge. Initial parallel-roof prompt assumption is rejected. Source approval only.",
+      "measurement_draft": "prework/sixplex-garden-measurement-draft.json",
+      "material_record": "sixplex-garden-material-v003-generation.json",
+      "material_note": "V003 independently source-compatible prototype masonry:4brick lengths x12even courses mapped.96x.90m. Original/v002 odd27courses preserved. Boundary/edge shading/repetition keeper limits remain; no geometry.",
+      "material_record_sha256": "1cbdba8a9afd5333b5411de8c6165dd8691319b34f80ec3bf6d18c8334cb07a1",
+      "measurement_draft_sha256": "e9ca836d02e4780810112dcfe4bc96389e892f6f2633f349f23608bd496534b7",
+      "material_lock": "prework/sixplex-garden-material-lock.json",
+      "material_lock_sha256": "f15dfe8ff3c08a1a00c9ceb645e5ad8d0b4b93d8699b0d03220f796a7fcfbd6b",
+      "build_generation": "sixplex-garden-build-v3-generation.json",
+      "material_attempts": [
+        {
+          "specimen": "materials/sixplex-garden-buff-brick.png",
+          "state": "prototype_compatible_with_odd_course_defect",
+          "review": "prework/sixplex-garden-material-review.json"
+        },
+        {
+          "specimen": "materials/sixplex-garden-buff-brick-v002.png",
+          "state": "failed_repeat_repair",
+          "review": "prework/sixplex-garden-material-review-v3.json"
+        },
+        {
+          "specimen": "materials/sixplex-garden-buff-brick-v003.png",
+          "state": "prototype_material_category_locked",
+          "review": "prework/sixplex-garden-material-review-v3.json",
+          "sha256": "cf14c5d3defe6f7b4fc3859eeff381dc2e49fb7bc3b6943a760b501c96404b68"
+        }
+      ],
+      "prework": {
+        "path": "prework/sixplex-garden-prework.json",
+        "sha256": "7a55ccc6d6ff8461c9174045980b54433435e1a97de8da961ac25dae8cbd9f65",
+        "camera_count": 61,
+        "planned_native_routes": 41,
+        "dry_run": "PASS:3sources,61cameras,no geometry"
+      },
+      "builder": {
+        "path": "tools/neighborhood_expansion/build_garden_sixplex.py",
+        "sha256": "309fc19e727c8697ae1ea0c7a6b0705e782f6255ce349b5ba57915f8251beb67"
+      },
+      "independent_builder_preflight": {
+        "path": "prework/sixplex-garden-builder-preflight.json",
+        "sha256": "618835101b17a125d6198b074aa0799c47780f2e845085d76fc6a7c17d3a4116",
+        "scope": "Source/code-plan only; no model approval"
+      },
+      "current_candidate": "sixplex-garden-v002",
+      "local_review": {
+        "candidate": "sixplex-garden-v002",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "sixplex-garden-v002/review/independent-visual-review.json",
+        "review_sha256": "3c2c9fc495aba9bf7e81f2eb7ea31235ae997a2fa9b26759d83942de4167f1b2",
+        "glb_sha256": "31499e365aa764aa5cc3b0e0cec47b7fa89439e6648a3c97bf17b5586b0221d7",
+        "routes": 41,
+        "physical_samples": 1626,
+        "stair_boundary_probes": 102,
+        "garden_probes": 6,
+        "circulation_guard_probes": 3,
+        "mandatory_views": 61,
+        "browser_verified": true
+      }
+    },
+    {
+      "archetype_id": "community_association_hall",
+      "family": "Community Association Hall",
+      "variant_id": "hall_timber_park_edge",
+      "variant_index": 1,
+      "brief": {
+        "id": "hall_timber_park_edge",
+        "label": "Timber Hall at the Park",
+        "width": 32,
+        "depth": 22,
+        "floors": 1,
+        "floorHeight": 4.8,
+        "primary": "natural timber cladding with a brick plinth",
+        "secondary": "exposed glulam portal frames and clear glazing",
+        "roof": "one simple pitched roof with a deep park-facing veranda",
+        "roofMaterial": "dark grey standing seam",
+        "description": "A single-storey timber community hall beside a neighborhood park. Repeated glulam frames support a simple pitched roof and a deep veranda facing the grass. A glazed multipurpose room shares a sheltered entry with smaller meeting rooms and a community kitchen. Movable tables are visible inside; low native planting and bicycle parking connect to the public path.",
+        "siteNote": "Keep the park a separate open-space use; the veranda provides a clear threshold between indoor activities and outdoor gathering."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "hall-park-v001",
+          "state": "independent_local_hold",
+          "expected_renders": 38,
+          "expected_routes": 23,
+          "keeper_approved": false,
+          "glb_sha256": "5b54804a3b70efba061c342cf287e5a40be95f910732fee162b09cf4d2660850",
+          "renders": 38,
+          "boards": 3,
+          "native_routes_passed": 23,
+          "physical_samples": 1556,
+          "physical_aperture_rays": 462,
+          "physical_aperture_failed_openings": 2,
+          "independent_review_sha256": "3c9ab1b6b4a2313b3c5a593273d55bc72b1e364a3c1bfd4e6933572d18da8248",
+          "local_p1_groups": 2,
+          "browser": "partial: exterior, routes and artwork; full controls untested",
+          "counted_complete": false
+        },
+        {
+          "candidate": "hall-park-v002",
+          "state": "local_prototype_pass",
+          "expected_renders": 38,
+          "expected_routes": 23,
+          "keeper_approved": false,
+          "counted_complete": true,
+          "glb_sha256": "e837b35d3c451d15ae3710fcb0e5e5f0c5b4cb0ea9725953b20ce59bd5c5d153",
+          "renders_completed": 38,
+          "boards": 3,
+          "native_routes_passed": 23,
+          "native_routes_total": 23,
+          "physical_samples": 1544,
+          "physical_aperture_rays": 462,
+          "physical_aperture_failed_openings": 0,
+          "browser_verified": true,
+          "browser_screenshots": 13,
+          "independent_review": "hall-park-v002/review/independent-visual-review.json",
+          "review_sha256": "829d6337a0d4c84b47c04ed3bf11673e24d5ab004957c738d7161c1257037079",
+          "local_p0": 0,
+          "local_p1": 0,
+          "keeper_p1": 2
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "view": "front-001",
+          "path": "source-attempts/hall_timber_park_edge/front-001.png",
+          "generation": "hall-park-front-generation.json",
+          "state": "locked_source_compatible"
+        },
+        {
+          "view": "oblique-001",
+          "path": "source-attempts/hall_timber_park_edge/oblique-001.png",
+          "generation": "hall-park-oblique-generation.json",
+          "state": "locked_source_compatible"
+        },
+        {
+          "view": "top-001",
+          "path": "source-attempts/hall_timber_park_edge/top-001.png",
+          "generation": "hall-park-top001-generation.json",
+          "state": "builder_hold_apparent_extra_rear_bar_weak_projection"
+        },
+        {
+          "view": "top-002",
+          "path": "source-attempts/hall_timber_park_edge/top-002.png",
+          "generation": "hall-park-top002-generation.json",
+          "state": "locked_topology_only"
+        }
+      ],
+      "source_lock": {
+        "path": "prework/hall-park-source-lock.json",
+        "sha256": "3043aba746ff77d64eb011bf3115f417b2ade6c2ab968db1c148c23da57c96d2"
+      },
+      "sources": [
+        {
+          "role": "front",
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1.png",
+          "bytes": 2791843,
+          "sha256": "6625e74a7cfe40790cb52742dd6f55c0c4bc449c8b60713429d2a8105ac21953",
+          "source_attempt": "source-attempts\\hall_timber_park_edge\\front-001.png",
+          "authority": "Primary design identity and frontage cadence. One occupied floor; long glazed park-facing frontage; six outer veranda columns on brick pedestals with knee braces; recessed glazing-line supports; main public double entry toward the left and secondary glazed exit toward the right; cedar ends and low planting/bicycle approach. Trace the projected individual members rather than inferring an evenly spaced seven-post row."
+        },
+        {
+          "role": "oblique",
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1_oblique.png",
+          "bytes": 2800553,
+          "sha256": "201c869868dfd99e2df7e209ffaaefc54d2a0d7a81840141a9978fc0276371a2",
+          "source_attempt": "source-attempts\\hall_timber_park_edge\\oblique-001.png",
+          "authority": "Corroborates the continuous front veranda, exposed right gable, right-end three narrow windows, timber framing/brick pedestal relationships and front-to-back roof arrangement. The front view remains primary for facade placement."
+        },
+        {
+          "role": "topology",
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1_roof-study.png",
+          "bytes": 3148972,
+          "sha256": "d11dc3c03947bbc83dd9f6eca7445e61ea63b8aa9f64145dcdb6d2b5cd00a5bf",
+          "source_attempt": "source-attempts\\hall_timber_park_edge\\top-002.png",
+          "authority": "Topology corroboration only: one rectangular common roof with two pitched planes meeting one continuous long ridge parallel to the front, extending forward over the veranda. No extra rear bar, roofbox, dormer or valley. Still elevated oblique rather than requested near-nadir; not metric footprint, bay spacing or hidden rear-fenestration authority."
+        }
+      ],
+      "material_attempt": {
+        "path": "materials/hall-park-cedar-v002.png",
+        "state": "prototype_material_category_locked_with_boundary_hold",
+        "generation": "hall-park-cedar-v002-generation.json",
+        "review": "prework/hall-park-material-review-v2.json"
+      },
+      "material_attempts": [
+        {
+          "path": "materials/hall-park-cedar-v001.png",
+          "state": "category_compatible_boundary_hold",
+          "generation": "hall-park-cedar-v001-generation.json",
+          "review": "prework/hall-park-material-review.json"
+        },
+        {
+          "path": "materials/hall-park-cedar-v002.png",
+          "state": "prototype_material_category_locked_with_boundary_hold",
+          "generation": "hall-park-cedar-v002-generation.json",
+          "review": "prework/hall-park-material-review-v2.json"
+        }
+      ],
+      "material_lock": {
+        "path": "prework/hall-park-material-lock.json",
+        "bytes": 3659,
+        "sha256": "5e99cda9f9a81f1c3d5e89c8117b11f059279656cbbbdf6f033c545530a048f7"
+      },
+      "build_generation": {
+        "path": "hall-park-build-v2-generation.json",
+        "bytes": 1721,
+        "sha256": "3298f9b5f9f51357de6cac61e3c26bf474f8f476fdcfbacb4be3b9a4dc6e751a"
+      },
+      "current_candidate": "hall-park-v002",
+      "job": {
+        "candidate": "hall-park-v002",
+        "pid": 9016,
+        "state": "finished_local_prototype_pass",
+        "started_utc": "2026-10-03T23:41:01.5802658Z",
+        "stdout": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/hall-park-v002.stdout.log",
+        "stderr": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/hall-park-v002.stderr.log",
+        "expected_renders": 38,
+        "expected_routes": 23,
+        "counted_complete": false
+      },
+      "prework": {
+        "path": "prework/hall-park-prework.json",
+        "sha256": "81f651e52ffd3b29eccbd6135bd7c30ce64e82471a8283c7e9f42130969719ee"
+      },
+      "prebuild_review": {
+        "path": "prework/hall-park-builder-preflight-v4.json",
+        "sha256": "3088eb0bd27dd92823453e28c557bb1454429b28b116a23457e52ff8000b62bb"
+      },
+      "unskinned_diagnostic": {
+        "path": "prework/hall-park-unskinned-v003",
+        "scope": "Construction/native preflight only, no delivery approval",
+        "routes_passed": 23,
+        "native_samples": 4667,
+        "furniture_probes": 20,
+        "garden_probes": 4,
+        "cedar_board_segments": 1031,
+        "raw_texture_wrap": false,
+        "cameras": 38,
+        "preserved_attempts": [
+          "prework/hall-park-unskinned-v001",
+          "prework/hall-park-unskinned-v002"
+        ]
+      },
+      "repair_preflight": {
+        "path": "prework/hall-park-repair-v002-preflight.json",
+        "sha256": "b67fd575faa0a83cdff8d03551ba661b89dd67836b4da1545f657989e940de7c",
+        "scope": "Code-only coherent repair; model review pending"
+      },
+      "local_review": {
+        "candidate": "hall-park-v002",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "hall-park-v002/review/independent-visual-review.json",
+        "review_sha256": "829d6337a0d4c84b47c04ed3bf11673e24d5ab004957c738d7161c1257037079",
+        "glb_sha256": "e837b35d3c451d15ae3710fcb0e5e5f0c5b4cb0ea9725953b20ce59bd5c5d153",
+        "routes": 23,
+        "physical_samples": 1544,
+        "aperture_rays": 462,
+        "garden_probes": 4,
+        "mandatory_views": 38,
+        "browser_verified": true
+      }
+    },
+    {
+      "archetype_id": "neighborhood_elementary_school",
+      "family": "Neighborhood Elementary School",
+      "variant_id": "school_timber_learning_courtyard",
+      "variant_index": 2,
+      "brief": {
+        "id": "school_timber_learning_courtyard",
+        "label": "Timber Learning Courtyard",
+        "width": 52,
+        "depth": 40,
+        "floors": 2,
+        "floorHeight": 3.8,
+        "primary": "vertical cedar cladding on a durable brick base",
+        "secondary": "exposed glulam porch posts and deep window shades",
+        "roof": "three shallow standing-seam gables around an open rear learning court",
+        "roofMaterial": "muted zinc standing seam",
+        "description": "A two-storey U-shaped elementary school framing a sheltered rear outdoor classroom. Modest timber classroom wings have generous windows, projecting sunshades and covered ground-floor walks. The street elevation has a clear central entrance, low planting and a roofed bike shelter. The architecture feels durable, warm and attainable rather than monumental.",
+        "siteNote": "Keep the learning courtyard unbuilt and connect it to a larger play area; footprint dimensions describe the outer envelope."
+      },
+      "state": "local_prototype_pass",
+      "attempts": [
+        {
+          "candidate": "school-timber-v001",
+          "state": "local_prototype_pass",
+          "source_locked": true,
+          "planned_render_count": 71,
+          "resolution": 1280,
+          "log": "school-timber-v001.log",
+          "requires": "Fresh full-skinned native/physical71pixels/3boards/validator/browser and independent holistic local review",
+          "glb_sha256": "538e8115f2069a8e177c79487d009fca933462ae7ab6c19972fd28c316a3fa79",
+          "mandatory_views": 71,
+          "native_routes": 45,
+          "physical_samples": 13450,
+          "browser_verified": true,
+          "keeper_approved": false
+        }
+      ],
+      "keeper_approved": false,
+      "catalogue_activated": false,
+      "source_attempts": [
+        {
+          "role": "front",
+          "path": "source-attempts/school_timber_learning_courtyard/front-001.png",
+          "bytes": 2813460,
+          "sha256": "8761c896efdae84efd76b365f133909053ddcc592120cab0e6ba5345030c2de1",
+          "full_pixels_inspected": true
+        },
+        {
+          "role": "oblique",
+          "path": "source-attempts/school_timber_learning_courtyard/oblique-001.png",
+          "bytes": 3332090,
+          "sha256": "f9a1c8ff9f26ed53e4a1e53878e793f85bfd3c91b46c32e738db41a325bbb231",
+          "full_pixels_inspected": true
+        },
+        {
+          "role": "topology",
+          "path": "source-attempts/school_timber_learning_courtyard/top-001.png",
+          "bytes": 3621958,
+          "sha256": "16a4faab41229b0058895645b7840bd120b21b3b12e4482aae6c3b2a9b14211f",
+          "full_pixels_inspected": true
+        }
+      ],
+      "generation_records": [
+        {
+          "path": "school-timber-front-generation.json",
+          "sha256": "98a3299910cff2d5214439af4a8b763348cc402926b6eca6d5914f52ff399e93"
+        },
+        {
+          "path": "school-timber-oblique-generation.json",
+          "sha256": "582f6a7fa8ec65c4dd40532397c789687541d437bcb463e303a63bff6cba9df1"
+        },
+        {
+          "path": "school-timber-top-generation.json",
+          "sha256": "39d9236bc179d4b6501359cfa8dbc16254c6ff1d74c024614b303589001c6c83"
+        }
+      ],
+      "source_note": "Three exact sources independently compatible with explicit roles. Canonical neighborhood-school variant_2 images locked; front/oblique identity, top graph only. Full brick ground storey/cedar above governs source fidelity. No model or material approval.",
+      "source_lock": {
+        "path": "prework/school-timber-source-lock.json",
+        "sha256": "e2670f9b5a253a311daf6670debe39cbe05fa8877f18a524f6c865f2d56f98db"
+      },
+      "source_review": {
+        "path": "prework/school-timber-source-review.json",
+        "sha256": "cf55ea3acbfbd3a45c7c7ae837dd905fb5b46aede32b2ac6d9c6144dbbed9336",
+        "scope": "Source compatibility and authority assignment only. Direct full-resolution inspection of three source images, exact generation prompts/input hashes and progress brief. No constructor, model, material specimen, physical contact, walking, keeper or catalogue approval."
+      },
+      "generation_provenance": {
+        "path": "school-timber-locked-generation.json",
+        "sha256": "a0ef95ab703fedeed7aada02ea8fc79c93768642038bddd20ae6fdb92cbd2e1c"
+      },
+      "measurement_draft": {
+        "path": "prework/school-timber-measurement-draft.json",
+        "sha256": "0fb599d5f512d15641b47b20c8cbaa426f10e702689df88accecd3e094c4ebdf",
+        "scope": "Pending programme/bay/roof/material/camera preflight; no geometry"
+      },
+      "material_review": {
+        "path": "prework/school-timber-material-review.json",
+        "sha256": "0158d88aebd866e4d58381005c822b4beec30827cd33c0cf6f469a7142b22656",
+        "scope": "Category only; raw repeat held; face sampling conditions frozen"
+      },
+      "measured_prework": {
+        "path": "prework/school-timber-measured-plan-v004.json",
+        "sha256": "53dde8b0a778cff4dbb12c2faee03faea117c45eafd4441fb6a3c15070cdfefb",
+        "builder_sha256": "ae889608b911a4226cf03b57d420da723b41c717c7f35b60fc01f6287dca543c",
+        "cameras": 71,
+        "planned_routes": 45
+      },
+      "constructor_hold": {
+        "path": "prework/school-timber-builder-preflight-v001.json",
+        "sha256": "4adc15b465a5c28e224de519f35ebed36c108da1873e3d7ae1f1e1ef1d7bcf04",
+        "builder_snapshot": "prework/build_timber_school-preflight-v001.py",
+        "p1_groups": 7
+      },
+      "constructor_hold_v002": {
+        "path": "prework/school-timber-builder-preflight-v002.json",
+        "sha256": "4c0f04fcb293c20dd6035006284a20982f04317e4b7d0f5e7b99faa4510b61c3",
+        "p1_groups": 2
+      },
+      "constructor_review": {
+        "path": "prework/school-timber-builder-preflight-v003.json",
+        "sha256": "fb814b8f4e70ff17de0647a6f620b1e8898d2b0e3a3229d14b8f8d92869a70f1",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "scope": "Prebuild code only; no model/walking/browser approval"
+      },
+      "diagnostic_job": {
+        "stage": "unskinned_diagnostic",
+        "pid": 10664,
+        "script": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\check-school-timber-unskinned.py",
+        "stdout": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-timber-unskinned-v001.log",
+        "stderr": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\school-timber-unskinned-v001-error.log",
+        "started_utc": "2026-10-04T01:01:26.2518566Z",
+        "candidate": "prework/school-timber-unskinned-v001",
+        "builder_sha256": "ae889608b911a4226cf03b57d420da723b41c717c7f35b60fc01f6287dca543c",
+        "prework_sha256": "53dde8b0a778cff4dbb12c2faee03faea117c45eafd4441fb6a3c15070cdfefb",
+        "record": "school-timber-unskinned-v001-job.json"
+      },
+      "diagnostic_helpers": {
+        "updated_utc": "2026-10-04T01:22:21.275141+00:00",
+        "scope": "Prepared and independently code-reviewed checks only; actual GLB/solver/physical/render review pending.",
+        "helpers": {
+          "check-school-timber-physical-details-v003.py": {
+            "path": "check-school-timber-physical-details-v003.py",
+            "sha256": "bc85a6fade0b3ea1b14a7398e84c799f5a051ee7358267af7bb8adfdc8ad618b",
+            "bytes": 7125
+          },
+          "school-timber-boards.py": {
+            "path": "school-timber-boards.py",
+            "sha256": "515565c1844c50dfccb0db4852e11ada720fd3971e4985fb4e8415ba17c02c06",
+            "bytes": 3603
+          }
+        },
+        "physical_checker_review": {
+          "path": "prework\\school-timber-physical-checker-review-v003.json",
+          "sha256": "80e699e9ec288d7fab763f58ae0ff2dc84043bd4069fd937bc9afea9c41f8052",
+          "unresolved_p0": 0,
+          "unresolved_p1": 0
+        },
+        "preserved_checker_holds": [
+          "prework/school-timber-physical-checker-review-v001.json",
+          "prework/school-timber-physical-checker-review-v002.json"
+        ],
+        "diagnostic_command": "blender --background --factory-startup --python check-school-timber-physical-details-v003.py -- prework/school-timber-unskinned-v001 --unskinned",
+        "diagnostic_boards_command": "python school-timber-boards.py prework/school-timber-unskinned-v001 --diagnostic"
+      },
+      "diagnostic_v001_completed": {
+        "candidate": "prework/school-timber-unskinned-v001",
+        "state": "held_not_model_pass",
+        "finished_observed_utc": "2026-10-04T01:45:23.919669+00:00",
+        "glb_sha256": "0f7fa42504d89cbe88071831337e1375b732d94a80083846df6df71621907d92",
+        "renders_completed": 22,
+        "native_routes_passed": 40,
+        "native_routes_tested": 45,
+        "garden_probes_passed": 9,
+        "furniture_probes_passed": 20,
+        "legacy_null_only_guard_probes": "0/6; preserved. Layered-floor semantics invalid; independent at-height supplementary movement6/6 rejects.",
+        "physical_route_samples": 4323,
+        "physical_route_failures": 279,
+        "physical_stair_samples_passed": 96,
+        "physical_aperture_rays_passed": 1638,
+        "independent_review": {
+          "path": "prework/school-timber-unskinned-v001-independent-review.json",
+          "sha256": "29c363eb0c5d636c7fff5ac1e8a98085c29a2e0a0bc91859f77d0bd01353b88c"
+        },
+        "finite_corrections": "Lower stair native ownership; three routes around actual leaves/posts; classroom and canopy-post evidence framing. No geometry change.",
+        "current_network_camera_builder_sha256": "a60f515ee5807d19b1dbb87a16876b191a00fcd3a2b586240a653d4aa9fd56cd",
+        "current_network_camera_prework_sha256": "9526ab315795422b922609ad0a42ca3de6e7e337d294f2d928211b8da37eb44a",
+        "pending_replay": "replay-school-timber-unskinned-v002.py"
+      },
+      "diagnostic_v002": {
+        "state": "held_render_evidence_not_model_pass",
+        "job": {
+          "pid": 28948,
+          "started_utc": "2026-10-04T01:51:48.8943702Z",
+          "runner": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/replay-school-timber-unskinned-v002.py",
+          "preflight": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/prework/school-timber-builder-preflight-v005.json",
+          "candidate": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/prework/school-timber-unskinned-v002",
+          "state": "running",
+          "counted_complete": false
+        },
+        "preflight": {
+          "path": "prework/school-timber-builder-preflight-v005.json",
+          "sha256": "6cf60a7aa25db8878297b793ccf3d2cbcddefd6a71c60bb97ceb52db59f5c3ca"
+        },
+        "fresh_checks_required": [
+          "geometry JSON/BIN identity",
+          "45 app routes",
+          "9 garden exclusions",
+          "6 at-height guard movements",
+          "exact-GLB physical routes/stairs/apertures",
+          "22 exact-GLB render pixels",
+          "independent diagnostic review"
+        ],
+        "completed_evidence": {
+          "glb_sha256": "a05a7561b333f78ef0d00b4aeb36c988d422b8b1fa84bf34724c2b11ed8eb8c8",
+          "native_routes": 45,
+          "trace_samples": 13405,
+          "physical_samples_including_starts": 13450,
+          "stair_boundary_samples": 96,
+          "aperture_rays": 1638,
+          "garden": 9,
+          "furniture": 20,
+          "at_height_guards": 6,
+          "legacy_null_guard_report": "4/6; upper lip fallback remains a semantic false-negative; preserved separately",
+          "geometry_BIN_and_JSON_identical_except_walking_extras": true,
+          "renders_written": 22,
+          "render_evidence_blockers": [
+            "Rear lookup selected QA rear LIGHT rather than QA rear.001 CAMERA",
+            "Black rectangular surface patches regression despite exact geometry identity"
+          ],
+          "diagnosis": "prework/school-timber-replay-scene-diagnosis.json",
+          "render_state_control": "prework/school-timber-render-state-control-v001",
+          "independent_review": "prework/school-timber-unskinned-v002-independent-review.json"
+        }
+      },
+      "diagnostic_v003": {
+        "state": "independent_unskinned_diagnostic_pass_only",
+        "candidate": "prework/school-timber-unskinned-v003",
+        "glb_sha256": "a05a7561b333f78ef0d00b4aeb36c988d422b8b1fa84bf34724c2b11ed8eb8c8",
+        "independent_review": {
+          "path": "prework/school-timber-unskinned-v003-independent-review.json",
+          "sha256": "17a39efb75057c795173a69cdfab2bff630dae1a7dd1646f8cd3216ac69ab143",
+          "p0": 0,
+          "p1": 0
+        },
+        "renders_completed": 22,
+        "native_routes_passed": 45,
+        "furniture": 20,
+        "garden": 9,
+        "at_height_guard_movements": 6,
+        "physical_route_samples_including_starts": 13450,
+        "physical_stair_boundary_samples": 96,
+        "physical_aperture_rays": 1638,
+        "evidence": {
+          "walking-solver-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/walking-solver-review.json",
+            "sha256": "7a2a48ef86b8eac41159798f37c38131db0b9b0461fdff7041eca35686ad3786"
+          },
+          "at-height-guard-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/at-height-guard-review.json",
+            "sha256": "954646c1a273cdf4df40a72b277103126050e72efaebdcb469b287d3d9af8613"
+          },
+          "garden-collision-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/garden-collision-review.json",
+            "sha256": "9b23b9e85503882bb724fbc28f24377781a870d592e7484c855ee179108ea9cd"
+          },
+          "physical-route-actual-floor-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/physical-route-actual-floor-review.json",
+            "sha256": "03e69feaac50d82b300441930d75b4d67068bd9bb109e516dcca9f293a917411"
+          },
+          "stair-boundary-physical-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/stair-boundary-physical-review.json",
+            "sha256": "97b0d4617b617feef39899b457606608d574e6597ef7439749ba471e174e3119"
+          },
+          "physical-aperture-review.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/physical-aperture-review.json",
+            "sha256": "fcf15c765ec73f509c59303697bc0e5e212dd3d3a5af6376d46ebda5695aa870"
+          },
+          "replay-geometry-identity.json": {
+            "path": "prework/school-timber-unskinned-v003/evidence/replay-geometry-identity.json",
+            "sha256": "abf5114dae65d1889cb47d1793f2bcb2ef532685562b7cb97c07d1674b8d6ca2"
+          }
+        },
+        "original_geometry_identity": "Exact BIN and geometry JSON excluding walking extras, same native bounds",
+        "render_repair": "Original OPTIX device initialization and typed rear camera lookup",
+        "keeper_approved": false,
+        "local_model_approved": false
+      },
+      "skinned_v001_job": {
+        "pid": 5212,
+        "started_utc": "2026-10-04T02:10:25.9318054Z",
+        "builder": "tools/neighborhood_expansion/build_timber_school.py",
+        "builder_sha256": "a60f515ee5807d19b1dbb87a16876b191a00fcd3a2b586240a653d4aa9fd56cd",
+        "prework_sha256": "9526ab315795422b922609ad0a42ca3de6e7e337d294f2d928211b8da37eb44a",
+        "diagnostic_review": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/prework/school-timber-unskinned-v003-independent-review.json",
+        "candidate": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/school-timber-v001",
+        "expected_renders": 71,
+        "resolution": 1280,
+        "state": "completed_full_build_and_review",
+        "counted_complete": true
+      },
+      "current_candidate": "school-timber-v001",
+      "local_review": {
+        "candidate": "school-timber-v001",
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "p0": 0,
+        "p1": 0,
+        "keeper_p1": 2,
+        "review": "school-timber-v001/review/independent-visual-review-v002.json",
+        "review_sha256": "d41dd74de2d5f5606a033456ab6993b76e9205418684d24204c967927e5d20bb",
+        "glb_sha256": "538e8115f2069a8e177c79487d009fca933462ae7ab6c19972fd28c316a3fa79",
+        "routes": 45,
+        "physical_samples": 13450,
+        "garden_probes": 9,
+        "furniture_exclusions": 20,
+        "circulation_guard_probes": 6,
+        "stair_boundary_probes": 96,
+        "aperture_rays": 1638,
+        "mandatory_views": 71,
+        "browser_verified": true,
+        "main_app_trial": "NOT_TESTED",
+        "preserved_review_v001": "school-timber-v001/review/independent-visual-review.json"
+      }
+    },
+    {
+      "archetype_id": "neighborhood_fourplex",
+      "family": "Neighborhood Fourplex",
+      "variant_id": "fourplex_compact_maisonettes",
+      "variant_index": 2,
+      "brief": {
+        "id": "fourplex_compact_maisonettes",
+        "label": "Four Compact Maisonettes",
+        "width": 20,
+        "depth": 11,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "warm red brick with pale mortar",
+        "secondary": "natural timber doors and slender dark steel porch canopies",
+        "roof": "four modest aligned gables, one above each home",
+        "roofMaterial": "dark grey standing seam",
+        "description": "One compact row of exactly four two-storey maisonettes. Four equal-width bays each have a private front door, a sheltered threshold and upstairs windows. Four modest gables articulate the homes without making separate detached houses. Small planted front gardens and one shared rear garden replace a vehicle-dominated frontage. No basement flats or extra units.",
+        "siteNote": "Exactly four maisonettes; this variant compares private front doors with the shared entrances of stacked flats."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_branch_library",
+      "family": "Neighborhood Branch Library",
+      "variant_id": "library_main_street_branch",
+      "variant_index": 1,
+      "brief": {
+        "id": "library_main_street_branch",
+        "label": "Main Street Branch",
+        "width": 18,
+        "depth": 28,
+        "floors": 2,
+        "floorHeight": 3.8,
+        "primary": "red-brown brick",
+        "secondary": "bronze-framed shopfront glazing and pale stone lintels",
+        "roof": "flat parapet roof behind a restrained cornice",
+        "roofMaterial": "membrane",
+        "description": "A compact two-storey public branch library filling a main-street infill lot. A generous ground-floor shopfront reveals bookshelves, a children's reading alcove and the reception desk; upstairs meeting and quiet study rooms have tall regular windows. One prominent step-free entrance sits beneath a simple canopy. Adjoining low-rise shops establish the streetwall scale.",
+        "siteNote": "Use the existing main-street sidewalk; loading and staff access belong at the rear or side."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "community_association_hall",
+      "family": "Community Association Hall",
+      "variant_id": "hall_main_street_youth_hub",
+      "variant_index": 2,
+      "brief": {
+        "id": "hall_main_street_youth_hub",
+        "label": "Main Street Youth & Community Hub",
+        "width": 18,
+        "depth": 24,
+        "floors": 2,
+        "floorHeight": 3.6,
+        "primary": "warm red brick",
+        "secondary": "muted blue-green metal panels and timber shopfront frames",
+        "roof": "flat parapet roof",
+        "roofMaterial": "membrane",
+        "description": "A two-storey neighborhood community hub in a main-street infill building. A transparent ground floor contains a flexible youth activity room, shared kitchen and reception; quieter meeting rooms occupy the upper floor. One sheltered entrance opens directly to the sidewalk, with a bench and bicycle hoops beside it. The architecture is civic and approachable without looking like a shopping mall or school.",
+        "siteNote": "Plan active ground-floor use and quiet upstairs rooms; provide a separate rear servicing route."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_elementary_school",
+      "family": "Neighborhood Elementary School",
+      "variant_id": "school_adaptive_reuse",
+      "variant_index": 3,
+      "brief": {
+        "id": "school_adaptive_reuse",
+        "label": "Adapted Neighborhood School",
+        "width": 44,
+        "depth": 30,
+        "floors": 2,
+        "floorHeight": 3.8,
+        "primary": "retained red-brown brick",
+        "secondary": "pale timber-clad entrance addition and dark metal frames",
+        "roof": "existing low hip roof with a flat-roof entrance extension",
+        "roofMaterial": "dark standing-seam metal and membrane",
+        "description": "A modest two-storey mid-century brick civic building adapted into an elementary school. Retained regularly spaced classroom windows and a low hipped roof contrast with one contemporary timber entrance porch. A new step-free route reaches the main door and a planted fence defines a side learning garden. The reused building remains the dominant volume.",
+        "siteNote": "Test reuse of an existing neighborhood site; retain a separate outdoor play area and clear emergency access."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_childcare_centre",
+      "family": "Childcare / Early-Learning Centre",
+      "variant_id": "childcare_main_street_conversion",
+      "variant_index": 2,
+      "brief": {
+        "id": "childcare_main_street_conversion",
+        "label": "Main Street Conversion",
+        "width": 20,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 3.8,
+        "primary": "existing red brick shopfront surround",
+        "secondary": "natural timber storefront frames and a muted yellow entry recess",
+        "roof": "existing flat parapet roof",
+        "roofMaterial": "membrane",
+        "description": "A one-storey former neighborhood shop converted into a small early-learning centre. Deep display windows become child-height reading alcoves behind partial privacy screens. One controlled entrance has a stroller bay and sheltered threshold; a passage along the side reaches a secure rear play yard. Modest adjoining shops provide context but are visually subordinate.",
+        "siteNote": "The rear outdoor play yard and secure route to it are essential; avoid placing play equipment in the public sidewalk."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_sixplex",
+      "family": "Neighborhood Sixplex",
+      "variant_id": "sixplex_corner_infill",
+      "variant_index": 2,
+      "brief": {
+        "id": "sixplex_corner_infill",
+        "label": "Corner Infill Sixplex",
+        "width": 18,
+        "depth": 16,
+        "floors": 3,
+        "floorHeight": 3.1,
+        "primary": "dark textured brick",
+        "secondary": "warm timber entrance lining and pale concrete balcony edges",
+        "roof": "flat parapet roof with a recessed corner terrace within the third floor",
+        "roofMaterial": "membrane",
+        "description": "A compact three-storey sixplex occupying a neighborhood corner, with exactly two apartments per floor. A chamfered ground-floor corner marks the shared residential entrance; living-room windows turn onto both streets. Small recessed balconies and a modest third-floor corner terrace relieve the mass. There is no retail shop or additional penthouse.",
+        "siteNote": "Six homes total; corner glazing and entrance placement respond to two public frontages."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "community_association_hall",
+      "family": "Community Association Hall",
+      "variant_id": "hall_reused_local_workshop",
+      "variant_index": 3,
+      "brief": {
+        "id": "hall_reused_local_workshop",
+        "label": "Reused Local Workshop",
+        "width": 34,
+        "depth": 24,
+        "floors": 1,
+        "floorHeight": 4.8,
+        "primary": "retained red-brown workshop brick",
+        "secondary": "dark steel industrial windows and a new pale timber vestibule",
+        "roof": "retained low sawtooth roof with north-facing clerestories",
+        "roofMaterial": "dark corrugated metal and clerestory glass",
+        "description": "A small former neighborhood workshop converted into a community hall with a shared kitchen, repair room and flexible gathering space. The retained sawtooth roof and industrial windows light occupied rooms with tables and chairs. One old loading opening becomes a glazed public entrance beneath a modest canopy; a side gate leads to a community garden. Keep the scale local and the conversion visibly legible.",
+        "siteNote": "Explore reuse and local repair activities; service and delivery space remains separate from the public entrance."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_fourplex",
+      "family": "Neighborhood Fourplex",
+      "variant_id": "fourplex_timber_garden",
+      "variant_index": 3,
+      "brief": {
+        "id": "fourplex_timber_garden",
+        "label": "Timber Garden Fourplex",
+        "width": 16,
+        "depth": 16,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "natural cedar cladding over a dark brick base",
+        "secondary": "deep pale window reveals and timber balcony screens",
+        "roof": "one broad shallow gable with sheltered eaves",
+        "roofMaterial": "grey standing seam",
+        "description": "A two-storey garden fourplex containing exactly two flats per floor. A central shared entrance is flanked by two ground-floor living-room bays; two shallow recessed balconies serve the upper flats. Timber screens give privacy without enclosing the balconies. A shared side path leads to a communal rear garden and secure bike store. Simple repeated structure and modest details keep the form attainable.",
+        "siteNote": "Maintain four homes and shared outdoor space; the material choice does not imply a certified construction system."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_sixplex",
+      "family": "Neighborhood Sixplex",
+      "variant_id": "sixplex_shared_garden",
+      "variant_index": 3,
+      "brief": {
+        "id": "sixplex_shared_garden",
+        "label": "Six Homes Around a Garden",
+        "width": 28,
+        "depth": 20,
+        "floors": 2,
+        "floorHeight": 3.1,
+        "primary": "warm pale stucco on a brick base",
+        "secondary": "timber galleries and dark bronze railings",
+        "roof": "two shallow gabled residential wings linked by a low entrance canopy",
+        "roofMaterial": "grey standing seam",
+        "description": "A small two-storey U-shaped sixplex arranged around an open planted entrance garden. Exactly three flats occupy each floor across the linked wings. A sheltered shared stair and short upper gallery face the garden; bedrooms face the quieter outer edges. The front remains open through one low gate and bicycle parking sits by the entrance. No additional cottages or rear houses.",
+        "siteNote": "The 28 by 20 metre envelope includes the unbuilt garden; exactly six homes are distributed across the linked wings."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    },
+    {
+      "archetype_id": "neighborhood_branch_library",
+      "family": "Neighborhood Branch Library",
+      "variant_id": "library_reused_neighborhood_hall",
+      "variant_index": 2,
+      "brief": {
+        "id": "library_reused_neighborhood_hall",
+        "label": "Reused Neighborhood Hall",
+        "width": 28,
+        "depth": 22,
+        "floors": 1,
+        "floorHeight": 4.5,
+        "primary": "retained weathered red brick",
+        "secondary": "new timber entry porch and dark steel arched windows",
+        "roof": "retained broad pitched hall roof",
+        "roofMaterial": "dark slate-like standing seam",
+        "description": "A modest single-storey former civic hall converted into a local library. Tall retained arched windows reveal shelving and reading tables beneath exposed timber roof trusses. A small contemporary timber vestibule gives the old building an accessible public entrance without overwhelming the original brick hall. Low planting and benches create a neighborhood meeting edge.",
+        "siteNote": "Explore adaptive reuse while retaining the existing hall volume and a clear public entrance."
+      },
+      "state": "queued",
+      "attempts": [],
+      "keeper_approved": false,
+      "catalogue_activated": false
+    }
+  ],
+  "state": "ten_building_main_app_trial_required_before_eleven",
+  "continuation": "Read WORK_PLAN.md and this progress.json. Resume the first incomplete candidate; never count a queued source, failed model, or palette-only duplicate as finished.",
+  "automation_id": "build-20-neighbourhood-buildings",
+  "completed_models": 10,
+  "next_action": "Finish a separate finite C8 renderer diagnosis and explicit physically measured/native walking handoff design review. Do not relax route guards or rewrite sealed assets. Recheck Garden before scaling to nine remaining individual trials; mixed ten and building11 remain queued. Own5175/8003 jobs and exact fixture seal remain running/unchanged; no reinstall or duplicate job.",
+  "updated_utc": "2026-10-04T04:14:33.707280+00:00",
+  "inspector_url": "http://127.0.0.1:5203/",
+  "bounded_waves": [
+    [
+      "fourplex_corner_entries",
+      "sixplex_brick_walk_up",
+      "library_neighborhood_pavilion",
+      "hall_prairie_community_league"
+    ],
+    [
+      "school_shared_community_campus",
+      "childcare_sheltered_courtyard",
+      "sixplex_two_storey_garden",
+      "hall_timber_park_edge"
+    ],
+    [
+      "school_timber_learning_courtyard",
+      "fourplex_compact_maisonettes",
+      "library_main_street_branch",
+      "hall_main_street_youth_hub"
+    ],
+    [
+      "school_adaptive_reuse",
+      "childcare_main_street_conversion",
+      "sixplex_corner_infill",
+      "hall_reused_local_workshop"
+    ],
+    [
+      "fourplex_timber_garden",
+      "sixplex_shared_garden",
+      "library_reused_neighborhood_hall"
+    ]
+  ],
+  "ten_building_browser_checkpoint": {
+    "requested_by_user": "Once you get to 10, please trial them all in the City prompt browser.",
+    "trigger_completed_models": 10,
+    "before_building": 11,
+    "status": "HOLD_first_pilot_runtime_blockers",
+    "scope": "First ten completed additional buildings in the main CityPrompt browser application. The standalone model inspector evidence does not satisfy this requested trial.",
+    "project_policy": "Use a separate disposable test project and appropriate vacant site; preserve the user live project, original candidates and all prior evidence.",
+    "trial_plan": [
+      "Freeze the first ten keeper-unapproved local-pass candidate IDs and exact GLB hashes.",
+      "Identify the actual CityPrompt main app, source version, backend/storage environment and supported local test-asset binding. Use isolated local fixtures; no public catalogue activation, publication or push.",
+      "Load/place each exact model through the supported app workflow at its native scale. Check identity, dimensions, full plot support, visible entrances, exterior/interior views and available walking/approach behaviour.",
+      "Exercise supported selection, move/rotate, Undo/Redo, save/reload/reopen and visibility/capture controls. Preserve screenshots, console/network findings and exact binding/hash readback.",
+      "Trial a mixed neighbourhood with all ten on a sufficiently large vacant test site. Verify clear approaches, surrounding paths/open space, distinct models and low/aerial views. Preserve individual trials for oversized civic buildings.",
+      "Save per-model PASS/FAIL/NOT_TESTED findings in separate runtime trial reports; never rewrite sealed independent asset reviews. Record finish limits and unsupported or unavailable advertised features honestly.",
+      "Resolve concrete blockers within authorized local scope, or record the exact intervention needed. Complete this checkpoint and report its evidence before starting building11."
+    ],
+    "runtime_reference": "docs/ARCHETYPE_RUNTIME_INTEGRATION.md and per-variant runtime review templates",
+    "keeper_approval_granted": false,
+    "catalogue_activation_authorized": false,
+    "publication_authorized": false,
+    "created_utc": "2026-10-04T00:10:37.598164+00:00",
+    "fixture_draft": "prework/ten-building-fixed-fixture-draft-v002.json",
+    "fixture_draft_scope": "Provisional firstnine exact GLB/sidecar/hash bindings only; external, no installation, no catalogue or DB mutation. Add reviewedtenth and freeze ten when count10. Runtime NOT_TESTED.",
+    "environment_preparation": "ten-building-trial-environment-prework-v004.json",
+    "environment_preparation_sha256": "f2adf68b233005d7a8f38ca05cd677e5288faacf6587ffa5c8009543071e6ea5",
+    "environment_status": "isolated_main_app_exact_ten_installed_first_disposable_project_active",
+    "frontend_url": "http://127.0.0.1:5175/",
+    "backend_url": "http://127.0.0.1:8003",
+    "frontend_job": "main-app-runtime/frontend-job-v005.json",
+    "backend_job": "main-app-runtime/backend-job.json",
+    "browser_tab_id": "5",
+    "fixture_helper_preflight": "prework/main-app-ten-fixture-helper-preflight-v004.json",
+    "fixture_helper_preflight_sha256": "c576d921d5349f770d51d2bb272e4d6397e85ce104f5043d9b8cc9b74c34b5b5",
+    "fixture_sealer": "seal-main-app-ten-fixtures-v004.py",
+    "fixture_frontend": "main-app-frontend-neighborhood20-v004.mjs",
+    "fixtures_installed": 10,
+    "models_trialled": 0,
+    "triggered_utc": "2026-10-04T02:57:26.200436+00:00",
+    "local_models_passed": 10,
+    "fixture_seal": "main-app-runtime/sealed-ten-fixtures.json",
+    "fixture_seal_sha256": "43fb056d74d449e288f9536ca448a3e49f09429fcde4a65534bbdbac66966303",
+    "models_started": 1,
+    "individual_trials": [
+      {
+        "candidate": "childcare-garden-v004",
+        "project_id": "0a17a73b-4b9b-4645-b6cf-b00e4a3e15cd",
+        "project_name": "Neighbourhood20 — 01 Garden Pavilion Trial",
+        "status": "HOLD",
+        "evidence_dir": "main-app-trials/01-childcare-garden-v004",
+        "verified_so_far": [
+          "ordinary_UI_exact_native_placement",
+          "front_public_entry_walk_connector_and_classroom_doorway",
+          "return_entrance",
+          "toggle_visibility",
+          "free_exact_3D_preview_capture",
+          "rotation_undo_redo",
+          "move_save_reload_stable_ID_dimensions_hash",
+          "internal_lane_stock_LFS_hydration_and_Retry_recovery",
+          "rejected_boundary_save_and_Reload_saved_version_recovery",
+          "residual_site_landscape_Apply_UI_only",
+          "shared_native_bounds_ground_contact_repair_52_tests_typecheck",
+          "independent_prepared_C3_runtime_review",
+          "landscape_saved_reload_and_exact_capture"
+        ],
+        "open": [
+          "C5/C9 exact entrance picking, measured approach and native external walking handoff",
+          "C8 glazing/roof renderer diagnosis",
+          "natural ground and real-browser negative capture/freshness cases",
+          "landscape edit invalidation Undo/Redo",
+          "actual Download delivery",
+          "remaining nine individual trials and mixed ten"
+        ],
+        "natural_ground": "PARTIAL: five unavailable cells preserved; deliberate ordinary UI redevelopment level at median1102.662m for prepared concept trial",
+        "keeper_approved": false,
+        "final_rotation_degrees": 180,
+        "runtime_report": "main-app-trials/01-childcare-garden-v004/runtime-trial-report-v001.json",
+        "runtime_report_sha256": "2ff3a4a4838c7501382308f169440ef4daea1e9fa891d65374ae684e86fd2bdb",
+        "prepared_ground_c3": "PASS observed Garden contact/reload/capture, independent review"
+      }
+    ],
+    "independent_runtime_diagnosis": "main-app-trials/01-childcare-garden-v004/review/independent-runtime-diagnosis-v001.json",
+    "independent_adapter_design_preflight": "main-app-trials/01-childcare-garden-v004/review/independent-runtime-adapter-design-preflight-v001.json",
+    "runtime_blockers": [
+      "Actual native entrance picking/approach report missing. Public portal reaches y=-15 but walking triangles start at y=-14.4. Existing paving at z=.04 does not authorize a fabricated navigation floor. Internal lane is not an off-site public-road junction.",
+      "Main-app glazing streaks and roof artifacts persist in low views and exact low preview. Exact free captures succeed and preserve context. PNG data URL extraction proves content; actual Download action/file delivery NOT_TESTED. AI image calls not made."
+    ],
+    "runtime_c3_repair": {
+      "status": "PASS_scoped_source_and_first_Garden_prepared_browser",
+      "source_freeze": "prework/runtime-c3-source-after-v003/manifest.json",
+      "reviews": [
+        {
+          "path": "main-app-trials/01-childcare-garden-v004/review/independent-runtime-c3-source-review-v002.json",
+          "sha256": "18f4159d2da52e17e1d8e419e7e41816f7466fc9d1abfd6546f55ab31b18d32b"
+        },
+        {
+          "path": "main-app-trials/01-childcare-garden-v004/review/independent-runtime-c3-browser-review-v001.json",
+          "sha256": "ac5df32f0ca735776bb94af8d0004bfcee94b062fdc43d82673f0fc46baadcef"
+        }
+      ],
+      "tests": "52/52 plus type-check PASS",
+      "remaining": "Natural-ground runtime and negative capture states not visually exercised. C5/C9/C8 HOLD."
+    }
+  },
+  "completion_browser_handoff": {
+    "requested_by_user": "When you are finished, can you bring up the City Prompt Browser",
+    "trigger": "After all20 additional buildings and the required firstten main-app trial are complete",
+    "status": "pending_batch_completion",
+    "action": "Open the verified main CityPrompt application visibly in the Codex browser, preferably on the disposable mixed-neighbourhood trial project. Verify it is loaded and mark the browser tab as a user-facing deliverable.",
+    "preserve_original_projects": true,
+    "standalone_inspector_satisfies_request": false,
+    "created_utc": "2026-10-04T01:23:51.643635+00:00"
+  }
+}

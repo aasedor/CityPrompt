@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
   cinematicRouteProgress,
+  videoMotionProgress,
+  assertBicycleRouteLength,
   normalizedVideoPointToNdc,
   resampleVideoRoute,
   selectVideoRecorderMimeType,
@@ -50,6 +52,22 @@ describe('video route controls', () => {
     expect(samples[2].x).toBeCloseTo(0.5);
   });
 
+  it('rides at constant travelled distance while retaining eased drone motion', () => {
+    expect(videoMotionProgress(.25, 'bicycle_ride')).toBe(.25);
+    expect(videoMotionProgress(.75, 'bicycle_ride')).toBe(.75);
+    expect(videoMotionProgress(-1, 'bicycle_ride')).toBe(0);
+    expect(videoMotionProgress(2, 'bicycle_ride')).toBe(1);
+    expect(videoMotionProgress(.25, 'path_follow')).toBeCloseTo(.15625);
+  });
+
+  it('rejects implausibly fast or unusable bicycle routes before capture', () => {
+    expect(() => assertBicycleRouteLength(56, 8)).not.toThrow();
+    expect(() => assertBicycleRouteLength(56.1, 8)).toThrow('within 56 m');
+    for (const [distance, duration] of [[0, 8], [NaN, 8], [Infinity, 8], [20, 0], [20, NaN]]) {
+      expect(() => assertBicycleRouteLength(distance, duration)).toThrow('start and finish');
+    }
+  });
+
   it('reverses the center crop before converting route points to NDC', () => {
     expect(normalizedVideoPointToNdc({ x: 0.5, y: 0.5 }, 16 / 9)).toEqual({ x: 0, y: 0 });
     expect(normalizedVideoPointToNdc({ x: 0, y: 0.5 }, 2).x).toBeCloseTo(-8 / 9);
@@ -64,6 +82,7 @@ describe('video route controls', () => {
   it('keeps pedestrian and low-drone routes on terrain instead of roofs', () => {
     expect(videoRouteSurfaceHeight(1045, 1002, 'street_walkby')).toBe(1002);
     expect(videoRouteSurfaceHeight(1045, 1002, 'detail_flythrough')).toBe(1002);
+    expect(videoRouteSurfaceHeight(1045, 1002, 'bicycle_ride')).toBe(1002);
     expect(videoRouteSurfaceHeight(1045, 1002, 'path_follow')).toBe(1045);
     expect(stableNearFieldTerrainHeight([990, 1000, 1001, 1045, 1046, 1047])).toBe(1000);
   });

@@ -37,6 +37,12 @@ describe('videoRenderPath', () => {
     expect(routeSvgPoints(route)).toBe('12.35,75.00 100.00,0.00');
   });
 
+  it('does not bunch camera controls where the pointer moved slowly', () => {
+    const denseStart = Array.from({ length: 30 }, (_, index) => ({ x: index / 1000, y: .5 }));
+    const samples = resampleRoute([...denseStart, { x: 1, y: .5 }], 5);
+    expect(samples.map(point => point.x)).toEqual([0, .25, .5, .75, 1]);
+  });
+
   it('keeps the default flight short enough for the continuity-first pilot', () => {
     const distance = DEFAULT_VIDEO_ROUTE.slice(1).reduce((total, point, index) => {
       const previous = DEFAULT_VIDEO_ROUTE[index];

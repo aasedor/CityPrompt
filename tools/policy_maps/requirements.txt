@@ -1,0 +1,6 @@
+# Offline extraction / verification only; never shipped to student browsers.
+PyMuPDF==1.28.0
+shapely==2.0.6
+numpy==2.5.1
+pyproj==3.7.0
+Pillow==12.3.0

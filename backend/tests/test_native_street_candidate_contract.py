@@ -18,6 +18,18 @@ from app.services.public_realm_lego import (
 MANIFEST = Path(__file__).resolve().parents[2] / "frontend/src/data/nativeStreetPilots.json"
 
 
+@pytest.mark.parametrize('length', [36, 53.7, 79, 334, 712.5, 2000])
+def test_flexible_canal_recipe_roundtrip(length):
+    catalog = build_public_realm_capability_catalog()
+    recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
+        archetype_id='amsterdam_gracht', variant_id='amsterdam_gracht_v1',
+        target=StreetSegmentTarget(row_width_m=36, length_m=length),
+    ), catalog=catalog)
+    identity = public_realm_recipe_identity(recipe, catalog=catalog)
+    assert identity is not None
+    assert identity['recipe']['target']['length_m'] == length
+
+
 def test_new_route_capabilities_do_not_convert_saved_fixed_rectangles():
     from shapely.geometry import Polygon
     from app.services.public_realm_lego import plan_public_realm_zone_recipe, PublicRealmPlanningError
@@ -65,6 +77,8 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         'student_elevated_garden_rail_v1',
         'skytrain_elevated_corridor_v0',
         'elevated_rail_transit_corridor_v0',
+        'garden_gravel_path_v1', 'concrete_neighbourhood_walk_v1',
+        'brick_courtyard_path_v1', 'timber_garden_walk_v1', 'asphalt_shared_path_v1',
     }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()

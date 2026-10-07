@@ -47,7 +47,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
   const undoStackRef = useRef<CanvasSnapshot[]>([]);
 
   const [prompt, setPrompt] = useState('');
-  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice();
+  const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ projectId, allowLocal: false });
   const [imageProgress, setImageProgress] = useState('');
   const [brushSize, setBrushSize] = useState(DEFAULT_BRUSH_SIZE);
   const [zoom, setZoom] = useState(1);
@@ -411,7 +411,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
           </div>
 
           <aside className="flex min-h-0 flex-col gap-4 border-t border-white/10 bg-gray-900/80 p-4 text-white lg:border-l lg:border-t-0">
-            <ImageModelSelect value={imageModel} onChange={setImageModel} disabled={submitting} availability={imageModelAvailability} />
+            <ImageModelSelect value={imageModel} onChange={setImageModel} disabled={submitting} availability={imageModelAvailability} allowLocal={false} />
             {imageProgress && <p role="status" className="text-xs">{imageProgress}</p>}
             <div className="rounded-lg bg-white/[0.04] p-3 ring-1 ring-white/10">
               <label htmlFor="render-edit-brush" className="flex items-center justify-between text-xs font-semibold text-white/75">

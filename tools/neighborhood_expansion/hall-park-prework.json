@@ -1,0 +1,1316 @@
+{
+  "variant_id": "hall_timber_park_edge",
+  "archetype_id": "community_association_hall",
+  "method": "RLASM v6.1",
+  "state": "prework_frozen_builder_only",
+  "sources": [
+    {
+      "role": "front",
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1.png",
+      "bytes": 2791843,
+      "sha256": "6625e74a7cfe40790cb52742dd6f55c0c4bc449c8b60713429d2a8105ac21953",
+      "source_attempt": "source-attempts\\hall_timber_park_edge\\front-001.png",
+      "authority": "Primary design identity and frontage cadence. One occupied floor; long glazed park-facing frontage; six outer veranda columns on brick pedestals with knee braces; recessed glazing-line supports; main public double entry toward the left and secondary glazed exit toward the right; cedar ends and low planting/bicycle approach. Trace the projected individual members rather than inferring an evenly spaced seven-post row."
+    },
+    {
+      "role": "oblique",
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1_oblique.png",
+      "bytes": 2800553,
+      "sha256": "201c869868dfd99e2df7e209ffaaefc54d2a0d7a81840141a9978fc0276371a2",
+      "source_attempt": "source-attempts\\hall_timber_park_edge\\oblique-001.png",
+      "authority": "Corroborates the continuous front veranda, exposed right gable, right-end three narrow windows, timber framing/brick pedestal relationships and front-to-back roof arrangement. The front view remains primary for facade placement."
+    },
+    {
+      "role": "topology",
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-association-hall\\variant_1_roof-study.png",
+      "bytes": 3148972,
+      "sha256": "d11dc3c03947bbc83dd9f6eca7445e61ea63b8aa9f64145dcdb6d2b5cd00a5bf",
+      "source_attempt": "source-attempts\\hall_timber_park_edge\\top-002.png",
+      "authority": "Topology corroboration only: one rectangular common roof with two pitched planes meeting one continuous long ridge parallel to the front, extending forward over the veranda. No extra rear bar, roofbox, dormer or valley. Still elevated oblique rather than requested near-nadir; not metric footprint, bay spacing or hidden rear-fenestration authority."
+    }
+  ],
+  "roof_graph": {
+    "body": "One rectangular single-storey enclosed hall, with an open veranda across its park-facing long edge.",
+    "ridge": "One continuous ridge parallel to the glazed long front.",
+    "planes": "One rear slope and one forward slope. Forward roof continues above the veranda and its outer support row.",
+    "ends": "Two cedar gable ends under the common roof; no intersecting wing or separate veranda roof volume.",
+    "lines": "Standing seams, ridge/eave trim and front slope snow-retention lines are surface hardware, not additional ridges or folds.",
+    "rear": "Rear wall belongs beneath the same rear eave. Its exact fenestration and dimensions remain inferred."
+  },
+  "column_count_reconciliation": {
+    "outer_veranda_columns": 6,
+    "front_approx_column_centres_px": [
+      375,
+      728,
+      982,
+      1209,
+      1401,
+      1595
+    ],
+    "oblique_approx_column_centres_px": [
+      126,
+      378,
+      543,
+      730,
+      956,
+      1220
+    ],
+    "top002_approx_column_centres_px": [
+      347,
+      657,
+      875,
+      1097,
+      1296,
+      1499
+    ],
+    "explanation": "The apparent seventh column results from counting a recessed timber/brick support at the glazing plane as part of the outer row. In front001 the right support near x1502 is behind the outer row; the entrance/glazing line also has additional brick-based supports. In oblique001 the apparent extra near x239 is recessed. Top002's six outer supports therefore do not constitute a six-versus-seven contradiction.",
+    "limits": "Approximate image x coordinates identify visible members, not metric spacing. Do not author seven evenly spaced outer columns from the total count of all visible pedestals. Recessed glazing-plane supports must be classified separately."
+  },
+  "remaining_inferences": [
+    "Exact 32 x 22 m interpretation: whether depth includes the veranda, enclosed depth, veranda depth and roof overhangs must be stated before construction.",
+    "Eave/ridge heights, slope, member sizes, pedestal dimensions, support spacing and exact roof-to-frame contacts.",
+    "Complete internal glulam frame arrangement and roof lining; visible references do not prove a load-path calculation.",
+    "Multipurpose, smaller meeting rooms, kitchen, storage and toilets, with their partitions, fixtures, private/public entries and window-carrier relationships.",
+    "Rear and obscured side fenestration, mechanical/service details, drainage and landscape extent.",
+    "Grounded public approach, porch edge/threshold transitions, authored walking network and actual-GLB clearances."
+  ],
+  "source_limits": [
+    {
+      "id": "projection_limit",
+      "severity": "scope_limit",
+      "symptom": "Top002 does not achieve the requested near-nadir camera; front glazing and posts remain prominently visible.",
+      "resolution": "Limit it to corroborated roof topology; use front/oblique for elevation identity and explicitly inferred dimensions."
+    },
+    {
+      "id": "minor_source_variation",
+      "severity": "scope_limit",
+      "symptom": "The views vary in projected window/mullion details, planting, door presentation and apparent spacing. They are generated architectural references rather than surveyed orthographic drawings.",
+      "resolution": "Do not blend conflicting projected measurements. Freeze front-driven frontage and record hidden side/rear details as inferences."
+    }
+  ],
+  "independent_source_review": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\prework\\hall-park-source-review.json",
+    "sha256": "d1c68245fee94a9cd6f65ea7ea1cd74a1804251f0144da46acc614d7330a5e1d",
+    "scope": "Source compatibility only: direct full-resolution front001, oblique001, top002 and retained top001 comparison, generation provenance and progress brief. No hall geometry, materials, programme realization, walking, model or keeper assessment."
+  },
+  "generation_provenance": "hall-park-build-v2-generation.json",
+  "generation_provenance_sha256": "3298f9b5f9f51357de6cac61e3c26bf474f8f476fdcfbacb4be3b9a4dc6e751a",
+  "created_utc": "2026-10-03T23:06:11.093240+00:00",
+  "keeper_approved": false,
+  "catalogue_activated": false,
+  "next_step": "Lock conditioned cedar category; measured prework with32x22 envelope interpretation, exactlysix outer veranda supports plus recessed supports, complete programme/routes/cameras, dedicated constructor dryrun and unusedpilot. No hall geometry exists.",
+  "builder_sha256": "cf1b0377d92ec289279775c901e9ff398359c934a33e663b661f1b279bab9e8b",
+  "measurement_contract": {
+    "units": "Inferred metres, not survey or structural certification",
+    "envelope_m": [
+      32,
+      22
+    ],
+    "occupied_floors": 1,
+    "floor_z_m": 0.14,
+    "body": "x[-16,16], y[-7.5,11]. The 22m total depth includes a 3.5m open veranda y[-11,-7.5]. Enclosed depth 18.5m.",
+    "roof": "One roof, x[-16.6,16.6], y[-11.4,11.4], ridge y0,z7.4; z=7.4-(2.6/11.4)*abs(y). Metal .12m thick, lining .055m below; all exterior caps terminate at roofz-.175.",
+    "supports": {
+      "outer_columns": 6,
+      "outer_column_x": [
+        -15.6,
+        -9.36,
+        -3.12,
+        3.12,
+        9.36,
+        15.6
+      ],
+      "outer_y": -10.9,
+      "structural_bays": 5,
+      "recessed_y": -7.35,
+      "rear_inferred_y": 10.6,
+      "post": ".28x.30m glulam seats at z.88 on brick pedestal cap top.905; column head roofz(y)-.34. Continuous headers and slope rafters overlap actual columns and timber lining.",
+      "braces": "Paired 1m knee braces seat into columns and continuous headers. Ridge/standing seams/snow rails are hardware, not additional volume folds."
+    },
+    "frontage": "Two open glazed double-door portals centred x-12.5 and12.5, physical cuts through the continuous carrier; left/right sidelights, three wide glazed hall bays, .20m sills/4.25m heights and 3.52m transoms. Both inferred edge sidelights are narrowed to .85m at x-14.65/14.55, clearing the recessed pedestal/cap footprint.",
+    "gables": "Right has exactly three .8x2.1m narrow source-category windows at y[-3.8,.5,4.8]; left has four inferred corresponding service windows. All cedar/gable caps close to actual two roof planes.",
+    "rear": "Inferred windows: high WC x-12.6,w2,z2,h1.1; hall light1 x-6,w3,z1,h2.7; hall light2 x6.24,w4.8,z1,h2.7; double exit x12.5,w1.8,z.14,h3.15. Rear windows clear retained six-post row; no rear wing."
+  },
+  "program_contract": {
+    "main_hall": "x[-7.85,15.7], y[-7.2,10.7], vaulted lining and visible frames. Nine movable tables with 36 chairs in three rows; actual community art and folded-table storage.",
+    "commons": "x[-15.7,-8], y[-7.2,-2]. Vaulted front commons openly connects to the hall behind the common glazed facade. No partition or flat ceiling lands within front glazing. Reception counter and noticeboard on solid left-front pier; pendant reaches actual roof lining.",
+    "corridor": "x[-9.8,-8], y[-2,10.7]. Four real 90-degree leaves swing left into rooms at y0/3.8/7.3/9.8, clear of crosswalls and through-route. Closed service spine begins y-2 and closes to actual roof, flat service ceiling covers only y[-2,11].",
+    "kitchen": "x[-15.7,-9.95], y[-2,2]. Hollow basin/worktop, range/oven/hobs, ceiling-seated extraction duct, refrigerator and preparation island.",
+    "meeting_A": "x[-15.7,-9.95], y[2,5.7]. Movable table, four chairs and wall-seated board. Wall board seats at y5.7 partition, away from exterior window.",
+    "meeting_B": "x[-15.7,-9.95], y[5.7,9]. Separate table, four chairs and wall-seated board. Wall board seats at y9 partition, away from exterior window.",
+    "washroom": "x[-15.7,-9.95], y[9,10.7]. Hollow basin, wall-seated mirror, toilet and floor-supported grab rail. No code/accessibility claim. Mirror uses separate opaque metallic material. Grab rail x-12.2 clears corridor doorway/route.",
+    "site": "46x40m plot. Open park grass remains a separate open-space use; full-width veranda path, main ramp, physically paved bike pad, side/rear paths and seated bench, low beds and four trees. Grass is split around public sidewalk, avoiding coplanar surfaces. Native east route is clipped to the physical paving union.",
+    "artwork": "Backing x[-.9,2.5], y[10.63,10.70], z[1.575,2.925], seated against solid rear wall between windows and posts. Four surface panels at x[-.4,.4,1.2,2].",
+    "storage": "Rack at (13.8,9.2): four .075m-radius casters, centers x[12.95,14.65],y[8.88,9.52],z.215; bottoms meet floor .14 and tops overlap base bottom .25. Folded tables remain on base top .39."
+  },
+  "material_contract": {
+    "lock": "hall-park-material-lock.json",
+    "lock_sha256": "5e99cda9f9a81f1c3d5e89c8117b11f059279656cbbbdf6f033c545530a048f7",
+    "cedar": "Cedar v002 is category-compatible, raw seamless repeat held. Individual .12m boards with .004m joints own cladding morphology. Each board maps only the interior .06..94 fraction of one of eight source board faces. Each complete board height fits one source interval; no horizontal or vertical raw texture wrapping.",
+    "mapping": "Wall texture .96x2.40m authority. Local B.uv_all wrapper explicitly precompensates shared tile scaling, then maps board-local coordinate axes. No shared compiler/delivery edits.",
+    "plinth": "Physical .24x.075m red-brown brick courses over mortar carrier and pedestal bases. Individual brick solids are consolidated in one mesh without per-brick bevel operations; morphology/positions remain explicit geometry. Sharp edges and prototype palette finish remain keeper limitations. All brick solids are clipped in both horizontal and vertical axes against every intersecting aperture, including front windows beginning z.20. The consolidated envelope mesh is not used as a giant native obstacle.",
+    "limits": "Strong cedar knots, golden hue, fitted vertical grain scaling and short-pattern repetition remain keeper limits. Prototype palette metal/glulam/fixtures, optics and schematic landscape require independent complete review."
+  },
+  "circulation_contract": {
+    "native_schema": 2,
+    "routes": [
+      {
+        "name": "Public path to entrance",
+        "points": [
+          [
+            -12.5,
+            -17.2,
+            0.04
+          ],
+          [
+            -12.5,
+            -16,
+            0.04
+          ],
+          [
+            -12.5,
+            -14.7,
+            0.14
+          ],
+          [
+            -12.5,
+            -12.6,
+            0.14
+          ],
+          [
+            -12.5,
+            -6.5,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Commons to hall",
+        "points": [
+          [
+            -12.5,
+            -6.5,
+            0.14
+          ],
+          [
+            -12.5,
+            -4.7,
+            0.14
+          ],
+          [
+            -6,
+            -4.7,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Reception approach",
+        "points": [
+          [
+            -12.5,
+            -4.7,
+            0.14
+          ],
+          [
+            -13.1,
+            -4.7,
+            0.14
+          ],
+          [
+            -13.1,
+            -3.0,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Commons notice board",
+        "points": [
+          [
+            -12.5,
+            -4.7,
+            0.14
+          ],
+          [
+            -14.8,
+            -4.7,
+            0.14
+          ],
+          [
+            -14.8,
+            -6.0,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Service corridor",
+        "points": [
+          [
+            -12.5,
+            -4.7,
+            0.14
+          ],
+          [
+            -9,
+            -4.7,
+            0.14
+          ],
+          [
+            -9,
+            10.1,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Kitchen door",
+        "points": [
+          [
+            -9,
+            -4.7,
+            0.14
+          ],
+          [
+            -9,
+            0,
+            0.14
+          ],
+          [
+            -10.8,
+            0,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Meeting A door",
+        "points": [
+          [
+            -9,
+            -4.7,
+            0.14
+          ],
+          [
+            -9,
+            3.8,
+            0.14
+          ],
+          [
+            -10.8,
+            3.8,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Meeting B door",
+        "points": [
+          [
+            -9,
+            -4.7,
+            0.14
+          ],
+          [
+            -9,
+            7.3,
+            0.14
+          ],
+          [
+            -10.8,
+            7.3,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Washroom door",
+        "points": [
+          [
+            -9,
+            -4.7,
+            0.14
+          ],
+          [
+            -9,
+            9.8,
+            0.14
+          ],
+          [
+            -10.8,
+            9.8,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Kitchen sink",
+        "points": [
+          [
+            -10.8,
+            0,
+            0.14
+          ],
+          [
+            -11.0,
+            0.4,
+            0.14
+          ],
+          [
+            -14,
+            0.4,
+            0.14
+          ],
+          [
+            -14,
+            0.55,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Kitchen preparation",
+        "points": [
+          [
+            -10.8,
+            0,
+            0.14
+          ],
+          [
+            -12.25,
+            0,
+            0.14
+          ],
+          [
+            -12.25,
+            -1.1,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "WC basin",
+        "points": [
+          [
+            -10.8,
+            9.8,
+            0.14
+          ],
+          [
+            -12.4,
+            9.5,
+            0.14
+          ],
+          [
+            -14.4,
+            9.5,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Hall clear west aisle",
+        "points": [
+          [
+            -6,
+            -4.7,
+            0.14
+          ],
+          [
+            -6,
+            9.2,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Hall seating row -3.5",
+        "points": [
+          [
+            -6,
+            -5.3,
+            0.14
+          ],
+          [
+            11.7,
+            -5.3,
+            0.14
+          ],
+          [
+            11.7,
+            -3.5,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Hall seating row 1.5",
+        "points": [
+          [
+            -6,
+            -0.30000000000000004,
+            0.14
+          ],
+          [
+            11.7,
+            -0.30000000000000004,
+            0.14
+          ],
+          [
+            11.7,
+            1.5,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Hall seating row 6.5",
+        "points": [
+          [
+            -6,
+            4.7,
+            0.14
+          ],
+          [
+            11.7,
+            4.7,
+            0.14
+          ],
+          [
+            11.7,
+            6.5,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Community art",
+        "points": [
+          [
+            -6,
+            9.2,
+            0.14
+          ],
+          [
+            0.8,
+            9.2,
+            0.14
+          ],
+          [
+            0.8,
+            9.7,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Event storage",
+        "points": [
+          [
+            11.7,
+            6.5,
+            0.14
+          ],
+          [
+            11.7,
+            9.2,
+            0.14
+          ],
+          [
+            12.4,
+            9.2,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Secondary park exit",
+        "points": [
+          [
+            11.7,
+            -4.7,
+            0.14
+          ],
+          [
+            12.5,
+            -4.7,
+            0.14
+          ],
+          [
+            12.5,
+            -12.65,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Rear exit",
+        "points": [
+          [
+            11.7,
+            6.5,
+            0.14
+          ],
+          [
+            11.7,
+            10.1,
+            0.14
+          ],
+          [
+            12.5,
+            10.1,
+            0.14
+          ],
+          [
+            12.5,
+            12.5,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Veranda threshold",
+        "points": [
+          [
+            -12.5,
+            -12.65,
+            0.14
+          ],
+          [
+            12.5,
+            -12.65,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Bicycle approach",
+        "points": [
+          [
+            -12.5,
+            -12.65,
+            0.14
+          ],
+          [
+            -12.5,
+            -11.6,
+            0.14
+          ],
+          [
+            -17.5,
+            -11.6,
+            0.14
+          ]
+        ]
+      },
+      {
+        "name": "Park bench",
+        "points": [
+          [
+            -12.5,
+            -12.65,
+            0.14
+          ],
+          [
+            17.25,
+            -12.65,
+            0.14
+          ],
+          [
+            17.25,
+            2.8,
+            0.14
+          ],
+          [
+            19,
+            2.8,
+            0.14
+          ],
+          [
+            19,
+            3.15,
+            0.14
+          ]
+        ]
+      }
+    ],
+    "max_step_m": 0.18,
+    "floor": "Actual slab height .14m, public path .04m; 1.3m ramp rises .10m (7.69% inferred slope). Plateau y[-14.7,-13.2], ramp y[-16,-14.7], native ramp/plateau/waypoint and portal endpoint agree. Supported real entrance/rear floor strips and bike/bench pads; no code/accessibility certification.",
+    "obligations": "Run actual app check-walking, garden probes and exact exported GLB floor/headroom ray verification with unchanged tolerances. Inspect complete routes and doors in browser. Furniture, carriers, supports and leaves must be obstacles."
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -64,
+        11
+      ],
+      "target": [
+        0,
+        0,
+        3.5
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        44,
+        -49,
+        27
+      ],
+      "target": [
+        0,
+        0,
+        3.5
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "aerial",
+      "location": [
+        40,
+        -40,
+        55
+      ],
+      "target": [
+        0,
+        0,
+        3.5
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -62,
+        0,
+        13
+      ],
+      "target": [
+        0,
+        0,
+        3.5
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "right_side",
+      "location": [
+        62,
+        0,
+        13
+      ],
+      "target": [
+        0,
+        0,
+        3.5
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        59,
+        14
+      ],
+      "target": [
+        0,
+        0,
+        3.5
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -40,
+        38,
+        26
+      ],
+      "target": [
+        0,
+        0,
+        3.5
+      ],
+      "whole": true,
+      "lens": 52
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -19,
+        -25,
+        6
+      ],
+      "target": [
+        -9,
+        -7.5,
+        2.8
+      ],
+      "whole": false,
+      "lens": 32
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        11,
+        -24,
+        5
+      ],
+      "target": [
+        12.5,
+        -8.5,
+        2
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        0,
+        -10,
+        1.9
+      ],
+      "target": [
+        3,
+        -3.5,
+        1.2
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        25,
+        -25,
+        19
+      ],
+      "target": [
+        9,
+        -7,
+        5.8
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "roof_rear_contact",
+      "location": [
+        26,
+        21,
+        17
+      ],
+      "target": [
+        15,
+        6,
+        5.8
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "single_ridge",
+      "location": [
+        24,
+        0,
+        16
+      ],
+      "target": [
+        3,
+        0,
+        7.4
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "veranda_frame",
+      "location": [
+        -14,
+        -12,
+        2.0
+      ],
+      "target": [
+        -9.36,
+        -10.9,
+        4.6
+      ],
+      "whole": false,
+      "lens": 25
+    },
+    {
+      "name": "pedestal_contact",
+      "location": [
+        -5,
+        -13,
+        1.7
+      ],
+      "target": [
+        -3.12,
+        -10.9,
+        0.9
+      ],
+      "whole": false,
+      "lens": 35
+    },
+    {
+      "name": "veranda_soffit",
+      "location": [
+        -7,
+        -10.0,
+        2.0
+      ],
+      "target": [
+        7,
+        -8.3,
+        5.6
+      ],
+      "whole": false,
+      "lens": 24
+    },
+    {
+      "name": "public_approach",
+      "location": [
+        -10,
+        -19,
+        1.5
+      ],
+      "target": [
+        -12.5,
+        -14,
+        0.14
+      ],
+      "whole": false,
+      "lens": 26
+    },
+    {
+      "name": "entrance_double",
+      "location": [
+        -12.5,
+        -11.0,
+        1.8
+      ],
+      "target": [
+        -12.5,
+        -7.5,
+        1.8
+      ],
+      "whole": false,
+      "lens": 25
+    },
+    {
+      "name": "program_interior",
+      "location": [
+        -6.0,
+        -6.4,
+        1.8
+      ],
+      "target": [
+        5,
+        1.5,
+        1.1
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "hall_rear",
+      "location": [
+        12,
+        9.8,
+        1.8
+      ],
+      "target": [
+        2,
+        -1,
+        1.2
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "hall_frames",
+      "location": [
+        12,
+        4.5,
+        2.0
+      ],
+      "target": [
+        3.12,
+        0,
+        6.5
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "commons",
+      "location": [
+        -9,
+        -6.5,
+        1.8
+      ],
+      "target": [
+        -14.4,
+        -3.5,
+        1.2
+      ],
+      "whole": false,
+      "lens": 23
+    },
+    {
+      "name": "commons_notice",
+      "location": [
+        -14,
+        -5.0,
+        1.8
+      ],
+      "target": [
+        -15.66,
+        -6,
+        1.9
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "service_corridor",
+      "location": [
+        -9,
+        -1.7,
+        1.8
+      ],
+      "target": [
+        -9,
+        8,
+        1.4
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "kitchen",
+      "location": [
+        -10.6,
+        -1.5,
+        1.8
+      ],
+      "target": [
+        -13.5,
+        0.8,
+        1.0
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "kitchen_sink",
+      "location": [
+        -13.3,
+        0.2,
+        1.8
+      ],
+      "target": [
+        -14,
+        1.36,
+        0.98
+      ],
+      "whole": false,
+      "lens": 28
+    },
+    {
+      "name": "meeting_A",
+      "location": [
+        -10.6,
+        2.6,
+        1.8
+      ],
+      "target": [
+        -13,
+        3.9,
+        1.1
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "meeting_B",
+      "location": [
+        -10.6,
+        6.2,
+        1.8
+      ],
+      "target": [
+        -13,
+        7.3,
+        1.1
+      ],
+      "whole": false,
+      "lens": 22
+    },
+    {
+      "name": "washroom",
+      "location": [
+        -10.4,
+        9.5,
+        1.8
+      ],
+      "target": [
+        -13,
+        10.3,
+        0.9
+      ],
+      "whole": false,
+      "lens": 20
+    },
+    {
+      "name": "washroom_sink",
+      "location": [
+        -13.1,
+        9.35,
+        1.8
+      ],
+      "target": [
+        -14.4,
+        10.35,
+        1.0
+      ],
+      "whole": false,
+      "lens": 28
+    },
+    {
+      "name": "washroom_toilet",
+      "location": [
+        -12.6,
+        9.3,
+        1.7
+      ],
+      "target": [
+        -11.5,
+        10.35,
+        0.8
+      ],
+      "whole": false,
+      "lens": 27
+    },
+    {
+      "name": "event_storage",
+      "location": [
+        11,
+        8.2,
+        1.8
+      ],
+      "target": [
+        13.8,
+        9.2,
+        1.1
+      ],
+      "whole": false,
+      "lens": 28
+    },
+    {
+      "name": "community_art",
+      "location": [
+        2.5,
+        8.5,
+        1.8
+      ],
+      "target": [
+        0.8,
+        10.65,
+        2.2
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "rear_exit",
+      "location": [
+        12.5,
+        8.8,
+        1.8
+      ],
+      "target": [
+        12.5,
+        11,
+        1.4
+      ],
+      "whole": false,
+      "lens": 26
+    },
+    {
+      "name": "cedar_board_mapping",
+      "location": [
+        21,
+        -3,
+        4
+      ],
+      "target": [
+        16,
+        0.7,
+        2.5
+      ],
+      "whole": false,
+      "lens": 40
+    },
+    {
+      "name": "bicycle_threshold",
+      "location": [
+        -23,
+        -19,
+        5
+      ],
+      "target": [
+        -17,
+        -12,
+        1
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "park_bench",
+      "location": [
+        24,
+        0,
+        5
+      ],
+      "target": [
+        19,
+        4,
+        0.8
+      ],
+      "whole": false,
+      "lens": 28
+    },
+    {
+      "name": "landscape_approach",
+      "location": [
+        10,
+        -22,
+        5
+      ],
+      "target": [
+        2,
+        -14.5,
+        0.7
+      ],
+      "whole": false,
+      "lens": 30
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "roof_rear_contact",
+    "single_ridge",
+    "veranda_frame",
+    "pedestal_contact",
+    "veranda_soffit",
+    "public_approach",
+    "entrance_double",
+    "program_interior",
+    "hall_rear",
+    "hall_frames",
+    "commons",
+    "commons_notice",
+    "service_corridor",
+    "kitchen",
+    "kitchen_sink",
+    "meeting_A",
+    "meeting_B",
+    "washroom",
+    "washroom_sink",
+    "washroom_toilet",
+    "event_storage",
+    "community_art",
+    "rear_exit",
+    "cedar_board_mapping",
+    "bicycle_threshold",
+    "park_bench",
+    "landscape_approach"
+  ],
+  "camera_contract": "All whole-envelope, glass, single-roof, frame/pedestal/soffit, mapped cedar, each room/fixture and route/site views are authored before geometry. Complete exact-GLB neutral renders plus 1080x1920 phone/source comparisons required.",
+  "assumptions": [
+    "32x22m depth includes veranda; source images are not metric survey.",
+    "Six outer supports and five bays are source-locked; equal 6.24m spacing, hidden rear row and internal framing are inferred.",
+    "Hidden rooms, rear fenestration and fixture arrangements are inferred occupied programme.",
+    "Source/material review closes only its declared categories; no model, keeper, catalogue or main-app runtime approval.",
+    "Finite candidate pass permits at most three repair versions before a new explicit checkpoint."
+  ],
+  "prebuild_revision": {
+    "preserved_builder": "prework/build_park_hall-initial.py",
+    "preserved_measurement": "prework/hall-park-prework-initial.json",
+    "independent_preflight": "prework/hall-park-builder-preflight.json",
+    "independent_preflight_sha256": "37d12abb5966bc8f9210b3541bd53b34f73de4661865a2adb6eee78596683a36",
+    "scope": "Bounded pre-build correction of seven source/code P1 groups; no candidate geometry or review approval yet.",
+    "corrections": [
+      "Vault front commons; begin enclosed service spine/ceiling at y-2, extend commons lamp support to roof.",
+      "Move noticeboard to solid pier, meeting boards to partitions; seat backing/paper/art against actual surfaces.",
+      "Swing internal corridor leaves 90 degrees into rooms, clearing crosswalls and corridor.",
+      "Move WC grab rail to x-12.2 and bicycle approach to y-11.6 before moving west.",
+      "Split grass around sidewalk; clip east native paving union to physical boundaries.",
+      "Use an opaque mirror material.",
+      "Shorten both inferred edge sidelights to clear pedestal caps; both double leaves swing outward."
+    ]
+  },
+  "construction_revision": {
+    "proposed_ramp_review": "prework/hall-park-builder-preflight-v2-ramp-addendum.json",
+    "preserved_v2_measurement": "prework/hall-park-prework-preflight-v2.json",
+    "prior_unskinned_attempt": "prework/hall-park-unskinned-v001/diagnostic-interruption.json",
+    "changes": [
+      "Lengthen ramp to1.3m, move plateau, native triangles, waypoint and portal limit together.",
+      "Consolidate brick box solids into one mesh without changing brick dimensions/contact coordinates. No shared helper/compiler edits.",
+      "Clip all plinth brick solids against every low window/door opening before consolidating the mesh.",
+      "Route kitchen preparation around the actual room leaf, and rear exit around folded-table storage, preserving obstacles/clearance/tolerances."
+    ],
+    "state": "final_prebuild_code_and_native_review_pending",
+    "preserved_v3_builder": "prework/build_park_hall-preflight-v3.py",
+    "preserved_v3_measurement": "prework/hall-park-prework-preflight-v3.json",
+    "preflight_v3_hold": "prework/hall-park-builder-preflight-v3.json",
+    "preflight_v3_sha256": "0a186ad9b9f73ec89df772f1936ebd82ffdbf18ba631b904e29eb5cb2b6913aa",
+    "preserved_native_failures": "prework/hall-park-unskinned-v002/evidence/walking-solver-review.json",
+    "final_unskinned_diagnostic": "prework/hall-park-unskinned-v003"
+  },
+  "finite_repair_v002": {
+    "preserved_candidate": "hall-park-v001",
+    "review_sha256": "3c9ab1b6b4a2313b3c5a593273d55bc72b1e364a3c1bfd4e6933572d18da8248",
+    "scope": "Two independent local P1 correction groups only; exact rear windows/art contacts and floor-supported rack. Sources/front frame/roof unchanged.",
+    "rear_window_schedule": [
+      {
+        "u": -6,
+        "z": 1,
+        "w": 3,
+        "h": 2.7
+      },
+      {
+        "u": 6.24,
+        "z": 1,
+        "w": 4.8,
+        "h": 2.7
+      }
+    ],
+    "required_checks": "Fresh 38 exact-GLB views, 3 boards, 23 app routes, physical floors/headroom and all 462 aperture rays, browser controls/route/cameras/switch/visibility/reload and independent complete review. No approval from static changes."
+  }
+}

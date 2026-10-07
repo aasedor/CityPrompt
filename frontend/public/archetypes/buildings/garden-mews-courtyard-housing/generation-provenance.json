@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-9cc91ba4-5465-444f-984f-74223c891c26.png",
+      "prompt": "Create ONE original architectural reference photograph of a beautiful small Canadian courtyard housing development called Garden Mews. Six homes, exactly six: TWO parallel rows, each row has THREE joined two-storey townhomes. The two rows face inward toward a shared landscaped court, are fully separate from each other, open at both ends; no building across the back. About23m wide overall by23m long, each row18m long by7m deep,8m clear between inward walls. Each individual home is6m along the courtyard,7m deep. Each row therefore shows exactly THREE repeated front-gabled roof bays facing the courtyard, charcoal standing-seam roofs at8.6m ridge and6.5m eaves. Lower floor warm pale cream brick, upper floor rich medium chestnut vertical timber siding; slim dark windows and simple warm timber entrance doors. Each of all SIX homes has ONE individual courtyard front door at grade on the left of a broad two-pane living window, two simple paired bedroom windows upstairs, no balconies. Six small individual patios each2.5m deep and3m along the facade, distinguished with low planting, and a continuous central stone walk open from the foreground to the far end. Low leafy perennials, two modest multi-stem serviceberry trees and a shared small sitting area; keep doors, lower windows and roof bays visible. Camera elevated front-right from just outside the near court entrance, architectural oblique composition showing both complete rows and all six roof bays, whole compound uncropped with generous margin, clear bright soft natural daylight, photographic materials, beautifully restrained urban landscape architecture. This is a reproducible architectural reference, not a fantasy complex. No people, vehicles, signs, text, labels, diagram, building across rear, fourth home in a row or extra storey. Every roof and wall has real supported junctions. Original design, no developer branding.",
+      "input_roles": [],
+      "sha256": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67",
+      "bytes": 3215101,
+      "dimensions_px": [
+        1310,
+        1200
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-9ec5c44b-d97e-45a7-b62b-8c9295731b86.png",
+      "prompt": "Generate ONE matching aerial architectural reference photograph of exactly the Garden Mews shown. Move camera FAR BACK and UP, looking from the front-right corner of the compound at approximately45degrees downward, so BOTH COMPLETE rows including OUTER rear walls and all roofs are fully inside the frame, with15percent clear margin. Absolutely no building edges cut off. Preserve EXACTLY TWO PARALLEL SEPARATE BLOCKS of THREE joined houses each, six dwellings in total, no building across the far court end. Three equal-width front-gabled roof bays on each inward-facing block, two occupied storeys, cream brick lower floor, warm vertical cedar/timber upper and gables, charcoal standing-seam roofs. Overall building-group envelope23m across and23m front to back, each block18m long and7m deep, court8m wide. Same SIX individual doors, living glass alongside each, two separate slim upper windows per home. Preserve six small private stone patios and low cream-brick dividing walls, central continuous stone path, low garden planting and modest multi-stem serviceberry trees. Design modest unseen outer elevations consistently: two simple windows per storey per home and no extra doors/dwellings. Bright natural photographic daylight, grounded contact, original source architecture intact. This is another view of the exact same small six-home project, not an expanded complex. No text, labels, people, signage, parked cars, collage or perspective crop.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "f46549541102072d1acfa6bf430eb187900fd17309f52deccba5182389016288",
+      "bytes": 3479453,
+      "dimensions_px": [
+        1310,
+        1200
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-dbb5749b-b8c6-4c9c-b3ea-1082b5a63acf.png",
+      "prompt": "Create ONE near-vertical overhead aerial reference photograph of EXACTLY the six-home Garden Mews in the two attached photos. Show the complete finite compound with generous margins, all building corners visible, north/far end at top and court entrance at bottom. Preserve exactly two parallel detached ROW BLOCKS, each containing three joined 6m-wide homes, NOT four: THREE charcoal standing-seam gable ridges per block running perpendicular to the long courtyard. Each block approximately7m deep by18m long;8m court gap between. Open rear end, no connecting building. Six inward front doors and individual stone patios, continuous central stone path, low garden beds with small trees and cream brick privacy dividers matching attached project. Roofs fully closed with realistic shared valleys, no solar panels, no dormers or skylights. Keep warm timber upper elevations, cream brick lower elevations, no extra storeys or structures. Camera nearly overhead to show both complete roof footprints, not a streetscape perspective; this is photographic source evidence of the same original project, no labels, text, numbers, collage, diagrams, people or cars.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "fa077b77b88bbeddce308d5077c9f9507c8467323b7e39d03278eafca02f11b7",
+      "bytes": 3268862,
+      "dimensions_px": [
+        1310,
+        1200
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

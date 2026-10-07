@@ -1,0 +1,52 @@
+{
+  "slug": "ubst-timber-cohousing",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-c91ddce6-dfef-43e3-b413-edd3d74653d2.png",
+      "prompt": "Architectural street photograph of an original small Calgary timber co-housing terrace. FOUR identical attached two-storey family homes in a straight row, total frontage 24 metres, depth 10 metres, floor pitch 3.0 metres. A simple continuous flat roof with a thin dark parapet, no pitched roofs. Four clearly readable equal 6-metre bays. Warm natural vertical larch boards throughout, charcoal thin window frames. Every bay has one separate front door on its RIGHT and one wide three-panel living window on its LEFT at ground; above, TWO equal tall rectangular bedroom windows. One continuous modest timber canopy at first-floor level extends 1.6 metres in front across all four bays, supported by FIVE slim timber posts exactly at bay boundaries. No balcony and no railings. Flat shallow canopy complete, simple crisp supports. Small individual paved front patios separated by low planters, common path across front. Modest native planting, a couple people, no trees obscuring architecture. Photoreal contemporary Canadian architecture, soft overcast warm natural colours, building fills frame with generous complete margins, near-frontal eye-level view. Consistent two occupied storeys, not a generic box, no signage or words.",
+      "input_paths": [],
+      "sha256": "fc4d971440925f585255ecead5dbc0e246f9dc1334013a7f6cb66efd6ac14d6c",
+      "bytes": 2739322,
+      "dimensions_px": [
+        1774,
+        887
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-e4644583-ad97-47dc-8f41-0158090c29b5.png",
+      "prompt": "Photograph the EXACT four-home timber terrace in the attached source from a modestly elevated FRONT RIGHT oblique view. Preserve all four bays, two occupied storeys, same proportions and all front windows and doors. Four ground doors each to the right of its three-panel living window, two tall upper windows per bay. Continuous flat roof and thin dark parapet, full-width shallow front canopy on five posts at bay boundaries, NO balcony or rails. Reveal right side and roof. On right side use two upper rectangular windows and one ground service door with a ground window. Complete building in frame with margin, natural realistic larch board materials, same light, no labels. Roof is plain flat membrane, no extra rooms or storeys, front canopy must remain firmly attached to building.",
+      "input_paths": [
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-c91ddce6-dfef-43e3-b413-edd3d74653d2.png"
+      ],
+      "sha256": "e6ea62e41b8f48ced338ee99f7a9fcf9e80eab421815604266821ce67d64da6e",
+      "bytes": 2862825,
+      "dimensions_px": [
+        1774,
+        887
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-1b628f66-dd18-40b0-ba36-2e6939efa8bf.png",
+      "prompt": "Show the EXACT four-bay two-storey timber terrace in the two supplied views from high above its front-right corner. Preserve all eight upper front windows, four lower three-pane living windows with individual doors to their right, full-width attached canopy on five boundary posts, flat rectangular membrane roof and slim dark parapet, warm vertical wood boards. Right side has two upper windows, small lower window and rear-position service door exactly as second source. Reveal whole roof and all four front patios without changing any floor counts or proportions. Building footprint is long and shallow, roof rectangular, no extra volumes or raised floors. Complete building with margins, realistic architectural photograph, same light and materials. No diagrams or labels.",
+      "input_paths": [
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-c91ddce6-dfef-43e3-b413-edd3d74653d2.png",
+        "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-e4644583-ad97-47dc-8f41-0158090c29b5.png"
+      ],
+      "sha256": "988206cafc6a8d4338b00bcd665260a78f08551f524dd67fc12ed0d7bb794c1a",
+      "bytes": 3470346,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "origin": "original_generated_design",
+  "generation_tool": "built-in image_gen",
+  "date": "2026-10-07"
+}

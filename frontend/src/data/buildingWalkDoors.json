@@ -1,0 +1,3223 @@
+{
+  "schema": "cityprompt.measured-walking-doors@1",
+  "entries": [
+    {
+      "variantId": "reference_charcoal_gable_fourplex_v1",
+      "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+      "modelBasename": "reference-fourplex-v1.glb",
+      "floorMaterials": [
+        "Exposed pale cast-concrete stoops",
+        "Warm interior joinery"
+      ],
+      "doors": [
+        {
+          "origin": [
+            0,
+            -5.43,
+            0
+          ],
+          "tangent": [
+            1,
+            0,
+            0
+          ],
+          "inward": [
+            0,
+            1,
+            0
+          ],
+          "u": -9.705,
+          "z": 1.16,
+          "width": 1.07,
+          "height": 2.35,
+          "inset": 0.33
+        },
+        {
+          "origin": [
+            0,
+            -5.12,
+            0
+          ],
+          "tangent": [
+            1,
+            0,
+            0
+          ],
+          "inward": [
+            0,
+            1,
+            0
+          ],
+          "u": -4.3549999999999995,
+          "z": 1.16,
+          "width": 1.07,
+          "height": 2.35,
+          "inset": 0.33
+        },
+        {
+          "origin": [
+            0,
+            -5.3,
+            0
+          ],
+          "tangent": [
+            1,
+            0,
+            0
+          ],
+          "inward": [
+            0,
+            1,
+            0
+          ],
+          "u": 0.995,
+          "z": 1.16,
+          "width": 1.07,
+          "height": 2.35,
+          "inset": 0.33
+        },
+        {
+          "origin": [
+            0,
+            -5.1,
+            0
+          ],
+          "tangent": [
+            1,
+            0,
+            0
+          ],
+          "inward": [
+            0,
+            1,
+            0
+          ],
+          "u": 6.344999999999998,
+          "z": 1.16,
+          "width": 1.07,
+          "height": 2.35,
+          "inset": 0.33
+        }
+      ],
+      "sourceEvidence": "C:\\Users\\andre\\.codex\\worktrees\\public-realm-recovery\\CityPrompt\\tools\\fourplex_pilot\\build_fourplex.py",
+      "sourceEvidenceSha256": "e0fde07723fa611997e18c94964ae401efe1517cda994135a6908026209587a1",
+      "cutCarrierMaterials": [
+        "Deep charcoal running-bond brick",
+        "Warm grey brick joints"
+      ],
+      "clipLeafMaterials": [
+        "Black powder-coated frames and rail",
+        "Layered smoked low-iron glass"
+      ],
+      "thresholdBridges": [
+        {
+          "center": [
+            -9.705,
+            -5.1875,
+            1.21
+          ],
+          "size": [
+            0.85,
+            0.15,
+            0.06
+          ]
+        }
+      ]
+    },
+    {
+      "variantId": "minimalist_infill_brick_monolith",
+      "revision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+      "modelBasename": "buff-brick-infill-clay-v002.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_TRIM",
+        "CLAY_TIMBER"
+      ],
+      "doors": [
+        {
+          "origin": [
+            0.0,
+            -8.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": -1.0,
+          "z": 0.12,
+          "width": 1.55,
+          "height": 2.83,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            0.0,
+            -5.900000095367432,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 3.6,
+          "z": 0.12,
+          "width": 1.16,
+          "height": 2.75,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            0.0,
+            8.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 1.8,
+          "z": 0.12,
+          "width": 1.1,
+          "height": 2.4,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\cohesive-community-2026-09-24\\buildings\\brick-v002\\build-report.json",
+      "sourceEvidenceSha256": "ba3a66b602697a2ef86f8b6091fd52317393fc1c78de6ee82efb34faeb848fa8"
+    },
+    {
+      "variantId": "brewery_crystal_brewhouse",
+      "revision": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782",
+      "modelBasename": "untried-brewhouse-clay-v003.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_STONE",
+        "CLAY_CONCRETE",
+        "CLAY_TIMBER",
+        "CLAY_FLOOR",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            12.0,
+            -14.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 5.0,
+          "z": 1.7,
+          "width": 9.4,
+          "height": 4.7,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            7.0,
+            -7.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 3.5,
+          "z": 1.68,
+          "width": 1.8,
+          "height": 2.7,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            -22.0,
+            -7.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 10.5,
+          "z": 1.68,
+          "width": 1.8,
+          "height": 2.7,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            -7.0,
+            8.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 9.799999999999999,
+          "z": 1.68,
+          "width": 1.8,
+          "height": 2.7,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            -7.0,
+            -7.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "inward": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "u": 5,
+          "z": 1.68,
+          "width": 1.8,
+          "height": 2.7,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            7.0,
+            3.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "inward": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "u": 5,
+          "z": 1.68,
+          "width": 1.8,
+          "height": 2.7,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            12.0,
+            29.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "inward": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "u": 34,
+          "z": 1.68,
+          "width": 1.8,
+          "height": 2.7,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            12.0,
+            3.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 2.5,
+          "z": 1.68,
+          "width": 3.2,
+          "height": 3.2,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            -7.0,
+            13.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 7.5,
+          "z": 1.68,
+          "width": 3.2,
+          "height": 3.2,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            22.0,
+            29.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 5.0,
+          "z": 1.68,
+          "width": 3.2,
+          "height": 3.2,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            7.0,
+            29.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 7.0,
+          "z": 1.68,
+          "width": 3.2,
+          "height": 3.2,
+          "inset": 0.18
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\untried-nine-2026-09-24\\buildings\\brewhouse-v003\\build-report.json",
+      "sourceEvidenceSha256": "c926e2b11a24f171a153ecdfdcebfd48c49ffb14cbc8423dcd350353b94b42dd"
+    },
+    {
+      "variantId": "museum_earth_sheltered",
+      "revision": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106",
+      "modelBasename": "showcase-museum-clay-v005.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_CONCRETE",
+        "CLAY_STONE",
+        "CLAY_TRIM",
+        "CLAY_TIMBER"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -3.4000000953674316,
+            -17.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            1.0,
+            0.0
+          ],
+          "u": 3.4,
+          "z": 0.32,
+          "width": 6.5,
+          "height": 3.35,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            22.0,
+            30.149999618530273,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 10,
+          "z": 0.32,
+          "width": 1.2,
+          "height": 2.15,
+          "inset": 0.18
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\buildings\\museum-v005\\build-report.json",
+      "sourceEvidenceSha256": "8ab20f5e7d4054bf361fa7ee302ce5d0de9a126ca0d9eb3d2eb691023e64b851"
+    },
+    {
+      "variantId": "clapboard_north_end",
+      "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
+      "modelBasename": "untried-clapboard-clay-v003.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_TRIM",
+        "CLAY_TIMBER",
+        "CLAY_CONCRETE"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -5.25,
+            -4.5,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 4.4,
+          "z": 0.6,
+          "width": 1.22,
+          "height": 2.25,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            5.25,
+            4.5,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 7.6,
+          "z": 0.6,
+          "width": 1.0,
+          "height": 2.2,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\untried-nine-2026-09-24\\buildings\\clapboard-v003\\build-report.json",
+      "sourceEvidenceSha256": "23906a7918553a280edd80925f4cb76c9be2b251624177ca22486d90f1a57062"
+    },
+    {
+      "variantId": "machiya_cafe_gallery",
+      "revision": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9",
+      "modelBasename": "favourites-machiya-clay-v005.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_TIMBER",
+        "CLAY_TRIM",
+        "CLAY_STONE",
+        "CLAY_CONCRETE"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -6.0,
+            -8.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 6,
+          "z": 0.23,
+          "width": 8.8,
+          "height": 2.8,
+          "inset": 0.12
+        },
+        {
+          "origin": [
+            6.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 3.65,
+          "z": 0.23,
+          "width": 5.8,
+          "height": 2.65,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            6.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 9.45,
+          "z": 0.23,
+          "width": 1.4,
+          "height": 2.35,
+          "inset": 0.18
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\favourites-2026-09-24\\buildings\\machiya-v005\\build-report.json",
+      "sourceEvidenceSha256": "d887d1a6e2e276b83005303b10afcb8720a97755ca53caf79a4c217da509bf1b"
+    },
+    {
+      "variantId": "cast_iron_italianate",
+      "revision": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f",
+      "modelBasename": "untried-soho-clay-v002.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_TIMBER",
+        "CLAY_TRIM",
+        "CLAY_STONE",
+        "CLAY_CONCRETE"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -12.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 12.0,
+          "z": 0.42,
+          "width": 2.3314285714285714,
+          "height": 3.9400000000000004,
+          "inset": 0.23
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\untried-nine-2026-09-24\\buildings\\soho-v002\\build-report.json",
+      "sourceEvidenceSha256": "f65b122001f43c222446dd2a5a65bf0bd186bc01cb5a845e28c286837e55da68"
+    },
+    {
+      "variantId": "art_deco_streamline_moderne",
+      "revision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+      "modelBasename": "showcase-streamline-clay-v003.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_TRIM",
+        "CLAY_TIMBER"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -12.0,
+            -12.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 17.5,
+          "z": 0.31,
+          "width": 4.8,
+          "height": 2.75,
+          "inset": 0.18
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\buildings\\streamline-v003\\build-report.json",
+      "sourceEvidenceSha256": "46147c782aa0de3795737493eff64fe878aa2489db364dd09875538ba773bb8f"
+    },
+    {
+      "variantId": "rndsqr_midrise_terraced_garden",
+      "revision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+      "modelBasename": "showcase-terrace-clay-v006.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_TRIM",
+        "CLAY_CONCRETE",
+        "CLAY_TIMBER",
+        "CLAY_STONE"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -17.0,
+            -14.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 14.875,
+          "z": 0.25,
+          "width": 3.9699999999999998,
+          "height": 3.12,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            17.0,
+            -14.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "inward": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "u": 16.333333333333336,
+          "z": 0.25,
+          "width": 4.386666666666667,
+          "height": 3.12,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            -17.0,
+            14.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "inward": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "u": 16.333333333333336,
+          "z": 0.25,
+          "width": 4.386666666666667,
+          "height": 3.12,
+          "inset": 0.18
+        },
+        {
+          "origin": [
+            17.0,
+            14.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 14.875,
+          "z": 0.25,
+          "width": 3.9699999999999998,
+          "height": 3.12,
+          "inset": 0.18
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\buildings\\terrace-v006\\build-report.json",
+      "sourceEvidenceSha256": "e5fac72e81aa374d5e748e17fcf1d6a6d669d87ceaa5422e8c4e060840d46f3a"
+    },
+    {
+      "variantId": "rec_centre_timber_hall",
+      "revision": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf",
+      "modelBasename": "favourites-hall-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_CONCRETE",
+        "CLAY_FLOOR",
+        "CLAY_TIMBER",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            9.0,
+            11.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 9,
+          "z": 0.35660377358490564,
+          "width": 1.8,
+          "height": 3.9150943396226414,
+          "inset": 0.18
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\favourites-2026-09-24\\buildings\\hall-v004\\build-report.json",
+      "sourceEvidenceSha256": "371985120aa27906b6e2683ec65f13ddabd3b7bffb4c0f0c41cbf7f9fea8ef42"
+    },
+    {
+      "variantId": "contemporary_townhouse_timber_screen",
+      "revision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+      "modelBasename": "timber-screen-townhouse-clay-v002.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_STONE",
+        "CLAY_TIMBER",
+        "CLAY_CONCRETE",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            0.0,
+            -8.5,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 0,
+          "z": 0.15,
+          "width": 3.45,
+          "height": 2.65,
+          "inset": 0.23
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\cohesive-community-2026-09-24\\buildings\\timber-v002\\build-report.json",
+      "sourceEvidenceSha256": "a811e4e649b909890f4cc88c9c5258d64877e479a858088d59660db4bc6e8236"
+    },
+    {
+      "variantId": "beltline_brick_modern",
+      "revision": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618",
+      "modelBasename": "calgary-beltline-mid-rise-clay-v005.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_TRIM",
+        "CLAY_TIMBER",
+        "CLAY_FLOOR"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -15.0,
+            -15.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 14.7,
+          "z": 0.12,
+          "width": 3.0,
+          "height": 3.48,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            15.0,
+            -15.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "inward": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "u": 14.7,
+          "z": 0.12,
+          "width": 3.0,
+          "height": 3.48,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            -15.0,
+            15.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "inward": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "u": 14.7,
+          "z": 0.12,
+          "width": 3.0,
+          "height": 3.48,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            15.0,
+            15.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 14.7,
+          "z": 0.12,
+          "width": 3.0,
+          "height": 3.48,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\priority-upgrades-2026-09-24\\beltline-v005\\build-report.json",
+      "sourceEvidenceSha256": "7c59f15fcebd7ce7d5bd664943a7963fcbb1f38afa6afa719aaa282c3b77ecac"
+    },
+    {
+      "variantId": "infill_flat_roof_minimal",
+      "revision": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74",
+      "modelBasename": "calgary-infill-flat-roof-minimal-clay-v007.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_TIMBER",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            0.0,
+            -4.28000020980835,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 3.12,
+          "z": 0.32,
+          "width": 1.19,
+          "height": 2.49,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            3.8499999046325684,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "inward": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "u": -3.64,
+          "z": 0.47,
+          "width": 1.08,
+          "height": 2.35,
+          "inset": 0.135
+        },
+        {
+          "origin": [
+            0.0,
+            4.880000114440918,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": -0.72,
+          "z": 0.32,
+          "width": 0.92,
+          "height": 2.22,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\priority-upgrades-2026-09-24\\infill-v007\\build-report.json",
+      "sourceEvidenceSha256": "fabda077a27b7588ef9597e1b5b879049376c2307313f447405106eacbf4dfb9"
+    },
+    {
+      "variantId": "infill_duplex",
+      "revision": "1414b17d3ebec4aa87529da16dcc3a8f10305b51eaa3d129fb5a5c6c0d296f92",
+      "modelBasename": "calgary-side-by-side-duplex-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FLOOR",
+        "CLAY_FOUNDATION",
+        "CLAY_TIMBER",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            0.0,
+            -7.5,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 0.8499999999999996,
+          "z": 0.9,
+          "width": 1.03,
+          "height": 2.25,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            0.0,
+            -7.150000095367432,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": -0.8499999999999996,
+          "z": 0.9,
+          "width": 1.03,
+          "height": 2.25,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            0.0,
+            7.5,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": -0.8499999999999996,
+          "z": 0.9,
+          "width": 1.03,
+          "height": 2.25,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            0.0,
+            7.5,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 0.8499999999999996,
+          "z": 0.9,
+          "width": 1.03,
+          "height": 2.25,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-cycle-2026-09-05\\duplex\\v004\\build-report.json",
+      "sourceEvidenceSha256": "64b039e334c7416c47bb11742252b494cac9edbc53c60fdb431d978862fbba40"
+    },
+    {
+      "variantId": "montreal_duplex_plateau",
+      "revision": "28fe10a3f8c5fc2e96b1e7c01382d6ec8ce546410a4976cd13c35b26c5cc4ab3",
+      "modelBasename": "montreal-plateau-duplex-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FLOOR",
+        "CLAY_FOUNDATION",
+        "CLAY_TIMBER",
+        "CLAY_TRIM",
+        "CLAY_HARDWARE"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -2.1500000953674316,
+            -6.599999904632568,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            1.0,
+            0.0
+          ],
+          "u": 1.47,
+          "z": 0.65,
+          "width": 0.91,
+          "height": 2.65,
+          "inset": 0.14
+        },
+        {
+          "origin": [
+            -5.199999809265137,
+            6.599999904632568,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "inward": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "u": 5.35,
+          "z": 0.65,
+          "width": 1.0,
+          "height": 2.65,
+          "inset": 0.14
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\catalogue-batch-2026-09-06\\montreal-v004\\build-report.json",
+      "sourceEvidenceSha256": "9a467e3114b1e71055fcc74911cc8dbcbf81fb4348dc3d9af5bf5b9f94c4dafd",
+      "thresholdBridges": [
+        {
+          "center": [
+            -0.6800000953674316,
+            -6.64,
+            0.615
+          ],
+          "size": [
+            0.65,
+            0.2,
+            0.07
+          ]
+        }
+      ]
+    },
+    {
+      "variantId": "courtyard_family_brick_modern",
+      "revision": "6aedca74a28fd10deddda1659556968b86c9b32310b0697523559888b4ecd55a",
+      "modelBasename": "courtyard-brick-modern-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FLOOR",
+        "CLAY_FOUNDATION",
+        "CLAY_TIMBER",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            0.0,
+            -3.9000000953674316,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": -8,
+          "z": 0.12,
+          "width": 1.2,
+          "height": 2.25,
+          "inset": 0.14
+        },
+        {
+          "origin": [
+            0.0,
+            -3.9000000953674316,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 8,
+          "z": 0.12,
+          "width": 1.2,
+          "height": 2.25,
+          "inset": 0.14
+        },
+        {
+          "origin": [
+            -11.5,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "inward": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "u": 2.8,
+          "z": 0.12,
+          "width": 1.05,
+          "height": 2.25,
+          "inset": 0.14
+        },
+        {
+          "origin": [
+            11.5,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "inward": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "u": 2.8,
+          "z": 0.12,
+          "width": 1.05,
+          "height": 2.25,
+          "inset": 0.14
+        },
+        {
+          "origin": [
+            0.0,
+            3.9000000953674316,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": -8,
+          "z": 0.12,
+          "width": 1.2,
+          "height": 2.25,
+          "inset": 0.14
+        },
+        {
+          "origin": [
+            0.0,
+            3.9000000953674316,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 8,
+          "z": 0.12,
+          "width": 1.2,
+          "height": 2.25,
+          "inset": 0.14
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\astra-model-batch-2026-09-22\\courtyard-v004\\build-report.json",
+      "sourceEvidenceSha256": "17fbe6f81c1ed62937d9ea8ed4b6a10d1257a5097adf3dae0d47e627297ce4b3"
+    },
+    {
+      "variantId": "bungalow_postwar_ranch",
+      "revision": "f601299cdb32072119e5484fe3206ddc4aa2263e88cea703a79158f018238153",
+      "modelBasename": "calgary-inner-city-bungalow-clay-v005.glb",
+      "floorMaterials": [
+        "CLAY_FLOOR",
+        "CLAY_FOUNDATION",
+        "CLAY_TIMBER",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -5.0,
+            -6.199999809265137,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 4.85,
+          "z": 0.62,
+          "width": 0.94,
+          "height": 2.18,
+          "inset": 0.14
+        },
+        {
+          "origin": [
+            5.0,
+            6.199999809265137,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 3,
+          "z": 0.62,
+          "width": 0.94,
+          "height": 2.15,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\ranch-v005\\build-report.json",
+      "sourceEvidenceSha256": "a8759846f1892fe258dcf8dc3d6b13f54aac6628b05a9dd619bb09183e435596"
+    },
+    {
+      "variantId": "toronto_foursquare_red_brick",
+      "revision": "3a6848fc6aa78151f3059b75f441092c4c1ff60ef4c17ccd0028ea27153c9dd7",
+      "modelBasename": "toronto-edwardian-foursquare-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FLOOR",
+        "CLAY_FOUNDATION",
+        "CLAY_TIMBER",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -5.0,
+            -6.199999809265137,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 5,
+          "z": 0.85,
+          "width": 1.05,
+          "height": 2.35,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            5.0,
+            6.199999809265137,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 5,
+          "z": 0.85,
+          "width": 1,
+          "height": 2.25,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\building-trio-2026-09-06\\foursquare-v004\\build-report.json",
+      "sourceEvidenceSha256": "8e65b1ce643f0d84a487d5c4524aa91f9aa2e9e6d01eac4492feb62f45021043"
+    },
+    {
+      "variantId": "detached_infill_rammed_earth",
+      "revision": "4c198bf2caed851c04e77f4c731a38c73077df5a43a44c1880bc0a3075dbc6d5",
+      "modelBasename": "detached_contemporary_infill-clay-v003.glb",
+      "floorMaterials": [
+        "CLAY_FLOOR",
+        "CLAY_FOUNDATION",
+        "CLAY_TIMBER",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -5.699999809265137,
+            -9.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 2.1,
+          "z": 0.16,
+          "width": 3.4,
+          "height": 2.68,
+          "inset": 0.14
+        },
+        {
+          "origin": [
+            -5.699999809265137,
+            -7.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 8.8,
+          "z": 0.16,
+          "width": 4.0,
+          "height": 2.68,
+          "inset": 0.14
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\building-next3-2026-09-06\\infill-v003\\build-report.json",
+      "sourceEvidenceSha256": "4d4ceb24ea7816c6fa68fe4a019f7a83770cfafab60668ea1b586ea789c2447d"
+    },
+    {
+      "variantId": "glass_tower_blue_reflective",
+      "revision": "de6faa2fa3b7abe467b6902767f42e26d0f45813fa696b9aed1abfa5fe2c9c43",
+      "modelBasename": "glass_tower_podium_modern-clay-v003.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_TRIM",
+        "CLAY_FLOOR",
+        "CLAY_TIMBER"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -13.0,
+            -12.5,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 11.700000000000001,
+          "z": 0.2,
+          "width": 2.46,
+          "height": 2.7,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            -13.0,
+            -12.5,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 14.3,
+          "z": 0.2,
+          "width": 2.46,
+          "height": 2.7,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\glass-v003\\build-report.json",
+      "sourceEvidenceSha256": "46019898839f9dc009790c362aa10aed609670fa80b19303fd31541436161853",
+      "cutCarrierMaterials": [
+        "CLAY_TRIM"
+      ]
+    },
+    {
+      "variantId": "vancouverism_classic",
+      "revision": "ddcdf3b267589c54d0f9d3949157c7745a4efb06a9a13e53685e20ac31e6e172",
+      "modelBasename": "vancouverism-tower-podium-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_TRIM",
+        "CLAY_TIMBER",
+        "CLAY_FLOOR"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -21.0,
+            -19.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            1.0,
+            0.0
+          ],
+          "u": 27.928571428571427,
+          "z": 0.48000000000000004,
+          "width": 2.2685714285714282,
+          "height": 2.8,
+          "inset": 0.19
+        },
+        {
+          "origin": [
+            -21.0,
+            -19.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            1.0,
+            0.0
+          ],
+          "u": 30.357142857142854,
+          "z": 0.48000000000000004,
+          "width": 2.2685714285714282,
+          "height": 2.8,
+          "inset": 0.19
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\skyscraper-trio-2026-09-08\\vancouver-v004\\build-report.json",
+      "sourceEvidenceSha256": "592a00ead3e509c7ad3ef14632b3cea7cb4b52d4e79cbcba6a0f6b7ddb25fba7"
+    },
+    {
+      "variantId": "market_historic_iron_glass",
+      "revision": "ea1d0d55ccfe5de9ce74bd8a8e2b998748f045728bd674195cb1f6f1323e0074",
+      "modelBasename": "showcase-market-clay-v006.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_STONE",
+        "CLAY_TRIM",
+        "CLAY_TIMBER"
+      ],
+      "doors": [
+        {
+          "origin": [
+            17.0,
+            -24.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "inward": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "u": 24,
+          "z": 0.26,
+          "width": 5,
+          "height": 7.04,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -17.0,
+            24.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "inward": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "u": 24,
+          "z": 0.26,
+          "width": 5,
+          "height": 7.04,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            17.0,
+            24.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 17,
+          "z": 0.26,
+          "width": 5,
+          "height": 4.3,
+          "inset": 0.16
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\showcase-nine-2026-09-27\\buildings\\market-v006\\build-report.json",
+      "sourceEvidenceSha256": "cadd73e53fa4674a3b7618c3ca62a90f98af1073ea8caa9342f6a58d67988f23"
+    },
+    {
+      "variantId": "biophilic_mass_timber_pool",
+      "revision": "f81cd1aadb24768d513cea6a87fa9ff26e5ec5736349d195d195c257f0ed9041",
+      "modelBasename": "showcase-aquatic-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_TIMBER",
+        "CLAY_TRIM",
+        "CLAY_STONE"
+      ],
+      "doors": [
+        {
+          "origin": [
+            0,
+            -24,
+            0
+          ],
+          "tangent": [
+            1,
+            0,
+            0
+          ],
+          "inward": [
+            0,
+            1,
+            0
+          ],
+          "u": 2.9,
+          "z": 0.28,
+          "width": 1.9,
+          "height": 2.7,
+          "inset": 0
+        },
+        {
+          "origin": [
+            0,
+            -24,
+            0
+          ],
+          "tangent": [
+            1,
+            0,
+            0
+          ],
+          "inward": [
+            0,
+            1,
+            0
+          ],
+          "u": 5.1,
+          "z": 0.28,
+          "width": 1.9,
+          "height": 2.7,
+          "inset": 0
+        }
+      ],
+      "sourceEvidence": "C:\\Users\\andre\\.codex\\worktrees\\public-realm-recovery\\CityPrompt\\tools\\showcase_building_trio\\aquatic.py",
+      "sourceEvidenceSha256": "d046ce407a7714823ab38f00c3d31300f5d30ec48fb123a9bef5cf533dc5198f",
+      "clipSharedGlass": true
+    },
+    {
+      "variantId": "art_deco_cream_terracotta",
+      "revision": "a0b4f53281c43b0cd3a98f057a5da4ea0de5f56476e7a6227074d79e61a54b80",
+      "modelBasename": "showcase-tower-clay-v005.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_STONE",
+        "CLAY_FLOOR",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -16.0,
+            -14.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            1.0,
+            0.0
+          ],
+          "u": 16.0,
+          "z": 0.22,
+          "width": 2.1236363636363635,
+          "height": 3.15,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            16.0,
+            -14.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "inward": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "u": 15.399999999999999,
+          "z": 0.22,
+          "width": 2.044,
+          "height": 3.15,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -16.0,
+            14.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "inward": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "u": 15.399999999999999,
+          "z": 0.22,
+          "width": 2.044,
+          "height": 3.15,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            16.0,
+            14.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 16.0,
+          "z": 0.22,
+          "width": 2.1236363636363635,
+          "height": 3.15,
+          "inset": 0.16
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\showcase-nine-2026-09-27\\buildings\\tower-v005\\build-report.json",
+      "sourceEvidenceSha256": "42846e2bd1b6c12c7495c05fc5ebd4ab1e34b340da01125404f3a20f0eacc599"
+    },
+    {
+      "variantId": "nordic_timber_mass_timber",
+      "revision": "b640a836d5364e6d06e3dcd2f84b63cf56d233f4185b251383a717da9267cbe3",
+      "modelBasename": "autumn-timber-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_TIMBER",
+        "CLAY_STONE",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -1.8400001525878906,
+            -8.800000190734863,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 1.84,
+          "z": 0.2,
+          "width": 3.2,
+          "height": 2.86,
+          "inset": 0.16
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\timber-v004\\build-report.json",
+      "sourceEvidenceSha256": "e1fefbdd078c25c41216c1cb1ac7df277958bb4ea1b75361d6655d0188db7299"
+    },
+    {
+      "variantId": "med_villa_tuscan",
+      "revision": "4d7c8d4647cd5b384ba36124c6fd3b16f9bb82c1a26ccdce8b05a66d28a5c84c",
+      "modelBasename": "autumn-villa-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_STONE",
+        "CLAY_TRIM",
+        "CLAY_FLOOR",
+        "CLAY_TIMBER"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -9.0,
+            -3.5,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 3,
+          "z": 0.16,
+          "width": 1.55,
+          "height": 1.89,
+          "inset": 0.16
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\villa-v004\\build-report.json",
+      "sourceEvidenceSha256": "7e268ffeb4a325468ff929cea07baa620e8012acde3ea8746e2c958d341d71d0"
+    },
+    {
+      "variantId": "deco_theater_movie_palace",
+      "revision": "318112940fbccf95c705771ec73498bb30a99525d3a2f33801e3572c3e00c5c1",
+      "modelBasename": "autumn-cinema-clay-v004.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_STONE",
+        "CLAY_TIMBER",
+        "CLAY_TRIM"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -12.0,
+            -19.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 7,
+          "z": 0.2,
+          "width": 1.75,
+          "height": 3.25,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -12.0,
+            -19.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 9,
+          "z": 0.2,
+          "width": 1.75,
+          "height": 3.25,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -12.0,
+            -19.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 11,
+          "z": 0.2,
+          "width": 1.75,
+          "height": 3.25,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -12.0,
+            -19.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 13,
+          "z": 0.2,
+          "width": 1.75,
+          "height": 3.25,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -12.0,
+            -19.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 15,
+          "z": 0.2,
+          "width": 1.75,
+          "height": 3.25,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -12.0,
+            -19.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 17,
+          "z": 0.2,
+          "width": 1.75,
+          "height": 3.25,
+          "inset": 0.16
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\autumn-nine-2026-09-30\\buildings\\cinema-v004\\build-report.json",
+      "sourceEvidenceSha256": "502866f4a86fdb19504430b597e410f826b3910f7f835b7f69da01c02eb5a251"
+    },
+    {
+      "variantId": "mass_timber_biophilic_barn",
+      "revision": "7515d9c43e64c9b172d937b754b1d22ce71a89066fc2e57d4e6d0b9c8248449b",
+      "modelBasename": "neighbourhood-library-clay-v003.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_TRIM",
+        "CLAY_TIMBER",
+        "CLAY_FLOOR"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -17.0,
+            -15.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "u": 17,
+          "z": 0.24,
+          "width": 8.8,
+          "height": 3.8,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            17.0,
+            15.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 17,
+          "z": 0.24,
+          "width": 8.8,
+          "height": 3.8,
+          "inset": 0.16
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\library-v003\\build-report.json",
+      "sourceEvidenceSha256": "57ae177c1f32adb1e228aa0a9833e7545abad2da90815f11c7953c1af905f098"
+    },
+    {
+      "variantId": "parisian_corner_cafe_culture",
+      "revision": "bbfd154388f29ed53aa80369635d2fdac76a2e4e9518650027268525d3ddf47b",
+      "modelBasename": "neighbourhood-corner-cafe-clay-v010.glb",
+      "floorMaterials": [
+        "CLAY_FOUNDATION",
+        "CLAY_FLOOR",
+        "CLAY_TRIM",
+        "CLAY_STONE",
+        "CLAY_TIMBER"
+      ],
+      "doors": [
+        {
+          "origin": [
+            -3.0,
+            -18.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            1.0,
+            0.0
+          ],
+          "u": 3.0,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            3.0,
+            -18.0,
+            0.0
+          ],
+          "tangent": [
+            0.8137334585189819,
+            0.5812382102012634,
+            0.0
+          ],
+          "inward": [
+            -0.5812382102012634,
+            0.8137334585189819,
+            0.0
+          ],
+          "u": 2.1505813167606567,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            3.0,
+            -18.0,
+            0.0
+          ],
+          "tangent": [
+            0.8137334585189819,
+            0.5812382102012634,
+            0.0
+          ],
+          "inward": [
+            -0.5812382102012634,
+            0.8137334585189819,
+            0.0
+          ],
+          "u": 6.45174395028197,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.8137334585189819,
+            -0.5812382102012634,
+            0.0
+          ],
+          "inward": [
+            0.5812382102012634,
+            0.8137334585189819,
+            0.0
+          ],
+          "u": 2.1505813167606567,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.8137334585189819,
+            -0.5812382102012634,
+            0.0
+          ],
+          "inward": [
+            0.5812382102012634,
+            0.8137334585189819,
+            0.0
+          ],
+          "u": 6.45174395028197,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 1.6818181818181819,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 5.045454545454546,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 8.409090909090908,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 11.772727272727273,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 15.136363636363637,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 18.5,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 21.863636363636363,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 25.227272727272727,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 28.59090909090909,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 31.954545454545453,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            10.0,
+            -13.0,
+            0.0
+          ],
+          "tangent": [
+            0.3243243396282196,
+            0.9459459781646729,
+            0.0
+          ],
+          "inward": [
+            -0.9459459781646729,
+            0.3243243396282196,
+            0.0
+          ],
+          "u": 35.31818181818182,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 1.7786456215091246,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 5.3359368645273735,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 8.893228107545623,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 12.450519350563873,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 16.00781059358212,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 19.56510183660037,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 23.122393079618618,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 26.67968432263687,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -18.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            0.24987801909446716,
+            -0.9682773351669312,
+            0.0
+          ],
+          "inward": [
+            0.9682773351669312,
+            0.24987801909446716,
+            0.0
+          ],
+          "u": 30.23697556565512,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -5.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            -0.20601047575473785,
+            0.9785497784614563,
+            0.0
+          ],
+          "inward": [
+            -0.9785497784614563,
+            -0.20601047575473785,
+            0.0
+          ],
+          "u": 1.94164878389476,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -5.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            -0.20601047575473785,
+            0.9785497784614563,
+            0.0
+          ],
+          "inward": [
+            -0.9785497784614563,
+            -0.20601047575473785,
+            0.0
+          ],
+          "u": 5.82494635168428,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -5.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            -0.20601047575473785,
+            0.9785497784614563,
+            0.0
+          ],
+          "inward": [
+            -0.9785497784614563,
+            -0.20601047575473785,
+            0.0
+          ],
+          "u": 9.7082439194738,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -5.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            -0.20601047575473785,
+            0.9785497784614563,
+            0.0
+          ],
+          "inward": [
+            -0.9785497784614563,
+            -0.20601047575473785,
+            0.0
+          ],
+          "u": 13.591541487263319,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -5.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            -0.20601047575473785,
+            0.9785497784614563,
+            0.0
+          ],
+          "inward": [
+            -0.9785497784614563,
+            -0.20601047575473785,
+            0.0
+          ],
+          "u": 17.47483905505284,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            13.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -0.3387194871902466,
+            -0.940887451171875,
+            0.0
+          ],
+          "inward": [
+            0.940887451171875,
+            -0.3387194871902466,
+            0.0
+          ],
+          "u": 1.8979043222266319,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            13.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -0.3387194871902466,
+            -0.940887451171875,
+            0.0
+          ],
+          "inward": [
+            0.940887451171875,
+            -0.3387194871902466,
+            0.0
+          ],
+          "u": 5.693712966679896,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            13.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -0.3387194871902466,
+            -0.940887451171875,
+            0.0
+          ],
+          "inward": [
+            0.940887451171875,
+            -0.3387194871902466,
+            0.0
+          ],
+          "u": 9.489521611133158,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            13.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -0.3387194871902466,
+            -0.940887451171875,
+            0.0
+          ],
+          "inward": [
+            0.940887451171875,
+            -0.3387194871902466,
+            0.0
+          ],
+          "u": 13.285330255586425,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            13.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -0.3387194871902466,
+            -0.940887451171875,
+            0.0
+          ],
+          "inward": [
+            0.940887451171875,
+            -0.3387194871902466,
+            0.0
+          ],
+          "u": 17.081138900039686,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            13.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -0.3387194871902466,
+            -0.940887451171875,
+            0.0
+          ],
+          "inward": [
+            0.940887451171875,
+            -0.3387194871902466,
+            0.0
+          ],
+          "u": 20.876947544492953,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            13.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -0.3387194871902466,
+            -0.940887451171875,
+            0.0
+          ],
+          "inward": [
+            0.940887451171875,
+            -0.3387194871902466,
+            0.0
+          ],
+          "u": 24.672756188946213,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -1.0,
+            -5.0,
+            0.0
+          ],
+          "tangent": [
+            -0.7071067690849304,
+            0.7071067690849304,
+            0.0
+          ],
+          "inward": [
+            -0.7071067690849304,
+            -0.7071067690849304,
+            0.0
+          ],
+          "u": 2.8284271247461903,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            4.0,
+            -3.0,
+            0.0
+          ],
+          "tangent": [
+            -0.9284766912460327,
+            -0.3713906705379486,
+            0.0
+          ],
+          "inward": [
+            0.3713906705379486,
+            -0.9284766912460327,
+            0.0
+          ],
+          "u": 2.692582403567252,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -9.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 2.25,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            -9.0,
+            18.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 6.75,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            22.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 2.25,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        },
+        {
+          "origin": [
+            22.0,
+            22.0,
+            0.0
+          ],
+          "tangent": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "inward": [
+            -0.0,
+            -1.0,
+            0.0
+          ],
+          "u": 6.75,
+          "z": 0.2,
+          "width": 2.7,
+          "height": 3.2,
+          "inset": 0.16
+        }
+      ],
+      "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\cafe-v010\\build-report.json",
+      "sourceEvidenceSha256": "7ca1fb1b4dd8d5687a765eb83adc857438e56b52efdf58b69fdc937031429645"
+    }
+  ]
+}

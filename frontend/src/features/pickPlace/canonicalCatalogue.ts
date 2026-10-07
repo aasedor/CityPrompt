@@ -1,14 +1,15 @@
 import {
-  BUILDING_AESTHETIC_OPTIONS_V2, OPENSPACE_AESTHETIC_OPTIONS_V2, ROADWAY_AESTHETIC_OPTIONS_V2,
+  BUILDING_AESTHETIC_OPTIONS_V2, OPENSPACE_AESTHETIC_OPTIONS_V2, ROADWAY_AESTHETIC_OPTIONS_V2, SAVED_BUILDING_AESTHETIC_OPTIONS, SAVED_OPENSPACE_AESTHETIC_OPTIONS, SAVED_ROADWAY_AESTHETIC_OPTIONS,
   type AestheticOption, type ArchetypeVariant,
 } from '@/components/viewer/aestheticCatalog';
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, MANUAL_STREET_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
+import { catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
@@ -19,6 +20,20 @@ export const CANONICAL_DOMAINS = {
   park_plaza: OPENSPACE_AESTHETIC_OPTIONS_V2,
   street_pathway: ROADWAY_AESTHETIC_OPTIONS_V2,
 };
+
+/** Reference photography is presentation metadata; it cannot change which
+ * exact model, dimensions, or revision is placed. Preserve the full reference
+ * lookup before the inspector's validation-only variant filtering. */
+const REFERENCE_DOMAINS = {
+  building: SAVED_BUILDING_AESTHETIC_OPTIONS,
+  park_plaza: SAVED_OPENSPACE_AESTHETIC_OPTIONS,
+  street_pathway: SAVED_ROADWAY_AESTHETIC_OPTIONS,
+};
+function referenceImage(domain: CatalogueDomain, archetypeId: string, variantId: string, fallback: string) {
+  const source = REFERENCE_DOMAINS[domain].find(option => option.id === archetypeId);
+  return source?.variants?.find(variant => variant.id === variantId)?.thumbnailUrl
+    || source?.catalogCardImageUrl || source?.photoUrl || fallback;
+}
 
 /** References own discovery; the runtime registry alone owns detailed placement readiness. */
 export function catalogueChoices(domains = CANONICAL_DOMAINS, assets = CATALOGUE_ASSETS): CanonicalChoice[] {
@@ -64,18 +79,55 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
     const asset = matches.find(candidate => candidate.id === entry.placement_id) ?? matches[0];
     if (!asset) { unavailable.push(entry); continue; }
     const source = CANONICAL_DOMAINS[domain].find(option => option.id === entry.archetype_id);
+    // Expansion variants already have exact runtime registrations, but their
+    // parent can be absent from the validation-only inspector catalogue.
+    // Restore browsing tags alone: never revive the parent's other variants,
+    // presets, floor counts, references, or runtime eligibility.
+    const styleSource = source ?? (domain === 'building' ? SAVED_BUILDING_AESTHETIC_OPTIONS.find(option => option.id === entry.archetype_id) : undefined);
     choices.push({ id: `${domain}:${entry.archetype_id}:${entry.variant_id}`, domain, placements: [asset], option: {
-      ...source, id: entry.archetype_id, label: asset.label, description: asset.description,
-      photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
-      variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }],
+      ...source, categoryId: styleSource?.categoryId, generationTags: styleSource?.generationTags,
+      id: entry.archetype_id, label: asset.label, description: asset.description,
+      photoUrl: referenceImage(domain, entry.archetype_id, entry.variant_id, asset.thumbnail), calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+      variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: referenceImage(domain, entry.archetype_id, entry.variant_id, asset.thumbnail) }],
     } });
   }
   return { choices, unavailable };
 }
 
 // Local validation roster: no legacy variants or generic massing fallbacks in discovery.
-const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries]);
-export const CANONICAL_CHOICES = resolvedRoster.choices;
+const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries,
+  ...[...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS].map(asset => ({ domain: 'building',
+    archetype_id: String(asset.properties.development_archetype_id),
+    variant_id: asset.model.variantId, placement_id: asset.id }))]);
+/** Supplemental choices must share the reviewed registry's exact identity and
+ * browsing classification, just like the resolved validation roster. */
+function registeredSupplement(asset: CatalogueAsset): CatalogueAsset {
+  const registered = CATALOGUE_ASSETS.find(candidate => candidate.id === asset.id
+    && candidate.model.variantId === asset.model.variantId && isPlaceable(candidate));
+  if (!registered) throw new Error(`Missing supplemental catalogue registration: ${asset.id}`);
+  return registered;
+}
+export const CANONICAL_CHOICES: CanonicalChoice[] = [
+  ...resolvedRoster.choices,
+  ...PATHWAY_ASSETS.map(registeredSupplement).map(asset => ({
+    id: `street_pathway:${asset.properties.road_archetype_id}:${asset.model.variantId}`,
+    domain: 'street_pathway' as const, placements: [asset], option: {
+      id: String(asset.properties.road_archetype_id), label: asset.label,
+      description: asset.description, photoUrl: asset.thumbnail,
+      calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+      variants: [{ id: asset.model.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }],
+    },
+  })),
+  ...FLEXIBLE_PARK_ASSETS.map(registeredSupplement).map(asset => {
+    const source = CANONICAL_DOMAINS.park_plaza.find(option => option.id === asset.properties.green_space_archetype_id);
+    if (!source) throw new Error(`Missing park reference for ${asset.id}`);
+    return { id: `park_plaza:${source.id}:flexible:${asset.id}`, domain: 'park_plaza' as const, placements: [asset], option: {
+      ...source, label: asset.label, description: asset.description, photoUrl: referenceImage('park_plaza', source.id, asset.model.variantId, asset.thumbnail),
+      calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+      variants: [{ id: asset.model.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }],
+    } };
+  }),
+];
 export const UNAVAILABLE_CATALOGUE_ENTRIES = resolvedRoster.unavailable;
 /** Exact starter variants only. Parent cards must not quietly expose their other
  * variants under the classroom promise. The full catalogue remains separate. */
@@ -90,12 +142,12 @@ export function classroomChoices(choices = CANONICAL_CHOICES): CanonicalChoice[]
     return [{ ...choice, placements: [placement], option: { ...choice.option, variants: [variant] } }];
   });
 }
-CANONICAL_CHOICES.push(...MANUAL_STREET_ASSETS.map(asset => ({
+CANONICAL_CHOICES.push(...MANUAL_STREET_ASSETS.map(registeredSupplement).map(asset => ({
   id: `street_pathway:${asset.properties.road_archetype_id}:${asset.model.variantId}`,
   domain: 'street_pathway' as const, placements: [asset], option: {
     ...CANONICAL_DOMAINS.street_pathway.find(o => o.id === asset.properties.road_archetype_id),
     id: String(asset.properties.road_archetype_id), label: asset.label, description: asset.description,
-    photoUrl: asset.thumbnail, calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
+    photoUrl: referenceImage('street_pathway', String(asset.properties.road_archetype_id), asset.model.variantId, asset.thumbnail), calgaryGuide: asset.calgaryGuide, propertyPresets: asset.properties,
     variants: [{ id: asset.model.variantId, label: 'Street Manual | metric 3D', thumbnailUrl: asset.thumbnail }],
   },
 })));
@@ -124,6 +176,7 @@ export function filterCanonicalChoices(domain: CatalogueDomain, query = '', grou
     const group = calgaryGroup(choice.option.calgaryGuide);
     const haystack = normalize([choice.option.id, choice.option.label, choice.option.description, choice.option.categoryId,
       group?.label, ...(group?.districts ?? []), ...(choice.option.generationTags ?? []),
+      ...catalogueStyleIds(choice).map(id => catalogueStyleLabel(id)),
       ...(choice.option.variants ?? []).map(v => v.label), ...choice.placements.map(a => a.label)].join(' '));
     return terms.every(term => haystack.includes(term));
   });

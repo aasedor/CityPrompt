@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-2a8abd08-4b21-4c33-8e7f-8cb68907a0b9.png",
+      "prompt": "Original architectural reference image for an educational 3D building catalogue: Porchlight Affordable Townhouse Row, a fictional Calgary infill project, no brands. Photoreal architectural model photography in soft neutral daylight, near-frontal view from slightly above street eye height, entire building with generous margins, uncluttered plain pale grey background and small simple ground slab. Four attached compact two-storey townhouses in one straight row, total body width 22 metres and depth 9 metres, equal 5.5m bays. One continuous dark charcoal standing-seam gable roof with ridge parallel to the long front elevation, eaves 6.25m and ridge 7.65m, no dormers. Warm off-white fibre cement walls with a muted terracotta vertical accent strip beside each of the FOUR front doors. At ground level each bay has one door on its right and a large rectangular living-room window on its left. At second floor each bay has TWO separate identical rectangular windows, aligned in one row. Slim charcoal window frames. Four simple separate flat timber porch canopies, 2.4m wide and 1.25m projection, on slender timber posts seated on low individual entrance pads; doors visibly reachable, no gates. Restrained real construction details, deep window reveals, actual warm modest interiors, no dramatic cantilevers. End walls have sparse well placed windows, shared party walls not visible. Minimal low planted strips and distinct paths, no tall trees, no cars, no people, no decorative text. Beautiful calm dignified attainable housing, practical repetition with careful proportions, avoid luxury mansion cues. Exact counts: four dwellings, two occupied floors, eight upper front windows, four lower large windows, four doors. Single image, not a collage.",
+      "input_roles": [],
+      "sha256": "0c007771825a58b3908cb52177532172561cae418bc718b20f2aede07bdc2a68",
+      "bytes": 1992647,
+      "dimensions_px": [
+        1774,
+        887
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-b7bf2a4f-a44a-48d2-bfa2-cbcb2ac78026.png",
+      "prompt": "Use the supplied ORIGINAL Porchlight four-townhouse design as exact architecture authority. Generate a second reference photograph of this SAME building from a front-right elevated 60-degree three-quarter camera, showing entire front, right gable end and both roof planes, full ground contact and ample margins. Preserve exactly FOUR dwellings, TWO occupied floors, eight separate upper front windows, four broad lower front windows on left of each bay, four doors at right of each bay, four terracotta strips, four timber porch canopies, charcoal standing-seam single longitudinal gable. Body 22m long x9m deep, eave6.25m ridge7.65m. Right end wall is warm off-white with TWO simple windows per occupied floor, placed towards front and rear leaving central gable wall solid, no extra door. Roof no dormers or skylights. Keep the original palette and construction details, simple low plants and concrete entrance pads, neutral studio background. Original fictional teaching architecture, no text/brands/people/cars. Do not change the design or add floor levels. Single image.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "ac9d7f793cd96fdc38d43a6c23cacdd3ec81c17ce18cc85407745f538c31d2c9",
+      "bytes": 2041517,
+      "dimensions_px": [
+        1774,
+        887
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-7a099fc1-d41c-429c-9b05-3a7e46cb7c6c.png",
+      "prompt": "Create the matching true top-down orthographic roof-plan photograph of the EXACT original four-townhouse Porchlight building in the two inputs. Camera vertically above, front edge at bottom of image. Entire building and small simple ground surround comfortably in frame on pale grey background. Body is a long 22m by 9m rectangle. One continuous charcoal standing-seam gable roof, ridge along the 22m long axis, no dormers/skylights. FOUR identical timber-fronted flat porch roofs project 1.25m from the front at the right-hand side of each of the four 5.5m townhouse bays. Each porch is 2.4m wide, low concrete entrance pads and straight short concrete paths beneath. Minimal narrow planted strips at front, modest simple private rear patios and lawn strips at back; rear facade is warm off-white with restrained windows, no extra wings. No major trees obscuring geometry. Exact same geometry/palette, no text, dimensions, symbols or labels. This is an original fictional architectural catalogue reference, not a GIS map. Top view alone, not a collage.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "b693b185f66951c8d46a112613992cdbe22df92830149293b9e050112e55ad31",
+      "bytes": 1991738,
+      "dimensions_px": [
+        1774,
+        887
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

@@ -127,7 +127,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
                   setX(result.anchor.xM);setY(result.anchor.yM);setEntranceHeight(0);setScale(false);setPicked(result);
                 }});
               }}>Pick entrance step in 3D</button>
-              <p className="mt-2">Choose the outer edge of the lowest entrance step on this building. You can navigate the map while picking. Changes stay in this dialog until you save.</p>
+              <p className="mt-2">Choose the outer edge of the lowest entrance step. If the model includes a paved entrance path, choose its outer edge where it meets the ground. You can navigate the map while picking. Changes stay in this dialog until you save.</p>
             </div>}
             {pickFeedback && <p role="status" className={`rounded-lg p-3 text-sm ${pickFeedback.status==='ready'?'bg-lime-50':'bg-amber-50'}`}>{pickFeedback.message} Ground is checked again after saving.</p>}
             <p className="text-sm">Position the anchor at the outer foot of the building's entrance steps, where they meet its foundation edge. Distances are from the plot centre in its own orientation.</p>

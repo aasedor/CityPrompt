@@ -32,7 +32,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   const actual = await importOriginal<typeof import('./aestheticCatalog')>();
   const industrialBrick = {
     id: 'industrial_brick_mixed_use',
-    calgaryGuide: actual.BUILDING_AESTHETIC_OPTIONS_V2.find(option => option.id === 'industrial_brick_mixed_use')!.calgaryGuide,
+    calgaryGuide: actual.SAVED_BUILDING_AESTHETIC_OPTIONS.find(option => option.id === 'industrial_brick_mixed_use')!.calgaryGuide,
     categoryId: 'industrial_brick',
     label: 'Industrial Brick Mixed Use',
     description: 'Adapted industrial building with brick piers and large windows.',
@@ -114,7 +114,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   };
   const streetOption = (id: string, label: string, width: number, volume: 'low' | 'medium') => ({
     id,
-    calgaryGuide: actual.ROADWAY_AESTHETIC_OPTIONS_V2.find(option => option.id === id)!.calgaryGuide,
+    calgaryGuide: actual.SAVED_ROADWAY_AESTHETIC_OPTIONS.find(option => option.id === id)!.calgaryGuide,
     categoryId: 'auto_oriented',
     label,
     description: `${label} catalog description.`,
@@ -158,7 +158,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   ];
   const urbanPocketPark = {
     id: 'urban_pocket_park',
-    calgaryGuide: actual.OPENSPACE_AESTHETIC_OPTIONS_V2.find(option => option.id === 'urban_pocket_park')!.calgaryGuide,
+    calgaryGuide: actual.SAVED_OPENSPACE_AESTHETIC_OPTIONS.find(option => option.id === 'urban_pocket_park')!.calgaryGuide,
     categoryId: 'neighborhood_public_realm',
     label: 'Urban Pocket Park',
     description: 'Compact landscaped public room.',
@@ -177,7 +177,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
   };
   const neighborhoodPark = {
     id: 'neighborhood_park',
-    calgaryGuide: actual.OPENSPACE_AESTHETIC_OPTIONS_V2.find(option => option.id === 'neighborhood_park')!.calgaryGuide,
+    calgaryGuide: actual.SAVED_OPENSPACE_AESTHETIC_OPTIONS.find(option => option.id === 'neighborhood_park')!.calgaryGuide,
     categoryId: 'neighborhood_public_realm',
     label: 'Neighborhood Park',
     description: 'Everyday community park with recreation and planting.',
@@ -202,16 +202,16 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
       subtype: 'park',
     },
   };
-  const japaneseMachiya = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
+  const japaneseMachiya = actual.SAVED_BUILDING_AESTHETIC_OPTIONS.find(
     (option) => option.id === 'japanese_machiya_mixed_use',
   )!;
-  const daylightFactory = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
+  const daylightFactory = actual.SAVED_BUILDING_AESTHETIC_OPTIONS.find(
     (option) => option.id === 'daylight_factory',
   )!;
-  const foodHall = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
+  const foodHall = actual.SAVED_BUILDING_AESTHETIC_OPTIONS.find(
     (option) => option.id === 'food_hall_market_hall',
   )!;
-  const contemporaryMidrise = actual.BUILDING_AESTHETIC_OPTIONS_V2.find(
+  const contemporaryMidrise = actual.SAVED_BUILDING_AESTHETIC_OPTIONS.find(
     (option) => option.id === 'contemporary_midrise_residential',
   )!;
   return {
@@ -252,7 +252,7 @@ vi.mock('./aestheticCatalog', async (importOriginal) => {
       label: 'Neighborhood Public Realm',
       description: 'Small parks and civic spaces.',
     }],
-    OPENSPACE_AESTHETIC_OPTIONS_V2: [neighborhoodPark, urbanPocketPark],
+    OPENSPACE_AESTHETIC_OPTIONS_V2: [...actual.OPENSPACE_AESTHETIC_OPTIONS_V2.filter(option => !['neighborhood_park', 'urban_pocket_park'].includes(option.id)), neighborhoodPark, urbanPocketPark],
     filterOptionsByDevelopmentType: (options: unknown[]) => options,
   };
 });
@@ -526,7 +526,25 @@ describe('ZonePropertiesPanel explicit saved-version reload', () => {
 });
 
 describe('ZonePropertiesPanel site ground', () => {
+  beforeEach(() => Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() }));
   afterEach(cleanup);
+
+  it.each([0, 45, 100])('saves %s percent boundary opacity without changing the ground mode or level', (percentage) => {
+    const zone = { ...siteBoundaryZone(), properties: { community_3d_mask_existing_tiles: true, terrain_elevation_m: 1035 } };
+    const onUpdate = vi.fn();
+    const view = renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByLabelText('Site boundary opacity')).toHaveValue('100');
+    fireEvent.change(screen.getByLabelText('Site boundary opacity'), { target: { value: '50' } });
+    fireEvent.change(screen.getByLabelText('Site boundary opacity'), { target: { value: String(percentage) } });
+    expect(onUpdate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
+    expect(onUpdate).toHaveBeenCalledWith(zone.id, expect.objectContaining({ properties: {
+      community_3d_mask_existing_tiles: true, terrain_elevation_m: 1035, site_boundary_opacity: percentage / 100,
+    } }));
+    view.unmount();
+    renderPanel(<ZonePropertiesPanel zone={{ ...zone, properties: onUpdate.mock.calls[0][1].properties }} onUpdate={vi.fn()} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByLabelText('Site boundary opacity')).toHaveValue(String(percentage));
+  });
 
   it('preserves legacy ground until the student explicitly saves a terrain choice', () => {
     Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() });
@@ -1095,4 +1113,22 @@ describe('ZonePropertiesPanel LEGO selection handoff', () => {
     expect(legacyBulkMeshy).not.toHaveBeenCalled();
   });
 
+});
+
+
+describe('exact model advanced settings', () => {
+  afterEach(cleanup);
+  it('derives type and protects authored dimensions instead of the generic saved height', async () => {
+    const { placementProperties, placeAsset } = await import('@/features/pickPlace/catalogue');
+    const asset = placeAsset('validation_minimalist_infill_brick_monolith');
+    const onUpdate = vi.fn();
+    const zone = { ...industrialZone(), properties: { ...placementProperties(asset), development_type: undefined, height: 30 } };
+    renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /3.*Scale/i }));
+    expect(screen.getByLabelText('Floors')).toBeDisabled();
+    expect(screen.getByLabelText('Height (m)')).toBeDisabled();
+    expect(Number((screen.getByLabelText('Height (m)') as HTMLInputElement).value)).toBeCloseTo(10.68, 2);
+    expect(screen.getByText('Placement plot', { selector: 'p' })).toBeInTheDocument();
+    expect(onUpdate).not.toHaveBeenCalled();
+  });
 });

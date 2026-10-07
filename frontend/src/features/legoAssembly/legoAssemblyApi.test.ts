@@ -223,6 +223,12 @@ describe('getLegoPlanningFailure', () => {
 });
 
 describe('legoArchetypeContextFromZone', () => {
+  it('pins the selected model revision when old versions share a variant', () => {
+    expect(legoArchetypeContextFromZone({
+      development_selected_variant_id: 'corten_timber_equipment_yard',
+      pick_place_model_revision: 'contractor-storage-yard-clay-v003',
+    })).toMatchObject({ archetype_id: 'corten_timber_equipment_yard', model_revision: 'contractor-storage-yard-clay-v003' });
+  });
   it('returns an empty context without properties', () => {
     expect(legoArchetypeContextFromZone(undefined)).toEqual({});
   });

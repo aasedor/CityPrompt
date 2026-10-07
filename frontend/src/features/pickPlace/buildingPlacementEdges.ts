@@ -61,20 +61,45 @@ export function buildingPlacementEnvelope(zone: PlacedZone): number[][] {
   ]);
 }
 
-/** Near-edge attraction, without rotating or changing the saved plot. Only
- * opposing approved side edges and the authored front can attract. */
-export function buildingEdgeSnapCandidates(zone: PlacedZone, neighbours: SiteZone[], distanceM=1) {
+/** Near-edge attraction preserves rotation, plot size and model identity.
+ * Parks meet streets at their plot edge; unreviewed buildings retain all plot
+ * padding. Only reviewed building sides may attract other building sides. */
+export function placementEdgeSnapCandidates(zone: PlacedZone, neighbours: SiteZone[], distanceM=3) {
   const contract=buildingEdgeContract(zone);
-  if(!contract)return [];
+  if(zone.coordinates.length<3)return [];
   const origin=zone.coordinates[0],east=metersPerDegLon(origin[1]);
   const local=(p:number[])=>[(p[0]-origin[0])*east,(p[1]-origin[1])*METERS_PER_DEG_LAT];
   const ring=buildingPlacementEnvelope(zone).map(local);
   const candidates:{coordinates:number[][];distance:number}[]=[];
   for(const other of neighbours) {
     const road=other.zone_type==='road',otherContract=buildingEdgeContract(other);
-    if(!road&&!otherContract)continue;
+    if(!road&&(!contract||!otherContract))continue;
     const target=(road?other.coordinates:buildingPlacementEnvelope(other)).map(local);
-    const ownEdges=road?[0]:[...(contract.right==='abut'?[1]:[]),...(contract.left==='abut'?[3]:[])];
+    if(road&&zone.zone_type==='green_space') {
+      // An irregular or rotated park can meet a curved street at its nearest
+      // boundary point. Translate normal to the street edge; never reshape it.
+      const winding=Math.sign(target.reduce((sum,p,i)=>{
+        const next=target[(i+1)%target.length];return sum+p[0]*next[1]-next[0]*p[1];
+      },0));
+      if(!winding)continue;
+      for(let j=0;j<target.length;j++) {
+        const q=target[j],r=target[(j+1)%target.length],size=Math.hypot(r[0]-q[0],r[1]-q[1]);
+        if(size<.01)continue;
+        const t=[(r[0]-q[0])/size,(r[1]-q[1])/size],n=[winding*t[1],-winding*t[0]];
+        const along=ring.map(p=>p[0]*t[0]+p[1]*t[1]),start=q[0]*t[0]+q[1]*t[1];
+        if(Math.min(Math.max(...along),start+size)-Math.max(Math.min(...along),start)<1)continue;
+        const projected=ring.map(p=>(p[0]-q[0])*n[0]+(p[1]-q[1])*n[1]);
+        if(projected.reduce((sum,value)=>sum+value,0)/projected.length<0)continue;
+        const shift=.02-Math.min(...projected);
+        if(Math.abs(shift)>distanceM||Math.abs(shift)<.001)continue;
+        candidates.push({distance:Math.abs(shift),coordinates:zone.coordinates.map(p=>[
+          p[0]+n[0]*shift/east,p[1]+n[1]*shift/METERS_PER_DEG_LAT,
+        ])});
+      }
+      continue;
+    }
+    const ownEdges=road?(zone.zone_type==='green_space'?ring.map((_,i)=>i):[0])
+      :[...(contract?.right==='abut'?[1]:[]),...(contract?.left==='abut'?[3]:[])];
     const targetEdges=road?target.map((_,i)=>i):[...(otherContract?.right==='abut'?[1]:[]),...(otherContract?.left==='abut'?[3]:[])];
     for(const i of ownEdges)for(const j of targetEdges) {
       const a=ring[i],b=ring[(i+1)%ring.length],q=target[j],r=target[(j+1)%target.length];

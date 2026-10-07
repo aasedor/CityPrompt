@@ -83,7 +83,7 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
         {onRetry3D && <button type="button" className="mt-2 min-h-11 font-semibold underline" onClick={onRetry3D}>Retry 3D update</button>}
       </div>}
       <button type="button" className={`${action} bg-[#c9ff3d] disabled:opacity-50`} disabled={!canRender} onClick={onImage}><Camera size={18} aria-hidden />Image</button>
-      {videoEnabled && <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />Video</button>}
+      <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />{videoEnabled ? 'Video' : 'Video preview · free'}</button>
       {!canRender && (automatic3DStatus === 'idle' || automatic3DStatus === 'ready') && <p role="status" className="text-sm text-slate-700">{renderReason}</p>}
       <button type="button" className={`${action} border-transparent underline`} onClick={onDesign}>Back to design</button>
     </>}

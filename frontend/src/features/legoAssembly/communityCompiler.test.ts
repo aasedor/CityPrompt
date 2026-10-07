@@ -492,6 +492,33 @@ describe('mixed community compiler', () => {
     ]);
   });
 
+  it.each(['project', 'selection'] as const)('recovers %s scope without silently broadening a selection', async (scopeMode) => {
+    const original = zone('original-park', 'green_space', { green_space_archetype_id: 'neighborhood_park' });
+    const added = zone('added-park', 'green_space', { green_space_archetype_id: 'neighborhood_park' });
+    const expected = scopeMode === 'project' ? [original, added] : [original];
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity')
+      .mockRejectedValueOnce({ response: { status: 409, data: { detail: 'The visible Community 3D layer scope changed' } } })
+      .mockResolvedValueOnce({ status: 'compiled', compiled_at: 'now', counts: { building: 0, park: expected.length, street: 0 },
+        items: expected.map(park => ({ zone_id: park.id, kind: 'park', building_id: null, building_created: false, generator: 'park_kit' })) });
+    vi.spyOn(siteZonesApi, 'list').mockResolvedValue([original, added]);
+    await expect(compileMixedCommunity3D([original], undefined, { scopeMode, scopeZoneIds: [original.id] })).resolves.toMatchObject({ parks: expected.length });
+    expect(compile).toHaveBeenCalledTimes(2);
+    expect(compile.mock.calls[1][1]).toEqual(expected.map(park => park.id));
+    expect(compile.mock.calls[1][0].map(item => item.zone_id)).toEqual(expected.map(park => park.id));
+  });
+
+  it('drops deleted objects during full-project recovery without restoring stale geometry', async () => {
+    const removed = zone('removed-park', 'green_space', { green_space_archetype_id: 'neighborhood_park' });
+    const current = zone('current-park', 'green_space', { green_space_archetype_id: 'neighborhood_park' });
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity')
+      .mockRejectedValueOnce({ response: { status: 409, data: { detail: 'Community 3D source zone changed' } } })
+      .mockResolvedValueOnce({ status: 'compiled', compiled_at: 'now', counts: { building: 0, park: 1, street: 0 },
+        items: [{ zone_id: current.id, kind: 'park', building_id: null, building_created: false, generator: 'park_kit' }] });
+    vi.spyOn(siteZonesApi, 'list').mockResolvedValue([current]);
+    await expect(compileMixedCommunity3D([removed], undefined, { scopeMode: 'project', scopeZoneIds: [removed.id] })).resolves.toMatchObject({ parks: 1 });
+    expect(compile.mock.calls[1][1]).toEqual([current.id]);
+  });
+
   it('does not retry a catalogue-integrity conflict as a source refresh', async () => {
     const building = zone('catalogue-conflict', 'building', {
       _plan_role: 'building',

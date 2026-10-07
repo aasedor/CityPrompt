@@ -2819,7 +2819,17 @@ def public_realm_recipe_identity(
     if capability is None:
         return None
     if public_realm_capability_fingerprint(capability) != recipe.capability_fingerprint:
-        return None
+        # Existing canals retain their exact source programme and original
+        # 80–320 m contract. Never use the old fingerprint to bless a new route.
+        if recipe.family_id != 'street_native_amsterdam_gracht_v1':
+            return None
+        from app.services.native_street_candidate_contract import retained_canal_capability
+        retained = retained_canal_capability()
+        if public_realm_capability_fingerprint(retained) != recipe.capability_fingerprint:
+            return None
+        capability = retained
+        catalog = replace(catalog, capabilities=tuple(
+            retained if c.family_id == retained.family_id else c for c in catalog.capabilities))
     if recipe.catalog_fingerprint != catalog.fingerprint:
         trusted = _historical_catalog_locks().get(recipe.catalog_fingerprint, {})
         if trusted.get(f'{recipe.family_id}@{recipe.family_version}') != recipe.capability_fingerprint:

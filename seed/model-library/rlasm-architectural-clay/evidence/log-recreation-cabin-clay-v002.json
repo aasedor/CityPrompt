@@ -1,0 +1,181 @@
+{
+  "candidate": "log-recreation-cabin-clay-v002",
+  "model_sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e",
+  "reviewer": "independent RLASM source_review agent",
+  "reviewed_at": "2026-10-07T13:53:49.428128+00:00",
+  "scope": "Fresh holistic source-locked untextured architectural-clay review; no textured keeper, runtime, engineering or publication approval.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "lifecycle_recommendation": "architectural_clay_review_passed",
+  "previous_review": "../cabin-v001/review/independent.json",
+  "inspected_files": [
+    {
+      "path": "log-recreation-cabin-clay-v002.glb",
+      "sha256": "b41eabe070792f0560f1ab6c9d7c3df3893e0b569c5eda1dc11d70c56407df4e"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "67d5d1d26b4ebee7161e54da13faefabe7cab94a0edc8dbdb5bb85b86788a0a8"
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "7c7b7ac8772cfc3aaf337850edce4832dd3d46c10e6fc7daef6c2a5562b8f5fd"
+    },
+    {
+      "path": "scripts/designs.py",
+      "sha256": "cca645e2ba767c377785ef79aeb3308cde115f1e57290be905256515d6085fa5"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "72f995aa1fa4490c6272f281e9ba7fca81ac5c55e3aa58ec15989a4df9d7c58b"
+    },
+    {
+      "path": "sources/variant_1.png",
+      "sha256": "bd7a456bb9d485ea5138ce38a3740d25556b6557bb1d25eba03c330a116b65b6"
+    },
+    {
+      "path": "sources/variant_1_angle_60.jpg",
+      "sha256": "73c3539683ebc6a8bbbe565bd56adbe1750624508b1741ec68f48af7b649c2cd"
+    },
+    {
+      "path": "sources/variant_1_angle_90.jpg",
+      "sha256": "b8f917cf97105c5a5ca851a00c0a7186a5d0c705a1d09ebbd96e9d0af2900630"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "5eb061f8eacc624828017bd5501644075d56f3b772c51f082b4a84e722390bd4"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "d8f87159ca556ecbf54e2e89ba2f7fa54b5d23c48a2fc739ed6f63acfdfa1978"
+    },
+    {
+      "path": "renders/entry_steps.png",
+      "sha256": "11ea70ca1cd4f67bce0b15661f2756d44968118d91b78bfd0c8059cf1575431a"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "b6c0e8149224ea361dd6eb9156680857f32e91f6638810f414be162d163b4fda"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "9c3f2c3e2e5338f411bf5e342bb5ae6fc6df88c3be9f5b56d96f06b2b2ed0bf1"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "295e128534ab78d70aaf3a72b0f4bfe3251aa0a58d7506dbeb51d8258de61ff5"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "8978ede4718c3030953d7af0ff4f21255b229714c6b3df6612bd68ab5d98d71c"
+    },
+    {
+      "path": "renders/hearth.png",
+      "sha256": "fae9876c71c75e07009c310de1c2e2c7135af2e1bd528dddfac5383ff1cba106"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "9abf37f85d5b26c8041b6ab35585ca14d7fdf93120598345f16c865746b633b2"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "8406a35e62b4c4d0a05622eeb811c7d0815d3710d4e28b0e84c1589964fc5a62"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "0a3ac59798caca04a91e4f7444d79dd6f4e9f9e9c1531e0bfb70f15c58ad72be"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "c23df3e4f9c6f68d94c1a909c6ff73f7544166c01e7cd0153015079fbf3f6ebf"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "deb3e8edba701eac62e08d860c4951e66025b8405f0076f3847c560b81281bb0"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "sha256": "2189650db7b91f8852b6b44443c27103587a288e89b2ff0bac6aece9de022aba"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "sha256": "fd98d6f648bdd5749a60402c733ca3b848be4b14b284697363ad2a3d3286a055"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "df7a720a56234f4686bb04502f8eed4e71cdbfb00a73e3aebd9b26a1ad5198b3"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "sha256": "ee66450aca67aefd175d8287a389899e9ee3593b38199d2fb5e3aa5d6dae8c50"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "sha256": "f6b183e3d0ddbb4865831be385f139d93d883b5cd4be6f471a2a68c10e74ae44"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "sha256": "38fab2d23240faad7ae095b708db13960953293d52d519fa92db073f126457c4"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "sha256": "7ce7c482f4511392012038753a427e6f9e7aa39719aaf3b6c629fe6cc78f7c9e"
+    }
+  ],
+  "findings": [
+    {
+      "id": "CABIN-V002-01",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "scripts/designs.py"
+      ],
+      "finding": "Rear exit now has a supported landing at the .575m door level with three connected steps reaching grade. The former direct drop has been removed."
+    },
+    {
+      "id": "CABIN-V002-02",
+      "severity": "P1",
+      "status": "resolved",
+      "evidence": [
+        "renders/front.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/interior.png",
+        "renders/hearth.png",
+        "scripts/designs.py"
+      ],
+      "finding": "Grounded chimney and hearth now occupy the left front roof slope at y=-1.15 near the ridge, matching the source roof-side placement; the moved hearth has credible room clearance."
+    },
+    {
+      "id": "CABIN-V002-03",
+      "severity": "P2",
+      "status": "nonblocking_clay_simplification",
+      "evidence": [
+        "renders/side_projection.png",
+        "renders/roof_contact.png",
+        "sources/variant_1.png"
+      ],
+      "finding": "Vertical gable-board cadence, pale chinking, irregular stone and shingle texture remain simplified. This limits material fidelity but does not block this explicitly untextured architectural-clay scope.",
+      "finite_correction": "Carry these source-specific material details into a later textured candidate; no textured-keeper claim on this version."
+    }
+  ],
+  "positive_findings": [
+    "Fresh inspection covered all three locked source images, all 16 individual GLB reimport renders and all four boards at original resolution; review was not restricted to previous fixes.",
+    "The single-storey log volume, kicked front roof over the full porch, four bearing posts and grounded entrance stairs retain the source architectural identity.",
+    "Log courses split around recessed windows and single-leaf doors; jambs, shutters and inhabited enclosed room depth are visible.",
+    "Porch post-to-beam and beam-to-roof contacts read coherently; no floating roof or unjoined porch assembly observed.",
+    "Rear landing, front steps, floor and thresholds connect visually; interior tables, benches, hearth and lights remain physically supported.",
+    "Independent exported GLB hash matches delivery report and the GLB contains no images/textures."
+  ],
+  "limitations": [
+    "Architectural-clay pass only. Final materials, human keeper approval and catalogue/runtime approval are not granted.",
+    "CityPrompt walking, placement and persistence are not tested in this review.",
+    "Hidden rear layout and recreation interior are inferred, not source-surveyed."
+  ]
+}

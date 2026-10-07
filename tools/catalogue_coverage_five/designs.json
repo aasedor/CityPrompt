@@ -1,0 +1,550 @@
+{
+  "schema": "cityprompt.original-reference-batch@1",
+  "created": "2026-10-06",
+  "method": "RLASM v6.1",
+  "source_origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "runtime_activation": false,
+  "scope": "Five user-selected coverage designs; original references, metadata and independently reviewed architectural-clay models.",
+  "deferred_next_batch": "Affordable housing inspired by Attainable Homes Calgary; separately classified by form/use and modular construction. Not started in this five-design batch.",
+  "candidates": [
+    {
+      "kind": "maple",
+      "id": "maple_porch_manufactured_home",
+      "variant": "maple_porch_sage",
+      "title": "Maple Porch Manufactured Cottage",
+      "slug": "maple-porch-manufactured-cottage",
+      "styles": [
+        "Canadian vernacular",
+        "Traditional"
+      ],
+      "uses": [
+        "Manufactured Home"
+      ],
+      "storeys": 1,
+      "dimensions_m": {
+        "width": 14,
+        "depth": 4.8,
+        "height": 4.55
+      },
+      "program": "One year-round dwelling on a permanent steel chassis, two bedrooms, kitchen and living room. A supported low front porch has one central entrance. Fabrication, transport and certification remain specialist design matters.",
+      "search_tags": [
+        "Maple Porch Manufactured Cottage",
+        "Canadian vernacular",
+        "Traditional",
+        "Manufactured Home"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Independent teaching-level review of the City-published online Bylaw 1P2007. New-building use routes are distinguished from existing-building permissions. These are conditional candidates, not development approvals.",
+        "district_candidates": [
+          {
+            "district": "R-MH",
+            "category": "permitted use route",
+            "use": "Manufactured Home",
+            "section": "507(c); 510-520",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=10",
+            "remaining_conditions": "Height <=5m. Individual parcel: one home, width >=9.8m, area >=270m², setbacks 3m front/rear and 1.2m sides, coverage <=45% less applicable parking deduction. Provide contiguous outdoor amenity >=42m² (minimum dimension 3.6m). Install on foundation or blocked and anchored; skirt home and remove or skirt hitch. Park contexts require separate s 522 review.",
+            "height_limit_m": 5,
+            "park_context": {
+              "use": "Manufactured Home Park",
+              "category": "discretionary use route for the overall park, not an automatic home-level approval",
+              "section": "508(c); 522",
+              "conditions": "Overall park parcel 8-16ha; each approved home site >=240m² and mean width >=9m, plus access, spacing and recreation rules."
+            }
+          }
+        ],
+        "program_conditions": [
+          "Section 227: one year-round dwelling on permanent chassis, relocatable without requiring a permanent foundation, excluding recreational vehicles. This does not prohibit a permanent foundation at installation; s 520 requires foundation or blocking/anchoring.",
+          "One vehicle stall per dwelling under s 227(c); chassis, skirt, porch structure, transport and certification are conceptual and require specialist verification.",
+          "Two transport sections still constitute one dwelling for Horizon; its clerestory remains unoccupied. Maple remains one dwelling with a separately supported porch."
+        ],
+        "use_definitions": [
+          {
+            "section": "227",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=227#section227"
+          },
+          {
+            "section": "188",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=188#section188"
+          }
+        ],
+        "approval": false,
+        "verification_limits": "No parcel, mapped modifiers, grade survey, full bylaw area calculation or permit decision has been verified. City online consolidation is informational; binding interpretation requires the City. No automatic relaxation, rezoning or Direct Control classification."
+      }
+    },
+    {
+      "kind": "horizon",
+      "id": "horizon_manufactured_home",
+      "variant": "horizon_double_section",
+      "title": "Horizon Manufactured Home",
+      "slug": "horizon-manufactured-home",
+      "styles": [
+        "Mid-century modern",
+        "Contemporary"
+      ],
+      "uses": [
+        "Manufactured Home"
+      ],
+      "storeys": 1,
+      "dimensions_m": {
+        "width": 13.6,
+        "depth": 7.2,
+        "height": 4.65
+      },
+      "program": "One dwelling assembled from two permanent-chassis transport sections, with three bedrooms and one open living/kitchen space. Clerestory roof step is unoccupied; no second storey.",
+      "search_tags": [
+        "Horizon Manufactured Home",
+        "Mid-century modern",
+        "Contemporary",
+        "Manufactured Home"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Independent teaching-level review of the City-published online Bylaw 1P2007. New-building use routes are distinguished from existing-building permissions. These are conditional candidates, not development approvals.",
+        "district_candidates": [
+          {
+            "district": "R-MH",
+            "category": "permitted use route",
+            "use": "Manufactured Home",
+            "section": "507(c); 510-520",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=10",
+            "remaining_conditions": "Height <=5m. Individual parcel: one home, width >=9.8m, area >=270m², setbacks 3m front/rear and 1.2m sides, coverage <=45% less applicable parking deduction. Provide contiguous outdoor amenity >=42m² (minimum dimension 3.6m). Install on foundation or blocked and anchored; skirt home and remove or skirt hitch. Park contexts require separate s 522 review.",
+            "height_limit_m": 5,
+            "park_context": {
+              "use": "Manufactured Home Park",
+              "category": "discretionary use route for the overall park, not an automatic home-level approval",
+              "section": "508(c); 522",
+              "conditions": "Overall park parcel 8-16ha; each approved home site >=240m² and mean width >=9m, plus access, spacing and recreation rules."
+            }
+          }
+        ],
+        "program_conditions": [
+          "Section 227: one year-round dwelling on permanent chassis, relocatable without requiring a permanent foundation, excluding recreational vehicles. This does not prohibit a permanent foundation at installation; s 520 requires foundation or blocking/anchoring.",
+          "One vehicle stall per dwelling under s 227(c); chassis, skirt, porch structure, transport and certification are conceptual and require specialist verification.",
+          "Two transport sections still constitute one dwelling for Horizon; its clerestory remains unoccupied. Maple remains one dwelling with a separately supported porch."
+        ],
+        "use_definitions": [
+          {
+            "section": "227",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=227#section227"
+          },
+          {
+            "section": "188",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=188#section188"
+          }
+        ],
+        "approval": false,
+        "verification_limits": "No parcel, mapped modifiers, grade survey, full bylaw area calculation or permit decision has been verified. City online consolidation is informational; binding interpretation requires the City. No automatic relaxation, rezoning or Direct Control classification."
+      }
+    },
+    {
+      "kind": "craftsman",
+      "id": "narrow_lot_craftsman_cottage",
+      "variant": "brick_timber_craftsman",
+      "title": "Narrow-lot Craftsman Cottage",
+      "slug": "narrow-lot-craftsman-cottage",
+      "styles": [
+        "Arts and Crafts",
+        "Canadian Craftsman"
+      ],
+      "uses": [
+        "Single Detached Dwelling"
+      ],
+      "storeys": 1,
+      "dimensions_m": {
+        "width": 7.2,
+        "depth": 12.8,
+        "height": 6.3
+      },
+      "program": "One single-storey detached dwelling with two bedrooms and a separate front porch. Tall gabled roof encloses an unoccupied attic. One main front entrance and rear garden exit. No secondary suite.",
+      "search_tags": [
+        "Narrow-lot Craftsman Cottage",
+        "Arts and Crafts",
+        "Canadian Craftsman",
+        "Single Detached Dwelling"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Independent teaching-level review of the City-published online Bylaw 1P2007. New-building use routes are distinguished from existing-building permissions. These are conditional candidates, not development approvals.",
+        "district_candidates": [
+          {
+            "district": "R-C1 / R-C1s",
+            "category": "discretionary use route",
+            "use": "Single Detached Dwelling",
+            "section": "386(1)(l); R-C1s 387(2); 390-399",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=3",
+            "remaining_conditions": "Height is the greater of 8.6m or contextual height +1.5m capped at 10m for that contextual term. Actual grade/context must be measured. Parcel minimums: width 12m, depth 22m, area 330m². Contextual setbacks, coverage and parking still apply.",
+            "height_baseline_m": 8.6,
+            "conditional_permitted_route": {
+              "use": "Contextual Single Detached Dwelling",
+              "section": "385(1)(b); R-C1s 387(1); definition171",
+              "conditions": "Only if every rule for that use is met on the actual parcel; architectural style or low height alone does not establish this classification."
+            }
+          },
+          {
+            "district": "R-C1L / R-C1Ls",
+            "category": "discretionary use route",
+            "use": "Single Detached Dwelling",
+            "section": "368(1)(k); R-C1Ls 369(2); 372-381",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=2",
+            "remaining_conditions": "Height is the greater of 8.6m or contextual height +1.5m capped at 10m for that contextual term. Actual grade/context must be measured. Large-parcel minimums: width 24m, depth 22m, area 1100m². Ordinary side setbacks 2.4m; rear 7.5m. The narrow building does not make this a narrow-lot district.",
+            "height_baseline_m": 8.6,
+            "conditional_permitted_route": {
+              "use": "Contextual Single Detached Dwelling",
+              "section": "367(b); R-C1Ls 369(1); definition171",
+              "conditions": "Requires all actual-parcel rules; no blanket contextual permission."
+            }
+          },
+          {
+            "district": "R-C1N",
+            "category": "discretionary use route",
+            "use": "Single Detached Dwelling",
+            "section": "406(1)(l); 409-418; 423",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=4",
+            "remaining_conditions": "Height is the greater of 8.6m or contextual height +1.5m capped at 10m for that contextual term. Actual grade/context must be measured. Minimum width 7.5m, depth 22m, area 233m²; ordinary side setbacks 1.2m each. A 7.2m-wide body therefore needs at least 9.6m width with ordinary side setbacks, not the district minimum 7.5m. Two vehicle stalls when parcel width<9m.",
+            "height_baseline_m": 8.6,
+            "conditional_permitted_route": {
+              "use": "Contextual Single Detached Dwelling",
+              "section": "405(b); definition171",
+              "conditions": "Only if all site-specific rules are met. Easement-based side-setback provisions are not assumed."
+            }
+          },
+          {
+            "district": "R-1N",
+            "category": "permitted use route",
+            "use": "Single Detached Dwelling",
+            "section": "460(f); 464-473",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=5&div=7",
+            "remaining_conditions": "Height 10m, or 11m only where parcel area>=400m² and width>=10m. Minimum parcel width 7.5m, depth 22m, area 233m². Ordinary 1.2m side setbacks mean the 7.2m body needs 9.6m width; exceptions require real easements/site facts. Two vehicle stalls when parcel width<9m.",
+            "height_limit_m": 10,
+            "conditional_height_limit_m": 11
+          }
+        ],
+        "program_conditions": [
+          "One dwelling with kitchen, living, sleeping and sanitary facilities; unoccupied attic, no secondary suite. Single Detached Dwelling under s 305 expressly excludes a Manufactured Home.",
+          "The authored 6.3m total height is only a preliminary screen. Style does not create contextual permitted status; parcel geometry, grade, coverage, setbacks and parking remain unresolved.",
+          "R-C1/R-C1L suffix-s routes inherit the corrected permitted and discretionary sections; they do not create an extra dwelling in this design."
+        ],
+        "use_definitions": [
+          {
+            "section": "305",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=305#section305"
+          },
+          {
+            "section": "171",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=171#section171"
+          },
+          {
+            "section": "188",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=188#section188"
+          }
+        ],
+        "approval": false,
+        "verification_limits": "No parcel, mapped modifiers, grade survey, full bylaw area calculation or permit decision has been verified. City online consolidation is informational; binding interpretation requires the City. No automatic relaxation, rezoning or Direct Control classification."
+      }
+    },
+    {
+      "kind": "mews",
+      "id": "garden_mews_courtyard_housing",
+      "reference_reconciliation": "The front source is a close courtyard composition with cropped outer edges; the full oblique and overhead sources establish both complete blocks and their six roof bays. Compound dimensions are authored and are not a surveyed parcel.",
+      "variant": "garden_mews_six_homes",
+      "title": "Garden Mews Courtyard Housing",
+      "slug": "garden-mews-courtyard-housing",
+      "styles": [
+        "Contemporary courtyard",
+        "Warm brick and timber"
+      ],
+      "uses": [
+        "Dwelling Unit",
+        "Multi-Residential Development"
+      ],
+      "storeys": 2,
+      "dimensions_m": {
+        "width": 23,
+        "depth": 23,
+        "height": 8.7
+      },
+      "program": "Six unstacked two-storey homes in two parallel blocks of three, facing one open shared garden court. Each home has an individual front door directly to grade and its own internal stair. No common indoor access corridor.",
+      "search_tags": [
+        "Garden Mews Courtyard Housing",
+        "Contemporary courtyard",
+        "Warm brick and timber",
+        "Dwelling Unit",
+        "Multi-Residential Development"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 2,
+        "native": 2,
+        "maximum": 2,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Independent teaching-level review of the City-published online Bylaw 1P2007. New-building use routes are distinguished from existing-building permissions. These are conditional candidates, not development approvals.",
+        "district_candidates": [
+          {
+            "district": "H-GO",
+            "category": "permitted use route",
+            "use": "Dwelling Unit",
+            "section": "1387(b); 1390-1399; 1402-1405; 1411; 1413; 1415",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=15&div=1",
+            "remaining_conditions": "Height 12m with s 1399 boundary height planes; FAR1.5 and density-based coverage. Every unit needs separate direct grade access. A unit with a street-facing exterior wall needs a street-visible entrance and direct exterior walk. For six units:3 vehicle stalls; class 1 bicycle storage for each unit without private-garage parking. Landscape, outdoor amenity, depth/setbacks and screened waste remain site requirements.",
+            "height_limit_m": 12
+          },
+          {
+            "district": "M-G",
+            "category": "permitted use route subject to full minor-use classification",
+            "use": "Multi-Residential Development - Minor",
+            "section": "606(c); definition240; 609-615",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=5",
+            "remaining_conditions": "Height 13m; density 35-80units/ha, subject to mapped d. Six units require >=750m² at 80units/ha. Each block must contain>=3units with separate direct grade access. Each unit needs private amenity>=7.5m², minimum dimension 2m; shared garden alone is insufficient. Parking, landscaping and setbacks remain unresolved.",
+            "height_limit_m": 13,
+            "alternative_discretionary_route": {
+              "use": "Multi-Residential Development",
+              "section": "607(g); definition239",
+              "conditions": "Use this classification when Minor cannot be established; any required relaxations still need express approval."
+            }
+          },
+          {
+            "district": "M-1",
+            "category": "permitted use route subject to full minor-use classification",
+            "use": "Multi-Residential Development - Minor",
+            "section": "617(c); definition240; 620-624",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=6",
+            "remaining_conditions": "Height 14m with lower 9m boundary and 10m street-edge controls. Density 50-148units/ha, subject to mapped d. Six units need approximately 405.41-1200m² from density alone; actual required parcel may be larger for layout. General multi-residential site, parking, landscape and amenity rules apply.",
+            "height_limit_m": 14,
+            "alternative_discretionary_route": {
+              "use": "Multi-Residential Development",
+              "section": "618(h); definition239",
+              "conditions": "Separate discretionary classification, not a permitted-use waiver of rules."
+            }
+          },
+          {
+            "district": "M-2",
+            "category": "permitted use route subject to full minor-use classification",
+            "use": "Multi-Residential Development - Minor",
+            "section": "626(c); definition240; 629-634",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=6&div=7",
+            "remaining_conditions": "Height 16m with lower 11m boundary and 10m street-edge controls. FAR<=3 or lower mapped f; minimum density 60units/ha and any mapped d maximum. Six units imply parcel<=1000m² from minimum density alone. Full layout, parking, landscaping and amenity checks remain.",
+            "height_limit_m": 16,
+            "alternative_discretionary_route": {
+              "use": "Multi-Residential Development",
+              "section": "627(h); definition239",
+              "conditions": "Separate discretionary classification; no automatic relaxation."
+            }
+          }
+        ],
+        "program_conditions": [
+          "Six dwellings in two blocks of three, each with its own grade entrance and internal stair. Each dwelling must contain kitchen, living, sleeping and sanitary facilities.",
+          "For Minor (s 240), parcel<=1ha,>=3units,>=90% of units in buildings containing>=3units, and every district rule must be met. This two-by-three form satisfies the unit-distribution test, not the full site test.",
+          "For Multi-Residential Development (s 239), this six-unit form meets the>=3 total and>=50% in buildings with>=2units tests. Classifications depend on district/site, not simultaneous legal uses.",
+          "The 23x 23m assembly envelope is not a surveyed parcel. It would be about 113.42units/ha if wrongly used as a 529m² parcel, exceeding ordinary M-G density. Site area, orientation and private amenity must be added at placement.",
+          "H-GO street visibility is not proved by inward courtyard doors alone. Assess which unit walls face the actual street and provide appropriate entrances/walks.",
+          "No affordable-housing, modular construction or Attainable Homes attribution is inferred; that initiative remains deferred."
+        ],
+        "use_definitions": [
+          {
+            "section": "188",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=188#section188"
+          },
+          {
+            "section": "239",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=239#section239"
+          },
+          {
+            "section": "240",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=240#section240"
+          }
+        ],
+        "approval": false,
+        "verification_limits": "No parcel, mapped modifiers, grade survey, full bylaw area calculation or permit decision has been verified. City online consolidation is informational; binding interpretation requires the City. No automatic relaxation, rezoning or Direct Control classification.",
+        "design_intent_pending_visual_verification": {
+          "private_amenity": "Builder plans six separate 2.5m by 3m patios, each 7.5m², plus a continuous shared path/garden. This meets the stated M-G dimensional target only; location, privacy and completed geometry remain unverified.",
+          "parcel": "The 23m by 23m assembly must sit within a separately designed parcel of at least 750m² for ordinary M-G density, with actual setbacks and site requirements checked.",
+          "street_access": "Street-facing end homes need a visible entrance and direct exterior walk where H-GO section 1391(2) applies. Any-orientation compliance is not claimed."
+        }
+      }
+    },
+    {
+      "kind": "office",
+      "id": "courtyard_lowrise_office",
+      "reference_reconciliation": "The three original views establish a compact two-storey U-shaped building. Authored height was reconciled from the initial 8.9m concept to 7.4m to preserve the source proportions; envelope14x12m and approximately224m² gross area remain. Dimensions are authored, not photographically surveyed.",
+      "variant": "brick_timber_two_storey_office",
+      "title": "Brick-and-timber Courtyard Office",
+      "slug": "brick-timber-courtyard-office",
+      "styles": [
+        "Contemporary brick",
+        "Timber modernism"
+      ],
+      "uses": [
+        "Office"
+      ],
+      "storeys": 2,
+      "dimensions_m": {
+        "width": 14,
+        "depth": 12,
+        "height": 7.4
+      },
+      "program": "Compact two-storey U-shaped professional office in a 14m by 12m envelope around an open central court. Two 3.5m by 12m side wings and one 7m by 4m rear connector give an authored 112m² footprint and approximately 224m² gross floor area over two storeys, including circulation. One main entrance, reception, work areas, meeting room, stair and reserved lift core. No medical, counselling, retail or laboratory programme inferred.",
+      "search_tags": [
+        "Brick-and-timber Courtyard Office",
+        "Contemporary brick",
+        "Timber modernism",
+        "Office"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 2,
+        "native": 2,
+        "maximum": 2,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "scope": "Independent teaching-level review of the City-published online Bylaw 1P2007. New-building use routes are distinguished from existing-building permissions. These are conditional candidates, not development approvals.",
+        "district_candidates": [
+          {
+            "district": "I-E",
+            "category": "discretionary use route for a new building",
+            "use": "Office",
+            "section": "938(2)(h); 939(1); 941-944; 950-951",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=4",
+            "remaining_conditions": "Height 12m; FAR1.0; Office use area<=300m². Revised 224m² authored gross area supports size screening, subject to actual area measurement. Residential-edge access/activity restrictions, setbacks/landscaping, connected 2m walks and>=10m² employee outdoor area remain.",
+            "height_limit_m": 12,
+            "maximum_use_area_m2": 300
+          },
+          {
+            "district": "I-C",
+            "category": "discretionary use route for a new building",
+            "use": "Office",
+            "section": "954(2)(n); 955(1); 958-960; 965-966",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=5",
+            "remaining_conditions": "Height 12m and FAR1.0. Section 960 imposes no Office use-area cap. Front setback 6m plus neighbour-sensitive side/rear setbacks, landscape, connected 2m walks and>=10m² employee outdoor area remain.",
+            "height_limit_m": 12
+          },
+          {
+            "district": "I-R",
+            "category": "discretionary use route",
+            "use": "Office",
+            "section": "969(o); 971-973; 979-980",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=8&div=6",
+            "remaining_conditions": "Height 16m. Serviced-parcel FAR1.0; unserviced parcels have total-building GFA<=1600m². Actual servicing, frontage-sensitive setbacks, landscape, pedestrian links and>=10m² employee outdoor area remain.",
+            "height_limit_m": 16
+          },
+          {
+            "district": "C-R1",
+            "category": "discretionary use route conditional on a larger principal-building site",
+            "use": "Office",
+            "section": "845(p.1); 847-851",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=10",
+            "remaining_conditions": "Height 15m; Office use area<=360m². Parcel 0.5-6ha and mapped f apply. Every parcel needs a principal building>=3600m² GFA; at most two additional buildings, each<=360m². This 224m² office can only be an additional-building candidate in that context, not standalone C-R1 coverage.",
+            "height_limit_m": 15,
+            "maximum_use_area_m2": 360,
+            "standalone_coverage": false
+          },
+          {
+            "district": "C-O",
+            "category": "discretionary use route for a new building",
+            "use": "Office",
+            "section": "829(2)(e); 830(1); 832-834",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=7&div=9",
+            "remaining_conditions": "Height and FAR are the actual mapped h and f values; no default district-wide height. Office has no s 834 use-area cap. Actual designation, setbacks, site access and landscaping must be checked. Existing-building permission does not make this new building permitted.",
+            "requires_mapped_modifiers": [
+              "f",
+              "h"
+            ]
+          }
+        ],
+        "program_conditions": [
+          "Office under s 246 is professional/clerical/administrative work outside medical or counselling fields, with limited general-public contact and no on-site production or direct retail sales. Reception and meetings fit that programme.",
+          "Compact 224m² authored GFA is a design estimate, not a certified use-area computation. Two occupied floors stay fixed; reserved lift core is not an approved accessibility solution.",
+          "I-E, I-C and C-O have conditional permitted lists for existing approved buildings, but proposed new buildings follow the cited discretionary routes. I-R Office is expressly discretionary.",
+          "C-R1 is retained only as a conditional additional-building context, excluded from standalone coverage; its required principal building is not part of this archetype."
+        ],
+        "use_definitions": [
+          {
+            "section": "246",
+            "url": "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?part=4&div=2&alphaSearch=246#section246"
+          }
+        ],
+        "approval": false,
+        "verification_limits": "No parcel, mapped modifiers, grade survey, full bylaw area calculation or permit decision has been verified. City online consolidation is informational; binding interpretation requires the City. No automatic relaxation, rezoning or Direct Control classification."
+      },
+      "design_size_metadata": {
+        "envelope_m": [
+          14,
+          12
+        ],
+        "side_wings": {
+          "count": 2,
+          "dimensions_m": [
+            3.5,
+            12
+          ]
+        },
+        "rear_connector_m": [
+          7,
+          4
+        ],
+        "authored_footprint_m2": 112,
+        "authored_gross_floor_area_m2": 224,
+        "calculation": "2*(2*3.5*12+7*4)",
+        "area_status": "Authored design estimate including circulation; final bylaw gross floor/use area measurement remains required.",
+        "authorization": "Parent author explicitly authorized compact 14x 12m office revision during independent zoning audit on 2026-10-06."
+      }
+    }
+  ]
+}

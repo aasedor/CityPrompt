@@ -1,10 +1,15 @@
 import { nativeParkLayouts } from '@/features/parks/nativeParkRegistry';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
+import communityBatch from '@/data/communityBuildingBatch.json';
+import october from '@/data/catalogueOctober2026.json';
+import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
+import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
 import manualStreets from '@/data/streetManual.json';
+import { reviewedAssetClassification } from './catalogueClassification';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
 export type PlaceAssetId = string;
@@ -118,6 +123,21 @@ export const LEGACY_OBJECT_ASSETS: PlaceAsset[] = [
   },
 ];
 
+/** Shape-first parks use the existing measured public-realm kits. Their
+ * programme adapts to the drawn parcel; they never scale a native assembly. */
+export const FLEXIBLE_PARK_ASSETS: PlaceAsset[] = flexibleParks.programmes.map(programme => ({
+  id: programme.id, kind: 'object', definitionVersion: 1,
+  readiness: 'pilot', reshapeMode: 'authored_footprint',
+  model: { variantId: programme.variantId, revision: 'flexible-outline-v1', method: 'public_realm_park_kit' },
+  label: programme.label, description: programme.description, thumbnail: programme.thumbnail,
+  calgaryGuide: classifyCalgaryAsset('park_plaza', { id: programme.archetypeId }),
+  zoneType: 'green_space', width: programme.widthM, depth: programme.depthM,
+  minWidth: programme.minWidthM, minDepth: programme.minDepthM, maxSize: programme.maxSizeM,
+  reshapeDescription: programme.reshapeDescription,
+  properties: { green_space_archetype_id: programme.archetypeId, green_space_selected_variant_id: programme.variantId,
+    pick_place_flexible_park: programme.key, pick_place_automatic_3d: true },
+}));
+
 const streetSource = streetCatalogue.archetypes.find(entry => entry.id === 'calgary_local')!;
 export const LOCAL_STREET_ASSET: StreetAsset = {
   id: 'calgary_local_street', kind: 'street', definitionVersion: 1,
@@ -164,7 +184,7 @@ export function additionalStreet(archetypeId: string, label: string, description
 
 const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
   id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
-    label: street.title, description: street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${street.program.maxLengthM} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
+    label: street.title, description: street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${street.program.maxLengthM} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
   calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
   model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },
@@ -173,6 +193,13 @@ const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
     pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
     road_standard_citation: 'City Prompt native-module teaching section' },
 }));
+
+/** Surface-only paths keep a complete clear walking width, with no road kit. */
+export const PATHWAY_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS
+  .filter(asset => nativeStreets.find(row => row.id === asset.model.variantId)?.program?.adapter === 'narrow-pathway-v1')
+  .map(asset => ({ ...asset, description: `${asset.sectionWidth} m clear width · draw a winding path · ${Math.max(2, asset.sectionWidth)}–300 m long · prepared level site`,
+    calgaryGuide: { groupId: 'active', basis: 'design_reference' },
+    properties: { ...asset.properties, lane_count: 0, road_standard_citation: 'City Prompt conceptual pathway; not a Calgary standard section' } }));
 
 export const ALL_MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street => ({
   id: street.variantId, kind: 'street', definitionVersion: 1, readiness: 'pilot',
@@ -190,7 +217,7 @@ export const ALL_MANUAL_STREET_ASSETS: StreetAsset[] = manualStreets.map(street 
 }));
 const supersededManualVariants = new Set(manualStreets.filter(street => !street.sourceEdition).map(street => street.variantId));
 export const MANUAL_STREET_ASSETS = ALL_MANUAL_STREET_ASSETS.filter(asset => !supersededManualVariants.has(asset.model.variantId));
-export const STREET_ASSETS: StreetAsset[] = [...NATIVE_STREET_ASSETS, ...MANUAL_STREET_ASSETS];
+export const STREET_ASSETS: StreetAsset[] = [...NATIVE_STREET_ASSETS.map(asset => PATHWAY_ASSETS.find(path => path.id === asset.id) ?? asset), ...MANUAL_STREET_ASSETS];
 // Saved metric streets stay editable without adding them to the seven candidates.
 export const LEGACY_SECTION_STREET_ASSETS: StreetAsset[] = [
   ...ALL_MANUAL_STREET_ASSETS.filter(asset => supersededManualVariants.has(asset.model.variantId)), LOCAL_STREET_ASSET,
@@ -210,7 +237,7 @@ export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
 }
 
 export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
-function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
+export function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
   if (asset.kind !== 'object' || asset.zoneType !== 'building' || asset.storeyProgram) return asset;
   const nativeStoreys = Number(asset.properties.floor_count ?? asset.properties.floors);
   const nativeHeightM = Number(asset.nativeDimensions?.[2]);
@@ -235,7 +262,30 @@ function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
   };
 }
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS].map(asset => {
+/** Explicit finite additions; existing saved placements keep their own binding. */
+export const OCTOBER_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset =>
+  october.entries.some(entry => entry.archetype_id === asset.properties.development_archetype_id
+    && entry.variant_id === asset.model.variantId)
+  && ![...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[]].some(existing =>
+    existing.properties.development_archetype_id === asset.properties.development_archetype_id
+    && existing.model.variantId === asset.model.variantId));
+
+/** Reviewed exact candidates only; older families and saved IDs are untouched. */
+export const COMMUNITY_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset =>
+  communityBatch.entries.some(entry => entry.archetype_id === asset.properties.development_archetype_id
+    && entry.variant_id === asset.model.variantId && entry.candidate === asset.model.revision));
+
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+  // Exact local validation buildings already declare their delivered GLB.
+  // Keep that binding reproducible rather than depending on an unrelated
+  // developer database having a matching Model Library row.
+  if(asset.kind==='object' && asset.zoneType==='building' && asset.reshapeMode==='fixed_native') {
+    const entry=validation.entries.find(row=>row.placement_id===asset.id);
+    if(entry?.local_url && entry.sha256===asset.model.revision && entry.binding==='native-runtime') {
+      asset={...asset,properties:{...asset.properties,validation_fixed_fixture:true,
+        validation_native_url:entry.local_url,community_3d_mask_existing_tiles:true}};
+    }
+  }
   if (asset.kind==='object' && asset.zoneType==='road') {
     const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
     if(native)return {...native,calgaryGuide:asset.calgaryGuide};
@@ -251,7 +301,7 @@ export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, 
     model:{...asset.model,revision:layout.contentRevision,method:'native_park_v2'},
     width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
     properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
-});
+}).concat(FLEXIBLE_PARK_ASSETS).map(reviewedAssetClassification);
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

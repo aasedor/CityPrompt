@@ -4,7 +4,7 @@ import { rectangleAt } from '@/features/pickPlace/geometry';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
 import { nativeParkLayouts, nativeParkProperties, readNativePark } from './nativeParkRegistry';
 import { verifiedScene } from './nativeParkAssets';
-import { constrainNativeParkWalk, nativeParkLiftDestination, nativeParkWalkEntrance, nativeParkWalkEntry } from './nativeParkWalking';
+import { constrainNativeParkWalk, nativeParkLiftDestination, nativeParkWalkEntrance, nativeParkWalkEntry, nativeParkWalkStartForZone } from './nativeParkWalking';
 import { STEP_FREE_PARK_LIFTS, stepFreeParkWalkingNetwork } from './stepFreeParkAccess';
 import { advanceParkWalk, parkWalkHeight, type WalkPoint } from './parkWalking';
 import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
@@ -68,6 +68,18 @@ describe('native park walking in saved placement frames', () => {
     vi.mocked(verifiedScene).mockImplementation(() => { throw new Error('asset unavailable'); });
     expect(nativeParkWalkEntrance(zones, point(0, 0))).toBeNull();
     expect(nativeParkWalkEntry(zones, point(0, 0))).toEqual(point(0, 0));
+  });
+  it.each([0,37,90,180])('starts a selected park on its dry entrance with a traversable heading at yaw %s',angle=>{
+    const {zones,point}=fixture(angle);
+    const start=nativeParkWalkStartForZone(zones,'park')!;
+    expect(start.lng).toBeCloseTo(point(0,-33.5).lng,9);
+    expect(start.lat).toBeCloseTo(point(0,-33.5).lat,9);
+    const r=start.heading*Math.PI/180;
+    const target={...start,lng:start.lng+Math.sin(r)*.3/metersPerDegLon(start.lat),lat:start.lat+Math.cos(r)*.3/METERS_PER_DEG_LAT};
+    const next=constrainNativeParkWalk(zones,start,target);
+    expect(Math.hypot((next.lng-start.lng)*metersPerDegLon(start.lat),(next.lat-start.lat)*METERS_PER_DEG_LAT)).toBeGreaterThan(.2);
+    vi.mocked(verifiedScene).mockImplementation(()=>{throw new Error('unavailable');});
+    expect(nativeParkWalkStartForZone(zones,'park')).toBeNull();
   });
   it.each(Object.entries(STEP_FREE_PARK_LIFTS))('opens a reversible lift and walkable bridge in %s', (variant, plan) => {
     const {zones,point,layout}=fixture(37,variant);

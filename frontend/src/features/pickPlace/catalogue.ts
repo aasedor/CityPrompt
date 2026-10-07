@@ -8,6 +8,7 @@ import { canonicalBuildingById, canonicalBuildingForProperties } from './canonic
 import { reviewedEntranceForAsset } from './reviewedEntrances';
 import { storeyProgramSupports } from './buildingStoreyProgram';
 import { footprintProgramTarget } from './buildingFootprintProgram';
+import { savedModelRevision } from './savedModelRevision';
 export type { PlaceAsset, PlaceAssetId } from './assetRegistry';
 const OBJECT_ASSETS = CATALOGUE_ASSETS.filter((asset): asset is PlaceAsset => asset.kind === 'object');
 // Resolve older saved IDs without returning those versions to student discovery.
@@ -36,8 +37,12 @@ export function placeAsset(id: PlaceAssetId): PlaceAsset {
 }
 export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | undefined {
   const properties = zone.properties ?? {};
-  const native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset) ?? LEGACY_VALIDATION_ASSETS.find((asset): asset is PlaceAsset => asset.kind === 'object' && asset.id === properties.pick_place_asset)
+  let native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset) ?? LEGACY_VALIDATION_ASSETS.find((asset): asset is PlaceAsset => asset.kind === 'object' && asset.id === properties.pick_place_asset)
     ?? LEGACY_OBJECT_LOOKUP.find(asset => asset.id === properties.pick_place_asset);
+  if (native?.zoneType === 'building' && native.reshapeMode === 'fixed_native') {
+    native = savedModelRevision(native, properties);
+    if (!native) return undefined;
+  }
   if (native?.reshapeMode === 'fixed_native' && properties.native_home_plot === true
     && ['infill_home', 'trial_postwar_bungalow'].includes(native.id)
     && properties.development_selected_variant_id === native.model.variantId && properties.development_height_override_m == null) {
@@ -64,6 +69,11 @@ export function placementProperties(asset: PlaceAsset, elevation?: number, coord
     ...(Number.isFinite(elevation)?{terrain_elevation_m:elevation}:{})};
   const entrance = reviewedEntranceForAsset(asset);
   return { ...asset.properties, pick_place_asset: asset.id,
+    ...(asset.zoneType === 'building' && asset.reshapeMode === 'fixed_native' && asset.nativeDimensions ? {
+      model_native_dimensions_m: asset.nativeDimensions, model_dimensions_revision: asset.model.revision,
+      height: asset.nativeDimensions[2], height_m: asset.nativeDimensions[2],
+      building_geometry_basis: 'placement_plot',
+    } : {}),
     pick_place_definition_version: asset.definitionVersion,
     ...(asset.model.revision ? { pick_place_model_revision: asset.model.revision } : {}),
     ...(asset.footprintProgram ? {

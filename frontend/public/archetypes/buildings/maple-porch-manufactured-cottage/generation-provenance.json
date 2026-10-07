@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-92cec16b-96e3-4394-a12e-6d65d0aacf62.png",
+      "prompt": "Use case: photorealistic-natural. Asset: original fictional architectural reference photograph for an exact 3D building study, landscape 3:2. Design Maple Porch Manufactured Cottage in Calgary: a single year-round dwelling carried on a permanent steel transport chassis behind a neat ventilated dark skirt, main rectangle 14 metres wide left-to-right and 4.8 metres deep, one occupied storey. Warm muted sage horizontal clapboard with ivory window trim, a simple warm grey asphalt gable roof with ridge running left-to-right, total height about 4.5m including 0.45m raised floor. An integral-looking but separately supported full-width front timber porch 1.5m deep with a low lean-to metal roof under the main eave, four square painted timber posts on solid feet. Clearly visible five-part FRONT opening sequence from left to right: paired living room window, smaller kitchen window, single front door at exact centre, paired bedroom window, smaller bedroom window. Porch central three-step stair aligns with the one front door; open porch sides, no railings because low deck. Physically buildable, modestly detailed, charming well-proportioned affordable Canadian home, no luxury decoration. Photograph from a slightly elevated near-frontal viewpoint showing the full front and a small amount of RIGHT short end. Short right end has one centered window. Neutral early autumn daylight, plain pale gravel around home, no foreground plants obscuring structure. All building, skirt, roof and porch must be fully in frame with generous margins. Real timber and painted clapboard textures, crisp readable roof geometry. No people, cars, text, watermark or neighbouring buildings. Exactly one home, one storey, one long gable, one continuous shallow porch roof; no dormers, no wheels, no extra wings.",
+      "input_roles": [],
+      "sha256": "c6757674bdefda401a9928d1296e845c46058ba9556f9bc3496c895f32e6dd1b",
+      "bytes": 3208770,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-ba1e7a10-74a8-4a81-bc56-d0583ba37c78.png",
+      "prompt": "Use the provided original Maple Porch design as exact architectural identity. Create a new photorealistic architectural reference view of this SAME home from an elevated front-left corner, camera about 55 degrees above ground, showing the entire front, LEFT short end and roof topology. Preserve the five front opening groups, sage horizontal clapboard, ivory trim, FOUR porch posts, centered door and stairs, one long gable with ridge left-to-right and single full-width shallow lean-to porch canopy. Main rectangle 14m long by 4.8m deep, porch depth 1.5m; overall height under5m. Do not redesign. Left short end has one centered double-hung window. Show no new wings, dormers or additional storeys. Flat gravel site with soft neutral daylight, no mountain backdrop needed. Generous clear margin around the complete roof, base and steps. No text, people or vehicles. Realistic materials and coherent construction. This is the oblique reference for the same original fictional building.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "78342d46b5e55bbd7c3b17d6b69a583a277c2261fba251d72d38bb617390331e",
+      "bytes": 3854243,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-2e39d34f-6670-491a-989a-d526b4cc1def.png",
+      "prompt": "Generate the true overhead/nadir reference photograph of this EXACT SAME Maple Porch home from supplied front and elevated oblique images. Camera straight vertically down, no facade perspective, building long axis horizontal in image and front porch along BOTTOM. The main body is 14m wide by4.8m deep plus 1.5m deep full-width front porch. One clean rectangular asphalt-shingle gable roof, ridge horizontal centered over main body; continuous shallow grey standing-seam lean-to canopy over full front porch along bottom, then centered three entrance steps extending below. Preserve exact architecture, proportions, roof material, complete footprint and all source-visible details. Plain gravel perimeter, no trees obscuring roof, no extra wings, chimneys or dormers. Every edge and stair fits within ample image margins. Real architectural survey-style reference of original fictional concept, no labels or text. Do not invent a floor plan or remove roofs.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "2a7b170d3350e50c45414d606638c68e74a823706e3c2ce53b7c9e020a41074c",
+      "bytes": 3959130,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

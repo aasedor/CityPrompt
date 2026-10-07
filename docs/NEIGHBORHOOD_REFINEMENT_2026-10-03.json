@@ -1,0 +1,615 @@
+{
+  "schema": "cityprompt.neighborhood-refinement@1",
+  "date": "2026-10-03",
+  "method": "RLASM v6.1",
+  "scope": "Two local architectural/circulation prototypes, independent keeper review retained separately",
+  "branch": "codex/neighborhood-refinement",
+  "base_commit": "2f2c993669c94c25f5975c75fc192546be18dc88",
+  "asset_root": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03",
+  "catalogue_activated": false,
+  "pushed": false,
+  "main_app_project_mutated": false,
+  "preview_url": "http://127.0.0.1:5201/",
+  "assets": [
+    {
+      "candidate": "school-v006",
+      "archetype_id": "neighborhood_elementary_school",
+      "variant_id": "school_compact_urban",
+      "dimensions_m": {
+        "width": 28,
+        "depth": 22,
+        "height": 11.4
+      },
+      "glb": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\school-v006.glb",
+        "bytes": 10553204,
+        "sha256": "e451a28c9b107b8140ed0c635841505e6d97f2b552e22daf164018540007ea53"
+      },
+      "blend": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\school-v006.blend",
+        "bytes": 8456387,
+        "sha256": "a7eb9f0a42000bd20db5f3a344e1fe6171c3ecac2e4f3eb3572bcdb6da81d398"
+      },
+      "source_contract": {
+        "sources": [
+          {
+            "archetype_id": "neighborhood_elementary_school",
+            "variant_id": "school_compact_urban",
+            "role": "front",
+            "path": "sources/variant_0.png",
+            "original_path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-essentials\\CityPrompt\\frontend\\public\\archetypes\\buildings\\neighborhood-elementary-school\\variant_0.png",
+            "bytes": 2802543,
+            "sha256": "a9027d974ab6ee7542369d10c9d96fb412b7d69a91de7041ca60f2d8b01b7331",
+            "authority": "original catalogue design"
+          },
+          {
+            "archetype_id": "neighborhood_elementary_school",
+            "variant_id": "school_compact_urban",
+            "role": "oblique",
+            "path": "sources/variant_0_oblique.png",
+            "original_path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-essentials\\CityPrompt\\frontend\\public\\archetypes\\buildings\\neighborhood-elementary-school\\variant_0_oblique.png",
+            "bytes": 3430697,
+            "sha256": "5718f01ffbe0dbdeb38060e8093825877d65e0892255a883fc771d34d91f817a",
+            "authority": "generated continuation; unseen sides inferred"
+          },
+          {
+            "archetype_id": "neighborhood_elementary_school",
+            "variant_id": "school_compact_urban",
+            "role": "topology",
+            "path": "sources/variant_0_roof-study.png",
+            "original_path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-essentials\\CityPrompt\\frontend\\public\\archetypes\\buildings\\neighborhood-elementary-school\\variant_0_roof-study.png",
+            "bytes": 3112544,
+            "sha256": "8ecbea635c2deaaafa62f545a702003a6e8ba12a1affb24f82aa6400e6f82f2d",
+            "authority": "generated high roof study; not true nadir and not metric authority"
+          }
+        ],
+        "front_is_primary": true,
+        "derived_views_are_design_assumptions": true
+      },
+      "materials": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\textures\\buff_brick.png",
+          "bytes": 2471970,
+          "sha256": "131e44a29a6914fa4ecf74dabe451ca04f476044687e911084f83527af22e190"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\textures\\red_brick.png",
+          "bytes": 3104017,
+          "sha256": "1f4ebfef40e0d3f9a4bd285475dca43cdf53ad238b6d8dfff034e489555a445a"
+        }
+      ],
+      "generation_provenance": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\sources\\reference-generation.json",
+        "bytes": 9447,
+        "sha256": "257c902505d88ad736abe2e29e7ce27799ddf4fa773bd42cc5b2b2b998caafac"
+      },
+      "source_snapshots": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\scripts\\build_neighborhood.py",
+          "bytes": 23745,
+          "sha256": "95b4fbd9062312c35dc5494b5f9eec47eb4ca9c7e1ecbcdaa2e5ce9a147af23d"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\scripts\\geometry_core.py",
+          "bytes": 26703,
+          "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\scripts\\refinements.py",
+          "bytes": 17862,
+          "sha256": "0dfc88c2ceaf49675a4e3b22e651abc58a3f5e85f3f48b4d2809d4d6cad4c546"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\scripts\\walking.py",
+          "bytes": 4074,
+          "sha256": "f63da8fd24c73c54f5c0ef8187cae53586ed52ec7122ee527e4783755f4b497e"
+        }
+      ],
+      "mandatory_views": [
+        "front",
+        "front_corner",
+        "aerial",
+        "left_side",
+        "right_side",
+        "rear",
+        "rear_side",
+        "facade_close",
+        "architecture_close",
+        "glass_close",
+        "roof_contact",
+        "program_interior",
+        "corridor",
+        "stair_lower",
+        "stair_landing",
+        "top_landing",
+        "classroom",
+        "classroom_teaching",
+        "gym_connection"
+      ],
+      "metrics": {
+        "path": "school-v006.glb",
+        "bytes": 10553204,
+        "sha256": "e451a28c9b107b8140ed0c635841505e6d97f2b552e22daf164018540007ea53",
+        "meshes": 18,
+        "textures": 1,
+        "mesh_objects": 18,
+        "vertices": 209696,
+        "polygons": 102892,
+        "triangles": 102892
+      },
+      "checks": {
+        "solver_routes": 6,
+        "solver_passed": true,
+        "furniture_exclusions": {
+          "checked": 20,
+          "allBlocked": true
+        },
+        "physical_samples": 366,
+        "physical_passed": true,
+        "browser": {
+          "candidate": "school-v006",
+          "scope": "Standalone local exact-GLB inspector using the actual app parkWalking.ts solver; no main-app project placement or terrain transitions tested.",
+          "url": "http://127.0.0.1:5201/?model=school-v006",
+          "glb_sha256": "e451a28c9b107b8140ed0c635841505e6d97f2b552e22daf164018540007ea53",
+          "checks": {
+            "load": true,
+            "model_switch": true,
+            "toggle_hidden_visible": true,
+            "reload_retains_model": true,
+            "forward_0_5m": {
+              "from": [
+                -1.9,
+                -15,
+                0.04
+              ],
+              "to": [
+                -1.9,
+                -14.5,
+                0.04
+              ]
+            },
+            "back_0_5m": {
+              "from": [
+                -1.9,
+                -14.5,
+                0.04
+              ],
+              "to": [
+                -1.9,
+                -15,
+                0.04
+              ]
+            },
+            "embedded_routes": true,
+            "console_warnings_errors": []
+          },
+          "screenshots": [
+            "browser-classroom.jpg",
+            "browser-exterior.jpg",
+            "browser-gym.jpg"
+          ]
+        },
+        "preflight": "pass",
+        "carrier_apertures": "PASS_CARRIER_APERTURES",
+        "roundtrip_max_error_m": 0.0
+      },
+      "independent_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v006\\review\\independent-visual-review.json",
+        "bytes": 8794,
+        "sha256": "4cbcefdc331ecb94ae17863f6cbc8dc08d60fd511d514c944fe4fbe687dc3093"
+      },
+      "keeper_decision": "visual_rework_required",
+      "keeper_approved": false,
+      "local_trial": {
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "summary": "The exact v006 model passes this independent architectural/circulation assessment: source envelope, complete rooms, stairs, floor contacts, openings and the bounded planting set are suitable for a detailed local trial. Six solver routes and all 366 physical route samples pass in the supplied records. Browser integration/walking must be verified separately. This is not a textured keeper, canonical architectural-clay approval, user approval or catalogue activation."
+      },
+      "unresolved_p0": 0,
+      "unresolved_p1": 2,
+      "blockers": [
+        {
+          "id": "S6-P1-OPTICAL-QA",
+          "severity": "P1",
+          "category": "optics_and_render_finish",
+          "applies_to": [
+            "textured_keeper"
+          ],
+          "evidence": [
+            "renders/facade_close.png",
+            "renders/glass_close.png",
+            "renders/classroom.png"
+          ],
+          "symptom": "Large blown-white oval reflections dominate the upper glazing; interior glass remains gray and cloudy under the QA setup. Occupied depth is readable, but the optical finish does not match the source.",
+          "physical_cause": "Large QA area lights are reflected in panes and the neutral environment supplies little natural reflection detail.",
+          "finite_correction": "Retain broad neutral lighting while suppressing nonarchitectural light shapes in glossy reflections; tune pane roughness/transmission and prove consistent exterior/interior optics in a complete rerender."
+        },
+        {
+          "id": "S6-P1-SOURCE-FINISH",
+          "severity": "P1",
+          "category": "material_and_landscape_fidelity",
+          "applies_to": [
+            "textured_keeper"
+          ],
+          "evidence": [
+            "boards/phone-comparison.png",
+            "renders/front_corner.png",
+            "renders/roof_contact.png"
+          ],
+          "symptom": "The model remains a simplified architectural representation: uniform roof/trim and thin repeated hedge/lawn strips do not reproduce the source's aged membrane, layered entrance planters, varied forecourt plants and paving. The landscape is improved and readable, but full source fidelity is incomplete.",
+          "physical_cause": "Most nonbrick materials remain palette-based and the landscape layout is a bounded schematic set.",
+          "finite_correction": "For a future textured keeper, enroll reviewed source-derived roof/trim/ground material roles and model the two entrance planter groups plus varied forecourt planting from the primary source, preserving all circulation clearances."
+        }
+      ]
+    },
+    {
+      "candidate": "fourplex-v005",
+      "archetype_id": "neighborhood_fourplex",
+      "variant_id": "fourplex_stacked_brick",
+      "dimensions_m": {
+        "width": 16,
+        "depth": 14,
+        "height": 7.3
+      },
+      "glb": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\fourplex-v005.glb",
+        "bytes": 9098092,
+        "sha256": "c9caa58e5c5dd50719699f28ec983d29c7d852bb60d76a9378ee24af83c65fad"
+      },
+      "blend": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\fourplex-v005.blend",
+        "bytes": 6977685,
+        "sha256": "6d8d5ca84276767f89f392ff62625970a90ddc8500b880380b2a3257f1f8cab5"
+      },
+      "source_contract": {
+        "sources": [
+          {
+            "archetype_id": "neighborhood_fourplex",
+            "variant_id": "fourplex_stacked_brick",
+            "role": "front",
+            "path": "sources/variant_0.png",
+            "original_path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-essentials\\CityPrompt\\frontend\\public\\archetypes\\buildings\\neighborhood-fourplex\\variant_0.png",
+            "bytes": 2796948,
+            "sha256": "e0fd8cae02a106f59c37ba676181b22eda04eedc389fff5fb993cd841bea9920",
+            "authority": "original catalogue design"
+          },
+          {
+            "archetype_id": "neighborhood_fourplex",
+            "variant_id": "fourplex_stacked_brick",
+            "role": "oblique",
+            "path": "sources/variant_0_oblique.png",
+            "original_path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-essentials\\CityPrompt\\frontend\\public\\archetypes\\buildings\\neighborhood-fourplex\\variant_0_oblique.png",
+            "bytes": 3229542,
+            "sha256": "87d24fe534baf1e4c3f4a226f689c6bad9058f1e468c111c7b01e1b54b5e1728",
+            "authority": "generated continuation; unseen sides inferred"
+          },
+          {
+            "archetype_id": "neighborhood_fourplex",
+            "variant_id": "fourplex_stacked_brick",
+            "role": "topology",
+            "path": "sources/variant_0_roof-study.png",
+            "original_path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-essentials\\CityPrompt\\frontend\\public\\archetypes\\buildings\\neighborhood-fourplex\\variant_0_roof-study.png",
+            "bytes": 3160258,
+            "sha256": "69c06c11f281c61dae5101ca73dc8b1e1158b4cc24abeac24112bfec8470845f",
+            "authority": "generated high roof study; not true nadir and not metric authority"
+          }
+        ],
+        "front_is_primary": true,
+        "derived_views_are_design_assumptions": true
+      },
+      "materials": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\textures\\buff_brick.png",
+          "bytes": 2471970,
+          "sha256": "131e44a29a6914fa4ecf74dabe451ca04f476044687e911084f83527af22e190"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\textures\\red_brick.png",
+          "bytes": 3104017,
+          "sha256": "1f4ebfef40e0d3f9a4bd285475dca43cdf53ad238b6d8dfff034e489555a445a"
+        }
+      ],
+      "generation_provenance": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\sources\\reference-generation.json",
+        "bytes": 9447,
+        "sha256": "257c902505d88ad736abe2e29e7ce27799ddf4fa773bd42cc5b2b2b998caafac"
+      },
+      "source_snapshots": [
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\scripts\\build_neighborhood.py",
+          "bytes": 23910,
+          "sha256": "a0afc781f39129e17c2815fc3180780340719bef129384f5e4ddaf07d4c3f5ac"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\scripts\\geometry_core.py",
+          "bytes": 26703,
+          "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\scripts\\refinements.py",
+          "bytes": 20185,
+          "sha256": "6c69c406b2763117b3aee4866d100cfa0cc251df2285a7a55541bd4b7ee1175c"
+        },
+        {
+          "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\scripts\\walking.py",
+          "bytes": 4835,
+          "sha256": "51f210e470e72ded2750b5355f5347ec629ec01484c2407e29666804137e8412"
+        }
+      ],
+      "mandatory_views": [
+        "front",
+        "front_corner",
+        "aerial",
+        "left_side",
+        "right_side",
+        "rear",
+        "rear_side",
+        "facade_close",
+        "architecture_close",
+        "glass_close",
+        "roof_contact",
+        "program_interior",
+        "stair_lower",
+        "stair_landing",
+        "apartment_access",
+        "kitchen_bedroom",
+        "dwelling_entry",
+        "bathroom"
+      ],
+      "metrics": {
+        "path": "fourplex-v005.glb",
+        "bytes": 9098092,
+        "sha256": "c9caa58e5c5dd50719699f28ec983d29c7d852bb60d76a9378ee24af83c65fad",
+        "meshes": 17,
+        "textures": 2,
+        "mesh_objects": 17,
+        "vertices": 99166,
+        "polygons": 48742,
+        "triangles": 48742
+      },
+      "checks": {
+        "solver_routes": 15,
+        "solver_passed": true,
+        "furniture_exclusions": {
+          "checked": 20,
+          "allBlocked": true
+        },
+        "physical_samples": 423,
+        "physical_passed": true,
+        "browser": {
+          "candidate": "fourplex-v005",
+          "scope": "Standalone local exact-GLB inspector using the actual app parkWalking.ts solver; no main-app project placement or terrain transitions tested.",
+          "url": "http://127.0.0.1:5201/?model=fourplex-v005",
+          "glb_sha256": "c9caa58e5c5dd50719699f28ec983d29c7d852bb60d76a9378ee24af83c65fad",
+          "checks": {
+            "load": true,
+            "model_switch": true,
+            "toggle_hidden_visible": true,
+            "reload_retains_model": true,
+            "forward_0_5m": {
+              "from": [
+                0,
+                -11,
+                0.04
+              ],
+              "to": [
+                0,
+                -10.5,
+                0.04
+              ]
+            },
+            "back_0_5m": {
+              "from": [
+                0,
+                -10.5,
+                0.04
+              ],
+              "to": [
+                0,
+                -11,
+                0.04
+              ]
+            },
+            "embedded_routes": true,
+            "console_warnings_errors": []
+          },
+          "screenshots": [
+            "browser-bathroom.jpg",
+            "browser-exterior.jpg",
+            "browser-shower.jpg"
+          ]
+        },
+        "preflight": "pass",
+        "carrier_apertures": "PASS_CARRIER_APERTURES",
+        "roundtrip_max_error_m": 0.0
+      },
+      "independent_review": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v005\\review\\independent-visual-review.json",
+        "bytes": 11498,
+        "sha256": "89dc10a726e4248835744537f24feec70c654bebb4b6e9c5850bb804070b0901"
+      },
+      "keeper_decision": "visual_rework_required",
+      "keeper_approved": false,
+      "local_trial": {
+        "decision": "suitable_for_local_architectural_and_circulation_trial",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "summary": "The exact final v005 is suitable for the bounded detailed local architectural/circulation trial. Source envelope, stairs, guarded double-height opening, four unit entries, room separations and basic domestic program are coherent; earlier rear/door/furniture/partition and bathroom-entry defects are corrected. Supplied solver, physical and browser route evidence passes. Schematic fixtures and keeper finish limitations remain explicit; this does not approve catalogue activation or main-app integration."
+      },
+      "unresolved_p0": 0,
+      "unresolved_p1": 2,
+      "blockers": [
+        {
+          "id": "F5-P1-OPTICAL-FINISH",
+          "severity": "P1",
+          "category": "optics_and_render_finish",
+          "applies_to": [
+            "textured_keeper"
+          ],
+          "evidence": [
+            "renders/glass_close.png",
+            "renders/facade_close.png",
+            "renders/front_corner.png"
+          ],
+          "symptom": "Large blown-white oval QA-light reflections dominate glazing; rigid narrow curtain bars do not reproduce coherent fabric or the source's natural reflection/occupied-room balance.",
+          "physical_cause": "Area-light shapes remain prominent in reflections and the curtain geometry is a sparse schematic set.",
+          "finite_correction": "For a future keeper, suppress nonarchitectural light shapes while preserving neutral exposure, tune glass and replace curtain bars with coherent folded fabric. Regress close and whole exterior/interior views."
+        },
+        {
+          "id": "F5-P1-SOURCE-FINISH",
+          "severity": "P1",
+          "category": "source_material_landscape_and_fixture_finish",
+          "applies_to": [
+            "textured_keeper"
+          ],
+          "evidence": [
+            "boards/phone-comparison.png",
+            "renders/roof_contact.png",
+            "renders/front_corner.png",
+            "renders/bathroom.png",
+            "evidence/browser-shower.jpg"
+          ],
+          "symptom": "Uniform roof/trim, repeated hedge and lawn strips and simple garden/tree forms remain well below the sources' weathered membrane and varied grounds. Domestic fixtures are clear program proxies, but WC/basin/tray and appliance finish lack production detail. A fine room ceiling/partition seam remains visible.",
+          "physical_cause": "Most nonbrick materials use palette values; landscape and interior fittings remain intentionally bounded schematic geometry.",
+          "finite_correction": "For a future full keeper, enroll reviewed source-derived roof/trim/ground material roles, model bounded varied source planting and garden elements, refine fixture shape and hardware, and close room finish seams without reducing circulation clearance."
+        }
+      ]
+    }
+  ],
+  "prior_versions": [
+    {
+      "candidate": "school-v003",
+      "glb": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v003\\school-v003.glb",
+        "bytes": 8184400,
+        "sha256": "d3d0897bcde156dde93c75342485dc1b99fdb675ee3f9f2737a6b5c668601c9a"
+      },
+      "superseded_by": "school-v006",
+      "preserved": true
+    },
+    {
+      "candidate": "school-v004",
+      "glb": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v004\\school-v004.glb",
+        "bytes": 9552304,
+        "sha256": "01fab599704d39f763fcfc046b8a5c7f71fec18cef743c0b17946d58c54718c2"
+      },
+      "superseded_by": "school-v006",
+      "preserved": true
+    },
+    {
+      "candidate": "school-v005",
+      "glb": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\school-v005\\school-v005.glb",
+        "bytes": 10552376,
+        "sha256": "902d10781fa8ad3d6e77286737e9ba190150ecfbcf8c88e44f5da78cb8112728"
+      },
+      "superseded_by": "school-v006",
+      "preserved": true
+    },
+    {
+      "candidate": "fourplex-v002",
+      "glb": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v002\\fourplex-v002.glb",
+        "bytes": 8977116,
+        "sha256": "fc7740e11f357fae90335d6fd8b702abb3e67d43664e209ef8ff24c8957cad78"
+      },
+      "superseded_by": "fourplex-v005",
+      "preserved": true
+    },
+    {
+      "candidate": "fourplex-v003",
+      "glb": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v003\\fourplex-v003.glb",
+        "bytes": 9084688,
+        "sha256": "bd7f6513bba133a79a27a6f1bd82769444f76ec656637db80a47bbe173453c1d"
+      },
+      "superseded_by": "fourplex-v005",
+      "preserved": true
+    }
+  ],
+  "interrupted_candidates": [
+    {
+      "candidate": "fourplex-v004",
+      "state": "interrupted_unreviewed",
+      "record": {
+        "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-refinement-2026-10-03\\fourplex-v004\\interrupted-build.json",
+        "bytes": 261,
+        "sha256": "9afdcd4cfd1f48f4bebdb3e7806842809af9fe46d509c7e15435ddc75f186883"
+      }
+    }
+  ],
+  "inherited_pilots": {
+    "root": "C:/dev-artifacts/CityPrompt/neighborhood-essentials-2026-10-03",
+    "school-v002": "11488a175688c93d8c521e5ef38ff4809df80d09eda609374d92be14e2d4760a",
+    "fourplex-v001": "5a7102aed405030df68e25f265dfa157c2432221618530ad8e9976d087dd400b",
+    "preserved": true
+  },
+  "source_files": [
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\boards.py",
+      "bytes": 1104,
+      "sha256": "fddce9f88b0f0e9cc2ec6bba2d24fdfd05009f52c75d156b35e66046f7dc7496"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\build_neighborhood.py",
+      "bytes": 23910,
+      "sha256": "a0afc781f39129e17c2815fc3180780340719bef129384f5e4ddaf07d4c3f5ac"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\check-physical-walk.py",
+      "bytes": 1616,
+      "sha256": "4d2a57ee668b253ae46451ba7da87e2e56b05a31286d3fb3ae29e47e96a57d79"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\check-walking.mjs",
+      "bytes": 2401,
+      "sha256": "9a31659ed6dad57ac9a383b30d005f0122bb80aa910610c6ca49b3168bf090fe"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\geometry_core.py",
+      "bytes": 26703,
+      "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\preview\\index.html",
+      "bytes": 1371,
+      "sha256": "3b44d49a7d566b52e738c7f622e5457cc39c8a4e6fce285be828da029fb5455a"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\preview\\review.js",
+      "bytes": 6873,
+      "sha256": "545175a2c875954e622a27a2fab738b80d8855870c268ab3032180473cca6465"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\preview.mjs",
+      "bytes": 1249,
+      "sha256": "0850265677ffa8b8c0a873ee867cc39f1238d6e48065f9e721344bf7257ffb5d"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\README.md",
+      "bytes": 4412,
+      "sha256": "b963bf98c8df73ec4ec3229cb7094ebb131e6ab39a60df2341d9791766cbd9e7"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\refinements.py",
+      "bytes": 20185,
+      "sha256": "6c69c406b2763117b3aee4866d100cfa0cc251df2285a7a55541bd4b7ee1175c"
+    },
+    {
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\neighborhood-refinement\\CityPrompt\\tools\\neighborhood_refinement\\walking.py",
+      "bytes": 4835,
+      "sha256": "51f210e470e72ded2750b5355f5347ec629ec01484c2407e29666804137e8412"
+    }
+  ],
+  "geometry_helper_inherited_sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527",
+  "frontend_tests": {
+    "passed": 19,
+    "files": [
+      "src/features/legoAssembly/buildingWalking.test.ts",
+      "src/components/viewer/globe/walkNavigation.test.ts",
+      "src/features/parks/parkWalking.test.ts"
+    ]
+  }
+}

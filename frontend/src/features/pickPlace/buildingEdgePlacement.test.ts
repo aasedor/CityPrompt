@@ -23,8 +23,8 @@ const xCenter=(ring:number[][])=>(rectangleDimensions(ring).center[0]+114)*meter
 const yCenter=(ring:number[][])=>(rectangleDimensions(ring).center[1]-51)*METERS_PER_DEG_LAT;
 
 describe('reviewed building contact envelopes',()=>{
-  it('locks every current building to its exact measured asset revision',()=>{
-    const buildings=CATALOGUE_ASSETS.filter(a=>a.kind==='object'&&a.zoneType==='building');
+  it('locks every declared contact envelope to its exact measured asset revision',()=>{
+    const buildings=CATALOGUE_ASSETS.filter(a=>a.kind==='object'&&a.zoneType==='building'&&edges.buildings.some(row=>row.assetId===a.id));
     expect(new Set(edges.buildings.map(r=>r.assetId)).size).toBe(buildings.length);
     for(const asset of buildings){
       if(asset.kind!=='object')throw new Error('Expected object');
@@ -37,6 +37,8 @@ describe('reviewed building contact envelopes',()=>{
       expect(stable(contract?.storeyProgram)).toEqual(stable(asset.storeyProgram ?? null));
       expect(stable(contract?.footprintProgram)).toEqual(stable(asset.footprintProgram ?? null));
     }
+    for(const asset of CATALOGUE_ASSETS.filter(a=>a.kind==='object'&&a.zoneType==='building'&&!edges.buildings.some(row=>row.assetId===a.id)))
+      expect(buildingEdgeContract(building(asset.id)),asset.label).toBeNull();
   });
   it('closes a small gap between attached buildings while keeping plot and model sizes',()=>{
     const other=building(soho),width=buildingEdgeContract(other)!.width;
@@ -96,6 +98,15 @@ describe('reviewed building contact envelopes',()=>{
     expect(result.problem).toBeNull();
     expect(xCenter(result.coordinates)).toBeCloseTo(c.width+.02,2);
     expect(yCenter(result.coordinates)).toBeCloseTo(10+c.depth/2+.02,2);
+  });
+  it('attracts the authored building front from within three metres without rewriting its model',()=>{
+    const moving=building(soho),contract=buildingEdgeContract(moving)!;
+    moving.coordinates=rectangleAt(ll(0,10+contract.depth/2+2.4),placeAsset(soho).width,placeAsset(soho).depth);
+    const saved=JSON.stringify(moving),road={id:'road',zone_type:'road',properties:{width:20},coordinates:rectangleAt(ll(0,0),150,20)} as SiteZone;
+    const result=snapPlacement(moving.coordinates,[road],site,undefined,moving.properties,'building');
+    expect(result.problem).toBeNull();expect(result.snapped).toBe(true);
+    expect(yCenter(result.coordinates)).toBeCloseTo(10+contract.depth/2+.02,2);
+    expect(JSON.stringify(moving)).toBe(saved);
   });
   it.each(['trial_postwar_bungalow','trial_edwardian_foursquare','validation_clapboard_north_end','clay_vancouver_balcony_podium_tower'])(
     'keeps %s contact bounds unchanged across its supported heights',id=>{

@@ -7,12 +7,28 @@ import type { SiteZone } from '@/types';
 import { rectangleAt } from '@/features/pickPlace/geometry';
 import { authoredCameraGround } from './authoredCameraGround';
 import {bufferLineToPolygon} from '@/utils/roadGeometry';
+import { canalRoute } from './canalRoute';
+import { roundMetricStreetCenterline } from '@/utils/streetRouteCurves';
 
 const boundary: SiteZone = { id:'site', project_id:'test', zone_type:'site_boundary',
   coordinates:rectangleAt([-114,51],100,100), is_active_boundary:true,
   properties:{terrain_elevation_m:1103,community_3d_mask_existing_tiles:true},
   color:'#aaa',sort_order:0,created_at:'now',updated_at:'now' };
 describe('camera ground for authored communities',()=>{
+  it('walks the relocated canal arch and bent banks without creating a floor over water', () => {
+    const points = roundMetricStreetCenterline([[0,0],[0,120],[140,220]],54).map(([x,y])=>({x,y}));
+    const layout = canalRoute(points), sx = metersPerDegLon(51);
+    const ll = ([x,y]: number[]) => [-114+x/sx,51+y/111320];
+    const line = points.map(p=>ll([p.x,p.y]));
+    const canal = {...boundary,id:'canal',zone_type:'road' as const,is_active_boundary:false,
+      coordinates:bufferLineToPolygon(line,36),properties:{width:36,
+        road_selected_variant_id:'amsterdam_gracht_v1',plan_centerline:line}};
+    const large = {...boundary,coordinates:rectangleAt([-114,51],1000,1000)};
+    for (const [offset,station,height] of [[0,layout.crossing!,1.72],[0,30,-2.05],[13.5,180,.12]]) {
+      const [lng,lat] = ll(layout.point(offset,station,0));
+      expect(authoredCameraGround([large,canal],lng,lat,1103)).toBeCloseTo(1103+height,2);
+    }
+  });
   it('keeps the elevated railway paths at ground level even when the picked deck is above them',()=>{
     const line=[[-114,51-40/111320],[-114,51+40/111320]];
     const rail={...boundary,id:'rail',zone_type:'road' as const,is_active_boundary:false,coordinates:bufferLineToPolygon(line,26),

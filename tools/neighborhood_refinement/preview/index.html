@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Neighbourhood building trial</title>
+<style>body{margin:0;background:#e6e8e5;color:#202a25;font:14px system-ui}canvas{display:block}header{position:absolute;top:18px;left:18px;background:#fffffff2;border-radius:12px;padding:18px;max-width:274px;box-shadow:0 4px 20px #0002}h1{font-size:20px;margin:0 0 8px}button,select{padding:8px;margin:3px;border:1px solid #bbb;border-radius:6px;background:white;cursor:pointer}p{margin:9px 0}#results{max-height:180px;overflow:auto;font:12px monospace;white-space:pre-wrap}#status{color:#496351}</style></head><body>
+<header><h1>Neighbourhood building trial</h1><p>Local prototypes · catalogue approval pending</p>
+<select id="model" aria-label="Model"><option>school-v006</option><option>fourplex-v005</option></select>
+<button id="exterior">Exterior</button><button id="toggle">Toggle 3D</button><button id="walk">Walk from entrance</button>
+<button id="forward">Forward 0.5 m</button><button id="back">Back 0.5 m</button>
+<select id="view" aria-label="Review view"><option value="">Select an interior view</option></select>
+<button id="test">Test every walking route</button><p>Orbit: drag · Zoom: scroll · Walk: W/S, A/D turn</p><p id="status">Loading model…</p><pre id="results"></pre></header>
+<script type="module" src="/review.js"></script></body></html>

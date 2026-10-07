@@ -14,6 +14,8 @@ import { useAIRender, AI_RENDER_STYLES } from './useAIRender';
 import type { AIRenderResult } from './useAIRender';
 import { collectArchetypeRenderInputs, mergeArchetypePrompts } from './collectArchetypeRenderInputs';
 import { RenderEditModal } from './RenderEditModal';
+import { AnimateRenderButton } from './AnimateRenderButton';
+import type { VideoAttempt } from './VideoGeneratePanel';
 import { rendersApi, resolveApiFileUrl, authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 import { saveRenderedImage } from '@/utils/renderPersistence';
@@ -65,13 +67,14 @@ interface AIRenderPanelProps {
   onLightboxOpenChange?: (open: boolean) => void;
   /** Called after a render is persisted to the project gallery. */
   onRenderSaved?: (render: SavedRender) => void;
+  onVideoSaved?: (attempt: VideoAttempt) => void;
 }
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId, onBeforeRender, onLightboxOpenChange, onRenderSaved }: AIRenderPanelProps) {
+export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId, onBeforeRender, onLightboxOpenChange, onRenderSaved, onVideoSaved }: AIRenderPanelProps) {
   const {
     renderPreviews,
     isRendering,
@@ -774,6 +777,7 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
               </p>
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
+              {projectId && <AnimateRenderButton projectId={projectId} render={galleryLightbox} onSaved={onVideoSaved} onImageSaved={handleEditedRenderSaved} />}
               {projectId && (
                 <button
                   type="button"

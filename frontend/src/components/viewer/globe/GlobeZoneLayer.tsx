@@ -15,6 +15,7 @@ import { Html } from '@react-three/drei';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
+import { siteBoundaryOpacity } from '@/utils/siteBoundaryAppearance';
 import { createPreparedEdgeGeometry, readPreparedEdges } from './preparedSiteEdges';
 import { cutGeometry } from './terraceGeometry';
 import { applyParkGroundUVs, useParkGroundTexture } from './parkGroundTexture';
@@ -464,6 +465,7 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
   const isSiteBoundary = zone.zone_type === 'site_boundary';
   const isWaterSurface = zone.zone_type === 'water';
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
+  const boundaryOpacity = siteBoundaryOpacity(zone.properties);
   const residualLandscapeRecipe = useMemo(
     () => (isPreparedBoundary ? getResidualLandscapeRecipe(zone) : null),
     [isPreparedBoundary, zone],
@@ -1228,14 +1230,24 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
             <meshBasicMaterial colorWrite={false} depthWrite={false} />
           ) : isPreparedBoundary ? (
             <meshStandardMaterial
-              key="prepared-site"
+              key={boundaryOpacity === 1 ? 'prepared-site' : 'prepared-site-translucent'}
               color="#ffffff"
               map={preparedSiteTexture ?? undefined}
               roughness={0.98}
               metalness={0}
               side={THREE.DoubleSide}
+              // Keep this in the ground render pass, after context and before
+              // authored objects. Custom blending permits alpha in that pass.
+              opacity={boundaryOpacity}
+              blending={boundaryOpacity < 1 ? THREE.CustomBlending : THREE.NormalBlending}
+              blendSrc={THREE.SrcAlphaFactor}
+              blendDst={THREE.OneMinusSrcAlphaFactor}
+              blendEquation={THREE.AddEquation}
+              // Retain a flat depth surface even at 0% so original rooftops
+              // cannot occlude authored buildings placed on the prepared site.
               depthTest
               depthWrite
+              depthFunc={boundaryOpacity === 1 ? THREE.LessEqualDepth : THREE.AlwaysDepth}
               polygonOffset
               polygonOffsetFactor={4}
               polygonOffsetUnits={8}
@@ -1274,7 +1286,7 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
               key="plain"
               color={isSiteBoundary ? '#ef4444' : color}
               transparent={publicRealmDepthPolicy.transparent}
-              opacity={isSiteBoundary ? 0 : 1.0}
+              opacity={isSiteBoundary ? boundaryOpacity : 1.0}
               side={THREE.DoubleSide}
               depthTest={publicRealmDepthPolicy.depthTest}
               depthWrite={publicRealmDepthPolicy.depthWrite}

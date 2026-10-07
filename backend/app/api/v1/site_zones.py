@@ -21,6 +21,7 @@ from pydantic import BaseModel
 from shapely.geometry import Polygon
 from shapely.validation import explain_validity
 from app.services.native_parks import plan_native_park
+from app.services.public_realm_lego import plan_public_realm_zone_recipe, PublicRealmPlanningError
 from app.services.native_brt import validate_brt_properties, validate_brt_ground, is_native_brt
 from app.services.native_tram import validate_tram_properties, validate_tram_ground, is_native_tram
 from app.services.native_specialist_streets import validate_specialist_properties, validate_specialist_ground, is_native_specialist
@@ -208,6 +209,37 @@ def _assert_optional_boundary_covers(
         )
         if not public_road_connection_fits(zone_type, properties, candidate, boundary):
             raise HTTPException(status_code=409, detail=detail)
+
+
+_FLEXIBLE_PARK_VARIANTS = {
+    'pocket-v1': ('urban_pocket_park', 'urban_pocket_park_v0'),
+    'greenway-v1': ('linear_park_greenway', 'linear_park_greenway_v0'),
+    'shade-courtyard-v1': ('urban_pocket_park', 'urban_pocket_park_v1'),
+    'meadow-grove-v1': ('urban_pocket_park', 'urban_pocket_park_v2'),
+}
+
+
+def _validate_flexible_park(
+    polygon: Polygon, properties: dict, active_boundary: SiteZone | None,
+) -> None:
+    """Keep shape-first catalogue parks inside their executable metric contract."""
+    programme = properties.get('pick_place_flexible_park')
+    expected = _FLEXIBLE_PARK_VARIANTS.get(programme)
+    if expected is None or expected != (
+        properties.get('green_space_archetype_id'),
+        properties.get('green_space_selected_variant_id'),
+    ):
+        raise ValueError('Choose one of the available flexible park designs again.')
+    boundary_props = active_boundary.properties if active_boundary else {}
+    if not active_boundary or boundary_props.get('terrain_strategy') == 'landscape' or boundary_props.get('community_3d_mask_existing_tiles') is not True:
+        raise ValueError('Prepare a level site before drawing this flexible park.')
+    try:
+        plan_public_realm_zone_recipe('green_space', polygon, properties, strict=True)
+    except PublicRealmPlanningError as exc:
+        raise ValueError(
+            'This outline is outside the supported size or shape for this park. '
+            'Adjust its corners or choose the other flexible park.'
+        ) from exc
 
 
 async def _assert_boundary_covers_existing_zones(
@@ -1113,6 +1145,11 @@ async def create_zone(
                 raise ValueError('Place this native park on a prepared level site.')
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
+    if (zone_in.properties or {}).get('pick_place_flexible_park') is not None:
+        try:
+            _validate_flexible_park(candidate_polygon, zone_in.properties, active_boundary)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
     coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
 
     zone = SiteZone(
@@ -1439,6 +1476,12 @@ async def update_zone(
             native_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
             if native_boundary is None or (native_boundary.properties or {}).get('terrain_strategy') == 'landscape' or (native_boundary.properties or {}).get('community_3d_mask_existing_tiles') is not True:
                 raise ValueError('Keep this native park on a prepared level site.')
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+    if native_properties.get('pick_place_flexible_park') is not None:
+        try:
+            flexible_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
+            _validate_flexible_park(Polygon(updated_coordinates or before_snapshot['coordinates']), native_properties, flexible_boundary)
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
     for field, value in update_data.items():

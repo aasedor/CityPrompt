@@ -12,6 +12,23 @@ const long=nativeParkLayouts.find(p=>p.id==='basketball_court_v1--long-v1')!;
 const coords=rectangleAt([-114.05,51.04],52,39);
 const zone=()=>({id:'park',updated_at:'one',zone_type:'green_space',coordinates:coords,properties:nativeParkProperties({},native,coords)} as SiteZone);
 describe('native parks',()=>{
+  it('resolves saved beach revisions without replacing identity or duplicating discovery',()=>{
+    const latest=nativeParkLayouts.find(p=>p.variantId==='student_sandy_beach_v1')!;
+    const coordinates=rectangleAt([-114.05,51.04],60,70);
+    const properties=nativeParkProperties({},latest,coordinates);
+    const oldRevision='ed1f2868663d2bc5cf1b90cdf2463ac2703107242d7dad483277e72ac2dc0408';
+    properties.green_space_native_layout={...(properties.green_space_native_layout as object),content_revision:oldRevision};
+    const saved={...zone(),coordinates,properties};
+    expect(readNativePark(saved)?.layout.contentRevision).toBe(oldRevision);
+    expect(readNativePark(saved)?.layout.assets).toEqual(latest.assets);
+    expect(nativeParkFitProblem(saved)).toBeNull();
+    expect(nativeParkLayouts.filter(p=>p.id===latest.id)).toHaveLength(1);
+    const moved=rectangleAt([-114.049,51.04],60,70,25);
+    expect(readNativePark({properties:nativeParkEditProperties(saved,moved)})?.selection.content_revision).toBe(oldRevision);
+    properties.green_space_native_layout={...(properties.green_space_native_layout as object),content_revision:'0'.repeat(64)};
+    expect(readNativePark(saved)).toBeNull();
+  });
+
   it.each(['student_woodland_stream_garden_v1','student_reflecting_fountain_garden_v1','student_terraced_cafe_court_v1','student_urban_splash_plaza_v1','student_stone_labyrinth_garden_v1','student_sheltered_dog_park_v1','student_treetop_walk_v1','student_terraced_rose_v1'])('%s preserves the exact native assembly through movement and reload',variant=>{
     const layout=nativeParkLayouts.find(p=>p.variantId===variant)!;
     expect(layout).toBeDefined();

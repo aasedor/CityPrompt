@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-1c6cc19e-cec3-43b3-88e0-33eb784e47ba.png",
+      "prompt": "Create ONE original architectural reference photograph for a new fictional Canadian manufactured home called Horizon. Photorealistic, beautifully restrained mid-century modern design, fully buildable single-storey home, warm natural cedar and ivory mineral plaster with charcoal window frames. Entire building and immediate ground visible with generous margins; slightly elevated eye-level front-right three-quarter view, long front facade dominates, no crop. Main rectangular body exactly conceptually 13.6 metres across front, 7.2 metres front-to-back, raised 0.45m on a neat charcoal removable skirt, one dwelling assembled from two transport chassis sections. Roof identity is essential: two parallel shallow standing-seam charcoal shed roofs spanning full width left-to-right. Lower FRONT roof rises from about 3.15m front edge to 3.5m at centre of depth. Higher REAR roof begins at 4.6m on centreline and falls slightly to 4.1m at rear. Thus a continuous front-facing clerestory window band sits ABOVE the lower roof, across nearly the full width, separated into six simple broad panes. This is NOT a second storey. Broad shallow roof overhangs with fine wood soffits. Front facade reading left to right: a 3-pane wide full-height-ish living window, an ivory plaster pier, a recessed natural timber entrance door with a narrow glazed sidelight near centre, then two separate broad bedroom windows in vertical cedar cladding to the right. On visible right end, upper roof step profile visible and two simple windows. Modest independent timber entry deck only at central door, three broad timber steps, slim cantilevered entry eyebrow; no porch across entire front, no decorative columns, no chimney, no garage. Minimal prairie grasses low at edges, quiet pale gravel apron and distant Alberta trees. Clear soft morning daylight, realistic material detail, human scale, dignified architectural magazine photography. No people, text, logos, labels, graphics, illustration, collages, multiple views or excessive landscaping. This image is a reference for a physical 3D model; make roof junctions, wall contacts and opening positions unambiguous.",
+      "input_roles": [],
+      "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d",
+      "bytes": 3036322,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-f2d561b0-e931-453a-92f3-61edab83e6c3.png",
+      "prompt": "Create ONE second architectural reference photograph of EXACTLY the attached original Horizon manufactured home. Preserve its precise roof topology, count and placement of windows and doors, materials, raised charcoal skirt, dimensions and height. Move the camera to a higher front-LEFT three-quarter oblique angle so the long front and left end and TWO stepped shallow shed roof surfaces are legible. Whole building uncropped with margins. Both roof ridges/edges run along the long width; front roof is lower, rear roof higher with the same front-facing clerestory band of seven broad glazed panes. Front left-to-right: three-pane living glazing, ivory pier, timber door and right sidelight, two separate single-pane bedroom windows. Same central little entry deck and three steps, unsupported-edge cantilevered eyebrow attached to building. Left end can have two simple windows matching right end logic; infer only unseen side consistently. Cedar front, ivory side plaster, charcoal metal standing-seam roofs. Soft clear natural daylight, same realistic restrained Canadian prairie setting. This is a matching view of the same house, not a redesign. No people, labels, text, crop or collage.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "1caf71ec52c5515181677c8c966b60ba0fb27e6b73ce9b55fc5b5689e8da21b3",
+      "bytes": 3201466,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-a36f6b26-28b5-44e3-a43c-ec1c788cca63.png",
+      "prompt": "Create ONE high overhead architectural reference photograph of EXACTLY the same Horizon home shown in the two attached views. Camera almost directly above, slight frontal tilt so the stepped clerestory can be understood. Main rectangle 13.6m across by 7.2m deep, single storey. Preserve exact two parallel shallow shed roof surfaces with charcoal standing seams: lower front half roof rises gently toward depth centre, high rear half roof has a raised front edge at centreline and falls toward back. The front-facing vertical step has the same seven clerestory panes. No gable roof, no new wing, no second storey. The only projection is the little central front timber entry platform with three broad steps and the short central entry eyebrow. Cedar long front, ivory sides, charcoal plinth, same window/door locations from original. Show roof edges and four corners uncropped, minimal gravel and prairie grasses. Crisp neutral daylight, true photographic materials, no diagram, no labels, no grid, no measurements, no text, no split views.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "50b8e4ad1577a7451c78cd2d753d9221184df2258afbcb747aead6bf2c978681",
+      "bytes": 3421837,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

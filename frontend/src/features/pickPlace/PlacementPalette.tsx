@@ -1,28 +1,30 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
-import { CATALOGUE_ASSETS, STREET_ASSETS, type StreetAsset } from './assetRegistry';
+import { STREET_ASSETS, type StreetAsset } from './assetRegistry';
 import { CANONICAL_CHOICES, CLASSROOM_CHOICES, UNAVAILABLE_CATALOGUE_ENTRIES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
 import { availablePickerCategories, pickerCategory } from './pickerCategories';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
 import { UserGeneratedBuildings } from './UserGeneratedBuildings';
 import type { UserGeneratedBuilding } from '@/services/api';
+import { CatalogueFacetControls } from './CatalogueFacetControls';
+import { choiceMatchesFacets, type CatalogueFacets } from './catalogueFacets';
 
 const sections = [
   { id: 'building', label: 'Buildings', icon: Building2 },
   { id: 'park_plaza', label: 'Parks', icon: Trees },
   { id: 'street_pathway', label: 'Streets', icon: Route },
 ] as const;
-const DRAWABLE_STREETS = CATALOGUE_ASSETS.filter((asset): asset is StreetAsset => asset.kind === 'street');
 const classroomCount = (domain: typeof sections[number]['id']) => CLASSROOM_CHOICES.filter(choice => choice.domain === domain).length;
 const classroomSummary = `${CLASSROOM_CHOICES.length} exact choices: ${classroomCount('building')} buildings, ${classroomCount('park_plaza')} parks, ${classroomCount('street_pathway')} streets. App validation in progress; fixed review models have explicit limits.`;
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
-export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated }: {
+export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, canRefreshDetail, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated, primaryAction }: {
+  primaryAction?: ReactNode;
   selected: PlaceAssetId | null; onPick: (id: PlaceAssetId) => void; onCancel: () => void;
-  status: string; message: string; onRetry: () => void;
+  status: string; message: string; onRetry: () => void; canRefreshDetail?: boolean;
   onPickStreet?: (asset: StreetAsset) => void; activeStreetVariant?: string;
   onBrowseChange?: (open: boolean) => void;
   onPickCanonical: (selection: CanonicalSelection) => void;
@@ -32,15 +34,18 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const [section, setSection] = useState<Section>('building');
   const [query, setQuery] = useState('');
   const [groupId, setGroupId] = useState('');
+  const [purposeId, setPurposeId] = useState('');
+  const [facets, setFacets] = useState<CatalogueFacets>({ styleId: '', sizeId: '' });
   const [limit, setLimit] = useState(12);
   const [collection, setCollection] = useState<'starter' | 'explore'>('starter');
   const [showFixedStreetSegments, setShowFixedStreetSegments] = useState(false);
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
-  const chooseSection = (id: Section) => { setSection(id); setGroupId(''); setQuery(''); setLimit(12); };
+  const clearFilters = () => { setGroupId(''); setPurposeId(''); setQuery(''); setFacets({styleId:'',sizeId:''}); setLimit(12); };
+  const chooseSection = (id: Section) => { setSection(id); clearFilters(); };
   const choices = collection === 'starter' ? CLASSROOM_CHOICES : CANONICAL_CHOICES;
   const groups = availablePickerCategories(section, choices);
-  const matchingAssets = filterCanonicalChoices(section, query, '', choices)
-    .filter(choice => !groupId || pickerCategory(choice) === groupId);
+  const matchingAssets = useMemo(() => filterCanonicalChoices(section, query, purposeId, choices)
+    .filter(choice => (!groupId || pickerCategory(choice) === groupId) && choiceMatchesFacets(choice, facets)), [section, query, purposeId, choices, groupId, facets]);
   const fixedStreetCount = section === 'street_pathway'
     ? matchingAssets.filter(choice => choice.placements[0]?.kind !== 'street').length : 0;
   const assets = section === 'street_pathway' && !showFixedStreetSegments
@@ -58,25 +63,25 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         <Icon size={22} />{label}
       </button>)}
     </div>
-    {onPickStreet && DRAWABLE_STREETS[0] && <button type="button" onClick={() => onPickStreet(DRAWABLE_STREETS[0])}
-      className="min-h-11 w-full rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950">
-      Draw a road route
-    </button>}
+    {primaryAction}
     {activeStreet && <p className="rounded-lg border border-lime-400 bg-lime-50 px-2 py-2 text-xs text-slate-900">
-      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />Place the first point, then move to preview the street in 3D. Start near a site edge to snap an entrance, then draw inward. Enter finishes the route.
+      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />{activeStreet.model.variantId === 'amsterdam_gracht_v1'
+        ? 'Draw the canal to fit your site. Click route points to bend or extend it, then press Enter to finish. The banks stay 36 m wide; the arch stays its original size and fits on a straight stretch.'
+        : 'Place the first point, then move to preview the street in 3D. Start near a site edge to snap an entrance, then draw inward. Enter finishes the route.'}
     </p>}
     {selected && <button onClick={onCancel} className="min-h-11 w-full rounded-lg border border-slate-500 bg-white text-sm text-slate-900">Cancel placement · Esc</button>}
     <div role="status" aria-live="polite" className={`rounded-lg px-2 py-1 text-xs ${status === 'error' ? 'bg-amber-50 text-amber-950' : 'bg-emerald-50 text-emerald-950'}`}>
       <p className="font-semibold">{status === 'updating' ? 'Updating 3D…' : status === 'error' ? '3D update needs attention' : status === 'ready' ? '3D saved' : '3D appears automatically'}</p>
       {message && <p className="mt-1">{message}</p>}
       {status === 'error' && <button onClick={onRetry} className="mt-1 min-h-11 underline">Retry 3D update</button>}
+      {status === 'ready' && canRefreshDetail && <button onClick={onRetry} className="mt-1 min-h-11 underline">Refresh detailed models</button>}
     </div>
     {open && <StudioDialog title="Community catalogue" onClose={close}>
       <div className="flex h-[min(70dvh,640px)] min-h-0 flex-col gap-3 text-slate-900">
         <div className="shrink-0 space-y-3">
           <label className="flex items-center gap-2 text-sm font-semibold">Collection
             <select aria-label="Catalogue collection" value={collection} className={filterStyle}
-              onChange={event => { setCollection(event.target.value as 'starter' | 'explore'); setQuery(''); setGroupId(''); setLimit(12); }}>
+              onChange={event => { setCollection(event.target.value as 'starter' | 'explore'); clearFilters(); }}>
               <option value="starter">Approved & validation candidates</option>
             </select>
           </label>
@@ -100,7 +105,15 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
               {section === 'building' && onPickGenerated && <option value="user-generated">User generated</option>}
             </select>
           </div>
-          {!userGenerated && <p className="text-xs text-slate-600" role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Choose a design, then place it or draw its outline.</p>}
+          {!userGenerated && <>
+            <CatalogueFacetControls domain={section} choices={choices} purposeId={purposeId} facets={facets}
+              onPurpose={id => { setPurposeId(id); setLimit(12); }}
+              onFacet={(key,id) => { setFacets(value => ({...value,[key]:id})); setLimit(12); }} />
+            <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
+              <p role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Choose a design, then place it or draw its outline.</p>
+              {(query || groupId || purposeId || facets.styleId || facets.sizeId) && <button type="button" onClick={clearFilters} className="min-h-11 shrink-0 underline">Reset filters</button>}
+            </div>
+          </>}
           {section === 'street_pathway' && fixedStreetCount > 0 && <button type="button"
             aria-expanded={showFixedStreetSegments} onClick={() => setShowFixedStreetSegments(value => !value)}
             className="min-h-11 text-left text-xs font-semibold underline">
@@ -110,13 +123,13 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         <div aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
           {userGenerated && onPickGenerated ? <UserGeneratedBuildings query={query} onPick={model => { close(); onPickGenerated(model); }} /> : <>
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}`} choice={choice}
-              initialVariantId={preferredCatalogueVariant(choice, query)}
+            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}:${purposeId}:${facets.styleId}:${facets.sizeId}`} choice={choice}
+              initialVariantId={preferredCatalogueVariant(choice, query, purposeId)}
               selected={selected} activeStreetVariant={activeStreetVariant}
               onPlacement={asset => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}
               onDraw={selection => { close(); onPickCanonical(selection); }} />)}
           </div>
-          {!assets.length && <div className="p-4 text-sm">No available objects match.<button onClick={() => { setQuery(''); setGroupId(''); setLimit(12); }} className="block min-h-11 underline">Clear filters</button></div>}
+          {!assets.length && <div className="p-4 text-sm">No available objects match.<button onClick={clearFilters} className="block min-h-11 underline">Clear filters</button></div>}
           {assets.length > limit && <button onClick={() => setLimit(value => value + 12)} className="mt-3 min-h-11 w-full rounded-lg border border-slate-400 font-semibold">Show more choices</button>}
           </>}
         </div>

@@ -1752,6 +1752,21 @@ export const rendersApi = {
 
 /** Bounded Video Render pilot. Generate calls are never retried by the client;
  * the server persists idempotency and the bounded run ledger before starting. */
+export const renderAnimationApi = {
+  preflight: async (request: { project_id: string; source_render_id: string }): Promise<import('@/components/viewer/AnimateRenderButton').AnimationPreflight> => {
+    const { data } = await api.post('/api/v1/video/animate/preflight', request, { timeout: 30000 });
+    return data;
+  },
+  generate: async (request: { project_id: string; source_render_id: string; request_id: string; confirm_paid_submission: true }): Promise<import('@/components/viewer/VideoGeneratePanel').VideoAttempt> => {
+    const { data } = await api.post('/api/v1/video/animate', request, { timeout: 180000 });
+    return data;
+  },
+  recover: async (projectId: string, attemptId: string): Promise<import('@/components/viewer/VideoGeneratePanel').VideoAttempt> => {
+    const { data } = await api.post(`/api/v1/video/projects/${projectId}/animations/${attemptId}/recover`, {}, { timeout: 240000 });
+    return data;
+  },
+};
+
 export const videoRenderApi = {
   preflight: async (request: unknown): Promise<unknown> => {
     const { data } = await api.post('/api/v1/video/preflight', request, { timeout: 30000 });

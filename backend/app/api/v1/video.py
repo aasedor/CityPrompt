@@ -72,7 +72,7 @@ VIDEO_CREDIT_COST = 50
 SEEDANCE_VIDEO_CREDIT_COST = 125
 ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
 
-CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough"]
+CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough", "bicycle_ride"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
 VideoProvider = Literal["omni", "seedance_mini", "internal_enhance"]
 SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
@@ -203,7 +203,12 @@ class VideoPreflightResponse(BaseModel):
 class VideoAttemptResponse(BaseModel):
     id: str
     request_id: str
-    provider: VideoProvider = "omni"
+    provider: VideoProvider | Literal["kling", "comfyui"] = "omni"
+    mode: Literal["route_video", "saved_render_animation"] = "route_video"
+    source_render_id: str | None = None
+    generation_settings: dict | None = None
+    negative_prompt: str | None = None
+    recoverable: bool = False
     model: str | None = None
     seedance_reference_mode: SeedanceReferenceMode | None = None
     internal_enhance_quality: InternalEnhanceQuality | None = None
@@ -283,14 +288,14 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def _attempt_provider(attempt: dict) -> VideoProvider:
+def _attempt_provider(attempt: dict) -> VideoProvider | Literal["kling"]:
     provider = attempt.get("provider")
-    if provider in {"omni", "seedance_mini", "internal_enhance"}:
+    if provider in {"omni", "seedance_mini", "internal_enhance", "kling"}:
         return provider
     return "omni"
 
 
-def _provider_cap(provider: VideoProvider) -> int | None:
+def _provider_cap(provider: VideoProvider | Literal["kling"]) -> int | None:
     if provider == "seedance_mini":
         return SEEDANCE_PILOT_MAX_PROVIDER_CALLS
     if provider == "internal_enhance":
@@ -306,7 +311,7 @@ def _provider_credit_cost(provider: VideoProvider) -> int:
     return VIDEO_CREDIT_COST
 
 
-def _count_provider_calls(attempts: list[dict], provider: VideoProvider | None = None) -> int:
+def _count_provider_calls(attempts: list[dict], provider: VideoProvider | Literal["kling"] | None = None) -> int:
     return sum(
         1
         for attempt in attempts
@@ -315,7 +320,7 @@ def _count_provider_calls(attempts: list[dict], provider: VideoProvider | None =
     )
 
 
-def _provider_usage(attempts: list[dict], provider: VideoProvider) -> VideoProviderUsage:
+def _provider_usage(attempts: list[dict], provider: VideoProvider | Literal["kling"]) -> VideoProviderUsage:
     used = _count_provider_calls(attempts, provider)
     maximum = _provider_cap(provider)
     return VideoProviderUsage(
@@ -325,7 +330,7 @@ def _provider_usage(attempts: list[dict], provider: VideoProvider) -> VideoProvi
     )
 
 
-def _visible_usage(project: Project, attempts: list[dict], provider: VideoProvider) -> VideoProviderUsage:
+def _visible_usage(project: Project, attempts: list[dict], provider: VideoProvider | Literal["kling"]) -> VideoProviderUsage:
     usage = _provider_usage(attempts, provider)
     trial = (project.metadata_ or {}).get(TRIAL_KEY)
     if trial and provider != "internal_enhance":
@@ -338,6 +343,20 @@ def _visible_usage(project: Project, attempts: list[dict], provider: VideoProvid
 
 def _public_attempt(entry: dict) -> VideoAttemptResponse:
     public = {key: entry[key] for key in VideoAttemptResponse.model_fields if key in entry}
+    if entry.get("mode") == "saved_render_animation":
+        # A generative still animation has no prescribed 3D route to score.
+        if entry.get("video_url"):
+            public.update(status="complete", error=None, recoverable=False)
+        else:
+            public["recoverable"] = bool(entry.get("interaction_id")) and entry.get("status") != "failed"
+            if entry.get("status") in {"reserved", "submitting"} and not entry.get("interaction_id"):
+                try:
+                    started = datetime.fromisoformat(entry["created_at"].replace("Z", "+00:00"))
+                    if (datetime.now(timezone.utc) - started).total_seconds() > 300:
+                        public.update(status="submission_unknown", error="This saved request was interrupted before a provider receipt was retained. Review the provider queue; it will not be submitted again automatically.")
+                except (KeyError, TypeError, ValueError):
+                    pass
+        return VideoAttemptResponse(**public)
     # Retained pixels remain recoverable even if scoring or the response failed.
     if entry.get("video_url") and entry.get("status") != "complete":
         public.update(status="complete", fidelity_status="unavailable",
@@ -776,7 +795,8 @@ async def list_video_attempts(
             # Saved pixels survive an interrupted completion check too.
             shared = _public_attempt(item).model_dump()
             shared.update(prompt=None, error=None, guide_image_url=None,
-                          interaction_id=None, request_id="")
+                          interaction_id=None, request_id="", recoverable=False,
+                          negative_prompt=None, generation_settings=None)
             visible.append(shared)
     attempts = visible
     omni_usage = _visible_usage(project, all_attempts, "omni")

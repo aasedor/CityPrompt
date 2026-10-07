@@ -1,0 +1,475 @@
+{
+  "candidate": "ubst-student-courtyard-clay-v004",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "ubst-student-courtyard",
+  "variant_id": "ubst-student-courtyard-v0",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 30,
+      "depth": 24,
+      "height": 12.42
+    },
+    "observed_storeys": 3,
+    "source_measurements": [
+      "Front W1478px/H600px: H/W .406; 30m frontage gives about12.2m totalheight.",
+      "Wing ends2columns x3rows; both visible long elevations8columns x3rows; rear4uppercolumns x2rows.",
+      "Wing width6.5m, court17m clear, upperwindows1.6x2.6m, floorpitch3.9m."
+    ],
+    "hidden_assumptions": [
+      "24m depth and7m rearwing authored, not surveyed.",
+      "Hidden rear, rooms and circulation inferred."
+    ]
+  },
+  "roof_contract": {
+    "topology": "One continuous U-shaped flat roof",
+    "parapets": "Outer and courtyard perimeter only",
+    "authority": "Three locked generated views"
+  },
+  "identity_contract": {
+    "owner": "Source-specific physical geometry",
+    "bitmap_stickers": "None in architectural-clay profile"
+  },
+  "material_contract": {
+    "profile": "Source-palette architectural clay",
+    "limitation": "Not a textured keeper"
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "uses": [
+      "Student residence",
+      "Shared study and lounge"
+    ],
+    "legal_approval": false,
+    "description": "Ground-level open court, two bedroom wings, rear common spaces and continuous stairs."
+  },
+  "contact_contract": [
+    "Ground support",
+    "Through-carrier apertures",
+    "Physically open doors",
+    "Occupied rooms",
+    "Closed roof slabs",
+    "Sloped stairs with through-floor holes"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "resizing": false,
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -31,
+        2
+      ],
+      "target": [
+        0,
+        0,
+        2
+      ],
+      "lens": 18,
+      "shift_y": 0.13
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        13,
+        -48,
+        18
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ],
+      "lens": 30
+    },
+    {
+      "name": "aerial",
+      "location": [
+        17,
+        -53,
+        30
+      ],
+      "target": [
+        0,
+        0,
+        5
+      ],
+      "lens": 35
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        81.9
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 42.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -63.0,
+        0,
+        8.645
+      ],
+      "target": [
+        0,
+        0,
+        5.5575
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        63.0,
+        0,
+        8.645
+      ],
+      "target": [
+        0,
+        0,
+        5.5575
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        63.0,
+        8.645
+      ],
+      "target": [
+        0,
+        0,
+        5.5575
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -44.099999999999994,
+        50.400000000000006,
+        24.7
+      ],
+      "target": [
+        0,
+        0,
+        5.5575
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        11.5,
+        -25,
+        8
+      ],
+      "target": [
+        11.75,
+        -12,
+        6
+      ],
+      "lens": 52,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        2,
+        -10,
+        2.1
+      ],
+      "target": [
+        0,
+        5,
+        2
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -2.2,
+        2.7,
+        2
+      ],
+      "target": [
+        -3.6,
+        7.4,
+        1.8
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "roof_contact",
+      "location": [
+        21,
+        -10,
+        19
+      ],
+      "target": [
+        15,
+        -7,
+        12
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "side_projection",
+      "location": [
+        25,
+        -15,
+        8
+      ],
+      "target": [
+        15,
+        -4,
+        6
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -1.7,
+        5.6,
+        1.8
+      ],
+      "target": [
+        -3.6,
+        8.8,
+        1.4
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "stairs",
+      "location": [
+        6.8,
+        5.45,
+        1.8
+      ],
+      "target": [
+        6.8,
+        10,
+        4
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "upper_landing",
+      "location": [
+        7.4,
+        11.4,
+        5.65
+      ],
+      "target": [
+        5,
+        8.3,
+        5
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "upper_stairs",
+      "location": [
+        6.8,
+        5.45,
+        5.7
+      ],
+      "target": [
+        6.8,
+        10,
+        8
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "bedroom",
+      "location": [
+        -10.4,
+        -10.8,
+        5.65
+      ],
+      "target": [
+        -13,
+        -9.1,
+        4.9
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "bathroom",
+      "location": [
+        -1.4,
+        10.3,
+        9.55
+      ],
+      "target": [
+        -3.1,
+        11,
+        8.8
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "courtyard",
+      "location": [
+        0,
+        -10,
+        2
+      ],
+      "target": [
+        0,
+        5,
+        5
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "study_room",
+      "location": [
+        -5.5,
+        5.7,
+        1.8
+      ],
+      "target": [
+        -6.4,
+        8.3,
+        1.3
+      ],
+      "lens": 24,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "side_projection",
+    "interior",
+    "stairs",
+    "upper_landing",
+    "upper_stairs",
+    "bedroom",
+    "bathroom",
+    "courtyard",
+    "study_room"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-student-courtyard\\variant_0.png",
+        "path": "sources/variant_0.png",
+        "bytes": 2977231,
+        "sha256": "85389303bbb993ef809d8cdf76bdc4161c7de696bfd26f3409a10b482f8f4686",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-student-courtyard\\variant_0_angle_60.png",
+        "path": "sources/variant_0_angle_60.png",
+        "bytes": 3426660,
+        "sha256": "2d845bcef2d4c967365848bec75a04305fe5202e7f561e3a279605fb6d56e120",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-student-courtyard\\variant_0_angle_90.png",
+        "path": "sources/variant_0_angle_90.png",
+        "bytes": 3503201,
+        "sha256": "4fc8e0a44e817dc6a6d74614caece4a2fcbe1dcf8f105da91c66b1036c188d56",
+        "dimensions_px": [
+          1536,
+          1024
+        ]
+      }
+    ],
+    "exact_variant_only": true,
+    "origin": "original_generated_design",
+    "generated_references_explicitly_requested": true,
+    "not_surveyed": true
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/batch_build.py",
+        "sha256": "2ca2204d4a5c7eaa58331e566580159663da9f151ef15bc47c684231be516a25"
+      },
+      {
+        "path": "scripts/family_student.py",
+        "sha256": "1f8f0785a51358b80198b7199d71bf23ff6b98a8522aee58a352d9b35537bcdf"
+      },
+      {
+        "path": "scripts/common.py",
+        "sha256": "0db1dc2abcf2bbd30616f42fa474ae5dcbf9e985899db202886ef51c9c5de47b"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "087956b841e15c473d747ae8735c33c8fdcde5a27df5938acb277d6b934a09b9"
+      },
+      {
+        "path": "scripts/references.py",
+        "sha256": "74277ba115affed986f0902a2cb0abcba3c14ecbb9a928b4f18bdffdcffdecea"
+      },
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "fe900d6f7b7798ce80ef4d3e7387c704bf2e1830fbe48c0e13428aa36fc81889"
+      }
+    ],
+    "blender_version": "5.1.2",
+    "python_version": "3.13.9 (main, Jan 16 2026, 12:29:45) [MSC v.1944 64 bit (AMD64)]",
+    "build_started_utc": "2026-10-07T18:39:31.562820+00:00",
+    "generation_api_calls_during_build": 0,
+    "reference_generation": "built-in image_gen; prompts in source provenance",
+    "render_source": "actual optimized GLB reimport only"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:/Users/andre/.codex/generated_images/01a10a60-a044-76b1-a682-d89a8dd78ea7/exec-92b13541-99b4-4c43-9fd4-bce593640e78.png",
+      "prompt": "Use case: photorealistic-natural. Create an exceptional, believable original architectural design reference for City Prompt, not a real existing property. ONE image, one building, no collage, no lettering, logos or watermark. Editorial architectural photograph in Calgary prairie light, neutral clear sky, beautifully restrained Nordic design with realistic material scale and precise construction. Show the ENTIRE small single-storey manufactured home from its front-right corner at eye height, long front facing camera, enough distance for all roof and base edges and 12% breathing room. No people, cars, large trees or obscuring objects.\nDESIGN TO LOCK for subsequent views: exactly one long rectangular transportable dwelling, 16 metres across the front (left-right), 6 metres deep. One occupied floor at 0.45 metres above grade, level wall eaves at 3.15 metres, shallow symmetric gable ridge at 4.35 metres running the long 16 m axis, simple uninterrupted charcoal standing-seam roof. Dark charcoal vertical cladding on the left and right thirds; warm honey cedar vertical boards around the central entry. Front has exactly four opening groups: a broad two-pane living-room window in the left third; a glazed single entry door near centre; two equal bedroom windows on the right third. Slim black window frames, believable recessed glazing with actual inhabited rooms behind. Narrow continuous cedar front deck at floor height with an open centre approach of three low broad steps, four timber posts supporting a slim level porch canopy across the central 8 metres only, fully connected to the house below the eaves. Solid charcoal ventilated perimeter skirt conceals the transport chassis and piles. Visible right end has one centred small window. Small shallow planted gravel strip. The architecture must be modest and buildable, beautifully proportioned rather than extravagant. Keep exactly one storey, one simple longitudinal gable, FOUR front opening groups, central half-length porch, coherent weather-tight envelope, no text.",
+      "input_roles": [],
+      "sha256": "3bf9de8703d6e737b270f1a5140876376c8a06f1927b74efee46660cd5586f56",
+      "bytes": 2879262,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:/Users/andre/.codex/generated_images/01a10a60-a044-76b1-a682-d89a8dd78ea7/exec-ceea0e12-90e5-463e-917d-c8dce43429b5.png",
+      "prompt": "Create a second architectural reference photograph of the EXACT SAME original manufactured home in the supplied image. Input image is identity and geometry authority. Move only the camera: elevated front-right aerial at roughly 55 degrees down, long front at bottom, enough distance to show the entire building, its simple gable roof and porch with generous margin. Preserve EXACTLY the single occupied storey, long rectangular 16-by-6 m body, continuous longitudinal gable roof, charcoal standing seam, charcoal end sections and central cedar section, four opening groups in the front (left broad living window, central glass entry, two equal bedroom windows), FOUR porch posts and the half-length level porch canopy, front deck and three low central steps, one small centred right-end window. Do not add roof lights, chimneys, dormers, extra wings, windows or solar panels. Neutral clear daylight with readable material detail, restrained gravel and low planting; no people, vehicles, text or labels. This is one architecture reference image, not a collage. Prioritize cross-view consistency over dramatic lighting.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "f0975857ff37a304864cd1b44c73e0ad531a26442b506fc41a743b4ae9cd2a8d",
+      "bytes": 3811965,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:/Users/andre/.codex/generated_images/01a10a60-a044-76b1-a682-d89a8dd78ea7/exec-5b332853-55a8-476f-9a1a-868350e5a1f3.png",
+      "prompt": "Create a TRUE VERTICAL NADIR orthographic overhead architectural reference image of the EXACT SAME single manufactured home in the two supplied references. Both images are identity authority, not collage elements. Camera points straight down at 90 degrees, no horizon, no visible walls except tiny eave edge, no perspective convergence, roof footprint fully visible. Put the 16 m long axis left-right and the FRONT PORCH along the BOTTOM edge. Main body is a simple 16 by 6 metre rectangle, uninterrupted symmetric charcoal standing-seam gable, single long ridge left-right at the centre. Preserve the central half-length shallow porch canopy projecting toward bottom, supported by the same four posts; narrow continuous front timber deck, three low central steps below deck. No other roof structures, panels, chimneys, skylights or additions. Subdued gravel surrounds and sparse low prairie planting, diffuse daylight and small soft shadows. Photorealistic materials and high detail, elegant architectural documentation. One building, one image, no labels, no dimensions, no diagram symbols, no text. EXACTLY the same footprint and roof arrangement; do not redesign.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "0446c6e512c367859619d298c42735840947d8fb18bb33a3c288e92a268c5330",
+      "bytes": 2821329,
+      "dimensions_px": [
+        1774,
+        887
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

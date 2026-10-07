@@ -1,0 +1,684 @@
+{
+  "status": "PASS_OFFLINE_ROUTE_PROBES",
+  "model_sha256": "6f17a05f7c0d74ccc0c567ba178395d255bdefb2ac08588a1319b85c72ebb2c5",
+  "scope": "Family-specific prescribed centrelines, floor support and 1.85m vertical clearance only; not continuous body collision, runtime or code approval.",
+  "samples": 52,
+  "checks": [
+    {
+      "route": "lounge-entry",
+      "index": 0,
+      "point": [
+        0,
+        4.5,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lounge-entry",
+      "index": 1,
+      "point": [
+        0,
+        5,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lounge-entry",
+      "index": 2,
+      "point": [
+        0,
+        5.5,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lounge-entry",
+      "index": 3,
+      "point": [
+        0,
+        6,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 0,
+      "point": [
+        6.8,
+        5.58,
+        0.15
+      ],
+      "support": true,
+      "measured_floor_z": 0.15000000596046448,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 1,
+      "point": [
+        6.8,
+        5.824090909090909,
+        0.32727272727272727
+      ],
+      "support": true,
+      "measured_floor_z": 0.3272727131843567,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 2,
+      "point": [
+        6.8,
+        6.072272727272727,
+        0.5045454545454545
+      ],
+      "support": true,
+      "measured_floor_z": 0.5045454502105713,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 3,
+      "point": [
+        6.8,
+        6.320454545454545,
+        0.6818181818181818
+      ],
+      "support": true,
+      "measured_floor_z": 0.6818181872367859,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 4,
+      "point": [
+        6.8,
+        6.568636363636363,
+        0.8590909090909091
+      ],
+      "support": true,
+      "measured_floor_z": 0.8590909242630005,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 5,
+      "point": [
+        6.8,
+        6.816818181818182,
+        1.0363636363636364
+      ],
+      "support": true,
+      "measured_floor_z": 1.0363636016845703,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 6,
+      "point": [
+        6.8,
+        7.065,
+        1.2136363636363634
+      ],
+      "support": true,
+      "measured_floor_z": 1.2136363983154297,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 7,
+      "point": [
+        6.8,
+        7.3131818181818184,
+        1.3909090909090909
+      ],
+      "support": true,
+      "measured_floor_z": 1.3909090757369995,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 8,
+      "point": [
+        6.8,
+        7.5613636363636365,
+        1.5681818181818181
+      ],
+      "support": true,
+      "measured_floor_z": 1.5681818723678589,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 9,
+      "point": [
+        6.8,
+        7.809545454545455,
+        1.7454545454545454
+      ],
+      "support": true,
+      "measured_floor_z": 1.7454545497894287,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 10,
+      "point": [
+        6.8,
+        8.057727272727274,
+        1.9227272727272726
+      ],
+      "support": true,
+      "measured_floor_z": 1.9227272272109985,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 11,
+      "point": [
+        6.8,
+        8.305909090909092,
+        2.1
+      ],
+      "support": true,
+      "measured_floor_z": 2.0999999046325684,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 12,
+      "point": [
+        6.8,
+        8.55409090909091,
+        2.277272727272727
+      ],
+      "support": true,
+      "measured_floor_z": 2.2772727012634277,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 13,
+      "point": [
+        6.8,
+        8.802272727272728,
+        2.454545454545454
+      ],
+      "support": true,
+      "measured_floor_z": 2.454545497894287,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 14,
+      "point": [
+        6.8,
+        9.050454545454546,
+        2.631818181818182
+      ],
+      "support": true,
+      "measured_floor_z": 2.6318182945251465,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 15,
+      "point": [
+        6.8,
+        9.298636363636364,
+        2.809090909090909
+      ],
+      "support": true,
+      "measured_floor_z": 2.8090908527374268,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 16,
+      "point": [
+        6.8,
+        9.546818181818182,
+        2.9863636363636363
+      ],
+      "support": true,
+      "measured_floor_z": 2.986363649368286,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 17,
+      "point": [
+        6.8,
+        9.795,
+        3.1636363636363636
+      ],
+      "support": true,
+      "measured_floor_z": 3.1636364459991455,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 18,
+      "point": [
+        6.8,
+        10.043181818181818,
+        3.340909090909091
+      ],
+      "support": true,
+      "measured_floor_z": 3.340909004211426,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 19,
+      "point": [
+        6.8,
+        10.291363636363638,
+        3.5181818181818176
+      ],
+      "support": true,
+      "measured_floor_z": 3.518181800842285,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 20,
+      "point": [
+        6.8,
+        10.539545454545454,
+        3.6954545454545453
+      ],
+      "support": true,
+      "measured_floor_z": 3.6954545974731445,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 21,
+      "point": [
+        6.8,
+        10.787727272727272,
+        3.872727272727272
+      ],
+      "support": true,
+      "measured_floor_z": 3.872727155685425,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 22,
+      "point": [
+        6.8,
+        11.03590909090909,
+        4.05
+      ],
+      "support": true,
+      "measured_floor_z": 4.050000190734863,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "lower-stair",
+      "index": 23,
+      "point": [
+        6.8,
+        11.39,
+        4.05
+      ],
+      "support": true,
+      "measured_floor_z": 4.050000190734863,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 0,
+      "point": [
+        6.8,
+        5.58,
+        4.05
+      ],
+      "support": true,
+      "measured_floor_z": 4.050000190734863,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 1,
+      "point": [
+        6.8,
+        5.824090909090909,
+        4.2272727272727275
+      ],
+      "support": true,
+      "measured_floor_z": 4.2272725105285645,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 2,
+      "point": [
+        6.8,
+        6.072272727272727,
+        4.404545454545454
+      ],
+      "support": true,
+      "measured_floor_z": 4.404545307159424,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 3,
+      "point": [
+        6.8,
+        6.320454545454545,
+        4.581818181818182
+      ],
+      "support": true,
+      "measured_floor_z": 4.581818103790283,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 4,
+      "point": [
+        6.8,
+        6.568636363636363,
+        4.759090909090909
+      ],
+      "support": true,
+      "measured_floor_z": 4.759090900421143,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 5,
+      "point": [
+        6.8,
+        6.816818181818182,
+        4.9363636363636365
+      ],
+      "support": true,
+      "measured_floor_z": 4.936363697052002,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 6,
+      "point": [
+        6.8,
+        7.065,
+        5.113636363636363
+      ],
+      "support": true,
+      "measured_floor_z": 5.113636493682861,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 7,
+      "point": [
+        6.8,
+        7.3131818181818184,
+        5.290909090909091
+      ],
+      "support": true,
+      "measured_floor_z": 5.290909290313721,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 8,
+      "point": [
+        6.8,
+        7.5613636363636365,
+        5.468181818181818
+      ],
+      "support": true,
+      "measured_floor_z": 5.468181610107422,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 9,
+      "point": [
+        6.8,
+        7.809545454545455,
+        5.6454545454545455
+      ],
+      "support": true,
+      "measured_floor_z": 5.645454406738281,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 10,
+      "point": [
+        6.8,
+        8.057727272727274,
+        5.822727272727272
+      ],
+      "support": true,
+      "measured_floor_z": 5.822727203369141,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 11,
+      "point": [
+        6.8,
+        8.305909090909092,
+        6.0
+      ],
+      "support": true,
+      "measured_floor_z": 6.0,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 12,
+      "point": [
+        6.8,
+        8.55409090909091,
+        6.177272727272728
+      ],
+      "support": true,
+      "measured_floor_z": 6.177272796630859,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 13,
+      "point": [
+        6.8,
+        8.802272727272728,
+        6.3545454545454545
+      ],
+      "support": true,
+      "measured_floor_z": 6.354545593261719,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 14,
+      "point": [
+        6.8,
+        9.050454545454546,
+        6.531818181818182
+      ],
+      "support": true,
+      "measured_floor_z": 6.531818389892578,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 15,
+      "point": [
+        6.8,
+        9.298636363636364,
+        6.709090909090909
+      ],
+      "support": true,
+      "measured_floor_z": 6.709090709686279,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 16,
+      "point": [
+        6.8,
+        9.546818181818182,
+        6.886363636363637
+      ],
+      "support": true,
+      "measured_floor_z": 6.886363506317139,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 17,
+      "point": [
+        6.8,
+        9.795,
+        7.063636363636364
+      ],
+      "support": true,
+      "measured_floor_z": 7.063636302947998,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 18,
+      "point": [
+        6.8,
+        10.043181818181818,
+        7.24090909090909
+      ],
+      "support": true,
+      "measured_floor_z": 7.240909099578857,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 19,
+      "point": [
+        6.8,
+        10.291363636363638,
+        7.418181818181818
+      ],
+      "support": true,
+      "measured_floor_z": 7.418181896209717,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 20,
+      "point": [
+        6.8,
+        10.539545454545454,
+        7.595454545454546
+      ],
+      "support": true,
+      "measured_floor_z": 7.595454692840576,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 21,
+      "point": [
+        6.8,
+        10.787727272727272,
+        7.772727272727273
+      ],
+      "support": true,
+      "measured_floor_z": 7.7727274894714355,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 22,
+      "point": [
+        6.8,
+        11.03590909090909,
+        7.95
+      ],
+      "support": true,
+      "measured_floor_z": 7.949999809265137,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    },
+    {
+      "route": "upper-stair",
+      "index": 23,
+      "point": [
+        6.8,
+        11.39,
+        7.95
+      ],
+      "support": true,
+      "measured_floor_z": 7.949999809265137,
+      "clear_headroom_1_85m": true,
+      "obstruction": null
+    }
+  ]
+}

@@ -112,7 +112,7 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange }: {draft: 
   const degrees = surface && draft.faceStreet ? streetFacingDegrees([surface.lng,surface.lat], zones, draft.degrees) : draft.degrees;
   const proposed = surface ? rectangleAt([surface.lng,surface.lat],draft.width,draft.depth,degrees) : null;
   const snapped = proposed
-    ? snapPlacement(proposed,zones,getActiveSiteBoundary(zones),undefined,previewZone.properties)
+    ? snapPlacement(proposed,zones,getActiveSiteBoundary(zones),undefined,previewZone.properties,previewZone.zone_type)
     : null;
   const footprint = snapped?.coordinates;
   const invalid = snapped ? snapped.problem : 'Move over the site and wait for the ground to load.';

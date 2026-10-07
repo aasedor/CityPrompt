@@ -168,6 +168,9 @@ function detectStreetIntersections(
     // Canal bank connections and elevated fixed spans do not create asphalt
     // nodes at centreline crossings. Their specialist envelope owns topology.
     if (!zone.properties?.validation_fixed_fixture && isSpecialistStreet(zone.properties?.road_selected_variant_id)) return false;
+    // Exact surface-only pathways participate in pedestrian T/X joins. Legacy
+    // trails remain excluded; a name or width alone cannot enable this path.
+    if (nativeStreetPilotForZone(zone, preview)?.program?.adapter === 'narrow-pathway-v1') return true;
     const native = publicRealmTrialAsset(zone);
     if (native) return native.kind === 'street' && native.dimensions[0] >= 5;
     const props = zone.properties as Record<string, unknown> | undefined;

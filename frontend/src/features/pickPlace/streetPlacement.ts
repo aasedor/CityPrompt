@@ -30,7 +30,24 @@ export function streetSectionWidth(zone: Pick<SiteZone, 'zone_type' | 'propertie
 
 /** Save the route and its buffer atomically, including move/undo/redo. */
 export function streetCoordinateUpdate(zone: SiteZone | undefined, coordinates: number[][]) {
-  if (!zone || !isFixedSectionStreet(zone)) return { coordinates };
+  if (!zone) return { coordinates };
+  if (!isFixedSectionStreet(zone)) {
+    const line = zone.zone_type === 'road' ? parsePersistedCenterline(zone.properties?.plan_centerline) : null;
+    if (!line || !zone.coordinates.length || zone.coordinates.length !== coordinates.length) return { coordinates };
+    // Legacy/procedural streets also carry their source route when a whole
+    // footprint is translated. An irregular outline edit cannot imply a route.
+    const dx = coordinates[0][0] - zone.coordinates[0][0], dy = coordinates[0][1] - zone.coordinates[0][1];
+    const sx = metersPerDegLon(zone.coordinates[0][1]), sy = METERS_PER_DEG_LAT;
+    if (coordinates.some((p, i) => Math.hypot(
+      (p[0] - zone.coordinates[i][0] - dx) * sx,
+      (p[1] - zone.coordinates[i][1] - dy) * sy,
+    ) > .02)) return { coordinates };
+    const move = (points: number[][]) => points.map(p => [p[0] + dx, p[1] + dy]);
+    const controls = parsePersistedCenterline(zone.properties?.plan_route_controls);
+    return { coordinates, properties: {
+      ...zone.properties, plan_centerline: move(line), ...(controls ? { plan_route_controls: move(controls) } : {}),
+    } };
+  }
   const width = streetSectionWidth(zone);
   const controls = extractCenterline(coordinates);
   const previous = zone.coordinates?.length ? extractZoneCenterline(zone) : [];
@@ -98,7 +115,7 @@ export function streetRouteProblem(
 }
 
 export function addStreetBend(zone: SiteZone): number[][] | null {
-  if(isSpecialistStreet(zone.properties?.road_selected_variant_id) || zone.properties?.road_selected_variant_id==='brt_bus_rapid_transit_corridor_v0')return null;
+  if((isSpecialistStreet(zone.properties?.road_selected_variant_id) && zone.properties?.road_selected_variant_id !== 'amsterdam_gracht_v1') || zone.properties?.road_selected_variant_id==='brt_bus_rapid_transit_corridor_v0')return null;
   const width = streetSectionWidth(zone);
   const savedControls = parsePersistedCenterline(zone.properties?.plan_route_controls);
   const line = savedControls ?? extractZoneCenterline(zone);

@@ -14,7 +14,7 @@ export const hasNativePark = (zone: Pick<SiteZone, 'properties'>) => zone.proper
 export function readNativePark(zone: Pick<SiteZone, 'properties'>): { layout: NativeParkLayout; selection: NativeParkSelection } | null {
   const selection = zone.properties?.green_space_native_layout as NativeParkSelection | undefined;
   if (!selection?.frame || ![selection.frame.longitude, selection.frame.latitude, selection.frame.yaw].every(Number.isFinite)) return null;
-  const layout = nativeParkLayouts.find(p => p.id === selection.layout_id && p.contentRevision === selection.content_revision);
+  const layout = [...nativeParkLayouts, ...registry.archivedLayouts].find(p => p.id === selection.layout_id && p.contentRevision === selection.content_revision);
   if (!layout || layout.archetypeId !== zone.properties?.green_space_archetype_id || layout.variantId !== zone.properties?.green_space_selected_variant_id) return null;
   return { layout, selection };
 }

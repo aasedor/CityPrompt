@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-3238f9e7-abab-4c63-b7ec-369f80e70f3d.png",
+      "prompt": "Use case: photorealistic-natural. Create an exceptional original architectural reference design for a small NEW childcare centre in Calgary, serving 30 children aged 3–5. One photograph, no collage, no people, text, logos or parked cars. Entire building, secure outdoor play courtyard and base visible with generous margin. Elevated front-right three-quarter camera, clear diffuse prairie daylight. Realistic Scandinavian civic architecture, warm pale timber, restrained sage green and pale brick, beautiful precise material joints, child-scaled but sophisticated.\nLOCKED DESIGN: one occupied storey only. Overall building-and-courtyard rectangle 28 m wide by 22 m deep. Three parallel equal gabled pavilions, each about 7.5 m wide across the front and 12 m deep, stand side-by-side across the BACK portion, connected at their lower walls. THREE equal front-facing gable ends, ridges run front-to-back, eaves 3.7 m and ridge 6.2 m. Roofs muted sage-grey standing seam. Each pavilion's front gable wall has one generous group of tall timber-framed glazing with glazed classroom doors opening onto a shared covered timber veranda. The LEFT pavilion contains the welcoming reception entrance and staff rooms; centre and right support activity rooms, with a third activity room in the rear. Long modest flat veranda canopy sits below gable windows, fully joined to all three pavilions and supported by exactly six slender timber posts. In FRONT of veranda, a secure rectangular play courtyard fills remaining 8 m depth: low pale timber picket fence, front-left pedestrian gate, one small timber sandbox, simple low log stepping pieces and a planted strip along one edge. No tall towers or elaborate equipment, no unsafe open street access. Main pedestrian entry through front-left gate, no vehicle driveway within play yard. Three drop-off spaces belong to the future site plan outside this asset and should not be drawn. Coherent geometry, genuine enclosed rooms behind glazing, calm expressive three-gable silhouette, delightful high-quality nursery architecture.",
+      "input_roles": [],
+      "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af",
+      "bytes": 3359153,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-cf57fc9c-9daf-4f43-b901-d42fdd5066a0.png",
+      "prompt": "Create a faithful elevated front-right aerial reference of the EXACT SAME original childcare centre in the input image, camera looking down about55degrees and pulled back enough to show all roofs, building edges and entire enclosed play garden with10% margin. Input is architectural identity authority, no redesign. Preserve THREE equal joined gabled pavilions side by side, ridges front-to-back, sage-grey standing-seam roofs, large triangular clerestory glass in each front gable surrounded by pale timber, pale brick lower walls, three groups of tall timber-framed classroom glazing/doors. One long shallow flat veranda roof across all three groups with SIX slender timber supports and a timber deck. One occupied storey with tall daylit rooms, absolutely no second floor, balconies, stairs or roof dormers. Front garden has one sandbox to left, low stepping logs near centre-right, grass and planted edge, pale picket perimeter fence and front-left pedestrian gate. Side fences taller for privacy. Preserve office/staff at left. No new wings, solar panels, roof equipment or play towers. Calm daylight, restrained natural materials, buildable fine detailing, no people, vehicles, text, logos or collage.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc",
+      "bytes": 3717880,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-ae6c4e2e-3d0f-4b1d-ac49-a1ce62cfe241.png",
+      "prompt": "Create a roof-and-garden plan reference of the EXACT SAME original three-gable childcare centre in the supplied images. Use a VERTICAL straight-down90degree camera, no horizon, no facade facing camera, no vanishing point. Whole property rectangle and fence visible with10% margin. FRONT garden and its front-left gate at BOTTOM; building at TOP/back. Preserve exactly THREE joined equal gable roofs side-by-side, each ridge FRONT-TO-BACK, muted sage standing seam. Three7.5m-wide by12m-deep pavilions, overall22.5m building width within a28m-wide by22m-deep compound. Continuous shallow flat veranda canopy and timber deck along building front. In front courtyard preserve left sandbox, small centre-right arc of low stepping logs plus single horizontal log, grass, edge planting, left pedestrian path connected to front-left gate, pale timber fence. Do not add wings, roof levels, play structures, chimneys, solar panels or cars. Same original architecture and material colours. Photorealistic overhead architectural documentation, no labels, dimensions, text or diagram symbols; top-down footprint consistency is the priority.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7",
+      "bytes": 3206421,
+      "dimensions_px": [
+        1145,
+        1374
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

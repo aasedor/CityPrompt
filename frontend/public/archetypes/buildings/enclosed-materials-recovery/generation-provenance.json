@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-c8ba892f-449d-4bf1-9753-4e433855b2c8.png",
+      "prompt": "Use case: photorealistic-natural. One original architectural reference photograph of a beautifully designed ENCLOSED dry-recyclables materials recovery hall for Calgary. Fictional new teaching building, no text, logos, signs, people or vehicles. Whole building with 12% breathing room from front-right at eye level in soft clear prairie daylight, editorial architecture quality, restrained palette and precise buildable detailing.\nDESIGN TO LOCK: one occupied industrial storey, rectangular plan 36 m across front by 24 m deep. Exactly THREE parallel identical sawtooth roof modules, each 12 m wide, running front-to-back: each roof slopes upward left-to-right from 6.2 m low eave to 9 m high ridge, then drops vertically to the next low eave. The vertical high faces are northlight clerestory glazing. The FRONT reads three repeated sawtooth profile ends, not gables. Roofs are muted pale zinc standing seam, thin dark structural edges. Walls pale warm grey vertically ribbed recycled metal on a concrete plinth. Front has TWO tall closed blue-green sectional receiving doors, one in the left third and one in the right third. Centre front contains a modest 6 m wide timber-framed glass staff entry with a thin flat canopy. Clear staff access separated from doors. Right side has a long high glazed clerestory below its upper roof edge, subtle column rhythm. No outdoor material piles, bins or processing: all sorting, baling and storage occur inside this enclosed hall. Clear swept concrete apron, a few low grasses near staff entry. Strong rhythmic roof silhouette, refined industrial architecture with functional credible openings, real glazing and weather-tight envelope.",
+      "input_roles": [],
+      "sha256": "6aa993c6fd3b967723c5d0f4b5f4282c63695145aabe2ee2c9eecd6b69a98a42",
+      "bytes": 2106234,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-e3f14823-f948-434f-affa-8162025f23bb.png",
+      "prompt": "Make one faithful second reference photograph of the EXACT SAME original enclosed materials recovery hall in the supplied image. Use input as geometry identity authority; change camera only to elevated front-right aerial about55 degrees down with full building and all roof edges visible plus generous margins. Preserve THREE identical sawtooth roof strips running front-to-back, each rising left-to-right then dropping vertically, total36m across front and24m deep. Front at bottom. Preserve two teal closed receiving doors on outer thirds, central timber-framed glazed entry and its shallow dark canopy, pale vertical ribbed walls, concrete plinth, and high glass on every vertical roof-tooth face including rightmost exterior long edge. No gables, no extra teeth, no clerestory huts, chimneys, roof penetrations, solar panels or outdoor material piles. Make the three sloping zinc standing-seam roof planes and glazed vertical faces physically clear and consistent. Exact same single storey, palette and proportions, soft natural daylight. Clear apron, modest low planting, no people, vehicles, text or collage.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "96c87b670d8b8e0ba5e315fa2ad8140cb8b46f14e0fdbcefc3ea9c7c9c89788b",
+      "bytes": 2946935,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-6c285280-d101-426b-9f29-9a96e81bcb03.png",
+      "prompt": "One TRUE TOP-DOWN ROOF PLAN photograph of the EXACT SAME materials recovery hall in the two images. Move camera to vertical90-degree nadir, no horizon, orthographic projection, absolutely no front wall or side wall visible. This is an overhead roof-footprint reference, not another oblique perspective. FRONT must be BOTTOM, 36m wide left-right,24m front-back. Show precisely THREE repeated sawtooth roof strips side by side, each 12m wide and running24m front-back. Each plane slopes upward from its left edge to its right edge; the high edge drops vertically to the next plane, with a narrow northlight glazed seam at each right edge. Pale zinc standing seam roof, no central gable ridges, no pitched-roof pairs, no extra strips. The modest central front timber entry canopy projects outward at the bottom middle; preserve its size and position. Clear concrete apron and low grasses around. Same building, original materials and topology, whole rectangle visible with margin. No text, diagrams, labels, vehicles, people, extra roof objects or outdoor waste/materials.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "e79b039a4d4c52dc14a6396a23e35f64be47887a6b6ffabcb4ccd0b2906fddb1",
+      "bytes": 2750419,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

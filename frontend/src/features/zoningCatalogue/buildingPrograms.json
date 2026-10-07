@@ -1,0 +1,1266 @@
+{
+  "infill_flat_roof_minimal": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74"
+  },
+  "bungalow_postwar_ranch": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "calgary-inner-city-bungalow-clay-v005"
+  },
+  "toronto_foursquare_red_brick": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "toronto-edwardian-foursquare-clay-v004"
+  },
+  "detached_infill_rammed_earth": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "detached_contemporary_infill-clay-v003"
+  },
+  "med_villa_tuscan": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "autumn-villa-clay-v004"
+  },
+  "clapboard_north_end": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "One detached home, with no secondary suite assumed. Contextual permitted routes require a separate site assessment.",
+    "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6"
+  },
+  "infill_duplex": {
+    "components": [
+      [
+        "Semi-detached Dwelling",
+        "Contextual Semi-detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Two side-by-side homes. Calgary classifies this arrangement as semi-detached, rather than a stacked duplex.",
+    "revision": "calgary-side-by-side-duplex-clay-v004"
+  },
+  "montreal_duplex_plateau": {
+    "components": [
+      [
+        "Duplex Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Two stacked homes, treated as a Duplex Dwelling.",
+    "revision": "montreal-plateau-duplex-clay-v004"
+  },
+  "nordic_timber_mass_timber": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Residential apartments; no shops or offices assumed.",
+    "revision": "autumn-timber-clay-v004"
+  },
+  "courtyard_family_brick_modern": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Classroom program: eight apartments on the two upper occupied floors, reached by shared stairs. The courtyard is a separate site element.",
+    "revision": "courtyard-brick-modern-clay-v004",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The v004 builder places four furnished residential bays on each of two upper floors, with two internal stairs. Eight dwellings is the declared teaching layout, not a surveyed unit count."
+    },
+    "conditions": [
+      "Shared stair access does not establish individual access to grade for every apartment."
+    ]
+  },
+  "rndsqr_midrise_terraced_garden": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Classroom program: apartments above ground-floor shops. Both residential and retail uses must be allowed.",
+    "revision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact terrace-v006 recipe identifies ground-floor shopfronts on all four sides and living windows, terrace doors and residential furniture above. The shop program is retail; a restaurant or office would need a different check."
+    }
+  },
+  "cast_iron_italianate": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Teaching program: apartments above or alongside retail. Both residential and retail uses must be listed; changing the shop program changes the result.",
+    "revision": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f"
+  },
+  "beltline_brick_modern": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Teaching program: apartments above or alongside retail. Both residential and retail uses must be listed; changing the shop program changes the result.",
+    "revision": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618"
+  },
+  "vancouverism_classic": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Teaching program: apartments above or alongside retail. Both residential and retail uses must be listed; changing the shop program changes the result.",
+    "revision": "vancouverism-tower-podium-clay-v004"
+  },
+  "parisian_corner_cafe_culture": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Restaurant: Food Service Only"
+      ]
+    ],
+    "assumption": "Apartments over an unlicensed café. A licensed restaurant would need its own use check.",
+    "revision": "neighbourhood-corner-cafe-clay-v010"
+  },
+  "glass_tower_blue_reflective": {
+    "components": [
+      [
+        "Office"
+      ]
+    ],
+    "assumption": "Office tower, including its entrance lobby; no residential use assumed.",
+    "revision": "glass_tower_podium_modern-clay-v003"
+  },
+  "art_deco_cream_terracotta": {
+    "components": [
+      [
+        "Office"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Classroom program: offices above a retail base.",
+    "revision": "showcase-tower-clay-v005",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The current tower-v005 builder names office interior partitions and retail base details. This exact-model evidence takes precedence over the older residential family label; residential occupancy is not assumed."
+    }
+  },
+  "art_deco_streamline_moderne": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Classroom program: apartments above street-level shops.",
+    "revision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The streamline-v003 recipe explicitly models street shops and upper occupied lounge spaces. Residential upper floors are the declared teaching occupancy, consistent with the residential catalogue family; an office conversion is a different program."
+    }
+  },
+  "museum_earth_sheltered": {
+    "components": [
+      [
+        "Museum"
+      ]
+    ],
+    "assumption": "Museum exhibition and visitor spaces.",
+    "revision": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106"
+  },
+  "mass_timber_biophilic_barn": {
+    "components": [
+      [
+        "Library"
+      ]
+    ],
+    "assumption": "Library reading, collection and associated spaces.",
+    "revision": "neighbourhood-library-clay-v003"
+  },
+  "deco_theater_movie_palace": {
+    "components": [
+      [
+        "Cinema"
+      ]
+    ],
+    "assumption": "Cinema/movie theatre, with associated lobby spaces.",
+    "revision": "autumn-cinema-clay-v004"
+  },
+  "biophilic_mass_timber_pool": {
+    "components": [
+      [
+        "Indoor Recreation Facility"
+      ]
+    ],
+    "assumption": "Indoor swimming facility. A community-operated facility may follow a different use definition.",
+    "revision": "showcase-aquatic-clay-v004"
+  },
+  "mediterranean_resort_courtyard": {
+    "components": [
+      [
+        "Hotel"
+      ]
+    ],
+    "assumption": "Hotel guest accommodation with associated reception and pool.",
+    "revision": "interior-hotel-clay-v006"
+  },
+  "timber_sanctuary_church_glazed_gable": {
+    "components": [
+      [
+        "Place of Worship – Large"
+      ]
+    ],
+    "assumption": "Place of Worship – Large: the authored assembly hall exceeds 500 m².",
+    "revision": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+    "classification": {
+      "basis": "model",
+      "evidence": "The exact model recipe has a 24 × 38 m sanctuary floor. A conservative 22 × 30 m portion of the connected hall alone is 660 m² before small column deductions, comfortably above the Large threshold. This measures the conceptual model, not a real property."
+    },
+    "conditions": [
+      "The screen conservatively uses the complete model height. Any spire or roof-feature exemption requires a separate bylaw height assessment."
+    ]
+  },
+  "gothic_community_church_single_spire": {
+    "components": [
+      [
+        "Place of Worship – Large"
+      ]
+    ],
+    "assumption": "Place of Worship – Large: the authored assembly hall exceeds 500 m².",
+    "revision": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+    "classification": {
+      "basis": "model",
+      "evidence": "The exact model recipe has a 25 × 41 m nave floor with connected side aisles. A conservative 22 × 30 m portion of the connected hall alone is 660 m² before small column deductions, comfortably above the Large threshold. This measures the conceptual model, not a real property."
+    },
+    "conditions": [
+      "The screen conservatively uses the complete model height. Any spire or roof-feature exemption requires a separate bylaw height assessment."
+    ]
+  },
+  "reference_charcoal_gable_fourplex_v1": {
+    "components": [
+      [
+        "Rowhouse Building",
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Classroom program: four side-by-side, unstacked homes with individual entrances and shared party walls.",
+    "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The fourplex-v001 recipe provides four two-storey residential units, three party-wall divisions and individual front stoops. The Rowhouse route assumes street-facing placement; Townhouse is not treated as an interchangeable label."
+    },
+    "conditions": [
+      "For the Rowhouse Building route, every home must face a public street with its own direct grade entrance beside the public sidewalk or street, with no intervening building. The intended party walls run from foundation to roof."
+    ]
+  },
+  "minimalist_infill_brick_monolith": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Classroom program: one detached home occupying the complete buff-brick building, without a secondary suite.",
+    "revision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact brick-v002 recipe supplies a complete freestanding envelope with main, recessed and rear entrances, but no verified dwelling divisions. One household is an explicit teaching choice; multiple doors do not establish multiple dwellings."
+    }
+  },
+  "contemporary_townhouse_timber_screen": {
+    "components": [
+      [
+        "Single Detached Dwelling",
+        "Contextual Single Detached Dwelling",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Classroom program: one detached home occupying the complete timber-screen building, without a secondary suite.",
+    "revision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact timber-v002 recipe has one wide recessed entrance, screened upper levels and a penthouse terrace. The architectural name does not establish three or more dwellings. A single household is the declared teaching program; the native 16.5 m height is retained."
+    }
+  },
+  "brewery_crystal_brewhouse": {
+    "components": [
+      [
+        "Brewery, Winery and Distillery"
+      ]
+    ],
+    "assumption": "Classroom program: brewery production with a small public tasting area included in the brewery use.",
+    "revision": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The brewhouse-v003 recipe models brewing vessels and six tasting tables. The public-area limit is a declared operating constraint, not a measured claim about the whole visitor wing. Bylaw s.156.1 includes public consumption up to 150 m²."
+    },
+    "conditions": [
+      "Limit all indoor public consumption space to 150 m² and entertainment to 10 m². A larger taproom or a separate restaurant needs another use classification; the remaining visitor wing is not assumed to be public consumption space."
+    ]
+  },
+  "machiya_cafe_gallery": {
+    "components": [
+      [
+        "Restaurant: Food Service Only"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Classroom program: an unlicensed café and a commercial art gallery selling artwork.",
+    "revision": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact machiya-v005 catalogue program is café/gallery. Selling artwork is the stated retail scenario; neither museum operation nor an artist-production studio is assumed."
+    },
+    "conditions": [
+      "No alcohol service. Food preparation, public area and any required separation from residential districts need a site check."
+    ]
+  },
+  "rec_centre_timber_hall": {
+    "components": [
+      [
+        "Community Recreation Facility"
+      ]
+    ],
+    "assumption": "Classroom program: a neighbourhood community association hall for social and recreational activities.",
+    "revision": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The hall-v004 model supports a community hall. The operator is explicitly assumed to be a non-profit association whose voluntary membership represents a neighbourhood, as required by s.169."
+    },
+    "conditions": [
+      "A commercial gym, private event venue or other operator would require reclassification."
+    ]
+  },
+  "market_historic_iron_glass": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Classroom program: a multi-vendor market selling goods and food products, with shared customer seating.",
+    "revision": "showcase-market-clay-v006",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The market-v006 recipe provides stocked vendor stalls, product displays and common tables. Retail and Consumer Service s.286.1 includes multi-vendor food-product markets and seating. Separate restaurants, alcohol service and entertainment are not part of this teaching program."
+    },
+    "conditions": [
+      "A vendor operating a separate restaurant or licensed venue needs its own use check."
+    ]
+  },
+  "station_victorian_iron_glass": {
+    "components": [],
+    "assumption": "Passenger rail station: platforms, ticketing, passenger circulation and a café.",
+    "revision": "victorian-station-interior-clay-v007",
+    "classification": {
+      "basis": "model",
+      "evidence": "The station-v007 model establishes a passenger station. No ordinary new-building use route has been verified for the complete rail program. It must not be relabelled Office, Retail or Utilities to create a match."
+    },
+    "siteReview": "Known passenger-station program: confirm the rail operator, site-specific planning authority and applicable approvals, including the café. No permitted or discretionary district recommendation is made for this station."
+  },
+  "biophilic_mass_timber_campus": {
+    "components": [
+      [
+        "Post-secondary Learning Institution"
+      ]
+    ],
+    "assumption": "Classroom program: a post-secondary art and design school with teaching studios and a student exhibition gallery.",
+    "revision": "interior-school-clay-v003",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "The exact school-v003 model provides painting/ceramics studios and a gallery, within the University Academic Complex family. A post-secondary education provider is the stated operator; the gallery is ancillary teaching space."
+    },
+    "conditions": [
+      "K–12 schooling or an independently operated public gallery would require a different use check."
+    ]
+  },
+  "neoclassical_brick_headquarters": {
+    "revision": "neoclassical-brick-office-clay-v005",
+    "components": [
+      [
+        "Office"
+      ]
+    ],
+    "assumption": "Professional and administrative office, with no medical, retail or production use assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "admin_faculty_brick_bronze_fins": {
+    "revision": "brick-bronze-faculty-office-clay-v004",
+    "components": [
+      [
+        "Office"
+      ]
+    ],
+    "assumption": "Faculty administrative offices and meeting rooms; no classroom or laboratory use assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "strip_single_storey_classic": {
+    "revision": "commercial-strip-single-storey-classic-clay-v002",
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Small retail and personal-service tenancies; restaurants and vehicle uses require separate classification.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "factory_sawtooth_roof": {
+    "revision": "daylight-sawtooth-factory-clay-v003",
+    "components": [
+      [
+        "General Industrial – Light"
+      ]
+    ],
+    "assumption": "Teaching programme: enclosed light fabrication. No external processing, hazardous materials or off-site nuisance assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "industrial_gabled_metal_shed": {
+    "revision": "industrial-gabled-metal-shed-clay-v002",
+    "components": [
+      [
+        "General Industrial – Light"
+      ]
+    ],
+    "assumption": "Teaching programme: enclosed workshop with ancillary storage and office. The operator and process must satisfy the Light definition.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "industrial_tilt_up_concrete": {
+    "revision": "industrial-tilt-up-concrete-clay-v006",
+    "components": [
+      [
+        "General Industrial – Light"
+      ]
+    ],
+    "assumption": "Teaching programme: enclosed light production with ancillary offices. No separate retail or public-service occupancy assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "warehouse_tilt_wall_mega": {
+    "revision": "tilt-wall-warehouse-clay-v006",
+    "components": [
+      [
+        "General Industrial – Light"
+      ]
+    ],
+    "assumption": "Teaching programme: enclosed warehousing and distribution with ancillary administration. External storage or transport-terminal operations need separate review.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "ecole-republicaine-provincial-brick": {
+    "revision": "provincial-brick-school-clay-v007",
+    "components": [
+      [
+        "School Authority – School"
+      ]
+    ],
+    "assumption": "Teaching programme: school operated by a school authority; a private school is a different defined use.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "rndsqr_townhome_brick_contextual": {
+    "revision": "rndsqr-brick-contextual-row-clay-v005",
+    "components": [
+      [
+        "Rowhouse Building",
+        "Townhouse",
+        "Multi-Residential Development"
+      ]
+    ],
+    "assumption": "Unstacked homes with individual entrances and internal stairs; parcel arrangement determines the applicable defined use.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "rndsqr_townhome_scandinavian_peaks": {
+    "revision": "rndsqr-scandinavian-peaks-row-clay-v006",
+    "components": [
+      [
+        "Rowhouse Building",
+        "Townhouse",
+        "Multi-Residential Development"
+      ]
+    ],
+    "assumption": "Unstacked gabled homes with individual entrances and internal stairs; parcel arrangement determines the applicable defined use.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact reviewed October model with the explicitly stated classroom occupancy."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, parking, access and measured bylaw height remain site requirements."
+    ]
+  },
+  "prairie_cedar_chassis_home": {
+    "revision": "prairie-manufactured-home-clay-v003",
+    "components": [
+      [
+        "Manufactured Home"
+      ]
+    ],
+    "assumption": "One factory-built dwelling on a permanent transportable chassis; two bedrooms and one accessible-from-front living/kitchen zone. Manufactured-home certification and transport permits are not established by an architectural model.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_original_five/designs.json: prairie_manufactured_home; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "One year-round dwelling; permanent chassis/undercarriage; transportable without a permanent foundation; not an RV.",
+      "Show credible seated support/skirt and access steps/ramp; do not substitute a conventional permanent-foundation bungalow or merely label it prefab."
+    ],
+    "districtUseGroups": {
+      "R-MH": [
+        [
+          "Manufactured Home"
+        ]
+      ]
+    }
+  },
+  "copperline_four_bay_depot": {
+    "revision": "municipal-works-depot-clay-v003",
+    "components": [
+      [
+        "Municipal Works Depot"
+      ]
+    ],
+    "assumption": "Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_original_five/designs.json: municipal_works_depot; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Declare government operator and infrastructure-maintenance program.",
+      "Reference should distinguish service bays, staff/admin entrance, equipment access and associated screened outdoor storage; do not depict a fire/emergency-response station."
+    ],
+    "districtUseGroups": {
+      "S-CRI": [
+        [
+          "Municipal Works Depot"
+        ]
+      ],
+      "I-G": [
+        [
+          "Municipal Works Depot"
+        ]
+      ]
+    }
+  },
+  "folded_roof_recovery_hall": {
+    "revision": "enclosed-materials-recovery-clay-v002",
+    "components": [
+      [
+        "General Industrial – Light"
+      ]
+    ],
+    "assumption": "Enclosed sorting, baling and shipping of non-hazardous dry recyclables, with all operations indoors; no external processing, escaped dust/vibration, waste incineration or landfill.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_original_five/designs.json: enclosed_materials_recovery; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Name the accepted non-hazardous recyclable stream and enclosed sorting/baling/recovery operation; no landfill, hazardous waste or waste-storage use assumed.",
+      "Show enclosed receiving/sorting hall and contained loading; no outdoor processing stockpiles that contradict Light classification.",
+      "Do not use obsolete Recycling Plant or assume Salvage Yard: current Salvage Yard s.288.1 includes an outdoor component. Operations with outdoor processing or different dust/vibration impacts need a fresh classification."
+    ],
+    "districtUseGroups": {
+      "I-G": [
+        [
+          "General Industrial — Light"
+        ]
+      ]
+    }
+  },
+  "corten_timber_equipment_yard": {
+    "revision": "contractor-storage-yard-clay-v003",
+    "components": [
+      [
+        "Storage Yard"
+      ]
+    ],
+    "assumption": "Screened outdoor storage of contractor equipment and materials, with ancillary servicing of stored equipment and a compact dispatch office. No separate retail or independent manufacturing use.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_original_five/designs.json: contractor_storage_yard; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Outdoor stored usable goods/materials/supplies with a small office and ancillary servicing of stored construction equipment, as described by s.313(a)(viii).",
+      "Exclude salvage/waste/recyclable piles and vehicle-storage operations from the assumed use.",
+      "An independent trades, fabrication or manufacturing workshop may require General Industrial — Light/Medium as another use. New General Industrial uses cannot inherit I-O permission: s.984(2) has an existing/approved condition. Do not use obsolete Contractor's Shop."
+    ],
+    "districtUseGroups": {
+      "I-O": [
+        [
+          "Storage Yard"
+        ]
+      ],
+      "I-G": [
+        [
+          "Storage Yard"
+        ]
+      ],
+      "S-CRI": [
+        [
+          "Storage Yard"
+        ]
+      ]
+    }
+  },
+  "meadow_three_gable_childcare": {
+    "revision": "courtyard-childcare-centre-clay-v003",
+    "components": [
+      [
+        "Child Care Service"
+      ]
+    ],
+    "assumption": "Purpose-built daytime childcare study with three activity rooms, a rear circulation spine and staff service counter, and a screened secure courtyard play area. Separate reception, toilets and other support rooms are not resolved in this clay layout. No school or overnight care assumed. Teaching capacity: 30 children aged 3-5, with three pick-up/drop-off spaces to be provided in the project site design.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_original_five/designs.json: courtyard_childcare_centre; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Declare seven or more children and non-overnight care, with age/capacity program recorded.",
+      "Show screened courtyard play space and separated pedestrian entry/drop-off. s.165(e) requires one pick-up/drop-off stall per ten children; capacity must be set before interpreting the site plan.",
+      "Treat it as a new building. Do not inherit existing-approved-building childcare permissions in low-density residential districts."
+    ],
+    "districtUseGroups": {
+      "S-CS": [
+        [
+          "Child Care Service"
+        ]
+      ],
+      "C-N1": [
+        [
+          "Child Care Service"
+        ]
+      ]
+    }
+  },
+  "maple_porch_sage": {
+    "revision": "maple-porch-manufactured-cottage-clay-v004",
+    "components": [
+      [
+        "Manufactured Home"
+      ]
+    ],
+    "assumption": "One year-round dwelling on a permanent steel chassis, two bedrooms, kitchen and living room. A supported low front porch has one central entrance. Fabrication, transport and certification remain specialist design matters.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_coverage_five/designs.json: maple_porch_manufactured_home; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Section 227: one year-round dwelling on permanent chassis, relocatable without requiring a permanent foundation, excluding recreational vehicles. This does not prohibit a permanent foundation at installation; s 520 requires foundation or blocking/anchoring.",
+      "One vehicle stall per dwelling under s 227(c); chassis, skirt, porch structure, transport and certification are conceptual and require specialist verification.",
+      "Two transport sections still constitute one dwelling for Horizon; its clerestory remains unoccupied. Maple remains one dwelling with a separately supported porch."
+    ],
+    "districtUseGroups": {
+      "R-MH": [
+        [
+          "Manufactured Home"
+        ]
+      ]
+    }
+  },
+  "horizon_double_section": {
+    "revision": "horizon-manufactured-home-clay-v003",
+    "components": [
+      [
+        "Manufactured Home"
+      ]
+    ],
+    "assumption": "One dwelling assembled from two permanent-chassis transport sections, with three bedrooms and one open living/kitchen space. Clerestory roof step is unoccupied; no second storey.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_coverage_five/designs.json: horizon_manufactured_home; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Section 227: one year-round dwelling on permanent chassis, relocatable without requiring a permanent foundation, excluding recreational vehicles. This does not prohibit a permanent foundation at installation; s 520 requires foundation or blocking/anchoring.",
+      "One vehicle stall per dwelling under s 227(c); chassis, skirt, porch structure, transport and certification are conceptual and require specialist verification.",
+      "Two transport sections still constitute one dwelling for Horizon; its clerestory remains unoccupied. Maple remains one dwelling with a separately supported porch."
+    ],
+    "districtUseGroups": {
+      "R-MH": [
+        [
+          "Manufactured Home"
+        ]
+      ]
+    }
+  },
+  "brick_timber_craftsman": {
+    "revision": "narrow-lot-craftsman-cottage-clay-v003",
+    "components": [
+      [
+        "Single Detached Dwelling"
+      ]
+    ],
+    "assumption": "One single-storey detached dwelling with two bedrooms and a separate front porch. Tall gabled roof encloses an unoccupied attic. One main front entrance and rear garden exit. No secondary suite.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_coverage_five/designs.json: narrow_lot_craftsman_cottage; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "One dwelling with kitchen, living, sleeping and sanitary facilities; unoccupied attic, no secondary suite. Single Detached Dwelling under s 305 expressly excludes a Manufactured Home.",
+      "The authored 6.3m total height is only a preliminary screen. Style does not create contextual permitted status; parcel geometry, grade, coverage, setbacks and parking remain unresolved.",
+      "R-C1/R-C1L suffix-s routes inherit the corrected permitted and discretionary sections; they do not create an extra dwelling in this design."
+    ],
+    "districtUseGroups": {
+      "R-C1 / R-C1s": [
+        [
+          "Single Detached Dwelling"
+        ]
+      ],
+      "R-C1L / R-C1Ls": [
+        [
+          "Single Detached Dwelling"
+        ]
+      ],
+      "R-C1N": [
+        [
+          "Single Detached Dwelling"
+        ]
+      ],
+      "R-1N": [
+        [
+          "Single Detached Dwelling"
+        ]
+      ]
+    }
+  },
+  "garden_mews_six_homes": {
+    "revision": "garden-mews-courtyard-housing-clay-v003",
+    "components": [
+      [
+        "Dwelling Unit",
+        "Multi-Residential Development"
+      ]
+    ],
+    "assumption": "Six unstacked two-storey homes in two parallel blocks of three, facing one open shared garden court. Each home has an individual front door directly to grade and its own internal stair. No common indoor access corridor.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_coverage_five/designs.json: garden_mews_courtyard_housing; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Six dwellings in two blocks of three, each with its own grade entrance and internal stair. Each dwelling must contain kitchen, living, sleeping and sanitary facilities.",
+      "For Minor (s 240), parcel<=1ha,>=3units,>=90% of units in buildings containing>=3units, and every district rule must be met. This two-by-three form satisfies the unit-distribution test, not the full site test.",
+      "For Multi-Residential Development (s 239), this six-unit form meets the>=3 total and>=50% in buildings with>=2units tests. Classifications depend on district/site, not simultaneous legal uses.",
+      "The 23x 23m assembly envelope is not a surveyed parcel. It would be about 113.42units/ha if wrongly used as a 529m² parcel, exceeding ordinary M-G density. Site area, orientation and private amenity must be added at placement.",
+      "H-GO street visibility is not proved by inward courtyard doors alone. Assess which unit walls face the actual street and provide appropriate entrances/walks.",
+      "No affordable-housing, modular construction or Attainable Homes attribution is inferred; that initiative remains deferred."
+    ],
+    "districtUseGroups": {
+      "H-GO": [
+        [
+          "Dwelling Unit"
+        ]
+      ],
+      "M-G": [
+        [
+          "Multi-Residential Development - Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-1": [
+        [
+          "Multi-Residential Development - Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-2": [
+        [
+          "Multi-Residential Development - Minor",
+          "Multi-Residential Development"
+        ]
+      ]
+    }
+  },
+  "brick_timber_two_storey_office": {
+    "revision": "brick-timber-courtyard-office-clay-v004",
+    "components": [
+      [
+        "Office"
+      ]
+    ],
+    "assumption": "Compact two-storey U-shaped professional office in a 14m by 12m envelope around an open central court. Two 3.5m by 12m side wings and one 7m by 4m rear connector give an authored 112m² footprint and approximately 224m² gross floor area over two storeys, including circulation. One main entrance, reception, work areas, meeting room, stair and reserved lift core. No medical, counselling, retail or laboratory programme inferred.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_coverage_five/designs.json: courtyard_lowrise_office; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Office under s 246 is professional/clerical/administrative work outside medical or counselling fields, with limited general-public contact and no on-site production or direct retail sales. Reception and meetings fit that programme.",
+      "Compact 224m² authored GFA is a design estimate, not a certified use-area computation. Two occupied floors stay fixed; reserved lift core is not an approved accessibility solution.",
+      "I-E, I-C and C-O have conditional permitted lists for existing approved buildings, but proposed new buildings follow the cited discretionary routes. I-R Office is expressly discretionary.",
+      "C-R1 is retained only as a conditional additional-building context, excluded from standalone coverage; its required principal building is not part of this archetype."
+    ],
+    "districtUseGroups": {
+      "I-E": [
+        [
+          "Office"
+        ]
+      ],
+      "I-C": [
+        [
+          "Office"
+        ]
+      ],
+      "I-R": [
+        [
+          "Office"
+        ]
+      ],
+      "C-R1": [
+        [
+          "Office"
+        ]
+      ],
+      "C-O": [
+        [
+          "Office"
+        ]
+      ]
+    }
+  },
+  "affordable_porchlight_original": {
+    "revision": "affordable-porchlight-clay-v004",
+    "components": [
+      [
+        "Rowhouse Building",
+        "Townhouse",
+        "Dwelling Unit",
+        "Multi-Residential Development",
+        "Multi-Residential Development — Minor"
+      ]
+    ],
+    "assumption": "Four two-storey two-bedroom homes; independent street entrances, internal stairs, kitchen/living rooms and private rear patios. Repeated simple envelope for an attainable homeownership teaching programme.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_affordable_five/designs.json: affordable_porchlight; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+      "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+      "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+      "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+      "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+      "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+    ],
+    "districtUseGroups": {
+      "R-CG": [
+        [
+          "Rowhouse Building",
+          "Townhouse"
+        ]
+      ],
+      "H-GO": [
+        [
+          "Dwelling Unit"
+        ]
+      ],
+      "M-G": [
+        [
+          "Multi-Residential Development — Minor"
+        ]
+      ],
+      "M-CG": [
+        [
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-1": [
+        [
+          "Multi-Residential Development — Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-2": [
+        [
+          "Multi-Residential Development — Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-C1": [
+        [
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-C2": [
+        [
+          "Multi-Residential Development"
+        ]
+      ]
+    },
+    "districtReview": {
+      "M-G": "Definition240 plus610: each residential building>=3units and each unit separate direct grade pedestrian access. Density35–80units/ha or mapped d; each private amenity>=7.5m², minimum dimension2m (615). Authored3.1x1.8m patios alone fail these dimensions; additional qualifying private space/site plan required."
+    }
+  },
+  "affordable_juniper_original": {
+    "revision": "affordable-juniper-clay-v006",
+    "components": [
+      [
+        "Cottage Housing Cluster",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Four single-level 49 m² one-bedroom cottages, a 22 × 22 m body cluster, an 8 × 8 m shared garden and four private 12 m² outboard patios. Front cottages face the street; rear cottages face the garden. Authored 6 m roof ridge with no attic dwelling. Site and accessibility approval required.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_affordable_five/designs.json: affordable_juniper; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+      "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+      "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+      "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+      "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+      "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+    ],
+    "districtUseGroups": {
+      "R-CG": [
+        [
+          "Cottage Housing Cluster"
+        ]
+      ],
+      "H-GO": [
+        [
+          "Dwelling Unit"
+        ]
+      ]
+    }
+  },
+  "affordable_stackyard_original": {
+    "revision": "affordable-stackyard-clay-v003",
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Multi-Residential Development — Minor"
+      ]
+    ],
+    "assumption": "Six two-bedroom homes stacked as three ground and three upper dwellings. Upper outdoor gallery with two end stairs; private lower patios.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_affordable_five/designs.json: affordable_stackyard; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+      "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+      "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+      "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+      "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+      "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+    ],
+    "districtUseGroups": {
+      "M-1": [
+        [
+          "Multi-Residential Development — Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-2": [
+        [
+          "Multi-Residential Development — Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-C1": [
+        [
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-C2": [
+        [
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-CG": [
+        [
+          "Multi-Residential Development"
+        ]
+      ]
+    }
+  },
+  "affordable_aspen_original": {
+    "revision": "affordable-aspen-clay-v003",
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Multi-Residential Development — Minor"
+      ]
+    ],
+    "assumption": "Twelve compact one-bedroom rental apartments, shared interior circulation, two stairs and a reserved lift core.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_affordable_five/designs.json: affordable_aspen; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+      "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+      "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+      "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+      "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+      "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+    ],
+    "districtUseGroups": {
+      "M-1": [
+        [
+          "Multi-Residential Development — Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-2": [
+        [
+          "Multi-Residential Development — Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-C1": [
+        [
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-C2": [
+        [
+          "Multi-Residential Development"
+        ]
+      ]
+    }
+  },
+  "affordable_switchback_original": {
+    "revision": "affordable-switchback-clay-v003",
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Multi-Residential Development — Minor"
+      ]
+    ],
+    "assumption": "Twenty-four permanent studio dwellings in an authored modular apartment assembly, six per floor, common corridor, two stairs and lift core. Prefabricated construction, no permanent transport chassis.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "tools/catalogue_affordable_five/designs.json: affordable_switchback; original authored programme and researched use routes."
+    },
+    "conditions": [
+      "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+      "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+      "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+      "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+      "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+      "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+    ],
+    "districtUseGroups": {
+      "M-1": [
+        [
+          "Multi-Residential Development — Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-2": [
+        [
+          "Multi-Residential Development — Minor",
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-C1": [
+        [
+          "Multi-Residential Development"
+        ]
+      ],
+      "M-C2": [
+        [
+          "Multi-Residential Development"
+        ]
+      ]
+    },
+    "districtReview": {
+      "M-C1": "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions. Density<=148units/ha or lower mapped d; at12m cross-section<=40% of maximum area0–10m, plus neighbour/street envelopes (590,594). 13.8m full-width fourth floor likely exceeds594(4) area at12m; being below14m total is insufficient. Do not show an unconditional height match."
+    }
+  },
+  "montreal_depanneur_modern": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ],
+      [
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Small grocery at ground level and one conceptual dwelling upstairs. No liquor, tobacco, restaurant or additional suite assumed.",
+    "revision": "brick-corner-grocery-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    }
+  },
+  "rec_clerestory_modern": {
+    "components": [
+      [
+        "Community Recreation Facility"
+      ]
+    ],
+    "assumption": "Teaching programme: community recreation and meeting hall operated by a non-profit community organization. No commercial fitness, spectator venue or overnight accommodation assumed.",
+    "revision": "clerestory-neighbourhood-hall-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    }
+  },
+  "rec_log_cabin_vernacular": {
+    "components": [
+      [
+        "Community Recreation Facility"
+      ]
+    ],
+    "assumption": "Teaching programme: day-use recreation cabin operated by a non-profit community organization. No overnight accommodation or restaurant assumed.",
+    "revision": "log-recreation-cabin-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    }
+  },
+  "inglewood_deco_infill": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ],
+      [
+        "Office"
+      ]
+    ],
+    "assumption": "Ground-floor shops and upper offices; no dwelling or restaurant assumed. Service roof access is not a public terrace.",
+    "revision": "inglewood-corner-merchants-clay-v003",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    }
+  },
+  "strip_weathered_1980s": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ],
+      [
+        "Restaurant: Food Service Only"
+      ],
+      [
+        "Liquor Store"
+      ]
+    ],
+    "assumption": "Four teaching tenants follow the reference signs: deli, hardware, liquor retail and gifts. Deli assumes food preparation; occupancy and licensing require confirmation.",
+    "revision": "prairie-neighbourhood-shops-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
+    },
+    "review": "The liquor tenant has not yet been screened against the district-use snapshot. Review each tenancy before treating this mixed shop row as a permitted or discretionary candidate."
+  }
+}

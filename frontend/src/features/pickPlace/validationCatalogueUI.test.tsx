@@ -36,11 +36,14 @@ describe('local student validation discovery',()=>{
     expect(onPick).not.toHaveBeenCalled();
     expect(onPickCanonical).not.toHaveBeenCalled();
   }, 60000);
-  it('starts point-by-point road drawing directly from the sidebar',()=>{
+  it('leaves street drawing in Streets and reserves the primary action for walking',()=>{
     const onPickStreet=vi.fn();
-    render(<PlacementPalette selected={null} onPick={vi.fn()} onPickStreet={onPickStreet}
+    render(<PlacementPalette primaryAction={<button>Walk</button>} selected={null} onPick={vi.fn()} onPickStreet={onPickStreet}
       onPickCanonical={vi.fn()} onCancel={vi.fn()} status="idle" message="" onRetry={vi.fn()}/>);
-    fireEvent.click(screen.getByRole('button',{name:'Draw a road route'}));
-    expect(onPickStreet).toHaveBeenCalledWith(expect.objectContaining({kind:'street',id:'amsterdam_gracht_v1'}));
+    expect(screen.queryByRole('button',{name:'Draw a road route'})).not.toBeInTheDocument();
+    expect(screen.getByRole('button',{name:'Walk'})).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Streets'}));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(onPickStreet).not.toHaveBeenCalled();
   });
 });

@@ -22,7 +22,8 @@ import {
 import { createPortal } from 'react-dom';
 import toast from 'react-hot-toast';
 
-import { authApi, getApiErrorMessage, resolveApiFileUrl, videoRenderApi } from '@/services/api';
+import { authApi, direct3DAttempts, getApiErrorMessage, resolveApiFileUrl, videoRenderApi } from '@/services/api';
+import { assertNearFieldVideoSourceQuality } from './videoSourceQuality';
 import { useAuthStore } from '@/store';
 import type { Building, SiteZone } from '@/types';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
@@ -48,9 +49,10 @@ import {
 } from './videoRenderQuality';
 
 const MOTIONS = [
-  { id: 'path_follow', name: 'Aerial fly-through', detail: 'Slow + high oblique' },
+  { id: 'path_follow', name: 'Drone fly-through', detail: 'Slow + high oblique' },
   { id: 'street_walkby', name: 'Street walk-by', detail: 'Slow + pedestrian height' },
   { id: 'detail_flythrough', name: 'Low detail fly-through', detail: '6 m · between buildings' },
+  { id: 'bicycle_ride', name: 'Bicycle ride', detail: '1.6 m · forward view · up to 56 m' },
 ] as const;
 
 const CONTROL_MODES: Array<{ id: VideoControlMode; name: string; detail: string }> = [
@@ -70,19 +72,25 @@ const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
   { id: 'internal_enhance', name: 'Internal Enhance', detail: 'Self-hosted · exact skins · $0' },
 ];
 
-function providerName(provider?: VideoProvider): string {
+function providerName(provider?: VideoProvider | 'kling' | 'comfyui'): string {
+  if (provider === 'comfyui') return 'Wan · local';
+  if (provider === 'kling') return 'Kling';
   if (provider === 'seedance_mini') return 'Seedance Mini';
   if (provider === 'internal_enhance') return 'Internal Enhance';
   return 'Omni';
 }
 
-function providerSlug(provider?: VideoProvider): string {
+function providerSlug(provider?: VideoProvider | 'kling' | 'comfyui'): string {
+  if (provider === 'comfyui') return 'comfy-animation';
+  if (provider === 'kling') return 'kling-animation';
   if (provider === 'seedance_mini') return 'seedance-mini';
   if (provider === 'internal_enhance') return 'internal-enhance';
   return 'omni';
 }
 
-function providerOrigin(provider?: VideoProvider): string {
+function providerOrigin(provider?: VideoProvider | 'kling' | 'comfyui'): string {
+  if (provider === 'comfyui') return 'Local ComfyUI · animated still';
+  if (provider === 'kling') return 'fal Kling · animated still';
   if (provider === 'seedance_mini') return 'fal Seedance Mini';
   if (provider === 'internal_enhance') return 'City Prompt local pipeline';
   return 'Gemini Omni';
@@ -106,7 +114,10 @@ function sceneClaimsSignature(
 export interface VideoAttempt {
   id: string;
   request_id: string;
-  provider?: VideoProvider;
+  provider?: VideoProvider | 'kling' | 'comfyui';
+  mode?: 'route_video' | 'saved_render_animation';
+  source_render_id?: string | null;
+  recoverable?: boolean;
   model?: string | null;
   seedance_reference_mode?: SeedanceReferenceMode | null;
   internal_enhance_quality?: InternalEnhanceQuality | null;
@@ -148,6 +159,7 @@ function fidelityTone(status: VideoAttempt['fidelity_status']): string {
 }
 
 function videoAttemptLabel(attempt: VideoAttempt): string {
+  if (attempt.mode === 'saved_render_animation') return `${providerName(attempt.provider)} · animated still · slow push-in`;
   const provider = providerName(attempt.provider);
   const motion = attempt.camera_motion.split('_').join(' ');
   const control = attempt.provider === 'seedance_mini'
@@ -358,10 +370,11 @@ export function VideoGeneratePanel({
   const [isCapturing, setIsCapturing] = useState(true);
   const [routePoints, setRoutePoints] = useState<VideoRoutePoint[]>([]);
   const [motion, setMotion] = useState<MotionId>('path_follow');
+  const [videoGenerationEnabled, setVideoGenerationEnabled] = useState(false);
   const [provider, setProvider] = useState<VideoProvider>('omni');
   const [seedanceReferenceMode, setSeedanceReferenceMode] = useState<SeedanceReferenceMode>('preview_plus_keyframes');
   const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
-  const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('high');
+  const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('draft');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
   const [sourceCaptureVersion, setSourceCaptureVersion] = useState(0);
   const [previewProgress, setPreviewProgress] = useState('Preparing your route…');
@@ -415,11 +428,15 @@ export function VideoGeneratePanel({
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
-  const providerCanRun = providerUsage.attempts_remaining === null
-    || providerUsage.attempts_remaining > 0;
+  const providerCanRun = videoGenerationEnabled && (providerUsage.attempts_remaining === null
+    || providerUsage.attempts_remaining > 0);
 
   const loadPilot = useCallback(async () => {
+    setVideoGenerationEnabled(false);
     try {
+      const capabilities = await direct3DAttempts.capabilities();
+      setVideoGenerationEnabled(capabilities.video_enabled === true);
+      if (capabilities.video_enabled !== true) return;
       const state = await videoRenderApi.list(projectId) as VideoPilotState;
       setPilot({
         ...state,
@@ -553,6 +570,9 @@ export function VideoGeneratePanel({
         ? `${sceneContract.text}\nSOURCE POLICY: The City Prompt route preview is the exact camera, geography, and geometry authority. Preserve every frame's layout, topology, context, and timing. Omni may improve only the physically plausible visual finish already implied by the source; it must not redesign or relocate anything.`
         : `${sceneContract.text}\nSOURCE POLICY: Image1 is the only visual input. Animate the captured scene as-is. Do not restyle, relight, beautify, materialize, reinterpret, or add detail.`;
     const allRouteKeyframes = activeControls?.keyframesBase64 ?? [];
+    // Keep architectural source admission on finished enhancement; a free
+    // exact-camera preview may show a sparse park without inventing detail.
+    if (motion !== 'path_follow' && allRouteKeyframes.length) await assertNearFieldVideoSourceQuality(allRouteKeyframes);
     const routeKeyframes = controlMode === 'multi_keyframe'
       ? allRouteKeyframes
       : provider === 'seedance_mini' && seedanceReferenceMode === 'preview_plus_keyframes' && allRouteKeyframes.length >= 3
@@ -752,7 +772,7 @@ export function VideoGeneratePanel({
             <h2 className="text-sm font-black uppercase tracking-[0.14em] sm:text-base">Video Render</h2>
             <p className="truncate text-[11px] text-white/55">Draw the path. Animate the captured scene. Preserve every building.</p>
           </div>
-          <div className="ml-auto hidden items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 sm:flex">
+          {videoGenerationEnabled ? <div className="ml-auto hidden items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 sm:flex">
             <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">{providerUsage.allowance_scope === 'trial' ? 'Paid trial · all providers' : provider === 'internal_enhance' ? 'Local runs' : provider === 'seedance_mini' ? 'Seedance calls' : 'Omni calls'}</span>
             <div className="flex gap-1">
               {usedDots.map((used, index) => (
@@ -764,7 +784,7 @@ export function VideoGeneratePanel({
                 ? `${providerUsage.attempts_used} · Unlimited`
                 : `${providerUsage.attempts_used}/${providerUsage.max_attempts}`}
             </span>
-          </div>
+          </div> : <span className="ml-auto text-xs font-bold text-white/70">Free route preview</span>}
           <button onClick={onClose} disabled={isGenerating || isPreparingControls} className="rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white disabled:opacity-30" aria-label="Close Video Render">
             <X size={19} />
           </button>
@@ -777,7 +797,7 @@ export function VideoGeneratePanel({
                 <MapPinned size={12} /> Flight path
               </span>
               <span className="text-[11px] text-white/45">
-                {motion === 'street_walkby'
+                {motion === 'bicycle_ride' ? 'Click clear ground to add each cycling vertex · up to 56 m in 8 seconds' : motion === 'street_walkby'
                   ? 'Click ground to add each vertex · the camera faces the site'
                   : motion === 'detail_flythrough'
                     ? 'Click ground between buildings · each click adds a low-flight vertex'
@@ -807,7 +827,7 @@ export function VideoGeneratePanel({
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#111c1d]/90 px-8 text-center text-sm font-semibold text-white/75">
                   <Loader2 className="mb-3 animate-spin" size={24} />
                   <span role="status" aria-live="polite">{previewProgress}</span>
-                  <span className="mt-1 text-[10px] font-normal text-white/45">{renderQuality === 'high' ? 'This can take a few minutes on a laptop.' : 'This may take several seconds.'} No provider call or credit is used.</span>
+                  <span className="mt-1 text-[10px] font-normal text-white/45">Rendering the exact route can take several minutes on a laptop. No provider call or credit is used.</span>
                 </div>
               )}
               {!isCapturing && !sourceFrame && (
@@ -821,7 +841,7 @@ export function VideoGeneratePanel({
                 <div
                   className="absolute inset-0 cursor-crosshair touch-none"
                   onClick={addRouteVertex}
-                  aria-label={motion === 'street_walkby' ? 'Add pedestrian path vertex' : 'Add drone path vertex'}
+                  aria-label={motion === 'bicycle_ride' ? 'Add bicycle path vertex' : motion === 'street_walkby' ? 'Add pedestrian path vertex' : 'Add drone path vertex'}
                 >
                   <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full drop-shadow-[0_2px_2px_rgba(0,0,0,0.9)]">
                     <defs>
@@ -885,6 +905,7 @@ export function VideoGeneratePanel({
                 )}
                 <a href={routeControls.previewVideoBase64} download={`city-prompt-guide.${routeControls.previewVideoMimeType.includes('mp4') ? 'mp4' : 'webm'}`}
                   className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-xs font-semibold text-white underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"><Download size={14} />Download preview</a>
+                {routeControls.routeProfile && <p className="mt-2 text-xs text-white/70">{routeControls.routeProfile.distanceMeters.toFixed(1)} m route · {(routeControls.routeProfile.averageSpeedMps * 3.6).toFixed(1)} km/h average{routeControls.routeProfile.eyeHeightMeters ? ` · ${routeControls.routeProfile.eyeHeightMeters} m camera height` : ''}</p>}
                 {motion === 'street_walkby' && routeControls.streetRenderReadiness && (
                   <div className="mt-2 rounded-lg border border-white/10 bg-white/[0.05] px-2.5 py-2 text-[9px] text-white/55">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-bold">
@@ -906,7 +927,7 @@ export function VideoGeneratePanel({
                 )}
                 {routeControls.previewCaptureProfile?.renderHeight && (
                   <div className="mt-2 flex flex-wrap gap-x-2 gap-y-1 rounded-lg border border-[#c9ff3d]/20 bg-[#c9ff3d]/[0.06] px-2.5 py-2 text-[9px] font-bold text-white/55">
-                    <span className="uppercase text-[#c9ff3d]">High-quality source</span>
+                    <span className="uppercase text-[#c9ff3d]">{renderQuality === 'high' ? 'High-quality source' : 'Draft source'}</span>
                     <span>{routeControls.previewCaptureProfile.renderWidth}×{routeControls.previewCaptureProfile.renderHeight} render</span>
                     <span>→ {routeControls.previewCaptureProfile.width}×{routeControls.previewCaptureProfile.height}</span>
                     <span>{routeControls.previewCaptureProfile.tileWarmupFrameCount ?? 0} tile-preload poses</span>
@@ -951,6 +972,7 @@ export function VideoGeneratePanel({
 
           <aside className="flex min-h-0 flex-col bg-[#f7f2e8] lg:overflow-y-auto">
             <div className="space-y-4 p-4 sm:p-5">
+              {!videoGenerationEnabled && <p role="status" className="rounded-lg border border-slate-300 bg-white p-3 text-sm">Finished video generation is unavailable on this server. Draw a route, preview it locally and download the exact 3D journey for free.</p>}
               <div>
                 <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Source render quality</p>
                 <div className="grid grid-cols-2 gap-2">
@@ -983,7 +1005,7 @@ export function VideoGeneratePanel({
                       setPreflight(null);
                       setPrepared(null);
                       setError(null);
-                    }} disabled={isGenerating || isPreflighting} className={`rounded-xl border-2 p-2.5 text-left transition disabled:opacity-40 ${provider === item.id ? 'border-[#151515] bg-white shadow-[2px_2px_0_0_#151515]' : 'border-[#151515]/15 bg-white/45 hover:bg-white'}`}>
+                    }} disabled={!videoGenerationEnabled || isGenerating || isPreflighting} className={`rounded-xl border-2 p-2.5 text-left transition disabled:opacity-40 ${provider === item.id ? 'border-[#151515] bg-white shadow-[2px_2px_0_0_#151515]' : 'border-[#151515]/15 bg-white/45 hover:bg-white'}`}>
                       <span className="block text-[10px] font-black">{item.name}</span>
                       <span className="mt-0.5 block text-[8px] leading-tight text-[#151515]/50">{item.detail}</span>
                     </button>
@@ -1097,7 +1119,7 @@ export function VideoGeneratePanel({
                 </div>
                 <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || !providerCanRun} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
                   {isGenerating ? <Loader2 size={15} className="animate-spin" /> : <Film size={15} />}
-                  {isGenerating
+                  {!videoGenerationEnabled ? 'Finished generation unavailable' : isGenerating
                     ? provider === 'internal_enhance' ? 'Restoring exact City Prompt frames…' : 'Rendering one continuous shot…'
                     : provider === 'internal_enhance'
                       ? `${internalEnhanceQuality === 'gpu_detail' ? 'Run GPU pass' : 'Run fast pass'} · unlimited local runs · est. $0.00`
@@ -1129,7 +1151,7 @@ export function VideoGeneratePanel({
                         )}
                       </div>
                       <p className="text-[9px] text-[#151515]/45">
-                        8 sec · {selectedAttempt.render_quality === 'high' ? '1080p HQ source' : '720p source'} · {providerOrigin(selectedAttempt.provider)} · saved to project
+                        {selectedAttempt.duration_seconds} sec · {selectedAttempt.mode === 'saved_render_animation' ? 'Finished render source' : selectedAttempt.render_quality === 'high' ? '1080p HQ source' : '720p source'} · {providerOrigin(selectedAttempt.provider)} · saved to project
                         {selectedAttempt.scene_revision_sha256
                           ? ` · scene ${selectedAttempt.scene_revision_sha256.slice(0, 10)}`
                           : ''}

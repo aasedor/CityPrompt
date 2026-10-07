@@ -1,0 +1,657 @@
+{
+  "schema": "cityprompt.rlasm.prior-review-supplemental-attestation@1",
+  "candidate": "narrow-lot-craftsman-cottage-clay-v003",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003",
+  "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\narrow-lot-craftsman-cottage-clay-v003.glb",
+  "model_sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "attested_utc": "2026-10-06T20:05:13.298117+00:00",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "holistic_review_basis": "Cited original independent full holistic review, not new pixels in this attestation.",
+  "fresh_holistic_pixel_review_performed": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "decision": "PASS_PRIOR_ARCHITECTURAL_CLAY_REVIEW_REVALIDATED",
+  "scope": "Machine-schema normalization of an existing holistic architectural-clay pass plus fresh exact-byte integrity revalidation. No new visual, runtime, textured-keeper or zoning approval.",
+  "prior_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\narrow-lot-craftsman-cottage-clay-v003-independent-review-2026-10-06-v001.json",
+    "sha256": "4eccaee9be22505ba18e2b5bd2f2ce91ac09cbfc150091073f6940adb01d85dc",
+    "reviewer": "independent agent /root/rlasm_independent_review",
+    "date": "2026-10-06T17:57:31.333736+00:00",
+    "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+    "original_bytes_preserved": true
+  },
+  "readiness_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\recent-twenty-readiness-audit-2026-10-06-v001.json",
+    "sha256": "7ebc72a2577a4e7194e3691cdc32f977e08958321bec9ac02fa02fabb16bd362",
+    "no_readiness_hold": true
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0.png",
+      "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39",
+      "bytes": 2913125,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "1540cda4637310dc81f489e65dd06e7e1bcc872aea84ff21a86315ac6bf39f39",
+      "bytes": 2932943,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "6da001c3a743418f18afab6bdc8ad0987a3b5abb047c110f1186c892083c7d6e",
+      "bytes": 3558530,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\aerial.png",
+      "sha256": "bc55efc6358e288fcbe3633d37e5c294462fa28a76e90b8b7187657aafda3d76",
+      "bytes": 1404928,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\architecture_close.png",
+      "sha256": "6fbf3e107bd4ad2f2e871f6c5e85c6880631710e440123f2ae0aff356b3f8933",
+      "bytes": 1568083,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\attic_vent.png",
+      "sha256": "49538ff92df3965e61de87878a971d649b89b0688aa46280e511f8994bb268e3",
+      "bytes": 1544531,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\bedroom.png",
+      "sha256": "d225bca12cce7338e92344e7dc1117b58c5624e90093d4bd2b19a7310b538324",
+      "bytes": 1381045,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\corridor.png",
+      "sha256": "ada41b27d1329a440d7328669a626f7c70a340316af59986bfbfd1cce49299b0",
+      "bytes": 1358930,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\facade_close.png",
+      "sha256": "1673837858a6acf8db5d5ee19eb644c7ca844ed3788d2268db37912c5acb8b31",
+      "bytes": 1595958,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\front.png",
+      "sha256": "4a3ebed1b429f222af7468f6a7d658fd40387ea1ebdf9f4c3c10582aa21127ab",
+      "bytes": 1416521,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\front_corner.png",
+      "sha256": "7216e5c655ee27345ca0438ed56d3c9c9249bee221cb7fe7494010c0321eb246",
+      "bytes": 1485844,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\garden_entry.png",
+      "sha256": "a3bd900bd2f480886f8e715e7360f18e89c80bc284ed977cb57c950ac2308e14",
+      "bytes": 1582010,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\glass_close.png",
+      "sha256": "94a8218bdcc6172875966ec0d2607502522203925dc3d98803a54279a5846550",
+      "bytes": 1423052,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\interior.png",
+      "sha256": "9b571ff888c28d1e32b81a8c29c0ce3c1a946405d5391fffcb23a3c1d6a07dc7",
+      "bytes": 1370528,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\left_side.png",
+      "sha256": "b8bfbfaf1fedf44ffc982cc02259aa635211d14a004ca3bd9f63da6d3e62c27c",
+      "bytes": 1303531,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\post_contact.png",
+      "sha256": "28caa28643d62c2f46ef17094f85fc73e81818c6aea74628e3db44506cf91b84",
+      "bytes": 1475276,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\rear.png",
+      "sha256": "d10fe3c69c86adf3077afb87d152871cae3ad46b6420fbe47a0345879867ef0b",
+      "bytes": 1391176,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\rear_side.png",
+      "sha256": "b9bf1f3b0beb4b50388bfc288d828e895b9451538f09f514405f8200ff36e24f",
+      "bytes": 1517459,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\right_side.png",
+      "sha256": "c8d603caf796c2199ef7a76022f0208f551e2297b98fd4ebc4f95809f585a900",
+      "bytes": 1312840,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\roof_contact.png",
+      "sha256": "6cfd33799e719645e7cbf1a2a535ace5af8ac2eab6d3c3c6a5c90da654805a8a",
+      "bytes": 1533178,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\side_projection.png",
+      "sha256": "293f5a7589ca47b607f5c6f13471dc000bc2f911acfdaa3e9efe9d04e702316a",
+      "bytes": 1468973,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\top.png",
+      "sha256": "bdf8281d9cd452c1d2e3ba0a1d59bbfc1a4feb9e168d0b6e9e2c4c4870b65c51",
+      "bytes": 1261923,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\boards\\all-views-contact.png",
+      "sha256": "aa08f9e012d473d03131239dca4ca29047aa7fa7d7d619b23191b552128a9a8d",
+      "bytes": 2514977,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\boards\\locked-source-board.png",
+      "sha256": "a62d1f9e2830124d22dc4ee2393154326dcf0f0e5523d31ada92e02cfb2fbe6e",
+      "bytes": 1574435,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\boards\\phone-construction.png",
+      "sha256": "6a71437c83e1c459c8cee75e336ff2c2df46817d397731d376218a534870ad51",
+      "bytes": 1069045,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\boards\\phone-source-comparison.png",
+      "sha256": "49c9790013f282fb0cf9c2643d8229bb9c9ae33f9b4f1ae389764591433440dd",
+      "bytes": 1842604,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    }
+  ],
+  "sources_current_exact": [
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\narrow-lot-craftsman-cottage\\variant_0.png",
+      "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\narrow-lot-craftsman-cottage\\variant_0_angle_60.png",
+      "sha256": "1540cda4637310dc81f489e65dd06e7e1bcc872aea84ff21a86315ac6bf39f39",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\narrow-lot-craftsman-cottage\\variant_0_angle_90.png",
+      "sha256": "6da001c3a743418f18afab6bdc8ad0987a3b5abb047c110f1186c892083c7d6e",
+      "passed": true
+    }
+  ],
+  "integrity_checks": [
+    {
+      "kind": "build model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\narrow-lot-craftsman-cottage-clay-v003.glb",
+      "sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a",
+      "passed": true
+    },
+    {
+      "kind": "gallery model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\narrow-lot-craftsman-cottage-clay-v003.glb",
+      "sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a",
+      "passed": true
+    },
+    {
+      "kind": "review model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\narrow-lot-craftsman-cottage-clay-v003.glb",
+      "sha256": "a56d0b53dbebcea7a1db512138f35ce731ba9d1a2fe3393a810e852a7292833a",
+      "passed": true
+    },
+    {
+      "kind": "gallery review",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\reviews\\narrow-lot-craftsman-cottage-clay-v003-independent-review-2026-10-06-v001.json",
+      "sha256": "4eccaee9be22505ba18e2b5bd2f2ce91ac09cbfc150091073f6940adb01d85dc",
+      "passed": true
+    },
+    {
+      "kind": "authoring blend",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\narrow-lot-craftsman-cottage-clay-v003-authoring.blend",
+      "sha256": "bd62f17173b2771770c71b420587bccc66cacd597853557c5cd5ded886e9fdb1",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0.png",
+      "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\narrow-lot-craftsman-cottage\\variant_0.png",
+      "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "1540cda4637310dc81f489e65dd06e7e1bcc872aea84ff21a86315ac6bf39f39",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\narrow-lot-craftsman-cottage\\variant_0_angle_60.png",
+      "sha256": "1540cda4637310dc81f489e65dd06e7e1bcc872aea84ff21a86315ac6bf39f39",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "6da001c3a743418f18afab6bdc8ad0987a3b5abb047c110f1186c892083c7d6e",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\narrow-lot-craftsman-cottage\\variant_0_angle_90.png",
+      "sha256": "6da001c3a743418f18afab6bdc8ad0987a3b5abb047c110f1186c892083c7d6e",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\scripts\\clay_core.py",
+      "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\scripts\\build.py",
+      "sha256": "ea2380481dd2efb519ce4547ee2f4ce27d55332f0e7ecbcc50482da3ed4c24db",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\scripts\\assemblies.py",
+      "sha256": "79bef5e83954bad60e5384a8a2736b4913a30a4cc414e79ca5f087bb377095f7",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\scripts\\plan.py",
+      "sha256": "8dcbf7921d91d7c96784e7a9212f3f366ebb1e5e2ef6104cad1a9555ac4c5e47",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\scripts\\designs.json",
+      "sha256": "3d0270693ccf6b44907b10f8a802b593fa5a4164904794d099fc9939a792b60a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0.png",
+      "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "1540cda4637310dc81f489e65dd06e7e1bcc872aea84ff21a86315ac6bf39f39",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "6da001c3a743418f18afab6bdc8ad0987a3b5abb047c110f1186c892083c7d6e",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\aerial.png",
+      "sha256": "bc55efc6358e288fcbe3633d37e5c294462fa28a76e90b8b7187657aafda3d76",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\architecture_close.png",
+      "sha256": "6fbf3e107bd4ad2f2e871f6c5e85c6880631710e440123f2ae0aff356b3f8933",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\attic_vent.png",
+      "sha256": "49538ff92df3965e61de87878a971d649b89b0688aa46280e511f8994bb268e3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\bedroom.png",
+      "sha256": "d225bca12cce7338e92344e7dc1117b58c5624e90093d4bd2b19a7310b538324",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\corridor.png",
+      "sha256": "ada41b27d1329a440d7328669a626f7c70a340316af59986bfbfd1cce49299b0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\facade_close.png",
+      "sha256": "1673837858a6acf8db5d5ee19eb644c7ca844ed3788d2268db37912c5acb8b31",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\front.png",
+      "sha256": "4a3ebed1b429f222af7468f6a7d658fd40387ea1ebdf9f4c3c10582aa21127ab",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\front_corner.png",
+      "sha256": "7216e5c655ee27345ca0438ed56d3c9c9249bee221cb7fe7494010c0321eb246",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\garden_entry.png",
+      "sha256": "a3bd900bd2f480886f8e715e7360f18e89c80bc284ed977cb57c950ac2308e14",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\glass_close.png",
+      "sha256": "94a8218bdcc6172875966ec0d2607502522203925dc3d98803a54279a5846550",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\interior.png",
+      "sha256": "9b571ff888c28d1e32b81a8c29c0ce3c1a946405d5391fffcb23a3c1d6a07dc7",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\left_side.png",
+      "sha256": "b8bfbfaf1fedf44ffc982cc02259aa635211d14a004ca3bd9f63da6d3e62c27c",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\post_contact.png",
+      "sha256": "28caa28643d62c2f46ef17094f85fc73e81818c6aea74628e3db44506cf91b84",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\rear.png",
+      "sha256": "d10fe3c69c86adf3077afb87d152871cae3ad46b6420fbe47a0345879867ef0b",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\rear_side.png",
+      "sha256": "b9bf1f3b0beb4b50388bfc288d828e895b9451538f09f514405f8200ff36e24f",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\right_side.png",
+      "sha256": "c8d603caf796c2199ef7a76022f0208f551e2297b98fd4ebc4f95809f585a900",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\roof_contact.png",
+      "sha256": "6cfd33799e719645e7cbf1a2a535ace5af8ac2eab6d3c3c6a5c90da654805a8a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\side_projection.png",
+      "sha256": "293f5a7589ca47b607f5c6f13471dc000bc2f911acfdaa3e9efe9d04e702316a",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\top.png",
+      "sha256": "bdf8281d9cd452c1d2e3ba0a1d59bbfc1a4feb9e168d0b6e9e2c4c4870b65c51",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\boards\\all-views-contact.png",
+      "sha256": "aa08f9e012d473d03131239dca4ca29047aa7fa7d7d619b23191b552128a9a8d",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\boards\\locked-source-board.png",
+      "sha256": "a62d1f9e2830124d22dc4ee2393154326dcf0f0e5523d31ada92e02cfb2fbe6e",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\boards\\phone-construction.png",
+      "sha256": "6a71437c83e1c459c8cee75e336ff2c2df46817d397731d376218a534870ad51",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\boards\\phone-source-comparison.png",
+      "sha256": "49c9790013f282fb0cf9c2643d8229bb9c9ae33f9b4f1ae389764591433440dd",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\evidence\\builder-evidence.json",
+      "sha256": "8fc688e1943447dbf4a4a37f6fe9eb5bb4213c3cbac2e835f3f85c344f655bc0",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\evidence\\carrier-aperture-audit.json",
+      "sha256": "e0e23ff3d8526f5bd36a411a8bc756509f3e34eaf745c3b101ca23d0580afe21",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\evidence\\delivery-verification.json",
+      "sha256": "82241b91439b9bbabdb112b539b1464ccb40c2f4f47634c466cce2014b08237f",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\evidence\\runtime-review.md",
+      "sha256": "11b0a26d814a4a989cd1c663108654c80d301d8c03040acd9cb47b7c792d7741",
+      "passed": true
+    },
+    {
+      "kind": "source_manifest_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\prework-manifest.json",
+      "sha256": "700145d1dac808d54acd3942fce76be7589165d8b19f423b4e00a1a00bfc4902",
+      "passed": true
+    },
+    {
+      "kind": "build_report_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\build-report.json",
+      "sha256": "171d94b5d81b401d878263db7445f86fd14d57260d17f0ebdd1f604057d83274",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0.png",
+      "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "1540cda4637310dc81f489e65dd06e7e1bcc872aea84ff21a86315ac6bf39f39",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "6da001c3a743418f18afab6bdc8ad0987a3b5abb047c110f1186c892083c7d6e",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\aerial.png",
+      "sha256": "bc55efc6358e288fcbe3633d37e5c294462fa28a76e90b8b7187657aafda3d76",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\architecture_close.png",
+      "sha256": "6fbf3e107bd4ad2f2e871f6c5e85c6880631710e440123f2ae0aff356b3f8933",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\attic_vent.png",
+      "sha256": "49538ff92df3965e61de87878a971d649b89b0688aa46280e511f8994bb268e3",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\bedroom.png",
+      "sha256": "d225bca12cce7338e92344e7dc1117b58c5624e90093d4bd2b19a7310b538324",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\corridor.png",
+      "sha256": "ada41b27d1329a440d7328669a626f7c70a340316af59986bfbfd1cce49299b0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\facade_close.png",
+      "sha256": "1673837858a6acf8db5d5ee19eb644c7ca844ed3788d2268db37912c5acb8b31",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\front.png",
+      "sha256": "4a3ebed1b429f222af7468f6a7d658fd40387ea1ebdf9f4c3c10582aa21127ab",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\front_corner.png",
+      "sha256": "7216e5c655ee27345ca0438ed56d3c9c9249bee221cb7fe7494010c0321eb246",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\garden_entry.png",
+      "sha256": "a3bd900bd2f480886f8e715e7360f18e89c80bc284ed977cb57c950ac2308e14",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\glass_close.png",
+      "sha256": "94a8218bdcc6172875966ec0d2607502522203925dc3d98803a54279a5846550",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\interior.png",
+      "sha256": "9b571ff888c28d1e32b81a8c29c0ce3c1a946405d5391fffcb23a3c1d6a07dc7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\left_side.png",
+      "sha256": "b8bfbfaf1fedf44ffc982cc02259aa635211d14a004ca3bd9f63da6d3e62c27c",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\post_contact.png",
+      "sha256": "28caa28643d62c2f46ef17094f85fc73e81818c6aea74628e3db44506cf91b84",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\rear.png",
+      "sha256": "d10fe3c69c86adf3077afb87d152871cae3ad46b6420fbe47a0345879867ef0b",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\rear_side.png",
+      "sha256": "b9bf1f3b0beb4b50388bfc288d828e895b9451538f09f514405f8200ff36e24f",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\right_side.png",
+      "sha256": "c8d603caf796c2199ef7a76022f0208f551e2297b98fd4ebc4f95809f585a900",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\roof_contact.png",
+      "sha256": "6cfd33799e719645e7cbf1a2a535ace5af8ac2eab6d3c3c6a5c90da654805a8a",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\side_projection.png",
+      "sha256": "293f5a7589ca47b607f5c6f13471dc000bc2f911acfdaa3e9efe9d04e702316a",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003\\renders\\top.png",
+      "sha256": "bdf8281d9cd452c1d2e3ba0a1d59bbfc1a4feb9e168d0b6e9e2c4c4870b65c51",
+      "passed": true
+    }
+  ],
+  "canonical_validator": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\rlasm-coverage-five-2026-10-06\\craftsman-v003",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "mandatory_view_count": 19,
+  "all_mandatory_views_covered_by_original_review": true,
+  "requires_fresh_review": false,
+  "runtime_approved": false,
+  "textured_keeper_approved": false,
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval."
+  ]
+}

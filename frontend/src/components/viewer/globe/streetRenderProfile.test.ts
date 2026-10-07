@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import * as THREE from 'three';
+import { BICYCLE_CAMERA_HEIGHT_METERS } from '../videoRouteControls';
 
 import {
   STREET_RENDER_VERTICAL_FOV_DEGREES,
@@ -77,5 +78,19 @@ describe('streetRenderProfile', () => {
     const expected = siteFocus.clone().sub(camera.position).normalize();
     expect(forward.angleTo(expected)).toBeLessThan(1e-6);
     expect(forward.z).toBeLessThan(-0.8);
+  });
+
+  it('keeps cycling eye height and a forward, level heading through a bend', () => {
+    const camera = new THREE.PerspectiveCamera();
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 100, 0), new THREE.Vector3(10, 100, 0), new THREE.Vector3(20, 100, 10),
+    ], false, 'centripetal');
+    for (const progress of [0, .25, .5, .75, 1]) {
+      applyStreetRoutePose(camera, curve, progress, new THREE.Vector3(0, 1, 0), BICYCLE_CAMERA_HEIGHT_METERS);
+      const forward = camera.getWorldDirection(new THREE.Vector3());
+      expect(camera.position.y).toBeCloseTo(101.6);
+      expect(forward.y).toBeCloseTo(0);
+      expect(forward.dot(curve.getTangentAt(progress))).toBeGreaterThan(.98);
+    }
   });
 });

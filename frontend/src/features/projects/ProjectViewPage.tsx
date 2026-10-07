@@ -21,6 +21,7 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
 import { parkOutlineProblem } from '@/features/pickPlace/parkOutline';
+import { flexibleParkFitProblem, isFlexiblePark } from '@/features/parks/flexibleParkFit';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
 import { duplicateStreet } from '@/features/pickPlace/duplicateStreet';
 import { streetConnectionProblem } from '@/features/pickPlace/streetConnectionProblem';
@@ -39,6 +40,7 @@ import { specialistConnectionProblem } from '@/features/pickPlace/specialistConn
 import { snapConnectedStreetEdit, streetEditConnectionCheck } from '@/features/pickPlace/streetEditConnections';
 import { isAxiosError } from 'axios';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
+import { snapStreetBoundaryPlacement, streetBoundaryEditCoordinates } from '@/features/pickPlace/streetBoundaryPlacement';
 import { useAutomatic3D } from '@/features/pickPlace/useAutomatic3D';
 import type { PlacementDraft } from '@/features/pickPlace/GlobePlacementPreview';
 import { generatedPlacementDraft, placementDraftProperties } from '@/features/pickPlace/generatedPlacement';
@@ -65,7 +67,20 @@ import { StudentPlanningReport } from '@/features/studentReports/StudentPlanning
 import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessConnections';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
 import { ZoningLabelsControls } from '@/features/referenceLayers/ZoningLabelsControls';
+import { SiteAssessmentPanel } from '@/features/referenceLayers/SiteAssessmentPanel';
+import { ZoningStudyPanel } from '@/features/referenceLayers/ZoningStudyPanel';
+import { useStudyMapDrawing } from '@/features/referenceLayers/useStudyMapDrawing';
+import { studyMetadata } from '@/features/referenceLayers/zoningStudy';
 import { useZoningLabels } from '@/features/referenceLayers/useZoningLabels';
+import { useLocalAreaPolicy } from '@/features/policyPlans/useLocalAreaPolicy';
+import { LocalAreaPlanPanel } from '@/features/policyPlans/LocalAreaPlanPanel';
+import { PolicyDetailsCard } from '@/features/policyPlans/PolicyDetailsCard';
+import { useCityPolicyMaps } from '@/features/policyPlans/useCityPolicyMaps';
+import { CityPolicyMapsPanel } from '@/features/policyPlans/CityPolicyMapsPanel';
+import { CityPolicyDetailsCard } from '@/features/policyPlans/CityPolicyDetailsCard';
+import { ZoningCatalogueCard } from '@/features/zoningCatalogue/ZoningCatalogueCard';
+import { resolveZoneInspection } from '@/features/zoningCatalogue/zoningInspection';
+import type { ZoneInspection } from '@/features/zoningCatalogue/types';
 import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
 import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
@@ -82,6 +97,7 @@ import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { savedRenderNotice } from '@/utils/renderPresentation';
 import { SavedRenderCard } from './SavedRenderCard';
+import { AnimateRenderButton } from '@/components/viewer/AnimateRenderButton';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
@@ -141,6 +157,8 @@ export function ProjectViewPage() {
   const [showProjectRenders, setShowProjectRenders] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [showCatalogue, setShowCatalogue] = useState(false);
+  const [walkControlTarget, setWalkControlTarget] = useState<HTMLDivElement | null>(null);
+  const [mapToolsTarget, setMapToolsTarget] = useState<HTMLDivElement | null>(null);
   const [studentStep, setStudentStep] = useState<StudentStep | null>(null);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
   const [showVideoRender, setShowVideoRender] = useState(false);
@@ -268,6 +286,30 @@ export function ProjectViewPage() {
     handleZoneUpdated,
   } = useSiteZones(id);
   const zoningLabels = useZoningLabels(id, siteZones);
+  const localPolicy = useLocalAreaPolicy(id, siteZones);
+  const cityPolicyMaps = useCityPolicyMaps(id);
+  const [zoningSelection, setZoningSelection] = useState<{ projectId?: string; zone: ZoneInspection | null } | null>(null);
+  const selectZoning = useCallback((zone: ZoneInspection | null) => setZoningSelection({ projectId: id, zone }), [id]);
+  const inspectZoningLegend = (zoneId: string) => {
+    setShowReferenceLayers(false);
+    localPolicy.clearSelection(); cityPolicyMaps.clearSelection();
+    selectZone(null);
+    selectZoning({ id: zoneId, label: '', source: '' });
+  };
+  const selectedZoning = useMemo(() => resolveZoneInspection(zoningSelection && zoningSelection.projectId === id ? zoningSelection.zone : null,
+    zoningLabels, references.visibleLayers), [id, zoningSelection, zoningLabels, references.visibleLayers]);
+  const localPolicyPanel = { ...localPolicy, selectCategory: (category: string) => {
+    setShowReferenceLayers(false); selectZone(null);
+    selectZoning(null); cityPolicyMaps.clearSelection(); localPolicy.selectCategory(category);
+  } };
+  const cityPolicyPanel = { ...cityPolicyMaps, inspect: (mapId: string) => {
+    setShowReferenceLayers(false); selectZone(null);
+    selectZoning(null); localPolicy.clearSelection(); cityPolicyMaps.inspect(mapId);
+  } };
+  const studyMap = useStudyMapDrawing(id);
+  useEffect(() => {
+    if (zoningSelection?.zone && (!selectedZoning || studyMap.editing || selectedZoneId)) selectZoning(null);
+  }, [zoningSelection, selectedZoning, studyMap.editing, selectedZoneId, selectZoning]);
   const { savedVersionReload, reloadSavedVersion } = useZonePropertiesReload(id, selectedZoneId, reloadZones);
 
   const initializedSiteToolProjectRef = useRef<string | null>(null);
@@ -283,6 +325,11 @@ export function ProjectViewPage() {
     const asset = placeAsset(assetId);
     setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
     useViewerStore.getState().setStreetViewActive(false);
+    if (isFlexiblePark(asset.properties)) {
+      cancelPlacement();
+      setActiveSitePlannerTool('green_space', asset.properties);
+      return;
+    }
     setPlacementDraft({ assetId, width: width ?? asset.width, depth: depth ?? asset.depth, degrees,
       faceStreet: asset.zoneType === 'building' });
   };
@@ -317,6 +364,11 @@ export function ProjectViewPage() {
   const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
     const zone = siteZones.find(item => item.id === zoneId);
     if (zone && isFixedSectionStreet(zone)) coordinates = snapConnectedStreetEdit(zone, coordinates, siteZones);
+    if (zone?.zone_type === 'road') {
+      const snapped = snapStreetBoundaryPlacement({ ...zone, ...streetCoordinateUpdate(zone, coordinates) }, siteZones, getActiveSiteBoundary(siteZones));
+      if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
+      coordinates = streetBoundaryEditCoordinates(zone, snapped);
+    }
     if (zone && ['building', 'residential', 'green_space'].includes(zone.zone_type)) {
       const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), zoneId,zone.properties);
       if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
@@ -330,7 +382,7 @@ export function ProjectViewPage() {
         ?? brtConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
         ?? streetConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
         ?? nativeStreetRouteProblem({...zone,...(streetUpdate??{coordinates})},getActiveSiteBoundary(siteZones))
-        ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates)
+        ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates) ?? flexibleParkFitProblem(coordinates,zone.properties)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
           parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
@@ -1110,6 +1162,8 @@ export function ProjectViewPage() {
       <div className="fixed inset-x-0 bottom-0 top-16 z-50 bg-black">
         <Suspense fallback={<MapLoadingFallback mode="3D" />}>
           <GlobeSitePlannerMap
+            walkControlTarget={walkControlTarget}
+            mapToolsTarget={mapToolsTarget}
             entrancePick={entrancePick}
             placementDraft={placementDraft}
             onPlacementDraftChange={setPlacementDraft}
@@ -1147,11 +1201,34 @@ export function ProjectViewPage() {
             longitude={project.location?.longitude}
             siteZones={visibleZones}
             allSiteZones={siteZones}
-            referenceLayers={references.visibleLayers}
-            zoningLabels={zoningLabels}
+            referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}
+            zoningLabels={studyMap.editing ? {...zoningLabels,enabled:false} : zoningLabels}
+            zoningInspection={studyMap.editing ? undefined : { selected: selectedZoning, select: selectZoning }}
+            policyMap={studyMap.editing ? { ...localPolicy, enabled: false } : localPolicy}
+            cityPolicyMaps={studyMap.editing ? { ...cityPolicyMaps, layers: [] } : cityPolicyMaps}
             transportContext={transportContext}
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
+              if (properties?.cartography_study) return references.canEdit && studyMap.complete(coordinates);
+              if (['building', 'residential', 'green_space'].includes(type)) {
+                const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, properties, type);
+                if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
+                coordinates = snapped.coordinates;
+              }
+              if (type === 'road') {
+                const snapped = snapStreetBoundaryPlacement({
+                  id: 'boundary-street-preview', zone_type: type, project_id: id ?? '', color: '',
+                  sort_order: 0, created_at: '', updated_at: '', coordinates, properties,
+                }, siteZones, getActiveSiteBoundary(siteZones));
+                if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
+                coordinates = snapped.coordinates; properties = snapped.properties;
+              }
+              if (type === 'green_space' && isFlexiblePark(properties)) {
+                const problem = parkOutlineProblem(coordinates)
+                  ?? flexibleParkFitProblem(coordinates, properties)
+                  ?? placementProblem(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined);
+                if (problem) { toast.error(problem, {position:'top-center'}); return false; }
+              }
               if (isFixedSectionStreet({zone_type:type, properties})) {
                 const problem = specialistConnectionProblem({coordinates,properties},siteZones)
                   ?? brtConnectionProblem({coordinates,properties},siteZones)
@@ -1173,7 +1250,7 @@ export function ProjectViewPage() {
             onGlobeReady={setGlobeRefs}
             onModeledBuildingsChange={setModeledBuildingIds}
             measureModeActive={measureActive}
-            interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || showReferenceLayers || showCatalogue || Boolean(connectionZone && !entrancePick)}
+            interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || (showReferenceLayers && !studyMap.editing) || showCatalogue || Boolean(connectionZone && !entrancePick)}
             onMeasureModeChange={handleMeasureModeChange}
           />
         </Suspense>
@@ -1194,13 +1271,14 @@ export function ProjectViewPage() {
               automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
               onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={handleOpenGenerate3D} onRetry3D={automatic3D.retry} />}
-            {activeStudentStep === 'site' && <div className="mt-3"><ZoningLabelsControls state={zoningLabels} /></div>}
+            {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} /></div>}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
               streetInPlacement
-              placementSlot={<PlacementPalette selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
-                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry}
+              advancedSlot={<div ref={setMapToolsTarget} className="grid gap-2" aria-label="3D viewing tools" />}
+              placementSlot={<PlacementPalette primaryAction={<div ref={setWalkControlTarget} />} selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
+                status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} canRefreshDetail={automatic3D.canRefreshDetail}
                 onBrowseChange={setShowCatalogue}
                 onPickGenerated={model => {
                   setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
@@ -1275,7 +1353,11 @@ export function ProjectViewPage() {
         </div>
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
           <div className="sticky -top-3 z-10 flex items-center justify-between bg-white py-1"><h2 className="font-semibold text-slate-900">Map layers</h2><button onClick={() => setShowReferenceLayers(false)} aria-label="Close layers" className="flex h-11 w-11 items-center justify-center"><X size={18} /></button></div>
-          <ZoningLabelsControls state={zoningLabels} />
+          <ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} />
+          <LocalAreaPlanPanel state={localPolicyPanel} />
+          <CityPolicyMapsPanel state={cityPolicyPanel} />
+          <ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/>
+          <SiteAssessmentPanel zones={siteZones} projectId={id} />
           <ShapefileImportButton projectId={project.id} />
           <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers} />
           <ReferenceLayersPanel layers={references.layers} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer}
@@ -1284,6 +1366,9 @@ export function ProjectViewPage() {
           <LayersPanel siteZones={siteZones} hiddenLayers={hiddenLayers} onToggleLayer={toggleLayer} onDeleteLayer={deleteLayer} deletingLayer={deletingLayer} />
           <SiteElevation lat={project.location?.latitude} lon={project.location?.longitude} />
         </aside>}
+        {!studyMap.editing && !localPolicy.selected && !cityPolicyMaps.selected && <ZoningCatalogueCard zone={selectedZoning} onClose={() => selectZoning(null)} />}
+        {!studyMap.editing && <PolicyDetailsCard selected={localPolicy.selected} onClose={localPolicy.clearSelection} />}
+        {!studyMap.editing && !localPolicy.selected && <CityPolicyDetailsCard map={cityPolicyMaps.selected} onClose={cityPolicyMaps.clearSelection} />}
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
           <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}
@@ -1529,6 +1614,7 @@ export function ProjectViewPage() {
                 <RenderSourceNote render={renderLightbox} />
               </div>
               <div className="absolute top-3 right-3 flex gap-2">
+                <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} onImageSaved={rememberSavedRender} />
                 <button
                   type="button"
                   onClick={() => handleEditRender(renderLightbox)}
@@ -1576,7 +1662,7 @@ export function ProjectViewPage() {
                 <Video size={18} className="text-[#c9ff3d]" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold capitalize">{videoRenderLabel(videoLightbox)}</p>
-                  <p className="text-xs text-white/50">8 sec · {videoProviderOrigin(videoLightbox)} · saved to project</p>
+                  <p className="text-xs text-white/50">{videoLightbox.duration_seconds} sec · {videoProviderOrigin(videoLightbox)} · saved to project</p>
                 </div>
                 <a
                   href={videoDownloadUrl(videoLightbox)}
@@ -1761,6 +1847,7 @@ export function ProjectViewPage() {
               onLightboxOpenChange={setAiPanelLightboxOpen}
               onStyleChange={setActiveAIStyle}
               onRenderSaved={rememberSavedRender}
+              onVideoSaved={rememberSavedVideo}
             />
           )}
 
@@ -2007,6 +2094,7 @@ export function ProjectViewPage() {
               <RenderSourceNote render={renderLightbox} />
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
+              <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} onImageSaved={rememberSavedRender} />
               <button
                 type="button"
                 onClick={() => handleEditRender(renderLightbox)}
@@ -2105,7 +2193,7 @@ function RenderSourceNote({ render }: { render: SavedRender }) {
 function videoDownloadUrl(video: VideoAttempt): string {
   const source = resolveApiFileUrl(video.video_url ?? '');
   const separator = source.includes('?') ? '&' : '?';
-  const provider = video.provider === 'seedance_mini'
+  const provider = video.provider === 'kling' ? 'kling-animation' : video.provider === 'seedance_mini'
     ? 'seedance-mini'
     : video.provider === 'internal_enhance'
       ? 'internal-enhance'
@@ -2115,12 +2203,15 @@ function videoDownloadUrl(video: VideoAttempt): string {
 }
 
 function videoProviderOrigin(video: VideoAttempt): string {
+  if (video.provider === 'comfyui') return 'Local ComfyUI · animated still';
+  if (video.provider === 'kling') return 'fal Kling · animated still';
   if (video.provider === 'seedance_mini') return 'Seedance Mini';
   if (video.provider === 'internal_enhance') return 'City Prompt local pipeline';
   return 'Gemini Omni';
 }
 
 function videoRenderLabel(video: VideoAttempt): string {
+  if (video.mode === 'saved_render_animation') return `${video.provider === 'comfyui' ? 'Wan · local' : 'Kling'} · animated still · slow push-in`;
   const motion = video.camera_motion.split('_').join(' ');
   const provider = video.provider === 'seedance_mini'
     ? 'Seedance Mini'

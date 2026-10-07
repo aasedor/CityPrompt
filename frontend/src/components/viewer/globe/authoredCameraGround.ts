@@ -1,3 +1,4 @@
+import { canalRoute, canalWalkingHeight } from './canalRoute';
 import { readNativePark, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import { nativePavingProbe } from '@/features/parks/nativeParkAccess';
 import { parkWalkHeight, type ParkWalkingNetwork } from '@/features/parks/parkWalking';
@@ -24,6 +25,22 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
     const variant=String(zone.properties?.road_selected_variant_id);
     if(zone.zone_type==='road' && !zone.properties?.validation_fixed_fixture && isSpecialistStreet(variant)){
       const route=extractZoneCenterline(zone),a=route[0],b=route[route.length-1];
+      if(variant==='amsterdam_gracht_v1' && a){
+        const sx=metersPerDegLon(a[1]);
+        const layout=canalRoute(route.map(p=>({x:(p[0]-a[0])*sx,y:(p[1]-a[1])*METERS_PER_DEG_LAT})));
+        const px=(lng-a[0])*sx,py=(lat-a[1])*METERS_PER_DEG_LAT;
+        const nearest=layout.segments.map(s=>{
+          const dx=(s.to.x-s.from.x)/s.size,dy=(s.to.y-s.from.y)/s.size;
+          const along=(px-s.from.x)*dx+(py-s.from.y)*dy;
+          const t=Math.max(0,Math.min(s.size,along));
+          return {x:(px-s.from.x)*dy-(py-s.from.y)*dx,station:s.start+t,
+            distance:Math.hypot(px-s.from.x-dx*t,py-s.from.y-dy*t)};
+        }).sort((a,b)=>a.distance-b.distance)[0];
+        const level=resolvePreparedSiteTerrainForZone(zone,zones,measured);
+        const height=nearest?canalWalkingHeight(nearest.x,nearest.station,layout.length,layout.crossing,layout.original):null;
+        if(height!==null && level!==null)return level+height;
+        continue;
+      }
       if(a&&b){
         const sx=metersPerDegLon(a[1]),dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*METERS_PER_DEG_LAT,length=Math.hypot(dx,dy);
         const x=(lng-a[0])*sx,y=(lat-a[1])*METERS_PER_DEG_LAT;
@@ -56,7 +73,7 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
           try {
             const source = (native.layout as typeof native.layout & { walking?: ParkWalkingNetwork }).walking;
             const walking = source && stepFreeParkWalkingNetwork(native.layout.variantId, source);
-            const height = walking ? parkWalkHeight(walking, local[0], local[1], walking.version===2?measured-level:undefined) : nativePavingProbe(native.layout, true)(local);
+            const height = walking ? parkWalkHeight(walking, local[0], local[1], walking.version===2?measured-level:undefined, true) : nativePavingProbe(native.layout, true)(local);
             if (height !== null) return level + height;
           } catch {
             // Loading/errors remain owned by NativeParkLayer and its capture guard.

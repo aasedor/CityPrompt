@@ -27,7 +27,7 @@ export const VIDEO_RENDER_QUALITY_PROFILES: Readonly<Record<VideoRenderQuality, 
   draft: {
     id: 'draft',
     label: 'Draft',
-    detail: '720p · quick preparation',
+    detail: '720p · lighter capture',
     outputWidth: 1280,
     outputHeight: 720,
     renderWidth: 1280,

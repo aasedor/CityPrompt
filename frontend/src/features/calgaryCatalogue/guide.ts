@@ -11,7 +11,7 @@ export const CALGARY_SOURCES = {
   hotelUse: { label: 'Hotel · defined use', url: 'https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?alphaSearch=209&div=2&part=4', status: 'Part 4 · section 209' },
   foodProduction: { label: 'Food Production · defined use', url: 'https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?alphaSearch=198.1&div=2&part=4', status: 'Part 4 · section 198.1' },
   streets: { label: 'Complete Streets Policy & Guide', url: 'https://www.calgary.ca/planning/transportation/complete-streets.html', status: 'Council approved · 2014' },
-  streetManual: { label: 'Street Manual', url: 'https://www.calgary.ca/planning/city-building-program/city-building-program/the-street-manual.html', status: 'Draft · final approval anticipated Q2 2027' },
+  streetManual: { label: 'Street Manual', url: 'https://www.calgary.ca/planning/city-building-program/city-building-program/the-street-manual.html', status: 'Draft · administrative approval of the final draft anticipated Q2 2027; policy/bylaw approvals anticipated in 2027' },
   parks: { label: 'Connect: Calgary’s Parks Plan', url: 'https://www.calgary.ca/planning/parks-rec/parks-plan.html', status: 'Council approved · May 2025' },
   parkTypes: { label: 'Parks Plan · park types and connections', url: 'https://www.calgary.ca/content/dam/www/programs-services/city-planning/parks-projects-and-developments/parks-plan.pdf', status: 'Connect · sections 4.4–4.5' },
   localPlans: { label: 'Local area plans', url: 'https://www.calgary.ca/planning/local-area/resources.html', status: 'Check the plan that covers your site' },

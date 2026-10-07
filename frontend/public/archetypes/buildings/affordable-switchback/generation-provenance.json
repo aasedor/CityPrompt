@@ -1,0 +1,52 @@
+{
+  "origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "records": [
+    {
+      "role": "front",
+      "file": "variant_0.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-2d74c06b-fbe3-465e-bfc0-cbbbb9317db5.png",
+      "prompt": "Create one refined photoreal architectural reference for an ORIGINAL Canadian permanent modular affordable apartment building called Switchback Studios. FOUR STOREYS exactly, flatroof lowparapet, 24m wide by14m deep,13.8mhigh.24 permanent studio homes, six per floor: three along front and three rear, interior corridor in middle, enclosed stairs at each end. FRONT composition has THREE equal6mwide studio bays within an18m central area, flanked by two3mwide stair/core bays. Each studio bay has TWO tall rectangular windows side by side on EACH floor: SIX studio windows per floor. End stair bays have one narrow vertical window on each floor; a main entry door at ground at left end and secondary door rightend. Rich ochre and muted olive rainscreen panels alternate by studio BAY, not randomly; warm white sidewalls and darkbronze windowframes. Physical slim horizontal floor-joint lines indicate actual stacked volumetric modules. All modules align vertically, no cantilevers. A short supported timber canopy at left entrance, tiny street planting, simple concretegrade. No transport wheels or chassis, no balconies, no extra fifth floor, no cars/people/letters/logos. A beautiful attainable rental design of precise proportions and practical warmth. Straight front catalogue photograph, entire building centred with clear sky and ground margins, diffuse daylight, high-end believable architecture rather than an AI fantasy. Horizontal image.",
+      "input_roles": [],
+      "sha256": "d5ee46b884d03cec0c3b6584cbea84c2e0e8ee0a4620fca2a633703629ed21e0",
+      "bytes": 2422931,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "file": "variant_0_angle_60.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-bc6cd80b-b728-40d1-a4a1-cb03a2411e9b.png",
+      "prompt": "Show this EXACT four-storey permanentmodularstudio apartment building from elevatedfront-rightthreequarterangle, entire building.24mfrontwidth14mdepth13.8mheight. Preserve threecentral studio bays ochre/olive/ochre,twotallwindowsperbayperfloor,white3mwideendstairbayswithnarrowwindows, lefttimbercanopieddoorandrightsecondarydoor. Flat closedroof withshallowparapet. Rear mirrorssixstudiowindowsperfloor andcorewindows;rightsidequietwarmwhitepanelswithnarrowstairwindows. Exactsamewindows,mass,height,colours;noadditionalfloors,balconies,transportchassis,textorpeople. Neutral architecturalphotograph.",
+      "input_roles": [
+        "front"
+      ],
+      "sha256": "d90bc9e15378502361d9a42b649e181bc69b20a3e60f6fab2206e3cbec9eb88b",
+      "bytes": 2504041,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "file": "variant_0_angle_90.png",
+      "source": "C:\\Users\\andre\\.codex\\generated_images\\01a10a60-a044-76b1-a682-d89a8dd78ea7\\exec-828e30d1-7d2b-4bac-86d4-dd48e0a0bcba.png",
+      "prompt": "High aerial near top-down architectural reference of this EXACT four-storey permanentmodularstudio apartment.24mby14mrectanglemassing,closedflatmembranerooflowparapetwithoutroofstructures. Ochre/olive/ochrethreefrontbaycompositionwithsixcentralstudiofrontwindowsperfloor, warmwhiteendstairbayswithnarrowwindows, whitepanelreturnswithtwonarrowwindowsperfloor asreference. Frontlefttimberentrycanopyandrightdoor. Originaldesignunchanged,noextrafloors,balconies,chassisorunits. Fullbuildinginframe,naturallight,noannotation.",
+      "input_roles": [
+        "front",
+        "oblique"
+      ],
+      "sha256": "49555d2046a7fdee921fc56eb7530b63baba904c98f699e7946307f4176c3bb2",
+      "bytes": 2984102,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "not_surveyed": true,
+  "metadata_authority": "Pixels govern geometry; programmes and metric dimensions are authored design assumptions."
+}

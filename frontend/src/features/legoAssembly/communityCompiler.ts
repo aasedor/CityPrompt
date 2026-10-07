@@ -317,6 +317,8 @@ export interface MixedCommunityCompileSummary {
 }
 
 export interface MixedCommunityCompileOptions {
+  /** Only full-project recovery may include zones added after the request. */
+  scopeMode?: 'project' | 'selection';
   includeResidualLandscape?: boolean;
   /** Complete visible physical-zone scope used for residual landscaping.
    * Incremental `Complete` requests compile only unfinished items, but must
@@ -355,14 +357,17 @@ async function reloadCommunityCompilerZones(
   const currentProjectZones = await siteZonesApi.list(projectId);
   const currentById = new Map(currentProjectZones.map((zone) => [zone.id, zone]));
   const missingIds = Array.from(requestedIds).filter((zoneId) => !currentById.has(zoneId));
-  if (missingIds.length > 0) {
+  const fullProject = options.scopeMode === 'project' && !options.scopeBoundaryId;
+  if (missingIds.length > 0 && !fullProject) {
     throw new Error(
       `${missingIds.length} Community 3D source zone${missingIds.length === 1 ? '' : 's'} `
       + 'were removed while the scene was being prepared. The plan was refreshed; review it before rebuilding.',
     );
   }
 
-  const refreshed = currentProjectZones.filter((zone) => requestedIds.has(zone.id));
+  const refreshed = currentProjectZones.filter((zone) => fullProject
+    ? zone.zone_type !== 'site_boundary' && zone.properties?._plan_role !== 'framework_height' && !zone.id.startsWith('temp-')
+    : requestedIds.has(zone.id));
   const savedLayoutZones = refreshed.filter((zone) => savedSingleBuildingLayoutId(zone) !== null);
   return savedLayoutZones.length > 0
     ? alignSavedLayoutBuildingFootprints(refreshed, await buildingsApi.list(projectId))
@@ -646,7 +651,8 @@ export async function compileMixedCommunity3D(
     return compileMixedCommunity3D(
       refreshedZones,
       onProgress,
-      { ...options, recoverSourceChanges: false },
+      { ...options, ...(options.scopeMode === 'project' && !options.scopeBoundaryId
+        ? { scopeZoneIds: refreshedZones.map(zone => zone.id) } : {}), recoverSourceChanges: false },
     );
   }
   assertCommunityCompileResponse(expectedItems, response);

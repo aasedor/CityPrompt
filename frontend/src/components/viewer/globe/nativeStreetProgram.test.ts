@@ -21,7 +21,7 @@ describe('finite native street placement limits',()=>{
     ['student_quiet_residential_street_v1',48,480],
     ['student_planted_shared_lane_v1',40,480],
     ['brt_bus_rapid_transit_corridor_v0',100,480],
-    ['amsterdam_gracht_v1',80,320],
+    ['amsterdam_gracht_v1',36,2000],
     ['landmark_signature_bridge_v2',260,480],
     ['student_cycle_avenue_v1',48,480],
     ['student_green_alley_v1',40,480],

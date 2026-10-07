@@ -1,0 +1,100 @@
+{
+  "origin": "original_generated_design",
+  "generation_tool": "built-in image_gen",
+  "date": "2026-10-07",
+  "families": [
+    {
+      "slug": "ubst-student-courtyard",
+      "records": [
+        {
+          "role": "front",
+          "file": "variant_0.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-90a6692e-fbfa-4b2e-a37f-895d27d0d41d.png",
+          "prompt": "Photoreal architectural street photograph of an original modest Calgary STUDENT COURTYARD RESIDENCE. EXACTLY THREE occupied floors, all same3.2m height, flat roofs and low parapets. U-shaped plan30m wide x24m deep: two7m-wide side wings extending towards the street, joined by a7m-deep rear wing; a16m-wide x17m-deep planted courtyard is OPEN at the front with no front building connecting the wings. Camera from street nearly straight on, slightly elevated to see open courtyard and whole rear connecting wing, full building with margins. Warm muted red brick side wings, pale sage-green panel accents, charcoal windows. Each of the two forward wing end facades has EXACTLY TWO window columns and THREE rows (one row per storey). Inner long courtyard walls have five window columns and three rows. Rear wing at back of court has a central glazed common-room entry at ground floor, shared study lounge windows beside it, and four evenly spaced window columns on each of two upper floors. Main entry through courtyard. Small tree, seating ledges, bike racks, short paved path and useful planted gathering space; modest well designed university housing, no towers, no balconies, no gables. Beautiful realistic brick, occupied interiors, subtle material weathering, bright overcast, precise coherent building geometry. No words, logos, diagrams or cutaways.",
+          "input_paths": []
+        },
+        {
+          "role": "oblique",
+          "file": "variant_0_angle_60.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-89240991-bfc3-4060-8297-8e6ee96f6222.png",
+          "prompt": "Show the EXACT three-storey student residence from the attached image from an elevated FRONT RIGHT oblique architectural photography view, complete building all sides and roof with margin. Preserve U-shaped plan, TWO side wings pointing toward street, one rear connecting wing, open courtyard with no front connecting building. All wings exactly THREE occupied floors under flat roofs. Red-brown brick, paired vertical windows and pale sage panels between floors. Each forward end has two window columns and three rows. Right OUTSIDE long elevation has six evenly spaced window columns and three rows. Courtyard-facing side walls have five columns and three rows; rear common-room wall has four upper columns, two upper rows over glazed ground lounge and entry. No extra floors, no roof terrace, no balconies. The garden is at STREET GROUND LEVEL, connected directly from pavement to the common-room doorway. Same exact proportions, planted courtyard and material finish. Bright overcast, photoreal detail, no words or diagrams.",
+          "input_paths": [
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-90a6692e-fbfa-4b2e-a37f-895d27d0d41d.png"
+          ]
+        },
+        {
+          "role": "top",
+          "file": "variant_0_angle_90.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-f157f537-fdd0-4078-b7ea-7527534105c3.png",
+          "prompt": "Create a high elevated front-right aerial architectural photograph of this EXACT three-storey U-shaped student residence. Both supplied pictures depict the same design. Preserve three floors on all exterior AND courtyard walls, two parallel side wings and a rear connecting wing, open street-facing courtyard with no front wing. The garden is at street ground level. Reveal the complete U-shaped flat roof, courtyard paving and small plants, and the connected rear wing. Keep the paired windows, warm red-brown brick and muted pale sage vertical panels. Each front wing end has two window columns and three rows. No extra floors, no podium, no raised courtyard, no roof garden. Full building framed with clear margin, neutral bright overcast realism. No labels, text or diagrams.",
+          "input_paths": [
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-90a6692e-fbfa-4b2e-a37f-895d27d0d41d.png",
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-89240991-bfc3-4060-8297-8e6ee96f6222.png"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ubst-timber-cohousing",
+      "records": [
+        {
+          "role": "front",
+          "file": "variant_0.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-c91ddce6-dfef-43e3-b413-edd3d74653d2.png",
+          "prompt": "Architectural street photograph of an original small Calgary timber co-housing terrace. FOUR identical attached two-storey family homes in a straight row, total frontage 24 metres, depth 10 metres, floor pitch 3.0 metres. A simple continuous flat roof with a thin dark parapet, no pitched roofs. Four clearly readable equal 6-metre bays. Warm natural vertical larch boards throughout, charcoal thin window frames. Every bay has one separate front door on its RIGHT and one wide three-panel living window on its LEFT at ground; above, TWO equal tall rectangular bedroom windows. One continuous modest timber canopy at first-floor level extends 1.6 metres in front across all four bays, supported by FIVE slim timber posts exactly at bay boundaries. No balcony and no railings. Flat shallow canopy complete, simple crisp supports. Small individual paved front patios separated by low planters, common path across front. Modest native planting, a couple people, no trees obscuring architecture. Photoreal contemporary Canadian architecture, soft overcast warm natural colours, building fills frame with generous complete margins, near-frontal eye-level view. Consistent two occupied storeys, not a generic box, no signage or words.",
+          "input_paths": []
+        },
+        {
+          "role": "oblique",
+          "file": "variant_0_angle_60.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-e4644583-ad97-47dc-8f41-0158090c29b5.png",
+          "prompt": "Photograph the EXACT four-home timber terrace in the attached source from a modestly elevated FRONT RIGHT oblique view. Preserve all four bays, two occupied storeys, same proportions and all front windows and doors. Four ground doors each to the right of its three-panel living window, two tall upper windows per bay. Continuous flat roof and thin dark parapet, full-width shallow front canopy on five posts at bay boundaries, NO balcony or rails. Reveal right side and roof. On right side use two upper rectangular windows and one ground service door with a ground window. Complete building in frame with margin, natural realistic larch board materials, same light, no labels. Roof is plain flat membrane, no extra rooms or storeys, front canopy must remain firmly attached to building.",
+          "input_paths": [
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-c91ddce6-dfef-43e3-b413-edd3d74653d2.png"
+          ]
+        },
+        {
+          "role": "top",
+          "file": "variant_0_angle_90.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-1b628f66-dd18-40b0-ba36-2e6939efa8bf.png",
+          "prompt": "Show the EXACT four-bay two-storey timber terrace in the two supplied views from high above its front-right corner. Preserve all eight upper front windows, four lower three-pane living windows with individual doors to their right, full-width attached canopy on five boundary posts, flat rectangular membrane roof and slim dark parapet, warm vertical wood boards. Right side has two upper windows, small lower window and rear-position service door exactly as second source. Reveal whole roof and all four front patios without changing any floor counts or proportions. Building footprint is long and shallow, roof rectangular, no extra volumes or raised floors. Complete building with margins, realistic architectural photograph, same light and materials. No diagrams or labels.",
+          "input_paths": [
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-c91ddce6-dfef-43e3-b413-edd3d74653d2.png",
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-e4644583-ad97-47dc-8f41-0158090c29b5.png"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ubst-garden-hotel",
+      "records": [
+        {
+          "role": "front",
+          "file": "variant_0.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-69e077d7-a196-4713-ab2b-0755313500da.png",
+          "prompt": "Photoreal street-level architectural photograph of an original intimate three-storey garden hotel in Calgary, complete front elevation nearly straight-on with whole building and margin. Width24 metres, depth16metres, groundfloor4metres tall, two upperfloors3.2metres each. Front upper floors step back exactly2metres per floor, creating TWO long planted front terraces, one at each upper floor. Rear wall stays vertically aligned. Pale warm limestone facade, slim bronze-dark window frames, generous continuous full-height glazing. SIX evenly spaced hotel room glazing bays per upper floor, each bay a large window and narrow glazed terrace door. Groundfront six bays: central two bays form welcoming glazed lobby with wide entrance, outer four bays restaurant/library windows. Low masonry planters and fine dark vertical guardrails run along both terrace edges, green grasses and small shrubs. Warm wood soffits, complete flat roof parapets. No tower, no pitched roofs, no side wings. Small café tables at ground left, entry canopy between ground and first floor, a couple guests at entrance. Elegant restrained modern architecture with rich believable materials, overcast daylight, no signs, letters or collage.",
+          "input_paths": []
+        },
+        {
+          "role": "oblique",
+          "file": "variant_0_angle_60.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-254c2c12-ce43-416e-84a1-9bd346f2dd5b.png",
+          "prompt": "Photograph the EXACT three-storey garden hotel from the supplied image from an elevated FRONT RIGHT oblique viewpoint, showing whole building including roof with margins. Same six room bays per upper floor, central ground lobby and flanking restaurant windows, pale warm stone frames, bronze dark glazing, wood soffits and TWO planted recessed terrace strips with thin dark vertical railings. Each higher floor steps back 2metres from front, rear wall is aligned. Ground footprint24wide16deep; floor heights should match input photograph's proportions exactly. Side of hotel continues stone/window grammar with three tall windows per floor. Preserve substantial stone fascia beams framing terraces, all terraces' floor slabs, planters seated on actual floors and columns at room divisions. A single flat roof with parapet over top floor. No additional storeys or roof terrace. Photoreal image in same overcast lighting, no words or diagrams.",
+          "input_paths": [
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-69e077d7-a196-4713-ab2b-0755313500da.png"
+          ]
+        },
+        {
+          "role": "top",
+          "file": "variant_0_angle_90.png",
+          "generated_path": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-f624fb4a-18b6-4429-9944-66455ef7c19d.png",
+          "prompt": "High front-right aerial photograph of the EXACT three-storey garden hotel in the two supplied photographs. Keep the same six upper room glazing bays on each of two planted front terrace levels, central ground lobby, pale stone deep fascia beams and columns, bronze glazing, wood soffits. Three occupied storeys total, two stepped front terraces, each front facade moves inward 2m per upper level. Reveal the whole rectangular flat membrane roof and side elevations; three tall side windows per level, same proportions. No roof garden or extra floors, no new wing. Small service caps may sit on the flat roof. All terrace planters and fine dark railings seated on continuous floor edges, realistic vegetation. Entire building framed with ample margins and same materials and light. No text, no diagram, no change to building.",
+          "input_paths": [
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-69e077d7-a196-4713-ab2b-0755313500da.png",
+            "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-254c2c12-ce43-416e-84a1-9bd346f2dd5b.png"
+          ]
+        }
+      ]
+    }
+  ]
+}

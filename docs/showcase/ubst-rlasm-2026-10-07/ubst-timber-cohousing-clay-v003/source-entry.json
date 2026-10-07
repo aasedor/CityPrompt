@@ -1,0 +1,40 @@
+{
+  "archetype_id": "ubst-timber-cohousing",
+  "variant_id": "ubst-timber-cohousing-v0",
+  "source_origin": "original_generated_design",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-timber-cohousing\\variant_0.png",
+      "path": "sources/variant_0.png",
+      "bytes": 2739322,
+      "sha256": "fc4d971440925f585255ecead5dbc0e246f9dc1334013a7f6cb66efd6ac14d6c",
+      "dimensions_px": [
+        1774,
+        887
+      ]
+    },
+    {
+      "role": "oblique",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-timber-cohousing\\variant_0_angle_60.png",
+      "path": "sources/variant_0_angle_60.png",
+      "bytes": 2862825,
+      "sha256": "e6ea62e41b8f48ced338ee99f7a9fcf9e80eab421815604266821ce67d64da6e",
+      "dimensions_px": [
+        1774,
+        887
+      ]
+    },
+    {
+      "role": "top",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-timber-cohousing\\variant_0_angle_90.png",
+      "path": "sources/variant_0_angle_90.png",
+      "bytes": 3470346,
+      "sha256": "988206cafc6a8d4338b00bcd665260a78f08551f524dd67fc12ed0d7bb794c1a",
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ]
+}

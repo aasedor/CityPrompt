@@ -1,0 +1,40 @@
+{
+  "archetype_id": "ubst-student-courtyard",
+  "variant_id": "ubst-student-courtyard-v0",
+  "source_origin": "original_generated_design",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-student-courtyard\\variant_0.png",
+      "path": "sources/variant_0.png",
+      "bytes": 2977231,
+      "sha256": "85389303bbb993ef809d8cdf76bdc4161c7de696bfd26f3409a10b482f8f4686",
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-student-courtyard\\variant_0_angle_60.png",
+      "path": "sources/variant_0_angle_60.png",
+      "bytes": 3426660,
+      "sha256": "2d845bcef2d4c967365848bec75a04305fe5202e7f561e3a279605fb6d56e120",
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-student-courtyard\\variant_0_angle_90.png",
+      "path": "sources/variant_0_angle_90.png",
+      "bytes": 3503201,
+      "sha256": "4fc8e0a44e817dc6a6d74614caece4a2fcbe1dcf8f105da91c66b1036c188d56",
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ]
+}

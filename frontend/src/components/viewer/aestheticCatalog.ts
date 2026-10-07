@@ -1,4 +1,5 @@
 import validationRoster from '@/data/validationCatalogue.json';
+import flexibleParks from '@/data/flexibleParks.json';
 
 import type { SiteZoneProperties } from '@/types';
 import buildingArchetypeLibrary from '@/data/buildingArchetypes.json';
@@ -832,6 +833,10 @@ export function mapDevelopmentTypeToCategory(_value?: string): string | undefine
 
 // This dedicated local build offers only the exact validation roster, including
 // inspector selectors. Source reference catalogues remain preserved on disk.
+// Read-only compatibility lookup; these records are not student discovery choices.
+export const SAVED_BUILDING_AESTHETIC_OPTIONS = [...BUILDING_AESTHETIC_OPTIONS_V2];
+export const SAVED_ROADWAY_AESTHETIC_OPTIONS = [...ROADWAY_AESTHETIC_OPTIONS_V2];
+export const SAVED_OPENSPACE_AESTHETIC_OPTIONS = [...OPENSPACE_AESTHETIC_OPTIONS_V2];
 for (const [domain, options] of [
   ['building', BUILDING_AESTHETIC_OPTIONS_V2], ['park', OPENSPACE_AESTHETIC_OPTIONS_V2],
   ['street', ROADWAY_AESTHETIC_OPTIONS_V2],
@@ -839,10 +844,15 @@ for (const [domain, options] of [
   const allowed = validationRoster.entries.filter(entry => entry.domain === domain);
   const selected = options.flatMap(option => {
     const entry = allowed.find(row => row.archetype_id === option.id);
-    if (!entry) return [];
-    const asset = validationRoster.assets.find(row => row.id === entry.placement_id && row.model.variantId === entry.variant_id);
+    const flexible = domain === 'park' ? flexibleParks.programmes.filter(row => row.archetypeId === option.id) : [];
+    if (!entry && !flexible.length) return [];
+    const asset = entry ? validationRoster.assets.find(row => row.id === entry.placement_id && row.model.variantId === entry.variant_id) : flexible[0];
     if (!asset) return [];
-    return [{ ...option, variants: [{ id: entry.variant_id, label: asset.label, thumbnailUrl: asset.thumbnail }] }];
+    const variants = [{ id: entry?.variant_id ?? flexible[0].variantId, label: asset.label, thumbnailUrl: asset.thumbnail }];
+    for (const programme of flexible) if (!variants.some(variant => variant.id === programme.variantId)) {
+      variants.push({ id: programme.variantId, label: programme.label, thumbnailUrl: programme.thumbnail });
+    }
+    return [{ ...option, variants }];
   });
   options.splice(0, options.length, ...selected);
 }

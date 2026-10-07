@@ -92,6 +92,7 @@ export interface LegoPlanRequest {
   target_floors: number;
   /** Explicit authored height; incompatible native models must use massing. */
   target_height_m?: number;
+  model_revision?: string;
   footprint_local_m?: number[][];
   archetype_id?: string;
   reuse_keys?: string[];
@@ -244,7 +245,7 @@ export interface Community3DCompileResponse {
  */
 export function legoArchetypeContextFromZone(
   properties: SiteZoneProperties | undefined,
-): Pick<LegoPlanRequest, 'archetype_id' | 'reuse_keys' | 'allow_setback'> {
+): Pick<LegoPlanRequest, 'archetype_id' | 'reuse_keys' | 'allow_setback' | 'model_revision'> {
   if (!properties) return {};
 
   const generationInput = properties.generation_style_input as
@@ -278,6 +279,8 @@ export function legoArchetypeContextFromZone(
 
   return {
     archetype_id: archetypeId,
+    ...(typeof properties.pick_place_model_revision === 'string' && properties.pick_place_model_revision
+      ? { model_revision: properties.pick_place_model_revision } : {}),
     allow_setback: allowSetback,
     reuse_keys: Array.isArray(reuseKeys)
       ? reuseKeys.filter((value): value is string => typeof value === 'string' && value.length > 0)

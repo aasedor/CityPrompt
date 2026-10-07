@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { advanceParkWalk, parkWalkHeight } from '@/features/parks/parkWalking';
-import { buildingWalkEntry, buildingWalkEntrance, buildingWalkGround, constrainBuildingWalk, mountBuildingWalking, readBuildingWalking, type BuildingWalkNetwork } from './buildingWalking';
+import { buildingWalkEntry, buildingWalkEntrance, buildingWalkGround, buildingWalkStartForZone, constrainBuildingWalk, mountBuildingWalking, readBuildingWalking, type BuildingWalkNetwork } from './buildingWalking';
 
 const rect = (x0:number,x1:number,y0:number,y1:number,z:number) => [
   [[x0,y0,z],[x1,y0,z],[x1,y1,z]], [[x0,y0,z],[x1,y1,z],[x0,y1,z]],
@@ -65,6 +65,21 @@ describe('occupied building walking',()=>{
     } finally {cleanup();}
     expect(buildingWalkEntrance([zone],at(0,2,0))).toBeNull();
   });
+  it.each([0,Math.PI/2,Math.PI,Math.PI*1.5])('starts a selected model at its actual entrance and faces inward at yaw %s',yaw=>{
+    const {at,cleanup}=placed(network(),yaw);
+    try {
+      const start=buildingWalkStartForZone([zone],zone.id)!;
+      expect(start.lng).toBeCloseTo(at(0,-7,0).lng,8);
+      expect(start.lat).toBeCloseTo(at(0,-7,0).lat,8);
+      expect(start.heading).toBeGreaterThanOrEqual(0);
+      expect(start.heading).toBeLessThan(360);
+      const inward=at(0,-6,0), radians=start.heading*Math.PI/180;
+      const north=inward.lat-start.lat, east=(inward.lng-start.lng)*Math.cos(start.lat*Math.PI/180);
+      expect(Math.cos(radians)*north+Math.sin(radians)*east).toBeGreaterThan(0);
+      expect(buildingWalkStartForZone([{...zone,updated_at:'moved'}],zone.id)).toBeNull();
+    } finally {cleanup();}
+    expect(buildingWalkStartForZone([zone],zone.id)).toBeNull();
+  });
   it('lets a visitor exit the front portal, blocks entering through the side, and preserves turning',()=>{
     const {at,cleanup}=placed(network());
     try {
@@ -79,5 +94,20 @@ describe('occupied building walking',()=>{
     mesh.userData.cityprompt_walking_json='{';expect(readBuildingWalking(scene)).toBeNull();
     mesh.userData.cityprompt_walking_json=JSON.stringify({...network(),maxStepM:20});expect(readBuildingWalking(scene)).toBeNull();
     mesh.userData.cityprompt_walking_json=JSON.stringify(network());expect(readBuildingWalking(scene)?.version).toBe(2);
+  });
+  it('joins the site at a real paving edge inside an overhang and allows re-entry without bypassing a solid barrier',()=>{
+    const n=network(); n.groundFloorOnly=true; n.triangles=rect(-5,5,-7.6,6,0);
+    const {at,cleanup}=placed(n);
+    try {
+      const inside=at(0,-7.59,0),outside=at(0,-7.65,0);
+      expect(constrainBuildingWalk([zone],inside,outside)).toEqual(outside);
+      const back=constrainBuildingWalk([zone],outside,inside);
+      expect(back.lat).toBeCloseTo(inside.lat,8);
+      expect(buildingWalkGround([zone],outside)).toBeNull();
+      n.barriers=[[-1,-7.55,1,-7.55,0,2.2]];
+      const blocked=constrainBuildingWalk([zone],at(0,-7.25,0),at(0,-7.4,0));
+      expect(blocked.lat).toBeGreaterThan(at(0,-7.4,0).lat+1e-8);
+      expect(buildingWalkGround([zone],at(0,-7.4,0))).not.toBeNull();
+    } finally {cleanup();}
   });
 });

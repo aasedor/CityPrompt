@@ -227,6 +227,35 @@ def test_linked_footprint_not_counted_twice_and_unknown_floors_are_not_guessed()
     assert "floor-area-inputs" in {f["id"] for f in report["findings"]}
 
 
+def test_authored_model_plot_is_not_floor_area_and_plot_growth_does_not_change_gfa():
+    parcel = zone('building', rectangle(width=0.0003), floors=2,
+                  pick_place_asset='validation_minimalist_infill_brick_monolith',
+                  development_selected_variant_id='minimalist_infill_brick_monolith',
+                  pick_place_model_revision='97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7')
+    building = SimpleNamespace(id=uuid.uuid4(), name='Buff brick', footprint=parcel.geometry,
+                              floor_count=2, height_meters=6.4, specifications={})
+    parcel.building_id = building.id
+    first = values(analyze_snapshot(snapshot([parcel], [building])))
+    assert first['building_placement_plot_m2'] > 0
+    assert first['building_footprint_m2'] is None and first['gfa_m2'] is None
+    parcel.geometry = rectangle(width=0.0006)
+    building.footprint = parcel.geometry
+    second = values(analyze_snapshot(snapshot([parcel], [building])))
+    assert second['building_placement_plot_m2'] > first['building_placement_plot_m2']
+    assert second['building_footprint_m2'] is None and second['gfa_m2'] is None
+
+
+def test_mixed_footprint_and_native_plot_total_remains_explicitly_incomplete():
+    drawn = zone('building', rectangle(x=0.002), floors=3)
+    native = zone('building', native_plot_axes=True, pick_place_asset='trial_neighborhood20_campus', floors=3)
+    report = analyze_snapshot(snapshot([drawn, native]))
+    metrics = values(report)
+    assert metrics['gfa_m2'] == pytest.approx(metrics['building_footprint_m2'] * 3, abs=0.02)
+    gfa = next(metric for metric in report['metrics'] if metric['key'] == 'gfa_m2')
+    assert 'incomplete' in gfa['label']
+    assert report['method_version'] == 'student-review-v2-placement-plots'
+
+
 def test_park_union_preserves_holes_and_excludes_reference_layers():
     outer = rectangle()
     hole = rectangle(x=0.0002, y=0.0002, width=0.0002, height=0.0002)

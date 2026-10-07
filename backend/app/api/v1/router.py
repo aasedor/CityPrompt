@@ -3,11 +3,14 @@ API v1 router - aggregates all endpoint routers.
 """
 
 from fastapi import APIRouter, Depends
+from app.api.v1 import comfy_trials
 from app.core.classroom_scope import require_classroom_scope
 
 from app.api.v1 import (
     projects,
     reference_layers,
+    site_assessments,
+    zoning_studies,
     student_reports,
     documents,
     buildings,
@@ -38,9 +41,11 @@ from app.api.v1 import (
     lego_assembly,
     site_landscape,
     video,
+    render_animation,
 )
 
 api_router = APIRouter(dependencies=[Depends(require_classroom_scope)])
+api_router.include_router(comfy_trials.router, prefix="/local-render", tags=["Local model trials"])
 
 api_router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 api_router.include_router(oauth.router, prefix="/auth/oauth", tags=["OAuth2 Social Login"])
@@ -64,6 +69,7 @@ api_router.include_router(lego_assembly.router, prefix="/lego-assembly", tags=["
 api_router.include_router(master_plan_2d.router, prefix="/master-plan-2d", tags=["2D Master Plan"])
 api_router.include_router(render.router, prefix="/render", tags=["AI Render"])
 api_router.include_router(video.router, prefix="/video", tags=["Video Render"])
+api_router.include_router(render_animation.router, prefix="/video", tags=["Saved Render Animation"])
 api_router.include_router(direct_3d_render.router, prefix="/render", tags=["Direct 3D Render"])
 api_router.include_router(render_attempts.router, prefix="/render", tags=["Direct 3D Render"])
 api_router.include_router(feedback.router, prefix="/feedback", tags=["Beta Feedback"])
@@ -74,6 +80,8 @@ api_router.include_router(custom_style.router, prefix="/custom-style", tags=["Cu
 api_router.include_router(urban_dna.router, prefix="/urban-dna", tags=["Urban Intelligence DNA"])
 
 api_router.include_router(reference_layers.router, prefix="/reference-layers", tags=["Reference layers"])
+api_router.include_router(site_assessments.router, prefix="/site-assessments", tags=["Site assessments"])
+api_router.include_router(zoning_studies.router, prefix="/zoning-studies", tags=["Zoning studies"])
 api_router.include_router(student_reports.router)
 
 api_router.include_router(site_landscape.router, prefix="/site-landscape", tags=["Site Landscape"])

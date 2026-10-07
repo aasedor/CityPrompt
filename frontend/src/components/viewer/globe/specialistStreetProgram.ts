@@ -1,19 +1,21 @@
 import * as THREE from 'three';
+import { canalRoute, canalRouteProblem, canalWalkingHeight, type CanalPoint } from './canalRoute';
 import type {StreetRouteStation} from './nativeStreetPilot';
 import { hasElevatedStation, isElevatedRail, RAIL_LIFT_X_M, RAIL_LIFT_Y_M, RAIL_PLATFORM_HEIGHT_M, type RailStation } from './elevatedRailProgram';
 
 export const CANAL_VARIANT='amsterdam_gracht_v1';
 export const BRIDGE_VARIANT='landmark_signature_bridge_v2';
 export const isSpecialistStreet=(variant:unknown)=>variant===CANAL_VARIANT || variant===BRIDGE_VARIANT || isElevatedRail(variant);
-export interface SpecialistFixture {kind:string;x:number;y:number;z:number;yaw:number;scale:number}
+export interface SpecialistFixture {kind:string;x:number;y:number;z:number;yaw:number;scale:number;anchorM?:number}
 
 export function specialistRouteProblem(variant:string,route:StreetRouteStation[]):string|null {
   if(!isSpecialistStreet(variant))return null;
-  const min=isElevatedRail(variant)?48:variant===CANAL_VARIANT?80:260,max=isElevatedRail(variant)?288:variant===CANAL_VARIANT?320:480;
+  if(variant===CANAL_VARIANT)return canalRouteProblem(route);
+  const min=isElevatedRail(variant)?48:260,max=isElevatedRail(variant)?288:480;
   if(route.length<2)return 'Draw two endpoints for this straight specialist street.';
   const a=route[0],b=route[route.length-1],dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy);
   if(!Number.isFinite(length)||length<min-.01||length>max+.01)
-    return isElevatedRail(variant)?'Keep the elevated rail route 48–288 m long.':variant===CANAL_VARIANT?'Keep the canal 80–320 m long so its basin and original crossing fit.':'Keep the bridge route 260–480 m long for its rigid span and two gradual approaches.';
+    return isElevatedRail(variant)?'Keep the elevated rail route 48–288 m long.':'Keep the bridge route 260–480 m long for its rigid span and two gradual approaches.';
   let previous=-1;
   for(const p of route){
     const x=p.x-a.x,y=p.y-a.y,station=(x*dx+y*dy)/length;
@@ -24,20 +26,27 @@ export function specialistRouteProblem(variant:string,route:StreetRouteStation[]
   return null;
 }
 
-export function specialistFixtures(variant:string,length:number):SpecialistFixture[] {
+export function specialistFixtures(variant:string,length:number,route:CanalPoint[]=[{x:0,y:0},{x:0,y:length}]):SpecialistFixture[] {
   if(isElevatedRail(variant))throw new Error('Elevated rail fixtures require their locked source placements.');
   const fixtures:SpecialistFixture[]=[];
   const add=(kind:string,x:number,y:number,z=0,yaw=0)=>fixtures.push({kind,x,y,z,yaw,scale:1});
   if(variant===BRIDGE_VARIANT){add('bridge_structure',0,length/2);return fixtures;}
-  // Three independent source programs reconstruct the native 80 m study once.
-  // Only the open-channel end extends. The basin and arch never repeat.
-  for(const kind of ['canal_ground','canal_crossing','canal_furnishings'])add(kind,0,40);
-  for(let y=86;y+5<=length;y+=16)for(const sign of [-1,1]){
-    add('canal_tree',sign*10.55,y,.065,sign<0?Math.PI:0);
-    add('canal_bench',sign*10.25,y+4,0,sign<0?Math.PI:0);
-    add('canal_lamp',sign*11.6,y-3);
+  const layout=canalRoute(route);
+  if(layout.original)for(const kind of ['canal_ground','canal_crossing','canal_furnishings'])add(kind,0,40);
+  else if(layout.crossing!==null)fixtures.push({kind:'canal_crossing',x:0,y:layout.crossing-20,z:0,yaw:0,scale:1,anchorM:layout.crossing});
+  const start=layout.original?80:2;
+  for(let y=start+6;y+5<=length;y+=16){
+    if(!layout.original&&layout.crossing!==null&&Math.abs(y-layout.crossing)<18)continue;
+    for(const sign of [-1,1]){
+      add('canal_tree',sign*10.55,y,.065,sign<0?Math.PI:0);
+      add('canal_bench',sign*10.25,y+4,0,sign<0?Math.PI:0);
+      add('canal_lamp',sign*11.6,y-3);
+    }
   }
-  for(let y=80;y+.1<=length;y+=8)for(const sign of [-1,1])add('canal_bollard',sign*9.45,y);
+  for(let y=start;y+.1<=length;y+=8){
+    if(!layout.original&&layout.crossing!==null&&Math.abs(y-layout.crossing)<13)continue;
+    for(const sign of [-1,1])add('canal_bollard',sign*9.45,y);
+  }
   return fixtures;
 }
 
@@ -67,39 +76,37 @@ export function specialistWalkingHeight(variant:string,x:number,station:number,l
     const grade=Math.min(1,station/approach,(length-station)/approach);
     return (Math.abs(x)>9.25?4.482:4.3)*Math.max(0,grade);
   }
-  if(variant!==CANAL_VARIANT||Math.abs(x)>18)return null;
-  const y=station-40,ax=Math.abs(x),halfdepth=3.2+Math.max(0,ax-9)*.3;
-  const deck=.12+1.6*Math.max(0,1-(x/16)**2);
-  if(ax<=16 && Math.abs(y-20)<=halfdepth)return deck;
-  if(ax>=9){
-    if(ax<16 && y>=8&&y<=32)return .123+1.6*Math.max(0,1-(x/16)**2)*Math.max(0,Math.min(1,(y-8)/(12-halfdepth),(32-y)/(12-halfdepth)));
-    return .12;
-  }
-  if(y<=-32 || (ax>5 && y< -28-Math.sqrt(Math.max(0,16-(ax-5)**2))))return .12;
-  // Open water is never a fictitious ground-level walking plane.
-  return -2.05;
+  if(variant!==CANAL_VARIANT)return null;
+  const layout=canalRoute([{x:0,y:0},{x:0,y:length}]);
+  return canalWalkingHeight(x,station,length,layout.crossing,layout.original);
 }
 
 export function buildSpecialistStreetProgram(variant:string,route:StreetRouteStation[]) {
   const problem=specialistRouteProblem(variant,route);if(problem)throw new Error(problem);
-  const a=route[0],b=route[route.length-1],length=Math.hypot(b.x-a.x,b.y-a.y),dx=(b.x-a.x)/length,dy=(b.y-a.y)/length;
+  const layout=canalRoute(route),length=layout.length;
   const groups=new Map<string,{positions:number[];indices:number[]}>();
   const face=(material:string,points:number[][])=>{
     const group=groups.get(material)??{positions:[],indices:[]},n=group.positions.length/3;
-    for(const [x,y,z] of points)group.positions.push(a.x+dx*y+dy*x,a.y+dy*y-dx*x,z);
+    for(const [x,y,z] of points)group.positions.push(...layout.point(x,y,z));
     group.indices.push(n,n+1,n+2,n,n+2,n+3);groups.set(material,group);
   };
-  const box=(material:string,x0:number,x1:number,y0:number,y1:number,top:number,bottom=top)=>{
+  const slab=(material:string,x0:number,x1:number,y0:number,y1:number,top:number,bottom=top)=>{
     const p=[[x0,y0,top],[x1,y0,top],[x1,y1,top],[x0,y1,top]];face(material,p);
     if(top>bottom)for(let i=0;i<4;i++){const u=p[i],v=p[(i+1)%4];face(material,[u,[u[0],u[1],bottom],[v[0],v[1],bottom],v]);}
   };
-  if(variant===CANAL_VARIANT && length>80){
-    box('water',-9,9,80,length,-2.05);
-    const wells=[];for(let y=86;y+5<=length;y+=16)wells.push(y);
+  const box=(material:string,x0:number,x1:number,y0:number,y1:number,top:number,bottom=top)=>{
+    const cuts=[y0,...layout.segments.map(s=>s.start).filter(y=>y>y0+1e-7&&y<y1-1e-7),y1];
+    for(let i=1;i<cuts.length;i++)slab(material,x0,x1,cuts[i-1],cuts[i],top,bottom);
+  };
+  if(variant===CANAL_VARIANT && (!layout.original || length>80)){
+    const start=layout.original?80:2;
+    if(!layout.original)box('paving',-18,18,0,start,.12,-2.8);
+    box('water',-9,9,start,length,-2.05);
+    const wells=[];for(let y=start+6;y+5<=length;y+=16){if(layout.original||layout.crossing===null||Math.abs(y-layout.crossing)>=18)wells.push(y);}
     for(const sign of [-1,1]){
       const rect=(mat:string,l:number,r:number,lo:number,hi:number,z:number,bottom=z)=>box(mat,sign<0?-r:l,sign<0?-l:r,lo,hi,z,bottom);
-      rect('mortar',9,18,80,length,0,-2.8);
-      const ys=[80,...wells.flatMap(y=>[y-1,y+1]),length];
+      rect('mortar',9,18,start,length,0,-2.8);
+      const ys=[start,...wells.flatMap(y=>[y-1,y+1]),length];
       for(let j=0;j<ys.length-1;j++){
         const lo=ys[j],hi=ys[j+1],well=wells.some(y=>Math.abs((lo+hi)/2-y)<1);
         const strips=well?[[9,9.55],[11.55,11.7],[11.7,16.1],[16.1,18]]:[[9,11.7],[11.7,16.1],[16.1,18]];
@@ -122,10 +129,10 @@ export function buildSpecialistStreetProgram(variant:string,route:StreetRouteSta
         for(const x of [9.54,11.56])rect('coping',x-.0275,x+.0275,y-1.04,y+1.04,.16,.04);
         for(const yy of [y-1.01,y+1.01])rect('coping',9.51,11.59,yy-.0275,yy+.0275,.16,.04);
       }
-      rect('coping',8.96,9.26,80,length,.2,0);
-      for(const x of [11.7,16.1])rect('coping',x-.07,x+.07,80,length,.145);
-      for(let row=0;row<19;row++)for(let j=Math.floor((80-12)/.3);12+j*.3<length;j++){
-        const ya=Math.max(80,12+j*.3+(row%2)*.15),yb=Math.min(length,12+j*.3+(row%2)*.15+.286);
+      rect('coping',8.96,9.26,start,length,.2,0);
+      for(const x of [11.7,16.1])rect('coping',x-.07,x+.07,start,length,.145);
+      for(let row=0;row<19;row++)for(let j=Math.floor((start-12)/.3);12+j*.3<length;j++){
+        const ya=Math.max(start,12+j*.3+(row%2)*.15),yb=Math.min(length,12+j*.3+(row%2)*.15+.286);
         if(yb>ya)face('brick',[[sign*8.985,ya,-2.24+row*.12],[sign*8.985,yb,-2.24+row*.12],[sign*8.985,yb,-2.132+row*.12],[sign*8.985,ya,-2.132+row*.12]]);
       }
     }

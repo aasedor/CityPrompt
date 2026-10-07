@@ -1,0 +1,105 @@
+{
+  "scope": "Finite October2026 model batch. This list is discovery scope only; reviewed runtime registration owns availability.",
+  "entries": [
+    {
+      "archetype_id": "corrugated_vernacular_industrial",
+      "variant_id": "industrial_gabled_metal_shed"
+    },
+    {
+      "archetype_id": "commercial_strip_mall",
+      "variant_id": "strip_single_storey_classic"
+    },
+    {
+      "archetype_id": "corporate_office_campus_headquarters",
+      "variant_id": "neoclassical_brick_headquarters"
+    },
+    {
+      "archetype_id": "rndsqr_missing_middle_townhomes",
+      "variant_id": "rndsqr_townhome_brick_contextual"
+    },
+    {
+      "archetype_id": "ecole_republicaine",
+      "variant_id": "ecole-republicaine-provincial-brick"
+    },
+    {
+      "archetype_id": "industrial_park_modernism",
+      "variant_id": "industrial_tilt_up_concrete"
+    },
+    {
+      "archetype_id": "daylight_factory",
+      "variant_id": "factory_sawtooth_roof"
+    },
+    {
+      "archetype_id": "modern_bigbox_warehouse",
+      "variant_id": "warehouse_tilt_wall_mega"
+    },
+    {
+      "archetype_id": "administrative_faculty_office_building",
+      "variant_id": "admin_faculty_brick_bronze_fins"
+    },
+    {
+      "archetype_id": "rndsqr_missing_middle_townhomes",
+      "variant_id": "rndsqr_townhome_scandinavian_peaks"
+    },
+    {
+      "archetype_id": "prairie_manufactured_home",
+      "variant_id": "prairie_cedar_chassis_home"
+    },
+    {
+      "archetype_id": "municipal_works_depot",
+      "variant_id": "copperline_four_bay_depot"
+    },
+    {
+      "archetype_id": "enclosed_materials_recovery",
+      "variant_id": "folded_roof_recovery_hall"
+    },
+    {
+      "archetype_id": "contractor_storage_yard",
+      "variant_id": "corten_timber_equipment_yard"
+    },
+    {
+      "archetype_id": "courtyard_childcare_centre",
+      "variant_id": "meadow_three_gable_childcare"
+    },
+    {
+      "archetype_id": "maple_porch_manufactured_home",
+      "variant_id": "maple_porch_sage"
+    },
+    {
+      "archetype_id": "horizon_manufactured_home",
+      "variant_id": "horizon_double_section"
+    },
+    {
+      "archetype_id": "narrow_lot_craftsman_cottage",
+      "variant_id": "brick_timber_craftsman"
+    },
+    {
+      "archetype_id": "garden_mews_courtyard_housing",
+      "variant_id": "garden_mews_six_homes"
+    },
+    {
+      "archetype_id": "courtyard_lowrise_office",
+      "variant_id": "brick_timber_two_storey_office"
+    },
+    {
+      "archetype_id": "affordable_porchlight",
+      "variant_id": "affordable_porchlight_original"
+    },
+    {
+      "archetype_id": "affordable_juniper",
+      "variant_id": "affordable_juniper_original"
+    },
+    {
+      "archetype_id": "affordable_stackyard",
+      "variant_id": "affordable_stackyard_original"
+    },
+    {
+      "archetype_id": "affordable_aspen",
+      "variant_id": "affordable_aspen_original"
+    },
+    {
+      "archetype_id": "affordable_switchback",
+      "variant_id": "affordable_switchback_original"
+    }
+  ]
+}

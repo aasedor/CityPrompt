@@ -22,21 +22,22 @@ def repository_bytes(relative: str) -> bytes:
 
 def stage(archive: Path, public_dir: Path | None = None) -> dict:
     registry = json.loads(REGISTRY.read_text(encoding='utf-8'))
-    for park in registry['layouts']:
+    layouts = [*registry['layouts'], *registry.get('archivedLayouts', [])]
+    for park in layouts:
         geometry = {key:value for key,value in park.items() if key not in ('status','visualStatus','runtimeStatus','contentRevision')}
         digest = hashlib.sha256(json.dumps(geometry, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
         if digest != park['contentRevision']:
             raise ValueError(f"Park content changed without a new revision: {park['id']}")
     files = {asset['sha256']: (asset, park.get('sourceStorage') == 'repository', True)
-             for park in registry['layouts'] for asset in park['assets'].values()}
-    for park in registry['layouts']:
+             for park in layouts for asset in park['assets'].values()}
+    for park in layouts:
         if park.get('thumbnail'):
             asset = park['thumbnail']
             files[asset['sha256']] = (asset, park.get('sourceStorage') == 'repository', False)
     verified = []
     with ZipFile(archive) as source:
         # Validate the whole batch before writing any files.
-        for park in registry['layouts']:
+        for park in layouts:
             recipe = (repository_bytes(park['sourceRecipePath']) if park.get('sourceStorage') == 'repository'
                       else source.read(f"evidence/validation_{park['variantId']}/recipe.json"))
             if hashlib.sha256(recipe).hexdigest() != park['sourceRecipeSha256']:

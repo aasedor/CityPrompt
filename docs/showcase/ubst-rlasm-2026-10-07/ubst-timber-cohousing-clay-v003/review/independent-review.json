@@ -1,0 +1,320 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "independent RLASM verifier /root/ubst_pilot_review",
+  "review_date": "2026-10-07",
+  "candidate": "ubst-timber-cohousing-clay-v003",
+  "method": "RLASM v6.1",
+  "review_type": "fresh holistic architectural-clay review",
+  "scope": "Exact delivered GLB reimport renders at native dimensions; source identity, proportions, topology, all elevations, openings, construction contacts, optics, program, circulation, landscape and evidence cameras. All 21 full-resolution renders, four boards and three locked source copies directly inspected. Clay profile only.",
+  "decision": "architectural_clay_visual_pass",
+  "architectural_clay_approved": true,
+  "keeper_approved": false,
+  "runtime_approved": false,
+  "model": {
+    "path": "ubst-timber-cohousing-clay-v003.glb",
+    "sha256": "3ba2e0b773799dc7340bfdeb8ff471c3b54293566e86f75a25c0ecedd36efd67"
+  },
+  "unresolved_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1
+  },
+  "unresolved_blockers": [],
+  "findings": [
+    {
+      "id": "TIM-003-01",
+      "priority": "P2",
+      "category": "clay presentation polish",
+      "finding": "Vegetation and interior furnishings remain schematic clay representations; small roof/coping seams and generous comparison-board margins could be refined for a later presentation. They do not obscure building identity, openings or construction evidence at this stage.",
+      "evidence": [
+        "renders/aerial.png",
+        "renders/shared_garden.png",
+        "renders/interior.png",
+        "boards/phone-source-comparison.png"
+      ]
+    }
+  ],
+  "previous_findings": [
+    {
+      "id": "TIM-002-01",
+      "status": "closed",
+      "finding": "Cladding/frame intersections",
+      "closure": "Full-resolution facade and glass close views now show continuous black sill/head envelopes without the prior tan comb protrusions. Elevated roof contact perspective exposes narrow recessed timber reveals without the prior intersection pattern.",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/glass_close.png",
+        "renders/roof_contact.png"
+      ]
+    },
+    {
+      "id": "TIM-002-02",
+      "status": "closed",
+      "finding": "Source comparison cameras",
+      "closure": "Low oblique now follows the source roofline and facade visibility; aerial includes the roof with a source-compatible oblique angle. Paired phone views support inspection of the same counts, proportions and construction planes.",
+      "evidence": [
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "boards/phone-source-comparison.png"
+      ]
+    },
+    {
+      "id": "TIM-002-03",
+      "status": "closed",
+      "finding": "Candidate version identity",
+      "closure": "Manifest, model filename and boards consistently identify clay-v003; preserved v002 evidence was not overwritten.",
+      "evidence": [
+        "prework-manifest.json",
+        "boards/phone-source-comparison.png"
+      ]
+    },
+    {
+      "id": "TIM-002-04",
+      "status": "closed",
+      "finding": "Suspected stair obstruction in earlier low camera",
+      "closure": "Fresh descending stairs view shows continuous treads and the landing. Exact-model offline audit reports all 116 prescribed route samples with support and 1.85m vertical clearance; its model hash matches the delivered GLB. This closes the earlier visual suspicion within offline scope, without claiming continuous body collision or runtime testing.",
+      "evidence": [
+        "renders/stairs.png",
+        "renders/upper_landing.png",
+        "evidence/offline-route-probes.json"
+      ]
+    }
+  ],
+  "holistic_checks": {
+    "identity_and_ratios": "Four two-storey six-metre homes preserve the 24m frontage, approximately 7.9m source-led building height above the 0.15m plinth, continuous flat roof and front canopy.",
+    "openings": "Eight upper front windows, four three-light living windows, four separate solid doors and five physical canopy posts agree with the sources. Right side has two upper windows, one small lower window and rearward service door.",
+    "envelope_and_contacts": "All elevations, roof perimeter, canopy/post connections, corner trims, vent curbs, plinth and ground contacts read as closed, seated construction. No remaining visible contact or coplanar finish blocker.",
+    "materials_and_optics": "Consistent architectural clay material zoning retains timber cladding, dark window/door frames, recessed glazing and opaque door identity. No requirement or claim of final textured fidelity.",
+    "program_and_circulation": "Open entry, living/kitchen, stairs, guarded upper landing, bedroom, bathroom and rear access have legible spatial connections. Descending stair evidence and exact-model route probes substantiate the prescribed routes offline.",
+    "landscape_and_visibility": "Veranda and shared garden are grounded and legible. Inferred rear/left elevations and landscape are coherent; planting remains schematic. Mandatory detail cameras show their intended subjects.",
+    "regressions": "Fresh full-set review found no new P0 or P1 architectural-clay defect after the finite fixes. Previous failed candidate decisions remain preserved."
+  },
+  "delivery_evidence": {
+    "status": "PASS_DELIVERY_CHECKS",
+    "path": "evidence/delivery-verification.json",
+    "model_hash_matches": true
+  },
+  "route_evidence": {
+    "status": "PASS_OFFLINE_ROUTE_PROBES",
+    "path": "evidence/offline-route-probes.json",
+    "samples": 116,
+    "failures": 0,
+    "model_hash_matches": true,
+    "scope": "Prescribed family route centrelines, floor support and 1.85m vertical clearance only."
+  },
+  "limitations": [
+    "Runtime placement, walking, collision, persistence and activation are NOT_TESTED.",
+    "Offline ray probes are not continuous body collision or building-code approval.",
+    "This is architectural clay approval at the delivered native size, not textured keeper, runtime catalogue or arbitrary-scale approval."
+  ],
+  "inspected_files": [
+    {
+      "sha256": "6dce66800da04d93e5b72253d08eb8a440de5c7cacdd7158e723f120eaa878b8",
+      "direct_visual_inspection": true,
+      "bytes": 2741172,
+      "path": "boards/all-views-contact.png"
+    },
+    {
+      "sha256": "6c0bdc642acc568fd9495a6c4ccbfd1f59e2b8d66d9b2ae9d43ea91ea0a62f86",
+      "direct_visual_inspection": true,
+      "bytes": 1112455,
+      "path": "boards/locked-source-board.png"
+    },
+    {
+      "sha256": "c9e24260f61c7ffcdef8a665cbab5667457cf30eb9fb74a3a2cb9ea4696c95a7",
+      "direct_visual_inspection": true,
+      "bytes": 1132583,
+      "path": "boards/phone-construction.png"
+    },
+    {
+      "sha256": "42d9e7362eed77f56c6941bd1c73d2815c4801755a425eda362168a166dcf2ee",
+      "direct_visual_inspection": true,
+      "bytes": 1288615,
+      "path": "boards/phone-source-comparison.png"
+    },
+    {
+      "sha256": "9cedb6278f9de91f5a12c1cc686c56ba77beda35f167a2006af2a40dc45c846b",
+      "direct_visual_inspection": true,
+      "bytes": 1451581,
+      "path": "renders/aerial.png"
+    },
+    {
+      "sha256": "363f2408da988581fdb90ecf001a268b9945d6f5170c528c18ed0dc61ab62c64",
+      "direct_visual_inspection": true,
+      "bytes": 1523322,
+      "path": "renders/architecture_close.png"
+    },
+    {
+      "sha256": "dba3db5bdd6685982faa699ea6baede56afd0f03776b657baaf31037050f366d",
+      "direct_visual_inspection": true,
+      "bytes": 1365473,
+      "path": "renders/bathroom.png"
+    },
+    {
+      "sha256": "c40727772a03a3d2f4d33beb92718a01beeed044c656db23c4d8a3cbab60db1e",
+      "direct_visual_inspection": true,
+      "bytes": 1309172,
+      "path": "renders/bedroom.png"
+    },
+    {
+      "sha256": "477c30988ae1ae9698e8238bcaebca494ba154a967220befa06a10e0219fbc74",
+      "direct_visual_inspection": true,
+      "bytes": 1511072,
+      "path": "renders/facade_close.png"
+    },
+    {
+      "sha256": "3e3377e9c6a703a22fcc045e36ed1f1d1e72b1f9ee3da0b6694c94fdb98847ce",
+      "direct_visual_inspection": true,
+      "bytes": 1376144,
+      "path": "renders/front_corner.png"
+    },
+    {
+      "sha256": "b4b1c5e71793663bc9b45f8208c8bae486e948bbb9fd7c22d5a054e92e5d3e1a",
+      "direct_visual_inspection": true,
+      "bytes": 1365876,
+      "path": "renders/front.png"
+    },
+    {
+      "sha256": "679259754ed465ffc4967c19c0cc2e19490a5e12c7b8e583ee4774b244d9761f",
+      "direct_visual_inspection": true,
+      "bytes": 1407459,
+      "path": "renders/glass_close.png"
+    },
+    {
+      "sha256": "0d4cb952c85a3038e5fedb07107daedcd868110a156470016389f206f0687e0b",
+      "direct_visual_inspection": true,
+      "bytes": 1428177,
+      "path": "renders/interior.png"
+    },
+    {
+      "sha256": "5981fb72e742d0612372a2c3944d6cd8b85a149074dc3e8b6c0163b453d8c131",
+      "direct_visual_inspection": true,
+      "bytes": 1328561,
+      "path": "renders/left_side.png"
+    },
+    {
+      "sha256": "596fc2b41ac3cb27557bf7806c9413667621cc69810a659d59e8c63f87b04892",
+      "direct_visual_inspection": true,
+      "bytes": 1424559,
+      "path": "renders/rear_entry.png"
+    },
+    {
+      "sha256": "5e3974b948f64e9cdc2e79123fe74f467f291794a8bebc9fe39f52aab22e5286",
+      "direct_visual_inspection": true,
+      "bytes": 1467455,
+      "path": "renders/rear_side.png"
+    },
+    {
+      "sha256": "e0ce0e33350c1c8bd2f48338fde1bca43667ea1c4d67485eb10d54b6667fffae",
+      "direct_visual_inspection": true,
+      "bytes": 1366021,
+      "path": "renders/rear.png"
+    },
+    {
+      "sha256": "dfc707eb2b69b2d9ea20ce8c117c3c90680ac5a54caf54975814d690844865ff",
+      "direct_visual_inspection": true,
+      "bytes": 1320074,
+      "path": "renders/right_side.png"
+    },
+    {
+      "sha256": "6e79b34723876069d9cbe20bb7f221c354d53238e3475100945d9789a7df925f",
+      "direct_visual_inspection": true,
+      "bytes": 1672027,
+      "path": "renders/roof_contact.png"
+    },
+    {
+      "sha256": "18f0f6943e6c353fe50b3fc226f2941e2b877f790a47d9783557917498a2847d",
+      "direct_visual_inspection": true,
+      "bytes": 1495597,
+      "path": "renders/shared_garden.png"
+    },
+    {
+      "sha256": "b01ef2b3a4906cf044426174d1391ce7e483940891f1aa493947bc824cf147af",
+      "direct_visual_inspection": true,
+      "bytes": 1469291,
+      "path": "renders/side_projection.png"
+    },
+    {
+      "sha256": "b427a77e954bf66fea44988ee8c287388e6e1475cfb3db0cf19dd1f6d60a6d60",
+      "direct_visual_inspection": true,
+      "bytes": 1727568,
+      "path": "renders/stairs.png"
+    },
+    {
+      "sha256": "473e7cd9a0be70e3b1bb478996689c702f54ddac0da522d64e553ddd909a5901",
+      "direct_visual_inspection": true,
+      "bytes": 1305603,
+      "path": "renders/top.png"
+    },
+    {
+      "sha256": "c83ef4f51c13e5c8c1167fb80a8b68968d1164d3bf320886625872b2c80439d6",
+      "direct_visual_inspection": true,
+      "bytes": 1491955,
+      "path": "renders/upper_landing.png"
+    },
+    {
+      "sha256": "04fe07ca0685a4f0097d5d7d0c0ba3ab7428c0d1976ee4921252223e3a1ffedd",
+      "direct_visual_inspection": true,
+      "bytes": 1490568,
+      "path": "renders/veranda.png"
+    },
+    {
+      "sha256": "e6ea62e41b8f48ced338ee99f7a9fcf9e80eab421815604266821ce67d64da6e",
+      "direct_visual_inspection": true,
+      "bytes": 2862825,
+      "path": "sources/variant_0_angle_60.png"
+    },
+    {
+      "sha256": "988206cafc6a8d4338b00bcd665260a78f08551f524dd67fc12ed0d7bb794c1a",
+      "direct_visual_inspection": true,
+      "bytes": 3470346,
+      "path": "sources/variant_0_angle_90.png"
+    },
+    {
+      "sha256": "fc4d971440925f585255ecead5dbc0e246f9dc1334013a7f6cb66efd6ac14d6c",
+      "direct_visual_inspection": true,
+      "bytes": 2739322,
+      "path": "sources/variant_0.png"
+    }
+  ],
+  "metadata_files": [
+    {
+      "path": "prework-manifest.json",
+      "sha256": "27fa3c3c93aadcc9ef01bb7a8107dd93550331114d861046d2bd0d6fbe51fa2a"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "fee70c7c16b6eafb984a2d9f29703afa3c6d04f4bbe1b735c79014fdc4c26b8c"
+    },
+    {
+      "path": "evidence/runtime-status.json",
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56"
+    },
+    {
+      "path": "evidence/offline-route-probes.json",
+      "sha256": "86f6b25658a524cb54aa9c1173ffa7be13092ba62f9657da0e47681c41a8c8e4"
+    }
+  ],
+  "source_hash_checks": [
+    {
+      "copy": "sources/variant_0.png",
+      "identical": true,
+      "original_sha256": "fc4d971440925f585255ecead5dbc0e246f9dc1334013a7f6cb66efd6ac14d6c",
+      "copy_sha256": "fc4d971440925f585255ecead5dbc0e246f9dc1334013a7f6cb66efd6ac14d6c",
+      "original": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-c91ddce6-dfef-43e3-b413-edd3d74653d2.png"
+    },
+    {
+      "copy": "sources/variant_0_angle_60.png",
+      "identical": true,
+      "original_sha256": "e6ea62e41b8f48ced338ee99f7a9fcf9e80eab421815604266821ce67d64da6e",
+      "copy_sha256": "e6ea62e41b8f48ced338ee99f7a9fcf9e80eab421815604266821ce67d64da6e",
+      "original": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-e4644583-ad97-47dc-8f41-0158090c29b5.png"
+    },
+    {
+      "copy": "sources/variant_0_angle_90.png",
+      "identical": true,
+      "original_sha256": "988206cafc6a8d4338b00bcd665260a78f08551f524dd67fc12ed0d7bb794c1a",
+      "copy_sha256": "988206cafc6a8d4338b00bcd665260a78f08551f524dd67fc12ed0d7bb794c1a",
+      "original": "C:/Users/andre/.codex/generated_images/01a1136c-a630-7cd1-91d1-6bfa6efefb27/exec-1b628f66-dd18-40b0-ba36-2e6939efa8bf.png"
+    }
+  ]
+}

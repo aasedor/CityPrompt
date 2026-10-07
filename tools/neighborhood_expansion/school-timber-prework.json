@@ -1,0 +1,916 @@
+{
+  "variant_id": "school_timber_learning_courtyard",
+  "archetype_id": "neighborhood_elementary_school",
+  "method": "RLASM v6.1",
+  "state": "diagnostic_v002_navigation_camera_corrections_pending",
+  "sources": [
+    {
+      "role": "front",
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-school/variant_2.png",
+      "bytes": 2813460,
+      "sha256": "8761c896efdae84efd76b365f133909053ddcc592120cab0e6ba5345030c2de1",
+      "source_attempt": "source-attempts/school_timber_learning_courtyard/front-001.png",
+      "authority": "Primary street identity: two occupied floors, cedar upper storey over a full brick ground storey, two street-facing end gables framing the broad transverse connector, three prominent wide upper connector window groups with narrower/partly tree-obscured end transitions, corresponding lower groups and central glazed entrance with timber porch. Left roofed bicycle shelter, low planting, seating and clear public approach. Use actual visible grouping/occlusion boundaries; do not turn every partly hidden pane into a new equal-width bay."
+    },
+    {
+      "role": "oblique",
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-school/variant_2_oblique.png",
+      "bytes": 3332090,
+      "sha256": "f9a1c8ff9f26ed53e4a1e53878e793f85bfd3c91b46c32e738db41a325bbb231",
+      "source_attempt": "source-attempts/school_timber_learning_courtyard/oblique-001.png",
+      "authority": "Rear-courtyard relationship authority: two parallel two-storey wings extending behind the front connector; both rear wing tips are gabled, the rear mouth remains open to play lawn. Courtyard-facing classroom glazing on both levels, roofed low timber walks along both wing interiors and connector rear, outdoor tables/benches/planting. It is a rear elevated view of different elevations, not an alternative front facade. Visible classroom occupation informs programme category only."
+    },
+    {
+      "role": "topology",
+      "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/reference-repo/frontend/public/archetypes/buildings/neighborhood-school/variant_2_roof-study.png",
+      "bytes": 3621958,
+      "sha256": "16a4faab41229b0058895645b7840bd120b21b3b12e4482aae6c3b2a9b14211f",
+      "source_attempt": "source-attempts/school_timber_learning_courtyard/top-001.png",
+      "authority": "Corroborates only a U footprint with two longitudinal parallel wing ridges and one perpendicular transverse front-connector ridge, seated corner roof junctions, open uncovered rear court and no rear closing bar. Elevated oblique projection, not the requested <=10-degree near-nadir. Excluded from facade counts, entrance/canopy shape, metric lengths, slope, relative ridge/eave heights and precise valley coordinates."
+    }
+  ],
+  "roof_graph": {
+    "body": "Two occupied storeys in a U: front connector and two parallel side wings; rear courtyard mouth stays open to play lawn.",
+    "main_ridges": "Two parallel longitudinal wing ridges and one transverse front connector ridge. Connector terminates into wing roof fields; do not assume equal heights.",
+    "junctions": "Solve actual intersecting/clipped roof planes, valleys and complete lining/carrier closure. Projected source crossings are not metric intersection coordinates.",
+    "secondary_roofs": "Low covered timber walks along courtyard edges and modest front porch/bicycle shelter. These are secondary roofs, not fourth main volumes.",
+    "excluded": "No rear closing bar, roof over court, tall gym, tower, dormers or extra storeys."
+  },
+  "facade_material_observation": "Images coherently show full brick ground storey with vertical cedar above; this governs construction rather than the original low-brick-base wording.",
+  "source_limits": [
+    "Front governs three prominent connector upper window groups plus narrow or obscured transitions; tree occlusion does not create an additional repeated bay.",
+    "Top changes connector front groups to four and alters canopy/site details; exclude those features.",
+    "Top is elevated oblique, not near-nadir; use topology only, no metric width/depth/height/slope/proportions.",
+    "Hidden outer wing elevations and complete programme, room partitions, stairs, fixtures, support contacts and landscape extents require explicit inference."
+  ],
+  "remaining_inferences": [
+    "52 by40m envelope, wing/connector widths and site allocation.",
+    "Eave/ridge levels, actual roof intersections/lining/fascias and canopy support contacts.",
+    "Occupied room count and programme, connected stairs and floor voids, furnishings and every route.",
+    "Source-conditioned cedar/brick physical scale and bounded mapping; glulam/glass/fixtures remain unapproved until relevant review."
+  ],
+  "independent_source_review": {
+    "path": "C:/dev-artifacts/CityPrompt/neighborhood-expansion-20-2026-10-03/prework/school-timber-source-review.json",
+    "sha256": "cf55ea3acbfbd3a45c7c7ae837dd905fb5b46aede32b2ac6d9c6144dbbed9336",
+    "scope": "Source compatibility and authority assignment only. Direct full-resolution inspection of three source images, exact generation prompts/input hashes and progress brief. No constructor, model, material specimen, physical contact, walking, keeper or catalogue approval."
+  },
+  "generation_provenance": "school-timber-locked-generation.json",
+  "generation_provenance_sha256": "a0ef95ab703fedeed7aada02ea8fc79c93768642038bddd20ae6fdb92cbd2e1c",
+  "created_utc": "2026-10-04T00:07:04.617267+00:00",
+  "keeper_approved": false,
+  "catalogue_activated": false,
+  "next_step": "Independent finite correction/replay preflight, second22-view unskinned diagnostic with new embedded network and fresh physical proof, then full skinned71 views only after diagnostic pass.",
+  "measurement_contract": {
+    "units": "Inferred metres; no survey, engineering, code or accessibility certification",
+    "body_rectangles_xy": {
+      "left": [
+        -26,
+        -12,
+        -20,
+        20
+      ],
+      "right": [
+        12,
+        26,
+        -20,
+        20
+      ],
+      "connector": [
+        -12,
+        12,
+        -20,
+        -8
+      ]
+    },
+    "site_m": [
+      68,
+      64
+    ],
+    "floors": 2,
+    "floor_z_m": [
+      0.14,
+      3.94
+    ],
+    "rise_m": 3.8,
+    "slab_thickness_m": 0.14,
+    "ground_wall": [
+      0,
+      3.94
+    ],
+    "upper_wall": [
+      3.94,
+      7.925
+    ],
+    "ceilings_top_m": [
+      3.79,
+      7.64
+    ],
+    "corridor_clear_bounds": {
+      "left": [
+        -15.25,
+        -12.3,
+        -19.7,
+        19.7
+      ],
+      "right": [
+        12.3,
+        15.25,
+        -19.7,
+        19.7
+      ]
+    },
+    "classroom_crosswalls_y": [
+      -6.6666666667,
+      6.6666666667
+    ],
+    "crosswall_thickness_m": 0.14,
+    "connector_front_crosspassage": [
+      -13.7,
+      13.7,
+      -16,
+      -14.325
+    ],
+    "connector_rear_crosspassage": [
+      -13.7,
+      13.7,
+      -10.395,
+      -8.3
+    ],
+    "central_commons": [
+      -4,
+      4,
+      -19.7,
+      -8.3
+    ],
+    "occupied_union_per_floor_gross_m2": 1408,
+    "unbuilt_court_gross_m2": 672,
+    "wing_connector_shared_interfaces": {
+      "x": [
+        -12,
+        12
+      ],
+      "open_y": [
+        -19.7,
+        -8.3
+      ],
+      "z_floor": [
+        0.14,
+        3.94
+      ],
+      "rule": "No perimeter wall, skin, curb, rail or native obstacle on either internal x12 interface. Wing/connector slabs and ceiling carrier pieces join at x12. Native surfaces extend to the shared seam, not12.3. Exterior inner-wing walls begin at y-8 only. Source front/end exterior walls keep their own .30m returns."
+    },
+    "ceiling_undersides_m": [
+      3.69,
+      7.54
+    ],
+    "upper_clear_headroom_m": 3.6
+  },
+  "roof_contract": {
+    "plane_top": "Wing:9.9-(1.8/7)*abs(x-sign*19). Connector:9.6-.25*abs(y+14).",
+    "wing_domains": {
+      "left": [
+        -26.55,
+        -11.45,
+        -20.5657142857,
+        20.5657142857
+      ],
+      "right": [
+        11.45,
+        26.55,
+        -20.5657142857,
+        20.5657142857
+      ]
+    },
+    "connector_domain": [
+      -19,
+      19,
+      -20.5657142857,
+      -7.4342857143
+    ],
+    "ownership": "Upper envelope of the valid wing and connector roof volumes. Extend connector into wings up to equality, retain only active highest patches; split at ridges, domain boundaries and plane equalities. No overlapping full planes.",
+    "valley_xy": "x=sign*(17.8333333333-.9722222222*abs(y+14)), y[-20.5657142857,-7.4342857143]. End x=sign*11.45, ridge node x=sign*17.8333333333,y=-14.",
+    "wing_ridges": {
+      "x": [
+        -19,
+        19
+      ],
+      "y": [
+        -20.5657142857,
+        20.5657142857
+      ],
+      "z": 9.9
+    },
+    "connector_ridge": {
+      "x": [
+        -17.8333333333,
+        17.8333333333
+      ],
+      "y": -14,
+      "z": 9.6
+    },
+    "metal_thickness_m": 0.12,
+    "lining_thickness_m": 0.055,
+    "closure_top": "Same actual upper-envelope height minus .175. Front/rear gables and every raised cheek close to this datum. Flat room ceilings below complete enclosed attic.",
+    "overhang_rationale": "Wing .55m X overhang lowers top .14142857m. Connector .56571429m Y overhang lowers it the same amount, so all four valley ends share height7.95857143m at the U roof corners.",
+    "hardware": "Surface-clipped standing seams; bounded valley flashing, continuous actual ridges, fascias and eave gutters. None are additional roof volumes."
+  },
+  "rooms": [
+    {
+      "id": "left_classroom_1_floor_1",
+      "clear_bounds_xy": [
+        -25.7,
+        -15.39,
+        -19.7,
+        -6.736666666666666
+      ],
+      "floor_z": 0.14,
+      "clear_area_m2": 133.652,
+      "door": {
+        "wall_x": -15.25,
+        "centre_y": -17.4,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": -15.25,
+        "centre_y": -11.2333333333,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": -15.39,
+        "centre_y": -15.2,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "left_classroom_2_floor_1",
+      "clear_bounds_xy": [
+        -25.7,
+        -15.39,
+        -6.596666666666666,
+        6.596666666666668
+      ],
+      "floor_z": 0.14,
+      "clear_area_m2": 136.023,
+      "door": {
+        "wall_x": -15.25,
+        "centre_y": -4.296666666666666,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": -15.25,
+        "centre_y": 1.8700000000333343,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": -15.39,
+        "centre_y": -2.096666666666666,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "left_classroom_3_floor_1",
+      "clear_bounds_xy": [
+        -25.7,
+        -15.39,
+        6.736666666666668,
+        19.7
+      ],
+      "floor_z": 0.14,
+      "clear_area_m2": 133.652,
+      "door": {
+        "wall_x": -15.25,
+        "centre_y": 9.036666666666669,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": -15.25,
+        "centre_y": 15.203333333366668,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": -15.39,
+        "centre_y": 11.236666666666668,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "right_classroom_1_floor_1",
+      "clear_bounds_xy": [
+        15.39,
+        25.7,
+        -19.7,
+        -6.736666666666666
+      ],
+      "floor_z": 0.14,
+      "clear_area_m2": 133.652,
+      "door": {
+        "wall_x": 15.25,
+        "centre_y": -17.4,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": 15.25,
+        "centre_y": -11.2333333333,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": 15.39,
+        "centre_y": -15.2,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "right_classroom_2_floor_1",
+      "clear_bounds_xy": [
+        15.39,
+        25.7,
+        -6.596666666666666,
+        6.596666666666668
+      ],
+      "floor_z": 0.14,
+      "clear_area_m2": 136.023,
+      "door": {
+        "wall_x": 15.25,
+        "centre_y": -4.296666666666666,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": 15.25,
+        "centre_y": 1.8700000000333343,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": 15.39,
+        "centre_y": -2.096666666666666,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "right_classroom_3_floor_1",
+      "clear_bounds_xy": [
+        15.39,
+        25.7,
+        6.736666666666668,
+        19.7
+      ],
+      "floor_z": 0.14,
+      "clear_area_m2": 133.652,
+      "door": {
+        "wall_x": 15.25,
+        "centre_y": 9.036666666666669,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": 15.25,
+        "centre_y": 15.203333333366668,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": 15.39,
+        "centre_y": 11.236666666666668,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "left_classroom_1_floor_2",
+      "clear_bounds_xy": [
+        -25.7,
+        -15.39,
+        -19.7,
+        -6.736666666666666
+      ],
+      "floor_z": 3.94,
+      "clear_area_m2": 133.652,
+      "door": {
+        "wall_x": -15.25,
+        "centre_y": -17.4,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": -15.25,
+        "centre_y": -11.2333333333,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": -15.39,
+        "centre_y": -15.2,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "left_classroom_2_floor_2",
+      "clear_bounds_xy": [
+        -25.7,
+        -15.39,
+        -6.596666666666666,
+        6.596666666666668
+      ],
+      "floor_z": 3.94,
+      "clear_area_m2": 136.023,
+      "door": {
+        "wall_x": -15.25,
+        "centre_y": -4.296666666666666,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": -15.25,
+        "centre_y": 1.8700000000333343,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": -15.39,
+        "centre_y": -2.096666666666666,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "left_classroom_3_floor_2",
+      "clear_bounds_xy": [
+        -25.7,
+        -15.39,
+        6.736666666666668,
+        19.7
+      ],
+      "floor_z": 3.94,
+      "clear_area_m2": 133.652,
+      "door": {
+        "wall_x": -15.25,
+        "centre_y": 9.036666666666669,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": -15.25,
+        "centre_y": 15.203333333366668,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": -15.39,
+        "centre_y": 11.236666666666668,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "right_classroom_1_floor_2",
+      "clear_bounds_xy": [
+        15.39,
+        25.7,
+        -19.7,
+        -6.736666666666666
+      ],
+      "floor_z": 3.94,
+      "clear_area_m2": 133.652,
+      "door": {
+        "wall_x": 15.25,
+        "centre_y": -17.4,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": 15.25,
+        "centre_y": -11.2333333333,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": 15.39,
+        "centre_y": -15.2,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "right_classroom_2_floor_2",
+      "clear_bounds_xy": [
+        15.39,
+        25.7,
+        -6.596666666666666,
+        6.596666666666668
+      ],
+      "floor_z": 3.94,
+      "clear_area_m2": 136.023,
+      "door": {
+        "wall_x": 15.25,
+        "centre_y": -4.296666666666666,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": 15.25,
+        "centre_y": 1.8700000000333343,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": 15.39,
+        "centre_y": -2.096666666666666,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    },
+    {
+      "id": "right_classroom_3_floor_2",
+      "clear_bounds_xy": [
+        15.39,
+        25.7,
+        6.736666666666668,
+        19.7
+      ],
+      "floor_z": 3.94,
+      "clear_area_m2": 133.652,
+      "door": {
+        "wall_x": 15.25,
+        "centre_y": 9.036666666666669,
+        "width": 1.4,
+        "height": 2.4,
+        "leaf": "90deg into classroom; hinge on low-Y jamb"
+      },
+      "internal_glass": {
+        "wall_x": 15.25,
+        "centre_y": 15.203333333366668,
+        "width": 5,
+        "sill_above_floor": 0.85,
+        "height": 2.3
+      },
+      "programme": "24 seated pupils: six columns at abs(x)17.6+1.4j, four rows at y=low+4.5+2j. Desks face the courtyard-side teaching wall. Teacher desk, wall-seated whiteboard on opaque pier between door/glass, grounded low cubbies and reading furniture. No classroom desks in corridor.",
+      "teaching_board": {
+        "wall_inner_face_x": 15.39,
+        "centre_y": 11.236666666666668,
+        "width_y": 2.0,
+        "height": 1.15
+      },
+      "route": "Clear inner aisle abs(x)16.4 from the open door to the teacher/board approach; do not claim unrestricted room coverage."
+    }
+  ],
+  "support_rooms": [
+    {
+      "id": "staff_floor_1",
+      "clear_bounds_xy": [
+        -11.56,
+        -4.14,
+        -19.7,
+        -16.14
+      ],
+      "door": "x=sign*4, centre y=-17.8,1.3m width,2.4m height, leaf into room on low-Y jamb",
+      "window": "Front x=sign*8,6.6m group; furnishings remain offset and low enough to expose room depth."
+    },
+    {
+      "id": "west_washroom_floor_1",
+      "clear_bounds_xy": [
+        -7.66,
+        -4.34,
+        -14.185,
+        -10.535
+      ],
+      "door": "Rear crosspassage y=-10.395, centre x=sign*6,1.25m width,2.35m height. Swing into washroom.",
+      "programme": "Cut bowl/basin/counter, cistern, tap, wall-seated mirror, privacy enclosure. Basin and WC along front washroom wall, clear route from rear door."
+    },
+    {
+      "id": "meeting_floor_1",
+      "clear_bounds_xy": [
+        4.14,
+        11.56,
+        -19.7,
+        -16.14
+      ],
+      "door": "x=sign*4, centre y=-17.8,1.3m width,2.4m height, leaf into room on low-Y jamb",
+      "window": "Front x=sign*8,6.6m group; furnishings remain offset and low enough to expose room depth."
+    },
+    {
+      "id": "east_washroom_floor_1",
+      "clear_bounds_xy": [
+        4.34,
+        7.66,
+        -14.185,
+        -10.535
+      ],
+      "door": "Rear crosspassage y=-10.395, centre x=sign*6,1.25m width,2.35m height. Swing into washroom.",
+      "programme": "Cut bowl/basin/counter, cistern, tap, wall-seated mirror, privacy enclosure. Basin and WC along front washroom wall, clear route from rear door."
+    },
+    {
+      "id": "resource_floor_2",
+      "clear_bounds_xy": [
+        -11.56,
+        -4.14,
+        -19.7,
+        -16.14
+      ],
+      "door": "x=sign*4, centre y=-17.8,1.3m width,2.4m height, leaf into room on low-Y jamb",
+      "window": "Front x=sign*8,6.6m group; furnishings remain offset and low enough to expose room depth."
+    },
+    {
+      "id": "west_washroom_floor_2",
+      "clear_bounds_xy": [
+        -7.66,
+        -4.34,
+        -14.185,
+        -10.535
+      ],
+      "door": "Rear crosspassage y=-10.395, centre x=sign*6,1.25m width,2.35m height. Swing into washroom.",
+      "programme": "Cut bowl/basin/counter, cistern, tap, wall-seated mirror, privacy enclosure. Basin and WC along front washroom wall, clear route from rear door."
+    },
+    {
+      "id": "quiet_reading_floor_2",
+      "clear_bounds_xy": [
+        4.14,
+        11.56,
+        -19.7,
+        -16.14
+      ],
+      "door": "x=sign*4, centre y=-17.8,1.3m width,2.4m height, leaf into room on low-Y jamb",
+      "window": "Front x=sign*8,6.6m group; furnishings remain offset and low enough to expose room depth."
+    },
+    {
+      "id": "east_washroom_floor_2",
+      "clear_bounds_xy": [
+        4.34,
+        7.66,
+        -14.185,
+        -10.535
+      ],
+      "door": "Rear crosspassage y=-10.395, centre x=sign*6,1.25m width,2.35m height. Swing into washroom.",
+      "programme": "Cut bowl/basin/counter, cistern, tap, wall-seated mirror, privacy enclosure. Basin and WC along front washroom wall, clear route from rear door."
+    }
+  ],
+  "stair_contract": {
+    "cores_x": [
+      -9.7,
+      9.7
+    ],
+    "base_y": -14.2,
+    "floor_z": 0.14,
+    "rise": 3.8,
+    "risers": 22,
+    "riser_m": 0.17272727272727273,
+    "tread_m": 0.25,
+    "treads_per_flight": 11,
+    "flight_width_m": 1.25,
+    "flight_centres_relative_x": [
+      -0.6875,
+      0.6875
+    ],
+    "tread_y": [
+      -14.325,
+      -11.575
+    ],
+    "half_landing_xy_relative_x": [
+      -1.3125,
+      1.3125
+    ],
+    "half_landing_y": [
+      -11.575,
+      -10.525
+    ],
+    "half_landing_z": 2.04,
+    "upper_slab_and_lower_ceiling_void": {
+      "width": 3,
+      "y": [
+        -14.325,
+        -10.395
+      ]
+    },
+    "lower_approach": "x=core-.6875,y=-14.7,z=.14 from1.675m front crosspassage",
+    "upper_approach": "x=core+.6875,y=-14.7,z=3.94 from same clear front crosspassage",
+    "half_landing_route_y": -10.95,
+    "guards": "Tread-seated inner and outer posts/rails, seated half-landing side/rear rails, upper void side/rear guards and lower-flight lip guard. Leave upper flight entry open. No rail crosses landing turn.",
+    "programme_connection": "Front crosspassage reaches both wing corridors at abs(x)13.7 on both floors; rear2.095m crosspassage bypasses both cores/WCs and also joins wings. Central commons connects front/rear transverse routes.",
+    "headroom": "Upper ceiling underside7.54 gives3.60m over top landing3.94; lower ceiling removed over full core. Prove exact mesh sampled headroom and void guards before local pass.",
+    "qualification": "Authored prototype circulation; no building-code or accessibility certification.",
+    "guard_detail": "Intermediate pickets seated on every tread/outer landing transition, nominal125mm pitch, continuous top rail. Upper void sides/rear/lower lip retained; exact physical/contact/camera proof pending.",
+    "native_surface_ownership": "Both lower and upper connector navigation exclude the3m by3.93m core rectangles. Physical lower slabs stay intact; actual22treads/half-landing own the covered core walking surface. Unchanged maxStepM.18 and app clearance.22."
+  },
+  "opening_schedule": {
+    "front_connector": "Three prominent6.6m upper groups x[-8,0,8], sill+1.05,height2.15. Lower support groups x±8,6.6m,sill+.75,height2.35. Central double entry2.4m plus two1.8m sidelights and transom, cut through all carriers.",
+    "wing_front_and_rear": "Each level broad5.8m classroom group x±20, sill+.95,height2.2; narrow corridor front/end group x±13.9,1.65m where unobscured. Rear ground corridor exit1.4m.",
+    "outer_long_wings": "Two3.2m groups per classroom at y=low+4.3 and low+9.3, both levels, chosen away from crosswalls.",
+    "courtyard_wings": "Three exposed groups y[-3,5,14.2], widths[6.2,4.8,7], both levels. Ground sill floor+.75,height2.10; full top frame<=2.99, opening sill.89/head2.99. Upper sill floor+1.05,height2.15. Ground court door y9.2,width1.4,height2.40,between glazing. Classroom programme visible behind glazed inner wall.",
+    "connector_rear": "Upper three groups x[-8,0,8],widths[4.4,6.6,4.4],sill+1.05,height2.15. Ground side groups x±8,width4.4,sill+.75,height2.10. Centre2.4m double exit height2.40 with two1.8m sidelights to2.99m and transom z2.61..2.99. Full frame top<=2.99, clear under wall canopy.",
+    "timber_head_shades": "Every broad exterior window>=3m has a supported440mm-deep timber head shade, top=openinghead+.15, separate from frame. Ground court heads2.99=>shade3.14, below ledgerunderside3.15 and lining3.245. Recessed brackets bear on solid jamb/head returns. Exact pixels still need verification."
+  },
+  "landscape_contract": {
+    "grade": 0.04,
+    "occupied_walk_level": 0.14,
+    "public_sidewalk": [
+      -34,
+      34,
+      -32,
+      -29.5
+    ],
+    "ramp": [
+      -2,
+      2,
+      -29.5,
+      -28
+    ],
+    "ramp_rise": 0.1,
+    "forecourt": "Ground-supported .14m plateau y[-28,-20],x[-26,26]; gardens and left bicycle pad outside central clear route.",
+    "court_walks": "Floor level.14 on2.4m supported walks: leftx[-12,-9.6],rightx[9.6,12],y[-8,20]; rear connector y[-8,-5.6],x[-12,12]. Low shed timber roofs and posts on outer walk edges, three-way corners solved as one union canopy. Keep path centreabs(x)10.8 clear.",
+    "canopy": "Wall top3.42,outer edge3.08,2.4m run; lining/metal on shared clipped union, posts atabs(x)9.72 and y[-3,5,13,19], rear posts x[-8,0,8],y-5.72 clear of paths/window views. Beam/post load paths reach paving.",
+    "court": "Separate planted pockets, outdoor teaching tables on grounded pads, clear central approach/play route to rear lawn; no rear closing bar.",
+    "rear_lawn": "Play lawn extends y20..32. Side approach paths, rear corridor exit plateaux and public connection preserve .14 floor routes without hidden grade steps.",
+    "fixtures": "Covered left bicycle hoops on .14 pad, grounded bench/table legs, separate gardens, young trees outside primary source facade view.",
+    "canopy_sections": {
+      "metal_top_at_wall": 3.42,
+      "metal_top_at_outer_edge": 3.08,
+      "metal_vertical_thickness": 0.12,
+      "lining_vertical_thickness": 0.055,
+      "lining_bottom_at_wall": 3.245,
+      "lining_bottom_at_outer_edge": 2.905,
+      "wall_ledger_section": "Centre3.21,height.12,underside3.15; top3.27 penetrates lining by25mm. Frame top2.99 gives160mm clear below ledger.",
+      "outer_header_section": "Centre2.985,height.20,underside2.885/top3.085; seated column top2.91 overlapsheader25mm. Header contacts roof/lining at actual outer support coordinate. Header is2.3m from windows, no aperture overlap.",
+      "frame_clearance": "All court ground window/door/transom frame tops <=2.99, below wall lining3.245 and ledger3.15. Sill/leaf definitions use actual geometry tops rather than nominal roof top.",
+      "corner_rule": "Joined U canopy upper envelope, clip panels/lining to active slopes and corner equalities. No duplicated full overlapping roofs; diagonal corner valley capped."
+    },
+    "additional_pads_and_bridges": {
+      "left_teaching_bench_union": [
+        -7.7,
+        -2.3,
+        0.4,
+        6
+      ],
+      "right_teaching": [
+        2.3,
+        7.7,
+        6.9,
+        11.1
+      ],
+      "right_court_bench": [
+        3.5,
+        6.5,
+        15,
+        17
+      ],
+      "table_links": [
+        [
+          -2.3,
+          -1.6,
+          1.3,
+          3.7
+        ],
+        [
+          1.6,
+          2.3,
+          7.8,
+          10.2
+        ]
+      ],
+      "floor_z": 0.14,
+      "bike_geometry_offset_m": 0.095,
+      "book_shift_m": -0.01,
+      "right_bench_link": [
+        1.6,
+        3.5,
+        15,
+        17
+      ]
+    }
+  },
+  "material_contract": {
+    "cedar": {
+      "path": "materials/school-timber-cedar-v001.png",
+      "sha256": "722c49db7ce0c61760ff950eae6af4d07c1c2e681cc9ddb6e97575e9b698b02b",
+      "observed": "8boards793x1983; physical pitch120mm including4mm gap;116mm face. Separate physical board geometry uses interior specimen strip, preserves full parent mapping when opening cuts segment it.",
+      "uv": "Per-parent strip U interior of assigned one of8 source boards. V over inferred tall parent board, bounded. Tall4m+ boards stretch original2.4m grain; finish limitation. No raw seamless repeat.",
+      "slope_clipping": "Upper interval uses maximum endpoint height; each final endpoint clamps to actual roof gable profile. No horizontal sawtooth gap under lining."
+    },
+    "brick": {
+      "path": "materials/school-timber-brick-v001.png",
+      "sha256": "923ac48051a25169275e0b283676cd6b535284a914c73183f21a515294818885",
+      "observed": "24courses/8length equivalents;240x75mm module includes10mm mortar,230x65mm brick face.",
+      "mapping": "Physical .24x.075m running-bond modules/half-course offsets. Source interior brick-face UVs, per-parent preservation through all two-axis opening cuts. Geometry owns mortar; no raw repeat/outer-sheet boundaries.",
+      "measured_mapping": "Use interior specimen courses1..22 only. Their actual bed-joint ranges from material-review define V between previous band end+5px and next band start-5px. Selected interior columns1..6 use stagger parity and8px inset from both cell ends; source1295x1214. Parent UVs preserved through clipping; no inferred uniform24-cell V grid. Brick backd.299 stays1mm behind interior finish d.30."
+    },
+    "independent_category_review": {
+      "path": "prework/school-timber-material-review.json",
+      "sha256": "0158d88aebd866e4d58381005c822b4beec30827cd33c0cf6f469a7142b22656"
+    },
+    "scope": "Dominant two wall materials conditioned from exact front family; remaining trim/timber/metal/interior prototype palette, keeper finish/optics unapproved."
+  },
+  "camera_contract": "71 unique mandatory cameras authored before geometry. Complete7exteriors, source facade/glass/entrance,5main roof junction/ridge and2gable contacts,2canopy corners/2post andlining/materialcontact,12classrooms/4teachingboards/4wingcorridors/8supportrooms/6commons-crossconnections/6stairlandings-guards,fixtures/court/play/bikes/ramp/porch. Both sides of all stair cameras face from outer open connector side, away from washroom walls. Full exactGLB rerender and3boards mandatory. Classroom camera moves beyond the open leaf at abs(x)17,y=roomLow+2.8; both canopy-post cameras include the foot using abs(x)5.5,y11.5,z1.8,targetz1.35,lens24. Same71 camera identities.",
+  "readiness": "Unskinned v001 held on native ownership/route failures. Geometry-only staircase/aperture rays pass; navigation/camera correction and all later full-model/browser gates remain pending.",
+  "plan_revision": "v005: exact diagnostic navigation ownership and evidence framing corrections",
+  "finite_corrections_v002": [
+    "Shared internal wing interfaces open continuously bothfloors; native surfaces include actual slab seam.",
+    "Court lower frame heads frozen2.99m, lining/ledger/header complete bounds frozen and source-compatible."
+  ],
+  "builder_sha256": "a60f515ee5807d19b1dbb87a16876b191a00fcd3a2b586240a653d4aa9fd56cd",
+  "independent_measured_plan_review": {
+    "path": "prework/school-timber-measured-plan-v002-review.json",
+    "sha256": "ef61cf38b90845bf6598b24be69a937f71aa7d039faefa7c0c032701a3c76a59",
+    "scope": "Plan-only pass; no code/model approval"
+  },
+  "preserved_constructor_hold": {
+    "path": "prework/school-timber-builder-preflight-v001.json",
+    "sha256": "4adc15b465a5c28e224de519f35ebed36c108da1873e3d7ae1f1e1ef1d7bcf04",
+    "builder_snapshot": "prework/build_timber_school-preflight-v001.py",
+    "p1_groups": 7
+  },
+  "finite_corrections_v003": [
+    "Ceilings meet open internal seams; upper ceiling matches3.60m clearance.",
+    "Court benches/pads/bike feet/books physically seated; path links and rear native threshold gaps closed.",
+    "Cedar endpoints meet actual slope; brick samples use measured face-only bounds; interior finish owns back.",
+    "WC/basin/mirror backs seated to front privacy wall.",
+    "Source timber shades supported and dimensioned clear of canopy/ledger.",
+    "Both stair-camera sets face from outer open side; guard pickets added on treads."
+  ],
+  "preserved_constructor_hold_v002": {
+    "path": "prework/school-timber-builder-preflight-v002.json",
+    "sha256": "4c0f04fcb293c20dd6035006284a20982f04317e4b7d0f5e7b99faa4510b61c3",
+    "p1_groups": 2
+  },
+  "finite_corrections_v004": [
+    "Both court bench approaches now physically/native connected and explicitly routed.",
+    "All support desks use corrected chair atom; every school bookshelf book rests on actual closest shelf top.",
+    "Every parent cedar strip crossing a gable ridge splits there with original parent coordinates and full apex height."
+  ],
+  "finite_corrections_v005": [
+    "Remove only lower native plane ownership under both stair cores; no physical floor/geometry change.",
+    "Rear wing exits cross beyond their actual90-degree open leaves at y21.65.",
+    "Court/play route detours around the central canopy post via x.6 and y-6.8/-5.",
+    "Covered U path uses x+-10.3 and cross y-6.35, preserving actual paving and all post/leaf obstacles.",
+    "All12 classroom cameras clear foreground door leaves; both canopy-post cameras show complete foot contact.",
+    "Preserve null-only guard failures. Supplemental at-height movement checks must prove rejection without a level drop using the unchanged actual app solver."
+  ],
+  "preserved_diagnostic_v001": {
+    "path": "prework/school-timber-unskinned-v001",
+    "glb_sha256": "0f7fa42504d89cbe88071831337e1375b732d94a80083846df6df71621907d92",
+    "independent_review": "prework/school-timber-unskinned-v001-independent-review.json",
+    "native_routes": "40/45",
+    "physical_failures": 279,
+    "stair_boundary_samples": "96/96",
+    "aperture_rays": "1638/1638",
+    "garden": "9/9",
+    "furniture": "20/20",
+    "no_model_pass": true
+  }
+}

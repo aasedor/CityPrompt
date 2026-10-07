@@ -54,6 +54,9 @@ function Get-UnhydratedRuntimeLfsAssets {
         @()
     }
     foreach ($relativeRoot in @(
+        'native-park-assets',
+        'street-kits',
+        'landscape-pilots',
         'archetypes\buildings',
         'archetypes\openspaces',
         'archetypes\streets'
@@ -93,8 +96,8 @@ function Ensure-RuntimeLfsAssets {
     # Runtime building modules are served from backend library storage. Pulling
     # every historical source-family GLB here adds roughly 8 GB and makes Vite
     # copy that archive into dist. The browser directly consumes park kits and
-    # the three authoritative catalogue image roots, so hydrate only those.
-    $include = 'frontend/public/park-kits/**/*.glb,frontend/public/archetypes/buildings/**,frontend/public/archetypes/openspaces/**,frontend/public/archetypes/streets/**'
+    # shared landscape components and authoritative catalogue image roots.
+    $include = 'frontend/public/park-kits/**/*.glb,frontend/public/native-park-assets/**,frontend/public/street-kits/**,frontend/public/landscape-pilots/**/*.glb,frontend/public/archetypes/buildings/**,frontend/public/archetypes/openspaces/**,frontend/public/archetypes/streets/**'
     $upstream = ((git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null) | Out-String).Trim()
     Write-Host "Hydrating $($pointers.Count) Git LFS catalogue/model assets..."
     Push-Location $repoRoot
@@ -458,6 +461,10 @@ Ensure-RuntimeLfsAssets
 Ensure-DockerDesktop
 Ensure-Infrastructure
 Ensure-Backend
+if (-not $SkipFrontend) {
+    & python (Join-Path $repoRoot 'scripts/check_model_library_storage.py') --require-catalogue --report (Join-Path $artifactRoot 'model-library-storage.json')
+    if ($LASTEXITCODE -ne 0) { throw 'Catalogue model storage is incomplete. Restore the exact seed models in this backend environment before opening the frontend.' }
+}
 Ensure-CeleryWorker
 Ensure-Frontend
 

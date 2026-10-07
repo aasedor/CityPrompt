@@ -95,7 +95,9 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
     }
     if (Math.acos(Math.min(1, Math.abs(Math.cos(angle - expected)))) > Math.PI / 180) return null;
     const scale = (profile.metricWidthLocked ? profile.targetRowM ?? profile.rowM : effectiveRoadWidth(zone.properties)) / profile.rowM;
-    const pedestrianPilot = ['student_market_street_v1', 'student_planted_shared_lane_v1'].includes(nativeStreetPilotForZone(zone, true)?.id ?? '');
+    const nativePilot = nativeStreetPilotForZone(zone, true);
+    const pedestrianPilot = nativePilot?.program?.adapter === 'narrow-pathway-v1'
+      || ['student_market_street_v1', 'student_planted_shared_lane_v1'].includes(nativePilot?.id ?? '');
     const drive = profile.bands.filter((band) => ['motor', 'parking', 'cycle'].includes(band.kind));
     if (pedestrianPilot && drive.length === 0) drive.push(...profile.bands.filter((band) => band.kind === 'path'));
     if (!drive.length) return null;

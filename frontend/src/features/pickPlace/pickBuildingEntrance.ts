@@ -104,7 +104,7 @@ export function pickBuildingEntrance(hit: NativeEntranceHit, zone: SiteZone, zon
     if (delta < distance) { distance = delta; nearest = p; }
   }
   if (!nearest || distance > .6)
-    return { error: 'Choose the outer edge of the lowest entrance step, where the approach should meet the building.' };
+    return { error: 'Choose the outer edge of the lowest entrance step or its paved entrance path, where it meets the model base.' };
   const dimensions = rectangleDimensions(zone.coordinates), yaw = dimensions.degrees * Math.PI / 180;
   const lng = hit.lng + nearest[0]/metersPerDegLon(hit.lat), lat = hit.lat + nearest[1]/METERS_PER_DEG_LAT;
   const x = (lng-dimensions.center[0])*metersPerDegLon(dimensions.center[1]);

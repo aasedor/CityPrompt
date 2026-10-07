@@ -1,0 +1,40 @@
+{
+  "archetype_id": "ubst-garden-hotel",
+  "variant_id": "ubst-garden-hotel-v0",
+  "source_origin": "original_generated_design",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-garden-hotel\\variant_0.png",
+      "path": "sources/variant_0.png",
+      "bytes": 2874324,
+      "sha256": "842edfbb873db093fc6f378f6df4816c6fb5471cc9c43e0367c39e7ad3a00fec",
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-garden-hotel\\variant_0_angle_60.png",
+      "path": "sources/variant_0_angle_60.png",
+      "bytes": 3279018,
+      "sha256": "1f238fe23209f8e7bfd045ce4a96aa6424ae96c60889573e30b472dccd000041",
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\ubst-rlasm-building-pilot\\CityPrompt\\frontend\\public\\archetypes\\buildings\\ubst-garden-hotel\\variant_0_angle_90.png",
+      "path": "sources/variant_0_angle_90.png",
+      "bytes": 3595039,
+      "sha256": "413a2fbf7d2b53cf937ed8187954e268a6810587543c49484c809e2ee532bd55",
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ]
+}

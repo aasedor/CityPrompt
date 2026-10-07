@@ -1,0 +1,988 @@
+{
+  "schema": "cityprompt.original-reference-batch@1",
+  "created": "2026-10-06",
+  "method": "RLASM v6.1",
+  "source_origin": "original_generated_design",
+  "generator": "built-in image_gen",
+  "runtime_activation": false,
+  "scope": "Five original affordable-housing teaching concepts, independently reviewed then trialled in City Prompt. Inspired by AHC's programme, not replicas or endorsed AHC projects.",
+  "inspiration_sources": [
+    {
+      "url": "https://attainyourhome.com/",
+      "note": "Below-market ownership and rental programmes; townhomes and factory-built studio apartments."
+    },
+    {
+      "url": "https://attainyourhome.com/wp-content/uploads/2025/06/AHC-Financial-Statements-2024-Final.pdf",
+      "note": "605 modular studio programme; design dimensions below are original authored concepts, not copied AHC project specifications."
+    }
+  ],
+  "affordability": "Proposed non-market tenure programme. No rents, construction costs, subsidy or eligibility certification inferred from architectural appearance.",
+  "candidates": [
+    {
+      "kind": "porchlight",
+      "id": "affordable_porchlight",
+      "variant": "affordable_porchlight_original",
+      "title": "Porchlight Townhouse Row",
+      "slug": "affordable-porchlight",
+      "styles": [
+        "Contemporary Canadian",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Rowhouse Building",
+        "Townhouse",
+        "Dwelling Unit",
+        "Multi-Residential Development",
+        "Multi-Residential Development — Minor"
+      ],
+      "storeys": 2,
+      "units": 4,
+      "dimensions_m": {
+        "width": 22,
+        "depth": 9,
+        "height": 7.75
+      },
+      "program": "Four two-storey two-bedroom homes; independent street entrances, internal stairs, kitchen/living rooms and private rear patios. Repeated simple envelope for an attainable homeownership teaching programme.",
+      "search_tags": [
+        "Porchlight Townhouse Row",
+        "Contemporary Canadian",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 2,
+        "native": 2,
+        "maximum": 2,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "independently_researched_candidate_routes_only",
+        "approval": false,
+        "runtime_activation": false,
+        "authored_height_m": 7.75,
+        "authored_units": 4,
+        "site_evaluated": false,
+        "general_conditions": [
+          "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+          "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+          "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+          "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+          "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+          "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+        ],
+        "district_candidates": [
+          {
+            "district": "R-CG",
+            "defined_use": "Rowhouse Building",
+            "permission": "permitted",
+            "section": "526(2);347.3",
+            "nominal_height_limit_m": 10,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=11&part=5"
+            ],
+            "conditions": [
+              "Definition287: side-by-side units, foundation-to-roof party walls, each facade directly faces public street with separate direct grade entry to sidewalk/street; no stacked units.",
+              "All347.3 conditions: facade articulation or porch>=2m wide projecting>=1.2m, floor<=1.2m above grade, corner entries, no attached garage, individual lane-access parking, side-window privacy, limited grade variation, outside heritage guideline area, permitted depth and only one main residential building.",
+              "Current model porch projection is not certified; pad/canopy coordinates suggest a shallow projection. Do not mark this route satisfied until measured.",
+              "75units/ha max: four units require at least533.34m² by density alone;541 height10m, contextual boundary plane and rear-depth8.6m cap."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "R-CG",
+            "defined_use": "Rowhouse Building",
+            "permission": "discretionary",
+            "section": "527(1)",
+            "nominal_height_limit_m": 10,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=11&part=5"
+            ],
+            "conditions": [
+              "Where a Rowhouse Building does not satisfy every permitted-route rule; discretionary review still required."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "R-CG",
+            "defined_use": "Townhouse",
+            "permission": "discretionary",
+            "section": "527(2)(s.1)",
+            "nominal_height_limit_m": 10,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=11&part=5"
+            ],
+            "conditions": [
+              "Alternative orientation only if definition319 is satisfied and it is not a Rowhouse Building; no stacked units and each unit has separate direct grade entry."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "H-GO",
+            "defined_use": "Dwelling Unit",
+            "permission": "permitted",
+            "section": "1387(b)",
+            "nominal_height_limit_m": 12,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=1&part=15"
+            ],
+            "conditions": [
+              "1391 individual separate direct grade access; visible street-facing entrances; actual mapped H-GO parcel; FAR1.5; coverage, setbacks, building separation and1399 contextual height plane."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-G",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "606(c)",
+            "nominal_height_limit_m": 13,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=5&part=6"
+            ],
+            "conditions": [
+              "Definition240 plus610: each residential building>=3units and each unit separate direct grade pedestrian access.",
+              "Density35–80units/ha or mapped d; each private amenity>=7.5m², minimum dimension2m (615). Authored3.1x1.8m patios alone fail these dimensions; additional qualifying private space/site plan required."
+            ],
+            "fit_status": "site_amenity_enlargement_or_reassessment_required",
+            "approval": false
+          },
+          {
+            "district": "M-CG",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "578(1)(i)",
+            "nominal_height_limit_m": 12,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=2&part=6"
+            ],
+            "conditions": [
+              "Ground-floor units occupy>=50% of ground-floor area with individual direct grade entry and street-visible entrances (581); density<=111units/ha or mapped d; contextual height/cross-section585."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-1",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "617(c)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=6&part=6"
+            ],
+            "conditions": [
+              "Definition240: parcel<=1ha, at least3units, at least90% of units in buildings containing>=3units, and all district rules satisfied.",
+              "50–148 units/ha, subject to a lower mapped d modifier (620); 14m maximum with 9m-to-14m neighbour plane and 10m street-edge rule (624)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-1",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "618(h)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=6&part=6"
+            ],
+            "conditions": [
+              "Definition239 composition must be satisfied; all site standards and any requested relaxation require assessment.",
+              "Alternative use route; not a guarantee that a non-compliant Minor proposal will be approved."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-2",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "626(c)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=7&part=6"
+            ],
+            "conditions": [
+              "Definition240: parcel<=1ha, at least3units, at least90% of units in buildings containing>=3units, and all district rules satisfied.",
+              "Minimum60 units/ha; FAR3 unless mapped f is lower; mapped d may limit density (629–630).16m maximum with 11m-to-16m neighbour plane and 10m street-edge rule (634)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-2",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "627(h)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=7&part=6"
+            ],
+            "conditions": [
+              "Definition239 composition must be satisfied; all site standards and any requested relaxation require assessment.",
+              "Alternative use route; not a guarantee that a non-compliant Minor proposal will be approved."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-C1",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "588(1)(j)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=3&part=6"
+            ],
+            "conditions": [
+              "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions.",
+              "Density<=148units/ha or lower mapped d; at12m cross-section<=40% of maximum area0–10m, plus neighbour/street envelopes (590,594)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-C2",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "597(1)(j)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=4&part=6"
+            ],
+            "conditions": [
+              "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions.",
+              "FAR<=2.5 or lower mapped f; mapped d may apply. At14m cross-section<=40% of maximum area0–12m, plus neighbour/street envelopes (599,600,604)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          }
+        ],
+        "excluded_or_unresolved_routes": [],
+        "defined_use_labels": [
+          "Rowhouse Building",
+          "Townhouse",
+          "Dwelling Unit",
+          "Multi-Residential Development",
+          "Multi-Residential Development — Minor"
+        ]
+      }
+    },
+    {
+      "kind": "juniper",
+      "id": "affordable_juniper",
+      "variant": "affordable_juniper_original",
+      "title": "Juniper Courtyard Cottages",
+      "slug": "affordable-juniper",
+      "styles": [
+        "Scandinavian",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Cottage Housing Cluster",
+        "Dwelling Unit"
+      ],
+      "storeys": 1,
+      "units": 4,
+      "dimensions_m": {
+        "width": 28,
+        "depth": 24.9,
+        "height": 6.1
+      },
+      "program": "Four single-level 49 m² one-bedroom cottages, a 22 × 22 m body cluster, an 8 × 8 m shared garden and four private 12 m² outboard patios. Front cottages face the street; rear cottages face the garden. Authored 6 m roof ridge with no attic dwelling. Site and accessibility approval required.",
+      "search_tags": [
+        "Juniper Courtyard Cottages",
+        "Scandinavian",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 1,
+        "native": 1,
+        "maximum": 1,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "independently_researched_candidate_routes_only",
+        "approval": false,
+        "runtime_activation": false,
+        "authored_height_m": 4.4,
+        "authored_units": 4,
+        "site_evaluated": false,
+        "general_conditions": [
+          "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+          "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+          "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+          "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+          "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+          "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+        ],
+        "district_candidates": [
+          {
+            "district": "R-CG",
+            "defined_use": "Cottage Housing Cluster",
+            "permission": "discretionary",
+            "section": "527(2)(f);175;365.1",
+            "nominal_height_limit_m": 10,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=11&part=5"
+            ],
+            "conditions": [
+              "Assumes four physically separate cottage buildings around common open space; definition175 requires4–12buildings, no units over another.",
+              "365.1: separation>=3m,>=6m where common amenity lies between; each storey<=100m², dwelling<=150m²; each private outdoor amenity>=12m² with minimum1.5m dimension; four-unit common space>=60m², minimum6m dimension, central contiguous and outside setbacks.",
+              "75units/ha implies parcel>=533.34m² by density alone. Nominal22x17m composition is not an approved parcel; parking, access, waste, landscaping and the complete site remain unresolved."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "H-GO",
+            "defined_use": "Dwelling Unit",
+            "permission": "permitted",
+            "section": "1387(b)",
+            "nominal_height_limit_m": 12,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=1&part=15"
+            ],
+            "conditions": [
+              "Candidate only for actual H-GO site with all1391 direct grade/street entry rules; FAR1.5, separation and site coverage/setbacks still apply."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          }
+        ],
+        "excluded_or_unresolved_routes": [
+          {
+            "districts": [
+              "M-G",
+              "M-1",
+              "M-2",
+              "M-CG",
+              "M-C1",
+              "M-C2"
+            ],
+            "reason": "Four detached single-unit cottages fail definition239(a)(iv) minimum50% units in buildings of>=2 and definition240>=90% in buildings of>=3. M-G610 additionally requires>=3units per residential building. Do not mislabel this assembly as generic Multi-Residential Development."
+          }
+        ],
+        "defined_use_labels": [
+          "Cottage Housing Cluster",
+          "Dwelling Unit"
+        ]
+      },
+      "reference_reconciliation": "Four separate single-storey 7 m square cottages. All entrance gables face the street; left and right columns mirror their doors. Source gable pitch governs the 6 m roof ridge; no occupied attic. The 22 × 22 m body cluster has outboard 3 × 4 m patios, paths and an 8 × 8 m common garden. The top reference is high oblique.",
+      "source_measurements": [
+        "Four discrete gable roofs; two-by-two site layout.",
+        "One front door and broad living window per cottage; mirrored by column."
+      ]
+    },
+    {
+      "kind": "stackyard",
+      "id": "affordable_stackyard",
+      "variant": "affordable_stackyard_original",
+      "title": "Stackyard Stacked Townhomes",
+      "slug": "affordable-stackyard",
+      "styles": [
+        "Contemporary",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Multi-Residential Development",
+        "Multi-Residential Development — Minor"
+      ],
+      "storeys": 2,
+      "units": 6,
+      "dimensions_m": {
+        "width": 21,
+        "depth": 11,
+        "height": 7.2
+      },
+      "program": "Six two-bedroom homes stacked as three ground and three upper dwellings. Upper outdoor gallery with two end stairs; private lower patios.",
+      "search_tags": [
+        "Stackyard Stacked Townhomes",
+        "Contemporary",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 2,
+        "native": 2,
+        "maximum": 2,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "independently_researched_candidate_routes_only",
+        "approval": false,
+        "runtime_activation": false,
+        "authored_height_m": 7.2,
+        "authored_units": 6,
+        "site_evaluated": false,
+        "general_conditions": [
+          "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+          "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+          "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+          "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+          "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+          "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+        ],
+        "district_candidates": [
+          {
+            "district": "M-1",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "617(c)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=6&part=6"
+            ],
+            "conditions": [
+              "Definition240: parcel<=1ha, at least3units, at least90% of units in buildings containing>=3units, and all district rules satisfied.",
+              "50–148 units/ha, subject to a lower mapped d modifier (620); 14m maximum with 9m-to-14m neighbour plane and 10m street-edge rule (624)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-1",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "618(h)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=6&part=6"
+            ],
+            "conditions": [
+              "Definition239 composition must be satisfied; all site standards and any requested relaxation require assessment.",
+              "Alternative use route; not a guarantee that a non-compliant Minor proposal will be approved."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-2",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "626(c)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=7&part=6"
+            ],
+            "conditions": [
+              "Definition240: parcel<=1ha, at least3units, at least90% of units in buildings containing>=3units, and all district rules satisfied.",
+              "Minimum60 units/ha; FAR3 unless mapped f is lower; mapped d may limit density (629–630).16m maximum with 11m-to-16m neighbour plane and 10m street-edge rule (634)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-2",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "627(h)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=7&part=6"
+            ],
+            "conditions": [
+              "Definition239 composition must be satisfied; all site standards and any requested relaxation require assessment.",
+              "Alternative use route; not a guarantee that a non-compliant Minor proposal will be approved."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-C1",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "588(1)(j)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=3&part=6"
+            ],
+            "conditions": [
+              "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions.",
+              "Density<=148units/ha or lower mapped d; at12m cross-section<=40% of maximum area0–10m, plus neighbour/street envelopes (590,594)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-C2",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "597(1)(j)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=4&part=6"
+            ],
+            "conditions": [
+              "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions.",
+              "FAR<=2.5 or lower mapped f; mapped d may apply. At14m cross-section<=40% of maximum area0–12m, plus neighbour/street envelopes (599,600,604)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-CG",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "578(1)(i)",
+            "nominal_height_limit_m": 12,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=2&part=6"
+            ],
+            "conditions": [
+              "Ground-floor units must occupy>=50% of ground floor with individual direct grade access and visible street-facing entrances (581). Upper shared gallery alone does not disqualify this district; ground programme/site still must be checked.",
+              "Density<=111units/ha or lower mapped d; contextual height585."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          }
+        ],
+        "excluded_or_unresolved_routes": [
+          {
+            "districts": [
+              "R-CG"
+            ],
+            "reason": "Stacked units do not satisfy Rowhouse287 or Townhouse319, both exclude units above other units. Do not equate the marketing form name with defined uses."
+          },
+          {
+            "districts": [
+              "H-GO",
+              "M-G"
+            ],
+            "reason": "Shared upper gallery/common corridor access is not established as individual, separate, direct grade access. Omit these routes pending a genuinely different access arrangement or City interpretation."
+          }
+        ],
+        "defined_use_labels": [
+          "Multi-Residential Development",
+          "Multi-Residential Development — Minor"
+        ]
+      },
+      "reference_reconciliation": "Two occupied levels, three door/window sets per level, full front gallery, two end stairs and continuous flat roof over gallery. Rear interiors inferred.",
+      "source_measurements": [
+        "Three equal front bays; six independent dwellings.",
+        "Four grounded columns and continuous front gallery."
+      ]
+    },
+    {
+      "kind": "aspen",
+      "id": "affordable_aspen",
+      "variant": "affordable_aspen_original",
+      "title": "Aspen Walk Apartments",
+      "slug": "affordable-aspen",
+      "styles": [
+        "Canadian modern",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Multi-Residential Development",
+        "Multi-Residential Development — Minor"
+      ],
+      "storeys": 3,
+      "units": 12,
+      "dimensions_m": {
+        "width": 24,
+        "depth": 13,
+        "height": 10.7
+      },
+      "program": "Twelve compact one-bedroom rental apartments, shared interior circulation, two stairs and a reserved lift core.",
+      "search_tags": [
+        "Aspen Walk Apartments",
+        "Canadian modern",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "compact housing"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 3,
+        "native": 3,
+        "maximum": 3,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "independently_researched_candidate_routes_only",
+        "approval": false,
+        "runtime_activation": false,
+        "authored_height_m": 10.7,
+        "authored_units": 12,
+        "site_evaluated": false,
+        "general_conditions": [
+          "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+          "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+          "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+          "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+          "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+          "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+        ],
+        "district_candidates": [
+          {
+            "district": "M-1",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "617(c)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=6&part=6"
+            ],
+            "conditions": [
+              "Definition240: parcel<=1ha, at least3units, at least90% of units in buildings containing>=3units, and all district rules satisfied.",
+              "50–148 units/ha, subject to a lower mapped d modifier (620); 14m maximum with 9m-to-14m neighbour plane and 10m street-edge rule (624)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-1",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "618(h)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=6&part=6"
+            ],
+            "conditions": [
+              "Definition239 composition must be satisfied; all site standards and any requested relaxation require assessment.",
+              "Alternative use route; not a guarantee that a non-compliant Minor proposal will be approved."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-2",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "626(c)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=7&part=6"
+            ],
+            "conditions": [
+              "Definition240: parcel<=1ha, at least3units, at least90% of units in buildings containing>=3units, and all district rules satisfied.",
+              "Minimum60 units/ha; FAR3 unless mapped f is lower; mapped d may limit density (629–630).16m maximum with 11m-to-16m neighbour plane and 10m street-edge rule (634)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-2",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "627(h)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=7&part=6"
+            ],
+            "conditions": [
+              "Definition239 composition must be satisfied; all site standards and any requested relaxation require assessment.",
+              "Alternative use route; not a guarantee that a non-compliant Minor proposal will be approved."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-C1",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "588(1)(j)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=3&part=6"
+            ],
+            "conditions": [
+              "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions.",
+              "Density<=148units/ha or lower mapped d; at12m cross-section<=40% of maximum area0–10m, plus neighbour/street envelopes (590,594)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-C2",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "597(1)(j)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=4&part=6"
+            ],
+            "conditions": [
+              "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions.",
+              "FAR<=2.5 or lower mapped f; mapped d may apply. At14m cross-section<=40% of maximum area0–12m, plus neighbour/street envelopes (599,600,604)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          }
+        ],
+        "excluded_or_unresolved_routes": [
+          {
+            "districts": [
+              "R-CG"
+            ],
+            "reason": "Stacked units do not satisfy Rowhouse287 or Townhouse319, both exclude units above other units. Do not equate the marketing form name with defined uses."
+          },
+          {
+            "districts": [
+              "H-GO",
+              "M-G"
+            ],
+            "reason": "Shared upper gallery/common corridor access is not established as individual, separate, direct grade access. Omit these routes pending a genuinely different access arrangement or City interpretation."
+          },
+          {
+            "districts": [
+              "M-CG"
+            ],
+            "reason": "Current shared-entry ground-floor apartments do not establish581 direct grade entrances;10.7m envelope also needs10.5m cross-section test. Not a default route."
+          }
+        ],
+        "defined_use_labels": [
+          "Multi-Residential Development",
+          "Multi-Residential Development — Minor"
+        ]
+      },
+      "reference_reconciliation": "Three occupied floors; four large front windows per floor, narrow central axis and two end stair windows. Oblique governs three right-side windows per floor over one-window prompt. Rear/interiors inferred.",
+      "source_measurements": [
+        "Four wide front apartment windows per level, plus central/end narrow windows.",
+        "Three right-side windows per floor; closed flat roof."
+      ]
+    },
+    {
+      "kind": "switchback",
+      "id": "affordable_switchback",
+      "variant": "affordable_switchback_original",
+      "title": "Switchback Modular Studios",
+      "slug": "affordable-switchback",
+      "styles": [
+        "Contemporary modular",
+        "Affordable housing"
+      ],
+      "uses": [
+        "Multi-Residential Development",
+        "Multi-Residential Development — Minor"
+      ],
+      "storeys": 4,
+      "units": 24,
+      "dimensions_m": {
+        "width": 24,
+        "depth": 14,
+        "height": 13.8
+      },
+      "program": "Twenty-four permanent studio dwellings in an authored modular apartment assembly, six per floor, common corridor, two stairs and lift core. Prefabricated construction, no permanent transport chassis.",
+      "search_tags": [
+        "Switchback Modular Studios",
+        "Contemporary modular",
+        "Affordable housing",
+        "non-market",
+        "residential",
+        "modular"
+      ],
+      "storey_program": {
+        "mode": "fixed_authored_assembly",
+        "minimum": 4,
+        "native": 4,
+        "maximum": 4,
+        "mesh_stretching": false
+      },
+      "lifecycle": {
+        "reference_origin": "original_generated_design",
+        "model_scope": "architectural_clay",
+        "runtime_enabled": false,
+        "human_activation": false
+      },
+      "zoning_research": {
+        "checked_date": "2026-10-06",
+        "status": "independently_researched_candidate_routes_only",
+        "approval": false,
+        "runtime_activation": false,
+        "authored_height_m": 13.8,
+        "authored_units": 24,
+        "site_evaluated": false,
+        "general_conditions": [
+          "Actual mapped district and suffixes must be checked on the selected parcel; no parcel has been assessed.",
+          "Height is an authored model envelope, not a geodetic bylaw measurement. Check slope, setbacks, contextual planes, coverage, density/FAR, access, parking, landscaping and amenity space.",
+          "Listed permitted/discretionary is the statutory route for the specified use, not approval of this mesh or a development permit.",
+          "A relaxation is not automatic; a use absent from a district is not made allowed by a height adjustment. DC is site-specific, not a fallback approval.",
+          "Only modifiers supported by the mapped district apply. Do not invent an h suffix on R-CG, H-GO, M-G, M-1, M-2, M-C1 or M-C2. Changing mapped entitlements requires the appropriate City process.",
+          "Affordability is a proposed tenure/programme attribute, not a zoning-use class or an architectural style. No rent, cost, subsidy, eligibility or accessibility certification is established."
+        ],
+        "district_candidates": [
+          {
+            "district": "M-1",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "617(c)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=6&part=6"
+            ],
+            "conditions": [
+              "Definition240: parcel<=1ha, at least3units, at least90% of units in buildings containing>=3units, and all district rules satisfied.",
+              "50–148 units/ha, subject to a lower mapped d modifier (620); 14m maximum with 9m-to-14m neighbour plane and 10m street-edge rule (624).",
+              "13.8m is near14m maximum; actual terrain/roof measurement and neighbour/street envelope require verification."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-1",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "618(h)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=6&part=6"
+            ],
+            "conditions": [
+              "Definition239 composition must be satisfied; all site standards and any requested relaxation require assessment.",
+              "Alternative use route; not a guarantee that a non-compliant Minor proposal will be approved.",
+              "13.8m is near14m maximum; actual terrain/roof measurement and neighbour/street envelope require verification."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-2",
+            "defined_use": "Multi-Residential Development — Minor",
+            "permission": "permitted",
+            "section": "626(c)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=7&part=6"
+            ],
+            "conditions": [
+              "Definition240: parcel<=1ha, at least3units, at least90% of units in buildings containing>=3units, and all district rules satisfied.",
+              "Minimum60 units/ha; FAR3 unless mapped f is lower; mapped d may limit density (629–630).16m maximum with 11m-to-16m neighbour plane and 10m street-edge rule (634)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-2",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "627(h)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=7&part=6"
+            ],
+            "conditions": [
+              "Definition239 composition must be satisfied; all site standards and any requested relaxation require assessment.",
+              "Alternative use route; not a guarantee that a non-compliant Minor proposal will be approved."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          },
+          {
+            "district": "M-C1",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "588(1)(j)",
+            "nominal_height_limit_m": 14,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=3&part=6"
+            ],
+            "conditions": [
+              "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions.",
+              "Density<=148units/ha or lower mapped d; at12m cross-section<=40% of maximum area0–10m, plus neighbour/street envelopes (590,594).",
+              "13.8m full-width fourth floor likely exceeds594(4) area at12m; being below14m total is insufficient. Do not show an unconditional height match."
+            ],
+            "fit_status": "envelope_conflict_requires_design_change_or_specific_discretionary_assessment",
+            "approval": false
+          },
+          {
+            "district": "M-C2",
+            "defined_use": "Multi-Residential Development",
+            "permission": "discretionary",
+            "section": "597(1)(j)",
+            "nominal_height_limit_m": 16,
+            "source_urls": [
+              "https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html?div=4&part=6"
+            ],
+            "conditions": [
+              "New residential construction is discretionary; do not use unrelated school/existing-use permitted provisions.",
+              "FAR<=2.5 or lower mapped f; mapped d may apply. At14m cross-section<=40% of maximum area0–12m, plus neighbour/street envelopes (599,600,604)."
+            ],
+            "fit_status": "candidate_site_review_required",
+            "approval": false
+          }
+        ],
+        "excluded_or_unresolved_routes": [
+          {
+            "districts": [
+              "R-CG"
+            ],
+            "reason": "Stacked units do not satisfy Rowhouse287 or Townhouse319, both exclude units above other units. Do not equate the marketing form name with defined uses."
+          },
+          {
+            "districts": [
+              "H-GO",
+              "M-G"
+            ],
+            "reason": "Shared upper gallery/common corridor access is not established as individual, separate, direct grade access. Omit these routes pending a genuinely different access arrangement or City interpretation."
+          },
+          {
+            "districts": [
+              "R-MH"
+            ],
+            "reason": "Prefabrication is not Manufactured Home227. No R-MH recommendation for this permanent24-unit apartment assembly."
+          }
+        ],
+        "defined_use_labels": [
+          "Multi-Residential Development",
+          "Multi-Residential Development — Minor"
+        ],
+        "construction_classification": {
+          "construction_method": "prefabricated_modular",
+          "Manufactured Home": false,
+          "rationale": "No permanent transport chassis;24units in a permanent apartment building. Section227 defines one dwelling on permanent chassis with relocatability.133(5) distinguishes modular construction from Manufactured Home."
+        }
+      },
+      "reference_reconciliation": "Four occupied floors; three central paired-window colour bays with two white end cores. Side reference shows two narrow windows per floor. Top image is high oblique. Permanent apartment, no transport chassis.",
+      "source_measurements": [
+        "Six tall central front windows per floor in ochre/olive/ochre bays.",
+        "Two narrow side windows per floor; low flat roof parapet."
+      ]
+    }
+  ]
+}

@@ -86,6 +86,36 @@ def test_internal_enhance_defaults_to_the_fast_source_locked_tier():
     assert request.internal_enhance_quality == "fast"
 
 
+def test_bicycle_request_and_prompt_keep_forward_eye_height_motion():
+    request = VideoPilotRequest(
+        project_id="00000000-0000-0000-0000-000000000001",
+        guide_frame_base64=_jpeg_data_url(),
+        route_points=[{"x": .4, "y": .66}, {"x": .6, "y": .64}],
+        camera_motion="bicycle_ride",
+    )
+    prompt = build_cinematic_prompt(
+        route_points=[point.model_dump() for point in request.route_points],
+        camera_motion=request.camera_motion,
+        scene_brief="A park beside the route.", duration_seconds=8,
+        control_mode="multi_keyframe", keyframe_count=6,
+    )
+    assert "forward-facing bicycle ride" in prompt
+    assert "1.6 metres" in prompt
+    assert "constant cycling speed" in prompt
+    assert "Ride no more than 56 metres" in prompt
+    assert "Stay in clear open space" in prompt
+    assert "professional architectural drone shot" not in prompt
+
+    preview_prompt = build_cinematic_prompt(
+        route_points=[point.model_dump() for point in request.route_points],
+        camera_motion=request.camera_motion,
+        scene_brief="A park beside the route.", duration_seconds=8,
+        control_mode="preview_video",
+    )
+    assert "Match the source video's total travel distance" in preview_prompt
+    assert "Copy the supplied video's camera positions" in preview_prompt
+
+
 def test_video_request_defaults_to_high_quality_and_validates_capture_audit():
     request = VideoPilotRequest(
         project_id="00000000-0000-0000-0000-000000000001",

@@ -1,0 +1,615 @@
+{
+  "schema": "cityprompt.rlasm.prior-review-supplemental-attestation@1",
+  "candidate": "courtyard-childcare-centre-clay-v003",
+  "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003",
+  "model_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\courtyard-childcare-centre-clay-v003.glb",
+  "model_sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f",
+  "reviewer": "independent agent /root/rlasm_independent_review",
+  "attested_utc": "2026-10-06T20:05:12.367220+00:00",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "holistic_review_basis": "Cited original independent full holistic review, not new pixels in this attestation.",
+  "fresh_holistic_pixel_review_performed": false,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_blocker_counts": {
+    "P0": 0,
+    "P1": 0
+  },
+  "decision": "PASS_PRIOR_ARCHITECTURAL_CLAY_REVIEW_REVALIDATED",
+  "scope": "Machine-schema normalization of an existing holistic architectural-clay pass plus fresh exact-byte integrity revalidation. No new visual, runtime, textured-keeper or zoning approval.",
+  "prior_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\courtyard-childcare-centre-clay-v003-independent-review-2026-10-06-v001.json",
+    "sha256": "35e90f2134de63ea1538c565f16b49a4312a42f6067fe99cfb8bdd9913c63e6f",
+    "reviewer": "independent agent /root/rlasm_independent_review",
+    "date": "2026-10-06T16:28:47.799133+00:00",
+    "decision": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+    "original_bytes_preserved": true
+  },
+  "readiness_authority": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\affordable-housing-2026-10-06\\reviews\\recent-twenty-readiness-audit-2026-10-06-v001.json",
+    "sha256": "7ebc72a2577a4e7194e3691cdc32f977e08958321bec9ac02fa02fabb16bd362",
+    "no_readiness_hold": true
+  },
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0.png",
+      "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af",
+      "bytes": 3359153,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc",
+      "bytes": 3717880,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7",
+      "bytes": 3206421,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\aerial.png",
+      "sha256": "28affda3a88d3e1d078625412ea38ad41cbb932fbfe1bf6cccbee96f0be89630",
+      "bytes": 1486843,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\architecture_close.png",
+      "sha256": "d11f8571890a4f2120724b5d247bcc64b4de2d5c6044d9b77359d61ed1374291",
+      "bytes": 1454227,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\courtyard.png",
+      "sha256": "d93af702ceaf3c40d5744e6048b0eda880e01dd15fa775c6a25ad969bbc2bdb1",
+      "bytes": 1634695,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\facade_close.png",
+      "sha256": "bffcf6dd73d4fbf8b6724571152f4c65c9d6510c7c0458c9b08d9000d0e5d20e",
+      "bytes": 1667072,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\front.png",
+      "sha256": "40d9733d6cd607e11e45317da48bfe3cf71797e7cff50c81e54fcd1bcbf20ad0",
+      "bytes": 1405775,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\front_corner.png",
+      "sha256": "5b879eb53c30503aa48df4cf260e0366fde6dad96c8d9b2b200734626ec5d303",
+      "bytes": 1507703,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\glass_close.png",
+      "sha256": "7abe43304bc1bf3ff6b1cc59042fabcbcd627a2029182d108c7655046282d5f9",
+      "bytes": 1522117,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\interior.png",
+      "sha256": "435203b2014f0f3d89d5ddbe05ad2541d240c2c811b6c03f913dd8677b3fee40",
+      "bytes": 1414495,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\left_side.png",
+      "sha256": "0263c39221fa0557b3b45fc4b22ffb7b6e8964af397f28de1948572705c9bfb4",
+      "bytes": 1368509,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear.png",
+      "sha256": "0c437e207967440362f004f11504ba98ec633c8b8de56b8ae186a948481fce11",
+      "bytes": 1350351,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear_side.png",
+      "sha256": "70fbe0ff8fae21f1f1214192b581211dfd93072b37553fb6c9ce3346707a9c83",
+      "bytes": 1507440,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear_spine.png",
+      "sha256": "d11c8127412d3ba8ed7b0bc9a76d5812a50decfc28f1553931511868ab257cc7",
+      "bytes": 1335533,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\right_side.png",
+      "sha256": "90edf2a60632c54e021bb31b0de57bc06e8ee6c9575f2bace951ea8489bca6ba",
+      "bytes": 1355511,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\roof_contact.png",
+      "sha256": "f72ef738444eb922c5b57645a2c66f890af08668cd95f2134a8849cb5d041425",
+      "bytes": 1624649,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\side_projection.png",
+      "sha256": "5bc31d947f88c2af176079ebdc6fd77522bd2155d1630bf8e2f4e53b61eb06e4",
+      "bytes": 1563785,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\top.png",
+      "sha256": "288fa44b62de050fa4483896fc6b4488df6cccbcc1a14a106eac8370102970b5",
+      "bytes": 1388719,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\veranda_contact.png",
+      "sha256": "f9131ce6eb93a6c65234883d9290be605ba4c807592513dc7a30f845531844f6",
+      "bytes": 1514478,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\boards\\all-views-contact.png",
+      "sha256": "ff0837e41ebe0780835605f74f40b4ac92bc3283cfbeba722ea3fc0ea4aa7ece",
+      "bytes": 2286134,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\boards\\locked-source-board.png",
+      "sha256": "1ba7e4b7a6147c1b6b8ab2d8e638e3914e12faf65096d2b5ec13503f0b893598",
+      "bytes": 1364615,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\boards\\phone-construction.png",
+      "sha256": "1e44e6f50217462bd2b519a6004b9afbe32a2bc464817d9abc148200e1aa21fe",
+      "bytes": 1107600,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\boards\\phone-source-comparison.png",
+      "sha256": "1db1dad6953bfc5e8c59795e34552ae753fbd32e585a6dc492ed3702aba5c32c",
+      "bytes": 1570745,
+      "inspection_basis": "Original full-resolution pixel inspection in cited holistic review; bytes revalidated for this attestation. No new pixel inspection claimed."
+    }
+  ],
+  "sources_current_exact": [
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\courtyard-childcare-centre\\variant_0.png",
+      "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\courtyard-childcare-centre\\variant_0_angle_60.png",
+      "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\courtyard-childcare-centre\\variant_0_angle_90.png",
+      "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7",
+      "passed": true
+    }
+  ],
+  "integrity_checks": [
+    {
+      "kind": "build model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\courtyard-childcare-centre-clay-v003.glb",
+      "sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f",
+      "passed": true
+    },
+    {
+      "kind": "gallery model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\courtyard-childcare-centre-clay-v003.glb",
+      "sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f",
+      "passed": true
+    },
+    {
+      "kind": "review model",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\courtyard-childcare-centre-clay-v003.glb",
+      "sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f",
+      "passed": true
+    },
+    {
+      "kind": "gallery review",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\courtyard-childcare-centre-clay-v003-independent-review-2026-10-06-v001.json",
+      "sha256": "35e90f2134de63ea1538c565f16b49a4312a42f6067fe99cfb8bdd9913c63e6f",
+      "passed": true
+    },
+    {
+      "kind": "authoring blend",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\courtyard-childcare-centre-clay-v003-authoring.blend",
+      "sha256": "90c2b2aa9e5296492ddb2a30418ae360ac5065923082ec7bff32f93ea9edf67e",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0.png",
+      "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\courtyard-childcare-centre\\variant_0.png",
+      "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\courtyard-childcare-centre\\variant_0_angle_60.png",
+      "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc",
+      "passed": true
+    },
+    {
+      "kind": "copied source",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7",
+      "passed": true
+    },
+    {
+      "kind": "authoritative source",
+      "path": "C:\\Users\\andre\\.codex\\worktrees\\rlasm-five-zoning-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\courtyard-childcare-centre\\variant_0_angle_90.png",
+      "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\scripts\\clay_core.py",
+      "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\scripts\\build.py",
+      "sha256": "70489adddcb0e755f31a8ff2eaa0224adce91ddb133140e3f867613c532ee522",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\scripts\\plan.py",
+      "sha256": "8dcbf7921d91d7c96784e7a9212f3f366ebb1e5e2ef6104cad1a9555ac4c5e47",
+      "passed": true
+    },
+    {
+      "kind": "immutable script",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\scripts\\designs.json",
+      "sha256": "6bd319ca99118d35891c1a3261df6bd98e8f3b6d5f6758b31b1d07cf3096ecd3",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0.png",
+      "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\aerial.png",
+      "sha256": "28affda3a88d3e1d078625412ea38ad41cbb932fbfe1bf6cccbee96f0be89630",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\architecture_close.png",
+      "sha256": "d11f8571890a4f2120724b5d247bcc64b4de2d5c6044d9b77359d61ed1374291",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\courtyard.png",
+      "sha256": "d93af702ceaf3c40d5744e6048b0eda880e01dd15fa775c6a25ad969bbc2bdb1",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\facade_close.png",
+      "sha256": "bffcf6dd73d4fbf8b6724571152f4c65c9d6510c7c0458c9b08d9000d0e5d20e",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\front.png",
+      "sha256": "40d9733d6cd607e11e45317da48bfe3cf71797e7cff50c81e54fcd1bcbf20ad0",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\front_corner.png",
+      "sha256": "5b879eb53c30503aa48df4cf260e0366fde6dad96c8d9b2b200734626ec5d303",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\glass_close.png",
+      "sha256": "7abe43304bc1bf3ff6b1cc59042fabcbcd627a2029182d108c7655046282d5f9",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\interior.png",
+      "sha256": "435203b2014f0f3d89d5ddbe05ad2541d240c2c811b6c03f913dd8677b3fee40",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\left_side.png",
+      "sha256": "0263c39221fa0557b3b45fc4b22ffb7b6e8964af397f28de1948572705c9bfb4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear.png",
+      "sha256": "0c437e207967440362f004f11504ba98ec633c8b8de56b8ae186a948481fce11",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear_side.png",
+      "sha256": "70fbe0ff8fae21f1f1214192b581211dfd93072b37553fb6c9ce3346707a9c83",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear_spine.png",
+      "sha256": "d11c8127412d3ba8ed7b0bc9a76d5812a50decfc28f1553931511868ab257cc7",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\right_side.png",
+      "sha256": "90edf2a60632c54e021bb31b0de57bc06e8ee6c9575f2bace951ea8489bca6ba",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\roof_contact.png",
+      "sha256": "f72ef738444eb922c5b57645a2c66f890af08668cd95f2134a8849cb5d041425",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\side_projection.png",
+      "sha256": "5bc31d947f88c2af176079ebdc6fd77522bd2155d1630bf8e2f4e53b61eb06e4",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\top.png",
+      "sha256": "288fa44b62de050fa4483896fc6b4488df6cccbcc1a14a106eac8370102970b5",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\veranda_contact.png",
+      "sha256": "f9131ce6eb93a6c65234883d9290be605ba4c807592513dc7a30f845531844f6",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\boards\\all-views-contact.png",
+      "sha256": "ff0837e41ebe0780835605f74f40b4ac92bc3283cfbeba722ea3fc0ea4aa7ece",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\boards\\locked-source-board.png",
+      "sha256": "1ba7e4b7a6147c1b6b8ab2d8e638e3914e12faf65096d2b5ec13503f0b893598",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\boards\\phone-construction.png",
+      "sha256": "1e44e6f50217462bd2b519a6004b9afbe32a2bc464817d9abc148200e1aa21fe",
+      "passed": true
+    },
+    {
+      "kind": "previously visually inspected image",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\boards\\phone-source-comparison.png",
+      "sha256": "1db1dad6953bfc5e8c59795e34552ae753fbd32e585a6dc492ed3702aba5c32c",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\evidence\\builder-evidence.json",
+      "sha256": "18047a2fd9726b0d546a1bd536c1a15c43bcd34c60c4b7f2734ba47353ed91c2",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\evidence\\carrier-aperture-audit.json",
+      "sha256": "fbdfdf60d3c987ae0addadbbd3b16bd163012e1f5e98f6e174ccedd99653f364",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\evidence\\delivery-verification.json",
+      "sha256": "6535fff8ac442ac4fc7cf600a3e5262ef2e915ca2e9e99e65bc87a7e160822ef",
+      "passed": true
+    },
+    {
+      "kind": "reviewed evidence",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\evidence\\runtime-review.md",
+      "sha256": "5492bdabf23e73d3926ff958ea6299ae8e8a8d736271e46f1fac25a51f4f53f8",
+      "passed": true
+    },
+    {
+      "kind": "source_manifest_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\prework-manifest.json",
+      "sha256": "d9315f1ff22e0267f9ec056f9f7f7868641b3547a2e01e52de8d111bfc232501",
+      "passed": true
+    },
+    {
+      "kind": "build_report_sha256",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\build-report.json",
+      "sha256": "02030a027677551b58a304dae9b6b4c5792a03bd818995d6f0a43c3648f216d7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0.png",
+      "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0_angle_60.png",
+      "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\sources\\variant_0_angle_90.png",
+      "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\aerial.png",
+      "sha256": "28affda3a88d3e1d078625412ea38ad41cbb932fbfe1bf6cccbee96f0be89630",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\architecture_close.png",
+      "sha256": "d11f8571890a4f2120724b5d247bcc64b4de2d5c6044d9b77359d61ed1374291",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\courtyard.png",
+      "sha256": "d93af702ceaf3c40d5744e6048b0eda880e01dd15fa775c6a25ad969bbc2bdb1",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\facade_close.png",
+      "sha256": "bffcf6dd73d4fbf8b6724571152f4c65c9d6510c7c0458c9b08d9000d0e5d20e",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\front.png",
+      "sha256": "40d9733d6cd607e11e45317da48bfe3cf71797e7cff50c81e54fcd1bcbf20ad0",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\front_corner.png",
+      "sha256": "5b879eb53c30503aa48df4cf260e0366fde6dad96c8d9b2b200734626ec5d303",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\glass_close.png",
+      "sha256": "7abe43304bc1bf3ff6b1cc59042fabcbcd627a2029182d108c7655046282d5f9",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\interior.png",
+      "sha256": "435203b2014f0f3d89d5ddbe05ad2541d240c2c811b6c03f913dd8677b3fee40",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\left_side.png",
+      "sha256": "0263c39221fa0557b3b45fc4b22ffb7b6e8964af397f28de1948572705c9bfb4",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear.png",
+      "sha256": "0c437e207967440362f004f11504ba98ec633c8b8de56b8ae186a948481fce11",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear_side.png",
+      "sha256": "70fbe0ff8fae21f1f1214192b581211dfd93072b37553fb6c9ce3346707a9c83",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\rear_spine.png",
+      "sha256": "d11c8127412d3ba8ed7b0bc9a76d5812a50decfc28f1553931511868ab257cc7",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\right_side.png",
+      "sha256": "90edf2a60632c54e021bb31b0de57bc06e8ee6c9575f2bace951ea8489bca6ba",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\roof_contact.png",
+      "sha256": "f72ef738444eb922c5b57645a2c66f890af08668cd95f2134a8849cb5d041425",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\side_projection.png",
+      "sha256": "5bc31d947f88c2af176079ebdc6fd77522bd2155d1630bf8e2f4e53b61eb06e4",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\top.png",
+      "sha256": "288fa44b62de050fa4483896fc6b4488df6cccbcc1a14a106eac8370102970b5",
+      "passed": true
+    },
+    {
+      "kind": "board input",
+      "path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003\\renders\\veranda_contact.png",
+      "sha256": "f9131ce6eb93a6c65234883d9290be605ba4c807592513dc7a30f845531844f6",
+      "passed": true
+    }
+  ],
+  "canonical_validator": {
+    "schema": "cityprompt.rlasm.preflight@1",
+    "candidate": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003",
+    "keeper_check_requested": false,
+    "status": "pass",
+    "failures": [],
+    "warnings": [
+      "Deterministic preflight cannot prove pixel fidelity, camera framing, contacts, optics, or holistic approval."
+    ]
+  },
+  "mandatory_view_count": 17,
+  "all_mandatory_views_covered_by_original_review": true,
+  "requires_fresh_review": false,
+  "runtime_approved": false,
+  "textured_keeper_approved": false,
+  "candidate_files_modified": false,
+  "repository_files_modified": false,
+  "limitations": [
+    "Absolute dimensions inferred from images, not survey.",
+    "Hidden/rear/interior layouts inferred; no surveyed floorplan or building-code approval.",
+    "Texture-free semantic clay; no source-conditioned PBR/textured keeper judgment.",
+    "No runtime placement, terrain, scale, performance or legal zoning compliance approval."
+  ]
+}

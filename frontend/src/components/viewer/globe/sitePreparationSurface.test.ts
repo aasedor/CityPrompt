@@ -43,6 +43,25 @@ const compiledPark = {
 };
 
 describe('compiled site preparation', () => {
+  it('keeps centimetre projection drift on the prepared datum but rejects actual boundary overhangs', () => {
+    const coordinates = (ring: number[][]): [number, number][] => ring.map(([x, y]) =>
+      [-114 + x / (111320 * Math.cos(51 * Math.PI / 180)), 51 + y / 111320]);
+    const boundary = { ...zone('site', 'site_boundary', { terrain_elevation_m: 1031.25 }),
+      is_active_boundary: true, coordinates: coordinates([[0, 0], [100, 0], [100, 100], [0, 100]]) };
+    for (const drift of [-0.01, 0.01]) {
+      const road = { ...zone('road', 'road'), coordinates: coordinates([[drift, 20], [100 + drift, 20], [100 + drift, 30], [drift, 30]]) };
+      expect(preparedSiteContainsZone(boundary, road)).toBe(true);
+      expect(resolvePreparedSiteTerrainForZone(road, [boundary, road], 1090)).toBe(1031.25);
+    }
+    for (const drift of [-0.03, 0.03]) {
+      const road = { ...zone('road', 'road'), coordinates: coordinates([[drift, 20], [100 + drift, 20], [100 + drift, 30], [drift, 30]]) };
+      expect(preparedSiteContainsZone(boundary, road)).toBe(false);
+      expect(resolvePreparedSiteTerrainForZone(road, [boundary, road], 1090)).toBeNull();
+    }
+    const notched = { ...boundary, coordinates: coordinates([[0, 0], [100, 0], [100, 100], [22.2, 100], [22.2, 10], [22, 10], [22, 100], [0, 100]]) };
+    const bridge = { ...zone('bridge', 'road'), coordinates: coordinates([[10, 40], [90, 40], [90, 50], [10, 50]]) };
+    expect(preparedSiteContainsZone(notched, bridge)).toBe(false);
+  });
   it('inherits retained ground inside the boundary, permits an explicit override, and leaves outside objects independent', () => {
     const boundary = { ...zone('site', 'site_boundary', { community_3d_mask_existing_tiles: false }), is_active_boundary: true,
       coordinates: [[0, 0], [10, 0], [10, 10], [0, 10]] as [number, number][] };
@@ -71,8 +90,8 @@ describe('compiled site preparation', () => {
     source.dispose(); backing.dispose();
   });
 
-  it('shares the active prepared datum only with contained authored zones', () => {
-    const boundary = { ...zone('site', 'site_boundary', { terrain_elevation_m: 1031.25 }), is_active_boundary: true,
+  it.each([0, 0.45, 1])('shares the active prepared datum only with contained authored zones at opacity %s', (opacity) => {
+    const boundary = { ...zone('site', 'site_boundary', { terrain_elevation_m: 1031.25, site_boundary_opacity: opacity }), is_active_boundary: true,
       coordinates: [[0, 0], [10, 0], [10, 4], [4, 4], [4, 10], [0, 10]] as [number, number][] };
     for (const type of ['building', 'road', 'green_space'] as const) {
       const contained = { ...zone(type, type, { terrain_elevation_m: 1090 }), coordinates: [[1, 1], [3, 1], [3, 3], [1, 3]] as [number, number][] };

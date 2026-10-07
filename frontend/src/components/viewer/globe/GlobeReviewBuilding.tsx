@@ -1,60 +1,181 @@
-import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
+import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
+import type { ThreeEvent } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
+import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
 import { computeCentroid } from '../mapEngine/geoUtils';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
 import { rectangleDimensions } from '@/features/pickPlace/geometry';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { resolveZoneTerrainHeight } from './globeTerrainUtils';
 import { direct3DInstanceUserData, direct3DZoneInstanceDescriptor } from './direct3dCapture';
-import { mountBuildingWalking, readBuildingWalking } from '@/features/legoAssembly/buildingWalking';
+import { mountBuildingInspection } from '@/features/legoAssembly/buildingInspection';
+import { mountModelBuildingWalking } from '@/features/legoAssembly/mountModelBuildingWalking';
+import * as THREE from 'three';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { useSharedSiteGround, useSharedSiteGroundVerification } from './SharedSiteGroundProvider';
+import { preparedEntranceGround } from './preparedEntranceGround';
+import { reviewBuildingFootprints, reviewBuildingGroundContact } from './reviewBuildingGround';
+import { BuildingFoundationSurface } from './BuildingFoundationSurface';
+import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
+import { prepareReviewBuildingGlass } from './reviewBuildingGlass';
+import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
+import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
+import { useBuildingEntranceApproach, BuildingEntranceApproachMesh } from './BuildingEntranceApproaches';
+import { computeFootprintFrame } from './buildingPlacement';
+import { entranceReviewRevision, type BuildingEntranceReview } from './buildingEntranceReview';
+
+type BuildingClick = (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
+
+/** Use the unrotated foundation frame; the footprints already include plot yaw. */
+export function reviewBuildingPointerHit(frame: THREE.Object3D, event: Pick<ThreeEvent<PointerEvent>, 'point' | 'ray' | 'distance'>,
+  ground: Omit<NativeEntranceHit, 'point' | 'ray'>): NativeEntranceHit {
+  const local = frame.worldToLocal(event.point.clone());
+  return { ...ground, point: local.toArray(), ray: {
+    origin: event.ray.origin.toArray(), direction: event.ray.direction.toArray(), distance: event.distance,
+  } };
+}
+
+type GroundReporter = (buildingId: string, rendererId: string, reason: string | null, review?: BuildingEntranceReview | null) => void;
+
+function PendingGroundIssue({ zone, reason, report }: { zone: SiteZone; reason: string; report?: GroundReporter }) {
+  const buildingId = zone.building_id || zone.id;
+  const rendererId = `review:${zone.id}`;
+  useEffect(() => {
+    report?.(buildingId, rendererId, reason);
+    return () => report?.(buildingId, rendererId, null);
+  }, [buildingId, rendererId, reason, report]);
+  return null;
+}
 
 /** Isolated local-review GLB. A bad candidate leaves a visible fallback and
  * never takes down the project view or another building. */
-class ReviewBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+class ReviewBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
-  render() { return this.state.failed
-    ? <mesh name="review-building-error" userData={{ reviewBuildingStatus: 'error' }} position={[0, 0, 4]}>
-        <boxGeometry args={[22, 14, 8]}/><meshBasicMaterial color="#e86a40" wireframe/>
-      </mesh>
-    : this.props.children; }
+  render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-function BuildingGLB({ url, zone, walkReady }: { url: string; zone: SiteZone; walkReady: boolean }) {
+function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuildingClick }: {
+  url: string; zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter; onBuildingClick?: BuildingClick;
+}) {
+  const frameRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(url);
-  const model = useMemo(() => centreNativeClayClone(scene.clone(true)), [scene]);
+  const preparedModel = useMemo(() => prepareReviewBuildingGlass(scene), [scene]);
+  const model = useMemo(() => {
+    const clone = centreNativeClayClone(preparedModel.clone);
+    // Draw authored geometry after the prepared surface, whose depth remains
+    // flat even when its colour is transparent over the Google context.
+    clone.traverse(object => { if ((object as THREE.Mesh).isMesh) object.renderOrder = 150; });
+    return clone;
+  }, [preparedModel]);
+  useEffect(() => retainResourceForDeferredDisposal(preparedModel,
+    value => value.ownedMaterials.forEach(material => material.dispose())), [preparedModel]);
+  const [lng, lat] = computeCentroid(zone.coordinates);
+  const yaw = rectangleDimensions(zone.coordinates).degrees * Math.PI / 180;
+  const footprints = useMemo(() => reviewBuildingFootprints(scene, yaw), [scene, yaw]);
+  const sharedGround = useSharedSiteGround();
+  const verifiedGround = useSharedSiteGroundVerification();
+  const boundary = getActiveSiteBoundary(zones);
+  const preparedLevel = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
+  const prepared = useMemo(() => preparedEntranceGround(boundary, preparedLevel), [boundary, preparedLevel]);
+  const ground = sharedGround.status === 'inactive' && prepared ? prepared : verifiedGround;
+  const displayGround = sharedGround.status === 'inactive' && prepared ? prepared : sharedGround;
+  const contact = useMemo(() => reviewBuildingGroundContact(footprints, lng, lat, ground), [footprints, lng, lat, ground]);
+  // Retain a coherent visible draft during tile refresh. Only the verification
+  // contact above can authorize walking or clear a capture-blocking issue.
+  const displayContact = useMemo(() => reviewBuildingGroundContact(footprints, lng, lat, displayGround),
+    [footprints, lng, lat, displayGround]);
+  const geometry = useMemo(() => {
+    if (displayContact.status !== 'ready') return null;
+    const result = new THREE.BufferGeometry();
+    result.setAttribute('position', new THREE.Float32BufferAttribute(displayContact.positions, 3));
+    result.setIndex(displayContact.indices);
+    result.computeVertexNormals();
+    result.computeBoundingSphere();
+    return result;
+  }, [displayContact]);
+  useEffect(() => geometry ? retainResourceForDeferredDisposal(geometry, value => value.dispose()) : undefined, [geometry]);
+  const buildingId = zone.building_id || zone.id;
+  const rendererId = `review:${zone.id}`;
+  const footprintFrame = useMemo(() => computeFootprintFrame(zone.coordinates)!, [zone.coordinates]);
+  const approach = useBuildingEntranceApproach(contact, footprints, footprintFrame, buildingId, prepared);
+  const reason = contact.status === 'ready' ? null : contact.status === 'outside'
+    ? 'incomplete_footprint_ground' : contact.reason ?? 'incomplete_footprint_ground';
+  const combinedReason = reason ?? approach.reason;
+  const review = useMemo<BuildingEntranceReview | null>(() => {
+    const sections = approach.userData?.entranceApproachSections;
+    const details = approach.userData?.entranceApproachDetails;
+    const revision = entranceReviewRevision(displayGround, ground);
+    if (combinedReason || contact.status !== 'ready' || !sections?.length || !details || revision === null) return null;
+    return {buildingId, groundRevision:revision, generatedSteps:approach.userData!.entranceApproachStepCount,
+      riseM:sections[sections.length-1].endHeightM-sections[0].startHeightM, clearWidthM:details.clearWidthM,
+      supportHeightM:contact.positions.reduce((max,value,index) => index%3===2 ? Math.max(max,-value) : max,0)};
+  }, [approach.userData, combinedReason, contact, buildingId, displayGround, ground]);
+  useEffect(() => {
+    onGroundingIssue?.(buildingId, rendererId, combinedReason, review);
+    return () => onGroundingIssue?.(buildingId, rendererId, null);
+  }, [buildingId, rendererId, combinedReason, review, onGroundingIssue]);
   useEffect(() => {
     const source = model.children[0];
-    if (!walkReady || !source) return;
-    const walking = readBuildingWalking(source);
-    if (walking) return mountBuildingWalking(`review:${zone.id}`, zone, source, walking);
-  }, [model, zone, walkReady]);
-  return <group name="review-building-loaded" userData={{ reviewBuildingStatus: 'ready',
+    if (contact.status !== 'ready' || !source) return;
+    const inspect = mountBuildingInspection(rendererId, zone, source);
+    const walk = mountModelBuildingWalking(rendererId, zone, source, url);
+    return () => { walk(); inspect(); };
+  }, [model, zone, contact, rendererId, url]);
+  const storedTerrain = Number(zone.properties?.terrain_elevation_m);
+  const height = displayContact.status === 'ready' ? displayContact.anchorHeight : preparedLevel
+    ?? resolveZoneTerrainHeight(null, Number.isFinite(storedTerrain) ? storedTerrain : null, terrainHeight);
+  const userData = { reviewBuildingStatus: contact.status === 'ready' ? 'ready' : 'ground-unresolved',
+    reviewBuildingGroundReason: reason, reviewBuildingGroundRevision: ground.revision,
     ...direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id, 'building',
-      zone.building_id ? { building_id: zone.building_id } : {})) }}
-    rotation={[Math.PI / 2, 0, 0]} dispose={null}><primitive object={model}/></group>;
+      zone.building_id ? { building_id: zone.building_id } : {})) };
+  return <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>
+    <group ref={frameRef} name={`review-building-${zone.id}`}>
+      {geometry && <BuildingFoundationSurface geometry={geometry} renderOrder={150} userData={userData}/>}
+      <group rotation={[0, 0, yaw]}
+        onPointerDown={event => {
+          event.stopPropagation();
+          const hit = frameRef.current && supportsNativeEntranceStepPick(zone)
+            ? reviewBuildingPointerHit(frameRef.current, event, { footprints, lng, lat, contact }) : undefined;
+          onBuildingClick?.(buildingId, hit ?? undefined, 'pointerdown');
+        }}
+        onClick={event => {
+          event.stopPropagation();
+          if (event.delta <= 6) onBuildingClick?.(buildingId);
+        }}>
+        <group name="review-building-loaded" userData={userData}
+          rotation={[Math.PI / 2, 0, 0]} dispose={null}><primitive object={model}/></group>
+      </group>
+      <BuildingEntranceApproachMesh approach={approach}/>
+    </group>
+  </EastNorthUpFrame>;
 }
 
-export function GlobeReviewBuilding({ zone, zones, terrainHeight }: {
-  zone: SiteZone; zones: SiteZone[]; terrainHeight: number;
+export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIssue, onBuildingClick }: {
+  zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter; onBuildingClick?: BuildingClick;
 }) {
-  const url = String(zone.properties?.validation_native_url || '');
+  const url = nativeBuildingUrl(zone) ?? '';
   const [lng, lat] = computeCentroid(zone.coordinates);
   const storedTerrain = Number(zone.properties?.terrain_elevation_m);
   const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)
     ?? resolveZoneTerrainHeight(null, Number.isFinite(storedTerrain) ? storedTerrain : null, terrainHeight);
-  const degrees = rectangleDimensions(zone.coordinates).degrees;
-  const walkReady = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight) !== null;
   if (!url || zone.coordinates.length < 4) return null;
-  return <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height + .12}>
-    <group name={`review-building-${zone.id}`} rotation={[0, 0, degrees * Math.PI / 180]}>
-      <ReviewBoundary><Suspense fallback={
+  return <ReviewBoundary key={url} fallback={<>
+    <PendingGroundIssue zone={zone} reason="review_model_unavailable" report={onGroundingIssue}/>
+    <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>
+      <mesh name="review-building-error" userData={{ reviewBuildingStatus: 'error' }} position={[0, 0, 4]}>
+        <boxGeometry args={[22, 14, 8]}/><meshBasicMaterial color="#e86a40" wireframe/>
+      </mesh>
+    </EastNorthUpFrame>
+  </>}><Suspense fallback={<>
+      <PendingGroundIssue zone={zone} reason="review_model_loading" report={onGroundingIssue}/>
+      <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>
         <mesh name="review-building-loading" userData={{ reviewBuildingStatus: 'loading' }} position={[0, 0, 4]}>
           <boxGeometry args={[22, 14, 8]}/><meshBasicMaterial color="#64748b" wireframe/>
         </mesh>
-      }><BuildingGLB url={url} zone={zone} walkReady={walkReady}/></Suspense></ReviewBoundary>
-    </group>
-  </EastNorthUpFrame>;
+      </EastNorthUpFrame>
+    </>}><BuildingGLB url={url} zone={zone} zones={zones} terrainHeight={terrainHeight}
+      onGroundingIssue={onGroundingIssue} onBuildingClick={onBuildingClick}/></Suspense></ReviewBoundary>;
 }

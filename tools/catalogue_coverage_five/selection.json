@@ -1,0 +1,22 @@
+{
+  "maple": {
+    "folder": "maple-v004",
+    "review": "reviews/maple-porch-manufactured-cottage-clay-v004-independent-review-2026-10-06-v001.json"
+  },
+  "horizon": {
+    "folder": "horizon-v003",
+    "review": "reviews/horizon-manufactured-home-clay-v003-independent-review-2026-10-06-v001.json"
+  },
+  "craftsman": {
+    "folder": "craftsman-v003",
+    "review": "reviews/narrow-lot-craftsman-cottage-clay-v003-independent-review-2026-10-06-v001.json"
+  },
+  "mews": {
+    "folder": "mews-v003",
+    "review": "reviews/garden-mews-courtyard-housing-clay-v003-independent-review-2026-10-06-v001.json"
+  },
+  "office": {
+    "folder": "office-v004",
+    "review": "reviews/brick-timber-courtyard-office-clay-v004-independent-review-2026-10-06-v001.json"
+  }
+}

@@ -24,25 +24,27 @@ export function snapStreetEndpoint(line: number[][], index: number, zones: SiteZ
     const variant=street.properties?.road_selected_variant_id;
     if(isElevatedRail(variant))continue;
     if(variant===CANAL_VARIANT || variant===BRIDGE_VARIANT){
-      if(target.length!==2)continue;
-      const [ax,ay]=local(target[0]),[bx,by]=local(target[1]);
-      const dx=bx-ax,dy=by-ay,length=Math.hypot(dx,dy);if(length<1)continue;
-      let candidates:number[][]=[];
-      if(variant===CANAL_VARIANT){
-        const along=((px-ax)*dx+(py-ay)*dy)/length;
-        const cosine=Math.abs((px*dx+py*dy)/approachLength/length);
-        if(cosine>Math.sin(12*Math.PI/180)||along<incomingWidth/2+4||along>length-incomingWidth/2-4)continue;
-        const sign=Math.sign(-ax*dy+ay*dx)||1;
-        // Snap to the dry OUTER bank, never to the water's centreline.
-        candidates=[[ax+along*dx/length+sign*18*dy/length,ay+along*dy/length-sign*18*dx/length]];
-      }else{
-        if(Math.abs((px*dx+py*dy)/approachLength/length)<.97)continue;
-        candidates=[[ax,ay],[bx,by]];
-      }
-      for(const [x,y] of candidates){
-        const distance=Math.hypot(x-px,y-py);
-        if(distance>4 || (best&&distance>=best.distance))continue;
-        best={point:[adjacent[0]+x/lonM,adjacent[1]+y/METERS_PER_DEG_LAT],distance};
+      if(target.length<2 || (variant===BRIDGE_VARIANT && target.length!==2))continue;
+      for(let segment=0;segment<target.length-1;segment++){
+        const [ax,ay]=local(target[segment]),[bx,by]=local(target[segment+1]);
+        const dx=bx-ax,dy=by-ay,length=Math.hypot(dx,dy);if(length<1)continue;
+        let candidates:number[][]=[];
+        if(variant===CANAL_VARIANT){
+          const along=((px-ax)*dx+(py-ay)*dy)/length;
+          const cosine=Math.abs((px*dx+py*dy)/approachLength/length);
+          if(cosine>Math.sin(12*Math.PI/180)||along<incomingWidth/2+4||along>length-incomingWidth/2-4)continue;
+          const sign=Math.sign(-ax*dy+ay*dx)||1;
+          // Snap to the dry OUTER bank, never to the water's centreline.
+          candidates=[[ax+along*dx/length+sign*18*dy/length,ay+along*dy/length-sign*18*dx/length]];
+        }else{
+          if(Math.abs((px*dx+py*dy)/approachLength/length)<.97)continue;
+          candidates=[[ax,ay],[bx,by]];
+        }
+        for(const [x,y] of candidates){
+          const distance=Math.hypot(x-px,y-py);
+          if(distance>4 || (best&&distance>=best.distance))continue;
+          best={point:[adjacent[0]+x/lonM,adjacent[1]+y/METERS_PER_DEG_LAT],distance};
+        }
       }
       continue;
     }

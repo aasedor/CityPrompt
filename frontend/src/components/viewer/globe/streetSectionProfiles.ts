@@ -659,7 +659,7 @@ export function resolvePilotStreetSectionProfile(
   // contextual path connectors an explicit, scale-locked section so they do
   // not fall through to the generic motor-road treatment (curbs + white road
   // dashes). The 4 m total matches the catalog and the plan generator.
-  if (pilotId === 'multi_use_trail') {
+  if (pilotId === 'multi_use_trail' && !nativePilot) {
     const bands: StreetSectionBand[] = [
       {
         sourceType: 'soft_shoulder', label: 'Soft shoulder', kind: 'shoulder',
@@ -699,7 +699,8 @@ export function resolvePilotStreetSectionProfile(
     rowM: nativePilot.widthM,
     renderCurbs: nativePilot.id === 'student_main_street_v1',
     zones: nativePilot.sections.map(section => ({
-      type: section.name.includes('walk') || section.name.includes('furniture') ? 'sidewalk'
+      type: nativePilot.program?.adapter === 'narrow-pathway-v1' ? 'multi_use_pathway'
+        : section.name.includes('walk') || section.name.includes('furniture') ? 'sidewalk'
         : section.name.includes('parking') ? 'parking'
           : section.material === 'asphalt' ? 'travel_lane'
           : ['grass','soil'].includes(section.material) ? 'boulevard' : 'multi_use_pathway',

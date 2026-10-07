@@ -4,7 +4,7 @@ import { cleanup } from '@testing-library/react';
 import { reshapeParkOutline, parkOutlineDimensions } from './parkOutline';
 import type { SiteZone } from '@/types';
 import { ReshapePanel } from './ReshapePanel';
-import { rectangleAt } from './geometry';
+import { rectangleAt, rectangleDimensions } from './geometry';
 import { placeAsset, placementProperties } from './catalogue';
 afterEach(cleanup);
 
@@ -99,4 +99,19 @@ it('keeps a nonrectangular park when a student changes its dimensions', () => {
   expect(parkOutlineDimensions(onReshape.mock.calls[0][0]).width).toBeCloseTo(105,2);
   fireEvent.click(screen.getByRole('button',{name:'Add outline point'}));
   expect(onReshape.mock.calls[1][0]).toHaveLength(7);
+});
+
+it('rotates a fixed model without rounding away its saved fractional footprint', () => {
+  const asset = placeAsset('validation_brewery_crystal_brewhouse');
+  const zone = { id: 'fixed-fractional', zone_type: 'building', properties: placementProperties(asset),
+    coordinates: rectangleAt([-114, 51], asset.width + 0.04, asset.depth + 0.04) } as SiteZone;
+  const onReshape = vi.fn();
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
+  expect((screen.getByLabelText('Plot depth (m)') as HTMLInputElement).disabled).toBe(true);
+  fireEvent.change(screen.getByLabelText('Rotation (degrees)'), { target: { value: '5' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
+  const actual = rectangleDimensions(onReshape.mock.calls[0][0]);
+  expect(actual.width).toBeCloseTo(asset.width + 0.04, 5);
+  expect(actual.depth).toBeCloseTo(asset.depth + 0.04, 5);
 });

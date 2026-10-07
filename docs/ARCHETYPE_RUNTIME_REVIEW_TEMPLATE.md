@@ -72,6 +72,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Direct selection where an authored zone overlaps prepared ground | NOT TESTED | After reload, select the contained zone from the canvas, select the site elsewhere, then reselect the zone; confirm its edit handles and settings. |
 | Proposed off-site public-road endpoint; Undo/Redo/reload and low junction grade | NOT TESTED | Confirm the mapped road visually; marker or stored height alone is insufficient. |
 | Fixed street bend through ordinary controls | NOT TESTED | Add bend point, drag the route handle, then reload and compare centreline, compiler identity and handle count. |
+| Narrow pedestrian section and bend control retention | NOT TESTED | Zero motor lanes; identical footprint/graph/section width; sparse handles survive boundary snap, save, Undo/Redo and reload. |
 | Native street production recipe and unchanged Apply | NOT TESTED | Backend catalogue, exact profile/revision/module locks, editor variant/width, reload without DEV marker; no fallback to a sibling. |
 | Finite street draft and connected section replacement | NOT TESTED | Exact variant/archetype/width before recipe creation, real existing zone ID, unchanged neighbours, no persisted preview flag; invalid saved recipes and lost junctions reject. |
 | Angled join and short-arm recovery | NOT TESTED | Width-aware snapping, sampled-curve node identity, owned pavement/sidewalk surface, no crossing-only fallback on unsupported joins. |

@@ -1,0 +1,68 @@
+{
+  "variant_id": "hall_prairie_community_league",
+  "archetype_id": "community_association_hall",
+  "method": "RLASM v6.1 prototype",
+  "state": "source_locked",
+  "keeper_approved": false,
+  "generation_provenance": "hall-locked-generation.json",
+  "sources": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0.png",
+      "role": "front",
+      "bytes": 2771603,
+      "sha256": "7fa69e7ba1e4ec07c7237089759bca75c732782ba5b7e5c799dc34e6b9de5ca4"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0_oblique.png",
+      "role": "oblique",
+      "bytes": 3047096,
+      "sha256": "6647b8876e31131720b1b3183cef18d15658d950c0c23760a7a81e0c97ba78ac"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\neighborhood-expansion-20-2026-10-03\\reference-repo\\frontend\\public\\archetypes\\buildings\\community-hall\\variant_0_roof-study.png",
+      "role": "topology",
+      "bytes": 2703371,
+      "sha256": "e988df8771437a22073888775dc97c803d8d00eacfe4fada8c7c66aaa70ecedd"
+    }
+  ],
+  "measurement_contract": {
+    "units": "Inferred metres, not surveyed",
+    "width": 30,
+    "depth": 24,
+    "floor": 0.14,
+    "main_volume": "x[-15,5],y[-12,12]; eave4.5, ridge x-5,z7.7",
+    "wing": "x[5,15],y[-12,4]; lower hipped roof, ridge x10,y[-7,-1],z5.9; front and rear hip slopes.40,outer.40,inner.20",
+    "roof_graph": "Main z7.7-.32*abs(x+5). Wing envelope=min(.20x+3.90,-.40x+9.90,.40y+8.70,-.40y+5.50). Roof union upper envelope clipped along active equality lines, valley x4.230769,z4.746154,y[-9.884615,1.884615]. Ends follow front/rear hip equality to main overhang edge. Complete lining and bounded caps/flashings.",
+    "source_scope": "Front and oblique are facade-ratio authority. Top003 closes parallel-ridge topology only;16m wing depth is explicit source-informed inference.",
+    "closure": "Bounded metal cheek at each stepped shared eave closes main/hip height change; service partition extends to each actual clipped union lining plane."
+  },
+  "program_contract": {
+    "main": "Nine movable gathering tables/chairs beneath exposed timber trusses; rear flexible space, event notice board and folded-table trolley",
+    "services": "Front wing community kitchen with service door and preparation island; middle washroom off small lobby; rear meeting room. Wing doors open from main clear aisle.",
+    "site": "Cedar porch, concrete footings, forecourt benches/bike hoops, west gathering lawn and planted edges",
+    "noticeboard": "Rear solid pier x[-2.15,1.15], outside glazing; event storage remains offset from window.",
+    "canopy": "Raised soffitbottom3.57 above entrance transomtop3.44, posts and header continue to cap."
+  },
+  "opening_schedule": {
+    "front": "Three3.65m broad3-light hall windows, entrance sidelight/transom and1.65m open door; wing three1m narrow windows and1.1m service door",
+    "left": "Four broad hall windows",
+    "rear": "Two broad hall windows and clear exit; wing meeting window",
+    "right": "Four wing windows and one main rear side window"
+  },
+  "circulation_contract": {
+    "routes": "15 native routes including publicground ramp, hall main/row aisles, event storage, noticeboard, kitchen/service, WC,meeting,rear exit,forecourtbench,bikes and lawn",
+    "public_approach": "Groundz.04,y-18.8 through solid1.3m ramp at y-18.3..-17 toz.14; geometry/nav match. Not accessibility certification.",
+    "obstacles": "Physical walls, open leaves, furniture and site equipment; GLB physical route checks required"
+  },
+  "material_contract": {
+    "brick": "Built-in source-conditioned buff running-bond texture; observed6.6brickwidths and21courses mapped1.584x1.68m",
+    "other": "Source palette; timbertrusses, roof seams/caps and furniture in realgeometry; finish remains prototype scope"
+  },
+  "camera_contract": "26 mandatory exact-GLB views authored before geometry;7 wholebuilding,front/opening,2 roofjunction,mainhall,truss/storage,kitchen/service/fixtures,WC/fixtures,meeting and site/approach.",
+  "assumptions": [
+    "Original generated design; no survey or realbuilding claim.",
+    "Rear and interior programme inferred.",
+    "Front/oblique/rootstudy role differences retained in source-only independent review.",
+    "No fullkeeper, humanapproval, catalogueactivation, codecertification or arbitraryterrain claim."
+  ]
+}

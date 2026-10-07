@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import buildings from '@/data/buildingArchetypes.json';
 import parks from '@/data/openSpaceArchetypes.json';
 import streets from '@/data/streetPathArchetypes.json';
-import { BUILDING_AESTHETIC_OPTIONS_V2, OPENSPACE_AESTHETIC_OPTIONS_V2, ROADWAY_AESTHETIC_OPTIONS_V2 } from '@/components/viewer/aestheticCatalog';
+import { BUILDING_AESTHETIC_OPTIONS_V2, SAVED_OPENSPACE_AESTHETIC_OPTIONS, SAVED_ROADWAY_AESTHETIC_OPTIONS } from '@/components/viewer/aestheticCatalog';
 import { CALGARY_GROUPS, CALGARY_SOURCES, calgaryGroup, classifyCalgaryAsset, filterCalgaryCatalogue, type CatalogueDomain } from './guide';
 
 describe('Calgary catalogue guide', () => {
@@ -46,7 +46,7 @@ describe('Calgary catalogue guide', () => {
   });
 
   it('keeps parking and amenities distinct from park service-area types', () => {
-    const groupFor = (id: string) => calgaryGroup(OPENSPACE_AESTHETIC_OPTIONS_V2.find(item => item.id === id)?.calgaryGuide)?.id;
+    const groupFor = (id: string) => calgaryGroup(SAVED_OPENSPACE_AESTHETIC_OPTIONS.find(item => item.id === id)?.calgaryGuide)?.id;
     expect(groupFor('surface_parking_lot')).toBe('space_other');
     expect(groupFor('neighborhood_park')).toBe('neighbourhood');
     expect(groupFor('tennis_court_cluster')).toBe('play_sport');
@@ -55,8 +55,8 @@ describe('Calgary catalogue guide', () => {
   });
 
   it('distinguishes draft Calgary manual sections from other street inspiration', () => {
-    expect(ROADWAY_AESTHETIC_OPTIONS_V2.find(item => item.id === 'calgary_local')?.calgaryGuide).toEqual({ groupId: 'local', basis: 'draft_manual' });
-    expect(ROADWAY_AESTHETIC_OPTIONS_V2.find(item => item.id === 'haussmann_boulevard')?.calgaryGuide?.basis).toBe('design_reference');
+    expect(SAVED_ROADWAY_AESTHETIC_OPTIONS.find(item => item.id === 'calgary_local')?.calgaryGuide).toEqual({ groupId: 'local', basis: 'draft_manual' });
+    expect(SAVED_ROADWAY_AESTHETIC_OPTIONS.find(item => item.id === 'haussmann_boulevard')?.calgaryGuide?.basis).toBe('design_reference');
     expect(CALGARY_SOURCES.streetManual.status).toContain('Draft');
   });
 
@@ -75,7 +75,7 @@ describe('Calgary catalogue guide', () => {
       arterial: ['calgary_arterial_4lane_50', 'calgary_arterial_4lane_70', 'calgary_arterial_high_activity', 'calgary_arterial_6lane', 'calgary_skeletal'],
     };
     for (const [group, ids] of Object.entries(expected)) {
-      const results = filterCalgaryCatalogue(ROADWAY_AESTHETIC_OPTIONS_V2, group, 'Calgary');
+      const results = filterCalgaryCatalogue(SAVED_ROADWAY_AESTHETIC_OPTIONS, group, 'Calgary');
       expect(results.map(item => item.id).sort()).toEqual([...ids].sort());
       expect(results.every(item => item.calgaryGuide?.basis === 'draft_manual')).toBe(true);
     }

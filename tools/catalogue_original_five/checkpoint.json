@@ -1,0 +1,250 @@
+{
+  "schema": "cityprompt.rlasm.original-five-checkpoint@1",
+  "date": "2026-10-06",
+  "initiative": "rlasm-original-five-2026-10-06",
+  "status": "FIVE_ORIGINAL_DESIGNS_ARCHITECTURAL_CLAY_REVIEWED",
+  "references": 15,
+  "gallery": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\gallery-v001\\index.html",
+  "selected": [
+    {
+      "kind": "home",
+      "title": "Prairie Fold Manufactured Home",
+      "candidate": "prairie-manufactured-home-clay-v003",
+      "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\home-v003",
+      "model_sha256": "eaa3991f32d5582e534edda6c7ccf5b44f8eff78cc2347b4ac57721423ac7607",
+      "model_bytes": 438712,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\prairie-manufactured-home-clay-v003-independent-review-2026-10-06-v001.json",
+      "review_sha256": "0553db0ff042ec80f12a5527931cd5d53be80aa65f03e1bf1c9016e7d320d640",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "reference_count": 3,
+      "runtime": "NOT TESTED"
+    },
+    {
+      "kind": "depot",
+      "title": "Copperline Municipal Works Depot",
+      "candidate": "municipal-works-depot-clay-v003",
+      "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\depot-v003",
+      "model_sha256": "b5701e1c087b8852a89c037554c589cc4290ba0927e99e0eaa2fa4f12fb2505b",
+      "model_bytes": 641808,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\municipal-works-depot-clay-v003-independent-review-2026-10-06-v001.json",
+      "review_sha256": "4d86d147f536b7271b1ce50ffbcb29b4ffae12b9037c248ecbc250dd5b30320c",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "reference_count": 3,
+      "runtime": "NOT TESTED"
+    },
+    {
+      "kind": "recovery",
+      "title": "Folded-Roof Materials Recovery Hall",
+      "candidate": "enclosed-materials-recovery-clay-v002",
+      "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\recovery-v002",
+      "model_sha256": "c828f68cb29328f2fcceb8288c5774740c4aa0a350ff4d5d42c62b2aec71f77c",
+      "model_bytes": 869316,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\enclosed-materials-recovery-clay-v002-independent-review-2026-10-06-v001.json",
+      "review_sha256": "93e7c2087c69be5638592c4b1785c6d192cc45cbf78c63e2cdfcd4263575d70f",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "reference_count": 3,
+      "runtime": "NOT TESTED"
+    },
+    {
+      "kind": "yard",
+      "title": "Corten & Timber Equipment Yard",
+      "candidate": "contractor-storage-yard-clay-v002",
+      "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\yard-v002",
+      "model_sha256": "8a04105800414295e7321271ae94d100b0cb28b0bc852e7a89e054169bdcf00e",
+      "model_bytes": 1667392,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\contractor-storage-yard-clay-v002-independent-review-2026-10-06-v001.json",
+      "review_sha256": "eea103ba5b06a6724bdb199947a47a103d8b5477deeef05e796866821d10803f",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "reference_count": 3,
+      "runtime": "NOT TESTED"
+    },
+    {
+      "kind": "childcare",
+      "title": "Meadow Court Childcare Centre",
+      "candidate": "courtyard-childcare-centre-clay-v003",
+      "candidate_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\childcare-v003",
+      "model_sha256": "ee65d36d3868ab9d121b0172dfd869176cd555b3bc21125adc6d89ac944e308f",
+      "model_bytes": 1387204,
+      "review_path": "C:\\dev-artifacts\\CityPrompt\\rlasm-original-five-2026-10-06\\reviews\\courtyard-childcare-centre-clay-v003-independent-review-2026-10-06-v001.json",
+      "review_sha256": "35e90f2134de63ea1538c565f16b49a4312a42f6067fe99cfb8bdd9913c63e6f",
+      "status": "PASS_ARCHITECTURAL_CLAY_REVIEW",
+      "reference_count": 3,
+      "runtime": "NOT TESTED"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "tools/catalogue_original_five/build.py",
+      "bytes": 49799,
+      "sha256": "70489adddcb0e755f31a8ff2eaa0224adce91ddb133140e3f867613c532ee522"
+    },
+    {
+      "path": "tools/catalogue_original_five/capture_reference.py",
+      "bytes": 2273,
+      "sha256": "ca3b5896be2a6d207a04e809fe700555aace1a607a22a15536586af1cf8a917d"
+    },
+    {
+      "path": "tools/catalogue_original_five/gallery.py",
+      "bytes": 11059,
+      "sha256": "8188d55ca3d7c248b308b94d8ad8a6e85c432efe59b85abba4b96e83fb41aab8"
+    },
+    {
+      "path": "tools/catalogue_original_five/plan.py",
+      "bytes": 2792,
+      "sha256": "8dcbf7921d91d7c96784e7a9212f3f366ebb1e5e2ef6104cad1a9555ac4c5e47"
+    },
+    {
+      "path": "tools/catalogue_original_five/designs.json",
+      "bytes": 19642,
+      "sha256": "6bd319ca99118d35891c1a3261df6bd98e8f3b6d5f6758b31b1d07cf3096ecd3"
+    },
+    {
+      "path": "tools/archetype_compiler/tests/test_original_five_sources.py",
+      "bytes": 3041,
+      "sha256": "bdbb9ccdef7a671b05d31da171dbe2b6699bd312c9fdf1ebfc884c7cccbf85eb"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/prairie-manufactured-home/generation-provenance.json",
+      "bytes": 5959,
+      "sha256": "5f7a990ad727e14bc24578acef10512b7086cfa42c7a00320929e33013ad4272"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/prairie-manufactured-home/variant_0.png",
+      "bytes": 2879262,
+      "sha256": "3bf9de8703d6e737b270f1a5140876376c8a06f1927b74efee46660cd5586f56"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/prairie-manufactured-home/variant_0_angle_60.png",
+      "bytes": 3811965,
+      "sha256": "f0975857ff37a304864cd1b44c73e0ad531a26442b506fc41a743b4ae9cd2a8d"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/prairie-manufactured-home/variant_0_angle_90.png",
+      "bytes": 2821329,
+      "sha256": "0446c6e512c367859619d298c42735840947d8fb18bb33a3c288e92a268c5330"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/municipal-works-depot/generation-provenance.json",
+      "bytes": 5663,
+      "sha256": "980c4e23dc3fc8e0516c1b9cea80d99041c48fb5a63b83fb417500b241abd94a"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/municipal-works-depot/variant_0.png",
+      "bytes": 2467808,
+      "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/municipal-works-depot/variant_0_angle_60.png",
+      "bytes": 2805302,
+      "sha256": "317254d4999ae6e0a8c90d8749125b1d32bac0d86e0f72132b4b62e7b605cf13"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/municipal-works-depot/variant_0_angle_90.png",
+      "bytes": 2780834,
+      "sha256": "ce8579dadcdded6ea01a25df8ba3d99758a37d67a43864778800cbeaae4d0c2a"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/enclosed-materials-recovery/generation-provenance.json",
+      "bytes": 5517,
+      "sha256": "de45f1a503888efaf7c33300db64c004370953af84733784c9d1ea2ccf55c661"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/enclosed-materials-recovery/variant_0.png",
+      "bytes": 2106234,
+      "sha256": "6aa993c6fd3b967723c5d0f4b5f4282c63695145aabe2ee2c9eecd6b69a98a42"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/enclosed-materials-recovery/variant_0_angle_60.png",
+      "bytes": 2946935,
+      "sha256": "96c87b670d8b8e0ba5e315fa2ad8140cb8b46f14e0fdbcefc3ea9c7c9c89788b"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/enclosed-materials-recovery/variant_0_angle_90.png",
+      "bytes": 2750419,
+      "sha256": "e79b039a4d4c52dc14a6396a23e35f64be47887a6b6ffabcb4ccd0b2906fddb1"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/contractor-storage-yard/generation-provenance.json",
+      "bytes": 5676,
+      "sha256": "a91faa914b1d20e7fb24941a55da5e61f4f8c01f1df48e8aa2b52e2b6d8f6a12"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/contractor-storage-yard/variant_0.png",
+      "bytes": 3316191,
+      "sha256": "1f76fbd12bfc7b7caec39fcf5027105ce3d79a4ae5df1055f846f8124742e544"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/contractor-storage-yard/variant_0_angle_60.png",
+      "bytes": 3559438,
+      "sha256": "0ef76032e91b70594d1b1494942520fcbe42e6a5f8f5a1e3e3ff8ebb7a7d766c"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/contractor-storage-yard/variant_0_angle_90.png",
+      "bytes": 3226671,
+      "sha256": "fc23d7d636b37d80b65b6c7671ca25e07612d7cf9990f6b77eff8280e53f261a"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/courtyard-childcare-centre/generation-provenance.json",
+      "bytes": 6056,
+      "sha256": "0ee9c81cdd969933efe8728f85e97818d01e3cfcb5deddeca6cd6b550b71c226"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/courtyard-childcare-centre/variant_0.png",
+      "bytes": 3359153,
+      "sha256": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/courtyard-childcare-centre/variant_0_angle_60.png",
+      "bytes": 3717880,
+      "sha256": "dfb619b672b679640a59f1a88e9ab74812d22cc3a3bde83d6c80e15d2be10afc"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/courtyard-childcare-centre/variant_0_angle_90.png",
+      "bytes": 3206421,
+      "sha256": "7509f17108d51479fe3e5a0ca55d296b536e989908fa0c15456bfa8f3d2e95f7"
+    }
+  ],
+  "verification": {
+    "independent_holistic_reviews": 5,
+    "unresolved_P0": 0,
+    "unresolved_P1": 0,
+    "local_gallery_targets": 65,
+    "gallery_file_hashes": "PASS",
+    "source_whitespace": "PASS",
+    "narrow_pytest": "18 passed",
+    "pytest_command": "python -m pytest tools/archetype_compiler/tests/test_original_five_sources.py tools/archetype_compiler/tests/test_rlasm_method.py tools/archetype_compiler/tests/test_rlasm_delivery_contract.py -q",
+    "note": "Pytest has an existing unset asyncio_default_fixture_loop_scope deprecation warning.",
+    "browser_gallery": {
+      "status": "PASS",
+      "http_targets": 65,
+      "model_downloads_matching_reviewed_hash": 5,
+      "desktop": {
+        "cards": 5,
+        "visible_images_loaded": 10,
+        "horizontal_overflow": false
+      },
+      "phone": {
+        "width": 390,
+        "horizontal_overflow": false,
+        "image_grid_columns": "313px"
+      },
+      "expanded_childcare_zoning_details": "PASS",
+      "normal_viewport_restored": true,
+      "browser_screenshots": [
+        "gallery-browser.jpg",
+        "gallery-mobile.jpg"
+      ],
+      "scope": "Static review gallery only; no City Prompt runtime acceptance implied."
+    }
+  },
+  "publication": "LOCAL_ONLY_UNCOMMITTED",
+  "textured_keeper_approved": false,
+  "runtime": "NOT_TESTED",
+  "catalogue_activation": false,
+  "pending_stages": [
+    "Source-conditioned final materials",
+    "Human visual acceptance for activation",
+    "Student placement and terrain checks before catalogue promotion"
+  ],
+  "preservation": "Failed and superseded versions and their independent or builder records remain in external artifact storage. Previous batches and primary checkout were not modified."
+}

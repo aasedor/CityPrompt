@@ -238,6 +238,7 @@ function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = 
           </select>
         </label>}
         {report.is_stale && <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>The proposal has changed.</strong> This report and its responses describe the earlier saved plan. Request a new report to review the current design; your earlier reasoning stays in the report history.</div>}
+        {report.analysis.method_version === 'student-review-v1' && <p role="status" className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">This saved report predates the separation of placement plots from building footprints. Its building and floor-area quantities may include yards or paving. Request a new report for corrected quantities; this version and your responses stay in history.</p>}
         <div className="text-xs text-slate-500">Plan {report.plan_version.slice(0, 12)} · {report.analysis.scope_zone_count} proposal areas · {new Date(report.created_at).toLocaleString()} · requested by {report.requested_by_name}</div>
         <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white p-4">
           <h3 className="mb-3 font-semibold text-slate-900">Proposal quantities</h3>

@@ -75,7 +75,7 @@ describe('automatic placement compilation',()=>{
     });
     await advance();
     expect(compileMixedCommunity3D).toHaveBeenCalledWith([zone()],undefined,{
-      includeResidualLandscape:true,scopeZoneIds:['zone','water'],
+      includeResidualLandscape:true,scopeMode:'project',scopeZoneIds:['zone','water'],
     });
     const movedWater={...water,coordinates:[[2,0],[3,0],[3,1],[2,1]]};
     rerender({zones:[zone(),movedWater]});
@@ -133,6 +133,21 @@ describe('automatic placement compilation',()=>{
     const viewer=renderHook(()=>useAutomatic3D(undefined,[zone()],false),{wrapper});await advance();viewer.unmount();
     expect(compileMixedCommunity3D).not.toHaveBeenCalled();
   });
+  it('refreshes saved design massing only when explicitly requested',async()=>{
+    const saved=zone(0,true);
+    const massing={...saved,properties:{...saved.properties,pick_place_model_revision:'unavailable-saved-revision',community_3d:{
+      schema_version:1,state:'compiled',kind:'building',generator:'planned_massing',
+      compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64),
+    }}} as SiteZone;
+    const {result,unmount}=renderHook(()=>useAutomatic3D('p',[massing],false),{wrapper});
+    await advance();
+    expect(result.current.canRefreshDetail).toBe(true);
+    expect(compileMixedCommunity3D).not.toHaveBeenCalled();
+    act(()=>result.current.retry());
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    unmount();
+  });
   it('keeps runtime building entrance edits and Undo from recompiling the saved native house',async()=>{
     const saved=zone(0,true);
     const {rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{initialProps:{zones:[saved]},wrapper});
@@ -152,7 +167,7 @@ describe('automatic placement compilation',()=>{
     });
     await advance();
     expect(compileMixedCommunity3D).toHaveBeenCalledWith([fixture],undefined,{
-      includeResidualLandscape:true,scopeZoneIds:['zone'],
+      includeResidualLandscape:true,scopeMode:'project',scopeZoneIds:['zone'],
     });
     rerender({zones:[{...fixture,properties:{...fixture.properties,community_3d:{schema_version:1,state:'compiled',kind:'park',generator:'park_kit',compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64)}}},boundary('compiled')]});
     await advance();

@@ -8,7 +8,7 @@ describe('published building catalogue', () => {
     for (const asset of PUBLISHED_BUILDING_ASSETS) {
       expect(CATALOGUE_BUILDING_ASSETS.find(row => row.id === asset.id)).toMatchObject({ model: asset.model, readiness: 'ready' });
       expect(asset.readiness).toBe('ready');
-      expect(asset.label).not.toContain('trial');
+      expect(asset.label).not.toMatch(/\btrial\b/i);
     }
   });
   it('keeps unpublished local pilots out of the release catalogue', () => {

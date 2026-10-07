@@ -1,0 +1,383 @@
+{
+  "candidate": "ubst-live-work-row-clay-v002",
+  "reviewer": "Independent RLASM verifier /root/ubst_pilot_review",
+  "date": "2026-10-07",
+  "method": "RLASM v6.1",
+  "scope": "Fresh holistic source-locked architectural-clay visual review across all mandatory views, full-resolution renders and phone boards. Covers identity, ratios, roof topology, all elevations, opaque envelope, openings, optical depth, contacts, visible occupied program and circulation, camera visibility, and regressions beyond the six previous findings.",
+  "holistic_within_architectural_clay_profile": true,
+  "category_closure_only": false,
+  "decision": "architectural_clay_visual_pass",
+  "architectural_clay_approved": true,
+  "approval_applies_to": "Exact v002 GLB bytes identified by model_sha256, at authored native scale, as an offline architectural-clay visual asset.",
+  "unresolved_P0": 0,
+  "unresolved_P1": 0,
+  "keeper_approved": false,
+  "textured_keeper_review": false,
+  "runtime_tested": false,
+  "engineering_review": false,
+  "runtime_activation_authorized_by_this_review": false,
+  "publication_authorized_by_this_review": false,
+  "prior_review": "../live-work-v001/review/independent-review.json",
+  "prior_candidate_disposition": "Preserve v001 and its visual_rework_required decision unchanged; v002 is the separately reviewed correction.",
+  "evidence_basis": "All 21 mandatory 1440x1080 v002 render PNGs and all four v002 boards were opened directly at original resolution. This includes both 1080x1920 phone boards. Original source PNGs were opened during the preceding source review and their v002 copies are hash-verified against those exact originals. Builder audit data supports but does not replace the direct pixel review.",
+  "closed_previous_findings": [
+    {
+      "id": "P0-01",
+      "status": "closed_in_v002",
+      "files": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/interior.png"
+      ],
+      "pixel_evidence": "Each broad storefront now contains a separate open public studio door alongside the fixed pane. The door opening reaches the occupied floor, shows no opaque sill spanning the walk-through part, and connects to a visible aisle beside the desks. The adjacent residential stair entrance remains distinct."
+    },
+    {
+      "id": "P0-02",
+      "status": "closed_in_v002",
+      "files": [
+        "renders/bathroom.png",
+        "boards/phone-construction.png"
+      ],
+      "pixel_evidence": "The bathroom camera now shows the schematic toilet, washstand, floor contacts and standing space without the previous occluding near partition. This proves schematic sanitary program within the clay profile."
+    },
+    {
+      "id": "P1-01",
+      "status": "closed_in_v002",
+      "files": [
+        "renders/front.png",
+        "renders/facade_close.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "pixel_evidence": "The upper left columns have moved inward. Their centers are now approximately one-third of each bay, yielding paired-window and pier proportions close to the authoritative front reference. Window counts, dimensions and floor datums remain coherent."
+    },
+    {
+      "id": "P1-02",
+      "status": "closed_in_v002",
+      "files": [
+        "renders/right_side.png",
+        "renders/front_corner.png",
+        "renders/side_projection.png"
+      ],
+      "pixel_evidence": "The right service door is now near mid-depth, consistent with both oblique references, and remains a through-wall opening with an occupied interior and grade contact. No opaque threshold or wall plane fills the aperture."
+    },
+    {
+      "id": "P1-03",
+      "status": "closed_in_v002",
+      "files": [
+        "renders/front.png",
+        "renders/rear.png",
+        "renders/roof_contact.png"
+      ],
+      "pixel_evidence": "Timber coverage continues into the gables without the former horizontal eave-height band or pale vertical backing stripes. Roof-to-gable contact remains closed, and the valley termination remains seated on the party-wall line."
+    },
+    {
+      "id": "P1-04",
+      "status": "closed_in_v002",
+      "files": [
+        "boards/phone-source-comparison.png"
+      ],
+      "pixel_evidence": "The phone board now pairs source front/model front, source oblique/model front_corner, and source high oblique/model aerial. All three pairs retain readable silhouettes and openings; the separate true-top render remains available."
+    }
+  ],
+  "holistic_pixel_findings": [
+    {
+      "category": "source identity and ratios",
+      "files": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "boards/locked-source-board.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "finding": "Three equal attached front-gabled units, three occupied floors, twelve upper front windows, two upper timber stages above the pale ground floor, and the broad-workspace/narrow-home-entry hierarchy match the locked design. Overall height, eave/ridge ratios and gable rise remain close to measured source proportions."
+    },
+    {
+      "category": "roof topology and envelope",
+      "files": [
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/roof_contact.png",
+        "renders/rear_side.png"
+      ],
+      "finding": "Three full-depth parallel ridges and two shared valleys form a complete roof. The gables are closed, roof edges are seated, and there are no evident missing facets, floating caps, cross-ridge substitutions or black slots. Roof seams and bounded edge members remain coherent for architectural clay."
+    },
+    {
+      "category": "complete elevations and physical openings",
+      "files": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/facade_close.png",
+        "renders/side_projection.png",
+        "renders/rear_entry.png"
+      ],
+      "finding": "Both sides and inferred rear continue the architectural grammar with complete walls, windows and ground entrances. Openings show recessed frames, opaque returns and enclosed room depth. No orientation-specific uncut wall ghost panel or detached opening is visible."
+    },
+    {
+      "category": "optics and occupied program",
+      "files": [
+        "renders/glass_close.png",
+        "renders/interior.png",
+        "renders/bedroom.png",
+        "renders/living.png",
+        "renders/bathroom.png"
+      ],
+      "finding": "Transparent panes reveal actual room depth. Ground desks and monitors read as workspace; upper seating, kitchen, bed and sanitary fixtures read as living program. Interior objects have visible support and are spatially offset from glazing. Simplified forms are appropriate to the declared clay representation."
+    },
+    {
+      "category": "visible circulation and support",
+      "files": [
+        "renders/architecture_close.png",
+        "renders/stairs.png",
+        "renders/upper_landing.png",
+        "renders/upper_stairs.png",
+        "renders/rear_entry.png"
+      ],
+      "finding": "Separate front doors, continuous floors, connected stair flights, guarded stairwells and landing space are visible. Rear entries meet supported terrace surfaces. No visible floating building, disconnected stair flight, sealed public entrance, or furniture blocking the public studio aisle remains."
+    },
+    {
+      "category": "camera validity and phone regression",
+      "files": [
+        "boards/all-views-contact.png",
+        "boards/phone-source-comparison.png",
+        "boards/phone-construction.png"
+      ],
+      "finding": "All mandatory whole views retain neutral margins around roof and grade. Detail views prove their named relationships, including the corrected bathroom view. Both phone boards remain legible and reveal the same coherent massing, opening and contact relationships seen at full resolution."
+    }
+  ],
+  "unresolved_findings": [],
+  "limitations": [
+    "This is architectural-clay visual approval only, not keeper_approved or source-conditioned textured-material approval.",
+    "The generated references are original design images, not measured photographs. The 18 by 10 m wall footprint and metric scale are authored assumptions.",
+    "Rear, left-side and internal layouts are declared inferences. Furniture, sanitary fixtures, planting and finishes remain schematic; detailed service, weathering, accessibility and construction design are not certified.",
+    "Full delivered native bounds include aprons and rear terraces and must be preserved independently of the nominal wall footprint.",
+    "Offline route probes cover six prescribed centrelines with floor support and 1.85 m vertical clearance. They do not establish full-width movement envelopes, runtime navigation, all side/rear routes, code compliance or engineering adequacy.",
+    "CityPrompt placement, collision, terrain fit, walking, persistence and publication remain untested or separately gated. Human runtime activation authorization is still required.",
+    "Fixed native scale and exact variant only. No alternate storey count, resizing, repetition or sibling substitution is approved.",
+    "Only this external review record was written by the verifier. No source repository changes, commits or pushes were made by the verifier."
+  ],
+  "supporting_checks": {
+    "delivery": "PASS_DELIVERY_CHECKS report inspected; source/script/model hashes, texture-free self-contained GLB, finite geometry, aperture samples, exact bounds roundtrip and view inventory reported passing.",
+    "offline_routes": "PASS_OFFLINE_ROUTE_PROBES report header inspected, tied to the reviewed GLB hash; supporting offline evidence only.",
+    "runtime": "NOT_TESTED as explicitly recorded in evidence/runtime-status.json."
+  },
+  "inspected_files": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1540619,
+      "sha256": "15e0052c206f476fe50255b12387230453aecc3b82ca771b93b87210517b995a",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1377515,
+      "sha256": "de7465619a7d470326fd20c9d1b889573acdd0767d767bcb85b3ea2f3334dd29",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/bathroom.png",
+      "bytes": 1362857,
+      "sha256": "5b50c5fc884daf82d7b7e1e699e7e24a8f9a974982dec62d03c40826a23095ae",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/bedroom.png",
+      "bytes": 1327096,
+      "sha256": "00e3ccc3887b7818b29a358b59ca8072685233f7ad0f7580479ae4b1c0c22f39",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1527639,
+      "sha256": "e4a5694b9f30dbefbeea38c46419269581a8eddb79b9412869d2f3c32e6c5c7b",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1527151,
+      "sha256": "506857c363a79d2b677def2b71e66881fa283f44b74a8ee647ec8e0187b0b79a",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1460148,
+      "sha256": "8a89dd4bc1fe367b00c8c0f8f66fcd75c97a0e0f962a766a0dd1112487afd4dc",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1343163,
+      "sha256": "239797cecc9ce8328fbfa19b9c29a4d811da18cb4655fd2dec6cb9f32838ee48",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/interior.png",
+      "bytes": 1340589,
+      "sha256": "59c954772b75eed104ee6b4df5c08cfa9e15bbf5cf8fac20ce21e5f5ce83f9ae",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1348821,
+      "sha256": "4d03f8a0536e09e3302c855481e57569e22d2c99c0032efba9d4d679c7469ec8",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/living.png",
+      "bytes": 1495655,
+      "sha256": "01fafdce27c5eb509d9400ee8b261900c1bfc14cd4e374c603cce9ba87891452",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/rear_entry.png",
+      "bytes": 1353620,
+      "sha256": "9844e749bf49c3ae28e23a7edcdea9bf74cfcb37ad15e239e5ba277c90ac3360",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1547088,
+      "sha256": "8f7f3d570cbfa5cd43170fbf136c39f2a65b8e94b5f0bb39d0f410b9c886ca5d",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1443445,
+      "sha256": "4928fe674f7be1971a1621697cca4799178b6bc221fd911e39cd4512b486f06b",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1349849,
+      "sha256": "c92793ea9816733d43618a4ac653b57069e45cf57935774a372ab28874572c9e",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "bytes": 1708055,
+      "sha256": "35647820d6e9697724bf044b04c68c6cf90f9835aa9db68a892fdb77031b254f",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/side_projection.png",
+      "bytes": 1461424,
+      "sha256": "191164627e173b27c04b600a1ca535064ab5dace460048c24cfcc1217c011621",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/stairs.png",
+      "bytes": 1504463,
+      "sha256": "253606ce056a1a42a7b683c63c91154697c6171730b4b90fe85e0ae6fc07c1ca",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1334263,
+      "sha256": "b157aa18f4ee5638387a6c1827cd51ee05323b042213454243743f5d1c256bb8",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/upper_landing.png",
+      "bytes": 1543023,
+      "sha256": "4f8c022109e47db1dc51f5c18f18a3ab5c180d06412da880d9b598520765fd90",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "renders/upper_stairs.png",
+      "bytes": 1571811,
+      "sha256": "f8c4a520f4d9bef7cf5f6dbaefb811308dd94914a4b3482b863ff977f84f21fb",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "boards/all-views-contact.png",
+      "bytes": 2855278,
+      "sha256": "e4e62dbf28db0a95ea65853f876dbd54c01e64924080769649d06d81301646b6",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "bytes": 1376474,
+      "sha256": "714dff1a65657808ae2b2f293db1e30c9c6d8128cf3e630dfa3472ddfa9c9469",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "bytes": 1030251,
+      "sha256": "b01bd3ca602d60c797de257125f79f1120bdd7c144b643a36f7bdb245a6a4b80",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "bytes": 1555733,
+      "sha256": "e10b9f269b9c667eb856043ac85cf7fa6c6b283a29f7013a3375cdc4e0c5a4cf",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "sources/variant_0_angle_60.png",
+      "bytes": 3194356,
+      "sha256": "cb964a7063afaadcc0d2cc1a6faea51f1f46a6f989b0e6daf86924e1024f4b4c",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "sources/variant_0_angle_90.png",
+      "bytes": 3715344,
+      "sha256": "8cb63892ebc592508142d91454fef70d56d680e8793a5df5eecd9c7eedb000a5",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    },
+    {
+      "path": "sources/variant_0.png",
+      "bytes": 2809110,
+      "sha256": "acbb9061a5431b79372ee03dbe4bba6474fdf18eae1ca7e3c731461ee42a8393",
+      "inspection": "Pixels opened directly at original resolution; original source counterparts inspected earlier"
+    }
+  ],
+  "supporting_file_hashes": [
+    {
+      "path": "prework-manifest.json",
+      "sha256": "50bc27094255916cf3c53799dba55116f9ad791847d838c0c9fbdb9b911d15fe"
+    },
+    {
+      "path": "source-entry.json",
+      "sha256": "aa82b55d2cc2d5471777c60df04bdc62eb58a4e1572b68e927b478d16d3408f1"
+    },
+    {
+      "path": "evidence/builder-evidence.json",
+      "sha256": "9075cd1479229aa0cfa69e007f22cd69b91198af6c67faf22de4985101217686"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "e8577901899cdeaedd69d197247e87d9c94a22a52e388d072d0117c3a59e85ac"
+    },
+    {
+      "path": "evidence/offline-route-probes.json",
+      "sha256": "c61e57f16952ef090d4cc0f39d9a9132e0b6072db0a8f61768cd97dcd7cb8730"
+    },
+    {
+      "path": "evidence/runtime-status.json",
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56"
+    }
+  ],
+  "source_hash_verification": [
+    {
+      "source": "variant_0.png",
+      "inspected_original": "C:\\Users\\andre\\.codex\\generated_images\\01a1136c-a630-7cd1-91d1-6bfa6efefb27\\exec-d54b0616-354d-47ea-a0fc-17390e6c5ab8.png",
+      "sha256": "acbb9061a5431b79372ee03dbe4bba6474fdf18eae1ca7e3c731461ee42a8393",
+      "original_matches": true
+    },
+    {
+      "source": "variant_0_angle_60.png",
+      "inspected_original": "C:\\Users\\andre\\.codex\\generated_images\\01a1136c-a630-7cd1-91d1-6bfa6efefb27\\exec-7cd6781e-a2bb-41b3-8c62-fea5ecd2571d.png",
+      "sha256": "cb964a7063afaadcc0d2cc1a6faea51f1f46a6f989b0e6daf86924e1024f4b4c",
+      "original_matches": true
+    },
+    {
+      "source": "variant_0_angle_90.png",
+      "inspected_original": "C:\\Users\\andre\\.codex\\generated_images\\01a1136c-a630-7cd1-91d1-6bfa6efefb27\\exec-c1eafe59-77cf-4aba-92da-4e4b64e1108d.png",
+      "sha256": "8cb63892ebc592508142d91454fef70d56d680e8793a5df5eecd9c7eedb000a5",
+      "original_matches": true
+    }
+  ],
+  "model_sha256": "ff09e636bc6a0146eb030cebf794c8840a71510a68fb6c4be2e4e6eb42ad74fd"
+}
