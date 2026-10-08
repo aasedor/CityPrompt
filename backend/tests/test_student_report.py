@@ -111,6 +111,40 @@ def test_policy_map_context_is_bound_to_saved_boundary_and_is_explicitly_a_summa
     assert bind_policy_map_evidence(evidence, plan) == []
 
 
+def test_comparisons_bind_saved_design_and_reject_changed_geometry_or_reference():
+    from app.services.student_report import bind_plan_comparisons
+    from app.schemas.student_report import PolicyMapEvidence
+    boundary, building = zone('site_boundary'), zone('building')
+    plan = snapshot([boundary, building])
+    payload = dict(boundary_coordinates=list(boundary.geometry.exterior.coords), sources=[],
+        design_inputs={'zones': [{'id': z['id'], 'coordinates': z['geometry']['coordinates'][0], 'properties': z['properties']} for z in plan['zones']], 'references': []},
+        comparisons=[{'id': 'test', 'kind': 'source_context', 'title': 'Compare zoning', 'observation': 'Check use',
+          'recommendation': 'Explain', 'basis': 'Map comparison', 'uncertainty': 'Screen only', 'sources': [],
+          'location': {'label': 'Building', 'zone_ids': [str(building.id)]},
+          'comparison': {'group': 'proposed_zoning', 'status': 'review', 'expected': 'R-CG', 'proposed': 'Housing'}}])
+    evidence = PolicyMapEvidence.model_validate(payload)
+    result = bind_plan_comparisons(evidence, plan)
+    assert result[0]['comparison']['expected'] == 'R-CG'
+    plan['comparison_findings'] = result
+    analysis = analyze_snapshot(plan)
+    assert any(f.get('comparison') for f in analysis['findings'])
+    plan['zones'][1]['geometry'] = mapping(rectangle(x=.002))
+    assert not bind_plan_comparisons(evidence, plan)
+    plan = snapshot([boundary, building])
+    plan['references'] = [{'id':'new-layer', 'data_version':'changed'}]
+    assert not bind_plan_comparisons(evidence, plan)
+    from app.schemas.student_report import ComparisonReferenceInput
+    evidence.design_inputs.references = [ComparisonReferenceInput(id='new-layer', content_hash='correct')]
+    plan['references'][0]['content_hash'] = 'correct'
+    assert bind_plan_comparisons(evidence, plan)
+    plan['references'][0]['content_hash'] = 'edited'
+    assert not bind_plan_comparisons(evidence, plan)
+    evidence.design_inputs.references = []
+    plan['references'] = []
+    evidence.comparisons[0].location.zone_ids = ['another-project']
+    assert not bind_plan_comparisons(evidence, plan)
+
+
 def test_housing_is_never_invented_for_commercial_or_industrial():
     plan = snapshot(
         [
@@ -416,6 +450,8 @@ def test_export_preserves_authors_reasoning_snapshot_and_staleness_without_execu
     plan = snapshot([zone("residential", floors=3, unit_count=12)])
     plan["project_name"] = "<script>alert(1)</script>"
     analysis = analyze_snapshot(plan)
+    analysis['findings'][0]['comparison'] = {'group':'proposed_zoning', 'status':'review',
+        'expected':'M-C2 <script>district()</script>', 'proposed':'Apartment model'}
     decision = {
         "choice": "decline",
         "rationale": "Our reason <script>attack()</script>",
@@ -442,6 +478,8 @@ def test_export_preserves_authors_reasoning_snapshot_and_staleness_without_execu
     assert "<script>attack()</script>" not in output
     assert 'id="plan-snapshot"' in output and 'aria-label="Saved proposal plan"' in output
     assert "Our reason &lt;script&gt;" in output
+    assert 'Student-proposed zoning' in output and 'Apartment model' in output
+    assert '<script>district()</script>' not in output
 
 
 def test_student_cannot_submit_blank_or_automatically_invented_reasoning():

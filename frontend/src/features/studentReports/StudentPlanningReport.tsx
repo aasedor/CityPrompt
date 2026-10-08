@@ -75,6 +75,11 @@ function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone, d
         ? <button className="underline hover:text-teal-700" onClick={() => onSelectZone(finding.location.zone_ids[0])}>{finding.location.label}</button>
         : finding.location.label}
     </p>
+    {finding.comparison && <dl className="mt-3 grid gap-2 rounded-lg bg-slate-50 p-3 text-sm">
+      <div><dt className="font-semibold">{finding.comparison.group === 'local_plan' ? 'Local plan intent' : 'Student-proposed zoning'}</dt><dd>{finding.comparison.expected}</dd></div>
+      <div><dt className="font-semibold">Your design</dt><dd>{finding.comparison.proposed}</dd></div>
+      <div><dt className="font-semibold">Comparison</dt><dd>{{ permitted:'Preliminary permitted-use match', discretionary:'Discretionary use route — assessment needed', review:'Further review needed', potential_conflict:'Potential departure or mismatch' }[finding.comparison.status]}</dd></div>
+    </dl>}
     <p className="mt-3 text-sm text-slate-700">{finding.observation}</p>
     <p className="mt-2 text-sm text-slate-800"><strong>Suggested next step:</strong> {finding.recommendation}</p>
     <details className="mt-3 text-sm text-slate-600">
@@ -270,7 +275,13 @@ function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = 
         </div>
         <details className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600"><summary className="cursor-pointer font-medium">Scope and limitations</summary><ul className="mt-2 list-disc space-y-2 pl-5">{report.analysis.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}</ul></details>
         <p className="text-xs text-slate-500">Recording “implement” saves your intention. It does not change geometry or verify that a design change has been made.</p>
-        {report.analysis.findings.map((finding) => <FindingCard key={`${report.id}-${finding.id}`} draftKey={reportDraftKey(account, projectId, report.id, finding.id)} finding={finding} decision={report.decisions[finding.id]} canEdit={canEdit} busy={saving || working || loading} onSave={(choice, rationale, followThrough) => save(finding.id, choice, rationale, followThrough)} onSelectZone={onSelectZone} />)}
+        {(['local_plan', 'proposed_zoning', 'other'] as const).map(group => {
+          const findings = report.analysis.findings.filter(finding => (finding.comparison?.group ?? 'other') === group);
+          return findings.length > 0 && <section key={group} className="space-y-4" aria-label={group === 'local_plan' ? 'Compare with the local area plan' : group === 'proposed_zoning' ? 'Compare with your proposed zoning' : 'Other planning findings'}>
+            <h3 className="text-xl font-semibold">{group === 'local_plan' ? 'Compare with the local area plan' : group === 'proposed_zoning' ? 'Compare with your proposed zoning' : 'Other planning findings'}</h3>
+            {findings.map(finding => <FindingCard key={`${report.id}-${finding.id}`} draftKey={reportDraftKey(account, projectId, report.id, finding.id)} finding={finding} decision={report.decisions[finding.id]} canEdit={canEdit} busy={saving || working || loading} onSave={(choice, rationale, followThrough) => save(finding.id, choice, rationale, followThrough)} onSelectZone={onSelectZone} />)}
+          </section>;
+        })}
       </>}
     </div>
   </section>;

@@ -1279,7 +1279,7 @@ export function ProjectViewPage() {
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
           <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}
-            getPolicyMapEvidence={() => collectPolicyMapEvidence(getActiveSiteBoundary(siteZones)?.coordinates ?? [])}
+            getPolicyMapEvidence={() => collectPolicyMapEvidence(getActiveSiteBoundary(siteZones)?.coordinates ?? [], siteZones, references.layers)}
             getParkAccessSnapshot={() => siteZones.every(zone => isPersistedZoneId(zone.id) && zone.updated_at)
               ? resolveManualParkAccess(siteZones, {}, visibleZones.filter(zone => zone.zone_type === 'road').map(zone => zone.id), transportContext)
               : undefined}

@@ -142,6 +142,7 @@ def build_snapshot(
             "source_crs": layer.source_crs,
             "feature_count": layer.feature_count,
             "data_version": digest(layer.feature_collection),
+            "content_hash": getattr(layer, 'content_hash', None),
             "site_attribute_examples": reference_attributes(layer, extent),
             "proposed_geometries": [feature.get("geometry") for feature in (layer.feature_collection or {}).get("features", [])]
                 if (layer.feature_collection or {}).get("_citypromptStudy", {}).get("schema") == 1
@@ -215,6 +216,52 @@ def bind_policy_map_evidence(evidence, snapshot: dict) -> list[dict]:
 
 def _object(value: Any) -> dict:
     return value if isinstance(value, dict) else {}
+
+
+def bind_plan_comparisons(evidence, snapshot: dict) -> list[dict]:
+    """Accept advisory browser findings only for the same saved project inputs."""
+    if evidence is None or evidence.design_inputs is None:
+        return []
+    saved_boundary = boundary_record(snapshot)
+    supplied_boundary = _shape({'geometry': {'type':'Polygon', 'coordinates':[evidence.boundary_coordinates]}})
+    saved_shape = _shape(saved_boundary) if saved_boundary else None
+    if saved_shape is None or supplied_boundary is None or not saved_shape.equals(supplied_boundary):
+        return []
+    inputs = evidence.design_inputs
+    saved = {zone['id']: zone for zone in snapshot['zones']}
+    if len(inputs.zones) != len(saved) or {zone.id for zone in inputs.zones} != set(saved):
+        return []
+    for source in inputs.zones:
+        target = saved[source.id]
+        geometry = _shape({'geometry': {'type':'Polygon', 'coordinates':[source.coordinates]}})
+        target_geometry = _shape(target)
+        properties = dict(source.properties)
+        for key in ('visible', 'is_visible', 'hidden', '_visible', '_hidden'):
+            properties.pop(key, None)
+        if geometry is None or target_geometry is None or not geometry.equals(target_geometry) or properties != target['properties']:
+            return []
+    references = {layer['id']:layer for layer in snapshot['references']}
+    if len(inputs.references) != len(references) or {layer.id for layer in inputs.references} != set(references):
+        return []
+    for layer in inputs.references:
+        saved_layer = references[layer.id]
+        if layer.content_hash:
+            if layer.content_hash != saved_layer.get('content_hash'):
+                return []
+        elif layer.feature_collection is None or digest(layer.feature_collection) != saved_layer['data_version']:
+            return []
+    allowed = {zone['id'] for zone in scoped_zones(snapshot)}
+    result = []
+    seen = set()
+    for finding in evidence.comparisons:
+        if not set(finding.location.zone_ids).issubset(allowed) or finding.id in seen:
+            return []
+        seen.add(finding.id)
+        item = finding.model_dump(exclude_none=True)
+        item['id'] = 'comparison-' + item['id']
+        item['basis'] = 'Saved-input-checked browser comparison. ' + item['basis']
+        result.append(item)
+    return result
 
 
 def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -> dict:
@@ -702,6 +749,11 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         basis="Planning implementation reasoning",
         uncertainty="No replacement district is recommended without verified proposal requirements and current municipal rules.",
     )
+    findings.extend(snapshot.get('comparison_findings', []))
+    if snapshot.get('comparison_unavailable'):
+        finding('comparison-unavailable', 'Refresh the policy and zoning comparison',
+                'The comparison inputs did not match the saved design or reference layers.',
+                'Wait for drawings and zoning layers to save, then request a new report.', kind='unresolved_question')
     return {
         "method_version": "student-review-v2-placement-plots",
         "metrics": metrics,
@@ -825,6 +877,9 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
         )
         sections.append(
             f"<section><h2>{esc(finding['title'])}</h2><p class='meta'>{esc(finding['kind'].replace('_', ' '))} · {esc(finding['location']['label'])}</p>"
+            + (f"<p><b>{'Local plan intent' if finding['comparison']['group'] == 'local_plan' else 'Student-proposed zoning'}:</b> {esc(finding['comparison']['expected'])}</p>"
+               f"<p><b>Your design:</b> {esc(finding['comparison']['proposed'])}</p><p><b>Comparison:</b> {esc(finding['comparison']['status'].replace('_', ' '))} · preliminary screening</p>" if finding.get('comparison') else '')
+            +
             f"<p>{esc(finding['observation'])}</p><p><b>Suggested next step:</b> {esc(finding['recommendation'])}</p>"
             f"<p><b>Basis:</b> {esc(finding['basis'])}</p><p><b>Uncertainty:</b> {esc(finding['uncertainty']) or 'None additional recorded.'}</p><ul>{''.join(sources)}</ul>{student}</section>"
         )

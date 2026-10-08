@@ -30,6 +30,7 @@ from app.services.student_report import (
     boundary_record,
     build_snapshot,
     bind_policy_map_evidence,
+    bind_plan_comparisons,
     digest,
     report_html,
     select_policy_sources,
@@ -111,7 +112,7 @@ async def _policy_sources(db: AsyncSession, project_id: uuid.UUID, snapshot: dic
 def _plan_version(snapshot: dict) -> str:
     # Route evidence belongs to this report; freshness still compares the complete
     # saved design so later reads need no browser-derived geometry.
-    return digest({key: value for key, value in snapshot.items() if key not in {"park_access_snapshot", "map_policy_sources"}})
+    return digest({key: value for key, value in snapshot.items() if key not in {"park_access_snapshot", "map_policy_sources", "comparison_findings", "comparison_unavailable"}})
 
 
 def _view(row: StudentPlanningReport, current: dict) -> dict:
@@ -207,6 +208,8 @@ async def create_report(
     ids = [str(value) for value in request.zone_ids] if request.zone_ids is not None else None
     snapshot = await _snapshot(db, project_id, ids, request.park_access_snapshot)
     snapshot["map_policy_sources"] = bind_policy_map_evidence(request.policy_map_evidence, snapshot)
+    snapshot['comparison_findings'] = bind_plan_comparisons(request.policy_map_evidence, snapshot)
+    snapshot['comparison_unavailable'] = bool(request.policy_map_evidence and request.policy_map_evidence.comparisons and not snapshot['comparison_findings'])
     if ids is not None and set(ids) - {zone["id"] for zone in snapshot["zones"]}:
         raise HTTPException(
             409,

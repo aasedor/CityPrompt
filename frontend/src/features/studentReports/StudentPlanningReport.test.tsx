@@ -59,6 +59,16 @@ afterEach(() => {
 });
 
 describe('StudentPlanningReport', () => {
+  it('separates local policy and proposed zoning while retaining student response controls', async () => {
+    vi.mocked(studentReportsApi.latest).mockResolvedValue({...report,analysis:{...report.analysis,findings:[
+      {...report.analysis.findings[0],id:'local',comparison:{group:'local_plan',status:'potential_conflict',expected:'Civic recreation land',proposed:'New housing'}},
+      {...report.analysis.findings[0],id:'zoning',comparison:{group:'proposed_zoning',status:'discretionary',expected:'M-C2 · 16 m',proposed:'Apartments · 10.4 m'}},
+    ]}});
+    render(<StudentPlanningReport projectId="project-1" />);
+    expect(await screen.findByRole('region',{name:'Compare with the local area plan'})).toHaveTextContent('Potential departure or mismatch');
+    expect(screen.getByRole('region',{name:'Compare with your proposed zoning'})).toHaveTextContent('Discretionary use route');
+    expect(screen.getAllByLabelText('Your reasoning')).toHaveLength(2);
+  });
   it('attaches site map evidence before requesting the report', async () => {
     const evidence = { boundary_coordinates: [[0, 0], [1, 0], [0, 1]], sources: [] };
     render(<StudentPlanningReport projectId="project-1" getPolicyMapEvidence={async () => evidence} />);

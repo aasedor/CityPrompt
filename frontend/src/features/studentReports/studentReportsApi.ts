@@ -12,6 +12,7 @@ export interface ReportSource {
   context_created_at?: string;
 }
 export interface StudentFinding {
+  comparison?: import('./planComparisons').Comparison;
   id: string;
   kind: 'design_suggestion' | 'unresolved_question' | 'source_context';
   title: string;
