@@ -1127,6 +1127,7 @@ export function ProjectViewPage() {
             projectBenches={projectDetails.data?.benches}
             projectTrees={projectDetails.data?.trees}
             projectProps={projectDetails.data?.props}
+            projectSurfaces={projectDetails.data?.surfaces}
             siteZones={visibleZones}
             allSiteZones={siteZones}
             referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}

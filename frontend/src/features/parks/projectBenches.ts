@@ -1,5 +1,6 @@
 import type { Location, SiteZone } from "@/types";
 import type { DetailPropVariant } from "./detailCatalogue";
+import type { PavingSurface } from './pavingSurfaces';
 import {
   benchContext,
   type BenchContext,
@@ -24,6 +25,7 @@ export interface ProjectDetails {
   benches: ProjectBench[];
   trees?: ProjectTree[];
   props?: ProjectProp[];
+  surfaces?: PavingSurface[];
   can_edit: boolean;
 }
 export interface ProjectTree extends ProjectBench {

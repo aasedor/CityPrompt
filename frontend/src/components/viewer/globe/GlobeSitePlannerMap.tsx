@@ -1,5 +1,8 @@
 import { NativeParkLayer, assertNativeParksReady, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
 import {GlobeProjectBenches} from '@/features/parks/GlobeProjectBenches';
+import { GlobePavingSurfaces } from '@/features/parks/GlobePavingSurfaces';
+import { GlobeParkParcelGuide } from '@/features/parks/GlobeParkParcelGuide';
+import type { PavingSurface } from '@/features/parks/pavingSurfaces';
 import type {ProjectBench, ProjectTree, ProjectProp} from '@/features/parks/projectBenches';
 import { assertNativeStreetsReady, waitForNativeStreetsReady, expectsNativeStreet } from './nativeStreetReadiness';
 import { hasNativePark } from '@/features/parks/nativeParkRegistry';
@@ -1489,6 +1492,7 @@ interface GlobeSitePlannerMapProps {
   projectBenches?:ProjectBench[];
   projectTrees?:ProjectTree[];
   projectProps?:ProjectProp[];
+  projectSurfaces?:PavingSurface[];
   walkControlTarget?: HTMLElement | null;
   mapToolsTarget?: HTMLElement | null;
   entrancePick?: import('@/features/pickPlace/pickBuildingEntrance').EntrancePickRequest | null;
@@ -1601,6 +1605,7 @@ export function GlobeSitePlannerMap({
   projectBenches,
   projectTrees,
   projectProps,
+  projectSurfaces,
   walkControlTarget,
   mapToolsTarget,
   entrancePick,
@@ -4549,6 +4554,11 @@ export function GlobeSitePlannerMap({
           <BuildingEntranceApproaches zones={connectedSceneZones} results={pedestrianConnections}>
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
           {projectBenches && <GlobeProjectBenches benches={projectBenches} trees={projectTrees} props={projectProps} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
+          {projectSurfaces && <GlobePavingSurfaces surfaces={projectSurfaces} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
+          {!captureOverlaysHidden && !interactionPaused && walkMode !== 'active' && selectedZoneId && (()=>{
+            const zone=siteZones.find(z=>z.id===selectedZoneId);
+            return zone && hasNativePark(zone) ? <GlobeParkParcelGuide zone={zone} zones={allSiteZones} fallbackHeight={terrainElevation}/> : null;
+          })()}
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />

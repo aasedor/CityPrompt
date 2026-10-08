@@ -45,7 +45,9 @@ export function ParkLayoutControls({zone,zones,disabled,onSave}:{zone:SiteZone;z
         {choices.map(p=><option key={p.id} value={p.id}>{p.label} · {p.widthM} × {p.depthM} m</option>)}
       </select>
     </label>
-    <p className="my-2 text-xs">Objects keep their real size. Parcel resizing keeps your chosen layout.</p>
+    <p className="my-2 text-xs">Dashed amber outline: reserved park parcel. Solid green outline: the fixed park layout inside it.</p>
+    {current && <p className="my-2 text-xs font-semibold">Parcel: {parkOutlineDimensions(zone.coordinates).width.toFixed(1)} × {parkOutlineDimensions(zone.coordinates).depth.toFixed(1)} m. Fixed layout: {current.layout.widthM} × {current.layout.depthM} m.</p>}
+    <p className="my-2 text-xs">Enlarging the parcel reserves more space; it does not extend paving or stretch equipment. Use Add details → Custom paving to draw extra paved areas.</p>
     {layout && (layout.occupiedWidthM>layout.widthM || layout.occupiedDepthM>layout.depthM) && <p className="mb-2 text-xs">Placement space: {layout.occupiedWidthM} × {layout.occupiedDepthM} m, including projecting details.</p>}
     {!preview?<button className="min-h-11 w-full rounded border text-sm font-semibold" disabled={locked||current?.layout.id===selected}
       onClick={()=>setPreview(true)}>Preview layout</button>:<>

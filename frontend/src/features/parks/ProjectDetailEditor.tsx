@@ -42,7 +42,19 @@ export function ProjectDetailEditor({
     projectBenchContext(
       projectBenchFrame(
         zones,
-        [...source.benches, ...(source.trees ?? []), ...(source.props ?? [])],
+        [
+          ...source.benches,
+          ...(source.trees ?? []),
+          ...(source.props ?? []),
+          ...(source.surfaces ?? []).flatMap((s) =>
+            s.coordinates.map(([lng, lat], i) => ({
+              id: `${s.id}-${i}`,
+              lng,
+              lat,
+              angle: 0,
+            })),
+          ),
+        ],
         project.location,
       ),
     ),
@@ -52,15 +64,17 @@ export function ProjectDetailEditor({
       title={project.name}
       context={context}
       initialBenches={readProjectDetails(source, context)}
+      initialSurfaces={source.surfaces ?? []}
       contextZones={zones}
       disabled={!source.can_edit}
       onClose={onClose}
-      onSave={async (benches) => {
+      onSave={async (benches, surfaces) => {
         const response = await api.put<ProjectDetails>(
           `/api/v1/projects/${project.id}/details`,
           {
             expected_revision: source.revision,
             ...saveProjectDetails(benches, context),
+            surfaces,
           },
         );
         queryClient.setQueryData(

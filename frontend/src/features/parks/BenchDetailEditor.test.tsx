@@ -22,15 +22,131 @@ const zone = {
   },
 } as SiteZone;
 describe("isolated bench editor", () => {
-  it('searches the catalogue and adds, moves and saves a standalone picnic table', async () => {
-    const onSave=vi.fn().mockResolvedValue({});
-    render(<BenchLayoutEditor context={projectBenchContext(projectBenchFrame([],[]))} initialBenches={[]} title="Furniture trial" disabled={false} onSave={onSave} onClose={vi.fn()} />);
-    fireEvent.change(screen.getByLabelText('Search detail catalogue'),{target:{value:'picnic'}});
-    fireEvent.click(screen.getByRole('button',{name:'Add object'}));
-    fireEvent.click(screen.getByRole('button',{name:'Move object east'}));
-    fireEvent.click(screen.getByRole('button',{name:'Save details'}));
-    await waitFor(()=>expect(onSave).toHaveBeenCalledOnce());
-    expect(onSave.mock.calls[0][0][0].propVariant).toBe('picnic-table-accessible');
+  it("draws paving beneath details, undoes removal and saves both in the same draft", async () => {
+    const onSave = vi.fn().mockResolvedValue({});
+    const context = projectBenchContext(projectBenchFrame([], []));
+    const benches = [{ id: "bench", point: { x: 5, y: 5 }, yaw: 0 }];
+    render(
+      <BenchLayoutEditor
+        context={context}
+        initialBenches={benches}
+        title="Paving trial"
+        disabled={false}
+        onSave={onSave}
+        onClose={vi.fn()}
+      />,
+    );
+    const plan = screen.getByRole("group", { name: "Detail layout plan" });
+    Object.defineProperty(plan, "getScreenCTM", {
+      value: () => ({ inverse: () => ({}) }),
+    });
+    vi.stubGlobal("PointerEvent", MouseEvent);
+    vi.stubGlobal(
+      "DOMPoint",
+      class {
+        constructor(
+          public x: number,
+          public y: number,
+        ) {}
+        matrixTransform() {
+          return this;
+        }
+      },
+    );
+    try {
+      fireEvent.click(screen.getByRole("button", { name: "Draw paved area" }));
+      for (const [x, y] of [
+        [0, 0],
+        [20, 0],
+        [20, -20],
+        [0, -20],
+      ])
+        fireEvent.pointerDown(plan, { clientX: x, clientY: y });
+      fireEvent.click(screen.getByRole("button", { name: "Finish paving" }));
+      expect(
+        screen.getByRole("button", { name: "Select paving 1" }),
+      ).toBeInTheDocument();
+      fireEvent.change(screen.getByLabelText("Paving material"), {
+        target: { value: "brick" },
+      });
+      fireEvent.click(
+        screen.getByRole("button", { name: "Remove paved area" }),
+      );
+      expect(
+        screen.queryByRole("button", { name: "Select paving 1" }),
+      ).not.toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Undo detail edit" }));
+      fireEvent.click(screen.getByRole("button", { name: "Save details" }));
+      await waitFor(() => expect(onSave).toHaveBeenCalledOnce());
+      expect(onSave.mock.calls[0][0]).toEqual(benches);
+      expect(onSave.mock.calls[0][1][0]).toMatchObject({
+        material: "brick",
+        coordinates: [
+          [0, 0],
+          [20, 0],
+          [20, 20],
+          [0, 20],
+        ].map(([x, y]) => context.toWorld({ x, y })),
+      });
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+  it("keeps the moving detail selected when the destination hits another marker", () => {
+    const context = projectBenchContext(projectBenchFrame([], []));
+    render(
+      <BenchLayoutEditor
+        context={context}
+        initialBenches={[
+          { id: "one", point: { x: 10, y: 0 }, yaw: 0 },
+          { id: "two", point: { x: 0, y: 0 }, yaw: 0 },
+        ]}
+        title="Move trial"
+        disabled={false}
+        onSave={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+    const first = screen.getByRole("button", { name: "Select bench 1" });
+    const second = screen.getByRole("button", { name: "Select bench 2" });
+    Object.defineProperty(
+      screen.getByRole("group", { name: "Detail layout plan" }),
+      "getScreenCTM",
+      { value: () => null },
+    );
+    second.setPointerCapture = vi.fn();
+    fireEvent.click(first);
+    fireEvent.click(screen.getByRole("button", { name: "Move on plan" }));
+    fireEvent.pointerDown(second);
+    fireEvent.click(second);
+    expect(first).toHaveAttribute("aria-pressed", "true");
+    expect(second).toHaveAttribute("aria-pressed", "false");
+    expect(
+      screen.getByRole("button", { name: "Move on plan" }),
+    ).toHaveAttribute("aria-pressed", "true");
+  });
+  it("searches the catalogue and adds, moves and saves a standalone picnic table", async () => {
+    const onSave = vi.fn().mockResolvedValue({});
+    render(
+      <BenchLayoutEditor
+        context={projectBenchContext(projectBenchFrame([], []))}
+        initialBenches={[]}
+        title="Furniture trial"
+        disabled={false}
+        onSave={onSave}
+        onClose={vi.fn()}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText("Search detail catalogue"), {
+      target: { value: "picnic" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Add object" }));
+    fireEvent.click(screen.getByRole("button", { name: "Move object east" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save details" }));
+    await waitFor(() => expect(onSave).toHaveBeenCalledOnce());
+    expect(onSave.mock.calls[0][0][0].propVariant).toBe(
+      "picnic-table-accessible",
+    );
   });
   it("adds an oak tree, moves it, undoes removal and saves its model choice", async () => {
     const onSave = vi.fn().mockResolvedValue({});

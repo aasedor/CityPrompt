@@ -21,6 +21,9 @@ import { getApiErrorMessage } from "@/services/api";
 import { isAxiosError } from "axios";
 import { assetForZone } from "@/features/pickPlace/catalogue";
 import { DetailCataloguePicker } from "./DetailCataloguePicker";
+import { usePavingEditor } from "./PavingEditor";
+import type { PavingSurface } from "./pavingSurfaces";
+import { readNativePark, nativeParkFootprint } from "./nativeParkRegistry";
 import {
   detailAsset,
   type DetailAssetId,
@@ -101,19 +104,27 @@ export function BenchLayoutEditor({
   onSave,
   onClose,
   contextZones = [],
+  initialSurfaces = [],
 }: {
   context: BenchContext;
   initialBenches: DetailBench[];
   title: string;
   disabled: boolean;
-  onSave: (benches: DetailBench[]) => Promise<unknown>;
+  onSave: (
+    benches: DetailBench[],
+    surfaces: PavingSurface[],
+  ) => Promise<unknown>;
   onClose: () => void;
   contextZones?: SiteZone[];
+  initialSurfaces?: PavingSurface[];
 }) {
   const [benches, setBenches] = useState(initialBenches);
+  const [surfaces, setSurfaces] = useState(initialSurfaces);
   const independent = context.scope === "project";
   const [viewScale, setViewScale] = useState(1);
-  const [past, setPast] = useState<DetailBench[][]>([]),
+  const [past, setPast] = useState<
+      { benches: DetailBench[]; surfaces: PavingSurface[] }[]
+    >([]),
     [selected, setSelected] = useState<string | null>(null);
   const [placing, setPlacing] = useState(false),
     [message, setMessage] = useState(""),
@@ -127,6 +138,7 @@ export function BenchLayoutEditor({
   } | null>(null);
   const svg = useRef<SVGSVGElement>(null),
     dialog = useRef<HTMLDivElement>(null);
+  const suppressPlanClick = useRef(false);
   const locked = disabled || saving,
     active = benches.find((b) => b.id === selected),
     dirty = past.length > 0;
@@ -169,9 +181,33 @@ export function BenchLayoutEditor({
       maxY: y + ((maxY - minY) * viewScale) / 2,
     };
   }, [context, viewScale]);
-  const change = (next: DetailBench[]) => {
-    setPast((p) => [...p.slice(-49), benches]);
+  const change = (next: DetailBench[], nextSurfaces = surfaces) => {
+    setPast((p) => [...p.slice(-49), { benches, surfaces }]);
     setBenches(next);
+    setSurfaces(nextSurfaces);
+    setMessage("");
+  };
+  const paving = usePavingEditor({
+    surfaces,
+    context,
+    locked,
+    change: (next) => change(benches, next),
+    onActivate: () => {
+      setSelected(null);
+      setPlacing(false);
+      setPreview(null);
+      drag.current = null;
+    },
+  });
+  const undo = () => {
+    const previous = past[past.length - 1];
+    if (!previous) return;
+    setBenches(previous.benches);
+    setSurfaces(previous.surfaces);
+    setPast((p) => p.slice(0, -1));
+    setPreview(null);
+    setPlacing(false);
+    paving.reset();
     setMessage("");
   };
   const move = (candidate: DetailBench) => {
@@ -184,6 +220,9 @@ export function BenchLayoutEditor({
     setPlacing(false);
   };
   const add = (assetId: DetailAssetId = "timber-bench") => {
+    paving.reset();
+    setPlacing(false);
+    setPreview(null);
     const model = detailAsset(assetId);
     const candidate: DetailBench = {
       id: `${model.kind}-${crypto.randomUUID()}`,
@@ -272,18 +311,29 @@ export function BenchLayoutEditor({
           }
           if (e.key === "Escape" && !saving) {
             e.preventDefault();
+            if (paving.armed) {
+              paving.reset();
+              return;
+            }
+            if (placing) {
+              setPlacing(false);
+              setPreview(null);
+              return;
+            }
             onClose();
           }
           if (locked) return;
           if ((e.target as HTMLElement).closest("select,input,textarea"))
             return;
+          if (e.key === "Enter" && paving.drawing) {
+            e.preventDefault();
+            paving.finish();
+            return;
+          }
           if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
             e.preventDefault();
             if (past.length) {
-              setBenches(past[past.length - 1]);
-              setPast((p) => p.slice(0, -1));
-              setPreview(null);
-              setMessage("");
+              undo();
             }
             return;
           }
@@ -351,6 +401,10 @@ export function BenchLayoutEditor({
               viewBox={`${box.minX} ${-box.maxY} ${box.maxX - box.minX} ${box.maxY - box.minY}`}
               className="max-h-[58dvh] min-h-64 w-full touch-none rounded-xl border border-slate-400 bg-[#e8edd9]"
               onPointerMove={(e) => {
+                if (placing && active && !locked) {
+                  setPreview({ ...active, point: point(e) });
+                  return;
+                }
                 if (!drag.current || locked) return;
                 if (
                   Math.hypot(
@@ -393,9 +447,27 @@ export function BenchLayoutEditor({
                     },
                   });
               }}
-              onPointerDown={(e) => {
+              onClickCapture={(e) => {
+                if (suppressPlanClick.current || placing || paving.armed) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  suppressPlanClick.current = false;
+                }
+              }}
+              onPointerDownCapture={(e) => {
+                suppressPlanClick.current = false;
+                if (paving.armed && !locked) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  suppressPlanClick.current = true;
+                  paving.click(point(e));
+                  return;
+                }
                 if (placing && active && !locked) {
                   e.preventDefault();
+                  e.stopPropagation();
+                  suppressPlanClick.current = true;
+                  setPreview(null);
                   move({ ...active, point: point(e) });
                 }
               }}
@@ -408,6 +480,7 @@ export function BenchLayoutEditor({
                   strokeWidth=".25"
                 />
               )}
+              {independent && paving.plan}
               {independent &&
                 contextZones.map((zone) => (
                   <g key={zone.id} pointerEvents="none">
@@ -419,7 +492,9 @@ export function BenchLayoutEditor({
                           : zone.zone_type === "road"
                             ? "#bec3c8"
                             : zone.zone_type === "green_space"
-                              ? "#aac593"
+                              ? readNativePark(zone)
+                                ? "none"
+                                : "#aac593"
                               : "#d1b69c"
                       }
                       stroke="#6d7469"
@@ -427,9 +502,26 @@ export function BenchLayoutEditor({
                         zone.zone_type === "site_boundary" ? 0.4 : 0.2
                       }
                       strokeDasharray={
-                        zone.zone_type === "site_boundary" ? "2 1" : undefined
+                        zone.zone_type === "site_boundary" ||
+                        readNativePark(zone)
+                          ? "2 1"
+                          : undefined
                       }
                     />
+                    {readNativePark(zone) && (
+                      <polygon
+                        points={points(
+                          nativeParkFootprint(
+                            readNativePark(zone)!.selection,
+                            readNativePark(zone)!.layout,
+                          ).map(context.fromWorld),
+                        )}
+                        fill="#aac593"
+                        fillOpacity={0.5}
+                        stroke="#315d4b"
+                        strokeWidth={0.5}
+                      />
+                    )}
                     {zone.zone_type !== "site_boundary" && (
                       <text
                         x={context.fromWorld(zone.coordinates[0]).x}
@@ -504,9 +596,14 @@ export function BenchLayoutEditor({
                   aria-label={`Select ${bench.treeVariant ? "tree" : bench.propVariant ? "object" : "bench"} ${i + 1}`}
                   aria-pressed={selected === bench.id}
                   transform={`translate(${bench.point.x} ${-bench.point.y}) rotate(${(-bench.yaw * 180) / Math.PI})`}
-                  onFocus={() => setSelected(bench.id)}
+                  onFocus={() => {
+                    if (!placing && !paving.armed) setSelected(bench.id);
+                  }}
                   onClick={() => {
-                    if (!locked) setSelected(bench.id);
+                    if (!locked && !placing && !paving.armed) {
+                      paving.reset();
+                      setSelected(bench.id);
+                    }
                   }}
                   onKeyDown={(e) => {
                     if (["Enter", " "].includes(e.key) && !locked) {
@@ -519,6 +616,7 @@ export function BenchLayoutEditor({
                     e.stopPropagation();
                     e.preventDefault();
                     setSelected(bench.id);
+                    paving.reset();
                     setPlacing(false);
                     drag.current = {
                       id: bench.id,
@@ -610,11 +708,12 @@ export function BenchLayoutEditor({
             <p className="mt-2 text-xs">
               Top view · north ↑ · objects keep their real dimensions.{" "}
               {independent
-                ? "Building, street and park outlines are guides, not placement limits."
+                ? "Dashed park outline = reserved parcel; solid green outline = fixed park layout. Details can be placed beyond these guides."
                 : "Paths and larger park objects are shown for context."}
             </p>
           </div>
           <div className="space-y-3 md:max-h-[74dvh] md:overflow-y-auto md:pr-1">
+            {independent && paving.controls}
             <p className="font-semibold">
               {benchCount} {benchCount === 1 ? "bench" : "benches"}
               {independent &&
@@ -682,6 +781,8 @@ export function BenchLayoutEditor({
                   disabled={locked}
                   aria-pressed={placing}
                   onClick={() => {
+                    paving.reset();
+                    setPreview(null);
                     setPlacing((v) => !v);
                     setMessage(
                       "Click a clear place on the plan to move this object.",
@@ -757,9 +858,7 @@ export function BenchLayoutEditor({
               aria-label="Undo detail edit"
               disabled={locked || !past.length}
               onClick={() => {
-                setBenches(past[past.length - 1]);
-                setPast((p) => p.slice(0, -1));
-                setMessage("");
+                undo();
               }}
             >
               Undo
@@ -772,12 +871,12 @@ export function BenchLayoutEditor({
             </p>
             <button
               className={`${button} w-full !bg-[#c9ff3d]`}
-              disabled={locked || !dirty || !!invalid}
+              disabled={locked || !dirty || !!invalid || paving.drawing}
               onClick={async () => {
                 setSaving(true);
                 setMessage("");
                 try {
-                  await onSave(benches);
+                  await onSave(benches, surfaces);
                   onClose();
                 } catch (error) {
                   const fallback =

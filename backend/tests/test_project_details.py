@@ -7,6 +7,35 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 from app.api.v1 import project_details as endpoint
 
+PAVING = {'id':'paving-1', 'material':'concrete', 'coordinates':[
+    [-114.1,51.05],[-114.0998,51.05],[-114.0998,51.0502],[-114.1,51.0502]]}
+
+@pytest.mark.asyncio
+async def test_paving_round_trip_and_old_clients_preserve_surfaces(monkeypatch):
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    db, row = session({'keep':'unchanged'})
+    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], surfaces=[PAVING]), SimpleNamespace(), db)
+    assert saved['surfaces'] == [PAVING]
+    assert row.metadata_['keep'] == 'unchanged'
+    loaded = await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db)
+    assert loaded['surfaces'] == [PAVING]
+    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db)
+    assert legacy['surfaces'] == [PAVING]
+    cleared = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], surfaces=[]), SimpleNamespace(), db)
+    assert cleared['surfaces'] == []
+
+@pytest.mark.parametrize('patch', [
+    {'material':'unknown'}, {'coordinates':[[0,0],[1,0]]},
+    {'coordinates':[[0,0],[1,1],[0,1],[1,0]]},
+    {'coordinates':[[0,0],[1,0],[2,0]]},
+    {'coordinates':[[0,0],[181,0],[1,1]]},
+    {'coordinates':[[0,0],[float('nan'),0],[1,1]]},
+    {'coordinates':[[0,0],[1,0],[1,1],[0,1]]},
+])
+def test_rejects_invalid_paving(patch):
+    with pytest.raises(ValidationError):
+        endpoint.DetailUpdate(expected_revision=0, benches=[], surfaces=[{**PAVING, **patch}])
+
 
 def session(metadata=None):
     row = SimpleNamespace(metadata_=metadata or {})
