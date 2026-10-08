@@ -11,11 +11,11 @@ export function LocalAreaPlanPanel({ state }: { state: LocalAreaPolicyState }) {
     </header>
     <label className="block text-xs font-semibold">Plan to explore
       <select aria-label="Local area plan" value={state.planId} onChange={event => state.setPlan(event.target.value)} className="mt-1 min-h-11 w-full rounded-xl border border-[#151515]/20 bg-white px-2 text-xs">
-        <option value="auto">Automatically match my site</option>
-        {LOCAL_AREA_PLANS.map(item => <option key={item.id} value={item.id}>{item.name}{state.matchingPlans.some(match => match.id === item.id) ? ' · covers your site' : ''}</option>)}
+        <option value="auto">{state.hasBoundary ? 'Automatically match my site' : 'Automatically match map area'}</option>
+        {LOCAL_AREA_PLANS.map(item => <option key={item.id} value={item.id}>{item.name}{state.matchingPlans.some(match => match.id === item.id) ? state.hasBoundary ? ' · covers your site' : ' · in map area' : ''}</option>)}
       </select>
     </label>
-    {state.matchingPlans.length > 1 && <p role="status" className="text-xs leading-relaxed text-[#5c554d]">Your site crosses {state.matchingPlans.map(item => item.name).join(' and ')}. Explore each plan with the selector; automatic selection shows the largest overlap.</p>}
+    {state.matchingPlans.length > 1 && <p role="status" className="text-xs leading-relaxed text-[#5c554d]">{state.hasBoundary ? 'Your site crosses' : 'This map area includes'} {state.matchingPlans.map(item => item.name).join(' and ')}. Explore each plan with the selector; automatic selection shows the largest overlap.</p>}
     <label className="flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-[#151515]/15 bg-white/80 px-3 py-2 text-xs font-semibold">
       {plan ? `Show ${plan.name} policy map` : 'Show local policy map'}
       <span className="relative inline-flex shrink-0">
@@ -31,7 +31,7 @@ export function LocalAreaPlanPanel({ state }: { state: LocalAreaPolicyState }) {
         <input aria-label="Policy map opacity" type="range" min="0" max="100" step="1" value={Math.round(state.opacity * 100)} onChange={event => state.setOpacity(Number(event.target.value) / 100)} className="h-9 w-full cursor-pointer accent-[#37594b]" />
         <span className="flex justify-between text-[10px] text-[#5c554d]"><span>Transparent</span><span>Solid</span></span>
       </label>
-      <label className="flex min-h-11 cursor-pointer items-center gap-2 text-xs"><input type="checkbox" className="h-4 w-4 accent-[#37594b]" checked={state.clipToSite} onChange={event => state.setClipToSite(event.target.checked)} />Only show inside my site</label>
+      {state.hasBoundary && <label className="flex min-h-11 cursor-pointer items-center gap-2 text-xs"><input type="checkbox" className="h-4 w-4 accent-[#37594b]" checked={state.clipToSite} onChange={event => state.setClipToSite(event.target.checked)} />Only show inside my site</label>}
       {state.loading && <p role="status" className="text-xs">Loading {plan.name} policy map…</p>}
       {state.error && <div role="alert" className="rounded-xl bg-amber-50 p-2 text-xs"><p>The {plan.name} map could not load.</p><button className="min-h-11 font-semibold underline" onClick={state.retry}>Retry policy map</button></div>}
       {state.partial && <p role="status" className="text-xs text-amber-900">Part of your site is outside {plan.name}. Policy coverage stops at the plan boundary.</p>}

@@ -6,18 +6,19 @@ import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPr
 import { fetchZoningLabels, zoningBounds, zoningCoverageProblem } from './zoningLabels';
 import { readZoningPreferences, type ZoningPreferences } from './zoningAppearance';
 
-export function useZoningLabels(projectId: string | undefined, zones: SiteZone[]) {
+export function useZoningLabels(projectId: string | undefined, zones: SiteZone[], exploration: number[][] = []) {
   // District outlines are distinct from the retired cadastral lot-line toggle.
   const key = `cityprompt:parcel-zoning:${projectId}`;
   const [choices, setChoices] = useState<Record<string, ZoningPreferences>>({});
   const saved = useMemo(() => readZoningPreferences(readBrowserPreference(key)), [key]);
   const visibility = choices[key] ?? saved;
   const boundary = getActiveSiteBoundary(zones);
-  const bounds = zoningBounds(boundary?.coordinates ?? []);
+  const coordinates = boundary?.coordinates ?? exploration;
+  const bounds = zoningBounds(coordinates);
   const problem = zoningCoverageProblem(bounds);
   const query = useQuery({
-    queryKey: ['zoning-district-map-v3', projectId, boundary?.coordinates],
-    queryFn: ({ signal }) => fetchZoningLabels(boundary!.coordinates, AbortSignal.any([signal, AbortSignal.timeout(30_000)])),
+    queryKey: ['zoning-district-map-v3', projectId, coordinates],
+    queryFn: ({ signal }) => fetchZoningLabels(coordinates, AbortSignal.any([signal, AbortSignal.timeout(30_000)])),
     enabled: Boolean(projectId && bounds && !problem && visibility.enabled && (visibility.labels || visibility.lines || visibility.fill)),
     staleTime: 15 * 60_000, gcTime: 30 * 60_000, retry: false,
   });
@@ -30,6 +31,6 @@ export function useZoningLabels(projectId: string | undefined, zones: SiteZone[]
     toggle: () => update({ labels: !visibility.labels }), toggleLines: () => update({ lines: !visibility.lines }),
     toggleFill: () => update({ fill: !visibility.fill }),
     setFillOpacity: (fillOpacity: number) => { if (Number.isFinite(fillOpacity)) update({ fillOpacity: Math.min(1, Math.max(0, fillOpacity)) }); },
-    problem, data: problem ? undefined : query.data, loading: query.isFetching, error: query.error, retry: () => { void query.refetch(); } };
+    hasBoundary: Boolean(boundary), problem, data: problem ? undefined : query.data, loading: query.isFetching, error: query.error, retry: () => { void query.refetch(); } };
 }
 export type ZoningLabelsState = ReturnType<typeof useZoningLabels>;

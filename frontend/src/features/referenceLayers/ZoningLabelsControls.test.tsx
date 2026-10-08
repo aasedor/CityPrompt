@@ -9,17 +9,26 @@ import { fetchZoningLabels } from './zoningLabels';
 
 vi.mock('./zoningLabels', async original => ({ ...await original<object>(), fetchZoningLabels: vi.fn() }));
 const boundary = { id: 'site', zone_type: 'site_boundary', is_active_boundary: true, coordinates: [[-114.12, 51.01], [-114.119, 51.01], [-114.119, 51.011], [-114.12, 51.011]], properties: {} } as SiteZone;
-function App({ id = 'one', zones = [boundary] }: { id?: string; zones?: SiteZone[] }) {
-  const state = useZoningLabels(id, zones);
+function App({ id = 'one', zones = [boundary], area }: { id?: string; zones?: SiteZone[]; area?: number[][] }) {
+  const state = useZoningLabels(id, zones, area);
   return <><ZoningLabelsControls state={state} /><output data-testid="data">{state.data?.loadedAt ?? 'none'}</output></>;
 }
 function setup() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return (props: { id?: string; zones?: SiteZone[] } = {}) => <QueryClientProvider client={client}><App {...props} /></QueryClientProvider>;
+  return (props: Parameters<typeof App>[0] = {}) => <QueryClientProvider client={client}><App {...props} /></QueryClientProvider>;
 }
 beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); });
 
 describe('zoning label controls', () => {
+  it('loads zoning around the map without an authored boundary', async () => {
+    vi.mocked(fetchZoningLabels).mockResolvedValue({ districts: [], bounds: [-114.12,51.01,-114.119,51.011], loadedAt: 'exploring' });
+    render(setup()({ zones: [], area: boundary.coordinates }));
+    expect(screen.getByRole('switch')).toBeEnabled();
+    fireEvent.click(screen.getByRole('switch'));
+    await waitFor(() => expect(screen.getByTestId('data')).toHaveTextContent('exploring'));
+    expect(fetchZoningLabels).toHaveBeenCalledWith(boundary.coordinates, expect.any(AbortSignal));
+    expect(screen.getByText(/around the map centre/)).toBeInTheDocument();
+  });
   it('supports transparent and solid endpoints without hiding boundaries or labels', async () => {
     vi.mocked(fetchZoningLabels).mockResolvedValue({ districts: [], bounds: [-114.12, 51.01, -114.119, 51.011], loadedAt: 'ready' });
     render(setup()());

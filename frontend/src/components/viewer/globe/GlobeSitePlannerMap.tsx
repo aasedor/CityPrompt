@@ -1529,6 +1529,7 @@ interface GlobeSitePlannerMapProps {
    * dead code for any future code that wants to adapt the globe to that API.
    */
   onGlobeReady?: (refs: {
+    getMapCentre?: () => { lng: number; lat: number };
     canvas: HTMLCanvasElement;
     camera: THREE.Camera;
     terrainHeight: number;
@@ -3553,6 +3554,7 @@ export function GlobeSitePlannerMap({
     const camera = cameraRef.current;
     if (!canvas || !camera) return;
     onGlobeReady({
+      getMapCentre: globeAIRenderViewport.getCenter,
       canvas,
       camera,
       terrainHeight: terrainElevation,

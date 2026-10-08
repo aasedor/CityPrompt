@@ -71,6 +71,7 @@ import { ZoningStudyPanel } from '@/features/referenceLayers/ZoningStudyPanel';
 import { useStudyMapDrawing } from '@/features/referenceLayers/useStudyMapDrawing';
 import { studyMetadata } from '@/features/referenceLayers/zoningStudy';
 import { useZoningLabels } from '@/features/referenceLayers/useZoningLabels';
+import { useMapExploration } from '@/features/referenceLayers/useMapExploration';
 import { useLocalAreaPolicy } from '@/features/policyPlans/useLocalAreaPolicy';
 import { LocalAreaPlanPanel } from '@/features/policyPlans/LocalAreaPlanPanel';
 import { PolicyDetailsCard } from '@/features/policyPlans/PolicyDetailsCard';
@@ -130,6 +131,19 @@ function planLayerStorageKey(projectId: string): string {
 
 export function ProjectViewPage() {
   const { id } = useParams<{ id: string }>();
+  const { data: project, isLoading, error: projectError, refetch: reloadProject } = useQuery({
+    queryKey: ['project', id],
+    queryFn: () => projectsApi.get(id!),
+    enabled: !!id,
+    refetchInterval: (query) => {
+      const data = query.state.data;
+      if (!data) return false;
+      const hasGenerating = data.buildings?.some(
+        (b: { generation_status?: string }) => b.generation_status === 'generating'
+      );
+      return hasGenerating ? 3000 : 10 * 60 * 1000;
+    },
+  });
   const [placementDraft, setPlacementDraft] = useState<PlacementDraft | null>(null);
   const [advancedZoneId, setAdvancedZoneId] = useState<string | null>(null);
   const placementPending = useRef(false);
@@ -163,6 +177,7 @@ export function ProjectViewPage() {
   const [globeRenderPosition, setGlobeRenderPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDraggingGlobeRender, setIsDraggingGlobeRender] = useState(false);
   const [globeRefs, setGlobeRefs] = useState<{
+    getMapCentre?: () => { lng: number; lat: number };
     canvas: HTMLCanvasElement;
     camera: any;
     terrainHeight: number;
@@ -280,18 +295,24 @@ export function ProjectViewPage() {
     handleZoneCreated,
     handleZoneUpdated,
   } = useSiteZones(id);
-  const zoningLabels = useZoningLabels(id, siteZones);
-  const localPolicy = useLocalAreaPolicy(id, siteZones);
+  const readMapCentre = useMemo(() => globeRefs?.getMapCentre ?? (mapInstance ? () => mapInstance.getCenter() : undefined), [globeRefs?.getMapCentre, mapInstance]);
+  const exploration = useMapExploration(id, readMapCentre,
+    project?.location?.longitude, project?.location?.latitude, !getActiveSiteBoundary(siteZones));
+  const zoningLabels = useZoningLabels(id, siteZones, exploration);
+  const localPolicy = useLocalAreaPolicy(id, siteZones, exploration);
   const cityPolicyMaps = useCityPolicyMaps(id);
-  const [zoningSelection, setZoningSelection] = useState<{ projectId?: string; zone: ZoneInspection | null } | null>(null);
-  const selectZoning = useCallback((zone: ZoneInspection | null) => setZoningSelection({ projectId: id, zone }), [id]);
+  const [zoningSelection, setZoningSelection] = useState<{ projectId?: string; zone: ZoneInspection | null; overlay: typeof zoningLabels.data } | null>(null);
+  const selectZoning = useCallback((zone: ZoneInspection | null) => setZoningSelection({ projectId: id, zone, overlay: zoningLabels.data }), [id, zoningLabels.data]);
   const inspectZoningLegend = (zoneId: string) => {
     setShowReferenceLayers(false);
     localPolicy.clearSelection(); cityPolicyMaps.clearSelection();
     selectZone(null);
     selectZoning({ id: zoneId, label: '', source: '' });
   };
-  const selectedZoning = useMemo(() => resolveZoneInspection(zoningSelection && zoningSelection.projectId === id ? zoningSelection.zone : null,
+  // City feature IDs are scoped to a query result. Panning must never retarget
+  // an open catalogue card to a different district with the same row index.
+  const selectedZoning = useMemo(() => resolveZoneInspection(zoningSelection && zoningSelection.projectId === id
+    && (zoningSelection.zone?.layerId || zoningSelection.overlay === zoningLabels.data) ? zoningSelection.zone : null,
     zoningLabels, references.visibleLayers), [id, zoningSelection, zoningLabels, references.visibleLayers]);
   const localPolicyPanel = { ...localPolicy, selectCategory: (category: string) => {
     setShowReferenceLayers(false); selectZone(null);
@@ -980,20 +1001,6 @@ export function ProjectViewPage() {
       window.addEventListener('keydown', handleKeyDown, true);
       return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [renderLightbox, stepRenderLightbox]);
-
-  const { data: project, isLoading, error: projectError, refetch: reloadProject } = useQuery({
-    queryKey: ['project', id],
-    queryFn: () => projectsApi.get(id!),
-    enabled: !!id,
-    refetchInterval: (query) => {
-      const data = query.state.data;
-      if (!data) return false;
-      const hasGenerating = data.buildings?.some(
-        (b: { generation_status?: string }) => b.generation_status === 'generating'
-      );
-      return hasGenerating ? 3000 : 10 * 60 * 1000;
-    },
-  });
 
   const visibleBuildings = useMemo(
     () => filterBuildingsForVisibleCommunity3DScope(

@@ -91,7 +91,7 @@ describe('Riley policy controls', () => {
     expect(screen.getByTestId('map')).toHaveTextContent('absent');
     rerender(view({ zones: [] }));
     expect(screen.getByTestId('map')).toHaveTextContent('absent');
-    expect(screen.getByText(/Draw a site boundary/)).toBeInTheDocument();
+    expect(screen.getByText(/Choose a local area plan below/)).toBeInTheDocument();
   });
   it('reports unavailable areas and can recover from a load error', async () => {
     vi.mocked(loadRileyPolicy).mockRejectedValueOnce(new Error('Chunk unavailable'));

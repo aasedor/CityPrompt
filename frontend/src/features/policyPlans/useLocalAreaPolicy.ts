@@ -8,15 +8,17 @@ import { loadLocalAreaPlan, localAreaPlan, matchLocalAreaPlans, readLocalPolicyP
 
 const EMPTY_COORDINATES: number[][] = [];
 
-export function useLocalAreaPolicy(projectId: string | undefined, zones: SiteZone[]) {
+export function useLocalAreaPolicy(projectId: string | undefined, zones: SiteZone[], exploration: number[][] = EMPTY_COORDINATES) {
   // Preserve Riley visibility/opacity/clipping saved by existing projects.
   const key = `cityprompt:policy-map:v1:${projectId}`;
   const saved = useMemo(() => readLocalPolicyPreferences(readBrowserPreference(key)), [key]);
   const [choices, setChoices] = useState<Record<string, LocalPolicyPreferences>>({});
   const [inspection, setInspection] = useState<{ key: string; category: string; featureId?: string } | null>(null);
   const preferences = choices[key] ?? saved;
-  const coordinates = getActiveSiteBoundary(zones)?.coordinates ?? EMPTY_COORDINATES;
-  const coverage = useMemo(() => matchLocalAreaPlans(coordinates), [coordinates]);
+  const boundary = getActiveSiteBoundary(zones);
+  const coordinates = boundary?.coordinates ?? EMPTY_COORDINATES;
+  const matchCoordinates = boundary ? coordinates : exploration;
+  const coverage = useMemo(() => matchLocalAreaPlans(matchCoordinates), [matchCoordinates]);
   const plan = preferences.planId === 'auto' ? coverage.matches[0] : localAreaPlan(preferences.planId);
   const inspectionKey = `${key}:${plan?.snapshot}`;
   const query = useQuery({ queryKey: ['local-area-urban-form', plan?.snapshot],
@@ -28,11 +30,11 @@ export function useLocalAreaPolicy(projectId: string | undefined, zones: SiteZon
     try { return { value: selectPolicySite(query.data, coordinates), error: null }; }
     catch { return { value: undefined, error: 'The plan could not be matched to this boundary. Check the site outline.' }; }
   }, [preferences.enabled, plan, query.data, coordinates]);
-  const problem = (!plan ? coverage.problem : null) ?? selection?.error ?? null;
+  const problem = (!plan ? boundary ? coverage.problem : 'Choose a local area plan below to browse its map, or move to an area with an approved plan.' : null) ?? selection?.error ?? null;
   const data = useMemo(() => {
     if (!preferences.enabled || problem || !query.data || !selection?.value) return undefined;
-    return policyOverlay(query.data, preferences.clipToSite ? selection.value.features : query.data.features);
-  }, [preferences.enabled, preferences.clipToSite, problem, query.data, selection]);
+    return policyOverlay(query.data, preferences.clipToSite && boundary ? selection.value.features : query.data.features);
+  }, [preferences.enabled, preferences.clipToSite, boundary, problem, query.data, selection]);
   const legend = useMemo(() => {
     const withinSite = new Set(selection?.value?.features.map(feature => feature.properties.category));
     const available = new Set(data?.districts.map(area => area.label));
@@ -47,9 +49,9 @@ export function useLocalAreaPolicy(projectId: string | undefined, zones: SiteZon
     writeBrowserPreference(key, JSON.stringify(next));
     setChoices(current => ({ ...current, [key]: next }));
   };
-  return { ...preferences, plan, matchingPlans: coverage.matches, data, legend, selected, problem,
+  return { ...preferences, hasBoundary: Boolean(boundary), plan, matchingPlans: coverage.matches, data, legend, selected, problem,
     loading: query.isFetching, error: query.error,
-    outsideSite: Boolean(selection?.value && !selection.value.hasCoverage),
+    outsideSite: Boolean(boundary && selection?.value && !selection.value.hasCoverage),
     selectCategory: (category: string) => {
       if (legend.some(entry => entry.category === category)) setInspection({ key: inspectionKey, category });
     },

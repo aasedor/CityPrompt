@@ -16,8 +16,8 @@ vi.mock('./localAreaPlans', async original => ({ ...await original<object>(), lo
 const site = (x: number, y: number) => ({ id:'site', zone_type:'site_boundary', is_active_boundary:true, properties:{}, coordinates:[[x-.001,y-.001],[x+.001,y-.001],[x+.001,y+.001],[x-.001,y+.001]] }) as SiteZone;
 const riley = site(-114.10,51.056);
 const chinook = site(-114.0813912,51.0087248);
-function App({ zones = [riley], project = 'one' }: { zones?: SiteZone[]; project?: string }) {
-  const state = useLocalAreaPolicy(project, zones);
+function App({ zones = [riley], project = 'one', area }: { zones?: SiteZone[]; project?: string; area?: number[][] }) {
+  const state = useLocalAreaPolicy(project, zones, area);
   return <><LocalAreaPlanPanel state={state} /><PolicyDetailsCard selected={state.selected} onClose={state.clearSelection} />
     <output data-testid="geometry">{state.data?.districts[0]?.id ?? 'none'}</output></>;
 }
@@ -32,6 +32,23 @@ beforeEach(async () => {
 });
 
 describe('local area plan workflow', () => {
+  it('automatically matches the map area before any boundary exists', async () => {
+    const view = setup(); const { rerender } = render(view({ zones: [], area: riley.coordinates }));
+    expect(screen.getByRole('switch')).toHaveAccessibleName('Show Riley policy map');
+    fireEvent.click(screen.getByRole('switch'));
+    await screen.findByText('Urban form legend');
+    rerender(view({ zones: [], area: chinook.coordinates }));
+    await waitFor(() => expect(screen.getByTestId('geometry')).toHaveTextContent('chinook-'));
+    expect(screen.getByRole('switch')).toHaveAccessibleName('Show Chinook policy map');
+  });
+  it('browses a full selected plan without a boundary even with saved site clipping', async () => {
+    localStorage.setItem('cityprompt:policy-map:v1:one', JSON.stringify({ enabled:true, clipToSite:true, planId:'riley', opacity:0.7 }));
+    render(setup()({ zones: [] }));
+    await screen.findByText('Urban form legend');
+    expect(screen.getByTestId('geometry')).not.toHaveTextContent('none');
+    expect(screen.queryByLabelText('Only show inside my site')).not.toBeInTheDocument();
+    expect(screen.queryByText(/does not overlap your current site/)).not.toBeInTheDocument();
+  });
   it('retries the real map request after a connection failure without reloading the project', async () => {
     vi.mocked(fetch).mockRejectedValueOnce(new TypeError('Failed to fetch'));
     render(setup()());
@@ -71,7 +88,7 @@ describe('local area plan workflow', () => {
     await waitFor(() => expect(screen.getByTestId('geometry')).toHaveTextContent('chinook-'));
     rerender(view({ zones:[] }));
     expect(screen.getByTestId('geometry')).toHaveTextContent('none');
-    expect(screen.getByText(/Draw a site boundary/)).toBeInTheDocument();
+    expect(screen.getByText(/Choose a local area plan below/)).toBeInTheDocument();
     rerender(view({ project:'two' }));
     expect(screen.getByRole('switch')).not.toBeChecked();
   });
