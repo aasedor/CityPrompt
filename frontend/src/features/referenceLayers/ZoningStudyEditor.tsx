@@ -4,6 +4,7 @@ import { api, getApiErrorMessage } from '@/services/api';
 import { StudyEditorShell } from './StudyEditorShell';
 import { CalgaryDistrictSelect } from './CalgaryDistrictSelect';
 import { CatalogueMatches } from '@/features/zoningCatalogue/ZoningCatalogueCard';
+import { DRAFT_DISTRICTS, DRAFT_ZONING_SOURCE, draftDistrictColor, draftDistrictInfo } from './draftZoning';
 import { CALGARY_COLOUR_SOURCE, CALGARY_CATALOGUE_DATE, CUSTOM_ZONE, districtChoices as bylawChoices } from './calgaryBylaw';
 import type { StudyMapDrawing } from './useStudyMapDrawing';
 import { referenceLayerQueryKey, referenceLayersApi, type ReferenceLayer } from './api';
@@ -23,7 +24,7 @@ const loadedSlot = (layer?: ReferenceLayer): Slot => { const zones=studyZones(la
 const button = 'min-h-11 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-stone-900 hover:bg-lime-50 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900';
 
 function persistDrafts(prefix:string, slots:Record<StudyCondition,Slot>) {
-  for(const condition of ['existing','proposed'] as const) {
+  for(const condition of ['existing','proposed','draft-2025'] as const) {
     const value=slots[condition];
     if(JSON.stringify(value.zones)===value.baseline && value.opacity===value.baselineOpacity) localStorage.removeItem(prefix+condition);
     else localStorage.setItem(prefix+condition,JSON.stringify({schema:1,zones:value.zones,baseHash:value.baseHash,opacity:value.opacity}));
@@ -58,6 +59,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
   const [slots,setSlots]=useState<Record<StudyCondition,Slot>>(()=>({
     existing:readDraft(draftPrefix+'existing',loadedSlot(findLayer(layers,'existing'))),
     proposed:readDraft(draftPrefix+'proposed',loadedSlot(findLayer(layers,'proposed'))),
+    'draft-2025':readDraft(draftPrefix+'draft-2025',loadedSlot(findLayer(layers,'draft-2025'))),
   }));
   const [condition,setCondition]=useState<StudyCondition>('existing');
   const [newType,setNewType]=useState('R-CG');
@@ -81,7 +83,10 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
   const slot=slots[condition];
   const zones=preview??slot.zones;
   const active=zones.find(zone=>zone.id===selected);
+  const isDraft=condition==='draft-2025';
+  const districtColour=isDraft?draftDistrictColor:studyDistrictColor;
   const districtChoices=useMemo(()=>{
+    if (isDraft) return DRAFT_DISTRICTS;
     const choices=new Map<string,CalgaryDistrict>();
     for(const zone of zoningData?.districts??[]) choices.set(zone.label,{
       designation:zone.label,code:zone.code,description:zone.description,
@@ -92,7 +97,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
       choices.set(zone.district.designation,{...previous,...zone.district});
     }
     return bylawChoices([...choices.values()]);
-  },[zoningData,slots.existing.zones,slots.proposed.zones]);
+  },[isDraft,zoningData,slots.existing.zones,slots.proposed.zones]);
   const outer=active?.rings[0]?.slice(0,-1)??[];
   const dirty=useMemo(()=>JSON.stringify(slot.zones)!==slot.baseline||slot.opacity!==slot.baselineOpacity,[slot.zones,slot.baseline,slot.opacity,slot.baselineOpacity]);
   const latestSlots=useRef(slots);
@@ -137,7 +142,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
   };
   const updateZone=(patch:Partial<StudyZone>)=>change(slot.zones.map(zone=>zone.id===selected?{...zone,...patch}:zone));
   const select=(id:string)=>{setSelected(id);setCorner(0);};
-  const switchCondition=(next:StudyCondition)=>{mapDrawing?.cancel();setCondition(next);setSelected(null);setPoints([]);setDrawing(false);setPreview(null);setError(null);setNotice(null);};
+  const switchCondition=(next:StudyCondition)=>{mapDrawing?.cancel();setCondition(next);setNewType(next==='draft-2025'?'H-1I':'R-CG');setSelected(null);setPoints([]);setDrawing(false);setPreview(null);setError(null);setNotice(null);};
   const coordinates=(event:PointerEvent<SVGSVGElement|SVGCircleElement>):Position=>{
     const matrix=svg.current!.getScreenCTM()!;
     const point=new DOMPoint(event.clientX,event.clientY).matrixTransform(matrix.inverse());
@@ -173,7 +178,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
     const district=districtChoices.find(choice=>choice.designation===newType);
     const custom=newType===CUSTOM_ZONE;
     if(!custom&&!district){setError('Choose a Calgary district or a custom zone.');return;}
-    const zone:StudyZone={id:crypto.randomUUID(),label:custom?customName.trim():district!.designation,color:custom?customColour:studyDistrictColor(district!.designation),district,custom,origin:'student',rings:[closedRing(drawnPoints)]};
+    const zone:StudyZone={id:crypto.randomUUID(),label:custom?customName.trim():district!.designation,color:custom?customColour:districtColour(district!.designation),district,custom,origin:'student',rings:[closedRing(drawnPoints)]};
     setBusy(true);
     try{const clipped=await clipStudyZones([zone],boundary);if(!clipped.length)throw new Error('Draw inside the site boundary.');change([...slot.zones,...clipped]);setSelected(clipped[0].id);setCorner(0);setPoints([]);setDrawing(false);}
     catch(cause){setError(getApiErrorMessage(cause,'This outline could not finish.'));}finally{setBusy(false);setDrawing(false);}
@@ -222,8 +227,13 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
   return <StudyEditorShell globe={Boolean(mapDrawing)} onClose={onClose}>
     <p className="mb-3 text-xs leading-relaxed text-stone-600">1. Use your saved site boundary. 2. Choose a zone type. 3. Draw its corners{mapDrawing?' on the Google 3D map':''}. Save existing and proposed land use as separate layers.</p>
     <div className="mb-4 flex flex-wrap gap-2" role="tablist" aria-label="Study conditions">
-      {(['existing','proposed'] as const).map(value=><button key={value} role="tab" aria-selected={condition===value} disabled={busy} className={`${button} ${condition===value?'!border-stone-900 !bg-lime-200':''}`} onClick={()=>switchCondition(value)}>{value==='existing'?'Existing conditions':'Proposed land use'}</button>)}
+      {(['existing','proposed','draft-2025'] as const).map(value=><button key={value} role="tab" aria-selected={condition===value} disabled={busy} className={`${button} ${condition===value?'!border-stone-900 !bg-lime-200':''}`} onClick={()=>switchCondition(value)}>{value==='draft-2025'?'Draft bylaw · May 2025':value==='existing'?'Existing conditions':'Proposed land use'}</button>)}
     </div>
+    {isDraft&&<div className="mb-3 space-y-2 rounded-xl border border-stone-200 bg-white p-3 text-xs text-stone-700">
+      <p>May 2025 discussion draft · student proposals only. The draft contains no zoning maps. Colours are illustrative. Current-bylaw catalogue and report checks do not assess this separate draft layer.</p>
+      <p>{draftDistrictInfo(active?.district?.designation??newType)?.summary}</p>
+      <a className="underline" href={draftDistrictInfo(active?.district?.designation??newType)?.source??DRAFT_ZONING_SOURCE} target="_blank" rel="noreferrer">Read draft zone purpose and rules</a>
+    </div>}
     <div className={`grid items-start gap-4 ${mapDrawing?'':'lg:grid-cols-[minmax(0,1fr)_260px]'}`}>
       <div className="min-w-0">
         <div className="mb-3 space-y-2 rounded-xl border border-stone-200 bg-white/80 p-3 text-sm">
@@ -231,7 +241,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
           {newType===CUSTOM_ZONE?<>
             <label className="block text-xs">Custom zone name<input aria-label="Custom zone name" value={customName} maxLength={120} disabled={!canEdit||busy||drawing} onChange={event=>setCustomName(event.target.value)} className="mt-1 min-h-11 w-full rounded-lg border border-stone-300 px-2"/></label>
             <label className="flex min-h-11 items-center justify-between text-xs">Custom colour<input aria-label="Custom colour" type="color" value={customColour} disabled={!canEdit||busy||drawing} onChange={event=>setCustomColour(event.target.value)} className="h-11 w-14"/></label>
-          </>:<p className="flex items-center gap-2 text-xs text-stone-600"><span className="h-4 w-4 border border-stone-300" style={{backgroundColor:studyDistrictColor(newType)}}/>Calgary land-use class colour</p>}
+          </>:<p className="flex items-center gap-2 text-xs text-stone-600"><span className="h-4 w-4 border border-stone-300" style={{backgroundColor:districtColour(newType)}}/>{isDraft?'Illustrative student palette · draft zones':'Calgary land-use class colour'}</p>}
         </div>
         <div className="mb-2 flex flex-wrap gap-2">
           <button className={button} disabled={!canEdit||busy||drawing||(newType===CUSTOM_ZONE&&!customName.trim())} onClick={startDrawing}>Draw zone</button>
@@ -287,30 +297,30 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
           </div>)}
         </dl>}
         <div className="mt-3 flex flex-wrap gap-2"><button className={button} disabled={exporting||drawing||busy} onClick={()=>void exportMap('svg')}>Export SVG</button><button className={button} disabled={exporting||drawing||busy} onClick={()=>void exportMap('png')}>Export PNG</button></div>
-        <p className="mt-3 text-xs leading-relaxed text-stone-600"><a className="underline" href={CALGARY_BYLAW} target="_blank" rel="noreferrer">Calgary bylaw districts</a> · <a className="underline" href={CALGARY_COLOUR_SOURCE} target="_blank" rel="noreferrer">City land-use class colours</a> · catalogue {CALGARY_CATALOGUE_DATE}. Student concepts; zoning compliance is not checked.</p>
+        <p className="mt-3 text-xs leading-relaxed text-stone-600"><a className="underline" href={isDraft?DRAFT_ZONING_SOURCE:CALGARY_BYLAW} target="_blank" rel="noreferrer">{isDraft?'May 2025 draft zone definitions':'Calgary bylaw districts'}</a>{!isDraft&&<> · <a className="underline" href={CALGARY_COLOUR_SOURCE} target="_blank" rel="noreferrer">City land-use class colours</a> · catalogue {CALGARY_CATALOGUE_DATE}</>}. Student concepts; zoning compliance is not checked.</p>
         </details>
       </div>
       <aside aria-label="Zone editing" className="space-y-3 text-sm">
-        <button className={`${button} w-full`} disabled={!canEdit||busy||drawing} onClick={()=>void copyCalgary()}>Copy Calgary outlines</button>
+        {!isDraft&&<button className={`${button} w-full`} disabled={!canEdit||busy||drawing} onClick={()=>void copyCalgary()}>Copy Calgary outlines</button>}
         {condition==='proposed'&&<button className={`${button} w-full`} disabled={!canEdit||busy||drawing||!slots.existing.zones.length} onClick={()=>{change(slots.existing.zones.map(zone=>({...zone,id:crypto.randomUUID()})));setSelected(null);}}>Copy existing study</button>}
         {active&&<div className="space-y-3 rounded-xl border border-stone-200 p-3">
           <CalgaryDistrictSelect label="Calgary district" disabled={!canEdit||busy||drawing} value={active.custom?CUSTOM_ZONE:active.district?.designation??''} choices={districtChoices} onChange={value=>{
             const district=districtChoices.find(choice=>choice.designation===value);
             updateZone({district,custom:value===CUSTOM_ZONE,origin:'student',
               ...(active.label===active.district?.designation?{label:district?.designation??'Custom zone'}:{}),
-              ...(district?{color:studyDistrictColor(district.designation)}:{}),
+              ...(district?{color:districtColour(district.designation)}:{}),
             });
           }}/>
           {active.district&&<p className="text-xs leading-relaxed text-stone-600">{active.district.description||'Saved district designation. Copy Calgary outlines to retrieve current source descriptions.'}{active.district.code==='DC'&&' Direct Control: review the specific bylaw for this designation.'}</p>}
           <details className="rounded-xl border border-stone-200 bg-[#fffdf6] p-3"><summary className="min-h-11 cursor-pointer text-xs font-bold">Catalogue matches for this zone</summary><CatalogueMatches zone={{ id: active.id, label: active.label, source: studyTitle(condition), district: active.district, custom: active.custom }} /></details>
           <label className="block font-semibold">Map caption<input aria-label="Map caption" disabled={!canEdit||busy} maxLength={120} value={active.label} onChange={event=>updateZone({label:event.target.value})} className="mt-1 min-h-11 w-full rounded-lg border-stone-300 text-sm"/></label>
           <label className="flex min-h-11 items-center justify-between font-semibold">Zone colour<input aria-label="Zone colour" type="color" disabled={!canEdit||busy||Boolean(active.district)} value={active.color} onChange={event=>updateZone({color:event.target.value})} className="h-11 w-14 cursor-pointer"/></label>
-          {active.district&&<p className="text-xs text-stone-600">Colour follows the City class. Choose Custom zone to use your own colour.</p>}
+          {active.district&&<p className="text-xs text-stone-600">{isDraft?'Colour uses the illustrative draft palette.':'Colour follows the City class.'} Choose Custom zone to use your own colour.</p>}
           {outer.length<=128&&<><label className="block">Corner<select aria-label="Selected corner" className="mt-1 min-h-11 w-full rounded-lg border-stone-300 text-sm" value={Math.min(corner,Math.max(0,outer.length-1))} onChange={event=>setCorner(Number(event.target.value))}>{outer.map((_,i)=><option key={i} value={i}>Corner {i+1}</option>)}</select></label><p className="text-xs text-stone-600">Move selected corner 1 metre</p><div className="grid grid-cols-2 gap-1">{([['north',0,-1],['east',1,0],['south',0,1],['west',-1,0]] as const).map(([name,x,y])=><button key={name} className={button} disabled={!canEdit||busy||!outer[corner]} onClick={()=>{const point=frame.project(outer[corner]);void commitGeometry(changedCorner(slot.zones,active.id,corner,frame.unproject([point[0]+x*frame.scale,point[1]+y*frame.scale])),active.id);}}>Move {name}</button>)}</div></>}
           {outer.length>128&&<p className="text-xs text-stone-600">This detailed source outline has {outer.length} corners. Draw a simpler replacement to reshape it.</p>}
           <button className={`${button} w-full`} disabled={!canEdit||busy} onClick={()=>{change(slot.zones.filter(zone=>zone.id!==active.id));setSelected(null);}}>Remove zone</button>
         </div>}
-        <div className="max-h-52 overflow-y-auto rounded-xl border border-stone-200" aria-label="Study zones">{slot.zones.map(zone=><button key={zone.id} className={`flex min-h-11 w-full items-center gap-2 border-b border-stone-100 px-3 py-2 text-left ${selected===zone.id?'bg-lime-100':''}`} onClick={()=>select(zone.id)}><span aria-hidden className="h-3 w-3 shrink-0 rounded" style={{backgroundColor:zone.color}}/><span><span className={zone.district?'font-semibold':''}>{studyZoneName(zone)||'Untitled zone'}</span>{' '}{studyZoneCaption(zone)&&<span className="block text-xs text-stone-600">{studyZoneCaption(zone)}</span>}</span></button>)}{!slot.zones.length&&<p className="p-3 text-stone-600">Start with Calgary outlines or draw your own zones.</p>}</div>
+        <div className="max-h-52 overflow-y-auto rounded-xl border border-stone-200" aria-label="Study zones">{slot.zones.map(zone=><button key={zone.id} className={`flex min-h-11 w-full items-center gap-2 border-b border-stone-100 px-3 py-2 text-left ${selected===zone.id?'bg-lime-100':''}`} onClick={()=>select(zone.id)}><span aria-hidden className="h-3 w-3 shrink-0 rounded" style={{backgroundColor:zone.color}}/><span><span className={zone.district?'font-semibold':''}>{studyZoneName(zone)||'Untitled zone'}</span>{' '}{studyZoneCaption(zone)&&<span className="block text-xs text-stone-600">{studyZoneCaption(zone)}</span>}</span></button>)}{!slot.zones.length&&<p className="p-3 text-stone-600">{isDraft?'Draw proposed zones using the draft bylaw choices.':'Start with Calgary outlines or draw your own zones.'}</p>}</div>
         {(conflict||earlierBoundary)&&<p className="text-xs text-amber-900">{conflict?'The shared version changed. Your draft keeps its previous revision.':'This study belongs to an earlier site boundary. Review and clip its shapes before saving.'}</p>}
         {earlierBoundary&&<button className={button} disabled={!canEdit||busy} onClick={()=>{setBusy(true);void clipStudyZones(slot.zones,boundary).then(change).catch(cause=>setError(String(cause))).finally(()=>setBusy(false));}}>Clip to current boundary</button>}
         <button className={`${button} w-full`} disabled={busy||drawing} onClick={()=>void reloadShared()}>Reload shared version</button>

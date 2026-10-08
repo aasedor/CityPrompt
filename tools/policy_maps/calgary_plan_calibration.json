@@ -1,0 +1,260 @@
+{
+  "maps": {
+    "25": {
+      "matrix": [
+        [
+          74.03686610429384,
+          3.018680905977953
+        ],
+        [
+          3.01734157414223,
+          -74.03745781122925
+        ]
+      ],
+      "translation": [
+        681588.1626529876,
+        5680745.962638182
+      ],
+      "reference": "Robust road-network registration to independently calibrated current MDP Map 1",
+      "registrationMedianMetres": 2.7452857778305217,
+      "registrationP75Metres": 5.350286858031954,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          285.5,
+          296.16251
+        ],
+        "offsetMetres": 5.51
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "51": {
+      "matrix": [
+        [
+          74.03686610429384,
+          3.018680905977953
+        ],
+        [
+          3.01734157414223,
+          -74.03745781122925
+        ]
+      ],
+      "translation": [
+        681588.1626529876,
+        5680745.962638182
+      ],
+      "reference": "Robust road-network registration to independently calibrated current MDP Map 1",
+      "registrationMedianMetres": 2.7452857778305217,
+      "registrationP75Metres": 5.350286858031954,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          285.5,
+          296.16251
+        ],
+        "offsetMetres": 5.51
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "59": {
+      "matrix": [
+        [
+          74.03686610429384,
+          3.018680905977953
+        ],
+        [
+          3.01734157414223,
+          -74.03745781122925
+        ]
+      ],
+      "translation": [
+        681588.1626529876,
+        5680745.962638182
+      ],
+      "reference": "Robust road-network registration to independently calibrated current MDP Map 1",
+      "registrationMedianMetres": 2.7452857778305217,
+      "registrationP75Metres": 5.350286858031954,
+      "independentCheck": {
+        "method": "Visual comparison with City street junction and river geography",
+        "limitation": "No measurable road-junction vector in this map. City-boundary or Centre City outline registration; no independent numeric accuracy claim."
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "61": {
+      "matrix": [
+        [
+          74.03686610429384,
+          3.018680905977953
+        ],
+        [
+          3.01734157414223,
+          -74.03745781122925
+        ]
+      ],
+      "translation": [
+        681588.1626529876,
+        5680745.962638182
+      ],
+      "reference": "Robust road-network registration to independently calibrated current MDP Map 1",
+      "registrationMedianMetres": 2.7452857778305217,
+      "registrationP75Metres": 5.350286858031954,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          285.5,
+          296.16251
+        ],
+        "offsetMetres": 5.51
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "63": {
+      "matrix": [
+        [
+          74.03686610429384,
+          3.018680905977953
+        ],
+        [
+          3.01734157414223,
+          -74.03745781122925
+        ]
+      ],
+      "translation": [
+        681588.1626529876,
+        5680745.962638182
+      ],
+      "reference": "Robust road-network registration to independently calibrated current MDP Map 1",
+      "registrationMedianMetres": 2.7452857778305217,
+      "registrationP75Metres": 5.350286858031954,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          285.5,
+          296.16251
+        ],
+        "offsetMetres": 5.51
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "65": {
+      "matrix": [
+        [
+          74.03686610429384,
+          3.018680905977953
+        ],
+        [
+          3.01734157414223,
+          -74.03745781122925
+        ]
+      ],
+      "translation": [
+        681588.1626529876,
+        5680745.962638182
+      ],
+      "reference": "Robust road-network registration to independently calibrated current MDP Map 1",
+      "registrationMedianMetres": 2.7452857778305217,
+      "registrationP75Metres": 5.350286858031954,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          285.5,
+          296.16251
+        ],
+        "offsetMetres": 5.51
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "83": {
+      "matrix": [
+        [
+          74.03686610429384,
+          3.018680905977953
+        ],
+        [
+          3.01734157414223,
+          -74.03745781122925
+        ]
+      ],
+      "translation": [
+        681588.1626529876,
+        5680745.962638182
+      ],
+      "reference": "Robust road-network registration to independently calibrated current MDP Map 1",
+      "registrationMedianMetres": 2.7452857778305217,
+      "registrationP75Metres": 5.350286858031954,
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          285.5,
+          296.16251
+        ],
+        "offsetMetres": 5.51
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    },
+    "26": {
+      "matrix": [
+        [
+          12.277785649058442,
+          0.5113867190661996
+        ],
+        [
+          0.4933013042225518,
+          -12.227941243358007
+        ]
+      ],
+      "translation": [
+        700841.9794352512,
+        5665296.451491847
+      ],
+      "rms": 4.491305217180445,
+      "reference": "Greater Downtown outline matched to calibrated proposed City Structure map",
+      "independentCheck": {
+        "junction": "14 St NW / Kensington Rd NW",
+        "cityStreetLonLat": [
+          -114.0947104,
+          51.0525233
+        ],
+        "pdfJunction": [
+          207.10001,
+          468.19998
+        ],
+        "offsetMetres": 12.92
+      },
+      "fitNote": "Registration fit only, not parcel accuracy. Artwork may generalize roads, symbols and boundaries."
+    }
+  },
+  "controlSource": "Citywide road artwork registered to current MDP Map 1 using its independently calibrated EPSG:26911 frame (citywide_calibration.json). Downtown frame registered through its Greater Downtown outline. Independent check: Calgary Open Data Road Street Network, 14 St NW / Kensington Rd NW segment junction coordinates, retrieved 2026-10-05. Initial generalized city-boundary fit was rejected.",
+  "edition": "Proposed Calgary Plan, annotated 2026-05-21",
+  "sha256": "508588bb486bafa0a5dbd37e687c4c8182cdc24a1fcdfb83ef5ea2f7ae55fdca",
+  "source": "https://www.calgary.ca/content/dam/www/pda/pd/documents/city-building-program/calgary-plan/calgary-plan-annotated-2026-05-21.pdf",
+  "crs": "EPSG:26911",
+  "excludedPages": {
+    "93": "Regional Context: delete map annotation",
+    "94": "Regional Transportation: delete map annotation"
+  }
+}

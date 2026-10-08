@@ -192,3 +192,28 @@ def test_invalid_drawings_are_rejected_before_storage(kind):
     if kind == "duplicate-id": body["zones"].append(body["zones"][0])
     if kind == "blank-label": body["zones"][0]["label"] = " "
     with pytest.raises(ValueError): endpoint.study_collection(endpoint.StudyRequest(**body), "proposed", SITE)
+
+
+@pytest.mark.asyncio
+async def test_draft_bylaw_is_a_separate_sourced_layer(client, db):
+    body = copy.deepcopy(BODY)
+    body['zones'][0]['district'] = {'designation': 'MU-1', 'bylaw': 'draft-2025'}
+    response = await client.put(f'/api/v1/zoning-studies/projects/{PROJECT}/draft-2025', json=body)
+    assert response.status_code == 200, response.text
+    layer = db.add.call_args.args[0]
+    assert layer.source_filename == 'cityprompt-zoning-study-draft-2025.geojson'
+    assert 'may2025.pdf' in layer.source_url
+    assert layer.feature_collection['features'][0]['properties']['district']['bylaw'] == 'draft-2025'
+
+
+@pytest.mark.parametrize('condition,district,origin', [
+    ('proposed', {'designation': 'MU-1', 'bylaw': 'draft-2025'}, 'student'),
+    ('existing', {'designation': 'MU-1', 'bylaw': 'draft-2025'}, 'student'),
+    ('draft-2025', {'designation': 'MU-1'}, 'student'),
+    ('draft-2025', {'designation': 'MU-1', 'bylaw': 'draft-2025'}, 'calgary-extract'),
+])
+def test_cannot_mix_draft_and_current_bylaw_identity(condition, district, origin):
+    body = copy.deepcopy(BODY)
+    body['zones'][0].update(district=district, origin=origin)
+    with pytest.raises(ValueError, match='draft|Draft'):
+        endpoint.study_collection(endpoint.StudyRequest(**body), condition, SITE)

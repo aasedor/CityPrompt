@@ -1,5 +1,6 @@
 /** Published district identity is separate from a student's editable caption. */
 export interface CalgaryDistrict {
+  bylaw?: 'draft-2025';
   code?: string;
   designation: string;
   description?: string;
@@ -13,7 +14,8 @@ export function readCalgaryDistrict(value: unknown): CalgaryDistrict | undefined
   if (typeof district.designation !== 'string' || !district.designation.trim() || district.designation.length > 120) return undefined;
   if (district.code !== undefined && (typeof district.code !== 'string' || !district.code.trim() || district.code.length > 40)) return undefined;
   if (district.description !== undefined && (typeof district.description !== 'string' || district.description.length > 300)) return undefined;
-  return { designation: district.designation.trim(),
+  if (district.bylaw !== undefined && district.bylaw !== 'draft-2025') return undefined;
+  return { ...(district.bylaw === 'draft-2025' ? { bylaw: 'draft-2025' as const } : {}), designation: district.designation.trim(),
     ...(typeof district.code === 'string' ? { code: district.code.trim() } : {}),
     ...(typeof district.description === 'string' && district.description.trim() ? { description: district.description.trim() } : {}),
   };

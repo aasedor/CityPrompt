@@ -31,7 +31,7 @@ export function parseDesignation(designation: string) {
 }
 
 export function rulesForZone(zone: ZoneInspection) {
-  const parsed = !zone.custom && zone.district ? parseDesignation(zone.district.designation) : null;
+  const parsed = !zone.custom && zone.district && !zone.district.bylaw ? parseDesignation(zone.district.designation) : null;
   return parsed ? { ...parsed, rule: DISTRICT_RULES[parsed.code] } : null;
 }
 

@@ -1,4 +1,5 @@
-export type CityPlanGroup = "MDP" | "CTP" | "TRANSIT";
+import { CALGARY_PLAN_MAPS } from './calgaryPlanDraft';
+export type CityPlanGroup = "MDP" | "CTP" | "TRANSIT" | "Calgary Plan";
 export type CityPlanMap = {
   id: string;
   group: CityPlanGroup;
@@ -10,6 +11,7 @@ export type CityPlanMap = {
   guidance: string[];
   legendText: string;
   source: string;
+  edition?: string;
 };
 const MDP =
   "https://publicaccess.calgary.ca/lldm01/exccpa?func=ccpa.general&msgAction=Download&msgID=OTTKcgyTerX";
@@ -222,10 +224,10 @@ const maps: Omit<CityPlanMap, "source">[] = [
       "Skeletal Road; Arterial Street; Urban Boulevard; Industrial Arterial; Neighbourhood Boulevard; Parkway; unclassified future roads; regional connections; Collector Roads.",
   },
 ];
-export const CITY_PLAN_MAPS: CityPlanMap[] = maps.map((map) => ({
+export const CITY_PLAN_MAPS: CityPlanMap[] = [...maps.map((map) => ({
   ...map,
   source: `${map.group === "MDP" ? MDP : CTP}#page=${map.page}`,
-}));
+})), ...CALGARY_PLAN_MAPS];
 export const CITY_MAP_LAYERS: CityPlanMap[] = [...CITY_PLAN_MAPS, {
   id: 'service-routes', group: 'TRANSIT', title: 'Calgary Transit routes',
   source: 'https://data.calgary.ca/Transportation-Transit/Calgary-Transit-Routes/hpnd-riq4',

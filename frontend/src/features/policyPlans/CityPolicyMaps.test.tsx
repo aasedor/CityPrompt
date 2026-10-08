@@ -99,9 +99,9 @@ describe("City-wide plan maps", () => {
     expect(screen.getByRole('link', { name: 'View official City feature service' })).toHaveAttribute('href', transitSnapshot.sources.city.url);
     expect(screen.getByText('Published PDF reference legend')).toBeInTheDocument();
   });
-  it("offers all 12 policy maps plus two transit service layers, excludes removed CTP 4, and explains each policy map with its exact source page before loading artwork", () => {
+  it("offers all 20 policy maps plus two transit service layers, excludes removed CTP 4, and explains each policy map with its exact source page before loading artwork", () => {
     render(<App />, { wrapper });
-    expect(screen.getAllByRole("switch", { hidden: true })).toHaveLength(14);
+    expect(screen.getAllByRole("switch", { hidden: true })).toHaveLength(22);
     expect(CITY_PLAN_MAPS.some((map) => map.id === "ctp-4")).toBe(false);
     for (const map of CITY_PLAN_MAPS) {
       fireEvent.click(
@@ -200,4 +200,20 @@ describe("City-wide plan maps", () => {
     expect(preferences["ctp-3"]).toEqual({ enabled: true, opacity: 1 });
     expect(preferences.unknown).toBeUndefined();
   });
+});
+
+it('adds eight separately toggleable proposed Calgary Plan maps without replacing current maps',async()=>{
+  expect(CITY_PLAN_MAPS.filter(m=>m.group==='Calgary Plan')).toHaveLength(8);
+  expect(CITY_PLAN_MAPS.filter(m=>m.group==='MDP')).toHaveLength(6);
+  const {result}=renderHook(()=>useCityPolicyMaps('draft-maps'),{wrapper});
+  expect(result.current.layers.filter(l=>l.map.group==='Calgary Plan').every(l=>!l.enabled)).toBe(true);
+  act(()=>result.current.setEnabled('calgary-plan-1',true));
+  act(()=>result.current.setOpacity('calgary-plan-1',.35));
+  await waitFor(()=>expect(fetchMap).toHaveBeenCalledWith(expect.stringContaining('/calgary-plan-1/map.json'),expect.anything()));
+  expect(result.current.layers.find(l=>l.map.id==='mdp-1')?.enabled).toBe(false);
+  expect(result.current.layers.find(l=>l.map.id==='calgary-plan-1')?.opacity).toBe(.35);
+  const map=CITY_PLAN_MAPS.find(m=>m.id==='calgary-plan-1')!;
+  render(<CityPolicyDetailsCard map={map} onClose={()=>{}}/>);
+  expect(screen.getByText(/Proposed · 21 May 2026/)).toBeInTheDocument();
+  expect(map.source).toContain('calgary-plan-annotated-2026-05-21.pdf#page=25');
 });

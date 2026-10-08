@@ -16,7 +16,7 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
         </p>
       </header>
       <p className="text-[10px] text-[#5c554d]">{CITY_PLAN_EDITION}</p>
-      {(["MDP", "CTP", "TRANSIT"] as const).map((group) => (
+      {(["MDP", "CTP", "Calgary Plan", "TRANSIT"] as const).map((group) => (
         <details
           key={group}
           open={group === "MDP"}
@@ -25,8 +25,9 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
           <summary className="cursor-pointer px-3 py-3 text-xs font-semibold">
             {group === "MDP"
               ? "Municipal Development Plan"
-              : group === 'CTP' ? "Calgary Transportation Plan" : 'Calgary Transit · service routes & stops'}
+              : group === 'CTP' ? "Calgary Transportation Plan" : group === 'Calgary Plan' ? "Calgary Plan · proposed May 2026" : 'Calgary Transit · service routes & stops'}
           </summary>
+          {group === 'Calgary Plan' && <p className="px-3 pb-2 text-[11px] text-[#5c554d]">Additional proposed maps · 21 May 2026 edition. Current MDP/CTP maps are above.</p>}
           <ul className="divide-y divide-[#151515]/10 border-t border-[#151515]/10">
             {state.layers
               .filter((layer) => layer.map.group === group)

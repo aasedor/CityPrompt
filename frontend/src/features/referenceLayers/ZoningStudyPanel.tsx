@@ -21,7 +21,7 @@ export function ZoningStudyPanel({ projectId, projectName, zones, layers, canEdi
   const studies=layers.filter(layer=>studyMetadata(layer));
   return <section aria-label="Student zoning studies" className="max-w-sm space-y-3 rounded-2xl border border-[#151515]/20 bg-[#fffdf6]/95 p-3 text-[#151515] shadow-lg">
     <h3 className="text-sm font-bold">Zoning map studio</h3>
-    <p className="text-xs leading-relaxed text-[#5c554d]">Draw land-use areas inside your site. Choose Calgary bylaw districts with City colours, or make a custom zone.</p>
+    <p className="text-xs leading-relaxed text-[#5c554d]">Draw land-use areas inside your site. Use current Calgary districts, the May 2025 draft bylaw, or custom zones. Each scheme saves as a separate layer.</p>
     <button className="min-h-11 w-full rounded-xl border border-[#151515] bg-[#c9ff3d] px-3 py-2 text-xs font-semibold disabled:opacity-50" disabled={!boundary||isLoading} onClick={()=>setOpen(true)}>Open zoning map studio</button>
     {!boundary&&<p className="text-xs">Draw a site boundary first.</p>}
     {studies.map(layer=><label key={layer.id} className="flex min-h-11 items-center justify-between gap-2 text-xs">{layer.name}<input type="checkbox" className="h-5 w-5 accent-[#151515]" checked={!hiddenIds.has(layer.id)} onChange={()=>onToggle(layer.id)}/></label>)}

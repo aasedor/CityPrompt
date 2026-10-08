@@ -1,4 +1,4 @@
-"""Student cartography stored as two independent reference layers.
+"""Student cartography stored as independent versioned reference layers.
 
 No statutory zoning, development drawings, assessments or terrain are changed.
 Project locking and content revisions protect classmates' concurrent edits.
@@ -26,12 +26,14 @@ from app.schemas.reference_layers import ReferenceLayerResponse
 from app.services.spatial_engine import SiteFrame
 
 router = APIRouter()
-Condition = Literal["existing", "proposed"]
+Condition = Literal["existing", "proposed", "draft-2025"]
+DRAFT_SOURCE = "https://www.calgary.ca/content/dam/www/pda/pd/documents/city-building-program/cbp.annotated-draft-zoning-bylaw-may2025.pdf"
 Position = tuple[FiniteFloat, FiniteFloat]
 Ring = Annotated[list[Position], Field(min_length=4, max_length=4096)]
 
 
 class StudyDistrict(BaseModel):
+    bylaw: Literal["draft-2025"] | None = None
     # A student's district reference, not a regulatory compliance assertion.
     # Full designation retains density/height modifiers and individual DC bylaws.
     designation: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=120)]
@@ -66,6 +68,11 @@ def study_collection(request: StudyRequest, condition: Condition, site: Polygon)
     shapes = []
     features = []
     for zone in request.zones:
+        draft = condition == "draft-2025"
+        if draft and zone.origin == "calgary-extract":
+            raise ValueError("Draft zoning has no published City zoning boundaries to copy.")
+        if zone.district and draft != (zone.district.bylaw == "draft-2025"):
+            raise ValueError("Keep draft and current bylaw districts in their separate study layers.")
         positions += sum(len(ring) for ring in zone.rings)
         if positions > 50_000 or any(not 4 <= len(ring) <= 4096 or ring[0] != ring[-1] for ring in zone.rings):
             raise ValueError("Use closed outlines with 4–4,096 points and at most 50,000 points per study.")
@@ -137,11 +144,14 @@ async def save_zoning_study(
     if layer is None:
         layer = ReferenceLayer(project_id=project_id, created_by=user.id)
         db.add(layer)
-    layer.name = "Existing zoning study" if condition == "existing" else "Proposed land-use study"
+    layer.name = "Draft bylaw · May 2025 study" if condition == "draft-2025" else "Existing zoning study" if condition == "existing" else "Proposed land-use study"
     layer.kind = "zoning"
     layer.source_filename = filename
     layer.source_crs = "EPSG:4326"
     layer.source_url = "https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh" if any(zone.origin == "calgary-extract" or zone.district is not None for zone in request.zones) else None
+    if condition == "draft-2025":
+        layer.source_url = DRAFT_SOURCE
+        warnings.append("May 2025 discussion draft; illustrative student colours, not statutory zoning or a compliance assessment.")
     layer.description = "Editable student graphic. Existing and proposed conditions are separate; official zoning and project drawings remain independent."
     layer.feature_collection = collection
     layer.feature_count = len(request.zones)

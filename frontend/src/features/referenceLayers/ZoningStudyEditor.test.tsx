@@ -181,3 +181,23 @@ describe('zoning study editing and recovery',()=>{
     expect(screen.getByRole('button',{name:'Export SVG'})).toBeEnabled();
   });
 });
+
+it('draws the draft scheme separately and never copies City districts into it',async()=>{
+  const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn()};
+  vi.mocked(api.put).mockResolvedValue({data:layer});
+  setup({mapDrawing});
+  fireEvent.click(screen.getByRole('tab',{name:'Draft bylaw · May 2025'}));
+  expect(screen.queryByRole('button',{name:'Copy Calgary outlines'})).not.toBeInTheDocument();
+  expect(screen.getByLabelText('New zone type')).toHaveValue('H-1I');
+  fireEvent.change(screen.getByLabelText('New zone type'),{target:{value:'MU-1'}});
+  expect(within(screen.getByLabelText('New zone type')).getByRole('option',{name:/MU-1 — Mixed Use – Low-Rise/})).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button',{name:'Draw zone'}));
+  await act(async()=>{mapDrawing.begin.mock.calls[0][0](boundary);});
+  fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
+  await waitFor(()=>expect(api.put).toHaveBeenCalledOnce());
+  expect(vi.mocked(api.put).mock.calls[0][0]).toContain('/draft-2025');
+  expect(vi.mocked(api.put).mock.calls[0][1]).toMatchObject({zones:[{district:{designation:'MU-1',bylaw:'draft-2025'}}]});
+  fireEvent.click(screen.getByRole('tab',{name:'Existing conditions'}));
+  expect(screen.getByRole('button',{name:'Housing'})).toBeInTheDocument();
+  expect(screen.getByLabelText('New zone type')).toHaveValue('R-CG');
+});

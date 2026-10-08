@@ -113,7 +113,7 @@ export function CityPolicyDetailsCard({
           <ExternalLink size={14} />
         </a>
         <p className="text-[10px] text-[#5c554d]">
-          {map.group === 'TRANSIT' ? 'Source: The City of Calgary Open Data. The service snapshot and long-term policy network have different purposes.' : <>© The City of Calgary · {CITY_PLAN_EDITION}. Student guidance
+          {map.group === 'TRANSIT' ? 'Source: The City of Calgary Open Data. The service snapshot and long-term policy network have different purposes.' : <>© The City of Calgary · {map.edition??CITY_PLAN_EDITION}. Student guidance
           accompanies the original map artwork. Read the plan’s written policies
           and check subsequent amendments for site-specific decisions.</>}
         </p>

@@ -1,3 +1,4 @@
+import { draftDistrictInfo, DRAFT_ZONING_SOURCE } from '@/features/referenceLayers/draftZoning';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Building2, ExternalLink, Trees, X } from 'lucide-react';
 import { CANONICAL_CHOICES } from '@/features/pickPlace/canonicalCatalogue';
@@ -18,6 +19,11 @@ export function CatalogueMatches({ zone }: { zone: ZoneInspection }) {
   const parks = category === 'parks';
   const matches = useMemo(() => matchCatalogue(parks ? ZONING_CATALOGUE_PARKS : ZONING_CATALOGUE_BUILDINGS, zone), [parks, zone]);
   const district = rulesForZone(zone);
+  if (zone.district?.bylaw === 'draft-2025') return <div className="space-y-2 text-sm leading-relaxed">
+    <p>{draftDistrictInfo(zone.district.designation)?.summary}</p>
+    <p>May 2025 discussion draft. Current-bylaw catalogue checks do not apply to this draft zone.</p>
+    <a className="underline" href={draftDistrictInfo(zone.district.designation)?.source??DRAFT_ZONING_SOURCE} target="_blank" rel="noreferrer">Read draft zone purpose and rules</a>
+  </div>;
   if (!district) return <p className="text-sm leading-relaxed">{zone.custom
     ? 'This is a custom zone. Choose a Calgary district to compare catalogue uses and heights.'
     : 'This designation needs a specific bylaw review. Direct Control districts have their own rules.'}</p>;
