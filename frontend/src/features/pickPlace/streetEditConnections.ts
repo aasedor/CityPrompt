@@ -3,12 +3,14 @@ import { detectConnectedStreetIntersections } from '@/components/viewer/globe/st
 import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJunctionGeometry';
 import { bufferLineToPolygon, extractCenterline, extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { streetCoordinateUpdate, streetSectionWidth } from './streetPlacement';
+import { isSurfacePath } from './streetConnectionProblem';
 
 /** Preserve working junctions, including their full sidewalk/road patch. A
  * touching street polygon alone is not evidence of a usable intersection. */
 export function streetEditConnectionCheck(zone: SiteZone, zones: SiteZone[]) {
   const required = detectConnectedStreetIntersections(zones).filter(node =>
-    node.zoneIds.includes(zone.id) && resolveStreetJunctionLayout(node, zones));
+    node.zoneIds.includes(zone.id) && !node.zoneIds.every(id => zones.some(item => item.id === id && isSurfacePath(item)))
+      && resolveStreetJunctionLayout(node, zones));
   return (candidate: SiteZone) => {
     if (!required.length) return true;
     const preview = { ...candidate, properties: { ...candidate.properties, junction_preview_candidate: true } };

@@ -65,3 +65,19 @@ def uses_placement_plot(properties: dict[str, Any]) -> bool:
                 or properties.get('validation_native_url')
                 or (properties.get('native_plot_axes') is True and properties.get('pick_place_asset'))
                 or native_model_facts(properties))
+
+
+@lru_cache(maxsize=1)
+def _dwelling_programmes() -> tuple[dict, ...]:
+    return tuple(json.loads((DATA / 'catalogue_dwelling_programmes.json').read_text(encoding='utf-8'))['records'])
+
+
+def catalogue_dwellings(properties: dict[str, Any]) -> int | None:
+    """Only an exact, unchanged authored assembly supplies a catalogue estimate."""
+    facts = native_model_facts(properties)
+    if not facts or not facts.get('fixed'):
+        return None
+    if properties.get('floor_count', properties.get('floors', facts['storeys'])) != facts['storeys']:
+        return None
+    return next((row['dwellings'] for row in _dwelling_programmes()
+                 if row['variant_id'] == facts['variant_id'] and row['revision'] == facts['revision']), None)

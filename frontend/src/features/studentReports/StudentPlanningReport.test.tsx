@@ -59,6 +59,22 @@ afterEach(() => {
 });
 
 describe('StudentPlanningReport', () => {
+  it('attaches site map evidence before requesting the report', async () => {
+    const evidence = { boundary_coordinates: [[0, 0], [1, 0], [0, 1]], sources: [] };
+    render(<StudentPlanningReport projectId="project-1" getPolicyMapEvidence={async () => evidence} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Request report' }));
+    await waitFor(() => expect(studentReportsApi.create).toHaveBeenCalledWith('project-1', undefined, undefined, evidence));
+  });
+
+  it('does not submit old map evidence after switching projects', async () => {
+    const pending = deferred<{ boundary_coordinates: number[][]; sources: [] }>();
+    const view = render(<StudentPlanningReport projectId="project-1" getPolicyMapEvidence={() => pending.promise} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Request report' }));
+    view.rerender(<StudentPlanningReport projectId="project-2" />);
+    await act(async () => pending.resolve({ boundary_coordinates: [], sources: [] }));
+    expect(studentReportsApi.create).not.toHaveBeenCalled();
+  });
+
   it('keeps unsaved reasoning when the panel is closed and reopened', async () => {
     vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
     const view = render(<StudentPlanningReport projectId="project-1" />);

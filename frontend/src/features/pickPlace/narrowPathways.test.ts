@@ -10,6 +10,18 @@ import { streetConnectionProblem } from './streetConnectionProblem';
 import type { SiteZone } from '@/types';
 
 describe('narrow, surface-only pathways', () => {
+  it('accepts mixed-width path crossings near bends and angled end joins without road junction approaches', () => {
+    const path = (index:number, id:string, points:number[][]):SiteZone => {
+      const asset=PATHWAY_ASSETS[index];
+      const line=points.map(([x,y])=>[x/111320,y/111320]);
+      return {id,project_id:'test',color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',zone_type:'road',
+        coordinates:bufferLineToPolygon(line,asset.sectionWidth),properties:{...asset.properties,plan_centerline:line}};
+    };
+    const through=path(4,'shared',[[-30,0],[0,0],[0,-12]]);
+    expect(streetConnectionProblem(path(1,'walk',[[-20,-10],[10,-10]]),[through])).toBeNull();
+    expect(streetConnectionProblem(path(1,'join',[[-20,-15],[0,-12]]),[through])).toBeNull();
+    expect(streetConnectionProblem(path(1,'shallow',[[-20,-2],[20,2]]),[path(4,'straight',[[-30,0],[30,0]])])).toBeNull();
+  });
   it('registers unique searchable exact choices with their own photographic previews', () => {
     expect(PATHWAY_ASSETS).toHaveLength(5);
     expect(validateRegistry(PATHWAY_ASSETS)).toEqual([]);

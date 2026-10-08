@@ -63,6 +63,7 @@ import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentWorkflowNav, StudentStepPanel, studentLandscapeNeedsRefresh, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
 import { defaultStudentStep } from './studentNavigation';
 import { StudentPlanningReport } from '@/features/studentReports/StudentPlanningReport';
+import { collectPolicyMapEvidence } from '@/features/studentReports/policyMapEvidence';
 import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessConnections';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
 import { ZoningLabelsControls } from '@/features/referenceLayers/ZoningLabelsControls';
@@ -1278,6 +1279,7 @@ export function ProjectViewPage() {
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
           <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}
+            getPolicyMapEvidence={() => collectPolicyMapEvidence(getActiveSiteBoundary(siteZones)?.coordinates ?? [])}
             getParkAccessSnapshot={() => siteZones.every(zone => isPersistedZoneId(zone.id) && zone.updated_at)
               ? resolveManualParkAccess(siteZones, {}, visibleZones.filter(zone => zone.zone_type === 'road').map(zone => zone.id), transportContext)
               : undefined}

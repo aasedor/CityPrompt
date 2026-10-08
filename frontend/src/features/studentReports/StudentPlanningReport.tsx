@@ -16,6 +16,7 @@ interface Props {
   canEdit?: boolean;
   onSelectZone?: (zoneId: string) => void;
   getParkAccessSnapshot?: () => ParkAccessSnapshot | undefined;
+  getPolicyMapEvidence?: () => Promise<import('./policyMapEvidence').PolicyMapEvidence>;
 }
 
 const kindLabels = {
@@ -127,7 +128,7 @@ export function StudentPlanningReport(props: Props) {
   return <ProjectPlanningReport key={`${account}:${props.projectId}`} {...props} />;
 }
 
-function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = true, onSelectZone, getParkAccessSnapshot }: Props) {
+function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = true, onSelectZone, getParkAccessSnapshot, getPolicyMapEvidence }: Props) {
   const account = useAuthStore(state => state.user?.id ?? 'anonymous');
   const [report, setReport] = useState<StudentReport | null>(null);
   const [history, setHistory] = useState<ReportSummary[]>([]);
@@ -180,7 +181,11 @@ function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = 
     setError(null);
     const sequence = ++requestSequence.current;
     try {
-      const next = await studentReportsApi.create(projectId, zoneIds, getParkAccessSnapshot?.());
+      const mapEvidence = getPolicyMapEvidence ? await getPolicyMapEvidence() : undefined;
+      if (lifetime !== lifecycle.current || sequence !== requestSequence.current) return;
+      const next = await (mapEvidence
+        ? studentReportsApi.create(projectId, zoneIds, getParkAccessSnapshot?.(), mapEvidence)
+        : studentReportsApi.create(projectId, zoneIds, getParkAccessSnapshot?.()));
       if (lifetime !== lifecycle.current || sequence !== requestSequence.current) return;
       selectedId.current = next.id;
       setReport(next);

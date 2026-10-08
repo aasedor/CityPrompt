@@ -824,7 +824,10 @@ function StreetRibbonDetail({
         </mesh>
       ))}
       {geometries.nativeProgram.map(({material,geometry})=>geometry && <mesh key={`native-${material}`} geometry={geometry} receiveShadow renderOrder={RENDER_ORDER_FLATWORK}>
-        <meshStandardMaterial color={new THREE.Color().setRGB(...(nativePilot!.program!.palette[material] as [number,number,number]))} roughness={.86} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-3} polygonOffsetUnits={-6}/>
+        <meshStandardMaterial color={new THREE.Color().setRGB(...(nativePilot!.program!.palette[material] as [number,number,number]))} roughness={.86} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-3}
+          polygonOffsetUnits={nativePilot!.program!.adapter === 'narrow-pathway-v1'
+            ? -6 - Array.from(nativePilot!.id).reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 1), 0) / 10000
+            : -6}/>
       </mesh>)}
       {geometries.markings.map(({ marking, geometry }, index) => (
         <mesh

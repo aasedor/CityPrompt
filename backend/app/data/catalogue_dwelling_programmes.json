@@ -1,0 +1,10 @@
+{
+  "source": "Exact authored housing programmes in frontend/src/data/buildingArchetypes.json; reviewed 2026-10-07. Concept dwellings, not occupancy approval or measured floor area.",
+  "records": [
+    {"variant_id":"affordable_porchlight_original","revision":"affordable-porchlight-clay-v004","dwellings":4},
+    {"variant_id":"affordable_juniper_original","revision":"affordable-juniper-clay-v006","dwellings":4},
+    {"variant_id":"affordable_stackyard_original","revision":"affordable-stackyard-clay-v003","dwellings":6},
+    {"variant_id":"affordable_aspen_original","revision":"affordable-aspen-clay-v003","dwellings":12},
+    {"variant_id":"affordable_switchback_original","revision":"affordable-switchback-clay-v003","dwellings":24}
+  ]
+}

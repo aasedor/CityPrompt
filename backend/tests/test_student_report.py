@@ -59,6 +59,58 @@ def values(analysis):
     return {metric["key"]: metric["value"] for metric in analysis["metrics"]}
 
 
+def test_exact_catalogue_dwelling_programmes_are_counted_without_plot_floor_area():
+    props = dict(pick_place_asset="clay_affordable_aspen_original",
+                 development_selected_variant_id="affordable_aspen_original",
+                 pick_place_model_revision="affordable-aspen-clay-v003",
+                 floor_count=3)
+    plan = snapshot([zone("building", **props), zone("building", **props)])
+    result = values(analyze_snapshot(plan))
+    assert result["catalogue_dwellings"] == 24
+    assert result["recorded_units"] is None
+    assert result["gfa_m2"] is None
+    plan["zones"][0]["properties"]["unit_count"] = 10
+    result = values(analyze_snapshot(plan))
+    assert result["catalogue_dwellings"] == 12
+    assert result["recorded_units"] == 10
+    plan["zones"][1]["properties"]["pick_place_model_revision"] = "unknown"
+    assert values(analyze_snapshot(plan))["catalogue_dwellings"] is None
+
+
+def test_proposed_study_area_is_separate_clipped_and_deduplicated():
+    boundary = zone("site_boundary")
+    collection = {"type": "FeatureCollection", "_citypromptStudy": {"schema": 1, "condition": "proposed"},
+                  "features": [{"type": "Feature", "id": str(i), "properties": {"label": "MU-1"},
+                                "geometry": mapping(rectangle())} for i in range(2)]}
+    layer = SimpleNamespace(id=uuid.uuid4(), name="Proposed", kind="geojson", source_url=None,
+                            source_filename="study.geojson", source_crs="EPSG:4326", feature_count=2,
+                            feature_collection=collection)
+    result = values(analyze_snapshot(snapshot([boundary], references=[layer])))
+    assert result["proposed_zoning_area_m2"] == result["site_area_m2"]
+    assert result["development_land_m2"] == 0
+    collection["_citypromptStudy"]["condition"] = "existing"
+    assert values(analyze_snapshot(snapshot([boundary], references=[layer])))["proposed_zoning_area_m2"] == 0
+
+
+def test_policy_map_context_is_bound_to_saved_boundary_and_is_explicitly_a_summary():
+    from app.services.student_report import bind_policy_map_evidence
+    from app.schemas.student_report import PolicyMapEvidence
+    boundary = zone("site_boundary")
+    plan = snapshot([boundary])
+    evidence = PolicyMapEvidence(boundary_coordinates=list(boundary.geometry.exterior.coords), sources=[{
+        "title":"Westbrook: City Civic and Recreation", "url":"https://www.calgary.ca/plan.pdf",
+        "excerpt":"2025 edition. Public recreation land."}])
+    bound = bind_policy_map_evidence(evidence, plan)
+    assert bound[0]["excerpt"].startswith("Map-derived student summary")
+    plan["map_policy_sources"] = bound
+    report = analyze_snapshot(plan)
+    finding = next(f for f in report["findings"] if f["id"] == "city-documents")
+    assert finding["kind"] == "source_context"
+    assert finding["sources"][0]["title"].startswith("Westbrook")
+    plan["zones"][0]["geometry"] = mapping(rectangle(x=0.1))
+    assert bind_policy_map_evidence(evidence, plan) == []
+
+
 def test_housing_is_never_invented_for_commercial_or_industrial():
     plan = snapshot(
         [

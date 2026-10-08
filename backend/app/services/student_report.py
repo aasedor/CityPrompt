@@ -19,7 +19,7 @@ from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
 
 from app.services.plan_metrics import DerivedMetric
-from app.services.model_contract import uses_placement_plot
+from app.services.model_contract import uses_placement_plot, catalogue_dwellings
 from app.services.lego_assembly import DETACHED_ARCHETYPE_IDS, catalog_parent_archetype_id
 from app.services.residual_landscape import community_3d_source_hash
 from app.services.policy_intelligence.retrieval import (
@@ -143,6 +143,9 @@ def build_snapshot(
             "feature_count": layer.feature_count,
             "data_version": digest(layer.feature_collection),
             "site_attribute_examples": reference_attributes(layer, extent),
+            "proposed_geometries": [feature.get("geometry") for feature in (layer.feature_collection or {}).get("features", [])]
+                if (layer.feature_collection or {}).get("_citypromptStudy", {}).get("schema") == 1
+                and (layer.feature_collection or {}).get("_citypromptStudy", {}).get("condition") == "proposed" else [],
         }
         for layer in references
     ]
@@ -194,6 +197,20 @@ def scoped_zones(snapshot: dict) -> list[dict]:
         and z["properties"].get("_layer_role") != "reference"
         and not z["properties"].get("is_reference")
     ]
+
+
+def bind_policy_map_evidence(evidence, snapshot: dict) -> list[dict]:
+    """Bind browser map summaries to the saved site; never call them legal text."""
+    if evidence is None or len(evidence.boundary_coordinates) < 3:
+        return []
+    boundary = boundary_record(snapshot)
+    saved = _shape(boundary) if boundary else None
+    supplied = _shape({"geometry": {"type": "Polygon", "coordinates": [evidence.boundary_coordinates]}})
+    if saved is None or supplied is None or not saved.equals(supplied):
+        return []
+    return [{**source.model_dump(exclude_none=True),
+             "excerpt": "Map-derived student summary (verify against linked plan): " + source.excerpt}
+            for source in evidence.sources]
 
 
 def _object(value: Any) -> dict:
@@ -443,6 +460,13 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "m²",
             "Union of development-area polygons; this is land allocation, not building footprint.",
         )
+        study_shapes = [_shape({"geometry": geometry}) for layer in snapshot.get("references", [])
+                        for geometry in layer.get("proposed_geometries", [])]
+        study_shapes = [project_geometry(geom, transformer) for geom in study_shapes if geom is not None]
+        study_union = unary_union(study_shapes)
+        metric("proposed_zoning_area_m2", "Proposed zoning study area",
+               study_union.intersection(boundary_m).area if boundary_m is not None else study_union.area,
+               "m²", "Union of proposed student zoning polygons, clipped to the site; overlaps counted once. Separate from development allocation and existing statutory zoning. Whole-site reference study, even in a selected-object report.")
         if boundary_m is not None:
             outside = [z for z in zones if z["id"] in measured and measured[z["id"]].difference(boundary_m).area > 1]
             if outside:
@@ -558,11 +582,17 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
 
     known_units = 0.0
     units_recorded = False
+    catalogue_units = 0
+    catalogue_plots = 0
+    counted_catalogue_buildings: set[str] = set()
     for zone in zones:
         props = zone["properties"]
         if zone["id"] in compiled_detached_zone_ids:
             continue
         use = props.get("development_type") or ("residential" if zone["zone_type"] == "residential" else None)
+        authored = catalogue_dwellings(props) if zone["zone_type"] in {"building", "residential", "development_area"} else None
+        if use is None and authored is not None:
+            use = "residential"  # Exact housing programme, not a guessed use from plot size.
         if use not in {"residential", "mixed_use"} and not str(use).startswith("residential_"):
             continue
         raw_units = props.get("unit_count")
@@ -570,6 +600,12 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         if units is not None:
             known_units += units
             units_recorded = True
+        else:
+            linked = set(([zone["building_id"]] if zone["building_id"] else []) + zone["building_ids"])
+            if authored is not None and not linked.intersection(counted_catalogue_buildings):
+                catalogue_units += authored
+                catalogue_plots += 1
+                counted_catalogue_buildings.update(linked)
     metric(
         "recorded_units",
         "Other recorded dwelling-unit estimates" if compiled_detached else "Recorded dwelling-unit estimates",
@@ -578,6 +614,10 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         "Sum of student-recorded residential/mixed-use zone unit estimates, excluding plots counted by a current detached recipe. Missing values are unknown; no area-to-unit conversion.",
         0.8,
     )
+
+    metric("catalogue_dwellings", "Catalogue dwelling estimates (known models)",
+           catalogue_units if catalogue_plots else None, "dwellings",
+           f"Exact revision-locked catalogue housing programmes across {catalogue_plots} placements. Excludes student-entered unit counts and compiled detached recipes to avoid double counting. Models without a reviewed programme remain unknown. Concept estimates, not approved yield or measured floor area.", 0.8)
 
     if detached_zone_ids:
         metric(
@@ -632,16 +672,16 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             ],
             uncertainty="Imported attributes are evidence to check, not an automatic legal conformance determination.",
         )
-    policy_sources = policy_sources or []
+    policy_sources = (policy_sources or []) + snapshot.get("map_policy_sources", [])
     if policy_sources:
         finding(
             "city-documents",
-            "Read relevant city policy passages",
-            "Stored city-document passages match housing, public-space, access, or built-form topics in the proposal.",
+            "Read relevant city policy evidence",
+            "Available evidence includes stored city-document passages and/or site-matched map summaries. Each source identifies its basis and edition where available.",
             "Explain how the proposal responds to these passages and verify that their geographic scope and current versions apply.",
             kind="source_context",
             sources=policy_sources,
-            basis="Lexical retrieval from the existing city policy corpus",
+            basis="Stored policy corpus and site-matched browser map summaries; summaries are not verbatim bylaw text",
             uncertainty="A text match is a reading lead. It does not establish that a rule applies to this parcel or that the proposal complies.",
         )
     else:

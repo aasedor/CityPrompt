@@ -2,10 +2,22 @@ from types import SimpleNamespace
 
 from app.api.v1.lego_assembly import _planned_massing_dimensions
 from app.services.model_contract import native_model_facts, uses_placement_plot
+from app.services.model_contract import catalogue_dwellings
 
 CURRENT = {'pick_place_asset': 'validation_minimalist_infill_brick_monolith',
            'development_selected_variant_id': 'minimalist_infill_brick_monolith',
            'pick_place_model_revision': '97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7'}
+
+
+def test_catalogue_programme_requires_unchanged_height_storeys_and_revision():
+    from app.services.model_contract import _records
+    row = next(row for row in _records() if row['variant_id'] == 'affordable_aspen_original' and row['current'])
+    properties = {'pick_place_asset': row['asset_id'], 'development_selected_variant_id': row['variant_id'],
+                  'pick_place_model_revision': row['revision'], 'floor_count': row['storeys']}
+    assert catalogue_dwellings(properties) == 12
+    assert catalogue_dwellings({**properties, 'floor_count': row['storeys'] + 1}) is None
+    assert catalogue_dwellings({**properties, 'development_height_override_m': 100}) is None
+    assert catalogue_dwellings({**properties, 'pick_place_model_revision': 'unreviewed'}) is None
 
 
 def test_exact_model_overrules_generic_height_without_rewriting_zone():

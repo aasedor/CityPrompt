@@ -6,6 +6,11 @@ import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJun
 import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetProgram';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { isFixedSectionStreet } from './streetPlacement';
+import { nativeStreetPilotForZone } from '@/components/viewer/globe/nativeStreetPilot';
+
+/** Exact, flat walking surfaces can overlap without a vehicle junction kit. */
+export const isSurfacePath = (zone: Pick<SiteZone, 'zone_type' | 'properties'>) =>
+  nativeStreetPilotForZone(zone, true)?.program?.adapter === 'narrow-pathway-v1';
 
 /** Only accept overlaps that the shared junction renderer can actually join. */
 export function streetConnectionProblem(candidate: Pick<SiteZone, 'coordinates'|'properties'> & Partial<SiteZone>, zones: SiteZone[]): string | null {
@@ -18,6 +23,7 @@ export function streetConnectionProblem(candidate: Pick<SiteZone, 'coordinates'|
   for(const other of zones){
     if(other.id===draft.id || !isFixedSectionStreet(other) || isSpecialistStreet(other.properties?.road_selected_variant_id) || other.properties?.validation_fixed_fixture)continue;
     if(!envelopesOverlap(local(draft.coordinates),local(other.coordinates)))continue;
+    if(isSurfacePath(draft) && isSurfacePath(other))continue;
     const pair=[other,draft];
     if(detectConnectedStreetIntersections(pair,true).some(node=>resolveStreetJunctionLayout(node,pair)))continue;
     // A flush collinear end connection needs no junction patch. Require
@@ -33,7 +39,8 @@ export function streetConnectionProblem(candidate: Pick<SiteZone, 'coordinates'|
   }
   const network = [...zones.filter(zone => zone.id !== draft.id), draft];
   if (detectConnectedStreetIntersections(network, true).some(node =>
-    node.zoneIds.includes(draft.id) && !resolveStreetJunctionLayout(node, network))) {
+    node.zoneIds.includes(draft.id) && !node.zoneIds.every(id => network.some(zone => zone.id === id && isSurfacePath(zone)))
+      && !resolveStreetJunctionLayout(node, network))) {
     return 'These streets cannot share one complete junction. Separate the nearby connections and leave longer straight approaches.';
   }
   return null;
