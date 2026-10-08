@@ -7,6 +7,7 @@ import {
 import {
   CITY_PLAN_ASSETS,
   CITY_PLAN_MAPS,
+  CITY_MAP_LAYERS,
   readCityPlanPreferences,
   type MapPreference,
   type PlanRaster,
@@ -56,7 +57,7 @@ export function useCityPolicyMaps(projectId: string | undefined) {
       retry: false,
     })),
   });
-  const networks = ['transit', '5a'] as const;
+  const networks = ['transit', '5a', 'service-routes', 'service-stops'] as const;
   const vectorQueries = useQueries({ queries: networks.map(network => ({
     queryKey: ['transport-vectors-v1', network],
     queryFn: async ({ signal }: { signal: AbortSignal }) => {
@@ -64,13 +65,20 @@ export function useCityPolicyMaps(projectId: string | undefined) {
       if (!response.ok) throw new Error('Transport map unavailable');
       return parseTransportSnapshot(await response.json(), network);
     },
-    enabled: Boolean(projectId && CITY_PLAN_MAPS.some(map => transportNetworkForMap(map.id) === network
+    enabled: Boolean(projectId && CITY_MAP_LAYERS.some(map => transportNetworkForMap(map.id) === network
       && preferences[map.id].enabled && preferences[map.id].opacity > 0 && preferences[map.id].format !== 'pdf')),
     staleTime: Infinity, gcTime: 30 * 60_000, retry: false,
   })) });
+  const serviceRoutes = vectorQueries[2].data;
+  const routeId = preferences['service-routes'].routeId;
+  const filteredRoutes = useMemo(() => {
+    if (!serviceRoutes || !routeId) return serviceRoutes;
+    const features = serviceRoutes.features.filter(f => f.id === routeId);
+    return features.length ? { ...serviceRoutes, features, featureCount: features.length } : serviceRoutes;
+  }, [serviceRoutes, routeId]);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   const [retryVersion, setRetryVersion] = useState<Record<string, number>>({});
-  const layers = CITY_PLAN_MAPS.map((map, i) => {
+  const layers = CITY_MAP_LAYERS.map((map, i) => {
     const network = transportNetworkForMap(map.id);
     const vector = network && preferences[map.id].format !== 'pdf';
     const query = network ? vectorQueries[networks.indexOf(network)] : undefined;
@@ -78,10 +86,11 @@ export function useCityPolicyMaps(projectId: string | undefined) {
     map,
     ...preferences[map.id],
     format: vector ? 'vector' as const : 'pdf' as const,
-    data: vector ? undefined : queries[i].data,
-    vectorData: vector ? query?.data : undefined,
-    loading: vector ? Boolean(query?.isFetching) : queries[i].isFetching,
-    error: vector ? Boolean(query?.error) : Boolean(queries[i].error || imageErrors[map.id]),
+    data: vector ? undefined : queries[i]?.data,
+    vectorData: network === 'service-routes' ? filteredRoutes : vector ? query?.data : undefined,
+    routeOptions: network === 'service-routes' ? serviceRoutes?.features : undefined,
+    loading: vector ? Boolean(query?.isFetching) : Boolean(queries[i]?.isFetching),
+    error: vector ? Boolean(query?.error) : Boolean(queries[i]?.error || imageErrors[map.id]),
   }); });
   const update = (id: string, patch: Partial<MapPreference>) => {
     if (!preferences[id]) return;
@@ -99,17 +108,21 @@ export function useCityPolicyMaps(projectId: string | undefined) {
     selectedSnapshot: selection?.key === key ? layers.find(layer => layer.map.id === selection.id)?.vectorData : undefined,
     selected:
       selection?.key === key
-        ? (CITY_PLAN_MAPS.find((map) => map.id === selection.id) ?? null)
+        ? (CITY_MAP_LAYERS.find((map) => map.id === selection.id) ?? null)
         : null,
     setEnabled: (id: string, enabled: boolean) => update(id, { enabled }),
-    setFormat: (id: string, format: 'vector' | 'pdf') => { update(id, { format }); setSelection(null); },
+    setFormat: (id: string, format: 'vector' | 'pdf') => {
+      if (CITY_MAP_LAYERS.find(map => map.id === id)?.group === 'TRANSIT') return;
+      update(id, { format }); setSelection(null);
+    },
+    setRouteId: (routeId: string) => { update('service-routes', { routeId }); setSelection(null); },
     setOpacity: (id: string, opacity: number) => {
       if (Number.isFinite(opacity))
         update(id, { opacity: Math.max(0, Math.min(1, opacity)) });
     },
     inspect: (token: string) => {
       const [id, featureId] = token.split('::');
-      if (CITY_PLAN_MAPS.some((map) => map.id === id))
+      if (CITY_MAP_LAYERS.some((map) => map.id === id))
         setSelection({ key, id, featureId });
     },
     clearSelection: useCallback(() => setSelection(null), []),

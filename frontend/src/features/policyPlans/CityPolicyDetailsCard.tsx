@@ -41,7 +41,7 @@ export function CityPolicyDetailsCard({
       <header className="sticky top-0 z-10 flex items-start gap-2 border-b border-[#151515]/10 bg-[#fffdf6] p-4">
         <div className="flex-1">
           <p className="text-[10px] font-semibold uppercase tracking-widest text-[#5c554d]">
-            {map.group} · Map {map.number}
+            {map.group === 'TRANSIT' ? 'Calgary Transit · Service snapshot' : `${map.group} · Map ${map.number}`}
           </p>
           <h2 id={heading} className="mt-1 text-base font-bold">
             {map.title}
@@ -58,12 +58,20 @@ export function CityPolicyDetailsCard({
       </header>
       <div className="space-y-4 p-4 text-sm leading-relaxed">
         {feature && <div className="space-y-2 rounded-xl border border-stone-200 bg-white p-3">
+          {feature.properties.name && <h3 className="font-bold">{feature.properties.routeNumber ? `${feature.properties.routeNumber} · ` : ''}{feature.properties.name}</h3>}
+          {feature.properties.stopNumber && <p>Stop number: {feature.properties.stopNumber}</p>}
           <h3 className="font-bold">{transportStyle(feature.properties.category).label}</h3>
           <p>{transportStyle(feature.properties.category).description}</p>
+          {feature.properties.routes && <div><h4 className="font-semibold">Serving routes</h4>
+            {feature.properties.routes.length ? <ul className="list-disc pl-4">{feature.properties.routes.map(route => <li key={route.number}>{route.number} · {route.name}</li>)}</ul>
+              : <p>No route association was available in this snapshot.</p>}
+          </div>}
           {feature.properties.priority && <p className="text-xs">Network priority: {feature.properties.priority.toLowerCase()}</p>}
           {snapshot?.sources[feature.properties.source] && <a className="text-xs underline" target="_blank" rel="noreferrer"
             href={snapshot.sources[feature.properties.source].url}>View official City feature service</a>}
-          <p className="text-[11px]">City vector snapshot: {snapshot?.retrieved.slice(0, 10)} UTC. Conceptual policy alignment; not a surveyed route.</p>
+          <p className="text-[11px]">City vector snapshot: {snapshot?.retrieved.slice(0, 10)} UTC. {map.group === 'TRANSIT' ? 'Published service data; not live arrivals.' : 'Conceptual policy alignment; not a surveyed route.'}</p>
+          {map.group === 'TRANSIT' && snapshot?.sources[feature.properties.source]?.updated && <p className="text-[11px]">Source updated: {snapshot.sources[feature.properties.source].updated?.slice(0, 10)} UTC.</p>}
+          {feature.properties.routes && snapshot?.sources['stop-routes'] && <p className="text-[11px]"><a href={snapshot.sources['stop-routes'].url} target="_blank" rel="noreferrer" className="underline">Stop-to-route source</a> · updated {snapshot.sources['stop-routes'].updated?.slice(0, 10)} UTC.</p>}
         </div>}
         <p>{map.summary}</p>
         <h3 className="text-xs font-bold uppercase tracking-wide">
@@ -74,7 +82,7 @@ export function CityPolicyDetailsCard({
             <li key={text}>{text}</li>
           ))}
         </ul>
-        <figure className="rounded-xl border border-stone-200 bg-white p-2">
+        {map.group !== 'TRANSIT' && <figure className="rounded-xl border border-stone-200 bg-white p-2">
           <figcaption className="mb-2 text-xs font-bold">
             {snapshot ? 'Published PDF reference legend' : 'Original City legend'}
           </figcaption>
@@ -93,7 +101,7 @@ export function CityPolicyDetailsCard({
           <p className="mt-2 text-[10px] text-[#5c554d]">
             Click the legend to enlarge it.
           </p>
-        </figure>
+        </figure>}
         <p className="text-[11px] text-[#5c554d]">{map.legendText}</p>
         <a
           href={map.source}
@@ -101,13 +109,13 @@ export function CityPolicyDetailsCard({
           rel="noreferrer"
           className="flex min-h-11 items-center gap-2 text-xs font-semibold text-[#37594b] underline underline-offset-2"
         >
-          Read the plan · page {map.printedPage}
+          {map.group === 'TRANSIT' ? 'Open City transit dataset' : `Read the plan · page ${map.printedPage}`}
           <ExternalLink size={14} />
         </a>
         <p className="text-[10px] text-[#5c554d]">
-          © The City of Calgary · {CITY_PLAN_EDITION}. Student guidance
+          {map.group === 'TRANSIT' ? 'Source: The City of Calgary Open Data. The service snapshot and long-term policy network have different purposes.' : <>© The City of Calgary · {CITY_PLAN_EDITION}. Student guidance
           accompanies the original map artwork. Read the plan’s written policies
-          and check subsequent amendments for site-specific decisions.
+          and check subsequent amendments for site-specific decisions.</>}
         </p>
       </div>
     </section>

@@ -1,11 +1,11 @@
-export type CityPlanGroup = "MDP" | "CTP";
+export type CityPlanGroup = "MDP" | "CTP" | "TRANSIT";
 export type CityPlanMap = {
   id: string;
   group: CityPlanGroup;
-  number: number;
+  number?: number;
   title: string;
-  page: number;
-  printedPage: number;
+  page?: number;
+  printedPage?: number;
   summary: string;
   guidance: string[];
   legendText: string;
@@ -226,8 +226,25 @@ export const CITY_PLAN_MAPS: CityPlanMap[] = maps.map((map) => ({
   ...map,
   source: `${map.group === "MDP" ? MDP : CTP}#page=${map.page}`,
 }));
+export const CITY_MAP_LAYERS: CityPlanMap[] = [...CITY_PLAN_MAPS, {
+  id: 'service-routes', group: 'TRANSIT', title: 'Calgary Transit routes',
+  source: 'https://data.calgary.ca/Transportation-Transit/Calgary-Transit-Routes/hpnd-riq4',
+  summary: 'Published Calgary Transit service routes. Select a route to see its number, name and service category.',
+  guidance: ['These service routes are separate from the MDP/CTP long-term policy network.',
+    'School, express and special routes may run only at particular times. Route presence does not establish frequency or all-day service.',
+    'Use Calgary Transit trip planning for current schedules, detours and arrivals.'],
+  legendText: 'Lines show the route categories supplied by Calgary Transit. Overlapping routes can be inspected individually using Choose transit route.',
+}, {
+  id: 'service-stops', group: 'TRANSIT', title: 'Calgary Transit stops',
+  source: 'https://data.calgary.ca/Transportation-Transit/Calgary-Transit-Stops/muzh-c9qc',
+  summary: 'Active stop locations in the City snapshot. Click a stop for its name, stop number and published serving routes.',
+  guidance: ['Only stops marked ACTIVE in the source are shown.',
+    'Serving routes come from the City’s separately updated stop-to-route table. An empty list means no association was available in this snapshot.',
+    'Stop locations are useful for access planning; this layer does not show live arrivals or confirm step-free access.'],
+  legendText: 'Teal circles indicate active Calgary Transit stops.',
+}];
 export const CITY_PLAN_ASSETS = "/policy-maps/citywide-2026-v1";
-export type MapPreference = { enabled: boolean; opacity: number; format?: 'vector' | 'pdf' };
+export type MapPreference = { enabled: boolean; opacity: number; format?: 'vector' | 'pdf'; routeId?: string };
 export function readCityPlanPreferences(
   raw: string | null,
 ): Record<string, MapPreference> {
@@ -240,13 +257,14 @@ export function readCityPlanPreferences(
     /* Optional browser storage. */
   }
   return Object.fromEntries(
-    CITY_PLAN_MAPS.map((map) => {
+    CITY_MAP_LAYERS.map((map) => {
       const saved = value[map.id] as Partial<MapPreference> | undefined;
       return [
         map.id,
         {
           enabled: saved?.enabled === true,
-          ...(saved?.format === 'pdf' ? { format: 'pdf' as const } : {}),
+          ...(map.group !== 'TRANSIT' && saved?.format === 'pdf' ? { format: 'pdf' as const } : {}),
+          ...(map.id === 'service-routes' && typeof saved?.routeId === 'string' ? { routeId: saved.routeId } : {}),
           opacity:
             typeof saved?.opacity === "number" && Number.isFinite(saved.opacity)
               ? Math.max(0, Math.min(1, saved.opacity))

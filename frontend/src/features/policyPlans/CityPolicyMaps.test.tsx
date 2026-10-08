@@ -99,9 +99,9 @@ describe("City-wide plan maps", () => {
     expect(screen.getByRole('link', { name: 'View official City feature service' })).toHaveAttribute('href', transitSnapshot.sources.city.url);
     expect(screen.getByText('Published PDF reference legend')).toBeInTheDocument();
   });
-  it("offers all 12 maps, excludes removed CTP 4, and explains each with its exact source page before loading artwork", () => {
+  it("offers all 12 policy maps plus two transit service layers, excludes removed CTP 4, and explains each policy map with its exact source page before loading artwork", () => {
     render(<App />, { wrapper });
-    expect(screen.getAllByRole("switch", { hidden: true })).toHaveLength(12);
+    expect(screen.getAllByRole("switch", { hidden: true })).toHaveLength(14);
     expect(CITY_PLAN_MAPS.some((map) => map.id === "ctp-4")).toBe(false);
     for (const map of CITY_PLAN_MAPS) {
       fireEvent.click(

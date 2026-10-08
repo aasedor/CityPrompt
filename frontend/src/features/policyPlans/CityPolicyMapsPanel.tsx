@@ -16,7 +16,7 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
         </p>
       </header>
       <p className="text-[10px] text-[#5c554d]">{CITY_PLAN_EDITION}</p>
-      {(["MDP", "CTP"] as const).map((group) => (
+      {(["MDP", "CTP", "TRANSIT"] as const).map((group) => (
         <details
           key={group}
           open={group === "MDP"}
@@ -25,7 +25,7 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
           <summary className="cursor-pointer px-3 py-3 text-xs font-semibold">
             {group === "MDP"
               ? "Municipal Development Plan"
-              : "Calgary Transportation Plan"}
+              : group === 'CTP' ? "Calgary Transportation Plan" : 'Calgary Transit · service routes & stops'}
           </summary>
           <ul className="divide-y divide-[#151515]/10 border-t border-[#151515]/10">
             {state.layers
@@ -36,7 +36,7 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
                     <input
                       type="checkbox"
                       role="switch"
-                      aria-label={`Show ${group} Map ${layer.map.number}: ${layer.map.title}`}
+                      aria-label={`Show ${group === 'TRANSIT' ? layer.map.title : `${group} Map ${layer.map.number}: ${layer.map.title}`}`}
                       checked={layer.enabled}
                       onChange={(event) =>
                         state.setEnabled(layer.map.id, event.target.checked)
@@ -44,16 +44,16 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
                       className="h-4 w-4 shrink-0 accent-[#37594b]"
                     />
                     <span>
-                      <span className="mr-1 text-[#5c554d]">
+                      {group !== 'TRANSIT' && <span className="mr-1 text-[#5c554d]">
                         {layer.map.number}.
-                      </span>
+                      </span>}
                       {layer.map.title}
                     </span>
                   </label>
                   <button
                     type="button"
                     onClick={() => state.inspect(layer.map.id)}
-                    aria-label={`Legend and meaning for ${group} Map ${layer.map.number}`}
+                    aria-label={group === 'TRANSIT' ? `About ${layer.map.title}` : `Legend and meaning for ${group} Map ${layer.map.number}`}
                     className="min-h-11 px-1 text-[11px] font-semibold text-[#37594b] underline underline-offset-2"
                   >
                     Legend & meaning
@@ -61,23 +61,32 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
                   {layer.enabled && (
                     <>
                       {transportNetworkForMap(layer.map.id) && <>
-                        <label className="block text-[11px]">Map source
+                        {group !== 'TRANSIT' && <label className="block text-[11px]">Map source
                           <select aria-label={`${group} Map ${layer.map.number} source`} value={layer.format}
                             onChange={event => state.setFormat(layer.map.id, event.target.value as 'vector' | 'pdf')}
                             className="my-1 min-h-11 w-full rounded-lg border bg-white px-2">
                             <option value="vector">City vector network</option><option value="pdf">Published PDF · compare</option>
                           </select>
-                        </label>
+                        </label>}
+                        {layer.routeOptions && <label className="block text-[11px]">Choose transit route
+                          <select aria-label="Choose transit route" value={layer.routeOptions.some(f => f.id === layer.routeId) ? layer.routeId : ''}
+                            onChange={event => state.setRouteId(event.target.value)}
+                            className="my-1 min-h-11 w-full rounded-lg border bg-white px-2">
+                            <option value="">All routes</option>
+                            {[...layer.routeOptions].sort((a, b) => (a.properties.routeNumber ?? '').localeCompare(b.properties.routeNumber ?? '', undefined, { numeric: true })).map(f =>
+                              <option key={f.id} value={f.id}>{f.properties.routeNumber} · {f.properties.name}</option>)}
+                          </select>
+                        </label>}
                         {layer.vectorData && <>
-                          <p className="text-[10px]">City data snapshot · {layer.vectorData.retrieved.slice(0, 10)} UTC. Click a route or hub for details.</p>
-                          <ul aria-label={`${group} Map ${layer.map.number} vector legend`} className="my-2 space-y-1 text-[10px]">
+                          <p className="text-[10px]">City data snapshot · {layer.vectorData.retrieved.slice(0, 10)} UTC. Click a {group === 'TRANSIT' ? 'route or stop' : 'route or hub'} for details.</p>
+                          <ul aria-label={group === 'TRANSIT' ? `${layer.map.title} legend` : `${group} Map ${layer.map.number} vector legend`} className="my-2 space-y-1 text-[10px]">
                             {[...new Set(layer.vectorData.features.map(f => f.properties.category))].map((category: TransportCategory) => {
                               const style = TRANSPORT_STYLES[category];
-                              const point = category === 'hub' || category === 'transit-centre' || category === 'regional-hub';
+                              const point = category === 'hub' || category === 'transit-centre' || category === 'regional-hub' || category === 'service-stop';
                               return <li key={category} className="flex items-center gap-2"><span aria-hidden="true" className={point ? 'inline-block h-3 w-3 shrink-0 rounded-full' : 'inline-block w-6 shrink-0 border-t-[3px]'} style={point ? { backgroundColor: style.color } : { borderColor: style.color, borderStyle: style.dashed ? 'dashed' : 'solid' }} />{style.label}</li>;
                             })}
                           </ul>
-                          <p className="text-[10px]">{layer.vectorData.network === 'transit'
+                          <p className="text-[10px]">{group === 'TRANSIT' ? 'Published service snapshot. Check Calgary Transit for schedules, detours and arrivals.' : layer.vectorData.network === 'transit'
                             ? 'City network categories, not named LRT lines. Regional rail corridors and the PDF land-use background are not included.'
                             : 'Routes only. The PDF also shows crossing recommendations, transit, schools and recreation symbols.'}</p>
                         </>}
@@ -88,7 +97,7 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
                           <span>{Math.round(layer.opacity * 100)}%</span>
                         </span>
                         <input
-                          aria-label={`${group} Map ${layer.map.number} opacity`}
+                          aria-label={group === 'TRANSIT' ? `${layer.map.title} opacity` : `${group} Map ${layer.map.number} opacity`}
                           type="range"
                           min="0"
                           max="100"

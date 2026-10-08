@@ -56,7 +56,7 @@ export function GlobeTransportVectors({ data, mapId, height, opacity, order }: {
       if (batch.points.length) {
         const material = new THREE.MeshBasicMaterial({ color: style.color, transparent: true, depthTest: false,
           depthWrite: false, toneMapped: false, side: THREE.DoubleSide });
-        const object = new THREE.InstancedMesh(new THREE.CircleGeometry(category === 'transit-centre' ? 17 : 28, 20), material, batch.points.length);
+        const object = new THREE.InstancedMesh(new THREE.CircleGeometry(category === 'service-stop' ? 6 : category === 'transit-centre' ? 17 : 28, 20), material, batch.points.length);
         batch.points.forEach((position, index) => {
           const normal = position.clone().add(origin).normalize();
           object.setMatrixAt(index, new THREE.Matrix4().compose(position,

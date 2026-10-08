@@ -1,14 +1,23 @@
-export type TransportNetwork = 'transit' | '5a';
+export type TransportNetwork = 'transit' | '5a' | 'service-routes' | 'service-stops';
 export type TransportCategory = keyof typeof TRANSPORT_STYLES;
 export type TransportFeature = {
   type: 'Feature'; id: string;
-  properties: { category: TransportCategory; designation?: string; priority?: string | null; source: string };
+  properties: { category: TransportCategory; designation?: string; priority?: string | null; source: string;
+    name?: string; routeNumber?: string; stopNumber?: string; routes?: Array<{ number: string; name: string }> };
   geometry: { type: 'Point'; coordinates: number[] } | { type: 'LineString'; coordinates: number[][] } | { type: 'MultiLineString'; coordinates: number[][][] };
 };
 export type TransportSnapshot = { type: 'FeatureCollection'; network: TransportNetwork; retrieved: string;
-  sources: Record<string, { url: string; featureCount: number }>; featureCount: number; features: TransportFeature[] };
+  sources: Record<string, { url: string; featureCount: number; updated?: string }>; featureCount: number; features: TransportFeature[] };
 export const TRANSPORT_ASSETS = '/policy-maps/transport-vectors-v1';
 export const TRANSPORT_STYLES = {
+  'service-regular': { label: 'Regular bus', color: '#c53848', dashed: false, description: 'A regular bus route in the published Calgary Transit snapshot. Consult the timetable for operating hours and frequency.' },
+  'service-lrt': { label: 'CTrain', color: '#194b95', dashed: false, description: 'A CTrain route in the published service network. See the route name for its line designation.' },
+  'service-brt': { label: 'BRT', color: '#763d9a', dashed: false, description: 'A route classified as BRT by Calgary Transit.' },
+  'service-max': { label: 'MAX', color: '#007e89', dashed: false, description: 'A MAX route in the published Calgary Transit service network.' },
+  'service-express': { label: 'Express bus', color: '#aa6110', dashed: false, description: 'An express bus route. Service may be concentrated at particular times; check the timetable.' },
+  'service-school': { label: 'School service', color: '#71717a', dashed: true, description: 'A school service route. It should not be assumed to offer all-day or year-round service.' },
+  'service-special': { label: 'Special service', color: '#995e61', dashed: true, description: 'A special service route. Check Calgary Transit for its operating conditions.' },
+  'service-stop': { label: 'Active transit stop', color: '#007f78', dashed: false, description: 'A stop marked active in the City snapshot. The routes listed below come from the published stop-to-route cross-reference.' },
   'existing-pathway': { label: 'Existing pathway · 5A', color: '#b60000', dashed: false, description: 'An existing off-street pathway in the Council-approved 5A network. It may still need upgrades for accessibility, separation, lighting or year-round reliability.' },
   'proposed-pathway': { label: 'Recommended pathway · 5A', color: '#b60000', dashed: true, description: 'A proposed off-street pathway connection in the Council-approved 5A network. Use it to consider future walking and wheeling access; it does not confirm construction funding or an opening date.' },
   'existing-bikeway': { label: 'Existing on-street bikeway · 5A', color: '#008bff', dashed: false, description: 'An existing on-street cycling connection in the Council-approved 5A network. Inclusion does not mean it already meets every 5A principle.' },
@@ -23,6 +32,7 @@ export const TRANSPORT_STYLES = {
 } as const;
 export function transportStyle(category: TransportCategory) { return TRANSPORT_STYLES[category]; }
 export function transportNetworkForMap(id: string): TransportNetwork | undefined {
+  if (id === 'service-routes' || id === 'service-stops') return id;
   return id === 'ctp-1' ? '5a' : id === 'mdp-2' || id === 'ctp-2' ? 'transit' : undefined;
 }
 export function parseTransportSnapshot(value: unknown, network: TransportNetwork): TransportSnapshot {
