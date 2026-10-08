@@ -1,0 +1,90 @@
+{
+  "initiative": "Official transportation vectors pilot",
+  "date": "2026-10-07 America/Edmonton",
+  "defaultVectorMaps": [
+    "ctp-1",
+    "ctp-2",
+    "mdp-2"
+  ],
+  "use": "Site > City-wide policy maps > enable 5A or Primary Transit Network. Map source switches between City vector network and Published PDF comparison. Click a route or hub for designation and source. Opacity supports 0-100%.",
+  "snapshotRefresh": "python tools/policy_maps/fetch_transport_vectors.py --output <review-directory>; review output before promoting both GeoJSON files to frontend/public/policy-maps/transport-vectors-v1. A changed schema or release should bump the snapshot directory and query key.",
+  "deployment": "Both GeoJSON files are static public assets. No City API credentials or backend changes. When using CITYPROMPT_PUBLIC_DIR for local hydrated assets, copy these two files to that root as well and restart Vite to index new public paths.",
+  "dataHandling": "EPSG:4326 coordinates rounded to six decimals; no PDF tracing, snapping or line simplification. Stable source IDs deduplicate overlapping City views. 5A segments with identical category, priority and source are grouped into MultiLineStrings without moving vertices.",
+  "rendering": "Screen-space route lines batched by category, instanced hub symbols, cached on-demand snapshots. Geometry rebuilt only when snapshot, height or layer identity changes; not each animation frame.",
+  "browserVerified": [
+    "5A riverside pathway visually follows the pathway around the Bow Arts trial site in top view",
+    "Clicking a 5A route opens its designation, primary network priority, explanation and official City feature service",
+    "Clicking a regional transit hub opens its explanation and source",
+    "Transit opacity zero hides geometry and clears selection; 100 percent restores it",
+    "Switch between PDF and vector for both networks; toggle layers off/on",
+    "5A and transit vector closeups retain crisp symbols while PDF symbols become broad and pixelated",
+    "After correcting hub disposal, toggling transit on/off produced no new browser error logs during the final trial"
+  ],
+  "limits": [
+    "Vector datasets are not a one-to-one reproduction of the 2026 PDF. Transit has generic skeletal LRT classes rather than named Red/Blue/Green lines; regional rail corridors and urban structure background are absent.",
+    "5A contains route segments; the PDF also has crossing recommendations, transit, schools and recreation symbols.",
+    "5A includes primary and secondary proposed route classes as supplied by the City; priority appears in route details.",
+    "Policy geometry remains conceptual, not surveyed. Top View avoids 3D terrain parallax; the overlay uses the existing project terrain reference height, not per-vertex terrain sampling.",
+    "No representative student laptop or 40-user load test was performed. No measured FPS comparison is claimed.",
+    "Dash lengths are 30 m with 20 m gaps; proposed routes may resemble solid lines at city-wide overview scale. Their designation remains available by clicking."
+  ],
+  "verification": {
+    "vitest": "40 passed across 10 policyPlans test files, including a failing-then-passing hub disposal regression",
+    "typescript": "npm run type-check passed",
+    "python": "3 normalization/grouping unit tests passed"
+  },
+  "browserEvidenceDirectory": "C:/dev-artifacts/CityPrompt/transport-vectors-2026-10-07/browser",
+  "snapshot": {
+    "5a": {
+      "bytes": 6785091,
+      "sha256": "27d3d14e83567753030523a15cbb6d6aebb5bac7975d15bcc389921f04f06a9a",
+      "retrieved": "2026-10-08T03:24:00.050456+00:00",
+      "sourceFeatureCount": 34779,
+      "renderFeatures": 8,
+      "sources": {
+        "Recommended_Pathway_Priority": {
+          "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Recommended_Pathway_Priority/FeatureServer/0",
+          "featureCount": 5200
+        },
+        "Existing_Pathway_Priority": {
+          "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Existing_Pathway_Priority/FeatureServer/0",
+          "featureCount": 11113
+        },
+        "Recommended_On_Street_Bikeway_Priority": {
+          "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Recommended_On_Street_Bikeway_Priority/FeatureServer/0",
+          "featureCount": 5710
+        },
+        "Existing_On_Street_Bikeway_Priority": {
+          "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Existing_On_Street_Bikeway_Priority/FeatureServer/0",
+          "featureCount": 5355
+        },
+        "Recommended_Pathway_Secondary": {
+          "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Recommended_Pathway_Secondary/FeatureServer/0",
+          "featureCount": 6403
+        },
+        "Recommended_On_Street_Bikeway_Secondary": {
+          "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Recommended_On_Street_Bikeway_Secondary/FeatureServer/0",
+          "featureCount": 11908
+        }
+      }
+    },
+    "transit": {
+      "bytes": 208050,
+      "sha256": "ff3071e9ee606c3aaa6bca3d38e5dd7273a61a5530541f00cce2a988e69dd641",
+      "retrieved": "2026-10-08T03:22:37.812370+00:00",
+      "sourceFeatureCount": 189,
+      "renderFeatures": 189,
+      "sources": {
+        "Municipal_Development_Plan_Primary_Transit_Network_Lines": {
+          "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Municipal_Development_Plan_Primary_Transit_Network_Lines/FeatureServer/0",
+          "featureCount": 98
+        },
+        "Municipal_Development_Plan_Primary_Transit_Network_Points": {
+          "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Municipal_Development_Plan_Primary_Transit_Network_Points/FeatureServer/0",
+          "featureCount": 91
+        }
+      }
+    }
+  },
+  "review": "Independent read-only code review found no additional critical or important issues. Reported disposal failure fixed and verified. Minor: proposed-route world-distance dashes can become subpixel at city-wide zoom; neighbourhood/site comparisons are the verified pilot scale."
+}

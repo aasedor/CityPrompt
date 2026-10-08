@@ -227,7 +227,7 @@ export const CITY_PLAN_MAPS: CityPlanMap[] = maps.map((map) => ({
   source: `${map.group === "MDP" ? MDP : CTP}#page=${map.page}`,
 }));
 export const CITY_PLAN_ASSETS = "/policy-maps/citywide-2026-v1";
-export type MapPreference = { enabled: boolean; opacity: number };
+export type MapPreference = { enabled: boolean; opacity: number; format?: 'vector' | 'pdf' };
 export function readCityPlanPreferences(
   raw: string | null,
 ): Record<string, MapPreference> {
@@ -246,6 +246,7 @@ export function readCityPlanPreferences(
         map.id,
         {
           enabled: saved?.enabled === true,
+          ...(saved?.format === 'pdf' ? { format: 'pdf' as const } : {}),
           opacity:
             typeof saved?.opacity === "number" && Number.isFinite(saved.opacity)
               ? Math.max(0, Math.min(1, saved.opacity))

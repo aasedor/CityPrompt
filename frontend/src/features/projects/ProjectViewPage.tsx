@@ -1267,7 +1267,7 @@ export function ProjectViewPage() {
         </aside>}
         {!studyMap.editing && !localPolicy.selected && !cityPolicyMaps.selected && <ZoningCatalogueCard zone={selectedZoning} onClose={() => selectZoning(null)} />}
         {!studyMap.editing && <PolicyDetailsCard selected={localPolicy.selected} onClose={localPolicy.clearSelection} />}
-        {!studyMap.editing && !localPolicy.selected && <CityPolicyDetailsCard map={cityPolicyMaps.selected} onClose={cityPolicyMaps.clearSelection} />}
+        {!studyMap.editing && !localPolicy.selected && <CityPolicyDetailsCard map={cityPolicyMaps.selected} feature={cityPolicyMaps.selectedFeature} snapshot={cityPolicyMaps.selectedSnapshot} onClose={cityPolicyMaps.clearSelection} />}
         {showPlanningReport && <StudioDialog title="Planning report" onClose={closePlanningReport}>
           <TerraceSummary zones={siteZones}/>
           <StudentPlanningReport projectId={project.id} zoneIds={visibleZones.filter((zone) => isPersistedZoneId(zone.id)).map((zone) => zone.id)}

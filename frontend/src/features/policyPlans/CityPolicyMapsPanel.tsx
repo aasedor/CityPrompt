@@ -1,5 +1,6 @@
 import type { CityPolicyMapsState } from "./useCityPolicyMaps";
 import { CITY_PLAN_EDITION } from "./citywidePlans";
+import { transportNetworkForMap, TRANSPORT_STYLES, type TransportCategory } from './transportVectors';
 
 export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
   const count = state.layers.filter((layer) => layer.enabled).length;
@@ -59,6 +60,28 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
                   </button>
                   {layer.enabled && (
                     <>
+                      {transportNetworkForMap(layer.map.id) && <>
+                        <label className="block text-[11px]">Map source
+                          <select aria-label={`${group} Map ${layer.map.number} source`} value={layer.format}
+                            onChange={event => state.setFormat(layer.map.id, event.target.value as 'vector' | 'pdf')}
+                            className="my-1 min-h-11 w-full rounded-lg border bg-white px-2">
+                            <option value="vector">City vector network</option><option value="pdf">Published PDF · compare</option>
+                          </select>
+                        </label>
+                        {layer.vectorData && <>
+                          <p className="text-[10px]">City data snapshot · {layer.vectorData.retrieved.slice(0, 10)} UTC. Click a route or hub for details.</p>
+                          <ul aria-label={`${group} Map ${layer.map.number} vector legend`} className="my-2 space-y-1 text-[10px]">
+                            {[...new Set(layer.vectorData.features.map(f => f.properties.category))].map((category: TransportCategory) => {
+                              const style = TRANSPORT_STYLES[category];
+                              const point = category === 'hub' || category === 'transit-centre' || category === 'regional-hub';
+                              return <li key={category} className="flex items-center gap-2"><span aria-hidden="true" className={point ? 'inline-block h-3 w-3 shrink-0 rounded-full' : 'inline-block w-6 shrink-0 border-t-[3px]'} style={point ? { backgroundColor: style.color } : { borderColor: style.color, borderStyle: style.dashed ? 'dashed' : 'solid' }} />{style.label}</li>;
+                            })}
+                          </ul>
+                          <p className="text-[10px]">{layer.vectorData.network === 'transit'
+                            ? 'City network categories, not named LRT lines. Regional rail corridors and the PDF land-use background are not included.'
+                            : 'Routes only. The PDF also shows crossing recommendations, transit, schools and recreation symbols.'}</p>
+                        </>}
+                      </>}
                       <label className="block text-[11px]">
                         <span className="flex justify-between">
                           <span>Opacity</span>
@@ -112,7 +135,7 @@ export function CityPolicyMapsPanel({ state }: { state: CityPolicyMapsState }) {
       ))}
       <p className="text-[10px] leading-relaxed text-[#5c554d]">
         Geographically aligned plan maps. Use Top View to compare locations.
-        Colours, lines and hatching retain the City’s published symbols; these
+        Vector transportation layers use City data; PDF layers retain the published artwork. These
         city-wide maps are conceptual rather than parcel boundaries.
       </p>
       {count > 0 && (

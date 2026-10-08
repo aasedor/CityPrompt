@@ -5,13 +5,18 @@ import {
   CITY_PLAN_EDITION,
   type CityPlanMap,
 } from "./citywidePlans";
+import { transportStyle, type TransportFeature, type TransportSnapshot } from './transportVectors';
 
 export function CityPolicyDetailsCard({
   map,
   onClose,
+  feature,
+  snapshot,
 }: {
   map: CityPlanMap | null;
   onClose: () => void;
+  feature?: TransportFeature;
+  snapshot?: TransportSnapshot;
 }) {
   const heading = useId();
   const panel = useRef<HTMLElement>(null);
@@ -52,6 +57,14 @@ export function CityPolicyDetailsCard({
         </button>
       </header>
       <div className="space-y-4 p-4 text-sm leading-relaxed">
+        {feature && <div className="space-y-2 rounded-xl border border-stone-200 bg-white p-3">
+          <h3 className="font-bold">{transportStyle(feature.properties.category).label}</h3>
+          <p>{transportStyle(feature.properties.category).description}</p>
+          {feature.properties.priority && <p className="text-xs">Network priority: {feature.properties.priority.toLowerCase()}</p>}
+          {snapshot?.sources[feature.properties.source] && <a className="text-xs underline" target="_blank" rel="noreferrer"
+            href={snapshot.sources[feature.properties.source].url}>View official City feature service</a>}
+          <p className="text-[11px]">City vector snapshot: {snapshot?.retrieved.slice(0, 10)} UTC. Conceptual policy alignment; not a surveyed route.</p>
+        </div>}
         <p>{map.summary}</p>
         <h3 className="text-xs font-bold uppercase tracking-wide">
           Reading this map
@@ -63,7 +76,7 @@ export function CityPolicyDetailsCard({
         </ul>
         <figure className="rounded-xl border border-stone-200 bg-white p-2">
           <figcaption className="mb-2 text-xs font-bold">
-            Original City legend
+            {snapshot ? 'Published PDF reference legend' : 'Original City legend'}
           </figcaption>
           <a
             href={`${CITY_PLAN_ASSETS}/${map.id}/legend.webp`}

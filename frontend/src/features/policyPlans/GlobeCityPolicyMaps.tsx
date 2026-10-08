@@ -14,6 +14,7 @@ import { retainResourceForDeferredDisposal } from "@/components/viewer/globe/str
 import { CITY_PLAN_ASSETS, type PlanTile } from "./citywidePlans";
 import type { CityPolicyMapsState } from "./useCityPolicyMaps";
 import { cityPlanTileGeometry, opaqueMapPixel } from "./cityPlanGeometry";
+import { GlobeTransportVectors } from './GlobeTransportVectors';
 
 export type CityPolicyMapHandle = {
   pick: (x: number, y: number, camera: THREE.Camera) => string | null;
@@ -47,8 +48,10 @@ export const GlobeCityPolicyMaps = forwardRef<
     ref,
     () => ({
       pick: (x, y, camera) => {
-        if (!group.current || !pixel) return null;
+        if (!group.current) return null;
         raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+        // Give narrow screen-space routes a forgiving mouse/touch target.
+        raycaster.params.Line2 = { threshold: 8 };
         const hits: THREE.Intersection<THREE.Object3D>[] = [];
         group.current.updateWorldMatrix(true, true);
         group.current.traverse((object) => {
@@ -64,7 +67,8 @@ export const GlobeCityPolicyMaps = forwardRef<
             parent = parent.parent
           )
             if (!parent.visible) return;
-          THREE.Mesh.prototype.raycast.call(object, raycaster, hits);
+          if (object.userData.policyRaycast) object.userData.policyRaycast(raycaster, hits);
+          else THREE.Mesh.prototype.raycast.call(object, raycaster, hits);
         });
         // Match the displayed layer stack, not distance to Google buildings beneath.
         hits.sort(
@@ -73,12 +77,19 @@ export const GlobeCityPolicyMaps = forwardRef<
             a.distance - b.distance,
         );
         for (const hit of hits) {
+          const ids = hit.object.userData.transportIds as string[] | undefined;
+          if (ids) {
+            const featureId = ids[hit.instanceId ?? hit.faceIndex ?? -1];
+            if (featureId) return `${hit.object.userData.cityPolicyId}::${featureId}`;
+            continue;
+          }
           const material = (hit.object as THREE.Mesh)
             .material as THREE.MeshBasicMaterial;
           const image = material.map?.image as HTMLImageElement | undefined;
           if (
             hit.uv &&
             image &&
+            pixel &&
             material.opacity > 0 &&
             opaqueMapPixel(image, hit.uv, pixel)
           )
@@ -99,7 +110,8 @@ export const GlobeCityPolicyMaps = forwardRef<
         (layer, index) =>
           layer.enabled &&
           layer.opacity > 0 &&
-          layer.data && (
+          (layer.vectorData ? <GlobeTransportVectors key={layer.map.id} data={layer.vectorData} mapId={layer.map.id}
+            height={Number.isFinite(terrainHeight) ? terrainHeight : 0} opacity={layer.opacity} order={970 + index} /> : layer.data && (
             <RasterMap
               key={`${layer.map.id}:${retryVersion[layer.map.id] ?? 0}`}
               layer={layer}
@@ -107,7 +119,7 @@ export const GlobeCityPolicyMaps = forwardRef<
               order={970 + index}
               onError={imageFailed}
             />
-          ),
+          )),
       )}
     </group>
   );
