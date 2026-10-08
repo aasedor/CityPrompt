@@ -1,5 +1,7 @@
 # Complete CityPrompt button audit — 7 October 2026
 
+Implementation follow-up: [Astra's independent re-review](ASTRA_BUTTON_REVIEW_2026-10-07.md) identifies additional recovery/draft issues, a required automatic initial-build transition, and qualifications to the recommendations below. Read it before implementing this audit as a cleanup plan.
+
 The interface has a useful core, but older workflows compete with it. Keep Site → Design → Present, make Walk prominent, and keep policy interpretation, object editing, free scene export, the planning report and sharing easy to find. Remove the student-facing **Generate to 3D** operation entirely: the scene is already in 3D. The cleanup proposals below have not been implemented.
 
 This expands the [earlier secondary-button review](STUDENT_BUTTON_REVIEW_2026-10-07.md) to the whole frontend. Recommendations reflect students choosing a site, explaining planning decisions, designing and exploring a community, and presenting street/aerial images and optional video. No click-frequency analytics or new marking rubric were supplied.
