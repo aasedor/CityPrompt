@@ -302,6 +302,7 @@ export function ProjectViewPage() {
     selectZoning(null); localPolicy.clearSelection(); cityPolicyMaps.inspect(mapId);
   } };
   const studyMap = useStudyMapDrawing(id);
+  useEffect(() => { if (studyMap.editing) selectZone(null); }, [studyMap.editing, selectZone]);
   useEffect(() => {
     if (zoningSelection?.zone && (!selectedZoning || studyMap.editing || selectedZoneId)) selectZoning(null);
   }, [zoningSelection, selectedZoning, studyMap.editing, selectedZoneId, selectZoning]);
@@ -1115,7 +1116,9 @@ export function ProjectViewPage() {
             allSiteZones={siteZones}
             referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}
             zoningLabels={studyMap.editing ? {...zoningLabels,enabled:false} : zoningLabels}
-            zoningInspection={studyMap.editing ? undefined : { selected: selectedZoning, select: selectZoning }}
+            zoningInspection={studyMap.editing
+              ? { editing: true, selected: null, select: zone => studyMap.select(zone?.id ?? null) }
+              : { selected: selectedZoning, select: selectZoning }}
             policyMap={studyMap.editing ? { ...localPolicy, enabled: false } : localPolicy}
             cityPolicyMaps={studyMap.editing ? { ...cityPolicyMaps, layers: [] } : cityPolicyMaps}
             transportContext={transportContext}

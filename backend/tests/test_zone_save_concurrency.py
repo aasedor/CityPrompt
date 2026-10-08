@@ -30,6 +30,33 @@ def create_payload(**overrides):
 
 
 @pytest.mark.asyncio
+async def test_boundary_resize_saves_without_rejecting_existing_objects(mock_db, test_user, monkeypatch):
+    from shapely.geometry import Polygon
+    from geoalchemy2.shape import from_shape, to_shape
+    project = FakeProject(owner_id=test_user.id)
+    original = [[-114,51],[-113.99,51],[-113.99,51.01],[-114,51.01]]
+    revised = [[-114,51],[-113.995,51],[-113.995,51.005],[-114,51.005]]
+    zone = SimpleNamespace(id=uuid.uuid4(), project_id=project.id, zone_type="site_boundary",
+        properties={}, updated_at=datetime.now(timezone.utc), geometry=from_shape(Polygon(original),srid=4326),
+        building_id=None, building_ids=None)
+    mock_db.execute.side_effect = [result(zone), result(project)]
+    reject = AsyncMock(side_effect=HTTPException(409, "existing street is outside"))
+    monkeypatch.setattr(site_zones, "_assert_boundary_covers_existing_zones", reject)
+    for name in ("lock_residual_landscape_project", "_invalidate_boundary_dependents",
+                 "_invalidate_residual_landscape", "_record_zone_history"):
+        monkeypatch.setattr(site_zones, name, AsyncMock())
+    monkeypatch.setattr(site_zones, "_snapshot_from_zone", lambda z: {
+        "zone_type": z.zone_type, "properties": z.properties,
+        "coordinates": [list(p) for p in to_shape(z.geometry).exterior.coords][:-1]})
+    monkeypatch.setattr(site_zones, "_zone_to_response", lambda z: {"id": str(z.id)})
+    await site_zones.update_zone(zone.id, SiteZoneUpdate(coordinates=revised),
+        SimpleNamespace(headers={}), test_user, mock_db)
+    assert to_shape(zone.geometry).equals(Polygon(revised))
+    reject.assert_not_called()
+    mock_db.commit.assert_awaited_once()
+
+
+@pytest.mark.asyncio
 async def test_create_retry_returns_saved_zone_before_boundary_or_side_effects(mock_db, test_user, monkeypatch):
     project = FakeProject(owner_id=test_user.id)
     payload = create_payload()

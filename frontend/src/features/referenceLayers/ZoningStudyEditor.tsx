@@ -106,6 +106,10 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
   useEffect(()=>()=>controller.current?.abort(),[]);
   const globePreview=useMemo(()=>studyPreviewLayer(zones,boundary,condition,1),[zones,boundary,condition]);
   useEffect(()=>{mapDrawing?.preview({...globePreview,opacity:slot.opacity});},[mapDrawing,globePreview,slot.opacity]);
+  useEffect(()=>{
+    mapDrawing?.onSelect?.(id=>{setSelected(id);setCorner(0);});
+    return ()=>mapDrawing?.onSelect?.(null);
+  },[mapDrawing]);
   useEffect(()=>()=>{mapDrawing?.cancel();mapDrawing?.preview(null);},[mapDrawing]);
   useEffect(()=>{
     if (!canEdit) return;

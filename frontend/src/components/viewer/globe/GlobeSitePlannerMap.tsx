@@ -4210,6 +4210,7 @@ export function GlobeSitePlannerMap({
   }, [externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
+    if (zoningInspection?.editing) return;
     if (placementDraft) return;
     if (interactionPaused) return;
     if (hasDrawingTool || measureModeActive) return;
@@ -4219,9 +4220,10 @@ export function GlobeSitePlannerMap({
     ignoreNextCanvasClickRef.current = true;
     setSelectedBuildingId(null);
     onZoneSelected(zoneId);
-  }, [placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, streetViewPegman]);
+  }, [zoningInspection?.editing, placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, streetViewPegman]);
 
   const handleBuildingModelClick = useCallback((buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => {
+    if (zoningInspection?.editing) return;
     if (externalInteractionPaused) return;
     if (phase === 'pointerdown') {
       if (entrancePick) entrancePointerHitRef.current={buildingId,hit};
@@ -4241,7 +4243,7 @@ export function GlobeSitePlannerMap({
     const owningZone = siteZones.find((zone) => zone.building_id === buildingId);
     onZoneSelected(owningZone ? owningZone.id : null);
     setSelectedBuildingId(buildingId);
-  }, [externalInteractionPaused, entrancePick, placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones, streetViewPegman]);
+  }, [zoningInspection?.editing, externalInteractionPaused, entrancePick, placementDraft, hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, siteZones, streetViewPegman]);
 
   useEffect(() => {
     if (!selectedBuildingId) return;
@@ -4268,7 +4270,7 @@ export function GlobeSitePlannerMap({
     const cityMapId = id ? null : cityPolicyMapsRef.current?.pick(x,y,camera);
     zoningRaycaster.setFromCamera(new THREE.Vector2(x, y), camera);
     const zoningHit = !id && !cityMapId && zoningInspection ? pickZoningArea(referenceOverlayGroup.current, zoningRaycaster, zoningLabels, referenceLayers) : null;
-    if (!id && !cityMapId && !zoningHit) { zoningInspection?.select(null); policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return false; }
+    if (!id && !cityMapId && !zoningHit) { zoningInspection?.select(null); policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return Boolean(zoningInspection?.editing); }
     ignoreNextCanvasClickRef.current = false;
     markUserInteracted();
     setSelectedBuildingId(null);

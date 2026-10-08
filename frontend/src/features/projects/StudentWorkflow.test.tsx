@@ -54,12 +54,12 @@ describe('student workflow', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Video preview · free' }));
     expect(onVideo).toHaveBeenCalledOnce();
   });
-  it('shows an access check before a concept render without blocking it', () => {
+  it('keeps planning access advice out of the render panel', () => {
     const onImage = vi.fn();
     render(<StudentStepPanel step="present" hasSite canRender renderReason=""
       streetAccessNotice="No public-road connection is marked for this design."
       onSite={vi.fn()} onDesign={vi.fn()} onImage={onImage} onVideo={vi.fn()} onRefreshLandscape={vi.fn()} />);
-    expect(screen.getByRole('status')).toHaveTextContent('No public-road connection');
+    expect(screen.queryByText(/No public-road connection/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Image' }));
     expect(onImage).toHaveBeenCalledOnce();
   });

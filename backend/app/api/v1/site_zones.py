@@ -1410,14 +1410,10 @@ async def update_zone(
             updated_coordinates = coords
             boundary_geometry_changed = zone.zone_type == "site_boundary" and zone_geometry_changed
             candidate_polygon = Polygon(coords)
-            if zone.zone_type == "site_boundary":
-                await _assert_boundary_covers_existing_zones(
-                    db,
-                    zone.project_id,
-                    candidate_polygon,
-                    exclude_zone_id=zone.id,
-                )
-            else:
+            # A revised study boundary must save independently of existing
+            # objects. Keep their geometry intact; student_report already
+            # records objects outside the boundary as planning advice.
+            if zone.zone_type != "site_boundary":
                 active_boundary = await _active_site_boundary(
                     db,
                     zone.project_id,

@@ -22,6 +22,19 @@ const props={projectId:'project',accountId:'student',boundaryId:'site',boundary,
 const setup=(changes:Partial<typeof props>&{mapDrawing?:StudyMapDrawing}={})=>render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}><ZoningStudyEditor {...props} {...changes}/></QueryClientProvider>);
 beforeEach(()=>{vi.clearAllMocks();localStorage.clear();});
 describe('zoning study editing and recovery',()=>{
+  it('selects a drawn zone from the globe and edits its caption',async()=>{
+    const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn(),onSelect:vi.fn()};
+    setup({mapDrawing});
+    fireEvent.click(screen.getByRole('button',{name:'Draw zone'}));
+    await act(async()=>{mapDrawing.begin.mock.calls[0][0](boundary);});
+    const preview=mapDrawing.preview.mock.calls[mapDrawing.preview.mock.calls.length-1][0];
+    const id=preview.feature_collection.features[0].id;
+    act(()=>{mapDrawing.onSelect.mock.calls[mapDrawing.onSelect.mock.calls.length-1][0](null);});
+    expect(screen.queryByLabelText('Map caption')).not.toBeInTheDocument();
+    act(()=>{mapDrawing.onSelect.mock.calls[mapDrawing.onSelect.mock.calls.length-1][0](id);});
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Mixed-use frontage'}});
+    expect(screen.getByLabelText('Map caption')).toHaveValue('Mixed-use frontage');
+  });
   it('draws a custom area on the globe and saves its identity and opacity',async()=>{
     const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn()};
     vi.mocked(api.put).mockResolvedValue({data:layer});

@@ -6,6 +6,7 @@ export interface StudyMapDrawing {
   begin: (accept: (points: number[][]) => boolean, cancel: () => void) => void;
   cancel: () => void;
   preview: (layer: ReferenceLayer | null) => void;
+  onSelect?: (handler: ((id: string | null) => void) | null) => void;
 }
 
 /** Reuse the globe's polygon picking, touch controls and vertex undo. Complete
@@ -15,6 +16,9 @@ export function useStudyMapDrawing(projectId: string | undefined) {
   const studyTool = useViewerStore(state => state.activeToolProperties?.cartography_study === true);
   const setTool = useViewerStore(state => state.setActiveSitePlannerTool);
   const pending = useRef<{ accept: (points: number[][]) => boolean; cancel: () => void } | null>(null);
+  const selection = useRef<((id: string | null) => void) | null>(null);
+  const onSelect = useCallback((handler: ((id: string | null) => void) | null) => { selection.current = handler; }, []);
+  const select = useCallback((id: string | null) => { selection.current?.(id); }, []);
   const [layer, preview] = useState<ReferenceLayer | null>(null);
   const cancel = useCallback(() => {
     const previous = pending.current;
@@ -48,6 +52,6 @@ export function useStudyMapDrawing(projectId: string | undefined) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [cancel]);
   useEffect(() => () => { pending.current = null; setTool(null); }, [projectId, setTool]);
-  const controls = useMemo(() => ({ begin, cancel, preview }), [begin, cancel]);
-  return { controls, complete, layer, editing: layer !== null };
+  const controls = useMemo(() => ({ begin, cancel, preview, onSelect }), [begin, cancel, onSelect]);
+  return { controls, complete, layer, editing: layer !== null, select };
 }

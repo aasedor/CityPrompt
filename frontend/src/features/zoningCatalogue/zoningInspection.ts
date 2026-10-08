@@ -8,6 +8,7 @@ import type { ZoneInspection } from './types';
 
 export type ZoningMapState = Pick<ZoningLabelsState, 'data' | 'enabled' | 'fill' | 'fillOpacity'>;
 export interface ZoningInspectionControls {
+  editing?: boolean;
   selected: ZoneInspection | null;
   select: (zone: ZoneInspection | null) => void;
 }

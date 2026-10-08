@@ -44,7 +44,7 @@ export function StudentWorkflowNav({ step, onChange }: {
   </nav>;
 }
 
-export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, streetAccessNotice, landscapeNeedsRefresh = false, automatic3DStatus = 'idle', automatic3DMessage = '', onSite, onDesign, onImage, onVideo, onRefreshLandscape, onRetry3D }: {
+export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, landscapeNeedsRefresh = false, automatic3DStatus = 'idle', automatic3DMessage = '', onSite, onDesign, onImage, onVideo, onRefreshLandscape, onRetry3D }: {
   step: 'site' | 'present'; hasSite: boolean; location?: string | null;
   drawingSite?: boolean;
   canRender: boolean; renderReason: string; streetAccessNotice?: string | null; landscapeNeedsRefresh?: boolean;
@@ -72,7 +72,6 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
     </> : <>
       <h2 className="text-base font-bold">Render this view</h2>
       <p className="text-sm">Move around your community to find your view, then choose an output.</p>
-      {streetAccessNotice && <p role="status" className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs text-amber-950">{streetAccessNotice}</p>}
       {landscapeNeedsRefresh && automatic3DStatus === 'idle' && <div className="rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs text-amber-950">
         <p role="status">Your design changed after the last 3D build. Update the site landscape before presenting.</p>
         <button type="button" className="mt-2 min-h-11 font-semibold underline" onClick={onRefreshLandscape}>Update site landscape</button>
