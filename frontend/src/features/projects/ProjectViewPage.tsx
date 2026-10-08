@@ -10,7 +10,7 @@ import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type
 import { useParams, Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Video, Wand2, X } from 'lucide-react';
+import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Trees, Video, Wand2, X } from 'lucide-react';
 import { buildingsApi, projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi, videoRenderApi } from '@/services/api';
 import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
@@ -1207,7 +1207,21 @@ export function ProjectViewPage() {
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
               streetInPlacement
               advancedSlot={<div ref={setMapToolsTarget} className="grid gap-2" aria-label="3D viewing tools" />}
-              placementSlot={<PlacementPalette primaryAction={<div ref={setWalkControlTarget} />} selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
+              placementSlot={<PlacementPalette primaryAction={<div className="grid gap-2">
+                <div ref={setWalkControlTarget} />
+                <button type="button"
+                  onClick={async () => {
+                    const result = await projectDetails.refetch();
+                    if (result.data) {
+                      cancelPlacement(); setActiveSitePlannerTool(null); selectZone(null);
+                      setEditingProjectDetails(true);
+                    } else toast.error('Details could not load. Please try again.');
+                  }}
+                  className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-900 bg-white px-3 py-2 text-sm font-bold text-slate-950 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+                  title="Add and arrange benches, trees and other small objects">
+                  <Trees size={20} aria-hidden="true" /> Add details
+                </button>
+              </div>} selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} canRefreshDetail={automatic3D.canRefreshDetail}
                 onBrowseChange={setShowCatalogue}
                 onPickGenerated={model => {
@@ -1263,7 +1277,6 @@ export function ProjectViewPage() {
 
         <div className="absolute right-3 top-16 z-40 max-w-[calc(100vw-1.5rem)] sm:right-4 sm:top-2">
           <StudioControls layersOpen={showReferenceLayers} onLayers={() => { selectZone(null); setShowReferenceLayers((open) => !open); }}
-            onDetails={async()=>{const result=await projectDetails.refetch();if(result.data){cancelPlacement();setActiveSitePlannerTool(null);selectZone(null);setEditingProjectDetails(true);}else toast.error('Details could not load. Please try again.');}}
             onReport={() => { setActiveSitePlannerTool(null); setShowPlanningReport(true); }} onTeam={() => setShowShare(true)} onHelp={() => setShowTour(true)} />
         </div>
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
