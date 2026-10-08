@@ -4,7 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { SiteZone } from '@/types';
 import { api } from '@/services/api';
-import { SiteAssessmentPanel, type SiteAssessment } from './SiteAssessmentPanel';
+import { SiteAssessmentPanel, useSiteAssessment, type SiteAssessment } from './SiteAssessmentPanel';
+import { useState } from 'react';
 
 vi.mock('@/services/api', () => ({ api: { post: vi.fn() }, getApiErrorMessage: (error: Error) => error.message }));
 const boundary = { id: 'site', zone_type: 'site_boundary', is_active_boundary: true,
@@ -24,6 +25,29 @@ function setup() {
 beforeEach(() => vi.clearAllMocks());
 
 describe('site assessments', () => {
+  it('keeps the map value when the panel closes, supports hiding it, and clears it on a boundary edit', async () => {
+    vi.mocked(api.post).mockResolvedValue({ data: result });
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    function Trial({ zones }: { zones: SiteZone[] }) {
+      const state = useSiteAssessment(zones, 'one');
+      const [open, setOpen] = useState(true);
+      return <><button onClick={() => setOpen(value => !value)}>Toggle panel</button>
+        {open && <SiteAssessmentPanel zones={zones} projectId="one" state={state} />}
+        <output aria-label="Map value">{state.mapData?.districts[0].label}</output></>;
+    }
+    const view = (zones = [boundary]) => <QueryClientProvider client={client}><Trial zones={zones} /></QueryClientProvider>;
+    const { rerender } = render(view());
+    fireEvent.click(screen.getByRole('button', { name: 'Calculate assessed value' }));
+    await waitFor(() => expect(screen.getByLabelText('Map value')).toHaveTextContent('$350,000 / Prorated site estimate · 2026'));
+    fireEvent.click(screen.getByRole('switch', { name: 'Show assessed value on map' }));
+    expect(screen.getByLabelText('Map value')).toBeEmptyDOMElement();
+    fireEvent.click(screen.getByRole('switch', { name: 'Show assessed value on map' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle panel' }));
+    expect(screen.getByLabelText('Map value')).toHaveTextContent('$350,000');
+    rerender(view([{ ...boundary, coordinates: boundary.coordinates.map(([x, y]) => [x + .001, y]) }]));
+    expect(screen.getByLabelText('Map value')).toBeEmptyDOMElement();
+    expect(api.post).toHaveBeenCalledOnce();
+  });
   it('looks up on request and distinguishes official property totals from partial-site estimates', async () => {
     vi.mocked(api.post).mockResolvedValue({ data: result });
     render(setup()());

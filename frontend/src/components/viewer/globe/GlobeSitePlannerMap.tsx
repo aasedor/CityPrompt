@@ -1507,6 +1507,7 @@ interface GlobeSitePlannerMapProps {
   onPlaceAsset?: (lngLat: [number, number], height: number) => void;
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
+  siteAssessment?: import('@/features/referenceLayers/zoningLabels').ZoningOverlay;
   zoningLabels?: Pick<ZoningLabelsState, 'data' | 'enabled' | 'labels' | 'lines' | 'fill' | 'fillOpacity'>;
   zoningInspection?: ZoningInspectionControls;
   policyMap?: GlobePolicyMapProps;
@@ -1622,6 +1623,7 @@ export function GlobeSitePlannerMap({
   onPlaceAsset,
   onCancelPlacement,
   referenceLayers = [],
+  siteAssessment,
   zoningLabels,
   zoningInspection,
   policyMap,
@@ -4576,6 +4578,8 @@ export function GlobeSitePlannerMap({
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />
+            {siteAssessment && <GlobeZoningLabels data={siteAssessment} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation}
+              enabled labels lines={false} fill={false} fillOpacity={0} />}
             {zoningLabels && <GlobeZoningLabels {...zoningLabels} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
             {policyMap && <GlobePolicyMap ref={policyMapRef} {...policyMap} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
             {cityPolicyMaps && <GlobeCityPolicyMaps ref={cityPolicyMapsRef} {...cityPolicyMaps} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}

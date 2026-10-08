@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Calculator, ExternalLink } from 'lucide-react';
 import { api, getApiErrorMessage } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { zoningBounds, zoningCoverageProblem } from './zoningLabels';
+import { assessmentDollars as dollars, assessmentMapOverlay } from './assessmentMapLabel';
 
 export interface SiteAssessment {
   boundary_id: string; roll_year: number | null; property_count: number;
@@ -16,12 +17,11 @@ export interface SiteAssessment {
     assessed_value: number | null; overlap_pct: number; partial: boolean }[];
 }
 
-const dollars = new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 });
-
-export function SiteAssessmentPanel({ zones, projectId }: { zones: SiteZone[]; projectId: string | undefined }) {
+export function useSiteAssessment(zones: SiteZone[], projectId: string | undefined) {
   const boundary = getActiveSiteBoundary(zones);
   const problem = zoningCoverageProblem(zoningBounds(boundary?.coordinates ?? []));
   const signature = JSON.stringify([projectId, boundary?.id, boundary?.coordinates]);
+  const [showOnMap, setShowOnMap] = useState(true);
   const [requested, setRequested] = useState<string | null>(null);
   const query = useQuery({
     queryKey: ['site-assessment-v1', signature],
@@ -36,9 +36,23 @@ export function SiteAssessmentPanel({ zones, projectId }: { zones: SiteZone[]; p
   // A previous site's total must disappear immediately after an edit or switch.
   const data = !problem ? query.data : undefined;
   const calculate = () => {
-    setRequested(signature);
+    setRequested(signature); setShowOnMap(true);
     if (data || requested === signature) void query.refetch();
   };
+  const mapData = useMemo(() => showOnMap ? assessmentMapOverlay(boundary, data) : undefined, [boundary, data, showOnMap]);
+  return { query, data, problem, requested, signature, calculate, showOnMap, setShowOnMap, mapData };
+}
+export type SiteAssessmentState = ReturnType<typeof useSiteAssessment>;
+type PanelProps = { zones: SiteZone[]; projectId: string | undefined; state?: SiteAssessmentState };
+export function SiteAssessmentPanel(props: PanelProps) {
+  return props.state ? <AssessmentContents state={props.state} /> : <ConnectedAssessment {...props} />;
+}
+function ConnectedAssessment({ zones, projectId }: PanelProps) {
+  const state = useSiteAssessment(zones, projectId);
+  return <AssessmentContents state={state} />;
+}
+function AssessmentContents({ state }: { state: SiteAssessmentState }) {
+  const { query, data, problem, requested, signature, calculate, showOnMap, setShowOnMap } = state;
   return <section aria-label="Site assessment" className="max-w-sm space-y-3 rounded-2xl border border-[#151515]/20 bg-[#fffdf6]/95 p-3 text-[#151515] shadow-lg">
     <header className="flex items-center gap-2"><Calculator size={17} aria-hidden="true" /><h3 className="text-sm font-bold">Site assessment</h3></header>
     <p className="text-xs leading-relaxed text-[#5c554d]">Look up Calgary’s published property assessments within your boundary.</p>
@@ -49,6 +63,11 @@ export function SiteAssessmentPanel({ zones, projectId }: { zones: SiteZone[]; p
     {problem && <p className="text-xs text-[#5c554d]">{problem.replace('zoning', 'assessment data')}</p>}
     {requested === signature && query.error && <p role="alert" className="rounded-xl bg-amber-50 p-2 text-xs text-amber-950">{getApiErrorMessage(query.error, 'Calgary assessments could not load. Please retry.')}</p>}
     {data && (data.property_count === 0 ? <p role="status" className="text-xs">No assessed properties were published for this boundary.{data.warnings.map(warning => ` ${warning}`)}</p> : <>
+      <label className="flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-[#151515]/15 p-2 text-xs font-semibold">
+        Show assessed value on map
+        <input type="checkbox" role="switch" checked={showOnMap} onChange={event => setShowOnMap(event.target.checked)} />
+      </label>
+      <p className="text-xs text-[#5c554d]">The site value appears inside your boundary. Partial properties use the within-boundary estimate.</p>
       <div role="status">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-[#5c554d]">{data.roll_year} · {data.property_count} assessed properties</p>
         <p className="mt-1 text-2xl font-bold tabular-nums">{dollars.format(data.full_property_assessed_total)}</p>

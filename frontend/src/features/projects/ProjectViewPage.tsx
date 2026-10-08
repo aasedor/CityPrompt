@@ -72,7 +72,7 @@ import { collectPolicyMapEvidence } from '@/features/studentReports/policyMapEvi
 import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessConnections';
 import { useReferenceLayers } from '@/features/referenceLayers/useReferenceLayers';
 import { ZoningLabelsControls } from '@/features/referenceLayers/ZoningLabelsControls';
-import { SiteAssessmentPanel } from '@/features/referenceLayers/SiteAssessmentPanel';
+import { SiteAssessmentPanel, useSiteAssessment } from '@/features/referenceLayers/SiteAssessmentPanel';
 import { ZoningStudyPanel } from '@/features/referenceLayers/ZoningStudyPanel';
 import { useStudyMapDrawing } from '@/features/referenceLayers/useStudyMapDrawing';
 import { studyMetadata } from '@/features/referenceLayers/zoningStudy';
@@ -316,6 +316,7 @@ export function ProjectViewPage() {
   const readMapCentre = useMemo(() => globeRefs?.getMapCentre ?? (mapInstance ? () => mapInstance.getCenter() : undefined), [globeRefs?.getMapCentre, mapInstance]);
   const exploration = useMapExploration(id, readMapCentre,
     project?.location?.longitude, project?.location?.latitude, !getActiveSiteBoundary(siteZones));
+  const siteAssessment = useSiteAssessment(siteZones, id);
   const zoningLabels = useZoningLabels(id, siteZones, exploration);
   const localPolicy = useLocalAreaPolicy(id, siteZones, exploration);
   const cityPolicyMaps = useCityPolicyMaps(id);
@@ -1146,6 +1147,7 @@ export function ProjectViewPage() {
             siteZones={visibleZones}
             allSiteZones={siteZones}
             referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}
+            siteAssessment={siteAssessment.mapData}
             zoningLabels={studyMap.editing ? {...zoningLabels,enabled:false} : zoningLabels}
             zoningInspection={studyMap.editing
               ? { editing: true, selected: null, select: zone => studyMap.select(zone?.id ?? null) }
@@ -1217,7 +1219,7 @@ export function ProjectViewPage() {
               automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
               onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={automatic3D.retry} onRetry3D={automatic3D.retry} />}
-            {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} /></div>}
+            {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment} /></div>}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
@@ -1301,7 +1303,7 @@ export function ProjectViewPage() {
           <LocalAreaPlanPanel state={localPolicyPanel} />
           <CityPolicyMapsPanel state={cityPolicyPanel} />
           <ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/>
-          <SiteAssessmentPanel zones={siteZones} projectId={id} />
+          <SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment} />
           <ShapefileImportButton projectId={project.id} />
           <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers} />
           <ReferenceLayersPanel layers={references.layers} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer}
