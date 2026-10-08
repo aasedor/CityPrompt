@@ -42,7 +42,7 @@ export function ProjectDetailEditor({
     projectBenchContext(
       projectBenchFrame(
         zones,
-        [...source.benches, ...(source.trees ?? [])],
+        [...source.benches, ...(source.trees ?? []), ...(source.props ?? [])],
         project.location,
       ),
     ),

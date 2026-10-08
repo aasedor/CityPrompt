@@ -14,6 +14,7 @@ import {
 } from "@/components/viewer/globe/neighborhoodParkLayout";
 import { getDerivedParkAccess } from "@/components/viewer/globe/parkAccessConnections";
 import { parkOutlineDimensions } from "@/features/pickPlace/parkOutline";
+import { detailAsset, type DetailPropVariant } from "./detailCatalogue";
 
 export const MAX_DETAIL_BENCHES = 32;
 export const DETAIL_TREE_MODELS = [
@@ -28,6 +29,7 @@ export interface DetailBench {
   yaw: number;
   /** Present only for independent project trees; absent means timber bench. */
   treeVariant?: DetailTreeVariant;
+  propVariant?: DetailPropVariant;
 }
 export interface SavedBenchDetails {
   version: 1;
@@ -271,6 +273,31 @@ export function benchPlacementProblem(
   others: DetailBench[],
   context: BenchContext,
 ): string | null {
+  if (
+    context.scope === "project" &&
+    (bench.propVariant || others.some((p) => p.propVariant))
+  ) {
+    const radius = (item: DetailBench) =>
+      item.treeVariant
+        ? 0.45
+        : item.propVariant
+          ? Math.hypot(
+              ...detailAsset(item.propVariant).dimensions.slice(0, 2),
+            ) / 2
+          : 1.05;
+    const overlap = others.some(
+      (p) =>
+        p.id !== bench.id &&
+        (p.propVariant ||
+        bench.propVariant ||
+        p.treeVariant ||
+        bench.treeVariant
+          ? Math.hypot(p.point.x - bench.point.x, p.point.y - bench.point.y) <
+            radius(p) + radius(bench)
+          : envelopesOverlap(benchFootprint(bench), benchFootprint(p))),
+    );
+    return overlap ? "Leave a little space between objects." : null;
+  }
   if (
     context.scope === "project" &&
     (bench.treeVariant || others.some((p) => p.treeVariant))

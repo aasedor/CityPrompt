@@ -1,4 +1,5 @@
 import type { Location, SiteZone } from "@/types";
+import type { DetailPropVariant } from "./detailCatalogue";
 import {
   benchContext,
   type BenchContext,
@@ -22,10 +23,14 @@ export interface ProjectDetails {
   revision: number;
   benches: ProjectBench[];
   trees?: ProjectTree[];
+  props?: ProjectProp[];
   can_edit: boolean;
 }
 export interface ProjectTree extends ProjectBench {
   variant: DetailTreeVariant;
+}
+export interface ProjectProp extends ProjectBench {
+  variant: DetailPropVariant;
 }
 
 export function readProjectDetails(
@@ -38,6 +43,10 @@ export function readProjectDetails(
       ...readProjectBenches([t], context)[0],
       treeVariant: t.variant,
     })),
+    ...(data.props ?? []).map((p) => ({
+      ...readProjectBenches([p], context)[0],
+      propVariant: p.variant,
+    })),
   ];
 }
 export function saveProjectDetails(
@@ -46,7 +55,7 @@ export function saveProjectDetails(
 ) {
   return {
     benches: saveProjectBenches(
-      items.filter((i) => !i.treeVariant),
+      items.filter((i) => !i.treeVariant && !i.propVariant),
       context,
     ),
     trees: items
@@ -54,6 +63,12 @@ export function saveProjectDetails(
       .map((i) => ({
         ...saveProjectBenches([i], context)[0],
         variant: i.treeVariant!,
+      })),
+    props: items
+      .filter((i) => i.propVariant)
+      .map((i) => ({
+        ...saveProjectBenches([i], context)[0],
+        variant: i.propVariant!,
       })),
   };
 }

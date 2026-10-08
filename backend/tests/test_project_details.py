@@ -75,3 +75,23 @@ def test_tree_validation_rejects_unknown_assets_and_shared_ids():
         endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[{**tree,'variant':'arbitrary-url'}])
     with pytest.raises(ValidationError):
         endpoint.DetailUpdate(expected_revision=0, benches=[{k:v for k,v in tree.items() if k!='variant'}], trees=[tree])
+
+@pytest.mark.asyncio
+async def test_catalogue_objects_preserve_legacy_details_and_support_explicit_removal(monkeypatch):
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    db, row = session()
+    prop = {'id':'prop-1','lng':-114.1,'lat':51.05,'angle':15,'variant':'picnic-table-accessible'}
+    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db)
+    assert saved['props'] == [prop]
+    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[], trees=[]), SimpleNamespace(), db)
+    assert legacy['props'] == [prop]
+    cleared = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], props=[]), SimpleNamespace(), db)
+    assert cleared['props'] == []
+
+def test_catalogue_rejects_unknown_models_bad_coordinates_and_colliding_ids():
+    prop={'id':'prop','lng':-114.1,'lat':51.05,'angle':0,'variant':'dual-stream-bin'}
+    for bad in ({**prop,'variant':'https://untrusted/model.glb'}, {**prop,'lat':float('nan')}):
+        with pytest.raises(ValidationError):
+            endpoint.DetailUpdate(expected_revision=0,benches=[],props=[bad])
+    with pytest.raises(ValidationError):
+        endpoint.DetailUpdate(expected_revision=0,benches=[{k:v for k,v in prop.items() if k!='variant'}],props=[prop])

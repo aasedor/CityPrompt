@@ -25,16 +25,20 @@ class Bench(BaseModel):
 class Tree(Bench):
     variant: Literal['oak-0', 'oak-1', 'oak-2']
 
+class Prop(Bench):
+    variant: Literal['picnic-table-accessible', 'dual-stream-bin', 'bike-rack-three-stall', 'drinking-fountain-accessible', 'boulders', 'split-rail']
+
 
 class DetailUpdate(BaseModel):
     model_config = ConfigDict(extra='forbid')
     expected_revision: int = Field(ge=0)
     benches: list[Bench] = Field(max_length=256)
     trees: list[Tree] | None = Field(default=None, max_length=256)
+    props: list[Prop] | None = Field(default=None, max_length=256)
 
     @model_validator(mode='after')
     def unique_ids(self):
-        items = [*self.benches, *(self.trees or [])]
+        items = [*self.benches, *(self.trees or []), *(self.props or [])]
         if len({item.id for item in items}) != len(items):
             raise ValueError('Detail IDs must be unique')
         return self
@@ -45,6 +49,7 @@ class DetailResponse(BaseModel):
     revision: int
     benches: list[Bench]
     trees: list[Tree] = Field(default_factory=list)
+    props: list[Prop] = Field(default_factory=list)
     can_edit: bool
 
 
@@ -73,7 +78,10 @@ async def save_details(project_id: uuid.UUID, request: DetailUpdate, user: User 
     saved = {'version':1,'revision':current['revision']+1,'benches':[bench.model_dump() for bench in request.benches]}
     saved['trees'] = ([tree.model_dump() for tree in request.trees]
                       if request.trees is not None else current.get('trees', []))
-    if len({item['id'] for item in [*saved['benches'], *saved['trees']]}) != len(saved['benches']) + len(saved['trees']):
+    saved['props'] = ([prop.model_dump() for prop in request.props]
+                      if request.props is not None else current.get('props', []))
+    items = [*saved['benches'], *saved['trees'], *saved['props']]
+    if len({item['id'] for item in items}) != len(items):
         raise HTTPException(422, 'Detail IDs must be unique')
     project.metadata_ = {**(project.metadata_ or {}), 'scene_details':saved}
     await db.flush()

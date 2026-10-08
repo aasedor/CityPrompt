@@ -10,14 +10,14 @@ import { useFrame } from "@react-three/fiber";
 import { EastNorthUpFrame, TilesRendererContext } from "3d-tiles-renderer/r3f";
 import { Raycaster } from "three";
 import type { SiteZone } from "@/types";
-import { RusticDetail } from "@/components/viewer/globe/GlobeNeighborhoodParkPilot";
+import { DetailModel } from "./DetailModel";
 import { useSharedSiteGround } from "@/components/viewer/globe/SharedSiteGroundProvider";
 import { authoredCameraGround } from "@/components/viewer/globe/authoredCameraGround";
 import { raycastTerrainHeightAtLatLng } from "@/components/viewer/globe/GlobeZoneLayer";
 import { direct3DProposalUserData } from "@/components/viewer/globe/direct3dCapture";
-import type { ProjectBench, ProjectTree } from "./projectBenches";
+import type { ProjectBench, ProjectTree, ProjectProp } from "./projectBenches";
 
-const zeroGround = () => 0;
+const NO_PROPS: ProjectProp[] = [];
 const NO_TREES: ProjectTree[] = [];
 const keyFor = (bench: ProjectBench) => `${bench.id}:${bench.lng}:${bench.lat}`;
 
@@ -25,11 +25,13 @@ const keyFor = (bench: ProjectBench) => `${bench.id}:${bench.lng}:${bench.lat}`;
 export function GlobeProjectBenches({
   benches,
   trees = NO_TREES,
+  props = NO_PROPS,
   zones,
   fallbackHeight,
 }: {
   benches: ProjectBench[];
   trees?: ProjectTree[];
+  props?: ProjectProp[];
   zones: SiteZone[];
   fallbackHeight: number;
 }) {
@@ -37,8 +39,9 @@ export function GlobeProjectBenches({
     () => [
       ...benches.map((b) => ({ ...b, variant: "timber-bench" as const })),
       ...trees,
+      ...props,
     ],
-    [benches, trees],
+    [benches, trees, props],
   );
   const ground = useSharedSiteGround(),
     tiles = useContext(TilesRendererContext);
@@ -87,13 +90,7 @@ export function GlobeProjectBenches({
             height={height}
           >
             <Suspense fallback={null}>
-              <RusticDetail
-                asset={b.variant}
-                point={{ x: 0, y: 0 }}
-                yaw={(b.angle * Math.PI) / 180}
-                terrainZ={zeroGround}
-                ignorePicking
-              />
+              <DetailModel asset={b.variant} yaw={(b.angle * Math.PI) / 180} />
             </Suspense>
           </EastNorthUpFrame>
         );

@@ -22,6 +22,16 @@ const zone = {
   },
 } as SiteZone;
 describe("isolated bench editor", () => {
+  it('searches the catalogue and adds, moves and saves a standalone picnic table', async () => {
+    const onSave=vi.fn().mockResolvedValue({});
+    render(<BenchLayoutEditor context={projectBenchContext(projectBenchFrame([],[]))} initialBenches={[]} title="Furniture trial" disabled={false} onSave={onSave} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText('Search detail catalogue'),{target:{value:'picnic'}});
+    fireEvent.click(screen.getByRole('button',{name:'Add object'}));
+    fireEvent.click(screen.getByRole('button',{name:'Move object east'}));
+    fireEvent.click(screen.getByRole('button',{name:'Save details'}));
+    await waitFor(()=>expect(onSave).toHaveBeenCalledOnce());
+    expect(onSave.mock.calls[0][0][0].propVariant).toBe('picnic-table-accessible');
+  });
   it("adds an oak tree, moves it, undoes removal and saves its model choice", async () => {
     const onSave = vi.fn().mockResolvedValue({});
     render(
@@ -34,7 +44,7 @@ describe("isolated bench editor", () => {
         onClose={vi.fn()}
       />,
     );
-    fireEvent.change(screen.getByLabelText("Tree model"), {
+    fireEvent.change(screen.getByLabelText("Detail model"), {
       target: { value: "oak-2" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Add tree" }));

@@ -10,6 +10,13 @@ import {
 import { benchPlacementProblem } from "./benchDetails";
 
 describe("independent project benches", () => {
+  it('round trips catalogue object variants without converting them into benches',()=>{
+    const benches=[{id:'bench',lng:-114.1,lat:51.05,angle:0}];
+    const trees=[{id:'tree',lng:-114.101,lat:51.051,angle:15,variant:'oak-0' as const}];
+    const props=[{id:'table',lng:-114.102,lat:51.052,angle:30,variant:'picnic-table-accessible' as const}];
+    const context=projectBenchContext(projectBenchFrame([], [...benches,...trees,...props]));
+    expect(saveProjectDetails(readProjectDetails({version:1,revision:0,can_edit:true,benches,trees,props},context),context)).toEqual({benches,trees,props});
+  });
   it('does not invalidate an existing close bench arrangement when a distant tree is added', () => {
     const context = projectBenchContext(projectBenchFrame([], []));
     const first = {id:'one',point:{x:0,y:0},yaw:0};
@@ -39,7 +46,7 @@ describe("independent project benches", () => {
         ),
         context,
       ),
-    ).toEqual({ benches, trees });
+    ).toEqual({ benches, trees, props: [] });
     expect(
       readProjectDetails(
         { version: 1, revision: 0, can_edit: true, benches },
