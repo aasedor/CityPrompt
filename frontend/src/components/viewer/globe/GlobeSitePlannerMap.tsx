@@ -93,6 +93,7 @@ import {
   renderableLegoBuildingIds,
 } from './legoGlobePlacement';
 import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
+import { useStreetDetailZones } from './useStreetDetailZones';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { GlobePublicRealmTrialLayer } from './GlobePublicRealmTrialLayer';
 import { GlobeGroundBackdrop } from './GlobeGroundBackdrop';
@@ -1718,6 +1719,7 @@ export function GlobeSitePlannerMap({
     setSharedGroundState(state);
   }, []);
   const terrainZonesRef = useRef(siteZones);
+  const streetDetailZones = useStreetDetailZones(siteZones);
   terrainZonesRef.current = siteZones;
   const [parkAlignment, setParkAlignment] = useState<ParkAlignment>({ pending: false, needsAttention: false, retry: () => {} });
   const parkAlignmentRef = useRef(parkAlignment);
@@ -4595,7 +4597,7 @@ export function GlobeSitePlannerMap({
               overlays. Keep them in clean captures alongside building models
               and park props so mixed plans retain their exact lane geometry. */}
           <group name="siteforge-direct3d-street" userData={direct3DProposalUserData('street')}>
-            <GlobeStreetDetailLayer zones={siteZones.filter(zone => !publicRealmTrialAsset(zone) && !hasNativePark(zone))} terrainHeight={terrainElevation} />
+            <GlobeStreetDetailLayer zones={streetDetailZones} terrainHeight={terrainElevation} />
             <GlobePedestrianConnections results={pedestrianConnections} zones={connectedSceneZones} terrainHeight={terrainElevation} />
             <GlobeTerraces scene={terraceScene} zones={connectedSceneZones} />
           </group>
