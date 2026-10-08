@@ -22,15 +22,21 @@ class Bench(BaseModel):
     angle: float = Field(ge=-360, le=360)
 
 
+class Tree(Bench):
+    variant: Literal['oak-0', 'oak-1', 'oak-2']
+
+
 class DetailUpdate(BaseModel):
     model_config = ConfigDict(extra='forbid')
     expected_revision: int = Field(ge=0)
     benches: list[Bench] = Field(max_length=256)
+    trees: list[Tree] | None = Field(default=None, max_length=256)
 
     @model_validator(mode='after')
     def unique_ids(self):
-        if len({bench.id for bench in self.benches}) != len(self.benches):
-            raise ValueError('Bench IDs must be unique')
+        items = [*self.benches, *(self.trees or [])]
+        if len({item.id for item in items}) != len(items):
+            raise ValueError('Detail IDs must be unique')
         return self
 
 
@@ -38,6 +44,7 @@ class DetailResponse(BaseModel):
     version: Literal[1] = 1
     revision: int
     benches: list[Bench]
+    trees: list[Tree] = Field(default_factory=list)
     can_edit: bool
 
 
@@ -64,6 +71,10 @@ async def save_details(project_id: uuid.UUID, request: DetailUpdate, user: User 
     if request.expected_revision != current['revision']:
         raise HTTPException(409, 'Details were updated elsewhere. Your draft is still open. Close and reopen the editor to load the latest version before editing again.')
     saved = {'version':1,'revision':current['revision']+1,'benches':[bench.model_dump() for bench in request.benches]}
+    saved['trees'] = ([tree.model_dump() for tree in request.trees]
+                      if request.trees is not None else current.get('trees', []))
+    if len({item['id'] for item in [*saved['benches'], *saved['trees']]}) != len(saved['benches']) + len(saved['trees']):
+        raise HTTPException(422, 'Detail IDs must be unique')
     project.metadata_ = {**(project.metadata_ or {}), 'scene_details':saved}
     await db.flush()
     return {**saved,'can_edit':True}

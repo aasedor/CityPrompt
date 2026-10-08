@@ -7,8 +7,8 @@ import { BenchLayoutEditor } from "./BenchDetailEditor";
 import {
   projectBenchFrame,
   projectBenchContext,
-  readProjectBenches,
-  saveProjectBenches,
+  readProjectDetails,
+  saveProjectDetails,
   type ProjectDetails,
 } from "./projectBenches";
 
@@ -40,14 +40,18 @@ export function ProjectDetailEditor({
   const [source] = useState(data);
   const [context] = useState(() =>
     projectBenchContext(
-      projectBenchFrame(zones, source.benches, project.location),
+      projectBenchFrame(
+        zones,
+        [...source.benches, ...(source.trees ?? [])],
+        project.location,
+      ),
     ),
   );
   return createPortal(
     <BenchLayoutEditor
       title={project.name}
       context={context}
-      initialBenches={readProjectBenches(source.benches, context)}
+      initialBenches={readProjectDetails(source, context)}
       contextZones={zones}
       disabled={!source.can_edit}
       onClose={onClose}
@@ -56,7 +60,7 @@ export function ProjectDetailEditor({
           `/api/v1/projects/${project.id}/details`,
           {
             expected_revision: source.revision,
-            benches: saveProjectBenches(benches, context),
+            ...saveProjectDetails(benches, context),
           },
         );
         queryClient.setQueryData(

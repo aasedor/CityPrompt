@@ -1125,6 +1125,7 @@ export function ProjectViewPage() {
             latitude={project.location?.latitude}
             longitude={project.location?.longitude}
             projectBenches={projectDetails.data?.benches}
+            projectTrees={projectDetails.data?.trees}
             siteZones={visibleZones}
             allSiteZones={siteZones}
             referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}

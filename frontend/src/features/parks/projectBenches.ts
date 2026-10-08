@@ -1,14 +1,15 @@
-import type { Location, SiteZone } from '@/types';
+import type { Location, SiteZone } from "@/types";
 import {
   benchContext,
   type BenchContext,
   type DetailBench,
-} from './benchDetails';
-import { rectangleAt } from '@/features/pickPlace/geometry';
+  type DetailTreeVariant,
+} from "./benchDetails";
+import { rectangleAt } from "@/features/pickPlace/geometry";
 import {
   metersPerDegLon,
   METERS_PER_DEG_LAT,
-} from '@/components/viewer/mapEngine/geoUtils';
+} from "@/components/viewer/mapEngine/geoUtils";
 
 export interface ProjectBench {
   id: string;
@@ -20,7 +21,41 @@ export interface ProjectDetails {
   version: 1;
   revision: number;
   benches: ProjectBench[];
+  trees?: ProjectTree[];
   can_edit: boolean;
+}
+export interface ProjectTree extends ProjectBench {
+  variant: DetailTreeVariant;
+}
+
+export function readProjectDetails(
+  data: ProjectDetails,
+  context: BenchContext,
+): DetailBench[] {
+  return [
+    ...readProjectBenches(data.benches, context),
+    ...(data.trees ?? []).map((t) => ({
+      ...readProjectBenches([t], context)[0],
+      treeVariant: t.variant,
+    })),
+  ];
+}
+export function saveProjectDetails(
+  items: DetailBench[],
+  context: BenchContext,
+) {
+  return {
+    benches: saveProjectBenches(
+      items.filter((i) => !i.treeVariant),
+      context,
+    ),
+    trees: items
+      .filter((i) => i.treeVariant)
+      .map((i) => ({
+        ...saveProjectBenches([i], context)[0],
+        variant: i.treeVariant!,
+      })),
+  };
 }
 
 /** A viewport only: never persisted as a zone and never a placement boundary. */
@@ -47,14 +82,14 @@ export function projectBenchFrame(
     (minLat + maxLat) / 2,
   ];
   return {
-    id: 'detail-editor-viewport',
-    project_id: '',
-    name: 'Community details',
-    zone_type: 'site_boundary',
-    color: '#ddd',
+    id: "detail-editor-viewport",
+    project_id: "",
+    name: "Community details",
+    zone_type: "site_boundary",
+    color: "#ddd",
     sort_order: 0,
-    created_at: '',
-    updated_at: '',
+    created_at: "",
+    updated_at: "",
     coordinates: rectangleAt(
       center,
       Math.max(100, (maxLng - minLng) * metersPerDegLon(center[1]) + 40),
@@ -64,7 +99,7 @@ export function projectBenchFrame(
   };
 }
 export const projectBenchContext = (frame: SiteZone) =>
-  benchContext(frame, undefined, 'project');
+  benchContext(frame, undefined, "project");
 export const readProjectBenches = (
   benches: ProjectBench[],
   context: BenchContext,

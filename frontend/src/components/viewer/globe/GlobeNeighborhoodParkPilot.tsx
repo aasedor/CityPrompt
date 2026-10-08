@@ -81,7 +81,7 @@ export function Surface({ ring, pathWidth, closed = false, role, terrainZ, grid,
   </mesh> : null;
 }
 
-export function RusticDetail({ asset, point, yaw, terrainZ, ignorePicking=false }: {asset: 'timber-bench' | 'boulders' | 'split-rail'; point: ParkPoint; yaw: number; terrainZ: Ground;ignorePicking?:boolean}) {
+export function RusticDetail({ asset, point, yaw, terrainZ, ignorePicking=false }: {asset: 'timber-bench' | 'boulders' | 'split-rail' | 'oak-0' | 'oak-1' | 'oak-2'; point: ParkPoint; yaw: number; terrainZ: Ground;ignorePicking?:boolean}) {
   const {scene} = useGLTF(`${ROOT}/${asset}.glb`);
   const clone = useMemo(() => { const c = scene.clone(true); c.traverse(o => { if ((o as THREE.Mesh).isMesh) { o.castShadow = true; o.receiveShadow = true; if(ignorePicking)o.raycast=()=>{}; } }); return c; }, [scene,ignorePicking]);
   return <group position={[point.x,point.y,terrainZ(point.x,point.y)+LIFT]} rotation={[0,0,yaw]} userData={{parkPilot: true,semanticRole:asset,fixedMetricObject:true}}>

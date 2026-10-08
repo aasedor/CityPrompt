@@ -56,3 +56,22 @@ def test_invalid_coordinates_duplicate_ids_and_excessive_items_rejected():
                     [{'id':str(i),'lng':0,'lat':51,'angle':0} for i in range(257)]):
         with pytest.raises(ValidationError):
             endpoint.DetailUpdate(expected_revision=0,benches=benches)
+
+@pytest.mark.asyncio
+async def test_trees_round_trip_legacy_writes_preserve_and_explicit_empty_removes(monkeypatch):
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    db, row = session()
+    tree = {'id':'tree-1','lng':-114.1,'lat':51.05,'angle':15,'variant':'oak-1'}
+    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[tree]), SimpleNamespace(), db)
+    assert saved['trees'] == [tree]
+    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db)
+    assert legacy['trees'] == [tree]
+    cleared = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], trees=[]), SimpleNamespace(), db)
+    assert cleared['trees'] == []
+
+def test_tree_validation_rejects_unknown_assets_and_shared_ids():
+    tree = {'id':'same','lng':-114.1,'lat':51.05,'angle':0,'variant':'oak-0'}
+    with pytest.raises(ValidationError):
+        endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[{**tree,'variant':'arbitrary-url'}])
+    with pytest.raises(ValidationError):
+        endpoint.DetailUpdate(expected_revision=0, benches=[{k:v for k,v in tree.items() if k!='variant'}], trees=[tree])

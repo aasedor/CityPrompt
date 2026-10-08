@@ -1,8 +1,8 @@
-import type { SiteZone, SiteZoneProperties } from '@/types';
+import type { SiteZone, SiteZoneProperties } from "@/types";
 import {
   metersPerDegLon,
   METERS_PER_DEG_LAT,
-} from '@/components/viewer/mapEngine/geoUtils';
+} from "@/components/viewer/mapEngine/geoUtils";
 import {
   neighborhoodParkLayoutForZone,
   envelopeFits,
@@ -11,15 +11,23 @@ import {
   pointInPark,
   type NeighborhoodParkLayout,
   type ParkPoint,
-} from '@/components/viewer/globe/neighborhoodParkLayout';
-import { getDerivedParkAccess } from '@/components/viewer/globe/parkAccessConnections';
-import { parkOutlineDimensions } from '@/features/pickPlace/parkOutline';
+} from "@/components/viewer/globe/neighborhoodParkLayout";
+import { getDerivedParkAccess } from "@/components/viewer/globe/parkAccessConnections";
+import { parkOutlineDimensions } from "@/features/pickPlace/parkOutline";
 
 export const MAX_DETAIL_BENCHES = 32;
+export const DETAIL_TREE_MODELS = [
+  { id: "oak-0", label: "Oak · shape 1", canopyRadius: 3 },
+  { id: "oak-1", label: "Oak · shape 2", canopyRadius: 3 },
+  { id: "oak-2", label: "Oak · shape 3", canopyRadius: 3 },
+] as const;
+export type DetailTreeVariant = (typeof DETAIL_TREE_MODELS)[number]["id"];
 export interface DetailBench {
   id: string;
   point: ParkPoint;
   yaw: number;
+  /** Present only for independent project trees; absent means timber bench. */
+  treeVariant?: DetailTreeVariant;
 }
 export interface SavedBenchDetails {
   version: 1;
@@ -41,7 +49,7 @@ export function readBenchDetails(
     value.items.some(
       (p) =>
         !p ||
-        typeof p.id !== 'string' ||
+        typeof p.id !== "string" ||
         !/^[\w-]{1,80}$/.test(p.id) ||
         ![p.u, p.v, p.angle].every(Number.isFinite) ||
         Math.abs(p.u) > 2 ||
@@ -89,7 +97,7 @@ export function automaticRusticDetails(layout: NeighborhoodParkLayout) {
     return [
       {
         id: `auto-${index}`,
-        asset: i === 2 ? ('boulders' as const) : ('timber-bench' as const),
+        asset: i === 2 ? ("boulders" as const) : ("timber-bench" as const),
         point: p,
         yaw: Math.atan2(dy, dx) - Math.PI / 2,
       },
@@ -100,7 +108,7 @@ export function automaticRusticDetails(layout: NeighborhoodParkLayout) {
 export function benchContext(
   zone: SiteZone,
   origin = { lng: zone.coordinates[0][0], lat: zone.coordinates[0][1] },
-  scope: 'park' | 'project' = 'park',
+  scope: "park" | "project" = "park",
 ) {
   const frame = parkOutlineDimensions(zone.coordinates);
   const east = metersPerDegLon(origin.lat),
@@ -116,10 +124,10 @@ export function benchContext(
     origin.lat + p.y / METERS_PER_DEG_LAT,
   ];
   const layout: NeighborhoodParkLayout =
-    scope === 'park'
+    scope === "park"
       ? neighborhoodParkLayoutForZone(zone, origin)
       : {
-          status: 'constrained',
+          status: "constrained",
           boundary: zone.coordinates.map(fromWorld),
           lawn: [],
           loop: [],
@@ -199,7 +207,7 @@ export function resolveBenches(
       }))
     : automaticRusticDetails(context.layout).filter(
         (p) =>
-          p.asset === 'timber-bench' && context.clearOfEntrances(p.point, 3),
+          p.asset === "timber-bench" && context.clearOfEntrances(p.point, 3),
       );
 }
 export function saveBenchDetails(
@@ -263,23 +271,40 @@ export function benchPlacementProblem(
   others: DetailBench[],
   context: BenchContext,
 ): string | null {
+  if (
+    context.scope === "project" &&
+    (bench.treeVariant || others.some((p) => p.treeVariant))
+  ) {
+    // Allow overlapping crowns, but do not stack trunks or furniture bases.
+    const overlaps = others.some(
+      (p) =>
+        p.id !== bench.id &&
+        (p.treeVariant || bench.treeVariant
+          ? Math.hypot(p.point.x - bench.point.x, p.point.y - bench.point.y) <
+            (p.treeVariant ? 0.45 : 1.05) + (bench.treeVariant ? 0.45 : 1.05)
+          : envelopesOverlap(benchFootprint(bench), benchFootprint(p))),
+    );
+    return overlaps
+      ? "Leave a little space between tree trunks and benches."
+      : null;
+  }
   const footprint = benchFootprint(bench);
   if (
-    context.scope === 'park' &&
+    context.scope === "park" &&
     !envelopeFits(footprint, context.layout.boundary, 0.05)
   )
-    return 'Keep the whole bench inside the park.';
+    return "Keep the whole bench inside the park.";
   if (
     others.some(
       (p) =>
         p.id !== bench.id && envelopesOverlap(footprint, benchFootprint(p)),
     )
   )
-    return 'Leave a little space between benches.';
+    return "Leave a little space between benches.";
   if (
     context.layout.modules.some((m) => envelopesOverlap(footprint, m.envelope))
   )
-    return 'Place the bench outside the play equipment and pavilion space.';
+    return "Place the bench outside the play equipment and pavilion space.";
   const paths = [
     {
       points: [...context.layout.loop, context.layout.loop[0]].filter(Boolean),
@@ -301,6 +326,6 @@ export function benchPlacementProblem(
       ),
     )
   )
-    return 'Keep the walking paths clear; place the bench beside the path.';
+    return "Keep the walking paths clear; place the bench beside the path.";
   return null;
 }

@@ -14,6 +14,8 @@ import {
   MAX_DETAIL_BENCHES,
   type DetailBench,
   type BenchContext,
+  DETAIL_TREE_MODELS,
+  type DetailTreeVariant,
 } from "./benchDetails";
 import { getApiErrorMessage } from "@/services/api";
 import { isAxiosError } from "axios";
@@ -103,6 +105,7 @@ export function BenchLayoutEditor({
   contextZones?: SiteZone[];
 }) {
   const [benches, setBenches] = useState(initialBenches);
+  const [treeModel, setTreeModel] = useState<DetailTreeVariant>("oak-0");
   const independent = context.scope === "project";
   const [viewScale, setViewScale] = useState(1);
   const [past, setPast] = useState<DetailBench[][]>([]),
@@ -122,6 +125,9 @@ export function BenchLayoutEditor({
   const locked = disabled || saving,
     active = benches.find((b) => b.id === selected),
     dirty = past.length > 0;
+  const activeKind = active?.treeVariant ? "tree" : "bench";
+  const benchCount = benches.filter((b) => !b.treeVariant).length;
+  const treeCount = benches.length - benchCount;
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null,
       root = document.getElementById("root");
@@ -165,11 +171,12 @@ export function BenchLayoutEditor({
     change(benches.map((p) => (p.id === candidate.id ? candidate : p)));
     setPlacing(false);
   };
-  const add = () => {
+  const add = (treeVariant?: DetailTreeVariant) => {
     const candidate: DetailBench = {
-      id: `bench-${crypto.randomUUID()}`,
+      id: `${treeVariant ? "tree" : "bench"}-${crypto.randomUUID()}`,
       point: context.fromFrame(0.5, 0.5),
       yaw: context.angle,
+      ...(treeVariant ? { treeVariant } : {}),
     };
     // A bounded search offers a usable starting point; students can then drag it.
     const positions = [];
@@ -189,7 +196,7 @@ export function BenchLayoutEditor({
     );
     if (!free) {
       setMessage(
-        "There is no clear starting space for another bench in this layout. Move or remove a bench first.",
+        "There is no clear starting space for another object in this layout. Move or remove an object first.",
       );
       return;
     }
@@ -229,7 +236,7 @@ export function BenchLayoutEditor({
           if (e.key === "Tab") {
             const controls = Array.from(
               dialog.current?.querySelectorAll<HTMLElement>(
-                'button:not(:disabled),[tabindex="0"]',
+                'button:not(:disabled),select:not(:disabled),[tabindex="0"]',
               ) ?? [],
             );
             const first = controls[0],
@@ -251,6 +258,8 @@ export function BenchLayoutEditor({
             onClose();
           }
           if (locked) return;
+          if ((e.target as HTMLElement).closest("select,input,textarea"))
+            return;
           if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
             e.preventDefault();
             if (past.length) {
@@ -290,10 +299,15 @@ export function BenchLayoutEditor({
           <div>
             <h2 id="bench-editor-title" className="text-lg font-bold">
               {independent
-                ? "Edit community details · benches"
+                ? "Edit community details · benches & trees"
                 : "Edit park details · benches"}
             </h2>
-            <p className="text-xs">{title} · detailed timber bench trial</p>
+            <p className="text-xs">
+              {title} ·{" "}
+              {independent
+                ? "benches and oak trees"
+                : "detailed timber bench trial"}
+            </p>
           </div>
           <button
             aria-label="Close detail editor"
@@ -305,15 +319,18 @@ export function BenchLayoutEditor({
           </button>
         </header>
         <p className="mb-3 text-sm">
-          Select a bench on this plan, then drag it or use the move buttons.
-          Small objects can only be edited here. Save to update the 3D scene.
+          Select {independent ? "an object" : "a bench"} on this plan, then drag
+          it or use the move buttons. Small objects can only be edited here.
+          Save to update the 3D scene.
         </p>
         <div className="grid min-h-0 gap-4 md:grid-cols-[minmax(0,1fr)_240px]">
           <div className="min-w-0">
             <svg
               ref={svg}
               role="group"
-              aria-label="Bench layout plan"
+              aria-label={
+                independent ? "Detail layout plan" : "Bench layout plan"
+              }
               viewBox={`${box.minX} ${-box.maxY} ${box.maxX - box.minX} ${box.maxY - box.minY}`}
               className="max-h-[58dvh] min-h-64 w-full touch-none rounded-xl border border-slate-400 bg-[#e8edd9]"
               onPointerMove={(e) => {
@@ -467,7 +484,7 @@ export function BenchLayoutEditor({
                   key={bench.id}
                   role="button"
                   tabIndex={locked ? -1 : 0}
-                  aria-label={`Select bench ${i + 1}`}
+                  aria-label={`Select ${bench.treeVariant ? "tree" : "bench"} ${i + 1}`}
                   aria-pressed={selected === bench.id}
                   transform={`translate(${bench.point.x} ${-bench.point.y}) rotate(${(-bench.yaw * 180) / Math.PI})`}
                   onFocus={() => setSelected(bench.id)}
@@ -511,17 +528,35 @@ export function BenchLayoutEditor({
                     stroke={selected === bench.id ? "#263728" : "none"}
                     strokeWidth=".15"
                   />
-                  <rect
-                    x="-.95"
-                    y="-.293"
-                    width="1.9"
-                    height=".586"
-                    rx=".1"
-                    fill="#855633"
-                    stroke="#31271c"
-                    strokeWidth=".15"
-                  />
-                  <path d="M-.9 -.45H.9" stroke="#31271c" strokeWidth=".18" />
+                  {bench.treeVariant && (
+                    <circle
+                      r={3}
+                      fill="#76a65c"
+                      fillOpacity={0.65}
+                      stroke="#315935"
+                      strokeWidth=".2"
+                    />
+                  )}
+                  {!bench.treeVariant && (
+                    <>
+                      <rect
+                        x="-.95"
+                        y="-.293"
+                        width="1.9"
+                        height=".586"
+                        rx=".1"
+                        fill="#855633"
+                        stroke="#31271c"
+                        strokeWidth=".15"
+                      />
+                      <path
+                        d="M-.9 -.45H.9"
+                        stroke="#31271c"
+                        strokeWidth=".18"
+                      />
+                    </>
+                  )}
+                  {bench.treeVariant && <circle r={0.4} fill="#725638" />}
                   <text
                     x="0"
                     y={markerSize * 0.8}
@@ -543,22 +578,48 @@ export function BenchLayoutEditor({
           </div>
           <div className="space-y-3 md:max-h-[74dvh] md:overflow-y-auto md:pr-1">
             <p className="font-semibold">
-              {benches.length} {benches.length === 1 ? "bench" : "benches"}
+              {benchCount} {benchCount === 1 ? "bench" : "benches"}
+              {independent &&
+                ` · ${treeCount} ${treeCount === 1 ? "tree" : "trees"}`}
             </p>
             <button
               className={`${button} w-full !bg-[#c9ff3d]`}
               disabled={
-                locked ||
-                benches.length >= (independent ? 256 : MAX_DETAIL_BENCHES)
+                locked || benchCount >= (independent ? 256 : MAX_DETAIL_BENCHES)
               }
-              onClick={add}
+              onClick={() => add()}
             >
               Add bench
             </button>
             {independent && (
               <>
+                <label className="block text-sm font-semibold">
+                  Tree model
+                  <select
+                    aria-label="Tree model"
+                    className={`${button} mt-1 w-full`}
+                    value={treeModel}
+                    disabled={locked}
+                    onChange={(e) =>
+                      setTreeModel(e.target.value as DetailTreeVariant)
+                    }
+                  >
+                    {DETAIL_TREE_MODELS.map((model) => (
+                      <option key={model.id} value={model.id}>
+                        {model.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button
+                  className={`${button} w-full !bg-[#c9ff3d]`}
+                  disabled={locked || treeCount >= 256}
+                  onClick={() => add(treeModel)}
+                >
+                  Add tree
+                </button>
                 <p className="text-xs">
-                  Add a bench, then choose Move on plan and click anywhere.
+                  Add an object, then choose Move on plan and click anywhere.
                   Building and street outlines are guides.
                 </p>
                 <div className="grid grid-cols-2 gap-2">
@@ -582,8 +643,12 @@ export function BenchLayoutEditor({
             {active ? (
               <>
                 <p className="text-sm font-semibold">
-                  Bench {benches.findIndex((b) => b.id === active.id) + 1}{" "}
-                  selected
+                  {active.treeVariant
+                    ? DETAIL_TREE_MODELS.find(
+                        (m) => m.id === active.treeVariant,
+                      )?.label
+                    : "Bench"}{" "}
+                  {benches.findIndex((b) => b.id === active.id) + 1} selected
                 </p>
                 <button
                   className={`${button} w-full`}
@@ -592,7 +657,7 @@ export function BenchLayoutEditor({
                   onClick={() => {
                     setPlacing((v) => !v);
                     setMessage(
-                      "Click a clear place on the plan to move this bench.",
+                      "Click a clear place on the plan to move this object.",
                     );
                   }}
                 >
@@ -610,7 +675,7 @@ export function BenchLayoutEditor({
                     <button
                       key={name}
                       className={button}
-                      aria-label={`Move bench ${name}`}
+                      aria-label={`Move ${activeKind} ${name}`}
                       disabled={locked}
                       onClick={() =>
                         move({
@@ -651,11 +716,14 @@ export function BenchLayoutEditor({
                     setSelected(null);
                   }}
                 >
-                  Remove bench
+                  Remove {activeKind}
                 </button>
               </>
             ) : (
-              <p className="text-sm">Click a numbered bench to select it.</p>
+              <p className="text-sm">
+                Click a numbered {independent ? "object" : "bench"} to select
+                it.
+              </p>
             )}
             <button
               className={`${button} w-full`}
@@ -672,7 +740,7 @@ export function BenchLayoutEditor({
             <p role="status" className="text-sm text-amber-900">
               {message ||
                 (invalid
-                  ? "A bench needs a clearer position. Select and move it before saving."
+                  ? "An object needs a clearer position. Select and move it before saving."
                   : "")}
             </p>
             <button
@@ -686,7 +754,7 @@ export function BenchLayoutEditor({
                   onClose();
                 } catch (error) {
                   const fallback =
-                    "Could not save the benches. Your edits are still here; try Save details again.";
+                    "Could not save the details. Your edits are still here; try Save details again.";
                   setMessage(
                     isAxiosError(error) && error.response?.status === 409
                       ? getApiErrorMessage(error, fallback)
@@ -704,7 +772,7 @@ export function BenchLayoutEditor({
                 ? "Unsaved edits. Closing discards them."
                 : "Your saved arrangement."}{" "}
               {independent
-                ? "Benches keep their own positions when buildings, streets or parks move."
+                ? "Benches and trees keep their own positions when buildings, streets or parks move."
                 : "Moving or rotating the whole park carries the benches with it."}
             </p>
           </div>
