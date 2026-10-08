@@ -100,9 +100,9 @@ export function automaticRusticDetails(layout: NeighborhoodParkLayout) {
 export function benchContext(
   zone: SiteZone,
   origin = { lng: zone.coordinates[0][0], lat: zone.coordinates[0][1] },
+  scope: 'park' | 'project' = 'park',
 ) {
-  const layout = neighborhoodParkLayoutForZone(zone, origin),
-    frame = parkOutlineDimensions(zone.coordinates);
+  const frame = parkOutlineDimensions(zone.coordinates);
   const east = metersPerDegLon(origin.lat),
     angle = (frame.degrees * Math.PI) / 180,
     c = Math.cos(angle),
@@ -115,6 +115,21 @@ export function benchContext(
     origin.lng + p.x / east,
     origin.lat + p.y / METERS_PER_DEG_LAT,
   ];
+  const layout: NeighborhoodParkLayout =
+    scope === 'park'
+      ? neighborhoodParkLayoutForZone(zone, origin)
+      : {
+          status: 'constrained',
+          boundary: zone.coordinates.map(fromWorld),
+          lawn: [],
+          loop: [],
+          paths: [],
+          modules: [],
+          trees: [],
+          shrubs: [],
+          pathWidth: 2.6,
+          notes: [],
+        };
   const center = fromWorld(frame.center),
     eastRatio = east / metersPerDegLon(zone.coordinates[0][1]);
   const toFrame = (p: ParkPoint) => ({
@@ -157,6 +172,7 @@ export function benchContext(
       ),
     );
   return {
+    scope,
     layout,
     frame,
     angle,
@@ -248,7 +264,10 @@ export function benchPlacementProblem(
   context: BenchContext,
 ): string | null {
   const footprint = benchFootprint(bench);
-  if (!envelopeFits(footprint, context.layout.boundary, 0.05))
+  if (
+    context.scope === 'park' &&
+    !envelopeFits(footprint, context.layout.boundary, 0.05)
+  )
     return 'Keep the whole bench inside the park.';
   if (
     others.some(

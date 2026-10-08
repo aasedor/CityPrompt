@@ -4,6 +4,7 @@ API v1 router - aggregates all endpoint routers.
 
 from fastapi import APIRouter, Depends
 from app.api.v1 import comfy_trials
+from app.api.v1 import project_details
 from app.core.classroom_scope import require_classroom_scope
 
 from app.api.v1 import (
@@ -50,6 +51,7 @@ api_router.include_router(comfy_trials.router, prefix="/local-render", tags=["Lo
 api_router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 api_router.include_router(oauth.router, prefix="/auth/oauth", tags=["OAuth2 Social Login"])
 api_router.include_router(projects.router, prefix="/projects", tags=["Projects"])
+api_router.include_router(project_details.router, prefix="/projects", tags=["Project details"])
 api_router.include_router(documents.router, prefix="/documents", tags=["Documents"])
 api_router.include_router(buildings.router, prefix="/buildings", tags=["Buildings"])
 api_router.include_router(context.router, prefix="/context", tags=["Context"])

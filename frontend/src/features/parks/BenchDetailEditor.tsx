@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
-import { createPortal } from 'react-dom';
-import type { SiteZone, SiteZoneProperties } from '@/types';
+import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
+import { createPortal } from "react-dom";
+import type { SiteZone, SiteZoneProperties } from "@/types";
 import {
   isNeighborhoodParkPilot,
   type ParkPoint,
-} from '@/components/viewer/globe/neighborhoodParkLayout';
+} from "@/components/viewer/globe/neighborhoodParkLayout";
 import {
   benchContext,
   resolveBenches,
@@ -13,10 +13,14 @@ import {
   plantingClearOfBenches,
   MAX_DETAIL_BENCHES,
   type DetailBench,
-} from './benchDetails';
+  type BenchContext,
+} from "./benchDetails";
+import { getApiErrorMessage } from "@/services/api";
+import { isAxiosError } from "axios";
+import { assetForZone } from "@/features/pickPlace/catalogue";
 
 const button =
-  'min-h-11 rounded-lg border border-slate-400 bg-white px-3 py-2 text-sm font-semibold text-slate-900 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-700';
+  "min-h-11 rounded-lg border border-slate-400 bg-white px-3 py-2 text-sm font-semibold text-slate-900 disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-700";
 export function BenchDetailControls({
   zone,
   disabled,
@@ -69,11 +73,42 @@ function BenchDetailEditor({
   onClose: () => void;
 }) {
   const context = useMemo(() => benchContext(zone), [zone]);
-  const [benches, setBenches] = useState(() => resolveBenches(zone, context));
+  return (
+    <BenchLayoutEditor
+      context={context}
+      initialBenches={resolveBenches(zone, context)}
+      title={zone.name || "Neighbourhood park"}
+      disabled={disabled}
+      onSave={(benches) => onSave(saveBenchDetails(zone, benches, context))}
+      onClose={onClose}
+    />
+  );
+}
+
+export function BenchLayoutEditor({
+  context,
+  initialBenches,
+  title,
+  disabled,
+  onSave,
+  onClose,
+  contextZones = [],
+}: {
+  context: BenchContext;
+  initialBenches: DetailBench[];
+  title: string;
+  disabled: boolean;
+  onSave: (benches: DetailBench[]) => Promise<unknown>;
+  onClose: () => void;
+  contextZones?: SiteZone[];
+}) {
+  const [benches, setBenches] = useState(initialBenches);
+  const independent = context.scope === "project";
+  const [viewScale, setViewScale] = useState(1);
   const [past, setPast] = useState<DetailBench[][]>([]),
     [selected, setSelected] = useState<string | null>(null);
   const [placing, setPlacing] = useState(false),
-    [message, setMessage] = useState(''),
+    [message, setMessage] = useState(""),
     [saving, setSaving] = useState(false);
   const [preview, setPreview] = useState<DetailBench | null>(null);
   const drag = useRef<{
@@ -89,12 +124,12 @@ function BenchDetailEditor({
     dirty = past.length > 0;
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null,
-      root = document.getElementById('root');
-    const wasInert = root?.hasAttribute('inert');
-    root?.setAttribute('inert', '');
+      root = document.getElementById("root");
+    const wasInert = root?.hasAttribute("inert");
+    root?.setAttribute("inert", "");
     dialog.current?.focus();
     return () => {
-      if (!wasInert) root?.removeAttribute('inert');
+      if (!wasInert) root?.removeAttribute("inert");
       previous?.focus();
     };
   }, []);
@@ -103,17 +138,23 @@ function BenchDetailEditor({
   }, [selected]);
   const box = useMemo(() => {
     const p = context.layout.boundary;
+    const minX = Math.min(...p.map((v) => v.x)) - 2,
+      maxX = Math.max(...p.map((v) => v.x)) + 2;
+    const minY = Math.min(...p.map((v) => v.y)) - 2,
+      maxY = Math.max(...p.map((v) => v.y)) + 2;
+    const x = (minX + maxX) / 2,
+      y = (minY + maxY) / 2;
     return {
-      minX: Math.min(...p.map((v) => v.x)) - 2,
-      minY: Math.min(...p.map((v) => v.y)) - 2,
-      maxX: Math.max(...p.map((v) => v.x)) + 2,
-      maxY: Math.max(...p.map((v) => v.y)) + 2,
+      minX: x - ((maxX - minX) * viewScale) / 2,
+      maxX: x + ((maxX - minX) * viewScale) / 2,
+      minY: y - ((maxY - minY) * viewScale) / 2,
+      maxY: y + ((maxY - minY) * viewScale) / 2,
     };
-  }, [context]);
+  }, [context, viewScale]);
   const change = (next: DetailBench[]) => {
     setPast((p) => [...p.slice(-49), benches]);
     setBenches(next);
-    setMessage('');
+    setMessage("");
   };
   const move = (candidate: DetailBench) => {
     const problem = benchPlacementProblem(candidate, benches, context);
@@ -148,7 +189,7 @@ function BenchDetailEditor({
     );
     if (!free) {
       setMessage(
-        'There is no clear starting space for another bench in this layout. Move or remove a bench first.',
+        "There is no clear starting space for another bench in this layout. Move or remove a bench first.",
       );
       return;
     }
@@ -164,8 +205,9 @@ function BenchDetailEditor({
     );
     return { x: p.x, y: -p.y };
   };
-  const points = (p: ParkPoint[]) => p.map((v) => `${v.x},${-v.y}`).join(' ');
+  const points = (p: ParkPoint[]) => p.map((v) => `${v.x},${-v.y}`).join(" ");
   const shown = benches.map((b) => (preview?.id === b.id ? preview : b));
+  const markerSize = independent ? Math.max(3, (box.maxX - box.minX) / 90) : 3;
   const invalid = benches.find((b) =>
     benchPlacementProblem(b, benches, context),
   );
@@ -184,7 +226,7 @@ function BenchDetailEditor({
         className="flex h-[min(94dvh,680px)] w-full max-w-5xl flex-col overflow-y-auto rounded-2xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-slate-900 shadow-xl"
         onKeyDown={(e) => {
           e.stopPropagation();
-          if (e.key === 'Tab') {
+          if (e.key === "Tab") {
             const controls = Array.from(
               dialog.current?.querySelectorAll<HTMLElement>(
                 'button:not(:disabled),[tabindex="0"]',
@@ -204,23 +246,23 @@ function BenchDetailEditor({
               first?.focus();
             }
           }
-          if (e.key === 'Escape' && !saving) {
+          if (e.key === "Escape" && !saving) {
             e.preventDefault();
             onClose();
           }
           if (locked) return;
-          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
             e.preventDefault();
             if (past.length) {
               setBenches(past[past.length - 1]);
               setPast((p) => p.slice(0, -1));
               setPreview(null);
-              setMessage('');
+              setMessage("");
             }
             return;
           }
           if (!active) return;
-          if (['Delete', 'Backspace'].includes(e.key)) {
+          if (["Delete", "Backspace"].includes(e.key)) {
             e.preventDefault();
             change(benches.filter((b) => b.id !== active.id));
             setSelected(null);
@@ -247,11 +289,11 @@ function BenchDetailEditor({
         <header className="mb-3 flex items-center justify-between gap-3">
           <div>
             <h2 id="bench-editor-title" className="text-lg font-bold">
-              Edit park details · benches
+              {independent
+                ? "Edit community details · benches"
+                : "Edit park details · benches"}
             </h2>
-            <p className="text-xs">
-              {zone.name || 'Neighbourhood park'} · detailed timber bench trial
-            </p>
+            <p className="text-xs">{title} · detailed timber bench trial</p>
           </div>
           <button
             aria-label="Close detail editor"
@@ -266,7 +308,7 @@ function BenchDetailEditor({
           Select a bench on this plan, then drag it or use the move buttons.
           Small objects can only be edited here. Save to update the 3D scene.
         </p>
-        <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_240px]">
+        <div className="grid min-h-0 gap-4 md:grid-cols-[minmax(0,1fr)_240px]">
           <div className="min-w-0">
             <svg
               ref={svg}
@@ -324,12 +366,49 @@ function BenchDetailEditor({
                 }
               }}
             >
-              <polygon
-                points={points(context.layout.boundary)}
-                fill="#c2d09b"
-                stroke="#445737"
-                strokeWidth=".25"
-              />
+              {!independent && (
+                <polygon
+                  points={points(context.layout.boundary)}
+                  fill="#c2d09b"
+                  stroke="#445737"
+                  strokeWidth=".25"
+                />
+              )}
+              {independent &&
+                contextZones.map((zone) => (
+                  <g key={zone.id} pointerEvents="none">
+                    <polygon
+                      points={points(zone.coordinates.map(context.fromWorld))}
+                      fill={
+                        zone.zone_type === "site_boundary"
+                          ? "none"
+                          : zone.zone_type === "road"
+                            ? "#bec3c8"
+                            : zone.zone_type === "green_space"
+                              ? "#aac593"
+                              : "#d1b69c"
+                      }
+                      stroke="#6d7469"
+                      strokeWidth={
+                        zone.zone_type === "site_boundary" ? 0.4 : 0.2
+                      }
+                      strokeDasharray={
+                        zone.zone_type === "site_boundary" ? "2 1" : undefined
+                      }
+                    />
+                    {zone.zone_type !== "site_boundary" && (
+                      <text
+                        x={context.fromWorld(zone.coordinates[0]).x}
+                        y={-context.fromWorld(zone.coordinates[0]).y}
+                        fontSize={Math.max(1.5, context.frame.width / 65)}
+                      >
+                        {zone.name ||
+                          assetForZone(zone)?.label ||
+                          zone.zone_type}
+                      </text>
+                    )}
+                  </g>
+                ))}
               <polyline
                 points={points(
                   [...context.layout.loop, context.layout.loop[0]].filter(
@@ -367,7 +446,7 @@ function BenchDetailEditor({
                     fontSize="1.4"
                     fill="#342e28"
                   >
-                    {m.kind === 'tower' ? 'Play' : m.kind}
+                    {m.kind === "tower" ? "Play" : m.kind}
                   </text>
                 </g>
               ))}
@@ -396,7 +475,7 @@ function BenchDetailEditor({
                     if (!locked) setSelected(bench.id);
                   }}
                   onKeyDown={(e) => {
-                    if (['Enter', ' '].includes(e.key) && !locked) {
+                    if (["Enter", " "].includes(e.key) && !locked) {
                       e.preventDefault();
                       setSelected(bench.id);
                     }
@@ -417,13 +496,19 @@ function BenchDetailEditor({
                   }}
                 >
                   <rect
-                    x="-3"
-                    y="-2.5"
-                    width="6"
-                    height="5"
+                    x={-markerSize}
+                    y={-markerSize}
+                    width={markerSize * 2}
+                    height={markerSize * 2}
                     rx=".6"
-                    fill={selected === bench.id ? '#c9ff3d' : 'transparent'}
-                    stroke={selected === bench.id ? '#263728' : 'none'}
+                    fill={
+                      selected === bench.id
+                        ? "#c9ff3d"
+                        : independent
+                          ? "#fff9ec"
+                          : "transparent"
+                    }
+                    stroke={selected === bench.id ? "#263728" : "none"}
                     strokeWidth=".15"
                   />
                   <rect
@@ -439,9 +524,9 @@ function BenchDetailEditor({
                   <path d="M-.9 -.45H.9" stroke="#31271c" strokeWidth=".18" />
                   <text
                     x="0"
-                    y="1.9"
+                    y={markerSize * 0.8}
                     textAnchor="middle"
-                    fontSize="1.5"
+                    fontSize={markerSize * 0.6}
                     fill="#18251b"
                   >
                     {i + 1}
@@ -450,23 +535,54 @@ function BenchDetailEditor({
               ))}
             </svg>
             <p className="mt-2 text-xs">
-              Top view · north ↑ · benches keep their actual 1.9 m size. Paths
-              and larger park objects are shown for context.
+              Top view · north ↑ · benches keep their actual 1.9 m size.{" "}
+              {independent
+                ? "Building, street and park outlines are guides, not placement limits."
+                : "Paths and larger park objects are shown for context."}
             </p>
           </div>
-          <div className="space-y-3">
-            <p className="font-semibold">{benches.length} benches</p>
+          <div className="space-y-3 md:max-h-[74dvh] md:overflow-y-auto md:pr-1">
+            <p className="font-semibold">
+              {benches.length} {benches.length === 1 ? "bench" : "benches"}
+            </p>
             <button
               className={`${button} w-full !bg-[#c9ff3d]`}
-              disabled={locked || benches.length >= MAX_DETAIL_BENCHES}
+              disabled={
+                locked ||
+                benches.length >= (independent ? 256 : MAX_DETAIL_BENCHES)
+              }
               onClick={add}
             >
               Add bench
             </button>
+            {independent && (
+              <>
+                <p className="text-xs">
+                  Add a bench, then choose Move on plan and click anywhere.
+                  Building and street outlines are guides.
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    className={button}
+                    disabled={viewScale >= 8}
+                    onClick={() => setViewScale((v) => v * 2)}
+                  >
+                    Expand view
+                  </button>
+                  <button
+                    className={button}
+                    disabled={viewScale <= 0.125}
+                    onClick={() => setViewScale((v) => v / 2)}
+                  >
+                    Zoom in
+                  </button>
+                </div>
+              </>
+            )}
             {active ? (
               <>
                 <p className="text-sm font-semibold">
-                  Bench {benches.findIndex((b) => b.id === active.id) + 1}{' '}
+                  Bench {benches.findIndex((b) => b.id === active.id) + 1}{" "}
                   selected
                 </p>
                 <button
@@ -476,7 +592,7 @@ function BenchDetailEditor({
                   onClick={() => {
                     setPlacing((v) => !v);
                     setMessage(
-                      'Click a clear place on the plan to move this bench.',
+                      "Click a clear place on the plan to move this bench.",
                     );
                   }}
                 >
@@ -485,10 +601,10 @@ function BenchDetailEditor({
                 <div className="grid grid-cols-2 gap-2">
                   {(
                     [
-                      ['north', 0, 0.5],
-                      ['east', 0.5, 0],
-                      ['south', 0, -0.5],
-                      ['west', -0.5, 0],
+                      ["north", 0, 0.5],
+                      ["east", 0.5, 0],
+                      ["south", 0, -0.5],
+                      ["west", -0.5, 0],
                     ] as const
                   ).map(([name, x, y]) => (
                     <button
@@ -548,7 +664,7 @@ function BenchDetailEditor({
               onClick={() => {
                 setBenches(past[past.length - 1]);
                 setPast((p) => p.slice(0, -1));
-                setMessage('');
+                setMessage("");
               }}
             >
               Undo
@@ -556,34 +672,40 @@ function BenchDetailEditor({
             <p role="status" className="text-sm text-amber-900">
               {message ||
                 (invalid
-                  ? 'A bench needs a clearer position. Select and move it before saving.'
-                  : '')}
+                  ? "A bench needs a clearer position. Select and move it before saving."
+                  : "")}
             </p>
             <button
               className={`${button} w-full !bg-[#c9ff3d]`}
               disabled={locked || !dirty || !!invalid}
               onClick={async () => {
                 setSaving(true);
-                setMessage('');
+                setMessage("");
                 try {
-                  await onSave(saveBenchDetails(zone, benches, context));
+                  await onSave(benches);
                   onClose();
-                } catch {
+                } catch (error) {
+                  const fallback =
+                    "Could not save the benches. Your edits are still here; try Save details again.";
                   setMessage(
-                    'Could not save the benches. Your edits are still here; try Save details again.',
+                    isAxiosError(error) && error.response?.status === 409
+                      ? getApiErrorMessage(error, fallback)
+                      : fallback,
                   );
                 } finally {
                   setSaving(false);
                 }
               }}
             >
-              {saving ? 'Saving…' : 'Save details'}
+              {saving ? "Saving…" : "Save details"}
             </button>
             <p className="text-xs text-slate-600">
               {dirty
-                ? 'Unsaved edits. Closing discards them.'
-                : 'Your saved arrangement.'}{' '}
-              Moving or rotating the whole park carries the benches with it.
+                ? "Unsaved edits. Closing discards them."
+                : "Your saved arrangement."}{" "}
+              {independent
+                ? "Benches keep their own positions when buildings, streets or parks move."
+                : "Moving or rotating the whole park carries the benches with it."}
             </p>
           </div>
         </div>

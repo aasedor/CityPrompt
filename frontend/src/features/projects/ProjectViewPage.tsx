@@ -1,4 +1,5 @@
 import { nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
+import {ProjectDetailEditor,useProjectDetails} from '@/features/parks/ProjectDetailEditor';
 import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
 import { canonicalParkAsset } from '@/features/pickPlace/canonicalParkPlacement';
 import { canonicalBuildingAsset } from '@/features/pickPlace/canonicalBuildingPlacement';
@@ -153,6 +154,8 @@ export function ProjectViewPage() {
   const [showReferenceLayers, setShowReferenceLayers] = useState(false);
   const [showPlanningReport, setShowPlanningReport] = useState(false);
   const [editingBenchDetails, setEditingBenchDetails] = useState(false);
+  const [editingProjectDetails,setEditingProjectDetails]=useState(false);
+  const projectDetails=useProjectDetails(id);
   const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
   const references = useReferenceLayers(id);
   const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
@@ -271,7 +274,7 @@ export function ProjectViewPage() {
   }, [globeRefs]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
-  useUndoRedoKeyboard(editingBenchDetails);
+  useUndoRedoKeyboard(editingBenchDetails || editingProjectDetails);
 
   // Site planner store + zone CRUD + workflow
   const {
@@ -1121,6 +1124,7 @@ export function ProjectViewPage() {
             onCancelPlacement={cancelPlacement}
             latitude={project.location?.latitude}
             longitude={project.location?.longitude}
+            projectBenches={projectDetails.data?.benches}
             siteZones={visibleZones}
             allSiteZones={siteZones}
             referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}
@@ -1174,7 +1178,7 @@ export function ProjectViewPage() {
             onGlobeReady={setGlobeRefs}
             onModeledBuildingsChange={setModeledBuildingIds}
             measureModeActive={measureActive}
-            interactionPaused={editingBenchDetails || renderViewerActive || showPlanningReport || showShare || showTour || (showReferenceLayers && !studyMap.editing) || showCatalogue || Boolean(connectionZone && !entrancePick)}
+            interactionPaused={editingProjectDetails || editingBenchDetails || renderViewerActive || showPlanningReport || showShare || showTour || (showReferenceLayers && !studyMap.editing) || showCatalogue || Boolean(connectionZone && !entrancePick)}
             onMeasureModeChange={handleMeasureModeChange}
           />
         </Suspense>
@@ -1257,6 +1261,7 @@ export function ProjectViewPage() {
 
         <div className="absolute right-3 top-16 z-40 max-w-[calc(100vw-1.5rem)] sm:right-4 sm:top-2">
           <StudioControls layersOpen={showReferenceLayers} onLayers={() => { selectZone(null); setShowReferenceLayers((open) => !open); }}
+            onDetails={async()=>{const result=await projectDetails.refetch();if(result.data){cancelPlacement();setActiveSitePlannerTool(null);selectZone(null);setEditingProjectDetails(true);}else toast.error('Details could not load. Please try again.');}}
             onReport={() => { setActiveSitePlannerTool(null); setShowPlanningReport(true); }} onTeam={() => setShowShare(true)} onHelp={() => setShowTour(true)} />
         </div>
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
@@ -1290,6 +1295,7 @@ export function ProjectViewPage() {
         {showShare && <ShareModal projectId={project.id} projectName={project.name} onClose={() => setShowShare(false)} />}
         {showTour && <OnboardingTour placementMode forceShow onComplete={() => setShowTour(false)} />}
 
+        {editingProjectDetails && projectDetails.data && <ProjectDetailEditor project={project} zones={siteZones} data={projectDetails.data} onClose={()=>setEditingProjectDetails(false)}/>}
         {/* Zone properties panel */}
         {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}

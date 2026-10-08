@@ -1,4 +1,6 @@
 import { NativeParkLayer, assertNativeParksReady, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
+import {GlobeProjectBenches} from '@/features/parks/GlobeProjectBenches';
+import type {ProjectBench} from '@/features/parks/projectBenches';
 import { assertNativeStreetsReady, waitForNativeStreetsReady, expectsNativeStreet } from './nativeStreetReadiness';
 import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
@@ -1484,6 +1486,7 @@ function MeasurementOverlay({
 }
 
 interface GlobeSitePlannerMapProps {
+  projectBenches?:ProjectBench[];
   walkControlTarget?: HTMLElement | null;
   mapToolsTarget?: HTMLElement | null;
   entrancePick?: import('@/features/pickPlace/pickBuildingEntrance').EntrancePickRequest | null;
@@ -1593,6 +1596,7 @@ export interface GlobeAIRenderViewport {
 }
 
 export function GlobeSitePlannerMap({
+  projectBenches,
   walkControlTarget,
   mapToolsTarget,
   entrancePick,
@@ -4540,6 +4544,7 @@ export function GlobeSitePlannerMap({
           <StreetPreviewGroundProvider>
           <BuildingEntranceApproaches zones={connectedSceneZones} results={pedestrianConnections}>
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
+          {projectBenches && <GlobeProjectBenches benches={projectBenches} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
           <ParkAssemblyGroundProvider>
           <AutomaticParkGround zones={allSiteZones} paused={parkGroundPaused} onSave={onAutoParkTerrain} onChange={setParkAlignment} fallback={terrainElevation}>
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />
