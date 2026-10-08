@@ -1,5 +1,7 @@
 # City Prompt button review for student final projects
 
+Expanded review: [Complete button audit](COMPLETE_BUTTON_AUDIT_2026-10-07.md), including all 535 button definitions and a full control inventory. This report records the earlier, narrower inspection; later findings and runtime observations are in the expanded report.
+
 7 October 2026 · Recommendations for Andrew
 
 City Prompt should keep its planning, walking and presentation capabilities while reducing duplicate entry points and technical choices in the everyday student interface. The strongest cleanup opportunities are the duplicate Help and Guide buttons, the second project stepper, generic drawing modes that resemble zoning tools, and the large initial selection of render styles.
