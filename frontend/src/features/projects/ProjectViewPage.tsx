@@ -152,6 +152,7 @@ export function ProjectViewPage() {
   const [showShare, setShowShare] = useState(false);
   const [showReferenceLayers, setShowReferenceLayers] = useState(false);
   const [showPlanningReport, setShowPlanningReport] = useState(false);
+  const [editingBenchDetails, setEditingBenchDetails] = useState(false);
   const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
   const references = useReferenceLayers(id);
   const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
@@ -270,7 +271,7 @@ export function ProjectViewPage() {
   }, [globeRefs]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
-  useUndoRedoKeyboard();
+  useUndoRedoKeyboard(editingBenchDetails);
 
   // Site planner store + zone CRUD + workflow
   const {
@@ -1173,7 +1174,7 @@ export function ProjectViewPage() {
             onGlobeReady={setGlobeRefs}
             onModeledBuildingsChange={setModeledBuildingIds}
             measureModeActive={measureActive}
-            interactionPaused={renderViewerActive || showPlanningReport || showShare || showTour || (showReferenceLayers && !studyMap.editing) || showCatalogue || Boolean(connectionZone && !entrancePick)}
+            interactionPaused={editingBenchDetails || renderViewerActive || showPlanningReport || showShare || showTour || (showReferenceLayers && !studyMap.editing) || showCatalogue || Boolean(connectionZone && !entrancePick)}
             onMeasureModeChange={handleMeasureModeChange}
           />
         </Suspense>
@@ -1292,6 +1293,8 @@ export function ProjectViewPage() {
         {/* Zone properties panel */}
         {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
+            onSaveDetails={properties => updateZone.mutateAsync({zoneId:selectedZone.id,data:{properties},previousData:{properties:selectedZone.properties}})}
+            onDetailsEditingChange={setEditingBenchDetails}
             zones={siteZones} onUpdateParkLayout={data => updateZone.mutateAsync({zoneId:selectedZone.id,data,previousData:{coordinates:selectedZone.coordinates,properties:selectedZone.properties}})}
             onUpdateDesign={properties => {
               const footprintChanged=properties.building_footprint_scale!==selectedZone.properties?.building_footprint_scale;

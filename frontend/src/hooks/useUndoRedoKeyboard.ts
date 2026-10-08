@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { useUndoRedoStore } from '@/store/undoRedo';
 
 /** Registers Ctrl+Z (undo), Ctrl+Shift+Z / Ctrl+Y (redo) keyboard shortcuts. */
-export function useUndoRedoKeyboard() {
+export function useUndoRedoKeyboard(paused = false) {
   const undo = useUndoRedoStore((s) => s.undo);
   const redo = useUndoRedoStore((s) => s.redo);
 
   useEffect(() => {
+    if (paused) return;
     const handler = (e: KeyboardEvent) => {
       // Skip when focus is in an editable element
       const tag = (e.target as HTMLElement)?.tagName;
@@ -27,5 +28,5 @@ export function useUndoRedoKeyboard() {
 
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [undo, redo]);
+  }, [undo, redo, paused]);
 }

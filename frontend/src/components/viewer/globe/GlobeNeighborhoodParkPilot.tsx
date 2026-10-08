@@ -3,7 +3,8 @@ import { useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
-import { neighborhoodParkLayoutForZone, distanceToSegment, envelopeFits, pointInPark, type ParkPoint, type ParkModule } from './neighborhoodParkLayout';
+import { neighborhoodParkLayoutForZone, distanceToSegment, type ParkPoint, type ParkModule } from './neighborhoodParkLayout';
+import { automaticRusticDetails, benchContext, resolveBenches, readBenchDetails, plantingClearOfBenches } from '@/features/parks/benchDetails';
 import { getDerivedParkAccess } from './parkAccessConnections';
 import { drapeSharedGroundGeometry, type SharedGroundTriangulation } from './sharedGroundGeometry';
 import { parkApproachGround, parkPadDatum, roundedParkPad } from './neighborhoodParkGeometry';
@@ -176,19 +177,11 @@ export function GlobeNeighborhoodParkPilot({ zone, centroid, terrainZ, groundGri
     && terraceClearances.every(path => path.points.every((q,i) => i===0 || distanceToSegment(p,
       {x:(path.points[i-1][0]-centroid.lng)*metersPerDegLon(centroid.lat),y:(path.points[i-1][1]-centroid.lat)*METERS_PER_DEG_LAT},
       {x:(q[0]-centroid.lng)*metersPerDegLon(centroid.lat),y:(q[1]-centroid.lat)*METERS_PER_DEG_LAT}) > Math.max(clearance,path.widthM/2+.5)));
-  const trees = layout.trees.filter(p => clearOfEntrances(p, 3));
-  const flowers = layout.shrubs.filter(p => clearOfEntrances(p, 2.2));
-  const details = useMemo(() => {
-    if (!layout.loop.length) return [];
-    const center = layout.loop.reduce((a,p) => ({x:a.x+p.x/64,y:a.y+p.y/64}),{x:0,y:0});
-    return [7,21,38,52].flatMap((index,i) => {
-      const q=layout.loop[index], dx=q.x-center.x,dy=q.y-center.y,d=Math.hypot(dx,dy), offset=i===2?4:2.8;
-      const p={x:q.x+dx/d*offset,y:q.y+dy/d*offset}, radius=i===2?3:1.6;
-      const envelope=[{x:p.x-radius,y:p.y-radius},{x:p.x+radius,y:p.y-radius},{x:p.x+radius,y:p.y+radius},{x:p.x-radius,y:p.y+radius}];
-      if (!envelopeFits(envelope,layout.boundary,.2) || layout.modules.some(m=>envelope.some(v=>pointInPark(v,m.envelope)))) return [];
-      return [{asset: i===2?'boulders' as const:'timber-bench' as const, point:p, yaw:Math.atan2(dy,dx)-Math.PI/2}];
-    });
-  },[layout]);
+  const details = useMemo(() => automaticRusticDetails(layout).filter(p=>p.asset==='boulders'),[layout]);
+  const benches = useMemo(() => resolveBenches(zone,benchContext(zone,centroid)),[zone,centroid]);
+  const editedBenches = readBenchDetails(zone.properties) ? benches : [];
+  const trees = plantingClearOfBenches(layout.trees,editedBenches).filter(p => clearOfEntrances(p, 3));
+  const flowers = plantingClearOfBenches(layout.shrubs,editedBenches).filter(p => clearOfEntrances(p, 2.2));
   return <group name="neighborhood-park-adaptive-rustic-v1" userData={{ parkPilot: true, layoutStatus: layout.status, notes: layout.notes }}>
     <Surface ring={layout.boundary} role="lawn" terrainZ={terrainZ} grid={groundGrid} />
     {layout.lawn.length > 0 && <Surface ring={layout.lawn} role="lawn" tint="#c4d4b0" extraLift={.001} terrainZ={terrainZ} grid={groundGrid} />}
@@ -204,6 +197,7 @@ export function GlobeNeighborhoodParkPilot({ zone, centroid, terrainZ, groundGri
       return <RusticDetail key={`${module.id}-rail-${side}`} asset="split-rail" point={point} yaw={module.yaw} terrainZ={() => padHeight}/>;
     }))}
     {details.filter(detail=>clearOfEntrances(detail.point,3)).map((detail,i)=><RusticDetail key={`detail-${i}`} {...detail} terrainZ={terrainZ}/>)}
+    {benches.map(bench=><RusticDetail key={bench.id} asset="timber-bench" point={bench.point} yaw={bench.yaw} terrainZ={terrainZ}/>)}
     {[0, 1, 2].map(variant => <Woodland key={variant} variant={variant} points={trees.filter((_, i) => i % 3 === variant)} terrainZ={terrainZ} />)}
     <Wildflowers points={flowers} terrainZ={terrainZ} />
   </group>;

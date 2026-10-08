@@ -10,10 +10,13 @@ import { neighborhoodParkLayoutForZone } from '@/components/viewer/globe/neighbo
 import { isParkTrio, parkTrioLayout } from '@/components/viewer/globe/parkTrioLayout';
 import { parkOutlineDimensions, reshapeParkOutline, addParkOutlinePoint, type ParkOutlineShape } from './parkOutline';
 import { ParkComponentControls } from './ParkComponentControls';
+import { BenchDetailControls } from '@/features/parks/BenchDetailEditor';
 import { BuildingDesignControls } from './BuildingDesignControls';
 import type { SiteZoneProperties } from '@/types';
 
-export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace, onUpdateDesign, zones = [], onUpdateParkLayout }: {
+export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace, onUpdateDesign, zones = [], onUpdateParkLayout, onSaveDetails, onDetailsEditingChange }: {
+  onDetailsEditingChange?: (editing:boolean) => void;
+  onSaveDetails?: (properties: SiteZoneProperties) => Promise<unknown>;
   zones?: SiteZone[]; onUpdateParkLayout?: (data:{coordinates:number[][];properties:SiteZoneProperties})=>Promise<unknown>;
   zone: SiteZone; disabled: boolean;
   onReshape: (coordinates: number[][]) => boolean | void; onClose: () => void; onDelete: () => void;
@@ -59,6 +62,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     {!isPark && !fixedFixture && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m, zone.properties?.building_footprint_scale])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {onUpdateParkLayout && <ParkLayoutControls key={`${zone.id}:${zone.updated_at}`} zone={zone} zones={zones} disabled={disabled} onSave={onUpdateParkLayout}/>}
     {isPark && !hasNativePark(zone) && onUpdateDesign && <ParkComponentControls key={`${zone.id}:${zone.properties?.skate_spectator_edge}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
+    {isPark && onSaveDetails && <BenchDetailControls zone={zone} disabled={disabled} onSave={onSaveDetails} onEditingChange={onDetailsEditingChange}/>}
     {park && <div role="status" className="mb-3 rounded-lg bg-white p-2 text-xs text-slate-800">
       <p className="font-semibold">Current park · {park.status==='full'?'full programme':park.status==='compact'?'compact arrangement':park.loop.length?'reduced programme':'landscape layout'}</p>
       {park.notes.map(note=><p className="mt-1" key={note}>{note}</p>)}
