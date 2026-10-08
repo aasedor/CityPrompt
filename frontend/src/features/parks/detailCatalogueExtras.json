@@ -1,0 +1,2162 @@
+[
+  {
+    "id": "detail-baseball-backstop",
+    "label": "Baseball backstop",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      1.233,
+      7.152,
+      5.618
+    ],
+    "url": "/park-kits/baseball-youth-pinwheel/baseball-backstop.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      5.65854,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "baseball-youth-pinwheel",
+    "sha256": "e7d565af07004f3efaf83cd48835fda9acc58e598c900fc13db02ea13ff1a7f1",
+    "triangles": 540,
+    "meshes": 10,
+    "bytes": 27372
+  },
+  {
+    "id": "detail-batting-cage",
+    "label": "Batting cage",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      22.09,
+      4.59,
+      4.435
+    ],
+    "url": "/park-kits/baseball-youth-pinwheel/batting-cage.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "baseball-youth-pinwheel",
+    "sha256": "86dc524ffec1fb4d79d2dc50c3289f3d81966f5d1791aec9f60461d57eb30418",
+    "triangles": 180,
+    "meshes": 7,
+    "bytes": 391228
+  },
+  {
+    "id": "detail-shared-bleacher",
+    "label": "Compact sports bleachers",
+    "category": "Seating",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      8.0,
+      1.56,
+      0.74
+    ],
+    "url": "/park-kits/baseball-youth-pinwheel/shared-bleacher.glb",
+    "color": "#a78555",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.37,
+      0.62
+    ],
+    "sourceKit": "baseball-youth-pinwheel",
+    "sha256": "d87f224052b24759109f3ddb026209063c077561ebcb42dfe17f29d881bc60d0",
+    "triangles": 36,
+    "meshes": 3,
+    "bytes": 5100
+  },
+  {
+    "id": "detail-compost-bins",
+    "label": "Compost bins",
+    "category": "Garden & growing",
+    "description": "Place beside a path for access to planting and maintenance.",
+    "dimensions": [
+      6.4,
+      2.4,
+      1.38
+    ],
+    "url": "/park-kits/community-garden-allotments/compost-bins.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      0.3,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "community-garden-allotments",
+    "sha256": "d379cb375d1ed549f37347cb707bfe8d7d03f5461571c7488cf7ac4f1f69bd1b",
+    "triangles": 36,
+    "meshes": 3,
+    "bytes": 755360
+  },
+  {
+    "id": "detail-garden-greenhouse",
+    "label": "Garden greenhouse",
+    "category": "Garden & growing",
+    "description": "Place beside a path for access to planting and maintenance.",
+    "dimensions": [
+      7.0,
+      5.5,
+      4.655
+    ],
+    "url": "/park-kits/community-garden-allotments/garden-greenhouse.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "community-garden-allotments",
+    "sha256": "d41602e1acecdc9209b3e2eb4781202e2f4909fd9e553c0c31f570633f4ce178",
+    "triangles": 444,
+    "meshes": 17,
+    "bytes": 406848
+  },
+  {
+    "id": "detail-garden-trellis",
+    "label": "Garden trellis",
+    "category": "Garden & growing",
+    "description": "Place beside a path for access to planting and maintenance.",
+    "dimensions": [
+      5.171,
+      0.18,
+      2.88
+    ],
+    "url": "/park-kits/community-garden-allotments/garden-trellis.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "community-garden-allotments",
+    "sha256": "090b416905f3b8bee58e774bee090eb86e9e772c719db203b764f5e51692376e",
+    "triangles": 248,
+    "meshes": 8,
+    "bytes": 388216
+  },
+  {
+    "id": "detail-raised-growing-bed",
+    "label": "Raised growing bed",
+    "category": "Garden & growing",
+    "description": "Place beside a path for access to planting and maintenance.",
+    "dimensions": [
+      4.2,
+      2.5,
+      1.285
+    ],
+    "url": "/park-kits/community-garden-allotments/raised-growing-bed.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.005,
+      -0.0
+    ],
+    "sourceKit": "community-garden-allotments",
+    "sha256": "b72edb3bd38c9d270b531a4d69febed18d345216c64a6bc67a37de892095ecee",
+    "triangles": 1224,
+    "meshes": 17,
+    "bytes": 1344000
+  },
+  {
+    "id": "detail-cricket-practice-nets",
+    "label": "Cricket practice nets",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      22.09,
+      7.09,
+      4.03
+    ],
+    "url": "/park-kits/cricket-village-green/cricket-practice-nets.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "cricket-village-green",
+    "sha256": "9a3f73722c0ab7f2acd8685cf0c234a9a3020276c74a2a529ae10f15148b9abb",
+    "triangles": 264,
+    "meshes": 10,
+    "bytes": 463408
+  },
+  {
+    "id": "detail-cricket-sight-screen",
+    "label": "Cricket sight screen",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      8.0,
+      0.28,
+      4.2
+    ],
+    "url": "/park-kits/cricket-village-green/cricket-sight-screen.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "cricket-village-green",
+    "sha256": "7ec557e3c6ade591884fc72f1e069cb23cf654f68b37d7e81f51aba793bc84a3",
+    "triangles": 12,
+    "meshes": 1,
+    "bytes": 2136
+  },
+  {
+    "id": "detail-boulder-cluster",
+    "label": "Boulder cluster",
+    "category": "Landscape",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      7.788,
+      3.447,
+      1.717
+    ],
+    "url": "/park-kits/dog-park/boulder-cluster.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      0.217693,
+      0.13,
+      0.17625
+    ],
+    "sourceKit": "dog-park",
+    "sha256": "9dde2653697a2dfc4a63d8840fe232c5ce4c2e75eb15d617d79ebce2ea8a06a2",
+    "triangles": 240,
+    "meshes": 3,
+    "bytes": 406620
+  },
+  {
+    "id": "detail-dog-park-gate",
+    "label": "Dog park gate",
+    "category": "Edges & gates",
+    "description": "One fixed-size section; rotate and repeat to make an edge.",
+    "dimensions": [
+      4.64,
+      0.24,
+      1.6
+    ],
+    "url": "/park-kits/dog-park/dog-park-gate.glb",
+    "color": "#8f806a",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "dog-park",
+    "sha256": "c1280ace06fc60afcd462d1ad1e3ba164961f17ec1ce3f79dfd2d34cdbfd0c96",
+    "triangles": 304,
+    "meshes": 8,
+    "bytes": 353484
+  },
+  {
+    "id": "detail-shade-shelter",
+    "label": "Shade shelter",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      5.6,
+      4.15,
+      3.3
+    ],
+    "url": "/park-kits/dog-park/shade-shelter.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.02
+    ],
+    "sourceKit": "dog-park",
+    "sha256": "1bc3a02b124facb6829e8aa7af42b3e3c284fc86bd67411d6bd097fb30be7659",
+    "triangles": 536,
+    "meshes": 14,
+    "bytes": 370496
+  },
+  {
+    "id": "detail-timber-rail-fence",
+    "label": "Timber rail fence",
+    "category": "Edges & gates",
+    "description": "One fixed-size section; rotate and repeat to make an edge.",
+    "dimensions": [
+      6.22,
+      0.22,
+      1.25
+    ],
+    "url": "/park-kits/dog-park/timber-rail-fence.glb",
+    "color": "#8f806a",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "dog-park",
+    "sha256": "1de46e35b360d30d6ca9f2f4c15d0c62b56372d8106b85cdf5194f48b52569a2",
+    "triangles": 160,
+    "meshes": 4,
+    "bytes": 342528
+  },
+  {
+    "id": "detail-accessible-play-structure",
+    "label": "Accessible play structure",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      24.823,
+      16.437,
+      4.75
+    ],
+    "url": "/park-kits/inclusive-accessible-playground/accessible-play-structure.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      1.374489,
+      -0.0,
+      0.922708
+    ],
+    "sourceKit": "inclusive-accessible-playground",
+    "sha256": "102590a97d1922dc6bd67cf1630f903383f322ad6d17c0d1a71b31261fd6bce7",
+    "triangles": 524,
+    "meshes": 17,
+    "bytes": 379372
+  },
+  {
+    "id": "detail-accessible-swing-bay",
+    "label": "Accessible swing bay",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      8.251,
+      3.238,
+      3.591
+    ],
+    "url": "/park-kits/inclusive-accessible-playground/accessible-swing-bay.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.060899,
+      0.0
+    ],
+    "sourceKit": "inclusive-accessible-playground",
+    "sha256": "5771872b3e0fe3e46730be9f10ca847391beb2866034204179537f59db92df64",
+    "triangles": 356,
+    "meshes": 11,
+    "bytes": 365904
+  },
+  {
+    "id": "detail-inclusive-spinner",
+    "label": "Inclusive spinner",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      5.2,
+      5.2,
+      1.645
+    ],
+    "url": "/park-kits/inclusive-accessible-playground/inclusive-spinner.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.08,
+      -0.0
+    ],
+    "sourceKit": "inclusive-accessible-playground",
+    "sha256": "cbf4eefafe64bc9cbb65a22cf9413c374e729ad8b4479aee6b4c308506e24a41",
+    "triangles": 536,
+    "meshes": 10,
+    "bytes": 38672
+  },
+  {
+    "id": "detail-sensory-panel",
+    "label": "Sensory panel",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      2.8,
+      0.27,
+      2.2
+    ],
+    "url": "/park-kits/inclusive-accessible-playground/sensory-panel.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.035
+    ],
+    "sourceKit": "inclusive-accessible-playground",
+    "sha256": "6b1eed7ff769ed4ef693884297b00ead236fa98e0f7aa1a97d058265ad20a46c",
+    "triangles": 404,
+    "meshes": 7,
+    "bytes": 364596
+  },
+  {
+    "id": "detail-shade-canopy",
+    "label": "Shade canopy",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      5.32,
+      3.113,
+      2.97
+    ],
+    "url": "/park-kits/inclusive-accessible-playground/shade-canopy.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.015
+    ],
+    "sourceKit": "inclusive-accessible-playground",
+    "sha256": "e51ec0473d222d791a299c4671ca46aa998c696c36900f2aa6388849ecb6d451",
+    "triangles": 536,
+    "meshes": 14,
+    "bytes": 377120
+  },
+  {
+    "id": "detail-memorial-wall",
+    "label": "Memorial wall",
+    "category": "Water & landmarks",
+    "description": "A static landscape feature; no water simulation.",
+    "dimensions": [
+      12.0,
+      3.0,
+      4.4
+    ],
+    "url": "/park-kits/memorial-garden-classical-formal/memorial-wall.glb",
+    "color": "#589aaa",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.45
+    ],
+    "sourceKit": "memorial-garden-classical-formal",
+    "sha256": "d7b51584804e7130b985aa9e61bd6131118dac93f7ad0307d0e9e61d1836ef6b",
+    "triangles": 264,
+    "meshes": 2,
+    "bytes": 267436
+  },
+  {
+    "id": "detail-reflecting-pool",
+    "label": "Reflecting pool",
+    "category": "Water & landmarks",
+    "description": "A static landscape feature; no water simulation.",
+    "dimensions": [
+      12.0,
+      21.0,
+      0.55
+    ],
+    "url": "/park-kits/memorial-garden-classical-formal/reflecting-pool.glb",
+    "color": "#589aaa",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "memorial-garden-classical-formal",
+    "sha256": "1d561072d393c3adf070053966259f07347923de14ed1c0be058600967de6846",
+    "triangles": 24,
+    "meshes": 2,
+    "bytes": 254200
+  },
+  {
+    "id": "detail-tiered-fountain",
+    "label": "Tiered fountain",
+    "category": "Water & landmarks",
+    "description": "A static landscape feature; no water simulation.",
+    "dimensions": [
+      6.4,
+      6.4,
+      3.43
+    ],
+    "url": "/park-kits/memorial-garden-classical-formal/tiered-fountain.glb",
+    "color": "#589aaa",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.22,
+      -0.0
+    ],
+    "sourceKit": "memorial-garden-classical-formal",
+    "sha256": "5b92410dbf9fefbdf3249c960249d879408613a6dfb932879328c0e7bb9f1bd5",
+    "triangles": 672,
+    "meshes": 4,
+    "bytes": 289644
+  },
+  {
+    "id": "detail-topiary-urn",
+    "label": "Topiary urn",
+    "category": "Planting",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      2.187,
+      2.3,
+      3.937
+    ],
+    "url": "/park-kits/memorial-garden-classical-formal/topiary-urn.glb",
+    "color": "#669663",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "memorial-garden-classical-formal",
+    "sha256": "7bd01927baef68086bf7e757be24ee6dfc220debcad5f5f9dd32e92f0b980748",
+    "triangles": 408,
+    "meshes": 3,
+    "bytes": 628616
+  },
+  {
+    "id": "detail-balance-log",
+    "label": "Balance log",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      6.5,
+      0.84,
+      0.827
+    ],
+    "url": "/park-kits/nature-play-forest-adventure/balance-log.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.066381,
+      -0.0
+    ],
+    "sourceKit": "nature-play-forest-adventure",
+    "sha256": "11873916d371dc0c99600a7377b797947a013f7137d8986843ad221a962d3c93",
+    "triangles": 68,
+    "meshes": 1,
+    "bytes": 373396
+  },
+  {
+    "id": "detail-log-fort",
+    "label": "Log fort",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      8.744,
+      4.995,
+      3.6
+    ],
+    "url": "/park-kits/nature-play-forest-adventure/log-fort.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      1.771922,
+      -0.0,
+      -0.197635
+    ],
+    "sourceKit": "nature-play-forest-adventure",
+    "sha256": "8eb125d0b0c46d03db31e4de5aac0279950cc049ff4060a042cdc0c63b4f74d3",
+    "triangles": 232,
+    "meshes": 6,
+    "bytes": 386044
+  },
+  {
+    "id": "detail-play-boulders",
+    "label": "Play boulders",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      6.73,
+      3.97,
+      1.85
+    ],
+    "url": "/park-kits/nature-play-forest-adventure/play-boulders.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      0.004755,
+      0.04,
+      -0.185
+    ],
+    "sourceKit": "nature-play-forest-adventure",
+    "sha256": "69c586f76d1bba4bedf39d14a081045d14f7b752b740912653c83caf5975697c",
+    "triangles": 240,
+    "meshes": 3,
+    "bytes": 389148
+  },
+  {
+    "id": "detail-stepping-stump",
+    "label": "Stepping stump",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      1.083,
+      1.1,
+      0.76
+    ],
+    "url": "/park-kits/nature-play-forest-adventure/stepping-stump.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "nature-play-forest-adventure",
+    "sha256": "a5888b3011688fcd51c6133943211c2256dc3a67a6f7fee0b14bb8c9b1fe0d2b",
+    "triangles": 68,
+    "meshes": 1,
+    "bytes": 373360
+  },
+  {
+    "id": "detail-willow-tunnel",
+    "label": "Willow tunnel",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      6.11,
+      4.092,
+      2.286
+    ],
+    "url": "/park-kits/nature-play-forest-adventure/willow-tunnel.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.030509,
+      -0.0
+    ],
+    "sourceKit": "nature-play-forest-adventure",
+    "sha256": "f36c9cd9f74b834cd97aa35febf3123a0aef5076c544d641cfbdb9a97e0884d7",
+    "triangles": 320,
+    "meshes": 5,
+    "bytes": 379796
+  },
+  {
+    "id": "detail-rustic-timber-pavilion",
+    "label": "Rustic timber pavilion",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      7.807,
+      5.8,
+      4.3
+    ],
+    "url": "/park-kits/neighborhood-park-rustic-v0/rustic-timber-pavilion.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "neighborhood-park-rustic-v0",
+    "sha256": "d7881c8a8ada2c54284aa439fe2c8c291519326ed0b436fd3d2f36f02d1a969c",
+    "triangles": 1028,
+    "meshes": 25,
+    "bytes": 750636
+  },
+  {
+    "id": "detail-timber-climbing-tower-slide",
+    "label": "Timber climbing tower & slide",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      7.721,
+      2.35,
+      4.35
+    ],
+    "url": "/park-kits/neighborhood-park-rustic-v0/timber-climbing-tower-slide.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.426741,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "neighborhood-park-rustic-v0",
+    "sha256": "8bee3ab414aeef5ad5df37c047d6395d6a0f0b58e37e635f705e3001cda48ccb",
+    "triangles": 992,
+    "meshes": 24,
+    "bytes": 440492
+  },
+  {
+    "id": "detail-timber-swing-frame",
+    "label": "Timber swing frame",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      5.1,
+      2.898,
+      3.336
+    ],
+    "url": "/park-kits/neighborhood-park-rustic-v0/timber-swing-frame.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.046198,
+      0.0
+    ],
+    "sourceKit": "neighborhood-park-rustic-v0",
+    "sha256": "59e624cfd7b8c0e0cf7724832ee12942ca2051cb2277503f1c0a0a6a0683fc46",
+    "triangles": 388,
+    "meshes": 11,
+    "bytes": 580196
+  },
+  {
+    "id": "detail-calisthenics-rig",
+    "label": "Calisthenics rig",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      6.15,
+      3.75,
+      3.265
+    ],
+    "url": "/park-kits/outdoor-fitness-calisthenics/calisthenics-rig.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "outdoor-fitness-calisthenics",
+    "sha256": "3304bad4c2f477b9954cb42b841702c6fd3071878b83db21ed1e9f325d7b6d27",
+    "triangles": 480,
+    "meshes": 12,
+    "bytes": 35836
+  },
+  {
+    "id": "detail-parallel-bars",
+    "label": "Parallel bars",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      3.314,
+      1.22,
+      1.355
+    ],
+    "url": "/park-kits/outdoor-fitness-calisthenics/parallel-bars.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "outdoor-fitness-calisthenics",
+    "sha256": "d3cc665bb10721017e4617799ebb8609dfbfbb1384f1ff7532f4b18d574c0ff9",
+    "triangles": 216,
+    "meshes": 6,
+    "bytes": 16888
+  },
+  {
+    "id": "detail-rings-frame",
+    "label": "Rings frame",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      4.65,
+      2.15,
+      3.065
+    ],
+    "url": "/park-kits/outdoor-fitness-calisthenics/rings-frame.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "outdoor-fitness-calisthenics",
+    "sha256": "39c520d5d20ddac624e2a996f98c6302e4f3977f48811e5964bc0de472655fa0",
+    "triangles": 1248,
+    "meshes": 14,
+    "bytes": 378064
+  },
+  {
+    "id": "detail-situp-bench",
+    "label": "Exercise sit-up bench",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      4.264,
+      1.5,
+      0.758
+    ],
+    "url": "/park-kits/outdoor-fitness-calisthenics/situp-bench.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      0.12022,
+      -0.270885,
+      -0.0
+    ],
+    "sourceKit": "outdoor-fitness-calisthenics",
+    "sha256": "a3f96d7ffcf98fa9111cf58512fa617d586a2d77aade825dd1c5f75f237b6999",
+    "triangles": 48,
+    "meshes": 2,
+    "bytes": 5256
+  },
+  {
+    "id": "detail-pickleball-fence-6m",
+    "label": "Pickleball fence 6m",
+    "category": "Edges & gates",
+    "description": "One fixed-size section; rotate and repeat to make an edge.",
+    "dimensions": [
+      5.883,
+      0.14,
+      3.0
+    ],
+    "url": "/park-kits/pickleball-community-bank/pickleball-fence-6m.glb",
+    "color": "#8f806a",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "pickleball-community-bank",
+    "sha256": "131c84bd8822d5d89f5569ec8dc8f0402f3ed7c40dfe213ed74e6df79e79a1e4",
+    "triangles": 272,
+    "meshes": 12,
+    "bytes": 24852
+  },
+  {
+    "id": "detail-pickleball-floodlight",
+    "label": "Pickleball floodlight",
+    "category": "Lighting",
+    "description": "A decorative light fixture for paths, gardens and plazas.",
+    "dimensions": [
+      1.6,
+      0.3,
+      9.15
+    ],
+    "url": "/park-kits/pickleball-community-bank/pickleball-floodlight.glb",
+    "color": "#617383",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "pickleball-community-bank",
+    "sha256": "33970c0ecd7168dd4a617f4b749f7320ca703f5f0a37467e8fbf1e366eee33aa",
+    "triangles": 56,
+    "meshes": 2,
+    "bytes": 5736
+  },
+  {
+    "id": "detail-pickleball-net",
+    "label": "Pickleball net",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      0.086,
+      6.79,
+      0.94
+    ],
+    "url": "/park-kits/pickleball-community-bank/pickleball-net.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "pickleball-community-bank",
+    "sha256": "ee6cb0cf4d07b9d423a8cc38ef8bff11877c6b7cc37f92307175cfe99e7ea723",
+    "triangles": 432,
+    "meshes": 20,
+    "bytes": 40920
+  },
+  {
+    "id": "detail-play-structure",
+    "label": "Compact play structure",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      9.85,
+      5.4,
+      4.15
+    ],
+    "url": "/park-kits/pickleball-community-bank/play-structure.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -2.225,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "pickleball-community-bank",
+    "sha256": "581b83551658a64a61f4bfeb95a0b767d609edf40bfa84f6af178a27e0475930",
+    "triangles": 212,
+    "meshes": 7,
+    "bytes": 758900
+  },
+  {
+    "id": "detail-shade-sail",
+    "label": "Shade sail",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      6.54,
+      4.54,
+      3.8
+    ],
+    "url": "/park-kits/pickleball-community-bank/shade-sail.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "pickleball-community-bank",
+    "sha256": "5c36117d752c30d1eafe95873e1bc53d047c4d266bd7b5fbc78268c3cf2ce776",
+    "triangles": 178,
+    "meshes": 5,
+    "bytes": 393628
+  },
+  {
+    "id": "detail-swing-bay",
+    "label": "Timber swing bay",
+    "category": "Play",
+    "description": "Play equipment only; leave a clear play area around it.",
+    "dimensions": [
+      10.173,
+      1.682,
+      3.442
+    ],
+    "url": "/park-kits/pickleball-community-bank/swing-bay.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.041607,
+      -0.641198
+    ],
+    "sourceKit": "pickleball-community-bank",
+    "sha256": "8fbbe90338cb2d5364af9a9fb5af42d1937c290d02e89a95fb40ed9403b91c76",
+    "triangles": 404,
+    "meshes": 15,
+    "bytes": 414928
+  },
+  {
+    "id": "detail-start-mound",
+    "label": "Cycle start mound",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      9.033,
+      3.2,
+      1.357
+    ],
+    "url": "/park-kits/pump-track-asphalt-competition/start-mound.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -2.016406,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "pump-track-asphalt-competition",
+    "sha256": "1c37df5bfdca43feaa7fcac5aa1bc0c020569de524c83289ac40f68526ecbdc5",
+    "triangles": 24,
+    "meshes": 2,
+    "bytes": 395568
+  },
+  {
+    "id": "detail-basketball-hoop-regulation",
+    "label": "Basketball hoop regulation",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      2.037,
+      1.82,
+      3.95
+    ],
+    "url": "/park-kits/shared-park-equipment-v1/basketball-hoop-regulation.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.8385,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "shared-park-equipment-v1",
+    "sha256": "84020803a7cdd03bbca8c778f0ef1b1a47c6068ad38c3c6ac50b3933a502f93e",
+    "triangles": 1752,
+    "meshes": 6,
+    "bytes": 117976
+  },
+  {
+    "id": "detail-skate-bowl-module",
+    "label": "Skate bowl module",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      14.15,
+      22.55,
+      1.705
+    ],
+    "url": "/park-kits/skate-park/skate-bowl-module.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      1.42,
+      -0.0
+    ],
+    "sourceKit": "skate-park",
+    "sha256": "5ab78c60f668ca75375f55f51caeb6195b3a75b779f9ef19db9eaebf31a14b7c",
+    "triangles": 1656,
+    "meshes": 2,
+    "bytes": 427792
+  },
+  {
+    "id": "detail-skate-ledge",
+    "label": "Skate ledge",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      6.0,
+      1.02,
+      0.96
+    ],
+    "url": "/park-kits/skate-park/skate-ledge.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.01
+    ],
+    "sourceKit": "skate-park",
+    "sha256": "d57fd5cddfd7de94b509755995608dad35cf32eb1956c2c7bdcb1be8e9d29ef0",
+    "triangles": 24,
+    "meshes": 2,
+    "bytes": 405712
+  },
+  {
+    "id": "detail-skate-rail",
+    "label": "Skate rail",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      6.0,
+      0.11,
+      0.805
+    ],
+    "url": "/park-kits/skate-park/skate-rail.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "skate-park",
+    "sha256": "dec3c1559de0e5f11a38da9ef7f2e9349c46ff20e7cf2cd39ea6984d8b33512a",
+    "triangles": 132,
+    "meshes": 3,
+    "bytes": 9932
+  },
+  {
+    "id": "detail-stair-hubba-module",
+    "label": "Stair hubba module",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      7.8,
+      5.8,
+      1.215
+    ],
+    "url": "/park-kits/skate-park/stair-hubba-module.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.01,
+      -0.0
+    ],
+    "sourceKit": "skate-park",
+    "sha256": "b5efa571c1d482642299e138a0222ef77a5031f3ff56d4239bb243af20ea1174",
+    "triangles": 96,
+    "meshes": 8,
+    "bytes": 414216
+  },
+  {
+    "id": "detail-ground-jet",
+    "label": "Splash-pad jet",
+    "category": "Water & landmarks",
+    "description": "A static landscape feature; no water simulation.",
+    "dimensions": [
+      0.64,
+      0.64,
+      2.395
+    ],
+    "url": "/park-kits/splash-pad-water-play/ground-jet.glb",
+    "color": "#589aaa",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.01,
+      -0.0
+    ],
+    "sourceKit": "splash-pad-water-play",
+    "sha256": "8b0d270862627f568b8c6647b3f3640ae98e373fb5cec2d8e3f8bf96f4a61d3f",
+    "triangles": 284,
+    "meshes": 2,
+    "bytes": 17220
+  },
+  {
+    "id": "detail-spray-arch",
+    "label": "Spray arch",
+    "category": "Water & landmarks",
+    "description": "A static landscape feature; no water simulation.",
+    "dimensions": [
+      4.24,
+      0.24,
+      3.32
+    ],
+    "url": "/park-kits/splash-pad-water-play/spray-arch.glb",
+    "color": "#589aaa",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "splash-pad-water-play",
+    "sha256": "8192f2c5c92dd397a65b77a779b01474ed6a6eff495e81fd1af28925edcfeba1",
+    "triangles": 196,
+    "meshes": 4,
+    "bytes": 344616
+  },
+  {
+    "id": "detail-timber-water-tower",
+    "label": "Timber water tower",
+    "category": "Water & landmarks",
+    "description": "A static landscape feature; no water simulation.",
+    "dimensions": [
+      5.0,
+      8.836,
+      6.327
+    ],
+    "url": "/park-kits/splash-pad-water-play/timber-water-tower.glb",
+    "color": "#589aaa",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -2.417776
+    ],
+    "sourceKit": "splash-pad-water-play",
+    "sha256": "92361d7aa76bc85108589c2de66863408a6145becfc77bb5b566fd24d180d160",
+    "triangles": 384,
+    "meshes": 9,
+    "bytes": 359508
+  },
+  {
+    "id": "detail-soccer-goal",
+    "label": "Soccer goal",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      0.11,
+      7.43,
+      2.495
+    ],
+    "url": "/park-kits/sports-complex-tournament/soccer-goal.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "sports-complex-tournament",
+    "sha256": "86230189efe4bd9f800cd02995544b59c300fbf9582e93f59fb701a7813f3188",
+    "triangles": 132,
+    "meshes": 3,
+    "bytes": 10060
+  },
+  {
+    "id": "detail-sports-field-fence",
+    "label": "Sports field fence",
+    "category": "Edges & gates",
+    "description": "One fixed-size section; rotate and repeat to make an edge.",
+    "dimensions": [
+      6.133,
+      0.14,
+      2.4
+    ],
+    "url": "/park-kits/sports-complex-tournament/sports-field-fence.glb",
+    "color": "#8f806a",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "sports-complex-tournament",
+    "sha256": "0201ffac7912add4dab1e64cd975dd834bb92b32704c5c8705a1932eaf206887",
+    "triangles": 272,
+    "meshes": 12,
+    "bytes": 25208
+  },
+  {
+    "id": "detail-sports-floodlight",
+    "label": "Sports floodlight",
+    "category": "Lighting",
+    "description": "A decorative light fixture for paths, gardens and plazas.",
+    "dimensions": [
+      3.0,
+      0.4,
+      14.175
+    ],
+    "url": "/park-kits/sports-complex-tournament/sports-floodlight.glb",
+    "color": "#617383",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "sports-complex-tournament",
+    "sha256": "8166a68fb1992090bf1bd987e320ea4a9d3cbc9c9615d0cc70eb37822bb11092",
+    "triangles": 56,
+    "meshes": 2,
+    "bytes": 5712
+  },
+  {
+    "id": "detail-spectator-bleacher",
+    "label": "Spectator bleacher",
+    "category": "Seating",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      6.2,
+      1.9,
+      1.09
+    ],
+    "url": "/park-kits/tennis-court-professional/spectator-bleacher.glb",
+    "color": "#a78555",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.17,
+      0.78
+    ],
+    "sourceKit": "tennis-court-professional",
+    "sha256": "edf55befa026d23ebd7a194da66fea5d4ce0bca11dbcaf446757329938bb8423",
+    "triangles": 72,
+    "meshes": 6,
+    "bytes": 9676
+  },
+  {
+    "id": "detail-tennis-fence-6m",
+    "label": "Tennis fence 6m",
+    "category": "Edges & gates",
+    "description": "One fixed-size section; rotate and repeat to make an edge.",
+    "dimensions": [
+      6.105,
+      0.11,
+      3.6
+    ],
+    "url": "/park-kits/tennis-court-professional/tennis-fence-6m.glb",
+    "color": "#8f806a",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "tennis-court-professional",
+    "sha256": "affd10f57253cb6ddf9799928eca336b7a0a97d18e70fd00e9e7a687db0435ef",
+    "triangles": 592,
+    "meshes": 26,
+    "bytes": 54536
+  },
+  {
+    "id": "detail-tennis-floodlight",
+    "label": "Tennis floodlight",
+    "category": "Lighting",
+    "description": "A decorative light fixture for paths, gardens and plazas.",
+    "dimensions": [
+      2.02,
+      0.24,
+      9.13
+    ],
+    "url": "/park-kits/tennis-court-professional/tennis-floodlight.glb",
+    "color": "#617383",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "tennis-court-professional",
+    "sha256": "6024d695caa18a84fd069fe43365f17e27de073b856a13c79379a7e890d5b194",
+    "triangles": 92,
+    "meshes": 5,
+    "bytes": 10216
+  },
+  {
+    "id": "detail-tennis-net",
+    "label": "Tennis net",
+    "category": "Sport & exercise",
+    "description": "Equipment only; place with room for its activity and access.",
+    "dimensions": [
+      18.386,
+      0.09,
+      1.1
+    ],
+    "url": "/park-kits/tennis-court-professional/tennis-net.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "tennis-court-professional",
+    "sha256": "6c3c7810e2e1147857018fbb43b39cc8b98dc1fc1440a2dd971e1fdeebeec562",
+    "triangles": 560,
+    "meshes": 26,
+    "bytes": 53200
+  },
+  {
+    "id": "detail-canal-bench",
+    "label": "Canal-side bench",
+    "category": "Seating",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      0.615,
+      1.7,
+      1.0
+    ],
+    "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bench.glb",
+    "color": "#a78555",
+    "kind": "object",
+    "offset": [
+      -0.02,
+      -0.12,
+      -0.0
+    ],
+    "sourceKit": "amsterdam_gracht_v1",
+    "sha256": "a1765bfc10b83423d621479851523389fb06e9023b56cd41929c55be6f583411",
+    "triangles": 264,
+    "meshes": 2,
+    "bytes": 15160
+  },
+  {
+    "id": "detail-canal-bollard",
+    "label": "Canal bollard",
+    "category": "Street furniture",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      0.17,
+      0.17,
+      0.36
+    ],
+    "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bollard.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.12,
+      -0.0
+    ],
+    "sourceKit": "amsterdam_gracht_v1",
+    "sha256": "6b5422458e529bed849406937d9b3f847013e8f7a4b132652245f2a57c30385d",
+    "triangles": 44,
+    "meshes": 1,
+    "bytes": 3160
+  },
+  {
+    "id": "detail-canal-lamp",
+    "label": "Canal lamp",
+    "category": "Lighting",
+    "description": "A decorative light fixture for paths, gardens and plazas.",
+    "dimensions": [
+      0.45,
+      0.45,
+      4.085
+    ],
+    "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_lamp.glb",
+    "color": "#617383",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.12,
+      -0.0
+    ],
+    "sourceKit": "amsterdam_gracht_v1",
+    "sha256": "5316049c31be3a2dd68c641bc272c6c4c11a4fbac3480d9884c0a609bc00a2ca",
+    "triangles": 60,
+    "meshes": 2,
+    "bytes": 5000
+  },
+  {
+    "id": "detail-canal-tree",
+    "label": "Canal shade tree",
+    "category": "Trees",
+    "description": "Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      8.529,
+      8.408,
+      10.448
+    ],
+    "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_tree.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.447724,
+      0.009045,
+      -0.158356
+    ],
+    "sourceKit": "amsterdam_gracht_v1",
+    "sha256": "0d899baf64da60cdb6e40096a2eefdd15cc69eb5147ffd69f184ca1c99274c95",
+    "triangles": 11205,
+    "meshes": 1,
+    "bytes": 1278708
+  },
+  {
+    "id": "detail-light",
+    "label": "Contemporary path light",
+    "category": "Lighting",
+    "description": "A decorative light fixture for paths, gardens and plazas.",
+    "dimensions": [
+      0.58,
+      0.58,
+      3.675
+    ],
+    "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/light.glb",
+    "color": "#617383",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "brt_bus_rapid_transit_corridor_v0",
+    "sha256": "b480a69a4bcc2f8523e85804c8780a7df491233e9acdd20d58369c811096e166",
+    "triangles": 320,
+    "meshes": 1,
+    "bytes": 37676
+  },
+  {
+    "id": "detail-shade-tree",
+    "label": "Broad-canopy shade tree",
+    "category": "Trees",
+    "description": "Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      5.059,
+      4.879,
+      7.206
+    ],
+    "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/shade_tree.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.0363,
+      0.006238,
+      0.231874
+    ],
+    "sourceKit": "brt_bus_rapid_transit_corridor_v0",
+    "sha256": "16478d194648e0e51d361f2ceb64b88274fa079c9d58d6f7f35437b7aedbec55",
+    "triangles": 11205,
+    "meshes": 2,
+    "bytes": 1279432
+  },
+  {
+    "id": "detail-tree-well-grate",
+    "label": "Tree well grate",
+    "category": "Street furniture",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      1.8,
+      1.8,
+      0.05
+    ],
+    "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/tree_well_grate.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.0,
+      -0.0
+    ],
+    "sourceKit": "brt_bus_rapid_transit_corridor_v0",
+    "sha256": "f51ce084fa6ed1cda5e5fed3b0c3d678b8e762e6fc4f45f201292c40ecdbf60a",
+    "triangles": 828,
+    "meshes": 1,
+    "bytes": 95612
+  },
+  {
+    "id": "detail-bench",
+    "label": "Street timber bench",
+    "category": "Seating",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      1.86,
+      0.587,
+      0.965
+    ],
+    "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/bench.glb",
+    "color": "#a78555",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.0,
+      0.023646
+    ],
+    "sourceKit": "elevated_rail_transit_corridor_v0",
+    "sha256": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+    "triangles": 288,
+    "meshes": 1,
+    "bytes": 34024
+  },
+  {
+    "id": "detail-meadow-grass",
+    "label": "Meadow grass",
+    "category": "Planting",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      1.068,
+      1.03,
+      1.194
+    ],
+    "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/meadow_grass.glb",
+    "color": "#669663",
+    "kind": "object",
+    "offset": [
+      0.005415,
+      0.000759,
+      0.013737
+    ],
+    "sourceKit": "elevated_rail_transit_corridor_v0",
+    "sha256": "2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06",
+    "triangles": 585,
+    "meshes": 2,
+    "bytes": 68700
+  },
+  {
+    "id": "detail-rail-lamp",
+    "label": "Rail lamp",
+    "category": "Lighting",
+    "description": "A decorative light fixture for paths, gardens and plazas.",
+    "dimensions": [
+      0.875,
+      0.32,
+      3.865
+    ],
+    "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/rail_lamp.glb",
+    "color": "#617383",
+    "kind": "object",
+    "offset": [
+      -0.2775,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "elevated_rail_transit_corridor_v0",
+    "sha256": "bf97e3cba785ed7804a74288d2b2b1cb79c44282ab036de7bdac37909911c4d4",
+    "triangles": 48,
+    "meshes": 2,
+    "bytes": 4512
+  },
+  {
+    "id": "detail-autumn-florist-kiosk",
+    "label": "Florist kiosk",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      4.88,
+      2.6,
+      3.15
+    ],
+    "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/autumn_florist_kiosk.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_barcelona_shaded_promenade_v1",
+    "sha256": "95a928d8629ddcef1fb3c4983f1dd368bfe95be9cb6a0569d56d35952ebd18bf",
+    "triangles": 25424,
+    "meshes": 27,
+    "bytes": 2615768
+  },
+  {
+    "id": "detail-heritage-lantern",
+    "label": "Heritage lantern",
+    "category": "Lighting",
+    "description": "A decorative light fixture for paths, gardens and plazas.",
+    "dimensions": [
+      0.58,
+      0.58,
+      4.03
+    ],
+    "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/heritage_lantern.glb",
+    "color": "#617383",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_barcelona_shaded_promenade_v1",
+    "sha256": "8cf8de3045ec460b90470d94da117e4dafd229fa06e498c61482ab8e86a2e6d9",
+    "triangles": 320,
+    "meshes": 2,
+    "bytes": 17100
+  },
+  {
+    "id": "detail-street-bollard",
+    "label": "Street bollard",
+    "category": "Street furniture",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      0.28,
+      0.28,
+      0.98
+    ],
+    "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/street_bollard.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_barcelona_shaded_promenade_v1",
+    "sha256": "e4e20e97cef64814adea44546142c1f123c5ce275bcdefaad46f6e4a8f50808f",
+    "triangles": 176,
+    "meshes": 2,
+    "bytes": 9892
+  },
+  {
+    "id": "detail-autumn-cherry-tree",
+    "label": "Cherry blossom tree",
+    "category": "Trees",
+    "description": "Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.889,
+      4.549,
+      6.44
+    ],
+    "url": "/street-kits/pilots/student_cherry_blossom_street_v1/autumn_cherry_tree.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.29141,
+      0.001315,
+      0.214055
+    ],
+    "sourceKit": "student_cherry_blossom_street_v1",
+    "sha256": "1b18700be0bff2f4b778149dfa1dcb338fb1545f0889af8fe7be883047fdbdf6",
+    "triangles": 11277,
+    "meshes": 2,
+    "bytes": 1287648
+  },
+  {
+    "id": "detail-bike-rack",
+    "label": "Compact bicycle rack",
+    "category": "Street furniture",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      1.32,
+      0.77,
+      0.936
+    ],
+    "url": "/street-kits/pilots/student_cycle_avenue_v1/bike_rack.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.0,
+      -0.0
+    ],
+    "sourceKit": "student_cycle_avenue_v1",
+    "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+    "triangles": 840,
+    "meshes": 1,
+    "bytes": 96964
+  },
+  {
+    "id": "detail-flowering-perennial",
+    "label": "Flowering perennial",
+    "category": "Planting",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      0.732,
+      0.765,
+      0.699
+    ],
+    "url": "/street-kits/pilots/student_cycle_avenue_v1/flowering_perennial.glb",
+    "color": "#669663",
+    "kind": "object",
+    "offset": [
+      0.007991,
+      -0.004621,
+      -0.00827
+    ],
+    "sourceKit": "student_cycle_avenue_v1",
+    "sha256": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+    "triangles": 1404,
+    "meshes": 2,
+    "bytes": 162120
+  },
+  {
+    "id": "detail-grove-tree",
+    "label": "Slender grove tree",
+    "category": "Trees",
+    "description": "Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      2.716,
+      2.527,
+      8.05
+    ],
+    "url": "/street-kits/pilots/student_cycle_avenue_v1/grove_tree.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.161894,
+      0.001643,
+      0.11892
+    ],
+    "sourceKit": "student_cycle_avenue_v1",
+    "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+    "triangles": 11277,
+    "meshes": 2,
+    "bytes": 1287628
+  },
+  {
+    "id": "detail-silver-shrub",
+    "label": "Silver shrub",
+    "category": "Planting",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      1.189,
+      1.163,
+      1.066
+    ],
+    "url": "/street-kits/pilots/student_cycle_avenue_v1/silver_shrub.glb",
+    "color": "#669663",
+    "kind": "object",
+    "offset": [
+      0.014175,
+      -0.000823,
+      0.02698
+    ],
+    "sourceKit": "student_cycle_avenue_v1",
+    "sha256": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc",
+    "triangles": 3204,
+    "meshes": 2,
+    "bytes": 367296
+  },
+  {
+    "id": "detail-promenade-kiosk",
+    "label": "Promenade kiosk",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      2.9,
+      2.6,
+      3.1
+    ],
+    "url": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/promenade_kiosk.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_grand_haussmann_boulevard_v1",
+    "sha256": "4def0f2ee8620504669347ac23f061512fd1dd2e4993ee5ccfbcc45943d99ca5",
+    "triangles": 304,
+    "meshes": 6,
+    "bytes": 20692
+  },
+  {
+    "id": "detail-showcase-morris-column",
+    "label": "Circular poster column",
+    "category": "Street furniture",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      1.66,
+      1.66,
+      3.2
+    ],
+    "url": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/showcase_morris_column.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_grand_haussmann_boulevard_v1",
+    "sha256": "a8f52f40e6520f1190359906d9041e9b9182ce1b0723650dce312a51fc0e61c0",
+    "triangles": 1420,
+    "meshes": 5,
+    "bytes": 74412
+  },
+  {
+    "id": "detail-showcase-tram-stop",
+    "label": "Tram stop shelter",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      3.2,
+      27.2,
+      3.7
+    ],
+    "url": "/street-kits/pilots/student_grass_tram_avenue_v1/showcase_tram_stop.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_grass_tram_avenue_v1",
+    "sha256": "7fa75afb6de3550d54b89d51cd94c36b28f74812cac9933fdfcc65ff72f339c3",
+    "triangles": 5008,
+    "meshes": 6,
+    "bytes": 254788
+  },
+  {
+    "id": "detail-planted-trellis",
+    "label": "Planted trellis",
+    "category": "Garden & growing",
+    "description": "Place beside a path for access to planting and maintenance.",
+    "dimensions": [
+      2.8,
+      1.02,
+      2.48
+    ],
+    "url": "/street-kits/pilots/student_green_alley_v1/planted_trellis.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_green_alley_v1",
+    "sha256": "e81afde69f848f2407c607da9b727b1073db8fe315d8568636e75a85b7a0731c",
+    "triangles": 564,
+    "meshes": 3,
+    "bytes": 33656
+  },
+  {
+    "id": "detail-autumn-flower-planter",
+    "label": "Flower-filled planter",
+    "category": "Planting",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      0.98,
+      0.98,
+      1.273
+    ],
+    "url": "/street-kits/pilots/student_london_cobbled_mews_v1/autumn_flower_planter.glb",
+    "color": "#669663",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_london_cobbled_mews_v1",
+    "sha256": "2706b4ca3aa5aea161aef750c203ba7d3ae10dc9942821b7e1ec7a2ed480ad5c",
+    "triangles": 5284,
+    "meshes": 6,
+    "bytes": 560228
+  },
+  {
+    "id": "detail-autumn-planted-trellis",
+    "label": "Leafy garden trellis",
+    "category": "Garden & growing",
+    "description": "Place beside a path for access to planting and maintenance.",
+    "dimensions": [
+      2.8,
+      1.02,
+      2.48
+    ],
+    "url": "/street-kits/pilots/student_london_cobbled_mews_v1/autumn_planted_trellis.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_london_cobbled_mews_v1",
+    "sha256": "31079c9ab86bd7828e76a3b8d8cedb1f22cca2d4d2c4636f835b894d4fd0317d",
+    "triangles": 17028,
+    "meshes": 19,
+    "bytes": 1861788
+  },
+  {
+    "id": "detail-bin",
+    "label": "Street litter bin",
+    "category": "Street furniture",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      0.517,
+      0.52,
+      0.915
+    ],
+    "url": "/street-kits/pilots/student_main_street_v1/bin.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_main_street_v1",
+    "sha256": "31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c",
+    "triangles": 696,
+    "meshes": 1,
+    "bytes": 80532
+  },
+  {
+    "id": "detail-planter",
+    "label": "Street planter box",
+    "category": "Planting",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      1.615,
+      0.603,
+      1.196
+    ],
+    "url": "/street-kits/pilots/student_main_street_v1/planter.glb",
+    "color": "#669663",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_main_street_v1",
+    "sha256": "c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b",
+    "triangles": 1144,
+    "meshes": 1,
+    "bytes": 131616
+  },
+  {
+    "id": "detail-timber-seat-wall",
+    "label": "Timber seat wall",
+    "category": "Seating",
+    "description": "Place independently along streets, in parks or in open areas.",
+    "dimensions": [
+      3.6,
+      0.69,
+      0.48
+    ],
+    "url": "/street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
+    "color": "#a78555",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_main_street_v1",
+    "sha256": "100ee7db5a4c6889be5a355260bda4670117d7241b1cb7f9ddcebd6e3047dcfd",
+    "triangles": 300,
+    "meshes": 2,
+    "bytes": 18172
+  },
+  {
+    "id": "detail-cafe-parasol",
+    "label": "Cafe parasol",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      3.107,
+      3.107,
+      2.9
+    ],
+    "url": "/street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_market_street_v1",
+    "sha256": "60d58e1acfb57d9cde82ea33f60b368d9d95bc3446b6b48f8ae97b194af6a38e",
+    "triangles": 1136,
+    "meshes": 4,
+    "bytes": 60396
+  },
+  {
+    "id": "detail-market-stall",
+    "label": "Market stall",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      2.84,
+      1.911,
+      2.834
+    ],
+    "url": "/street-kits/pilots/student_market_street_v1/market_stall.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0055
+    ],
+    "sourceKit": "student_market_street_v1",
+    "sha256": "5d7c588fbb89704d7b1199432b17bd257a837f5df9f8b8bc45a8694cad80c2b3",
+    "triangles": 1248,
+    "meshes": 4,
+    "bytes": 65200
+  },
+  {
+    "id": "detail-stone-fountain",
+    "label": "Stone fountain",
+    "category": "Water & landmarks",
+    "description": "A static landscape feature; no water simulation.",
+    "dimensions": [
+      3.6,
+      3.6,
+      1.29
+    ],
+    "url": "/street-kits/pilots/student_market_street_v1/stone_fountain.glb",
+    "color": "#589aaa",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_market_street_v1",
+    "sha256": "263b17b8a091f076e8e5f784c3315eff9270f3c5516124b02e162877e6de12aa",
+    "triangles": 2476,
+    "meshes": 2,
+    "bytes": 115896
+  },
+  {
+    "id": "detail-ornamental-tree",
+    "label": "Small ornamental tree",
+    "category": "Trees",
+    "description": "Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      3.866,
+      3.838,
+      4.769
+    ],
+    "url": "/street-kits/pilots/student_planted_shared_lane_v1/ornamental_tree.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.040295,
+      0.015057,
+      -0.063181
+    ],
+    "sourceKit": "student_planted_shared_lane_v1",
+    "sha256": "437e6e87d362a0c3bffa1c2d84faf6bccfaf95750c660c5cfafee72de822af18",
+    "triangles": 12825,
+    "meshes": 2,
+    "bytes": 1464120
+  },
+  {
+    "id": "detail-walkway-arbor",
+    "label": "Walkway arbor",
+    "category": "Garden & growing",
+    "description": "Place beside a path for access to planting and maintenance.",
+    "dimensions": [
+      2.36,
+      1.25,
+      3.015
+    ],
+    "url": "/street-kits/pilots/student_planted_shared_lane_v1/walkway_arbor.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_planted_shared_lane_v1",
+    "sha256": "32bfc1b951adf0b644bb04d1977375b5c6d6c238c24b241c308a407c3a78e1da",
+    "triangles": 144,
+    "meshes": 2,
+    "bytes": 9744
+  },
+  {
+    "id": "detail-showcase-iron-guard",
+    "label": "Iron railing section",
+    "category": "Edges & gates",
+    "description": "One fixed-size section; rotate and repeat to make an edge.",
+    "dimensions": [
+      0.126,
+      3.026,
+      1.24
+    ],
+    "url": "/street-kits/pilots/student_vine_pergola_promenade_v1/showcase_iron_guard.glb",
+    "color": "#8f806a",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "student_vine_pergola_promenade_v1",
+    "sha256": "3a9d089f1e3212346d0278ca381182a61f0eb381a732a48c19732fa53056e9f4",
+    "triangles": 568,
+    "meshes": 1,
+    "bytes": 28696
+  },
+  {
+    "id": "detail-showcase-ivy-pergola",
+    "label": "Ivy pergola",
+    "category": "Shelters & markets",
+    "description": "Leave space for entrances and pedestrian access.",
+    "dimensions": [
+      4.129,
+      5.707,
+      3.46
+    ],
+    "url": "/street-kits/pilots/student_vine_pergola_promenade_v1/showcase_ivy_pergola.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      0.0055,
+      -0.0,
+      -0.01625
+    ],
+    "sourceKit": "student_vine_pergola_promenade_v1",
+    "sha256": "ebfa16bed6ab2c5e77c4b66dc55c36c15a4b8f073de3bcf17f0a7cbac7663788",
+    "triangles": 2280,
+    "meshes": 3,
+    "bytes": 137712
+  }
+]

@@ -1,9 +1,11 @@
 """Independent scene furniture, stored in project metadata (not fake site zones)."""
 import uuid
+import json
+from pathlib import Path
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,11 +24,29 @@ class Bench(BaseModel):
     angle: float = Field(ge=-360, le=360)
 
 
+# Shipped registry, never a client-provided model URL. Mirrored catalogue coverage
+# is checked against frontend metadata by test_project_details.py.
+_DETAIL_MODELS = json.loads((Path(__file__).resolve().parents[2] / 'data/project_detail_models.json').read_text())
+
 class Tree(Bench):
-    variant: Literal['oak-0', 'oak-1', 'oak-2']
+    variant: str
+
+    @field_validator('variant')
+    @classmethod
+    def known_tree(cls, value):
+        if value not in _DETAIL_MODELS['trees']:
+            raise ValueError('Unknown tree model')
+        return value
 
 class Prop(Bench):
-    variant: Literal['picnic-table-accessible', 'dual-stream-bin', 'bike-rack-three-stall', 'drinking-fountain-accessible', 'boulders', 'split-rail']
+    variant: str
+
+    @field_validator('variant')
+    @classmethod
+    def known_prop(cls, value):
+        if value not in _DETAIL_MODELS['props']:
+            raise ValueError('Unknown detail model')
+        return value
 
 
 class DetailUpdate(BaseModel):

@@ -547,7 +547,14 @@ export function BenchLayoutEditor({
                   />
                   {bench.treeVariant && (
                     <circle
-                      r={3}
+                      r={
+                        Math.max(
+                          ...detailAsset(bench.treeVariant).dimensions.slice(
+                            0,
+                            2,
+                          ),
+                        ) / 2
+                      }
                       fill="#76a65c"
                       fillOpacity={0.65}
                       stroke="#315935"
@@ -601,7 +608,7 @@ export function BenchLayoutEditor({
               ))}
             </svg>
             <p className="mt-2 text-xs">
-              Top view · north ↑ · benches keep their actual 1.9 m size.{" "}
+              Top view · north ↑ · objects keep their real dimensions.{" "}
               {independent
                 ? "Building, street and park outlines are guides, not placement limits."
                 : "Paths and larger park objects are shown for context."}

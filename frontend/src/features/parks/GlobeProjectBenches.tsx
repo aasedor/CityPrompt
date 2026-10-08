@@ -7,10 +7,11 @@ import {
   useState,
 } from "react";
 import { useFrame } from "@react-three/fiber";
-import { EastNorthUpFrame, TilesRendererContext } from "3d-tiles-renderer/r3f";
+import { TilesRendererContext } from "3d-tiles-renderer/r3f";
 import { Raycaster } from "three";
 import type { SiteZone } from "@/types";
-import { DetailModel } from "./DetailModel";
+import { DetailModelInstances } from "./DetailModelInstances";
+import type { DetailPlacement } from "./detailInstances";
 import { useSharedSiteGround } from "@/components/viewer/globe/SharedSiteGroundProvider";
 import { authoredCameraGround } from "@/components/viewer/globe/authoredCameraGround";
 import { raycastTerrainHeightAtLatLng } from "@/components/viewer/globe/GlobeZoneLayer";
@@ -73,28 +74,28 @@ export function GlobeProjectBenches({
     if (Object.keys(batch).length)
       setSampled((previous) => ({ ...previous, ...batch }));
   });
+  const batches = useMemo(() => {
+    const groups = new Map<string, DetailPlacement[]>();
+    for (const b of items) {
+      const measured =
+        ground.heightAt(b.lng, b.lat) ?? sampled[keyFor(b)] ?? fallbackHeight;
+      const height = authoredCameraGround(zones, b.lng, b.lat, measured);
+      const group = groups.get(b.variant) ?? [];
+      group.push({ ...b, height });
+      groups.set(b.variant, group);
+    }
+    return [...groups];
+  }, [items, ground, sampled, fallbackHeight, zones]);
   return (
     <group
       name="project-details"
       userData={direct3DProposalUserData("landscape")}
     >
-      {items.map((b) => {
-        const measured =
-          ground.heightAt(b.lng, b.lat) ?? sampled[keyFor(b)] ?? fallbackHeight;
-        const height = authoredCameraGround(zones, b.lng, b.lat, measured);
-        return (
-          <EastNorthUpFrame
-            key={b.id}
-            lat={(b.lat * Math.PI) / 180}
-            lon={(b.lng * Math.PI) / 180}
-            height={height}
-          >
-            <Suspense fallback={null}>
-              <DetailModel asset={b.variant} yaw={(b.angle * Math.PI) / 180} />
-            </Suspense>
-          </EastNorthUpFrame>
-        );
-      })}
+      {batches.map(([asset, placements]) => (
+        <Suspense key={asset} fallback={null}>
+          <DetailModelInstances asset={asset} placements={placements} />
+        </Suspense>
+      ))}
     </group>
   );
 }

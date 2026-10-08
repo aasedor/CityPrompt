@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   searchDetails,
   DETAIL_CATALOGUE,
+  DETAIL_CATEGORIES,
   type DetailAssetId,
 } from "./detailCatalogue";
 
@@ -39,11 +40,9 @@ export function DetailCataloguePicker({
         onChange={(e) => setCategory(e.target.value)}
         className={control}
       >
-        {["All", "Seating", "Trees", "Street furniture", "Landscape"].map(
-          (group) => (
-            <option key={group}>{group}</option>
-          ),
-        )}
+        {["All", ...DETAIL_CATEGORIES].map((group) => (
+          <option key={group}>{group}</option>
+        ))}
       </select>
       {choice ? (
         <>

@@ -1,7 +1,21 @@
+import extras from "./detailCatalogueExtras.json";
+export interface DetailAsset {
+  id: string;
+  label: string;
+  category: string;
+  description: string;
+  dimensions: readonly number[];
+  url: string;
+  color: string;
+  kind: "bench" | "tree" | "object";
+  /** Translation in source Y-up coordinates, before the globe conversion. */
+  offset?: readonly number[];
+}
+const extraModels = extras as DetailAsset[];
 /** Existing metric assets only. No user-provided paths or nonuniform scaling. */
 const RUSTIC = "/landscape-pilots/neighborhood-rustic-v5";
 const EQUIPMENT = "/park-kits/shared-park-equipment-v1";
-export const DETAIL_PROP_MODELS = [
+const ORIGINAL_PROP_MODELS = [
   {
     id: "picnic-table-accessible",
     label: "Accessible picnic table",
@@ -58,8 +72,12 @@ export const DETAIL_PROP_MODELS = [
     color: "#957856",
   },
 ] as const;
-export type DetailPropVariant = (typeof DETAIL_PROP_MODELS)[number]["id"];
-export const DETAIL_CATALOGUE = [
+export const DETAIL_PROP_MODELS = [
+  ...ORIGINAL_PROP_MODELS,
+  ...extraModels.filter((m) => m.kind === "object"),
+];
+export type DetailPropVariant = string;
+export const DETAIL_CATALOGUE: readonly DetailAsset[] = [
   {
     id: "timber-bench",
     label: "Timber bench",
@@ -82,10 +100,14 @@ export const DETAIL_CATALOGUE = [
     ][i],
     url: `${RUSTIC}/${id}.glb`,
     color: "#76a65c",
-    kind: "tree",
+    kind: "tree" as const,
   })),
-  ...DETAIL_PROP_MODELS.map((model) => ({ ...model, kind: "object" })),
+  ...DETAIL_PROP_MODELS.map((model) => ({ ...model, kind: "object" as const })),
+  ...extraModels.filter((m) => m.kind === "tree"),
 ] as const;
+export const DETAIL_CATEGORIES = [
+  ...new Set(DETAIL_CATALOGUE.map((m) => m.category)),
+];
 export type DetailAssetId = (typeof DETAIL_CATALOGUE)[number]["id"];
 export const detailAsset = (id: DetailAssetId) =>
   DETAIL_CATALOGUE.find((model) => model.id === id)!;

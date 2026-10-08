@@ -24,21 +24,24 @@
     "src/components/ui/TileTrail.tsx",
     "src/components/ui/UndoRedoButtons.tsx",
     "src/components/viewer/AIRenderPanel.tsx",
+    "src/components/viewer/AnimateRenderButton.tsx",
     "src/components/viewer/BuildingModelViewer.tsx",
     "src/components/viewer/CustomStyleEditor.tsx",
     "src/components/viewer/HistoryPanel.tsx",
     "src/components/viewer/ImageModelSelect.tsx",
     "src/components/viewer/LayoutPreviewPanel.tsx",
+    "src/components/viewer/LocalComfyTrialButton.tsx",
     "src/components/viewer/OnboardingTour.tsx",
     "src/components/viewer/RenderEditModal.tsx",
     "src/components/viewer/RenderResultModal.tsx",
+    "src/components/viewer/RenderStyleGuide.tsx",
+    "src/components/viewer/RenderStyleGuideButton.tsx",
     "src/components/viewer/SiteIntelligencePanel.tsx",
     "src/components/viewer/SitePlanDiagram.tsx",
     "src/components/viewer/SitePlannerMap.tsx",
     "src/components/viewer/SitePlannerToolbar.tsx",
     "src/components/viewer/StreetViewPanel.tsx",
     "src/components/viewer/VideoGeneratePanel.tsx",
-    "src/components/viewer/WorkflowStepper.tsx",
     "src/components/viewer/ZoneLegend.tsx",
     "src/components/viewer/ZonePropertiesPanel.tsx",
     "src/components/viewer/aestheticCatalog.ts",
@@ -100,6 +103,7 @@
     "src/components/viewer/globe/StreetRenderBoundary.tsx",
     "src/components/viewer/globe/TileSpatialMaskPlugin.ts",
     "src/components/viewer/globe/TileStencilPatcher.tsx",
+    "src/components/viewer/globe/WorkingViewPerformance.tsx",
     "src/components/viewer/globe/authoredCameraGround.ts",
     "src/components/viewer/globe/bridgeStreetClearance.ts",
     "src/components/viewer/globe/brtStreetProgram.ts",
@@ -234,9 +238,14 @@
     "src/components/viewer/globe/useParkGround.ts",
     "src/components/viewer/globe/useRenderDraft.ts",
     "src/components/viewer/globe/useSceneSettled.ts",
+    "src/components/viewer/globe/useStreetDetailZones.ts",
+    "src/components/viewer/globe/useWalkKeyboard.ts",
+    "src/components/viewer/globe/useWorkingViewQuality.ts",
     "src/components/viewer/globe/walkNavigation.ts",
     "src/components/viewer/globe/zoneSurfaceMode.ts",
     "src/components/viewer/mapEngine/geoUtils.ts",
+    "src/components/viewer/renderDraftStorage.ts",
+    "src/components/viewer/renderStyleGuideData.ts",
     "src/components/viewer/resolvePlanZoneArchetypes.ts",
     "src/components/viewer/runImageModelBatch.ts",
     "src/components/viewer/siteIntelligencePlanStatus.ts",
@@ -256,9 +265,12 @@
     "src/data/archetypeVisualSystem.json",
     "src/data/buildingArchetypes.json",
     "src/data/buildingPlacementEdges.json",
+    "src/data/buildingWalkDoors.json",
     "src/data/canalRoutePolicy.json",
+    "src/data/catalogueOctober2026.json",
     "src/data/classroomExpansion.json",
     "src/data/classroomStarter.json",
+    "src/data/communityBuildingBatch.json",
     "src/data/flexibleParks.json",
     "src/data/landUseColours.ts",
     "src/data/legoFamilySignatures.json",
@@ -269,6 +281,7 @@
     "src/data/openSpaceArchetypes.json",
     "src/data/parkKitManifest.ts",
     "src/data/parkKitRecipes.ts",
+    "src/data/savedModelRevisions.json",
     "src/data/sharedParkEquipment.ts",
     "src/data/sportsParkDimensions.json",
     "src/data/stickerMethodPilots.json",
@@ -322,19 +335,31 @@
     "src/features/context/useContextPresentation.ts",
     "src/features/landing/LandingPage.tsx",
     "src/features/legoAssembly/LegoAssemblyPreview.tsx",
-    "src/features/legoAssembly/LegoBuilderPanel.tsx",
     "src/features/legoAssembly/allSettledWithConcurrency.ts",
+    "src/features/legoAssembly/buildingInspection.ts",
     "src/features/legoAssembly/buildingWalking.ts",
     "src/features/legoAssembly/communityCompiler.ts",
     "src/features/legoAssembly/detachedPlot.ts",
     "src/features/legoAssembly/footprintProfiles.ts",
     "src/features/legoAssembly/legoAssemblyApi.ts",
     "src/features/legoAssembly/legoShared.tsx",
+    "src/features/legoAssembly/measuredBuildingWalking.ts",
+    "src/features/legoAssembly/mountModelBuildingWalking.ts",
     "src/features/legoAssembly/nativeClayPlacement.ts",
     "src/features/legoAssembly/projectCommunityCompile.ts",
+    "src/features/parks/BenchDetailEditor.tsx",
+    "src/features/parks/DetailCataloguePicker.tsx",
+    "src/features/parks/DetailModelInstances.tsx",
+    "src/features/parks/GlobeProjectBenches.tsx",
     "src/features/parks/NativeParkLayer.tsx",
     "src/features/parks/ParkLayoutControls.tsx",
+    "src/features/parks/ProjectDetailEditor.tsx",
+    "src/features/parks/benchDetails.ts",
+    "src/features/parks/detailCatalogue.ts",
+    "src/features/parks/detailCatalogueExtras.json",
+    "src/features/parks/detailInstances.ts",
     "src/features/parks/flexibleParkFit.ts",
+    "src/features/parks/measuredParkWalking.ts",
     "src/features/parks/nativeParkAccess.ts",
     "src/features/parks/nativeParkAssets.ts",
     "src/features/parks/nativeParkRegistry.ts",
@@ -342,10 +367,12 @@
     "src/features/parks/nativeParkSurfaceDepth.ts",
     "src/features/parks/nativeParkWalking.ts",
     "src/features/parks/parkWalking.ts",
+    "src/features/parks/projectBenches.ts",
     "src/features/parks/stepFreeParkAccess.ts",
     "src/features/pickPlace/BrtStopControls.tsx",
     "src/features/pickPlace/BuildingDesignControls.tsx",
     "src/features/pickPlace/CanonicalCatalogueCard.tsx",
+    "src/features/pickPlace/CatalogueFacetControls.tsx",
     "src/features/pickPlace/ConnectionEditor.tsx",
     "src/features/pickPlace/GlobePlacementPreview.tsx",
     "src/features/pickPlace/GlobeStreetDrawingPreview.tsx",
@@ -372,10 +399,13 @@
     "src/features/pickPlace/canonicalParkPlacement.ts",
     "src/features/pickPlace/canonicalStreetPlacement.ts",
     "src/features/pickPlace/catalogue.ts",
+    "src/features/pickPlace/catalogueClassification.ts",
     "src/features/pickPlace/catalogueDeletion.ts",
+    "src/features/pickPlace/catalogueFacets.ts",
     "src/features/pickPlace/duplicateStreet.ts",
     "src/features/pickPlace/generatedPlacement.ts",
     "src/features/pickPlace/geometry.ts",
+    "src/features/pickPlace/nativeBuildingContract.ts",
     "src/features/pickPlace/parkOutline.ts",
     "src/features/pickPlace/pedestrianConnections.ts",
     "src/features/pickPlace/pickBuildingEntrance.ts",
@@ -383,11 +413,15 @@
     "src/features/pickPlace/pickerHeroImages.ts",
     "src/features/pickPlace/publicRoadConnection.ts",
     "src/features/pickPlace/publicRoadSuggestions.ts",
+    "src/features/pickPlace/publishedBuildingAssets.ts",
     "src/features/pickPlace/representationNotice.ts",
     "src/features/pickPlace/reviewedEntrances.ts",
     "src/features/pickPlace/saveAutomaticParkGround.ts",
+    "src/features/pickPlace/savedModelRevision.ts",
+    "src/features/pickPlace/siteBoundarySnapping.ts",
     "src/features/pickPlace/snapPlacement.ts",
     "src/features/pickPlace/specialistConnections.ts",
+    "src/features/pickPlace/streetBoundaryPlacement.ts",
     "src/features/pickPlace/streetBoundarySnapping.ts",
     "src/features/pickPlace/streetConnectionProblem.ts",
     "src/features/pickPlace/streetDrawingGeometry.ts",
@@ -397,10 +431,31 @@
     "src/features/pickPlace/streetSnapping.ts",
     "src/features/pickPlace/useAutomatic3D.ts",
     "src/features/pickPlace/usePublicRoadContext.ts",
+    "src/features/policyPlans/CityPolicyDetailsCard.tsx",
+    "src/features/policyPlans/CityPolicyMapsPanel.tsx",
+    "src/features/policyPlans/GlobeCityPolicyMaps.tsx",
+    "src/features/policyPlans/GlobePolicyMap.tsx",
+    "src/features/policyPlans/GlobeTransportVectors.tsx",
+    "src/features/policyPlans/LocalAreaPlanPanel.tsx",
+    "src/features/policyPlans/PolicyDetailsCard.tsx",
+    "src/features/policyPlans/calgaryPlanDraft.ts",
+    "src/features/policyPlans/cityPlanGeometry.ts",
+    "src/features/policyPlans/citywidePlans.ts",
+    "src/features/policyPlans/data/localPlanIndex.json",
+    "src/features/policyPlans/localAreaPlans.ts",
+    "src/features/policyPlans/localDesignations.ts",
+    "src/features/policyPlans/policyPicking.ts",
+    "src/features/policyPlans/policySnapshotLoader.ts",
+    "src/features/policyPlans/rileyDesignations.ts",
+    "src/features/policyPlans/rileyPolicy.ts",
+    "src/features/policyPlans/transportVectors.ts",
+    "src/features/policyPlans/useCityPolicyMaps.ts",
+    "src/features/policyPlans/useLocalAreaPolicy.ts",
     "src/features/projects/InvitationPage.tsx",
     "src/features/projects/LayersPanel.tsx",
     "src/features/projects/ProjectEditModal.tsx",
     "src/features/projects/ProjectListPage.tsx",
+    "src/features/projects/ProjectPdfDownloadButton.tsx",
     "src/features/projects/ProjectViewPage.tsx",
     "src/features/projects/ReadOnlyProject.tsx",
     "src/features/projects/SavedRenderCard.tsx",
@@ -411,18 +466,33 @@
     "src/features/projects/StudioControls.tsx",
     "src/features/projects/studentNavigation.ts",
     "src/features/referenceLayers/CalgaryContextButton.tsx",
+    "src/features/referenceLayers/CalgaryDistrictSelect.tsx",
     "src/features/referenceLayers/GlobeReferenceLayer.tsx",
     "src/features/referenceLayers/GlobeZoningLabels.tsx",
+    "src/features/referenceLayers/GlobeZoningSurface.tsx",
     "src/features/referenceLayers/ReferenceImportButton.tsx",
     "src/features/referenceLayers/ReferenceLayersPanel.tsx",
+    "src/features/referenceLayers/SiteAssessmentPanel.tsx",
     "src/features/referenceLayers/SiteElevation.tsx",
+    "src/features/referenceLayers/StudyEditorShell.tsx",
     "src/features/referenceLayers/ZoningLabelsControls.tsx",
+    "src/features/referenceLayers/ZoningStudyEditor.tsx",
+    "src/features/referenceLayers/ZoningStudyPanel.tsx",
     "src/features/referenceLayers/api.ts",
+    "src/features/referenceLayers/calgaryBylaw.ts",
+    "src/features/referenceLayers/calgaryBylawCatalogue.json",
+    "src/features/referenceLayers/calgaryDistricts.ts",
+    "src/features/referenceLayers/draftZoning.ts",
     "src/features/referenceLayers/existingTransport.ts",
     "src/features/referenceLayers/referenceGeometry.ts",
+    "src/features/referenceLayers/useMapExploration.ts",
     "src/features/referenceLayers/useReferenceLayers.ts",
+    "src/features/referenceLayers/useStudyMapDrawing.ts",
     "src/features/referenceLayers/useZoningLabels.ts",
+    "src/features/referenceLayers/zoningAppearance.ts",
     "src/features/referenceLayers/zoningLabels.ts",
+    "src/features/referenceLayers/zoningStudy.ts",
+    "src/features/referenceLayers/zoningSurfaceGeometry.ts",
     "src/features/siteLandscape/SiteLandscapePanel.tsx",
     "src/features/siteLandscape/landscapeCapture.ts",
     "src/features/siteLandscape/landscapeContext.ts",
@@ -430,8 +500,19 @@
     "src/features/siteLandscape/siteLandscape.ts",
     "src/features/siteLandscape/useSiteLandscapeTexture.ts",
     "src/features/studentReports/StudentPlanningReport.tsx",
+    "src/features/studentReports/planComparisons.ts",
+    "src/features/studentReports/policyMapEvidence.ts",
+    "src/features/studentReports/reportDrafts.ts",
     "src/features/studentReports/studentReportsApi.ts",
     "src/features/workflow/cityPromptWorkflow.ts",
+    "src/features/zoningCatalogue/ZoningCatalogueCard.tsx",
+    "src/features/zoningCatalogue/buildingPrograms.json",
+    "src/features/zoningCatalogue/districtRules.json",
+    "src/features/zoningCatalogue/matching.ts",
+    "src/features/zoningCatalogue/parkPrograms.json",
+    "src/features/zoningCatalogue/parkUseRules.json",
+    "src/features/zoningCatalogue/types.ts",
+    "src/features/zoningCatalogue/zoningInspection.ts",
     "src/hooks/useGenerationPolling.ts",
     "src/hooks/useRoadNetwork.ts",
     "src/hooks/useSiteZones.ts",
@@ -444,8 +525,10 @@
     "src/services/api.ts",
     "src/services/assetAccess.ts",
     "src/services/authRefreshPolicy.ts",
+    "src/services/comfyTrials.ts",
     "src/services/direct3DAttempts.ts",
     "src/services/geocoding.ts",
+    "src/services/localImageRender.ts",
     "src/store/generationStore.ts",
     "src/store/index.ts",
     "src/store/themeStore.ts",
@@ -464,14 +547,15 @@
     "src/utils/seededRandom.ts",
     "src/utils/sessionReset.ts",
     "src/utils/siteBoundary.ts",
+    "src/utils/siteBoundaryAppearance.ts",
     "src/utils/streetRouteCurves.ts",
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2847,
+    "explicitReferenceCount": 2923,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 4684,
-    "requiredLogicalBytes": 11630136376,
+    "requiredFileCount": 4707,
+    "requiredLogicalBytes": 11710795548,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -520,7 +604,8 @@
       "url": "/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1365114,
       "lfsOid": "e69d0f36223a5885eb91af8d1b24b7ccce18ee672ae58d93cc707e88757ba3be"
@@ -551,6 +636,56 @@
       ],
       "logicalBytes": 1309057,
       "lfsOid": "a1dfffadaf7af1f12bdbada9b58a8668466b46ad51f2862283358efba77c919e"
+    },
+    {
+      "url": "/archetypes/buildings/affordable-aspen/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2658804,
+      "lfsOid": "38aef23b99fe01a55e8396a3651d4757a73af067aaff605db7c55555ca9a1e05"
+    },
+    {
+      "url": "/archetypes/buildings/affordable-juniper/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3482961,
+      "lfsOid": "e896808e3cf7b8015395e63a72b2b4ea48c2cec8af0154a3d5688cdefaedfdb5"
+    },
+    {
+      "url": "/archetypes/buildings/affordable-porchlight/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 1992647,
+      "lfsOid": "0c007771825a58b3908cb52177532172561cae418bc718b20f2aede07bdc2a68"
+    },
+    {
+      "url": "/archetypes/buildings/affordable-stackyard/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2142032,
+      "lfsOid": "224a6ce61e4c964e2fd33d15d9f744d3806a5e0436b7084177ee6d928307a8d1"
+    },
+    {
+      "url": "/archetypes/buildings/affordable-switchback/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2422931,
+      "lfsOid": "d5ee46b884d03cec0c3b6584cbea84c2e0e8ee0a4620fca2a633703629ed21e0"
     },
     {
       "url": "/archetypes/buildings/airport-terminal-building/hero.png",
@@ -1134,7 +1269,8 @@
     {
       "url": "/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
       "sources": [
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1292097,
       "lfsOid": "06810b6ee8ed0f3a58588be35c41cb9945eadfa49efe62a1cc3b4e9f8892882c"
@@ -1275,7 +1411,8 @@
     {
       "url": "/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
       "sources": [
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1120425,
       "lfsOid": "cbfa6ffaf90e040b2ef9f631f438cc1184993ceec74de95be8943dd85804e40b"
@@ -1680,7 +1817,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1256950,
       "lfsOid": "1f126e400d9312467d5fc7febe0eb29a7a9471b001e424472814b4acfe08eee4"
@@ -1828,6 +1966,16 @@
       ],
       "logicalBytes": 1391911,
       "lfsOid": "f06da13b854de58bc78ce74a7bad1005d278baf80f47e945b861969272ee78a2"
+    },
+    {
+      "url": "/archetypes/buildings/brick-timber-courtyard-office/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3142357,
+      "lfsOid": "29dc3deeab0693872b3e1bbcc9c60356fdfd94e2b9cbfa2deb9bbf113d9e6348"
     },
     {
       "url": "/archetypes/buildings/brownstone_rowhouse_frontage/hero.png",
@@ -2027,7 +2175,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomStarter.json"
+        "src/data/classroomStarter.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1331259,
       "lfsOid": "39f3dd9260e14f262498e67a1923c07b09d3265873f9e5f0908185ce8b856bc3"
@@ -2173,7 +2322,8 @@
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
         "src/data/classroomExpansion.json",
-        "src/data/classroomStarter.json"
+        "src/data/classroomStarter.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1514720,
       "lfsOid": "99dddd58994ef0c0f1c1d9abd472420cae16837759c885e9b85c7dca5b8d7ba8"
@@ -2221,7 +2371,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1403041,
       "lfsOid": "e5a2f4d6f6836643c65b5ee740c2b08f12e3ba9f8c52ac991eadf00d2a5447dc"
@@ -2333,7 +2484,8 @@
       "url": "/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1406587,
       "lfsOid": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d"
@@ -2743,7 +2895,8 @@
       "url": "/archetypes/buildings/civic_modernism_rec_centre/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1007802,
       "lfsOid": "fa24826d3490cefbf1bc41c3afe686a9d8f9f402bcf6977c05def4f3476864d4"
@@ -3037,7 +3190,8 @@
       "url": "/archetypes/buildings/commercial-strip-mall/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1152386,
       "lfsOid": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6"
@@ -3055,7 +3209,8 @@
       "url": "/archetypes/buildings/commercial-strip-mall/variant_3.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1176865,
       "lfsOid": "eab9758532974146e926c9e26339d5659fa669ec57f3b5182e584a1ee6bb83eb"
@@ -3475,6 +3630,16 @@
       "lfsOid": "2924060f40f4c4a9294e086f7fc0f0d60c9b54f1420d6078ae3ad50c56e39a90"
     },
     {
+      "url": "/archetypes/buildings/contractor-storage-yard/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3316191,
+      "lfsOid": "1f76fbd12bfc7b7caec39fcf5027105ce3d79a4ae5df1055f846f8124742e544"
+    },
+    {
       "url": "/archetypes/buildings/convention-exhibition-center/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -3586,7 +3751,8 @@
       "url": "/archetypes/buildings/corporate-office-campus-headquarters/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1264260,
       "lfsOid": "97acfa3d777c30e9deaa223261c4f71f8da8737ba1e8c5fee90adb732bb1b4ac"
@@ -3676,7 +3842,8 @@
       "url": "/archetypes/buildings/corrugated_vernacular_industrial/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1033561,
       "lfsOid": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688"
@@ -3709,6 +3876,16 @@
       "lfsOid": "05ed2d8824f88975c54d2e292b3452e145ead3e26361620a2bbdf2676b9b04e4"
     },
     {
+      "url": "/archetypes/buildings/courtyard-childcare-centre/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3359153,
+      "lfsOid": "c801f5f6315f55a89792a6b1a54d07072d26ccf2752e8a14942323a65e6524af"
+    },
+    {
       "url": "/archetypes/buildings/courtyard_family_housing/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -3738,7 +3915,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1379260
     },
@@ -3872,7 +4050,8 @@
       "url": "/archetypes/buildings/daylight_factory/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1376693,
       "lfsOid": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96"
@@ -3907,7 +4086,8 @@
     {
       "url": "/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
       "sources": [
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1209103,
       "lfsOid": "7d4c6e549afade74d08aad286d72e47dbbfbdf7508d4b4f7442fc3548a10f5a8"
@@ -3981,7 +4161,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1341589,
       "lfsOid": "88491e473c936ba553e1729a8c52e8c21b486a044c3ae2832e575ab65da30eab"
@@ -4183,7 +4364,8 @@
       "url": "/archetypes/buildings/ecole-republicaine/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1268822,
       "lfsOid": "8d13d2ba3fd84e9291f7e55e2e6ae4a477a619bda999a4cd88b574fdc15b6948"
@@ -4286,6 +4468,16 @@
       ],
       "logicalBytes": 1481091,
       "lfsOid": "eaa765bb7164fbba34b7eb5abb1a5e855d386d68381f13ab8f2744991cccc22f"
+    },
+    {
+      "url": "/archetypes/buildings/enclosed-materials-recovery/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2106234,
+      "lfsOid": "6aa993c6fd3b967723c5d0f4b5f4282c63695145aabe2ee2c9eecd6b69a98a42"
     },
     {
       "url": "/archetypes/buildings/ev-charging-hub-mobility-station/hero.png",
@@ -4434,7 +4626,8 @@
     {
       "url": "/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
       "sources": [
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 3270166,
       "lfsOid": "0f04fa934c3b2883f82b3a27ba6883639aff8ab57a065e6b11fbe9c1afe13659"
@@ -4563,6 +4756,16 @@
       ],
       "logicalBytes": 998090,
       "lfsOid": "80d83cd0623e80205c40c7661e8ff8da76d3fe8507836dd6c714c5abf0964343"
+    },
+    {
+      "url": "/archetypes/buildings/garden-mews-courtyard-housing/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3215101,
+      "lfsOid": "98af4233eec9567daf805fb7abf64620cbd68d52408aa432e5e6daf676a30f67"
     },
     {
       "url": "/archetypes/buildings/gastown-heritage-commercial/hero.png",
@@ -4713,7 +4916,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1301704,
       "lfsOid": "a9ee7987a8adf937f5e41f11c89904b8acb234f4393c8cd019d352c45b088a13"
@@ -4722,7 +4926,8 @@
       "url": "/archetypes/buildings/glass_tower_podium_modern/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1321374,
       "lfsOid": "b7f4527dc46471bc0037ea8ceffba904cdab564a75f2c58f52c6bec3ae958ae8"
@@ -4746,6 +4951,8 @@
     {
       "url": "/archetypes/buildings/gothic_community_church/reference-board-v1.png",
       "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 2957489,
@@ -5160,7 +5367,8 @@
       "url": "/archetypes/buildings/highway-motor-hotel/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1221206,
       "lfsOid": "4cc9e6ceff30e8ffeebaeac4da95d31e6e06c307c106cb0bf27487dde0c034c5"
@@ -5204,7 +5412,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1345064,
       "lfsOid": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
@@ -5266,6 +5475,16 @@
         "src/data/buildingArchetypes.json"
       ],
       "logicalBytes": 1168370
+    },
+    {
+      "url": "/archetypes/buildings/horizon-manufactured-home/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3036322,
+      "lfsOid": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d"
     },
     {
       "url": "/archetypes/buildings/hotel-particulier/hero.png",
@@ -5500,7 +5719,8 @@
       "url": "/archetypes/buildings/industrial_park_modernism/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1158882,
       "lfsOid": "de5e08df02bcda3c33c5a0d9eb5f13ac4c8f4d4c50a5ac89ef9d0df7826baab7"
@@ -5563,7 +5783,8 @@
       "url": "/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1425788,
       "lfsOid": "5a00e70334f19ac624228547cadec8cebc412846f9adc5fd15c8171fde553921"
@@ -6015,6 +6236,16 @@
       "lfsOid": "e8e0ae1718cf2c994ff90bbaabcbdac54610e1b3b7db7fe1ff6113686b633351"
     },
     {
+      "url": "/archetypes/buildings/maple-porch-manufactured-cottage/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3208770,
+      "lfsOid": "c6757674bdefda401a9928d1296e845c46058ba9556f9bc3496c895f32e6dd1b"
+    },
+    {
       "url": "/archetypes/buildings/marche-couvert/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -6094,7 +6325,8 @@
     {
       "url": "/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
       "sources": [
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1182591,
       "lfsOid": "a69fed88b5478ee2902ef21fffcc3c643f114f70ae9bdccf4f93da1a8863507d"
@@ -6409,7 +6641,8 @@
       "url": "/archetypes/buildings/modern_bigbox_warehouse/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1061888,
       "lfsOid": "740b5effaf7f25f38a5342c02ccce816f07a0f00c8b6e8eda2d16979db112f53"
@@ -6650,7 +6883,8 @@
       "url": "/archetypes/buildings/montreal-depanneur/variant_3.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1400746,
       "lfsOid": "0f8ad0364ecc686bf632e49544efd4f7a3192294dab8cb1f7d149e23eaf53e8b"
@@ -6669,7 +6903,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1390036,
       "lfsOid": "ceb646a88b05e64efc00199e3e2cb07bd93c3d254a718db0f437b8ae26516671"
@@ -6941,6 +7176,26 @@
       "logicalBytes": 1305951
     },
     {
+      "url": "/archetypes/buildings/municipal-works-depot/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2467808,
+      "lfsOid": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34"
+    },
+    {
+      "url": "/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2913125,
+      "lfsOid": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39"
+    },
+    {
       "url": "/archetypes/buildings/neoclassical_institutional/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -7177,7 +7432,8 @@
     {
       "url": "/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
       "sources": [
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1227190,
       "lfsOid": "646f3e4d0a5ce0bc4f0d37c1a380d6e1d8ee9139e457cdbb12addc1a0e09eed1"
@@ -7546,7 +7802,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1447547
     },
@@ -7674,7 +7931,8 @@
       "url": "/archetypes/buildings/parkitecture_recreational/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1545747,
       "lfsOid": "bd7a456bb9d485ea5138ce38a3740d25556b6557bb1d25eba03c330a116b65b6"
@@ -7842,6 +8100,16 @@
       "lfsOid": "c796188ab181d34bfd04ce646d612ddebb45071f18e024d9878b0e55bd4c426b"
     },
     {
+      "url": "/archetypes/buildings/prairie-manufactured-home/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2879262,
+      "lfsOid": "3bf9de8703d6e737b270f1a5140876376c8a06f1927b74efee46660cd5586f56"
+    },
+    {
       "url": "/archetypes/buildings/prairie-modern-fuel-bar/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -7898,6 +8166,8 @@
     {
       "url": "/archetypes/buildings/reference-fourplex/hero.jpg",
       "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 223767,
@@ -8177,7 +8447,8 @@
       "url": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1126212,
       "lfsOid": "01afdd56cf283f97c2cec678605ebc3aaf07a93d394e1f97bc32e581d830e263"
@@ -8186,7 +8457,8 @@
       "url": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1259623,
       "lfsOid": "ebf8a4faf2f43f24961f212e7cef61a0e721bd8fb4d5187bc768de9fc88bdcf3"
@@ -8886,6 +9158,8 @@
     {
       "url": "/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
       "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 2780624,
@@ -9085,7 +9359,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1447263,
       "lfsOid": "5e714abb64cbb8b507dbd128c311ae0061ddb010d80bc240b8a13a17ccf48e54"
@@ -9396,7 +9671,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1243908,
       "lfsOid": "1d66a10b13ffc137e6cec7ce6c4f31a23c5d8e1f64bffa015729059d9398eab3"
@@ -9424,7 +9700,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1119221,
       "lfsOid": "dbff795881507ed296a2ca190bf6b6c7218544a98dcdbeef39da25ee19f7ec9b"
@@ -9633,7 +9910,8 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
-        "src/data/classroomExpansion.json"
+        "src/data/classroomExpansion.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1268249,
       "lfsOid": "5a3076ec759214b506e653f4e82b7397b7c61c98ba54440629e1fbff8e502a6a"
@@ -15437,6 +15715,7 @@
       "url": "/archetypes/openspaces/urban-pocket-park/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/flexibleParks.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1330927
@@ -15445,6 +15724,7 @@
       "url": "/archetypes/openspaces/urban-pocket-park/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/flexibleParks.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1634753
@@ -19760,6 +20040,46 @@
       "lfsOid": "cc67bb3c022f35b846ed4d3f05f969a34ecacbbb9a0308ca065be2dca0875a4c"
     },
     {
+      "url": "/archetypes/streets/narrow-pathways/asphalt_shared_path_v1.png",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3558456,
+      "lfsOid": "3bd8c3eb2c626ef3d60f7e0241bf271280d8c0badc1f684caaaf8ead45050005"
+    },
+    {
+      "url": "/archetypes/streets/narrow-pathways/brick_courtyard_path_v1.png",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3638635,
+      "lfsOid": "7df386a09174b40c94fe4d2f4aeb9077f5d406ffce9558035cd94c73376d0b61"
+    },
+    {
+      "url": "/archetypes/streets/narrow-pathways/concrete_neighbourhood_walk_v1.png",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3152307,
+      "lfsOid": "64b9fa0eaf3d32dbc3bb25cc1b4543a1a79036a478b42dd5d226e6ac92f64211"
+    },
+    {
+      "url": "/archetypes/streets/narrow-pathways/garden_gravel_path_v1.png",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3606302,
+      "lfsOid": "e2d09b0305bcfa4991300b0088a18d63793c5442293eb4f50c9fb7dc4f864ac0"
+    },
+    {
+      "url": "/archetypes/streets/narrow-pathways/timber_garden_walk_v1.png",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3305630,
+      "lfsOid": "b14d8af753e8a407c3bede105710e036a262f8695df4922b730d7b02920a7235"
+    },
+    {
       "url": "/archetypes/streets/narrow-residential-street/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -23641,10 +23961,16 @@
     {
       "url": "/images/landing-collage.png",
       "sources": [
-        "src/features/auth/AuthPageShell.tsx",
-        "src/features/landing/LandingPage.tsx"
+        "src/features/auth/AuthPageShell.tsx"
       ],
       "logicalBytes": 7805575
+    },
+    {
+      "url": "/images/landing-prompt.jpg",
+      "sources": [
+        "src/features/landing/LandingPage.tsx"
+      ],
+      "logicalBytes": 860694
     },
     {
       "url": "/images/landing-render.png",
@@ -23799,6 +24125,13 @@
       "lfsOid": "1991a23fdb78085178a14e145132115f1f223824bd551db7e025ed8319308372"
     },
     {
+      "url": "/native-park-assets/1c74b53d35dbd80286bd1caff819643f1c84fbf5e752b4ea8be9e955f90eced2.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 3694340
+    },
+    {
       "url": "/native-park-assets/1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12.glb",
       "sources": [
         "src/data/nativeParks.json"
@@ -23947,6 +24280,15 @@
       ],
       "logicalBytes": 1394221,
       "lfsOid": "6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87"
+    },
+    {
+      "url": "/native-park-assets/798dd2f3c036e1d143163e01d85e3b816d54cb9a7a06f53f7e318cfd1ef0b6ce.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1638274,
+      "lfsOid": "798dd2f3c036e1d143163e01d85e3b816d54cb9a7a06f53f7e318cfd1ef0b6ce"
     },
     {
       "url": "/native-park-assets/8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a.glb",
@@ -24157,6 +24499,222 @@
       "lfsOid": "fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945"
     },
     {
+      "url": "/park-kits/baseball-youth-pinwheel/baseball-backstop.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 27372,
+      "lfsOid": "e7d565af07004f3efaf83cd48835fda9acc58e598c900fc13db02ea13ff1a7f1"
+    },
+    {
+      "url": "/park-kits/baseball-youth-pinwheel/batting-cage.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 391228,
+      "lfsOid": "86dc524ffec1fb4d79d2dc50c3289f3d81966f5d1791aec9f60461d57eb30418"
+    },
+    {
+      "url": "/park-kits/baseball-youth-pinwheel/shared-bleacher.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5100,
+      "lfsOid": "d87f224052b24759109f3ddb026209063c077561ebcb42dfe17f29d881bc60d0"
+    },
+    {
+      "url": "/park-kits/community-garden-allotments/compost-bins.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 755360,
+      "lfsOid": "d379cb375d1ed549f37347cb707bfe8d7d03f5461571c7488cf7ac4f1f69bd1b"
+    },
+    {
+      "url": "/park-kits/community-garden-allotments/garden-greenhouse.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 406848,
+      "lfsOid": "d41602e1acecdc9209b3e2eb4781202e2f4909fd9e553c0c31f570633f4ce178"
+    },
+    {
+      "url": "/park-kits/community-garden-allotments/garden-trellis.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 388216,
+      "lfsOid": "090b416905f3b8bee58e774bee090eb86e9e772c719db203b764f5e51692376e"
+    },
+    {
+      "url": "/park-kits/community-garden-allotments/raised-growing-bed.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1344000,
+      "lfsOid": "b72edb3bd38c9d270b531a4d69febed18d345216c64a6bc67a37de892095ecee"
+    },
+    {
+      "url": "/park-kits/cricket-village-green/cricket-practice-nets.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 463408,
+      "lfsOid": "9a3f73722c0ab7f2acd8685cf0c234a9a3020276c74a2a529ae10f15148b9abb"
+    },
+    {
+      "url": "/park-kits/cricket-village-green/cricket-sight-screen.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 2136,
+      "lfsOid": "7ec557e3c6ade591884fc72f1e069cb23cf654f68b37d7e81f51aba793bc84a3"
+    },
+    {
+      "url": "/park-kits/dog-park/boulder-cluster.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 406620,
+      "lfsOid": "9dde2653697a2dfc4a63d8840fe232c5ce4c2e75eb15d617d79ebce2ea8a06a2"
+    },
+    {
+      "url": "/park-kits/dog-park/dog-park-gate.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 353484,
+      "lfsOid": "c1280ace06fc60afcd462d1ad1e3ba164961f17ec1ce3f79dfd2d34cdbfd0c96"
+    },
+    {
+      "url": "/park-kits/dog-park/shade-shelter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 370496,
+      "lfsOid": "1bc3a02b124facb6829e8aa7af42b3e3c284fc86bd67411d6bd097fb30be7659"
+    },
+    {
+      "url": "/park-kits/dog-park/timber-rail-fence.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 342528,
+      "lfsOid": "1de46e35b360d30d6ca9f2f4c15d0c62b56372d8106b85cdf5194f48b52569a2"
+    },
+    {
+      "url": "/park-kits/inclusive-accessible-playground/accessible-play-structure.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 379372,
+      "lfsOid": "102590a97d1922dc6bd67cf1630f903383f322ad6d17c0d1a71b31261fd6bce7"
+    },
+    {
+      "url": "/park-kits/inclusive-accessible-playground/accessible-swing-bay.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 365904,
+      "lfsOid": "5771872b3e0fe3e46730be9f10ca847391beb2866034204179537f59db92df64"
+    },
+    {
+      "url": "/park-kits/inclusive-accessible-playground/inclusive-spinner.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 38672,
+      "lfsOid": "cbf4eefafe64bc9cbb65a22cf9413c374e729ad8b4479aee6b4c308506e24a41"
+    },
+    {
+      "url": "/park-kits/inclusive-accessible-playground/sensory-panel.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 364596,
+      "lfsOid": "6b1eed7ff769ed4ef693884297b00ead236fa98e0f7aa1a97d058265ad20a46c"
+    },
+    {
+      "url": "/park-kits/inclusive-accessible-playground/shade-canopy.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 377120,
+      "lfsOid": "e51ec0473d222d791a299c4671ca46aa998c696c36900f2aa6388849ecb6d451"
+    },
+    {
+      "url": "/park-kits/memorial-garden-classical-formal/memorial-wall.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 267436,
+      "lfsOid": "d7b51584804e7130b985aa9e61bd6131118dac93f7ad0307d0e9e61d1836ef6b"
+    },
+    {
+      "url": "/park-kits/memorial-garden-classical-formal/reflecting-pool.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 254200,
+      "lfsOid": "1d561072d393c3adf070053966259f07347923de14ed1c0be058600967de6846"
+    },
+    {
+      "url": "/park-kits/memorial-garden-classical-formal/tiered-fountain.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 289644,
+      "lfsOid": "5b92410dbf9fefbdf3249c960249d879408613a6dfb932879328c0e7bb9f1bd5"
+    },
+    {
+      "url": "/park-kits/memorial-garden-classical-formal/topiary-urn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 628616,
+      "lfsOid": "7bd01927baef68086bf7e757be24ee6dfc220debcad5f5f9dd32e92f0b980748"
+    },
+    {
+      "url": "/park-kits/nature-play-forest-adventure/balance-log.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 373396,
+      "lfsOid": "11873916d371dc0c99600a7377b797947a013f7137d8986843ad221a962d3c93"
+    },
+    {
+      "url": "/park-kits/nature-play-forest-adventure/log-fort.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 386044,
+      "lfsOid": "8eb125d0b0c46d03db31e4de5aac0279950cc049ff4060a042cdc0c63b4f74d3"
+    },
+    {
+      "url": "/park-kits/nature-play-forest-adventure/play-boulders.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 389148,
+      "lfsOid": "69c586f76d1bba4bedf39d14a081045d14f7b752b740912653c83caf5975697c"
+    },
+    {
+      "url": "/park-kits/nature-play-forest-adventure/stepping-stump.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 373360,
+      "lfsOid": "a5888b3011688fcd51c6133943211c2256dc3a67a6f7fee0b14bb8c9b1fe0d2b"
+    },
+    {
+      "url": "/park-kits/nature-play-forest-adventure/willow-tunnel.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 379796,
+      "lfsOid": "f36c9cd9f74b834cd97aa35febf3123a0aef5076c544d641cfbdb9a97e0884d7"
+    },
+    {
       "url": "/park-kits/neighborhood-park-rustic-v0/natural-boulder-group.glb",
       "sources": [
         "src/data/neighborhoodParkV0StickerKit.json"
@@ -24167,7 +24725,8 @@
     {
       "url": "/park-kits/neighborhood-park-rustic-v0/rustic-timber-pavilion.glb",
       "sources": [
-        "src/data/neighborhoodParkV0StickerKit.json"
+        "src/data/neighborhoodParkV0StickerKit.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 750636,
       "lfsOid": "d7881c8a8ada2c54284aa439fe2c8c291519326ed0b436fd3d2f36f02d1a969c"
@@ -24183,7 +24742,8 @@
     {
       "url": "/park-kits/neighborhood-park-rustic-v0/timber-climbing-tower-slide.glb",
       "sources": [
-        "src/data/neighborhoodParkV0StickerKit.json"
+        "src/data/neighborhoodParkV0StickerKit.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 440492,
       "lfsOid": "8bee3ab414aeef5ad5df37c047d6395d6a0f0b58e37e635f705e3001cda48ccb"
@@ -24191,10 +24751,215 @@
     {
       "url": "/park-kits/neighborhood-park-rustic-v0/timber-swing-frame.glb",
       "sources": [
-        "src/data/neighborhoodParkV0StickerKit.json"
+        "src/data/neighborhoodParkV0StickerKit.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 580196,
       "lfsOid": "59e624cfd7b8c0e0cf7724832ee12942ca2051cb2277503f1c0a0a6a0683fc46"
+    },
+    {
+      "url": "/park-kits/outdoor-fitness-calisthenics/calisthenics-rig.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 35836,
+      "lfsOid": "3304bad4c2f477b9954cb42b841702c6fd3071878b83db21ed1e9f325d7b6d27"
+    },
+    {
+      "url": "/park-kits/outdoor-fitness-calisthenics/parallel-bars.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 16888,
+      "lfsOid": "d3cc665bb10721017e4617799ebb8609dfbfbb1384f1ff7532f4b18d574c0ff9"
+    },
+    {
+      "url": "/park-kits/outdoor-fitness-calisthenics/rings-frame.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 378064,
+      "lfsOid": "39c520d5d20ddac624e2a996f98c6302e4f3977f48811e5964bc0de472655fa0"
+    },
+    {
+      "url": "/park-kits/outdoor-fitness-calisthenics/situp-bench.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5256,
+      "lfsOid": "a3f96d7ffcf98fa9111cf58512fa617d586a2d77aade825dd1c5f75f237b6999"
+    },
+    {
+      "url": "/park-kits/pickleball-community-bank/pickleball-fence-6m.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 24852,
+      "lfsOid": "131c84bd8822d5d89f5569ec8dc8f0402f3ed7c40dfe213ed74e6df79e79a1e4"
+    },
+    {
+      "url": "/park-kits/pickleball-community-bank/pickleball-floodlight.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5736,
+      "lfsOid": "33970c0ecd7168dd4a617f4b749f7320ca703f5f0a37467e8fbf1e366eee33aa"
+    },
+    {
+      "url": "/park-kits/pickleball-community-bank/pickleball-net.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 40920,
+      "lfsOid": "ee6cb0cf4d07b9d423a8cc38ef8bff11877c6b7cc37f92307175cfe99e7ea723"
+    },
+    {
+      "url": "/park-kits/pickleball-community-bank/play-structure.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 758900,
+      "lfsOid": "581b83551658a64a61f4bfeb95a0b767d609edf40bfa84f6af178a27e0475930"
+    },
+    {
+      "url": "/park-kits/pickleball-community-bank/shade-sail.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 393628,
+      "lfsOid": "5c36117d752c30d1eafe95873e1bc53d047c4d266bd7b5fbc78268c3cf2ce776"
+    },
+    {
+      "url": "/park-kits/pickleball-community-bank/swing-bay.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 414928,
+      "lfsOid": "8fbbe90338cb2d5364af9a9fb5af42d1937c290d02e89a95fb40ed9403b91c76"
+    },
+    {
+      "url": "/park-kits/pump-track-asphalt-competition/start-mound.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 395568,
+      "lfsOid": "1c37df5bfdca43feaa7fcac5aa1bc0c020569de524c83289ac40f68526ecbdc5"
+    },
+    {
+      "url": "/park-kits/shared-park-equipment-v1/basketball-hoop-regulation.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 117976,
+      "lfsOid": "84020803a7cdd03bbca8c778f0ef1b1a47c6068ad38c3c6ac50b3933a502f93e"
+    },
+    {
+      "url": "/park-kits/skate-park/skate-bowl-module.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 427792
+    },
+    {
+      "url": "/park-kits/skate-park/skate-ledge.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 405712
+    },
+    {
+      "url": "/park-kits/skate-park/skate-rail.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 9932
+    },
+    {
+      "url": "/park-kits/skate-park/stair-hubba-module.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 414216
+    },
+    {
+      "url": "/park-kits/splash-pad-water-play/ground-jet.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 17220,
+      "lfsOid": "8b0d270862627f568b8c6647b3f3640ae98e373fb5cec2d8e3f8bf96f4a61d3f"
+    },
+    {
+      "url": "/park-kits/splash-pad-water-play/spray-arch.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 344616,
+      "lfsOid": "8192f2c5c92dd397a65b77a779b01474ed6a6eff495e81fd1af28925edcfeba1"
+    },
+    {
+      "url": "/park-kits/splash-pad-water-play/timber-water-tower.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 359508,
+      "lfsOid": "92361d7aa76bc85108589c2de66863408a6145becfc77bb5b566fd24d180d160"
+    },
+    {
+      "url": "/park-kits/sports-complex-tournament/soccer-goal.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 10060,
+      "lfsOid": "86230189efe4bd9f800cd02995544b59c300fbf9582e93f59fb701a7813f3188"
+    },
+    {
+      "url": "/park-kits/sports-complex-tournament/sports-field-fence.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 25208,
+      "lfsOid": "0201ffac7912add4dab1e64cd975dd834bb92b32704c5c8705a1932eaf206887"
+    },
+    {
+      "url": "/park-kits/sports-complex-tournament/sports-floodlight.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5712,
+      "lfsOid": "8166a68fb1992090bf1bd987e320ea4a9d3cbc9c9615d0cc70eb37822bb11092"
+    },
+    {
+      "url": "/park-kits/tennis-court-professional/spectator-bleacher.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 9676,
+      "lfsOid": "edf55befa026d23ebd7a194da66fea5d4ce0bca11dbcaf446757329938bb8423"
+    },
+    {
+      "url": "/park-kits/tennis-court-professional/tennis-fence-6m.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 54536,
+      "lfsOid": "affd10f57253cb6ddf9799928eca336b7a0a97d18e70fd00e9e7a687db0435ef"
+    },
+    {
+      "url": "/park-kits/tennis-court-professional/tennis-floodlight.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 10216,
+      "lfsOid": "6024d695caa18a84fd069fe43365f17e27de073b856a13c79379a7e890d5b194"
+    },
+    {
+      "url": "/park-kits/tennis-court-professional/tennis-net.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 53200,
+      "lfsOid": "6c3c7810e2e1147857018fbb43b39cc8b98dc1fc1440a2dd971e1fdeebeec562"
     },
     {
       "url": "/park-skins/neighborhood-park-rustic-v0/adaptive-v1/lawn/albedo.jpg",
@@ -24223,7 +24988,8 @@
     {
       "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bench.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 15160,
       "lfsOid": "a1765bfc10b83423d621479851523389fb06e9023b56cd41929c55be6f583411"
@@ -24231,7 +24997,8 @@
     {
       "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bollard.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 3160,
       "lfsOid": "6b5422458e529bed849406937d9b3f847013e8f7a4b132652245f2a57c30385d"
@@ -24263,7 +25030,8 @@
     {
       "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_lamp.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 5000,
       "lfsOid": "5316049c31be3a2dd68c641bc272c6c4c11a4fbac3480d9884c0a609bc00a2ca"
@@ -24271,7 +25039,8 @@
     {
       "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_tree.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 1278708,
       "lfsOid": "0d899baf64da60cdb6e40096a2eefdd15cc69eb5147ffd69f184ca1c99274c95"
@@ -24295,7 +25064,8 @@
     {
       "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/light.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 37676,
       "lfsOid": "b480a69a4bcc2f8523e85804c8780a7df491233e9acdd20d58369c811096e166"
@@ -24311,7 +25081,8 @@
     {
       "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/shade_tree.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 1279432,
       "lfsOid": "16478d194648e0e51d361f2ceb64b88274fa079c9d58d6f7f35437b7aedbec55"
@@ -24327,7 +25098,8 @@
     {
       "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/tree_well_grate.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 95612,
       "lfsOid": "f51ce084fa6ed1cda5e5fed3b0c3d678b8e762e6fc4f45f201292c40ecdbf60a"
@@ -24335,7 +25107,8 @@
     {
       "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/bench.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 34024,
       "lfsOid": "2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73"
@@ -24343,7 +25116,8 @@
     {
       "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/meadow_grass.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 68700,
       "lfsOid": "2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06"
@@ -24367,7 +25141,8 @@
     {
       "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/rail_lamp.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 4512,
       "lfsOid": "bf97e3cba785ed7804a74288d2b2b1cb79c44282ab036de7bdac37909911c4d4"
@@ -24511,7 +25286,8 @@
     {
       "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/autumn_florist_kiosk.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 2615768,
       "lfsOid": "95a928d8629ddcef1fb3c4983f1dd368bfe95be9cb6a0569d56d35952ebd18bf"
@@ -24527,7 +25303,8 @@
     {
       "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/heritage_lantern.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 17100,
       "lfsOid": "8cf8de3045ec460b90470d94da117e4dafd229fa06e498c61482ab8e86a2e6d9"
@@ -24552,7 +25329,8 @@
     {
       "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/street_bollard.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 9892,
       "lfsOid": "e4e20e97cef64814adea44546142c1f123c5ce275bcdefaad46f6e4a8f50808f"
@@ -24568,7 +25346,8 @@
     {
       "url": "/street-kits/pilots/student_cherry_blossom_street_v1/autumn_cherry_tree.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 1287648,
       "lfsOid": "1b18700be0bff2f4b778149dfa1dcb338fb1545f0889af8fe7be883047fdbdf6"
@@ -24601,7 +25380,8 @@
     {
       "url": "/street-kits/pilots/student_cycle_avenue_v1/bike_rack.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 96964,
       "lfsOid": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
@@ -24609,7 +25389,8 @@
     {
       "url": "/street-kits/pilots/student_cycle_avenue_v1/flowering_perennial.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 162120,
       "lfsOid": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
@@ -24617,7 +25398,8 @@
     {
       "url": "/street-kits/pilots/student_cycle_avenue_v1/grove_tree.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 1287628,
       "lfsOid": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
@@ -24650,7 +25432,8 @@
     {
       "url": "/street-kits/pilots/student_cycle_avenue_v1/silver_shrub.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 367296,
       "lfsOid": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
@@ -24778,7 +25561,8 @@
     {
       "url": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/promenade_kiosk.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 20692,
       "lfsOid": "4def0f2ee8620504669347ac23f061512fd1dd2e4993ee5ccfbcc45943d99ca5"
@@ -24795,7 +25579,8 @@
     {
       "url": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/showcase_morris_column.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 74412,
       "lfsOid": "a8f52f40e6520f1190359906d9041e9b9182ce1b0723650dce312a51fc0e61c0"
@@ -24852,7 +25637,8 @@
     {
       "url": "/street-kits/pilots/student_grass_tram_avenue_v1/showcase_tram_stop.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 254788,
       "lfsOid": "7fa75afb6de3550d54b89d51cd94c36b28f74812cac9933fdfcc65ff72f339c3"
@@ -24908,7 +25694,8 @@
     {
       "url": "/street-kits/pilots/student_green_alley_v1/planted_trellis.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 33656,
       "lfsOid": "e81afde69f848f2407c607da9b727b1073db8fe315d8568636e75a85b7a0731c"
@@ -24933,7 +25720,8 @@
     {
       "url": "/street-kits/pilots/student_london_cobbled_mews_v1/autumn_flower_planter.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 560228,
       "lfsOid": "2706b4ca3aa5aea161aef750c203ba7d3ae10dc9942821b7e1ec7a2ed480ad5c"
@@ -24941,7 +25729,8 @@
     {
       "url": "/street-kits/pilots/student_london_cobbled_mews_v1/autumn_planted_trellis.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 1861788,
       "lfsOid": "31079c9ab86bd7828e76a3b8d8cedb1f22cca2d4d2c4636f835b894d4fd0317d"
@@ -24993,7 +25782,8 @@
       "url": "/street-kits/pilots/student_main_street_v1/bin.glb",
       "sources": [
         "src/data/classroomStarter.json",
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 80532,
       "lfsOid": "31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c"
@@ -25020,7 +25810,8 @@
       "url": "/street-kits/pilots/student_main_street_v1/planter.glb",
       "sources": [
         "src/data/classroomStarter.json",
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 131616,
       "lfsOid": "c70db15a31b9d7144b88146c07b87102d842527d2afcee6759e6c42161f3410b"
@@ -25037,7 +25828,8 @@
       "url": "/street-kits/pilots/student_main_street_v1/timber_seat_wall.glb",
       "sources": [
         "src/data/classroomStarter.json",
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 18172,
       "lfsOid": "100ee7db5a4c6889be5a355260bda4670117d7241b1cb7f9ddcebd6e3047dcfd"
@@ -25064,7 +25856,8 @@
       "url": "/street-kits/pilots/student_market_street_v1/cafe_parasol.glb",
       "sources": [
         "src/data/classroomStarter.json",
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 60396,
       "lfsOid": "60d58e1acfb57d9cde82ea33f60b368d9d95bc3446b6b48f8ae97b194af6a38e"
@@ -25082,7 +25875,8 @@
       "url": "/street-kits/pilots/student_market_street_v1/market_stall.glb",
       "sources": [
         "src/data/classroomStarter.json",
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 65200,
       "lfsOid": "5d7c588fbb89704d7b1199432b17bd257a837f5df9f8b8bc45a8694cad80c2b3"
@@ -25108,7 +25902,8 @@
       "url": "/street-kits/pilots/student_market_street_v1/stone_fountain.glb",
       "sources": [
         "src/data/classroomStarter.json",
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 115896,
       "lfsOid": "263b17b8a091f076e8e5f784c3315eff9270f3c5516124b02e162877e6de12aa"
@@ -25164,7 +25959,8 @@
     {
       "url": "/street-kits/pilots/student_planted_shared_lane_v1/ornamental_tree.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 1464120,
       "lfsOid": "437e6e87d362a0c3bffa1c2d84faf6bccfaf95750c660c5cfafee72de822af18"
@@ -25180,7 +25976,8 @@
     {
       "url": "/street-kits/pilots/student_planted_shared_lane_v1/walkway_arbor.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 9744,
       "lfsOid": "32bfc1b951adf0b644bb04d1977375b5c6d6c238c24b241c308a407c3a78e1da"
@@ -25382,7 +26179,8 @@
     {
       "url": "/street-kits/pilots/student_vine_pergola_promenade_v1/showcase_iron_guard.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 28696,
       "lfsOid": "3a9d089f1e3212346d0278ca381182a61f0eb381a732a48c19732fa53056e9f4"
@@ -25390,7 +26188,8 @@
     {
       "url": "/street-kits/pilots/student_vine_pergola_promenade_v1/showcase_ivy_pergola.glb",
       "sources": [
-        "src/data/nativeStreetPilots.json"
+        "src/data/nativeStreetPilots.json",
+        "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 137712,
       "lfsOid": "ebfa16bed6ab2c5e77c4b66dc55c36c15a4b8f073de3bcf17f0a7cbac7663788"
@@ -25426,13 +26225,15 @@
     {
       "url": "/landscape-pilots/neighborhood-rustic-v5",
       "sources": [
-        "src/components/viewer/globe/GlobeNeighborhoodParkPilot.tsx"
+        "src/components/viewer/globe/GlobeNeighborhoodParkPilot.tsx",
+        "src/features/parks/detailCatalogue.ts"
       ]
     },
     {
       "url": "/park-kits/shared-park-equipment-v1",
       "sources": [
-        "src/data/sharedParkEquipment.ts"
+        "src/data/sharedParkEquipment.ts",
+        "src/features/parks/detailCatalogue.ts"
       ]
     },
     {
@@ -25564,8 +26365,8 @@
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
       "fileCount": 92,
-      "logicalBytes": 42803088,
-      "pathDigest": "8c88494b17fb45904a9332fbc51ba634f45bbded9987eb1eb43a0751707cf31a"
+      "logicalBytes": 42803668,
+      "pathDigest": "9f774a6904a82f62fe9e5728324d0858fc62c1e731fae0d7277db8788a4de785"
     },
     {
       "name": "public-realm-skins",
@@ -25619,8 +26420,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21368,
-    "unclassifiedRuntimePathDigest": "de8925fc17ad0e24891dc0a8b6a46714eab798b6be13d6989b1e05eaeff2204d",
+    "unclassifiedRuntimeFileCount": 21428,
+    "unclassifiedRuntimePathDigest": "dc3b0da20e9cc52987a6fade8feb59cf026265810fda6dd0e232c69990da989a",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",
@@ -25642,6 +26443,21 @@
       "/archetypes/buildings/administrative-faculty-office-building/variant_2_angle_90.jpg",
       "/archetypes/buildings/administrative-faculty-office-building/variant_3_angle_60.jpg",
       "/archetypes/buildings/administrative-faculty-office-building/variant_3_angle_90.jpg",
+      "/archetypes/buildings/affordable-aspen/generation-provenance.json",
+      "/archetypes/buildings/affordable-aspen/variant_0_angle_60.png",
+      "/archetypes/buildings/affordable-aspen/variant_0_angle_90.png",
+      "/archetypes/buildings/affordable-juniper/generation-provenance.json",
+      "/archetypes/buildings/affordable-juniper/variant_0_angle_60.png",
+      "/archetypes/buildings/affordable-juniper/variant_0_angle_90.png",
+      "/archetypes/buildings/affordable-porchlight/generation-provenance.json",
+      "/archetypes/buildings/affordable-porchlight/variant_0_angle_60.png",
+      "/archetypes/buildings/affordable-porchlight/variant_0_angle_90.png",
+      "/archetypes/buildings/affordable-stackyard/generation-provenance.json",
+      "/archetypes/buildings/affordable-stackyard/variant_0_angle_60.png",
+      "/archetypes/buildings/affordable-stackyard/variant_0_angle_90.png",
+      "/archetypes/buildings/affordable-switchback/generation-provenance.json",
+      "/archetypes/buildings/affordable-switchback/variant_0_angle_60.png",
+      "/archetypes/buildings/affordable-switchback/variant_0_angle_90.png",
       "/archetypes/buildings/airport-terminal-building/variant_0_angle_60.jpg",
       "/archetypes/buildings/airport-terminal-building/variant_0_angle_90.jpg",
       "/archetypes/buildings/airport-terminal-building/variant_1_angle_60.jpg",
@@ -25706,22 +26522,7 @@
       "/archetypes/buildings/amsterdam-jordaan-house/variant_0_angle_90.jpg",
       "/archetypes/buildings/amsterdam-jordaan-house/variant_1_angle_60.jpg",
       "/archetypes/buildings/amsterdam-jordaan-house/variant_1_angle_90.jpg",
-      "/archetypes/buildings/amsterdam-jordaan-house/variant_2_angle_60.jpg",
-      "/archetypes/buildings/amsterdam-jordaan-house/variant_2_angle_90.jpg",
-      "/archetypes/buildings/amsterdam-jordaan-house/variant_3_angle_60.jpg",
-      "/archetypes/buildings/amsterdam-jordaan-house/variant_3_angle_90.jpg",
-      "/archetypes/buildings/amsterdam-neck-gable-house/variant_0_angle_60.jpg",
-      "/archetypes/buildings/amsterdam-neck-gable-house/variant_0_angle_90.jpg",
-      "/archetypes/buildings/amsterdam-neck-gable-house/variant_1_angle_60.jpg",
-      "/archetypes/buildings/amsterdam-neck-gable-house/variant_1_angle_90.jpg",
-      "/archetypes/buildings/amsterdam-neck-gable-house/variant_2_angle_60.jpg",
-      "/archetypes/buildings/amsterdam-neck-gable-house/variant_2_angle_90.jpg",
-      "/archetypes/buildings/amsterdam-neck-gable-house/variant_3_angle_60.jpg",
-      "/archetypes/buildings/amsterdam-neck-gable-house/variant_3_angle_90.jpg",
-      "/archetypes/buildings/amsterdam-school-housing/variant_0_angle_60.jpg",
-      "/archetypes/buildings/amsterdam-school-housing/variant_0_angle_90.jpg",
-      "/archetypes/buildings/amsterdam-school-housing/variant_1_angle_60.jpg",
-      "/archetypes/buildings/amsterdam-school-housing/variant_1_angle_90.jpg"
+      "/archetypes/buildings/amsterdam-jordaan-house/variant_2_angle_60.jpg"
     ],
     "familyDirectoriesAbsentFromRuntimeSignatures": [
       "art-deco-setback-tower",

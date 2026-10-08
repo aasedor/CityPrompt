@@ -14,14 +14,20 @@ import {
 } from "@/components/viewer/globe/neighborhoodParkLayout";
 import { getDerivedParkAccess } from "@/components/viewer/globe/parkAccessConnections";
 import { parkOutlineDimensions } from "@/features/pickPlace/parkOutline";
-import { detailAsset, type DetailPropVariant } from "./detailCatalogue";
+import {
+  DETAIL_CATALOGUE,
+  detailAsset,
+  type DetailPropVariant,
+} from "./detailCatalogue";
 
 export const MAX_DETAIL_BENCHES = 32;
-export const DETAIL_TREE_MODELS = [
-  { id: "oak-0", label: "Oak · shape 1", canopyRadius: 3 },
-  { id: "oak-1", label: "Oak · shape 2", canopyRadius: 3 },
-  { id: "oak-2", label: "Oak · shape 3", canopyRadius: 3 },
-] as const;
+export const DETAIL_TREE_MODELS = DETAIL_CATALOGUE.filter(
+  (m) => m.kind === "tree",
+).map((m) => ({
+  id: m.id,
+  label: m.label,
+  canopyRadius: Math.max(m.dimensions[0], m.dimensions[1]) / 2,
+}));
 export type DetailTreeVariant = (typeof DETAIL_TREE_MODELS)[number]["id"];
 export interface DetailBench {
   id: string;
