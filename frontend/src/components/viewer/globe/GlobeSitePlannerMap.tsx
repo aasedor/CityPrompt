@@ -1490,6 +1490,8 @@ function MeasurementOverlay({
 
 interface GlobeSitePlannerMapProps {
   projectBenches?:ProjectBench[];
+  detailEditing?: boolean;
+  onPlaceDetail?: (position: [number, number]) => void;
   projectTrees?:ProjectTree[];
   projectProps?:ProjectProp[];
   projectSurfaces?:PavingSurface[];
@@ -1603,6 +1605,8 @@ export interface GlobeAIRenderViewport {
 
 export function GlobeSitePlannerMap({
   projectBenches,
+  detailEditing = false,
+  onPlaceDetail,
   projectTrees,
   projectProps,
   projectSurfaces,
@@ -1657,7 +1661,7 @@ export function GlobeSitePlannerMap({
   const [walkBuildingZoneId, setWalkBuildingZoneId] = useState<string | null>(null);
   const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
-  const interactionPaused = externalInteractionPaused || Boolean(entrancePick) || walkMode !== null;
+  const interactionPaused = externalInteractionPaused || detailEditing || Boolean(entrancePick) || walkMode !== null;
   const [entrancePickError, setEntrancePickError] = useState('');
   const entrancePointerHitRef = useRef<{buildingId:string;hit?:NativeEntranceHit}|null>(null);
   useEffect(() => { setEntrancePickError(''); }, [entrancePick]);
@@ -2508,10 +2512,10 @@ export function GlobeSitePlannerMap({
   useWalkKeyboard(walkMode, externalInteractionPaused, walkPoseRef, applyWalkPose, leaveWalk, cancelWalkPick);
 
   useEffect(() => {
-    if (!walkMode || (!hasDrawingTool && !placementDraft && !streetViewPegman)) return;
+    if (!walkMode || (!hasDrawingTool && !placementDraft && !streetViewPegman && !detailEditing)) return;
     if (walkMode === 'active') leaveWalk();
     else setWalkMode(null);
-  }, [walkMode, hasDrawingTool, placementDraft, streetViewPegman, leaveWalk]);
+  }, [walkMode, hasDrawingTool, placementDraft, streetViewPegman, detailEditing, leaveWalk]);
 
   const requestProjectFrame = useCallback(async (
     renderZones: Array<{ coordinates?: [number, number][]; properties?: SiteZone['properties']; zone_type?: SiteZone['zone_type'] }>,
@@ -4074,6 +4078,16 @@ export function GlobeSitePlannerMap({
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
+    if (detailEditing) {
+      if (externalInteractionPaused) return;
+      const canvas = canvasRef.current ?? containerRef.current?.querySelector('canvas');
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const hit = raycastSurfacePoint(((e.clientX - rect.left) / rect.width) * 2 - 1,
+        -((e.clientY - rect.top) / rect.height) * 2 + 1);
+      if (hit) { markUserInteracted(); onPlaceDetail?.(hit.lngLat); }
+      return;
+    }
     if (entrancePick) {
       const candidate=entrancePointerHitRef.current;
       entrancePointerHitRef.current=null;
@@ -4224,7 +4238,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
+  }, [detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (zoningInspection?.editing) return;
@@ -5058,7 +5072,8 @@ export function GlobeSitePlannerMap({
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
       {!walkMode && !entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
-          {siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
+          {detailEditing ? 'Choose an item on the right · Click the map to place · Drag to pan · Scroll to zoom'
+            : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
             ? 'Drag the Move handle to reposition this house | Use the reshape panel to resize or rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)
             ? 'Drag to move | Use the reshape panel to resize or rotate | 3D updates automatically after saving | Esc to deselect'
@@ -5105,7 +5120,7 @@ export function GlobeSitePlannerMap({
         </button>
         {walkControlTarget !== undefined ? (walkControlTarget && createPortal(
           <button type="button" data-tour="walk-btn"
-            disabled={Boolean(entrancePick || placementDraft || hasDrawingTool || streetViewPegman || measureModeActive)}
+            disabled={Boolean(detailEditing || entrancePick || placementDraft || hasDrawingTool || streetViewPegman || measureModeActive)}
             onClick={() => {
               if (walkMode === 'active') leaveWalk();
               else if (walkMode === 'pick') setWalkMode(null);

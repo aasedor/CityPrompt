@@ -1,5 +1,9 @@
 import { nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import {ProjectDetailEditor,useProjectDetails} from '@/features/parks/ProjectDetailEditor';
+import { DetailPlacementPanel } from '@/features/parks/DetailPlacementPanel';
+import { useDetailPlacement } from '@/features/parks/useDetailPlacement';
+import type { ProjectDetails } from '@/features/parks/projectBenches';
+import { api } from '@/services/api';
 import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
 import { canonicalParkAsset } from '@/features/pickPlace/canonicalParkPlacement';
 import { canonicalBuildingAsset } from '@/features/pickPlace/canonicalBuildingPlacement';
@@ -155,7 +159,16 @@ export function ProjectViewPage() {
   const [showPlanningReport, setShowPlanningReport] = useState(false);
   const [editingBenchDetails, setEditingBenchDetails] = useState(false);
   const [editingProjectDetails,setEditingProjectDetails]=useState(false);
+  const [showDetailCatalogue, setShowDetailCatalogue] = useState(false);
   const projectDetails=useProjectDetails(id);
+  const detailPlacement = useDetailPlacement(projectDetails.data, async next => {
+    const response = await api.put<ProjectDetails>(`/api/v1/projects/${id}/details`, {
+      expected_revision: next.revision, benches: next.benches, trees: next.trees,
+      props: next.props, surfaces: next.surfaces,
+    });
+    queryClient.setQueryData(['project-details', id], response.data);
+    return response.data;
+  }, id);
   const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
   const references = useReferenceLayers(id);
   const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
@@ -274,7 +287,7 @@ export function ProjectViewPage() {
   }, [globeRefs]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
-  useUndoRedoKeyboard(editingBenchDetails || editingProjectDetails);
+  useUndoRedoKeyboard(editingBenchDetails || editingProjectDetails || showDetailCatalogue);
 
   // Site planner store + zone CRUD + workflow
   const {
@@ -1125,6 +1138,8 @@ export function ProjectViewPage() {
             latitude={project.location?.latitude}
             longitude={project.location?.longitude}
             projectBenches={projectDetails.data?.benches}
+            detailEditing={showDetailCatalogue}
+            onPlaceDetail={detailPlacement.place}
             projectTrees={projectDetails.data?.trees}
             projectProps={projectDetails.data?.props}
             projectSurfaces={projectDetails.data?.surfaces}
@@ -1215,7 +1230,7 @@ export function ProjectViewPage() {
                     const result = await projectDetails.refetch();
                     if (result.data) {
                       cancelPlacement(); setActiveSitePlannerTool(null); selectZone(null);
-                      setEditingProjectDetails(true);
+                      setShowDetailCatalogue(true);
                     } else toast.error('Details could not load. Please try again.');
                   }}
                   className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-900 bg-white px-3 py-2 text-sm font-bold text-slate-950 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
@@ -1224,7 +1239,7 @@ export function ProjectViewPage() {
                 </button>
               </div>} selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} canRefreshDetail={automatic3D.canRefreshDetail}
-                onBrowseChange={setShowCatalogue}
+                onBrowseChange={open => { setShowCatalogue(open); if (open) { setShowDetailCatalogue(false); detailPlacement.choose(null); } }}
                 onPickGenerated={model => {
                   setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
                   useViewerStore.getState().setStreetViewActive(false);
@@ -1312,6 +1327,9 @@ export function ProjectViewPage() {
         {showTour && <OnboardingTour placementMode forceShow onComplete={() => setShowTour(false)} />}
 
         {editingProjectDetails && projectDetails.data && <ProjectDetailEditor project={project} zones={siteZones} data={projectDetails.data} onClose={()=>setEditingProjectDetails(false)}/>}
+        {showDetailCatalogue && <DetailPlacementPanel placement={detailPlacement} canEdit={Boolean(projectDetails.data?.can_edit)}
+          onClose={() => { setShowDetailCatalogue(false); detailPlacement.choose(null); }}
+          onArrange={() => { detailPlacement.choose(null); setShowDetailCatalogue(false); setEditingProjectDetails(true); }} />}
         {/* Zone properties panel */}
         {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
