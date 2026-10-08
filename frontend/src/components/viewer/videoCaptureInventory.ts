@@ -13,7 +13,7 @@ type InitialVideoCapture = Pick<Direct3DCaptureBundle, 'beautyImageBase64' | 'in
 function currentClaims(scene: VideoCaptureScene) {
   const claims = getCommunity3DCaptureClaims(scene.zones, scene.buildings);
   if (!scene.projectId || !claims?.length) {
-    throw new Error('Run Generate to 3D again before capturing your video.');
+    throw new Error('Wait for the automatic 3D update before capturing your video. If it fails, use Retry 3D update.');
   }
   return claims;
 }

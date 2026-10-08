@@ -64,7 +64,8 @@ describe('deriveCityPromptWorkflow', () => {
     expect(pending.renderReason).toContain('automatically');
     expect(pending.renderReason).not.toContain('Generate to 3D');
     const mixed = deriveCityPromptWorkflow([home, zone('custom', 'building')]);
-    expect(mixed.renderReason).toContain('Generate to 3D');
+    expect(mixed.renderReason).toContain('automatically');
+    expect(mixed.renderReason).not.toContain('Generate to 3D');
   });
   it('allows an explicitly object-only scene without requiring automatic landscaping', () => {
     const boundary = activeBoundary();

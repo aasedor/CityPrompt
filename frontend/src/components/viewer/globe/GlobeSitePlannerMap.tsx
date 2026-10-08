@@ -118,7 +118,8 @@ import { elevatedRailLiftDestination } from './elevatedRailWalking';
 import { nativeParkLiftDestination, nativeParkWalkEntrance, nativeParkWalkStartForZone } from '@/features/parks/nativeParkWalking';
 import { buildingWalkEntrance, setBuildingWalkingDoorsOpen } from '@/features/legoAssembly/buildingWalking';
 import { updateWalkBuildingInspection, endBuildingInspection } from '@/features/legoAssembly/buildingInspection';
-import { advanceWalkPose, lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
+import { lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
+import { useWalkKeyboard } from './useWalkKeyboard';
 import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { isPlausibleTerrainAnchor } from './globeTerrainUtils';
@@ -2487,58 +2488,8 @@ export function GlobeSitePlannerMap({
     return () => { disposed = true; cleanup?.(); };
   }, [enterWalkAt, applyWalkPose]);
 
-  useEffect(() => {
-    if (walkMode !== 'active') return;
-    const pressed = new Set<string>();
-    const movementKeys = new Set(['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift']);
-    let frame = 0;
-    let lastTime = performance.now();
-    const tick = (time: number) => {
-      const current = walkPoseRef.current;
-      if (current && pressed.size) {
-        const next = advanceWalkPose(current, pressed, (time - lastTime) / 1000);
-        if (next !== current) {
-          // Free exploration never rejects a horizontal step. Authored ground
-          // supplies the camera height on sand, slopes, stairs and interiors.
-          applyWalkPose(next);
-        }
-      }
-      lastTime = time;
-      frame = requestAnimationFrame(tick);
-    };
-    const keyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault(); event.stopImmediatePropagation(); leaveWalk(); return;
-      }
-      const target = event.target as HTMLElement | null;
-      if (target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName ?? '')) return;
-      const key = event.key.toLowerCase();
-      if (!movementKeys.has(key)) return;
-      event.preventDefault(); event.stopImmediatePropagation(); pressed.add(key);
-    };
-    const keyUp = (event: KeyboardEvent) => { pressed.delete(event.key.toLowerCase()); };
-    const clearKeys = () => pressed.clear();
-    window.addEventListener('keydown', keyDown, true);
-    window.addEventListener('keyup', keyUp, true);
-    window.addEventListener('blur', clearKeys);
-    frame = requestAnimationFrame(tick);
-    return () => {
-      window.removeEventListener('keydown', keyDown, true);
-      window.removeEventListener('keyup', keyUp, true);
-      window.removeEventListener('blur', clearKeys);
-      cancelAnimationFrame(frame);
-    };
-  }, [walkMode, applyWalkPose, leaveWalk]);
-
-  useEffect(() => {
-    if (walkMode !== 'pick') return;
-    const cancel = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      event.preventDefault(); event.stopImmediatePropagation(); setWalkMode(null);
-    };
-    window.addEventListener('keydown', cancel, true);
-    return () => window.removeEventListener('keydown', cancel, true);
-  }, [walkMode]);
+  const cancelWalkPick = useCallback(() => setWalkMode(null), []);
+  useWalkKeyboard(walkMode, externalInteractionPaused, walkPoseRef, applyWalkPose, leaveWalk, cancelWalkPick);
 
   useEffect(() => {
     if (!walkMode || (!hasDrawingTool && !placementDraft && !streetViewPegman)) return;

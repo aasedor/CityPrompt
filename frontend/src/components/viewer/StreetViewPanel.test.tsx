@@ -182,9 +182,9 @@ describe('student street render', () => {
     const capture = vi.fn();
     const prepare = vi.fn();
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} onPrepareCommunity3D={prepare} />);
-    expect(screen.getByText(/New or changed objects need Complete Community 3D/)).toBeInTheDocument();
+    expect(screen.getByText(/New or changed objects update automatically/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Render' })).toBeDisabled();
-    fireEvent.click(screen.getByRole('button', { name: 'Open 3D build controls' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Retry 3D update' }));
     expect(prepare).toHaveBeenCalledTimes(1);
     expect(capture).not.toHaveBeenCalled();
     expect(mocks.direct).not.toHaveBeenCalled();

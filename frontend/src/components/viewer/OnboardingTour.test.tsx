@@ -32,15 +32,13 @@ describe('Quick-start guide', () => {
   it('follows drawing to 3D to render without triggering a generation', () => {
     const renderAction = vi.fn();
     const finish = vi.fn();
-    render(<><button data-tour="generate-3d-btn" onClick={renderAction}>Generate 3D</button><button data-tour="ai-render-btn" onClick={renderAction}>AI Render</button><OnboardingTour forceShow onComplete={finish} /></>);
+    render(<><button data-tour="ai-render-btn" onClick={renderAction}>AI Render</button><OnboardingTour forceShow onComplete={finish} /></>);
     expect(screen.getByRole('dialog')).toHaveAccessibleName('Start with one building');
     fireEvent.click(screen.getByRole('button', { name: 'Next' }));
     expect(screen.getByRole('dialog')).toHaveAccessibleName('Add a park');
     fireEvent.click(screen.getByRole('button', { name: 'Next' }));
     expect(screen.getByRole('dialog')).toHaveAccessibleName('Connect places with a road');
     fireEvent.click(screen.getByRole('button', { name: 'Next' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
-    expect(screen.getByRole('dialog')).toHaveAccessibleName('Build your 3D scene');
     fireEvent.click(screen.getByRole('button', { name: 'Next' }));
     expect(screen.getByRole('dialog')).toHaveAccessibleName('Create a presentation image');
     fireEvent.click(screen.getByRole('button', { name: 'Start drawing' }));

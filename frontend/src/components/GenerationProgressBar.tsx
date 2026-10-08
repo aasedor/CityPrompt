@@ -126,10 +126,7 @@ export function GenerationProgressBar() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center pointer-events-none">
       <div
-        onClick={() => {
-          if (projectId) navigate(`/projects/${projectId}/viewer`);
-        }}
-        className="pointer-events-auto mb-6 w-full max-w-lg cursor-pointer rounded-2xl border border-purple-500/30 bg-primary-950/95 shadow-[0_0_60px_-12px_rgba(139,92,246,0.4)] backdrop-blur-2xl transition-all hover:shadow-[0_0_80px_-12px_rgba(139,92,246,0.5)]"
+        className="pointer-events-auto mb-6 w-full max-w-lg rounded-2xl border border-purple-500/30 bg-primary-950/95 shadow-[0_0_60px_-12px_rgba(139,92,246,0.4)] backdrop-blur-2xl transition-all hover:shadow-[0_0_80px_-12px_rgba(139,92,246,0.5)]"
       >
         {/* Animated gradient top bar */}
         <div className="h-1 w-full overflow-hidden rounded-t-2xl bg-white/5">
@@ -147,9 +144,9 @@ export function GenerationProgressBar() {
                 <Wand2 size={20} className="text-purple-400 animate-pulse" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">
+                <button type="button" onClick={() => { if (projectId) navigate(`/projects/${projectId}`); }} aria-label="Open generation project" className="text-sm font-bold text-white underline focus-visible:outline focus-visible:outline-2">
                   {hasCancelled && !isActive ? 'Generation Stopped' : 'Generating 3D Models'}
-                </h3>
+                </button>
                 <p className="text-xs text-purple-300">
                   {hasCancelled && !isActive ? `${completedCount} of ${totalCount} completed` : getStepLabel(currentStep)}
                 </p>
@@ -169,6 +166,7 @@ export function GenerationProgressBar() {
                 {cancelling ? 'Stopping...' : 'Stop'}
               </button>
               <button
+                aria-label="Dismiss generation progress"
                 onClick={(e) => {
                   e.stopPropagation();
                   setDismissed(true);

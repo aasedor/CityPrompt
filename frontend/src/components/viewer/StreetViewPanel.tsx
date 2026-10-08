@@ -274,7 +274,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const handleGenerate = useCallback(async () => {
     if (!streetViewPegman?.position) return;
     if (directStreetMode && !currentSceneClaims?.length) {
-      toast.error('Complete Community 3D for the new or changed objects before rendering this street view.');
+      toast.error('Wait for the automatic 3D update before rendering this street view.');
       return;
     }
     const pegmanPosition = streetViewPegman.position;
@@ -782,8 +782,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
     <div className="absolute bottom-4 left-1/2 z-40 w-[min(94vw,760px)] -translate-x-1/2">
       {needsCommunity3D && (
         <div role="status" className="mb-2 flex flex-wrap items-center justify-center gap-2 rounded-lg bg-amber-50 px-4 py-3 text-center text-xs font-semibold text-amber-950 shadow-lg">
-          <span>New or changed objects need Complete Community 3D before a Direct 3D street render.</span>
-          {onPrepareCommunity3D && <button type="button" onClick={onPrepareCommunity3D} className="rounded-full bg-[#c9ff3d] px-3 py-2 font-black text-[#151515]">Open 3D build controls</button>}
+          <span>New or changed objects update automatically before a Direct 3D street render.</span>
+          {onPrepareCommunity3D && <button type="button" onClick={onPrepareCommunity3D} className="rounded-full bg-[#c9ff3d] px-3 py-2 font-black text-[#151515]">Retry 3D update</button>}
         </div>
       )}
       {sourcePreview && sourcePreview.position === JSON.stringify(streetViewPegman.position) && sourcePreview.angle === streetViewPegman.angle && (

@@ -387,11 +387,11 @@ export function GlobeAIRenderPanel({
     : catalogueOnly && (!hasCompiledCommunity || !hasAllCompiledSourceFingerprints || !hasCurrentResidualLandscape)
       ? CATALOGUE_UPDATE_GUIDANCE
     : !hasCompiledCommunity
-      ? 'Run Generate to 3D first.'
+      ? 'Your scene updates automatically. Wait for the 3D update to finish.'
     : !hasAllCompiledSourceFingerprints
-      ? 'Run Generate to 3D again to verify every layer against its current source geometry and design settings.'
+      ? 'Wait for the automatic 3D update to verify your current design. If it fails, use Retry 3D update.'
     : !hasCurrentResidualLandscape
-        ? 'Run Generate to 3D again to refresh residual landscaping before a Direct render.'
+        ? 'Wait for the site landscape to update before exporting. If it fails, use Retry 3D update.'
         : unsupportedDirect3DZones.length > 0
           ? `${unsupportedDirect3DZones.length} authored polygon${unsupportedDirect3DZones.length === 1 ? '' : 's'} need a supported building, park/plaza, or street/path type.`
         : !hasAllCompiledBuildingMassing

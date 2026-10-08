@@ -8,8 +8,8 @@ export function StudioControls({ layersOpen, onLayers, onReport, onTeam, onHelp 
   const button = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-3 text-sm font-semibold text-slate-900 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900';
   return <nav aria-label="Project tools" className="flex flex-wrap gap-1 rounded-xl border border-slate-300 bg-white/95 p-1 shadow-lg backdrop-blur-sm">
     <button type="button" className={button} onClick={onLayers} aria-expanded={layersOpen}><Layers size={17} /> Layers</button>
-    <button type="button" className={button} onClick={onReport}><FileText size={17} /> Report</button>
-    <button type="button" className={button} onClick={onTeam}><Users size={17} /> Team</button>
+    <button type="button" className={button} onClick={onReport}><FileText size={17} /> Planning report</button>
+    <button type="button" className={button} onClick={onTeam}><Users size={17} /> Share</button>
     <button type="button" className={button} onClick={onHelp}><HelpCircle size={17} /> Help</button>
   </nav>;
 }

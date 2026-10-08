@@ -301,7 +301,7 @@ export function ProjectListPage() {
         <div className="mt-6 rounded-lg border-2 border-[#151515] bg-white p-5 shadow-[8px_8px_0_0_#151515] sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-black uppercase">Create New Project</h2>
-            <button onClick={handleCancel} className="rounded-full border-2 border-[#151515] bg-white p-1 text-[#151515] hover:bg-[#c9ff3d]">
+            <button onClick={handleCancel} aria-label="Close new project form" className="rounded-full border-2 border-[#151515] bg-white p-1 text-[#151515] hover:bg-[#c9ff3d]">
               <X size={20} />
             </button>
           </div>

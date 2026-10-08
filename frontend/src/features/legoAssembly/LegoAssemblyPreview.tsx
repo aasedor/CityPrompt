@@ -520,7 +520,7 @@ export function LegoAssemblyPreview({
             <div className="mt-2 rounded border border-amber-300 bg-amber-50 p-2 text-[11px] text-amber-950">
               <p className="font-bold">Detailed Sticker/LEGO family to add</p>
               <p className="mt-1">
-                This does not block the plan. Generate to 3D uses correctly sized {targetWidth} × {targetDepth} m,
+                This does not block the plan. The automatic 3D update uses correctly sized {targetWidth} × {targetDepth} m,
                 {` ${targetFloors}-floor`} massing now. After the reviewed family is imported, Rebuild buildings
                 upgrades it in place.
               </p>
@@ -531,7 +531,7 @@ export function LegoAssemblyPreview({
             <div className="mt-2 rounded border border-amber-400 bg-amber-50 p-2 text-[11px] text-amber-900">
               <p className="font-bold">This detailed family is outside its reviewed fit.</p>
               <p className="mt-1">
-                This does not block the plan. Generate to 3D uses correctly sized {targetWidth} × {targetDepth} m,
+                This does not block the plan. The automatic 3D update uses correctly sized {targetWidth} × {targetDepth} m,
                 {` ${targetFloors}-floor`} massing now. Change the dimensions only if you want to use this reviewed
                 detailed family.
               </p>

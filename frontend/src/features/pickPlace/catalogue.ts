@@ -99,4 +99,4 @@ export function isCatalogueOnlyScene(zones: SiteZone[]): boolean {
   const physical = zones.filter(zone => resolveCommunity3DKind(zone) !== null);
   return physical.length > 0 && physical.every(zone => Boolean(assetForZone(zone)) || zone.properties?.pick_place_automatic_3d === true);
 }
-export const CATALOGUE_UPDATE_GUIDANCE = 'Your catalogue objects update in 3D automatically. Wait for “3D saved”, then try again. If an update failed, use “Retry 3D update” in the sidebar.';
+export const CATALOGUE_UPDATE_GUIDANCE = 'Your objects update in 3D automatically. Wait for “3D saved”, then try again. If an update failed, use “Retry 3D update” in the sidebar.';

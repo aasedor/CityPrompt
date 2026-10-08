@@ -363,9 +363,10 @@ export function HistoryPanel({ projectId, siteZones, onClose }: HistoryPanelProp
   const canRedo = !selectedHistoryEntry && hasClientRedo;
 
   const applyWorkingSnapshot = useCallback(async (zoneId: string, snapshot: ZoneSnapshot) => {
-    await zoneHistoryApi.restoreSnapshot(projectId, zoneId, snapshot);
+    const result = await zoneHistoryApi.restoreSnapshot(projectId, zoneId, snapshot);
     queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
     queryClient.invalidateQueries({ queryKey: ['zone-history', projectId] });
+    return result.deleted ? null : result.zone ?? snapshot;
   }, [projectId, queryClient]);
 
   const createSnapshotAction = useCallback((
@@ -374,11 +375,12 @@ export function HistoryPanel({ projectId, siteZones, onClose }: HistoryPanelProp
     redoSnapshot: ZoneSnapshot,
     label: string,
   ): UndoableAction => ({
+    projectId,
     label,
     zoneId,
-    undo: () => applyWorkingSnapshot(zoneId, undoSnapshot),
-    redo: () => applyWorkingSnapshot(zoneId, redoSnapshot),
-  }), [applyWorkingSnapshot]);
+    undo: async () => { await applyWorkingSnapshot(zoneId, undoSnapshot); },
+    redo: async () => { await applyWorkingSnapshot(zoneId, redoSnapshot); },
+  }), [applyWorkingSnapshot, projectId]);
 
   const getCurrentSnapshot = useCallback((zoneId: string): ZoneSnapshot => {
     return cloneZoneSnapshot(siteZones.find((zone) => zone.id === zoneId));
@@ -396,15 +398,15 @@ export function HistoryPanel({ projectId, siteZones, onClose }: HistoryPanelProp
           selectedHistoryEntry.zone_id,
           beforeSnapshot,
           targetSnapshot,
-          'Restore version',
+          'Undo history change',
         ));
         queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
         queryClient.invalidateQueries({ queryKey: ['zone-history', projectId] });
         setUndoTargetId(selectedHistoryEntry.zone_id);
         setSelectedHistoryId(null);
-        toast.success('Version restored');
+        toast.success('Selected change undone');
       } catch {
-        toast.error('Failed to restore selected version');
+        toast.error('Failed to undo selected change');
       } finally {
         setIsReverting(false);
       }
@@ -455,6 +457,23 @@ export function HistoryPanel({ projectId, siteZones, onClose }: HistoryPanelProp
     if (hasClientRedo) await redoForZone(effectiveTargetId);
   }, [effectiveTargetId, hasClientRedo, redoForZone]);
 
+  const handleRestoreVersion = async () => {
+    if (!selectedHistoryEntry || isReverting) return;
+    const entry = selectedHistoryEntry;
+    setIsReverting(true);
+    try {
+      const before = getCurrentSnapshot(entry.zone_id);
+      // History stores the AFTER state for create/update, and the last existing
+      // state for delete. Restoring never calls the event-undo endpoint.
+      const restored = await applyWorkingSnapshot(entry.zone_id, cloneZoneSnapshot(entry.snapshot));
+      pushAction(createSnapshotAction(entry.zone_id, before, restored, 'Restore version'));
+      setUndoTargetId(entry.zone_id);
+      setSelectedHistoryId(null);
+      toast.success('Version restored');
+    } catch { toast.error('Failed to restore version. Your history is kept.'); }
+    finally { setIsReverting(false); }
+  };
+
   const getLabel = (entry: ZoneHistoryEntry): string => {
     if (zoneLabels[entry.zone_id]) return zoneLabels[entry.zone_id];
     const typeName = (entry.snapshot.zone_type ?? 'zone').replace(/_/g, ' ');
@@ -476,6 +495,7 @@ export function HistoryPanel({ projectId, siteZones, onClose }: HistoryPanelProp
         </div>
         <button
           onClick={onClose}
+          aria-label="Close version history"
           className="rounded-md p-1 text-primary-950/40 transition-colors hover:bg-primary-950/[0.06] hover:text-primary-950"
         >
           <X size={14} />
@@ -485,6 +505,7 @@ export function HistoryPanel({ projectId, siteZones, onClose }: HistoryPanelProp
       {/* Undo / Redo controls with zone picker */}
       <div className="border-b border-primary-950/[0.06] px-3 py-2 space-y-1.5">
         <select
+          aria-label="Object history"
           value={undoTargetId}
           onChange={(e) => {
             setUndoTargetId(e.target.value);
@@ -510,17 +531,28 @@ export function HistoryPanel({ projectId, siteZones, onClose }: HistoryPanelProp
             className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-primary-950/10 bg-white px-2.5 py-1.5 text-[11px] font-medium text-primary-950/70 transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <Undo2 size={12} />
-            {isReverting ? 'Restoring...' : selectedHistoryEntry ? 'Restore' : 'Undo'}
+            {isReverting ? 'Applying…' : selectedHistoryEntry ? 'Undo this change' : 'Undo'}
           </button>
           <button
             onClick={handleRedo}
-            disabled={!canRedo}
+            disabled={!canRedo || isReverting}
             className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-primary-950/10 bg-white px-2.5 py-1.5 text-[11px] font-medium text-primary-950/70 transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <Redo2 size={12} />
             Redo
           </button>
         </div>
+        {selectedHistoryEntry && <div className="space-y-2 rounded-lg bg-blue-50 p-2 text-xs text-slate-700">
+          <p>{selectedHistoryEntry.action === 'create'
+            ? 'Undoing this change removes the object. Restore this version keeps its recorded geometry and settings.'
+            : selectedHistoryEntry.action === 'delete'
+              ? 'Restore deleted object recreates its geometry and settings from just before deletion.'
+              : 'Undo this change returns to the before state. Restore this version uses the after state shown in this row.'}</p>
+          <button onClick={() => void handleRestoreVersion()} disabled={isReverting} className="min-h-11 rounded-lg border border-blue-300 bg-white px-2 font-semibold disabled:opacity-40">
+            {selectedHistoryEntry.action === 'delete' ? 'Restore deleted object' : 'Restore this version'}
+          </button>
+          <button onClick={() => setSelectedHistoryId(null)} disabled={isReverting} className="ml-2 underline">Clear selection</button>
+        </div>}
       </div>
 
       {/* Timeline */}

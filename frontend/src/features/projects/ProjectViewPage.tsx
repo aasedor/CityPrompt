@@ -9,12 +9,11 @@ import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type
 import { useParams, Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Blocks, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Video, Wand2, X } from 'lucide-react';
+import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Video, Wand2, X } from 'lucide-react';
 import { buildingsApi, projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi, videoRenderApi } from '@/services/api';
 import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { LegoAssemblyPreview } from '@/features/legoAssembly/LegoAssemblyPreview';
-import { LegoBuilderPanel } from '@/features/legoAssembly/LegoBuilderPanel';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
@@ -58,7 +57,7 @@ import { RenderResultModal } from '@/components/viewer/RenderResultModal';
 import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
-import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
+import { ProjectPdfDownloadButton } from './ProjectPdfDownloadButton';
 import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls';
 import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentWorkflowNav, StudentStepPanel, studentLandscapeNeedsRefresh, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
@@ -104,7 +103,6 @@ import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGr
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import {
   deriveCityPromptWorkflow,
-  type CityPromptWorkflowStep,
 } from '@/features/workflow/cityPromptWorkflow';
 import { withModeledBuildingRenderZones } from '@/components/viewer/globe/modelRenderZones';
 import { filterBuildingsForVisibleCommunity3DScope } from '@/features/community3d/community3d';
@@ -146,9 +144,6 @@ export function ProjectViewPage() {
   const [aiGenerateInitialPrompt, setAiGenerateInitialPrompt] = useState<string | undefined>();
   const [aiGenerateInitialTab, setAiGenerateInitialTab] = useState<'image' | undefined>();
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
-  const [showLegoBuilder, setShowLegoBuilder] = useState(false);
-  const [isPreparingGenerate3D, setIsPreparingGenerate3D] = useState(false);
-  const [generate3DZones, setGenerate3DZones] = useState<SiteZone[] | null>(null);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [savedVideos, setSavedVideos] = useState<VideoAttempt[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
@@ -716,55 +711,6 @@ export function ProjectViewPage() {
   const masterPlanActive =
     workflowStep === 1 && !showHistory && selectedZone?.zone_type === 'site_boundary';
 
-  const handleOpenGenerate3D = useCallback(async () => {
-    if (!cityPromptWorkflow.canGenerate3D) {
-      toast(cityPromptWorkflow.generationReason, { icon: '🏗️' });
-      return;
-    }
-    if (visiblePlanLayers.length > 1) {
-      toast('Choose one Master Planner scenario before generating 3D. “All” is for comparing alternatives, not building them on top of each other.', { icon: '🧭' });
-      return;
-    }
-    setShowHistory(false);
-    setMeasureActive(false);
-    setShowGlobeRender(false);
-    setShowVideoRender(false);
-    selectZone(null);
-    setIsPreparingGenerate3D(true);
-    try {
-      if (visibleZones.some((zone) => !isPersistedZoneId(zone.id))) {
-        throw new Error('A plan zone is still saving. Wait a moment and run Generate to 3D again.');
-      }
-      const authoritativeProjectZones = id ? await siteZonesApi.list(id) : visibleZones;
-      if (id) {
-        // The server snapshot owns generation. Replacing the query cache here
-        // also removes persisted-id ghost zones left by a backend restart or a
-        // concurrent delete instead of misreporting them as "still saving".
-        queryClient.setQueryData(['site-zones', id], authoritativeProjectZones);
-      }
-      const frozenVisibleZones = authoritativeProjectZones.filter((zone) => {
-        const source = zone.properties?._imported_from;
-        return !(typeof source === 'string' && hiddenLayers.has(source));
-      });
-      if (frozenVisibleZones.length === 0) {
-        throw new Error('No saved building, park, or street is available to build. The plan was refreshed; draw the zone again.');
-      }
-      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-      setGenerate3DZones(frozenVisibleZones);
-      setShowLegoBuilder(true);
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Could not prepare Generate to 3D.');
-    } finally {
-      setIsPreparingGenerate3D(false);
-    }
-  }, [cityPromptWorkflow, hiddenLayers, id, queryClient, selectZone, visiblePlanLayers, visibleZones]);
-
-  const handleCloseGenerate3D = useCallback(() => {
-    setShowLegoBuilder(false);
-    setGenerate3DZones(null);
-  }, []);
-
   const handleOpenGlobeRender = useCallback(() => {
     if (!cityPromptWorkflow.canRender) {
       toast(cityPromptWorkflow.renderReason, { icon: '🧱' });
@@ -790,41 +736,6 @@ export function ProjectViewPage() {
     setShowVideoRender(true);
   }, [cityPromptWorkflow, selectZone]);
 
-  const handleWorkflowStepClick = useCallback((step: CityPromptWorkflowStep) => {
-    if (step === 1) {
-      setWorkflowStep(1);
-      setShowGlobeRender(false);
-      setShowVideoRender(false);
-      const boundary = cityPromptWorkflow.activeBoundary;
-      if (boundary) {
-        setActiveSitePlannerTool(null);
-        selectZone(boundary.id);
-      } else {
-        selectZone(null);
-        setActiveSitePlannerTool('site_boundary');
-      }
-      return;
-    }
-    if (step === 2) {
-      handleMasterPlan();
-      return;
-    }
-    if (step === 3) {
-      handleOpenGenerate3D();
-      return;
-    }
-    if (settings.mapMode === 'globe') handleOpenGlobeRender();
-    else setWorkflowStep(2);
-  }, [
-    cityPromptWorkflow.activeBoundary,
-    handleMasterPlan,
-    handleOpenGenerate3D,
-    handleOpenGlobeRender,
-    selectZone,
-    setActiveSitePlannerTool,
-    setWorkflowStep,
-    settings.mapMode,
-  ]);
 
   // Presentation navigation is transient UI state; the saved design and camera stay authoritative.
   const activeStudentStep = studentStep ?? defaultStudentStep(cityPromptWorkflow);
@@ -1091,7 +1002,8 @@ export function ProjectViewPage() {
     ),
     [project?.buildings, siteZones, visibleZones],
   );
-  const automatic3D = useAutomatic3D(project && project.permission !== 'viewer' && settings.mapMode === 'globe' ? id : undefined, siteZones, isSaving);
+  const automatic3D = useAutomatic3D(project && project.permission !== 'viewer' ? id : undefined, visibleZones, isSaving,
+    { hiddenLayers, comparingPlans: visiblePlanLayers.length > 1 });
   videoCaptureSceneRef.current = { projectId: id, zones: visibleZones, buildings: visibleBuildings };
 
   const deleteModeledBuilding = useMutation({
@@ -1270,7 +1182,7 @@ export function ProjectViewPage() {
               landscapeNeedsRefresh={studentLandscapeNeedsRefresh(cityPromptWorkflow.activeBoundary)}
               automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
-              onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={handleOpenGenerate3D} onRetry3D={automatic3D.retry} />}
+              onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={automatic3D.retry} onRetry3D={automatic3D.retry} />}
             {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} /></div>}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
@@ -1318,23 +1230,7 @@ export function ProjectViewPage() {
                   <div className="flex flex-col gap-1">
                     <StudioSaveStatus saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice} loadError={Boolean(siteZonesError)} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
                       discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />
-                    <details><summary className="min-h-11 cursor-pointer py-3 text-xs text-slate-700">Project steps &amp; custom 3D</summary>
-                    <WorkflowStepper
-                      state={cityPromptWorkflow}
-                      activeStep={showLegoBuilder ? 3 : cityPromptWorkflow.currentStep}
-                      onStepClick={handleWorkflowStepClick}
-                      compact
-                    />
-                    <button
-                      data-tour="generate-3d-btn"
-                      onClick={handleOpenGenerate3D}
-                      disabled={!cityPromptWorkflow.canGenerate3D || isPreparingGenerate3D}
-                      title={cityPromptWorkflow.generationReason}
-                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515] disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                      <Blocks size={16} />
-                      {isPreparingGenerate3D ? 'Preparing…' : 'Generate to 3D'}
-                    </button></details>
+
                     <button type="button" data-tour="ai-render-btn" onClick={() => changeStudentStep('present')}
                       className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-950 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-700">
                       <Camera size={16} aria-hidden /> Render this view
@@ -1567,7 +1463,7 @@ export function ProjectViewPage() {
           globeCapture={handleGlobeStreetCapture}
           buildings={visibleBuildings}
           onRenderSaved={rememberSavedRender}
-          onPrepareCommunity3D={handleOpenGenerate3D}
+          onPrepareCommunity3D={automatic3D.retry}
         />
 
         {renderLightbox && (
@@ -1713,15 +1609,6 @@ export function ProjectViewPage() {
             onClose={() => setLegoZone(null)}
           />
         )}
-
-        {/* LEGO builder — the whole plan assembled from archetype modules */}
-        {showLegoBuilder && (
-          <LegoBuilderPanel
-            zones={generate3DZones ?? visibleZones}
-            autoGenerate
-            onClose={handleCloseGenerate3D}
-          />
-        )}
       </div>
     );
   }
@@ -1748,13 +1635,7 @@ export function ProjectViewPage() {
           </div>
         </div>
         <div className="flex gap-2 self-start sm:self-auto">
-          <a
-            href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/reports/projects/${id}/report`}
-            className="btn-secondary shrink-0"
-          >
-            <FileDown size={16} className="mr-2" />
-            PDF Report
-          </a>
+          <ProjectPdfDownloadButton projectId={project.id} />
           <button
             onClick={() => setShowShare(true)}
             className="btn-secondary shrink-0"
@@ -1767,12 +1648,10 @@ export function ProjectViewPage() {
 
       {/* Master Plan — 2-Step Workflow: Draw & Style → AI Render */}
       <section className="relative left-1/2 mt-6 w-screen max-w-none -translate-x-1/2 overflow-hidden border-y border-primary-950/[0.08] shadow-card sm:rounded-xl sm:border">
-        {/* Workflow Stepper bar */}
-        <WorkflowStepper
-          state={cityPromptWorkflow}
-          activeStep={workflowStep === 2 ? 4 : cityPromptWorkflow.currentStep}
-          onStepClick={handleWorkflowStepClick}
-        />
+        <div className="flex items-center justify-between border-b bg-white p-3">
+          <span role="status">{automatic3D.status === 'updating' ? 'Updating your 3D scene…' : automatic3D.status === 'error' ? automatic3D.message : 'Your 3D scene updates automatically.'}</span>
+          {automatic3D.status === 'error' && <button type="button" onClick={automatic3D.retry} className="btn-secondary">Retry 3D update</button>}
+        </div>
 
         <div className="relative h-[56vh] min-h-[430px] sm:h-[62vh] lg:h-[68vh]">
           <Suspense fallback={<MapLoadingFallback mode="2D" />}>
@@ -1895,15 +1774,7 @@ export function ProjectViewPage() {
           {/* Plan editing actions: compile the scene before image rendering. */}
           {workflowStep === 1 && (
             <div className="flex items-center gap-2">
-              <button
-                onClick={handleOpenGenerate3D}
-                disabled={!cityPromptWorkflow.canGenerate3D || isPreparingGenerate3D}
-                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                title={cityPromptWorkflow.generationReason}
-              >
-                <Blocks size={16} />
-                {isPreparingGenerate3D ? 'Preparing…' : 'Generate to 3D'}
-              </button>
+
               <button
                 data-tour="ai-render-btn"
                 onClick={() => setWorkflowStep(2)}
@@ -2006,14 +1877,6 @@ export function ProjectViewPage() {
               zone={legoZone}
               buildingId={legoZone.building_id ?? legoZone.building_ids?.[0] ?? null}
               onClose={() => setLegoZone(null)}
-            />
-          )}
-          {/* LEGO builder — the whole plan assembled from archetype modules */}
-          {showLegoBuilder && (
-            <LegoBuilderPanel
-              zones={generate3DZones ?? visibleZones}
-              autoGenerate
-              onClose={handleCloseGenerate3D}
             />
           )}
         </div>

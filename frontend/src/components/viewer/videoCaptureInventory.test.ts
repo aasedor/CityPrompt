@@ -60,7 +60,7 @@ describe('initial video scene completeness', () => {
     const { scene, capture } = fixture();
     scene.zones[0].properties = {};
     const take = vi.fn().mockResolvedValue(capture);
-    await expect(captureCompleteVideoFrame(take, () => scene)).rejects.toThrow('Generate to 3D');
+    await expect(captureCompleteVideoFrame(take, () => scene)).rejects.toThrow('automatic 3D update');
     expect(take).not.toHaveBeenCalled();
   });
 });

@@ -99,6 +99,7 @@ export function RegisterPage() {
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
               className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#151515]/45 hover:text-[#151515]"
               tabIndex={-1}
             >

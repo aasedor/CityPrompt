@@ -99,3 +99,25 @@ Application code, account state and saved project data were not changed. Paid me
 Fine construction detail, legal/code certification and exhaustive provider-output quality were set aside because this review concerns student controls and safe interface cleanup. Mobile navigation remains a support decision under the existing desktop-first scope. No other discovered control behavior was silently excluded.
 
 **Verdict: proceed with a revised, staged cleanup plan, not the first audit as an automatic removal checklist.** The useful features and the prominent Walk layout should remain; resolve recovery and initial-preparation dependencies before simplifying their entry points.
+
+## Approved implementation checkpoint — 7 October 2026
+
+Implemented on `codex/student-control-fixes-2026-10-07` in the existing isolated preview worktree. Local preview: port 5183; existing backend: port 8011. No deployment or push is part of this checkpoint.
+
+- Report drafts persist in session storage, scoped to account, project, report and finding. A late save cannot erase newer text. Saving remains explicit; unsaved drafts are excluded from report exports.
+- History separates **Undo this change** from **Restore this version** / **Restore deleted object**. Restoring uses the recorded snapshot and is itself undoable.
+- Walk's active and start-point keyboard handlers pause under external dialogs. Closing a report with Escape retains the underlying Walk mode; held movement keys are cleared on pause.
+- Custom-only, older and mixed scenes prepare automatically. Removed the project-level Generate to 3D controls and duplicate stepper. Recovery uses Retry 3D update, with matching help and readiness language.
+- Automatic preparation respects hidden alternatives and waits while multiple scenarios are compared. A successful but still-unready result stops with an error instead of looping. Custom semantic edits can recover after a failed update.
+- The generation-progress link opens the real project route. Legacy PDF download uses the authenticated API client with busy/error handling. One Help entry remains in the globe view. Report/Team are labelled Planning report/Share; analysis Refresh says Regenerate site analysis; password visibility and close controls have accessible names.
+
+Verification: TypeScript passes. Fifteen focused Vitest files passed (103 tests); the final added legacy plural-style-input case brings coverage to 104, with the affected 22-test automatic-update file rerun successfully. Existing React act warnings and the direct-render test's multiple-Three.js warning remain non-failing. A fresh independent source review identified the scenario scope and automatic-recovery edge cases above; all were addressed with regression tests.
+
+Live browser checks on the local preview:
+
+- Prairie Gardens loaded, entered Walk and returned to Design. Both active Walk and its starting-point picker survived closing the planning-report dialog with Escape.
+- An unsaved report rationale survived closing/reopening in the disposable release-verification project. The first report request rejected an outdated park-access snapshot; reloading and requesting against the current revision succeeded.
+- Drawing a temporary custom building in that disposable project automatically reached **3D saved**. History restored its recorded version without deleting it; Undo reversed the restoration. Undo this change removed its creation, Undo recovered it, and Redo removed the temporary test object again.
+- Free export produced the exact 3D render preview and a PNG data URL with a download filename. The browser tool did not deliver a filesystem download event, so filesystem delivery is not claimed as verified. Token balance stayed at 8,970; no paid generations were submitted.
+
+The existing project named “Prairie Gardens · classroom scale · 20 / 5 / 8” currently lists 19 buildings, three parks and eight street segments. Its contents were preserved. This was a classroom-sized interaction check, not a new exact-count fixture or a 40-student load test. Touch-only/iPad movement, deployed-site verification and broad optional-control consolidation remain separate work. Screenshots are outside Git at `C:/dev-artifacts/CityPrompt/student-control-fixes-2026-10-07/`.

@@ -107,7 +107,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
         onClick={() => { leaveOtherModes(); setActiveSitePlannerTool(null); }} className={buttonStyle(!activeSitePlannerTool && !streetViewPegman && !measureActive)} title="Click a drawing to select and edit it"><MousePointer size={18} /> Select</button>
       <div aria-label="Undo and redo" className="[&_button]:min-h-11 [&_button]:min-w-11 [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2"><UndoRedoButtons /></div>
       <button type="button" data-tour="more-tools-btn" aria-expanded={showAdvanced} aria-controls="site-planner-advanced-tools" onClick={() => setShowAdvanced((value) => !value)} className={buttonStyle(showAdvanced)} title="Optional drawing and viewing tools"><Layers3 size={18} /> More Tools</button>
-      {onShowGuide && <button type="button" onClick={onShowGuide} className={buttonStyle()} title="Open the quick-start guide"><HelpCircle size={18} /> Guide</button>}
+      {onShowGuide && !isGlobeMode && <button type="button" onClick={onShowGuide} className={buttonStyle()} title="Open the quick-start guide"><HelpCircle size={18} /> Help</button>}
     </div>
 
     {showAdvanced && <div id="site-planner-advanced-tools" className="site-planner-advanced-row space-y-2 rounded-lg border border-slate-300 bg-white p-2">

@@ -62,6 +62,7 @@ export function ChangePasswordPage() {
             <button
               type="button"
               onClick={() => setShowCurrent((v) => !v)}
+              aria-label={showCurrent ? 'Hide current password' : 'Show current password'}
               className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 hover:text-primary-950/60"
               tabIndex={-1}
             >
@@ -88,6 +89,7 @@ export function ChangePasswordPage() {
             <button
               type="button"
               onClick={() => setShowNew((v) => !v)}
+              aria-label={showNew ? 'Hide new password' : 'Show new password'}
               className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 hover:text-primary-950/60"
               tabIndex={-1}
             >
@@ -114,6 +116,7 @@ export function ChangePasswordPage() {
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
+              aria-label={showConfirm ? 'Hide password confirmation' : 'Show password confirmation'}
               className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 hover:text-primary-950/60"
               tabIndex={-1}
             >

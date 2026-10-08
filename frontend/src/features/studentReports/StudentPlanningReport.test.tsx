@@ -45,6 +45,7 @@ function writeResponse() {
 }
 
 beforeEach(() => {
+  sessionStorage.clear();
   vi.clearAllMocks();
   vi.mocked(studentReportsApi.latest).mockResolvedValue(null);
   vi.mocked(studentReportsApi.history).mockResolvedValue([]);
@@ -58,6 +59,52 @@ afterEach(() => {
 });
 
 describe('StudentPlanningReport', () => {
+  it('keeps unsaved reasoning when the panel is closed and reopened', async () => {
+    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
+    const view = render(<StudentPlanningReport projectId="project-1" />);
+    await screen.findByText('Check park access');
+    fireEvent.change(screen.getByLabelText('Your response'), { target: { value: 'adapt' } });
+    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'Keep the mature trees.' } });
+    view.unmount();
+    render(<StudentPlanningReport projectId="project-1" />);
+    await screen.findByText('Check park access');
+    expect(screen.getByLabelText('Your response')).toHaveValue('adapt');
+    expect(screen.getByLabelText('Your reasoning')).toHaveValue('Keep the mature trees.');
+    expect(studentReportsApi.respond).not.toHaveBeenCalled();
+  });
+
+  it('keeps separate drafts when switching saved reports', async () => {
+    const older = { ...report, id: 'older-report' };
+    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
+    vi.mocked(studentReportsApi.history).mockResolvedValue([report, older]);
+    vi.mocked(studentReportsApi.get).mockImplementation(async id => id === older.id ? older : report);
+    render(<StudentPlanningReport projectId="project-1" />);
+    await screen.findByText('Check park access');
+    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'New plan reasoning.' } });
+    fireEvent.change(screen.getByLabelText('Saved reports'), { target: { value: older.id } });
+    await waitFor(() => expect(screen.getByLabelText('Saved reports')).toHaveValue(older.id));
+    expect(screen.getByLabelText('Your reasoning')).toHaveValue('');
+    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'Older plan reasoning.' } });
+    fireEvent.change(screen.getByLabelText('Saved reports'), { target: { value: report.id } });
+    await waitFor(() => expect(screen.getByLabelText('Saved reports')).toHaveValue(report.id));
+    expect(screen.getByLabelText('Your reasoning')).toHaveValue('New plan reasoning.');
+  });
+
+  it('does not erase newer typing when an earlier save finishes', async () => {
+    const pending = deferred<StudentReport>();
+    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
+    vi.mocked(studentReportsApi.respond).mockReturnValue(pending.promise);
+    const view = render(<StudentPlanningReport projectId="project-1" />);
+    await screen.findByText('Check park access');
+    writeResponse();
+    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'Further thoughts while saving.' } });
+    await act(async () => pending.resolve({ ...report, response_revision: 1 }));
+    expect(screen.queryByText('Response saved')).not.toBeInTheDocument();
+    view.unmount();
+    render(<StudentPlanningReport projectId="project-1" />);
+    await screen.findByText('Check park access');
+    expect(screen.getByLabelText('Your reasoning')).toHaveValue('Further thoughts while saving.');
+  });
   it('reads current route evidence only when the student requests the report', async () => {
     const access: ParkAccessSnapshot = { version: 1, sourceSignature: 'current', settings: { maxGapM: 8, pathWidthM: 2.2,
       obstacleClearanceM: 0.25, maxConnections: 2, gridStepM: 2 }, eligibleStreetZoneIds: [], sources: [], parks: [] };

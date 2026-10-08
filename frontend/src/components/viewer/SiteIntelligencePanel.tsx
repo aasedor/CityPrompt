@@ -901,7 +901,7 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
               className="flex items-center gap-1 font-black uppercase hover:text-[#151515] disabled:opacity-40"
               title="Regenerate the DNA from fresh data (also recovers a stuck run)"
             >
-              <RefreshCw className={`h-3 w-3 ${generating ? 'animate-spin' : ''}`} /> Refresh
+              <RefreshCw className={`h-3 w-3 ${generating ? 'animate-spin' : ''}`} /> Regenerate site analysis
             </button>
           </div>
 

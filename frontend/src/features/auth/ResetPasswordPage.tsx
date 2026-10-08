@@ -80,6 +80,7 @@ export function ResetPasswordPage() {
             <button
               type="button"
               onClick={() => setShowNew((v) => !v)}
+              aria-label={showNew ? 'Hide new password' : 'Show new password'}
               className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#151515]/45 hover:text-[#151515]"
               tabIndex={-1}
             >
@@ -106,6 +107,7 @@ export function ResetPasswordPage() {
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
+              aria-label={showConfirm ? 'Hide password confirmation' : 'Show password confirmation'}
               className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#151515]/45 hover:text-[#151515]"
               tabIndex={-1}
             >

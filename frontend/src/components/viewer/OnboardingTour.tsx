@@ -45,15 +45,9 @@ const STEPS: TourStep[] = [
     placement: 'top',
   },
   {
-    target: '[data-tour="generate-3d-btn"]',
-    title: 'Build your 3D scene',
-    body: 'When your drawings are ready, choose Generate 3D. Review the scene from different angles. If you change a drawing afterward, generate the scene again before making your final image.',
-    placement: 'top',
-  },
-  {
     target: '[data-tour="ai-render-btn"]',
     title: 'Create a presentation image',
-    body: 'Choose AI Render after generating 3D, then review the image settings before starting. Check the result against your design before presenting it. Start small: one building, one park and one road. Reopen this guide from Help whenever you need it.',
+    body: 'Your scene updates in 3D automatically. Choose AI Render, then review the image settings before starting. Check the result against your design before presenting it. Start small: one building, one park and one road. Reopen this guide from Help whenever you need it.',
     animation: 'ai-render',
     placement: 'top',
   },
@@ -67,7 +61,7 @@ const PLACEMENT_STEPS: TourStep[] = [
   {target:'[data-tour="select-btn"]',title:'Try an edit and Undo',body:'Select an object and drag its Move handle to move it. Use white corners to resize or the orange handle to rotate where available. Try Undo, then Redo. A wider infill plot can add houses; a fixed building keeps its proportions. Keep doors, sidewalks and park paths clear.',placement:'right'},
   {target:'[data-tour="workflow-site"]',title:'Finish the spaces between',body:'Open Site → Review site boundary. For a level redevelopment site, choose Clear site for redevelopment under Site ground, then Save changes. Choose a preset, Generate 3D Site Landscape, then Apply landscape. Presets use no image-generation tokens. After layout edits, regenerate the landscape if it disappears or needs updating.',placement:'right'},
   {target:'[data-tour="select-btn"]',title:'Save, reopen and review',body:'Wait for Drawings saved and 3D saved, then reload the project. Check that your buildings, street and park return. If a level site has an exposed edge, use Review ground → Close gaps at site edges and keep its level unchanged. Wait for measurements before applying.',placement:'right'},
-  {target:'[data-tour="ai-render-btn"]',title:'Download your first image',body:'Use Focus plan, right-drag to orbit and scroll to zoom. Choose Render this view → Image → Export current 3D view · free, then Download render in the preview. Open the saved PNG and check your design. AI styles are optional; compare their results with this original. Reopen Guide whenever you need it.',placement:'right'},
+  {target:'[data-tour="ai-render-btn"]',title:'Download your first image',body:'Use Focus plan, right-drag to orbit and scroll to zoom. Choose Render this view → Image → Export current 3D view · free, then Download render in the preview. Open the saved PNG and check your design. AI styles are optional; compare their results with this original. Reopen Help whenever you need it.',placement:'right'},
 ];
 
 // ---------------------------------------------------------------------------

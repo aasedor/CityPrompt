@@ -1,4 +1,4 @@
-import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
+import { CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import type { SiteZone } from '@/types';
 import {
   hasCommunity3DSourceFingerprint,
@@ -50,7 +50,6 @@ export function deriveCityPromptWorkflow(
   zones: SiteZone[],
   hasOutput = false,
 ): CityPromptWorkflowState {
-  const catalogueOnly = isCatalogueOnlyScene(zones);
   const activeBoundary = getActiveSiteBoundary(zones);
   const physicalZones = zones.filter((zone) => (
     zone.coordinates?.length >= 3 && resolveCommunity3DKind(zone) !== null
@@ -74,27 +73,13 @@ export function deriveCityPromptWorkflow(
 
   const generationReason = physicalZones.length === 0
     ? 'Draw a building, park, or street first. A site boundary is optional.'
-    : catalogueOnly
-      ? sceneReady ? '3D up to date. Your catalogue scene is ready to render.' : CATALOGUE_UPDATE_GUIDANCE
-    : sceneReady
-      ? 'The current scene is ready. Run Generate to 3D again whenever you want to rebuild it.'
-      : compiledZoneCount > 0
-        ? activeBoundary
-          ? 'Complete or rebuild the current buildings, public realm, and residual landscaping.'
-          : 'Complete or rebuild the current buildings and public realm.'
-        : activeBoundary
-          ? 'Transform the authored plan into buildings, public realm, props, and residual landscaping.'
-          : 'Transform the authored zones into buildings, public realm, and props.';
+    : sceneReady ? '3D up to date. Your scene is ready to render.' : CATALOGUE_UPDATE_GUIDANCE;
 
   const renderReason = physicalZones.length === 0
     ? 'Add a building, park, or street first. A site boundary is optional.'
-    : catalogueOnly && !sceneReady
-      ? CATALOGUE_UPDATE_GUIDANCE
-    : !allPhysicalZonesCompiled
-      ? 'Run Generate to 3D so every building, park, and street has a current 3D representation.'
-      : activeBoundary && !residualLandscapeReady
-        ? 'Run Generate to 3D to build the residual landscaping layer.'
-        : 'The compiled scene is ready for rendering.';
+    : !allPhysicalZonesCompiled ? CATALOGUE_UPDATE_GUIDANCE
+    : activeBoundary && !residualLandscapeReady ? 'The residual landscaping updates automatically. Wait for 3D saved, or use Retry 3D update if it fails.'
+    : 'Your scene is ready for rendering.';
 
   return {
     activeBoundary,

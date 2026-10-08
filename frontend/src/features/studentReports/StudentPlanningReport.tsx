@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Download, FileText, RefreshCw } from 'lucide-react';
 import type { ParkAccessSnapshot } from '@/components/viewer/globe/parkAccessConnections';
+import { useAuthStore } from '@/store';
+import { clearSavedReportDraft, readReportDraft, reportDraftKey, writeReportDraft, type ReportDraft } from './reportDrafts';
 
 import {
   reportError, safeSourceUrl, studentReportsApi,
@@ -20,7 +22,8 @@ const kindLabels = {
   design_suggestion: 'Design suggestion', unresolved_question: 'Question to resolve', source_context: 'Source to consider',
 };
 
-function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone }: {
+function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone, draftKey }: {
+  draftKey: string;
   finding: StudentFinding;
   decision?: StudentDecision;
   canEdit: boolean;
@@ -28,9 +31,18 @@ function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone }:
   onSave: (choice: StudentChoice, rationale: string, followThrough: string) => Promise<void>;
   onSelectZone?: (zoneId: string) => void;
 }) {
-  const [choice, setChoice] = useState<StudentChoice | ''>(decision?.choice ?? '');
-  const [rationale, setRationale] = useState(decision?.rationale ?? '');
-  const [followThrough, setFollowThrough] = useState(decision?.follow_through ?? '');
+  const [draft, setDraft] = useState<ReportDraft>(() => readReportDraft(draftKey) ?? {
+    choice: decision?.choice ?? '', rationale: decision?.rationale ?? '', followThrough: decision?.follow_through ?? '',
+  });
+  const { choice, rationale, followThrough } = draft;
+  const currentDraft = useRef(draft);
+  const updateDraft = (change: Partial<ReportDraft>) => {
+    const next = { ...currentDraft.current, ...change };
+    currentDraft.current = next;
+    writeReportDraft(draftKey, next);
+    setDraft(next);
+    setSaved(false);
+  };
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const lifecycle = useRef(0);
@@ -47,9 +59,11 @@ function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone }:
     setError(null);
     setSaved(false);
     const lifetime = lifecycle.current;
+    const submitted = currentDraft.current;
     try {
       await onSave(choice, rationale, followThrough);
-      if (lifetime === lifecycle.current) setSaved(true);
+      clearSavedReportDraft(draftKey, submitted);
+      if (lifetime === lifecycle.current && currentDraft.current === submitted) setSaved(true);
     } catch (err) { if (lifetime === lifecycle.current) setError(reportError(err)); }
   };
   return <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -79,7 +93,7 @@ function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone }:
     {canEdit ? <div className="mt-4 border-t border-slate-100 pt-4">
       <label className="block text-sm font-medium text-slate-800" htmlFor={`${inputId}-choice`}>Your response</label>
       <select id={`${inputId}-choice`} className="mt-1 min-h-11 w-full rounded-lg border border-slate-300 bg-white p-2 text-sm"
-        value={choice} onChange={(event) => { setChoice(event.target.value as StudentChoice | ''); setSaved(false); }}>
+        value={choice} onChange={(event) => updateDraft({ choice: event.target.value as StudentChoice | '' })}>
         <option value="">Choose how to respond</option>
         <option value="implement">Implement the suggestion</option>
         <option value="adapt">Adapt it to our vision</option>
@@ -88,11 +102,12 @@ function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone }:
       <label className="mt-3 block text-sm font-medium text-slate-800" htmlFor={`${inputId}-rationale`}>Your reasoning</label>
       <textarea id={`${inputId}-rationale`} className="mt-1 min-h-24 w-full rounded-lg border border-slate-300 p-2 text-sm"
         maxLength={6000} value={rationale} placeholder="Explain the evidence, priorities, or tradeoffs behind your choice."
-        onChange={(event) => { setRationale(event.target.value); setSaved(false); }} />
+        onChange={(event) => updateDraft({ rationale: event.target.value })} />
       <label className="mt-3 block text-sm font-medium text-slate-800" htmlFor={`${inputId}-follow`}>Follow-through <span className="font-normal text-slate-500">(optional)</span></label>
       <textarea id={`${inputId}-follow`} className="mt-1 min-h-16 w-full rounded-lg border border-slate-300 p-2 text-sm"
         maxLength={6000} value={followThrough} placeholder="What changed in the design, or what still needs investigation?"
-        onChange={(event) => { setFollowThrough(event.target.value); setSaved(false); }} />
+        onChange={(event) => updateDraft({ followThrough: event.target.value })} />
+      <p className="mt-2 text-xs text-slate-500">Draft text is kept in this browser tab when you inspect your design. Save response to include it in your report.</p>
       <div className="mt-3 flex items-center gap-3">
         <button disabled={busy} onClick={() => void save()} className="min-h-11 rounded-lg bg-teal-800 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900 disabled:opacity-50">Save response</button>
         {saved && <span role="status" className="text-sm text-teal-700">Response saved</span>}
@@ -108,10 +123,12 @@ function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone }:
 export function StudentPlanningReport(props: Props) {
   // A project switch must immediately discard the previous project's visible
   // report, drafts, and busy flags, even before a new request completes.
-  return <ProjectPlanningReport key={props.projectId} {...props} />;
+  const account = useAuthStore(state => state.user?.id ?? 'anonymous');
+  return <ProjectPlanningReport key={`${account}:${props.projectId}`} {...props} />;
 }
 
 function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = true, onSelectZone, getParkAccessSnapshot }: Props) {
+  const account = useAuthStore(state => state.user?.id ?? 'anonymous');
   const [report, setReport] = useState<StudentReport | null>(null);
   const [history, setHistory] = useState<ReportSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -206,7 +223,7 @@ function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = 
       });
       if (lifetime === lifecycle.current && sequence === requestSequence.current) setReport(next);
     } catch (err) {
-      if (lifetime === lifecycle.current) throw err;
+      throw err;
     } finally {
       if (lifetime === lifecycle.current) {
         setSaving(false);
@@ -248,7 +265,7 @@ function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = 
         </div>
         <details className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600"><summary className="cursor-pointer font-medium">Scope and limitations</summary><ul className="mt-2 list-disc space-y-2 pl-5">{report.analysis.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}</ul></details>
         <p className="text-xs text-slate-500">Recording “implement” saves your intention. It does not change geometry or verify that a design change has been made.</p>
-        {report.analysis.findings.map((finding) => <FindingCard key={`${report.id}-${finding.id}`} finding={finding} decision={report.decisions[finding.id]} canEdit={canEdit} busy={saving || working || loading} onSave={(choice, rationale, followThrough) => save(finding.id, choice, rationale, followThrough)} onSelectZone={onSelectZone} />)}
+        {report.analysis.findings.map((finding) => <FindingCard key={`${report.id}-${finding.id}`} draftKey={reportDraftKey(account, projectId, report.id, finding.id)} finding={finding} decision={report.decisions[finding.id]} canEdit={canEdit} busy={saving || working || loading} onSave={(choice, rationale, followThrough) => save(finding.id, choice, rationale, followThrough)} onSelectZone={onSelectZone} />)}
       </>}
     </div>
   </section>;

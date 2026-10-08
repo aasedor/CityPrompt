@@ -16,6 +16,34 @@ const boundary=(state:'compiled'|'stale'):SiteZone=>({id:'boundary',project_id:'
 const wrapper=({children}:{children:ReactNode})=><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}>{children}</QueryClientProvider>;
 const advance=()=>act(async()=>{await vi.advanceTimersByTimeAsync(750)});
 describe('automatic placement compilation',()=>{
+  it.each(['custom-only', 'mixed'] as const)('prepares a previously uncompiled %s scene without a generation button', async kind => {
+    const custom = { ...zone(), id: 'custom', properties: { height: 12, floors: 3 } };
+    const zones = kind === 'mixed' ? [custom, zone()] : [custom];
+    const view = renderHook(() => useAutomatic3D('p', zones, false), { wrapper });
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledWith(zones, undefined, expect.objectContaining({ scopeMode: 'project', includeResidualLandscape: true }));
+    view.unmount();
+  });
+  it('compiles only the selected scenario even when the query cache contains hidden alternatives', async () => {
+    const shown = { ...zone(), id: 'shown', properties: { _imported_from: 'scenario-a' } };
+    const hidden = { ...zone(), id: 'hidden', properties: { _imported_from: 'scenario-b' } };
+    const client = new QueryClient({defaultOptions:{queries:{retry:false}}});
+    client.setQueryData(['site-zones','p'], [shown,hidden]);
+    const wrap = ({children}:{children:ReactNode}) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+    const view = renderHook(() => useAutomatic3D('p', [shown], false, {hiddenLayers: new Set(['scenario-b']), comparingPlans: false}), {wrapper:wrap});
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledWith([shown], undefined, {includeResidualLandscape:true,scopeMode:'selection',scopeZoneIds:['shown']});
+    view.unmount();
+  });
+  it('waits for one scenario when alternatives are being compared', async () => {
+    const {result,rerender,unmount} = renderHook(({comparingPlans}) => useAutomatic3D('p',[zone()],false,{hiddenLayers:new Set<string>(),comparingPlans}), {initialProps:{comparingPlans:true},wrapper});
+    await advance();
+    expect(compileMixedCommunity3D).not.toHaveBeenCalled();
+    expect(result.current.message).toContain('one scenario');
+    rerender({comparingPlans:false}); await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    unmount();
+  });
   beforeEach(()=>{vi.useFakeTimers();vi.clearAllMocks();vi.mocked(siteZonesApi.list).mockResolvedValue([zone(0,true)]);vi.mocked(compileMixedCommunity3D).mockResolvedValue({plannedMasses:0} as never)});
   afterEach(()=>{vi.useRealTimers()});
   it('rejects late asset errors after a native layout change or deletion',()=>{
@@ -121,6 +149,24 @@ describe('automatic placement compilation',()=>{
     const original={...zone(),properties:{...zone().properties,building_footprint_scale:1}};
     const scaled={...original,properties:{...original.properties,building_footprint_scale:1.15}};
     expect(authoredPlacementKey([scaled])).not.toBe(authoredPlacementKey([original]));
+  });
+  it('stops after successful compilation leaves the saved scene unready', async () => {
+    vi.mocked(siteZonesApi.list).mockResolvedValue([zone()]);
+    const {result,unmount} = renderHook(() => useAutomatic3D('p',[zone()],false), {wrapper});
+    await advance(); await advance(); await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    expect(result.current.status).toBe('error');
+    expect(result.current.message).toContain('not ready');
+    unmount();
+  });
+  it.each(['plaza_archetype_id', 'generation_style_inputs'])('retries a failed custom plaza when %s changes', async field => {
+    vi.mocked(compileMixedCommunity3D).mockRejectedValueOnce(new Error('bad archetype'));
+    const plaza = {...zone(),zone_type:'parking',properties:{[field]:'old'}} as SiteZone;
+    const {result,rerender,unmount} = renderHook(({zones}) => useAutomatic3D('p',zones,false), {initialProps:{zones:[plaza]},wrapper});
+    await advance(); expect(result.current.status).toBe('error');
+    rerender({zones:[{...plaza,properties:{[field]:'new'}}]}); await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledTimes(2);
+    unmount();
   });
   it('stops after an error and retries only on request',async()=>{
     vi.mocked(compileMixedCommunity3D).mockRejectedValue(new Error('Offline'));
