@@ -111,7 +111,7 @@ export const GlobeCityPolicyMaps = forwardRef<
           layer.enabled &&
           layer.opacity > 0 &&
           (layer.vectorData ? <GlobeTransportVectors key={layer.map.id} data={layer.vectorData} mapId={layer.map.id}
-            height={Number.isFinite(terrainHeight) ? terrainHeight : 0} opacity={layer.opacity} order={970 + index} /> : layer.data && (
+            opacity={layer.opacity} order={970 + index} /> : layer.data && (
             <RasterMap
               key={`${layer.map.id}:${retryVersion[layer.map.id] ?? 0}`}
               layer={layer}
