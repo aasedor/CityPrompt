@@ -317,7 +317,9 @@ def _validate_direct_3d_project_zones(
         )
 
     server_inventory = (
-        _bind_instance_manifest_to_server_zones(req, physical_zones, zones) if bind_capture_instances else []
+        _bind_instance_manifest_to_server_zones(
+            req, physical_zones, zones, junction_checks_advisory=True,
+        ) if bind_capture_instances else []
     )
     server_inventory = _annotate_source_locked_rlasm_inventory(
         server_inventory,
@@ -693,6 +695,20 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         return False
     if persisted_variant_id and persisted_variant_id != recipe_variant_id:
         return False
+    # Exact registered surface pathways participate in pedestrian T/X joins
+    # in streetGraphIntersections.ts. The old vehicle-width/name filter rejected
+    # all five of them, even with a current, hash-locked compiled recipe.
+    if any(
+        capability.family_id == recipe.get("family_id")
+        and selection.variant_id == recipe_variant_id
+        and selection.archetype_id == recipe_archetype_id
+        and selection.compatibility.nominal_row_width_m is not None
+        and selection.compatibility.nominal_row_width_m < 5
+        and abs(_effective_street_width(zone) - selection.compatibility.nominal_row_width_m) < 1e-6
+        for capability in native_street_runtime_capabilities()
+        for selection in capability.selections
+    ):
+        return True
     semantic = " ".join(
         str(value or "").lower().replace("-", "_")
         for value in (
@@ -1130,9 +1146,9 @@ def _validate_junction_topology(
             recipe.get("family_id") in {capability.family_id for capability in manual_street_capabilities()}
             and recipe.get("archetype_id") == "calgary_alley"
         )
-        if _effective_street_width(zone) < (5 if alley else 6) or any(
+        if (_effective_street_width(zone) < (5 if alley else 6) or any(
             token in semantic for token in ("trail", "path", "roundabout", *(("laneway", "alley") if not alley else ()))
-        ):
+        )) and not _street_supports_v1_four_way_junction(zone):
             continue
         line = _street_zone_centerline(zone)
         if line is None:
@@ -1150,6 +1166,8 @@ def _bind_instance_manifest_to_server_zones(
     req: Direct3DRenderRequest,
     physical_zones: list[SiteZone],
     all_zones: list[SiteZone],
+    *,
+    junction_checks_advisory: bool = False,
 ) -> list[dict[str, object]]:
     """Bind screen-space instances to the selected server-owned scene scope."""
 
@@ -1219,6 +1237,7 @@ def _bind_instance_manifest_to_server_zones(
     seen_instance_ids: set[str] = set()
     server_inventory: list[dict[str, object]] = []
     for _color, descriptor in sorted(req.instance_id_manifest.items()):
+        junction_geometry_verified: bool | None = None
         zone_id = str(descriptor.zone_id) if descriptor.zone_id else None
         source_zone_ids = sorted({str(value) for value in descriptor.source_zone_ids})
         expected_item = expected.get(zone_id) if zone_id is not None else None
@@ -1281,15 +1300,25 @@ def _bind_instance_manifest_to_server_zones(
                         for zone in physical_zones
                         if community_3d_kind_for_source(zone.zone_type, zone.properties) == "street"
                     ]
-                    if not _validate_junction_topology(source_streets, scene_streets, descriptor.junction_topology):
+                    junction_geometry_verified = _validate_junction_topology(
+                        source_streets, scene_streets, descriptor.junction_topology,
+                    )
+                    if not junction_geometry_verified and not junction_checks_advisory:
                         raise _direct_state_conflict(
                             "The street-junction topology, anchor, or source revision no longer matches the compiled scene. Refresh the scene before rendering."
                         )
-                elif not _street_sources_form_four_arm_junction(source_streets):
-                    raise _direct_state_conflict(
-                        "The claimed street sources do not form a persisted four-arm "
-                        "junction. Refresh the scene before rendering."
-                    )
+                else:
+                    junction_geometry_verified = _street_sources_form_four_arm_junction(source_streets)
+                    if not junction_geometry_verified and not junction_checks_advisory:
+                        raise _direct_state_conflict(
+                            "The claimed street sources do not form a persisted four-arm "
+                            "junction. Refresh the scene before rendering."
+                        )
+                if not junction_geometry_verified:
+                    # Sources and identities are still bound to this project.
+                    # Preserve the captured pixels without asserting an unproven
+                    # arm count/anchor. This is design evidence, not a render gate.
+                    logger.info("Rendering captured junction %s without verified topology", descriptor.instance_id)
         else:
             if descriptor.junction_topology is not None:
                 raise _direct_state_conflict(
@@ -1354,9 +1383,11 @@ def _bind_instance_manifest_to_server_zones(
                 "source_zone_ids": source_zone_ids,
                 **(
                     {"junction_topology": descriptor.junction_topology.model_dump()}
-                    if descriptor.junction_topology is not None
+                    if descriptor.junction_topology is not None and junction_geometry_verified is True
                     else {}
                 ),
+                **({"junction_geometry_verified": junction_geometry_verified}
+                   if junction_checks_advisory and junction_geometry_verified is not None else {}),
                 "design_identity": (
                     expected_item["design_identity"]
                     if expected_item is not None and not is_supplemental_surface
