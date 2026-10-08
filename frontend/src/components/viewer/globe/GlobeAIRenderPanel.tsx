@@ -1167,7 +1167,7 @@ export function GlobeAIRenderPanel({
       ref={panelRef}
       onPointerMove={handlePanelPointerMove}
       onPointerLeave={handlePanelPointerLeave}
-      className={`globe-ai-dynamic-bg flex w-full flex-col overflow-hidden rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'mx-auto max-h-[13rem] max-w-md globe-ai-rendering' : 'max-h-[min(46rem,calc(100dvh-10rem))]'}`}
+      className={`globe-ai-dynamic-bg flex max-h-[min(46rem,calc(100dvh-10rem))] w-full flex-col rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'mx-auto max-w-md overflow-y-auto globe-ai-rendering' : 'overflow-hidden'}`}
     >
       {/* Header */}
       <div
@@ -1210,7 +1210,7 @@ export function GlobeAIRenderPanel({
       </div>
 
       {isRendering ? (
-        <div className="min-h-0 flex-1 px-4 py-3">
+        <div className="shrink-0 px-4 py-3">
           <div className="flex items-center gap-3 rounded-lg border-2 border-white/15 bg-black/25 px-3 py-2 text-white">
             <Loader2 size={18} className="shrink-0 animate-spin text-[#c9ff3d]" />
             <div className="min-w-0">
