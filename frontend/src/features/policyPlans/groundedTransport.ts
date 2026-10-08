@@ -54,6 +54,7 @@ export function buildGroundedTransport(data: TransportSnapshot, mapId: string, o
       for (const line of lines) for (let i = 1; i < line.length; i++) {
         const a = line[i - 1], b = line[i];
         const distance = Math.hypot((b[0] - a[0]) * 111320 * Math.cos(a[1] * RAD), (b[1] - a[1]) * 111320);
+        if (distance < .001) continue;
         const count = Math.max(1, Math.ceil(distance / 10));
         let previous = nodeAt(a[0], a[1]);
         for (let n = 1; n <= count; n++) {
@@ -84,7 +85,17 @@ export function buildGroundedTransport(data: TransportSnapshot, mapId: string, o
     const style = transportStyle(category);
     if (batch.segments.length) {
       const geometry = new LineSegmentsGeometry().setPositions(new Float32Array(batch.segments.length * 6));
+      const grounded = new THREE.InstancedBufferAttribute(new Float32Array(batch.segments.length), 1);
+      geometry.setAttribute('instanceGrounded', grounded);
       const material = new LineMaterial({ color: style.color, linewidth: 4, transparent: true, depthTest: true, depthWrite: false, toneMapped: false, dashed: style.dashed, dashSize: 30, gapSize: 20 });
+      // A collapsed segment is not a safe hidden line: the wide-line shader
+      // normalizes its zero direction and can produce screen-spanning spikes.
+      // Cull unknown instances before any perspective/line-width calculations.
+      material.onBeforeCompile = shader => {
+        shader.vertexShader = 'attribute float instanceGrounded;\n' + shader.vertexShader.replace(
+          'void main() {', 'void main() { if (instanceGrounded < 0.5) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }');
+      };
+      material.customProgramCacheKey = () => 'grounded-transport-v1';
       const object = new LineSegments2(geometry, material);
       const start = geometry.getAttribute('instanceStart'), end = geometry.getAttribute('instanceEnd');
       // Initial geographic distances keep dash phase independent of tile loading.
@@ -94,6 +105,7 @@ export function buildGroundedTransport(data: TransportSnapshot, mapId: string, o
         const update = () => {
           if (a.height === null || b.height === null) return;
           start.setXYZ(i, a.position.x, a.position.y, a.position.z); end.setXYZ(i, b.position.x, b.position.y, b.position.z);
+          grounded.setX(i, 1); grounded.addUpdateRange(i, 1); grounded.needsUpdate = true;
           (start as THREE.InterleavedBufferAttribute).data.addUpdateRange(i * 6, 6);
           start.needsUpdate = true; end.needsUpdate = true; dirty.add(geometry);
         };

@@ -26,13 +26,21 @@ describe('grounded transportation', () => {
   it('hides unknown ground, retains measured locations on missing tiles, and drapes stop edges too', () => {
     const result = buildGroundedTransport(data, 'test', 970);
     expect(result.nodes.every(n => n.height === null)).toBe(true);
+    expect(result.objects[0].geometry.getAttribute('instanceGrounded').array.every(n => n === 0)).toBe(true);
     const stop = result.objects[1];
     expect(stop.geometry.getAttribute('position').array.every(n => n === 0)).toBe(true);
     result.nodes.forEach(n => result.setHeight(n, 1030));
+    expect(result.objects[0].geometry.getAttribute('instanceGrounded').array.every(n => n === 1)).toBe(true);
     const before = result.nodes[0].position.clone();
     result.setHeight(result.nodes[0], null);
     expect(result.nodes[0].position.equals(before)).toBe(true);
     expect(stop.geometry.getAttribute('position').count).toBeGreaterThan(20);
+    result.dispose();
+  });
+  it('does not create zero-length line instances from duplicate source coordinates', () => {
+    const source = { ...data, features: [{ ...data.features[0], geometry: { type: 'LineString' as const, coordinates: [[-114.07, 51.05], [-114.07, 51.05]] } }] };
+    const result = buildGroundedTransport(source, 'test', 970);
+    expect(result.objects).toHaveLength(0);
     result.dispose();
   });
   it('casts along geographic vertical against visible ground, independent of camera direction', () => {
