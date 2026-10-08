@@ -2158,5 +2158,880 @@
     "triangles": 2280,
     "meshes": 3,
     "bytes": 137712
+  },
+  {
+    "id": "detail-player-bench",
+    "label": "Team bench",
+    "category": "Seating",
+    "description": "Long timber team seating beside playing fields.",
+    "dimensions": [
+      3.0,
+      0.54,
+      0.482
+    ],
+    "url": "/park-kits/standalone-details-v2/player-bench.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "sport:player_bench",
+    "sha256": "1642b0946bcfcee43adf65ad302499d66d905e8bc1545c0155f31455c34edefd",
+    "triangles": 84,
+    "meshes": 2,
+    "bytes": 6436
+  },
+  {
+    "id": "detail-covered-team-bench",
+    "label": "Covered team bench",
+    "category": "Shelters & markets",
+    "description": "Timber seating under a light shelter beside playing fields.",
+    "dimensions": [
+      3.9,
+      2.0,
+      2.894
+    ],
+    "url": "/park-kits/standalone-details-v2/covered-team-bench.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "sport:covered_bench",
+    "sha256": "a41be4e63b3c775afd45d286a05c4d36c3098ba6205f7522c6fbed2355469912",
+    "triangles": 446,
+    "meshes": 3,
+    "bytes": 26828
+  },
+  {
+    "id": "detail-three-row-bleachers",
+    "label": "Three-row bleachers with rails",
+    "category": "Seating",
+    "description": "Compact three-tier spectator seating with safety rails.",
+    "dimensions": [
+      4.8,
+      2.05,
+      1.969
+    ],
+    "url": "/park-kits/standalone-details-v2/three-row-bleachers.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "sport:bleachers",
+    "sha256": "95591651555c5c70e81350809e7235ff3e3f2210c879e33826534e4e81702551",
+    "triangles": 480,
+    "meshes": 2,
+    "bytes": 26712
+  },
+  {
+    "id": "detail-referee-chair",
+    "label": "Referee chair",
+    "category": "Sport & exercise",
+    "description": "Elevated official seating for courts.",
+    "dimensions": [
+      0.99,
+      1.43,
+      2.429
+    ],
+    "url": "/park-kits/standalone-details-v2/referee-chair.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.010394,
+      -0.075
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "sport:referee_stand",
+    "sha256": "bd81382d60ae9b5e8f28e38fc11cfaa042706a4e4e8a019d98d916d8dd9a8f32",
+    "triangles": 384,
+    "meshes": 4,
+    "bytes": 22960
+  },
+  {
+    "id": "detail-twin-court-light",
+    "label": "Twin-head court light",
+    "category": "Lighting",
+    "description": "Tall double-headed light for courts and recreation grounds.",
+    "dimensions": [
+      1.22,
+      0.38,
+      6.565
+    ],
+    "url": "/park-kits/standalone-details-v2/twin-court-light.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.03
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "sport:floodlight",
+    "sha256": "c572488c320bd17b1676e0973a2c109f29d4e8a44928bae01661712fd3498bb8",
+    "triangles": 188,
+    "meshes": 3,
+    "bytes": 12568
+  },
+  {
+    "id": "detail-festoon-lights",
+    "label": "Festoon light span",
+    "category": "Lighting",
+    "description": "A string of small lights suspended between two posts.",
+    "dimensions": [
+      6.44,
+      0.24,
+      3.2
+    ],
+    "url": "/park-kits/standalone-details-v2/festoon-lights.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "sport:festoon",
+    "sha256": "c6fad71a86ce74d47412f5dff28f79ffddd8884806f487a6865177efe38e4b6f",
+    "triangles": 948,
+    "meshes": 2,
+    "bytes": 50128
+  },
+  {
+    "id": "detail-bus-shelter",
+    "label": "Neighbourhood bus shelter",
+    "category": "Shelters & markets",
+    "description": "Sheltered transit seating with a roof and tinted panels.",
+    "dimensions": [
+      4.4,
+      1.8,
+      2.804
+    ],
+    "url": "/park-kits/standalone-details-v2/bus-shelter.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "street:shelter",
+    "sha256": "df73dfc0bbc595515f58711d78f38f5668958db9f2c00046d3864301793f7951",
+    "triangles": 276,
+    "meshes": 5,
+    "bytes": 19064
+  },
+  {
+    "id": "detail-bus-stop-pole",
+    "label": "Bus stop pole & timetable",
+    "category": "Street furniture",
+    "description": "Transit stop marker with a timetable panel.",
+    "dimensions": [
+      0.6,
+      0.1,
+      3.2
+    ],
+    "url": "/park-kits/standalone-details-v2/bus-stop-pole.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.01
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "street:stop_pole",
+    "sha256": "863c66701bcefd911b18ec041107387e4d57d17a51e28f73c9806e2778c0677c",
+    "triangles": 108,
+    "meshes": 3,
+    "bytes": 8316
+  },
+  {
+    "id": "detail-timber-picket-fence",
+    "label": "Timber picket fence",
+    "category": "Edges & gates",
+    "description": "Short timber fence panel for garden and residential edges.",
+    "dimensions": [
+      3.02,
+      0.157,
+      1.8
+    ],
+    "url": "/park-kits/standalone-details-v2/timber-picket-fence.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.01875
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "street:fence_panel",
+    "sha256": "d9cdfd04fa727d729a3ce86f6800e8be8e88f1a0a7a30696e605bec2891b3120",
+    "triangles": 288,
+    "meshes": 1,
+    "bytes": 16636
+  },
+  {
+    "id": "detail-boardwalk-railing",
+    "label": "Timber-and-steel boardwalk railing",
+    "category": "Edges & gates",
+    "description": "Timber handrail with steel uprights for paths and boardwalks.",
+    "dimensions": [
+      3.05,
+      0.13,
+      1.16
+    ],
+    "url": "/park-kits/standalone-details-v2/boardwalk-railing.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "street:guard",
+    "sha256": "7e000c13aff06bcb24e3c59afb6972a27b09c65ca7071f5a23a71c3f68c2d742",
+    "triangles": 528,
+    "meshes": 2,
+    "bytes": 28164
+  },
+  {
+    "id": "detail-hammock",
+    "label": "Freestanding hammock",
+    "category": "Seating",
+    "description": "Fabric hammock suspended on a freestanding frame.",
+    "dimensions": [
+      4.162,
+      1.0,
+      1.85
+    ],
+    "url": "/park-kits/standalone-details-v2/hammock.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "street:hammock",
+    "sha256": "a11902a479d4ad577132525ae72ac32c78c5164b337e09a5ba84be5df7bd99ad",
+    "triangles": 376,
+    "meshes": 4,
+    "bytes": 23124
+  },
+  {
+    "id": "detail-cafe-table-set",
+    "label": "Cafe table & four chairs",
+    "category": "Seating",
+    "description": "Round outdoor cafe table with four timber-and-metal chairs.",
+    "dimensions": [
+      1.95,
+      1.95,
+      0.84
+    ],
+    "url": "/park-kits/standalone-details-v2/cafe-table-set.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "sport:cafe_set",
+    "sha256": "3b0ef716d09cf0fceb85ae946ea8dab6feee55c1cf42d5ae0ec77999ebf711ad",
+    "triangles": 956,
+    "meshes": 2,
+    "bytes": 49452
+  },
+  {
+    "id": "detail-backless-bench",
+    "label": "Backless timber bench",
+    "category": "Seating",
+    "description": "Simple timber seating for paths, plazas and gardens.",
+    "dimensions": [
+      1.86,
+      0.53,
+      0.49
+    ],
+    "url": "/park-kits/standalone-details-v2/backless-bench.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "kit:backless_bench",
+    "sha256": "a7329131b4b86a4f2a08fd270298da9ac8877cc8992cb23e4d15f5e79306e3a3",
+    "triangles": 180,
+    "meshes": 1,
+    "bytes": 21720
+  },
+  {
+    "id": "detail-classic-picnic-table",
+    "label": "Classic picnic table",
+    "category": "Seating",
+    "description": "Timber picnic table with attached seats.",
+    "dimensions": [
+      2.2,
+      1.657,
+      0.785
+    ],
+    "url": "/park-kits/standalone-details-v2/classic-picnic-table.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "kit:picnic_table",
+    "sha256": "00f12d7762d3f066edd808f57dd2eb68bb7d7bc65fbfe75516f7499bb1f1802c",
+    "triangles": 312,
+    "meshes": 1,
+    "bytes": 36760
+  },
+  {
+    "id": "detail-planted-tree-well",
+    "label": "Planted tree surround",
+    "category": "Landscape",
+    "description": "Low planted surround; place a separate tree in its centre.",
+    "dimensions": [
+      1.8,
+      1.8,
+      0.23
+    ],
+    "url": "/park-kits/standalone-details-v2/planted-tree-well.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "kit:tree_well_planted",
+    "sha256": "7d9596c24f80073a0b235ee4aab834f7b6cb7a74fe25c2ba39d6e2ef0d35daef",
+    "triangles": 284,
+    "meshes": 1,
+    "bytes": 33584
+  },
+  {
+    "id": "detail-guarded-tree-well",
+    "label": "Tree surround with guard",
+    "category": "Landscape",
+    "description": "Planted surround with protective rails; add a separate tree.",
+    "dimensions": [
+      1.8,
+      1.8,
+      0.505
+    ],
+    "url": "/park-kits/standalone-details-v2/guarded-tree-well.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "kit:tree_well_guarded",
+    "sha256": "c1f9ca6c1c8de0c2dee668d52322e6fa636e12e15137b3f1d6d3d018f860b7f0",
+    "triangles": 620,
+    "meshes": 1,
+    "bytes": 71892
+  },
+  {
+    "id": "detail-compact-shrub",
+    "label": "Compact leafy shrub",
+    "category": "Planting",
+    "description": "Small leafy shrub for beds and soft landscape edges.",
+    "dimensions": [
+      0.773,
+      0.765,
+      0.728
+    ],
+    "url": "/park-kits/standalone-details-v2/compact-shrub.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.00033,
+      0.43,
+      0.017093
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "kit:compact_shrub",
+    "sha256": "e3b115fd6b14c1a5952a4070353bbbb7eb682c0211e9f8d98cef42102c94bc2a",
+    "triangles": 220,
+    "meshes": 1,
+    "bytes": 26272
+  },
+  {
+    "id": "detail-compact-grass",
+    "label": "Fine grass tuft",
+    "category": "Planting",
+    "description": "Fine grass tuft for small planted beds.",
+    "dimensions": [
+      0.802,
+      0.72,
+      0.914
+    ],
+    "url": "/park-kits/standalone-details-v2/compact-grass.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.010243,
+      0.5,
+      0.000116
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "kit:compact_grass",
+    "sha256": "cdfe2b33da87249322679bd46fc9ad0e06ccbeee3289e6f4d23c053bbb8fe5de",
+    "triangles": 104,
+    "meshes": 1,
+    "bytes": 13028
+  },
+  {
+    "id": "detail-compact-perennial",
+    "label": "Low flowering perennial",
+    "category": "Planting",
+    "description": "Low flowering plant for borders and small gardens.",
+    "dimensions": [
+      0.773,
+      0.765,
+      0.778
+    ],
+    "url": "/park-kits/standalone-details-v2/compact-perennial.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.00033,
+      0.43,
+      0.017093
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "kit:compact_perennial",
+    "sha256": "65b89958fe7d7dc76d0a0d41d61f2f581905231945a43918bf8ae0cddb573613",
+    "triangles": 360,
+    "meshes": 1,
+    "bytes": 42248
+  },
+  {
+    "id": "detail-meadow-patch",
+    "label": "Wildflower meadow patch",
+    "category": "Planting",
+    "description": "Small mixed wildflower and grass patch.",
+    "dimensions": [
+      1.723,
+      1.58,
+      0.557
+    ],
+    "url": "/park-kits/standalone-details-v2/meadow-patch.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.067185,
+      -0.0,
+      -0.038475
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "kit:meadow_patch",
+    "sha256": "f36863913d0d83ecdfdf3d1d5d2825706f5eb791d5d1b34c487652478f3c6875",
+    "triangles": 288,
+    "meshes": 1,
+    "bytes": 34008
+  },
+  {
+    "id": "detail-botanical-label",
+    "label": "Botanical interpretation label",
+    "category": "Garden & growing",
+    "description": "Low interpretation panel for garden displays.",
+    "dimensions": [
+      0.65,
+      0.403,
+      0.988
+    ],
+    "url": "/park-kits/standalone-details-v2/botanical-label.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "trio:label",
+    "sha256": "1d5200ac55350f0c63cb960d16c54ff01a07b744d5797381d7e712121789f868",
+    "triangles": 136,
+    "meshes": 2,
+    "bytes": 10648
+  },
+  {
+    "id": "detail-corten-growing-bed",
+    "label": "Corten teaching garden bed",
+    "category": "Garden & growing",
+    "description": "Raised corten bed with soil for teaching and community gardens.",
+    "dimensions": [
+      2.86,
+      1.66,
+      1.108
+    ],
+    "url": "/park-kits/standalone-details-v2/corten-growing-bed.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "trio:bed",
+    "sha256": "2d67d7283ae2697298ce03360322ac2a72b3ccacd85d32e062e9aabaf00e10e3",
+    "triangles": 2388,
+    "meshes": 5,
+    "bytes": 183996
+  },
+  {
+    "id": "detail-garden-teaching-canopy",
+    "label": "Garden teaching canopy",
+    "category": "Shelters & markets",
+    "description": "Open timber canopy for outdoor teaching and gathering.",
+    "dimensions": [
+      6.72,
+      7.7,
+      4.385
+    ],
+    "url": "/park-kits/standalone-details-v2/garden-teaching-canopy.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "trio:shelter",
+    "sha256": "d9cfec6fc695bab06ce3463872c44943060891911e1c3d3d94e24fdb903996e2",
+    "triangles": 18100,
+    "meshes": 3,
+    "bytes": 897444
+  },
+  {
+    "id": "detail-outdoor-cinema-screen",
+    "label": "Outdoor cinema screen",
+    "category": "Water & landmarks",
+    "description": "Freestanding outdoor screen for community film nights.",
+    "dimensions": [
+      10.91,
+      2.61,
+      6.914
+    ],
+    "url": "/park-kits/standalone-details-v2/outdoor-cinema-screen.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.005,
+      -0.0,
+      0.445
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "trio:screen",
+    "sha256": "e66e6064c7b36192a0941bfe4c34cb6e48cf2b8843133ea24c2ca5afec03bc3e",
+    "triangles": 2296,
+    "meshes": 4,
+    "bytes": 159480
+  },
+  {
+    "id": "detail-projection-booth",
+    "label": "Timber projection booth",
+    "category": "Shelters & markets",
+    "description": "Small timber booth for outdoor cinema equipment.",
+    "dimensions": [
+      3.65,
+      3.98,
+      2.81
+    ],
+    "url": "/park-kits/standalone-details-v2/projection-booth.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "trio:booth",
+    "sha256": "8b7ea1eaab382b36e2c3e887f95f6af2ac01f14c2a3c23a491c871c4233253a0",
+    "triangles": 1912,
+    "meshes": 5,
+    "bytes": 138384
+  },
+  {
+    "id": "detail-audience-seat-row",
+    "label": "Four-seat audience row",
+    "category": "Seating",
+    "description": "Four connected outdoor seats for events and performances.",
+    "dimensions": [
+      3.55,
+      0.526,
+      1.029
+    ],
+    "url": "/park-kits/standalone-details-v2/audience-seat-row.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.027883
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "trio:seats",
+    "sha256": "1280978e8e2cc50650a02815af4824c003f918b2047dfa829e9a02a14619c5e6",
+    "triangles": 1312,
+    "meshes": 1,
+    "bytes": 75456
+  },
+  {
+    "id": "detail-low-stone-wall",
+    "label": "Low stone garden wall",
+    "category": "Edges & gates",
+    "description": "Low coursed stone wall with a pale coping.",
+    "dimensions": [
+      3.08,
+      0.46,
+      0.664
+    ],
+    "url": "/park-kits/standalone-details-v2/low-stone-wall.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.006,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:stone_wall",
+    "sha256": "a6b6ccf310e03964f9b60bf46461a8a0a6615054cb567ad081a3211cb1d93a08",
+    "triangles": 228,
+    "meshes": 2,
+    "bytes": 14276
+  },
+  {
+    "id": "detail-stepping-stone",
+    "label": "Round stepping stone",
+    "category": "Landscape",
+    "description": "Single round stone for garden stepping paths.",
+    "dimensions": [
+      0.64,
+      0.64,
+      0.06
+    ],
+    "url": "/park-kits/standalone-details-v2/stepping-stone.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:stepping_stone",
+    "sha256": "e78f57a9b24c23118aeb150f5b2519a93aa859292bd31256b37a56aa57052c77",
+    "triangles": 92,
+    "meshes": 1,
+    "bytes": 5112
+  },
+  {
+    "id": "detail-bicycle-pump",
+    "label": "Public bicycle pump",
+    "category": "Street furniture",
+    "description": "Freestanding public bicycle pump with a hose and gauge.",
+    "dimensions": [
+      0.532,
+      0.3,
+      0.964
+    ],
+    "url": "/park-kits/standalone-details-v2/bicycle-pump.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.055893,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:bicycle_pump",
+    "sha256": "6294f53ad3fbd307fc4df22352a8b2b5d6f6dbab1ef3d21665da285d4636eb8b",
+    "triangles": 220,
+    "meshes": 4,
+    "bytes": 14168
+  },
+  {
+    "id": "detail-dog-bag-dispenser",
+    "label": "Dog-waste bag dispenser",
+    "category": "Street furniture",
+    "description": "Bag dispenser and sign for dog-walking routes.",
+    "dimensions": [
+      0.4,
+      0.192,
+      1.79
+    ],
+    "url": "/park-kits/standalone-details-v2/dog-bag-dispenser.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.00575
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:dog_bags",
+    "sha256": "faf91dc97eef913d1a673eab25fcacc3c075a0fde0244b78b32c2fea85e38a0d",
+    "triangles": 176,
+    "meshes": 3,
+    "bytes": 11288
+  },
+  {
+    "id": "detail-fire-hydrant",
+    "label": "Fire hydrant",
+    "category": "Street furniture",
+    "description": "Compact hydrant for street-edge detail.",
+    "dimensions": [
+      0.46,
+      0.4,
+      0.94
+    ],
+    "url": "/park-kits/standalone-details-v2/fire-hydrant.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:hydrant",
+    "sha256": "45c3208207d005bb393d9949cd46e2d431f0f041464d34021995798d76e60c70",
+    "triangles": 332,
+    "meshes": 3,
+    "bytes": 17760
+  },
+  {
+    "id": "detail-wayfinding-post",
+    "label": "Wayfinding fingerpost",
+    "category": "Street furniture",
+    "description": "Three-direction fingerpost for paths and public spaces.",
+    "dimensions": [
+      1.3,
+      0.1,
+      2.9
+    ],
+    "url": "/park-kits/standalone-details-v2/wayfinding-post.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.005
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:wayfinding",
+    "sha256": "46e5cbac8a1f09db055b86c8277d28a8f20897884084343f5a096ff8ad15f0a4",
+    "triangles": 81,
+    "meshes": 3,
+    "bytes": 6780
+  },
+  {
+    "id": "detail-community-mailbox",
+    "label": "Community mailbox",
+    "category": "Street furniture",
+    "description": "Twelve-door community mailbox with a weather cap.",
+    "dimensions": [
+      1.49,
+      0.59,
+      1.495
+    ],
+    "url": "/park-kits/standalone-details-v2/community-mailbox.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:mailbox",
+    "sha256": "2022a4d64b4c71c719013d56bab028e3eb62b67e54f74d23c0c08048e691acfa",
+    "triangles": 672,
+    "meshes": 3,
+    "bytes": 36708
+  },
+  {
+    "id": "detail-dog-agility-hoop",
+    "label": "Dog agility hoop",
+    "category": "Play",
+    "description": "Low dog agility ring on timber supports.",
+    "dimensions": [
+      1.5,
+      0.7,
+      1.405
+    ],
+    "url": "/park-kits/standalone-details-v2/dog-agility-hoop.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:dog_hoop",
+    "sha256": "d784c81ea9ca13524f2bfd2ab629049c3f14ba5a186ff32604876bac203871f5",
+    "triangles": 944,
+    "meshes": 2,
+    "bytes": 46744
+  },
+  {
+    "id": "detail-dog-agility-tunnel",
+    "label": "Dog agility tunnel",
+    "category": "Play",
+    "description": "Open-ended dog agility tunnel on timber cradles.",
+    "dimensions": [
+      2.4,
+      0.94,
+      0.96
+    ],
+    "url": "/park-kits/standalone-details-v2/dog-agility-tunnel.glb",
+    "color": "#9a8b71",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "sourceKit": "standalone-details-v2",
+    "sourceBuilder": "new:dog_tunnel",
+    "sha256": "08be4c069e57aa5718030236e9a493ec7e3eaf400a6c42a3341855b5a7df9b59",
+    "triangles": 280,
+    "meshes": 2,
+    "bytes": 13984
   }
 ]

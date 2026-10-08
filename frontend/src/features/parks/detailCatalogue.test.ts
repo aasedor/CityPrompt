@@ -10,8 +10,8 @@ import extras from "./detailCatalogueExtras.json";
 
 describe("standalone detail catalogue", () => {
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(100);
-    expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(100);
+    expect(DETAIL_CATALOGUE).toHaveLength(135);
+    expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(135);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-"),
     )) {
@@ -38,11 +38,28 @@ describe("standalone detail catalogue", () => {
   it("filters by category and searchable purpose", () => {
     expect(searchDetails("picnic", "Seating").map((a) => a.id)).toEqual([
       "picnic-table-accessible",
+      "detail-classic-picnic-table",
     ]);
     expect(searchDetails("water", "Street furniture").map((a) => a.id)).toEqual(
       ["drinking-fountain-accessible"],
     );
     expect(searchDetails("", "Trees").length).toBeGreaterThanOrEqual(8);
     expect(searchDetails("zzzz")).toEqual([]);
+  });
+  it("exposes the second batch with bounded geometry and useful search terms", () => {
+    const batch = extras.filter((m) => m.sourceKit === "standalone-details-v2");
+    expect(batch).toHaveLength(35);
+    expect(batch.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(4_000_000);
+    for (const model of batch) {
+      expect(model.triangles).toBeLessThan(20_000);
+      expect(model.meshes).toBeLessThanOrEqual(8);
+    }
+    expect(searchDetails("bicycle pump").map((m) => m.id)).toContain(
+      "detail-bicycle-pump",
+    );
+    expect(searchDetails("dog", "Play").map((m) => m.id)).toEqual([
+      "detail-dog-agility-hoop",
+      "detail-dog-agility-tunnel",
+    ]);
   });
 });

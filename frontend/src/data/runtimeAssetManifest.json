@@ -552,10 +552,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2923,
+    "explicitReferenceCount": 2958,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 4707,
-    "requiredLogicalBytes": 11710795548,
+    "requiredFileCount": 4742,
+    "requiredLogicalBytes": 11715199804,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -24930,6 +24930,286 @@
       "lfsOid": "8166a68fb1992090bf1bd987e320ea4a9d3cbc9c9615d0cc70eb37822bb11092"
     },
     {
+      "url": "/park-kits/standalone-details-v2/audience-seat-row.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 75456,
+      "lfsOid": "1280978e8e2cc50650a02815af4824c003f918b2047dfa829e9a02a14619c5e6"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/backless-bench.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 21720,
+      "lfsOid": "a7329131b4b86a4f2a08fd270298da9ac8877cc8992cb23e4d15f5e79306e3a3"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/bicycle-pump.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 14168,
+      "lfsOid": "6294f53ad3fbd307fc4df22352a8b2b5d6f6dbab1ef3d21665da285d4636eb8b"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/boardwalk-railing.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 28164,
+      "lfsOid": "7e000c13aff06bcb24e3c59afb6972a27b09c65ca7071f5a23a71c3f68c2d742"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/botanical-label.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 10648,
+      "lfsOid": "1d5200ac55350f0c63cb960d16c54ff01a07b744d5797381d7e712121789f868"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/bus-shelter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 19064,
+      "lfsOid": "df73dfc0bbc595515f58711d78f38f5668958db9f2c00046d3864301793f7951"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/bus-stop-pole.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8316,
+      "lfsOid": "863c66701bcefd911b18ec041107387e4d57d17a51e28f73c9806e2778c0677c"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/cafe-table-set.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 49452,
+      "lfsOid": "3b0ef716d09cf0fceb85ae946ea8dab6feee55c1cf42d5ae0ec77999ebf711ad"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/classic-picnic-table.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 36760,
+      "lfsOid": "00f12d7762d3f066edd808f57dd2eb68bb7d7bc65fbfe75516f7499bb1f1802c"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/community-mailbox.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 36708,
+      "lfsOid": "2022a4d64b4c71c719013d56bab028e3eb62b67e54f74d23c0c08048e691acfa"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/compact-grass.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 13028,
+      "lfsOid": "cdfe2b33da87249322679bd46fc9ad0e06ccbeee3289e6f4d23c053bbb8fe5de"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/compact-perennial.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 42248,
+      "lfsOid": "65b89958fe7d7dc76d0a0d41d61f2f581905231945a43918bf8ae0cddb573613"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/compact-shrub.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 26272,
+      "lfsOid": "e3b115fd6b14c1a5952a4070353bbbb7eb682c0211e9f8d98cef42102c94bc2a"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/corten-growing-bed.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 183996,
+      "lfsOid": "2d67d7283ae2697298ce03360322ac2a72b3ccacd85d32e062e9aabaf00e10e3"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/covered-team-bench.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 26828,
+      "lfsOid": "a41be4e63b3c775afd45d286a05c4d36c3098ba6205f7522c6fbed2355469912"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/dog-agility-hoop.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 46744,
+      "lfsOid": "d784c81ea9ca13524f2bfd2ab629049c3f14ba5a186ff32604876bac203871f5"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/dog-agility-tunnel.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 13984,
+      "lfsOid": "08be4c069e57aa5718030236e9a493ec7e3eaf400a6c42a3341855b5a7df9b59"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/dog-bag-dispenser.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 11288,
+      "lfsOid": "faf91dc97eef913d1a673eab25fcacc3c075a0fde0244b78b32c2fea85e38a0d"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/festoon-lights.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 50128,
+      "lfsOid": "c6fad71a86ce74d47412f5dff28f79ffddd8884806f487a6865177efe38e4b6f"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/fire-hydrant.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 17760,
+      "lfsOid": "45c3208207d005bb393d9949cd46e2d431f0f041464d34021995798d76e60c70"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/garden-teaching-canopy.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 897444,
+      "lfsOid": "d9cfec6fc695bab06ce3463872c44943060891911e1c3d3d94e24fdb903996e2"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/guarded-tree-well.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 71892,
+      "lfsOid": "c1f9ca6c1c8de0c2dee668d52322e6fa636e12e15137b3f1d6d3d018f860b7f0"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/hammock.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 23124,
+      "lfsOid": "a11902a479d4ad577132525ae72ac32c78c5164b337e09a5ba84be5df7bd99ad"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/low-stone-wall.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 14276,
+      "lfsOid": "a6b6ccf310e03964f9b60bf46461a8a0a6615054cb567ad081a3211cb1d93a08"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/meadow-patch.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 34008,
+      "lfsOid": "f36863913d0d83ecdfdf3d1d5d2825706f5eb791d5d1b34c487652478f3c6875"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/outdoor-cinema-screen.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 159480,
+      "lfsOid": "e66e6064c7b36192a0941bfe4c34cb6e48cf2b8843133ea24c2ca5afec03bc3e"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/planted-tree-well.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 33584,
+      "lfsOid": "7d9596c24f80073a0b235ee4aab834f7b6cb7a74fe25c2ba39d6e2ef0d35daef"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/player-bench.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6436,
+      "lfsOid": "1642b0946bcfcee43adf65ad302499d66d905e8bc1545c0155f31455c34edefd"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/projection-booth.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 138384,
+      "lfsOid": "8b7ea1eaab382b36e2c3e887f95f6af2ac01f14c2a3c23a491c871c4233253a0"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/referee-chair.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 22960,
+      "lfsOid": "bd81382d60ae9b5e8f28e38fc11cfaa042706a4e4e8a019d98d916d8dd9a8f32"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/stepping-stone.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5112,
+      "lfsOid": "e78f57a9b24c23118aeb150f5b2519a93aa859292bd31256b37a56aa57052c77"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/three-row-bleachers.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 26712,
+      "lfsOid": "95591651555c5c70e81350809e7235ff3e3f2210c879e33826534e4e81702551"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/timber-picket-fence.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 16636,
+      "lfsOid": "d9cdfd04fa727d729a3ce86f6800e8be8e88f1a0a7a30696e605bec2891b3120"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/twin-court-light.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 12568,
+      "lfsOid": "c572488c320bd17b1676e0973a2c109f29d4e8a44928bae01661712fd3498bb8"
+    },
+    {
+      "url": "/park-kits/standalone-details-v2/wayfinding-post.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6780,
+      "lfsOid": "46e5cbac8a1f09db055b86c8277d28a8f20897884084343f5a096ff8ad15f0a4"
+    },
+    {
       "url": "/park-kits/tennis-court-professional/spectator-bleacher.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26364,9 +26644,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 92,
-      "logicalBytes": 42803668,
-      "pathDigest": "9f774a6904a82f62fe9e5728324d0858fc62c1e731fae0d7277db8788a4de785"
+      "fileCount": 127,
+      "logicalBytes": 45005796,
+      "pathDigest": "8c7a9b42934e4797a5cf439b07d0bb9311077dd13be55ceae5eae0942fb1ef77"
     },
     {
       "name": "public-realm-skins",

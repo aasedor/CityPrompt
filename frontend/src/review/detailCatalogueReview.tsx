@@ -95,6 +95,7 @@ function Metrics({ onStats }: { onStats: (value: string) => void }) {
   return null;
 }
 function Review() {
+  const pageCount = Math.ceil(DETAIL_CATALOGUE.length / 20);
   const [page, setPage] = useState(0),
     [stress, setStress] = useState(false),
     [batched, setBatched] = useState(true),
@@ -123,10 +124,10 @@ function Review() {
           font: "14px Arial",
         }}
       >
-        <b>100-object catalogue review</b> · {stats}
+        <b>{DETAIL_CATALOGUE.length}-object catalogue review</b> · {stats}
         <br />
         <button onClick={() => setStress(false)}>Catalogue</button>
-        {[0, 1, 2, 3, 4].map((n) => (
+        {Array.from({ length: pageCount }, (_, n) => n).map((n) => (
           <button
             key={n}
             onClick={() => {
@@ -144,7 +145,7 @@ function Review() {
         <br />
         {stress
           ? `${batched ? "Batched" : "Individual"} · 100 identical benches, same camera and geometry`
-          : `Page ${page + 1} of 5 · normalized preview sizes; labels show real dimensions`}
+          : `Page ${page + 1} of ${pageCount} · normalized preview sizes; labels show real dimensions`}
       </div>
       <Canvas
         orthographic

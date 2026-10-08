@@ -102,7 +102,7 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
     from pathlib import Path
     root = Path(__file__).resolve().parents[2]
     choices = json.loads((root / 'frontend/src/features/parks/detailCatalogueExtras.json').read_text())
-    assert len(choices) == 90
+    assert len(choices) == 125
     assert set(endpoint._DETAIL_MODELS['trees']) == {'oak-0','oak-1','oak-2'} | {c['id'] for c in choices if c['kind'] == 'tree'}
     assert set(endpoint._DETAIL_MODELS['props']) == {'picnic-table-accessible','dual-stream-bin','bike-rack-three-stall','drinking-fountain-accessible','boulders','split-rail'} | {c['id'] for c in choices if c['kind'] == 'object'}
     for choice in choices:
