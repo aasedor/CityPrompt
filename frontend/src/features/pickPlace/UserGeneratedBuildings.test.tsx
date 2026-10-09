@@ -17,6 +17,7 @@ it('separates private creations in the building category and selects a reusable 
   const pick = vi.fn();
   render(<PlacementPalette selected={null} onPick={vi.fn()} onPickCanonical={vi.fn()} onPickGenerated={pick} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
   fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
+  fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
   fireEvent.change(screen.getByLabelText('Object category'), { target: { value: 'user-generated' } });
   expect(await screen.findByText('My red house')).toBeTruthy();
   expect(screen.queryByText('Halifax clapboard house')).toBeNull();

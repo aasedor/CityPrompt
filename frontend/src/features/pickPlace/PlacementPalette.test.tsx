@@ -16,12 +16,14 @@ describe('student asset browsing', () => {
     const onPick=vi.fn();
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={onPick} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
     fireEvent.click(screen.getByRole('button', {name:'Buildings'}));
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getByRole('option',{name:'Low density'})).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText('Object category'),{target:{value:'towers'}});
     expect(screen.getByRole('button',{name:/Blue glass office tower.*Choose & place/})).toBeInTheDocument();
     expect(screen.queryByRole('button',{name:/Side-by-side duplex.*Choose & place/})).not.toBeInTheDocument();
     expect(onPick).not.toHaveBeenCalled();
     fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getByLabelText('Object category')).toHaveValue('');
     fireEvent.change(screen.getByLabelText('Object category'),{target:{value:'transit'}});
     expect(screen.getByRole('button',{name:/Garden Tram Avenue.*Choose & draw route/})).toBeInTheDocument();
@@ -31,6 +33,7 @@ describe('student asset browsing', () => {
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onPickStreet={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
     const count = (domain: string) => catalogue.CLASSROOM_CHOICES.filter(choice => choice.domain === domain).length;
     fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getByLabelText('Catalogue collection')).toHaveValue('starter');
     expect(screen.getByText(new RegExp(`${catalogue.CLASSROOM_CHOICES.length} exact choices: ${count('building')} buildings, ${count('park_plaza')} parks, ${count('street_pathway')} streets`))).toBeInTheDocument();
     expect(screen.getAllByRole('article')).toHaveLength(12);
@@ -42,6 +45,7 @@ describe('student asset browsing', () => {
     }
     expect(screen.getAllByRole('article')).toHaveLength(count('building'));
     fireEvent.click(screen.getAllByRole('button', { name: 'Parks' })[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getByText('Show more choices', { selector: 'button' }));
     fireEvent.click(screen.getByText('Show more choices', { selector: 'button' }));
@@ -54,6 +58,7 @@ describe('student asset browsing', () => {
       activeStreetVariant="student_green_alley_v1" onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
     expect(screen.getByText('Ruelle Verte Community Alley · 11 m wide')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
     expect(screen.getByRole('button', { name: /Ruelle Verte Community Alley.*Choose & draw route/ })).toHaveAttribute('aria-pressed','true');
@@ -66,12 +71,14 @@ describe('student asset browsing', () => {
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={onPick} onPickStreet={onPickStreet} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     fireEvent.change(screen.getByLabelText('Search objects or district code'), { target: { value: 'Side-by-side duplex' } });
     expect(screen.getByRole('button', { name: /Side-by-side duplex.*Choose & place/ })).toBeInTheDocument();
     expect(onPick).not.toHaveBeenCalled();
     fireEvent.change(screen.getByLabelText('Search objects or district code'), { target: { value: 'unavailable' } });
     fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
     fireEvent.click(screen.getAllByRole('button', { name: 'Streets' })[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     fireEvent.change(screen.getByLabelText('Search objects or district code'), { target: { value: 'Ruelle Verte' } });
     fireEvent.click(screen.getByRole('button', { name: /Ruelle Verte Community Alley.*Choose & draw route/ }));
     expect(onPickStreet).toHaveBeenCalledWith(expect.objectContaining({id:'student_green_alley_v1'}));
@@ -84,6 +91,7 @@ describe('student asset browsing', () => {
     try {
       render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
       fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
+      fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
       expect(screen.getAllByRole('article')).toHaveLength(12);
       fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
       expect(screen.getAllByRole('article')).toHaveLength(24);
@@ -107,6 +115,7 @@ describe('student asset browsing', () => {
     const onPick = vi.fn(), onCancel = vi.fn();
     render(<PlacementPalette onPickCanonical={vi.fn()} selected="clay_side_by_side_duplex" onPick={onPick} onCancel={onCancel} status="ready" message="" onRetry={vi.fn()} />);
     fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     fireEvent.change(screen.getByLabelText('Search objects or district code'), { target: { value: 'Side-by-side duplex' } });
     fireEvent.click(screen.getByRole('button', { name: /Side-by-side duplex.*Choose & place/ }));
     expect(onPick).toHaveBeenCalledWith('clay_side_by_side_duplex');

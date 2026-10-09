@@ -8,6 +8,7 @@ it('keeps reviewed parks and makes all four flexible parks searchable and drawab
   render(<PlacementPalette selected={null} onPick={onPick} onPickStreet={vi.fn()}
     onPickCanonical={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}/>);
   fireEvent.click(screen.getByRole('button', { name: 'Parks' }));
+  fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
   expect(screen.getByRole('button', { name: /Conservatory botanical garden.*Choose & place/ })).toBeInTheDocument();
   fireEvent.change(screen.getByRole('searchbox', { name: 'Search objects or district code' }), { target: { value: 'Flexible' } });
   expect(screen.getAllByRole('article')).toHaveLength(4);
@@ -27,6 +28,7 @@ it.each([
   render(<PlacementPalette selected={null} onPick={onPick} onPickStreet={vi.fn()}
     onPickCanonical={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}/>);
   fireEvent.click(screen.getByRole('button', { name: 'Parks' }));
+  fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
   fireEvent.change(screen.getByRole('searchbox', { name: 'Search objects or district code' }), { target: { value: query } });
   fireEvent.click(screen.getByRole('button', {name: /Choose & draw park/}));
   expect(onPick).toHaveBeenCalledWith(id);

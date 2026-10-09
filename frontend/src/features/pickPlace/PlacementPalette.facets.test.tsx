@@ -9,6 +9,7 @@ function setup(){
   const onPick=vi.fn(),onPickCanonical=vi.fn(),onPickStreet=vi.fn();
   render(<PlacementPalette selected={null} onPick={onPick} onPickCanonical={onPickCanonical} onPickStreet={onPickStreet} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}/>);
   fireEvent.click(screen.getByRole('button',{name:'Buildings'}));
+  fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
   return {onPick,onPickCanonical,onPickStreet};
 }
 describe('student catalogue facets',()=>{
@@ -52,10 +53,12 @@ describe('student catalogue facets',()=>{
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.change(screen.getByLabelText('Architectural style'),{target:{value:'scandinavian_nordic'}});
     fireEvent.click(screen.getAllByRole('button',{name:'Parks'})[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.queryByLabelText('Architectural style')).not.toBeInTheDocument();
     expect(screen.getByLabelText('Default plot area')).toHaveValue('');
     expect(screen.getByLabelText('Park purpose')).toHaveValue('');
     fireEvent.click(screen.getAllByRole('button',{name:'Buildings'})[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getByLabelText('Architectural style')).toHaveValue('');
   });
   it('searches the Brutalist label even when the source category is Brutalism',()=>{
@@ -68,6 +71,7 @@ describe('student catalogue facets',()=>{
   it('filters streets by registered width and dispatches the original route asset',()=>{
     const callbacks=setup();
     fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     fireEvent.change(screen.getByLabelText('Corridor width'),{target:{value:'narrow'}});
     expect(screen.queryByLabelText('Default plot area')).not.toBeInTheDocument();
     expect(screen.queryByLabelText('Architectural style')).not.toBeInTheDocument();

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
-import { Building2, Trees, Route } from 'lucide-react';
+import { ArrowLeft, Building2, Trees, Route } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
 import { STREET_ASSETS, type StreetAsset } from './assetRegistry';
 import { CANONICAL_CHOICES, CLASSROOM_CHOICES, UNAVAILABLE_CATALOGUE_ENTRIES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
@@ -8,6 +8,8 @@ import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
 import { UserGeneratedBuildings } from './UserGeneratedBuildings';
 import type { UserGeneratedBuilding } from '@/services/api';
+import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
+import { CatalogueCategoryTiles } from './CatalogueCategoryTiles';
 import { CatalogueFacetControls } from './CatalogueFacetControls';
 import { choiceMatchesFacets, type CatalogueFacets } from './catalogueFacets';
 
@@ -31,6 +33,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   onPickGenerated?: (model: UserGeneratedBuilding) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [categoryView, setCategoryView] = useState(true);
   const [section, setSection] = useState<Section>('building');
   const [query, setQuery] = useState('');
   const [groupId, setGroupId] = useState('');
@@ -41,7 +44,9 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const [showFixedStreetSegments, setShowFixedStreetSegments] = useState(false);
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
   const clearFilters = () => { setGroupId(''); setPurposeId(''); setQuery(''); setFacets({styleId:'',sizeId:''}); setLimit(12); };
-  const chooseSection = (id: Section) => { setSection(id); clearFilters(); };
+  const showCategories = () => { clearFilters(); setCategoryView(true); };
+  const chooseSection = (id: Section) => { setSection(id); showCategories(); };
+  const choosePurpose = (id: string) => { clearFilters(); setPurposeId(id); setCategoryView(false); };
   const choices = collection === 'starter' ? CLASSROOM_CHOICES : CANONICAL_CHOICES;
   const groups = availablePickerCategories(section, choices);
   const matchingAssets = useMemo(() => filterCanonicalChoices(section, query, purposeId, choices)
@@ -81,7 +86,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
         <div className="shrink-0 space-y-3">
           <label className="flex items-center gap-2 text-sm font-semibold">Collection
             <select aria-label="Catalogue collection" value={collection} className={filterStyle}
-              onChange={event => { setCollection(event.target.value as 'starter' | 'explore'); clearFilters(); }}>
+              onChange={event => { setCollection(event.target.value as 'starter' | 'explore'); showCategories(); }}>
               <option value="starter">Approved & validation candidates</option>
             </select>
           </label>
@@ -95,17 +100,18 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             {visibleSections.map(({ id, label, icon: Icon }) => <button key={id} aria-pressed={section === id} onClick={() => chooseSection(id)}
               className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-lg border px-2 text-sm font-semibold ${section === id ? 'border-slate-900 bg-[#c9ff3d]' : 'border-slate-300 bg-white hover:bg-lime-50'}`}><Icon size={18} />{label}</button>)}
           </nav>
-          <div className="grid gap-2 sm:grid-cols-2">
+          <div className={categoryView ? 'grid gap-2' : 'grid gap-2 sm:grid-cols-2'}>
             <label className="sr-only" htmlFor="placement-search">Search objects or district code</label>
-            <input id="placement-search" type="search" placeholder="Search names or district codes…" value={query} onChange={event => { setQuery(event.target.value); setLimit(12); }} className={filterStyle} />
-            <label className="sr-only" htmlFor="placement-group">Object category</label>
-            <select id="placement-group" value={groupId} onChange={event => { setGroupId(event.target.value); setLimit(12); }} className={filterStyle}>
+            <input id="placement-search" type="search" placeholder="Search names or district codes…" value={query} onChange={event => { setQuery(event.target.value); setCategoryView(false); setLimit(12); }} className={filterStyle} />
+            <div className={categoryView ? 'hidden' : 'contents'}><label className="sr-only" htmlFor="placement-group">Object category</label>
+            <select id="placement-group" value={groupId} onChange={event => { setGroupId(event.target.value); setCategoryView(false); setLimit(12); }} className={filterStyle}>
               <option value="">All {sections.find(item => item.id === section)?.label.toLowerCase()}</option>
               {groups.map(group => <option key={group.id} value={group.id}>{group.label}</option>)}
               {section === 'building' && onPickGenerated && <option value="user-generated">User generated</option>}
-            </select>
+            </select></div>
           </div>
-          {!userGenerated && <>
+          {!categoryView && <div className="flex items-center gap-3"><button type="button" onClick={showCategories} className="flex min-h-11 items-center gap-2 rounded-full border-2 border-[#232323] bg-[#fff9ec] px-3 text-xs font-bold hover:bg-[#c9ff3d]"><ArrowLeft size={16} aria-hidden="true" />All categories</button><h3 className="text-lg font-extrabold">{userGenerated ? 'Your generated buildings' : CALGARY_GROUPS.find(group => group.id === purposeId)?.label ?? (query ? 'Search results' : `All ${sections.find(item => item.id === section)?.label.toLowerCase()}`)}</h3></div>}
+          {!categoryView && !userGenerated && <>
             <CatalogueFacetControls domain={section} choices={choices} purposeId={purposeId} facets={facets}
               onPurpose={id => { setPurposeId(id); setLimit(12); }}
               onFacet={(key,id) => { setFacets(value => ({...value,[key]:id})); setLimit(12); }} />
@@ -114,14 +120,17 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
               {(query || groupId || purposeId || facets.styleId || facets.sizeId) && <button type="button" onClick={clearFilters} className="min-h-11 shrink-0 underline">Reset filters</button>}
             </div>
           </>}
-          {section === 'street_pathway' && fixedStreetCount > 0 && <button type="button"
+          {!categoryView && section === 'street_pathway' && fixedStreetCount > 0 && <button type="button"
             aria-expanded={showFixedStreetSegments} onClick={() => setShowFixedStreetSegments(value => !value)}
             className="min-h-11 text-left text-xs font-semibold underline">
             {showFixedStreetSegments ? 'Hide' : 'Show'} {fixedStreetCount} fixed review segments (placement only)
           </button>}
         </div>
-        <div aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
-          {userGenerated && onPickGenerated ? <UserGeneratedBuildings query={query} onPick={model => { close(); onPickGenerated(model); }} /> : <>
+        <div key={`${section}:${categoryView ? 'categories' : purposeId || 'all'}`} aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
+          {categoryView ? <CatalogueCategoryTiles domain={section} choices={choices} onChoose={choosePurpose}
+            onBrowseAll={() => { clearFilters(); setCategoryView(false); }}
+            onGenerated={section === 'building' && onPickGenerated ? () => { clearFilters(); setGroupId('user-generated'); setCategoryView(false); } : undefined} />
+          : userGenerated && onPickGenerated ? <UserGeneratedBuildings query={query} onPick={model => { close(); onPickGenerated(model); }} /> : <>
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}:${purposeId}:${facets.styleId}:${facets.sizeId}`} choice={choice}
               initialVariantId={preferredCatalogueVariant(choice, query, purposeId)}

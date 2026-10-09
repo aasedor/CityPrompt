@@ -11,17 +11,23 @@ describe('local student validation discovery',()=>{
     render(<PlacementPalette selected={null} onPick={onPick} onPickStreet={onPickStreet}
       onPickCanonical={onPickCanonical} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}/>);
     fireEvent.click(screen.getByRole('button',{name:'Buildings'}));
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(within(screen.getByLabelText('Catalogue collection')).getAllByRole('option')).toHaveLength(1);
     expect(screen.getAllByRole('article')).toHaveLength(12);
     const count = (domain: string) => CANONICAL_CHOICES.filter(choice => choice.domain === domain).length;
     expect(screen.getByText(new RegExp(`${count('building')} buildings, ${count('park_plaza')} parks, ${count('street_pathway')} streets`))).toBeInTheDocument();
     for(const article of screen.getAllByRole('article'))expect(within(article).getAllByRole('option')).toHaveLength(1);
     fireEvent.click(screen.getAllByRole('button',{name:'Parks'})[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     const streets = CANONICAL_CHOICES.filter(choice => choice.domain === 'street_pathway');
     for (const [index, choice] of streets.entries()) {
-      if (index > 0) fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
+      if (index > 0) {
+        fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
+        fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
+      }
       for (let page = 0; page < Math.floor(index / 12); page++) {
         fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
       }
@@ -43,6 +49,7 @@ describe('local student validation discovery',()=>{
     expect(screen.queryByRole('button',{name:'Draw a road route'})).not.toBeInTheDocument();
     expect(screen.getByRole('button',{name:'Walk'})).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button',{name:'Streets'}));
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(onPickStreet).not.toHaveBeenCalled();
   });
