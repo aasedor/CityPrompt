@@ -1,3 +1,4 @@
+import { PromptSpellingSuggestions } from './PromptSpellingSuggestions';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Download, Film, Loader2, RefreshCw, X } from 'lucide-react';
@@ -225,6 +226,8 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
                 writeBrowserPreference(directionKey, event.target.value);
               }}
               className="mt-2 w-full resize-y rounded-xl border border-black/20 bg-white p-3 text-sm text-[#151515] focus:outline-none focus:ring-2 focus:ring-[#28c7e8] disabled:opacity-60" />
+            <PromptSpellingSuggestions value={sceneDirection} disabled={submitting} maxLength={400}
+              onChange={value => { setSceneDirection(value); writeBrowserPreference(directionKey, value); }} />
             <p id="animation-direction-help" className="mt-1 text-xs text-black/60">One short sentence about activity or movement. Leave blank for the default camera move.</p>
           </div>}
           {loading ? <p role="status" className="flex items-center gap-2 text-sm"><Loader2 size={16} className="animate-spin" /> Checking the saved render…</p>
