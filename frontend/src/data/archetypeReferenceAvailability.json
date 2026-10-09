@@ -3,8 +3,8 @@
   "domains": {
     "building": {
       "authoritativeRoot": "/archetypes/buildings/",
-      "availableCount": 241,
-      "completeCount": 219,
+      "availableCount": 246,
+      "completeCount": 224,
       "incompleteCount": 23,
       "incomplete": [
         {
@@ -2235,6 +2235,31 @@
         "affordable_switchback": {
           "availableUrls": [
             "/archetypes/buildings/affordable-switchback/variant_0.png"
+          ]
+        },
+        "final-courtyard-block": {
+          "availableUrls": [
+            "/archetypes/buildings/final-courtyard-block/front.png"
+          ]
+        },
+        "final-seniors-apartments": {
+          "availableUrls": [
+            "/archetypes/buildings/final-seniors-apartments/front.png"
+          ]
+        },
+        "final-transit-pavilion": {
+          "availableUrls": [
+            "/archetypes/buildings/final-transit-pavilion/front.png"
+          ]
+        },
+        "final-health-centre": {
+          "availableUrls": [
+            "/archetypes/buildings/final-health-centre/front.png"
+          ]
+        },
+        "final-urban-grocery": {
+          "availableUrls": [
+            "/archetypes/buildings/final-urban-grocery/front.png"
           ]
         }
       }
@@ -4762,6 +4787,11 @@
     "ev_charging_hub",
     "ev_charging_hub_mobility_station",
     "farnsworth_house_glass_pavilion",
+    "final-courtyard-block",
+    "final-health-centre",
+    "final-seniors-apartments",
+    "final-transit-pavilion",
+    "final-urban-grocery",
     "food_hall_market_hall",
     "functionalist_brick_industrial",
     "functionalist_healthcare",
@@ -5243,6 +5273,11 @@
     "ev_charging_hub",
     "ev_charging_hub_mobility_station",
     "farnsworth_house_glass_pavilion",
+    "final-courtyard-block",
+    "final-health-centre",
+    "final-seniors-apartments",
+    "final-transit-pavilion",
+    "final-urban-grocery",
     "food_hall_market_hall",
     "functionalist_brick_industrial",
     "functionalist_healthcare",

@@ -1,0 +1,435 @@
+{
+  "candidate": "final-health-centre-clay-v003",
+  "reviewer": "/root/remaining_sources_review (independent of authoring)",
+  "date": "2026-10-09T06:52:29.673188+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Fresh independent holistic architectural-clay review of complete v003: all 19 actual exported-GLB renders individually at 1440x1080, all 3 immutable original references and all 4 boards, current family script, complete geometry-script delta, delivery verification and independent exact-GLB triangle/contact probes. Texture-free source-palette architectural clay only; runtime, code compliance, textured keeper and publication excluded.",
+  "holistic_review_performed": true,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_pass",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "model_sha256": "4824545b9a82581e470e73907337651db93ca0c3657a8bc8564685321af5c893",
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\sources\\front.png",
+      "sha256": "6f6d033697b31fd34e936c8ce4282d141441342e71b82c6fae2bde8538072b1e",
+      "bytes": 3013158,
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\sources\\oblique.png",
+      "sha256": "99c0b550ac0aa624a2b81a001c70e714989d28f7d2c805ee11d2119673100740",
+      "bytes": 3303739,
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\sources\\top.png",
+      "sha256": "39accc2d2093bf296dbb390d972024aaf279418464ff7bf2a533028ec16d97e3",
+      "bytes": 3176738,
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\front.png",
+      "sha256": "cc08e3e2c04cab5738ccd7efbe088caf174a7b7ec3108bd8d1be86108939aa96",
+      "bytes": 1313595,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\front_corner.png",
+      "sha256": "7f7c75a068597df9092cc6ded7853bf602c419a6898c2043f41c2a060f4fe9f0",
+      "bytes": 1435973,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\aerial.png",
+      "sha256": "bbbafdab2e628b496dcdbe084b4836f5288891768d7f19d4ce63e1a3fe354584",
+      "bytes": 1491515,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\top.png",
+      "sha256": "6d0f40544df4c92dfac40d114fd1b8fa531c163279e5781e85fedc84ce5fafe2",
+      "bytes": 1386018,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\left_side.png",
+      "sha256": "79755e66132d0515f6e54d1b10404500396c27e30b4b9bb4ff9c8c03f3dfe1e0",
+      "bytes": 1341394,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\right_side.png",
+      "sha256": "eec9e8922c68d9d83830d1827341e8989834c56e9ac9a8141b1c2a99e361d0d3",
+      "bytes": 1373295,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\rear.png",
+      "sha256": "1d7fe799fc8b57e847773fb428b905070c37a92d3d8ed18cd37e44ef0a23f2f7",
+      "bytes": 1332085,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\rear_side.png",
+      "sha256": "2cee2f27fbb1cc57e17fd5ce1a3ebfbf90723b421fecb70521757d3293a1f975",
+      "bytes": 1482894,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\facade_close.png",
+      "sha256": "fa4a6109ff95cab2af1b624f70ab4f40a88fd276a6b6a75a977bf243a82ab465",
+      "bytes": 1457889,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\architecture_close.png",
+      "sha256": "c947ea8964c1d4da6903bc0c7514ae89523b507a1c5146701dd418f4a51a838f",
+      "bytes": 1479197,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\glass_close.png",
+      "sha256": "017d31f157f30132f5715b52ab93f0b54f88c2cef2b99a4edb6d2d084c2906d3",
+      "bytes": 1408749,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\roof_contact.png",
+      "sha256": "06443055f028c2516ad0756b5ce6c5095fa4ff1ec0a52eb7b50aee7a95ab51a2",
+      "bytes": 1251334,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\passage.png",
+      "sha256": "944c41649db8a0d322bad8c7cdc0e72f51c61b4c3470ad383139049663b9ade2",
+      "bytes": 1375618,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\courtyard.png",
+      "sha256": "4db8c0fd49cacc7b3917454532bbe91dd96ac6398487999bf0f85fcd95181b5a",
+      "bytes": 1668344,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\stairs.png",
+      "sha256": "ae1faf8dd213178ca906956a53b45d000d3633c22930a00b4e031f03329f3c05",
+      "bytes": 1489573,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\upper_landing.png",
+      "sha256": "cdf96bbef710572915359779d9143be0f4390ead9aeebf409dfce8b18579e8b0",
+      "bytes": 1651691,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\consulting_room.png",
+      "sha256": "76539ffb090b7a2b685d376f9cfcb0cccef9322703d6f8c4410c4aec1a71b6e8",
+      "bytes": 1346756,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\pharmacy.png",
+      "sha256": "d83a48b8c67736ff454b22c6b7284382b1086d93788670b6a80661818ef17415",
+      "bytes": 1443879,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\dropoff.png",
+      "sha256": "8b8752f6ded9b230678ffa220a67cf693cfe618ada9cd4d207f3ebabf6ab2c7a",
+      "bytes": 1368914,
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\boards\\locked-source-board.png",
+      "sha256": "166499912ca6872535ccf70ce2025f1fad1100e65bf9f73e15c77fede222b396",
+      "bytes": 1313276,
+      "dimensions_px": [
+        1800,
+        570
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\boards\\all-views-contact.png",
+      "sha256": "af0f26dffe577faede3b105b6c16813025b2d513b45659ecd480e051c22e181b",
+      "bytes": 2363443,
+      "dimensions_px": [
+        1920,
+        2095
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\boards\\phone-source-comparison.png",
+      "sha256": "88899e93cb9f0cb2f044bed699bcdba1ae1d05615b3ab2f097902a8be8901174",
+      "bytes": 1426866,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\boards\\phone-construction.png",
+      "sha256": "4589687c0be3f60f8eb13183318c740dd05bdb7efe2f3526e63528fd78f8c699",
+      "bytes": 971264,
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "pixels_inspected": true,
+      "inspection": "Fresh individual inspection at original resolution for this v003 review; boards also inspected separately."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\final-health-centre-clay-v003.glb",
+      "sha256": "4824545b9a82581e470e73907337651db93ca0c3657a8bc8564685321af5c893",
+      "bytes": 2217264,
+      "pixels_inspected": false,
+      "inspection": "Read source/report or independently parsed and probed exact GLB triangles."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\scripts\\family_health.py",
+      "sha256": "9f2dea5c5b5a395ca3d9233a1044769c374b50752e6f2f6c49596e7d340628d4",
+      "bytes": 11042,
+      "pixels_inspected": false,
+      "inspection": "Read source/report or independently parsed and probed exact GLB triangles."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\scripts\\geometry.py",
+      "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe",
+      "bytes": 4480,
+      "pixels_inspected": false,
+      "inspection": "Reviewed complete delta against v002 geometry.py previously read in full: the stair landing gap is now parameterized with unchanged 0.15 m default; health uses that default. Current stair frames and exact GLB also re-inspected."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\evidence\\delivery-verification.json",
+      "sha256": "57d07b3ee369cbc8e262d4e939f87f8c3715f6eb601e3a79e510ef3488903b4e",
+      "bytes": 1816,
+      "pixels_inspected": false,
+      "inspection": "Read source/report or independently parsed and probed exact GLB triangles."
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\review\\independent-geometry-probes.json",
+      "sha256": "0a3a6fabdaafb71e22b9de7c97e1f2c3c7f682d024a3166c62def3da72a5b363",
+      "bytes": 8199,
+      "pixels_inspected": false,
+      "inspection": "Read source/report or independently parsed and probed exact GLB triangles."
+    }
+  ],
+  "view_coverage": {
+    "full_resolution_renders": [
+      "front",
+      "front_corner",
+      "aerial",
+      "top",
+      "left_side",
+      "right_side",
+      "rear",
+      "rear_side",
+      "facade_close",
+      "architecture_close",
+      "glass_close",
+      "roof_contact",
+      "passage",
+      "courtyard",
+      "stairs",
+      "upper_landing",
+      "consulting_room",
+      "pharmacy",
+      "dropoff"
+    ],
+    "render_count": 19,
+    "source_count": 3,
+    "board_count": 4,
+    "all_individually_inspected": true
+  },
+  "source_authority": "Generated original building references, not photographs of an existing building. Front governs seven-bay/two-storey elevation and portico/pharmacy/drop-off identity; oblique and top govern the L-shaped massing and planted therapeutic garden. Metric dimensions and unseen room layouts remain inferred.",
+  "findings": [],
+  "blockers": [],
+  "closed_prior_findings": [
+    {
+      "id": "HEALTH-01",
+      "evidence": "The inner L corner is visibly closed. Exact GLB ray at (-3.64,-2.14) now intersects continuous wall/pier to z=8.6 and coping to z=8.7 rather than an open shaft.",
+      "verification_in_v003": "Re-inspected in fresh v003 full-resolution frames; applicable exact-GLB contact probes also rerun. No regression observed."
+    },
+    {
+      "id": "HEALTH-02",
+      "evidence": "Stairs and upper_landing show joined upper landing and seated side/end guards. Exact GLB walking surfaces at (-10,6.95), (-10,7.05) and (-10,7.2) all finish at z=4.15; the former 0.15 m tongue gap is closed.",
+      "verification_in_v003": "Re-inspected in fresh v003 full-resolution frames; applicable exact-GLB contact probes also rerun. No regression observed."
+    },
+    {
+      "id": "HEALTH-03",
+      "evidence": "Architecture_close and dropoff show seated supports. Exact GLB rays through all three front portico supports now begin at z=0 with footings reaching z=0.15 and connected columns above.",
+      "verification_in_v003": "Re-inspected in fresh v003 full-resolution frames; applicable exact-GLB contact probes also rerun. No regression observed."
+    },
+    {
+      "id": "HEALTH-04",
+      "evidence": "Pharmacy view shows shelf end panels/uprights connecting to the floor. Exact GLB upright probe at (8.3,-6.95) begins at z=0.15; shelf slabs are no longer unsupported planks.",
+      "verification_in_v003": "Re-inspected in fresh v003 full-resolution frames; applicable exact-GLB contact probes also rerun. No regression observed."
+    },
+    {
+      "id": "HEALTH-05",
+      "evidence": "All 19 frames are readable and appropriately framed. Glass_close includes full head, sill and both jambs; roof_contact shows equipment curb, roof plane and parapet; courtyard is outside vegetation; consulting_room and stairs are lit; new upper_landing verifies the stair connection.",
+      "verification_in_v003": "Re-inspected in fresh v003 full-resolution frames; applicable exact-GLB contact probes also rerun. No regression observed."
+    },
+    {
+      "id": "HEALTH-06",
+      "evidence": "Interior ground floors are visually clean. Probe (0.5,-8) now has one exposed foundation top at z=0.15 and no duplicate ground-floor slab; the upper floor remains at z=4.15.",
+      "verification_in_v003": "Re-inspected in fresh v003 full-resolution frames; applicable exact-GLB contact probes also rerun. No regression observed."
+    },
+    {
+      "id": "HEALTH-07",
+      "evidence": "The garden now has substantial planted islands, winding routes, trees and a social seating area, retaining source identity at architectural-clay fidelity. Photographic leaves or textured landscaping are not required. New path construction defects are isolated under HEALTH-V002-01.",
+      "verification_in_v003": "Re-inspected in fresh v003 full-resolution frames; applicable exact-GLB contact probes also rerun. No regression observed."
+    },
+    {
+      "id": "HEALTH-V002-01",
+      "evidence": "Courtyard, top, rear and rear_side show clean continuous winding routes and social terrace without overlap patches or projections beyond the soil. Exact GLB contains one connected garden walking-surface component of 838 triangles, including 288 top triangles, with bounds X 2.15..11.989426, Y -1.8..10.8, Z 0..0.15 m. Across 5,762 grid samples (1,687 covered) there are zero duplicate strict-interior pale top intersections. The former floating overhang point (4.9,11.05) now has no geometry. Interior path, clipped north edge and terrace probes show seated thickness from z=0 to z=0.15. The prior P1 is closed.",
+      "evidence_files": [
+        "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\courtyard.png",
+        "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\top.png",
+        "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\renders\\rear_side.png",
+        "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\scripts\\family_health.py",
+        "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003\\review\\independent-geometry-probes.json"
+      ]
+    }
+  ],
+  "passed_categories": [
+    "Source-specific seven-bay, two-occupied-storey front and L-shaped overall massing retained.",
+    "Pale central entry portico, right pharmacy opening and left covered drop-off retained with visible grade seating.",
+    "All exposed facades and roof inspected across fresh front, side, rear, oblique and aerial evidence.",
+    "Window recesses, full-aperture glass framing, timber fins and physical horizontal coursing coherent within architectural-clay scope.",
+    "Open public entries, lobby/reception, furnished consultation programme and pharmacy visible and connected.",
+    "Stair-to-upper-floor continuity and seated aperture guards demonstrated in stair and upper-landing frames and actual GLB probes.",
+    "Inner corner closure, ground-floor ownership, shelf uprights and roof-equipment seating remain corrected.",
+    "Therapeutic garden retains substantial planting, winding routes, trees and social seating.",
+    "Garden walking surface is continuous, bounded and seated; duplicate tops and unsupported path projections resolved.",
+    "Complete full-resolution and phone evidence inspected; delivery checks passed for exact reviewed GLB."
+  ],
+  "p2_notes": [
+    "One small roof mechanical housing remains over the front-right bar rather than all three over the rear-left wing as in the source. This is a secondary placement discrepancy and was not promoted to a new blocking requirement.",
+    "Brick-pier relief is less pronounced than the original reference; source-palette architectural clay is the reviewed scope, not a textured keeper."
+  ],
+  "runtime_approved": false,
+  "publication_approved": false,
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "next_gate": "Eligible for the separate local CityPrompt runtime/browser trial under existing authorization. This record does not approve runtime, textured keeper, publication or statutory compliance. Preserve v001 and v002 failure records."
+}

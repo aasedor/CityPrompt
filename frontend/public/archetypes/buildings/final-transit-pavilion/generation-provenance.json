@@ -1,0 +1,43 @@
+{
+  "family": "transit",
+  "generator": "Built-in imagegen",
+  "records": [
+    {
+      "role": "front",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-767b695e-1008-4c65-8699-090c1bb9f519.png",
+      "prompt": "Show this exact transit pavilion as a straight-on architectural front photograph. Preserve the actual design shown: FOUR paired timber V columns across the front, single-storey glazed waiting hall, pale stone service core at left, paired central entrance, cafe at right. Roof silhouette slopes downward from high LEFT end to valley at middle-right and rises slightly at right end, broad thin dark metal canopy with timber soffit. Keep all architecture identical, do not symmetrize or add columns. Whole building, crisp realistic architectural photography, no new signage.",
+      "file": "front.png",
+      "sha256": "e57304a120dcd764a4ce4f49af329ad031c9c3260cf1672c51de263a3415abe5",
+      "bytes": 2966962,
+      "dimensions_px": [
+        1672,
+        941
+      ]
+    },
+    {
+      "role": "oblique",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-56ea0b79-fc91-4908-b38c-d6e0d359542e.png",
+      "prompt": "Design one outstanding contemporary neighbourhood transit station pavilion in Calgary, an original architectural design for urban planning students. Photorealistic front-right elevated three-quarter architectural photograph, whole building visible. SINGLE STOREY, long low 24m by 9m rectangular glass waiting hall. Distinctive shallow asymmetrical butterfly canopy roof in charcoal standing-seam metal, warm timber soffit, extending 2m beyond glass frontage and ends, carried on SIX clearly spaced slender paired timber V columns along front edge. Roof slopes down to a central linear valley along building length. Bronze window mullions, buff brick solid service core at LEFT end, transparent waiting hall across middle and right; main paired open entrance centre, small cafe at right. Visible indoor seating benches, ticket machines at brick service wall. Low paved forecourt, tactile strip, two bicycles, restrained grasses. NO tracks or trains attached; this is a standalone building beside a separate transit corridor. Restrained elegant Canadian civic architecture, credible structure, welcoming human scale, crisp detailed materials, bright overcast daylight.",
+      "file": "oblique.png",
+      "sha256": "1edbfc73c3eaa8afe5d38c35214426fa74f46a9fe2c9cc1650ccae853b3bb0fc",
+      "bytes": 2970242,
+      "dimensions_px": [
+        1672,
+        941
+      ]
+    },
+    {
+      "role": "top",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-8bbf80df-19e9-4328-b976-5ea0b71887c9.png",
+      "prompt": "True vertical overhead nadir architectural drone photograph of the exact transit pavilion shown. Front entrance at bottom of image, rectangular elongated footprint, single-storey. Preserve its asymmetric butterfly roof: high LEFT end plane slopes downward across frontage to a valley at about sixty percent of width; shorter RIGHT plane rises gently to right edge. The valley line runs FRONT TO BACK, perpendicular to the long front facade. Both planes are charcoal standing seam metal. Large canopy extends beyond glass hall on all edges; FOUR V support columns at front beneath canopy. Pale stone core left end, central front entrance. No additional wings or tracks. Entire roof plus small forecourt visible, realistic photograph.",
+      "file": "top.png",
+      "sha256": "ba72cbf9d7b23ee5303489aaa7c15a1543b9004e2ed1c777b4ff6bd0b050c8f8",
+      "bytes": 2938279,
+      "dimensions_px": [
+        1672,
+        941
+      ]
+    }
+  ],
+  "origin": "original_generated_design"
+}

@@ -1,0 +1,43 @@
+{
+  "family": "health",
+  "generator": "Built-in imagegen",
+  "records": [
+    {
+      "role": "front",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-9d724f44-97a4-445e-879b-dca8b28739a4.png",
+      "prompt": "Create a straight-on front architectural photograph of this exact two-storey red brick neighbourhood health centre. Preserve six broad front window bays per storey, broad central pale stone entrance portico with two square columns, separate smaller pharmacy doorway at far right, timber vertical fins beside upper windows, flat roof, left-side vehicle dropoff canopy. Exactly TWO storeys. Whole front visible, no redesign, same architecture, warm realistic daylight.",
+      "file": "front.png",
+      "sha256": "6f6d033697b31fd34e936c8ce4282d141441342e71b82c6fae2bde8538072b1e",
+      "bytes": 3013158,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-df74d585-8e4d-4651-abb7-6ac44135c739.png",
+      "prompt": "Photoreal architectural reference: original compact TWO-STOREY neighbourhood health centre in Calgary, front-left aerial photograph of entire building with margin. L-shaped footprint: front wing24m wide x9m deep, attached rear-left wing9mwide x12mdeep, creating a sheltered planted garden to the rear right. Exactly two floors in BOTH wings, equal roof height8m, continuous flat roof with pale membrane. Warm red brick, six broad front bays with tall clear windows on both floors. Main entrance at front centre under a deep white stone portico with two slim square columns. Separate pharmacy entrance in front right bay. Rear garden visible from reception and clinical rooms. Shallow timber fins shade upper windows. Small covered vehicle drop-off on left, no huge car park. Front lettering 'NEIGHBOURHOOD HEALTH'. Calm dignified Canadian contemporary civic architecture, convincing real construction, modest landscape, detailed natural materials, neutral daylight. No extra floors, no tower, no glass atrium, no rooftop trees.",
+      "file": "oblique.png",
+      "sha256": "99c0b550ac0aa624a2b81a001c70e714989d28f7d2c805ee11d2119673100740",
+      "bytes": 3303739,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-fa7bc576-43d7-4b15-95ef-5efd2f877afd.png",
+      "prompt": "True vertical overhead nadir architectural photograph of this EXACT L-shaped two-storey neighbourhood health centre. Front street at bottom. Broad front wing running left to right and deep left wing running front to rear, both same roof height. Open garden in the rear-right inside corner. Flat pale membrane roof with low parapet and small HVAC. Vehicle dropoff canopy extends left from left wing. Preserve footprint and all massing; no new wings. Whole building visible.",
+      "file": "top.png",
+      "sha256": "39accc2d2093bf296dbb390d972024aaf279418464ff7bf2a533028ec16d97e3",
+      "bytes": 3176738,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "origin": "original_generated_design"
+}

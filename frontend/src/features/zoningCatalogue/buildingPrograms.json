@@ -1262,5 +1262,83 @@
       "evidence": "Explicit classroom occupancy for this source-locked native model; interior programme is inferred, not a survey of an existing business."
     },
     "review": "The liquor tenant has not yet been screened against the district-use snapshot. Review each tenancy before treating this mixed shop row as a permitted or discretionary candidate."
+  },
+  "final-courtyard-block-v1": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ],
+      [
+        "Retail and Consumer Service"
+      ],
+      [
+        "Restaurant: Food Service Only"
+      ]
+    ],
+    "assumption": "Four-storey homes over shops, recessed balconies, an open pedestrian passage and a planted shared courtyard. Teaching programme; not a surveyed or approved building.",
+    "revision": "final-courtyard-block-clay-v006",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Original source-locked building with explicit educational occupancy."
+    }
+  },
+  "final-seniors-apartments-v1": {
+    "components": [
+      [
+        "Multi-Residential Development",
+        "Dwelling Unit"
+      ]
+    ],
+    "assumption": "Five-storey independent seniors apartments with three balcony columns, a shared lounge and planted garden terrace. Teaching programme; not a surveyed or approved building. Independent dwellings; no medical care or assisted-living service assumed.",
+    "revision": "final-seniors-apartments-clay-v003",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Original source-locked building with explicit educational occupancy."
+    }
+  },
+  "final-transit-pavilion-v1": {
+    "components": [
+      [
+        "Restaurant: Food Service Only"
+      ]
+    ],
+    "assumption": "A glazed waiting hall with four timber V-columns, an asymmetric canopy, ticket machines and a small cafe. Tracks are separate. Teaching programme; not a surveyed or approved building.",
+    "revision": "final-transit-pavilion-clay-v002",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Original source-locked building with explicit educational occupancy."
+    },
+    "review": "This pavilion needs transport-operator/corridor approval and a use review. Only the cafe component is listed; the station is not assumed permitted by appearance."
+  },
+  "final-health-centre-v1": {
+    "components": [
+      [
+        "Health Care Service"
+      ],
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Two-storey clinic and pharmacy around a garden, with a covered drop-off, waiting areas and consulting rooms. Teaching programme; not a surveyed or approved building.",
+    "revision": "final-health-centre-clay-v003",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Original source-locked building with explicit educational occupancy."
+    },
+    "review": "This health-care use is not screened in the current district snapshot; review Health Care Service and the pharmacy tenancy."
+  },
+  "final-urban-grocery-v1": {
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "A compact urban supermarket with four roof lanterns, a transparent storefront, stocked aisles and a covered entrance. Teaching programme; not a surveyed or approved building.",
+    "revision": "final-urban-grocery-clay-v004",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Original source-locked building with explicit educational occupancy."
+    }
   }
 }

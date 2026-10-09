@@ -834,6 +834,71 @@
       "current": true
     },
     {
+      "asset_id": "final_seniors_apartments",
+      "variant_id": "final-seniors-apartments-v1",
+      "revision": "final-seniors-apartments-clay-v003",
+      "dimensions_m": [
+        32.36000061035156,
+        17.980000495910645,
+        18.989999771118164
+      ],
+      "storeys": 5,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "final_transit_pavilion",
+      "variant_id": "final-transit-pavilion-v1",
+      "revision": "final-transit-pavilion-clay-v002",
+      "dimensions_m": [
+        28.1299991607666,
+        13.149999618530273,
+        6.950000286102295
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "final_courtyard_block",
+      "variant_id": "final-courtyard-block-v1",
+      "revision": "final-courtyard-block-clay-v006",
+      "dimensions_m": [
+        30.3799991607666,
+        26.299999237060547,
+        15
+      ],
+      "storeys": 4,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "final_health_centre",
+      "variant_id": "final-health-centre-v1",
+      "revision": "final-health-centre-clay-v003",
+      "dimensions_m": [
+        35.18000030517578,
+        23.855000495910645,
+        9.020000457763672
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "final_urban_grocery",
+      "variant_id": "final-urban-grocery-v1",
+      "revision": "final-urban-grocery-clay-v004",
+      "dimensions_m": [
+        22.84999942779541,
+        15.599999904632568,
+        7.044765472412109
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
       "asset_id": "validation_minimalist_infill_brick_monolith",
       "variant_id": "minimalist_infill_brick_monolith",
       "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",

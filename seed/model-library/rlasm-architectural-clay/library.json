@@ -4597,6 +4597,356 @@
         "unresolved_p0": 0,
         "unresolved_p1": 0
       }
+    },
+    {
+      "candidate": "final-seniors-apartments-clay-v003",
+      "family": "rlasm-clay-final-seniors-apartments",
+      "archetype_id": "final-seniors-apartments",
+      "variant_id": "final-seniors-apartments-v1",
+      "archetype_label": "Aspen Terrace Seniors Apartments",
+      "variant_label": "Aspen Terrace Seniors Apartments",
+      "native_floors": 5,
+      "design_dimensions_m": {
+        "width": 32,
+        "depth": 16,
+        "height": 17.5
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/final-seniors-apartments/front.png",
+          "bytes": 2965297,
+          "sha256": "04d95fcf5ac79ea9572993226c3d1c59cf1b7c05018d904cca3d7713caa0de57"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/final-seniors-apartments/oblique.png",
+          "bytes": 3300738,
+          "sha256": "6293b79685526cbcfed4b97dafecd7fa2f947edfd23c3bdbedfb5541710d1cc7"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/final-seniors-apartments/top.png",
+          "bytes": 3690040,
+          "sha256": "fc38d38b1d7a17af6b1ad736dcc19f6a119c5fb170257f87555b6873403953fa"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003",
+      "picker": {
+        "id": "final_seniors_apartments",
+        "description": "Five-storey independent seniors apartments with three balcony columns, a shared lounge and planted garden terrace.",
+        "group_id": "apartments",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+        "width": 36.4,
+        "depth": 22.0,
+        "max_size": 65
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/final-seniors-apartments-clay-v003.glb",
+        "bytes": 3097336,
+        "sha256": "9721947c0cf2f0ec6813c57e068fb34bd18d07ecbef15ca809b0e549d9823165",
+        "native_dimensions_m": {
+          "width": 32.36000061035156,
+          "height": 18.989999771118164,
+          "depth": 17.980000495910645
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-seniors-apartments-clay-v003.json",
+        "sha256": "c5e6f3fde8142196784ecc11af902f2547cfdceff73be7229aafdba048fd8cf7",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "final-transit-pavilion-clay-v002",
+      "family": "rlasm-clay-final-transit-pavilion",
+      "archetype_id": "final-transit-pavilion",
+      "variant_id": "final-transit-pavilion-v1",
+      "archetype_label": "Timber Wing Transit Pavilion",
+      "variant_label": "Timber Wing Transit Pavilion",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 28,
+        "depth": 13,
+        "height": 6.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/final-transit-pavilion/front.png",
+          "bytes": 2966962,
+          "sha256": "e57304a120dcd764a4ce4f49af329ad031c9c3260cf1672c51de263a3415abe5"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/final-transit-pavilion/oblique.png",
+          "bytes": 2970242,
+          "sha256": "1edbfc73c3eaa8afe5d38c35214426fa74f46a9fe2c9cc1650ccae853b3bb0fc"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/final-transit-pavilion/top.png",
+          "bytes": 2938279,
+          "sha256": "ba72cbf9d7b23ee5303489aaa7c15a1543b9004e2ed1c777b4ff6bd0b050c8f8"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\transit-v002",
+      "picker": {
+        "id": "final_transit_pavilion",
+        "description": "A glazed waiting hall with four timber V-columns, an asymmetric canopy, ticket machines and a small cafe. Tracks are separate.",
+        "group_id": "infrastructure",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+        "width": 32.1,
+        "depth": 17.1,
+        "max_size": 65
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/final-transit-pavilion-clay-v002.glb",
+        "bytes": 234328,
+        "sha256": "2aa8ac03a0f11f193b782cc2e7de8d64a214b55e25309a07e5f519dd9798581e",
+        "native_dimensions_m": {
+          "width": 28.1299991607666,
+          "height": 6.950000286102295,
+          "depth": 13.149999618530273
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-transit-pavilion-clay-v002.json",
+        "sha256": "71e8ebf18ee1589947cdfe8548fa86e4762a86c55941a5fd21ad71ee04aa0938",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "final-courtyard-block-clay-v006",
+      "family": "rlasm-clay-final-courtyard-block",
+      "archetype_id": "final-courtyard-block",
+      "variant_id": "final-courtyard-block-v1",
+      "archetype_label": "Brick Garden Courtyard",
+      "variant_label": "Brick Garden Courtyard",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 30,
+        "depth": 24.4,
+        "height": 15
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/final-courtyard-block/front.png",
+          "bytes": 3044079,
+          "sha256": "5971de1709ae24eeb0ce5b0b962dba1877b70d26add6e1445e641d1855b9f4ce"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/final-courtyard-block/oblique.png",
+          "bytes": 3004466,
+          "sha256": "cf65398e7a3eb6c26b0048c11798765e563911ff2f02eca15b62abd0be2e6f0b"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/final-courtyard-block/top.png",
+          "bytes": 3070746,
+          "sha256": "16063f6506b33c1700249d42bb17c8c97f48bbfceba25e8ac323d7069c98f587"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\courtyard-v006",
+      "picker": {
+        "id": "final_courtyard_block",
+        "description": "Four-storey homes over shops, recessed balconies, an open pedestrian passage and a planted shared courtyard.",
+        "group_id": "mixed",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+        "width": 34.4,
+        "depth": 30.3,
+        "max_size": 65
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/final-courtyard-block-clay-v006.glb",
+        "bytes": 6976484,
+        "sha256": "4edb11725a41a638d9f31c34ce86a739f3d92088966d6ff143079e6d65c88271",
+        "native_dimensions_m": {
+          "width": 30.3799991607666,
+          "height": 15.0,
+          "depth": 26.299999237060547
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-courtyard-block-clay-v006.json",
+        "sha256": "66384d8f74fffb750e8c889914d97a66028dcf086c91eef645b2b40e51b8b589",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "final-health-centre-clay-v003",
+      "family": "rlasm-clay-final-health-centre",
+      "archetype_id": "final-health-centre",
+      "variant_id": "final-health-centre-v1",
+      "archetype_label": "Neighbourhood Health Centre",
+      "variant_label": "Neighbourhood Health Centre",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 35,
+        "depth": 22,
+        "height": 9.1
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/final-health-centre/front.png",
+          "bytes": 3013158,
+          "sha256": "6f6d033697b31fd34e936c8ce4282d141441342e71b82c6fae2bde8538072b1e"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/final-health-centre/oblique.png",
+          "bytes": 3303739,
+          "sha256": "99c0b550ac0aa624a2b81a001c70e714989d28f7d2c805ee11d2119673100740"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/final-health-centre/top.png",
+          "bytes": 3176738,
+          "sha256": "39accc2d2093bf296dbb390d972024aaf279418464ff7bf2a533028ec16d97e3"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\health-v003",
+      "picker": {
+        "id": "final_health_centre",
+        "description": "Two-storey clinic and pharmacy around a garden, with a covered drop-off, waiting areas and consulting rooms.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+        "width": 39.2,
+        "depth": 27.9,
+        "max_size": 65
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/final-health-centre-clay-v003.glb",
+        "bytes": 2217264,
+        "sha256": "4824545b9a82581e470e73907337651db93ca0c3657a8bc8564685321af5c893",
+        "native_dimensions_m": {
+          "width": 35.18000030517578,
+          "height": 9.020000457763672,
+          "depth": 23.855000495910645
+        },
+        "mesh_count": 14,
+        "material_count": 14,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-health-centre-clay-v003.json",
+        "sha256": "5ebb00edd2d6d567087f1c37754b48dd4db28aa0e59b9e185d867e3fc2895666",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "final-urban-grocery-clay-v004",
+      "family": "rlasm-clay-final-urban-grocery",
+      "archetype_id": "final-urban-grocery",
+      "variant_id": "final-urban-grocery-v1",
+      "archetype_label": "Sawtooth Neighbourhood Grocery",
+      "variant_label": "Sawtooth Neighbourhood Grocery",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 20,
+        "depth": 14.2,
+        "height": 7.1
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/final-urban-grocery/front.png",
+          "bytes": 2798212,
+          "sha256": "c571268e0568ef20c6b30c23f603cdac9893792bfe020ae4734d69be5ae828d1"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/final-urban-grocery/oblique.png",
+          "bytes": 2868806,
+          "sha256": "d61d172c002221434a623eca8c15dc1e506113e4d3baefd307a6e35a6e5e283a"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/final-urban-grocery/top.png",
+          "bytes": 2612227,
+          "sha256": "73c197aad124604c562037c8a45958dce5d2e29dd6e71dda53727072102e5e02"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\market-v004",
+      "picker": {
+        "id": "final_urban_grocery",
+        "description": "A compact urban supermarket with four roof lanterns, a transparent storefront, stocked aisles and a covered entrance.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+        "width": 26.8,
+        "depth": 19.6,
+        "max_size": 65
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {},
+      "local_trial_only": true,
+      "model": {
+        "path": "models/final-urban-grocery-clay-v004.glb",
+        "bytes": 594640,
+        "sha256": "3981963cf2543037cb472a7383f7a3466cdb157d416cc170e2ec06db7c46de5d",
+        "native_dimensions_m": {
+          "width": 22.84999942779541,
+          "height": 7.044765472412109,
+          "depth": 15.599999904632568
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-urban-grocery-clay-v004.json",
+        "sha256": "48c1c7500ec460aa6a0fd52357be95ac5a94b2c632a3a828401f7c4bc02e0621",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
     }
   ],
   "review_only_archive": []

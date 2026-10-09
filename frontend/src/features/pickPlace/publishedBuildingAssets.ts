@@ -2121,6 +2121,206 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 2,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "final_seniors_apartments",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Aspen Terrace Seniors Apartments",
+    "description": "Five-storey independent seniors apartments with three balcony columns, a shared lounge and planted garden terrace.",
+    "thumbnail": "/archetypes/buildings/final-seniors-apartments/front.png",
+    "model": {
+      "variantId": "final-seniors-apartments-v1",
+      "revision": "final-seniors-apartments-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "apartments",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 36.4,
+    "depth": 22.0,
+    "minWidth": 36.4,
+    "minDepth": 22.0,
+    "maxSize": 65.0,
+    "nativeDimensions": [
+      32.36000061035156,
+      17.980000495910645,
+      18.989999771118164
+    ],
+    "reshapeDescription": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+    "properties": {
+      "building_archetype_id": "final-seniors-apartments",
+      "development_archetype_id": "final-seniors-apartments",
+      "development_selected_variant_id": "final-seniors-apartments-v1",
+      "development_archetype_label": "Aspen Terrace Seniors Apartments",
+      "floors": 5,
+      "floor_count": 5,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "final_transit_pavilion",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Timber Wing Transit Pavilion",
+    "description": "A glazed waiting hall with four timber V-columns, an asymmetric canopy, ticket machines and a small cafe. Tracks are separate.",
+    "thumbnail": "/archetypes/buildings/final-transit-pavilion/front.png",
+    "model": {
+      "variantId": "final-transit-pavilion-v1",
+      "revision": "final-transit-pavilion-clay-v002",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "infrastructure",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 32.1,
+    "depth": 17.1,
+    "minWidth": 32.1,
+    "minDepth": 17.1,
+    "maxSize": 65.0,
+    "nativeDimensions": [
+      28.1299991607666,
+      13.149999618530273,
+      6.950000286102295
+    ],
+    "reshapeDescription": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+    "properties": {
+      "building_archetype_id": "final-transit-pavilion",
+      "development_archetype_id": "final-transit-pavilion",
+      "development_selected_variant_id": "final-transit-pavilion-v1",
+      "development_archetype_label": "Timber Wing Transit Pavilion",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "final_courtyard_block",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Brick Garden Courtyard",
+    "description": "Four-storey homes over shops, recessed balconies, an open pedestrian passage and a planted shared courtyard.",
+    "thumbnail": "/archetypes/buildings/final-courtyard-block/front.png",
+    "model": {
+      "variantId": "final-courtyard-block-v1",
+      "revision": "final-courtyard-block-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "mixed",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 34.4,
+    "depth": 30.3,
+    "minWidth": 34.4,
+    "minDepth": 30.3,
+    "maxSize": 65.0,
+    "nativeDimensions": [
+      30.3799991607666,
+      26.299999237060547,
+      15.0
+    ],
+    "reshapeDescription": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+    "properties": {
+      "building_archetype_id": "final-courtyard-block",
+      "development_archetype_id": "final-courtyard-block",
+      "development_selected_variant_id": "final-courtyard-block-v1",
+      "development_archetype_label": "Brick Garden Courtyard",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "final_health_centre",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Neighbourhood Health Centre",
+    "description": "Two-storey clinic and pharmacy around a garden, with a covered drop-off, waiting areas and consulting rooms.",
+    "thumbnail": "/archetypes/buildings/final-health-centre/front.png",
+    "model": {
+      "variantId": "final-health-centre-v1",
+      "revision": "final-health-centre-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 39.2,
+    "depth": 27.9,
+    "minWidth": 39.2,
+    "minDepth": 27.9,
+    "maxSize": 65.0,
+    "nativeDimensions": [
+      35.18000030517578,
+      23.855000495910645,
+      9.020000457763672
+    ],
+    "reshapeDescription": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+    "properties": {
+      "building_archetype_id": "final-health-centre",
+      "development_archetype_id": "final-health-centre",
+      "development_selected_variant_id": "final-health-centre-v1",
+      "development_archetype_label": "Neighbourhood Health Centre",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "final_urban_grocery",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Sawtooth Neighbourhood Grocery",
+    "description": "A compact urban supermarket with four roof lanterns, a transparent storefront, stocked aisles and a covered entrance.",
+    "thumbnail": "/archetypes/buildings/final-urban-grocery/front.png",
+    "model": {
+      "variantId": "final-urban-grocery-v1",
+      "revision": "final-urban-grocery-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 26.8,
+    "depth": 19.6,
+    "minWidth": 26.8,
+    "minDepth": 19.6,
+    "maxSize": 65.0,
+    "nativeDimensions": [
+      22.84999942779541,
+      15.599999904632568,
+      7.044765472412109
+    ],
+    "reshapeDescription": "Complete authored building. Rotate or enlarge its plot; architecture retains its native dimensions.",
+    "properties": {
+      "building_archetype_id": "final-urban-grocery",
+      "development_archetype_id": "final-urban-grocery",
+      "development_selected_variant_id": "final-urban-grocery-v1",
+      "development_archetype_label": "Sawtooth Neighbourhood Grocery",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
   }
 ];
 

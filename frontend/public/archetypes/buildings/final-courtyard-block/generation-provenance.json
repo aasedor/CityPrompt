@@ -1,0 +1,56 @@
+{
+  "origin": "original_generated_design",
+  "provider": "built-in image_gen",
+  "date": "2026-10-08",
+  "slug": "final-courtyard-block",
+  "records": [
+    {
+      "role": "front",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-82cddecc-f411-4d7b-bc36-20727301dcb9.png",
+      "prompt": "Create ONE realistic architectural street-view catalogue hero photograph of the exact front facade in this reference. Camera centered directly facing the seven-bay front, street-level slightly elevated enough to see entire four-storey facade, straight verticals, full building with margin. Preserve seven upper bays balcony/window/balcony/window/balcony/window/balcony on all THREE residential floors above the ground-floor shops, central open ground-level passage, three shops each side, same orange brick, pale lintels, recessed balconies, green awnings and sage frames. No redesign, no added floor, no omitted floor, no change of windows. Elegant neutral soft daylight, realistic brick detail, restrained foreground planting, believable Calgary streetscape, no large text, no collage.",
+      "file": "front.png",
+      "sha256": "5971de1709ae24eeb0ce5b0b962dba1877b70d26add6e1445e641d1855b9f4ce",
+      "bytes": 3044079,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-6eb59e21-6dd7-4f70-a8b8-ea237c8f1647.png",
+      "prompt": "Edit the inner courtyard walls only. Each wall currently shows only three levels. Make every courtyard wall FOUR LEVELS by adding one more horizontal row of windows between the ground-floor doors and the two existing rows above. The courtyard must visibly have ground-floor doors plus THREE full rows of apartment windows above, not two. Lower courtyard paving to accommodate the extra level while keeping the roof and outer street facade unchanged. Remove most courtyard vegetation to make the four levels easy to count. Keep the exact camera and building exterior.",
+      "previous_inputs": [
+        "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-727501ed-1999-4f0d-9bc5-5463649bcd43.png"
+      ],
+      "file": "oblique.png",
+      "sha256": "cf65398e7a3eb6c26b0048c11798765e563911ff2f02eca15b62abd0be2e6f0b",
+      "bytes": 3004466,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-9ceb5b4a-ca8a-4293-8f17-bdf97a0a67b2.png",
+      "prompt": "An EXACT TRUE NADIR TOP-DOWN architectural roof photograph of this same rectangular courtyard block. Camera points STRAIGHT DOWN, perpendicular to the horizontal flat roof. Orthographic projection. See ONLY the horizontal roof surfaces, rooftop vents, courtyard paving and trees, and surrounding pavement. NO VERTICAL WALLS ARE VISIBLE. No front facade visible, no inner courtyard facade visible, no horizon. Like a satellite orthophoto, or a flat architectural roof plan rendered with realistic materials. Outer footprint30 metres wide and26metres deep. Central OPEN courtyard15metres wide and13metres deep, centered within four flat-roof wings. Preserve warm brick parapet edge, pale gray membrane roofs, four grouped rooftop HVAC units near outer corners. Central courtyard garden with paths connecting front and rear ground-level passages (passages are beneath the roof and invisible from true top). Front at bottom. Plain context, no added buildings. No oblique or isometric perspective whatsoever. It must be a completely flat overhead image.",
+      "file": "top.png",
+      "sha256": "16063f6506b33c1700249d42bb17c8c97f48bbfceba25e8ac323d7069c98f587",
+      "bytes": 3070746,
+      "dimensions_px": [
+        1346,
+        1168
+      ]
+    }
+  ],
+  "authority": {
+    "front": "front facade",
+    "oblique": "complete four-storey exterior and court enclosure; foliage removed to expose levels",
+    "top": "nadir plan and courtyard planting"
+  },
+  "limitations": [
+    "Original conceptual design; scale and unseen interiors inferred",
+    "No engineering or code compliance claim"
+  ]
+}

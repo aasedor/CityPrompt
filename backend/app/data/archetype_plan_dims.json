@@ -1,6 +1,6 @@
 {
  "source": "buildingArchetypes.json",
- "count": 239,
+ "count": 244,
  "archetypes": [
   {
    "id": "adaptive_reuse_warehouse_lofts",
@@ -7917,6 +7917,146 @@
    "min_d_m": 14,
    "max_d_m": 14,
    "suggested_area_sqm": 336
+  },
+  {
+   "id": "final-courtyard-block",
+   "title": "Brick Garden Courtyard",
+   "development_type": "mixed_use",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Brick Garden Courtyard",
+    "original design",
+    "RLASM 6.1",
+    "neighbourhood essentials"
+   ],
+   "min_floors": 4,
+   "max_floors": 4,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "final-courtyard-block-v1"
+   ],
+   "default_variant_id": "final-courtyard-block-v1",
+   "suggested_w_m": 30,
+   "suggested_d_m": 24.4,
+   "min_w_m": 30,
+   "max_w_m": 30,
+   "min_d_m": 24.4,
+   "max_d_m": 24.4,
+   "suggested_area_sqm": 732.0
+  },
+  {
+   "id": "final-seniors-apartments",
+   "title": "Aspen Terrace Seniors Apartments",
+   "development_type": "residential_multifamily",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Aspen Terrace Seniors Apartments",
+    "original design",
+    "RLASM 6.1",
+    "neighbourhood essentials"
+   ],
+   "min_floors": 5,
+   "max_floors": 5,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "final-seniors-apartments-v1"
+   ],
+   "default_variant_id": "final-seniors-apartments-v1",
+   "suggested_w_m": 32,
+   "suggested_d_m": 16,
+   "min_w_m": 32,
+   "max_w_m": 32,
+   "min_d_m": 16,
+   "max_d_m": 16,
+   "suggested_area_sqm": 512
+  },
+  {
+   "id": "final-transit-pavilion",
+   "title": "Timber Wing Transit Pavilion",
+   "development_type": "institutional",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Timber Wing Transit Pavilion",
+    "original design",
+    "RLASM 6.1",
+    "neighbourhood essentials"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "final-transit-pavilion-v1"
+   ],
+   "default_variant_id": "final-transit-pavilion-v1",
+   "suggested_w_m": 28,
+   "suggested_d_m": 13,
+   "min_w_m": 28,
+   "max_w_m": 28,
+   "min_d_m": 13,
+   "max_d_m": 13,
+   "suggested_area_sqm": 364
+  },
+  {
+   "id": "final-health-centre",
+   "title": "Neighbourhood Health Centre",
+   "development_type": "institutional",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Neighbourhood Health Centre",
+    "original design",
+    "RLASM 6.1",
+    "neighbourhood essentials"
+   ],
+   "min_floors": 2,
+   "max_floors": 2,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "final-health-centre-v1"
+   ],
+   "default_variant_id": "final-health-centre-v1",
+   "suggested_w_m": 35,
+   "suggested_d_m": 22,
+   "min_w_m": 35,
+   "max_w_m": 35,
+   "min_d_m": 22,
+   "max_d_m": 22,
+   "suggested_area_sqm": 770
+  },
+  {
+   "id": "final-urban-grocery",
+   "title": "Sawtooth Neighbourhood Grocery",
+   "development_type": "commercial_retail",
+   "aesthetic_category": "contemporary_urban",
+   "district_kit": null,
+   "generation_tags": [
+    "Sawtooth Neighbourhood Grocery",
+    "original design",
+    "RLASM 6.1",
+    "neighbourhood essentials"
+   ],
+   "min_floors": 1,
+   "max_floors": 1,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "final-urban-grocery-v1"
+   ],
+   "default_variant_id": "final-urban-grocery-v1",
+   "suggested_w_m": 20,
+   "suggested_d_m": 14.2,
+   "min_w_m": 20,
+   "max_w_m": 20,
+   "min_d_m": 14.2,
+   "max_d_m": 14.2,
+   "suggested_area_sqm": 284.0
   }
  ]
 }

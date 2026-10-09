@@ -1,0 +1,43 @@
+{
+  "family": "seniors",
+  "generator": "Built-in imagegen",
+  "records": [
+    {
+      "role": "front",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-366d44bc-fb4c-4e09-b4ff-73e2e1793ba4.png",
+      "prompt": "Create a straight-on architectural front elevation photograph of this EXACT seniors apartment building, preserving its actual design: five storeys total (ground lobby plus four upper apartment levels), buff brick, THREE recessed balcony groups across the centre on EACH of four upper floors, narrow window columns at both outer edges, timber entrance portico and single-storey common lounge wing to the right with planted roof terrace. No redesign. Entire building visible, realistic architectural photography in calm daylight, no annotation.",
+      "file": "front.png",
+      "sha256": "04d95fcf5ac79ea9572993226c3d1c59cf1b7c05018d904cca3d7713caa0de57",
+      "bytes": 2965297,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-5ee625fb-9ba9-4c10-adb2-e534c19c64f0.png",
+      "prompt": "Original architectural reference photograph of a beautifully designed compact five-storey seniors apartment building in Calgary. Aerial from the front right corner, showing all floors, complete roof and full footprint. Exactly FIVE storeys total: ground floor shared lounge and entrance, FOUR apartment floors above. Simple rectangular main block24m wide x16m deep, flat roof, pale buff brick, vertical timber entrance screen, sage bronze window frames. Front has FOUR equal bays, each upper bay a generous recessed balcony, four balcony rows clearly countable. Ground central entrance under a deep timber canopy, wide unobstructed level approach. Fifth floor is SAME footprint, not an extra penthouse. A single one-storey lounge wing attached at the RIGHT SIDE,8m wide x12mdeep, its flat roof a planted shared terrace reached from the second floor, with a thin metal guard. Rear and side elevations continue same calm warm masonry. Comfortable inviting architecture for older residents, restrained landscaping, benches, no logos or signage, soft daylight, highly realistic materials, no foreground trees hiding geometry. Entire building plus margin.",
+      "file": "oblique.png",
+      "sha256": "6293b79685526cbcfed4b97dafecd7fa2f947edfd23c3bdbedfb5541710d1cc7",
+      "bytes": 3300738,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-7b6b1edc-ae56-4fbe-9674-46e53614f367.png",
+      "prompt": "Architectural roof plan photograph: camera EXACTLY vertically above the centre of this building, looking STRAIGHT DOWN at 90 degrees, ORTHOGRAPHIC NADIR, NO tilt. Only the roof surfaces and ground around them are visible; NO vertical facade surfaces are visible at all. Show the exact rectangular main gravel roof and attached right-hand lower planted terrace roof shown in this reference. Match rooftop plant arrangement and outline. Rectangular building aligned with image axes. Front entrance canopy bottom. Not an angled drone photo: true survey overhead roof photograph.",
+      "file": "top.png",
+      "sha256": "fc38d38b1d7a17af6b1ad736dcc19f6a119c5fb170257f87555b6873403953fa",
+      "bytes": 3690040,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "origin": "original_generated_design"
+}

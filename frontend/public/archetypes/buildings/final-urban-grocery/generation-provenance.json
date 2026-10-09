@@ -1,0 +1,43 @@
+{
+  "family": "market",
+  "generator": "Built-in imagegen",
+  "records": [
+    {
+      "role": "front",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-8614729b-f563-4542-a0db-e203dafcec49.png",
+      "prompt": "Correct only the roof in this straight front view (image1) to match the physical roof orientation in image2 (oblique) and image3 (overhead). The FOUR long glazed triangular clerestory SIDE FACES run front-to-back along depth; they must NOT show their broad triangular faces in this straight-on front elevation. From straight front they are seen almost edge-on as four narrow uprights receding away, with roof surfaces rising toward rear. Preserve entire storefront, brick band, four canopy posts, central door, all materials exactly. Realistic architectural front photo.",
+      "file": "front.png",
+      "sha256": "c571268e0568ef20c6b30c23f603cdac9893792bfe020ae4734d69be5ae828d1",
+      "bytes": 2798212,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "oblique",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-5c325083-9337-41c9-b610-a445b8042ff9.png",
+      "prompt": "Correct only the timber canopy support posts in this exact market image to FOUR posts total along the front edge, evenly spaced, matching the second reference front view. Keep everything else identical: the four sawtooth roof strips, brick walls, glazed shopfront, sign, side service area, camera view and materials. No added posts.",
+      "file": "oblique.png",
+      "sha256": "d61d172c002221434a623eca8c15dc1e506113e4d3baefd307a6e35a6e5e283a",
+      "bytes": 2868806,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "role": "top",
+      "generated_path": "C:/Users/andre/.codex/generated_images/01a11b91-6201-7c21-bc4f-78e168295749/exec-08f10086-5eee-46b3-8375-199ba1a6a681.png",
+      "prompt": "TRUE NADIR roof photograph, camera straight down perpendicular to ground, of the exact single-storey supermarket in the reference. Four long parallel sawtooth roof strips run FRONT TO BACK; each strip has a sloped zinc panel and a narrow vertical glazed clerestory along its raised side. Preserve FOUR strips exactly, rectangular footprint, shallow timber front entrance canopy, rear service door area. Front entrance faces bottom. No visible vertical building facades, no horizon, no isometric perspective. Entire roof and minimal adjacent pavement with margin, realistic zinc seam texture, neutral daylight. Do not redesign or rotate roof ridges.",
+      "file": "top.png",
+      "sha256": "73c197aad124604c562037c8a45958dce5d2e29dd6e71dda53727072102e5e02",
+      "bytes": 2612227,
+      "dimensions_px": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "origin": "original_generated_design"
+}

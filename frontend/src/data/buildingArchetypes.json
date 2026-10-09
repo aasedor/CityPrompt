@@ -38318,6 +38318,171 @@
           "maxFloors": 4
         }
       ]
+    },
+    {
+      "id": "final-courtyard-block",
+      "title": "Brick Garden Courtyard",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Four-storey homes over shops, recessed balconies, an open pedestrian passage and a planted shared courtyard.",
+      "developmentType": "mixed_use",
+      "generationTags": [
+        "Brick Garden Courtyard",
+        "original design",
+        "RLASM 6.1",
+        "neighbourhood essentials"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/final-courtyard-block/front.png",
+      "minFloors": 4,
+      "maxFloors": 4,
+      "suggestedFloorHeight": 3.75,
+      "suggestedWidth_m": 30,
+      "suggestedDepth_m": 24.4,
+      "minWidth_m": 30,
+      "maxWidth_m": 30,
+      "minDepth_m": 24.4,
+      "maxDepth_m": 24.4,
+      "variants": [
+        {
+          "id": "final-courtyard-block-v1",
+          "label": "Brick Garden Courtyard",
+          "description": "Four-storey homes over shops, recessed balconies, an open pedestrian passage and a planted shared courtyard.",
+          "thumbnailUrl": "/archetypes/buildings/final-courtyard-block/front.png",
+          "minFloors": 4,
+          "maxFloors": 4
+        }
+      ]
+    },
+    {
+      "id": "final-seniors-apartments",
+      "title": "Aspen Terrace Seniors Apartments",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Five-storey independent seniors apartments with three balcony columns, a shared lounge and planted garden terrace.",
+      "developmentType": "residential_multifamily",
+      "generationTags": [
+        "Aspen Terrace Seniors Apartments",
+        "original design",
+        "RLASM 6.1",
+        "neighbourhood essentials"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/final-seniors-apartments/front.png",
+      "minFloors": 5,
+      "maxFloors": 5,
+      "suggestedFloorHeight": 3.5,
+      "suggestedWidth_m": 32,
+      "suggestedDepth_m": 16,
+      "minWidth_m": 32,
+      "maxWidth_m": 32,
+      "minDepth_m": 16,
+      "maxDepth_m": 16,
+      "variants": [
+        {
+          "id": "final-seniors-apartments-v1",
+          "label": "Aspen Terrace Seniors Apartments",
+          "description": "Five-storey independent seniors apartments with three balcony columns, a shared lounge and planted garden terrace.",
+          "thumbnailUrl": "/archetypes/buildings/final-seniors-apartments/front.png",
+          "minFloors": 5,
+          "maxFloors": 5
+        }
+      ]
+    },
+    {
+      "id": "final-transit-pavilion",
+      "title": "Timber Wing Transit Pavilion",
+      "aestheticCategory": "contemporary_urban",
+      "description": "A glazed waiting hall with four timber V-columns, an asymmetric canopy, ticket machines and a small cafe. Tracks are separate.",
+      "developmentType": "institutional",
+      "generationTags": [
+        "Timber Wing Transit Pavilion",
+        "original design",
+        "RLASM 6.1",
+        "neighbourhood essentials"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/final-transit-pavilion/front.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 6.8,
+      "suggestedWidth_m": 28,
+      "suggestedDepth_m": 13,
+      "minWidth_m": 28,
+      "maxWidth_m": 28,
+      "minDepth_m": 13,
+      "maxDepth_m": 13,
+      "variants": [
+        {
+          "id": "final-transit-pavilion-v1",
+          "label": "Timber Wing Transit Pavilion",
+          "description": "A glazed waiting hall with four timber V-columns, an asymmetric canopy, ticket machines and a small cafe. Tracks are separate.",
+          "thumbnailUrl": "/archetypes/buildings/final-transit-pavilion/front.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
+    },
+    {
+      "id": "final-health-centre",
+      "title": "Neighbourhood Health Centre",
+      "aestheticCategory": "contemporary_urban",
+      "description": "Two-storey clinic and pharmacy around a garden, with a covered drop-off, waiting areas and consulting rooms.",
+      "developmentType": "institutional",
+      "generationTags": [
+        "Neighbourhood Health Centre",
+        "original design",
+        "RLASM 6.1",
+        "neighbourhood essentials"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/final-health-centre/front.png",
+      "minFloors": 2,
+      "maxFloors": 2,
+      "suggestedFloorHeight": 4.55,
+      "suggestedWidth_m": 35,
+      "suggestedDepth_m": 22,
+      "minWidth_m": 35,
+      "maxWidth_m": 35,
+      "minDepth_m": 22,
+      "maxDepth_m": 22,
+      "variants": [
+        {
+          "id": "final-health-centre-v1",
+          "label": "Neighbourhood Health Centre",
+          "description": "Two-storey clinic and pharmacy around a garden, with a covered drop-off, waiting areas and consulting rooms.",
+          "thumbnailUrl": "/archetypes/buildings/final-health-centre/front.png",
+          "minFloors": 2,
+          "maxFloors": 2
+        }
+      ]
+    },
+    {
+      "id": "final-urban-grocery",
+      "title": "Sawtooth Neighbourhood Grocery",
+      "aestheticCategory": "contemporary_urban",
+      "description": "A compact urban supermarket with four roof lanterns, a transparent storefront, stocked aisles and a covered entrance.",
+      "developmentType": "commercial_retail",
+      "generationTags": [
+        "Sawtooth Neighbourhood Grocery",
+        "original design",
+        "RLASM 6.1",
+        "neighbourhood essentials"
+      ],
+      "thumbnailUrl": "/archetypes/buildings/final-urban-grocery/front.png",
+      "minFloors": 1,
+      "maxFloors": 1,
+      "suggestedFloorHeight": 7.1,
+      "suggestedWidth_m": 20,
+      "suggestedDepth_m": 14.2,
+      "minWidth_m": 20,
+      "maxWidth_m": 20,
+      "minDepth_m": 14.2,
+      "maxDepth_m": 14.2,
+      "variants": [
+        {
+          "id": "final-urban-grocery-v1",
+          "label": "Sawtooth Neighbourhood Grocery",
+          "description": "A compact urban supermarket with four roof lanterns, a transparent storefront, stocked aisles and a covered entrance.",
+          "thumbnailUrl": "/archetypes/buildings/final-urban-grocery/front.png",
+          "minFloors": 1,
+          "maxFloors": 1
+        }
+      ]
     }
   ]
 }

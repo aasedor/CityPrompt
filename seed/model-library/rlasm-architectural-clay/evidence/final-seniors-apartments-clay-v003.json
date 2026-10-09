@@ -1,0 +1,220 @@
+{
+  "candidate": "final-seniors-apartments-clay-v003",
+  "reviewer": "/root/final_five_source_review (independent of authoring)",
+  "date": "2026-10-09T06:33:12.219935+00:00",
+  "method": "RLASM v6.1",
+  "scope": "Independent holistic architectural-clay review of all 18 new full-resolution actual-GLB frames, four boards, unchanged hash-verified locked sources inspected in earlier source and model reviews, prework/build/delivery evidence, archived family/stair geometry and exported GLB triangle probes. Runtime and textured keeper excluded.",
+  "holistic_review_performed": true,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_pass",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "model_sha256": "9721947c0cf2f0ec6813c57e068fb34bd18d07ecbef15ca809b0e549d9823165",
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\sources\\front.png",
+      "sha256": "04d95fcf5ac79ea9572993226c3d1c59cf1b7c05018d904cca3d7713caa0de57",
+      "bytes": 2965297
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\sources\\oblique.png",
+      "sha256": "6293b79685526cbcfed4b97dafecd7fa2f947edfd23c3bdbedfb5541710d1cc7",
+      "bytes": 3300738
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\sources\\top.png",
+      "sha256": "fc38d38b1d7a17af6b1ad736dcc19f6a119c5fb170257f87555b6873403953fa",
+      "bytes": 3690040
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\aerial.png",
+      "sha256": "a1462080f42720faec937da32bd35032587d2c1d6c8f5754c07ec6e03eb1076e",
+      "bytes": 1517073
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\apartment.png",
+      "sha256": "578294391facb04676214eec6ed1f1a1134f756f4200118ea98c77b96eff5655",
+      "bytes": 1444197
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\architecture_close.png",
+      "sha256": "dd607828653dd2f6e700555352ccf9d38ad47614e214ef804b217189f53ae41c",
+      "bytes": 1440789
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\courtyard.png",
+      "sha256": "0879c45694ce1937a63d70dbf0e2eb5844098b6bae3ff6334851ac560253f488",
+      "bytes": 1514912
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\facade_close.png",
+      "sha256": "7556d6ceb3475b5b6d305dc7a22c5cf5014c1dd6f48abe1c859538dad8b468e9",
+      "bytes": 1493250
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\front.png",
+      "sha256": "51239aeabab5b3b6e1c3cf78f31a7978f00b2212e3f6f6159f24baa0924a22fe",
+      "bytes": 1404129
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\front_corner.png",
+      "sha256": "e65f158ba4b2b97d2ba43e74ca867d9296d1fe6cce23736c07e2d728f4d0c71d",
+      "bytes": 1495631
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\glass_close.png",
+      "sha256": "e1cb78642884ecbc88f84ff82b62923b94c696892a8ba424d61895aa17e0cbb0",
+      "bytes": 1397170
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\left_side.png",
+      "sha256": "fff7f405decedbe5ab982542d083a715aaabd8d5c71be1dcdfc12954d52acce2",
+      "bytes": 1343752
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\lounge.png",
+      "sha256": "e548c01eee36336af4a11482bbb2a6d81ef28d82e38399e9973600012af7d6ba",
+      "bytes": 1347272
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\passage.png",
+      "sha256": "335f79c9f4dfc6a0b6b3455d922439465243f77781ab746a85c0f32881bae02b",
+      "bytes": 1346222
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\rear.png",
+      "sha256": "2370a27e561ac027784b117ef21e73c9c30049e3d5b70491c9ad9332681d1823",
+      "bytes": 1384879
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\rear_side.png",
+      "sha256": "1f4799fb540ca01eec6e16e95d11d421e39f288a635188474c2713ba8d82420e",
+      "bytes": 1568099
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\right_side.png",
+      "sha256": "ef124f89dc7060f54dd7f2a33b116fe8fa79f8fd16586a59552253be2dea440c",
+      "bytes": 1394945
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\roof_contact.png",
+      "sha256": "6ead92cd960c55479c7722e77c5b78ba2544033fb26f4b7e49b7f06b734f9310",
+      "bytes": 1323477
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\stairs.png",
+      "sha256": "771e63567801d832d52633c8ccd7e501e44859bad6bd7d21ad6548dafde1f97e",
+      "bytes": 1431311
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\top.png",
+      "sha256": "ba674ab0e729a276defb7e32c5c77349eff4da616c75a421b6c30a825e7e414d",
+      "bytes": 1316643
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\renders\\upper_landing.png",
+      "sha256": "c703ad7cb11977697b53cd584607e57fc2c87b155463e5f854b22ff2060d8371",
+      "bytes": 1513271
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\boards\\all-views-contact.png",
+      "sha256": "7c5e939d6f5512dd3769b2bdb3dffc7979a3ef4aa08f8f7ae82b000cbfe7c500",
+      "bytes": 2238117
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\boards\\locked-source-board.png",
+      "sha256": "44f177207bf27483caae3a5f1bf93e304ed974a6198f6ccc76c4b5717cfe99a2",
+      "bytes": 1348678
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\boards\\phone-construction.png",
+      "sha256": "a2245a06373189ee5c6a4b554b611647581720413def584451004a10e78dc9b6",
+      "bytes": 928596
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\boards\\phone-source-comparison.png",
+      "sha256": "129c01e2eba43eb77eb7a30fe86cbe02ffafacfe8ad30025ba78fb23bd8d45ca",
+      "bytes": 1475072
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\prework-manifest.json",
+      "sha256": "6da7ccde3f6457dda77d49d44a9f786845ce3347fa9f1e51c3e9003e10c2aae8",
+      "bytes": 8314
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\build-report.json",
+      "sha256": "367548b55be400dd61ef45efaff9e65473f0c8ed89e004be0284606d696bf04f",
+      "bytes": 215025
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\evidence\\delivery-verification.json",
+      "sha256": "609e54a6aa3b9f14eff39f62337bfd22e0a0e8e59063dff71c72d3a7d0de15eb",
+      "bytes": 1780
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\evidence\\carrier-aperture-audit.json",
+      "sha256": "e79c4ee46fc11db6918d57934241c84c049420e4c471c8a37efdfac9d7731ec0",
+      "bytes": 14467
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\scripts\\family_seniors.py",
+      "sha256": "5709d6b388e68d4f063af7b0d65232d6ccd3ee0f5a37d69dcf1c9685c8bbae62",
+      "bytes": 9451
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\scripts\\geometry.py",
+      "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe",
+      "bytes": 4480
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\review\\independent-geometry-probes.json",
+      "sha256": "3804c91cef5d04e02819a2fb17f7f1dc4c735e78c026266f834571dd5c6ed411",
+      "bytes": 3895
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\final-five-2026-10-08\\seniors-v003\\final-seniors-apartments-clay-v003.glb",
+      "sha256": "9721947c0cf2f0ec6813c57e068fb34bd18d07ecbef15ca809b0e549d9823165",
+      "bytes": 3097336
+    }
+  ],
+  "findings": [],
+  "blockers": [],
+  "passed_categories": [
+    "Five-storey main block, three recessed balcony columns, narrow end bays and low right lounge wing preserve source identity.",
+    "Source palette, glass guards with sparse posts, supported timber entrance and planted terrace dining/lounge retained.",
+    "Original buried-window issue remains corrected; physical windows and terrace doorway are clear.",
+    "SEN-04 landing continuity confirmed in actual GLB: x-8,y6.075 now has solid upper surfaces at4.15,7.35,10.55,13.75, matching adjacent tread/floor elevations.",
+    "Highest-floor transverse guard is physically present at y-.15; intermediate next-flight entrances remain open.",
+    "No new material roof/facade tearing, corner gaps, suspended furniture or broad contacts regression visible in the complete delivered set.",
+    "Actual GLB matches delivery hash:3097336bytes,12meshes,58716triangles,no textures. Carrier aperture and delivery checks pass.",
+    "All18full-resolution frames and4boards inspected."
+  ],
+  "p2_notes": [
+    "The interior is an exploratory furnished teaching arrangement, not a resolved independent-living apartment plan or accessibility certification; hidden rooms are inferred.",
+    "Annexe front glazing is simplified into three openings versus two broader source openings; ground-level opening proportions and minor rooftop vents could be refined for later textured fidelity.",
+    "Clay foliage and mechanical boxes are intentionally simplified; no demand for photoreal materials at this gate."
+  ],
+  "runtime_approved": false,
+  "publication_approved": false,
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "next_gate": "Local runtime import/placement/rotation/reload and walking checks using this exact GLB, followed by separate human visual approval before keeper/publication claims.",
+  "closed_prior_findings": [
+    {
+      "id": "SEN-01",
+      "closure": "Buried right-side ground windows removed, exposed rear strip has clear replacement; carrier aperture and delivery checks now pass."
+    },
+    {
+      "id": "SEN-02",
+      "closure": "Twelve front balconies now have glass infill, sparse posts and seated top/base rails; terrace retains source-specific metal pickets."
+    },
+    {
+      "id": "SEN-03",
+      "closure": "Terrace now includes perimeter and inward planter fingers, shaded dining, separate lounge grouping and a clear upper doorway route."
+    },
+    {
+      "id": "SEN-04",
+      "closure": "Four landing tongues bridge the0.15m aperture overrun at matching finished-floor levels; direct exported triangles prove continuity. Highest-floor non-exit end guarded; intermediate flight entries remain unblocked."
+    }
+  ]
+}

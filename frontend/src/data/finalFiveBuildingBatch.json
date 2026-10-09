@@ -1,0 +1,65 @@
+{
+  "scope": "Five neighbourhood essentials; independently reviewed local trials, October 2026",
+  "entries": [
+    {
+      "archetype_id": "final-courtyard-block",
+      "variant_id": "final-courtyard-block-v1",
+      "candidate": "final-courtyard-block-clay-v006",
+      "entrance": {
+        "xM": 0.0,
+        "yM": -13.1,
+        "widthM": 3.2,
+        "plotWidthM": 34.4,
+        "plotDepthM": 30.3
+      }
+    },
+    {
+      "archetype_id": "final-seniors-apartments",
+      "variant_id": "final-seniors-apartments-v1",
+      "candidate": "final-seniors-apartments-clay-v003",
+      "entrance": {
+        "xM": -4.0,
+        "yM": -7.190000057,
+        "widthM": 2.5,
+        "plotWidthM": 36.4,
+        "plotDepthM": 22.0
+      }
+    },
+    {
+      "archetype_id": "final-transit-pavilion",
+      "variant_id": "final-transit-pavilion-v1",
+      "candidate": "final-transit-pavilion-clay-v002",
+      "entrance": {
+        "xM": 0.0,
+        "yM": -6.5,
+        "widthM": 3,
+        "plotWidthM": 32.1,
+        "plotDepthM": 17.1
+      }
+    },
+    {
+      "archetype_id": "final-health-centre",
+      "variant_id": "final-health-centre-v1",
+      "candidate": "final-health-centre-clay-v003",
+      "entrance": {
+        "xM": 1.709999847,
+        "yM": -10.252500057,
+        "widthM": 3.5,
+        "plotWidthM": 39.2,
+        "plotDepthM": 27.9
+      }
+    },
+    {
+      "archetype_id": "final-urban-grocery",
+      "variant_id": "final-urban-grocery-v1",
+      "candidate": "final-urban-grocery-clay-v004",
+      "entrance": {
+        "xM": -1.025000095,
+        "yM": -5.600000143,
+        "widthM": 2.5,
+        "plotWidthM": 26.8,
+        "plotDepthM": 19.6
+      }
+    }
+  ]
+}

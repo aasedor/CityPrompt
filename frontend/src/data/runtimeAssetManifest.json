@@ -271,6 +271,7 @@
     "src/data/classroomExpansion.json",
     "src/data/classroomStarter.json",
     "src/data/communityBuildingBatch.json",
+    "src/data/finalFiveBuildingBatch.json",
     "src/data/flexibleParks.json",
     "src/data/landUseColours.ts",
     "src/data/legoFamilySignatures.json",
@@ -349,15 +350,23 @@
     "src/features/legoAssembly/projectCommunityCompile.ts",
     "src/features/parks/BenchDetailEditor.tsx",
     "src/features/parks/DetailCataloguePicker.tsx",
+    "src/features/parks/DetailCategoryTiles.tsx",
+    "src/features/parks/DetailEditControls.tsx",
+    "src/features/parks/DetailMapPreview.tsx",
     "src/features/parks/DetailModelInstances.tsx",
+    "src/features/parks/DetailPlacementPanel.tsx",
+    "src/features/parks/GlobeParkParcelGuide.tsx",
+    "src/features/parks/GlobePavingSurfaces.tsx",
     "src/features/parks/GlobeProjectBenches.tsx",
     "src/features/parks/NativeParkLayer.tsx",
     "src/features/parks/ParkLayoutControls.tsx",
+    "src/features/parks/PavingEditor.tsx",
     "src/features/parks/ProjectDetailEditor.tsx",
     "src/features/parks/benchDetails.ts",
     "src/features/parks/detailCatalogue.ts",
     "src/features/parks/detailCatalogueExtras.json",
     "src/features/parks/detailInstances.ts",
+    "src/features/parks/detailThumbnail.ts",
     "src/features/parks/flexibleParkFit.ts",
     "src/features/parks/measuredParkWalking.ts",
     "src/features/parks/nativeParkAccess.ts",
@@ -367,11 +376,16 @@
     "src/features/parks/nativeParkSurfaceDepth.ts",
     "src/features/parks/nativeParkWalking.ts",
     "src/features/parks/parkWalking.ts",
+    "src/features/parks/pavingGround.ts",
+    "src/features/parks/pavingSurfaces.ts",
     "src/features/parks/projectBenches.ts",
     "src/features/parks/stepFreeParkAccess.ts",
+    "src/features/parks/useDetailPlacement.ts",
     "src/features/pickPlace/BrtStopControls.tsx",
     "src/features/pickPlace/BuildingDesignControls.tsx",
     "src/features/pickPlace/CanonicalCatalogueCard.tsx",
+    "src/features/pickPlace/CatalogueCategoryIllustration.tsx",
+    "src/features/pickPlace/CatalogueCategoryTiles.tsx",
     "src/features/pickPlace/CatalogueFacetControls.tsx",
     "src/features/pickPlace/ConnectionEditor.tsx",
     "src/features/pickPlace/GlobePlacementPreview.tsx",
@@ -442,6 +456,7 @@
     "src/features/policyPlans/cityPlanGeometry.ts",
     "src/features/policyPlans/citywidePlans.ts",
     "src/features/policyPlans/data/localPlanIndex.json",
+    "src/features/policyPlans/groundedTransport.ts",
     "src/features/policyPlans/localAreaPlans.ts",
     "src/features/policyPlans/localDesignations.ts",
     "src/features/policyPlans/policyPicking.ts",
@@ -479,6 +494,7 @@
     "src/features/referenceLayers/ZoningStudyEditor.tsx",
     "src/features/referenceLayers/ZoningStudyPanel.tsx",
     "src/features/referenceLayers/api.ts",
+    "src/features/referenceLayers/assessmentMapLabel.ts",
     "src/features/referenceLayers/calgaryBylaw.ts",
     "src/features/referenceLayers/calgaryBylawCatalogue.json",
     "src/features/referenceLayers/calgaryDistricts.ts",
@@ -552,10 +568,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2958,
+    "explicitReferenceCount": 2973,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 4742,
-    "requiredLogicalBytes": 11715199804,
+    "requiredFileCount": 4757,
+    "requiredLogicalBytes": 11730207232,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -4613,6 +4629,51 @@
       ],
       "logicalBytes": 1130060,
       "lfsOid": "a5cbb8bf01ef23476bd35835775f16f689397429a10d4bf860425a35a378aa35"
+    },
+    {
+      "url": "/archetypes/buildings/final-courtyard-block/front.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3044079
+    },
+    {
+      "url": "/archetypes/buildings/final-health-centre/front.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 3013158
+    },
+    {
+      "url": "/archetypes/buildings/final-seniors-apartments/front.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2965297
+    },
+    {
+      "url": "/archetypes/buildings/final-transit-pavilion/front.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2966962
+    },
+    {
+      "url": "/archetypes/buildings/final-urban-grocery/front.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 2798212
     },
     {
       "url": "/archetypes/buildings/food_hall_market_hall/hero.png",
@@ -26481,6 +26542,86 @@
       ],
       "logicalBytes": 367296,
       "lfsOid": "b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/flexible-bollard.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 14136,
+      "lfsOid": "4262fa4f3306b12c75ec48c96d230f8e849276051cf37f35fd2994f64d80f2e8"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/no-entry-sign.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 16772,
+      "lfsOid": "919a3daf64f4c1b886b8e6c5e4e6aa447f63a72c5c20f1365037889d61dae3e2"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/pedestrian-signal.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 19756,
+      "lfsOid": "94213dd058c8f26110b2066ed4c9cbfc3bae218a92390a7e698ff75fa6929841"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/raised-crossing.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 26368,
+      "lfsOid": "a6a187ed19830d9b16ad9bd3772f9c756318d7672e6d0d1907d9aa5b335b6aea"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/speed-hump.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 20012,
+      "lfsOid": "5c2ed04083b31890ce535f9e41fd0b6b936ea87c685a4f93430015c4ef0ce20d"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/speed-limit-30.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 42592,
+      "lfsOid": "0274c3bf8763694e1f3bd45f7770597034bd65bf1074639be3f1950e6452a445"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/stop-sign.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 19192,
+      "lfsOid": "18f29d31e3828c83823ed5ca6ccebad5b61d6aea1a778b574c24156f1e558a1f"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/traffic-cone.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 19936,
+      "lfsOid": "def07bd1c9bd09351d41ec8381fefb596659669105a5915a7271c0e2585139d9"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/traffic-signal.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 26792,
+      "lfsOid": "3a8ffe5ba26f44378e6ac4582eb2834ca03f558de848ce3557a60a4c488f03b8"
+    },
+    {
+      "url": "/street-kits/traffic-safety-v1/yield-sign.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 14164,
+      "lfsOid": "589e27ffaff3ab11042950e65cc502578ad9211b86cefd4a666178f8e55fd82f"
     }
   ],
   "directoryReferences": [
@@ -26700,8 +26841,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21428,
-    "unclassifiedRuntimePathDigest": "dc3b0da20e9cc52987a6fade8feb59cf026265810fda6dd0e232c69990da989a",
+    "unclassifiedRuntimeFileCount": 21444,
+    "unclassifiedRuntimePathDigest": "0069df2f5a8e14e49e7814c51e9009794d02b1b4bdb6caac20b5d79e874e68da",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",

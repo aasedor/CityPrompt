@@ -1,0 +1,387 @@
+{
+  "schema": "cityprompt.rlasm.architectural_clay_independent_review@1",
+  "candidate": "final-transit-pavilion-clay-v002",
+  "artifact_root": "C:/dev-artifacts/CityPrompt/final-five-2026-10-08/transit-v002",
+  "model_path": "final-transit-pavilion-clay-v002.glb",
+  "model_sha256": "2aa8ac03a0f11f193b782cc2e7de8d64a214b55e25309a07e5f519dd9798581e",
+  "reviewer": "/root/source_pilot_review",
+  "reviewer_role": "Independent reviewer; did not author or modify candidate geometry.",
+  "review_date": "2026-10-09",
+  "method": "RLASM v6.1 architectural-clay profile",
+  "scope": "Fresh holistic review of the exact exported GLB evidence: all source images, all exterior elevations and roof, contacts and enclosure, actual openings and optical depth, room and programme geometry, circulation, camera coverage, source fidelity and regressions. The full 17-render roster and four boards were reopened for this candidate. Local trial architectural-clay review only.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_pass",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "all_mandatory_full_resolution_images_opened": true,
+  "mandatory_render_count": 17,
+  "source_image_count": 3,
+  "board_count": 4,
+  "inspected_files": [
+    {
+      "path": "boards/all-views-contact.png",
+      "bytes": 1916330,
+      "sha256": "1f2de78d05d79488ef87b3609dfec0fbaeb354a7ef32e3ed61a51039e22999df",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "bytes": 1089423,
+      "sha256": "4580c3ad318e1c95f8fbd1e1e10baf80b4d13d3953e2e4e76fa1a91ad24b468d",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "bytes": 936964,
+      "sha256": "14cfdab9f23ff83206f4f23cd8ce46050a1caebb4c861c1fe0603c6862f67a54",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "bytes": 1227796,
+      "sha256": "ff15a9f1878c26bba26c5d2c468e29282947fea733d0fb67dcf91f0f871f042d",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1486470,
+      "sha256": "33fdc6de2ed2cba1e060a7c2cc533b294b85ebe1c790670cbfce35575f711f08",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1406690,
+      "sha256": "c123e00067da62c9a725e79c657af01504cd23c3a9592671984511131f33ff02",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/canopy_support.png",
+      "bytes": 1355620,
+      "sha256": "97a44212e2b0dcd4bf74084756a7f5ced91019726ba2e2c557a934c0028d73b0",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/courtyard.png",
+      "bytes": 1403900,
+      "sha256": "41fd600f369cdf8d12f7fecb8e1ad169b79b9682d5296bb34bc6de510bf838d8",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1431075,
+      "sha256": "3271dd27fd5763a2a27c63e0b6363d198fee96afdbd1f4e808a145b530523057",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1382455,
+      "sha256": "6c28a56290f0cafcdf414306d2c653a1ab462bf58414b0e5b0ba1bd0ebe0ce7b",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1312327,
+      "sha256": "fb16bfd8797f4b1d77a05ede79d37f4c528445e2f3a3dd60be9fb0851fd4e715",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1366119,
+      "sha256": "e155f6dbc481934355462cadd4f99bd20af4d9f73714a4838ccbf9937f121489",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1286148,
+      "sha256": "80882cd6fdde42bfa5cb31d3926a813bfb5a7a65e7152d342f0676d631c199ba",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/passage.png",
+      "bytes": 1316044,
+      "sha256": "d1cabbcbe093718cbab534342c809244f5b49b22c37b4dd9db3f91f755f22090",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1390453,
+      "sha256": "ef5f15f47c72ae1fa77ee8e265fc6c7e7b7c96cfcc5a20e8bf4fc01ae95290f2",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1293671,
+      "sha256": "7059f216a76e4f3605e34171a2a56b1969f60f580d64bce9728672f093c67546",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1295332,
+      "sha256": "4a643182629b959c5f32823661e79e6e7aa7798517dea932d764b35a7f94e780",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "bytes": 1461613,
+      "sha256": "478eaea5152f4d8efc578175ed9c185c0dbaee27ca293ba2b14167ed0caed17d",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/tickets.png",
+      "bytes": 1373406,
+      "sha256": "1b2cf1da8f91acaa55be334009ab960a53085d907e33bd1c9c0b5199a2801b85",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1250643,
+      "sha256": "49c7d268dd264f378a74eb3d1ba95d3970df470b0f56100426b80a2755d93446",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/waiting.png",
+      "bytes": 1351856,
+      "sha256": "feca73e13208fdaa59ea3a8ec8980af452738d554f290d8b16819839f46168ce",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "sources/front.png",
+      "bytes": 2966962,
+      "sha256": "e57304a120dcd764a4ce4f49af329ad031c9c3260cf1672c51de263a3415abe5",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "sources/oblique.png",
+      "bytes": 2970242,
+      "sha256": "1edbfc73c3eaa8afe5d38c35214426fa74f46a9fe2c9cc1650ccae853b3bb0fc",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "sources/top.png",
+      "bytes": 2938279,
+      "sha256": "ba72cbf9d7b23ee5303489aaa7c15a1543b9004e2ed1c777b4ff6bd0b050c8f8",
+      "full_resolution_pixels_inspected": true
+    }
+  ],
+  "supporting_files": [
+    {
+      "path": "scripts/family_transit.py",
+      "bytes": 8448,
+      "sha256": "87a86cc1c7b5e4eba35a1fd292866bcc63dd534cc3d4106dde1657a518139e23"
+    },
+    {
+      "path": "scripts/geometry.py",
+      "bytes": 4480,
+      "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+    },
+    {
+      "path": "scripts/assemblies.py",
+      "bytes": 9581,
+      "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3"
+    },
+    {
+      "path": "scripts/clay_core.py",
+      "bytes": 27120,
+      "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521"
+    },
+    {
+      "path": "scripts/build.py",
+      "bytes": 2472,
+      "sha256": "dd27e20953d8866a9918fb4df8f4d7367a5a38a903f05f2dd0ded2ec10f5625a"
+    },
+    {
+      "path": "scripts/contract.py",
+      "bytes": 2024,
+      "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+    },
+    {
+      "path": "scripts/prepare_review.py",
+      "bytes": 3790,
+      "sha256": "0107c986a468fee3cf024e195b5e55cd56a7752ff551819a2ca01cdd539dee0c"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "bytes": 1752,
+      "sha256": "abbb6b5adf106fa5a02bff6f05f632d5140f7d661c95c34696cc016c50d99f07"
+    },
+    {
+      "path": "evidence/carrier-aperture-audit.json",
+      "bytes": 728,
+      "sha256": "2c740288566a52d42e7296211781613d7e5b324a98527a37a4ecca74e4d503d7"
+    },
+    {
+      "path": "evidence/builder-evidence.json",
+      "bytes": 18307,
+      "sha256": "0460d578092bdfc5bd7fba505ea1c810d8adfff9594ad5ef5dd501864d8677b1"
+    },
+    {
+      "path": "evidence/runtime-status.json",
+      "bytes": 237,
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56"
+    },
+    {
+      "path": "boards/layout-provenance.json",
+      "bytes": 2921,
+      "sha256": "833ddb9ea5a5636b8b7e260c2f3176ee797888f4850198de7149387da3b18d22"
+    },
+    {
+      "path": "source-entry.json",
+      "bytes": 1252,
+      "sha256": "fc3fa1e2daf3d47b56a5dc89109ad5fb1a5a5912b35ce488c4a3a3bb2355d26c"
+    },
+    {
+      "path": "prework-manifest.json",
+      "bytes": 8033,
+      "sha256": "4d43f0521104a406b1b88c997a67dbac91c824e22e3fba2b1df8a15dc1040bdd"
+    }
+  ],
+  "source_review": {
+    "path": "C:/dev-artifacts/CityPrompt/final-five-2026-10-08/transit-source-review-v001.json",
+    "sha256": "57ef2e310b50a33ede21b34bcfa1c9f15646cf424be6a7c9f46fe383c254e254",
+    "scope": "Source compatibility only. All three source images were independently reopened and compared in this candidate review."
+  },
+  "prior_review": {
+    "candidate": "final-transit-pavilion-clay-v001",
+    "path": "C:/dev-artifacts/CityPrompt/final-five-2026-10-08/transit-v001/review/independent.json",
+    "sha256": "71ef0795b0add135cb69cfcf68223cb2d0c292d3583191d251a29de7ff969bad",
+    "decision": "visual_rework_required",
+    "unresolved_p0": 2,
+    "unresolved_p1": 1,
+    "preserved_unchanged": true
+  },
+  "render_provenance": "Actual optimized GLB reimport; no geometry or material replacement. Image hashes match the frozen layout provenance.",
+  "deterministic_status": "PASS_DELIVERY_CHECKS",
+  "aperture_audit": {
+    "status": "PASS_CARRIER_APERTURES",
+    "aperture_count": 4,
+    "blocked_openings": 0,
+    "scope": "Opaque carriers; direct pixels separately establish occupied depth and circulation."
+  },
+  "issues": [],
+  "closed_prior_issues": [
+    {
+      "id": "TRANSIT-V001-P0-01",
+      "category": "furniture contacts",
+      "status": "closed_in_v002",
+      "observed": "Waiting views now show connected bench backrests and seated legs. Both cafe table posts reach the floor in glass_close; the counter, chairs and ticket cabinets are grounded.",
+      "pixel_evidence": [
+        "renders/waiting.png",
+        "renders/facade_close.png",
+        "renders/glass_close.png",
+        "renders/tickets.png"
+      ],
+      "supporting_measurements_m": {
+        "bench_back_bottom": 0.67,
+        "bench_seat_top": 0.69,
+        "bench_back_seat_overlap": 0.02,
+        "cafe_table_post_bottom": 0.15,
+        "finished_floor_top": 0.15
+      },
+      "geometry": "scripts/family_transit.py"
+    },
+    {
+      "id": "TRANSIT-V001-P0-02",
+      "category": "stone core envelope closure",
+      "status": "closed_in_v002",
+      "observed": "The previous slit at the front cap is closed. Exterior left and interior core walls now meet the roof soffit across their thickness without a visible exterior spike, detached cap or open corner.",
+      "pixel_evidence": [
+        "renders/facade_close.png",
+        "renders/canopy_support.png",
+        "renders/left_side.png",
+        "renders/courtyard.png",
+        "renders/rear.png"
+      ],
+      "geometry": "Front and rear cap profiles meet roof_z(x)-0.23. Explicit triangular caps follow the actual soffit across the 0.28 m left and inner wall thicknesses; their ends meet the front/rear panels.",
+      "authoring_input": "scripts/family_transit.py"
+    },
+    {
+      "id": "TRANSIT-V001-P1-01",
+      "category": "roof finish coherence",
+      "status": "closed_in_v002",
+      "observed": "The seam rows read as attached raised profiles on the roof sheet. The detached shadows seen in v001 are gone, while the source seam cadence and two-plane silhouette remain.",
+      "pixel_evidence": [
+        "renders/roof_contact.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/rear_side.png"
+      ],
+      "supporting_measurements_m": {
+        "seam_centre_offset": 0.0345,
+        "seam_depth": 0.025,
+        "sheet_top_offset": 0.025,
+        "seam_base_overlap_at_centre": 0.003,
+        "minimum_overlap_across_width_on_steeper_plane": 0.0012561
+      },
+      "geometry": "scripts/family_transit.py"
+    }
+  ],
+  "category_findings": [
+    {
+      "category": "source identity and ratios",
+      "status": "pass_for_clay",
+      "finding": "One storey, four front timber V supports, high left and shallow rising right roof planes with a valley right of centre, pale left core, glazed waiting/ticket area and right cafe remain coherent with the three locked generated sources. Unseen rear and native metrics are disclosed inference."
+    },
+    {
+      "category": "roof and silhouette",
+      "status": "pass_for_clay",
+      "finding": "Both roof planes, the valley, fascia and rakes form a continuous envelope. Seams now contact the weathering sheet. Whole-building views show the full footprint and source roof graph."
+    },
+    {
+      "category": "support load paths and grade",
+      "status": "pass_for_clay",
+      "finding": "Steel feet visibly contact the forecourt; shoes overlap the feet and timber branches; timber branches meet the supporting roof beams and soffit. No newly detached support or base is visible."
+    },
+    {
+      "category": "wall enclosure and floor continuity",
+      "status": "pass_for_clay",
+      "finding": "The corrected core meets the soffit; the front, rear and side walls join at the core corners. Hall floor and forecourt connect through the open central route. Room depth and floor contacts are readable."
+    },
+    {
+      "category": "openings and glazing",
+      "status": "pass_for_clay",
+      "finding": "Service and staff doors have actual carrier cuts. Front and rear double doors are open with leaves parked at the reveals. Recessed optical glazing and solid frames show genuine depth, with no opaque carrier across the central route."
+    },
+    {
+      "category": "programme and circulation",
+      "status": "pass_for_clay",
+      "finding": "Three ticket machines, two waiting benches, cafe counter and coffee-appliance volume, two tables and four chairs provide the declared conceptual programme. The centre passage remains unobstructed from front to rear."
+    },
+    {
+      "category": "stairs and upper-level guards",
+      "status": "not_applicable",
+      "finding": "This is a single-storey pavilion with no advertised occupied upper floor or roof terrace."
+    },
+    {
+      "category": "source-palette material and optical scope",
+      "status": "pass_for_clay",
+      "finding": "Source-palette stone courses, timber, dark metal and transparent glass are differentiated. Textures and final PBR realism are intentionally outside this representation."
+    },
+    {
+      "category": "cameras and evidence",
+      "status": "pass_for_clay",
+      "finding": "Every mandatory frame was inspected at full resolution. The new tickets and waiting cameras show full cabinets and bench contacts; the paired support views cover feet and upper bearing. Phone boards are readable labels and letterboxed render/source copies."
+    },
+    {
+      "category": "provenance and regressions",
+      "status": "pass_for_clay",
+      "finding": "The source images remain byte-identical to the locked source gate. The candidate GLB matches delivery evidence. The full view set preserves the accepted composition while resolving the previous finite blockers."
+    }
+  ],
+  "evidence_limitations": [
+    "canopy_support frames upper bearing; architecture_close supplies the complementary foot/shoe/forecourt contact evidence.",
+    "courtyard is the retained camera filename for cafe interior; the actual content was reviewed as cafe and hall programme.",
+    "Fine joinery at roof-beam and fascia butt joints is simplified for classroom architectural clay; no final construction-detail or PBR claim is made."
+  ],
+  "accepted_scope_limits": [
+    "Original generated concept; no claim of an existing built station or real transit affiliation.",
+    "Metric scale, hidden rear detail and service-room configuration are design assumptions.",
+    "Site landscape dressing, transport tracks and route geometry are separate from this pavilion artifact.",
+    "No engineering, code, accessibility, transport-operation or runtime acceptance is implied."
+  ],
+  "runtime_approved": false,
+  "keeper_approved": false,
+  "publication_approved": false,
+  "human_visual_approval": false,
+  "final_note": "Zero unresolved P0/P1 after a fresh complete holistic pixel review. This pass applies only to the named exact-byte architectural-clay candidate and does not overwrite the preserved v001 failure."
+}

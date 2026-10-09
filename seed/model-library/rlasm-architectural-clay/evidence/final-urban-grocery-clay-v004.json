@@ -1,0 +1,876 @@
+{
+  "schema": "cityprompt.rlasm.architectural_clay_independent_review@1",
+  "candidate": "final-urban-grocery-clay-v004",
+  "artifact_root": "C:/dev-artifacts/CityPrompt/final-five-2026-10-08/market-v004",
+  "model_path": "final-urban-grocery-clay-v004.glb",
+  "model_sha256": "3981963cf2543037cb472a7383f7a3466cdb157d416cc170e2ec06db7c46de5d",
+  "reviewer": "/root/source_pilot_review",
+  "reviewer_role": "Independent reviewer; did not author or modify model geometry.",
+  "review_date": "2026-10-09",
+  "method": "RLASM v6.1 architectural-clay profile",
+  "scope": "Fresh holistic review of this exact final-five grocery candidate. All 17 actual-GLB renders, three locked sources and four boards were opened at original resolution. Reviewed source identity, ratios, roof graph, enclosure, openings, optics, supports, furniture contacts, grocery and receiving programme, circulation, cameras and regressions. Read-only inspection of frozen authoring code and actual GLB indexed triangle intersections supports the pixel findings. This is distinct from the earlier student-five-families market.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_pass",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "all_mandatory_full_resolution_images_opened": true,
+  "mandatory_render_count": 17,
+  "source_image_count": 3,
+  "board_count": 4,
+  "inspected_files": [
+    {
+      "path": "boards/all-views-contact.png",
+      "bytes": 2155347,
+      "sha256": "d0a1e50bafe46e687d4c75e178e2af9afaae1119fd019520f9c5d06cc953c90a",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "bytes": 1208087,
+      "sha256": "01bee7bcc71b0461ebdcd61ffc7b27579ea98a83cb33efade285bc468d8a23a2",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "bytes": 1027629,
+      "sha256": "1656bb7ea630ab2e8226b0b5f8c755a7b0b202738788a6a2d33090fd843184e0",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "bytes": 1362811,
+      "sha256": "2e33137f2f1d2cffb092bc9df563b41945b282a4d31db532968fdab3e0a5f650",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1582202,
+      "sha256": "d0e3a8c52eb0b35a962d03f1e6e211202e303d7ef6503acb9388ab2e0270b28e",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/aisles.png",
+      "bytes": 1468200,
+      "sha256": "165705dcf87a8ccb804d775382d95d43411949eb9e9a7193e28f2391a8962702",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1458907,
+      "sha256": "e0212de05b9906697bd7c8bf9b2a532a80775772a1963be9245ce554492bdb9a",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/checkout.png",
+      "bytes": 1483815,
+      "sha256": "fd51ba18def911b9ab7c59c6330b4f56f6a47ea3319d8a279609508cd37eb20c",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/clerestory.png",
+      "bytes": 1398445,
+      "sha256": "2ae8ebb31968a43cf69dc01b7051fb6cf732bbfcc2981958b7650cfeee00a2f9",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/courtyard.png",
+      "bytes": 1558525,
+      "sha256": "84d5cc50f501ef14a3b443173d48512a98ebd9947137421dd51d680917e27d7b",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1437964,
+      "sha256": "3161a6fba373f471da1070b91ed8ae570e0aca89048731383b24be1ac6874e77",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1532939,
+      "sha256": "9918dbca034f8dd05ea1f03b98aa551af411f720c85a16a4eebd8b73f8a834e2",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1341782,
+      "sha256": "1572a393aa5d16845986388bc501f3e161cfee18c734cb7b2a83af06e3f6421c",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1419298,
+      "sha256": "20fc43bb2903a49f89c6bc575681f43ed5e381d220ea498498a2912e41c4f961",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1312527,
+      "sha256": "1c1ae3a69c74ce2025b5810ebf63791146d656f24f551d52b62f1659a9f6813f",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/passage.png",
+      "bytes": 1437993,
+      "sha256": "99d5e59e669462bc9b6eacf3d26d9cf2bfc7aeca1053c9663a2f4d47cc20092e",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1486935,
+      "sha256": "331a5fbfa74e42a67e1ea20b7e96102fffed8b410748115d6b45006a85e10ef6",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1297661,
+      "sha256": "64527a6373d2902716a6f3ca16dbc5edd2b2795e78f519339f80c294e4f1ad0f",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1335359,
+      "sha256": "ce805519c3099d14617d048097d3536080dd5ca7b05a6b0e6b6c0404f158950c",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "bytes": 1600746,
+      "sha256": "5d4e8766f7c6db1f18e7de7ab6411ea3a27d3ca3d4ff5641e26dcd8b32c3bdf3",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1286730,
+      "sha256": "ef876f7c0d99f1631b7cf98b17cfda8c2082ae7e3e1932da3780339dbe8ddbca",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "sources/front.png",
+      "bytes": 2798212,
+      "sha256": "c571268e0568ef20c6b30c23f603cdac9893792bfe020ae4734d69be5ae828d1",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "sources/oblique.png",
+      "bytes": 2868806,
+      "sha256": "d61d172c002221434a623eca8c15dc1e506113e4d3baefd307a6e35a6e5e283a",
+      "full_resolution_pixels_inspected": true
+    },
+    {
+      "path": "sources/top.png",
+      "bytes": 2612227,
+      "sha256": "73c197aad124604c562037c8a45958dce5d2e29dd6e71dda53727072102e5e02",
+      "full_resolution_pixels_inspected": true
+    }
+  ],
+  "supporting_files": [
+    {
+      "path": "scripts/family_market.py",
+      "bytes": 8507,
+      "sha256": "1536d455e12348fe4c6fd420772709d2b0b2c475a2e800a3a69f169e5fba2b1f"
+    },
+    {
+      "path": "scripts/geometry.py",
+      "bytes": 4480,
+      "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+    },
+    {
+      "path": "scripts/assemblies.py",
+      "bytes": 9581,
+      "sha256": "deae172459d92f963601dd6b1bc633a4a68b4d7e1e572268def7b9d0e2bcbde3"
+    },
+    {
+      "path": "scripts/clay_core.py",
+      "bytes": 27120,
+      "sha256": "9a2e680d7ca26fc58e722936dbb3f5bbc07cabf0bc4f0c50244db2db8ceba521"
+    },
+    {
+      "path": "scripts/build.py",
+      "bytes": 2472,
+      "sha256": "dd27e20953d8866a9918fb4df8f4d7367a5a38a903f05f2dd0ded2ec10f5625a"
+    },
+    {
+      "path": "scripts/contract.py",
+      "bytes": 2024,
+      "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+    },
+    {
+      "path": "scripts/prepare_review.py",
+      "bytes": 3790,
+      "sha256": "0107c986a468fee3cf024e195b5e55cd56a7752ff551819a2ca01cdd539dee0c"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "bytes": 1747,
+      "sha256": "db457eedbac231a8f167b27d0a637ec869b0b5f57adbd6f779a57834001d7892"
+    },
+    {
+      "path": "evidence/carrier-aperture-audit.json",
+      "bytes": 1115,
+      "sha256": "7a00d6c61e831fd41ef9cdd01158469af8a3d404ef367a3bd3ce481cd75e8906"
+    },
+    {
+      "path": "evidence/builder-evidence.json",
+      "bytes": 39578,
+      "sha256": "68c3318ab8ecf1f6e55f52e3544026c76452827717445811c3bbd7edcb810b6d"
+    },
+    {
+      "path": "evidence/runtime-status.json",
+      "bytes": 237,
+      "sha256": "1e65ad0681e0ea0e53d716e547ce7dd60cf053715ffdf6ece59d3b4587282a56"
+    },
+    {
+      "path": "boards/layout-provenance.json",
+      "bytes": 2917,
+      "sha256": "a9b59fd5ffd5470206cf005ca55692406a4958478a9abf2d823a7c79ce6dff8c"
+    },
+    {
+      "path": "source-entry.json",
+      "bytes": 1237,
+      "sha256": "739471af8f983798a38a66267563c39e4870bd87634e3d35b261f0d553253bf9"
+    },
+    {
+      "path": "prework-manifest.json",
+      "bytes": 7953,
+      "sha256": "39884fa8204f4187aee78d3876d6bf9b651ba3c8943afdfc92489ba093185135"
+    }
+  ],
+  "source_review": {
+    "path": "C:/dev-artifacts/CityPrompt/final-five-2026-10-08/market-source-review-v003.json",
+    "sha256": "a4b1597a665c50a7684ac0fe098ac9eb2458da7b66a45c4ddc4cfc778e717f8f",
+    "scope": "Source compatibility only. These exact images were independently reopened for this model review."
+  },
+  "prior_review": {
+    "candidate": "final-urban-grocery-clay-v003",
+    "path": "C:/dev-artifacts/CityPrompt/final-five-2026-10-08/market-v003/review/independent.json",
+    "sha256": "7fe0031622dcc6d20fba9b8fbf2ac1c318cd44f8fa28bcf24db2921a3a9687a8",
+    "decision": "visual_rework_required",
+    "unresolved_p0": 1,
+    "unresolved_p1": 0,
+    "preserved_unchanged": true
+  },
+  "render_provenance": "Actual optimized GLB reimport; no geometry or material replacement. Boards use letterboxing and labels only.",
+  "deterministic_status": "PASS_DELIVERY_CHECKS",
+  "aperture_audit": {
+    "status": "PASS_CARRIER_APERTURES",
+    "aperture_count": 7,
+    "blocked_openings": 0,
+    "scope": "Opaque facade carriers; visible occupied depth and circulation separately inspected."
+  },
+  "issues": [],
+  "closed_prior_issues": [
+    {
+      "id": "MKT-05",
+      "status": "closed_in_v004",
+      "finding": "Both checkout screens now have actual hardware pedestals joining the countertop to the screen underside. Produce crates are seated on their display tops and the low-poly produce is seated on the crate tops. The contacts are visible in the current pixels and independently verified in the exported GLB.",
+      "pixel_evidence": [
+        "renders/front.png",
+        "renders/architecture_close.png",
+        "renders/checkout.png",
+        "renders/glass_close.png",
+        "renders/facade_close.png"
+      ],
+      "measurements_m": {
+        "counter_top": 1.15,
+        "pedestal_bottom": 1.15,
+        "pedestal_top": 1.375,
+        "till_screen_bottom": 1.375,
+        "display_top": 1.11,
+        "crate_bottom": 1.11,
+        "crate_top": 1.23,
+        "fruit_bottom": 1.23
+      }
+    },
+    {
+      "id": "MKT-03",
+      "status": "closure_retained_and_freshly_reviewed_in_v004",
+      "finding": "The right-rear receiving screen, service pad and paired yellow bollards remain present with a usable goods doorway. The pad now supports the entire rear screen-post footprints; the left rear post is inset from the slab edge. Four near-corner probes under each of the three rear-line post feet meet both the foundation and hardware at z0.15 m.",
+      "pixel_evidence": [
+        "renders/right_side.png",
+        "renders/rear_side.png",
+        "renders/courtyard.png",
+        "renders/aerial.png",
+        "renders/top.png"
+      ],
+      "measurements_m": {
+        "pad_x_min": 10,
+        "pad_x_max": 12.45,
+        "pad_y_min": 2.1,
+        "pad_y_max": 7.4,
+        "pad_top": 0.15,
+        "post_bottom": 0.15,
+        "rear_post_centres_x": [
+          10.1,
+          11.2,
+          12.35
+        ],
+        "rear_post_centre_y": 7.3,
+        "post_width": 0.1
+      }
+    },
+    {
+      "id": "MKT-04",
+      "status": "closure_retained_and_freshly_reviewed_in_v004",
+      "finding": "Standing seams and lantern flashings remain seated into their roof carriers; no detached lines or separated shadows recur. Actual triangle probes again confirm positive overlap at the former failing sample points.",
+      "pixel_evidence": [
+        "renders/roof_contact.png",
+        "renders/facade_close.png",
+        "renders/aerial.png",
+        "renders/rear_side.png"
+      ],
+      "measurements_m": {
+        "roof_top": 5.65,
+        "seam_bottom": 5.64798,
+        "seam_overlap": 0.00202,
+        "lantern_cap_top": 6.2,
+        "flashing_bottom": 6.194763,
+        "flashing_overlap": 0.005237
+      }
+    }
+  ],
+  "actual_glb_probes": {
+    "model_sha256": "3981963cf2543037cb472a7383f7a3466cdb157d416cc170e2ec06db7c46de5d",
+    "model_bytes": 594640,
+    "triangles": 10914,
+    "coordinate_system": "Authoring x/y horizontal, z up; converted from GLB x/y/z=(x,z,-y). Identity nodes verified.",
+    "method": "Vertical intersections with actual GLB indexed triangles, barycentric test; surface hits support rather than replace full-resolution pixel review.",
+    "probes": [
+      {
+        "name": "till_one",
+        "xy": [
+          5,
+          -3.85
+        ],
+        "z_range": [
+          0,
+          2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_TIMBER"
+          },
+          {
+            "z": 1.15,
+            "role": "CLAY_HARDWARE"
+          },
+          {
+            "z": 1.15,
+            "role": "CLAY_TIMBER"
+          },
+          {
+            "z": 1.375,
+            "role": "CLAY_BLUE"
+          },
+          {
+            "z": 1.375,
+            "role": "CLAY_HARDWARE"
+          },
+          {
+            "z": 1.725,
+            "role": "CLAY_BLUE"
+          }
+        ]
+      },
+      {
+        "name": "till_two",
+        "xy": [
+          8.3,
+          -3.85
+        ],
+        "z_range": [
+          0,
+          2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_TIMBER"
+          },
+          {
+            "z": 1.15,
+            "role": "CLAY_HARDWARE"
+          },
+          {
+            "z": 1.15,
+            "role": "CLAY_TIMBER"
+          },
+          {
+            "z": 1.375,
+            "role": "CLAY_BLUE"
+          },
+          {
+            "z": 1.375,
+            "role": "CLAY_HARDWARE"
+          },
+          {
+            "z": 1.725,
+            "role": "CLAY_BLUE"
+          }
+        ]
+      },
+      {
+        "name": "produce_crate",
+        "xy": [
+          -8.3,
+          -4.3
+        ],
+        "z_range": [
+          1,
+          1.4
+        ],
+        "hits": [
+          {
+            "z": 1.11,
+            "role": "CLAY_PALE"
+          },
+          {
+            "z": 1.11,
+            "role": "CLAY_TIMBER"
+          },
+          {
+            "z": 1.23,
+            "role": "CLAY_PALE"
+          },
+          {
+            "z": 1.23,
+            "role": "CLAY_YELLOW"
+          },
+          {
+            "z": 1.36,
+            "role": "CLAY_YELLOW"
+          }
+        ]
+      },
+      {
+        "name": "roof_seam",
+        "xy": [
+          -9.85,
+          0
+        ],
+        "z_range": [
+          5.4,
+          5.8
+        ],
+        "hits": [
+          {
+            "z": 5.51,
+            "role": "CLAY_ROOF"
+          },
+          {
+            "z": 5.53,
+            "role": "CLAY_TIMBER"
+          },
+          {
+            "z": 5.64798,
+            "role": "CLAY_ROOF"
+          },
+          {
+            "z": 5.65,
+            "role": "CLAY_ROOF"
+          },
+          {
+            "z": 5.65,
+            "role": "CLAY_TIMBER"
+          },
+          {
+            "z": 5.67202,
+            "role": "CLAY_ROOF"
+          }
+        ]
+      },
+      {
+        "name": "lantern_flashing",
+        "xy": [
+          6.18,
+          0
+        ],
+        "z_range": [
+          6,
+          6.4
+        ],
+        "hits": [
+          {
+            "z": 6.06,
+            "role": "CLAY_ROOF"
+          },
+          {
+            "z": 6.194763,
+            "role": "CLAY_TRIM"
+          },
+          {
+            "z": 6.2,
+            "role": "CLAY_ROOF"
+          },
+          {
+            "z": 6.2,
+            "role": "CLAY_TRIM"
+          },
+          {
+            "z": 6.245237,
+            "role": "CLAY_TRIM"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_10.1_foot_corner_-0.04_-0.04",
+        "xy": [
+          10.06,
+          7.26
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_10.1_foot_corner_-0.04_0.04",
+        "xy": [
+          10.06,
+          7.34
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_10.1_foot_corner_0.04_-0.04",
+        "xy": [
+          10.14,
+          7.26
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_10.1_foot_corner_0.04_0.04",
+        "xy": [
+          10.14,
+          7.34
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_11.2_foot_corner_-0.04_-0.04",
+        "xy": [
+          11.16,
+          7.26
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_11.2_foot_corner_-0.04_0.04",
+        "xy": [
+          11.16,
+          7.34
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_11.2_foot_corner_0.04_-0.04",
+        "xy": [
+          11.24,
+          7.26
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_11.2_foot_corner_0.04_0.04",
+        "xy": [
+          11.24,
+          7.34
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_12.35_foot_corner_-0.04_-0.04",
+        "xy": [
+          12.31,
+          7.26
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_12.35_foot_corner_-0.04_0.04",
+        "xy": [
+          12.31,
+          7.34
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_12.35_foot_corner_0.04_-0.04",
+        "xy": [
+          12.39,
+          7.26
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      },
+      {
+        "name": "receiving_post_12.35_foot_corner_0.04_0.04",
+        "xy": [
+          12.39,
+          7.34
+        ],
+        "z_range": [
+          0,
+          0.2
+        ],
+        "hits": [
+          {
+            "z": 0,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_FOUNDATION"
+          },
+          {
+            "z": 0.15,
+            "role": "CLAY_HARDWARE"
+          }
+        ]
+      }
+    ]
+  },
+  "passed_categories": [
+    "Source fidelity: the compact single-storey hall, four longitudinal narrow side-glazed clerestory strips, gently sloping metal carrier, brick front fascia, four-post canopy, broad display windows and narrow central-entry flanks remain coherent with the locked front, oblique and top sources.",
+    "Envelope and roof: lower brick sides and upper timber walls follow the roof slope; all four raised strips have end and opaque-side closures. No new corner slit, open roof seam or detached cap is visible.",
+    "Openings and optics: real recessed display windows and open doors reveal occupied depth. Front, rear and goods doorways are visibly cut through the carriers. The seven-aperture deterministic audit has zero blocked openings and agrees with the views.",
+    "Programme and circulation: produce, stocked shelves, two checkouts, rear stock cabinets and screened goods receiving form a readable grocery interior. Shelf uprights and stock are supported; the central entry-to-rear route, side aisles and goods-door approach remain clear.",
+    "Contacts and continuity: the slab supports the occupied programme. Canopy posts meet grade and canopy underside; structural beams meet the wall envelope and roof underside; pendant drops connect to the beams. Screen pedestals, produce seating, receiving feet and roof overlays are verified in the exact GLB.",
+    "Camera evidence: all eight whole-building views keep the building, roof and receiving appendage in frame. Close views reveal enclosure, optical depth, fixture contacts and clerestory apertures with sufficient lighting. All 17 frames and four boards were reviewed individually at original resolution.",
+    "Boards and provenance: source identities remain locked, the boards retain their original source/render pixels through labelled letterboxing, and the model is the actual optimized GLB named in this record."
+  ],
+  "non_blocking_notes": [
+    "The checkout close view crops the nearer till, but its support is visible in the front view and both screen contacts are independently measured in the exported GLB. The farther till connection is clear in checkout.",
+    "Fruit and package forms, absent applied sign lettering, small facade lights, bicycle rack and frontage landscape are acceptable simplifications for this architectural-clay gate.",
+    "The prework 20.8 x 14.2 x 7.1 m dimensions describe the main design envelope rather than the entire receiving-yard appendage. The measured native GLB bounds are approximately 22.85 x 15.60 x 7.044766 m including that appendage; any later placement work must use the actual bounds."
+  ],
+  "native_model_bounds_m": {
+    "coordinate_system": "Authoring x/y horizontal, z up",
+    "min": [
+      -10.3999996,
+      -8.1999998,
+      0
+    ],
+    "max": [
+      12.4499998,
+      7.4000001,
+      7.0447655
+    ],
+    "width": 22.8499994,
+    "depth": 15.5999999,
+    "height": 7.0447655
+  },
+  "accepted_scope_limits": [
+    "Original generated teaching concept; native metrics and unseen details are inferred.",
+    "Source-palette architectural clay with no textures; no final PBR or textured-keeper approval.",
+    "This visual architectural review does not imply runtime placement, walking, persistence, scaling, engineering or code certification.",
+    "This immutable record applies only to the exact candidate and hashes listed. Earlier failed records remain unchanged."
+  ],
+  "runtime_approved": false,
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "publication_approved": false,
+  "human_visual_approval": false,
+  "final_note": "The prior fixture-contact blocker is closed, with no remaining P0 or P1 after a fresh full-candidate review."
+}
