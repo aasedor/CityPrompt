@@ -17,9 +17,23 @@ export function sampleGeographicSurface(lng: number, lat: number, roots: THREE.O
   const down = WGS84_ELLIPSOID.getCartographicToNormal(lat * RAD, lng * RAD, new THREE.Vector3()).negate();
   ray.set(start, down); ray.far = 100000;
   for (const hit of ray.intersectObjects(roots, true)) {
-    let visible = true;
-    for (let p: THREE.Object3D | null = hit.object; p; p = p.parent) if (!p.visible) { visible = false; break; }
-    if (visible) return WGS84_ELLIPSOID.getPositionElevation(hit.point);
+    let visible = true, attached = false;
+    // TilesGroup's optimized raycaster can also inspect cached tile scenes.
+    // A detached scene may retain visible=true and an obsolete world transform.
+    for (let p: THREE.Object3D | null = hit.object; p; p = p.parent) {
+      if (!p.visible) { visible = false; break; }
+      if (roots.includes(p)) attached = true;
+    }
+    if (visible && attached) {
+      const height = WGS84_ELLIPSOID.getPositionElevation(hit.point);
+      // Loading/coarse Google tiles occasionally produce kilometre-scale
+      // outliers (observed -27 km and +3.4 km in central Calgary). Reject those
+      // measurements; never replace them with an invented flat elevation.
+      // This generous plausibility envelope applies only to Calgary, leaving
+      // imported layers in other regions free to follow their own elevations.
+      const inCalgary = lng >= -114.35 && lng <= -113.85 && lat >= 50.8 && lat <= 51.22;
+      if (Number.isFinite(height) && (!inCalgary || (height >= 500 && height <= 2000))) return height;
+    }
   }
   return null;
 }

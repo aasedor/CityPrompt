@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { buildGroundedTransport, sampleGeographicSurface } from './groundedTransport';
@@ -9,6 +9,26 @@ const data: TransportSnapshot = { type: 'FeatureCollection', network: '5a', retr
   { type: 'Feature', id: 'stop', properties: { category: 'service-stop', source: 'test' }, geometry: { type: 'Point', coordinates: [-114.07, 51.05] } },
 ] };
 describe('grounded transportation', () => {
+  it('rejects transient Calgary tile heights kilometres above or below the city without inventing ground', () => {
+    const root = new THREE.Group(), shown = new THREE.Mesh(); root.add(shown);
+    const ray = new THREE.Raycaster();
+    for (const height of [-27836, 3400]) {
+      const point = WGS84_ELLIPSOID.getCartographicToPosition(51.05 * Math.PI / 180, -114.07 * Math.PI / 180, height, new THREE.Vector3());
+      vi.spyOn(ray, 'intersectObjects').mockReturnValue([{ object: shown, point, distance: 50000-height }]);
+      expect(sampleGeographicSurface(-114.07, 51.05, [root], ray)).toBeNull();
+    }
+  });
+  it('ignores cached tile hits detached from the visible tile root', () => {
+    const root = new THREE.Group(), shown = new THREE.Mesh(), detached = new THREE.Mesh();
+    root.add(shown);
+    const point = (height: number) => WGS84_ELLIPSOID.getCartographicToPosition(51.05 * Math.PI / 180, -114.07 * Math.PI / 180, height, new THREE.Vector3());
+    const ray = new THREE.Raycaster();
+    vi.spyOn(ray, 'intersectObjects').mockReturnValue([
+      { object: detached, point: point(3400), distance: 46600 },
+      { object: shown, point: point(1030), distance: 48970 },
+    ]);
+    expect(sampleGeographicSurface(-114.07, 51.05, [root], ray)).toBeCloseTo(1030, 4);
+  });
   it('densifies routes and follows location-specific elevations without a camera or site datum', () => {
     const result = buildGroundedTransport(data, 'test', 970);
     expect(result.nodes.length).toBeGreaterThan(5);
