@@ -6442,8 +6442,9 @@ async def test_place_community_rejects_framework_overlay_without_mutating_it(cli
 @pytest.mark.anyio
 @pytest.mark.parametrize("include_landscape", [True, False])
 @pytest.mark.parametrize("landscape_mode", [None, "generated", "placed_objects_only"])
+@pytest.mark.parametrize("landscape_state", ["compiled", "stale"])
 async def test_place_community_derives_residual_from_all_project_zones(
-    client, mock_db, test_user, auth_headers, include_landscape, landscape_mode
+    client, mock_db, test_user, auth_headers, include_landscape, landscape_mode, landscape_state
 ):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
@@ -6465,7 +6466,7 @@ async def test_place_community_derives_residual_from_all_project_zones(
             **(
                 {
                     "community_3d_landscape_mode": landscape_mode,
-                    "community_3d_landscape": {"state": "stale", "source_hash": "previous-plan"},
+                    "community_3d_landscape": {"state": landscape_state, "source_hash": "previous-plan", "preset": "urban"},
                 }
                 if landscape_mode
                 else {}
@@ -6513,10 +6514,10 @@ async def test_place_community_derives_residual_from_all_project_zones(
 
     assert response.status_code == 200, response.text
     payload = response.json()
-    if not include_landscape:
+    if not include_landscape or landscape_mode == "generated":
         assert payload["residual_landscape"]["boundary_count"] == 0
         if landscape_mode == "generated":
-            assert boundary.properties["community_3d_landscape"]["state"] == "stale"
+            assert boundary.properties["community_3d_landscape"] == {"state": landscape_state, "source_hash": "previous-plan", "preset": "urban"}
             assert boundary.properties["community_3d_landscape_mode"] == "generated"
         else:
             assert "community_3d_landscape" not in boundary.properties

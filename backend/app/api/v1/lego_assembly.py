@@ -2068,6 +2068,16 @@ async def place_community_3d(
     boundary_recipes: list[tuple[SiteZone, dict[str, Any]]] = []
     try:
         for boundary in boundaries:
+            existing_landscape = (boundary.properties or {}).get("community_3d_landscape")
+            # Scene compilation owns the automatic remainder, not the finish
+            # explicitly applied in Site. Preserve its preset/artwork and any
+            # stale signal until the student refreshes it through that workflow.
+            if (
+                (boundary.properties or {}).get("community_3d_landscape_mode") == "generated"
+                and isinstance(existing_landscape, dict)
+                and existing_landscape.get("state") in {"compiled", "stale"}
+            ):
+                continue
             if not body.include_residual_landscape:
                 existing_landscape = (boundary.properties or {}).get("community_3d_landscape")
                 # Automatic object recompiles do not own a landscape the
