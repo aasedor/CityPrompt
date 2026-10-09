@@ -433,6 +433,8 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
             <label className="flex min-h-0 flex-1 flex-col text-xs font-semibold text-white/75">
               Description
               <textarea
+                spellCheck={true}
+                lang="en-CA"
                 value={prompt}
                 disabled={submitting}
                 onChange={(event) => setPrompt(event.target.value)}

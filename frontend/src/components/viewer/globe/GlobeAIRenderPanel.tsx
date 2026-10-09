@@ -1240,6 +1240,8 @@ export function GlobeAIRenderPanel({
       <div className="border-b border-white/15 bg-slate-900/90 px-4 py-3 text-white">
         <label htmlFor="globe-render-custom-prompt" className="mb-1 block text-xs font-bold">Custom prompt <span className="font-normal text-white/60">(optional)</span></label>
         <textarea
+          spellCheck={true}
+          lang="en-CA"
           id="globe-render-custom-prompt"
           value={customPrompt}
           onChange={(event) => setCustomPrompt(event.target.value)}

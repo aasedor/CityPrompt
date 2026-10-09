@@ -217,7 +217,7 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
             <p className="mt-2 text-xs text-black/60">AI motion may change details. Review the architecture before presenting.</p></div>
           {!attempt && <div>
             <label htmlFor="animation-scene-direction" className="text-sm font-bold">Scene direction (optional)</label>
-            <textarea id="animation-scene-direction" rows={3} maxLength={400} value={sceneDirection}
+            <textarea spellCheck={true} lang="en-CA" id="animation-scene-direction" rows={3} maxLength={400} value={sceneDirection}
               disabled={submitting} aria-describedby="animation-direction-help"
               placeholder="People stroll along the paths while leaves move gently."
               onChange={event => {

@@ -700,6 +700,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
           <div className="border-t border-white/10 px-5 py-3">
             <label htmlFor="street-render-custom-prompt" className="mb-1 block text-xs font-medium text-white">Custom prompt <span className="text-white/50">(optional)</span></label>
             <textarea
+              spellCheck={true}
+              lang="en-CA"
               id="street-render-custom-prompt"
               value={customPrompt}
               onChange={(event) => setCustomPrompt(event.target.value)}
@@ -821,6 +823,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         <div className="w-full">
           <label htmlFor="street-render-custom-prompt" className="mb-1 block text-xs font-bold">Custom prompt <span className="font-normal opacity-60">(optional)</span></label>
           <textarea
+            spellCheck={true}
+            lang="en-CA"
             id="street-render-custom-prompt"
             value={customPrompt}
             onChange={(event) => setCustomPrompt(event.target.value)}

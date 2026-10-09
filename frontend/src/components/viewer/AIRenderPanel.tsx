@@ -395,6 +395,8 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
             Custom prompt <span className="font-normal text-gray-500">(optional)</span>
           </label>
           <textarea
+            spellCheck={true}
+            lang="en-CA"
             id="aerial-render-custom-prompt"
             value={customPrompt}
             onChange={(event) => setCustomPrompt(event.target.value)}
