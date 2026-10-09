@@ -4,10 +4,30 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DetailPlacementPanel } from './DetailPlacementPanel';
 import { useDetailPlacement } from './useDetailPlacement';
 import type { ProjectDetails } from './projectBenches';
+import { DETAIL_CATEGORIES, searchDetails } from './detailCatalogue';
 // jsdom has no WebGL or intersection observer; placement, search and saving stay real.
 vi.mock('./detailThumbnail', () => ({ detailThumbnail: async () => 'data:image/png;base64,preview' }));
 afterEach(() => vi.unstubAllGlobals());
 describe('detail catalogue workflow', () => {
+  it('opens at categories, filters every group, and searches across items from home', () => {
+    vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} });
+    function Trial() {
+      const placement = useDetailPlacement({ version: 1, revision: 0, can_edit: true, benches: [] }, async next => next);
+      return <DetailPlacementPanel placement={placement} canEdit onClose={() => {}} onArrange={() => {}} />;
+    }
+    render(<Trial />);
+    expect(screen.queryAllByRole('article')).toHaveLength(0);
+    for (const category of DETAIL_CATEGORIES) {
+      fireEvent.click(screen.getByRole('button', { name: `Browse ${category}` }));
+      expect(screen.getAllByRole('article')).toHaveLength(searchDetails('', category).length);
+      fireEvent.click(screen.getByRole('button', { name: 'All categories' }));
+    }
+    fireEvent.change(screen.getByLabelText('Search individual items'), { target: { value: 'Traffic signal' } });
+    expect(screen.getByRole('button', { name: 'Choose Traffic signal' })).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'All categories' }));
+    expect(screen.getByLabelText('Search individual items')).toHaveValue('');
+    expect(screen.queryAllByRole('article')).toHaveLength(0);
+  });
   it('places and rotates traffic items without closing the category', async () => {
     vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} });
     const saved: ProjectDetails[] = [];
@@ -19,7 +39,7 @@ describe('detail catalogue workflow', () => {
         <button onClick={() => void placement.place([-114, 51])}>Traffic placement ground</button></>;
     }
     render(<Trial />);
-    fireEvent.change(screen.getByLabelText('Item category'), { target: { value: 'Traffic & safety' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Browse Traffic & safety' }));
     fireEvent.click(screen.getByRole('button', { name: 'Choose Traffic signal' }));
     fireEvent.change(screen.getByLabelText('Detail rotation'), { target: { value: '90' } });
     fireEvent.click(screen.getByText('Traffic placement ground'));
@@ -42,7 +62,7 @@ describe('detail catalogue workflow', () => {
         <button onClick={() => void placement.place([-114, 51])}>Map ground</button></>;
     }
     render(<Trial />);
-    fireEvent.change(screen.getByLabelText('Item category'), { target: { value: 'Seating' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Browse Seating' }));
     fireEvent.click(screen.getByRole('button', { name: 'Choose Timber bench' }));
     fireEvent.click(screen.getByText('Map ground'));
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Timber bench placed and saved'));
@@ -53,5 +73,9 @@ describe('detail catalogue workflow', () => {
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Accessible picnic table placed and saved'));
     expect(saved[1].benches).toHaveLength(1);
     expect(saved[1].props?.[0].variant).toBe('picnic-table-accessible');
+    fireEvent.click(screen.getByRole('button', { name: 'All categories' }));
+    expect(screen.getByText('Placing: Accessible picnic table')).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Browse Trees' }));
+    expect(screen.getByRole('button', { name: 'Choose Oak · shape 1' })).toBeVisible();
   });
 });

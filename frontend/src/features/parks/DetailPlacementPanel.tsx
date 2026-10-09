@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { X } from 'lucide-react';
+import { ArrowLeft, X } from 'lucide-react';
 import { DETAIL_CATEGORIES, searchDetails, detailAsset, type DetailAsset } from './detailCatalogue';
 import { detailThumbnail } from './detailThumbnail';
 import type { useDetailPlacement } from './useDetailPlacement';
 import { DetailEditControls } from './DetailEditControls';
+import { DetailCategoryTiles } from './DetailCategoryTiles';
 
 function Thumbnail({ asset }: { asset: DetailAsset }) {
   const root = useRef<HTMLDivElement>(null);
@@ -27,6 +28,8 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
   placement: ReturnType<typeof useDetailPlacement>; canEdit: boolean; onClose: () => void; onArrange: () => void;
 }) {
   const [query, setQuery] = useState(''), [category, setCategory] = useState('All');
+  const [categoryView, setCategoryView] = useState(true);
+  const showCategories = () => { setCategory('All'); setQuery(''); setCategoryView(true); };
   const options = searchDetails(query, category);
   const selected = placement.selected ? detailAsset(placement.selected) : null;
   return <aside aria-label="Detail catalogue" className="fixed bottom-0 right-0 top-16 z-[80] flex w-[420px] max-w-[calc(100vw-3rem)] flex-col border-l border-slate-300 bg-[#fff9ec] text-slate-950 shadow-2xl"
@@ -37,13 +40,17 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
     </header>
     <div className="shrink-0 space-y-2 border-b border-slate-200 p-3">
       <p className="text-sm">Choose an item, then click the map to place it. Keep browsing to add more.</p>
-      <input aria-label="Search individual items" placeholder="Search benches, trees, lights…" value={query} onChange={e => setQuery(e.target.value)} className="min-h-11 w-full rounded-lg border border-slate-400 bg-white px-3 text-sm" />
+      <input aria-label="Search individual items" placeholder="Search benches, trees, lights…" value={query} onChange={e => { setQuery(e.target.value); setCategoryView(false); }} className="min-h-11 w-full rounded-lg border border-slate-400 bg-white px-3 text-sm" />
+      {!categoryView && <>
+      <button type="button" onClick={showCategories} className="flex min-h-11 items-center gap-2 rounded-full border-2 border-[#232323] px-3 text-xs font-bold hover:bg-[#c9ff3d]"><ArrowLeft size={16} aria-hidden="true"/>All categories</button>
       <select aria-label="Item category" value={category} onChange={e => setCategory(e.target.value)} className="min-h-11 w-full rounded-lg border border-slate-400 bg-white px-3 text-sm">
         {['All', ...DETAIL_CATEGORIES].map(c => <option key={c} value={c}>{c === 'All' ? 'All individual items' : c}</option>)}
       </select>
       <p className="text-xs text-slate-600">{options.length} items · actual 3D model previews</p>
+      </>}
     </div>
-    <div className="min-h-0 flex-1 overflow-y-auto p-3">
+    <div key={categoryView ? 'categories' : category} className="min-h-0 flex-1 overflow-y-auto p-3">
+      {categoryView ? <DetailCategoryTiles onChoose={value => { setCategory(value); setQuery(''); setCategoryView(false); }} onBrowseAll={() => { setCategory('All'); setQuery(''); setCategoryView(false); }}/> : <>
       <div className="grid grid-cols-2 gap-3">
         {options.map(asset => <article key={asset.id} className="overflow-hidden rounded-xl border border-slate-300 bg-white">
           <button type="button" aria-label={`Choose ${asset.label}`} aria-pressed={placement.selected === asset.id} disabled={!canEdit || placement.saving}
@@ -57,6 +64,7 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
         </article>)}
       </div>
       {!options.length && <p className="py-4 text-sm">No matching items. Try another search or category.</p>}
+      </>}
     </div>
     <footer className="shrink-0 space-y-2 border-t border-slate-300 bg-white p-3">
       <DetailEditControls placement={placement} />
