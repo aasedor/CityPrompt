@@ -1,0 +1,1978 @@
+{
+  "validation_timber_sanctuary_church_glazed_gable": {
+    "label": "Timber Sanctuary Church",
+    "description": "A timber sanctuary with a tall glazed gable, exposed frames and a low community annex. A level entrance leads to a central aisle between pews.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "timber",
+      "sanctuary",
+      "church",
+      "community"
+    ]
+  },
+  "validation_gothic_community_church_single_spire": {
+    "label": "Gothic Community Church",
+    "description": "A limestone Gothic church with a bell tower, spire and rose window. A level entrance opens onto the vaulted nave and side aisles.",
+    "styleIds": [
+      "gothic"
+    ],
+    "searchTags": [
+      "building",
+      "gothic",
+      "community",
+      "church",
+      "sanctuary"
+    ]
+  },
+  "validation_reference_charcoal_gable_fourplex_v1": {
+    "label": "Charcoal Gable Fourplex",
+    "description": "Four homes with front gables and individual entrance stoops.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "charcoal",
+      "gable",
+      "fourplex",
+      "ground_housing",
+      "attached_homes"
+    ]
+  },
+  "validation_minimalist_infill_brick_monolith": {
+    "label": "Buff-Brick Infill",
+    "description": "A minimalist buff-brick home with deep window openings and a flat parapet roof.",
+    "styleIds": [
+      "minimalist"
+    ],
+    "searchTags": [
+      "building",
+      "minimalist",
+      "buff",
+      "brick",
+      "infill"
+    ]
+  },
+  "validation_brewery_crystal_brewhouse": {
+    "label": "Crystal Brewhouse",
+    "description": "A glass-and-steel brewhouse with a faceted roof and copper brewing kettles.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "crystal",
+      "brewhouse",
+      "brewery",
+      "craft_beer",
+      "taproom"
+    ]
+  },
+  "validation_museum_earth_sheltered": {
+    "label": "Earth-Sheltered Museum",
+    "description": "A museum set into the landscape, with a planted roof and projecting skylights.",
+    "styleIds": [
+      "civic_monumental"
+    ],
+    "searchTags": [
+      "building",
+      "civic_monumental",
+      "earth",
+      "sheltered",
+      "museum",
+      "institutional",
+      "cultural"
+    ]
+  },
+  "validation_clapboard_north_end": {
+    "label": "Halifax Clapboard House",
+    "description": "A painted clapboard house with a front porch, gabled roof and adjustable one- or two-storey form.",
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "halifax",
+      "clapboard",
+      "house"
+    ]
+  },
+  "validation_machiya_cafe_gallery": {
+    "label": "Machiya Café and Gallery",
+    "description": "A timber machiya café and gallery with earthen walls and an open garden-facing interior.",
+    "styleIds": [
+      "japanese_contemporary"
+    ],
+    "searchTags": [
+      "building",
+      "japanese_contemporary",
+      "machiya",
+      "cafe",
+      "gallery",
+      "mixed_use"
+    ]
+  },
+  "validation_cast_iron_italianate": {
+    "label": "SoHo Cast-Iron Loft",
+    "description": "A cast-iron loft building with round-arched windows, ornamental columns and a projecting cornice.",
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "soho",
+      "cast",
+      "iron",
+      "loft",
+      "mixed_use",
+      "gallery"
+    ]
+  },
+  "validation_art_deco_streamline_moderne": {
+    "label": "Streamline Moderne Corner",
+    "description": "A Streamline Moderne building with white walls, horizontal bands and curved corner windows.",
+    "styleIds": [
+      "art_deco"
+    ],
+    "searchTags": [
+      "building",
+      "art_deco",
+      "streamline",
+      "moderne",
+      "corner"
+    ]
+  },
+  "validation_rndsqr_midrise_terraced_garden": {
+    "label": "Terraced Garden Mid-Rise",
+    "description": "A timber-and-charcoal mid-rise with planted terraces stepping up to roof gardens.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "terraced",
+      "garden",
+      "mid",
+      "rise",
+      "mixed_use",
+      "mid_rise",
+      "missing_middle",
+      "rooftop_garden"
+    ]
+  },
+  "validation_rec_centre_timber_hall": {
+    "label": "Timber Community Hall",
+    "description": "A cedar-clad community hall with exposed timber frames and a covered veranda.",
+    "styleIds": [
+      "modernist"
+    ],
+    "searchTags": [
+      "building",
+      "modernist",
+      "timber",
+      "community",
+      "hall",
+      "recreation",
+      "community_centre"
+    ]
+  },
+  "validation_contemporary_townhouse_timber_screen": {
+    "label": "Timber-Screen Townhouse",
+    "description": "A townhouse with vertical timber screens, a recessed entrance and planted roof terraces.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "timber",
+      "screen",
+      "townhouse"
+    ]
+  },
+  "native-park:botanical_garden_v3--native-v1": {
+    "label": "Conservatory Botanical Garden",
+    "description": "A botanical garden centred on a conservatory and outdoor planting displays.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "conservatory",
+      "botanical",
+      "garden"
+    ]
+  },
+  "native-park:sculpture_garden_v0--native-v1": {
+    "label": "Museum Sculpture Court",
+    "description": "An outdoor sculpture court arranged for walking, viewing art and gathering.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "museum",
+      "sculpture",
+      "court"
+    ]
+  },
+  "native-park:student_neighbourhood_orchard_v1--native-v1": {
+    "label": "Neighbourhood Orchard",
+    "description": "A neighbourhood orchard with fruit trees and shared outdoor space.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "neighbourhood",
+      "orchard"
+    ]
+  },
+  "native-park:amphitheater_lawn_v0--native-v1": {
+    "label": "Terraced Performance Lawn",
+    "description": "A terraced lawn arranged for outdoor performances and informal seating.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "terraced",
+      "performance",
+      "lawn"
+    ]
+  },
+  "native-park:student_garden_square_v1--native-v1": {
+    "label": "Timber and Stone Square",
+    "description": "A garden square combining timber and stone surfaces with space to gather.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "timber",
+      "stone",
+      "square"
+    ]
+  },
+  "native-park:wetland_rain_garden_v0--native-v1": {
+    "label": "Wetland Boardwalk",
+    "description": "A wetland garden with a boardwalk through water and planted areas.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "wetland",
+      "boardwalk"
+    ]
+  },
+  "amsterdam_gracht_v1": {
+    "label": "Amsterdam Gracht (Canal Street)",
+    "description": "A canal street with planted banks, trees and an arched crossing. Draw a route on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "amsterdam",
+      "gracht",
+      "canal",
+      "street"
+    ]
+  },
+  "brt_bus_rapid_transit_corridor_v0": {
+    "label": "BRT Bus Rapid Transit Corridor",
+    "description": "A broad corridor arranged for bus rapid transit. Draw a 100–480 m route on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "brt",
+      "bus",
+      "rapid",
+      "transit",
+      "corridor"
+    ]
+  },
+  "student_planted_shared_lane_v1": {
+    "label": "Planted Shared Lane",
+    "description": "A shared lane with planting and space for neighbourhood movement and gathering.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "planted",
+      "shared",
+      "lane"
+    ]
+  },
+  "student_quiet_residential_street_v1": {
+    "label": "Quiet Residential Street",
+    "description": "A quiet residential street with walking routes and roadside planting.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "quiet",
+      "residential",
+      "street"
+    ]
+  },
+  "landmark_signature_bridge_v2": {
+    "label": "Landmark Signature Bridge",
+    "description": "A landmark bridge crossing with a broad deck. Draw a 260–480 m route on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "landmark",
+      "signature",
+      "bridge"
+    ]
+  },
+  "validation_beltline_brick_modern": {
+    "label": "Beltline Mixed-Use Mid-Rise",
+    "description": "A brick mid-rise with deep-set windows, weathering-steel accents and ground-floor shops.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "beltline",
+      "mixed",
+      "use",
+      "mid",
+      "rise",
+      "condominium",
+      "mixed_use",
+      "residential"
+    ]
+  },
+  "validation_infill_flat_roof_minimal": {
+    "label": "Calgary Modern Infill",
+    "description": "A narrow-lot home with a flat roof, white stucco, large windows and a recessed entrance.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "calgary",
+      "modern",
+      "infill",
+      "narrow_lot",
+      "residential"
+    ]
+  },
+  "native-park:research_garden_teaching_arboretum_variant_3--native-v1": {
+    "label": "Teaching Demonstration Garden",
+    "description": "A demonstration garden for exploring plants and outdoor learning.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "teaching",
+      "demonstration",
+      "garden"
+    ]
+  },
+  "native-park:basketball_court_v1--native-v1": {
+    "label": "Basketball Park",
+    "description": "An outdoor basketball court with nearby seating and shade trees.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "basketball",
+      "park"
+    ]
+  },
+  "validation_student_main_street_v1": {
+    "label": "Neighbourhood Main Street",
+    "description": "A neighbourhood shopping street with sidewalks, planting, seating and curbside parking.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "neighbourhood",
+      "main",
+      "street"
+    ]
+  },
+  "validation_student_market_street_v1": {
+    "label": "Pedestrian Market Street",
+    "description": "A pedestrian market street with space for stalls, walking and gathering.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "pedestrian",
+      "market",
+      "street"
+    ]
+  },
+  "native-park:student_reading_garden_v2--native-v1": {
+    "label": "Shaded Reading Garden",
+    "description": "A shaded garden for quiet reading and outdoor relaxation.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "shaded",
+      "reading",
+      "garden"
+    ]
+  },
+  "native-park:student_pickleball_garden_v1--native-v1": {
+    "label": "Pickleball Social Garden",
+    "description": "A pickleball court in a garden setting with space to meet and socialize.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "pickleball",
+      "social",
+      "garden"
+    ]
+  },
+  "native-park:student_tennis_garden_v2--native-v1": {
+    "label": "Garden Tennis Court",
+    "description": "An outdoor tennis court set within a planted garden.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "garden",
+      "tennis",
+      "court"
+    ]
+  },
+  "native-park:student_bocce_garden_v2--native-v1": {
+    "label": "Bocce Pergola Garden",
+    "description": "A bocce garden with a pergola and space for informal gathering.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "bocce",
+      "pergola",
+      "garden"
+    ]
+  },
+  "native-park:urban_pocket_park_v0--native-v1": {
+    "label": "Rustic Pocket Garden",
+    "description": "A small rustic garden for a quiet break within the neighbourhood.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "rustic",
+      "pocket",
+      "garden"
+    ]
+  },
+  "native-park:linear_park_greenway_v0--native-v1": {
+    "label": "Railway Meadow Greenway",
+    "description": "A linear meadow greenway with a railway-inspired landscape.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "railway",
+      "meadow",
+      "greenway"
+    ]
+  },
+  "native-park:inclusive_accessible_playground_v0--native-v1": {
+    "label": "Inclusive Woodland Playground",
+    "description": "A woodland-themed playground arranged for inclusive outdoor play.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "inclusive",
+      "woodland",
+      "playground"
+    ]
+  },
+  "clay_side_by_side_duplex": {
+    "label": "Side-by-Side Duplex",
+    "description": "Two homes with separate recessed entrances and flat roofs.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "side",
+      "by",
+      "duplex",
+      "infill",
+      "narrow_lot",
+      "residential"
+    ]
+  },
+  "clay_montreal_plateau_duplex": {
+    "label": "Plateau Stacked Duplex",
+    "description": "Two stacked homes with bay windows and a curved outdoor stair.",
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "plateau",
+      "stacked",
+      "duplex",
+      "residential"
+    ]
+  },
+  "clay_courtyard_brick_modern": {
+    "label": "Brick Courtyard Entrance Building",
+    "description": "A three-storey brick entrance building with two residential vestibules and two open passages. The surrounding courtyard is designed separately.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "brick",
+      "courtyard",
+      "entrance",
+      "courtyard_housing",
+      "family",
+      "housing"
+    ]
+  },
+  "trial_postwar_bungalow": {
+    "label": "Post-War Bungalow",
+    "description": "One- or two-storey brick home with a sheltered porch.",
+    "styleIds": [
+      "traditional_vernacular"
+    ],
+    "searchTags": [
+      "building",
+      "traditional_vernacular",
+      "post",
+      "war",
+      "bungalow",
+      "residential"
+    ]
+  },
+  "trial_edwardian_foursquare": {
+    "label": "Edwardian Foursquare",
+    "description": "One- or two-storey brick home with a porch and dormer.",
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "edwardian",
+      "foursquare",
+      "residential"
+    ]
+  },
+  "clay_rammed_earth_infill": {
+    "label": "Rammed-Earth Timber Infill",
+    "description": "Three-storey rammed-earth home with shaded loggias and timber screens.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "rammed",
+      "earth",
+      "timber",
+      "infill",
+      "detached_infill_residential"
+    ]
+  },
+  "clay_blue_glass_office_tower": {
+    "label": "Blue Glass Office Tower",
+    "description": "A 25-storey blue glass office tower with a glazed lobby, entrance canopy and rooftop crown.",
+    "styleIds": [
+      "glass_tower_modern"
+    ],
+    "searchTags": [
+      "building",
+      "glass_tower_modern",
+      "blue",
+      "glass",
+      "office",
+      "tower",
+      "high_rise_office"
+    ]
+  },
+  "clay_vancouver_balcony_podium_tower": {
+    "label": "Vancouver Balcony and Podium Tower",
+    "description": "A 16-storey residential tower with rounded balconies, a landscaped podium and a lower shop wing.",
+    "styleIds": [
+      "glass_tower_modern"
+    ],
+    "searchTags": [
+      "building",
+      "glass_tower_modern",
+      "vancouver",
+      "balcony",
+      "podium",
+      "tower",
+      "residential",
+      "high_rise"
+    ]
+  },
+  "student_cycle_avenue_v1": {
+    "label": "Protected Cycle Avenue",
+    "description": "An avenue with protected cycling space, walking routes and planting.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "protected",
+      "cycle",
+      "avenue"
+    ]
+  },
+  "student_green_alley_v1": {
+    "label": "Ruelle Verte Community Alley",
+    "description": "A planted community alley inspired by Montréal ruelles vertes.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "ruelle",
+      "verte",
+      "community",
+      "alley"
+    ]
+  },
+  "student_school_street_v1": {
+    "label": "Playful School Street",
+    "description": "A school street with playful paving, planting and pedestrian space.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "playful",
+      "school",
+      "street"
+    ]
+  },
+  "native-park:student_woodland_stream_garden_v1--native-v1": {
+    "label": "Woodland Stream and Bridge Garden",
+    "description": "A woodland garden with a stream and a small crossing bridge.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "woodland",
+      "stream",
+      "bridge",
+      "garden"
+    ]
+  },
+  "native-park:student_reflecting_fountain_garden_v1--native-v1": {
+    "label": "Reflecting Fountain Garden",
+    "description": "A garden centred on a reflecting pool and fountain.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "reflecting",
+      "fountain",
+      "garden"
+    ]
+  },
+  "native-park:student_terraced_cafe_court_v1--native-v1": {
+    "label": "Terraced Café and Fountain Court",
+    "description": "A terraced café court with a fountain and outdoor gathering space.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "terraced",
+      "cafe",
+      "fountain",
+      "court"
+    ]
+  },
+  "student_grass_tram_avenue_v1": {
+    "label": "Garden Tram Avenue",
+    "description": "An avenue with grassed tram tracks, walking routes and planting.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "garden",
+      "tram",
+      "avenue"
+    ]
+  },
+  "student_vine_pergola_promenade_v1": {
+    "label": "Vine Pergola Promenade",
+    "description": "A walking promenade shaded by vine-covered pergolas.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "vine",
+      "pergola",
+      "promenade"
+    ]
+  },
+  "student_grand_haussmann_boulevard_v1": {
+    "label": "Grand Haussmann Boulevard",
+    "description": "A broad Haussmann-inspired boulevard with tree-lined walking space.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "grand",
+      "haussmann",
+      "boulevard"
+    ]
+  },
+  "showcase_market": {
+    "label": "Grand Iron and Glass Market",
+    "description": "An iron-and-glass market hall with two occupied galleries, a barrel-vaulted roof and vendor stalls.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "grand",
+      "iron",
+      "glass",
+      "market"
+    ]
+  },
+  "showcase_aquatic": {
+    "label": "Living-Roof Aquatic Centre",
+    "description": "An aquatic centre with a planted timber roof, glazed entrance arch and eight-lane swimming hall.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "living",
+      "roof",
+      "aquatic",
+      "centre",
+      "natatorium",
+      "aquatic_centre",
+      "pool_hall",
+      "public_recreation"
+    ]
+  },
+  "showcase_tower": {
+    "label": "Gilded Terracotta Tower",
+    "description": "A cream terracotta setback tower with recessed windows, sunburst relief and a gilded lantern.",
+    "styleIds": [
+      "art_deco"
+    ],
+    "searchTags": [
+      "building",
+      "art_deco",
+      "gilded",
+      "terracotta",
+      "tower"
+    ]
+  },
+  "autumn_timber": {
+    "label": "Nordic Roof-Garden Apartments",
+    "description": "A six-storey timber frame with recessed balconies, planted roof terrace and shaded pavilion.",
+    "styleIds": [
+      "scandinavian_nordic"
+    ],
+    "searchTags": [
+      "building",
+      "scandinavian_nordic",
+      "nordic",
+      "roof",
+      "garden",
+      "apartments",
+      "mid_rise_residential"
+    ]
+  },
+  "autumn_villa": {
+    "label": "Tuscan Arcade Villa",
+    "description": "A three-level Tuscan home with a covered stone arcade, green shutters and a canal-tile roof.",
+    "styleIds": [
+      "mediterranean"
+    ],
+    "searchTags": [
+      "building",
+      "mediterranean",
+      "tuscan",
+      "arcade",
+      "villa",
+      "low_density_residential"
+    ]
+  },
+  "autumn_cinema": {
+    "label": "Grand Deco Cinema",
+    "description": "An Art Deco movie palace with arched gallery windows, a gold marquee and a double-sided blade sign.",
+    "styleIds": [
+      "art_deco"
+    ],
+    "searchTags": [
+      "building",
+      "art_deco",
+      "grand",
+      "deco",
+      "cinema",
+      "main_street_entertainment",
+      "theatre"
+    ]
+  },
+  "native-park:student_urban_splash_plaza_v1--native-v1": {
+    "label": "Urban Splash-Play Plaza",
+    "description": "An urban plaza arranged around splash play and gathering.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "urban",
+      "splash",
+      "play",
+      "plaza"
+    ]
+  },
+  "native-park:student_stone_labyrinth_garden_v1--native-v1": {
+    "label": "Stone Labyrinth Garden",
+    "description": "A garden with a stone labyrinth for slow walking and reflection.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "stone",
+      "labyrinth",
+      "garden"
+    ]
+  },
+  "native-park:student_sheltered_dog_park_v1--native-v1": {
+    "label": "Sheltered Dog Park",
+    "description": "A dog park with sheltered space for visitors and their dogs.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "sheltered",
+      "dog",
+      "park"
+    ]
+  },
+  "student_london_cobbled_mews_v1": {
+    "label": "London Cobbled Mews",
+    "description": "A narrow London-inspired mews with cobbled paving.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "london",
+      "cobbled",
+      "mews"
+    ]
+  },
+  "student_cherry_blossom_street_v1": {
+    "label": "Cherry Blossom Neighbourhood Street",
+    "description": "A neighbourhood street lined with cherry trees.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "cherry",
+      "blossom",
+      "neighbourhood",
+      "street"
+    ]
+  },
+  "student_barcelona_shaded_promenade_v1": {
+    "label": "Barcelona Shaded Promenade",
+    "description": "A broad Barcelona-inspired promenade with shaded walking space.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "barcelona",
+      "shaded",
+      "promenade"
+    ]
+  },
+  "clay_mass_timber_biophilic_barn": {
+    "label": "Mass-Timber Library",
+    "description": "A library with planted roof terraces, branching timber supports and a glazed reading hall.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "mass",
+      "timber",
+      "library",
+      "university_library",
+      "institutional",
+      "reading_room",
+      "knowledge_commons"
+    ]
+  },
+  "clay_parisian_corner_cafe_culture": {
+    "label": "Corner Café and Apartments",
+    "description": "Ochre brick and cream stone apartments over a green-awning corner café.",
+    "styleIds": [
+      "parisian"
+    ],
+    "searchTags": [
+      "building",
+      "parisian",
+      "corner",
+      "cafe",
+      "apartments",
+      "mixed_use"
+    ]
+  },
+  "native-park:student_community_allotment_v1--native-v1": {
+    "label": "Community Allotment Garden",
+    "description": "A community garden arranged for shared food growing and allotments.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "community",
+      "allotment",
+      "garden"
+    ]
+  },
+  "native-park:student_forest_adventure_v1--native-v1": {
+    "label": "Forest Adventure Nature Play",
+    "description": "A forest-themed play landscape for outdoor exploration.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "forest",
+      "adventure",
+      "nature",
+      "play"
+    ]
+  },
+  "native-park:student_spiral_lookout_v1--native-v1": {
+    "label": "Spiral Lookout Park",
+    "description": "A park centred on a spiral lookout structure.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "spiral",
+      "lookout",
+      "park"
+    ]
+  },
+  "native-park:student_quarry_garden_v1--native-v1": {
+    "label": "Quarry Garden",
+    "description": "A garden inspired by a quarry landscape.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "quarry",
+      "garden"
+    ]
+  },
+  "native-park:student_cascade_water_garden_v1--native-v1": {
+    "label": "Cascade Water Garden",
+    "description": "A water garden arranged around a series of cascades.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "cascade",
+      "water",
+      "garden"
+    ]
+  },
+  "clay_station_victorian_iron_glass": {
+    "label": "Victorian Grand Station",
+    "description": "A Victorian iron-and-glass station with a train hall, ticket booths, café, platforms and gallery stairs.",
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "victorian",
+      "grand",
+      "station"
+    ]
+  },
+  "clay_biophilic_mass_timber_campus": {
+    "label": "Timber Art and Design School",
+    "description": "A timber art and design school with studios, an exhibition gallery, a roof lounge and a planted terrace.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "timber",
+      "art",
+      "design",
+      "school",
+      "university_campus",
+      "academic_building",
+      "higher_education"
+    ]
+  },
+  "clay_mediterranean_resort_courtyard": {
+    "label": "Mediterranean Courtyard Hotel",
+    "description": "A Mediterranean hotel with guest suites, an open courtyard, upper galleries and a poolside loggia.",
+    "styleIds": [
+      "mediterranean"
+    ],
+    "searchTags": [
+      "building",
+      "mediterranean",
+      "courtyard",
+      "hotel",
+      "boutique_hotel",
+      "hospitality",
+      "urban_lodging"
+    ]
+  },
+  "native-park:student_treetop_walk_v1--native-v1": {
+    "label": "Treetop Walk Park",
+    "description": "A park with an elevated walk through the tree canopy.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "treetop",
+      "walk",
+      "park"
+    ]
+  },
+  "native-park:student_terraced_rose_v1--native-v1": {
+    "label": "Terraced Rose Garden",
+    "description": "A rose garden arranged across a series of planted terraces.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "terraced",
+      "rose",
+      "garden"
+    ]
+  },
+  "student_elevated_garden_rail_v1": {
+    "label": "Elevated Garden Rail",
+    "description": "An elevated twin-track railway with a static train, gardens, a cycle path and walking routes below. Draw a straight 48–288 m corridor on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "elevated",
+      "garden",
+      "rail"
+    ]
+  },
+  "skytrain_elevated_corridor_v0": {
+    "label": "SkyTrain Elevated Corridor · Modern Station Hub",
+    "description": "An elevated railway with a modern station hub, two platforms, stairs and lifts. Draw a straight 48–288 m corridor on prepared level ground; trains remain static.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "skytrain",
+      "elevated",
+      "corridor",
+      "modern",
+      "station",
+      "hub"
+    ]
+  },
+  "elevated_rail_transit_corridor_v0": {
+    "label": "Elevated Rail Transit · Parametric Flow Station",
+    "description": "An elevated railway with a flowing station canopy, two platforms, stairs and lifts. Draw a straight 48–288 m corridor on prepared level ground; trains remain static.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "elevated",
+      "rail",
+      "transit",
+      "parametric",
+      "flow",
+      "station"
+    ]
+  },
+  "native-park:student_sandy_beach_v1--native-v1": {
+    "label": "Sandy Beach and Boardwalk",
+    "description": "A sandy beach landscape with a boardwalk along its edge.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "sandy",
+      "beach",
+      "boardwalk"
+    ]
+  },
+  "native-park:student_prairie_picnic_grove_v1--native-v1": {
+    "label": "Prairie Picnic Grove",
+    "description": "A prairie grove arranged for picnics and outdoor gathering.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "prairie",
+      "picnic",
+      "grove"
+    ]
+  },
+  "native-park:student_neighbourhood_sports_green_v1--native-v1": {
+    "label": "Neighbourhood Sports Green",
+    "description": "A neighbourhood green for outdoor sport and informal recreation.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "neighbourhood",
+      "sports",
+      "green"
+    ]
+  },
+  "native-park:student_sensory_wellness_garden_v1--native-v1": {
+    "label": "Sensory and Wellness Garden",
+    "description": "A garden arranged for sensory exploration and quiet relaxation.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "sensory",
+      "wellness",
+      "garden"
+    ]
+  },
+  "native-park:student_bicycle_pump_track_park_v1--native-v1": {
+    "label": "Bicycle Pump-Track Park",
+    "description": "A bicycle park centred on a pump track for riding practice.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "bicycle",
+      "pump",
+      "track",
+      "park"
+    ]
+  },
+  "native-park:student_urban_skate_plaza_v1--native-v1": {
+    "label": "Urban Skate Plaza",
+    "description": "An urban plaza arranged for skateboarding.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "urban",
+      "skate",
+      "plaza"
+    ]
+  },
+  "student_rain_garden_residential_street_v1": {
+    "label": "Rain-Garden Residential Street",
+    "description": "A residential street with planted rain gardens and clear walking routes.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "rain",
+      "garden",
+      "residential",
+      "street"
+    ]
+  },
+  "student_compact_one_way_shopping_street_v1": {
+    "label": "Compact One-Way Shopping Street",
+    "description": "A compact shopping street with one-way traffic and sidewalks.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "compact",
+      "one",
+      "way",
+      "shopping",
+      "street"
+    ]
+  },
+  "student_neighbourhood_cycle_street_v1": {
+    "label": "Neighbourhood Cycle Street",
+    "description": "A neighbourhood street with dedicated space for cycling and walking.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "neighbourhood",
+      "cycle",
+      "street"
+    ]
+  },
+  "student_separated_walking_cycling_greenway_v1": {
+    "label": "Separated Walking and Cycling Greenway",
+    "description": "A planted greenway with separate walking and cycling routes.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "separated",
+      "walking",
+      "cycling",
+      "greenway"
+    ]
+  },
+  "student_neighbourhood_transit_stop_street_v1": {
+    "label": "Neighbourhood Transit-Stop Street",
+    "description": "A neighbourhood street with a transit stop, sidewalks and planting.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "neighbourhood",
+      "transit",
+      "stop",
+      "street"
+    ]
+  },
+  "clay_neoclassical_brick_headquarters": {
+    "label": "Neoclassical Office",
+    "description": "A neoclassical brick office with limestone trim, a columned entrance and a copper dome.",
+    "styleIds": [
+      "neoclassical"
+    ],
+    "searchTags": [
+      "building",
+      "neoclassical",
+      "office",
+      "corporate_headquarters",
+      "office_campus"
+    ]
+  },
+  "clay_admin_faculty_brick_bronze_fins": {
+    "label": "Brick-and-Bronze Faculty Office",
+    "description": "A faculty office with a cream-brick base, bronze upper panels and vertical shading fins.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "brick",
+      "bronze",
+      "faculty",
+      "office",
+      "administrative",
+      "institutional",
+      "campus",
+      "education"
+    ]
+  },
+  "clay_brick_timber_two_storey_office": {
+    "label": "Brick-and-Timber Courtyard Office",
+    "description": "A two-storey brick-and-timber office arranged around an open courtyard, with reception, work areas and a meeting room.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "brick",
+      "timber",
+      "courtyard",
+      "office"
+    ]
+  },
+  "clay_strip_single_storey_classic": {
+    "label": "Classic Retail Strip",
+    "description": "A single-storey row of glazed shopfronts beneath a continuous canopy and signage parapet.",
+    "styleIds": [
+      "roadside_commercial"
+    ],
+    "searchTags": [
+      "building",
+      "roadside_commercial",
+      "classic",
+      "retail",
+      "strip",
+      "strip_mall",
+      "commercial_strip",
+      "low_rise"
+    ]
+  },
+  "clay_corten_timber_equipment_yard": {
+    "label": "Corten and Timber Equipment Yard",
+    "description": "A screened equipment and materials yard with a compact dispatch office and space for servicing stored equipment.",
+    "styleIds": [
+      "modernist"
+    ],
+    "searchTags": [
+      "building",
+      "modernist",
+      "corten",
+      "timber",
+      "equipment",
+      "yard",
+      "storage_yard"
+    ]
+  },
+  "clay_meadow_three_gable_childcare": {
+    "label": "Meadow Court Childcare Centre",
+    "description": "A childcare centre with three activity rooms, a rear circulation area and a secure courtyard for play. Support rooms are not fully resolved.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "meadow",
+      "court",
+      "childcare",
+      "centre",
+      "child_care_service"
+    ]
+  },
+  "clay_factory_sawtooth_roof": {
+    "label": "Daylight Sawtooth Factory",
+    "description": "A brick factory with a repeating sawtooth roof and glazed roof slopes for daylight.",
+    "styleIds": [
+      "daylight_factory"
+    ],
+    "searchTags": [
+      "building",
+      "daylight_factory",
+      "daylight",
+      "sawtooth",
+      "factory",
+      "light_industrial"
+    ]
+  },
+  "clay_folded_roof_recovery_hall": {
+    "label": "Folded-Roof Materials Recovery Hall",
+    "description": "A folded-roof hall for indoor sorting, baling and shipping of non-hazardous dry recyclables.",
+    "styleIds": [
+      "modernist"
+    ],
+    "searchTags": [
+      "building",
+      "modernist",
+      "folded",
+      "roof",
+      "materials",
+      "recovery",
+      "hall",
+      "light_industrial"
+    ]
+  },
+  "clay_garden_mews_six_homes": {
+    "label": "Garden Mews Courtyard Housing",
+    "description": "Six two-storey homes in two rows facing a shared garden court, each with its own front door and internal stair.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "garden",
+      "mews",
+      "courtyard",
+      "housing",
+      "dwelling_unit",
+      "multi_residential_development"
+    ]
+  },
+  "clay_horizon_double_section": {
+    "label": "Horizon Manufactured Home",
+    "description": "A single-storey manufactured home with three bedrooms, an open living and kitchen area, and a raised clerestory roof.",
+    "styleIds": [
+      "modernist"
+    ],
+    "searchTags": [
+      "building",
+      "modernist",
+      "horizon",
+      "manufactured",
+      "home",
+      "manufactured_home"
+    ]
+  },
+  "clay_industrial_gabled_metal_shed": {
+    "label": "Industrial Shed",
+    "description": "A corrugated-metal industrial shed with a gabled roof and large loading door.",
+    "styleIds": [
+      "corrugated_vernacular"
+    ],
+    "searchTags": [
+      "building",
+      "corrugated_vernacular",
+      "industrial",
+      "shed"
+    ]
+  },
+  "clay_industrial_tilt_up_concrete": {
+    "label": "Tilt-Up Industrial Building",
+    "description": "A low-rise industrial building with textured concrete panels, office windows and loading doors.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "tilt",
+      "up",
+      "industrial",
+      "industrial_park",
+      "light_industrial"
+    ]
+  },
+  "clay_maple_porch_sage": {
+    "label": "Maple Porch Manufactured Cottage",
+    "description": "A two-bedroom manufactured cottage with a central entrance and a low covered porch.",
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "maple",
+      "porch",
+      "manufactured",
+      "cottage",
+      "manufactured_home"
+    ]
+  },
+  "clay_copperline_four_bay_depot": {
+    "label": "Copperline Municipal Works Depot",
+    "description": "Municipally operated maintenance and dispatch depot with four vehicle service bays, staff facilities and a small dispatch office.",
+    "styleIds": [
+      "modernist"
+    ],
+    "searchTags": [
+      "building",
+      "modernist",
+      "copperline",
+      "municipal",
+      "works",
+      "depot",
+      "municipal_works_depot"
+    ]
+  },
+  "clay_brick_timber_craftsman": {
+    "label": "Narrow-Lot Craftsman Cottage",
+    "description": "A single-storey Craftsman cottage with two bedrooms, a front porch and a tall gabled roof over an unoccupied attic.",
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "narrow",
+      "lot",
+      "craftsman",
+      "cottage",
+      "single_detached_dwelling"
+    ]
+  },
+  "clay_prairie_cedar_chassis_home": {
+    "label": "Prairie Fold Manufactured Home",
+    "description": "A two-bedroom manufactured home with a folded roof and a living and kitchen area reached from the front entrance.",
+    "styleIds": [
+      "scandinavian_nordic"
+    ],
+    "searchTags": [
+      "building",
+      "scandinavian_nordic",
+      "prairie",
+      "fold",
+      "manufactured",
+      "home",
+      "manufactured_home"
+    ]
+  },
+  "clay_rndsqr_townhome_brick_contextual": {
+    "label": "RNDSQR Contextual Townhouses",
+    "description": "A townhouse row with brick lower floors, timber and charcoal upper walls, and individual street entrances.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "rndsqr",
+      "contextual",
+      "townhouses",
+      "missing_middle",
+      "townhouse",
+      "rowhouse",
+      "infill"
+    ]
+  },
+  "clay_warehouse_tilt_wall_mega": {
+    "label": "Tilt-Wall Logistics Warehouse",
+    "description": "A large concrete-panel logistics warehouse with loading courts and an attached office area.",
+    "styleIds": [
+      "modern_bigbox"
+    ],
+    "searchTags": [
+      "building",
+      "modern_bigbox",
+      "tilt",
+      "wall",
+      "logistics",
+      "warehouse"
+    ]
+  },
+  "clay_ecole_republicaine_provincial_brick": {
+    "label": "Provincial Brick School",
+    "description": "A school with patterned red-and-cream brickwork, an arched entrance and a steep slate roof.",
+    "styleIds": [
+      "classical"
+    ],
+    "searchTags": [
+      "building",
+      "classical",
+      "provincial",
+      "brick",
+      "school",
+      "institutional"
+    ]
+  },
+  "clay_rndsqr_townhome_scandinavian_peaks": {
+    "label": "Scandinavian Townhouse Row",
+    "description": "A Scandinavian-inspired townhouse row with white walls, warm timber and alternating peaked and flat roofs.",
+    "styleIds": [
+      "scandinavian_nordic"
+    ],
+    "searchTags": [
+      "building",
+      "scandinavian_nordic",
+      "scandinavian",
+      "townhouse",
+      "row",
+      "missing_middle",
+      "rowhouse",
+      "infill"
+    ]
+  },
+  "clay_affordable_porchlight_original": {
+    "label": "Porchlight Townhouse Row",
+    "description": "Four two-storey, two-bedroom townhouses with individual street entrances, internal stairs and private rear patios.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "porchlight",
+      "townhouse",
+      "row",
+      "affordable_housing",
+      "non_market",
+      "residential",
+      "compact_housing"
+    ]
+  },
+  "clay_affordable_juniper_original": {
+    "label": "Juniper Courtyard Cottages",
+    "description": "Four single-storey, one-bedroom cottages around a shared garden, each with a private patio. Front cottages face the street; rear cottages face the garden.",
+    "styleIds": [
+      "contemporary_urban",
+      "scandinavian_nordic"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "scandinavian_nordic",
+      "juniper",
+      "courtyard",
+      "cottages",
+      "affordable_housing",
+      "non_market",
+      "residential",
+      "compact_housing"
+    ]
+  },
+  "clay_affordable_stackyard_original": {
+    "label": "Stackyard Stacked Townhomes",
+    "description": "Six two-bedroom homes stacked in two levels, with an outdoor upper gallery, stairs at both ends and private lower patios.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "stackyard",
+      "stacked",
+      "townhomes",
+      "affordable_housing",
+      "non_market",
+      "residential",
+      "compact_housing"
+    ]
+  },
+  "clay_affordable_aspen_original": {
+    "label": "Aspen Walk Apartments",
+    "description": "Twelve one-bedroom apartments with shared interior circulation, two stairs and space reserved for a lift.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "aspen",
+      "walk",
+      "apartments",
+      "affordable_housing",
+      "non_market",
+      "residential",
+      "compact_housing"
+    ]
+  },
+  "clay_affordable_switchback_original": {
+    "label": "Switchback Modular Studios",
+    "description": "Twenty-four permanent studio apartments across four floors, with shared corridors, two stairs and a lift core.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "switchback",
+      "modular",
+      "studios",
+      "affordable_housing",
+      "non_market",
+      "residential",
+      "compact_housing"
+    ]
+  },
+  "community_brick_corner_grocery": {
+    "label": "Brick Corner Grocery",
+    "description": "Corner grocery with one home above and an internal stair.",
+    "styleIds": [
+      "traditional_vernacular"
+    ],
+    "searchTags": [
+      "building",
+      "traditional_vernacular",
+      "brick",
+      "corner",
+      "grocery",
+      "depanneur",
+      "corner_store",
+      "commercial",
+      "convenience"
+    ]
+  },
+  "community_clerestory_neighbourhood_hall": {
+    "label": "Clerestory Neighbourhood Hall",
+    "description": "High clerestory windows, a covered entrance and community activity rooms.",
+    "styleIds": [
+      "civic_modernism_rec"
+    ],
+    "searchTags": [
+      "building",
+      "civic_modernism_rec",
+      "clerestory",
+      "neighbourhood",
+      "hall"
+    ]
+  },
+  "community_log_recreation_cabin": {
+    "label": "Log Recreation Cabin",
+    "description": "Log recreation shelter with a covered porch and shared activity room.",
+    "styleIds": [
+      "parkitecture"
+    ],
+    "searchTags": [
+      "building",
+      "parkitecture",
+      "log",
+      "recreation",
+      "cabin"
+    ]
+  },
+  "community_prairie_neighbourhood_shops": {
+    "label": "Prairie Neighbourhood Shops",
+    "description": "Four neighbourhood shops, each with its own entrance.",
+    "styleIds": [
+      "roadside_commercial"
+    ],
+    "searchTags": [
+      "building",
+      "roadside_commercial",
+      "prairie",
+      "neighbourhood",
+      "shops",
+      "strip_mall",
+      "commercial_strip",
+      "retail",
+      "low_rise"
+    ]
+  },
+  "community_inglewood_corner_merchants": {
+    "label": "Inglewood Corner Merchants",
+    "description": "Brick corner shops with upstairs offices and supported balconies.",
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "inglewood",
+      "corner",
+      "merchants",
+      "commercial",
+      "main_street"
+    ]
+  },
+  "final_seniors_apartments": {
+    "label": "Aspen Terrace Seniors Apartments",
+    "description": "Five-storey independent seniors apartments with three balcony columns, a shared lounge and planted garden terrace.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "aspen",
+      "terrace",
+      "seniors",
+      "apartments"
+    ]
+  },
+  "final_transit_pavilion": {
+    "label": "Timber Wing Transit Pavilion",
+    "description": "A glazed waiting hall with four timber V-columns, an asymmetric canopy, ticket machines and a small café. Tracks are separate.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "timber",
+      "wing",
+      "transit",
+      "pavilion"
+    ]
+  },
+  "final_courtyard_block": {
+    "label": "Brick Garden Courtyard",
+    "description": "Four-storey homes over shops, recessed balconies, an open pedestrian passage and a planted shared courtyard.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "brick",
+      "garden",
+      "courtyard"
+    ]
+  },
+  "final_health_centre": {
+    "label": "Neighbourhood Health Centre",
+    "description": "Two-storey clinic and pharmacy around a garden, with a covered drop-off, waiting areas and consulting rooms.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "neighbourhood",
+      "health",
+      "centre"
+    ]
+  },
+  "final_urban_grocery": {
+    "label": "Sawtooth Neighbourhood Grocery",
+    "description": "A compact urban supermarket with four roof lanterns, a transparent storefront, stocked aisles and a covered entrance.",
+    "styleIds": [
+      "contemporary_urban"
+    ],
+    "searchTags": [
+      "building",
+      "contemporary_urban",
+      "sawtooth",
+      "neighbourhood",
+      "grocery"
+    ]
+  },
+  "garden_gravel_path_v1": {
+    "label": "Garden Gravel Path",
+    "description": "A 1.5 m-wide gravel garden path. Draw a winding 2–300 m route on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "garden",
+      "gravel",
+      "path"
+    ]
+  },
+  "concrete_neighbourhood_walk_v1": {
+    "label": "Concrete Neighbourhood Walk",
+    "description": "A 1.8 m-wide concrete walking path. Draw a winding 2–300 m route on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "concrete",
+      "neighbourhood",
+      "walk"
+    ]
+  },
+  "brick_courtyard_path_v1": {
+    "label": "Brick Courtyard Path",
+    "description": "A 2 m-wide brick courtyard path. Draw a winding 2–300 m route on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "brick",
+      "courtyard",
+      "path"
+    ]
+  },
+  "timber_garden_walk_v1": {
+    "label": "Timber Garden Walk",
+    "description": "A 2 m-wide timber garden walk. Draw a winding 2–300 m route on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "timber",
+      "garden",
+      "walk"
+    ]
+  },
+  "asphalt_shared_path_v1": {
+    "label": "Asphalt Shared Path",
+    "description": "A 3 m-wide shared asphalt path. Draw a winding 3–300 m route on prepared level ground.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "asphalt",
+      "shared",
+      "path"
+    ]
+  },
+  "flexible_pocket_park_v1": {
+    "label": "Flexible Pocket Park",
+    "description": "Draw an irregular small park. Lawn, shade and seating adapt to the space.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "flexible",
+      "pocket",
+      "park"
+    ]
+  },
+  "flexible_linear_greenway_v1": {
+    "label": "Flexible Linear Greenway",
+    "description": "Draw a long, varied-width corridor with a continuous walking trail.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "flexible",
+      "linear",
+      "greenway"
+    ]
+  },
+  "flexible_shade_courtyard_v1": {
+    "label": "Flexible Shade Courtyard",
+    "description": "A quiet contemporary courtyard with clear lawn, shade trees and seating. Draw its outline to fit a small leftover space.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "flexible",
+      "shade",
+      "courtyard"
+    ]
+  },
+  "flexible_meadow_grove_v1": {
+    "label": "Flexible Meadow Grove",
+    "description": "A natural pocket refuge with meadow textures, irregular shade trees and timber seating. Draw a tapered or angled garden outline.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "flexible",
+      "meadow",
+      "grove"
+    ]
+  },
+  "calgary_local_draft3_v1": {
+    "label": "Local Residential Street — No Parking",
+    "description": "16 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "local",
+      "residential",
+      "street",
+      "parking"
+    ]
+  },
+  "calgary_local_industrial_draft3_v1": {
+    "label": "Local Industrial Street — No Parking",
+    "description": "18 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "local",
+      "industrial",
+      "street",
+      "parking"
+    ]
+  },
+  "calgary_collector_draft3_v1": {
+    "label": "Collector Street — Parking Both Sides",
+    "description": "23 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "collector",
+      "street",
+      "parking",
+      "both",
+      "sides"
+    ]
+  },
+  "calgary_arterial_4lane_50_draft3_v1": {
+    "label": "Four-Lane Arterial — 50 km/h",
+    "description": "30 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "four",
+      "lane",
+      "arterial"
+    ]
+  },
+  "calgary_arterial_4lane_70_draft3_v1": {
+    "label": "Four-Lane Arterial — 70 km/h",
+    "description": "36 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "four",
+      "lane",
+      "arterial"
+    ]
+  },
+  "calgary_arterial_6lane_draft3_v1": {
+    "label": "Six-Lane Arterial",
+    "description": "46 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "six",
+      "lane",
+      "arterial"
+    ]
+  },
+  "calgary_alley_draft3_v1": {
+    "label": "Alley — No Deep Utilities",
+    "description": "6 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "alley",
+      "deep",
+      "utilities"
+    ]
+  },
+  "calgary_local_high_activity_draft3_v1": {
+    "label": "High-Activity Local Street",
+    "description": "21 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "high",
+      "activity",
+      "local",
+      "street"
+    ]
+  },
+  "calgary_collector_industrial_draft3_v1": {
+    "label": "Industrial Collector Street",
+    "description": "26 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "industrial",
+      "collector",
+      "street"
+    ]
+  },
+  "calgary_collector_high_activity_draft3_v1": {
+    "label": "High-Activity Collector Street",
+    "description": "27 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "high",
+      "activity",
+      "collector",
+      "street"
+    ]
+  },
+  "calgary_arterial_high_activity_draft3_v1": {
+    "label": "High-Activity Arterial",
+    "description": "36 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024).",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "high",
+      "activity",
+      "arterial"
+    ]
+  },
+  "calgary_skeletal_draft3_v1": {
+    "label": "Skeletal Road — Surface Layout",
+    "description": "60 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024). Flat surface layout; ditch slopes, road crown and the interim ditch median are not modelled.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "skeletal",
+      "road",
+      "surface",
+      "layout"
+    ]
+  }
+}

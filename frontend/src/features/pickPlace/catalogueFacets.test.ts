@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { availableCatalogueSizes, availableCatalogueStyles, catalogueAssetSize, catalogueSizeId, catalogueSizeLabel, catalogueStyleIds, choiceMatchesFacets } from './catalogueFacets';
+import { availableCatalogueSizes, availableCatalogueStyles, catalogueAssetSize, catalogueSizeId, catalogueSizeLabel, catalogueStyleIds, catalogueStyleLabel, choiceMatchesFacets } from './catalogueFacets';
 import type { CanonicalChoice } from './canonicalCatalogue';
 import type { PlaceAsset, StreetAsset } from './assetRegistry';
 
@@ -15,6 +15,22 @@ const choice: CanonicalChoice = {
   option:{id:'home',label:'Home',description:'A Nordic design',photoUrl:'/home.png',categoryId:'scandinavian_nordic'},
 };
 describe('catalogue size and style evidence',()=>{
+  it.each([
+    ['civic_modernism_rec', 'Civic Modernism'],
+    ['civic_monumental', 'Monumental Civic'],
+    ['daylight_factory', 'Industrial'],
+    ['glass_tower_modern', 'Modern Glass'],
+    ['modern_bigbox', 'Modern Commercial'],
+    ['roadside_commercial', 'Roadside Commercial'],
+    ['corrugated_vernacular', 'Corrugated-Metal Vernacular'],
+    ['japanese_contemporary', 'Contemporary Japanese'],
+    ['parkitecture', 'Rustic Park Architecture'],
+  ])('presents the source style %s with a readable label', (id, label)=>{
+    expect(catalogueStyleLabel(id)).toBe(label);
+    const styled={...choice,option:{...choice.option,categoryId:id}};
+    expect(availableCatalogueStyles([styled],[])).toEqual([{id,label}]);
+    expect(catalogueStyleIds(styled)).toEqual([id]);
+  });
   it('uses reserved plot area rather than model envelope or total floor area',()=>{
     expect(catalogueAssetSize(plot)).toBe(400);
     expect(catalogueSizeLabel(plot)).toBe('Default plot 20 × 20 m · 400 m²');

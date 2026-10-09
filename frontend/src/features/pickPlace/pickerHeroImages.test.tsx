@@ -4,6 +4,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { CANONICAL_CHOICES } from './canonicalCatalogue';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { PICKER_HERO_IMAGES, pickerHeroImage } from './pickerHeroImages';
+import curatedHeroes from '@/data/catalogueHeroImages.json';
+import { CATALOGUE_ASSETS } from './assetRegistry';
 
 describe('classroom picker hero views', () => {
   it('recovers from a missing hero and keeps placement usable when all exact images fail', () => {
@@ -21,40 +23,35 @@ describe('classroom picker hero views', () => {
     fireEvent.click(getByText('Preview image unavailable'));
     expect(onPlacement).toHaveBeenCalledWith(choice.placements[0]);
   });
-  it('replaces the twelve technical thumbnails with real, staged photographic images', () => {
+  it('covers every active placement with an exact curated image and keeps future fallbacks usable', () => {
     const classroomHeroes = Object.entries(PICKER_HERO_IMAGES).filter(([, url]) => url.includes('/classroom-heroes/'));
-    expect(classroomHeroes).toHaveLength(12);
     const placements = new Set(CANONICAL_CHOICES.flatMap(choice => choice.placements.map(asset => asset.id)));
+    expect(Object.keys(curatedHeroes).sort()).toEqual([...placements].sort());
     expect(classroomHeroes.filter(([id]) => !placements.has(id))).toEqual([]);
     for (const [id, url] of classroomHeroes) {
       expect(url).toMatch(/^\/archetypes\/(buildings|openspaces|streets)\/classroom-heroes\/[^/]+\.webp$/);
       expect(pickerHeroImage(id, 'fallback')).toBe(url);
     }
-    const unchanged = CANONICAL_CHOICES.filter(choice => !PICKER_HERO_IMAGES[choice.placements[0].id]);
-    expect(unchanged).toHaveLength(CANONICAL_CHOICES.length - 22);
-    for (const choice of unchanged) {
-      const asset = choice.placements[0];
-      expect(pickerHeroImage(asset.id, asset.thumbnail)).toBe(asset.thumbnail);
-    }
+    expect(pickerHeroImage('future-archetype', '/its-reference.png')).toBe('/its-reference.png');
+    expect(pickerHeroImage(undefined, '/its-reference.png')).toBe('/its-reference.png');
   });
 
-  it('uses the eight native parks’ locked source-front images instead of absent archive URLs', () => {
-    const sourceFronts = Object.entries(PICKER_HERO_IMAGES).filter(([, url]) =>
-      url.startsWith('/archetypes/openspaces/') && !url.includes('/classroom-heroes/'));
-    expect(sourceFronts).toHaveLength(8);
+  it('uses photographic park views without changing locked model thumbnails', () => {
+    const sourceFronts = Object.entries(PICKER_HERO_IMAGES).filter(([id]) => id.startsWith('native-park:student_'));
+    expect(sourceFronts.length).toBeGreaterThan(8);
     for (const [id, url] of sourceFronts) {
       const choice = CANONICAL_CHOICES.find(item => item.placements[0]?.id === id)!;
       expect(choice).toBeDefined();
-      expect(choice.placements[0].thumbnail).toMatch(/^\/native-park-assets\/[a-f0-9]{64}\.png$/);
+      expect(choice.placements[0]).toBe(CATALOGUE_ASSETS.find(asset => asset.id === id));
       expect(pickerHeroImage(id, choice.placements[0].thumbnail)).toBe(url);
     }
   });
 
-  it('uses the locked source heroes for the main and market streets', () => {
+  it('uses curated ground-level heroes for the main and market streets', () => {
     for (const id of ['validation_student_main_street_v1', 'validation_student_market_street_v1']) {
       const choice = CANONICAL_CHOICES.find(item => item.placements[0]?.id === id)!;
       expect(choice).toBeDefined();
-      expect(pickerHeroImage(id, choice.placements[0].thumbnail)).toMatch(/^\/archetypes\/streets\/[^/]+\/hero\.png$/);
+      expect(pickerHeroImage(id, choice.placements[0].thumbnail)).toBe(curatedHeroes[id as keyof typeof curatedHeroes]);
     }
   });
 

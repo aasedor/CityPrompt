@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKET = ROOT / 'seed/validation'
 DEST = ROOT / '.validation'
 PICKER_HERO_DOMAINS = ('buildings', 'openspaces', 'streets')
-PICKER_HERO_COUNT = 12
+PICKER_HERO_MANIFEST = ROOT / 'frontend/src/data/catalogueHeroImages.json'
 
 def digest(data): return hashlib.sha256(data).hexdigest()
 
@@ -37,22 +37,78 @@ def unpack(destination=DEST):
     sync_picker_heroes(destination)
     print(f'Verified {len(expected)} exact files; extracted to {destination}')
 
-def sync_picker_heroes(destination=DEST, source_root=ROOT / 'frontend/public'):
+def _picker_hero_path(url):
+    if not isinstance(url, str):
+        raise ValueError(f'Unsafe picker hero path: {url!r}')
+    path=PurePosixPath(url)
+    if (not url.startswith('/') or '\\' in url or ':' in url or '%' in url
+            or '?' in url or '#' in url or '..' in path.parts
+            or str(path)!=url or len(path.parts)!=5 or path.parts[1]!='archetypes'
+            or path.parts[2] not in PICKER_HERO_DOMAINS
+            or path.parts[3]!='classroom-heroes' or path.suffix!='.webp'):
+        raise ValueError(f'Unsafe picker hero path: {url!r}')
+    return Path(*path.parts[1:])
+
+
+def _verify_picker_webp(data, source):
+    if data.startswith(b'version https://git-lfs.github.com/spec/v1'):
+        raise ValueError(f'Unhydrated picker hero: {source}; pull its Git LFS object')
+    if (len(data)<20 or data[:4]!=b'RIFF' or data[8:12]!=b'WEBP'
+            or int.from_bytes(data[4:8], 'little')!=len(data)-8):
+        raise ValueError(f'Invalid WebP picker hero: {source}')
+    offset=12
+    image_found=False
+    while offset<len(data):
+        if offset+8>len(data):
+            raise ValueError(f'Invalid WebP picker hero: {source}')
+        kind=data[offset:offset+4]
+        size=int.from_bytes(data[offset+4:offset+8], 'little')
+        payload=data[offset+8:offset+8+size]
+        offset+=8+size+(size%2)
+        if offset>len(data):
+            raise ValueError(f'Invalid WebP picker hero: {source}')
+        if kind==b'VP8 ':
+            image_found=len(payload)>=10 and payload[3:6]==b'\x9d\x01\x2a'
+        elif kind==b'VP8L':
+            image_found=len(payload)>=5 and payload[0]==0x2f
+    if not image_found:
+        raise ValueError(f'Invalid WebP picker hero: {source}')
+
+
+def sync_picker_heroes(destination=DEST, source_root=ROOT / 'frontend/public', manifest_path=None):
     """Stage the small, curated picker views beside the locked runtime packet.
 
     Never overwrite a locally changed staged image; the source and destination
     must agree byte-for-byte on repeated runs.
     """
-    source_root=Path(source_root)
+    source_root=Path(source_root).resolve()
+    destination=Path(destination)
+    manifest_path=Path(manifest_path) if manifest_path is not None else PICKER_HERO_MANIFEST
+    manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
+    if not isinstance(manifest,dict) or not manifest:
+        raise ValueError('Picker hero manifest must be a non-empty placement-to-URL mapping')
+    # Other reference photos are delivered by the existing public/runtime asset
+    # pipeline; this supplement owns only the classroom hero directories.
+    if any(not isinstance(url,str) for url in manifest.values()):
+        raise ValueError('Unsafe picker hero path: manifest URLs must be strings')
+    required={_picker_hero_path(url) for url in manifest.values() if '/classroom-heroes/' in url}
+    for path in required:
+        source=source_root/path
+        if not source.resolve().is_relative_to(source_root):
+            raise ValueError(f'Unsafe picker hero source: {source}')
+        if not source.is_file():
+            raise ValueError(f'Missing required picker hero: {source}')
+    # Retain inactive/legacy views too: saved or older clients can still use them.
     files=sorted(path for domain in PICKER_HERO_DOMAINS
                  for path in (source_root/'archetypes'/domain/'classroom-heroes').glob('*.webp'))
-    if len(files)!=PICKER_HERO_COUNT:
-        raise ValueError(f'Expected {PICKER_HERO_COUNT} picker heroes; found {len(files)}')
     for source in files:
+        if not source.resolve().is_relative_to(source_root):
+            raise ValueError(f'Unsafe picker hero source: {source}')
         data=source.read_bytes()
-        if data[:4]!=b'RIFF' or data[8:12]!=b'WEBP':
-            raise ValueError(f'Unhydrated picker hero: {source}; pull its Git LFS object')
+        _verify_picker_webp(data, source)
         target=destination/'public'/source.relative_to(source_root)
+        if not target.resolve().is_relative_to((destination/'public').resolve()):
+            raise ValueError(f'Unsafe picker hero destination: {target}')
         if target.exists() and digest(target.read_bytes())!=digest(data):
             raise ValueError(f'Preserved changed picker hero: {target}')
     for source in files:

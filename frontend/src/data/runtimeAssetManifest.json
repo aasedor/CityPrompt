@@ -171,6 +171,7 @@
     "src/components/viewer/globe/preparedSiteEdges.ts",
     "src/components/viewer/globe/preparedStreetEdges.ts",
     "src/components/viewer/globe/preparedStreetTransition.ts",
+    "src/components/viewer/globe/preparedWalkSurface.ts",
     "src/components/viewer/globe/projectFrameHeight.ts",
     "src/components/viewer/globe/projectFrameRetry.ts",
     "src/components/viewer/globe/publicRealmDepthPolicy.ts",
@@ -267,7 +268,9 @@
     "src/data/buildingPlacementEdges.json",
     "src/data/buildingWalkDoors.json",
     "src/data/canalRoutePolicy.json",
+    "src/data/catalogueHeroImages.json",
     "src/data/catalogueOctober2026.json",
+    "src/data/cataloguePresentation.json",
     "src/data/classroomExpansion.json",
     "src/data/classroomStarter.json",
     "src/data/communityBuildingBatch.json",
@@ -416,6 +419,7 @@
     "src/features/pickPlace/catalogueClassification.ts",
     "src/features/pickPlace/catalogueDeletion.ts",
     "src/features/pickPlace/catalogueFacets.ts",
+    "src/features/pickPlace/cataloguePresentation.ts",
     "src/features/pickPlace/duplicateStreet.ts",
     "src/features/pickPlace/generatedPlacement.ts",
     "src/features/pickPlace/geometry.ts",
@@ -568,10 +572,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 2973,
+    "explicitReferenceCount": 3062,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 4757,
-    "requiredLogicalBytes": 11730207232,
+    "requiredFileCount": 4846,
+    "requiredLogicalBytes": 11924299183,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -621,6 +625,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1365114,
@@ -1427,6 +1432,7 @@
     {
       "url": "/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -1833,6 +1839,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -2337,6 +2344,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/classroomStarter.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
@@ -2387,6 +2395,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -2912,6 +2921,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1007802,
@@ -2999,11 +3009,155 @@
       "logicalBytes": 1192996
     },
     {
+      "url": "/archetypes/buildings/classroom-heroes/clay_affordable_aspen_original-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 493684,
+      "lfsOid": "ad32ac38af4a81314a2efb11b0b163853ab0bc733016f594dffe092086d1f6d3"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_affordable_juniper_original-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 560990,
+      "lfsOid": "8d75f6a49bc8792d446317600747de9c406b29eabce87f6a86f09e42aa96e4a8"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_affordable_porchlight_original-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 435740,
+      "lfsOid": "49a9b9491f8cb956c19356f7a1a834bb101a60bb03d0dc844ce16e3c71251175"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_affordable_stackyard_original-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 491950,
+      "lfsOid": "9729139243d545c8df51bffae74a75bef71dca55f76e78be2d7cc96f6d32c49d"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_affordable_switchback_original-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 403874,
+      "lfsOid": "7b2337b0baa354f6b8ac560aa782677d9dbbfd35f3910c84d7380b16e1acc0e5"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_brick_timber_two_storey_office-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 515910,
+      "lfsOid": "caf8f31b3a08cff57928233a304a0d81d8ed4c6de4628e6d45609632c024c521"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_corten_timber_equipment_yard-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 447498,
+      "lfsOid": "bf512fdb1379459cb3ea8b05b5e408956e106e39b29e62434c12af31a3e10233"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_garden_mews_six_homes-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 576708,
+      "lfsOid": "3421209632bcbddacd6136f45200ab1fa7168eef90e5e5f6b8ee5fea934dd09c"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_meadow_three_gable_childcare-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 512400,
+      "lfsOid": "dee558dedddb95aa6af26064ed6ff61dab534f7058bdee1739996cad46f7c367"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/clay_warehouse_tilt_wall_mega-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 300512,
+      "lfsOid": "2e21445171cab5e5d2ef106ee3e2c76bf168d4dadf0020c679f925968fa5cf43"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/community_brick_corner_grocery-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 588746,
+      "lfsOid": "37bb9b3f8399775a182424c43825ce066eba4372ac9a5801213ee6709011fd8e"
+    },
+    {
       "url": "/archetypes/buildings/classroom-heroes/machiya-cafe-gallery-v005.webp",
       "sources": [
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 121796
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/showcase_aquatic-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 450764,
+      "lfsOid": "d941912614a00422882ecbe39797fb3d20df148f02b21bcbf36057ff9805799c"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/showcase_market-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 455002,
+      "lfsOid": "fe3f1f8749676590d31bee672ea4ba4f3f1af5cd4b94a332fd0ca6bd41c0629b"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/validation_brewery_crystal_brewhouse-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 387056,
+      "lfsOid": "0229d68f0dfa93dc42faf33385e32d821708e231e05cc77d3999f33a2eabb80e"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/validation_gothic_community_church_single_spire-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 380376,
+      "lfsOid": "9ac09590e01d971152961c1de3a404ab70cf3be01bf83c5a3492c085e0641e64"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/validation_machiya_cafe_gallery-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 420030,
+      "lfsOid": "5f03381e8b2196495abae501b2f2e6979fc7b8763b2a2bef7b89f56616cfda38"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/validation_museum_earth_sheltered-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 453022,
+      "lfsOid": "a6564961e9b33220cb9632323ba1f9d83b9c0ba37dd390cc5af1e8c73ff2d600"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/validation_timber_sanctuary_church_glazed_gable-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 446948,
+      "lfsOid": "a5450f3b28bcde73117d08e12d01249485e94ad9e0a4685a48c2383ed21651a5"
     },
     {
       "url": "/archetypes/buildings/climbing_wall_building/variant_0.png",
@@ -3207,6 +3361,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1152386,
@@ -3226,6 +3381,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1176865,
@@ -3768,6 +3924,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1264260,
@@ -3859,6 +4016,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1033561,
@@ -3931,6 +4089,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -4067,6 +4226,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1376693,
@@ -4102,6 +4262,7 @@
     {
       "url": "/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -4177,6 +4338,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -4381,6 +4543,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1268822,
@@ -4490,6 +4653,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 2106234,
@@ -4635,45 +4799,55 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
-      "logicalBytes": 3044079
+      "logicalBytes": 3044079,
+      "lfsOid": "5971de1709ae24eeb0ce5b0b962dba1877b70d26add6e1445e641d1855b9f4ce"
     },
     {
       "url": "/archetypes/buildings/final-health-centre/front.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
-      "logicalBytes": 3013158
+      "logicalBytes": 3013158,
+      "lfsOid": "6f6d033697b31fd34e936c8ce4282d141441342e71b82c6fae2bde8538072b1e"
     },
     {
       "url": "/archetypes/buildings/final-seniors-apartments/front.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
-      "logicalBytes": 2965297
+      "logicalBytes": 2965297,
+      "lfsOid": "04d95fcf5ac79ea9572993226c3d1c59cf1b7c05018d904cca3d7713caa0de57"
     },
     {
       "url": "/archetypes/buildings/final-transit-pavilion/front.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
-      "logicalBytes": 2966962
+      "logicalBytes": 2966962,
+      "lfsOid": "e57304a120dcd764a4ce4f49af329ad031c9c3260cf1672c51de263a3415abe5"
     },
     {
       "url": "/archetypes/buildings/final-urban-grocery/front.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
-      "logicalBytes": 2798212
+      "logicalBytes": 2798212,
+      "lfsOid": "c571268e0568ef20c6b30c23f603cdac9893792bfe020ae4734d69be5ae828d1"
     },
     {
       "url": "/archetypes/buildings/food_hall_market_hall/hero.png",
@@ -4977,6 +5151,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -5473,6 +5648,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -5542,6 +5718,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 3036322,
@@ -5781,6 +5958,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1158882,
@@ -5845,6 +6023,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1425788,
@@ -6301,6 +6480,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 3208770,
@@ -6386,6 +6566,7 @@
     {
       "url": "/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -6964,6 +7145,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -7241,6 +7423,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 2467808,
@@ -7251,6 +7434,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 2913125,
@@ -7493,6 +7677,7 @@
     {
       "url": "/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -7863,6 +8048,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -7993,6 +8179,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1545747,
@@ -8165,6 +8352,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 2879262,
@@ -8229,6 +8417,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 223767,
@@ -8509,6 +8698,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1126212,
@@ -8519,6 +8709,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1259623,
@@ -9420,6 +9611,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -9732,6 +9924,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -9761,6 +9954,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -9971,6 +10165,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -10523,6 +10718,7 @@
       "url": "/archetypes/openspaces/amphitheater-performance-lawn/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1427020,
@@ -10757,6 +10953,7 @@
       "url": "/archetypes/openspaces/basketball-court/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomStarter.json",
         "src/data/openSpaceArchetypes.json"
       ],
@@ -10861,6 +11058,15 @@
       ],
       "logicalBytes": 1352207,
       "lfsOid": "550c2f791a8de690076d8d46ab12a447254db2a2dbd460ad6175e1a15b36e6bc"
+    },
+    {
+      "url": "/archetypes/openspaces/bicycle-pump-track-park/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 3804886,
+      "lfsOid": "922f25853e014f11fc167ba94b1927e87b247bd840fe73557f31c75f98db8e9a"
     },
     {
       "url": "/archetypes/openspaces/bioswale-rain-garden-corridor/hero.png",
@@ -11381,13 +11587,23 @@
     {
       "url": "/archetypes/openspaces/classroom-heroes/bocce-v002.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 149876
     },
     {
+      "url": "/archetypes/openspaces/classroom-heroes/flexible_shade_courtyard_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 584452,
+      "lfsOid": "d921754d78baddfef268b091239754e4fa006e24f8fa48f63fa7657691848507"
+    },
+    {
       "url": "/archetypes/openspaces/classroom-heroes/greenway-v002.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 154034
@@ -11395,13 +11611,143 @@
     {
       "url": "/archetypes/openspaces/classroom-heroes/inclusive-v002.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 114772
     },
     {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-botanical_garden_v3--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 671736,
+      "lfsOid": "eabdf75bebb30459a1f891d0a0f74be5b8fcdc32ba5945127ac992f8e38dda1d"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_bicycle_pump_track_park_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 596118,
+      "lfsOid": "df6f75c76557946049efafce9b8c9579ebaedbcf245efb3d3da78810da65192f"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_cascade_water_garden_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 487484,
+      "lfsOid": "a3e92afbb1841bc95f088aa7eb8227df85777003dbe451ed03873f50f70ec2bc"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_neighbourhood_sports_green_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 542066,
+      "lfsOid": "1fc78544a7bc6d417f3c33c57ccb6ab80e0e34cb9311b741c5bf8a192aab474a"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_prairie_picnic_grove_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 678674,
+      "lfsOid": "c1b0e42eb96175193306f970f8ae21140a765c2f9eff5003f30699a841d05dc1"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_quarry_garden_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 512036,
+      "lfsOid": "27e18c4c3289af3e9eb25db22291df720e8f5c85627eb8b0657a951ccab82947"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_reading_garden_v2--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 598168,
+      "lfsOid": "c9b9086df5a6cf5141ba203f9d4f7c661f8d3968df8c5eae5ed65c9db857fe7c"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_sensory_wellness_garden_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 647276,
+      "lfsOid": "48fcae9e551d4ffa0882f8f97c966ad6a2523b513eeaed180ee6933d24059bda"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_spiral_lookout_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 561790,
+      "lfsOid": "5f7c132c0b634bd889394638d974860540e48bb08066c4ae14f19a0afbc8cb1d"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_stone_labyrinth_garden_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 542690,
+      "lfsOid": "50ed399c3a50e54dcd37f56c6413047fe711b7f6198dd2d0aa9bfdc14a571e47"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_tennis_garden_v2--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 539176,
+      "lfsOid": "5765b5bcc7c97caa05d752cab90e918ddd7966a96f714a0f1bc9be652ac850e9"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_terraced_rose_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 525896,
+      "lfsOid": "cd009b44fa8232a9cde4b376801c0870511744fcca5b390a2ed2edcec8f0c776"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_treetop_walk_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 581688,
+      "lfsOid": "40de542d5d6cab8e6bebc1c110ffbca6bdbe2a7b59b2bc42e7d4b37c872614ee"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_urban_skate_plaza_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 451418,
+      "lfsOid": "0d1cefca46ba686f6e8bfef66c8fdd970cbea084ca2411c7909a1228c93a115b"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-student_woodland_stream_garden_v1--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 689514,
+      "lfsOid": "35f07cec85bfbf700084dbc53466cb616b6dba67996c9cde327305d32f383c94"
+    },
+    {
+      "url": "/archetypes/openspaces/classroom-heroes/native-park-wetland_rain_garden_v0--native-v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 518652,
+      "lfsOid": "dbc7d25ea223d4581106ef92c97fc0f2d4a8584364839bde9653a275e0fc86e4"
+    },
+    {
       "url": "/archetypes/openspaces/classroom-heroes/orchard-v002.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 176582
@@ -11409,6 +11755,7 @@
     {
       "url": "/archetypes/openspaces/classroom-heroes/pickleball-v001.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 106746
@@ -11416,6 +11763,7 @@
     {
       "url": "/archetypes/openspaces/classroom-heroes/pocket-v003.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 159832
@@ -11430,6 +11778,7 @@
     {
       "url": "/archetypes/openspaces/classroom-heroes/square-v003.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 119542
@@ -11498,6 +11847,7 @@
       "url": "/archetypes/openspaces/community-garden-design-variants/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
@@ -11875,6 +12225,7 @@
       "url": "/archetypes/openspaces/dog-park/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
@@ -12244,6 +12595,7 @@
       "url": "/archetypes/openspaces/fountain-decorative-water-feature/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
@@ -12916,6 +13268,7 @@
       "url": "/archetypes/openspaces/linear-park-greenway/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/flexibleParks.json",
         "src/data/openSpaceArchetypes.json"
       ],
@@ -13393,6 +13746,7 @@
       "url": "/archetypes/openspaces/nature-play-area/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
@@ -13513,6 +13867,15 @@
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1383933
+    },
+    {
+      "url": "/archetypes/openspaces/neighbourhood-sports-green/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 3686148,
+      "lfsOid": "9114e9268c4594b76884db773bc60f07d390b12f625022a2286ea4a04456daf5"
     },
     {
       "url": "/archetypes/openspaces/new-york-community-garden/hero.png",
@@ -14148,6 +14511,15 @@
       "logicalBytes": 1528603
     },
     {
+      "url": "/archetypes/openspaces/prairie-picnic-grove/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 3732956,
+      "lfsOid": "34cdb5dd0da4db5c34f05fcf9470c725a63861e4236ac065c4c765a12cf848f9"
+    },
+    {
       "url": "/archetypes/openspaces/princes-island-park/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -14439,6 +14811,7 @@
       "sources": [
         "src/components/viewer/globe/parkTrioLayout.ts",
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomStarter.json",
         "src/data/openSpaceArchetypes.json"
       ],
@@ -14718,6 +15091,7 @@
       "url": "/archetypes/openspaces/sculpture-garden-art-park/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1418834,
@@ -14749,6 +15123,15 @@
       ],
       "logicalBytes": 1600221,
       "lfsOid": "6c1a9104a56456dcfa2d7ca1b9fb58efa1eb0c6bbc51727bb63ffb089e739b73"
+    },
+    {
+      "url": "/archetypes/openspaces/sensory-wellness-garden/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 4101993,
+      "lfsOid": "0f1d84df9f82bf05300a5adcd85ace45c16ae2da4a8c9ead01277fbbcaa67b39"
     },
     {
       "url": "/archetypes/openspaces/skate-park/hero.png",
@@ -14838,6 +15221,7 @@
       "url": "/archetypes/openspaces/splash-pad-water-play/variant_3.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
@@ -15244,6 +15628,7 @@
       "url": "/archetypes/openspaces/sunken-plaza/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
@@ -15629,6 +16014,7 @@
       "url": "/archetypes/openspaces/urban-beach/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1389498,
@@ -15767,6 +16153,7 @@
       "url": "/archetypes/openspaces/urban-pocket-park/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/flexibleParks.json",
         "src/data/openSpaceArchetypes.json"
       ],
@@ -15785,6 +16172,7 @@
       "url": "/archetypes/openspaces/urban-pocket-park/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/flexibleParks.json",
         "src/data/openSpaceArchetypes.json"
       ],
@@ -15797,6 +16185,15 @@
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1557442
+    },
+    {
+      "url": "/archetypes/openspaces/urban-skate-plaza/variant_0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 3569695,
+      "lfsOid": "86272bad46fec321a7e15eed91a4f907daf6ceb5dead6021ebf2fdbc2636e06b"
     },
     {
       "url": "/archetypes/openspaces/vancouver-beach-park/hero.png",
@@ -17029,6 +17426,7 @@
       "url": "/archetypes/streets/calgary-alley/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetManual.json",
         "src/data/streetPathArchetypes.json"
       ],
@@ -17214,6 +17612,7 @@
       "url": "/archetypes/streets/calgary-collector-high-activity/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetManual.json",
         "src/data/streetPathArchetypes.json"
       ],
@@ -17251,6 +17650,7 @@
       "url": "/archetypes/streets/calgary-collector-industrial/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetManual.json",
         "src/data/streetPathArchetypes.json"
       ],
@@ -17288,6 +17688,7 @@
       "url": "/archetypes/streets/calgary-collector/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetManual.json",
         "src/data/streetPathArchetypes.json"
       ],
@@ -17325,6 +17726,7 @@
       "url": "/archetypes/streets/calgary-local-high-activity/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetManual.json",
         "src/data/streetPathArchetypes.json"
       ],
@@ -17362,6 +17764,7 @@
       "url": "/archetypes/streets/calgary-local-industrial/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetManual.json",
         "src/data/streetPathArchetypes.json"
       ],
@@ -17436,6 +17839,7 @@
       "url": "/archetypes/streets/calgary-local/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomStarter.json",
         "src/data/streetManual.json",
         "src/data/streetPathArchetypes.json",
@@ -17576,8 +17980,57 @@
       "lfsOid": "c1b1e298837d0718fed562892b2b001a6f6fa30602f57ffb398a161d0730b5df"
     },
     {
+      "url": "/archetypes/streets/classroom-heroes/calgary_arterial_4lane_50_draft3_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 512122,
+      "lfsOid": "898182ead421b3e9acdc7cd2cc7986d31a009aea9269f39b14dfabb68e23ab27"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/calgary_arterial_4lane_70_draft3_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 457864,
+      "lfsOid": "2ab28ee869486b354e0d59ade4493276a5f021c99dae89dd248d6e44f5377a8d"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/calgary_arterial_6lane_draft3_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 468042,
+      "lfsOid": "ebdbd514805ba4275fd2dcb641effa5dd60728f4fcc61b234400c2b6450ad00e"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/calgary_arterial_high_activity_draft3_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 561008,
+      "lfsOid": "ffa8c3fbc5199f3f63e8fdeb6ade0fbfea2b33fb6040d6a9bcf0af31a8fa42d6"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/calgary_skeletal_draft3_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 406808,
+      "lfsOid": "976e954ce97aa9af98a223d25fc7a86adfd40fdbaece34fd84a93f762a65169c"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/elevated_rail_transit_corridor_v0-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 482826,
+      "lfsOid": "4b77c990e3f7980eb4c9a84da620e4419c7b323b686dd5b08b34d098bca8e4e5"
+    },
+    {
       "url": "/archetypes/streets/classroom-heroes/residential-v002.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 151936,
@@ -17586,10 +18039,43 @@
     {
       "url": "/archetypes/streets/classroom-heroes/shared-v001.webp",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/pickerHeroImages.ts"
       ],
       "logicalBytes": 134896,
       "lfsOid": "83e3ae8877b06de2f97d1fec3f6f610e4b03cf6e26def3bc94dfb06d8a0de5a2"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/skytrain_elevated_corridor_v0-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 480660,
+      "lfsOid": "7e0c748045f203736337b4714bf3bfdd10ca03d0c85fa0593a30aae2be261436"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/student_elevated_garden_rail_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 532430,
+      "lfsOid": "ff8e34472b583b311b87b939bf48a4529126ce48ef1101eaa232594b2803b1eb"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/validation_student_main_street_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 569736,
+      "lfsOid": "2b6f7e3a109a44b30912bca6f28e03032a3fdd5941a0727138893fea53dd04c7"
+    },
+    {
+      "url": "/archetypes/streets/classroom-heroes/validation_student_market_street_v1-street-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 525702,
+      "lfsOid": "a8c6524f4eff23af48692ccd684a60300bb51f700382ae4d3fb754ff2af2ebe0"
     },
     {
       "url": "/archetypes/streets/collector-road/hero.png",
@@ -20103,6 +20589,7 @@
     {
       "url": "/archetypes/streets/narrow-pathways/asphalt_shared_path_v1.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 3558456,
@@ -20111,6 +20598,7 @@
     {
       "url": "/archetypes/streets/narrow-pathways/brick_courtyard_path_v1.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 3638635,
@@ -20119,6 +20607,7 @@
     {
       "url": "/archetypes/streets/narrow-pathways/concrete_neighbourhood_walk_v1.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 3152307,
@@ -20127,6 +20616,7 @@
     {
       "url": "/archetypes/streets/narrow-pathways/garden_gravel_path_v1.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 3606302,
@@ -20135,6 +20625,7 @@
     {
       "url": "/archetypes/streets/narrow-pathways/timber_garden_walk_v1.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 3305630,
@@ -20477,6 +20968,56 @@
       ],
       "logicalBytes": 166326,
       "lfsOid": "6d66dc836d9816455570d81f93c6a98f5619defad604bfdd9afdd8edb25b7262"
+    },
+    {
+      "url": "/archetypes/streets/neighbourhood-five/student_compact_one_way_shopping_street_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3378227,
+      "lfsOid": "429185ee16548a99fb1b229d3ca8b5dd5818a4a58c1389f2e5daf3305aa80820"
+    },
+    {
+      "url": "/archetypes/streets/neighbourhood-five/student_neighbourhood_cycle_street_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3575062,
+      "lfsOid": "f9edf7a1a1194d9a9e6d544dd02aaf23f732f0d33c9ed1beebf875562d0b5b5f"
+    },
+    {
+      "url": "/archetypes/streets/neighbourhood-five/student_neighbourhood_transit_stop_street_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3610855,
+      "lfsOid": "ff53ec275d13ad5ee4de738831caee63a1665195f55ec960ba8a904fcd273890"
+    },
+    {
+      "url": "/archetypes/streets/neighbourhood-five/student_rain_garden_residential_street_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3681577,
+      "lfsOid": "fca36d58ab9eca41dd1259e4bf5aa6dd78705aa1f858867a8ba106d49b398548"
+    },
+    {
+      "url": "/archetypes/streets/neighbourhood-five/student_separated_walking_cycling_greenway_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3667246,
+      "lfsOid": "350c5e3475ca402979f3448ccef05cd259fa34710861caa02ce5cd3813ed5cfc"
     },
     {
       "url": "/archetypes/streets/new-york-brownstone-side-street/hero.png",
@@ -24177,6 +24718,13 @@
       "lfsOid": "0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8"
     },
     {
+      "url": "/native-park-assets/1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 18741720
+    },
+    {
       "url": "/native-park-assets/1991a23fdb78085178a14e145132115f1f223824bd551db7e025ed8319308372.png",
       "sources": [
         "src/data/classroomExpansion.json",
@@ -24385,6 +24933,13 @@
       "lfsOid": "a3c219f333b46938d85499e0b2b41e0ed77a108d2d2996084225b0ced3c55fdd"
     },
     {
+      "url": "/native-park-assets/ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 41206364
+    },
+    {
       "url": "/native-park-assets/af2874114c8c9b673d449e00db6c1c9f1e1e3bffdfc4307f09d2fa24dd480edb.png",
       "sources": [
         "src/data/classroomExpansion.json",
@@ -24400,6 +24955,13 @@
       ],
       "logicalBytes": 3053156,
       "lfsOid": "af81f58831b58430d0e23608782bc3d62086a34b5335c303a03eccc0e54e8018"
+    },
+    {
+      "url": "/native-park-assets/b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 16372392
     },
     {
       "url": "/native-park-assets/b4280c800244f05b035aea3a01ed954ec87740001b91130792f01a0bb19316b3.glb",
@@ -24532,6 +25094,20 @@
       ],
       "logicalBytes": 2560188,
       "lfsOid": "ea80cb09b3effdec7a7c041d46dd4adf94998cf081751a80f243be1674d78338"
+    },
+    {
+      "url": "/native-park-assets/eb6e1b2cec51485405504914d37f6b513cecc9f6d0fd645ed23c921cd73a745e.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 11960268
+    },
+    {
+      "url": "/native-park-assets/ecbe94622d7b698efd1085a6a651d2c48f6a0c0ffb8c961c32acbb45f42e8f6e.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 27081832
     },
     {
       "url": "/native-park-assets/f8097bb4f869cf9a854192fba3e67155368b17348737fff6356b62c538f0251f.png",
@@ -25389,6 +25965,7 @@
     {
       "url": "/street-kits/pilots/amsterdam_gracht_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 1537482,
@@ -25414,6 +25991,7 @@
     {
       "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 1411041,
@@ -25539,6 +26117,7 @@
     {
       "url": "/street-kits/pilots/landmark_signature_bridge_v2/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 1193686,
@@ -25653,6 +26232,7 @@
     {
       "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
@@ -25704,11 +26284,52 @@
     {
       "url": "/street-kits/pilots/student_cherry_blossom_street_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
       "logicalBytes": 1755310,
       "lfsOid": "90b8d7e405db85e1de8ccfa535fc251e4b5cb0488843be28c45ddae297fc0dac"
+    },
+    {
+      "url": "/street-kits/pilots/student_compact_one_way_shopping_street_v1/bike_rack.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 96964,
+      "lfsOid": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+    },
+    {
+      "url": "/street-kits/pilots/student_compact_one_way_shopping_street_v1/cafe_table_chairs.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 49444,
+      "lfsOid": "129d4576a28f1f406071f57aacbbc989c74d30925a4076718ad2e16d18032722"
+    },
+    {
+      "url": "/street-kits/pilots/student_compact_one_way_shopping_street_v1/grove_tree.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1287628,
+      "lfsOid": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    {
+      "url": "/street-kits/pilots/student_compact_one_way_shopping_street_v1/heritage_lantern.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 17092,
+      "lfsOid": "0e63e0f0c94cf6ae09e48238c2adcf27e0f5b13e4732d511695aa7e430b70980"
+    },
+    {
+      "url": "/street-kits/pilots/student_compact_one_way_shopping_street_v1/tree_well_grate.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 95608,
+      "lfsOid": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
     },
     {
       "url": "/street-kits/pilots/student_cycle_avenue_v1/bench.glb",
@@ -25764,6 +26385,7 @@
     {
       "url": "/street-kits/pilots/student_cycle_avenue_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
@@ -25911,6 +26533,7 @@
     {
       "url": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
@@ -25961,6 +26584,7 @@
     {
       "url": "/street-kits/pilots/student_grass_tram_avenue_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
@@ -26044,6 +26668,7 @@
     {
       "url": "/street-kits/pilots/student_green_alley_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
@@ -26095,6 +26720,7 @@
     {
       "url": "/street-kits/pilots/student_london_cobbled_mews_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
@@ -26250,6 +26876,118 @@
       "lfsOid": "263b17b8a091f076e8e5f784c3315eff9270f3c5516124b02e162877e6de12aa"
     },
     {
+      "url": "/street-kits/pilots/student_neighbourhood_cycle_street_v1/flowering_perennial.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 162120,
+      "lfsOid": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_cycle_street_v1/grove_tree.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1287628,
+      "lfsOid": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_cycle_street_v1/light.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 37668,
+      "lfsOid": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_cycle_street_v1/meadow_grass.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 68700,
+      "lfsOid": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_cycle_street_v1/silver_shrub.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 367296,
+      "lfsOid": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/bench.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 34024,
+      "lfsOid": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/bin.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 80532,
+      "lfsOid": "a146ecda675ef0cba34caf1edac9c13c4f8e8d93b42b137e070c47b32c8f89f1"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/flowering_perennial.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 162120,
+      "lfsOid": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/grove_tree.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1287628,
+      "lfsOid": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/meadow_grass.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 68700,
+      "lfsOid": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/silver_shrub.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 367296,
+      "lfsOid": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/transit_shelter.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 19188,
+      "lfsOid": "249745988687ed9a89b8e1d1fb52f303c0dbd8971c12c2e89ebea86ca4f3239b"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/transit_stop_pole.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 8320,
+      "lfsOid": "69720309aa8a9aca8fd137766aea8c54293252a98980b1dd30e524427eb60df5"
+    },
+    {
+      "url": "/street-kits/pilots/student_neighbourhood_transit_stop_street_v1/tree_well_grate.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 95608,
+      "lfsOid": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+    },
+    {
       "url": "/street-kits/pilots/student_planted_shared_lane_v1/bench.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
@@ -26396,6 +27134,46 @@
       "lfsOid": "b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
     },
     {
+      "url": "/street-kits/pilots/student_rain_garden_residential_street_v1/flowering_perennial.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 162120,
+      "lfsOid": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+    },
+    {
+      "url": "/street-kits/pilots/student_rain_garden_residential_street_v1/grove_tree.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1287628,
+      "lfsOid": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    {
+      "url": "/street-kits/pilots/student_rain_garden_residential_street_v1/light.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 37668,
+      "lfsOid": "bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded"
+    },
+    {
+      "url": "/street-kits/pilots/student_rain_garden_residential_street_v1/meadow_grass.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 68700,
+      "lfsOid": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+    },
+    {
+      "url": "/street-kits/pilots/student_rain_garden_residential_street_v1/silver_shrub.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 367296,
+      "lfsOid": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+    },
+    {
       "url": "/street-kits/pilots/student_school_street_v1/bike_rack.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
@@ -26430,6 +27208,7 @@
     {
       "url": "/street-kits/pilots/student_school_street_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
@@ -26459,6 +27238,46 @@
       ],
       "logicalBytes": 95608,
       "lfsOid": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+    },
+    {
+      "url": "/street-kits/pilots/student_separated_walking_cycling_greenway_v1/bench.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 34024,
+      "lfsOid": "996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7"
+    },
+    {
+      "url": "/street-kits/pilots/student_separated_walking_cycling_greenway_v1/flowering_perennial.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 162120,
+      "lfsOid": "c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581"
+    },
+    {
+      "url": "/street-kits/pilots/student_separated_walking_cycling_greenway_v1/grove_tree.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1287628,
+      "lfsOid": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    {
+      "url": "/street-kits/pilots/student_separated_walking_cycling_greenway_v1/meadow_grass.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 68700,
+      "lfsOid": "bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4"
+    },
+    {
+      "url": "/street-kits/pilots/student_separated_walking_cycling_greenway_v1/silver_shrub.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 367296,
+      "lfsOid": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
     },
     {
       "url": "/street-kits/pilots/student_vine_pergola_promenade_v1/bench.glb",
@@ -26511,6 +27330,7 @@
     {
       "url": "/street-kits/pilots/student_vine_pergola_promenade_v1/reference.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomExpansion.json",
         "src/data/nativeStreetPilots.json"
       ],
@@ -26825,9 +27645,9 @@
         "/street-kits/pilots/"
       ],
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
-      "fileCount": 145,
-      "logicalBytes": 82916537,
-      "pathDigest": "1470edc766fbe2580b03ec330caaa1898af4b70b4aff4fd645919ac570daa91f"
+      "fileCount": 174,
+      "logicalBytes": 92353281,
+      "pathDigest": "f42ba76385d374b65f41a1d041f36b4ba4440ae1adbbd5a9bbac2ff329e498ec"
     },
     {
       "name": "sports-park-modules",
@@ -26841,8 +27661,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21444,
-    "unclassifiedRuntimePathDigest": "0069df2f5a8e14e49e7814c51e9009794d02b1b4bdb6caac20b5d79e874e68da",
+    "unclassifiedRuntimeFileCount": 21449,
+    "unclassifiedRuntimePathDigest": "9f8f664ce3985bdf057cf4f22a67c773c0fd97cf56cd22d5d5e915a251ce0fff",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",

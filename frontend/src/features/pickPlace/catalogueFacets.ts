@@ -2,6 +2,7 @@ import type { AestheticCategory } from '@/components/viewer/aestheticCatalog';
 import type { CatalogueAsset } from './assetRegistry';
 import type { CanonicalChoice } from './canonicalCatalogue';
 import type { CatalogueDomain } from '@/features/calgaryCatalogue/guide';
+import { cataloguePresentationFor } from './cataloguePresentation';
 
 export interface CatalogueFacets { styleId: string; sizeId: string }
 interface SizeBand { id: string; label: string; min: number; max: number }
@@ -21,6 +22,20 @@ const STYLE_ALIASES: Record<string, string> = {
   brutalism: 'brutalism', brutalist: 'brutalism', brutalist_utility: 'brutalism',
   scandinavian_nordic: 'scandinavian_nordic', scandinavian: 'scandinavian_nordic', nordic: 'scandinavian_nordic',
 };
+// Source IDs remain stable evidence keys; card/filter labels use plain names.
+const STYLE_LABELS: Record<string, string> = {
+  brutalism: 'Brutalist',
+  scandinavian_nordic: 'Scandinavian / Nordic',
+  civic_modernism_rec: 'Civic Modernism',
+  civic_monumental: 'Monumental Civic',
+  daylight_factory: 'Industrial',
+  glass_tower_modern: 'Modern Glass',
+  modern_bigbox: 'Modern Commercial',
+  roadside_commercial: 'Roadside Commercial',
+  corrugated_vernacular: 'Corrugated-Metal Vernacular',
+  japanese_contemporary: 'Contemporary Japanese',
+  parkitecture: 'Rustic Park Architecture',
+};
 // These legacy categories describe a use or programme, not an appearance.
 // Keep their existing land-use grouping; do not advertise it as a style.
 const PURPOSE_CATEGORIES = new Set(['other','transportation','energy_infrastructure','transit_infrastructure',
@@ -39,6 +54,8 @@ const normalizeStyle = (value: string) => value.trim().toLowerCase().replace(/[\
  * category; material, location, and render-prompt text never invent a style. */
 export function catalogueStyleIds(choice: CanonicalChoice): string[] {
   if (choice.domain !== 'building') return [];
+  const presentation = cataloguePresentationFor(choice.placements[0]?.id);
+  if (presentation) return [...presentation.styleIds];
   const ids = new Set<string>();
   const category = normalizeStyle(choice.option.categoryId ?? '');
   if (category && !PURPOSE_CATEGORIES.has(category)) ids.add(STYLE_ALIASES[category] ?? category);
@@ -52,8 +69,7 @@ export function catalogueStyleIds(choice: CanonicalChoice): string[] {
 
 export function catalogueStyleLabel(id: string, categories: AestheticCategory[] = []): string {
   if (id === 'unknown') return 'Style not catalogued';
-  if (id === 'brutalism') return 'Brutalist';
-  if (id === 'scandinavian_nordic') return 'Scandinavian / Nordic';
+  if (STYLE_LABELS[id]) return STYLE_LABELS[id];
   return categories.find(category => category.id === id)?.label
     ?? id.replace(/_/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
 }

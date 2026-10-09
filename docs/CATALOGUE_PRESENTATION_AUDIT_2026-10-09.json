@@ -1,0 +1,2846 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-09",
+  "scope": "Active canonical catalogue only",
+  "counts": {
+    "total": 148,
+    "generated": 45,
+    "reused": 7,
+    "retained": 96
+  },
+  "delivery": "Full-size quality-90 WebP for new heroes; originals retained externally",
+  "modelGeometryChanged": false,
+  "entries": [
+    {
+      "placementId": "validation_timber_sanctuary_church_glazed_gable",
+      "domain": "building",
+      "label": "Timber Sanctuary Church",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+      "hero": "/archetypes/buildings/classroom-heroes/validation_timber_sanctuary_church_glazed_gable-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 446948,
+        "sha256": "a5450f3b28bcde73117d08e12d01249485e94ad9e0a4685a48c2383ed21651a5"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/timber_sanctuary_church/reference-board-v1.png",
+        "brief": "Single front three-quarter photograph; tall glazed timber gable, black standing-seam pitched roof, exposed laminated timber frame rhythm, pale foundation and low side annex.",
+        "styleBrief": "One landscape 16:9 realistic architectural photograph from human eye height, natural 35mm perspective and corrected verticals, soft late-morning daylight, restrained natural colours, realistic textures and modest context. Preserve reference massing, roof, windows and materials. No collage, aerial viewpoint, studio background, labels, border or watermark."
+      },
+      "styleChange": {
+        "before": [],
+        "after": [
+          "contemporary_urban"
+        ],
+        "evidence": "buildingArchetypes.json exact variant description explicitly calls this a contemporary timber sanctuary; contemporary_urban is the existing contemporary browsing family."
+      }
+    },
+    {
+      "placementId": "validation_gothic_community_church_single_spire",
+      "domain": "building",
+      "label": "Gothic Community Church",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/gothic_community_church/reference-board-v1.png",
+      "hero": "/archetypes/buildings/classroom-heroes/validation_gothic_community_church_single_spire-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 380376,
+        "sha256": "9ac09590e01d971152961c1de3a404ab70cf3be01bf83c5a3492c085e0641e64"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/gothic_community_church/reference-board-v1.png",
+        "brief": "Single front three-quarter photograph; entire single left bell tower and spire, six-bay nave, lower aisles, rose window, pointed arched entrance, polygonal sanctuary and limestone details.",
+        "styleBrief": "One landscape 16:9 realistic architectural photograph from human eye height, natural 35mm perspective and corrected verticals, soft late-morning daylight, restrained natural colours, realistic textures and modest context. Preserve reference massing, roof, windows and materials. No collage, aerial viewpoint, studio background, labels, border or watermark."
+      },
+      "styleChange": {
+        "before": [],
+        "after": [
+          "gothic"
+        ],
+        "evidence": "buildingArchetypes.json exact archetype/variant label is Gothic Community Church; nave, spire and rose-window description agrees."
+      }
+    },
+    {
+      "placementId": "validation_reference_charcoal_gable_fourplex_v1",
+      "domain": "building",
+      "label": "Charcoal Gable Fourplex",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/reference-fourplex/hero.jpg",
+      "hero": "/archetypes/buildings/reference-fourplex/hero.jpg",
+      "deliveredImage": {
+        "format": "JPEG",
+        "size": [
+          1024,
+          576
+        ],
+        "bytes": 223767,
+        "sha256": "349c1f261e63918f6e19f6fc3f61570d0af3ae39e286498ac5453a8f710255ed"
+      }
+    },
+    {
+      "placementId": "validation_minimalist_infill_brick_monolith",
+      "domain": "building",
+      "label": "Buff-Brick Infill",
+      "action": "retained",
+      "previousHero": "/validation-assets/brick-v002/reference.png",
+      "hero": "/validation-assets/brick-v002/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1243528,
+        "sha256": "a4d5f02a39e6ff1179801cd07192292b6da99da61c5e72a7673e269cca52a121"
+      }
+    },
+    {
+      "placementId": "validation_brewery_crystal_brewhouse",
+      "domain": "building",
+      "label": "Crystal Brewhouse",
+      "action": "generated",
+      "previousHero": "/validation-assets/brewhouse-v003/reference.png",
+      "hero": "/archetypes/buildings/classroom-heroes/validation_brewery_crystal_brewhouse-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 387056,
+        "sha256": "0229d68f0dfa93dc42faf33385e32d821708e231e05cc77d3999f33a2eabb80e"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/validation-assets/brewhouse-v003/reference.png",
+        "brief": "Camera at forecourt beside reflecting pool; central faceted glazed roof, diagonal steel frame, dark low wings, concrete terrace and copper brewing tanks; change dusk to daylight.",
+        "styleBrief": "One landscape 16:9 realistic architectural photograph from human eye height, natural 35mm perspective and corrected verticals, soft late-morning daylight, restrained natural colours, realistic textures and modest context. Preserve reference massing, roof, windows and materials. No collage, aerial viewpoint, studio background, labels, border or watermark."
+      }
+    },
+    {
+      "placementId": "validation_museum_earth_sheltered",
+      "domain": "building",
+      "label": "Earth-Sheltered Museum",
+      "action": "generated",
+      "previousHero": "/validation-assets/museum-v005/reference.png",
+      "hero": "/archetypes/buildings/classroom-heroes/validation_museum_earth_sheltered-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 453022,
+        "sha256": "a6564961e9b33220cb9632323ba1f9d83b9c0ba37dd390cc5af1e8c73ff2d600"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/validation-assets/museum-v005/reference.png",
+        "brief": "Pavement-level camera opposite entrance; preserve rammed-earth strata, ramp, planted roof with angular skylights and adjacent brick context.",
+        "styleBrief": "One landscape 16:9 realistic architectural photograph from human eye height, natural 35mm perspective and corrected verticals, soft late-morning daylight, restrained natural colours, realistic textures and modest context. Preserve reference massing, roof, windows and materials. No collage, aerial viewpoint, studio background, labels, border or watermark."
+      }
+    },
+    {
+      "placementId": "validation_clapboard_north_end",
+      "domain": "building",
+      "label": "Halifax Clapboard House",
+      "action": "retained",
+      "previousHero": "/validation-assets/clapboard-v003/reference.png",
+      "hero": "/validation-assets/clapboard-v003/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1411763,
+        "sha256": "3b3ee4fd17c395e1e0e448b39fa3b31b7e28698fc29c5c2673110754f497a423"
+      }
+    },
+    {
+      "placementId": "validation_machiya_cafe_gallery",
+      "domain": "building",
+      "label": "Machiya Café and Gallery",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/classroom-heroes/machiya-cafe-gallery-v005.webp",
+      "hero": "/archetypes/buildings/classroom-heroes/validation_machiya_cafe_gallery-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 420030,
+        "sha256": "5f03381e8b2196495abae501b2f2e6979fc7b8763b2a2bef7b89f56616cfda38"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/classroom-heroes/machiya-cafe-gallery-v005.webp",
+        "brief": "Opposite pavement eye-level camera; red-brown timber lattice, bamboo upper blinds, gray tiled roof with three rooflights and lower eave, open cafe shopfront and glimpsed courtyard.",
+        "styleBrief": "One landscape 16:9 realistic architectural photograph from human eye height, natural 35mm perspective and corrected verticals, soft late-morning daylight, restrained natural colours, realistic textures and modest context. Preserve reference massing, roof, windows and materials. No collage, aerial viewpoint, studio background, labels, border or watermark."
+      }
+    },
+    {
+      "placementId": "validation_cast_iron_italianate",
+      "domain": "building",
+      "label": "SoHo Cast-Iron Loft",
+      "action": "retained",
+      "previousHero": "/validation-assets/soho-v002/reference.png",
+      "hero": "/validation-assets/soho-v002/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1433920,
+        "sha256": "93702cf15872f17332409ce8e9e810113279107a03f5ab99d40448fc4ef41699"
+      },
+      "styleChange": {
+        "before": [
+          "industrial_brick"
+        ],
+        "after": [
+          "historical"
+        ],
+        "evidence": "buildingArchetypes.json exact variant is Italianate Cast Iron, a historic SoHo facade; inherited industrial_brick incorrectly describes material absent from this exact facade. Use existing broad historical facet."
+      }
+    },
+    {
+      "placementId": "validation_art_deco_streamline_moderne",
+      "domain": "building",
+      "label": "Streamline Moderne Corner",
+      "action": "retained",
+      "previousHero": "/validation-assets/streamline-v003/reference.png",
+      "hero": "/validation-assets/streamline-v003/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1087264,
+        "sha256": "aec55f944bf84f5fa76d6226f8ca75a7a6d9a9bc5b920093f78aa10411eaa333"
+      }
+    },
+    {
+      "placementId": "validation_rndsqr_midrise_terraced_garden",
+      "domain": "building",
+      "label": "Terraced Garden Mid-Rise",
+      "action": "retained",
+      "previousHero": "/validation-assets/terrace-v006/reference.png",
+      "hero": "/validation-assets/terrace-v006/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1226034,
+        "sha256": "9f7bd70d1b4c7675663f62dad4a071dc61ec35134be284646d75b3fd12b3a092"
+      }
+    },
+    {
+      "placementId": "validation_rec_centre_timber_hall",
+      "domain": "building",
+      "label": "Timber Community Hall",
+      "action": "retained",
+      "previousHero": "/validation-assets/hall-v004/reference.png",
+      "hero": "/validation-assets/hall-v004/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          1024
+        ],
+        "bytes": 1520697,
+        "sha256": "37fb1b42faaa321cc22dd4a845343e8ff8a1806b4f6297f00198e02d60352120"
+      }
+    },
+    {
+      "placementId": "validation_contemporary_townhouse_timber_screen",
+      "domain": "building",
+      "label": "Timber-Screen Townhouse",
+      "action": "retained",
+      "previousHero": "/validation-assets/timber-v002/reference.png",
+      "hero": "/validation-assets/timber-v002/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1246752,
+        "sha256": "739131b5b65c63d02d9ff9969206c7c69a3d174526ecfdedec2e0970f29feff3"
+      }
+    },
+    {
+      "placementId": "native-park:botanical_garden_v3--native-v1",
+      "domain": "park_plaza",
+      "label": "Conservatory Botanical Garden",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/botanical-garden/variant_3.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-botanical_garden_v3--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 671736,
+        "sha256": "eabdf75bebb30459a1f891d0a0f74be5b8fcdc32ba5945127ac992f8e38dda1d"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/botanical-garden/variant_3.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Conservatory botanical garden. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Camera is raised above the entrance and planting beds; create an eye-level conservatory approach preserving the domed conservatory. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "d864df01522c92adf64a527e7538a45ea98420cc7b705d6956f22b027a3c0a0e"
+      }
+    },
+    {
+      "placementId": "native-park:sculpture_garden_v0--native-v1",
+      "domain": "park_plaza",
+      "label": "Museum Sculpture Court",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/sculpture-garden-art-park/variant_0.png",
+      "hero": "/archetypes/openspaces/sculpture-garden-art-park/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1418834,
+        "sha256": "63324af609bfcc7346f06852b7986aaef956bf6a05b25431054a67a2d7e0ef43"
+      }
+    },
+    {
+      "placementId": "native-park:student_neighbourhood_orchard_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Neighbourhood Orchard",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/orchard-v002.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/orchard-v002.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 176582,
+        "sha256": "8e8c8af525105b5b4dec72c5d3d8c072835450aff75114b797ed969a75dbacab"
+      }
+    },
+    {
+      "placementId": "native-park:amphitheater_lawn_v0--native-v1",
+      "domain": "park_plaza",
+      "label": "Terraced Performance Lawn",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/amphitheater-performance-lawn/variant_0.png",
+      "hero": "/archetypes/openspaces/amphitheater-performance-lawn/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1427020,
+        "sha256": "41882be45777464ae92e5e7daac499515953450aec653a5833a81488390d9472"
+      }
+    },
+    {
+      "placementId": "native-park:student_garden_square_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Timber and Stone Square",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/square-v003.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/square-v003.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 119542,
+        "sha256": "26104f5315fd8eb2e5fe419dc9bc2f14696ce6f679844fb15da8dd512cee70ce"
+      }
+    },
+    {
+      "placementId": "native-park:wetland_rain_garden_v0--native-v1",
+      "domain": "park_plaza",
+      "label": "Wetland Boardwalk",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-wetland_rain_garden_v0--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 518652,
+        "sha256": "dbc7d25ea223d4581106ef92c97fc0f2d4a8584364839bde9653a275e0fc86e4"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/wetland-rain-garden/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Wetland boardwalk. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Elevated wetland overview; create eye-level boardwalk view. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "b3eeb5beb21dc61cd468e45990ed0050829c3a54b676af6986e782bb01fbca9d"
+      }
+    },
+    {
+      "placementId": "amsterdam_gracht_v1",
+      "domain": "street_pathway",
+      "label": "Amsterdam Gracht (Canal Street)",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/amsterdam_gracht_v1/reference.png",
+      "hero": "/street-kits/pilots/amsterdam_gracht_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1537482,
+        "sha256": "12b631fccef4facfaa4170680acbbb8949c968a001855468ddd9b4f4e7062fff"
+      }
+    },
+    {
+      "placementId": "brt_bus_rapid_transit_corridor_v0",
+      "domain": "street_pathway",
+      "label": "BRT Bus Rapid Transit Corridor",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/reference.png",
+      "hero": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1411041,
+        "sha256": "896d376aa35b3164b57d7aa4b220d4b4b892e07340431a3d55af63736ba730aa"
+      }
+    },
+    {
+      "placementId": "student_planted_shared_lane_v1",
+      "domain": "street_pathway",
+      "label": "Planted Shared Lane",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/classroom-heroes/shared-v001.webp",
+      "hero": "/archetypes/streets/classroom-heroes/shared-v001.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 134896,
+        "sha256": "83e3ae8877b06de2f97d1fec3f6f610e4b03cf6e26def3bc94dfb06d8a0de5a2"
+      }
+    },
+    {
+      "placementId": "student_quiet_residential_street_v1",
+      "domain": "street_pathway",
+      "label": "Quiet Residential Street",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/classroom-heroes/residential-v002.webp",
+      "hero": "/archetypes/streets/classroom-heroes/residential-v002.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 151936,
+        "sha256": "28b985b13222ffc660610eecb82980b990f25abbd87545a134634b9a5d04dad5"
+      }
+    },
+    {
+      "placementId": "landmark_signature_bridge_v2",
+      "domain": "street_pathway",
+      "label": "Landmark Signature Bridge",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/landmark_signature_bridge_v2/reference.png",
+      "hero": "/street-kits/pilots/landmark_signature_bridge_v2/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1193686,
+        "sha256": "3a68ae18809b45c35a44bb252251dda3beb8da1a3ca7d95fc30079d7d7cb7443"
+      }
+    },
+    {
+      "placementId": "validation_beltline_brick_modern",
+      "domain": "building",
+      "label": "Beltline Mixed-Use Mid-Rise",
+      "action": "retained",
+      "previousHero": "/validation-assets/beltline-v005/reference.png",
+      "hero": "/validation-assets/beltline-v005/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1331259,
+        "sha256": "39f3dd9260e14f262498e67a1923c07b09d3265873f9e5f0908185ce8b856bc3"
+      }
+    },
+    {
+      "placementId": "validation_infill_flat_roof_minimal",
+      "domain": "building",
+      "label": "Calgary Modern Infill",
+      "action": "retained",
+      "previousHero": "/validation-assets/infill-v007/reference.png",
+      "hero": "/validation-assets/infill-v007/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1399202,
+        "sha256": "2417d853c91b9e997bfdc2a34ec7339b80cea76718fbb05417a1d839789240c8"
+      }
+    },
+    {
+      "placementId": "native-park:research_garden_teaching_arboretum_variant_3--native-v1",
+      "domain": "park_plaza",
+      "label": "Teaching Demonstration Garden",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "hero": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1557500,
+        "sha256": "c0ac61bcf1e14b6672288d1f750188a655dab931b902f761e84dbff2dfc57308"
+      }
+    },
+    {
+      "placementId": "native-park:basketball_court_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Basketball Park",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/basketball-court/variant_1.png",
+      "hero": "/archetypes/openspaces/basketball-court/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1407609,
+        "sha256": "aab139515a6cbde875f659405b349e8941f1d9ff2a6f0034500a644804b203bf"
+      }
+    },
+    {
+      "placementId": "validation_student_main_street_v1",
+      "domain": "street_pathway",
+      "label": "Neighbourhood Main Street",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/neighborhood-main-street/hero.png",
+      "hero": "/archetypes/streets/classroom-heroes/validation_student_main_street_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 569736,
+        "sha256": "2b6f7e3a109a44b30912bca6f28e03032a3fdd5941a0727138893fea53dd04c7"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/neighborhood-main-street/hero.png",
+        "brief": "Sidewalk-level view of two-way asphalt carriageway, curbside parking, generous sidewalks, historic two-storey redbrick shops with fabric awnings, street trees, heritage lamps and flower baskets.",
+        "styleBrief": "Single landscape 16:9 realistic street photograph at 1.6m human eye height with soft late-morning daylight, natural materials and colours. Preserve exact reference street programme, paving, furnishings and building character. No aerial, collage, diagram or text overlay."
+      }
+    },
+    {
+      "placementId": "validation_student_market_street_v1",
+      "domain": "street_pathway",
+      "label": "Pedestrian Market Street",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/pedestrian-only-street/hero.png",
+      "hero": "/archetypes/streets/classroom-heroes/validation_student_market_street_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 525702,
+        "sha256": "a8c6524f4eff23af48692ccd684a60300bb51f700382ae4d3fb754ff2af2ebe0"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/pedestrian-only-street/hero.png",
+        "brief": "Pedestrian-level view near circular stone fountain; preserve cobblestones, bronze sculpture, wood benches, heritage lamps, red-flower planters, outdoor cafes and historic four-storey shopfronts; no traffic lanes.",
+        "styleBrief": "Single landscape 16:9 realistic street photograph at 1.6m human eye height with soft late-morning daylight, natural materials and colours. Preserve exact reference street programme, paving, furnishings and building character. No aerial, collage, diagram or text overlay."
+      }
+    },
+    {
+      "placementId": "native-park:student_reading_garden_v2--native-v1",
+      "domain": "park_plaza",
+      "label": "Shaded Reading Garden",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/reading-v002.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_reading_garden_v2--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 598168,
+        "sha256": "c9b9086df5a6cf5141ba203f9d4f7c661f8d3968df8c5eae5ed65c9db857fe7c"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/classroom-heroes/reading-v002.webp",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Shaded Reading Garden. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Aerial overview of pergola reading garden. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "ce018cc67a559c67214ccb4d529a0dbc52f41b216c355065290ba0cb0a0093a0"
+      }
+    },
+    {
+      "placementId": "native-park:student_pickleball_garden_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Pickleball Social Garden",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/pickleball-v001.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/pickleball-v001.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 106746,
+        "sha256": "10020d0090421a13a710b9ffc53e3019ef52b156d87fd53274225446e89f8f90"
+      }
+    },
+    {
+      "placementId": "native-park:student_tennis_garden_v2--native-v1",
+      "domain": "park_plaza",
+      "label": "Garden Tennis Court",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/tennis-v002.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_tennis_garden_v2--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 539176,
+        "sha256": "5765b5bcc7c97caa05d752cab90e918ddd7966a96f714a0f1bc9be652ac850e9"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/classroom-heroes/tennis-v002.webp",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Garden Tennis Court. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Stylized architectural render with pastel silhouette person; needs photographic people and court treatment. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "1d59d5b4274b2949cbd7016036d1c7d205d8c69d697647bd0e0db814bda47f61"
+      }
+    },
+    {
+      "placementId": "native-park:student_bocce_garden_v2--native-v1",
+      "domain": "park_plaza",
+      "label": "Bocce Pergola Garden",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/bocce-v002.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/bocce-v002.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 149876,
+        "sha256": "6136d4fa1218e662b0ff5d7cfc85198860b6e6b5f1c47feda6efd4455acf5214"
+      }
+    },
+    {
+      "placementId": "native-park:urban_pocket_park_v0--native-v1",
+      "domain": "park_plaza",
+      "label": "Rustic Pocket Garden",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/pocket-v003.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/pocket-v003.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 159832,
+        "sha256": "f67137c8087bb300384dbbb3a0fa4c31414c2105fca0ac598bc5da7d50b570b5"
+      }
+    },
+    {
+      "placementId": "native-park:linear_park_greenway_v0--native-v1",
+      "domain": "park_plaza",
+      "label": "Railway Meadow Greenway",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/greenway-v002.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/greenway-v002.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 154034,
+        "sha256": "e118ef18c39b2c65ac3ce3cad512b822b06f4f3bf313d30835aa8a176434bbba"
+      }
+    },
+    {
+      "placementId": "native-park:inclusive_accessible_playground_v0--native-v1",
+      "domain": "park_plaza",
+      "label": "Inclusive Woodland Playground",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/classroom-heroes/inclusive-v002.webp",
+      "hero": "/archetypes/openspaces/classroom-heroes/inclusive-v002.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          960,
+          540
+        ],
+        "bytes": 114772,
+        "sha256": "e680bba5aa289d0bf4f9a224999af96667aa983e01b3eb69a186f89c05b9f523"
+      }
+    },
+    {
+      "placementId": "clay_side_by_side_duplex",
+      "domain": "building",
+      "label": "Side-by-Side Duplex",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/calgary-modern-infill-house/variant_2.png",
+      "hero": "/archetypes/buildings/calgary-modern-infill-house/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1403041,
+        "sha256": "e5a2f4d6f6836643c65b5ee740c2b08f12e3ba9f8c52ac991eadf00d2a5447dc"
+      }
+    },
+    {
+      "placementId": "clay_montreal_plateau_duplex",
+      "domain": "building",
+      "label": "Plateau Stacked Duplex",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/montreal-duplex/variant_0.png",
+      "hero": "/archetypes/buildings/montreal-duplex/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1390036,
+        "sha256": "ceb646a88b05e64efc00199e3e2cb07bd93c3d254a718db0f437b8ae26516671"
+      }
+    },
+    {
+      "placementId": "clay_courtyard_brick_modern",
+      "domain": "building",
+      "label": "Brick Courtyard Entrance Building",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+      "hero": "/archetypes/buildings/courtyard_family_housing/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1379260,
+        "sha256": "a057771c31ead869c761723196c301bcce621f61db1fd6dd057a78f409711227"
+      }
+    },
+    {
+      "placementId": "trial_postwar_bungalow",
+      "domain": "building",
+      "label": "Post-War Bungalow",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
+      "hero": "/archetypes/buildings/calgary-inner-city-bungalow/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1514720,
+        "sha256": "99dddd58994ef0c0f1c1d9abd472420cae16837759c885e9b85c7dca5b8d7ba8"
+      }
+    },
+    {
+      "placementId": "trial_edwardian_foursquare",
+      "domain": "building",
+      "label": "Edwardian Foursquare",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png",
+      "hero": "/archetypes/buildings/toronto-edwardian-foursquare/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1447263,
+        "sha256": "5e714abb64cbb8b507dbd128c311ae0061ddb010d80bc240b8a13a17ccf48e54"
+      }
+    },
+    {
+      "placementId": "clay_rammed_earth_infill",
+      "domain": "building",
+      "label": "Rammed-Earth Timber Infill",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/detached_contemporary_infill/variant_3.png",
+      "hero": "/archetypes/buildings/detached_contemporary_infill/variant_3.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1341589,
+        "sha256": "88491e473c936ba553e1729a8c52e8c21b486a044c3ae2832e575ab65da30eab"
+      }
+    },
+    {
+      "placementId": "clay_blue_glass_office_tower",
+      "domain": "building",
+      "label": "Blue Glass Office Tower",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/glass_tower_podium_modern/variant_0.png",
+      "hero": "/archetypes/buildings/glass_tower_podium_modern/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1301704,
+        "sha256": "a9ee7987a8adf937f5e41f11c89904b8acb234f4393c8cd019d352c45b088a13"
+      }
+    },
+    {
+      "placementId": "clay_vancouver_balcony_podium_tower",
+      "domain": "building",
+      "label": "Vancouver Balcony and Podium Tower",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/vancouverism-tower-podium/variant_0.png",
+      "hero": "/archetypes/buildings/vancouverism-tower-podium/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1268249,
+        "sha256": "5a3076ec759214b506e653f4e82b7397b7c61c98ba54440629e1fbff8e502a6a"
+      }
+    },
+    {
+      "placementId": "student_cycle_avenue_v1",
+      "domain": "street_pathway",
+      "label": "Protected Cycle Avenue",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_cycle_avenue_v1/reference.png",
+      "hero": "/street-kits/pilots/student_cycle_avenue_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1397063,
+        "sha256": "633f0a4a02171263a705e6eee464c254cb6d7be752aa1c17cca544acb37daca9"
+      }
+    },
+    {
+      "placementId": "student_green_alley_v1",
+      "domain": "street_pathway",
+      "label": "Ruelle Verte Community Alley",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_green_alley_v1/reference.png",
+      "hero": "/street-kits/pilots/student_green_alley_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1724508,
+        "sha256": "9387cb75833f31cb1a7f5127aef73cdf594cbc1d0aa0c9911718a21e9774d0a1"
+      }
+    },
+    {
+      "placementId": "student_school_street_v1",
+      "domain": "street_pathway",
+      "label": "Playful School Street",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_school_street_v1/reference.png",
+      "hero": "/street-kits/pilots/student_school_street_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1606131,
+        "sha256": "36eb4c62f554de603e7b3a82b1f7f688ecdd509ee99fbd459af06f6e40d3e17a"
+      }
+    },
+    {
+      "placementId": "native-park:student_woodland_stream_garden_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Woodland Stream and Bridge Garden",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/japanese-garden/variant_1.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_woodland_stream_garden_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 689514,
+        "sha256": "35f07cec85bfbf700084dbc53466cb616b6dba67996c9cde327305d32f383c94"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/japanese-garden/variant_1.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Woodland Stream & Bridge Garden. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Raised overview of stream and stepping stones; create eye-level woodland bridge view. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "7cba470ee8ac38a557f110fccfca998af5e2dd17b5a73e6f3c2ad5c9fe7c6012"
+      }
+    },
+    {
+      "placementId": "native-park:student_reflecting_fountain_garden_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Reflecting Fountain Garden",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/fountain-decorative-water-feature/variant_1.png",
+      "hero": "/archetypes/openspaces/fountain-decorative-water-feature/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1358002,
+        "sha256": "af2874114c8c9b673d449e00db6c1c9f1e1e3bffdfc4307f09d2fa24dd480edb"
+      }
+    },
+    {
+      "placementId": "native-park:student_terraced_cafe_court_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Terraced Café and Fountain Court",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/sunken-plaza/variant_0.png",
+      "hero": "/archetypes/openspaces/sunken-plaza/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1331414,
+        "sha256": "fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945"
+      }
+    },
+    {
+      "placementId": "student_grass_tram_avenue_v1",
+      "domain": "street_pathway",
+      "label": "Garden Tram Avenue",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_grass_tram_avenue_v1/reference.png",
+      "hero": "/street-kits/pilots/student_grass_tram_avenue_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1478666,
+        "sha256": "5182b62fcf30d3289d9efe12827e582628db5d83379bfbb409993cedc0f21f58"
+      }
+    },
+    {
+      "placementId": "student_vine_pergola_promenade_v1",
+      "domain": "street_pathway",
+      "label": "Vine Pergola Promenade",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_vine_pergola_promenade_v1/reference.png",
+      "hero": "/street-kits/pilots/student_vine_pergola_promenade_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1467027,
+        "sha256": "9baca898cab21cc9bd864e7209f22c15ade3bccd2245d95c095b78429d6e6165"
+      }
+    },
+    {
+      "placementId": "student_grand_haussmann_boulevard_v1",
+      "domain": "street_pathway",
+      "label": "Grand Haussmann Boulevard",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/reference.png",
+      "hero": "/street-kits/pilots/student_grand_haussmann_boulevard_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1659825,
+        "sha256": "6ff3d9fd7714c1facbef3b3314d13b0eaac1d5496da6afb344c5b71e17b5e091"
+      }
+    },
+    {
+      "placementId": "showcase_market",
+      "domain": "building",
+      "label": "Grand Iron and Glass Market",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+      "hero": "/archetypes/buildings/classroom-heroes/showcase_market-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 455002,
+        "sha256": "fe3f1f8749676590d31bee672ea4ba4f3f1af5cd4b94a332fd0ca6bd41c0629b"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/food_hall_market_hall/showcase-v1-front.png",
+        "prompt": "Use case: photorealistic-natural. Create a single landscape 16:9 architectural catalogue photograph of the EXACT Grand Iron & Glass Market in the reference. Preserve green ornate iron structure, lofty glazed barrel-vault roof and ridge lantern, two occupied market galleries, red brick side walls, pale stone piers and open front with timber stalls. Move camera to public forecourt at 1.6m human eye height, front three-quarter view, back far enough to include whole building and roof with breathing room. Correct verticals, realistic textures, restrained colours, natural soft late-morning daylight. Modest ordinary street context. This is a real architectural photograph, never an aerial, cutaway, studio miniature or collage. No added labels, watermarks or graphic text. Keep exact massing, materials, roof and style; view strictly from pedestrian eye level."
+      }
+    },
+    {
+      "placementId": "showcase_aquatic",
+      "domain": "building",
+      "label": "Living-Roof Aquatic Centre",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+      "hero": "/archetypes/buildings/classroom-heroes/showcase_aquatic-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 450764,
+        "sha256": "d941912614a00422882ecbe39797fb3d20df148f02b21bcbf36057ff9805799c"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/aquatic-natatorium-complex/showcase-v1-front.png",
+        "prompt": "Use case: photorealistic-natural. Single landscape 16:9 realistic architectural photograph of EXACT Living-Roof Aquatic Centre from reference. Preserve large arched glulam entry frame, glazed front arch, long gently curved planted roof, solar strip, timber window grid, charcoal side cladding and tall timber vent stacks. Change camera to strictly 1.6m pedestrian eye height across street, front three-quarter view with whole building roof and entrance visible. Correct verticals. Soft late-morning daylight, restrained natural colours, real timber grain and glazing, modest street context. No aerial, studio, illustration, collage, labels, watermark. Exact reference massing, materials, roof and style, taken from human eye level."
+      }
+    },
+    {
+      "placementId": "showcase_tower",
+      "domain": "building",
+      "label": "Gilded Terracotta Tower",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+      "hero": "/archetypes/buildings/art_deco_setback_tower/showcase-v1-front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1120425,
+        "sha256": "cbfa6ffaf90e040b2ef9f631f438cc1184993ceec74de95be8943dd85804e40b"
+      }
+    },
+    {
+      "placementId": "autumn_timber",
+      "domain": "building",
+      "label": "Nordic Roof-Garden Apartments",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
+      "hero": "/archetypes/buildings/nordic_timber_midrise/autumn-v1-front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1227190,
+        "sha256": "646f3e4d0a5ce0bc4f0d37c1a380d6e1d8ee9139e457cdbb12addc1a0e09eed1"
+      }
+    },
+    {
+      "placementId": "autumn_villa",
+      "domain": "building",
+      "label": "Tuscan Arcade Villa",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
+      "hero": "/archetypes/buildings/mediterranean_villa_estate/autumn-v1-front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1182591,
+        "sha256": "a69fed88b5478ee2902ef21fffcc3c643f114f70ae9bdccf4f93da1a8863507d"
+      }
+    },
+    {
+      "placementId": "autumn_cinema",
+      "domain": "building",
+      "label": "Grand Deco Cinema",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+      "hero": "/archetypes/buildings/deco_theater_mainstreet/autumn-v1-front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1209103,
+        "sha256": "7d4c6e549afade74d08aad286d72e47dbbfbdf7508d4b4f7442fc3548a10f5a8"
+      }
+    },
+    {
+      "placementId": "native-park:student_urban_splash_plaza_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Urban Splash-Play Plaza",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/splash-pad-water-play/variant_3.png",
+      "hero": "/archetypes/openspaces/splash-pad-water-play/variant_3.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1394221,
+        "sha256": "6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87"
+      }
+    },
+    {
+      "placementId": "native-park:student_stone_labyrinth_garden_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Stone Labyrinth Garden",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/labyrinth-meditation-garden/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_stone_labyrinth_garden_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 542690,
+        "sha256": "50ed399c3a50e54dcd37f56c6413047fe711b7f6198dd2d0aa9bfdc14a571e47"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/labyrinth-meditation-garden/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Stone Labyrinth Garden. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Current grass labyrinth does not communicate the named stone labyrinth; same-folder hero is another layout, so preserve exact programme in a new view. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "14644eff50eb46c5935cd45983b11a5de1bbcc9387e1228a8697dabf8075f8cd"
+      }
+    },
+    {
+      "placementId": "native-park:student_sheltered_dog_park_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Sheltered Dog Park",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/dog-park/variant_0.png",
+      "hero": "/archetypes/openspaces/dog-park/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1361434,
+        "sha256": "bbdf27c4d00e171e6ff704417ac8861067dd831dc9862ffeb68bae0aeea93b61"
+      }
+    },
+    {
+      "placementId": "student_london_cobbled_mews_v1",
+      "domain": "street_pathway",
+      "label": "London Cobbled Mews",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_london_cobbled_mews_v1/reference.png",
+      "hero": "/street-kits/pilots/student_london_cobbled_mews_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1534359,
+        "sha256": "04c3f1daa1f434fb2057548c9c5d3dd018572b9a0d5878d6dfc93399cdcdd24e"
+      }
+    },
+    {
+      "placementId": "student_cherry_blossom_street_v1",
+      "domain": "street_pathway",
+      "label": "Cherry Blossom Neighbourhood Street",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_cherry_blossom_street_v1/reference.png",
+      "hero": "/street-kits/pilots/student_cherry_blossom_street_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1755310,
+        "sha256": "90b8d7e405db85e1de8ccfa535fc251e4b5cb0488843be28c45ddae297fc0dac"
+      }
+    },
+    {
+      "placementId": "student_barcelona_shaded_promenade_v1",
+      "domain": "street_pathway",
+      "label": "Barcelona Shaded Promenade",
+      "action": "retained",
+      "previousHero": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/reference.png",
+      "hero": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/reference.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1720782,
+        "sha256": "cd86bc60d87ffb5199410c960a9c01b19eebe14736d538573ab0110c85be0b55"
+      }
+    },
+    {
+      "placementId": "clay_mass_timber_biophilic_barn",
+      "domain": "building",
+      "label": "Mass-Timber Library",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/university-library/variant_2.png",
+      "hero": "/archetypes/buildings/university-library/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1119221,
+        "sha256": "dbff795881507ed296a2ca190bf6b6c7218544a98dcdbeef39da25ee19f7ec9b"
+      }
+    },
+    {
+      "placementId": "clay_parisian_corner_cafe_culture",
+      "domain": "building",
+      "label": "Corner Café and Apartments",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+      "hero": "/archetypes/buildings/parisian_boulevard_corner/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1447547,
+        "sha256": "44a33ec2b53dd2e4eab9cbf9f14dd2f24db938a31fcd2d58cd14206501378fde"
+      }
+    },
+    {
+      "placementId": "native-park:student_community_allotment_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Community Allotment Garden",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/community-garden-design-variants/variant_0.png",
+      "hero": "/archetypes/openspaces/community-garden-design-variants/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1562773,
+        "sha256": "2356bc5f9178f600cbf512ddafda7e740c5a172adee6f1282caf171034a42ee9"
+      }
+    },
+    {
+      "placementId": "native-park:student_forest_adventure_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Forest Adventure Nature Play",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/nature-play-area/variant_0.png",
+      "hero": "/archetypes/openspaces/nature-play-area/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1663627,
+        "sha256": "59fe473e5c81769c0bbae532851d162a335f0522c887f70183b3de3301f70212"
+      }
+    },
+    {
+      "placementId": "native-park:student_spiral_lookout_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Spiral Lookout Park",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/spiral-lookout-park/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_spiral_lookout_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 561790,
+        "sha256": "5f7c132c0b634bd889394638d974860540e48bb08066c4ae14f19a0afbc8cb1d"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/spiral-lookout-park/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Spiral Lookout Park. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Technical native 3D model preview on grey background, no realistic ground-level scene. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "9a24ba3d001fcdaac1075861fe5ff0b1fb2a0f4c323335cd8304c79f50f3fafe"
+      }
+    },
+    {
+      "placementId": "native-park:student_quarry_garden_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Quarry Garden",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/quarry-garden/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_quarry_garden_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 512036,
+        "sha256": "27e18c4c3289af3e9eb25db22291df720e8f5c85627eb8b0657a951ccab82947"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/quarry-garden/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Quarry Garden. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Technical native 3D model preview on grey background, no realistic ground-level scene. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "3aa3886628dae2dbf5bf41a902c4b14706c77e4a9fb2dff030ec81a5229c7b24"
+      }
+    },
+    {
+      "placementId": "native-park:student_cascade_water_garden_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Cascade Water Garden",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/cascade-water-garden/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_cascade_water_garden_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 487484,
+        "sha256": "a3e92afbb1841bc95f088aa7eb8227df85777003dbe451ed03873f50f70ec2bc"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/cascade-water-garden/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Cascade Water Garden. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Technical native 3D model preview on grey background, no realistic ground-level scene. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "905924ec1c59f098b0ff0431ebfe72bebbb70e6e55caac1d59344fa0d07b4a69"
+      }
+    },
+    {
+      "placementId": "clay_station_victorian_iron_glass",
+      "domain": "building",
+      "label": "Victorian Grand Station",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/historic_grand_station/variant_1.png",
+      "hero": "/archetypes/buildings/historic_grand_station/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1345064,
+        "sha256": "7799ccc3246622af2637448d61d08e8eaf4c97f4dcabea19bbde14c8957590fb"
+      },
+      "styleChange": {
+        "before": [],
+        "after": [
+          "historical"
+        ],
+        "evidence": "Exact runtime asset label is Victorian Grand Station and description explicitly says Victorian iron-and-glass train hall; historical is the existing broad facet."
+      }
+    },
+    {
+      "placementId": "clay_biophilic_mass_timber_campus",
+      "domain": "building",
+      "label": "Timber Art and Design School",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/university-academic-complex/variant_2.png",
+      "hero": "/archetypes/buildings/university-academic-complex/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1243908,
+        "sha256": "1d66a10b13ffc137e6cec7ce6c4f31a23c5d8e1f64bffa015729059d9398eab3"
+      }
+    },
+    {
+      "placementId": "clay_mediterranean_resort_courtyard",
+      "domain": "building",
+      "label": "Mediterranean Courtyard Hotel",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/boutique-hotel/variant_1.png",
+      "hero": "/archetypes/buildings/boutique-hotel/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1256950,
+        "sha256": "1f126e400d9312467d5fc7febe0eb29a7a9471b001e424472814b4acfe08eee4"
+      },
+      "styleChange": {
+        "before": [
+          "contemporary_urban"
+        ],
+        "after": [
+          "mediterranean"
+        ],
+        "evidence": "buildingArchetypes.json exact variant label is Mediterranean Resort Courtyard Hotel; white stucco, limestone and terracotta-tile roof support Mediterranean instead of generic parent Contemporary Urban."
+      }
+    },
+    {
+      "placementId": "native-park:student_treetop_walk_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Treetop Walk Park",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/treetop-walk-park/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_treetop_walk_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 581688,
+        "sha256": "40de542d5d6cab8e6bebc1c110ffbca6bdbe2a7b59b2bc42e7d4b37c872614ee"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/treetop-walk-park/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Treetop Walk Park. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Technical native 3D model preview on grey background, no realistic ground-level scene. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "b15d368c10a35944acc7a038adfbdbac479c63bd1622c6b5ac045d60560cd9e3"
+      }
+    },
+    {
+      "placementId": "native-park:student_terraced_rose_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Terraced Rose Garden",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/terraced-rose-garden/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_terraced_rose_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 525896,
+        "sha256": "cd009b44fa8232a9cde4b376801c0870511744fcca5b390a2ed2edcec8f0c776"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/terraced-rose-garden/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Terraced Rose Garden. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Technical native 3D model preview on grey background, no realistic ground-level scene. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "67f9423489e9e7ab09e32f48eb7eb947497ad109574222d7bbd91b840dc7daf7"
+      }
+    },
+    {
+      "placementId": "student_elevated_garden_rail_v1",
+      "domain": "street_pathway",
+      "label": "Elevated Garden Rail",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/elevated-garden-rail/variant_0.png",
+      "hero": "/archetypes/streets/classroom-heroes/student_elevated_garden_rail_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 532430,
+        "sha256": "ff8e34472b583b311b87b939bf48a4529126ce48ef1101eaa232594b2803b1eb"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/elevated-garden-rail/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Elevated Garden Rail. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Technical native 3D model preview on grey background, no realistic ground-level scene. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "9f38414426c798692f8a6286db58d8531db0d029b75fc0cc909dab5363a482e8"
+      }
+    },
+    {
+      "placementId": "skytrain_elevated_corridor_v0",
+      "domain": "street_pathway",
+      "label": "SkyTrain Elevated Corridor · Modern Station Hub",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/skytrain-elevated-station-native/variant_0.png",
+      "hero": "/archetypes/streets/classroom-heroes/skytrain_elevated_corridor_v0-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 480660,
+        "sha256": "7e0c748045f203736337b4714bf3bfdd10ca03d0c85fa0593a30aae2be261436"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/skytrain-elevated-station-native/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for SkyTrain Elevated Corridor Â· Modern Station Hub. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Technical native 3D model preview on grey background, no realistic ground-level scene. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "686b6002cfa1c1d7f85aee80ddb1adbcf56c3dcbac6ba91456cb786ce14859d4"
+      }
+    },
+    {
+      "placementId": "elevated_rail_transit_corridor_v0",
+      "domain": "street_pathway",
+      "label": "Elevated Rail Transit · Parametric Flow Station",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/elevated-rail-transit-station-native/variant_0.png",
+      "hero": "/archetypes/streets/classroom-heroes/elevated_rail_transit_corridor_v0-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 482826,
+        "sha256": "4b77c990e3f7980eb4c9a84da620e4419c7b323b686dd5b08b34d098bca8e4e5"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/elevated-rail-transit-station-native/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Elevated Rail Transit Â· Parametric Flow Station. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Technical native 3D model preview on grey background, no realistic ground-level scene. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "5a9c7c6bcc47a58a41d869b3e9a73ce49c1a53d89b65493baa6d7384e738f8f7"
+      }
+    },
+    {
+      "placementId": "native-park:student_sandy_beach_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Sandy Beach and Boardwalk",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/urban-beach/hero.png",
+      "hero": "/archetypes/openspaces/urban-beach/hero.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1389498,
+        "sha256": "cd4e458bded86c451ff8c43d3d3c629ad1d95a9dea06431b185d4d8f29f537e7"
+      }
+    },
+    {
+      "placementId": "native-park:student_prairie_picnic_grove_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Prairie Picnic Grove",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/prairie-picnic-grove/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_prairie_picnic_grove_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 678674,
+        "sha256": "c1b0e42eb96175193306f970f8ae21140a765c2f9eff5003f30699a841d05dc1"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/prairie-picnic-grove/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Prairie Picnic Grove. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Aerial photographic overview; requires eye-level view of the same park programme. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "28207d50525a2404833c9212506266803dcbe7191da538374791667b19636819"
+      }
+    },
+    {
+      "placementId": "native-park:student_neighbourhood_sports_green_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Neighbourhood Sports Green",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/neighbourhood-sports-green/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_neighbourhood_sports_green_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 542066,
+        "sha256": "1fc78544a7bc6d417f3c33c57ccb6ab80e0e34cb9311b741c5bf8a192aab474a"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/neighbourhood-sports-green/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Neighbourhood Sports Green. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Aerial photographic overview; requires eye-level view of the same park programme. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "b5deda95a3950d45affad883e0be0166c1d30ca8658b8fede09d7c79308d9d2a"
+      }
+    },
+    {
+      "placementId": "native-park:student_sensory_wellness_garden_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Sensory and Wellness Garden",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/sensory-wellness-garden/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_sensory_wellness_garden_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 647276,
+        "sha256": "48fcae9e551d4ffa0882f8f97c966ad6a2523b513eeaed180ee6933d24059bda"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/sensory-wellness-garden/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Sensory & Wellness Garden. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Aerial photographic overview; requires eye-level view of the same park programme. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "e6fbef616f082685aa0fe0ebe2e927028b9eaa0a17ef8372ae7191ba4728abbc"
+      }
+    },
+    {
+      "placementId": "native-park:student_bicycle_pump_track_park_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Bicycle Pump-Track Park",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/bicycle-pump-track-park/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_bicycle_pump_track_park_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 596118,
+        "sha256": "df6f75c76557946049efafce9b8c9579ebaedbcf245efb3d3da78810da65192f"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/bicycle-pump-track-park/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Bicycle Pump-Track Park. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Aerial photographic overview; requires eye-level view of the same park programme. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "291a04141e3f18f10819d6c478a0f03f172562f2195a3639105de662ef9ae060"
+      }
+    },
+    {
+      "placementId": "native-park:student_urban_skate_plaza_v1--native-v1",
+      "domain": "park_plaza",
+      "label": "Urban Skate Plaza",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/urban-skate-plaza/variant_0.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/native-park-student_urban_skate_plaza_v1--native-v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 451418,
+        "sha256": "0d1cefca46ba686f6e8bfef66c8fdd970cbea084ca2411c7909a1228c93a115b"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/urban-skate-plaza/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Urban Skate Plaza. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Aerial photographic overview; requires eye-level view of the same park programme. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "61e1d886c0c854a9dc29598c453f4cb7d30ff1e240e88daf84f15f2c2ae2bffc"
+      }
+    },
+    {
+      "placementId": "student_rain_garden_residential_street_v1",
+      "domain": "street_pathway",
+      "label": "Rain-Garden Residential Street",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/neighbourhood-five/student_rain_garden_residential_street_v1.png",
+      "hero": "/archetypes/streets/neighbourhood-five/student_rain_garden_residential_street_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1448,
+          1086
+        ],
+        "bytes": 3681577,
+        "sha256": "fca36d58ab9eca41dd1259e4bf5aa6dd78705aa1f858867a8ba106d49b398548"
+      }
+    },
+    {
+      "placementId": "student_compact_one_way_shopping_street_v1",
+      "domain": "street_pathway",
+      "label": "Compact One-Way Shopping Street",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/neighbourhood-five/student_compact_one_way_shopping_street_v1.png",
+      "hero": "/archetypes/streets/neighbourhood-five/student_compact_one_way_shopping_street_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1448,
+          1086
+        ],
+        "bytes": 3378227,
+        "sha256": "429185ee16548a99fb1b229d3ca8b5dd5818a4a58c1389f2e5daf3305aa80820"
+      }
+    },
+    {
+      "placementId": "student_neighbourhood_cycle_street_v1",
+      "domain": "street_pathway",
+      "label": "Neighbourhood Cycle Street",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/neighbourhood-five/student_neighbourhood_cycle_street_v1.png",
+      "hero": "/archetypes/streets/neighbourhood-five/student_neighbourhood_cycle_street_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1448,
+          1086
+        ],
+        "bytes": 3575062,
+        "sha256": "f9edf7a1a1194d9a9e6d544dd02aaf23f732f0d33c9ed1beebf875562d0b5b5f"
+      }
+    },
+    {
+      "placementId": "student_separated_walking_cycling_greenway_v1",
+      "domain": "street_pathway",
+      "label": "Separated Walking and Cycling Greenway",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/neighbourhood-five/student_separated_walking_cycling_greenway_v1.png",
+      "hero": "/archetypes/streets/neighbourhood-five/student_separated_walking_cycling_greenway_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1448,
+          1086
+        ],
+        "bytes": 3667246,
+        "sha256": "350c5e3475ca402979f3448ccef05cd259fa34710861caa02ce5cd3813ed5cfc"
+      }
+    },
+    {
+      "placementId": "student_neighbourhood_transit_stop_street_v1",
+      "domain": "street_pathway",
+      "label": "Neighbourhood Transit-Stop Street",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/neighbourhood-five/student_neighbourhood_transit_stop_street_v1.png",
+      "hero": "/archetypes/streets/neighbourhood-five/student_neighbourhood_transit_stop_street_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1448,
+          1086
+        ],
+        "bytes": 3610855,
+        "sha256": "ff53ec275d13ad5ee4de738831caee63a1665195f55ec960ba8a904fcd273890"
+      }
+    },
+    {
+      "placementId": "clay_neoclassical_brick_headquarters",
+      "domain": "building",
+      "label": "Neoclassical Office",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/corporate-office-campus-headquarters/variant_1.png",
+      "hero": "/archetypes/buildings/corporate-office-campus-headquarters/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1264260,
+        "sha256": "97acfa3d777c30e9deaa223261c4f71f8da8737ba1e8c5fee90adb732bb1b4ac"
+      },
+      "styleChange": {
+        "before": [
+          "contemporary_urban"
+        ],
+        "after": [
+          "neoclassical"
+        ],
+        "evidence": "buildingArchetypes.json exact variant label is Neoclassical Brick & Limestone Headquarters and description explicitly says neoclassical office; replace generic parent Contemporary Urban."
+      }
+    },
+    {
+      "placementId": "clay_admin_faculty_brick_bronze_fins",
+      "domain": "building",
+      "label": "Brick-and-Bronze Faculty Office",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+      "hero": "/archetypes/buildings/administrative-faculty-office-building/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1365114,
+        "sha256": "e69d0f36223a5885eb91af8d1b24b7ccce18ee672ae58d93cc707e88757ba3be"
+      }
+    },
+    {
+      "placementId": "clay_brick_timber_two_storey_office",
+      "domain": "building",
+      "label": "Brick-and-Timber Courtyard Office",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/brick-timber-courtyard-office/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_brick_timber_two_storey_office-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 515910,
+        "sha256": "caf8f31b3a08cff57928233a304a0d81d8ed4c6de4628e6d45609632c024c521"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/brick-timber-courtyard-office/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Make a single landscape 16:9 architectural photograph of this exact small two-storey U-shaped brick and timber courtyard office, 14m wide and 12m deep, two side wings and rear connector, open central garden court. Preserve exact window rhythm, warm red brown brick, vertical timber fins, black window frames, flat parapet roofs and central recessed entrance. Camera strictly 1.6m pedestrian eye height, slightly off-centre front three-quarter from pavement, see entire building and court entrance. Soft late-morning daylight, restrained natural colour, believable real masonry and timber, modest landscaping. No aerial perspective, cutaway, diagram, studio, collage, labels or watermark. Preserve reference proportions and design, only make camera human eye height."
+      }
+    },
+    {
+      "placementId": "clay_strip_single_storey_classic",
+      "domain": "building",
+      "label": "Classic Retail Strip",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/commercial-strip-mall/variant_0.png",
+      "hero": "/archetypes/buildings/commercial-strip-mall/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1152386,
+        "sha256": "287370d5bf3e68ea7c26912702e23dab690dddc776f1d9536782c15812dcf3e6"
+      }
+    },
+    {
+      "placementId": "clay_corten_timber_equipment_yard",
+      "domain": "building",
+      "label": "Corten and Timber Equipment Yard",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/contractor-storage-yard/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_corten_timber_equipment_yard-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 447498,
+        "sha256": "bf512fdb1379459cb3ea8b05b5e408956e106e39b29e62434c12af31a3e10233"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/contractor-storage-yard/variant_0.png",
+        "prompt": "Single landscape 16:9 realistic architectural catalogue photograph of exact Corten & Timber Equipment Yard in reference. Change elevated camera to 1.6m human eye height across street looking slightly diagonally through open central gates. Preserve corten-base timber slat screen fence, front-left low timber dispatch office, rear two-bay workshop with rusty corten upper cladding and concrete base, single sloping dark roof, left open timber storage canopy, right material racks and open gravel work yard. Correct verticals, natural soft late-morning daylight, restrained realistic materials and colour, modest industrial neighbourhood. No aerial, collage, illustration, miniature, labels or watermark. Exact site structures and architectural identity. Street-level photo with horizon at a standing person's eye height.",
+        "retryPrompt": "Fix only the camera height of this equipment-yard architectural photo. Put photographer standing on sidewalk directly in front of open entrance: lens 1.6 meters above pavement. The 2 meter fence top MUST be ABOVE camera horizon. Cannot see dispatch office roof surface at all. Look horizontally through gate at two bay rear shed. Human eye level, never elevated. Keep same structures, materials, daylight and 16:9 framing."
+      }
+    },
+    {
+      "placementId": "clay_meadow_three_gable_childcare",
+      "domain": "building",
+      "label": "Meadow Court Childcare Centre",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/courtyard-childcare-centre/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_meadow_three_gable_childcare-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 512400,
+        "sha256": "dee558dedddb95aa6af26064ed6ff61dab534f7058bdee1739996cad46f7c367"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/courtyard-childcare-centre/variant_0.png",
+        "prompt": "Single landscape 16:9 natural architectural photograph of EXACT childcare centre in reference. Three equal front-facing gables with sage green standing-seam pitched roofs, pale wood gable panels and triangular glazing, pale buff brick ground floor, timber-post covered porch, three activity rooms, fenced meadow play court. Place photographer standing on ground at gate at 1.6m eye height, slightly oblique front three-quarter view, full building visible. Horizon at door-handle/standing adult eye level. No seeing down into site or onto porch roof. Correct verticals, soft late-morning daylight, real tactile material, modest natural context. No aerial, studio, collage, cutaway, text overlay or watermark. Preserve exact three-gable low single-storey identity and materials."
+      }
+    },
+    {
+      "placementId": "clay_factory_sawtooth_roof",
+      "domain": "building",
+      "label": "Daylight Sawtooth Factory",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/daylight_factory/variant_0.png",
+      "hero": "/archetypes/buildings/daylight_factory/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1376693,
+        "sha256": "07598421a7834e313762bd33f6edfafcedef3170334976e2c385cb4a1bb03b96"
+      }
+    },
+    {
+      "placementId": "clay_folded_roof_recovery_hall",
+      "domain": "building",
+      "label": "Folded-Roof Materials Recovery Hall",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/enclosed-materials-recovery/variant_0.png",
+      "hero": "/archetypes/buildings/enclosed-materials-recovery/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 2106234,
+        "sha256": "6aa993c6fd3b967723c5d0f4b5f4282c63695145aabe2ee2c9eecd6b69a98a42"
+      }
+    },
+    {
+      "placementId": "clay_garden_mews_six_homes",
+      "domain": "building",
+      "label": "Garden Mews Courtyard Housing",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/garden-mews-courtyard-housing/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_garden_mews_six_homes-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          940
+        ],
+        "bytes": 576708,
+        "sha256": "3421209632bcbddacd6136f45200ab1fa7168eef90e5e5f6b8ee5fea934dd09c"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/garden-mews-courtyard-housing/variant_0.png",
+        "prompt": "Single landscape 16:9 realistic architecture photograph of EXACT six-home Garden Mews in reference. Two parallel facing rows, THREE two-storey homes each, each home one gable, pale brick ground floor and vertical natural cedar upper floor, dark standing-seam gabled roof, independent doors facing central landscaped garden court. Camera standing on ground at courtyard mouth, only 1.6m high; horizon crosses ground-floor windows, look horizontally along court, roofs above eye. Wider front three-quarter framing with both rows and garden mouth, corrected verticals, soft late-morning daylight, restrained realistic materials and colour. No aerial, elevated viewpoint, studio, collage, labels or watermark. Preserve exact two blocks of three, massing and materials."
+      }
+    },
+    {
+      "placementId": "clay_horizon_double_section",
+      "domain": "building",
+      "label": "Horizon Manufactured Home",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/horizon-manufactured-home/variant_0.png",
+      "hero": "/archetypes/buildings/horizon-manufactured-home/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3036322,
+        "sha256": "c73e6709df2976ab05556af5821911f9554c3939586965bc0cc63590ec3f214d"
+      }
+    },
+    {
+      "placementId": "clay_industrial_gabled_metal_shed",
+      "domain": "building",
+      "label": "Industrial Shed",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/corrugated_vernacular_industrial/variant_1.png",
+      "hero": "/archetypes/buildings/corrugated_vernacular_industrial/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1033561,
+        "sha256": "43ed5397487a480257573dabd26f9080584a74e8cdd531d9987c76da04a49688"
+      }
+    },
+    {
+      "placementId": "clay_industrial_tilt_up_concrete",
+      "domain": "building",
+      "label": "Tilt-Up Industrial Building",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/industrial_park_modernism/variant_0.png",
+      "hero": "/archetypes/buildings/industrial_park_modernism/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1158882,
+        "sha256": "de5e08df02bcda3c33c5a0d9eb5f13ac4c8f4d4c50a5ac89ef9d0df7826baab7"
+      }
+    },
+    {
+      "placementId": "clay_maple_porch_sage",
+      "domain": "building",
+      "label": "Maple Porch Manufactured Cottage",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/maple-porch-manufactured-cottage/variant_0.png",
+      "hero": "/archetypes/buildings/maple-porch-manufactured-cottage/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3208770,
+        "sha256": "c6757674bdefda401a9928d1296e845c46058ba9556f9bc3496c895f32e6dd1b"
+      }
+    },
+    {
+      "placementId": "clay_copperline_four_bay_depot",
+      "domain": "building",
+      "label": "Copperline Municipal Works Depot",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/municipal-works-depot/variant_0.png",
+      "hero": "/archetypes/buildings/municipal-works-depot/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 2467808,
+        "sha256": "1d11e993466c37bf1050961fca5f43c5ab2bc37f5148ca701aa02ad70eab4a34"
+      }
+    },
+    {
+      "placementId": "clay_brick_timber_craftsman",
+      "domain": "building",
+      "label": "Narrow-Lot Craftsman Cottage",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0.png",
+      "hero": "/archetypes/buildings/narrow-lot-craftsman-cottage/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1374,
+          1145
+        ],
+        "bytes": 2913125,
+        "sha256": "a7602805589fade5cf939514e4beebe311ddbbc7ff294ed0bb081b70f8befb39"
+      }
+    },
+    {
+      "placementId": "clay_prairie_cedar_chassis_home",
+      "domain": "building",
+      "label": "Prairie Fold Manufactured Home",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/prairie-manufactured-home/variant_0.png",
+      "hero": "/archetypes/buildings/prairie-manufactured-home/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 2879262,
+        "sha256": "3bf9de8703d6e737b270f1a5140876376c8a06f1927b74efee46660cd5586f56"
+      }
+    },
+    {
+      "placementId": "clay_rndsqr_townhome_brick_contextual",
+      "domain": "building",
+      "label": "RNDSQR Contextual Townhouses",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_2.png",
+      "hero": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1259623,
+        "sha256": "ebf8a4faf2f43f24961f212e7cef61a0e721bd8fb4d5187bc768de9fc88bdcf3"
+      }
+    },
+    {
+      "placementId": "clay_warehouse_tilt_wall_mega",
+      "domain": "building",
+      "label": "Tilt-Wall Logistics Warehouse",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/modern_bigbox_warehouse/variant_1.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_warehouse_tilt_wall_mega-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 300512,
+        "sha256": "2e21445171cab5e5d2ef106ee3e2c76bf168d4dadf0020c679f925968fa5cf43"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/modern_bigbox_warehouse/variant_1.png",
+        "prompt": "Single landscape16:9 realistic architectural photograph of EXACT large tilt-wall logistics warehouse in reference. Preserve giant low rectangular pale concrete panel volume, long left row of truck docks, black glazed corner office over entrance canopy, flat parapet and gatehouse. Photographer standing on opposite sidewalk at1.6m eye height, front threequarter corner view, corrected verticals and enough distance to see building extent. No looking down onto gatehouse or truck roofs. Soft late-morning daylight replacing sunset, restrained believable concrete textures and colours, modest industrial street context. No aerial, studio, collage, graphic labels or watermark. Preserve exact warehouse identity, massing and material details."
+      }
+    },
+    {
+      "placementId": "clay_ecole_republicaine_provincial_brick",
+      "domain": "building",
+      "label": "Provincial Brick School",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/ecole-republicaine/variant_2.png",
+      "hero": "/archetypes/buildings/ecole-republicaine/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1268822,
+        "sha256": "8d13d2ba3fd84e9291f7e55e2e6ae4a477a619bda999a4cd88b574fdc15b6948"
+      }
+    },
+    {
+      "placementId": "clay_rndsqr_townhome_scandinavian_peaks",
+      "domain": "building",
+      "label": "Scandinavian Townhouse Row",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_1.png",
+      "hero": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1126212,
+        "sha256": "01afdd56cf283f97c2cec678605ebc3aaf07a93d394e1f97bc32e581d830e263"
+      },
+      "styleChange": {
+        "before": [
+          "contemporary_urban"
+        ],
+        "after": [
+          "scandinavian_nordic"
+        ],
+        "evidence": "buildingArchetypes.json exact variant label is Scandinavian Mountain-Plains Row and description explicitly says Modern Scandinavian palette; use existing Scandinavian / Nordic facet."
+      }
+    },
+    {
+      "placementId": "clay_affordable_porchlight_original",
+      "domain": "building",
+      "label": "Porchlight Townhouse Row",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/affordable-porchlight/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_affordable_porchlight_original-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 435740,
+        "sha256": "49a9b9491f8cb956c19356f7a1a834bb101a60bb03d0dc844ce16e3c71251175"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/affordable-porchlight/variant_0.png",
+        "prompt": "Use reference as EXACT architecture, turn studio image into single realistic landscape16:9 street architectural photograph. Four attached two-storey Porchlight homes, continuous dark standing-seam gable roof, off-white facade, four terracotta vertical strips above four timber entrance canopies, each home two upstairs windows and one wide downstairs window, dark doors. Preserve precise four-unit facade rhythm and massing. Photograph from1.6m eye height across modest residential street, front three-quarter perspective, whole row visible with breathing room. Soft late-morning natural daylight, corrected verticals, credible material imperfections and restrained colour, lawn/sidewalk and subtle background trees. No studio, aerial, collage, labels or watermark. Maintain exact reference building design."
+      }
+    },
+    {
+      "placementId": "clay_affordable_juniper_original",
+      "domain": "building",
+      "label": "Juniper Courtyard Cottages",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/affordable-juniper/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_affordable_juniper_original-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 560990,
+        "sha256": "8d75f6a49bc8792d446317600747de9c406b29eabce87f6a86f09e42aa96e4a8"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/affordable-juniper/variant_0.png",
+        "prompt": "Make a single landscape16:9 realistic street-view architectural photograph of exact four Juniper Courtyard Cottages in reference. Four detached SINGLE STOREY sage-green vertical-board cottages with steep dark standing-seam gabled roofs, natural timber doors and small timber entrance brackets/canopies. Two front cottages face street, two rear face garden; shared green garden and central path between. Preserve this exact arrangement, size and materials. Camera physically on sidewalk,1.6m above ground, horizon through lower windows, looking horizontally into garden. Correct verticals, soft late-morning daylight, natural subdued colour, real materials. No aerial view, elevated camera, studio, collage, labels or watermark. Only change camera and photo presentation; exact architectural identity."
+      }
+    },
+    {
+      "placementId": "clay_affordable_stackyard_original",
+      "domain": "building",
+      "label": "Stackyard Stacked Townhomes",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/affordable-stackyard/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_affordable_stackyard_original-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 491950,
+        "sha256": "9729139243d545c8df51bffae74a75bef71dca55f76e78be2d7cc96f6d32c49d"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/affordable-stackyard/variant_0.png",
+        "prompt": "Single realistic landscape16:9 architectural street photograph of EXACT Stackyard homes from reference. Two storeys, THREE units per floor, olive charcoal vertical panel siding, six wood doors with adjacent broad windows, continuous upper outdoor gallery with black railing, exterior straight stairs at BOTH ends, flat roof and thin dark canopy columns. Preserve six-unit building identity and geometry. Convert studio presentation to believable modest residential context with sidewalk, planting and background trees. Camera1.6m pedestrian eye height, slight front threequarter angle, corrected verticals, entire structure including both stairs framed with breathing room. Soft late-morning daylight, natural restrained colour and real textures. No aerial, studio, collage, text overlay, watermark. Exact massing and material palette."
+      }
+    },
+    {
+      "placementId": "clay_affordable_aspen_original",
+      "domain": "building",
+      "label": "Aspen Walk Apartments",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/affordable-aspen/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_affordable_aspen_original-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 493684,
+        "sha256": "ad32ac38af4a81314a2efb11b0b163853ab0bc733016f594dffe092086d1f6d3"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/affordable-aspen/variant_0.png",
+        "prompt": "Create single landscape16:9 realistic architectural street photograph of EXACT Aspen Walk apartment building in reference. Three storeys, twelve broad apartment windows four across each floor; pale buff brick two broad panels, narrow vertical natural timber strips at centre and outer ends with small dark windows; flat parapet roof, central timber canopy and glazed double entry. Preserve exact three-storey proportions and facade rhythm. Camera1.6m human eye height from across street, front three-quarter viewpoint showing short side, corrected verticals and full building visible. Natural soft late-morning daylight, restrained colours, real brick and timber detail, modest neighbourhood context and planting. No aerial, studio, collage, labels, watermark. Exact reference building, only photo viewpoint/presentation changes."
+      }
+    },
+    {
+      "placementId": "clay_affordable_switchback_original",
+      "domain": "building",
+      "label": "Switchback Modular Studios",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/affordable-switchback/variant_0.png",
+      "hero": "/archetypes/buildings/classroom-heroes/clay_affordable_switchback_original-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 403874,
+        "sha256": "7b2337b0baa354f6b8ac560aa782677d9dbbfd35f3910c84d7380b16e1acc0e5"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/affordable-switchback/variant_0.png",
+        "prompt": "Single landscape16:9 realistic architectural street photograph of exact Switchback Modular Studios in reference. FOUR storeys, six tall narrow main windows per floor paired in three vertical colour bands: ochre left, muted olive centre, ochre right; pale off-white end towers with narrow slit windows. Flat roof, grid-panel facade, left ground entrance with small wood canopy and right service door. Preserve exact 24-studio block massing, facade count and materials. Camera1.6m pedestrian eye height from across street, front threequarter angle showing short side, entire building framed with breathing room and corrected verticals. Natural soft late-morning daylight, restrained colour and real material finish, modest street setting. No aerial, studio, collage, labels, watermark. Exact architecture from reference."
+      }
+    },
+    {
+      "placementId": "community_brick_corner_grocery",
+      "domain": "building",
+      "label": "Brick Corner Grocery",
+      "action": "generated",
+      "previousHero": "/archetypes/buildings/montreal-depanneur/variant_3.png",
+      "hero": "/archetypes/buildings/classroom-heroes/community_brick_corner_grocery-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 588746,
+        "sha256": "37bb9b3f8399775a182424c43825ce066eba4372ac9a5801213ee6709011fd8e"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/buildings/montreal-depanneur/variant_3.png",
+        "prompt": "Single realistic landscape16:9 architectural street photograph of EXACT two-storey brick corner grocery in reference. Keep red-brown brick, flat parapet, chamfered corner entrance, large ground shop windows with transoms, simple tall upstairs windows, cream shop fascia wrapping corner with the existing DÉPANNEUR LALONDE signage. Preserve massing, window rhythm, materials and corner geometry. Change winter dusk to snow-free mild-season soft late-morning daylight and leafy trees. Camera1.6m pedestrian eye height from opposite corner, front threequarter, corrected verticals, whole building in frame. Modest residential street context, believable texture and restrained colour. No aerial, studio, collage, added labels or watermark. Keep exact architecture and existing sign style."
+      }
+    },
+    {
+      "placementId": "community_clerestory_neighbourhood_hall",
+      "domain": "building",
+      "label": "Clerestory Neighbourhood Hall",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/civic_modernism_rec_centre/variant_2.png",
+      "hero": "/archetypes/buildings/civic_modernism_rec_centre/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1007802,
+        "sha256": "fa24826d3490cefbf1bc41c3afe686a9d8f9f402bcf6977c05def4f3476864d4"
+      }
+    },
+    {
+      "placementId": "community_log_recreation_cabin",
+      "domain": "building",
+      "label": "Log Recreation Cabin",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/parkitecture_recreational/variant_1.png",
+      "hero": "/archetypes/buildings/parkitecture_recreational/variant_1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1545747,
+        "sha256": "bd7a456bb9d485ea5138ce38a3740d25556b6557bb1d25eba03c330a116b65b6"
+      }
+    },
+    {
+      "placementId": "community_prairie_neighbourhood_shops",
+      "domain": "building",
+      "label": "Prairie Neighbourhood Shops",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/commercial-strip-mall/variant_3.png",
+      "hero": "/archetypes/buildings/commercial-strip-mall/variant_3.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1176865,
+        "sha256": "eab9758532974146e926c9e26339d5659fa669ec57f3b5182e584a1ee6bb83eb"
+      }
+    },
+    {
+      "placementId": "community_inglewood_corner_merchants",
+      "domain": "building",
+      "label": "Inglewood Corner Merchants",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2.png",
+      "hero": "/archetypes/buildings/inglewood-heritage-brick-commercial/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1425788,
+        "sha256": "5a00e70334f19ac624228547cadec8cebc412846f9adc5fd15c8171fde553921"
+      }
+    },
+    {
+      "placementId": "final_seniors_apartments",
+      "domain": "building",
+      "label": "Aspen Terrace Seniors Apartments",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/final-seniors-apartments/front.png",
+      "hero": "/archetypes/buildings/final-seniors-apartments/front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 2965297,
+        "sha256": "04d95fcf5ac79ea9572993226c3d1c59cf1b7c05018d904cca3d7713caa0de57"
+      }
+    },
+    {
+      "placementId": "final_transit_pavilion",
+      "domain": "building",
+      "label": "Timber Wing Transit Pavilion",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/final-transit-pavilion/front.png",
+      "hero": "/archetypes/buildings/final-transit-pavilion/front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 2966962,
+        "sha256": "e57304a120dcd764a4ce4f49af329ad031c9c3260cf1672c51de263a3415abe5"
+      }
+    },
+    {
+      "placementId": "final_courtyard_block",
+      "domain": "building",
+      "label": "Brick Garden Courtyard",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/final-courtyard-block/front.png",
+      "hero": "/archetypes/buildings/final-courtyard-block/front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3044079,
+        "sha256": "5971de1709ae24eeb0ce5b0b962dba1877b70d26add6e1445e641d1855b9f4ce"
+      }
+    },
+    {
+      "placementId": "final_health_centre",
+      "domain": "building",
+      "label": "Neighbourhood Health Centre",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/final-health-centre/front.png",
+      "hero": "/archetypes/buildings/final-health-centre/front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3013158,
+        "sha256": "6f6d033697b31fd34e936c8ce4282d141441342e71b82c6fae2bde8538072b1e"
+      }
+    },
+    {
+      "placementId": "final_urban_grocery",
+      "domain": "building",
+      "label": "Sawtooth Neighbourhood Grocery",
+      "action": "retained",
+      "previousHero": "/archetypes/buildings/final-urban-grocery/front.png",
+      "hero": "/archetypes/buildings/final-urban-grocery/front.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 2798212,
+        "sha256": "c571268e0568ef20c6b30c23f603cdac9893792bfe020ae4734d69be5ae828d1"
+      }
+    },
+    {
+      "placementId": "garden_gravel_path_v1",
+      "domain": "street_pathway",
+      "label": "Garden Gravel Path",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/narrow-pathways/garden_gravel_path_v1.png",
+      "hero": "/archetypes/streets/narrow-pathways/garden_gravel_path_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3606302,
+        "sha256": "e2d09b0305bcfa4991300b0088a18d63793c5442293eb4f50c9fb7dc4f864ac0"
+      }
+    },
+    {
+      "placementId": "concrete_neighbourhood_walk_v1",
+      "domain": "street_pathway",
+      "label": "Concrete Neighbourhood Walk",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/narrow-pathways/concrete_neighbourhood_walk_v1.png",
+      "hero": "/archetypes/streets/narrow-pathways/concrete_neighbourhood_walk_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3152307,
+        "sha256": "64b9fa0eaf3d32dbc3bb25cc1b4543a1a79036a478b42dd5d226e6ac92f64211"
+      }
+    },
+    {
+      "placementId": "brick_courtyard_path_v1",
+      "domain": "street_pathway",
+      "label": "Brick Courtyard Path",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/narrow-pathways/brick_courtyard_path_v1.png",
+      "hero": "/archetypes/streets/narrow-pathways/brick_courtyard_path_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3638635,
+        "sha256": "7df386a09174b40c94fe4d2f4aeb9077f5d406ffce9558035cd94c73376d0b61"
+      }
+    },
+    {
+      "placementId": "timber_garden_walk_v1",
+      "domain": "street_pathway",
+      "label": "Timber Garden Walk",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/narrow-pathways/timber_garden_walk_v1.png",
+      "hero": "/archetypes/streets/narrow-pathways/timber_garden_walk_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3305630,
+        "sha256": "b14d8af753e8a407c3bede105710e036a262f8695df4922b730d7b02920a7235"
+      }
+    },
+    {
+      "placementId": "asphalt_shared_path_v1",
+      "domain": "street_pathway",
+      "label": "Asphalt Shared Path",
+      "action": "retained",
+      "previousHero": "/archetypes/streets/narrow-pathways/asphalt_shared_path_v1.png",
+      "hero": "/archetypes/streets/narrow-pathways/asphalt_shared_path_v1.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 3558456,
+        "sha256": "3bd8c3eb2c626ef3d60f7e0241bf271280d8c0badc1f684caaaf8ead45050005"
+      }
+    },
+    {
+      "placementId": "flexible_pocket_park_v1",
+      "domain": "park_plaza",
+      "label": "Flexible Pocket Park",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/urban-pocket-park/variant_0.png",
+      "hero": "/archetypes/openspaces/urban-pocket-park/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1645915,
+        "sha256": "9d3f21b2a6d363802bed65e2d8b96a66cb2d41eadbd98a5d0757b08359fbd69b"
+      }
+    },
+    {
+      "placementId": "flexible_linear_greenway_v1",
+      "domain": "park_plaza",
+      "label": "Flexible Linear Greenway",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/linear-park-greenway/variant_0.png",
+      "hero": "/archetypes/openspaces/linear-park-greenway/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1402761,
+        "sha256": "cd289e44e948a8a69a8c97e131af88c3ce6f2db359e9777cc1b2c05e6822db52"
+      }
+    },
+    {
+      "placementId": "flexible_shade_courtyard_v1",
+      "domain": "park_plaza",
+      "label": "Flexible Shade Courtyard",
+      "action": "generated",
+      "previousHero": "/archetypes/openspaces/urban-pocket-park/variant_1.png",
+      "hero": "/archetypes/openspaces/classroom-heroes/flexible_shade_courtyard_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 584452,
+        "sha256": "d921754d78baddfef268b091239754e4fa006e24f8fa48f63fa7657691848507"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/openspaces/urban-pocket-park/variant_1.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Flexible shade courtyard. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Existing image shows swings and play court instead of the described quiet shade courtyard; create exact programme view. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera. The programme is a quiet contemporary lawn courtyard with shade trees and seating, no swings or play equipment.",
+        "sourceImageSha256": "504aab386bdd5b038d9e23453b88cf63adf907e56671113cd859c2e7181842b9"
+      }
+    },
+    {
+      "placementId": "flexible_meadow_grove_v1",
+      "domain": "park_plaza",
+      "label": "Flexible Meadow Grove",
+      "action": "retained",
+      "previousHero": "/archetypes/openspaces/urban-pocket-park/variant_2.png",
+      "hero": "/archetypes/openspaces/urban-pocket-park/variant_2.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1634753,
+        "sha256": "99a729bb525e587fe17db27aced20f8b781c99e5a491f88eb02f76dfc00bb988"
+      }
+    },
+    {
+      "placementId": "calgary_local_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Local Residential Street — No Parking",
+      "action": "reused",
+      "previousHero": "/archetypes/streets/calgary-local/section.svg",
+      "hero": "/archetypes/streets/calgary-local/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1418980,
+        "sha256": "caa608c1be23e1c8cd002d820ef32d413712e98e6630cd99e5df6af3a6cbb61c"
+      }
+    },
+    {
+      "placementId": "calgary_local_industrial_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Local Industrial Street — No Parking",
+      "action": "reused",
+      "previousHero": "/archetypes/streets/calgary-local-industrial/section.svg",
+      "hero": "/archetypes/streets/calgary-local-industrial/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1320835,
+        "sha256": "7c39e90490e41bf4931a842e0b1700cf87ab64a053590a89724e638bc2337426"
+      }
+    },
+    {
+      "placementId": "calgary_collector_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Collector Street — Parking Both Sides",
+      "action": "reused",
+      "previousHero": "/archetypes/streets/calgary-collector/section.svg",
+      "hero": "/archetypes/streets/calgary-collector/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1489797,
+        "sha256": "393c262d8235e7b2773d41fcdff22273fb7a2e9f59302cf4b118e6507a38f847"
+      }
+    },
+    {
+      "placementId": "calgary_arterial_4lane_50_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Four-Lane Arterial — 50 km/h",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/calgary-arterial-4lane-50/section.svg",
+      "hero": "/archetypes/streets/classroom-heroes/calgary_arterial_4lane_50_draft3_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 512122,
+        "sha256": "898182ead421b3e9acdc7cd2cc7986d31a009aea9269f39b14dfabb68e23ab27"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/calgary-arterial-4lane-50/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Four-lane arterial - 50 km/h. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Current hero is a street cross-section diagram. Same-folder variant_0.png is an elevated aerial, not ground level. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "83cebf25f2086a85e6830faee6ce5d39b34ab44db8b59d468512c4d32569ce7f"
+      }
+    },
+    {
+      "placementId": "calgary_arterial_4lane_70_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Four-Lane Arterial — 70 km/h",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/calgary-arterial-4lane-70/section.svg",
+      "hero": "/archetypes/streets/classroom-heroes/calgary_arterial_4lane_70_draft3_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 457864,
+        "sha256": "2ab28ee869486b354e0d59ade4493276a5f021c99dae89dd248d6e44f5377a8d"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/calgary-arterial-4lane-70/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Four-lane arterial - 70 km/h. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Current hero is a street cross-section diagram. Same-folder variant_0.png is an elevated aerial, not ground level. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "427446c537a739e174ab4b084bcb23a2c4d70467afe33e4f09c825de7c57779c"
+      }
+    },
+    {
+      "placementId": "calgary_arterial_6lane_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Six-Lane Arterial",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/calgary-arterial-6lane/section.svg",
+      "hero": "/archetypes/streets/classroom-heroes/calgary_arterial_6lane_draft3_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 468042,
+        "sha256": "ebdbd514805ba4275fd2dcb641effa5dd60728f4fcc61b234400c2b6450ad00e"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/calgary-arterial-6lane/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Six-lane arterial. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Current hero is a street cross-section diagram. Same-folder variant_0.png is an elevated aerial, not ground level. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "426d50b9f12cbd56ccc974119b3deb014e202f658286472b57331d5005d48e7f"
+      }
+    },
+    {
+      "placementId": "calgary_alley_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Alley — No Deep Utilities",
+      "action": "reused",
+      "previousHero": "/archetypes/streets/calgary-alley/section.svg",
+      "hero": "/archetypes/streets/calgary-alley/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1443986,
+        "sha256": "fb0fdfcac48e2953776b2b1643bf4ab8db5b2ba1db2d16438ff09d6d3070de7a"
+      }
+    },
+    {
+      "placementId": "calgary_local_high_activity_draft3_v1",
+      "domain": "street_pathway",
+      "label": "High-Activity Local Street",
+      "action": "reused",
+      "previousHero": "/archetypes/streets/calgary-local-high-activity/section.svg",
+      "hero": "/archetypes/streets/calgary-local-high-activity/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1284820,
+        "sha256": "a73e875ef64c32ea8148e4711d62c128e076ec428b6c6d3d6f6201760d9b5fd7"
+      }
+    },
+    {
+      "placementId": "calgary_collector_industrial_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Industrial Collector Street",
+      "action": "reused",
+      "previousHero": "/archetypes/streets/calgary-collector-industrial/section.svg",
+      "hero": "/archetypes/streets/calgary-collector-industrial/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1332881,
+        "sha256": "edea400f6ee7ec9591756139e93957b4acb455ddf08a892d6d487ad7d2103cea"
+      }
+    },
+    {
+      "placementId": "calgary_collector_high_activity_draft3_v1",
+      "domain": "street_pathway",
+      "label": "High-Activity Collector Street",
+      "action": "reused",
+      "previousHero": "/archetypes/streets/calgary-collector-high-activity/section.svg",
+      "hero": "/archetypes/streets/calgary-collector-high-activity/variant_0.png",
+      "deliveredImage": {
+        "format": "PNG",
+        "size": [
+          1024,
+          768
+        ],
+        "bytes": 1436430,
+        "sha256": "1e1f882f3a9c9cdb77d9e1f3df76cb7a721b592ecd70a1777b03815c1820f834"
+      }
+    },
+    {
+      "placementId": "calgary_arterial_high_activity_draft3_v1",
+      "domain": "street_pathway",
+      "label": "High-Activity Arterial",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/calgary-arterial-high-activity/section.svg",
+      "hero": "/archetypes/streets/classroom-heroes/calgary_arterial_high_activity_draft3_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 561008,
+        "sha256": "ffa8c3fbc5199f3f63e8fdeb6ade0fbfea2b33fb6040d6a9bcf0af31a8fa42d6"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/calgary-arterial-high-activity/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for High-activity arterial. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Current hero is a street cross-section diagram. Same-folder variant_0.png is an elevated aerial, not ground level. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "e4e0a5b4c3773f860e14a113fa708569c60b62b5b9067ebee13e10b73830c645"
+      }
+    },
+    {
+      "placementId": "calgary_skeletal_draft3_v1",
+      "domain": "street_pathway",
+      "label": "Skeletal Road — Surface Layout",
+      "action": "generated",
+      "previousHero": "/archetypes/streets/calgary-skeletal/section.svg",
+      "hero": "/archetypes/streets/classroom-heroes/calgary_skeletal_draft3_v1-street-v1.webp",
+      "deliveredImage": {
+        "format": "WEBP",
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 406808,
+        "sha256": "976e954ce97aa9af98a223d25fc7a86adfd40fdbaece34fd84a93f762a65169c"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "reference": "/archetypes/streets/calgary-skeletal/variant_0.png",
+        "prompt": "Use case: photorealistic-natural. Create one catalogue hero photograph for Skeletal road - surface layout. Input image is the exact archetype reference: preserve its defining programme, architectural/landscape identity, materials, structures and planting, but reconstruct the scene from a pedestrian viewpoint. Current hero is a street cross-section diagram. Same-folder variant_0.png is an elevated aerial, not ground level. Camera physically on an accessible street or park path, eye height 1.6 metres, level horizon, 35mm natural perspective. Landscape 16:9 framing, soft clear daylight, realistic natural colours and photographic texture, modest realistic people where appropriate. Show a single coherent lived-in real place, no collage, diagrams, model platform, grey void, labels or text. Strictly ground-level photographic view, never aerial or elevated camera.",
+        "sourceImageSha256": "0e42f9a8c0744dd6c4d5aa32e97a7cc6cf54ace079eddfad486d9a9832ed9c1e"
+      }
+    }
+  ]
+}

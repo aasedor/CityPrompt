@@ -1,7 +1,9 @@
+import curatedHeroes from '@/data/catalogueHeroImages.json';
+
 /** Curated picker views for exact choices whose runtime thumbnails are
  * technical model previews or archive-only URLs. Placement and capture keep
  * the locked asset thumbnail and revision from the catalogue registry. */
-export const PICKER_HERO_IMAGES: Record<string, string> = {
+const legacyHeroImages: Record<string, string> = {
   validation_machiya_cafe_gallery: '/archetypes/buildings/classroom-heroes/machiya-cafe-gallery-v005.webp',
   'native-park:student_neighbourhood_orchard_v1--native-v1': '/archetypes/openspaces/classroom-heroes/orchard-v002.webp',
   'native-park:student_garden_square_v1--native-v1': '/archetypes/openspaces/classroom-heroes/square-v003.webp',
@@ -35,6 +37,8 @@ export const PICKER_HERO_IMAGES: Record<string, string> = {
   trial_neighborhood20_hall_timber_park_edge: '/validation-assets/neighborhood20/hall-park-v002/hero.png',
   trial_neighborhood20_school_timber_learning_courtyard: '/validation-assets/neighborhood20/school-timber-v001/hero.png',
 };
+
+export const PICKER_HERO_IMAGES: Record<string, string> = { ...legacyHeroImages, ...curatedHeroes };
 
 export function pickerHeroImage(placementId: string | undefined, fallback: string): string {
   return (placementId && PICKER_HERO_IMAGES[placementId]) || fallback;

@@ -10,6 +10,7 @@ import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
 import { catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
+import { cataloguePresentationFor } from './cataloguePresentation';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
@@ -179,10 +180,21 @@ export function filterCanonicalChoices(domain: CatalogueDomain, query = '', grou
   return choices.filter(choice => {
     if (choice.domain !== domain || !choiceMatchesGroup(choice, groupId)) return false;
     const group = calgaryGroup(choice.option.calgaryGuide);
-    const haystack = normalize([choice.option.id, choice.option.label, choice.option.description, choice.option.categoryId,
-      group?.label, ...(group?.districts ?? []), ...(choice.option.generationTags ?? []),
+    const presentations = choice.placements.map(asset => cataloguePresentationFor(asset.id));
+    const presentationTerms = presentations.flatMap(presentation => {
+      return presentation ? [presentation.label, presentation.description, ...presentation.searchTags] : [];
+    });
+    // Exact presentation copy supersedes broad parent browsing tags. Keep the
+    // original rendering metadata untouched and available for future entries.
+    const fullyPresented = presentations.length > 0 && presentations.every(Boolean);
+    const fallbackTerms = fullyPresented ? [] : [choice.option.label, choice.option.description, choice.option.categoryId,
+      ...(choice.option.generationTags ?? []), ...(choice.option.variants ?? []).map(v => v.label),
+      ...choice.placements.map(asset => asset.label)];
+    const haystack = normalize([choice.option.id, group?.label, ...(group?.districts ?? []),
+      ...presentationTerms,
+      ...fallbackTerms,
       ...catalogueStyleIds(choice).map(id => catalogueStyleLabel(id)),
-      ...(choice.option.variants ?? []).map(v => v.label), ...choice.placements.map(a => a.label)].join(' '));
+      ...(choice.option.variants ?? []).map(v => v.id)].join(' '));
     return terms.every(term => haystack.includes(term));
   });
 }
