@@ -4183,7 +4183,10 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    if (isBuildingZoneType(activeSitePlannerTool)) {
+    // Zoning studies reuse the development-area drawing tool, but their
+    // polygons must be drawable across existing buildings without selecting
+    // those buildings and cancelling the unfinished zoning ring.
+    if (isBuildingZoneType(activeSitePlannerTool) && activeToolProperties?.cartography_study !== true) {
       const clickPt = turfPoint(clickLngLat);
       let hitZoneId: string | null = null;
       let hitZoneArea = Infinity;
@@ -4240,7 +4243,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
+  }, [detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (zoningInspection?.editing) return;
