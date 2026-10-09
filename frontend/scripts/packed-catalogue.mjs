@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
-const CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|archetypeReferenceAvailability)\.json$/;
+const CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue)\.json$/;
 
 /** Retain all legacy IDs, reference paths and prompts without compiling several
  * megabytes of JSON into JavaScript object literals. Three already ships this
