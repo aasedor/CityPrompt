@@ -7,7 +7,7 @@ import { api } from '@/services/api';
 import { SiteAssessmentPanel, useSiteAssessment, type SiteAssessment } from './SiteAssessmentPanel';
 import { useState } from 'react';
 
-vi.mock('@/services/api', () => ({ api: { post: vi.fn() }, getApiErrorMessage: (error: Error) => error.message }));
+vi.mock('@/services/api', () => ({ api: { post: vi.fn(), get: vi.fn() }, getApiErrorMessage: (error: Error) => error.message }));
 const boundary = { id: 'site', zone_type: 'site_boundary', is_active_boundary: true,
   coordinates: [[-114.12, 51.01], [-114.119, 51.01], [-114.119, 51.011], [-114.12, 51.011]], properties: {} } as SiteZone;
 const result: SiteAssessment = {
@@ -22,9 +22,19 @@ function setup() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return (zones = [boundary], projectId = 'one') => <QueryClientProvider client={client}><SiteAssessmentPanel zones={zones} projectId={projectId} /></QueryClientProvider>;
 }
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => { vi.clearAllMocks(); vi.mocked(api.get).mockResolvedValue({ data: null }); });
 
 describe('site assessments', () => {
+  it('restores saved evidence in a fresh session without calculating, but hides it on unsaved edits', async () => {
+    vi.mocked(api.get).mockResolvedValue({ data: { assessment: result,
+      coordinates: [...boundary.coordinates, boundary.coordinates[0]].reverse() } });
+    const view = setup(); const { rerender } = render(view());
+    expect(await screen.findByText('$500,000')).toBeInTheDocument();
+    expect(api.post).not.toHaveBeenCalled();
+    rerender(view([{ ...boundary, coordinates: boundary.coordinates.map(([x, y]) => [x + .001, y]) }]));
+    await waitFor(() => expect(api.get).toHaveBeenCalledTimes(2));
+    expect(screen.queryByText('$500,000')).not.toBeInTheDocument();
+  });
   it('keeps the map value when the panel closes, supports hiding it, and clears it on a boundary edit', async () => {
     vi.mocked(api.post).mockResolvedValue({ data: result });
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });

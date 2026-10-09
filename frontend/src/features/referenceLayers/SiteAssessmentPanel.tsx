@@ -17,12 +17,28 @@ export interface SiteAssessment {
     assessed_value: number | null; overlap_pct: number; partial: boolean }[];
 }
 
+// Server rings are closed and may have a different starting corner/direction.
+function sameBoundary(a: number[][], b: number[][]) {
+  const equal = (p: number[], q: number[]) => p[0] === q[0] && p[1] === q[1];
+  const open = (ring: number[][]) => ring.length > 1 && equal(ring[0], ring[ring.length - 1]) ? ring.slice(0, -1) : ring;
+  const left = open(a); const right = open(b);
+  if (left.length < 3 || left.length !== right.length) return false;
+  return right.some((point, offset) => equal(left[0], point) && [1, -1].some(direction =>
+    left.every((p, index) => equal(p, right[(offset + direction * index + right.length) % right.length]))));
+}
+
 export function useSiteAssessment(zones: SiteZone[], projectId: string | undefined) {
   const boundary = getActiveSiteBoundary(zones);
   const problem = zoningCoverageProblem(zoningBounds(boundary?.coordinates ?? []));
   const signature = JSON.stringify([projectId, boundary?.id, boundary?.coordinates]);
   const [showOnMap, setShowOnMap] = useState(true);
   const [requested, setRequested] = useState<string | null>(null);
+  const saved = useQuery({
+    queryKey: ['saved-site-assessment-v1', signature],
+    queryFn: async ({ signal }) => (await api.get<{ coordinates: number[][]; assessment: SiteAssessment } | null>(
+      `/api/v1/site-assessments/zones/${boundary!.id}`, { signal })).data,
+    enabled: Boolean(projectId && boundary && !problem), retry: false,
+  });
   const query = useQuery({
     queryKey: ['site-assessment-v1', signature],
     queryFn: async ({ signal }) => {
@@ -30,14 +46,17 @@ export function useSiteAssessment(zones: SiteZone[], projectId: string | undefin
         { coordinates: boundary!.coordinates.map(([x, y]) => [x, y]) }, { signal, timeout: 60_000 });
       return response.data;
     },
-    enabled: Boolean(projectId && boundary && !problem && requested === signature),
+    // Only an explicit click may query Calgary. Reopening/focusing restores saved evidence.
+    enabled: false,
     staleTime: 15 * 60_000, gcTime: 30 * 60_000, retry: false,
   });
   // A previous site's total must disappear immediately after an edit or switch.
-  const data = !problem ? query.data : undefined;
+  const restored = saved.data && boundary && sameBoundary(boundary.coordinates, saved.data.coordinates)
+    ? saved.data.assessment : undefined;
+  const data = !problem ? query.data ?? restored : undefined;
   const calculate = () => {
     setRequested(signature); setShowOnMap(true);
-    if (data || requested === signature) void query.refetch();
+    if (projectId && boundary && !problem) void query.refetch();
   };
   const mapData = useMemo(() => showOnMap ? assessmentMapOverlay(boundary, data) : undefined, [boundary, data, showOnMap]);
   return { query, data, problem, requested, signature, calculate, showOnMap, setShowOnMap, mapData };

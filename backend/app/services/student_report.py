@@ -19,6 +19,7 @@ from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
 
 from app.services.plan_metrics import DerivedMetric
+from app.services.saved_site_assessment import matching_assessment
 from app.services.model_contract import uses_placement_plot, catalogue_dwellings
 from app.services.lego_assembly import DETACHED_ARCHETYPE_IDS, catalog_parent_archetype_id
 from app.services.residual_landscape import community_3d_source_hash
@@ -152,6 +153,7 @@ def build_snapshot(
     ]
     return {
         "project_name": project.name,
+        "site_assessment": (matching_assessment(getattr(project, "metadata_", None), boundary["id"], _shape(boundary)) or {}).get("assessment") if boundary else None,
         "description": project.description or "",
         "project_boundary": project_boundary,
         "scope_zone_ids": sorted(set(zone_ids)) if zone_ids is not None else None,
@@ -391,6 +393,27 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 mode="geometry",
             ).model_dump()
         )
+
+    assessment = snapshot.get("site_assessment")
+    if assessment:
+        partial = assessment.get("partial_property_count", 0) > 0
+        known = assessment.get("property_count", 0) > assessment.get("missing_value_count", 0)
+        full = assessment.get("full_property_assessed_total") if known else None
+        value = (assessment.get("area_weighted_estimate") if partial else full) if known else None
+        provenance = f"Calgary assessment roll {assessment.get('roll_year')}; retrieved {assessment.get('fetched_at', '')[:10]}."
+        metric("property_assessment_cad", "Whole-property assessed total", full, "CAD", provenance)
+        metric("site_assessment_cad", "Prorated site estimate" if partial else "Assessed site value", value, "CAD",
+               provenance + (" Prorated by intersecting parcel area." if partial else " Whole intersecting properties."))
+        finding("site-assessment", "Existing property assessment", provenance +
+                f" {assessment.get('property_count', 0)} properties; {assessment.get('assessed_coverage_pct', 0)}% mapped coverage.",
+                "Use this as an approximate existing-site cost context, and explain the assumption in your proposal.",
+                basis="Saved City of Calgary property assessment data",
+                uncertainty="Assessed value is not a purchase price or a valuation of the proposed design. " +
+                ("Partial properties are prorated by area, not officially assessed as separate sites. " if partial else "") +
+                ("Incomplete coverage or missing assessments can understate the total." if not assessment.get('complete') or assessment.get('assessed_coverage_pct', 0) < 100 else ""),
+                kind="source_context",
+                sources=[{"title": "Calgary property assessments", "url": assessment.get("source_url"),
+                          "section": f"Assessment roll {assessment.get('roll_year')}"}])
 
     metric(
         "proposal_zones",

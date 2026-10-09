@@ -59,6 +59,36 @@ def values(analysis):
     return {metric["key"]: metric["value"] for metric in analysis["metrics"]}
 
 
+def test_report_includes_saved_assessment_with_provenance_and_excludes_changed_site():
+    boundary = zone("site_boundary")
+    assessment = {"boundary_id": str(boundary.id), "roll_year": 2026,
+                  "full_property_assessed_total": 500000, "area_weighted_estimate": 350000,
+                  "partial_property_count": 1, "property_count": 2, "missing_value_count": 0,
+                  "complete": True, "assessed_coverage_pct": 90,
+                  "fetched_at": "2026-10-08T12:00:00Z", "source_url": "https://data.calgary.ca/test"}
+    project = SimpleNamespace(name="Trial", description="", site_boundary=None, metadata_={
+        "site_assessment": {"boundary_id": str(boundary.id),
+                            "coordinates": list(boundary.geometry.exterior.coords), "assessment": assessment}})
+    plan = build_snapshot(project, [boundary], [], [], None)
+    analysis = analyze_snapshot(plan)
+    assert values(analysis)["site_assessment_cad"] == 350000
+    assert values(analysis)["property_assessment_cad"] == 500000
+    evidence = next(f for f in analysis['findings'] if f['id'] == 'site-assessment')
+    assert '2026-10-08' in evidence['observation']
+    assert 'prorat' in evidence['uncertainty'].lower()
+    assert evidence['sources'][0]['url'] == assessment['source_url']
+    rendered = report_html({"analysis": analysis, "project_name": "Trial", "created_at": "2026-10-08",
+                            "plan_version": "trial", "is_stale": False, "decisions": {},
+                            "requested_by_name": "Student", "id": "report", "response_revision": 0}, plan, [])
+    assert assessment['source_url'] in rendered
+    assert '350000' in rendered
+    boundary.geometry = rectangle(x=.001)
+    changed = build_snapshot(project, [boundary], [], [], None)
+    assert changed.get('site_assessment') is None
+    assert 'site_assessment_cad' not in values(analyze_snapshot(changed))
+    assert digest(plan) != digest(changed)
+
+
 def test_exact_catalogue_dwelling_programmes_are_counted_without_plot_floor_area():
     props = dict(pick_place_asset="clay_affordable_aspen_original",
                  development_selected_variant_id="affordable_aspen_original",
