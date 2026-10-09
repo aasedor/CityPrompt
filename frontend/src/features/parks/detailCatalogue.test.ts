@@ -9,9 +9,21 @@ import rustic from "../../../public/landscape-pilots/neighborhood-rustic-v5/mani
 import extras from "./detailCatalogueExtras.json";
 
 describe("standalone detail catalogue", () => {
+  it("offers the twenty site-finishing details with bounded geometry", () => {
+    const slugs = ['outdoor-stairs', 'accessible-ramp', 'modular-handrail', 'retaining-wall',
+      'refuge-island', 'planted-curb-extension', 'tactile-curb-ramp', 'covered-bike-parking',
+      'bicycle-locker', 'ev-charger', 'accessible-parking', 'loading-zone', 'waste-enclosure',
+      'privacy-screen', 'public-art', 'food-truck', 'cafe-barrier', 'community-noticeboard',
+      'rainwater-cistern', 'public-washroom'];
+    const batch = extras.filter(m => m.id.startsWith('detail-site-'));
+    expect(batch.map(m => m.id).sort()).toEqual(slugs.map(s => `detail-site-${s}`).sort());
+    expect(batch.reduce((sum, m) => sum + m.bytes, 0)).toBeLessThan(5_000_000);
+    batch.forEach(m => { expect(m.triangles).toBeLessThan(25_000); expect(m.meshes).toBeLessThanOrEqual(10); });
+    expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
+  });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(145);
-    expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(145);
+    expect(DETAIL_CATALOGUE).toHaveLength(165);
+    expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(165);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-"),
     )) {

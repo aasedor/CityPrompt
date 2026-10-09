@@ -1,4 +1,5 @@
 import extras from "./detailCatalogueExtras.json";
+import type { DetailWalkSurface } from "./detailWalking";
 export interface DetailAsset {
   id: string;
   label: string;
@@ -10,6 +11,8 @@ export interface DetailAsset {
   kind: "bench" | "tree" | "object";
   /** Translation in source Y-up coordinates, before the globe conversion. */
   offset?: readonly number[];
+  /** Authored pedestrian surface only; furniture and roofs never lift the walker. */
+  walkSurface?: DetailWalkSurface;
 }
 const extraModels = extras as DetailAsset[];
 /** Existing metric assets only. No user-provided paths or nonuniform scaling. */

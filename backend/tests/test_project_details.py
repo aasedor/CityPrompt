@@ -10,6 +10,15 @@ from app.api.v1 import project_details as endpoint
 PAVING = {'id':'paving-1', 'material':'concrete', 'coordinates':[
     [-114.1,51.05],[-114.0998,51.05],[-114.0998,51.0502],[-114.1,51.0502]]}
 
+SITE_DETAIL_IDS = tuple(f'detail-site-{slug}' for slug in (
+    'outdoor-stairs', 'accessible-ramp', 'modular-handrail', 'retaining-wall',
+    'refuge-island', 'planted-curb-extension', 'tactile-curb-ramp',
+    'covered-bike-parking', 'bicycle-locker', 'ev-charger', 'accessible-parking',
+    'loading-zone', 'waste-enclosure', 'privacy-screen', 'public-art',
+    'food-truck', 'cafe-barrier', 'community-noticeboard', 'rainwater-cistern',
+    'public-washroom',
+))
+
 @pytest.mark.asyncio
 async def test_paving_round_trip_and_old_clients_preserve_surfaces(monkeypatch):
     monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
@@ -131,7 +140,7 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
     from pathlib import Path
     root = Path(__file__).resolve().parents[2]
     choices = json.loads((root / 'frontend/src/features/parks/detailCatalogueExtras.json').read_text())
-    assert len(choices) == 135
+    assert len(choices) == 155
     assert set(endpoint._DETAIL_MODELS['trees']) == {'oak-0','oak-1','oak-2'} | {c['id'] for c in choices if c['kind'] == 'tree'}
     assert set(endpoint._DETAIL_MODELS['props']) == {'picnic-table-accessible','dual-stream-bin','bike-rack-three-stall','drinking-fountain-accessible','boulders','split-rail'} | {c['id'] for c in choices if c['kind'] == 'object'}
     for choice in choices:
@@ -140,6 +149,49 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
             'id': 'trial', 'lng': -114.1, 'lat': 51.05, 'angle': 15, 'variant': choice['id']
         }]})
         assert getattr(request, field)[0].variant == choice['id']
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('variant', SITE_DETAIL_IDS)
+async def test_site_details_save_reload_rotate_and_preserve_project_metadata(monkeypatch, variant):
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    metadata = {'address': 'Riley', 'other': {'keep': True}}
+    db, row = session(metadata.copy())
+    project_id = uuid.uuid4()
+    prop = {'id': 'site-prop', 'lng': -114.1, 'lat': 51.05, 'angle': 45, 'variant': variant}
+    saved = await endpoint.save_details(project_id, endpoint.DetailUpdate(
+        expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db)
+    assert saved['props'] == [prop]
+    assert saved['revision'] == 1
+    rotated = {**prop, 'angle': -90}
+    await endpoint.save_details(project_id, endpoint.DetailUpdate(
+        expected_revision=1, benches=[], props=[rotated]), SimpleNamespace(), db)
+    loaded = await endpoint.get_details(project_id, SimpleNamespace(), db)
+    assert loaded['props'] == [rotated]
+    assert loaded['revision'] == 2
+    assert {key: row.metadata_[key] for key in metadata} == metadata
+    legacy = await endpoint.save_details(project_id, endpoint.DetailUpdate(
+        expected_revision=2, benches=[]), SimpleNamespace(), db)
+    assert legacy['props'] == [rotated]
+
+
+@pytest.mark.parametrize('patch', [
+    {'variant': 'detail-site-unknown'}, {'variant': '/untrusted/model.glb'},
+    {'angle': 361}, {'angle': -361}, {'angle': float('nan')},
+])
+def test_site_details_reject_unknown_models_and_invalid_rotation(patch):
+    prop = {'id': 'site-prop', 'lng': -114.1, 'lat': 51.05, 'angle': 0,
+            'variant': 'detail-site-outdoor-stairs'}
+    with pytest.raises(ValidationError):
+        endpoint.DetailUpdate(expected_revision=0, benches=[], props=[{**prop, **patch}])
+
+
+def test_site_objects_cannot_be_saved_as_trees():
+    with pytest.raises(ValidationError, match='Unknown tree model'):
+        endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[{
+            'id': 'site-prop', 'lng': -114.1, 'lat': 51.05, 'angle': 0,
+            'variant': 'detail-site-outdoor-stairs',
+        }])
 
 
 def test_traffic_details_ship_real_hash_locked_models():

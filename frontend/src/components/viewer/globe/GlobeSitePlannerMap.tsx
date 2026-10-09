@@ -122,6 +122,7 @@ import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
+import { detailWalkGround } from '@/features/parks/detailWalking';
 import { preparedWalkSurface } from './preparedWalkSurface';
 import { elevatedRailLiftDestination } from './elevatedRailWalking';
 import { nativeParkLiftDestination, nativeParkWalkEntrance, nativeParkWalkStartForZone } from '@/features/parks/nativeParkWalking';
@@ -2383,6 +2384,7 @@ export function GlobeSitePlannerMap({
     }
     if (inspectionPose) next = inspectionPose;
     let groundHeight = inspectionPose?.groundHeight ?? authoredCameraGround(terrainZonesRef.current, next.lng, next.lat, next.groundHeight);
+    if (!inspectionPose) groundHeight = detailWalkGround(next.lng, next.lat, groundHeight, next.groundHeight, walkPoseRef.current);
     // The isolated terrain rehearsal uses the same physical surface for its
     // pedestrian camera. This development hook is absent from release builds.
     if (import.meta.env.DEV) {

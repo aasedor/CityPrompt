@@ -145,6 +145,26 @@
     "detail-speed-hump",
     "detail-raised-crossing",
     "detail-flexible-bollard",
-    "detail-traffic-cone"
+    "detail-traffic-cone",
+    "detail-site-outdoor-stairs",
+    "detail-site-accessible-ramp",
+    "detail-site-modular-handrail",
+    "detail-site-retaining-wall",
+    "detail-site-refuge-island",
+    "detail-site-planted-curb-extension",
+    "detail-site-tactile-curb-ramp",
+    "detail-site-covered-bike-parking",
+    "detail-site-bicycle-locker",
+    "detail-site-ev-charger",
+    "detail-site-accessible-parking",
+    "detail-site-loading-zone",
+    "detail-site-waste-enclosure",
+    "detail-site-privacy-screen",
+    "detail-site-public-art",
+    "detail-site-food-truck",
+    "detail-site-cafe-barrier",
+    "detail-site-community-noticeboard",
+    "detail-site-rainwater-cistern",
+    "detail-site-public-washroom"
   ]
 }

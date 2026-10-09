@@ -370,6 +370,7 @@
     "src/features/parks/detailCatalogueExtras.json",
     "src/features/parks/detailInstances.ts",
     "src/features/parks/detailThumbnail.ts",
+    "src/features/parks/detailWalking.ts",
     "src/features/parks/flexibleParkFit.ts",
     "src/features/parks/measuredParkWalking.ts",
     "src/features/parks/nativeParkAccess.ts",
@@ -572,10 +573,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3062,
+    "explicitReferenceCount": 3082,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 4846,
-    "requiredLogicalBytes": 11924299183,
+    "requiredFileCount": 4866,
+    "requiredLogicalBytes": 11925583195,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -27362,6 +27363,166 @@
       ],
       "logicalBytes": 367296,
       "lfsOid": "b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
+    },
+    {
+      "url": "/street-kits/site-details-v1/accessible-parking.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 20188,
+      "lfsOid": "42bd0f85acf07fe82aead1241bffc0797638a2f065e97dd7b12ad8041fe3b498"
+    },
+    {
+      "url": "/street-kits/site-details-v1/accessible-ramp.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 76288,
+      "lfsOid": "d655e381bcc3d52419551876c76862cabc75bf919bbc0e589934a0cbd2441595"
+    },
+    {
+      "url": "/street-kits/site-details-v1/bicycle-locker.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 42200,
+      "lfsOid": "96683d6da4ba0e80e9bf090366177eb012e8de49723c8ff2bb5ee3444bf49534"
+    },
+    {
+      "url": "/street-kits/site-details-v1/cafe-barrier.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 24868,
+      "lfsOid": "ec1ecb86e56cb7a0d5d6610d070bf88d7bef4d6d5f49834dc1ade29b4269a043"
+    },
+    {
+      "url": "/street-kits/site-details-v1/community-noticeboard.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 39360,
+      "lfsOid": "45ef02947d55092d0cfe6283392f27746a4648b30fe4c7e0dc999b9340085ded"
+    },
+    {
+      "url": "/street-kits/site-details-v1/covered-bike-parking.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 52028,
+      "lfsOid": "ec3e1202b5b02b24a33cc39fedbdfbe7ccffc69415cb35bedd4beea78627c9f6"
+    },
+    {
+      "url": "/street-kits/site-details-v1/ev-charger.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 50256,
+      "lfsOid": "14649c27cf12c131284aa5468334d258b0d79da61da4b582e6782eba474706b9"
+    },
+    {
+      "url": "/street-kits/site-details-v1/food-truck.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 82264,
+      "lfsOid": "5e848c0883193f312782a0b8711bf440049fe9b45a0ba712ca722511037cd430"
+    },
+    {
+      "url": "/street-kits/site-details-v1/loading-zone.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 31524,
+      "lfsOid": "e200c403b6ed5895a5d7b4ef35295dd7bab731a9183f85067bc30723bef9f082"
+    },
+    {
+      "url": "/street-kits/site-details-v1/modular-handrail.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 19732,
+      "lfsOid": "ed54e26188fca16636495d7356e7d393fdc19866db4c2ca715388b0365b263e4"
+    },
+    {
+      "url": "/street-kits/site-details-v1/outdoor-stairs.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 51684,
+      "lfsOid": "128530030a78117fc44d1de8ecc96b67c8cb1c5a6d6cccdd54e0be39560db91c"
+    },
+    {
+      "url": "/street-kits/site-details-v1/planted-curb-extension.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 127144,
+      "lfsOid": "cbc972e0d432f1a8e1ba49597c4e98e9b4496f2f08b65d4e840b93e487f3a6f5"
+    },
+    {
+      "url": "/street-kits/site-details-v1/privacy-screen.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 12932,
+      "lfsOid": "4667690f8789882c0567522f419d1cbf24d76bf8657e14135eafadc47396db1f"
+    },
+    {
+      "url": "/street-kits/site-details-v1/public-art.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 19684,
+      "lfsOid": "baa7b68d81182380a2e6fd1a395b2b9f9810777cc1b761cff183e482ecfdf6a8"
+    },
+    {
+      "url": "/street-kits/site-details-v1/public-washroom.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 51492,
+      "lfsOid": "6dccf1e889903652515284047cf33c8ed0366ea9afd46a70b790273a7671f242"
+    },
+    {
+      "url": "/street-kits/site-details-v1/rainwater-cistern.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 98840,
+      "lfsOid": "e3ae8394eed40d428746bde017823b37e2be6a0bd7e0092272a556e5bd049933"
+    },
+    {
+      "url": "/street-kits/site-details-v1/refuge-island.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 282328,
+      "lfsOid": "57eb3816838e05c4b4d4912be09b517c85c1f804d9469f26358d6fce58471035"
+    },
+    {
+      "url": "/street-kits/site-details-v1/retaining-wall.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 13872,
+      "lfsOid": "ce51925044423346d4376ecd3971982e25b5c7b69d9bcb46fe04b30a09c41870"
+    },
+    {
+      "url": "/street-kits/site-details-v1/tactile-curb-ramp.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 123972,
+      "lfsOid": "fece6c1481044de4b45353d704d7dd25e596ddba44b938d0e44bf2b0da9a6940"
+    },
+    {
+      "url": "/street-kits/site-details-v1/waste-enclosure.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 63356,
+      "lfsOid": "3aee84ad8de30ccb8508868ba6957368911e99b770c59b647d10f65900456a40"
     },
     {
       "url": "/street-kits/traffic-safety-v1/flexible-bollard.glb",

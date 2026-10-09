@@ -97,6 +97,7 @@ function Metrics({ onStats }: { onStats: (value: string) => void }) {
 function Review() {
   const pageCount = Math.ceil(DETAIL_CATALOGUE.length / 20);
   const [page, setPage] = useState(0),
+    [siteBatch, setSiteBatch] = useState(false),
     [stress, setStress] = useState(false),
     [batched, setBatched] = useState(true),
     [stats, setStats] = useState("Loading");
@@ -126,12 +127,14 @@ function Review() {
       >
         <b>{DETAIL_CATALOGUE.length}-object catalogue review</b> · {stats}
         <br />
-        <button onClick={() => setStress(false)}>Catalogue</button>
+        <button onClick={() => { setStress(false); setSiteBatch(false); }}>Catalogue</button>
+        <button onClick={() => { setStress(false); setSiteBatch(true); }}>Site finishing · 20</button>
         {Array.from({ length: pageCount }, (_, n) => n).map((n) => (
           <button
             key={n}
             onClick={() => {
               setPage(n);
+              setSiteBatch(false);
               setStress(false);
             }}
           >
@@ -145,6 +148,7 @@ function Review() {
         <br />
         {stress
           ? `${batched ? "Batched" : "Individual"} · 100 identical benches, same camera and geometry`
+          : siteBatch ? 'Site finishing · normalized preview sizes; labels show real dimensions'
           : `Page ${page + 1} of ${pageCount} · normalized preview sizes; labels show real dimensions`}
       </div>
       <Canvas
@@ -174,7 +178,7 @@ function Review() {
             />
           </Suspense>
         ) : (
-          DETAIL_CATALOGUE.slice(page * 20, page * 20 + 20).map((m, i) => (
+          (siteBatch ? DETAIL_CATALOGUE.filter(m => m.id.startsWith('detail-site-')) : DETAIL_CATALOGUE.slice(page * 20, page * 20 + 20)).map((m, i) => (
             <Card key={m.id} asset={m.id} index={i} />
           ))
         )}

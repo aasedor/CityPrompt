@@ -9,6 +9,30 @@ import { DETAIL_CATEGORIES, searchDetails } from './detailCatalogue';
 vi.mock('./detailThumbnail', () => ({ detailThumbnail: async () => 'data:image/png;base64,preview' }));
 afterEach(() => vi.unstubAllGlobals());
 describe('detail catalogue workflow', () => {
+  it('places repeatable access pieces with rotation while the picker stays open', async () => {
+    vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} });
+    const saved: ProjectDetails[] = [];
+    function Trial() {
+      const placement = useDetailPlacement({ version: 1, revision: 0, can_edit: true, benches: [] }, async next => {
+        const result = { ...next, revision: next.revision + 1 }; saved.push(result); return result;
+      });
+      return <><DetailPlacementPanel placement={placement} canEdit onClose={() => {}} onArrange={() => {}} />
+        <button onClick={() => void placement.place([-114, 51])}>Access placement ground</button></>;
+    }
+    render(<Trial />);
+    fireEvent.click(screen.getByRole('button', { name: 'Browse Access & levels' }));
+    const ramp = searchDetails('', 'Access & levels').find(m => m.id === 'detail-site-accessible-ramp')!;
+    fireEvent.click(screen.getByRole('button', { name: `Choose ${ramp.label}` }));
+    fireEvent.change(screen.getByLabelText('Detail rotation'), { target: { value: '90' } });
+    fireEvent.click(screen.getByText('Access placement ground'));
+    await waitFor(() => expect(saved).toHaveLength(1));
+    expect(saved[0].props?.[0]).toMatchObject({ variant: ramp.id, angle: 90 });
+    fireEvent.click(screen.getByText('Access placement ground'));
+    await waitFor(() => expect(saved).toHaveLength(2));
+    expect(saved[1].props).toHaveLength(2);
+    expect(screen.getByRole('complementary', { name: 'Detail catalogue' })).toBeVisible();
+    expect(screen.getByLabelText('Item category')).toHaveValue('Access & levels');
+  });
   it('opens at categories, filters every group, and searches across items from home', () => {
     vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} });
     function Trial() {

@@ -4,6 +4,7 @@ import { WGS84_ELLIPSOID } from "3d-tiles-renderer";
 import { EastNorthUpFrame } from "3d-tiles-renderer/r3f";
 import { Matrix4 } from "three";
 import { detailAsset } from "./detailCatalogue";
+import { registerDetailWalkSurfaces } from "./detailWalking";
 import {
   buildDetailInstances,
   detailPlacementMatrix,
@@ -39,6 +40,9 @@ export function DetailModelInstances({
     return result;
   }, [scene, placements, model, asset]);
   useEffect(() => () => disposeDetailInstances(group), [group]);
+  useEffect(() => model.walkSurface
+    ? registerDetailWalkSurfaces(model.walkSurface, placements, model.offset)
+    : undefined, [model, placements]);
   return (
     <EastNorthUpFrame
       lat={(origin.lat * Math.PI) / 180}

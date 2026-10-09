@@ -3273,5 +3273,590 @@
     "triangles": 362,
     "meshes": 3,
     "bytes": 19936
+  },
+  {
+    "id": "detail-site-outdoor-stairs",
+    "label": "Outdoor stairs",
+    "category": "Access & levels",
+    "description": "Six 150 mm concrete risers, 300 mm treads, upper landing and twin handrails.",
+    "dimensions": [
+      2.12,
+      3.09,
+      1.96
+    ],
+    "url": "/street-kits/site-details-v1/outdoor-stairs.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.015,
+      0.025
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "128530030a78117fc44d1de8ecc96b67c8cb1c5a6d6cccdd54e0be39560db91c",
+    "triangles": 1044,
+    "meshes": 3,
+    "bytes": 51684,
+    "walkSurface": {
+      "type": "profile",
+      "width": 1.8,
+      "interpolation": "step",
+      "stations": [
+        {
+          "z": -1.5,
+          "height": 0
+        },
+        {
+          "z": -1.5,
+          "height": 0.0
+        },
+        {
+          "z": -1.5,
+          "height": 0.15
+        },
+        {
+          "z": -1.2,
+          "height": 0.15
+        },
+        {
+          "z": -1.2,
+          "height": 0.3
+        },
+        {
+          "z": -0.9,
+          "height": 0.3
+        },
+        {
+          "z": -0.9,
+          "height": 0.45
+        },
+        {
+          "z": -0.6,
+          "height": 0.45
+        },
+        {
+          "z": -0.6,
+          "height": 0.6
+        },
+        {
+          "z": -0.3,
+          "height": 0.6
+        },
+        {
+          "z": -0.3,
+          "height": 0.75
+        },
+        {
+          "z": 0.0,
+          "height": 0.75
+        },
+        {
+          "z": 0.0,
+          "height": 0.9
+        },
+        {
+          "z": 1.5,
+          "height": 0.9
+        }
+      ]
+    }
+  },
+  {
+    "id": "detail-site-accessible-ramp",
+    "label": "Accessible ramp",
+    "category": "Access & levels",
+    "description": "Straight 1:12 concept ramp with 1.5 m landings, 1.8 m clear width and dual-height rails.",
+    "dimensions": [
+      2.12,
+      10.2,
+      1.66
+    ],
+    "url": "/street-kits/site-details-v1/accessible-ramp.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.015,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "d655e381bcc3d52419551876c76862cabc75bf919bbc0e589934a0cbd2441595",
+    "triangles": 1588,
+    "meshes": 2,
+    "bytes": 76288,
+    "walkSurface": {
+      "type": "profile",
+      "width": 1.8,
+      "interpolation": "linear",
+      "stations": [
+        {
+          "z": -5.1,
+          "height": 0
+        },
+        {
+          "z": -3.6,
+          "height": 0
+        },
+        {
+          "z": 3.6,
+          "height": 0.6
+        },
+        {
+          "z": 5.1,
+          "height": 0.6
+        }
+      ]
+    }
+  },
+  {
+    "id": "detail-site-modular-handrail",
+    "label": "Modular handrail",
+    "category": "Access & levels",
+    "description": "Repeatable three-metre steel handrail with intermediate rail and bolted base plates.",
+    "dimensions": [
+      3.0,
+      0.18,
+      1.127
+    ],
+    "url": "/street-kits/site-details-v1/modular-handrail.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "ed54e26188fca16636495d7356e7d393fdc19866db4c2ca715388b0365b263e4",
+    "triangles": 376,
+    "meshes": 2,
+    "bytes": 19732
+  },
+  {
+    "id": "detail-site-retaining-wall",
+    "label": "Retaining wall",
+    "category": "Access & levels",
+    "description": "Three-metre precast retaining-wall segment with coping, joints and drainage outlets.",
+    "dimensions": [
+      3.0,
+      0.8,
+      1.27
+    ],
+    "url": "/street-kits/site-details-v1/retaining-wall.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "ce51925044423346d4376ecd3971982e25b5c7b69d9bcb46fe04b30a09c41870",
+    "triangles": 228,
+    "meshes": 3,
+    "bytes": 13872
+  },
+  {
+    "id": "detail-site-refuge-island",
+    "label": "Pedestrian refuge island",
+    "category": "Traffic & safety",
+    "description": "Raised rounded island ends around a ground-level pedestrian refuge with tactile strips.",
+    "dimensions": [
+      1.8,
+      6.6,
+      1.05
+    ],
+    "url": "/street-kits/site-details-v1/refuge-island.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "57eb3816838e05c4b4d4912be09b517c85c1f804d9469f26358d6fce58471035",
+    "triangles": 5928,
+    "meshes": 3,
+    "bytes": 282328
+  },
+  {
+    "id": "detail-site-planted-curb-extension",
+    "label": "Planted curb extension",
+    "category": "Landscape",
+    "description": "Curb extension with planted soil, flowering grasses and curb drainage openings.",
+    "dimensions": [
+      2.9,
+      4.8,
+      0.6939
+    ],
+    "url": "/street-kits/site-details-v1/planted-curb-extension.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "cbc972e0d432f1a8e1ba49597c4e98e9b4496f2f08b65d4e840b93e487f3a6f5",
+    "triangles": 2448,
+    "meshes": 4,
+    "bytes": 127144
+  },
+  {
+    "id": "detail-site-tactile-curb-ramp",
+    "label": "Tactile curb ramp",
+    "category": "Access & levels",
+    "description": "Flush-entry ramp with flared sides, raised landing and tactile warning domes.",
+    "dimensions": [
+      2.5,
+      3.0,
+      0.165
+    ],
+    "url": "/street-kits/site-details-v1/tactile-curb-ramp.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      0.015,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "fece6c1481044de4b45353d704d7dd25e596ddba44b938d0e44bf2b0da9a6940",
+    "triangles": 2582,
+    "meshes": 2,
+    "bytes": 123972,
+    "walkSurface": {
+      "type": "profile",
+      "width": 1.5,
+      "interpolation": "linear",
+      "stations": [
+        {
+          "z": -1.5,
+          "height": 0
+        },
+        {
+          "z": 0.3,
+          "height": 0.15
+        },
+        {
+          "z": 1.5,
+          "height": 0.15
+        }
+      ]
+    }
+  },
+  {
+    "id": "detail-site-covered-bike-parking",
+    "label": "Covered bicycle parking",
+    "category": "Shelters & markets",
+    "description": "Open steel cycle canopy with six inverted-U bicycle stands.",
+    "dimensions": [
+      5.25,
+      2.8,
+      2.7825
+    ],
+    "url": "/street-kits/site-details-v1/covered-bike-parking.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "ec3e1202b5b02b24a33cc39fedbdfbe7ccffc69415cb35bedd4beea78627c9f6",
+    "triangles": 1056,
+    "meshes": 2,
+    "bytes": 52028
+  },
+  {
+    "id": "detail-site-bicycle-locker",
+    "label": "Bicycle locker",
+    "category": "Street furniture",
+    "description": "Two secure bicycle compartments with overhanging roof, vents and door handles.",
+    "dimensions": [
+      1.94,
+      2.3,
+      1.4
+    ],
+    "url": "/street-kits/site-details-v1/bicycle-locker.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "96683d6da4ba0e80e9bf090366177eb012e8de49723c8ff2bb5ee3444bf49534",
+    "triangles": 860,
+    "meshes": 4,
+    "bytes": 42200
+  },
+  {
+    "id": "detail-site-ev-charger",
+    "label": "EV charging station",
+    "category": "Street furniture",
+    "description": "Twin-cable charging pedestal with screens, connectors and protective bollards.",
+    "dimensions": [
+      1.63,
+      0.62,
+      1.88
+    ],
+    "url": "/street-kits/site-details-v1/ev-charger.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "14649c27cf12c131284aa5468334d258b0d79da61da4b582e6782eba474706b9",
+    "triangles": 956,
+    "meshes": 6,
+    "bytes": 50256
+  },
+  {
+    "id": "detail-site-accessible-parking",
+    "label": "Accessible parking bay",
+    "category": "Traffic & safety",
+    "description": "Concept parking bay and hatched access aisle with wheelchair symbol, wheel stop and sign; verify local requirements.",
+    "dimensions": [
+      4.04,
+      5.5,
+      2.35
+    ],
+    "url": "/street-kits/site-details-v1/accessible-parking.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      0.02,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "42bd0f85acf07fe82aead1241bffc0797638a2f065e97dd7b12ad8041fe3b498",
+    "triangles": 296,
+    "meshes": 6,
+    "bytes": 20188
+  },
+  {
+    "id": "detail-site-loading-zone",
+    "label": "Loading zone",
+    "category": "Traffic & safety",
+    "description": "Concept loading bay with curbside sign and yellow end markings; verify local requirements.",
+    "dimensions": [
+      3.04,
+      7.0,
+      2.35
+    ],
+    "url": "/street-kits/site-details-v1/loading-zone.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      0.02,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "e200c403b6ed5895a5d7b4ef35295dd7bab731a9183f85067bc30723bef9f082",
+    "triangles": 592,
+    "meshes": 6,
+    "bytes": 31524
+  },
+  {
+    "id": "detail-site-waste-enclosure",
+    "label": "Waste enclosure",
+    "category": "Edges & gates",
+    "description": "Slatted three-sided service enclosure with two lidded bins and open access.",
+    "dimensions": [
+      3.3,
+      2.4,
+      1.8525
+    ],
+    "url": "/street-kits/site-details-v1/waste-enclosure.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.05
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "3aee84ad8de30ccb8508868ba6957368911e99b770c59b647d10f65900456a40",
+    "triangles": 1220,
+    "meshes": 4,
+    "bytes": 63356
+  },
+  {
+    "id": "detail-site-privacy-screen",
+    "label": "Privacy screen",
+    "category": "Edges & gates",
+    "description": "Repeatable timber privacy panel with steel posts, horizontal slats and foot plates.",
+    "dimensions": [
+      3.1,
+      0.2,
+      1.9
+    ],
+    "url": "/street-kits/site-details-v1/privacy-screen.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "4667690f8789882c0567522f419d1cbf24d76bf8657e14135eafadc47396db1f",
+    "triangles": 204,
+    "meshes": 2,
+    "bytes": 12932
+  },
+  {
+    "id": "detail-site-public-art",
+    "label": "Public art sculpture",
+    "category": "Water & landmarks",
+    "description": "Interwoven bronze ribbon sculpture on a low circular stone plinth.",
+    "dimensions": [
+      1.76,
+      1.76,
+      2.65
+    ],
+    "url": "/street-kits/site-details-v1/public-art.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "baa7b68d81182380a2e6fd1a395b2b9f9810777cc1b761cff183e482ecfdf6a8",
+    "triangles": 360,
+    "meshes": 2,
+    "bytes": 19684
+  },
+  {
+    "id": "detail-site-food-truck",
+    "label": "Food truck",
+    "category": "Shelters & markets",
+    "description": "Parked catering truck with real serving opening, raised canopy, menu and counter.",
+    "dimensions": [
+      5.6,
+      2.5712,
+      2.7338
+    ],
+    "url": "/street-kits/site-details-v1/food-truck.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.01,
+      -0.17458
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "5e848c0883193f312782a0b8711bf440049fe9b45a0ba712ca722511037cd430",
+    "triangles": 1672,
+    "meshes": 7,
+    "bytes": 82264
+  },
+  {
+    "id": "detail-site-cafe-barrier",
+    "label": "Cafe barrier",
+    "category": "Edges & gates",
+    "description": "Repeatable weighted cafe windbreak with metal frame and woven infill.",
+    "dimensions": [
+      2.34,
+      0.44,
+      1.1
+    ],
+    "url": "/street-kits/site-details-v1/cafe-barrier.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "ec1ecb86e56cb7a0d5d6610d070bf88d7bef4d6d5f49834dc1ade29b4269a043",
+    "triangles": 500,
+    "meshes": 3,
+    "bytes": 24868
+  },
+  {
+    "id": "detail-site-community-noticeboard",
+    "label": "Community noticeboard",
+    "category": "Street furniture",
+    "description": "Roofed timber community board with pinned notices and glazed-looking inset.",
+    "dimensions": [
+      2.05,
+      0.55,
+      2.36
+    ],
+    "url": "/street-kits/site-details-v1/community-noticeboard.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "45ef02947d55092d0cfe6283392f27746a4648b30fe4c7e0dc999b9340085ded",
+    "triangles": 736,
+    "meshes": 5,
+    "bytes": 39360
+  },
+  {
+    "id": "detail-site-rainwater-cistern",
+    "label": "Rainwater cistern",
+    "category": "Garden & growing",
+    "description": "Ribbed collection tank with inlet, inspection lid, overflow pipe and tap.",
+    "dimensions": [
+      1.92,
+      1.72,
+      2.26
+    ],
+    "url": "/street-kits/site-details-v1/rainwater-cistern.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.02,
+      -0.0,
+      -0.04
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "e3ae8394eed40d428746bde017823b37e2be6a0bd7e0092272a556e5bd049933",
+    "triangles": 2180,
+    "meshes": 5,
+    "bytes": 98840
+  },
+  {
+    "id": "detail-site-public-washroom",
+    "label": "Public washroom",
+    "category": "Shelters & markets",
+    "description": "Small open-door washroom prop with toilet, basin, grab rails and interior clearance.",
+    "dimensions": [
+      3.28,
+      3.48,
+      2.74
+    ],
+    "url": "/street-kits/site-details-v1/public-washroom.glb",
+    "color": "#688779",
+    "kind": "object",
+    "offset": [
+      -0.0,
+      -0.0,
+      0.0
+    ],
+    "sourceKit": "site-details-v1",
+    "sha256": "6dccf1e889903652515284047cf33c8ed0366ea9afd46a70b790273a7671f242",
+    "triangles": 908,
+    "meshes": 7,
+    "bytes": 51492
   }
 ]
