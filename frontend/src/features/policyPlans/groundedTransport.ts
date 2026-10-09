@@ -39,7 +39,10 @@ export function sampleGeographicSurface(lng: number, lat: number, roots: THREE.O
 }
 
 /** Batched geometry with small mutable patches. Unknown segments are collapsed
- * until both ends have terrain evidence; existing samples survive missing tiles. */
+ * until both ends have terrain evidence; existing samples survive missing tiles.
+ * Map ink is composited over the 3D scene, without depth testing: tile relief,
+ * trees and later LODs cannot swallow it. This changes visibility only, never
+ * the geographic anchor or its height to suit a camera angle. */
 export function buildGroundedTransport(data: TransportSnapshot, mapId: string, order: number) {
   const origin = WGS84_ELLIPSOID.getCartographicToPosition(51.05 * RAD, -114.07 * RAD, 0, new THREE.Vector3());
   const nodes: GroundNode[] = [], lookup = new Map<string, GroundNode>(), objects: TransportObject[] = [];
@@ -101,7 +104,7 @@ export function buildGroundedTransport(data: TransportSnapshot, mapId: string, o
       const geometry = new LineSegmentsGeometry().setPositions(new Float32Array(batch.segments.length * 6));
       const grounded = new THREE.InstancedBufferAttribute(new Float32Array(batch.segments.length), 1);
       geometry.setAttribute('instanceGrounded', grounded);
-      const material = new LineMaterial({ color: style.color, linewidth: 4, transparent: true, depthTest: true, depthWrite: false, toneMapped: false, dashed: style.dashed, dashSize: 30, gapSize: 20 });
+      const material = new LineMaterial({ color: style.color, linewidth: 4, transparent: true, depthTest: false, depthWrite: false, toneMapped: false, dashed: style.dashed, dashSize: 30, gapSize: 20 });
       // A collapsed segment is not a safe hidden line: the wide-line shader
       // normalizes its zero direction and can produce screen-spanning spikes.
       // Cull unknown instances before any perspective/line-width calculations.
@@ -133,7 +136,7 @@ export function buildGroundedTransport(data: TransportSnapshot, mapId: string, o
     if (batch.triangles.length) {
       const geometry = new THREE.BufferGeometry(), positions = new THREE.BufferAttribute(new Float32Array(batch.triangles.length * 9), 3);
       geometry.setAttribute('position', positions);
-      const material = new THREE.MeshBasicMaterial({ color: style.color, transparent: true, depthTest: true, depthWrite: false, toneMapped: false, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
+      const material = new THREE.MeshBasicMaterial({ color: style.color, transparent: true, depthTest: false, depthWrite: false, toneMapped: false, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
       batch.triangles.forEach((triangle, i) => {
         const update = () => {
           if (triangle.some(n => n.height === null)) return;

@@ -38,7 +38,10 @@ describe('grounded transportation', () => {
       const world = node.position.clone().add(result.origin);
       expect(WGS84_ELLIPSOID.getPositionElevation(world)).toBeCloseTo(1000 + (node.lng + 114.07) * 10000 + .2, 4);
     }
-    expect(result.objects.every(o => (o.material as THREE.Material).depthTest)).toBe(true);
+    // Geographic coordinates remain grounded, but map ink must stay readable
+    // when the Google mesh lies above a sampled line or stop triangle.
+    expect(result.objects.every(o => !(o.material as THREE.Material).depthTest)).toBe(true);
+    expect(result.objects.every(o => !(o.material as THREE.Material).depthWrite)).toBe(true);
     expect(result.objects[0].userData.transportIds.every((id: string) => id === 'route')).toBe(true);
     expect(result.objects[1].userData.transportIds.every((id: string) => id === 'stop')).toBe(true);
     result.dispose();
