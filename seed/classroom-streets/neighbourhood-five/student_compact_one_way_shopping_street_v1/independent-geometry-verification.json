@@ -1,0 +1,95 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "checks": [
+    "self-contained GLB buffers",
+    "delivered byte hashes",
+    "finite metric bounds",
+    "1044 clear material-aware route rays",
+    "5 tree root openings checked",
+    "native module reimport and ground datum"
+  ],
+  "runtime_tested": false,
+  "independent_reviewer": true,
+  "model_sha256": "7849a86859dc6056d45adba6dfe126cb89dceef2e9137a5bf59bafbff7e8a4ef",
+  "native_modules": {
+    "bike_rack": {
+      "bounds_m": [
+        [
+          -0.6600000262260437,
+          -0.38499999046325684,
+          -1.0430813157658037E-10
+        ],
+        [
+          0.6600000262260437,
+          0.38499999046325684,
+          0.9359999895095825
+        ]
+      ],
+      "native_min_z_m": -1.0430813157658037E-10
+    },
+    "cafe_table_chairs": {
+      "bounds_m": [
+        [
+          -0.9750000238418579,
+          -0.9750000238418579,
+          0.0
+        ],
+        [
+          0.9750000238418579,
+          0.9750000238418579,
+          0.8399999737739563
+        ]
+      ],
+      "native_min_z_m": 0.0
+    },
+    "grove_tree": {
+      "bounds_m": [
+        [
+          -1.1961898803710938,
+          -1.144656777381897,
+          -0.0016432534903287888
+        ],
+        [
+          1.5199785232543945,
+          1.3824959993362427,
+          8.04883861541748
+        ]
+      ],
+      "native_min_z_m": -0.0016432534903287888
+    },
+    "heritage_lantern": {
+      "bounds_m": [
+        [
+          -0.28999999165534973,
+          -0.28999999165534973,
+          0.0
+        ],
+        [
+          0.28999999165534973,
+          0.28999999165534973,
+          4.03000020980835
+        ]
+      ],
+      "native_min_z_m": 0.0
+    },
+    "tree_well_grate": {
+      "bounds_m": [
+        [
+          -0.8999999761581421,
+          -0.8999999761581421,
+          -3.7252903539730653E-10
+        ],
+        [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.05000000074505806
+        ]
+      ],
+      "native_min_z_m": -3.7252903539730653E-10
+    }
+  },
+  "limitations": [
+    "Terminal samples are 1mm inside the mesh to avoid positive ray jitter leaving the exact boundary; no geometry or corridor widths changed.",
+    "Prepared level native fixture only; browser and terrain not tested."
+  ]
+}

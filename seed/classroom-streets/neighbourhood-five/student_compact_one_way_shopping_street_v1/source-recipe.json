@@ -1,0 +1,831 @@
+{
+  "id": "student_compact_one_way_shopping_street_v1",
+  "title": "Compact One-Way Shopping Street",
+  "kind": "shopping",
+  "reference": "compact_one_way_shopping_street/reference.png",
+  "dimensions_m": [
+    15.5,
+    40
+  ],
+  "fixed_width_m": 15.5,
+  "fixture_length_m": 40,
+  "pattern": "stone",
+  "sections": [
+    {
+      "name": "west_walk",
+      "x": -6.5,
+      "width": 2.5,
+      "material": "paving"
+    },
+    {
+      "name": "cafe_bay",
+      "x": -3.75,
+      "width": 3,
+      "material": "paving"
+    },
+    {
+      "name": "parking",
+      "x": -1.125,
+      "width": 2.25,
+      "material": "asphalt"
+    },
+    {
+      "name": "road",
+      "x": 1.625,
+      "width": 3.25,
+      "material": "asphalt"
+    },
+    {
+      "name": "east_furniture",
+      "x": 4.25,
+      "width": 2,
+      "material": "paving"
+    },
+    {
+      "name": "east_walk",
+      "x": 6.5,
+      "width": 2.5,
+      "material": "paving"
+    }
+  ],
+  "motor_lanes": 1,
+  "runtime_approved": false,
+  "clear_routes": [
+    {
+      "name": "west_walk",
+      "a": [
+        -6.5,
+        -20
+      ],
+      "b": [
+        -6.5,
+        20
+      ],
+      "width": 2.3
+    },
+    {
+      "name": "road",
+      "a": [
+        1.625,
+        -20
+      ],
+      "b": [
+        1.625,
+        20
+      ],
+      "width": 3.05
+    },
+    {
+      "name": "east_walk",
+      "a": [
+        6.5,
+        -20
+      ],
+      "b": [
+        6.5,
+        20
+      ],
+      "width": 2.3
+    }
+  ],
+  "image_references": [
+    {
+      "path": "reference.png",
+      "sha256": "429185ee16548a99fb1b229d3ca8b5dd5818a4a58c1389f2e5daf3305aa80820",
+      "bytes": 3378227,
+      "source": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\streets\\references\\shopping.png",
+      "provenance": "Original built-in image_gen design inspiration, 2026-10-09"
+    }
+  ],
+  "source_notes": [
+    "Original reference-informed teaching concept, not an official city section or drainage/traffic certification.",
+    "Native dimensions and amenity modules; prepared level support only. Shared engine owns route bends, junctions, terrain and capture.",
+    "No neighbouring buildings, cars or context are included; photographs are AI-generated design inspiration."
+  ],
+  "kit_sha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "showcase-street-v1",
+    "surfaceRegions": [
+      {
+        "x": -6.5,
+        "y": 0,
+        "width": 2.5,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": -3.75,
+        "y": 0,
+        "width": 3,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": -1.125,
+        "y": 0,
+        "width": 2.25,
+        "depth": 40,
+        "material": "asphalt"
+      },
+      {
+        "x": 1.625,
+        "y": 0,
+        "width": 3.25,
+        "depth": 40,
+        "material": "asphalt"
+      },
+      {
+        "x": 4.25,
+        "y": 0,
+        "width": 2,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": 6.5,
+        "y": 0,
+        "width": 2.5,
+        "depth": 40,
+        "material": "paving"
+      },
+      {
+        "x": -3.75,
+        "y": -5,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": -3.75,
+        "y": 5,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.25,
+        "y": -14,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.25,
+        "y": 0,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      },
+      {
+        "x": 4.25,
+        "y": 14,
+        "width": 1.8,
+        "depth": 1.8,
+        "material": "soil"
+      }
+    ],
+    "details": [
+      {
+        "x": -1.125,
+        "y": -18,
+        "width": 2,
+        "depth": 0.07,
+        "z": 0.012,
+        "height": 0,
+        "material": "paint"
+      },
+      {
+        "x": -1.125,
+        "y": -12,
+        "width": 2,
+        "depth": 0.07,
+        "z": 0.012,
+        "height": 0,
+        "material": "paint"
+      },
+      {
+        "x": -1.125,
+        "y": -6,
+        "width": 2,
+        "depth": 0.07,
+        "z": 0.012,
+        "height": 0,
+        "material": "paint"
+      },
+      {
+        "x": -1.125,
+        "y": 6,
+        "width": 2,
+        "depth": 0.07,
+        "z": 0.012,
+        "height": 0,
+        "material": "paint"
+      },
+      {
+        "x": -1.125,
+        "y": 12,
+        "width": 2,
+        "depth": 0.07,
+        "z": 0.012,
+        "height": 0,
+        "material": "paint"
+      },
+      {
+        "x": -1.125,
+        "y": 18,
+        "width": 2,
+        "depth": 0.07,
+        "z": 0.012,
+        "height": 0,
+        "material": "paint"
+      }
+    ],
+    "meshDetails": [
+      {
+        "positions": [
+          1.6638377904891968,
+          -11.418509483337402,
+          0.012000000104308128,
+          1.5861622095108032,
+          -11.481490135192871,
+          0.012000000104308128,
+          1.8861621618270874,
+          -11.851490020751953,
+          0.012000000104308128,
+          1.963837742805481,
+          -11.7885103225708,
+          0.012000000104308128
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          0,
+          2,
+          3
+        ],
+        "material": "paint"
+      },
+      {
+        "positions": [
+          1.6638377904891968,
+          -11.481490135192871,
+          0.012000000104308128,
+          1.5861622095108032,
+          -11.418509483337402,
+          0.012000000104308128,
+          1.286162257194519,
+          -11.7885103225708,
+          0.012000000104308128,
+          1.3638378381729126,
+          -11.851490020751953,
+          0.012000000104308128
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          0,
+          2,
+          3
+        ],
+        "material": "paint"
+      },
+      {
+        "positions": [
+          1.5750000476837158,
+          -12.550000190734863,
+          0.012000000104308128,
+          1.6749999523162842,
+          -12.550000190734863,
+          0.012000000104308128,
+          1.6749999523162842,
+          -11.449999809265137,
+          0.012000000104308128,
+          1.5750000476837158,
+          -11.449999809265137,
+          0.012000000104308128
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          0,
+          2,
+          3
+        ],
+        "material": "paint"
+      },
+      {
+        "positions": [
+          1.6638377904891968,
+          12.581490516662598,
+          0.012000000104308128,
+          1.5861622095108032,
+          12.518509864807129,
+          0.012000000104308128,
+          1.8861621618270874,
+          12.148509979248047,
+          0.012000000104308128,
+          1.963837742805481,
+          12.2114896774292,
+          0.012000000104308128
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          0,
+          2,
+          3
+        ],
+        "material": "paint"
+      },
+      {
+        "positions": [
+          1.6638377904891968,
+          12.518509864807129,
+          0.012000000104308128,
+          1.5861622095108032,
+          12.581490516662598,
+          0.012000000104308128,
+          1.286162257194519,
+          12.2114896774292,
+          0.012000000104308128,
+          1.3638378381729126,
+          12.148509979248047,
+          0.012000000104308128
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          0,
+          2,
+          3
+        ],
+        "material": "paint"
+      },
+      {
+        "positions": [
+          1.5750000476837158,
+          11.449999809265137,
+          0.012000000104308128,
+          1.6749999523162842,
+          11.449999809265137,
+          0.012000000104308128,
+          1.6749999523162842,
+          12.550000190734863,
+          0.012000000104308128,
+          1.5750000476837158,
+          12.550000190734863,
+          0.012000000104308128
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          0,
+          2,
+          3
+        ],
+        "material": "paint"
+      }
+    ],
+    "paving": "stone",
+    "pavingModuleM": [
+      1.2,
+      0.8
+    ],
+    "minLengthM": 40,
+    "maxLengthM": 300,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "paving": [
+        0.5299999713897705,
+        0.5,
+        0.4300000071525574
+      ],
+      "edge": [
+        0.3499999940395355,
+        0.3400000035762787,
+        0.28999999165534973
+      ],
+      "grass": [
+        0.20999999344348907,
+        0.2800000011920929,
+        0.10499999672174454
+      ],
+      "soil": [
+        0.10499999672174454,
+        0.0729999989271164,
+        0.04500000178813934
+      ],
+      "metal": [
+        0.03500000014901161,
+        0.04899999871850014,
+        0.04500000178813934
+      ],
+      "timber": [
+        0.3199999928474426,
+        0.23499999940395355,
+        0.15000000596046448
+      ],
+      "court": [
+        0.08500000089406967,
+        0.23499999940395355,
+        0.24500000476837158
+      ],
+      "runoff": [
+        0.1899999976158142,
+        0.2800000011920929,
+        0.2549999952316284
+      ],
+      "kitchen": [
+        0.2800000011920929,
+        0.38999998569488525,
+        0.3400000035762787
+      ],
+      "paint": [
+        0.8600000143051147,
+        0.8600000143051147,
+        0.7699999809265137
+      ],
+      "net": [
+        0.07500000298023224,
+        0.09000000357627869,
+        0.07999999821186066
+      ],
+      "cycle": [
+        0.33000001311302185,
+        0.14499999582767487,
+        0.08500000089406967
+      ],
+      "asphalt": [
+        0.10000000149011612,
+        0.11500000208616257,
+        0.10999999940395355
+      ],
+      "flower": [
+        0.3499999940395355,
+        0.23000000417232513,
+        0.3799999952316284
+      ],
+      "cream": [
+        0.7900000214576721,
+        0.7400000095367432,
+        0.6200000047683716
+      ],
+      "lamp_lens": [
+        0.8999999761581421,
+        0.8700000047683716,
+        0.6600000262260437
+      ],
+      "sage": [
+        0.10000000149011612,
+        0.20000000298023224,
+        0.1599999964237213
+      ],
+      "canvas": [
+        0.7400000095367432,
+        0.6800000071525574,
+        0.5400000214576721
+      ],
+      "canvas_shade": [
+        0.6200000047683716,
+        0.5699999928474426,
+        0.4399999976158142
+      ],
+      "warm_concrete": [
+        0.5199999809265137,
+        0.49000000953674316,
+        0.4000000059604645
+      ],
+      "water": [
+        0.10000000149011612,
+        0.3199999928474426,
+        0.3400000035762787
+      ],
+      "glass": [
+        0.49000000953674316,
+        0.6800000071525574,
+        0.6800000071525574
+      ],
+      "terracotta": [
+        0.49000000953674316,
+        0.20999999344348907,
+        0.10000000149011612
+      ],
+      "vine": [
+        0.12999999523162842,
+        0.23999999463558197,
+        0.06499999761581421
+      ],
+      "produce": [
+        0.41999998688697815,
+        0.18000000715255737,
+        0.05999999865889549
+      ]
+    }
+  },
+  "tree_wells": [
+    {
+      "x": -3.75,
+      "y": -5,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": -3.75,
+      "y": 5,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 4.25,
+      "y": -14,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 4.25,
+      "y": 0,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    },
+    {
+      "x": 4.25,
+      "y": 14,
+      "width": 1.8,
+      "depth": 1.8,
+      "style": "grate",
+      "tree_kind": "grove_tree"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "cafe_table_chairs",
+      "x": -3.75,
+      "y": -12,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "cafe_table_chairs",
+      "x": -3.75,
+      "y": 12,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "grove_tree",
+      "x": -3.75,
+      "y": -5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 0.72
+    },
+    {
+      "kind": "grove_tree",
+      "x": -3.75,
+      "y": 5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 0.72
+    },
+    {
+      "kind": "grove_tree",
+      "x": 4.25,
+      "y": -14,
+      "z": 0,
+      "yaw": 0,
+      "scale": 0.72
+    },
+    {
+      "kind": "grove_tree",
+      "x": 4.25,
+      "y": 0,
+      "z": 0,
+      "yaw": 0,
+      "scale": 0.72
+    },
+    {
+      "kind": "grove_tree",
+      "x": 4.25,
+      "y": 14,
+      "z": 0,
+      "yaw": 0,
+      "scale": 0.72
+    },
+    {
+      "kind": "heritage_lantern",
+      "x": 4.25,
+      "y": -7,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lantern",
+      "x": 4.25,
+      "y": 7,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1
+    },
+    {
+      "kind": "bike_rack",
+      "x": -3.75,
+      "y": 17,
+      "z": 0,
+      "yaw": 1.5707963267948966,
+      "scale": 1
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -3.75,
+      "y": -5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": -3.75,
+      "y": 5,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 4.25,
+      "y": -14,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 4.25,
+      "y": 0,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    },
+    {
+      "kind": "tree_well_grate",
+      "x": 4.25,
+      "y": 14,
+      "z": 0,
+      "yaw": 0,
+      "scale": 1,
+      "scale_xy": 1.0
+    }
+  ],
+  "surface_regions": [
+    {
+      "x": -6.5,
+      "y": 0,
+      "width": 2.5,
+      "depth": 40,
+      "material": "paving"
+    },
+    {
+      "x": -3.75,
+      "y": 0,
+      "width": 3,
+      "depth": 40,
+      "material": "paving"
+    },
+    {
+      "x": -1.125,
+      "y": 0,
+      "width": 2.25,
+      "depth": 40,
+      "material": "asphalt"
+    },
+    {
+      "x": 1.625,
+      "y": 0,
+      "width": 3.25,
+      "depth": 40,
+      "material": "asphalt"
+    },
+    {
+      "x": 4.25,
+      "y": 0,
+      "width": 2,
+      "depth": 40,
+      "material": "paving"
+    },
+    {
+      "x": 6.5,
+      "y": 0,
+      "width": 2.5,
+      "depth": 40,
+      "material": "paving"
+    },
+    {
+      "x": -3.75,
+      "y": -5,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": -3.75,
+      "y": 5,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 4.25,
+      "y": -14,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 4.25,
+      "y": 0,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    },
+    {
+      "x": 4.25,
+      "y": 14,
+      "width": 1.8,
+      "depth": 1.8,
+      "material": "soil"
+    }
+  ],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 1719208,
+    "sha256": "7849a86859dc6056d45adba6dfe126cb89dceef2e9137a5bf59bafbff7e8a4ef"
+  },
+  "modules": {
+    "bike_rack": {
+      "path": "bike_rack.glb",
+      "bytes": 96964,
+      "sha256": "0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907"
+    },
+    "cafe_table_chairs": {
+      "path": "cafe_table_chairs.glb",
+      "bytes": 49444,
+      "sha256": "129d4576a28f1f406071f57aacbbc989c74d30925a4076718ad2e16d18032722"
+    },
+    "grove_tree": {
+      "path": "grove_tree.glb",
+      "bytes": 1287628,
+      "sha256": "6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41"
+    },
+    "heritage_lantern": {
+      "path": "heritage_lantern.glb",
+      "bytes": 17092,
+      "sha256": "0e63e0f0c94cf6ae09e48238c2adcf27e0f5b13e4732d511695aa7e430b70980"
+    },
+    "tree_well_grate": {
+      "path": "tree_well_grate.glb",
+      "bytes": 95608,
+      "sha256": "861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+    }
+  },
+  "bounds_m": [
+    [
+      -7.75,
+      -20.0,
+      -0.11999999731779099
+    ],
+    [
+      7.75,
+      20.0,
+      5.795164108276367
+    ]
+  ],
+  "triangles": 65883,
+  "mesh_instances": 24,
+  "render_source": "reimported GLB",
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

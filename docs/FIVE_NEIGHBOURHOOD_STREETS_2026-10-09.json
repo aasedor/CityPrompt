@@ -1,0 +1,149 @@
+{
+  "date": "2026-10-09",
+  "status": "BOUNDED_LOCAL_BROWSER_PASS",
+  "branch": "codex/five-neighbourhood-streets",
+  "offlineReview": "independent PASS for all five selected exact packages",
+  "candidates": [
+    {
+      "package": "rain-v002",
+      "id": "student_rain_garden_residential_street_v1",
+      "dimensionsM": [
+        15.0,
+        40
+      ],
+      "motorLanes": 2,
+      "recipeSha256": "f4fb6ba6bffb3ad6590bace70e926c98d99a67a600091ddb8672c64a85727e87",
+      "assemblySha256": "b86365170f971d136e00f275d0001be96f37d7954f4b454819ddd5e899ed61a7",
+      "heroSha256": "fca36d58ab9eca41dd1259e4bf5aa6dd78705aa1f858867a8ba106d49b398548",
+      "triangles": 593772,
+      "moduleBytes": 1923412,
+      "placements": 300,
+      "independentReview": "independent-review.json",
+      "runtimeAcceptance": "NOT TESTED",
+      "publication": "NOT APPROVED",
+      "sourceBuilderSha256": "c10a9d19d039b206e7051aa1c4c64e92706c34f478fc655d9e9a610755807532"
+    },
+    {
+      "package": "shopping-v001",
+      "id": "student_compact_one_way_shopping_street_v1",
+      "dimensionsM": [
+        15.5,
+        40
+      ],
+      "motorLanes": 1,
+      "recipeSha256": "cc70a02fe62f7463c3b39889bba13e229170ee784d5e51f5060ffabd27a76767",
+      "assemblySha256": "7849a86859dc6056d45adba6dfe126cb89dceef2e9137a5bf59bafbff7e8a4ef",
+      "heroSha256": "429185ee16548a99fb1b229d3ca8b5dd5818a4a58c1389f2e5daf3305aa80820",
+      "triangles": 65883,
+      "moduleBytes": 1546736,
+      "placements": 15,
+      "independentReview": "independent-review.json",
+      "runtimeAcceptance": "NOT TESTED",
+      "publication": "NOT APPROVED",
+      "sourceBuilderSha256": "14cfec7056b8d95219096c2349821b38644eed0cedce7c1c934f19c90b8e9fcd"
+    },
+    {
+      "package": "cycle-v003",
+      "id": "student_neighbourhood_cycle_street_v1",
+      "dimensionsM": [
+        13.0,
+        40
+      ],
+      "motorLanes": 2,
+      "recipeSha256": "c35ec0969d4fcc4eee414fe9de4a378dbd7018340341edaf10a7da6a227b56be",
+      "assemblySha256": "2356309544b0cffbb2f97e20bdbd29ee1b45aa6cfac27f19916a629ab3d22342",
+      "heroSha256": "f9edf7a1a1194d9a9e6d544dd02aaf23f732f0d33c9ed1beebf875562d0b5b5f",
+      "triangles": 548624,
+      "moduleBytes": 1923412,
+      "placements": 274,
+      "independentReview": "independent-review.json",
+      "runtimeAcceptance": "NOT TESTED",
+      "publication": "NOT APPROVED",
+      "sourceBuilderSha256": "4f5f5c167213bdb0b216ba8fda25c1512cda470d26fa6c3661fe4c8e5fe41473"
+    },
+    {
+      "package": "greenway-v002",
+      "id": "student_separated_walking_cycling_greenway_v1",
+      "dimensionsM": [
+        10.0,
+        40
+      ],
+      "motorLanes": 0,
+      "recipeSha256": "9426902708df20e0f8f2b7ca690f82edde688d445f604eaa831a898818a64f8e",
+      "assemblySha256": "0c21b11b2e4a61a6d99f1b5eafc6d191ecdb946e0baaab4b88dcce24f55a4410",
+      "heroSha256": "350c5e3475ca402979f3448ccef05cd259fa34710861caa02ce5cd3813ed5cfc",
+      "triangles": 474116,
+      "moduleBytes": 1919768,
+      "placements": 252,
+      "independentReview": "independent-review.json",
+      "runtimeAcceptance": "NOT TESTED",
+      "publication": "NOT APPROVED",
+      "sourceBuilderSha256": "7156d070392946bf296e0c76be2c1d23e7473c2a917aca29daeb240c7bfa3eff"
+    },
+    {
+      "package": "transit-v001",
+      "id": "student_neighbourhood_transit_stop_street_v1",
+      "dimensionsM": [
+        17.0,
+        40
+      ],
+      "motorLanes": 2,
+      "recipeSha256": "4797f51909b02bfeb54ea45605feb58ab98a6bdeb0add3993a17062b720309fb",
+      "assemblySha256": "60cc4e3b3f3b50b14592624f09b87beaaf558f9c3a796200365bfdd2a20008d3",
+      "heroSha256": "ff53ec275d13ad5ee4de738831caee63a1665195f55ec960ba8a904fcd273890",
+      "triangles": 322758,
+      "moduleBytes": 2123416,
+      "placements": 156,
+      "independentReview": "independent-review.json",
+      "runtimeAcceptance": "NOT TESTED",
+      "publication": "NOT APPROVED",
+      "sourceBuilderSha256": "14cfec7056b8d95219096c2349821b38644eed0cedce7c1c934f19c90b8e9fcd"
+    }
+  ],
+  "browser": {
+    "ordinaryUiPlacement": "PASS approximately 60m per street",
+    "savedExactIdWidthMotorLanes": "PASS all five",
+    "unchangedApplyRecipeRecovery": "PASS all five after shared readiness repair",
+    "walkEntranceAndLowView": "PASS all five after prepared-ground pick repair",
+    "rainBendDragUndoRedoReload": "PASS",
+    "exactHeroBindings": "PASS all five URLs; rain/shopping/transit visual; cycle/greenway loaded",
+    "finalAllTenReloadDatabaseConsole": "PASS allten visible;3D saved;all5 exact native recipes;console errors empty",
+    "creditBalance": 7676,
+    "creditChange": 0
+  },
+  "checks": {
+    "frontendPriorSuite": "108 passed across13 files",
+    "backendNativeContract": "11 passed",
+    "walkGroundFocused": "12 passed across2 files",
+    "typescript": "PASS",
+    "registryParity": "PASS",
+    "cleanSeedRestage": "PASS"
+  },
+  "notTested": [
+    "sustained walking",
+    "capture/export",
+    "junction connectivity",
+    "terrain recovery",
+    "long-route or student-laptop performance"
+  ],
+  "fixes": [
+    "exact native thumbnail precedence",
+    "require missing native recipe rebuild after unchanged Apply",
+    "Walk pick prepared site surface while retaining authored and off-site roof guard"
+  ],
+  "publication": "not authorized; local only",
+  "evidence": {
+    "all-ten-browser-final.png": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\all-ten-browser-final.png",
+      "sha256": "6701191b2f82a537216cf9df2f5a3c04be883a185641d1fa8d7470d29bc14009"
+    },
+    "saved-trial-zones.json": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\saved-trial-zones.json",
+      "sha256": "eea56df515d01c52716947001ed34dd76e1d613e6e305d28538c5b827eaee9b3"
+    },
+    "greenway-browser-walk-fixed.png": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\streets\\greenway-browser-walk-fixed.png",
+      "sha256": "327cdd74a046cf0ec2d69c76099c33d237c8d2651700e1aedafa38e43af70dcf"
+    }
+  }
+}

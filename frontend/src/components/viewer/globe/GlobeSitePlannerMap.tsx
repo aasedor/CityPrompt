@@ -122,6 +122,7 @@ import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { authoredCameraGround } from './authoredCameraGround';
+import { preparedWalkSurface } from './preparedWalkSurface';
 import { elevatedRailLiftDestination } from './elevatedRailWalking';
 import { nativeParkLiftDestination, nativeParkWalkEntrance, nativeParkWalkStartForZone } from '@/features/parks/nativeParkWalking';
 import { buildingWalkEntrance, setBuildingWalkingDoorsOpen } from '@/features/legoAssembly/buildingWalking';
@@ -2453,6 +2454,18 @@ export function GlobeSitePlannerMap({
     applyWalkPose(pose);
     setWalkMode('active');
   }, [applyWalkPose, markUserInteracted]);
+
+  const raycastWalkSurfacePoint = useCallback((x: number, y: number) => {
+    const camera = cameraRef.current;
+    if (camera) {
+      const ray = new THREE.Raycaster();
+      ray.setFromCamera(new THREE.Vector2(x, y), camera);
+      const prepared = preparedWalkSurface(ray, terrainZonesRef.current, sceneRef.current,
+        tilesRendererRef.current?.group, terrainElevationRef.current);
+      if (prepared) return prepared;
+    }
+    return raycastSurfacePoint(x, y);
+  }, [raycastSurfacePoint]);
 
   const enterWalkAt = useCallback((hit: { lngLat: [number, number]; height: number }) => {
     const camera = cameraRef.current;
@@ -4788,7 +4801,7 @@ export function GlobeSitePlannerMap({
           const rect = event.currentTarget.getBoundingClientRect();
           const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
           const y = 1 - ((event.clientY - rect.top) / rect.height) * 2;
-          const hit = raycastSurfacePoint(x, y);
+          const hit = raycastWalkSurfacePoint(x, y);
           if (hit) enterWalkAt(hit);
           else setWalkPickError('No ground is loaded there yet. Choose another clear spot.');
         }}
@@ -4796,7 +4809,7 @@ export function GlobeSitePlannerMap({
           if (event.key === 'Escape') setWalkMode(null);
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            const hit = raycastSurfacePoint(0, 0);
+            const hit = raycastWalkSurfacePoint(0, 0);
             if (hit) enterWalkAt(hit);
             else setWalkPickError('No ground is loaded at the centre yet. Choose another clear spot.');
           }

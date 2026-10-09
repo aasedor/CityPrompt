@@ -8,6 +8,7 @@ import { siteZonesApi } from '@/services/api';
 import { authoredPlacementKey, useAutomatic3D } from './useAutomatic3D';
 import { nativeParkLayouts, nativeParkProperties } from '@/features/parks/nativeParkRegistry';
 import { rectangleAt } from './geometry';
+import streetRecipes from '@/components/viewer/globe/__fixtures__/classroomStreetRecipes.json';
 vi.mock('@/features/legoAssembly/communityCompiler',()=>({compileMixedCommunity3D:vi.fn()}));
 vi.mock('@/services/api',()=>({siteZonesApi:{list:vi.fn()},getApiErrorMessage:(e:Error)=>e.message}));
 vi.mock('@/store/undoActions',()=>({advanceDerivedZoneRevision:vi.fn()}));
@@ -16,6 +17,23 @@ const boundary=(state:'compiled'|'stale'):SiteZone=>({id:'boundary',project_id:'
 const wrapper=({children}:{children:ReactNode})=><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}>{children}</QueryClientProvider>;
 const advance=()=>act(async()=>{await vi.advanceTimersByTimeAsync(750)});
 describe('automatic placement compilation',()=>{
+  it('rebuilds a native street after unchanged Apply removes only its compiled recipe',async()=>{
+    const recipe=streetRecipes[0];
+    const native:SiteZone={...zone(0,true),zone_type:'road',properties:{
+      road_archetype_id:recipe.archetype_id,road_selected_variant_id:recipe.variant_id,
+      width:recipe.target.row_width_m,public_realm_lego:recipe,
+      community_3d:{schema_version:1,state:'compiled',kind:'street',generator:'street_section',compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64)},
+    }};
+    const damaged={...native,properties:{...native.properties,public_realm_lego:undefined}};
+    expect(authoredPlacementKey([damaged])).toBe(authoredPlacementKey([native]));
+    vi.mocked(siteZonesApi.list).mockResolvedValue([native]);
+    const view=renderHook(({zones})=>useAutomatic3D('p',zones,false),{initialProps:{zones:[native]},wrapper});
+    await advance();expect(compileMixedCommunity3D).not.toHaveBeenCalled();
+    view.rerender({zones:[damaged]});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    view.rerender({zones:[native]});await advance();
+    expect(view.result.current.status).toBe('ready');view.unmount();
+  });
   it.each(['custom-only', 'mixed'] as const)('prepares a previously uncompiled %s scene without a generation button', async kind => {
     const custom = { ...zone(), id: 'custom', properties: { height: 12, floors: 3 } };
     const zones = kind === 'mixed' ? [custom, zone()] : [custom];

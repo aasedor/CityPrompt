@@ -2,6 +2,9 @@ import { hasNativePark, hasExecutableNativeParkRecipe } from '@/features/parks/n
 import type { Building, SiteZone, SiteZoneProperties } from '@/types';
 import { resolveParkLegoContract } from '@/components/viewer/globe/parkLegoFamilies';
 import { validateStreetRecipeProperties } from '@/components/viewer/globe/streetLegoContract';
+import nativeStreetPilots from '@/data/nativeStreetPilots.json';
+
+const nativeStreetVariantIds = new Set<string>(nativeStreetPilots.map(pilot => pilot.id));
 
 /** The three pieces of a master plan that can be compiled into the globe. */
 export type Community3DKind = 'building' | 'park' | 'street';
@@ -296,6 +299,13 @@ export function hasExecutablePublicRealmRecipe(zone: SiteZone): boolean {
   if (hasNativePark(zone)) return hasExecutableNativeParkRecipe(zone);
   const nested = props.public_realm_lego;
   const fallback = props.public_realm_fallback;
+  // Apply may invalidate only the derived recipe while authored inputs remain
+  // identical. Native streets must then recompile instead of inheriting the
+  // manual/legacy ready state from a stale community_3d marker.
+  if (kind === 'street' && props.validation_fixed_fixture !== true
+    && nativeStreetVariantIds.has(String(props.road_selected_variant_id))) {
+    return fallback == null && validateStreetRecipeProperties(props).valid;
+  }
   const isAiPlan = typeof props._plan_scenario === 'string'
     && props._plan_scenario.trim().length > 0;
   if (nested != null) {

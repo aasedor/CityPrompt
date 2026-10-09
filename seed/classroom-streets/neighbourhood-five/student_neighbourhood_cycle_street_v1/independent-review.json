@@ -1,0 +1,55 @@
+{
+  "findings": [
+    {
+      "description": "Red cycle street, correctly opposed travel arrows and symbols, two side walks and dense planting preserve approved identity. Lamps moved from midpoint access links into soil; 126 supplemental link rays now pass, resolving v002 obstruction.",
+      "severity": "info"
+    },
+    {
+      "description": "self-contained GLB buffers; delivered byte hashes; finite metric bounds; 1044 clear material-aware route rays; 8 tree root openings checked; native module reimport and ground datum",
+      "severity": "info"
+    },
+    {
+      "description": "Stylized vegetation/materials are accepted for bounded native classroom concept. Runtime performance, ground support, bends, joining and student controls remain separate gates.",
+      "severity": "P2"
+    }
+  ],
+  "inspected_files": [
+    {
+      "path": "reference.png",
+      "sha256": "f9edf7a1a1194d9a9e6d544dd02aaf23f732f0d33c9ed1beebf875562d0b5b5f"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "cdc59a5a83e9aeafc37d29f4c7d1fe7882b9c78698541325c1f28c0531fda589"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "f58c62c0d1a950b8968a9053eb8b670f2e0f489047384f1ac92d5dcad037e49a"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "c35ec0969d4fcc4eee414fe9de4a378dbd7018340341edaf10a7da6a227b56be"
+    },
+    {
+      "path": "assembly-preview.glb",
+      "sha256": "2356309544b0cffbb2f97e20bdbd29ee1b45aa6cfac27f19916a629ab3d22342"
+    },
+    {
+      "path": "independent-geometry-verification.json",
+      "sha256": "f3acda0cf07473c51ee0afe31945937e2678016d581985cb1e2d8566b2af61d2"
+    },
+    {
+      "path": "independent-link-verification.json",
+      "sha256": "e5d6fbfae64d0b5898ecf08d96a7437c7110364534754361f2c80a2ec95c09e1"
+    }
+  ],
+  "schema_version": 1,
+  "reviewer": "independent-public-realm-reviewer",
+  "unresolved_p1": 0,
+  "review_revision": 1,
+  "scope": "Offline native level-fixture visual and reimported geometry review only. No runtime pass, new human visual approval or publication authorization.",
+  "unresolved_p0": 0,
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "date": "2026-10-09",
+  "model_sha256": "2356309544b0cffbb2f97e20bdbd29ee1b45aa6cfac27f19916a629ab3d22342"
+}

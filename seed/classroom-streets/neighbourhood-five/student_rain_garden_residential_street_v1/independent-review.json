@@ -1,0 +1,56 @@
+{
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "findings": [
+    {
+      "id": "rain-source-planting",
+      "severity": "resolved",
+      "description": "Dense overlapping grass, perennial and silver shrub drifts restore the rain-garden identity while preserving clear paved walks and midpoint access links. Aerial and walking views are coherent and legible."
+    },
+    {
+      "description": "Independent reimport checked exact delivered hashes, finite contained bounds, 1044 full-width corridor rays, eight tree root openings, 126 midpoint link rays and all five native module ground datums.",
+      "severity": "info"
+    },
+    {
+      "description": "Trees and repeating planting retain a stylized concept appearance; no drainage engineering or live-site performance certification is implied. 593772 triangles requires runtime performance check.",
+      "severity": "P2"
+    },
+    {
+      "description": "Original repository verifier samples beyond the exact north boundary due to positive ray jitter. Independent audit preserved width and moved terminal samples 1mm inward; no model geometry changed.",
+      "severity": "info"
+    }
+  ],
+  "scope": "Offline native level-fixture visual and geometry review only. Runtime terrain, bent routes, student editing, capture, new human approval and publication remain unreviewed.",
+  "unresolved_p1": 0,
+  "unresolved_p0": 0,
+  "model_sha256": "b86365170f971d136e00f275d0001be96f37d7954f4b454819ddd5e899ed61a7",
+  "inspected_files": [
+    {
+      "path": "reference.png",
+      "sha256": "fca36d58ab9eca41dd1259e4bf5aa6dd78705aa1f858867a8ba106d49b398548"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "f051e17430e153602d14ce2df3aaae048adc2146f2dce83a702d978d6523af16"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "82b15b59c7db649afc4d47b4daca6864e27668b596e6733f1bee088933f13a3a"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "f4fb6ba6bffb3ad6590bace70e926c98d99a67a600091ddb8672c64a85727e87"
+    },
+    {
+      "path": "assembly-preview.glb",
+      "sha256": "b86365170f971d136e00f275d0001be96f37d7954f4b454819ddd5e899ed61a7"
+    },
+    {
+      "path": "independent-geometry-verification.json",
+      "sha256": "56e2d073d3834b2226e3dadc5567c56d8abb62192aa5e3c3b83876627f80269e"
+    }
+  ],
+  "reviewer": "independent-public-realm-reviewer",
+  "review_revision": 1,
+  "date": "2026-10-09",
+  "schema_version": 1
+}

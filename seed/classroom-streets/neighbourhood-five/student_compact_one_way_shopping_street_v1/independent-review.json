@@ -1,0 +1,51 @@
+{
+  "findings": [
+    {
+      "description": "One-way roadway, parking marks, cafe tables, heritage lanterns and physical tree wells retain the shopping-street identity. Both unobstructed through-walks are clear. Missing umbrellas and lush off-site landscaping are visible concept simplifications, not route blockers.",
+      "severity": "info"
+    },
+    {
+      "description": "self-contained GLB buffers; delivered byte hashes; finite metric bounds; 1044 clear material-aware route rays; 5 tree root openings checked; native module reimport and ground datum",
+      "severity": "info"
+    },
+    {
+      "description": "Stylized vegetation/materials are accepted for bounded native classroom concept. Runtime performance, ground support, bends, joining and student controls remain separate gates.",
+      "severity": "P2"
+    }
+  ],
+  "inspected_files": [
+    {
+      "path": "reference.png",
+      "sha256": "429185ee16548a99fb1b229d3ca8b5dd5818a4a58c1389f2e5daf3305aa80820"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "8f0105ba6e43a8c7d3405b256dbb7b2827b5b471b6915b9834db23ee10ba1b0b"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "556eb3143d398fddbaa40eab9556b72450087cd8e6b8b54c973603ad7f0e2564"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "cc70a02fe62f7463c3b39889bba13e229170ee784d5e51f5060ffabd27a76767"
+    },
+    {
+      "path": "assembly-preview.glb",
+      "sha256": "7849a86859dc6056d45adba6dfe126cb89dceef2e9137a5bf59bafbff7e8a4ef"
+    },
+    {
+      "path": "independent-geometry-verification.json",
+      "sha256": "68e2e11384bcf0d850e2ae9daffd614dd91ef3384d58aa5a4ef4354a0f93d73c"
+    }
+  ],
+  "schema_version": 1,
+  "reviewer": "independent-public-realm-reviewer",
+  "unresolved_p1": 0,
+  "review_revision": 1,
+  "scope": "Offline native level-fixture visual and reimported geometry review only. No runtime pass, new human visual approval or publication authorization.",
+  "unresolved_p0": 0,
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "date": "2026-10-09",
+  "model_sha256": "7849a86859dc6056d45adba6dfe126cb89dceef2e9137a5bf59bafbff7e8a4ef"
+}

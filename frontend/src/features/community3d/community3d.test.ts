@@ -36,6 +36,17 @@ const SHA_A = 'a'.repeat(64);
 const SHA_B = 'b'.repeat(64);
 const SHA_C = 'c'.repeat(64);
 
+it('rejects a registered native street whose compiled marker lost its exact recipe', () => {
+  const native = zone('road', {
+    road_archetype_id: 'multi_use_trail',
+    road_selected_variant_id: 'student_separated_walking_cycling_greenway_v1',
+    width: 10, lane_count: 0,
+  });
+  native.properties = withCommunity3DMeta(native, 'street_section', '2026-10-09T00:00:00Z');
+  expect(hasExecutablePublicRealmRecipe(native)).toBe(false);
+  expect(hasExecutablePublicRealmRecipe({ ...native, properties: { ...native.properties, validation_fixed_fixture: true } })).toBe(true);
+});
+
 function pocketParkRecipe(): Record<string, unknown> {
   return {
     schema_version: 1,

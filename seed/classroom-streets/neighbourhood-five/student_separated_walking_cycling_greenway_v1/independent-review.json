@@ -1,0 +1,55 @@
+{
+  "findings": [
+    {
+      "description": "Distinct pedestrian promenade and red two-way cycle route, separator planting and linked seating pockets preserve greenway identity. 216 supplemental midpoint and bench-access rays pass. Initial supplemental material whitelist omitted flush edge paving; original result retained, corrected whitelist matches repository walking-surface contract.",
+      "severity": "info"
+    },
+    {
+      "description": "self-contained GLB buffers; delivered byte hashes; finite metric bounds; 696 clear material-aware route rays; 4 tree root openings checked; native module reimport and ground datum",
+      "severity": "info"
+    },
+    {
+      "description": "Stylized vegetation/materials are accepted for bounded native classroom concept. Runtime performance, ground support, bends, joining and student controls remain separate gates.",
+      "severity": "P2"
+    }
+  ],
+  "inspected_files": [
+    {
+      "path": "reference.png",
+      "sha256": "350c5e3475ca402979f3448ccef05cd259fa34710861caa02ce5cd3813ed5cfc"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "f8fbb0e21622aebef8e154b9ab76436920d3253034a1914010eff2e10e753591"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "1cfd15397446c046eb0d6cac6b1126370409d5c5e9621a12db49c8d3a0df6463"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "9426902708df20e0f8f2b7ca690f82edde688d445f604eaa831a898818a64f8e"
+    },
+    {
+      "path": "assembly-preview.glb",
+      "sha256": "0c21b11b2e4a61a6d99f1b5eafc6d191ecdb946e0baaab4b88dcce24f55a4410"
+    },
+    {
+      "path": "independent-geometry-verification.json",
+      "sha256": "4368578644b555ed9c638bb0f1214d36ec2587e934e88cc9202d6e189fd17bdf"
+    },
+    {
+      "path": "independent-link-verification.json",
+      "sha256": "4b4caf521e4b6c09d97a0c314ca80e137a82357ffc5abd593718ce448798d997"
+    }
+  ],
+  "schema_version": 1,
+  "reviewer": "independent-public-realm-reviewer",
+  "unresolved_p1": 0,
+  "review_revision": 1,
+  "scope": "Offline native level-fixture visual and reimported geometry review only. No runtime pass, new human visual approval or publication authorization.",
+  "unresolved_p0": 0,
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "date": "2026-10-09",
+  "model_sha256": "0c21b11b2e4a61a6d99f1b5eafc6d191ecdb946e0baaab4b88dcce24f55a4410"
+}

@@ -96,3 +96,6 @@ seed/classroom-parks/sensory-wellness-v003/*.py -text whitespace=cr-at-eol
 seed/classroom-parks/neighbourhood-sports-v002/*.py -text whitespace=cr-at-eol
 seed/classroom-parks/urban-skate-v005/*.py -text whitespace=cr-at-eol
 seed/classroom-parks/bicycle-pump-v004/*.py -text whitespace=cr-at-eol
+# Preserve reviewed source/evidence byte locks with core.autocrlf enabled.
+seed/classroom-streets/neighbourhood-five/**/*.py -text whitespace=cr-at-eol
+seed/classroom-streets/neighbourhood-five/**/*.json -text whitespace=cr-at-eol

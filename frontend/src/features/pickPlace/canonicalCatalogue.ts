@@ -84,9 +84,10 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
     // Restore browsing tags alone: never revive the parent's other variants,
     // presets, floor counts, references, or runtime eligibility.
     const styleSource = source ?? (domain === 'building' ? SAVED_BUILDING_AESTHETIC_OPTIONS.find(option => option.id === entry.archetype_id) : undefined);
-    // Published RLASM buildings carry the exact candidate's locked reference.
+    // RLASM buildings and native streets carry the exact candidate's locked reference.
     // Legacy parent photography can point at a retired variant image.
-    const photoUrl = domain === 'building' && asset.model.method === 'RLASM 6.1'
+    const photoUrl = (domain === 'building' && asset.model.method === 'RLASM 6.1')
+      || (domain === 'street_pathway' && asset.model.method === 'native_street_modules_v1')
       ? asset.thumbnail : referenceImage(domain, entry.archetype_id, entry.variant_id, asset.thumbnail);
     choices.push({ id: `${domain}:${entry.archetype_id}:${entry.variant_id}`, domain, placements: [asset], option: {
       ...source, categoryId: styleSource?.categoryId, generationTags: styleSource?.generationTags,

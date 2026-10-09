@@ -1,0 +1,96 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "checks": [
+    "self-contained GLB buffers",
+    "delivered byte hashes",
+    "finite metric bounds",
+    "1044 clear material-aware route rays",
+    "8 tree root openings checked",
+    "126 full midpoint planting-band access-link rays",
+    "native module reimport and ground datum"
+  ],
+  "runtime_tested": false,
+  "independent_reviewer": true,
+  "model_sha256": "b86365170f971d136e00f275d0001be96f37d7954f4b454819ddd5e899ed61a7",
+  "native_modules": {
+    "flowering_perennial": {
+      "bounds_m": [
+        [
+          -0.3738572597503662,
+          -0.39091697335243225,
+          0.004620928782969713
+        ],
+        [
+          0.357876181602478,
+          0.3743770122528076,
+          0.7032123804092407
+        ]
+      ],
+      "native_min_z_m": 0.004620928782969713
+    },
+    "grove_tree": {
+      "bounds_m": [
+        [
+          -1.1961898803710938,
+          -1.144656777381897,
+          -0.0016432534903287888
+        ],
+        [
+          1.5199785232543945,
+          1.3824959993362427,
+          8.04883861541748
+        ]
+      ],
+      "native_min_z_m": -0.0016432534903287888
+    },
+    "light": {
+      "bounds_m": [
+        [
+          -0.28999999165534973,
+          -0.28999999165534973,
+          2.98023217215615e-10
+        ],
+        [
+          0.28999999165534973,
+          0.28999999165534973,
+          3.674999952316284
+        ]
+      ],
+      "native_min_z_m": 2.98023217215615e-10
+    },
+    "meadow_grass": {
+      "bounds_m": [
+        [
+          -0.5395045876502991,
+          -0.5010257363319397,
+          -0.000758705660700798
+        ],
+        [
+          0.5286746621131897,
+          0.5284997820854187,
+          1.193111538887024
+        ]
+      ],
+      "native_min_z_m": -0.000758705660700798
+    },
+    "silver_shrub": {
+      "bounds_m": [
+        [
+          -0.6086273789405823,
+          -0.5545793175697327,
+          0.0008232704713009298
+        ],
+        [
+          0.5802770853042603,
+          0.6085392236709595,
+          1.0668087005615234
+        ]
+      ],
+      "native_min_z_m": 0.0008232704713009298
+    }
+  },
+  "limitations": [
+    "Repository verifier initial exact north endpoint fails because its positive ray offset leaves the mesh. Rerun moves endpoint samples 1mm inward, without changing asset geometry.",
+    "Prepared level native fixture only; browser and terrain not tested."
+  ]
+}

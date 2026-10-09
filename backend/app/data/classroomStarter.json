@@ -190,6 +190,46 @@
       "variantId": "asphalt_shared_path_v1",
       "revision": "d09c9368796449954516e0c5e6790857a84bb6465525cb60a14de789bb42d6e3",
       "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "narrow_residential_street",
+      "variantId": "student_rain_garden_residential_street_v1",
+      "revision": "f4fb6ba6bffb3ad6590bace70e926c98d99a67a600091ddb8672c64a85727e87",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "neighborhood_main_street",
+      "variantId": "student_compact_one_way_shopping_street_v1",
+      "revision": "cc70a02fe62f7463c3b39889bba13e229170ee784d5e51f5060ffabd27a76767",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "neighborhood_greenway",
+      "variantId": "student_neighbourhood_cycle_street_v1",
+      "revision": "c35ec0969d4fcc4eee414fe9de4a378dbd7018340341edaf10a7da6a227b56be",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "multi_use_trail",
+      "variantId": "student_separated_walking_cycling_greenway_v1",
+      "revision": "9426902708df20e0f8f2b7ca690f82edde688d445f604eaa831a898818a64f8e",
+      "status": "local-pilot-runtime-pending"
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "floating_bus_stop_transit_street",
+      "variantId": "student_neighbourhood_transit_stop_street_v1",
+      "revision": "4797f51909b02bfeb54ea45605feb58ab98a6bdeb0add3993a17062b720309fb",
+      "status": "local-pilot-runtime-pending"
     }
   ]
 }

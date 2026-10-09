@@ -683,6 +683,66 @@
       "asset_review": "agent_native_visual_and_geometry_pass",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Rain-Garden Residential Street",
+      "archetype_id": "narrow_residential_street",
+      "variant_id": "student_rain_garden_residential_street_v1",
+      "version": "student_rain_garden_residential_street_v1",
+      "placement_id": "student_rain_garden_residential_street_v1",
+      "sha256": "b86365170f971d136e00f275d0001be96f37d7954f4b454819ddd5e899ed61a7",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Compact One-Way Shopping Street",
+      "archetype_id": "neighborhood_main_street",
+      "variant_id": "student_compact_one_way_shopping_street_v1",
+      "version": "student_compact_one_way_shopping_street_v1",
+      "placement_id": "student_compact_one_way_shopping_street_v1",
+      "sha256": "7849a86859dc6056d45adba6dfe126cb89dceef2e9137a5bf59bafbff7e8a4ef",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Neighbourhood Cycle Street",
+      "archetype_id": "neighborhood_greenway",
+      "variant_id": "student_neighbourhood_cycle_street_v1",
+      "version": "student_neighbourhood_cycle_street_v1",
+      "placement_id": "student_neighbourhood_cycle_street_v1",
+      "sha256": "2356309544b0cffbb2f97e20bdbd29ee1b45aa6cfac27f19916a629ab3d22342",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Separated Walking & Cycling Greenway",
+      "archetype_id": "multi_use_trail",
+      "variant_id": "student_separated_walking_cycling_greenway_v1",
+      "version": "student_separated_walking_cycling_greenway_v1",
+      "placement_id": "student_separated_walking_cycling_greenway_v1",
+      "sha256": "0c21b11b2e4a61a6d99f1b5eafc6d191ecdb946e0baaab4b88dcce24f55a4410",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "street",
+      "title": "Neighbourhood Transit-Stop Street",
+      "archetype_id": "floating_bus_stop_transit_street",
+      "variant_id": "student_neighbourhood_transit_stop_street_v1",
+      "version": "student_neighbourhood_transit_stop_street_v1",
+      "placement_id": "student_neighbourhood_transit_stop_street_v1",
+      "sha256": "60cc4e3b3f3b50b14592624f09b87beaaf558f9c3a796200365bfdd2a20008d3",
+      "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -2730,6 +2790,161 @@
         "green_space_selected_variant_id": "student_urban_skate_plaza_v1",
         "green_space_native_layout_id": "student_urban_skate_plaza_v1--native-v1",
         "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "student_rain_garden_residential_street_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Rain-Garden Residential Street",
+      "description": "15.0 m fixed native section; clear routes, planting and furnishings.",
+      "thumbnail": "/archetypes/streets/neighbourhood-five/student_rain_garden_residential_street_v1.png",
+      "model": {
+        "variantId": "student_rain_garden_residential_street_v1",
+        "revision": "f4fb6ba6bffb3ad6590bace70e926c98d99a67a600091ddb8672c64a85727e87",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "local",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 15.0,
+      "properties": {
+        "road_archetype_id": "narrow_residential_street",
+        "road_selected_variant_id": "student_rain_garden_residential_street_v1",
+        "width": 15.0,
+        "lane_count": 2,
+        "pick_place_street_section": "student_rain_garden_residential_street_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original teaching concept; not a Calgary standard section"
+      }
+    },
+    {
+      "id": "student_compact_one_way_shopping_street_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Compact One-Way Shopping Street",
+      "description": "15.5 m fixed native section; clear routes, planting and furnishings.",
+      "thumbnail": "/archetypes/streets/neighbourhood-five/student_compact_one_way_shopping_street_v1.png",
+      "model": {
+        "variantId": "student_compact_one_way_shopping_street_v1",
+        "revision": "cc70a02fe62f7463c3b39889bba13e229170ee784d5e51f5060ffabd27a76767",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "local",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 15.5,
+      "properties": {
+        "road_archetype_id": "neighborhood_main_street",
+        "road_selected_variant_id": "student_compact_one_way_shopping_street_v1",
+        "width": 15.5,
+        "lane_count": 1,
+        "pick_place_street_section": "student_compact_one_way_shopping_street_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original teaching concept; not a Calgary standard section"
+      }
+    },
+    {
+      "id": "student_neighbourhood_cycle_street_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Neighbourhood Cycle Street",
+      "description": "13.0 m fixed native section; clear routes, planting and furnishings.",
+      "thumbnail": "/archetypes/streets/neighbourhood-five/student_neighbourhood_cycle_street_v1.png",
+      "model": {
+        "variantId": "student_neighbourhood_cycle_street_v1",
+        "revision": "c35ec0969d4fcc4eee414fe9de4a378dbd7018340341edaf10a7da6a227b56be",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "active",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 13.0,
+      "properties": {
+        "road_archetype_id": "neighborhood_greenway",
+        "road_selected_variant_id": "student_neighbourhood_cycle_street_v1",
+        "width": 13.0,
+        "lane_count": 2,
+        "pick_place_street_section": "student_neighbourhood_cycle_street_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original teaching concept; not a Calgary standard section"
+      }
+    },
+    {
+      "id": "student_separated_walking_cycling_greenway_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Separated Walking & Cycling Greenway",
+      "description": "10.0 m fixed native section; clear routes, planting and furnishings.",
+      "thumbnail": "/archetypes/streets/neighbourhood-five/student_separated_walking_cycling_greenway_v1.png",
+      "model": {
+        "variantId": "student_separated_walking_cycling_greenway_v1",
+        "revision": "9426902708df20e0f8f2b7ca690f82edde688d445f604eaa831a898818a64f8e",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "active",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 10.0,
+      "properties": {
+        "road_archetype_id": "multi_use_trail",
+        "road_selected_variant_id": "student_separated_walking_cycling_greenway_v1",
+        "width": 10.0,
+        "lane_count": 0,
+        "pick_place_street_section": "student_separated_walking_cycling_greenway_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original teaching concept; not a Calgary standard section"
+      }
+    },
+    {
+      "id": "student_neighbourhood_transit_stop_street_v1",
+      "kind": "street",
+      "definitionVersion": 1,
+      "readiness": "pilot",
+      "label": "Neighbourhood Transit-Stop Street",
+      "description": "17.0 m fixed native section; clear routes, planting and furnishings.",
+      "thumbnail": "/archetypes/streets/neighbourhood-five/student_neighbourhood_transit_stop_street_v1.png",
+      "model": {
+        "variantId": "student_neighbourhood_transit_stop_street_v1",
+        "revision": "4797f51909b02bfeb54ea45605feb58ab98a6bdeb0add3993a17062b720309fb",
+        "method": "native_street_modules_v1"
+      },
+      "calgaryGuide": {
+        "groupId": "transit",
+        "basis": "form_reference"
+      },
+      "reshapeMode": "fixed_section_route",
+      "sectionWidth": 17.0,
+      "properties": {
+        "road_archetype_id": "floating_bus_stop_transit_street",
+        "road_selected_variant_id": "student_neighbourhood_transit_stop_street_v1",
+        "width": 17.0,
+        "lane_count": 2,
+        "pick_place_street_section": "student_neighbourhood_transit_stop_street_v1",
+        "pick_place_automatic_3d": true,
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true,
+        "road_standard_citation": "City Prompt original teaching concept; not a Calgary standard section"
       }
     }
   ]

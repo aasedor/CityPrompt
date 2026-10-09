@@ -1,0 +1,63 @@
+{
+  "findings": [
+    {
+      "description": "Shelter front, boarding strip and rear walking route inspected in dedicated close views. Seat, safety bands, windscreen and stop pole preserve transit identity. Native front is open toward roadway. Flush boarding concept only; no resolved raised platform claim.",
+      "severity": "info"
+    },
+    {
+      "description": "self-contained GLB buffers; delivered byte hashes; finite metric bounds; 1134 clear material-aware route rays; 6 tree root openings checked; native module reimport and ground datum",
+      "severity": "info"
+    },
+    {
+      "description": "Stylized vegetation/materials are accepted for bounded native classroom concept. Runtime performance, ground support, bends, joining and student controls remain separate gates.",
+      "severity": "P2"
+    }
+  ],
+  "inspected_files": [
+    {
+      "path": "reference.png",
+      "sha256": "ff53ec275d13ad5ee4de738831caee63a1665195f55ec960ba8a904fcd273890"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "1e5e7ba8b136edbcd0a923e63856d63046ebd2e81a43e9e3f9142d5ae4a7b710"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "3cb24645a02499db02fdfbd35b9673b018d48dd84c337437f24c8a87d3e66137"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "4797f51909b02bfeb54ea45605feb58ab98a6bdeb0add3993a17062b720309fb"
+    },
+    {
+      "path": "assembly-preview.glb",
+      "sha256": "60cc4e3b3f3b50b14592624f09b87beaaf558f9c3a796200365bfdd2a20008d3"
+    },
+    {
+      "path": "independent-geometry-verification.json",
+      "sha256": "0c2f3aa27b681a2dc1cdf1024038cb88afd72fd740e890f9cdae80dbfaf6e587"
+    },
+    {
+      "path": "renders/boarding.png",
+      "sha256": "56814a0901671d548249facc09bc1ca177b71b5abe582bfa615b13c430347cf5"
+    },
+    {
+      "path": "renders/shelter-front.png",
+      "sha256": "d87c9e3784fa9335550cedd192fa9960abca8ef687dc81ce87a27819fea19618"
+    },
+    {
+      "path": "renders/rear-walk.png",
+      "sha256": "5a17304808764102663d43ad3f8517c7aa6321894f9de45ca580d8b28b014181"
+    }
+  ],
+  "schema_version": 1,
+  "reviewer": "independent-public-realm-reviewer",
+  "unresolved_p1": 0,
+  "review_revision": 1,
+  "scope": "Offline native level-fixture visual and reimported geometry review only. No runtime pass, new human visual approval or publication authorization.",
+  "unresolved_p0": 0,
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "date": "2026-10-09",
+  "model_sha256": "60cc4e3b3f3b50b14592624f09b87beaaf558f9c3a796200365bfdd2a20008d3"
+}
