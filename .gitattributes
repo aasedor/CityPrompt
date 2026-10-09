@@ -101,3 +101,6 @@ seed/classroom-parks/bicycle-pump-v004/*.py -text whitespace=cr-at-eol
 # Preserve reviewed source/evidence byte locks with core.autocrlf enabled.
 seed/classroom-streets/neighbourhood-five/**/*.py -text whitespace=cr-at-eol
 seed/classroom-streets/neighbourhood-five/**/*.json -text whitespace=cr-at-eol
+
+frontend/src/features/landing/media/*.png filter=lfs diff=lfs merge=lfs -text
+frontend/src/features/landing/media/*.mp4 filter=lfs diff=lfs merge=lfs -text
