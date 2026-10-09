@@ -47,6 +47,17 @@ additional elements or unsupported camera parameters are sent.
 
 ## Storage, ownership and recovery
 
+The dialog accepts an optional **Scene direction** of up to 400 characters,
+such as “People stroll along the paths.” It is appended to the existing single
+animation prompt; blank input retains the default. Keep directions brief and
+focused on activity or movement. The submitted direction and complete provider
+prompt are saved with the job and included in its idempotency check. Reopening
+a saved job checks that job rather than generating a revised clip.
+
+If a readiness or history read fails, **Check again** reruns only those unpaid
+checks. Generation stays disabled until both succeed. An existing paid job can
+still be recovered if a fresh submission would exceed the credit allowance.
+
 - Requests identify the project and saved-render UUID. The backend checks current
   editor access, render membership and the exact project storage key. It reads
   the saved PNG/JPEG/WebP bytes without resizing. Gallery thumbnails and a Direct

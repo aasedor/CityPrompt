@@ -8,8 +8,8 @@ import uuid
 from urllib.parse import urlsplit
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, ConfigDict
-from typing import Literal
+from pydantic import BaseModel, ConfigDict, StringConstraints
+from typing import Annotated, Literal
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -21,7 +21,7 @@ from app.services.render_provenance import revision_sha256
 from app.services.render_trial import check_trial_available, reserve_trial_slot
 from app.services.kling_video import (
     ANIMATION_SECONDS,
-    ANIMATION_PROMPT,
+    animation_prompt,
     ANIMATION_NEGATIVE_PROMPT,
     ANIMATION_SETTINGS,
     KlingGenerationFailed,
@@ -57,6 +57,7 @@ class RenderAnimationPreflightRequest(BaseModel):
 class RenderAnimationRequest(RenderAnimationPreflightRequest):
     request_id: uuid.UUID
     confirm_paid_submission: Literal[True]
+    scene_direction: Annotated[str, StringConstraints(strip_whitespace=True, max_length=400)] = ""
 
 
 class RenderAnimationPreflightResponse(BaseModel):
@@ -207,7 +208,11 @@ async def animate_render(
 ):
     await check_project_permission(req.project_id, user, db, required="editor")
     project = await _locked_project(db, req.project_id)
-    fingerprint = revision_sha256(req.model_dump(mode="json"))
+    request_data = req.model_dump(mode="json")
+    # Preserve idempotency for requests reserved before scene directions existed.
+    if not req.scene_direction:
+        request_data.pop("scene_direction")
+    fingerprint = revision_sha256(request_data)
     attempts = [
         dict(item) for item in (project.metadata_ or {}).get("video_pilot_attempts", [])
     ]
@@ -244,7 +249,8 @@ async def animate_render(
         "source_image_url": render["image_url"],
         "guide_image_url": render["image_url"],
         "model": settings.kling_animation_endpoint,
-        "prompt": ANIMATION_PROMPT,
+        "prompt": animation_prompt(req.scene_direction),
+        "scene_direction": req.scene_direction,
         "negative_prompt": ANIMATION_NEGATIVE_PROMPT,
         "generation_settings": dict(ANIMATION_SETTINGS),
         "status": "reserved",
@@ -340,7 +346,7 @@ async def animate_render(
     request_id = None
     try:
         request_id = await submit_kling_once(
-            settings.fal_key, entry["model"], build_kling_arguments(start_image_url)
+            settings.fal_key, entry["model"], build_kling_arguments(start_image_url, entry["scene_direction"])
         )
         # FIRST operation after the receipt: durable provider identity, before polling.
         entry = await _update_attempt(

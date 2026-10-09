@@ -206,6 +206,7 @@ class VideoAttemptResponse(BaseModel):
     provider: VideoProvider | Literal["kling", "comfyui"] = "omni"
     mode: Literal["route_video", "saved_render_animation"] = "route_video"
     source_render_id: str | None = None
+    scene_direction: str | None = None
     generation_settings: dict | None = None
     negative_prompt: str | None = None
     recoverable: bool = False
@@ -796,7 +797,7 @@ async def list_video_attempts(
             shared = _public_attempt(item).model_dump()
             shared.update(prompt=None, error=None, guide_image_url=None,
                           interaction_id=None, request_id="", recoverable=False,
-                          negative_prompt=None, generation_settings=None)
+                          negative_prompt=None, generation_settings=None, scene_direction=None)
             visible.append(shared)
     attempts = visible
     omni_usage = _visible_usage(project, all_attempts, "omni")

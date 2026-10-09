@@ -88,6 +88,28 @@ async def generate(f, req=None):
         )
 
 
+@pytest.mark.asyncio
+async def test_scene_direction_is_saved_submitted_once_and_cannot_change_on_replay(pilot):
+    f = pilot
+    req = f.request.model_copy(update={"scene_direction": "People walk beside the pond."})
+    result = await generate(f, req)
+    repeated = await generate(f, req)
+    assert result.id == repeated.id
+    assert result.scene_direction == req.scene_direction
+    assert result.prompt.endswith("Scene direction: People walk beside the pond.")
+    assert f.submit.await_args.args[2]["prompt"] == result.prompt
+    assert f.submit.await_count == 1
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        saved = project.metadata_["video_pilot_attempts"][0]
+        assert saved["scene_direction"] == req.scene_direction
+        assert saved["prompt"] == result.prompt
+    with pytest.raises(HTTPException) as conflict:
+        await generate(f, req.model_copy(update={"scene_direction": "People cycle."}))
+    assert conflict.value.status_code == 409
+    assert f.submit.await_count == 1
+
+
 async def recover(f, attempt):
     async with f.sessions() as db:
         return await animation.recover_animation(

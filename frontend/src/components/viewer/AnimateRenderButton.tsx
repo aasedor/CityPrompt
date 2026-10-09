@@ -61,7 +61,10 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
   const inFlight = useRef(false);
   const savedCallback = useRef(onSaved);
   const closeButton = useRef<HTMLButtonElement>(null);
+  const readinessInFlight = useRef(false);
   const pendingKey = `cityprompt.animation.v1:${projectId}:${render.id}`;
+  const directionKey = `${pendingKey}:direction`;
+  const [sceneDirection, setSceneDirection] = useState(() => (readBrowserPreference(directionKey) || '').slice(0, 400));
   const requestId = useRef(readBrowserPreference(pendingKey) || crypto.randomUUID());
   savedCallback.current = onSaved;
 
@@ -81,6 +84,31 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
     return existing;
   }, [acceptAttempt, projectId, render.id]);
 
+  const checkReadiness = useCallback(async () => {
+    if (readinessInFlight.current) return;
+    readinessInFlight.current = true;
+    setLoading(true);
+    setError(null);
+    setPreflight(null);
+    try {
+      const [check, history] = await Promise.allSettled([
+        renderAnimationApi.preflight({ project_id: projectId, source_render_id: render.id }),
+        loadHistory(),
+      ]);
+      if (!mounted.current) return;
+      if (check.status === 'fulfilled') setPreflight(check.value);
+      // An existing job can still be recovered after credits or allowances change.
+      if (history.status === 'rejected') {
+        setError('Could not check existing animation jobs. Check again to reconnect; no new clip will be submitted.');
+      } else if (!history.value && check.status === 'rejected') {
+        setError(getApiErrorMessage(check.reason, 'Animation is currently unavailable.'));
+      }
+    } finally {
+      readinessInFlight.current = false;
+      if (mounted.current) setLoading(false);
+    }
+  }, [loadHistory, projectId, render.id]);
+
   useEffect(() => {
     mounted.current = true;
     const previousFocus = document.activeElement as HTMLElement | null;
@@ -90,7 +118,7 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
       if (event.key === 'Escape') onClose();
       if (event.key === 'Tab') {
         const elements = closeButton.current?.closest('[role="dialog"]')?.querySelectorAll<HTMLElement>(
-          'button:not(:disabled), a[href], video[controls]',
+          'button:not(:disabled), textarea:not(:disabled), a[href], video[controls]',
         );
         if (!elements?.length) return;
         const first = elements[0], last = elements[elements.length - 1];
@@ -99,22 +127,13 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
       }
     };
     document.addEventListener('keydown', keydown, true);
-    void Promise.allSettled([
-      renderAnimationApi.preflight({ project_id: projectId, source_render_id: render.id }),
-      loadHistory(),
-    ]).then(([check, history]) => {
-      if (!mounted.current) return;
-      if (check.status === 'fulfilled') setPreflight(check.value);
-      else setError(getApiErrorMessage(check.reason, 'Animation is currently unavailable.'));
-      if (history.status === 'rejected') setError('Could not check existing animation jobs. Reopen this panel before generating.');
-      setLoading(false);
-    });
+    void checkReadiness();
     return () => {
       mounted.current = false;
       document.removeEventListener('keydown', keydown, true);
       previousFocus?.focus();
     };
-  }, [loadHistory, onClose, projectId, render.id]);
+  }, [checkReadiness, onClose]);
 
   const recover = useCallback(async (id: string) => {
     if (inFlight.current) return;
@@ -148,14 +167,15 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
   }, [attempt, loadHistory]);
 
   const generate = async () => {
-    if (!preflight || inFlight.current || submitting || attempt || error) return;
+    if (loading || !preflight || inFlight.current || submitting || attempt || error) return;
     inFlight.current = true;
     setSubmitting(true);
     writeBrowserPreference(pendingKey, requestId.current);
     const actorId = useAuthStore.getState().user?.id;
     try {
       const value = await renderAnimationApi.generate({ project_id: projectId, source_render_id: render.id,
-        request_id: requestId.current, confirm_paid_submission: true });
+        request_id: requestId.current, confirm_paid_submission: true,
+        ...(sceneDirection.trim() ? { scene_direction: sceneDirection.trim() } : {}) });
       acceptAttempt(value);
       if (mounted.current) setError(null);
     } catch (exc) {
@@ -195,6 +215,18 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
           <div><p className="text-sm font-bold">A calm architectural film</p>
             <p className="mt-2 text-sm text-black/65">5 seconds · silent · slow camera push-in. Uses this finished image and keeps its lighting and colour treatment.</p>
             <p className="mt-2 text-xs text-black/60">AI motion may change details. Review the architecture before presenting.</p></div>
+          {!attempt && <div>
+            <label htmlFor="animation-scene-direction" className="text-sm font-bold">Scene direction (optional)</label>
+            <textarea id="animation-scene-direction" rows={3} maxLength={400} value={sceneDirection}
+              disabled={submitting} aria-describedby="animation-direction-help"
+              placeholder="People stroll along the paths while leaves move gently."
+              onChange={event => {
+                setSceneDirection(event.target.value);
+                writeBrowserPreference(directionKey, event.target.value);
+              }}
+              className="mt-2 w-full resize-y rounded-xl border border-black/20 bg-white p-3 text-sm text-[#151515] focus:outline-none focus:ring-2 focus:ring-[#28c7e8] disabled:opacity-60" />
+            <p id="animation-direction-help" className="mt-1 text-xs text-black/60">One short sentence about activity or movement. Leave blank for the default camera move.</p>
+          </div>}
           {loading ? <p role="status" className="flex items-center gap-2 text-sm"><Loader2 size={16} className="animate-spin" /> Checking the saved render…</p>
             : !attempt && preflight && <div className="rounded-xl border border-black/10 bg-white p-3 text-sm">
               <p className="font-bold">{preflight.width} × {preflight.height} source</p>
@@ -202,6 +234,7 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
               <p className="mt-1 text-xs text-black/55">Creating a clip submits one paid generation.</p>
             </div>}
           {attempt ? <div className="rounded-xl bg-white p-3">
+            {attempt.scene_direction && <p className="mb-2 text-sm">{attempt.scene_direction}</p>}
             <p role="status" className="text-sm font-bold">{attempt.status === 'complete' ? 'Your clip is ready' : attempt.status === 'submission_unknown'
               ? 'Submission needs review' : `Animation ${attempt.status.replace(/_/g, ' ')}`}</p>
             {attempt.recoverable && <p className="mt-2 text-xs text-black/60">You can close this panel. Reopen this render to check the same saved job.</p>}
@@ -215,6 +248,10 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
             {submitting ? 'Submitting one clip…' : 'Create 5-second clip'}
           </button>}
           {(error || attempt?.error) && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-800">{error || attempt?.error}</p>}
+          {error && !attempt && <button type="button" disabled={loading || submitting}
+            onClick={() => void checkReadiness()}
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-black/20 px-4 text-sm font-bold disabled:opacity-50">
+            <RefreshCw size={16} /> Check again</button>}
         </div>
       </div>
     </section>

@@ -33,6 +33,21 @@ def test_saved_still_payload_matches_documented_schema_and_price():
         kling.validate_endpoint("https://untrusted.example/submit")
 
 
+def test_brief_scene_direction_is_optional_bounded_and_part_of_the_single_prompt():
+    import uuid
+
+    body = dict(project_id=uuid.uuid4(), source_render_id=uuid.uuid4(),
+                request_id=uuid.uuid4(), confirm_paid_submission=True)
+    req = RenderAnimationRequest(**body, scene_direction="  People stroll along the paths.  ")
+    assert req.scene_direction == "People stroll along the paths."
+    payload = kling.build_kling_arguments("https://fal.media/finished.png", req.scene_direction)
+    assert payload["prompt"] == kling.ANIMATION_PROMPT + " Scene direction: People stroll along the paths."
+    assert "multi_prompt" not in payload
+    assert kling.build_kling_arguments("https://fal.media/finished.png", " ")["prompt"] == kling.ANIMATION_PROMPT
+    with pytest.raises(ValidationError):
+        RenderAnimationRequest(**body, scene_direction="x" * 401)
+
+
 def test_separate_request_forbids_client_images_model_options_and_fake_route_controls():
     import uuid
 

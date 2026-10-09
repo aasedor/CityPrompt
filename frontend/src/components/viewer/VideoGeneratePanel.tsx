@@ -117,6 +117,7 @@ export interface VideoAttempt {
   provider?: VideoProvider | 'kling' | 'comfyui';
   mode?: 'route_video' | 'saved_render_animation';
   source_render_id?: string | null;
+  scene_direction?: string | null;
   recoverable?: boolean;
   model?: string | null;
   seedance_reference_mode?: SeedanceReferenceMode | null;

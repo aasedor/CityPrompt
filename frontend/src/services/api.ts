@@ -1757,7 +1757,7 @@ export const renderAnimationApi = {
     const { data } = await api.post('/api/v1/video/animate/preflight', request, { timeout: 30000 });
     return data;
   },
-  generate: async (request: { project_id: string; source_render_id: string; request_id: string; confirm_paid_submission: true }): Promise<import('@/components/viewer/VideoGeneratePanel').VideoAttempt> => {
+  generate: async (request: { project_id: string; source_render_id: string; request_id: string; confirm_paid_submission: true; scene_direction?: string }): Promise<import('@/components/viewer/VideoGeneratePanel').VideoAttempt> => {
     const { data } = await api.post('/api/v1/video/animate', request, { timeout: 180000 });
     return data;
   },

@@ -98,6 +98,45 @@ describe('saved finished render animation', () => {
     expect(renderAnimationApi.generate).not.toHaveBeenCalled();
   });
 
+  it('rechecks readiness in place and finds an existing job without a paid submission', async () => {
+    vi.mocked(videoRenderApi.list).mockRejectedValueOnce(new Error('network unavailable'));
+    render(<AnimateRenderButton projectId="p" render={still} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Animate this render' }));
+    await screen.findByRole('alert');
+    vi.mocked(videoRenderApi.list).mockResolvedValue({ attempts: [queued] });
+    fireEvent.click(screen.getByRole('button', { name: 'Check again' }));
+    await screen.findByText('Animation queued');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(renderAnimationApi.generate).not.toHaveBeenCalled();
+  });
+
+  it('retains a brief scene direction on reopen and sends it with the single request', async () => {
+    await open();
+    const input = screen.getByLabelText('Scene direction (optional)');
+    expect(input).toHaveAttribute('maxlength', '400');
+    fireEvent.change(input, { target: { value: 'People strolling along the paths.' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Close animation' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Animate this render' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Create 5-second clip' })).toBeEnabled());
+    expect(screen.getByLabelText('Scene direction (optional)')).toHaveValue('People strolling along the paths.');
+    fireEvent.click(screen.getByRole('button', { name: 'Create 5-second clip' }));
+    await screen.findByText('Animation queued');
+    expect(renderAnimationApi.generate).toHaveBeenCalledWith(expect.objectContaining({
+      scene_direction: 'People strolling along the paths.',
+    }));
+    expect(renderAnimationApi.generate).toHaveBeenCalledTimes(1);
+  });
+
+  it('allows recovery of an existing paid job even when a new clip would exceed credits', async () => {
+    vi.mocked(renderAnimationApi.preflight).mockRejectedValue(new Error('Insufficient credits'));
+    vi.mocked(videoRenderApi.list).mockResolvedValue({ attempts: [queued] });
+    render(<AnimateRenderButton projectId="p" render={still} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Animate this render' }));
+    await screen.findByRole('button', { name: 'Check saved request' });
+    await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());
+    expect(renderAnimationApi.generate).not.toHaveBeenCalled();
+  });
+
   it('retains the request key on a lost response and finds the existing paid receipt', async () => {
     await open();
     vi.mocked(renderAnimationApi.generate).mockRejectedValue(new Error('response interrupted'));

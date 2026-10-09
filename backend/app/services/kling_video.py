@@ -81,11 +81,16 @@ def validate_endpoint(endpoint: str) -> str:
     return endpoint
 
 
-def build_kling_arguments(start_image_url: str) -> dict:
+def animation_prompt(scene_direction: str = "") -> str:
+    direction = scene_direction.strip()
+    return ANIMATION_PROMPT + (f" Scene direction: {direction}" if direction else "")
+
+
+def build_kling_arguments(start_image_url: str, scene_direction: str = "") -> dict:
     return {
         "start_image_url": start_image_url,
         **ANIMATION_SETTINGS,
-        "prompt": ANIMATION_PROMPT,
+        "prompt": animation_prompt(scene_direction),
         "negative_prompt": ANIMATION_NEGATIVE_PROMPT,
     }
 
