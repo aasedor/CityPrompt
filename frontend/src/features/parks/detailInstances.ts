@@ -1,5 +1,6 @@
 import { Group, InstancedMesh, Matrix4, Mesh, type Object3D } from "three";
 import { WGS84_ELLIPSOID } from "3d-tiles-renderer";
+import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
 
 export interface DetailPlacement {
   lng: number;
@@ -36,6 +37,10 @@ export function buildDetailInstances(
   placements: readonly Matrix4[],
 ) {
   const group = new Group();
+  // Project details live in project metadata, not the server's zone inventory.
+  // Preserve their pixels in beauty/context captures without inventing a zone
+  // identity or asking the AI to regenerate these fixed metric objects.
+  group.userData = { ...DIRECT_3D_CAPTURE_CONTEXT_USER_DATA };
   source.updateMatrixWorld(true);
   source.traverseVisible((object) => {
     const mesh = object as Mesh;

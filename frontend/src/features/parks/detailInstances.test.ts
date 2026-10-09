@@ -9,12 +9,35 @@ import {
 } from "three";
 import { WGS84_ELLIPSOID } from "3d-tiles-renderer";
 import {
+  direct3DProposalUserData,
+  getDirect3DProposalRole,
+  getDirect3DInstanceDescriptor,
+  isExcludedFromDirect3DCapture,
+  requireDirect3DInstanceDescriptor,
+} from "@/components/viewer/globe/direct3dCapture";
+import {
   buildDetailInstances,
   detailPlacementMatrix,
   disposeDetailInstances,
 } from "./detailInstances";
 
 describe("batched project details", () => {
+  it("keeps detail pixels in captures without claiming a zone-owned landscape instance", () => {
+    const source = new Mesh(new BoxGeometry(), new MeshStandardMaterial());
+    const details = buildDetailInstances(source, [new Matrix4(), new Matrix4().makeTranslation(3, 0, 0)]);
+    const parent = new Group();
+    parent.userData = direct3DProposalUserData("landscape");
+    parent.add(details);
+    const mesh = details.children[0];
+    expect(isExcludedFromDirect3DCapture(mesh)).toBe(false);
+    expect(getDirect3DProposalRole(mesh)).toBeNull();
+    expect(getDirect3DInstanceDescriptor(mesh)).toBeNull();
+    expect(() => requireDirect3DInstanceDescriptor(getDirect3DProposalRole(mesh), getDirect3DInstanceDescriptor(mesh))).not.toThrow();
+    expect((mesh as import("three").InstancedMesh).count).toBe(2);
+    disposeDetailInstances(details);
+    source.geometry.dispose();
+    source.material.dispose();
+  });
   it("releases instance buffers without disposing shared geometry and materials", () => {
     const source = new Mesh(new BoxGeometry(), new MeshStandardMaterial());
     const geometry = vi.spyOn(source.geometry, "dispose");

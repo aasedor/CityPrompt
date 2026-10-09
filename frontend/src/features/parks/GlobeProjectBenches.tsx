@@ -15,7 +15,7 @@ import type { DetailPlacement } from "./detailInstances";
 import { useSharedSiteGround } from "@/components/viewer/globe/SharedSiteGroundProvider";
 import { authoredCameraGround } from "@/components/viewer/globe/authoredCameraGround";
 import { raycastTerrainHeightAtLatLng } from "@/components/viewer/globe/GlobeZoneLayer";
-import { direct3DProposalUserData } from "@/components/viewer/globe/direct3dCapture";
+import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
 import type { ProjectBench, ProjectTree, ProjectProp } from "./projectBenches";
 
 const NO_PROPS: ProjectProp[] = [];
@@ -89,7 +89,7 @@ export function GlobeProjectBenches({
   return (
     <group
       name="project-details"
-      userData={direct3DProposalUserData("landscape")}
+      userData={DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
     >
       {batches.map(([asset, placements]) => (
         <Suspense key={asset} fallback={null}>
