@@ -614,7 +614,7 @@ export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
     label: 'Site Boundary',
     color: '#F59E0B',
     icon: 'S',
-    defaultProperties: { community_3d_mask_existing_tiles: false },
+    defaultProperties: { community_3d_mask_existing_tiles: true },
   },
   building: {
     label: 'Building',
