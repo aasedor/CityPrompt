@@ -135,6 +135,16 @@
     "detail-wayfinding-post",
     "detail-community-mailbox",
     "detail-dog-agility-hoop",
-    "detail-dog-agility-tunnel"
+    "detail-dog-agility-tunnel",
+    "detail-traffic-signal",
+    "detail-pedestrian-signal",
+    "detail-stop-sign",
+    "detail-yield-sign",
+    "detail-speed-limit-30",
+    "detail-no-entry-sign",
+    "detail-speed-hump",
+    "detail-raised-crossing",
+    "detail-flexible-bollard",
+    "detail-traffic-cone"
   ]
 }

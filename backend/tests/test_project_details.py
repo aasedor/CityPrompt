@@ -131,7 +131,7 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
     from pathlib import Path
     root = Path(__file__).resolve().parents[2]
     choices = json.loads((root / 'frontend/src/features/parks/detailCatalogueExtras.json').read_text())
-    assert len(choices) == 125
+    assert len(choices) == 135
     assert set(endpoint._DETAIL_MODELS['trees']) == {'oak-0','oak-1','oak-2'} | {c['id'] for c in choices if c['kind'] == 'tree'}
     assert set(endpoint._DETAIL_MODELS['props']) == {'picnic-table-accessible','dual-stream-bin','bike-rack-three-stall','drinking-fountain-accessible','boulders','split-rail'} | {c['id'] for c in choices if c['kind'] == 'object'}
     for choice in choices:
@@ -140,3 +140,20 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
             'id': 'trial', 'lng': -114.1, 'lat': 51.05, 'angle': 15, 'variant': choice['id']
         }]})
         assert getattr(request, field)[0].variant == choice['id']
+
+
+def test_traffic_details_ship_real_hash_locked_models():
+    import hashlib
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[2]
+    choices = json.loads((root / 'frontend/src/features/parks/detailCatalogueExtras.json').read_text())
+    traffic = [c for c in choices if c['sourceKit'] == 'traffic-safety-v1']
+    assert len(traffic) == 10
+    assert sum(c['bytes'] for c in traffic) < 300_000
+    for model in traffic:
+        data = (root / 'frontend/public' / model['url'].lstrip('/')).read_bytes()
+        assert data[:4] == b'glTF', model['id']
+        assert hashlib.sha256(data).hexdigest() == model['sha256']
+        assert len(data) == model['bytes']
+        assert model['triangles'] < 10_000 and model['meshes'] <= 6

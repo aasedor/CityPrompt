@@ -1,0 +1,245 @@
+{
+  "method": "Metric static planning props; generated with tools/detail_catalogue/build_traffic.py",
+  "models": [
+    {
+      "id": "detail-traffic-signal",
+      "label": "Traffic signal",
+      "category": "Traffic & safety",
+      "description": "Three-lens signal on a roadside pole. Rotate its face toward approaching traffic; static display.",
+      "dimensions": [
+        0.52,
+        0.65,
+        3.3
+      ],
+      "url": "/street-kits/traffic-safety-v1/traffic-signal.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        -0.205
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "3a8ffe5ba26f44378e6ac4582eb2834ca03f558de848ce3557a60a4c488f03b8",
+      "triangles": 512,
+      "meshes": 6,
+      "bytes": 26792
+    },
+    {
+      "id": "detail-pedestrian-signal",
+      "label": "Pedestrian signal",
+      "category": "Traffic & safety",
+      "description": "Crossing signal with a push button and illuminated walk symbol; static display.",
+      "dimensions": [
+        0.43,
+        0.446,
+        2.89
+      ],
+      "url": "/street-kits/traffic-safety-v1/pedestrian-signal.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        -0.103
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "94213dd058c8f26110b2066ed4c9cbfc3bae218a92390a7e698ff75fa6929841",
+      "triangles": 336,
+      "meshes": 4,
+      "bytes": 19756
+    },
+    {
+      "id": "detail-stop-sign",
+      "label": "Stop sign",
+      "category": "Traffic & safety",
+      "description": "Octagonal STOP sign for a proposed intersection approach.",
+      "dimensions": [
+        0.7483,
+        0.24,
+        2.7242
+      ],
+      "url": "/street-kits/traffic-safety-v1/stop-sign.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        0.0
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "18f29d31e3828c83823ed5ca6ccebad5b61d6aea1a778b574c24156f1e558a1f",
+      "triangles": 396,
+      "meshes": 3,
+      "bytes": 19192
+    },
+    {
+      "id": "detail-yield-sign",
+      "label": "Yield sign",
+      "category": "Traffic & safety",
+      "description": "Triangular yield sign for a proposed junction or shared access.",
+      "dimensions": [
+        0.9,
+        0.24,
+        2.7
+      ],
+      "url": "/street-kits/traffic-safety-v1/yield-sign.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        0.0
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "589e27ffaff3ab11042950e65cc502578ad9211b86cefd4a666178f8e55fd82f",
+      "triangles": 238,
+      "meshes": 4,
+      "bytes": 14164
+    },
+    {
+      "id": "detail-speed-limit-30",
+      "label": "Speed limit · 30 km/h",
+      "category": "Traffic & safety",
+      "description": "A 30 km/h MAXIMUM sign for a proposed low-speed street.",
+      "dimensions": [
+        0.62,
+        0.24,
+        2.72
+      ],
+      "url": "/street-kits/traffic-safety-v1/speed-limit-30.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        0.0
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "0274c3bf8763694e1f3bd45f7770597034bd65bf1074639be3f1950e6452a445",
+      "triangles": 948,
+      "meshes": 3,
+      "bytes": 42592
+    },
+    {
+      "id": "detail-no-entry-sign",
+      "label": "Do not enter sign",
+      "category": "Traffic & safety",
+      "description": "Red disc and white bar to indicate a restricted approach.",
+      "dimensions": [
+        0.78,
+        0.246,
+        2.74
+      ],
+      "url": "/street-kits/traffic-safety-v1/no-entry-sign.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        -0.003
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "919a3daf64f4c1b886b8e6c5e4e6aa447f63a72c5c20f1365037889d61dae3e2",
+      "triangles": 316,
+      "meshes": 3,
+      "bytes": 16772
+    },
+    {
+      "id": "detail-speed-hump",
+      "label": "Speed hump",
+      "category": "Traffic & safety",
+      "description": "Rounded asphalt traffic-calming hump, 3.6 m across and 3.7 m along travel, 0.10 m high.",
+      "dimensions": [
+        3.6,
+        3.7,
+        0.102
+      ],
+      "url": "/street-kits/traffic-safety-v1/speed-hump.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        0.0
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "5c2ed04083b31890ce535f9e41fd0b6b936ea87c685a4f93430015c4ef0ce20d",
+      "triangles": 336,
+      "meshes": 2,
+      "bytes": 20012
+    },
+    {
+      "id": "detail-raised-crossing",
+      "label": "Raised pedestrian crossing",
+      "category": "Traffic & safety",
+      "description": "Six-metre-wide raised zebra crossing with approach ramps; 0.15 m high.",
+      "dimensions": [
+        6.0,
+        4.0,
+        0.152
+      ],
+      "url": "/street-kits/traffic-safety-v1/raised-crossing.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        0.0
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "a6a187ed19830d9b16ad9bd3772f9c756318d7672e6d0d1907d9aa5b335b6aea",
+      "triangles": 480,
+      "meshes": 2,
+      "bytes": 26368
+    },
+    {
+      "id": "detail-flexible-bollard",
+      "label": "Flexible delineator bollard",
+      "category": "Traffic & safety",
+      "description": "Reflective lane separator for cycling edges, traffic islands and restricted vehicle access.",
+      "dimensions": [
+        0.3,
+        0.3,
+        0.94
+      ],
+      "url": "/street-kits/traffic-safety-v1/flexible-bollard.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        0.0
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "4262fa4f3306b12c75ec48c96d230f8e849276051cf37f35fd2994f64d80f2e8",
+      "triangles": 256,
+      "meshes": 3,
+      "bytes": 14136
+    },
+    {
+      "id": "detail-traffic-cone",
+      "label": "Traffic cone",
+      "category": "Traffic & safety",
+      "description": "Orange cone with reflective bands for a temporary traffic or construction layout.",
+      "dimensions": [
+        0.42,
+        0.42,
+        0.74
+      ],
+      "url": "/street-kits/traffic-safety-v1/traffic-cone.glb",
+      "color": "#e6b828",
+      "kind": "object",
+      "offset": [
+        -0.0,
+        -0.0,
+        0.0
+      ],
+      "sourceKit": "traffic-safety-v1",
+      "sha256": "def07bd1c9bd09351d41ec8381fefb596659669105a5915a7271c0e2585139d9",
+      "triangles": 362,
+      "meshes": 3,
+      "bytes": 19936
+    }
+  ]
+}

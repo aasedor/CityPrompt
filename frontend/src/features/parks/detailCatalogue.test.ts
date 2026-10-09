@@ -10,8 +10,8 @@ import extras from "./detailCatalogueExtras.json";
 
 describe("standalone detail catalogue", () => {
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(135);
-    expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(135);
+    expect(DETAIL_CATALOGUE).toHaveLength(145);
+    expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(145);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-"),
     )) {
