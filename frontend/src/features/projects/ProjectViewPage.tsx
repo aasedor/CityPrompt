@@ -1140,6 +1140,7 @@ export function ProjectViewPage() {
             longitude={project.location?.longitude}
             projectBenches={projectDetails.data?.benches}
             detailEditing={showDetailCatalogue}
+            detailInteraction={{ ...detailPlacement, selectItem: itemId => { setShowDetailCatalogue(true); detailPlacement.selectItem(itemId); } }}
             onPlaceDetail={detailPlacement.place}
             projectTrees={projectDetails.data?.trees}
             projectProps={projectDetails.data?.props}

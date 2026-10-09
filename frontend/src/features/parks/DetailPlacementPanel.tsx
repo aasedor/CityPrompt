@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { DETAIL_CATEGORIES, searchDetails, detailAsset, type DetailAsset } from './detailCatalogue';
 import { detailThumbnail } from './detailThumbnail';
 import type { useDetailPlacement } from './useDetailPlacement';
+import { DetailEditControls } from './DetailEditControls';
 
 function Thumbnail({ asset }: { asset: DetailAsset }) {
   const root = useRef<HTMLDivElement>(null);
@@ -58,6 +59,7 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
       {!options.length && <p className="py-4 text-sm">No matching items. Try another search or category.</p>}
     </div>
     <footer className="shrink-0 space-y-2 border-t border-slate-300 bg-white p-3">
+      <DetailEditControls placement={placement} />
       {selected && <><p className="text-sm font-semibold">Placing: {selected.label}</p>
         <div className="flex items-center gap-2"><label className="text-xs">Rotation <input aria-label="Detail rotation" type="number" step="15" value={placement.angle} disabled={placement.saving} onChange={e => placement.setAngle(Number(e.target.value) || 0)} className="w-20 rounded border border-slate-400 p-2" /></label>
           <button type="button" className="ml-auto min-h-11 rounded-lg border border-slate-400 px-3 text-xs" onClick={() => placement.choose(null)}>Stop placing</button></div></>}

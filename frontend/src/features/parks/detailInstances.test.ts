@@ -6,6 +6,7 @@ import {
   MeshStandardMaterial,
   Matrix4,
   Vector3,
+  Raycaster,
 } from "three";
 import { WGS84_ELLIPSOID } from "3d-tiles-renderer";
 import {
@@ -19,9 +20,21 @@ import {
   buildDetailInstances,
   detailPlacementMatrix,
   disposeDetailInstances,
+  pickProjectDetail,
 } from "./detailInstances";
 
 describe("batched project details", () => {
+  it("picks the exact placed instance and ignores cursor previews", () => {
+    const source = new Mesh(new BoxGeometry(), new MeshStandardMaterial());
+    const group = buildDetailInstances(source, [new Matrix4(), new Matrix4().makeTranslation(3, 0, 0)]);
+    group.userData.projectDetailIds = ['bench-a', 'bench-b'];
+    group.updateMatrixWorld(true);
+    const ray = new Raycaster(new Vector3(3, 0, 4), new Vector3(0, 0, -1));
+    expect(pickProjectDetail(group, ray)).toBe('bench-b');
+    group.userData.projectDetailIds[1] = 'detail-preview:cursor';
+    expect(pickProjectDetail(group, ray)).toBeNull();
+    disposeDetailInstances(group); source.geometry.dispose(); source.material.dispose();
+  });
   it("keeps detail pixels in captures without claiming a zone-owned landscape instance", () => {
     const source = new Mesh(new BoxGeometry(), new MeshStandardMaterial());
     const details = buildDetailInstances(source, [new Matrix4(), new Matrix4().makeTranslation(3, 0, 0)]);

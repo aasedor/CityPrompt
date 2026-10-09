@@ -1,12 +1,31 @@
-import { Group, InstancedMesh, Matrix4, Mesh, type Object3D } from "three";
+import { Group, InstancedMesh, Matrix4, Mesh, type Object3D, type Raycaster, type Intersection } from "three";
 import { WGS84_ELLIPSOID } from "3d-tiles-renderer";
 import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
 
 export interface DetailPlacement {
+  id?: string;
   lng: number;
   lat: number;
   height: number;
   angle: number;
+}
+
+/** Pick only authored detail batches; instancing keeps the exact item identity. */
+export function pickProjectDetail(root: Object3D, ray: Raycaster): string | null {
+  const candidates: { id: string; distance: number }[] = [];
+  root.traverseVisible(object => {
+    const mesh = object as InstancedMesh;
+    const ids = mesh.parent?.userData.projectDetailIds as (string | undefined)[] | undefined;
+    if (!mesh.isInstancedMesh || !ids) return;
+    const hits: Intersection[] = [];
+    InstancedMesh.prototype.raycast.call(mesh, ray, hits);
+    for (const hit of hits) {
+      const id = hit.instanceId === undefined ? undefined : ids[hit.instanceId];
+      if (id && !id.startsWith('detail-preview:')) candidates.push({ id, distance: hit.distance });
+    }
+  });
+  candidates.sort((a, b) => a.distance - b.distance);
+  return candidates[0]?.id ?? null;
 }
 
 /** Keep instance coordinates near a shared origin to avoid Earth-scale Float32 jitter. */

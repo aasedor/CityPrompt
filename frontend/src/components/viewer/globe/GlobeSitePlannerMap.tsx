@@ -1,5 +1,7 @@
 import { NativeParkLayer, assertNativeParksReady, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
 import {GlobeProjectBenches} from '@/features/parks/GlobeProjectBenches';
+import { DetailMapPreview, type DetailInteraction } from '@/features/parks/DetailMapPreview';
+import { pickProjectDetail } from '@/features/parks/detailInstances';
 import { GlobePavingSurfaces } from '@/features/parks/GlobePavingSurfaces';
 import { GlobeParkParcelGuide } from '@/features/parks/GlobeParkParcelGuide';
 import type { PavingSurface } from '@/features/parks/pavingSurfaces';
@@ -1491,6 +1493,7 @@ function MeasurementOverlay({
 interface GlobeSitePlannerMapProps {
   projectBenches?:ProjectBench[];
   detailEditing?: boolean;
+  detailInteraction?: DetailInteraction;
   onPlaceDetail?: (position: [number, number]) => void;
   projectTrees?:ProjectTree[];
   projectProps?:ProjectProp[];
@@ -1608,6 +1611,7 @@ export function GlobeSitePlannerMap({
   projectBenches,
   detailEditing = false,
   onPlaceDetail,
+  detailInteraction,
   projectTrees,
   projectProps,
   projectSurfaces,
@@ -4080,6 +4084,18 @@ export function GlobeSitePlannerMap({
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
+    if (detailInteraction && !detailInteraction.selected && !detailInteraction.moving
+      && !externalInteractionPaused && !hasDrawingTool && !placementDraft && !streetViewPegman && !walkMode && !entrancePick) {
+      const canvas = canvasRef.current;
+      if (canvas && cameraRef.current && sceneRef.current) {
+        const rect = canvas.getBoundingClientRect();
+        const ray = new THREE.Raycaster();
+        ray.setFromCamera(new THREE.Vector2((e.clientX - rect.left) / rect.width * 2 - 1,
+          -(e.clientY - rect.top) / rect.height * 2 + 1), cameraRef.current);
+        const id = pickProjectDetail(sceneRef.current, ray);
+        if (id) { onZoneSelected?.(null); detailInteraction.selectItem(id); return; }
+      }
+    }
     if (detailEditing) {
       if (externalInteractionPaused) return;
       const canvas = canvasRef.current ?? containerRef.current?.querySelector('canvas');
@@ -4243,7 +4259,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
+  }, [detailInteraction, walkMode, detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (zoningInspection?.editing) return;
@@ -4572,7 +4588,8 @@ export function GlobeSitePlannerMap({
           <StreetPreviewGroundProvider>
           <BuildingEntranceApproaches zones={connectedSceneZones} results={pedestrianConnections}>
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
-          {projectBenches && <GlobeProjectBenches benches={projectBenches} trees={projectTrees} props={projectProps} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
+          {projectBenches && <GlobeProjectBenches benches={projectBenches} trees={projectTrees} props={projectProps} hiddenId={captureOverlaysHidden ? undefined : detailInteraction?.editing?.id} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
+          {detailInteraction && !captureOverlaysHidden && <DetailMapPreview interaction={detailInteraction} zones={allSiteZones} surfaceAt={raycastSurfacePoint} fallbackHeight={terrainElevation} />}
           {projectSurfaces && <GlobePavingSurfaces surfaces={projectSurfaces} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
           {!captureOverlaysHidden && !interactionPaused && walkMode !== 'active' && selectedZoneId && (()=>{
             const zone=siteZones.find(z=>z.id===selectedZoneId);

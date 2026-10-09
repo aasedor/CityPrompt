@@ -34,7 +34,8 @@ export function DetailModelInstances({
       scene,
       placements.map((p) => detailPlacementMatrix(p, inverse, model.offset)),
     );
-    result.userData = { ...result.userData, semanticRole: asset, fixedMetricObject: true };
+    result.userData = { ...result.userData, semanticRole: asset, fixedMetricObject: true,
+      projectDetailIds: placements.map(p => p.id) };
     return result;
   }, [scene, placements, model, asset]);
   useEffect(() => () => disposeDetailInstances(group), [group]);

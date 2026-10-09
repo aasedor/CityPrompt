@@ -29,20 +29,22 @@ export function GlobeProjectBenches({
   props = NO_PROPS,
   zones,
   fallbackHeight,
+  hiddenId,
 }: {
   benches: ProjectBench[];
   trees?: ProjectTree[];
   props?: ProjectProp[];
   zones: SiteZone[];
   fallbackHeight: number;
+  hiddenId?: string;
 }) {
   const items = useMemo(
     () => [
       ...benches.map((b) => ({ ...b, variant: "timber-bench" as const })),
       ...trees,
       ...props,
-    ],
-    [benches, trees, props],
+    ].filter(item => item.id !== hiddenId),
+    [benches, trees, props, hiddenId],
   );
   const ground = useSharedSiteGround(),
     tiles = useContext(TilesRendererContext);

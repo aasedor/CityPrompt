@@ -5,6 +5,20 @@ import type { ProjectDetails } from './projectBenches';
 
 const initial: ProjectDetails = { version: 1, revision: 4, can_edit: true, benches: [], trees: [], props: [], surfaces: [] };
 describe('persistent detail placement', () => {
+  it('selects, moves and rotates an existing item without creating a duplicate', async () => {
+    const save = vi.fn(async (data: ProjectDetails) => ({ ...data, revision: data.revision + 1 }));
+    const source = { ...initial, benches: [{ id: 'bench-a', lng: -114, lat: 51, angle: 0 }] };
+    const { result } = renderHook(() => useDetailPlacement(source, save));
+    act(() => result.current.selectItem('bench-a'));
+    act(() => { result.current.setAngle(45); result.current.setMoving(true); });
+    await act(() => result.current.place([-114.1, 51.1]));
+    expect(save.mock.calls[0][0].benches).toEqual([{ id: 'bench-a', lng: -114.1, lat: 51.1, angle: 45 }]);
+    expect(result.current.moving).toBe(false);
+    expect(result.current.editing?.id).toBe('bench-a');
+    await act(() => result.current.removeItem());
+    expect(save.mock.calls[1][0]).toMatchObject({ revision: 5, benches: [] });
+    expect(result.current.editing).toBeNull();
+  });
   it('places different chosen items using the last saved revision and preserves existing details', async () => {
     const save = vi.fn(async (data: ProjectDetails) => ({ ...data, revision: data.revision + 1 }));
     const { result } = renderHook(() => useDetailPlacement(initial, save));
