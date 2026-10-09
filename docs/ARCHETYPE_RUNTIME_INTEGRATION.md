@@ -616,6 +616,16 @@ Native images and material-aware rays
 complement one another. The [ten-court batch](SPORTS_COURT_BATCH_TEN_2026-09-23.md)
 records these offline checks; its browser testing was expressly deferred.
 
+For curved native park paths, verify the full walking width at the closed seam
+and every bend; a centreline can pass while an averaged endpoint normal leaves
+a grass wedge. Build rotated furniture from local-origin geometry before applying
+placement transforms. For raised skate decks and rolling cycle circuits, sample
+the complete entry width across the actual delivered transition: a visible overlap
+can conceal a step or a grass gap. Match the ramp endpoint to the landing's front
+edge and join riding entrances to sampled track-edge heights. Keep those offline
+contacts separate from runtime slope-walking acceptance. See the
+[five-neighbourhood-park checkpoint](FIVE_NEIGHBOURHOOD_PARKS_2026-10-09.md).
+
 For catalogue-image fidelity, inspect and lock the actual authoritative images
 before assigning amenities. Record observed features separately from borrowed
 or inferred details; a related-sport adaptation is not an exact-image match.

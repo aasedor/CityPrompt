@@ -1,0 +1,59 @@
+{
+  "findings": [
+    {
+      "description": "Positive-width bowl landing now joins approach bank continuously. Independent exact reimport probes atx12/y6.54 and6.55 measurez1.669429 and1.671: the prior28.18cm step is removed. Aerial and close ramp view confirm connection.",
+      "severity": "resolved"
+    },
+    {
+      "description": "Concrete bowl, paired quarter pipes, bank, grind ledge/rail, separated spectator loop and entry pergola retain the programme. Raised native bowl is an explicit adaptation of the photographic depressed bowl. Geometry report passes1680 level route rays,six roots,429 full-width elevated access contacts. Six independent native module reimports confirm exact bytes,finite envelopes and base datums.",
+      "severity": "info"
+    },
+    {
+      "description": "Landscape/plant variety and concrete detailing are simplified concept features. Skate riding manoeuvres,safety engineering,guard design and runtime terrain/editing remain untested. This passes bounded geometric programme access,not constructed skatepark certification.",
+      "severity": "P2"
+    }
+  ],
+  "scope": "Offline native level-fixture visual and geometry review only. No runtime,new human approval or publication pass.",
+  "date": "2026-10-09",
+  "unresolved_p0": 0,
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "unresolved_p1": 0,
+  "model_sha256": "b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0",
+  "inspected_files": [
+    {
+      "path": "variant_0.png",
+      "sha256": "86272bad46fec321a7e15eed91a4f907daf6ceb5dead6021ebf2fdbc2636e06b"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "915efc79265a441818def0dc24e04b07485ff3969209558eb6020e541411d29d"
+    },
+    {
+      "path": "renders/programme_walk.png",
+      "sha256": "b7e5c52c780ed954f7f0ae993b2515dc1e2c09da9d28f869079bd6cd17c00e0e"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "764ac03d7a8e7d1e663270a736bfa4e17ba783c0850bea2b464f644e5f358b3b"
+    },
+    {
+      "path": "assembly-preview.glb",
+      "sha256": "b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0"
+    },
+    {
+      "path": "geometry-verification.json",
+      "sha256": "917e722cd4962f772a041ecd6be3d06611573e428704d12e214247bb09c84a40"
+    },
+    {
+      "path": "independent-module-verification.json",
+      "sha256": "c5b6e6fda2023481f0c34e13f7dad1d9e959fbc28075ec2034fd8e833e3e01d6"
+    },
+    {
+      "path": "independent-landing-probes.json",
+      "sha256": "79eb0ba1607f1cf3dd0326125a67c64fe476b16e6f327a09f10355bd10a0965f"
+    }
+  ],
+  "review_revision": 1,
+  "reviewer": "independent-public-realm-reviewer",
+  "schema_version": 1
+}

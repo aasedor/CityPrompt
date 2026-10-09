@@ -1,0 +1,786 @@
+{
+  "initiative": "five-neighbourhood-parks",
+  "date": "2026-10-09",
+  "baselineCommit": "6ad927752",
+  "localTrialOnly": true,
+  "evidenceRoot": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks",
+  "verification": {
+    "registrationAndStagingTests": 13,
+    "backendNativeParkTests": 51,
+    "frontendFinal": "48 focused tests PASS; parent final run after all five registrations",
+    "frontendFinalTests": 48,
+    "typeCheck": "PASS"
+  },
+  "parks": [
+    {
+      "candidate": "picnic-v003",
+      "seedPath": "seed/classroom-parks/prairie-picnic-v003",
+      "title": "Prairie Picnic Grove",
+      "variantId": "student_prairie_picnic_grove_v1",
+      "nativeDimensionsM": [
+        40,
+        52
+      ],
+      "boundsM": [
+        [
+          -20.0,
+          -26.0,
+          -0.13099999725818634
+        ],
+        [
+          20.0,
+          26.0,
+          8.279224395751953
+        ]
+      ],
+      "triangles": 787025,
+      "meshInstances": 142,
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 41206364,
+        "sha256": "ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae"
+      },
+      "sourceReferences": [
+        {
+          "role": "front",
+          "path": "frontend\\public\\archetypes\\openspaces\\prairie-picnic-grove\\variant_0.png",
+          "bytes": 3732956,
+          "sha256": "34cdb5dd0da4db5c34f05fcf9470c725a63861e4236ac065c4c765a12cf848f9"
+        }
+      ],
+      "sourceBuildFiles": {
+        "build_five_neighbourhood_parks.py": "7fb9854a3ef82bb5dd312fcb30fd463a80c672eb700ee165363b4e3332be0c9f",
+        "scene.py": "13d81480cea63e93315a06f73abdd243c3e2b443529b1ac850ead175375da02f",
+        "build_showcase_parks.py": "c8c907418e8eb0304007b9ff0098fd5829dc00b35808b37c43bc854bc16ebe1d"
+      },
+      "kitSha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+      "recipeSha256": "d864902b36f3d581b1bfe6426259b2e300b065db20fa96858f52ae6ed940fab3",
+      "geometry": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "model_sha256": "ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1674 clear material-aware route rays",
+          "8 tree root openings checked"
+        ],
+        "runtime_tested": false
+      },
+      "independentReview": {
+        "schema_version": 1,
+        "reviewer": "independent-public-realm-reviewer",
+        "unresolved_p0": 0,
+        "inspected_files": [
+          {
+            "path": "variant_0.png",
+            "sha256": "34cdb5dd0da4db5c34f05fcf9470c725a63861e4236ac065c4c765a12cf848f9"
+          },
+          {
+            "path": "renders/aerial.png",
+            "sha256": "fa01216bf9e2589fa54075b352a80c2a0d62201e52f0c703980819c9fe19896c"
+          },
+          {
+            "path": "renders/walk.png",
+            "sha256": "998a24bc6cc5498b0e4d217184f376633277dffda35843a71783ad19a64587e6"
+          },
+          {
+            "path": "renders/programme_walk.png",
+            "sha256": "df33a48e71b6a183a03b9e66c95fe4a3e504461823e8b94d4b00f2b8c427dbef"
+          },
+          {
+            "path": "recipe.json",
+            "sha256": "d864902b36f3d581b1bfe6426259b2e300b065db20fa96858f52ae6ed940fab3"
+          },
+          {
+            "path": "assembly-preview.glb",
+            "sha256": "ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae"
+          },
+          {
+            "path": "geometry-verification.json",
+            "sha256": "2cd4bc71a305afd7dc99893d6d70e985e76aa6362915a3609f52fe40a7b59ff7"
+          },
+          {
+            "path": "independent-module-verification.json",
+            "sha256": "ad21c5f6e017fba5f1ba66a92b78fb08e0f1d697fd8cc511ed68d7c18c62b306"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\parks\\conservatory-v013\\renders\\aerial.png",
+            "sha256": "054a72160158536e9ab69dc51dfee07650297a3e8e59f69a9a73aaa573f562a8"
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\parks\\conservatory-v013\\renders\\garden_gate.png",
+            "sha256": "49d7d55cc272690043e230dd6760006a650231224ae35a3326f02a81601971b5"
+          }
+        ],
+        "findings": [
+          {
+            "description": "Dense central prairie mass and shelter border clusters restore legible landscape composition; twin detailed gable shelters, picnic tables and surrounding trees retain the approved identity. Aerial, entrance walk and programme close-up inspected against own reference and conservatory aerial/gate benchmark.",
+            "severity": "resolved",
+            "id": "picnic-landscape-richness"
+          },
+          {
+            "description": "Bench bays now connect to the continuous loop; broad entries and shelter aprons are visibly open. Exact-model geometry report passes 1674 full-width material-aware route rays and eight root checks.",
+            "severity": "resolved",
+            "id": "picnic-amenity-access"
+          },
+          {
+            "severity": "info",
+            "description": "Independent reimport of eight module types confirms hash locks, finite metric bounds and native base datums. Shelters ground at zero, tables approximately zero with 0.785m tops, benches approximately zero."
+          },
+          {
+            "severity": "P2",
+            "description": "Prairie geometry and distant edge planting remain stylized and simpler than inspiration imagery. This is acceptable for the bounded native classroom concept; 787025 triangles/41.2MB fixture need runtime loading review."
+          }
+        ],
+        "scope": "Offline native level-fixture visual and geometry review only. Runtime terrain, student editing, capture, new human approval and publication remain unreviewed.",
+        "model_sha256": "ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae",
+        "unresolved_p1": 0,
+        "date": "2026-10-09",
+        "review_revision": 1,
+        "status": "PASS_OFFLINE_NATIVE_REVIEW"
+      },
+      "runtimeStatus": "PARTIAL_LOCAL_TRIAL",
+      "runtimeReviewPath": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\picnic-v003\\runtime-review.md",
+      "publicationApproved": false,
+      "boundedBrowserTrial": {
+        "projectId": "879957be-ef27-4af6-9e73-dffd6a72ffb6",
+        "defaultNativePlacement": "PASS",
+        "separateRotationDegrees": 15,
+        "separateRotationSave": "PASS",
+        "walkingEntranceView": "PASS_VISUAL_ONLY",
+        "hardReloadExactVariantAndRevision": "PASS",
+        "databaseReadback": "PASS_READ_ONLY",
+        "evidence": [
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\picnic-browser-walk-entry.png",
+            "sha256": "12004b485a92dfb3b3a14770d8a16328359b8ddd418965c11cd186d69430428f",
+            "bytes": 122060
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\all-five-browser-reopened.png",
+            "sha256": "4f8e29245ff159746f03724281cb006b2786ea68737cb6ad3037954d719e4d06",
+            "bytes": 191317
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\saved-trial-zones.json",
+            "sha256": "26b55eff26a6bc909cfc13d5e0a5615234a67c2e4bb5413f61b87a392d035c7e",
+            "bytes": 36122
+          }
+        ],
+        "sustainedWalking": "NOT TESTED",
+        "slopeWalking": "NOT TESTED",
+        "laptopPerformance": "NOT TESTED",
+        "download": "NOT TESTED",
+        "publicationApproved": false,
+        "parcelDimensionsM": [
+          44,
+          56
+        ],
+        "nativeDimensionsM": [
+          40,
+          52
+        ],
+        "moveUndo": "PASS",
+        "rotationUndoRedo": "PASS",
+        "freeCapturePreview": "PASS",
+        "combinedResizeRotation": "REJECTED_RECOVERABLY; shared editor follow-up; separate operations work"
+      }
+    },
+    {
+      "candidate": "sensory-v003",
+      "seedPath": "seed/classroom-parks/sensory-wellness-v003",
+      "title": "Sensory & Wellness Garden",
+      "variantId": "student_sensory_wellness_garden_v1",
+      "nativeDimensionsM": [
+        36,
+        46
+      ],
+      "boundsM": [
+        [
+          -18.0,
+          -23.00200080871582,
+          -0.13099999725818634
+        ],
+        [
+          18.001510620117188,
+          23.00200080871582,
+          6.839359283447266
+        ]
+      ],
+      "triangles": 546482,
+      "meshInstances": 113,
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 27081832,
+        "sha256": "ecbe94622d7b698efd1085a6a651d2c48f6a0c0ffb8c961c32acbb45f42e8f6e"
+      },
+      "sourceReferences": [
+        {
+          "role": "front",
+          "path": "frontend\\public\\archetypes\\openspaces\\sensory-wellness-garden\\variant_0.png",
+          "bytes": 4101993,
+          "sha256": "0f1d84df9f82bf05300a5adcd85ace45c16ae2da4a8c9ead01277fbbcaa67b39"
+        }
+      ],
+      "sourceBuildFiles": {
+        "build_five_neighbourhood_parks.py": "cfa942dd533e61d33267be0b0d099e9ca4067ea0bfe9e48a6844ad3e8e1afd2b",
+        "scene.py": "13d81480cea63e93315a06f73abdd243c3e2b443529b1ac850ead175375da02f",
+        "build_showcase_parks.py": "c8c907418e8eb0304007b9ff0098fd5829dc00b35808b37c43bc854bc16ebe1d"
+      },
+      "kitSha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+      "recipeSha256": "87a4e83dae87d89adb028a9f54ddcd9bfa8eeb55b1c3961ba542e95424c3368e",
+      "geometry": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "model_sha256": "ecbe94622d7b698efd1085a6a651d2c48f6a0c0ffb8c961c32acbb45f42e8f6e",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "2115 clear material-aware route rays",
+          "8 tree root openings checked"
+        ],
+        "runtime_tested": false
+      },
+      "independentReview": {
+        "model_sha256": "ecbe94622d7b698efd1085a6a651d2c48f6a0c0ffb8c961c32acbb45f42e8f6e",
+        "scope": "Offline native level-fixture visual and geometry review only. No runtime, new human approval or publication pass.",
+        "unresolved_p1": 0,
+        "findings": [
+          {
+            "description": "Curved seat geometry is now assembled on its dedicated connected seating pads; the prior slat intrusion across central paths is absent. Two pergola rooms, planted quadrants, raised entrance herb beds and generous loop/cross routes retain sensory-garden identity.",
+            "severity": "resolved"
+          },
+          {
+            "description": "2115 full-width material-aware walking rays and eight roots pass on exact assembly. Six independently reimported module types have finite metric envelopes and native ground datums; curved seats inspected directly in programme close-up.",
+            "severity": "info"
+          },
+          {
+            "description": "Planting groups are simpler and less botanically varied than the photographic concept and conservatory benchmark. Native geometry remains coherent, readable and materially separated; botanical variety can improve later without blocking classroom concept use.",
+            "severity": "P2"
+          }
+        ],
+        "status": "PASS_OFFLINE_NATIVE_REVIEW",
+        "date": "2026-10-09",
+        "schema_version": 1,
+        "reviewer": "independent-public-realm-reviewer",
+        "inspected_files": [
+          {
+            "sha256": "0f1d84df9f82bf05300a5adcd85ace45c16ae2da4a8c9ead01277fbbcaa67b39",
+            "path": "variant_0.png"
+          },
+          {
+            "sha256": "af8c1edf7a448aa6da01275d7f99352e37f7835a8940446a99b674720f5f3451",
+            "path": "renders/aerial.png"
+          },
+          {
+            "sha256": "ca9ba90d621d1e6d0337a716a805676eeefedcc681249bdd0265137fb02bb2a3",
+            "path": "renders/walk.png"
+          },
+          {
+            "sha256": "08bdf978cf8b062e2e931c5ca1202250f1d91054ad52dd12d6bb9daee83c06b6",
+            "path": "renders/programme_walk.png"
+          },
+          {
+            "sha256": "87a4e83dae87d89adb028a9f54ddcd9bfa8eeb55b1c3961ba542e95424c3368e",
+            "path": "recipe.json"
+          },
+          {
+            "sha256": "ecbe94622d7b698efd1085a6a651d2c48f6a0c0ffb8c961c32acbb45f42e8f6e",
+            "path": "assembly-preview.glb"
+          },
+          {
+            "sha256": "e773bad110edfeb180bdbad69db0c8105e09aefc34f6cd731ca78352a27918bf",
+            "path": "geometry-verification.json"
+          },
+          {
+            "sha256": "c009d40326209f8a2473a76ab2855ba1d6444b8e7297ab76f4556804114a36db",
+            "path": "independent-module-verification.json"
+          }
+        ],
+        "review_revision": 1,
+        "unresolved_p0": 0
+      },
+      "runtimeStatus": "PARTIAL_LOCAL_TRIAL",
+      "runtimeReviewPath": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\sensory-v003\\runtime-review.md",
+      "publicationApproved": false,
+      "boundedBrowserTrial": {
+        "projectId": "879957be-ef27-4af6-9e73-dffd6a72ffb6",
+        "defaultNativePlacement": "PASS",
+        "separateRotationDegrees": 8,
+        "separateRotationSave": "PASS",
+        "walkingEntranceView": "PASS_VISUAL_ONLY",
+        "hardReloadExactVariantAndRevision": "PASS",
+        "databaseReadback": "PASS_READ_ONLY",
+        "evidence": [
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\sensory-browser-walk.png",
+            "sha256": "7d085c99b6f9be22bba97df4d64743e1b0944d4c09161a6d04e57c5438fa143e",
+            "bytes": 127457
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\all-five-browser-reopened.png",
+            "sha256": "4f8e29245ff159746f03724281cb006b2786ea68737cb6ad3037954d719e4d06",
+            "bytes": 191317
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\saved-trial-zones.json",
+            "sha256": "26b55eff26a6bc909cfc13d5e0a5615234a67c2e4bb5413f61b87a392d035c7e",
+            "bytes": 36122
+          }
+        ],
+        "sustainedWalking": "NOT TESTED",
+        "slopeWalking": "NOT TESTED",
+        "laptopPerformance": "NOT TESTED",
+        "download": "NOT TESTED",
+        "publicationApproved": false
+      }
+    },
+    {
+      "candidate": "skate-v005",
+      "seedPath": "seed/classroom-parks/urban-skate-v005",
+      "title": "Urban Skate Plaza",
+      "variantId": "student_urban_skate_plaza_v1",
+      "nativeDimensionsM": [
+        42,
+        54
+      ],
+      "boundsM": [
+        [
+          -21.0,
+          -27.00200080871582,
+          -0.13099999725818634
+        ],
+        [
+          21.0,
+          27.0,
+          3.8982081413269043
+        ]
+      ],
+      "triangles": 322124,
+      "meshInstances": 29,
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 16372392,
+        "sha256": "b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0"
+      },
+      "sourceReferences": [
+        {
+          "role": "front",
+          "path": "frontend\\public\\archetypes\\openspaces\\urban-skate-plaza\\variant_0.png",
+          "bytes": 3569695,
+          "sha256": "86272bad46fec321a7e15eed91a4f907daf6ceb5dead6021ebf2fdbc2636e06b"
+        }
+      ],
+      "sourceBuildFiles": {
+        "build_five_neighbourhood_parks.py": "12ba3239177516b2342c7a2f059e2baacc509f8ec91f3c960d41fb4b92f400c4",
+        "scene.py": "13d81480cea63e93315a06f73abdd243c3e2b443529b1ac850ead175375da02f",
+        "build_showcase_parks.py": "c8c907418e8eb0304007b9ff0098fd5829dc00b35808b37c43bc854bc16ebe1d"
+      },
+      "kitSha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+      "recipeSha256": "764ac03d7a8e7d1e663270a736bfa4e17ba783c0850bea2b464f644e5f358b3b",
+      "geometry": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "model_sha256": "b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1680 clear material-aware route rays",
+          "6 tree root openings checked",
+          "429 measured full-width elevated access contacts"
+        ],
+        "runtime_tested": false
+      },
+      "independentReview": {
+        "findings": [
+          {
+            "description": "Positive-width bowl landing now joins approach bank continuously. Independent exact reimport probes atx12/y6.54 and6.55 measurez1.669429 and1.671: the prior28.18cm step is removed. Aerial and close ramp view confirm connection.",
+            "severity": "resolved"
+          },
+          {
+            "description": "Concrete bowl, paired quarter pipes, bank, grind ledge/rail, separated spectator loop and entry pergola retain the programme. Raised native bowl is an explicit adaptation of the photographic depressed bowl. Geometry report passes1680 level route rays,six roots,429 full-width elevated access contacts. Six independent native module reimports confirm exact bytes,finite envelopes and base datums.",
+            "severity": "info"
+          },
+          {
+            "description": "Landscape/plant variety and concrete detailing are simplified concept features. Skate riding manoeuvres,safety engineering,guard design and runtime terrain/editing remain untested. This passes bounded geometric programme access,not constructed skatepark certification.",
+            "severity": "P2"
+          }
+        ],
+        "scope": "Offline native level-fixture visual and geometry review only. No runtime,new human approval or publication pass.",
+        "date": "2026-10-09",
+        "unresolved_p0": 0,
+        "status": "PASS_OFFLINE_NATIVE_REVIEW",
+        "unresolved_p1": 0,
+        "model_sha256": "b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0",
+        "inspected_files": [
+          {
+            "path": "variant_0.png",
+            "sha256": "86272bad46fec321a7e15eed91a4f907daf6ceb5dead6021ebf2fdbc2636e06b"
+          },
+          {
+            "path": "renders/aerial.png",
+            "sha256": "915efc79265a441818def0dc24e04b07485ff3969209558eb6020e541411d29d"
+          },
+          {
+            "path": "renders/programme_walk.png",
+            "sha256": "b7e5c52c780ed954f7f0ae993b2515dc1e2c09da9d28f869079bd6cd17c00e0e"
+          },
+          {
+            "path": "recipe.json",
+            "sha256": "764ac03d7a8e7d1e663270a736bfa4e17ba783c0850bea2b464f644e5f358b3b"
+          },
+          {
+            "path": "assembly-preview.glb",
+            "sha256": "b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0"
+          },
+          {
+            "path": "geometry-verification.json",
+            "sha256": "917e722cd4962f772a041ecd6be3d06611573e428704d12e214247bb09c84a40"
+          },
+          {
+            "path": "independent-module-verification.json",
+            "sha256": "c5b6e6fda2023481f0c34e13f7dad1d9e959fbc28075ec2034fd8e833e3e01d6"
+          },
+          {
+            "path": "independent-landing-probes.json",
+            "sha256": "79eb0ba1607f1cf3dd0326125a67c64fe476b16e6f327a09f10355bd10a0965f"
+          }
+        ],
+        "review_revision": 1,
+        "reviewer": "independent-public-realm-reviewer",
+        "schema_version": 1
+      },
+      "runtimeStatus": "PARTIAL_LOCAL_TRIAL",
+      "runtimeReviewPath": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\skate-v005\\runtime-review.md",
+      "publicationApproved": false,
+      "boundedBrowserTrial": {
+        "projectId": "879957be-ef27-4af6-9e73-dffd6a72ffb6",
+        "defaultNativePlacement": "PASS",
+        "separateRotationDegrees": -8,
+        "separateRotationSave": "PASS",
+        "walkingEntranceView": "PASS_VISUAL_ONLY",
+        "hardReloadExactVariantAndRevision": "PASS",
+        "databaseReadback": "PASS_READ_ONLY",
+        "evidence": [
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\skate-browser-walk.png",
+            "sha256": "f73c4a822cdd6d736dd67e14888f1d4dd0be97abebd2c80995669d288b3e7055",
+            "bytes": 112337
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\all-five-browser-reopened.png",
+            "sha256": "4f8e29245ff159746f03724281cb006b2786ea68737cb6ad3037954d719e4d06",
+            "bytes": 191317
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\saved-trial-zones.json",
+            "sha256": "26b55eff26a6bc909cfc13d5e0a5615234a67c2e4bb5413f61b87a392d035c7e",
+            "bytes": 36122
+          }
+        ],
+        "sustainedWalking": "NOT TESTED",
+        "slopeWalking": "NOT TESTED",
+        "laptopPerformance": "NOT TESTED",
+        "download": "NOT TESTED",
+        "publicationApproved": false
+      }
+    },
+    {
+      "candidate": "pump-v004",
+      "seedPath": "seed/classroom-parks/bicycle-pump-v004",
+      "title": "Bicycle Pump-Track Park",
+      "variantId": "student_bicycle_pump_track_park_v1",
+      "nativeDimensionsM": [
+        48,
+        60
+      ],
+      "boundsM": [
+        [
+          -24.0,
+          -30.00200080871582,
+          -0.13099999725818634
+        ],
+        [
+          24.0,
+          30.0,
+          3.8031299114227295
+        ]
+      ],
+      "triangles": 407101,
+      "meshInstances": 43,
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 18741720,
+        "sha256": "1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b"
+      },
+      "sourceReferences": [
+        {
+          "role": "front",
+          "path": "frontend\\public\\archetypes\\openspaces\\bicycle-pump-track-park\\variant_0.png",
+          "bytes": 3804886,
+          "sha256": "922f25853e014f11fc167ba94b1927e87b247bd840fe73557f31c75f98db8e9a"
+        }
+      ],
+      "sourceBuildFiles": {
+        "build_five_neighbourhood_parks.py": "2529b7c1db3c6114ce7060f69ebb2c33df8aeb07d03d01ff330d6db5ff667cbb",
+        "scene.py": "13d81480cea63e93315a06f73abdd243c3e2b443529b1ac850ead175375da02f",
+        "build_showcase_parks.py": "c8c907418e8eb0304007b9ff0098fd5829dc00b35808b37c43bc854bc16ebe1d"
+      },
+      "kitSha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+      "recipeSha256": "d1dda0d855374b7c7acf981f12db0ff205a2cdcc2749e2dbe5e40b0554b3cc35",
+      "geometry": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "model_sha256": "1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1977 clear material-aware route rays",
+          "9 tree root openings checked",
+          "150 measured full-width cycle ingress contacts"
+        ],
+        "runtime_tested": false
+      },
+      "independentReview": {
+        "schema_version": 1,
+        "inspected_files": [
+          {
+            "path": "variant_0.png",
+            "sha256": "922f25853e014f11fc167ba94b1927e87b247bd840fe73557f31c75f98db8e9a"
+          },
+          {
+            "path": "renders/aerial.png",
+            "sha256": "cab23820780256d1423940e754951d352f0fb5d85e58ad40230b363fc3043e4a"
+          },
+          {
+            "path": "renders/programme_walk.png",
+            "sha256": "ef2377edbc8a468ba961fc918af22db19c2fd095c1ffc96ba42410752d9a972a"
+          },
+          {
+            "path": "recipe.json",
+            "sha256": "d1dda0d855374b7c7acf981f12db0ff205a2cdcc2749e2dbe5e40b0554b3cc35"
+          },
+          {
+            "path": "assembly-preview.glb",
+            "sha256": "1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b"
+          },
+          {
+            "path": "geometry-verification.json",
+            "sha256": "ecc24159306e8e765017d512a3b11db876f26047fa8317fe60a40767e1e9989c"
+          },
+          {
+            "path": "independent-module-verification.json",
+            "sha256": "07bbf2414cc69c937c8116f8aa53f604744104e61bdbcb67d943acc2b8b5073c"
+          }
+        ],
+        "model_sha256": "1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b",
+        "unresolved_p1": 0,
+        "review_revision": 1,
+        "unresolved_p0": 0,
+        "date": "2026-10-09",
+        "scope": "Offline native level-fixture visual and geometry review only. No runtime,new human approval or publication pass.",
+        "reviewer": "independent-public-realm-reviewer",
+        "findings": [
+          {
+            "severity": "resolved",
+            "description": "Both asphalt ingress tongues now visibly connect to their banked circuits. Source identity retains separate main rolling loop, beginner loop, central planting, spectator promenade and shade gathering pergola."
+          },
+          {
+            "severity": "info",
+            "description": "Exact geometry report passes1977 full-width spectator route rays,nine root checks and150 height/material ingress contacts. Eight independent module reimports verify byte locks,native metric envelopes and base contact. Main circuit reaches1.23m and beginner0.458m, retaining distinct difficulty scales."
+          },
+          {
+            "severity": "P2",
+            "description": "Small dark triangular exposed shoulder skirt at main ingress side is visible in programme close-up. Riding top is connected; underside/edge finish remains concept follow-up. Riding dynamics, safety engineering and all runtime terrain/editing are untested."
+          }
+        ],
+        "status": "PASS_OFFLINE_NATIVE_REVIEW"
+      },
+      "runtimeStatus": "PARTIAL_LOCAL_TRIAL",
+      "runtimeReviewPath": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\pump-v004\\runtime-review.md",
+      "publicationApproved": false,
+      "boundedBrowserTrial": {
+        "projectId": "879957be-ef27-4af6-9e73-dffd6a72ffb6",
+        "defaultNativePlacement": "PASS",
+        "separateRotationDegrees": 5,
+        "separateRotationSave": "PASS",
+        "walkingEntranceView": "PASS_VISUAL_ONLY",
+        "hardReloadExactVariantAndRevision": "PASS",
+        "databaseReadback": "PASS_READ_ONLY",
+        "evidence": [
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\pump-browser-walk.png",
+            "sha256": "abda004ccfc3018e361435c180c39dfae2ac118bf772229359feefe62d5e0867",
+            "bytes": 114701
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\all-five-browser-reopened.png",
+            "sha256": "4f8e29245ff159746f03724281cb006b2786ea68737cb6ad3037954d719e4d06",
+            "bytes": 191317
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\saved-trial-zones.json",
+            "sha256": "26b55eff26a6bc909cfc13d5e0a5615234a67c2e4bb5413f61b87a392d035c7e",
+            "bytes": 36122
+          }
+        ],
+        "sustainedWalking": "NOT TESTED",
+        "slopeWalking": "NOT TESTED",
+        "laptopPerformance": "NOT TESTED",
+        "download": "NOT TESTED",
+        "publicationApproved": false
+      }
+    },
+    {
+      "candidate": "sports-v002",
+      "seedPath": "seed/classroom-parks/neighbourhood-sports-v002",
+      "title": "Neighbourhood Sports Green",
+      "variantId": "student_neighbourhood_sports_green_v1",
+      "nativeDimensionsM": [
+        48,
+        66
+      ],
+      "boundsM": [
+        [
+          -24.0,
+          -33.0,
+          -0.13099999725818634
+        ],
+        [
+          24.0,
+          33.0,
+          6.335406303405762
+        ]
+      ],
+      "triangles": 261830,
+      "meshInstances": 35,
+      "assembly": {
+        "path": "assembly-preview.glb",
+        "bytes": 11960268,
+        "sha256": "eb6e1b2cec51485405504914d37f6b513cecc9f6d0fd645ed23c921cd73a745e"
+      },
+      "sourceReferences": [
+        {
+          "role": "front",
+          "path": "frontend\\public\\archetypes\\openspaces\\neighbourhood-sports-green\\variant_0.png",
+          "bytes": 3686148,
+          "sha256": "9114e9268c4594b76884db773bc60f07d390b12f625022a2286ea4a04456daf5"
+        }
+      ],
+      "sourceBuildFiles": {
+        "build_five_neighbourhood_parks.py": "56e41486d8515a3ea5df4865508e4ecae53cec1157818bba719ee16f83b3fe25",
+        "scene.py": "13d81480cea63e93315a06f73abdd243c3e2b443529b1ac850ead175375da02f",
+        "build_showcase_parks.py": "c8c907418e8eb0304007b9ff0098fd5829dc00b35808b37c43bc854bc16ebe1d"
+      },
+      "kitSha256": "0d1117ae96b0fb6a6de8c2c99b136a3145a0435d23a68549837160f989d3d050",
+      "recipeSha256": "c5f2029aa8bbe12914889466d6ac36ea11409d13ba2aafd8e19ccc02b23fe2ea",
+      "geometry": {
+        "status": "PASS_OFFLINE_GEOMETRY",
+        "model_sha256": "eb6e1b2cec51485405504914d37f6b513cecc9f6d0fd645ed23c921cd73a745e",
+        "checks": [
+          "self-contained GLB buffers",
+          "delivered byte hashes",
+          "finite metric bounds",
+          "1788 clear material-aware route rays",
+          "8 tree root openings checked"
+        ],
+        "runtime_tested": false
+      },
+      "independentReview": {
+        "reviewer": "independent-public-realm-reviewer",
+        "schema_version": 1,
+        "review_revision": 1,
+        "model_sha256": "eb6e1b2cec51485405504914d37f6b513cecc9f6d0fd645ed23c921cd73a745e",
+        "status": "PASS_OFFLINE_NATIVE_REVIEW",
+        "inspected_files": [
+          {
+            "sha256": "9114e9268c4594b76884db773bc60f07d390b12f625022a2286ea4a04456daf5",
+            "path": "variant_0.png"
+          },
+          {
+            "sha256": "86983d45e2e5f50802fd4c69b2d6bf932638f09193bacb9645250254e101a9de",
+            "path": "renders/aerial.png"
+          },
+          {
+            "sha256": "90a57dbd222d8ac63c871c781f5d4820a6bbcc2c2de9ded4005485d3666462fe",
+            "path": "renders/walk.png"
+          },
+          {
+            "sha256": "7f7e92eaf28f9cf5b8780b6e2fc71570258f790c44e08f8249027a1693228dd1",
+            "path": "renders/programme_walk.png"
+          },
+          {
+            "sha256": "c5f2029aa8bbe12914889466d6ac36ea11409d13ba2aafd8e19ccc02b23fe2ea",
+            "path": "recipe.json"
+          },
+          {
+            "sha256": "eb6e1b2cec51485405504914d37f6b513cecc9f6d0fd645ed23c921cd73a745e",
+            "path": "assembly-preview.glb"
+          },
+          {
+            "sha256": "79190f6108b83a6be159ebb4f3d09969c9833dff9d2d87a43698ba24f5c495de",
+            "path": "geometry-verification.json"
+          },
+          {
+            "sha256": "e982f9aa19c81cc0e633d7f061abfa1534a8b39540f33065b3e7e27cf947a8d6",
+            "path": "independent-module-verification.json"
+          }
+        ],
+        "scope": "Offline native level-fixture visual and geometry review only. No runtime, new human approval or publication pass.",
+        "unresolved_p1": 0,
+        "findings": [
+          {
+            "description": "Small grass playing field, two open-facing netted goals, separate perimeter promenade, front fitness bays and shade pergola retain source identity. Field intentionally dominates the composition; foliage density is lower than conservatory garden but appropriate to open sports programme.",
+            "severity": "info"
+          },
+          {
+            "description": "1788 full-width material-aware walking rays and eight roots pass on exact reimported assembly. Seven independently reimported module types have finite native envelopes and base contacts within0.012m. Goal crossbar envelope approximately1.885m high including post radius; recreational dimensions explicitly recorded.",
+            "severity": "info"
+          },
+          {
+            "description": "Simplified perimeter planting and static fitness equipment are concept-level adaptations. Field and goals are recreational size; no competition or equipment certification. Runtime loading, terrain and editing remain untested.",
+            "severity": "P2"
+          }
+        ],
+        "unresolved_p0": 0,
+        "date": "2026-10-09"
+      },
+      "runtimeStatus": "PARTIAL_LOCAL_TRIAL",
+      "runtimeReviewPath": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\sports-v002\\runtime-review.md",
+      "publicationApproved": false,
+      "boundedBrowserTrial": {
+        "projectId": "879957be-ef27-4af6-9e73-dffd6a72ffb6",
+        "defaultNativePlacement": "PASS",
+        "separateRotationDegrees": 10,
+        "separateRotationSave": "PASS",
+        "walkingEntranceView": "PASS_VISUAL_ONLY",
+        "hardReloadExactVariantAndRevision": "PASS",
+        "databaseReadback": "PASS_READ_ONLY",
+        "evidence": [
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\sports-browser-walk.png",
+            "sha256": "622477bcc27339c999683c0af5d29cadcedfc2ad574d50e0cbb1a23a41d152b8",
+            "bytes": 104619
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\parks\\all-five-browser-reopened.png",
+            "sha256": "4f8e29245ff159746f03724281cb006b2786ea68737cb6ad3037954d719e4d06",
+            "bytes": 191317
+          },
+          {
+            "path": "C:\\dev-artifacts\\CityPrompt\\parks-streets-ten-2026-10-09\\saved-trial-zones.json",
+            "sha256": "26b55eff26a6bc909cfc13d5e0a5615234a67c2e4bb5413f61b87a392d035c7e",
+            "bytes": 36122
+          }
+        ],
+        "sustainedWalking": "NOT TESTED",
+        "slopeWalking": "NOT TESTED",
+        "laptopPerformance": "NOT TESTED",
+        "download": "NOT TESTED",
+        "publicationApproved": false
+      }
+    }
+  ],
+  "browserProjectId": "879957be-ef27-4af6-9e73-dffd6a72ffb6"
+}

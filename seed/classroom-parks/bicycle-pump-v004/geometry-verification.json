@@ -1,0 +1,13 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b",
+  "checks": [
+    "self-contained GLB buffers",
+    "delivered byte hashes",
+    "finite metric bounds",
+    "1977 clear material-aware route rays",
+    "9 tree root openings checked",
+    "150 measured full-width cycle ingress contacts"
+  ],
+  "runtime_tested": false
+}

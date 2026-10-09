@@ -1,0 +1,23 @@
+{
+  "provider": "built-in image_gen",
+  "created": "2026-10-09",
+  "sourceType": "original generated conceptual reference photograph",
+  "realProject": false,
+  "originalPath": "C:/Users/andre/.codex/generated_images/01a11fdc-9c38-7141-8c03-c171872ed62c/exec-19c67f71-5529-4919-a89c-db5c4f3465aa.png",
+  "authoritativePath": "frontend/public/archetypes/openspaces/bicycle-pump-track-park/variant_0.png",
+  "sha256": "922f25853e014f11fc167ba94b1927e87b247bd840fe73557f31c75f98db8e9a",
+  "bytes": 3804886,
+  "designBrief": "A banked rolling asphalt circuit, separate beginner loop and shaded gathering terrace",
+  "nativeDimensionsM": [
+    48,
+    60
+  ],
+  "promptConstraints": [
+    "Whole-site elevated oblique photorealistic landscape architecture view",
+    "Clear broad entrance and continuous separate walking route",
+    "Plausible metric scale and full 3D programme",
+    "Mature trees rooted in soft landscape; native grasses and flowering drifts",
+    "No text or diagram labels"
+  ],
+  "approval": "reference generation only; native asset and browser gates separate"
+}

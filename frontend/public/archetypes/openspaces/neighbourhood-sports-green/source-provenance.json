@@ -1,0 +1,23 @@
+{
+  "provider": "built-in image_gen",
+  "created": "2026-10-09",
+  "sourceType": "original generated conceptual reference photograph",
+  "realProject": false,
+  "originalPath": "C:/Users/andre/.codex/generated_images/01a11fdc-9c38-7141-8c03-c171872ed62c/exec-78be7c7e-10e3-419e-93a3-3723ed6cf2e4.png",
+  "authoritativePath": "frontend/public/archetypes/openspaces/neighbourhood-sports-green/variant_0.png",
+  "sha256": "9114e9268c4594b76884db773bc60f07d390b12f625022a2286ea4a04456daf5",
+  "bytes": 3686148,
+  "designBrief": "Recreational small playing field with two goals, perimeter walking loop, fitness stations and shade seating",
+  "nativeDimensionsM": [
+    48,
+    66
+  ],
+  "promptConstraints": [
+    "Whole-site elevated oblique photorealistic landscape architecture view",
+    "Clear broad entrance and continuous separate walking route",
+    "Plausible metric scale and full 3D programme",
+    "Mature trees rooted in soft landscape; native grasses and flowering drifts",
+    "No text or diagram labels"
+  ],
+  "approval": "reference generation only; native asset and browser gates separate"
+}

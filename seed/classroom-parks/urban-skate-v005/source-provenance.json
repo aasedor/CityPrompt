@@ -1,0 +1,23 @@
+{
+  "provider": "built-in image_gen",
+  "created": "2026-10-09",
+  "sourceType": "original generated conceptual reference photograph",
+  "realProject": false,
+  "originalPath": "C:/Users/andre/.codex/generated_images/01a11fdc-9c38-7141-8c03-c171872ed62c/exec-212c83e7-6ff0-4c7b-97b0-7e66a6949017.png",
+  "authoritativePath": "frontend/public/archetypes/openspaces/urban-skate-plaza/variant_0.png",
+  "sha256": "86272bad46fec321a7e15eed91a4f907daf6ceb5dead6021ebf2fdbc2636e06b",
+  "bytes": 3569695,
+  "designBrief": "A sculpted concrete bowl, flowing ramps, ledges and rails with a separate planted spectator walk",
+  "nativeDimensionsM": [
+    42,
+    54
+  ],
+  "promptConstraints": [
+    "Whole-site elevated oblique photorealistic landscape architecture view",
+    "Clear broad entrance and continuous separate walking route",
+    "Plausible metric scale and full 3D programme",
+    "Mature trees rooted in soft landscape; native grasses and flowering drifts",
+    "No text or diagram labels"
+  ],
+  "approval": "reference generation only; native asset and browser gates separate"
+}

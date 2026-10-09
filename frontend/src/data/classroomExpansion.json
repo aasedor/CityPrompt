@@ -623,6 +623,66 @@
       "asset_review": "agent_native_visual_and_geometry_pass",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Prairie Picnic Grove",
+      "archetype_id": "prairie_picnic_grove",
+      "variant_id": "student_prairie_picnic_grove_v1",
+      "version": "prairie-picnic-v003",
+      "placement_id": "native-park:student_prairie_picnic_grove_v1--native-v1",
+      "sha256": "ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Neighbourhood Sports Green",
+      "archetype_id": "neighbourhood_sports_green",
+      "variant_id": "student_neighbourhood_sports_green_v1",
+      "version": "neighbourhood-sports-v002",
+      "placement_id": "native-park:student_neighbourhood_sports_green_v1--native-v1",
+      "sha256": "eb6e1b2cec51485405504914d37f6b513cecc9f6d0fd645ed23c921cd73a745e",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Sensory & Wellness Garden",
+      "archetype_id": "sensory_wellness_garden",
+      "variant_id": "student_sensory_wellness_garden_v1",
+      "version": "sensory-wellness-v003",
+      "placement_id": "native-park:student_sensory_wellness_garden_v1--native-v1",
+      "sha256": "ecbe94622d7b698efd1085a6a651d2c48f6a0c0ffb8c961c32acbb45f42e8f6e",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Bicycle Pump-Track Park",
+      "archetype_id": "bicycle_pump_track_park",
+      "variant_id": "student_bicycle_pump_track_park_v1",
+      "version": "bicycle-pump-v004",
+      "placement_id": "native-park:student_bicycle_pump_track_park_v1--native-v1",
+      "sha256": "1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Urban Skate Plaza",
+      "archetype_id": "urban_skate_plaza",
+      "variant_id": "student_urban_skate_plaza_v1",
+      "version": "urban-skate-v005",
+      "placement_id": "native-park:student_urban_skate_plaza_v1--native-v1",
+      "sha256": "b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -2509,6 +2569,166 @@
         "green_space_archetype_id": "urban_beach",
         "green_space_selected_variant_id": "student_sandy_beach_v1",
         "green_space_native_layout_id": "student_sandy_beach_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_prairie_picnic_grove_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Prairie Picnic Grove",
+      "description": "Two timber picnic shelters, communal tables, dense flowering prairie and a continuous shaded walking loop.",
+      "thumbnail": "/archetypes/openspaces/prairie-picnic-grove/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "neighbourhood",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 40.0,
+      "depth": 52.0,
+      "minWidth": 40.0,
+      "minDepth": 52.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_prairie_picnic_grove_v1",
+        "revision": "21710e19c4b6368480eb761df99b29017083e1400dadadee33b9e9b7238d4b31",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "prairie_picnic_grove",
+        "green_space_selected_variant_id": "student_prairie_picnic_grove_v1",
+        "green_space_native_layout_id": "student_prairie_picnic_grove_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_neighbourhood_sports_green_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Neighbourhood Sports Green",
+      "description": "A small marked playing field with netted goals, perimeter walk, exercise stations and shaded seating.",
+      "thumbnail": "/archetypes/openspaces/neighbourhood-sports-green/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 48.0,
+      "depth": 66.0,
+      "minWidth": 48.0,
+      "minDepth": 66.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_neighbourhood_sports_green_v1",
+        "revision": "3cd5f45789349f6367ef0dbb51a36bb2db31a8e3161dd390dbba905d8878e6b3",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "neighbourhood_sports_green",
+        "green_space_selected_variant_id": "student_neighbourhood_sports_green_v1",
+        "green_space_native_layout_id": "student_neighbourhood_sports_green_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_sensory_wellness_garden_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Sensory & Wellness Garden",
+      "description": "A continuous garden loop, fragrant planting rooms, curved timber seating, raised herbs and two quiet pergolas.",
+      "thumbnail": "/archetypes/openspaces/sensory-wellness-garden/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "gardens",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 36.1,
+      "depth": 46.1,
+      "minWidth": 36.1,
+      "minDepth": 46.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_sensory_wellness_garden_v1",
+        "revision": "6c3847fafbd9169537b4647a8dddc5e1bdc287af405ccaf9425966e817a24578",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "sensory_wellness_garden",
+        "green_space_selected_variant_id": "student_sensory_wellness_garden_v1",
+        "green_space_native_layout_id": "student_sensory_wellness_garden_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_bicycle_pump_track_park_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Bicycle Pump-Track Park",
+      "description": "A rolling banked cycle circuit, low beginner loop, connected entrances and shaded bicycle gathering.",
+      "thumbnail": "/archetypes/openspaces/bicycle-pump-track-park/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 48.0,
+      "depth": 60.1,
+      "minWidth": 48.0,
+      "minDepth": 60.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_bicycle_pump_track_park_v1",
+        "revision": "5de7226e45bdda357d5f37707bf23c9857a544ab185ca5ddbd8171f6cd4b6e29",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "bicycle_pump_track_park",
+        "green_space_selected_variant_id": "student_bicycle_pump_track_park_v1",
+        "green_space_native_layout_id": "student_bicycle_pump_track_park_v1--native-v1",
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:student_urban_skate_plaza_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Urban Skate Plaza",
+      "description": "A curved concrete bowl, quarter pipes, bank, grind ledge and rail inside a planted spectator loop.",
+      "thumbnail": "/archetypes/openspaces/urban-skate-plaza/variant_0.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 42.0,
+      "depth": 54.1,
+      "minWidth": 42.0,
+      "minDepth": 54.1,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_urban_skate_plaza_v1",
+        "revision": "f8f39b1991f46f3c9b5281955b8e77d415fe02a5de25787d3203cd686554acd4",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "urban_skate_plaza",
+        "green_space_selected_variant_id": "student_urban_skate_plaza_v1",
+        "green_space_native_layout_id": "student_urban_skate_plaza_v1--native-v1",
         "pick_place_automatic_3d": true
       }
     }

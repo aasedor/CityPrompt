@@ -1,0 +1,59 @@
+{
+  "reviewer": "independent-public-realm-reviewer",
+  "schema_version": 1,
+  "review_revision": 1,
+  "model_sha256": "eb6e1b2cec51485405504914d37f6b513cecc9f6d0fd645ed23c921cd73a745e",
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "inspected_files": [
+    {
+      "sha256": "9114e9268c4594b76884db773bc60f07d390b12f625022a2286ea4a04456daf5",
+      "path": "variant_0.png"
+    },
+    {
+      "sha256": "86983d45e2e5f50802fd4c69b2d6bf932638f09193bacb9645250254e101a9de",
+      "path": "renders/aerial.png"
+    },
+    {
+      "sha256": "90a57dbd222d8ac63c871c781f5d4820a6bbcc2c2de9ded4005485d3666462fe",
+      "path": "renders/walk.png"
+    },
+    {
+      "sha256": "7f7e92eaf28f9cf5b8780b6e2fc71570258f790c44e08f8249027a1693228dd1",
+      "path": "renders/programme_walk.png"
+    },
+    {
+      "sha256": "c5f2029aa8bbe12914889466d6ac36ea11409d13ba2aafd8e19ccc02b23fe2ea",
+      "path": "recipe.json"
+    },
+    {
+      "sha256": "eb6e1b2cec51485405504914d37f6b513cecc9f6d0fd645ed23c921cd73a745e",
+      "path": "assembly-preview.glb"
+    },
+    {
+      "sha256": "79190f6108b83a6be159ebb4f3d09969c9833dff9d2d87a43698ba24f5c495de",
+      "path": "geometry-verification.json"
+    },
+    {
+      "sha256": "e982f9aa19c81cc0e633d7f061abfa1534a8b39540f33065b3e7e27cf947a8d6",
+      "path": "independent-module-verification.json"
+    }
+  ],
+  "scope": "Offline native level-fixture visual and geometry review only. No runtime, new human approval or publication pass.",
+  "unresolved_p1": 0,
+  "findings": [
+    {
+      "description": "Small grass playing field, two open-facing netted goals, separate perimeter promenade, front fitness bays and shade pergola retain source identity. Field intentionally dominates the composition; foliage density is lower than conservatory garden but appropriate to open sports programme.",
+      "severity": "info"
+    },
+    {
+      "description": "1788 full-width material-aware walking rays and eight roots pass on exact reimported assembly. Seven independently reimported module types have finite native envelopes and base contacts within0.012m. Goal crossbar envelope approximately1.885m high including post radius; recreational dimensions explicitly recorded.",
+      "severity": "info"
+    },
+    {
+      "description": "Simplified perimeter planting and static fitness equipment are concept-level adaptations. Field and goals are recreational size; no competition or equipment certification. Runtime loading, terrain and editing remain untested.",
+      "severity": "P2"
+    }
+  ],
+  "unresolved_p0": 0,
+  "date": "2026-10-09"
+}

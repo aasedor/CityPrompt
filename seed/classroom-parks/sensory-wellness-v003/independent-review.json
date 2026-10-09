@@ -1,0 +1,59 @@
+{
+  "model_sha256": "ecbe94622d7b698efd1085a6a651d2c48f6a0c0ffb8c961c32acbb45f42e8f6e",
+  "scope": "Offline native level-fixture visual and geometry review only. No runtime, new human approval or publication pass.",
+  "unresolved_p1": 0,
+  "findings": [
+    {
+      "description": "Curved seat geometry is now assembled on its dedicated connected seating pads; the prior slat intrusion across central paths is absent. Two pergola rooms, planted quadrants, raised entrance herb beds and generous loop/cross routes retain sensory-garden identity.",
+      "severity": "resolved"
+    },
+    {
+      "description": "2115 full-width material-aware walking rays and eight roots pass on exact assembly. Six independently reimported module types have finite metric envelopes and native ground datums; curved seats inspected directly in programme close-up.",
+      "severity": "info"
+    },
+    {
+      "description": "Planting groups are simpler and less botanically varied than the photographic concept and conservatory benchmark. Native geometry remains coherent, readable and materially separated; botanical variety can improve later without blocking classroom concept use.",
+      "severity": "P2"
+    }
+  ],
+  "status": "PASS_OFFLINE_NATIVE_REVIEW",
+  "date": "2026-10-09",
+  "schema_version": 1,
+  "reviewer": "independent-public-realm-reviewer",
+  "inspected_files": [
+    {
+      "sha256": "0f1d84df9f82bf05300a5adcd85ace45c16ae2da4a8c9ead01277fbbcaa67b39",
+      "path": "variant_0.png"
+    },
+    {
+      "sha256": "af8c1edf7a448aa6da01275d7f99352e37f7835a8940446a99b674720f5f3451",
+      "path": "renders/aerial.png"
+    },
+    {
+      "sha256": "ca9ba90d621d1e6d0337a716a805676eeefedcc681249bdd0265137fb02bb2a3",
+      "path": "renders/walk.png"
+    },
+    {
+      "sha256": "08bdf978cf8b062e2e931c5ca1202250f1d91054ad52dd12d6bb9daee83c06b6",
+      "path": "renders/programme_walk.png"
+    },
+    {
+      "sha256": "87a4e83dae87d89adb028a9f54ddcd9bfa8eeb55b1c3961ba542e95424c3368e",
+      "path": "recipe.json"
+    },
+    {
+      "sha256": "ecbe94622d7b698efd1085a6a651d2c48f6a0c0ffb8c961c32acbb45f42e8f6e",
+      "path": "assembly-preview.glb"
+    },
+    {
+      "sha256": "e773bad110edfeb180bdbad69db0c8105e09aefc34f6cd731ca78352a27918bf",
+      "path": "geometry-verification.json"
+    },
+    {
+      "sha256": "c009d40326209f8a2473a76ab2855ba1d6444b8e7297ab76f4556804114a36db",
+      "path": "independent-module-verification.json"
+    }
+  ],
+  "review_revision": 1,
+  "unresolved_p0": 0
+}

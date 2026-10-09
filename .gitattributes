@@ -86,3 +86,13 @@ seed/validation/supplemental-2026-10-07/**/*.png filter=lfs diff=lfs merge=lfs -
 docs/runtime-reviews/model-release-download-review-2026-10-07.json -text whitespace=cr-at-eol
 docs/runtime-reviews/model-release-occlusion-review-2026-10-07.json -text whitespace=cr-at-eol
 docs/runtime-reviews/model-release-trial-completion-2026-10-07.json -text whitespace=cr-at-eol
+frontend/public/archetypes/openspaces/prairie-picnic-grove/*.png filter=lfs diff=lfs merge=lfs -text
+frontend/public/archetypes/openspaces/sensory-wellness-garden/*.png filter=lfs diff=lfs merge=lfs -text
+frontend/public/archetypes/openspaces/urban-skate-plaza/*.png filter=lfs diff=lfs merge=lfs -text
+frontend/public/archetypes/openspaces/bicycle-pump-track-park/*.png filter=lfs diff=lfs merge=lfs -text
+frontend/public/archetypes/openspaces/neighbourhood-sports-green/*.png filter=lfs diff=lfs merge=lfs -text
+seed/classroom-parks/prairie-picnic-v003/*.py -text whitespace=cr-at-eol
+seed/classroom-parks/sensory-wellness-v003/*.py -text whitespace=cr-at-eol
+seed/classroom-parks/neighbourhood-sports-v002/*.py -text whitespace=cr-at-eol
+seed/classroom-parks/urban-skate-v005/*.py -text whitespace=cr-at-eol
+seed/classroom-parks/bicycle-pump-v004/*.py -text whitespace=cr-at-eol

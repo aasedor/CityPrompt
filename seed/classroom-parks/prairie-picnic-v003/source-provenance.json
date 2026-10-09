@@ -1,0 +1,23 @@
+{
+  "provider": "built-in image_gen",
+  "created": "2026-10-09",
+  "sourceType": "original generated conceptual reference photograph",
+  "realProject": false,
+  "originalPath": "C:/Users/andre/.codex/generated_images/01a11fdc-9c38-7141-8c03-c171872ed62c/exec-b41460a0-88f1-4471-ad53-68cd8748b2a3.png",
+  "authoritativePath": "frontend/public/archetypes/openspaces/prairie-picnic-grove/variant_0.png",
+  "sha256": "34cdb5dd0da4db5c34f05fcf9470c725a63861e4236ac065c4c765a12cf848f9",
+  "bytes": 3732956,
+  "designBrief": "Two timber picnic shelters, communal tables, flowering prairie meadow and a continuous shaded walking loop",
+  "nativeDimensionsM": [
+    40,
+    52
+  ],
+  "promptConstraints": [
+    "Whole-site elevated oblique photorealistic landscape architecture view",
+    "Clear broad entrance and continuous separate walking route",
+    "Plausible metric scale and full 3D programme",
+    "Mature trees rooted in soft landscape; native grasses and flowering drifts",
+    "No text or diagram labels"
+  ],
+  "approval": "reference generation only; native asset and browser gates separate"
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "reviewer": "independent-public-realm-reviewer",
+  "unresolved_p0": 0,
+  "inspected_files": [
+    {
+      "path": "variant_0.png",
+      "sha256": "34cdb5dd0da4db5c34f05fcf9470c725a63861e4236ac065c4c765a12cf848f9"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "fa01216bf9e2589fa54075b352a80c2a0d62201e52f0c703980819c9fe19896c"
+    },
+    {
+      "path": "renders/walk.png",
+      "sha256": "998a24bc6cc5498b0e4d217184f376633277dffda35843a71783ad19a64587e6"
+    },
+    {
+      "path": "renders/programme_walk.png",
+      "sha256": "df33a48e71b6a183a03b9e66c95fe4a3e504461823e8b94d4b00f2b8c427dbef"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "d864902b36f3d581b1bfe6426259b2e300b065db20fa96858f52ae6ed940fab3"
+    },
+    {
+      "path": "assembly-preview.glb",
+      "sha256": "ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae"
+    },
+    {
+      "path": "geometry-verification.json",
+      "sha256": "2cd4bc71a305afd7dc99893d6d70e985e76aa6362915a3609f52fe40a7b59ff7"
+    },
+    {
+      "path": "independent-module-verification.json",
+      "sha256": "ad21c5f6e017fba5f1ba66a92b78fb08e0f1d697fd8cc511ed68d7c18c62b306"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\parks\\conservatory-v013\\renders\\aerial.png",
+      "sha256": "054a72160158536e9ab69dc51dfee07650297a3e8e59f69a9a73aaa573f562a8"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\showcase-six-2026-09-24\\parks\\conservatory-v013\\renders\\garden_gate.png",
+      "sha256": "49d7d55cc272690043e230dd6760006a650231224ae35a3326f02a81601971b5"
+    }
+  ],
+  "findings": [
+    {
+      "description": "Dense central prairie mass and shelter border clusters restore legible landscape composition; twin detailed gable shelters, picnic tables and surrounding trees retain the approved identity. Aerial, entrance walk and programme close-up inspected against own reference and conservatory aerial/gate benchmark.",
+      "severity": "resolved",
+      "id": "picnic-landscape-richness"
+    },
+    {
+      "description": "Bench bays now connect to the continuous loop; broad entries and shelter aprons are visibly open. Exact-model geometry report passes 1674 full-width material-aware route rays and eight root checks.",
+      "severity": "resolved",
+      "id": "picnic-amenity-access"
+    },
+    {
+      "severity": "info",
+      "description": "Independent reimport of eight module types confirms hash locks, finite metric bounds and native base datums. Shelters ground at zero, tables approximately zero with 0.785m tops, benches approximately zero."
+    },
+    {
+      "severity": "P2",
+      "description": "Prairie geometry and distant edge planting remain stylized and simpler than inspiration imagery. This is acceptable for the bounded native classroom concept; 787025 triangles/41.2MB fixture need runtime loading review."
+    }
+  ],
+  "scope": "Offline native level-fixture visual and geometry review only. Runtime terrain, student editing, capture, new human approval and publication remain unreviewed.",
+  "model_sha256": "ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae",
+  "unresolved_p1": 0,
+  "date": "2026-10-09",
+  "review_revision": 1,
+  "status": "PASS_OFFLINE_NATIVE_REVIEW"
+}

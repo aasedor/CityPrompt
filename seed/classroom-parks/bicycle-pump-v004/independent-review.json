@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "inspected_files": [
+    {
+      "path": "variant_0.png",
+      "sha256": "922f25853e014f11fc167ba94b1927e87b247bd840fe73557f31c75f98db8e9a"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "cab23820780256d1423940e754951d352f0fb5d85e58ad40230b363fc3043e4a"
+    },
+    {
+      "path": "renders/programme_walk.png",
+      "sha256": "ef2377edbc8a468ba961fc918af22db19c2fd095c1ffc96ba42410752d9a972a"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "d1dda0d855374b7c7acf981f12db0ff205a2cdcc2749e2dbe5e40b0554b3cc35"
+    },
+    {
+      "path": "assembly-preview.glb",
+      "sha256": "1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b"
+    },
+    {
+      "path": "geometry-verification.json",
+      "sha256": "ecc24159306e8e765017d512a3b11db876f26047fa8317fe60a40767e1e9989c"
+    },
+    {
+      "path": "independent-module-verification.json",
+      "sha256": "07bbf2414cc69c937c8116f8aa53f604744104e61bdbcb67d943acc2b8b5073c"
+    }
+  ],
+  "model_sha256": "1625b0c7e9a8a8e67126364578888e996af2a48ce77aad235927b94efe28e47b",
+  "unresolved_p1": 0,
+  "review_revision": 1,
+  "unresolved_p0": 0,
+  "date": "2026-10-09",
+  "scope": "Offline native level-fixture visual and geometry review only. No runtime,new human approval or publication pass.",
+  "reviewer": "independent-public-realm-reviewer",
+  "findings": [
+    {
+      "severity": "resolved",
+      "description": "Both asphalt ingress tongues now visibly connect to their banked circuits. Source identity retains separate main rolling loop, beginner loop, central planting, spectator promenade and shade gathering pergola."
+    },
+    {
+      "severity": "info",
+      "description": "Exact geometry report passes1977 full-width spectator route rays,nine root checks and150 height/material ingress contacts. Eight independent module reimports verify byte locks,native metric envelopes and base contact. Main circuit reaches1.23m and beginner0.458m, retaining distinct difficulty scales."
+    },
+    {
+      "severity": "P2",
+      "description": "Small dark triangular exposed shoulder skirt at main ingress side is visible in programme close-up. Riding top is connected; underside/edge finish remains concept follow-up. Riding dynamics, safety engineering and all runtime terrain/editing are untested."
+    }
+  ],
+  "status": "PASS_OFFLINE_NATIVE_REVIEW"
+}

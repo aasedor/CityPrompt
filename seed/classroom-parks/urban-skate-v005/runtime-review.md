@@ -1,4 +1,4 @@
-# Runtime integration review — <archetype / exact variant>
+# Runtime integration review — Urban Skate Plaza / student_urban_skate_plaza_v1
 
 Copy this template into the candidate evidence package. Complete it using
 [Runtime integration for every archetype](ARCHETYPE_RUNTIME_INTEGRATION.md).
@@ -9,27 +9,26 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 
 ## Candidate and scope
 
-- Kind: building / street or path / park or open space
-- Archetype ID and exact variant ID:
-- Model SHA-256 or procedural recipe ID/revision/hash:
-- Runtime source commit and integration-checklist version:
-- Reviewer, date, project URL, viewport/device/input:
+- Kind: park / open space
+- Archetype ID and exact variant ID: `urban_skate_plaza` / `student_urban_skate_plaza_v1`
+- Model SHA-256 or procedural recipe ID/revision/hash: `b29d49b1c976bd1a5022b42c31ab2e1fa808599921ade7bfb7e4b676ac3bc8f0`
+- Runtime source commit and integration-checklist version: baseline `6ad927752`; local integration on `codex/five-neighbourhood-parks`; checklist 2026-09-24 with park-contact addendum 2026-10-09.
+- Reviewer, date, project URL, viewport/device/input: parent browser agent, 2026-10-09, local project `879957be-ef27-4af6-9e73-dffd6a72ffb6` on localhost:5183/API8011; UI-only authoring plus read-only database verification; desktop automation; laptop performance untested.
 - Vacant test site, protected reference, disposable test project:
 - Mixed-scene project and separate oversized-candidate project, if applicable:
-- Supported plot dimensions, axes/base datum, reshape/repetition behavior:
-- Supported terrain modes and connection capabilities:
+- Supported plot dimensions, axes/base datum, reshape/repetition behavior: 42 x 54 m native programme; X across/Y along/Z up; complete ground at z approximately 0; plot expansion preserves native geometry.
+- Supported terrain modes and connection capabilities: prepared level ground only; shared native-park measured entrance and runtime connection systems. Natural terrain untested.
 - Public-realm detail: metric plant height/footprint, paving scale, instance/texture budgets, and native close/aerial evidence:
 - Replacement furniture: complete mesh envelope/base datum, legacy-asset flag independence, component and in-site evidence:
 - Vegetation: canopy envelope, seeded prototype/triangle budget, furniture-scale comparison and route/entrance visibility:
 - Hardscape trees: paired bed/well style and footprint, visible root opening, shared surface datum, paving/joint exclusion, clear routes and sloped-contact evidence:
 - Sports: sourced playing dimensions, full run-off/equipment reserve, measured net/rim heights, open gates, crown clearance and non-coplanar floor finishes; separate recreational adaptations:
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules:
-- Native park seams and raised/cycle access: full-width closed-loop/bend support, local-origin furniture transforms, measured ramp/landing or track-entry height continuity; separate offline contacts from runtime slope walking:
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations:
-- Asset review status and separate publication/activation status:
+- Asset review status and separate publication/activation status: offline geometry/independent findings in adjacent exact-hash reports; local user-authorized trial only. No publication approval.
 - Model Library storage check, configured bucket and result (building GLBs):
 - Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence:
-- Evidence manifest location and hashes; durable shared location for delivery:
+- Evidence manifest location and hashes; durable shared location for delivery: `C:\dev-artifacts\CityPrompt\parks-streets-ten-2026-10-09\parks\skate-v005`; local evidence is not a shared backup. Source photograph and selected native assembly are retained in repository LFS seed packages.
 
 ## Gates
 
@@ -38,12 +37,12 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 
 | Gate | Status | Evidence / limitation / next action |
 | --- | --- | --- |
-| C1 Exact identity | NOT TESTED | |
-| C2 Dimensions and transformations | NOT TESTED | |
+| C1 Exact identity | PASS | Source-photo picker, exact native variant/revision persisted after hard reload; saved-trial-zones.json readback. |
+| C2 Dimensions and transformations | PASS | Bounded default native placement and separate -8 degree rotation. Broader input combinations untested. |
 | C3 Full footprint ground support | NOT TESTED | |
 | C4 Freshness and late results | NOT TESTED | |
 | C5 Pedestrian continuity and public-road access for vehicle streets | NOT TESTED | Entrance/park path; street endpoint, marker, real-road match, clear route |
-| C6 Edit / Undo / save / reopen | NOT TESTED | |
+| C6 Edit / Undo / save / reopen | PASS | Bounded default placement, separate rotation, save and hard reopen. Undo/Redo tested only for picnic; other recovery scenarios untested. |
 | C7 Failure and recovery | NOT TESTED | |
 | C8 Low/aerial views, exact capture and any AI-image comparison | NOT TESTED | Same-camera source/output; count, outline, location, scale, access, material/function, additions; pass/review/fallback |
 | C9 Student controls and supported inputs | NOT TESTED | |
@@ -199,3 +198,13 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot
 alone is not student-ready acceptance. Do not invent a review or approval.
+
+## Bounded local browser evidence — 2026-10-09
+
+Project `879957be-ef27-4af6-9e73-dffd6a72ffb6`: native default placement, separate rotation `-8 degrees`, walking entrance view, save and hard reload all observed. Read-only database evidence confirms exact variant, content revision and saved rotation. This is a local authoring checkpoint, not broad classroom or publication acceptance.
+
+Sustained walking, slope traversal, laptop performance, natural terrain, complete access/grade continuity and actual capture download remain NOT TESTED. Walking entrance screenshots prove appearance only.
+
+- `C:\dev-artifacts\CityPrompt\parks-streets-ten-2026-10-09\parks\skate-browser-walk.png` — SHA-256 `f73c4a822cdd6d736dd67e14888f1d4dd0be97abebd2c80995669d288b3e7055`
+- `C:\dev-artifacts\CityPrompt\parks-streets-ten-2026-10-09\parks\all-five-browser-reopened.png` — SHA-256 `4f8e29245ff159746f03724281cb006b2786ea68737cb6ad3037954d719e4d06`
+- `C:\dev-artifacts\CityPrompt\parks-streets-ten-2026-10-09\saved-trial-zones.json` — SHA-256 `26b55eff26a6bc909cfc13d5e0a5615234a67c2e4bb5413f61b87a392d035c7e`
