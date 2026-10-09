@@ -227,6 +227,7 @@ import {
 import {
   applyStreetCameraProjection,
   applyStreetRoutePose,
+  geographicStreetUp,
   restoreStreetCameraProjection,
 } from './streetRenderProfile';
 import { inspectStreetRenderReadiness } from './streetRenderReadiness';
@@ -3139,7 +3140,6 @@ export function GlobeSitePlannerMap({
     const detailFlythrough = request.cameraMotion === 'detail_flythrough';
     const bicycleRide = request.cameraMotion === 'bicycle_ride';
     const nearFieldRoute = streetWalkby || detailFlythrough || bicycleRide;
-    const streetUp = camera.up.clone().normalize();
     let previousStreetProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     let routeSurfacePoints: THREE.Vector3[];
     let nearFieldTerrainHeight: number | null = null;
@@ -3185,6 +3185,7 @@ export function GlobeSitePlannerMap({
       restoreStreetCameraProjection(camera, previousStreetProjection);
       throw new Error('The center of the captured view does not intersect the city. Reframe the site and try again.');
     }
+    const streetUp = geographicStreetUp(centerHit.lngLat[1], centerHit.lngLat[0]);
     const centerWorld = new THREE.Vector3();
     WGS84_ELLIPSOID.getCartographicToPosition(
       centerHit.lngLat[1] * DEG_TO_RAD,

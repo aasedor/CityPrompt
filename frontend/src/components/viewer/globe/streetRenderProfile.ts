@@ -3,6 +3,17 @@ import * as THREE from 'three';
 import type { NormalizedVideoRoutePoint } from '../videoRouteControls';
 import { normalizedVideoPointToNdc } from '../videoRouteControls';
 
+/** ECEF geodetic vertical, independent of an overhead camera's north-up. */
+export function geographicStreetUp(latitude: number, longitude: number): THREE.Vector3 {
+  const lat = THREE.MathUtils.degToRad(latitude);
+  const lng = THREE.MathUtils.degToRad(longitude);
+  return new THREE.Vector3(
+    Math.cos(lat) * Math.cos(lng),
+    Math.cos(lat) * Math.sin(lng),
+    Math.sin(lat),
+  );
+}
+
 export const STREET_RENDER_EYE_HEIGHT_METERS = 1.7;
 export const STREET_RENDER_LENS_FOCAL_LENGTH_MM = 35;
 export const STREET_RENDER_SENSOR_WIDTH_MM = 36;

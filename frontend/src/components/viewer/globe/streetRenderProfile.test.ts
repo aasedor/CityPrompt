@@ -6,6 +6,7 @@ import {
   STREET_RENDER_VERTICAL_FOV_DEGREES,
   applyStreetCameraProjection,
   applyStreetRoutePose,
+  geographicStreetUp,
   projectStreetRouteToGround,
   restoreStreetCameraProjection,
   verticalFovForHorizontalSensor,
@@ -92,5 +93,26 @@ describe('streetRenderProfile', () => {
       expect(forward.y).toBeCloseTo(0);
       expect(forward.dot(curve.getTangentAt(progress))).toBeGreaterThan(.98);
     }
+  });
+});
+
+// Overhead map cameras use north as camera.up; near-ground routes must use
+// the Earth's surface normal instead, regardless of the starting orbit.
+describe('geographic street route orientation', () => {
+  it('raises a Calgary route six metres vertically with a level north-facing horizon', () => {
+    const lat = 51.05 * Math.PI / 180, lng = -114.08 * Math.PI / 180;
+    const normal = new THREE.Vector3(Math.cos(lat)*Math.cos(lng), Math.cos(lat)*Math.sin(lng), Math.sin(lat));
+    const north = new THREE.Vector3(-Math.sin(lat)*Math.cos(lng), -Math.sin(lat)*Math.sin(lng), Math.cos(lat));
+    const origin = normal.clone().multiplyScalar(6370000);
+    const path = new THREE.CatmullRomCurve3([origin, origin.clone().addScaledVector(north, 36)]);
+    const camera = new THREE.PerspectiveCamera();
+    camera.up.copy(north);
+    const up = geographicStreetUp(51.05, -114.08);
+    applyStreetRoutePose(camera, path, .5, up, 6);
+    const rise = camera.position.clone().sub(path.getPointAt(.5));
+    expect(rise.dot(normal)).toBeCloseTo(6, 6);
+    expect(rise.dot(north)).toBeCloseTo(0, 6);
+    expect(camera.up.dot(normal)).toBeCloseTo(1, 8);
+    expect(camera.getWorldDirection(new THREE.Vector3()).dot(north)).toBeCloseTo(1, 6);
   });
 });
