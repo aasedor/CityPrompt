@@ -461,6 +461,7 @@ def _decode_base64_payload(image_b64: str) -> bytes:
 
 
 def _guess_image_mime(image_b64: str) -> str:
+    image_b64 = image_b64.split(",", 1)[1] if "," in image_b64[:64] else image_b64
     if image_b64.startswith("/9j/"):
         return "image/jpeg"
     if image_b64.startswith("iVBOR"):
@@ -621,7 +622,8 @@ def _build_openai_files(
         files.append(
             (
                 "image[]",
-                ("semantic-zone-map.png", _decode_base64_payload(req.semantic_guide_base64), "image/png"),
+                (f"semantic-zone-map.{_extension_for_mime(_guess_image_mime(req.semantic_guide_base64))}",
+                 _decode_base64_payload(req.semantic_guide_base64), _guess_image_mime(req.semantic_guide_base64)),
             )
         )
 
@@ -647,6 +649,7 @@ def _build_openai_files(
         16
         - 1
         - (1 if req.previous_render_base64 else 0)
+        - (1 if req.semantic_guide_base64 else 0)
         - len(context_images)
         - (1 if req.site_scene_reference_base64 else 0)
     )
@@ -666,9 +669,9 @@ def _build_openai_files(
             (
                 "image[]",
                 (
-                    "neighbourhood-appearance-reference.png",
+                    f"neighbourhood-appearance-reference.{_extension_for_mime(_guess_image_mime(req.site_scene_reference_base64))}",
                     _decode_base64_payload(req.site_scene_reference_base64),
-                    "image/png",
+                    _guess_image_mime(req.site_scene_reference_base64),
                 ),
             )
         )
@@ -692,6 +695,47 @@ def _build_openai_files(
     return files
 
 
+def _validated_render_image(value: str | None, label: str, *, required: bool = False) -> str | None:
+    """Prove decoded pixels exist; filename/HTTP MIME alone accepts LFS pointers."""
+    if not value and not required:
+        return None
+    try:
+        raw = _decode_base64_payload(value or "")
+        with Image.open(io.BytesIO(raw)) as image:
+            image.load()  # Detect truncated files, not just a plausible file signature.
+            if image.format not in {"PNG", "JPEG", "WEBP"}:
+                output = io.BytesIO()
+                image.convert("RGBA").save(output, format="PNG")
+                raw = output.getvalue()
+        return base64.b64encode(raw).decode()
+    except Exception:
+        if required:
+            raise HTTPException(400, detail="The view capture could not be read. Close the render panel, capture the view again, and try again.") from None
+        logger.warning("Skipping unreadable optional render image: %s", label)
+        return None
+
+
+def _prepare_openai_inputs(req: RenderRequest, site_pack: dict | None):
+    """Validate before constructing positional prompt text or making a paid call."""
+    updates = {"image_base64": _validated_render_image(req.image_base64, "view capture", required=True)}
+    for field in ("previous_render_base64", "semantic_guide_base64", "site_scene_reference_base64", "mask_base64"):
+        updates[field] = _validated_render_image(getattr(req, field), field)
+    references = []
+    for index, reference in enumerate(req.archetype_images or []):
+        image = _validated_render_image(reference.image_base64, f"archetype reference {index + 1}")
+        if image:
+            references.append(reference.model_copy(update={"image_base64": image}))
+    updates["archetype_images"] = references
+    if site_pack:
+        images = []
+        for index, (label, _mime, value) in enumerate(site_pack.get("images", [])):
+            image = _validated_render_image(value, f"site context {index + 1}")
+            if image:
+                images.append((label, _guess_image_mime(image), image))
+        site_pack = {**site_pack, "images": images}
+    return req.model_copy(update=updates), site_pack
+
+
 async def _call_openai_image_edit(
     req: RenderRequest,
     settings,
@@ -700,6 +744,7 @@ async def _call_openai_image_edit(
     include_mask: bool,
     site_pack: dict | None = None,
 ) -> httpx.Response:
+    req, site_pack = _prepare_openai_inputs(req, site_pack)
     prompt_text = _prompt_with_negative(req)
     semantic_framing = (
         "The second attached image is a SEMANTIC ZONE MAP of the exact same view: "
@@ -712,13 +757,15 @@ async def _call_openai_image_edit(
     prompt_text = _openai_source_framing(req.guide_image_kind) + semantic_framing + prompt_text
     if site_pack:
         n_ctx = len(site_pack.get("images", []))
-        prompt_text += (
-            f"\n\nThe final {n_ctx} attached images are REAL Street View photographs of "
-            "this exact site's surroundings, in compass order (north, east, south, west). "
-            "Use them ONLY for the appearance of the surroundings - buildings, materials, "
-            "signage, vegetation. The camera position, angle and framing must come from "
-            "Image 1 EXACTLY; do not adopt the viewpoint of any context photograph.\n" + site_pack["prompt_block"]
-        )
+        if n_ctx:
+            prompt_text += (
+                f"\n\nThe final {n_ctx} attached images are REAL Street View photographs of "
+                "this exact site's surroundings, in compass order (north, east, south, west). "
+                "Use them ONLY for the appearance of the surroundings - buildings, materials, "
+                "signage, vegetation. The camera position, angle and framing must come from "
+                "Image 1 EXACTLY; do not adopt the viewpoint of any context photograph.\n"
+            )
+        prompt_text += "\n\n" + site_pack["prompt_block"]
     prompt_text = _finish_render_prompt(req, prompt_text)
 
     image_quality = req.image_quality or "auto"
@@ -803,7 +850,7 @@ async def _generate_openai_render(req: RenderRequest, settings, render_model: st
         logger.error("OpenAI image edit returned %d: %s", resp.status_code, error_body)
         raise HTTPException(
             status_code=502,
-            detail=f"OpenAI image error ({resp.status_code}): {error_body}",
+            detail="The image service could not finish this render. Please try again. Your scene has been kept.",
         )
 
     body = resp.json()

@@ -163,8 +163,8 @@ async def test_continuous_base_uses_ground_authority_without_recreating_3d_objec
 
     monkeypatch.setattr(render.httpx, "AsyncClient", Client)
     req = render.RenderRequest(
-        image_base64="aW1hZ2U=",
-        site_scene_reference_base64="Y29udGV4dA==",
+        image_base64="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aB9sAAAAASUVORK5CYII=",
+        site_scene_reference_base64="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aB9sAAAAASUVORK5CYII=",
         guide_image_kind="landscape_base",
         prompt="Garden beds with local materials.",
         image_quality="high",
