@@ -21,7 +21,8 @@ import { DIRECT_3D_ALLOWED_STYLES, resolveDirect3DPresentationMode, useDirect3DR
 import { collectDirect3DArchetypeReferences } from './globe/direct3dArchetypeReferences';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel } from '@/config/imageModels';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, isLocalImageModel } from '@/config/imageModels';
+import { renderLocalImage } from '@/services/localImageRender';
 import { ImageModelSelect } from './ImageModelSelect';
 import { useImageModelChoice } from './useImageModelChoice';
 import { runImageModelBatch } from './runImageModelBatch';
@@ -315,23 +316,24 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
           overrideSemanticGuide = streetCapture.semanticBase64;
           console.log(`[StreetViewPanel] Street-level capture successful (${streetCapture.kind}, ${streetCapture.aspectRatio}, semantic=${!!streetCapture.semanticBase64})`);
         } else {
-          console.warn('[StreetViewPanel] Street-level capture failed, falling back to clay render');
+          console.warn('[StreetViewPanel] Street-level capture is not ready');
         }
+      }
+
+      if (globeCapture && !streetCapture?.direct3d && !overrideGuideImage?.trim()) {
+        toast('The street view is still loading. Try again when the scene is visible.');
+        return;
+      }
+      if (directStreetMode && !projectId) {
+        toast.error('Save the project before a street render.');
+        return;
       }
 
       // Inventory-locked street render: one call through the Direct 3D
       // endpoint with the full pass stack. The server saves both the returned
       // view and any separate AI attempt; neither bypasses visual review.
-      if (directStreetMode) {
-        const bundle = streetCapture?.direct3d;
-        if (!projectId) {
-          toast.error('Save the project before a Direct 3D street render.');
-          return;
-        }
-        if (!bundle) {
-          toast.error('Direct 3D street needs compiled 3D models in the scene — the capture returned no pass stack.');
-          return;
-        }
+      if (directStreetMode && projectId && streetCapture?.direct3d) {
+        const bundle = streetCapture.direct3d;
         const claims = currentSceneClaims!;
         const directLabel = 'Direct 3D Street';
         const completedPreviews: StreetViewResult[] = [];
@@ -413,8 +415,30 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         return;
       }
 
-      const results = await Promise.all(STREET_VIEW_RENDER_MODELS.map(async (provider) => {
+      // A valid screenshot can still guide a render when auxiliary geometry
+      // passes are unavailable. Select this before submission, never as a paid
+      // provider retry, and honour the user's engine choice and call count.
+      const providers = directStreetMode
+        ? imageModelsForChoice(imageModel).map(model => ({
+          model, label: `${imageModelLabel(model)} · Image-guided`, imageQuality: 'auto' as const,
+        }))
+        : STREET_VIEW_RENDER_MODELS;
+      const results: StreetViewResult[] = await Promise.all(providers.map(async (provider) => {
         try {
+          if (isLocalImageModel(provider.model)) {
+            if (!projectId || !overrideGuideImage) throw new Error('The saved project and street view must be ready.');
+            const prompt = [styleObj?.prompt,
+              includePeople ? 'Include a few naturally posed pedestrians.' : 'Do not add people.',
+              includeVehicles ? 'Include vehicles on existing streets.' : 'Do not add vehicles.',
+              customPrompt.trim(),
+            ].filter(Boolean).join(' ').slice(0, 1500);
+            const saved = await renderLocalImage({ projectId, model: provider.model, imageBase64: overrideGuideImage, prompt });
+            const preview = { imageUrl: resolveApiFileUrl(saved.image_url), prompt, model: provider.model,
+              imageQuality: provider.imageQuality, providerLabel: provider.label };
+            onRenderSaved?.(saved);
+            setSavedImageKeys(previous => new Set(previous).add(getRenderImageKey(preview)));
+            return preview;
+          }
           const providerResult = await generateStreetView(
             pegmanPosition,
             pegmanAngle,
@@ -466,7 +490,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         if (projectId) {
           Promise.allSettled(
             results
-              .filter((preview) => !preview.error)
+              .filter((preview) => !preview.error && !isLocalImageModel(preview.model ?? ''))
               .map((preview) => saveStreetViewRender(preview)),
           ).catch(() => undefined);
         }
