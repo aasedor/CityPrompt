@@ -1,0 +1,64 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "brownstone_rowhouse_frontage",
+  "variant_id": "variant_0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_1_thumb.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_2_thumb.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg",
+    "variant_3_thumb.jpg"
+  ],
+  "excluded_duplicate": "hero.png (byte-identical to variant_0.png)",
+  "records": [
+    {
+      "archetype_id": "brownstone_rowhouse_frontage",
+      "variant_id": "variant_0",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/brownstone_rowhouse_frontage/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1313577,
+      "sha256": "81b0c505faff936e7063ccd6e96390cb9fa84b6dd573bb25e72a06ba8e5315f1",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "brownstone_rowhouse_frontage",
+      "variant_id": "variant_0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/brownstone_rowhouse_frontage/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 883218,
+      "sha256": "ea4ddffe045599af5899a943a5a89525ced637505ad82f401c3f6ee2f5a0ecce",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "brownstone_rowhouse_frontage",
+      "variant_id": "variant_0",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/brownstone_rowhouse_frontage/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 802789,
+      "sha256": "79d3e4f2dc8b6cfe2da157919ad8652e87063cfb1ceeea747d9aebad87a3774c",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
