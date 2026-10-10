@@ -20,6 +20,8 @@ T = .30
 G0 = .15
 ANCHOR = (-40.0, -4.0, 0.0, 30.0)        # grocery box
 CAFE = (-56.0, -40.0, 0.0, 14.0)         # low cafe wing (about 45 per cent of the anchor width)
+LOWER = (-56.0, -40.0, 14.0, 30.0)       # lower anchor tier behind the cafe wing
+L_ROOF, L_CROWN = 6.6, 7.3
 INLINE = (-4.0, 40.0, 16.0, 30.0)        # inline shops
 ENDCAP = (40.0, 54.0, -16.0, 30.0)       # end-cap wing
 A_ROOF, A_CROWN = 8.0, 8.8
@@ -143,14 +145,16 @@ def anchor():
     x0, x1, y0, y1 = ANCHOR
     # South face: storefront glazing flanking the entrance; the tower projects in front of the entrance.
     f = face(*ANCHOR, 'south', 'anchor south')
-    tx = -18.0 - (x0 + x1) / 2          # tower centre in face u
+    # The tower stands at the cafe party wall; the entrance doors and sign band take the bay east of it.
     tw, tp = 10.0, 5.0
-    cx = -18.0
-    west = hole('Anchor storefront west', (-(x1 - x0) / 2 + .6 + tx - tw / 2 - .5) / 2, G0, (tx - tw / 2 - .5) - (-(x1 - x0) / 2 + .6), 3.4, cols=8)
-    east = hole('Anchor storefront east', (tx + tw / 2 + .5 + (x1 - x0) / 2 - .6) / 2, G0, ((x1 - x0) / 2 - .6) - (tx + tw / 2 + .5), 3.4, cols=5)
-    doors = hole('Anchor entrance doors', tx, G0, 5.0, 3.2, cols=4)
-    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, [west, east, doors], A_CROWN, pilasters=(west['u'] - west['w'] / 4, west['u'] + west['w'] / 4), sign_band=False)
-    f.part('Anchor canopy west', west['u'], -1.2, CANOPY_Z + .2, west['w'] + .8, 2.4, .30, 'cap', 'canopies', 0)
+    cx = x0 + tw / 2
+    tx = cx - (x0 + x1) / 2             # tower centre in face u
+    dx = tx + tw / 2 + 3.0               # entrance bay centre in face u
+    east = hole('Anchor storefront east', (dx + 3.3 + (x1 - x0) / 2 - .6) / 2, G0, ((x1 - x0) / 2 - .6) - (dx + 3.3), 3.4, cols=7)
+    doors = hole('Anchor entrance doors', dx, G0, 5.0, 3.2, cols=4)
+    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, [east, doors], A_CROWN, pilasters=(east['u'] - east['w'] / 4, east['u'] + east['w'] / 4), sign_band=False)
+    f.part('Entrance sign band', dx, -.03, A_CROWN - 1.6, 7.6, .06, 1.0, 'cream', 'sign band', 0)
+    f.part('Entrance canopy', dx, -1.2, CANOPY_Z + .2, 6.6, 2.4, .30, 'cap', 'canopies', 0)
     f.part('Anchor canopy east', east['u'], -1.2, CANOPY_Z + .2, east['w'] + .8, 2.4, .30, 'cap', 'canopies', 0)
     # Entrance tower: one projecting EIFS volume with a cut entrance recess, brick corner pilasters, green sign panel and wrap.
     tower = C.box('Entrance tower', (cx, y0 - tp / 2, (G0 + TOWER_TOP) / 2), (tw, tp, TOWER_TOP - G0), 'tan', 'entrance tower', 0)
@@ -158,8 +162,8 @@ def anchor():
     C.box('Tower recess soffit', (cx, y0 - tp / 2, G0 + 3.99), (tw - 2.42, tp - .02, .02), 'cap', 'entrance tower', 0)
     C.qa_room_light('Tower recess', (cx, y0 - tp / 2, G0 + 3.6), 40, 2.4)
     for sx in (-1, 1):
-        C.box('Tower brick pilaster', (cx + sx * (tw / 2 - .45), y0 - tp - .15, (G0 + TOWER_TOP - .8) / 2), (.9, .50, TOWER_TOP - .8 - G0), 'stone', 'entrance tower', 0)
-        C.box('Tower pilaster cap', (cx + sx * (tw / 2 - .45), y0 - tp - .15, TOWER_TOP - .76), (1.0, .60, .08), 'cream', 'entrance tower', 0)
+        C.box('Tower brick pilaster', (cx + sx * (tw / 2 - .40), y0 - tp - .15, (G0 + TOWER_TOP - .8) / 2), (.9, .50, TOWER_TOP - .8 - G0), 'stone', 'entrance tower', 0)
+        C.box('Tower pilaster cap', (cx + sx * (tw / 2 - .40), y0 - tp - .15, TOWER_TOP - .76), (1.0, .60, .08), 'cream', 'entrance tower', 0)
     C.box('Tower cap', (cx, y0 - tp / 2, TOWER_TOP + .05), (tw + .2, tp + .2, .10), 'cap', 'entrance tower', 0)
     C.box('Tower cornice band', (cx, y0 - tp - .03, TOWER_TOP - .45), (tw - 1.8, .06, .70), 'cap', 'entrance tower', 0)
     C.box('Tower sign panel', (cx, y0 - tp - .03, 6.4), (tw - 2.4, .06, 2.2), 'green', 'entrance tower', 0)
@@ -175,8 +179,8 @@ def anchor():
     f.part('Parapet coping', (lo + (INLINE[2] - y0) + hi) / 2, T / 2, A_CROWN + .03, hi - lo - (INLINE[2] - y0) - 2 * EPS, T + .06, .06, 'cap', 'coping', 0)
     f = face(*ANCHOR, 'west', 'anchor west')
     lo, hi = -(y1 - y0) / 2 + T, (y1 - y0) / 2 - T
-    f.wall('anchor west lower carrier', lo, (y1 - CAFE[3]) - (y1 - y0) / 2 - EPS, G0, A_CROWN, depth=T)          # exposed north of the cafe wing
-    f.wall('anchor west upper carrier', (y1 - CAFE[3]) - (y1 - y0) / 2, hi, S_CROWN - .24, A_CROWN, depth=T)     # above the cafe roof
+    f.wall('anchor west lower carrier', lo, (y1 - CAFE[3]) - (y1 - y0) / 2 - EPS, L_CROWN - .24, A_CROWN, depth=T)   # above the lower tier
+    f.wall('anchor west upper carrier', (y1 - CAFE[3]) - (y1 - y0) / 2, hi, S_CROWN - .24, A_CROWN, depth=T)        # above the cafe roof
     f.part('Cornice cap', 0, -.06, A_CROWN - .40, hi - lo - 2 * EPS, .12, .80, 'cap', 'cornice', 0)
     f.part('Parapet coping', 0, T / 2, A_CROWN + .03, hi - lo - 2 * EPS, T + .06, .06, 'cap', 'coping', 0)
     f = face(*ANCHOR, 'north', 'anchor north')
@@ -194,6 +198,16 @@ def anchor():
     f = face(*CAFE, 'north', 'cafe north')
     elevation(f, -(CAFE[1] - CAFE[0]) / 2, (CAFE[1] - CAFE[0]) / 2 - EPS, [], S_CROWN)
     roof(*ANCHOR, A_ROOF, units=((-30.0, 20.0), (-22.0, 24.0), (-12.0, 20.0), (-30.0, 8.0), (-10.0, 8.0)))
+    lx0, lx1, ly0, ly1 = LOWER
+    f = face(*LOWER, 'west', 'lower tier west')
+    elevation(f, -(ly1 - ly0) / 2 + T, (ly1 - ly0) / 2 - T, [hole('Lower tier west window', 2.0, 1.4, 3.0, 2.0)], L_CROWN)
+    f = face(*LOWER, 'north', 'lower tier north')
+    elevation(f, -(lx1 - lx0) / 2, (lx1 - lx0) / 2 - EPS, [hole('Lower tier rear door', 3.0, G0, 1.1, 2.4, kind='door')], L_CROWN)
+    f = face(*LOWER, 'south', 'lower tier south')
+    f.wall('lower tier south upper carrier', -(lx1 - lx0) / 2, (lx1 - lx0) / 2 - EPS, S_CROWN - .24, L_CROWN, depth=T)
+    f.part('Cornice cap', 0, -.06, L_CROWN - .40, lx1 - lx0 - 2 * EPS, .12, .80, 'cap', 'cornice', 0)
+    f.part('Parapet coping', 0, T / 2, L_CROWN + .03, lx1 - lx0 - 2 * EPS, T + .06, .06, 'cap', 'coping', 0)
+    roof(*LOWER, L_ROOF, units=((-48.0, 22.0),))
     roof(*CAFE, S_ROOF, units=((-50.0, 7.0), (-44.0, 7.0)))
     C.CONTACTS.append(dict(name='Entrance tower piers to grade in front of the anchor doors', grade_m=0, height_m=TOWER_TOP))
 

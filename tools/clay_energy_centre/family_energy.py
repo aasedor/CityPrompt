@@ -125,12 +125,12 @@ def frame_face(f, lo, hi, bays):
         elif kind == 'corner':
             holes.append(hole(tag + ' corner bay', c, G0, w, top - G0, kind='corner'))
         elif kind == 'service':
-            holes.append(hole(tag + ' roller door', c - w / 2 + 2.3, G0, 4.0, 4.5, kind='door'))
-            holes.append(hole(tag + ' ribbon glazing', c, 7.0, w, 3.0, kind='ribbon'))
+            holes.append(hole(tag + ' roller door', c - w / 2 + 2.3, G0, 4.0, 4.5, kind='recessed door'))
+            holes.append(hole(tag + ' ribbon glazing', c, 6.6, w, 3.6, kind='ribbon'))
         elif kind == 'entrance':
             holes.append(hole(tag + ' curtain wall', c - 1.5, G0, w - 3.0, top - G0, kind='tall'))
             holes.append(hole(tag + ' entrance doors', c + w / 2 - 1.5, G0, 2.4, 3.0, kind='entrance'))
-            holes.append(hole(tag + ' glazing over doors', c + w / 2 - 1.5, 3.3, 2.4, top - 3.3, kind='tall'))
+            holes.append(hole(tag + ' glazing over doors', c + w / 2 - 1.5, 4.1, 2.4, top - 4.1, kind='tall'))
     f.wall(f.label + ' carrier', lo, hi, G0, W_CROWN, depth=T, holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, G0, W_CROWN, holes, spacing=.075)
     for h in holes:
@@ -153,20 +153,27 @@ def frame_face(f, lo, hi, bays):
             f.part('Board-formed concrete panel', h['u'], T / 2, (z0 + z1) / 2, h['w'] + .02, T + .02, z1 - z0, 'concrete', 'concrete panel', 0)
             for kk in range(1, 10):
                 f.part('Board mark', h['u'], -.016, z0 + kk * (z1 - z0) / 10, h['w'] - .1, .008, .012, 'joint', 'concrete panel', 0)
+        elif k == 'recessed door':
+            f.part(h['id'] + ' leaf', h['u'], 1.22, h['z'] + h['h'] / 2, h['w'] - .06, .05, h['h'] - .02, 'pale', 'service door', 0)
+            for kk in range(1, 6):
+                f.part(h['id'] + ' slat seam', h['u'], 1.19, h['z'] + kk * h['h'] / 6, h['w'] - .10, .012, .012, 'joint', 'service door', 0)
+            lined(f, h, inset=1.20, role='concrete')
+            f.part(h['id'] + ' recess paving', h['u'], .6, G0 - .005, h['w'] - .05, 1.2, .03, 'concrete', 'service door', 0)
+            C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='roll-up door', clear_wall_cut=True,
+                carrier_depth_m=T, frame_inset_m=1.19, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='plant hall'))
         elif k == 'door':
             f.part(h['id'] + ' leaf', h['u'], .22, h['z'] + h['h'] / 2, h['w'] - .06, .05, h['h'] - .02, 'pale', 'service door', 0)
             lined(f, h, inset=.19, role='pale')
             C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='roll-up door', clear_wall_cut=True,
                 carrier_depth_m=T, frame_inset_m=.19, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='plant hall'))
         elif k == 'entrance':
-            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=2, rows=1, frame='trim', depth=T, sill=False, kind='glazed door')
-            lined(f, h)
+            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=2, rows=1, frame='trim', inset=.30, depth=T, sill=False, kind='glazed door')
+            lined(f, h, inset=.30, role='concrete')
             for du in (-.12, .12):
-                C.rod('Entrance door pull', f.p(h['u'] + du, .12, h['z'] + .9), f.p(h['u'] + du, .12, h['z'] + 1.5), .018, 'hardware', 'door hardware')
-            f.part('Entrance threshold', h['u'], -.4, G0 - .005, h['w'] + .4, .8, .03, 'concrete', 'entrance', 0)
-            f.part('Concrete entrance fin', h['u'] - h['w'] / 2 - .15, -.40, (G0 + top) / 2, .30, 1.10, top - G0, 'concrete', 'entrance', 0)
-            f.part('Entrance canopy', h['u'] + .2, -.92, h['z'] + h['h'] + .12, h['w'] + 1.0, 1.80, .18, 'concrete', 'entrance', 0)
-            C.CONTACTS.append(dict(name='Glazed entrance doors at slab level beside a concrete fin under a cantilevered canopy', grade_m=0, canopy_m=h['z'] + h['h'] + .12))
+                C.rod('Entrance door pull', f.p(h['u'] + du, .28, h['z'] + .9), f.p(h['u'] + du, .28, h['z'] + 1.5), .018, 'hardware', 'door hardware')
+            f.part('Entrance head panel', h['u'], .16, (h['z'] + h['h'] + 4.1) / 2, h['w'] + .02, .30, 4.1 - h['z'] - h['h'], 'trim', 'entrance', 0)
+            f.part('Entrance step', h['u'], -.4, (.015 + G0) / 2, h['w'] + .4, .8, G0 - .015, 'concrete', 'entrance', 0)
+            C.CONTACTS.append(dict(name='Glazed entrance doors recessed 0.3 m under a dark head panel, one step up from the pavement', grade_m=0, step_m=G0))
     f.part('Parapet coping', (lo + hi) / 2, T / 2, W_CROWN + .03, hi - lo - 2 * EPS, T + .06, .06, 'pale', 'coping', 0)
     f.part('Plinth', (lo + hi) / 2, -.02, .25, hi - lo - 2 * EPS, .04, .50, 'concrete', 'plinth', 0)
 
@@ -303,7 +310,7 @@ def plant_interior():
     for y in (-13.0, 4.0):
         C.rod('Main pipe run', (x0 + 1.5, y, G0 + 4.3), (x1 - 1.5, y, G0 + 4.3), .22, 'steel', 'plant', 12)
     for x in (-14.0, -8.0, -2.0):
-        C.rod('Riser pipe', (x, -13.0, G0 + .2), (x, -13.0, G0 + 4.3), .14, 'steel', 'plant', 10)
+        C.rod('Riser pipe', (x, -13.0, G0 - .10), (x, -13.0, G0 + 4.3), .14, 'steel', 'plant', 10)
     for x in (-13.0, -6.0):
         for y in (-11.0, 0.0, 11.0):
             C.qa_room_light('Plant hall', (x, y, L1 - .4), 110, 3.5)

@@ -21,7 +21,7 @@ G0, U, ROOF, CROWN = .15, 5.50, 10.00, 10.60
 FRONT_Y, REAR_Y, WEST_X, EAST_X = -D / 2, D / 2, -W / 2, W / 2
 SETBACK = 2.0                      # ground-floor south wall sits this far under the upper storey
 GY = FRONT_Y + SETBACK             # ground south wall plane
-BAYS = [-3.4, 2.2, 7.8, 13.4]      # apparatus bay centres
+BAYS = [-17.2, -11.7, -6.2, -0.7, 4.8, 10.3]   # six apparatus bays over about three quarters of the south face, from the west corner
 BAY_W, BAY_H = 4.6, 4.6
 TW_X0, TW_X1, TW_Y0, TW_Y1, TW_H = EAST_X, EAST_X + 5.5, FRONT_Y - 4.0, FRONT_Y + 4.0, 15.6
 APRON = 18.0
@@ -131,9 +131,9 @@ def south_upper(f):
     joints(f, WEST_X + .2, EAST_X - .2, U + EPS, CROWN - EPS, [])
     # Cantilever soffit slab from the front plane back to the ground-floor wall, lined pale underneath.
     C.box('Cantilever soffit slab', (0, FRONT_Y + SETBACK / 2 + T / 2, U - .25), (W, SETBACK + T, .50), 'wall', 'cantilever', 0)
-    C.box('Soffit lining', (0, FRONT_Y + SETBACK / 2 + .10, U - .505), (W - 14.0 - .02, SETBACK - .2, .01), 'pale', 'cantilever', 0)
+    C.box('Soffit lining', ((WEST_X + EAST_X - 7.0) / 2, FRONT_Y + SETBACK / 2 + .10, U - .505), (W - 7.0 - .02, SETBACK - .2, .01), 'pale', 'cantilever', 0)
     # The red skin steps down at both ends to door-head height; the light strip traces the stepped profile.
-    for x0, x1 in ((WEST_X, WEST_X + 7.0), (EAST_X - 7.0, EAST_X)):
+    for x0, x1 in ((EAST_X - 7.0, EAST_X),):
         cx = (x0 + x1) / 2
         C.box('Stepped soffit volume', (cx, FRONT_Y + SETBACK / 2 + T / 2, (3.6 + U - .5) / 2), (x1 - x0, SETBACK + T, U - .5 - 3.6), 'wall', 'cantilever', 0)
         C.box('Stepped soffit lining', (cx, FRONT_Y + SETBACK / 2 + .10, 3.595), (x1 - x0 - .02, SETBACK - .2, .01), 'pale', 'cantilever', 0)
@@ -141,7 +141,7 @@ def south_upper(f):
         sx = x1 if x0 == WEST_X else x0
         C.box('Step riser light strip', (sx + (.04 if x0 == WEST_X else -.04), FRONT_Y + .10, (3.6 + U - .5) / 2), (.05, .07, U - .5 - 3.6 - .1), 'glow', 'cantilever', 0)
         C.qa_room_light('Soffit', (cx, FRONT_Y + SETBACK / 2, 3.2), 70, 2.4)
-    C.box('Soffit light strip', (0, FRONT_Y + .10, U - .52), (W - 14.0 - .40, .07, .05), 'glow', 'cantilever', 0)
+    C.box('Soffit light strip', ((WEST_X + EAST_X - 7.0) / 2, FRONT_Y + .10, U - .52), (W - 7.0 - .40, .07, .05), 'glow', 'cantilever', 0)
     C.qa_room_light('Soffit centre', (0, FRONT_Y + SETBACK / 2, U - .9), 30, 3.0)
     C.box('Parapet coping south', (0, FRONT_Y + T / 2, CROWN + .03), (W, T + .06, .06), 'wall', 'coping', 0)
 
@@ -152,15 +152,19 @@ def south_ground(f):
     f.wall('South ground carrier', WEST_X, EAST_X, G0, U - .25 + EPS, depth=T, role='stone', holes=[cw])
     lined(f, cw)
     # Glazed segments: watch room to the west, glazed strips between the bays, entrance lobby to the east.
-    west = hole('Watch room glazing', (WEST_X + T + .2 + BAYS[0] - BAY_W / 2 - .5) / 2, G0, (BAYS[0] - BAY_W / 2 - .5) - (WEST_X + T + .2), U - .25 - G0)
-    f.window(west['id'], west['u'], west['z'], west['w'], west['h'], cols=8, rows=2, frame='trim', depth=T, sill=False)
+    wa, wb = WEST_X + T + .26, BAYS[0] - BAY_W / 2 - .5
+    if wb - wa > 1.5:
+        west = hole('Watch room glazing', (wa + wb) / 2, G0, wb - wa, U - .25 - G0)
+        f.window(west['id'], west['u'], west['z'], west['w'], west['h'], cols=8, rows=2, frame='trim', depth=T, sill=False)
+    else:
+        f.window('West corner strip', (wa + wb) / 2, G0, wb - wa, U - .25 - G0, cols=1, rows=2, frame='trim', depth=T, sill=False)
     for b in BAYS:
         bay_door(f, f'Apparatus bay {BAYS.index(b) + 1}', b, G0, BAY_W, BAY_H)
         f.part('Bay head glazing frame', b, .16, (BAY_H + G0 + U - .25) / 2, BAY_W, .10, U - .25 - BAY_H - G0, 'trim', 'apparatus doors', 0)
         f.part('Bay head glazing', b, .20, (BAY_H + G0 + U - .25) / 2, BAY_W - .14, .008, U - .25 - BAY_H - G0 - .14, 'glass', 'apparatus doors', 0)
-    for u in (BAYS[0] + BAY_W / 2 + .5, BAYS[1] + BAY_W / 2 + .5, BAYS[2] + BAY_W / 2 + .5):
+    for u in [b + BAY_W / 2 + .5 for b in BAYS[:-1]]:
         f.window(f'Bay mullion strip {u:+.1f}', u, G0, 1.0, U - .25 - G0, cols=1, rows=2, frame='trim', depth=T, sill=False)
-    east = hole('Entrance lobby glazing', (BAYS[3] + BAY_W / 2 + .5 + EAST_X - T - .2) / 2, G0, (EAST_X - T - .2) - (BAYS[3] + BAY_W / 2 + .5), U - .25 - G0)
+    east = hole('Entrance lobby glazing', (BAYS[-1] + BAY_W / 2 + .5 + EAST_X - T - .26) / 2, G0, (EAST_X - T - .26) - (BAYS[-1] + BAY_W / 2 + .5), U - .25 - G0)
     f.window(east['id'], east['u'], east['z'], east['w'], east['h'], cols=3, rows=2, frame='trim', depth=T, sill=False, kind='glazed door')
     for du in (-.12, .12):
         C.rod('Lobby door pull', f.p(east['u'] + du, .01, G0 + .9), f.p(east['u'] + du, .01, G0 + 1.5), .018, 'hardware', 'door hardware')
@@ -169,13 +173,22 @@ def south_ground(f):
 
 def west(f):
     """West face: dark concrete ground with a curtain-wall return at the south corner; red upper with a ribbon window."""
-    loggia = hole('West loggia', 10.7, U + 1.2, 9.4, 2.8)
+    loggia = hole('West loggia', 9.5, U + .9, 12.0, 3.2)
     f.wall('West upper carrier', -D / 2 + T, D / 2 - T, U, CROWN, depth=T, holes=[loggia])
     joints(f, -D / 2 + T + .2, D / 2 - .2, U + EPS, CROWN - EPS, [loggia])
     # Loggia: 1.2 m deep red returns and soffit, glazed wall at the back of the recess.
-    lined(f, loggia, inset=1.20, role='wall')
-    f.window(loggia['id'], loggia['u'], loggia['z'], loggia['w'], loggia['h'], cols=5, rows=1, frame='trim', inset=1.20, depth=T, sill=False)
-    C.qa_room_light('Loggia', f.p(loggia['u'], .6, loggia['z'] + loggia['h'] - .3), 25, 2.0)
+    lined(f, loggia, inset=2.0, role='wall')
+    f.window(loggia['id'], loggia['u'], loggia['z'], loggia['w'], loggia['h'], cols=6, rows=1, frame='trim', inset=2.0, depth=T, sill=False)
+    # Pale C-frame round the recess: head, sill and the north jamb (the frame opens towards the street corner).
+    lu, lz, lw, lh = loggia['u'], loggia['z'], loggia['w'], loggia['h']
+    f.part('Loggia frame head', lu, -.08, lz + lh + .18, lw + .72, .16, .36, 'pale', 'loggia frame', 0)
+    f.part('Loggia frame sill', lu, -.08, lz - .18, lw + .72, .16, .36, 'pale', 'loggia frame', 0)
+    f.part('Loggia frame north jamb', lu - lw / 2 - .18, -.08, lz + lh / 2, .36, .16, lh + .72, 'pale', 'loggia frame', 0)
+    C.box('Loggia frame light strip', f.p(lu, -.02, lz + lh + .02), (.07, lw - .4, .05), 'glow', 'loggia frame', 0)
+    C.qa_room_light('Loggia', f.p(lu, 1.0, lz + lh - .3), 40, 3.0)
+    # Red leg: the oxblood skin steps down over the ground wall at the north end of the west face.
+    C.box('West red leg', (WEST_X - .12, REAR_Y - T - 3.5, (3.6 + U + .05) / 2), (.44, 7.0, U + .05 - 3.6), 'wall', 'cantilever', 0)
+    C.box('West red leg light strip', (WEST_X - .30, REAR_Y - T - 3.5, 3.58), (.07, 6.6, .05), 'glow', 'cantilever', 0)
     ret = hole('West hall glass return', 8.0, G0, 10.0, U - .25 - G0, kind='curtain')
     sd = hole('West staff door', -4.0, G0, 1.1, 2.4, kind='door')
     gw = hole('West ground window', -10.0, 1.2, 2.4, 2.0)

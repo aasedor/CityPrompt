@@ -46,11 +46,11 @@ def manifest(version):
         ('glass_close', (-12.0, -32.0, 3.6), (-8.0, YA0, 3.6), 50),
         ('gable_mouth', (-70.0, -22.0, 8.0), (X0, 0.0, 9.0), 40),
         ('crane_interior', (-62.0, 0.0, 14.5), (X0 + 12.0, 0.0, 14.0), 40),
-        ('monitor_close', (-30.0, -34.0, 22.0), (-18.0, -13.0, 14.5), 45),
+        ('monitor_close', (-30.0, -36.0, 30.0), (-18.0, -13.0, 16.0), 45),
         ('stair_contact', (-48.0, -34.0, 5.0), (X0 + 4.0, YA0, 6.0), 40),
         ('yard_sidings', (-30.0, 48.0, 8.0), (-6.0, YA1 + 8.0, 2.0), 40),
         ('interior', (X0 + 6.0, -3.0, 4.0), (X0 + 40.0, 3.0, 7.0), 30),
-        ('side_doors', (-24.0, -36.0, 4.0), (-14.0, YA0, 4.0), 40)])
+        ('side_doors', (X0 + 8.5 * BAY - 9.0, -36.0, 4.0), (X0 + 8.5 * BAY, YA0, 4.0), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -109,7 +109,7 @@ def punched(f, name, u, z, w, h, hood=True):
         face_inward=list(f.n), occupied_space='workshop aisle behind carrier', cols=1, rows=1))
 
 
-def lattice_column(f, u, z0, z1, proud=.45, w=1.2, panels=3):
+def lattice_column(f, u, z0, z1, proud=.60, w=2.8, panels=4):
     """Wide lattice pier: two flanges with stacked X-laced panels between them."""
     f.part('Lattice column flange', u - w / 2 + .06, -proud / 2 + EPS, (z0 + z1) / 2, .12, proud, z1 - z0, 'pale', 'lattice columns', 0)
     f.part('Lattice column flange', u + w / 2 - .06, -proud / 2 + EPS, (z0 + z1) / 2, .12, proud, z1 - z0, 'pale', 'lattice columns', 0)
@@ -164,12 +164,24 @@ def gable_end(f, open_frame=True):
     holes = []
     if open_frame:
         holes.append(hole('Sliding door opening', 0.0, G0, 13.5, 8.6, kind='slider'))
-        holes.append(hole('Gable personnel door', uu(-10.5), G0, 1.1, 2.3, kind='door'))
     else:
         holes.append(hole('East roll-up door', 0.0, G0, 6.0, 6.5, kind='rollup'))
         holes.append(hole('East aisle window 0', uu(-13.0), 3.2, 3.2, 2.2)); holes.append(hole('East aisle window 1', uu(13.0), 3.2, 3.2, 2.2))
-    f.wall(f.label + ' lower carrier', -W / 2 + T, W / 2 - T, G0, A_EAVE, depth=T, holes=holes)
-    seams(f, -W / 2 + T + .3, W / 2 - T - .3, G0 + EPS, A_EAVE - EPS, holes)
+    if open_frame:
+        f.wall(f.label + ' lower carrier', uu(YN1), uu(YN0), G0, A_EAVE, depth=T, holes=holes)
+        seams(f, uu(YN1) + .3, uu(YN0) - .3, G0 + EPS, A_EAVE - EPS, holes)
+        # Open aisle end bays: lattice corner columns at the aisle corners and the nave lines, X-braces between them.
+        for y in (YA0 + 1.5, YN0 - .3, YN1 + .3, YA1 - 1.5):
+            lattice_column(f, uu(y), 0, A_EAVE - .02, proud=.6, w=2.2, panels=4)
+        for ya, yb in ((YA0 + 2.6, YN0 - 1.4), (YN1 + 1.4, YA1 - 2.6)):
+            brace(f, min(uu(ya), uu(yb)), max(uu(ya), uu(yb)), G0 + .4, A_EAVE - .6)
+            C.beam('Aisle end head beam', f.p(uu(ya), -.10, A_EAVE - .2), f.p(uu(yb), -.10, A_EAVE - .2), .25, .35, 'pale', 'open frame')
+        for ya, yb, tag in ((YA0 + 2.6, YN0 - 1.4, 'south'), (YN1 + 1.4, YA1 - 2.6, 'north')):
+            C.OPENINGS.append(dict(id=f'Open aisle end bay {tag}', face=f.label, u=uu((ya + yb) / 2), z=G0 + .5, width=abs(yb - ya) - .8, height=A_EAVE - 1.4 - G0, kind='open frame', clear_wall_cut=True,
+                carrier_depth_m=0.0, frame_inset_m=None, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='workshop aisle open to the gable'))
+    else:
+        f.wall(f.label + ' lower carrier', -W / 2 + T, W / 2 - T, G0, A_EAVE, depth=T, holes=holes)
+        seams(f, -W / 2 + T + .3, W / 2 - T - .3, G0 + EPS, A_EAVE - EPS, holes)
     for h in holes:
         if h.get('kind') == 'slider':
             # Three green sliding leaves on a head track, the middle one ajar.

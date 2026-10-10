@@ -42,7 +42,7 @@ def manifest(version):
         ('facade_close', (-24.0, -26.0, 6.0), (-6.0, FRONT_Y, 7.0), 45),
         ('architecture_close', (-20.0, -24.0, 24.0), (-6.0, FRONT_Y, 22.0), 50),
         ('glass_close', (-14.0, -20.0, 7.5), (-10.0, FRONT_Y, 7.4), 50),
-        ('entrance_contact', (-16.0, -22.0, 2.2), (-6.0, FRONT_Y, 2.0), 40),
+        ('entrance_contact', (22.0, -16.0, 2.2), (EAST_X, -8.1, 2.0), 40),
         ('slot_close', (-19.0, -16.5, 10.5), (WEST_X, -9.0, 10.6), 40),
         ('roof_greenhouses', (-26.0, -34.0, 37.0), (-1.0, -3.0, 27.0), 45),
         ('penthouse_contact', (-24.0, 2.0, 32.0), (-6.0, 7.5, 28.0), 45),
@@ -130,10 +130,10 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0)):
             f.part(f'{f.label} rack shelf {k}', 0, .95, zz, span - 2 * T - 1.0, 1.0, .04, 'rack', 'grow racks', 0)
             f.part(f'{f.label} leaf tray {k}', 0, .95, zz + .13, span - 2 * T - 1.2, .80, .18, 'leaf', 'grow racks', 0)
         # Magenta-lit rack backboard behind the slot row, washed by one magenta inspection light per face and level.
-        f.part(f'{f.label} LED backboard', 0, 1.50, lvl + 2.1, span - 2 * T - 1.0, .04, 3.8, 'led', 'grow racks', 0)
-        C.bpy.ops.object.light_add(type='AREA', location=f.p(0, .75, lvl + 2.1))
+        f.part(f'{f.label} LED backboard', 0, .62, lvl + 2.1, span - 2 * T - 1.0, .04, 3.8, 'led', 'grow racks', 0)
+        C.bpy.ops.object.light_add(type='AREA', location=f.p(0, .45, lvl + 2.1))
         light = C.bpy.context.object; light.name = f'QA grow wash {f.label} {lvl:.0f}'
-        light.data.energy = 900; light.data.shape = 'RECTANGLE'; light.data.size = span - 3.0; light.data.size_y = 3.4
+        light.data.energy = 2600; light.data.shape = 'RECTANGLE'; light.data.size = span - 3.0; light.data.size_y = 3.4
         light.data.color = (1.0, .32, .82)
         C.look_at(light, f.p(0, 1.5, lvl + 2.1))
     for h in ph:
@@ -310,10 +310,10 @@ def street_tree(x, y, z=.015, height=6.0, spread=1.3):
 def build():
     floors()
     f_front, f_right, f_rear, f_left = A.faces(W, D)
-    face_grammar(f_front, W, entrance=True, plinth_windows=(-1.5, 1.5))
+    face_grammar(f_front, W, plinth_windows=(-7.5, -4.5, -1.5, 1.5, 4.5, 7.5))
     face_grammar(f_left, D, plinth_windows=(-7.0, -2.0, 3.0))
-    face_grammar(f_right, D, plinth_windows=(-5.0, 5.0))
-    face_grammar(f_rear, W, plinth_windows=(-6.0, 0.0, 6.0))
+    face_grammar(f_right, D, entrance=True, plinth_windows=(2.0, 6.0))
+    face_grammar(f_rear, W, plinth_windows=(-6.0, 0.0))
     cut_stair_apertures()
     roof()
     programme()

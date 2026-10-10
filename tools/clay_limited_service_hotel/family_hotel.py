@@ -207,7 +207,7 @@ def blocks():
     for side, lo, hi, label in (('south', -(wx1 - wx0) / 2, (wx1 - wx0) / 2, 'wing south'), ('west', -(wy1 - wy0) / 2 + T, (wy1 - wy0) / 2 - T, 'wing west'),
                                 ('north', -(wx1 - wx0) / 2 + (wx1 - sx0) + EPS, (wx1 - wx0) / 2, 'wing north')):
         f = face(*WG, side, label)
-        glz = [hole(f'{label} storefront ribbon', (lo + hi) / 2, 1.0, hi - lo - 1.6, WG_ROOF - 1.0 - .9)]
+        glz = [hole(f'{label} storefront ribbon', (lo + hi) / 2, .4, hi - lo - 1.6, WG_ROOF - .4 - .35)]
         f.wall(label + ' carrier', lo, hi, G0, WG_CROWN, depth=T, holes=glz)
         joints(f, lo + .2, hi - .2, G0 + EPS, WG_ROOF - .2, glz)
         for h in glz:
@@ -228,8 +228,11 @@ def tower():
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
     for xx, yy in ((x0 + .25, y0 + .25), (x1 - .25, y0 + .25), (x1 - .25, y1 - .25), (x0 + .25, y1 - .25)):
         C.box('Tower corner column', (xx, yy, G0 + (TOWER_H - G0) / 2), (.45, .45, TOWER_H - G0), 'trim', 'lobby tower', 0)
-    for z in LV + [TOWER_H - .4]:
-        C.box('Tower floor plate', (cx, cy, z - .10), (x1 - x0 - .6, y1 - y0 - .6, .20), 'floor', 'lobby tower', 0)
+    for z in LV:
+        C.box('Tower landing', (cx, y1 - 1.4, z - .10), (x1 - x0 - .6, 2.2, .20), 'floor', 'lobby tower', 0)
+        C.railing('Tower landing guard', (x0 + .5, y1 - 2.5, z), (x1 - .5, y1 - 2.5, z), height=1.05, spacing=.3, role='hardware')
+    C.box('Tower inner wall west', (x0 + .08, (y0 + y1) / 2, G0 + (TOWER_H - .4 - G0) / 2), (.16, y1 - y0 - .5, TOWER_H - .4 - G0), 'interior', 'lobby tower', 0)
+    C.box('Tower inner wall north', ((x0 + x1) / 2, y1 - .08, G0 + (TOWER_H - .4 - G0) / 2), (x1 - x0 - .5, .16, TOWER_H - .4 - G0), 'interior', 'lobby tower', 0)
     for (px, py, tx, ty, span, label) in ((cx, y0 + .03, 1, 0, x1 - x0 - .5, 'south'), (x1 - .03, cy, 0, 1, y1 - y0 - .5, 'east')):
         C.box(f'Tower {label} glazing', (px, py, G0 + (TOWER_H - G0 - .4) / 2), (max(.012, span * abs(tx)), max(.012, span * abs(ty)), TOWER_H - G0 - .4), 'glass', 'tower glazing', 0)
         n = max(2, round(span / 1.5))
@@ -319,6 +322,17 @@ def floors():
     C.box('Wing slab', ((wx0 + sx0) / 2, (wy0 + wy1) / 2, G0 / 2), (sx0 - wx0, wy1 - wy0, G0), 'foundation', 'foundation', 0)
     C.box('Wing slab south', ((sx0 + wx1) / 2, (wy0 + sy0) / 2, G0 / 2), (wx1 - sx0, sy0 - wy0, G0), 'foundation', 'foundation', 0)
     C.box('Parking court', ((LOT[0] + LOT[1]) / 2, (LOT[2] + LOT[3]) / 2, .0075), (LOT[1] - LOT[0], LOT[3] - LOT[2], .015), 'foundation', 'site', 0)
+    SW = 2.4
+    walks = (('Sidewalk south', (wx0 - SW, sx1 + SW, sy0 - SW, sy0)), ('Sidewalk wing south', (wx0 - SW, sx0, wy0 - SW, wy0)),
+             ('Sidewalk wing west', (wx0 - SW, wx0, wy0 - SW, wy1 + SW)), ('Sidewalk west', (sx0 - SW, sx0, wy1 + SW, ny0)),
+             ('Sidewalk north wing west', (nx0 - SW, nx0, sy1, ny1 + SW)), ('Sidewalk north', (nx0 - SW, nx1 + SW, ny1, ny1 + SW)),
+             ('Sidewalk north wing east', (nx1, nx1 + SW, sy1, ny1)), ('Sidewalk east', (sx1, sx1 + SW, sy0 - SW, sy1)))
+    for name, (x0, x1, y0, y1) in walks:
+        C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, .015 + .06), (x1 - x0, y1 - y0, .12), 'pale', 'site', 0)
+    for name, (ax, ay, bx, by) in (('Kerb south', (wx0 - SW, sy0 - SW, sx1 + SW, sy0 - SW)), ('Kerb east', (sx1 + SW, sy0 - SW, sx1 + SW, sy1)),
+                                   ('Kerb wing south', (wx0 - SW, wy0 - SW, sx0, wy0 - SW)), ('Kerb wing west', (wx0 - SW, wy0 - SW, wx0 - SW, wy1 + SW)),
+                                   ('Kerb north', (nx0 - SW, ny1 + SW, nx1 + SW, ny1 + SW)), ('Kerb north wing east', (nx1 + SW, sy1, nx1 + SW, ny1 + SW))):
+        C.box(name, ((ax + bx) / 2, (ay + by) / 2, .015 + .07), (max(.12, abs(bx - ax)), max(.12, abs(by - ay)), .14), 'stone', 'site', 0)
     C.box('Road', (LOT[1] + 6.0, 0, .0075), (8.0, LOT[3] - LOT[2] + 10.0, .015), 'floor', 'site', 0)
     C.box('Road kerb', (LOT[1] + 2.0, 0, .06), (.12, LOT[3] - LOT[2], .12), 'stone', 'site', 0)
     C.box('Lawn verge east', (LOT[1] + 1.0, 0, .021), (1.9, LOT[3] - LOT[2], .012), 'planting', 'site', 0)
@@ -337,7 +351,7 @@ def floors():
         stripe(LOT[0] + 2.0, y, LOT[0] + 7.0, y); stripe(LOT[0] + 14.0, y, LOT[0] + 19.0, y); y += 2.7
     x = -6.0
     while x < 22.0:
-        stripe(x, LOT[3] - 2.0, x, LOT[3] - 7.0); stripe(x, LOT[2] + 2.0, x, LOT[2] + 7.0); x += 2.7
+        stripe(x, LOT[3] - .3, x, LOT[3] - 3.3); stripe(x, LOT[2] + 2.0, x, LOT[2] + 7.0); x += 2.7
     C.mesh('Parking stripes', vertices, faces, 'pale', 'site')
     C.box('Drive loop kerb', (sx1 + 2.0, (TOWER[2] - 8.0 + sy1) / 2, .06), (.12, sy1 - TOWER[2] + 8.0, .12), 'stone', 'site', 0)
     C.rod('Pylon sign post', (26.0, -30.0, 0), (26.0, -30.0, 6.0), .18, 'cap', 'site', 10)
@@ -356,7 +370,7 @@ def floors():
             A.bed(x, y + 3.0, z)
     C.box('Breakfast counter', (-22.0, -8.0, G0 + .5), (4.0, .8, 1.0), 'timber', 'wing', 0)
     C.box('Pool basin', (-22.0, -17.0, G0 + .02), (8.0, 4.0, .04), 'blue', 'wing', 0)
-    for i, (x, y) in enumerate(((LOT[0] + 4.5, -20.0), (LOT[0] + 4.5, -9.0), (LOT[0] + 16.5, 6.0), (LOT[0] + 16.5, -14.0), (4.0, LOT[3] - 4.5), (12.0, LOT[3] - 4.5), (-8.0, LOT[2] + 4.5))):
+    for i, (x, y) in enumerate(((LOT[0] + 4.5, -20.0), (LOT[0] + 4.5, -9.0), (LOT[0] + 16.5, 6.0), (LOT[0] + 16.5, -14.0), (9.4, LOT[3] - 1.8), (14.8, LOT[3] - 1.8), (-8.0, LOT[2] + 4.5))):
         C.box('Parked car body', (x, y, .65), (1.8, 4.4, .9) if i < 4 else (4.4, 1.8, .9), 'charcoal' if i % 2 else 'pale', 'site', 0)
         C.box('Parked car cabin', (x, y, 1.35), (1.6, 2.4, .6) if i < 4 else (2.4, 1.6, .6), 'trim', 'site', 0)
     A.small_tree(LOT[0] + 2.0, 20.0, .015, height=6.0, spread=1.1)

@@ -34,7 +34,7 @@ DOOR_Z = .60                      # raised ground floor: three 200 mm risers fro
 DOOR_X = {'A': EAST_X - UW / 2 - 2.15, 'B': 0.0, 'C': WEST_X + UW / 2 + 2.15}
 BAY_X = {'A': EAST_X - UW / 2 + .7, 'C': WEST_X + UW / 2 - .7}
 GW, GAPEX = 3.6, RIDGE - .6       # front cross gables span the bay only (source), apex just below the main ridge
-CHIMNEYS = (EAST_X - .35, -UW / 2)  # east end and the party line between units B and C, as the sources show
+CHIMNEYS = (EAST_X - T - .45, -UW / 2)  # east end and the party line between units B and C, as the sources show
 EPS = .002
 PALETTE = dict(wall=(.36, .14, .09), joint=(.24, .10, .06), trim=(.30, .20, .10),
     pale=(.76, .70, .56), stone=(.42, .40, .36), roof=(.15, .16, .19), sand=(.62, .56, .44),
@@ -234,11 +234,11 @@ def gable(xc, y_wall, width, apex, eave, face_dir=-1, infill=True, finial=True, 
         f.panel('Gable brick upper', [(-hw * .55, mid), (hw * .55, mid), (0, apex)], 0, T, 'wall', 'gables')
     for side in (-1, 1):
         a = f.p(side * (hw + .25), -.22, eave - .15)
-        b = f.p(0, -.22, apex + .22)
+        b = f.p(0, -.22, apex + .34)
         C.beam('Bargeboard', a, b, .05, .30, 'pale', 'bargeboards')
         C.beam('Rake trim', f.p(side * (hw + .1), -.10, eave + .02), f.p(0, -.10, apex + .30), .04, .12, 'green', 'bargeboards')
     if finial:
-        C.rod('Finial', (xc, y_wall + s * .22, apex + .22), (xc, y_wall + s * .22, apex + 1.2), .05, 'pale', 'bargeboards', 8)
+        C.rod('Finial', (xc, y_wall + s * .22, apex + .30), (xc, y_wall + s * .22, apex + 1.2), .05, 'pale', 'bargeboards', 8)
 
 
 def roof_z(y):
@@ -295,17 +295,22 @@ def roofs():
             gw, apex = GW, GAPEX
             slope = (apex - EAVE) / (gw / 2)
             gable(gx, FRONT_Y, gw, apex, EAVE, face_dir=-1, infill_role='green' if name == 'A' else 'sand', batten_role='pale' if name == 'A' else 'green')
-            C.prism(f'Cross gable roof {name}', [(gx - gw / 2 - .25, EAVE - .25 * slope), (gx, apex + .02), (gx + gw / 2 + .25, EAVE - .25 * slope),
-                                                 (gx + gw / 2 + .25, EAVE - .25 * slope - t), (gx, apex + .02 - t), (gx - gw / 2 - .25, EAVE - .25 * slope - t)],
+            C.prism(f'Cross gable roof {name}', [(gx - gw / 2 - .25, EAVE - .25 * slope), (gx, apex + .30), (gx + gw / 2 + .25, EAVE - .25 * slope),
+                                                 (gx + gw / 2 + .25, EAVE - .25 * slope - t), (gx, apex + .30 - t), (gx - gw / 2 - .25, EAVE - .25 * slope - t)],
                     'y', FRONT_Y - .30, FRONT_Y + (apex - EAVE) / PITCH + .3, 'roof', 'cross gables')
         else:
-            dormer(xc)
-        # Rear cross gable over the rear wing of every unit.
-        rw, rapex = 3.4, EAVE + 2.6
+            gw, apex = 2.8, GAPEX - .5
+            slope = (apex - EAVE) / (gw / 2)
+            gable(xc, FRONT_Y, gw, apex, EAVE, face_dir=-1, infill_role='green', batten_role='pale')
+            C.prism(f'Cross gable roof {name}', [(xc - gw / 2 - .25, EAVE - .25 * slope), (xc, apex + .30), (xc + gw / 2 + .25, EAVE - .25 * slope),
+                                                 (xc + gw / 2 + .25, EAVE - .25 * slope - t), (xc, apex + .30 - t), (xc - gw / 2 - .25, EAVE - .25 * slope - t)],
+                    'y', FRONT_Y - .30, FRONT_Y + (apex - EAVE) / PITCH + .3, 'roof', 'cross gables')
+        # Rear cross gable over the rear wing of every unit, carried up to the ridge as a full cross wing.
+        rw, rapex = 3.8, RIDGE - .2
         xr = xc + (1.0 if kind == 'bay_east' else -1.0 if kind == 'bay_west' else 0.0)
         gable(xr, REAR_Y, rw, rapex, EAVE, face_dir=1, infill=False, finial=False)
-        C.prism(f'Rear gable roof {name}', [(xr - rw / 2 - .2, EAVE - .2 * (rapex - EAVE) / (rw / 2)), (xr, rapex + .02), (xr + rw / 2 + .2, EAVE - .2 * (rapex - EAVE) / (rw / 2)),
-                                           (xr + rw / 2 + .2, EAVE - .2 * (rapex - EAVE) / (rw / 2) - t), (xr, rapex + .02 - t), (xr - rw / 2 - .2, EAVE - .2 * (rapex - EAVE) / (rw / 2) - t)],
+        C.prism(f'Rear gable roof {name}', [(xr - rw / 2 - .2, EAVE - .2 * (rapex - EAVE) / (rw / 2)), (xr, rapex + .30), (xr + rw / 2 + .2, EAVE - .2 * (rapex - EAVE) / (rw / 2)),
+                                           (xr + rw / 2 + .2, EAVE - .2 * (rapex - EAVE) / (rw / 2) - t), (xr, rapex + .30 - t), (xr - rw / 2 - .2, EAVE - .2 * (rapex - EAVE) / (rw / 2) - t)],
                 'y', REAR_Y - (rapex - EAVE) / PITCH, REAR_Y + .30, 'roof', 'cross gables')
     for x in CHIMNEYS:
         C.box('Chimney stack', (x, 0, RIDGE - .6 + 1.2), (.70, 1.10, 2.4), 'wall', 'chimneys', 0)
@@ -322,12 +327,14 @@ def sides_and_rear(f_right, f_rear, f_left):
     G.brick_courses(f_right, -span / 2 + .02, span / 2 - .02, G0, EAVE, eh, spacing=.075)
     for h in eh:
         sash(f_right, h['id'], h['u'], h['z'], h['w'], h['h'])
-    f_right.panel('East end gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (0, RIDGE + .02)], 0, T, 'wall', 'gables')
+    f_right.panel('East end gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (span / 2, EAVE + .30), (0, RIDGE + .32), (-span / 2, EAVE + .30)], 0, T, 'wall', 'gables')
+    C.beam('East gable coping', f_right.p(-span / 2 - .05, -.02, EAVE + .34), f_right.p(0, -.02, RIDGE + .36), .14, T + .08, 'sand', 'gables')
+    C.beam('East gable coping', f_right.p(span / 2 + .05, -.02, EAVE + .34), f_right.p(0, -.02, RIDGE + .36), .14, T + .08, 'sand', 'gables')
     for z, h in ((3.30, .20), (U + .55, .18), (U + .85 + 1.8 + .30, .14), (.45, .30)):
         band(f_right, -span / 2, span / 2, z, h=h)
     f_left.wall('West party carrier', -span / 2, span / 2, G0, EAVE, depth=T)
     G.brick_courses(f_left, -span / 2 + .02, span / 2 - .02, G0, EAVE, [], spacing=.075)
-    f_left.panel('West party gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (0, RIDGE + .02)], 0, T, 'wall', 'gables')
+    f_left.panel('West party gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (span / 2, EAVE + .30), (0, RIDGE + .32), (-span / 2, EAVE + .30)], 0, T, 'wall', 'gables')
     rh = []
     for name, xc, kind in UNITS:
         u = -xc

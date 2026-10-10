@@ -211,9 +211,9 @@ def gable_end(f, entrance):
         return -y if entrance else y
     holes = []
     if entrance:
-        holes.append(hole('Corner entrance storefront', uu(-12.9), G0, 3.4, 3.3, cols=3, rows=2, kind='storefront'))
-        holes.append(hole('Box upper window', uu(-12.9), U + .85, 3.4, 2.3, cols=3))
-        holes.append(hole('Corner bay ground window', uu(-8.7), 1.1, 2.6, 2.2, cols=3))
+        holes.append(hole('Corner bay shopfront', uu(-12.8), G0, 3.2, 3.3, cols=3, rows=2, kind='glazing'))
+        holes.append(hole('Entrance door', uu(-8.7), G0, 2.0, 2.6, kind='storefront'))
+        holes.append(hole('Box upper window', uu(-8.7), U + .85, 3.4, 2.3, cols=3))
     else:
         holes.append(hole('East staff door', uu(-11.5), G0, 1.05, 2.25, kind='door'))
         holes.append(hole('East box ground window', uu(-8.6), 1.1, 2.6, 2.2, cols=3))
@@ -239,15 +239,18 @@ def gable_end(f, entrance):
             for du in (-.12, .12):
                 C.rod('Entrance door pull', f.p(h['u'] + du, .01, h['z'] + .9), f.p(h['u'] + du, .01, h['z'] + 1.5), .018, 'hardware', 'door hardware')
             f.part('Entrance threshold', h['u'], .04, G0 - .005, h['w'] + .2, .40, .03, 'stone', 'entrance', 0)
+        elif h.get('kind') == 'glazing':
+            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=3, rows=2, frame='trim', depth=T, sill=False)
+            reveal(f, h['u'], h['z'], h['w'], h['h'])
         else:
             multilite(f, h['id'], h['u'], h['z'], h['w'], h['h'], cols=h.get('cols', 3), rows=2 if h['h'] > 2.1 else 1, curtain=h['id'].startswith('Box upper'))
-    # Galvanised columns at the box corner line and at every tooth valley; girts on the box portion.
-    for y in [BOX_N] + TEETH_Y[1:] + ([-10.8] if entrance else []):
+    # Galvanised columns at the box corner line, every tooth valley, the bay line and the street corner; girts on the box portion.
+    for y in [BOX_N] + TEETH_Y[1:] + ([-10.8, FRONT_Y + .20] if entrance else []):
         column(f, uu(y), 0, EAVE + .25)
     girt(f, min(uu(FRONT_Y), uu(BOX_N)), max(uu(FRONT_Y), uu(BOX_N)), U - .05)
     girt(f, min(uu(FRONT_Y), uu(BOX_N)), max(uu(FRONT_Y), uu(BOX_N)), EAVE + .10)
     if entrance:
-        brace(f, uu(-6.6), uu(-10.8), U + .12, EAVE - .08)     # corner bay X-brace over the corner window
+        brace(f, uu(-10.8), uu(FRONT_Y + .20), U + .12, EAVE - .08)     # corner bay X-brace meeting the corner column
     plinth(f, u0, u1, holes)
     if not entrance:
         access_ladder(f, uu(-9.5))
@@ -281,11 +284,11 @@ def access_ladder(f, u):
 
 def entrance_canopy_west(f):
     """Thin steel canopy over the entrance bay only, dying into the corner column."""
-    u0, u1 = 10.8 + .18, -FRONT_Y - .36
+    u0, u1 = 6.6 + .18, -FRONT_Y - .36
     f.part('Entrance canopy slab', (u0 + u1) / 2, -.80, 3.55, u1 - u0, 1.60, .10, 'trim', 'entrance canopy', 0)
     f.part('Entrance canopy fascia', (u0 + u1) / 2, -1.58, 3.68, u1 - u0, .04, .32, 'trim', 'entrance canopy', 0)
-    f.part('Sign board', (u0 + u1) / 2, -1.605, 3.68, 2.6, .02, .24, 'pale', 'entrance canopy', 0)
-    for uu in (u0 + .3, u1 - .3):
+    f.part('Sign board', 8.7, -1.605, 3.68, 2.6, .02, .24, 'pale', 'entrance canopy', 0)
+    for uu in (6.6 + .18, 10.8, -FRONT_Y - .20):      # hangers on the column lines, never across a window
         C.beam('Canopy hanger rod', f.p(uu, -.05, 5.6), f.p(uu, -1.45, 3.62), .035, .035, 'pale', 'entrance canopy')
 
 

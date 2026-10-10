@@ -211,7 +211,7 @@ def blocks():
     dy = (SE[3] - SE[2]) / 2
     elevation(F['south'], -(SE[1] - SE[0]) / 2, (SE[1] - SE[0]) / 2, [hole('Entrance passage south', -1.6, G0, 3.6, U - .45, kind='passage'), hole('Entrance block south window', 2.6, .9, 2.4, 2.6, cols=2)], [hole('Entrance block south strip', 0.0, U + 1.1, 6.6, 1.9)])
     elevation(F['east'], -dy + T, dy, [hole(f'Entrance block east ground window {i}', u, .9, 3.0, 2.6, cols=3) for i, u in enumerate((-6.0, 0.0, 6.0))], [hole(f'Entrance block east strip {i}', u, U + 1.1, 5.0, 1.9) for i, u in enumerate((-5.5, 1.0, 7.0))])
-    elevation(F['west'], -dy + T, dy, [hole('Entrance block court window', -4.0, .9, 3.0, 2.6, cols=3), hole('Entrance block court door', 2.0, G0, 1.6, 2.6, kind='door'), hole('Entrance block court window 2', 6.5, .9, 3.0, 2.6, cols=3)], [hole(f'Entrance block court strip {i}', u, U + 1.1, 5.0, 1.9) for i, u in enumerate((-5.5, 1.0, 7.0))])
+    elevation(F['west'], -dy + T, dy - T, [hole('Entrance block court window', -4.0, .9, 3.0, 2.6, cols=3), hole('Entrance block court door', 2.0, G0, 1.6, 2.6, kind='door'), hole('Entrance block court window 2', 6.5, .9, 3.0, 2.6, cols=3)], [hole(f'Entrance block court strip {i}', u, U + 1.1, 5.0, 1.9) for i, u in enumerate((-5.5, 1.0, 7.0))])
 
 
 def passage_and_canopy():
@@ -231,7 +231,7 @@ def passage_and_canopy():
     # Corten canopy: slab over the passage mouth and along the court's east edge to the hall block.
     # Thin corten plate along the court's east edge from the street line to the hall block, on the block wall and three columns.
     cx0, cx1, cy0, cy1 = 5.5, x0 - EPS, y0 + .3, y1 - .3
-    C.box('Corten canopy plate', ((cx0 + cx1) / 2, (cy0 + cy1) / 2, CANOPY + .06), (cx1 - cx0, cy1 - cy0, .12), 'corten', 'corten canopy', 0)
+    C.box('Corten canopy plate', ((cx0 + .06 + cx1) / 2, (cy0 + cy1) / 2, CANOPY + .06), (cx1 - cx0 - .06, cy1 - cy0 - .12, .12), 'corten', 'corten canopy', 0)
     C.box('Corten canopy fascia west', (cx0 + .03, (cy0 + cy1) / 2, CANOPY + .0), (.06, cy1 - cy0, .28), 'corten', 'corten canopy', 0)
     C.box('Corten canopy fascia south', ((cx0 + cx1) / 2, cy0 + .03, CANOPY + .0), (cx1 - cx0, .06, .28), 'corten', 'corten canopy', 0)
     C.box('Corten canopy fascia north', ((cx0 + cx1) / 2, cy1 - .03, CANOPY + .0), (cx1 - cx0, .06, .28), 'corten', 'corten canopy', 0)
