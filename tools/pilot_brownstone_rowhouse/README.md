@@ -67,7 +67,7 @@ Requires the `bpy` 4.2 module on Python 3.11.
 | v001 (720 px, 8 spp, 6 views) | first geometry check | silhouette and rhythm correct; newels collided with gate piers; furniture overexposed; roof slab edge exposed as a band |
 | v002 (1440 px, 32 spp, 18 views) | full roster | fixes above verified; coplanar wall overlaps at every corner and parapet corner; cornice crown overhang overlapped the corner block |
 | v003 | aborted before render completed (the cornice fix had not been applied) | superseded by v004 |
-| v004 (1440 px, 32 spp, 18 views) | corner topology fix | builder pass, zero P0: cornice mitre, parapet corners and wing junction clean; 16,394 triangles, 856,808-byte GLB (sha256 a3dff60a40b70668…), aperture audit PASS, 888 s render on 4 CPU cores; independent review in `evidence/v004/independent-review.md` |
+| v004 (1440 px, 32 spp, 18 views) | corner topology fix | builder pass, zero P0: cornice mitre, parapet corners and wing junction clean; 16,394 triangles, 856,808-byte GLB (sha256 a3dff60a40b70668…), aperture audit PASS, 888 s render on 4 CPU cores; independent review (separate agent, sources and renders only): **VISUAL_REWORK_REQUIRED**, 1 P0 (flank shows two window columns and no garden-level side door where the locked oblique shows three columns and a side entrance), 8 P1 (trim palette lighter than brick, roof furniture count and skylight form, open-stair stoop, undersized rear wing, window reveal seams, parapet corner slits, uncapped band ends), 9 P2; record in `evidence/v004/independent-review.md` |
 
 ## Where the artefacts are
 
