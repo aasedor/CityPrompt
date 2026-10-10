@@ -19,10 +19,10 @@ W, D = 30.0, 26.0
 CH = 9.0                      # chamfer length along the 45-degree face
 T = .34
 G0 = .15
-LEVELS = [5.0, 9.0, 12.6, 16.2]
-CORNICE = 19.6
+LEVELS = [5.0, 9.2, 13.0]        # ground floor, piano nobile, two brick storeys (the sources show ground plus three)
+CORNICE = 16.8
 PAR = CORNICE + 1.3
-DRUM_R, DRUM_H = 3.2, 2.4
+DRUM_R, DRUM_H = 3.0, 2.4
 EPS = .002
 PALETTE = dict(wall=(.62, .42, .28), joint=(.46, .30, .20), trim=(.18, .26, .22),
     pale=(.76, .70, .58), stone=(.72, .66, .54), roof=(.62, .34, .22), sand=(.70, .64, .52),
@@ -42,25 +42,25 @@ def manifest(version):
     h = PAR + DRUM_H + 8.0
     cams = G.camera_roster(W, D, h, [
         ('facade_close', (-6.0, -28.0, 8.0), (2.0, -D / 2, 10.0), 45),
-        ('architecture_close', (-32.0, -30.0, 20.0), (CMX, CMY, 20.0), 50),
+        ('architecture_close', (-32.0, -30.0, 18.0), (CMX, CMY, 17.0), 50),
         ('glass_close', (-4.0, -20.0, 2.2), (0.0, -D / 2, 2.6), 50),
-        ('chamfer_dome', (-34.0, -34.0, 30.0), (CMX - 1.0, CMY - 1.0, 24.0), 45),
+        ('chamfer_dome', (-34.0, -34.0, 27.0), (CMX - 1.0, CMY - 1.0, 21.0), 45),
         ('balcony_ironwork', (-8.0, -22.0, 9.0), (-4.0, -D / 2, 9.8), 45),
         ('ground_arcade', (-26.0, -24.0, 2.0), (CMX, CMY, 2.8), 45),
-        ('cornice_contact', (8.0, -26.0, 18.0), (10.0, -D / 2, 19.6), 45),
-        ('roof_terrace', (-36.0, -40.0, 42.0), (0.0, 0.0, 21.0), 45),
-        ('interior', (-6.0, -4.0, LEVELS[0] + 1.6), (-8.0, -D / 2 - 1.0, LEVELS[0] + 1.4), 60),
+        ('cornice_contact', (8.0, -26.0, 16.0), (10.0, -D / 2, 16.8), 45),
+        ('roof_terrace', (-36.0, -40.0, 38.0), (0.0, 0.0, 18.0), 45),
+        ('interior', (-6.0, -3.0, LEVELS[0] + 1.6), (-8.0, -D / 2 - 1.0, LEVELS[0] + 1.3), 55),
         ('rear_court', (12.0, 32.0, 10.0), (4.0, D / 2, 8.0), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='barcelona_corner_chamfer/variant_0 (chamfer_classic)',
         measurement_contract=dict(dimensions_m=dict(width=W, depth=D, height=h),
-            observed_storeys=5, storey_programme='stone ground floor of shops; piano nobile; three upper residential storeys; flat tiled roof with dome turret',
+            observed_storeys=4, storey_programme='stone ground floor of shops; stone piano nobile; two brick residential storeys; flat tiled roof with dome turret',
             plan='30 x 26 m corner block read from the top view (roof 480 x 420 px at 0.062 m/px) with a 9 m chamfer at the south-west corner carrying the bowed bay',
             facade='south face six bays and west face five bays of French windows 1.3 x 2.8 m with stone surrounds; continuous iron balcony at the piano nobile and individual balconies above; arched shop openings 3.2 x 4.2 m in rusticated stone; cornice at 19.6 m with a balustraded parapet to 20.9 m',
-            levels_m=[G0] + LEVELS, cornice_m=CORNICE, parapet_m=PAR,
-            chamfer='bowed stone bay projecting 1.6 m with glazing between columns on the three upper storeys; round drum 6.4 m across and 2.4 m high above the parapet; copper dome to 27.6 m; lantern to 30 m',
+            levels_m=[G0] + LEVELS, cornice_m=CORNICE, parapet_m=PAR, storeys_recorded='the sources read ground plus three upper storeys; v001 carried four and was corrected',
+            chamfer='bowed stone bay projecting 1.6 m: tall glazing between columns on the piano nobile, windows above, an iron balcony and short windowed drum on the top storey under the wrapping cornice; round drum 6 m across and 2.4 m high above the parapet with oriented windows; copper dome with three oculi and cresting; open arcaded lantern',
             roof='flat terracotta tiles; pyramid rooflight 5 m square; two small rooflights; three chimney stacks',
             inferred='north and east faces are not visible and repeat the grammar without balconies; interiors are teaching assumptions'),
         roof_contract=dict(type='flat tiled roof behind a balustraded parapet; dome turret on the chamfer bay; rooflights and chimneys on the slab', datum_m=CORNICE, crowns_m=[PAR, PAR + DRUM_H + 4.0, PAR + DRUM_H + 6.6]),
@@ -124,11 +124,11 @@ def arch_fill(f, u, z_top, w, rise, role='rustic'):
 
 def iron_balcony(m, f, u, z, w, depth=.8):
     """Cantilevered iron balcony: stone slab with a merged black lattice (top rail, end rails, pickets)."""
-    m.box('stone', u, -depth / 2 + .02, z - .07, w, depth + .04, .14)
+    m.box('stone', u, -depth / 2 + .02, z - .10, w, depth + .04, .20)
     m.box('hardware', u, -depth + .04, z + .98, w, .05, .05)
     for e in (-1, 1):
         m.box('hardware', u + e * (w / 2 - .02), -depth / 2 + .02, z + .98, .05, depth - .04, .05)
-    n = max(3, int(w / .78))
+    n = max(3, int(w / .48))
     for i in range(n + 1):
         m.box('hardware', u - w / 2 + .02 + (w - .04) * i / n, -depth + .04, z + .55, .025, .025, .86)
 
@@ -144,13 +144,14 @@ def elevation(f, lo, hi, bays, ground='shops', balconies=True, plain=False):
         elif i % 2 == 0:
             gholes.append(hole(f'{f.label} ground window {i}', c, 1.2, 1.6, 2.4))
         for k, zl in enumerate(LEVELS):
-            uholes.append(hole(f'{f.label} window {i}-{k}', c, zl + .12, 1.3, 2.8 if k < 3 else 2.5, kind='french'))
+            uholes.append(hole(f'{f.label} window {i}-{k}', c, zl + .12, 1.3, 2.8 if k < 2 else 2.4, kind='french'))
     # Rusticated stone ground carrier and brick upper carrier, split at the piano-nobile band.
     f.wall(f.label + ' ground carrier', lo, hi - EPS, G0, LEVELS[0] - .30, depth=T, role='rustic', holes=gholes)
-    f.wall(f.label + ' upper carrier', lo, hi - EPS, LEVELS[0] - .30, PAR, depth=T, holes=uholes)
+    f.wall(f.label + ' piano nobile carrier', lo, hi - EPS, LEVELS[0] - .30, LEVELS[1] - .30, depth=T, role='stone', holes=[h for h in uholes if h['z'] < LEVELS[1] - .3])
+    f.wall(f.label + ' upper carrier', lo, hi - EPS, LEVELS[1] - .30, CORNICE + .25, depth=T, holes=[h for h in uholes if h['z'] >= LEVELS[1] - .3])
     if not plain:
         G.brick_courses(f, lo + .02, hi - .02, G0 + .3, LEVELS[0] - .5, gholes, spacing=.8)
-        G.brick_courses(f, lo + .02, hi - .02, LEVELS[1], CORNICE - .8, uholes, spacing=.45)
+        G.brick_courses(f, lo + .02, hi - .02, LEVELS[1] + .2, CORNICE - .8, uholes, spacing=.45)
     m = Merge(f)
     for h in gholes:
         if h.get('kind') == 'shop':
@@ -167,7 +168,7 @@ def elevation(f, lo, hi, bays, ground='shops', balconies=True, plain=False):
         for sgn in (-1, 1):
             m.box('stone', h['u'] + sgn * (h['w'] / 2 + .12), -.04, h['z'] + h['h'] / 2, .24, T + .14, h['h'] + .24)
         m.box('stone', h['u'], -.05, h['z'] + h['h'] + .18, h['w'] + .70, T + .16, .26)
-        if balconies and h['z'] > LEVELS[1] - .1:
+        if balconies and h['z'] > LEVELS[1] - .1 and h['z'] < CORNICE - 1.0:
             iron_balcony(m, f, h['u'], h['z'], h['w'] + .9)
     m.box('stone', (lo + hi) / 2, -.06, LEVELS[0] - .15, span - 2 * EPS, T + .20, .30)
     if balconies:
@@ -175,10 +176,11 @@ def elevation(f, lo, hi, bays, ground='shops', balconies=True, plain=False):
     m.box('stone', (lo + hi) / 2, -.20, LEVELS[1] - .22, span - 2 * EPS, .40, .18)
     m.box('stone', (lo + hi) / 2, -.28, CORNICE - .30, span - 2 * EPS, T + .56, .60)
     m.box('stone', (lo + hi) / 2, -.10, CORNICE + .08, span - 2 * EPS, T + .20, .16)
-    m.box('stone', (lo + hi) / 2, T / 2 - .02, PAR + .04, span - 2 * EPS, T + .12, .10)
-    if not plain:
-        for i in range(int(span / 1.0)):
-            m.box('pale', lo + .5 + i * 1.0, -.08, CORNICE + .72, .16, .16, 1.0)
+    # Open balustrade: stone rail on balusters over the cornice band.
+    m.box('stone', (lo + hi) / 2, T / 2 - .02, PAR + .04, span - 2 * EPS, T + .12, .14)
+    nb = int(span / .72)
+    for i in range(nb + 1):
+        m.box('pale', lo + .2 + (span - .4) * i / max(1, nb), T / 2 - .02, (CORNICE + .25 + PAR) / 2, .14, .14, PAR - CORNICE - .27)
     m.flush('facade')
 
 
@@ -191,10 +193,10 @@ def chamfer_bay():
     f = C.Face((CMX, CMY, 0), (tx, ty, 0), (-nx, -ny, 0), 'chamfer')
     holes = [hole('Entrance doors', 0.0, G0, 2.8, 4.0, kind='door')]
     for k, zl in enumerate(LEVELS):
-        if k == 3:
-            holes.append(hole('Chamfer attic window', 0.0, zl + .3, 2.0, 2.2))
+        pass
     f.wall('chamfer ground carrier', -half, half, G0, LEVELS[0] - .30, depth=T, role='rustic', holes=[holes[0]])
-    f.wall('chamfer upper carrier', -half, half, LEVELS[0] - .30, PAR, depth=T, holes=holes[1:])
+    f.wall('chamfer piano nobile carrier', -half, half, LEVELS[0] - .30, LEVELS[1] - .30, depth=T, role='stone')
+    f.wall('chamfer upper carrier', -half, half, LEVELS[1] - .30, CORNICE + .25, depth=T, holes=holes[1:])
     G.brick_courses(f, -half + .02, half - .02, G0 + .3, LEVELS[0] - .5, holes, spacing=.8)
     m = Merge(f)
     for h in holes:
@@ -206,20 +208,14 @@ def chamfer_bay():
             framed(m, f, h, cols=2, occupied='attic salon')
             m.box('stone', h['u'], -.05, h['z'] + h['h'] + .18, h['w'] + .70, T + .16, .26)
     m.box('stone', 0.0, -.06, LEVELS[0] - .15, CH - 2 * EPS, T + .20, .30)
-    m.box('stone', 0.0, -.28, CORNICE - .30, CH - 2 * EPS, T + .56, .60)
-    m.box('stone', 0.0, -.10, CORNICE + .08, CH - 2 * EPS, T + .20, .16)
+    m.box('stone', 0.0, T / 2 - .02, PAR + .04, CH - 2 * EPS, T + .12, .14)
+    for i in range(int(CH / .72) + 1):
+        m.box('pale', -half + .2 + (CH - .4) * i / int(CH / .72), T / 2 - .02, (CORNICE + .25 + PAR) / 2, .14, .14, PAR - CORNICE - .27)
     m.flush('chamfer')
-    # Bowed bay over the piano nobile and two storeys above: five facets projecting 1.6 m, glazing between stone columns.
-    z0, z1 = LEVELS[0], LEVELS[3] - .2
+    # Bowed bay over the piano nobile and the two storeys above: five facets projecting 1.6 m.
+    z0, z1 = LEVELS[0], CORNICE - .30
     facets = 5
     r_out = 1.6
-    pts = []
-    for i in range(facets + 1):
-        a = math.pi * i / facets
-        s = -math.cos(a) * (CH / 2 - 1.0)
-        out = math.sin(a) * r_out
-        pts.append((CMX + tx * s - nx * out * -1 * -1, CMY + ty * s - ny * out * -1 * -1))
-    # Points run along the chamfer; bulge outward along (nx, ny) (outward normal).
     pts = [(CMX + tx * (-math.cos(math.pi * i / facets) * (CH / 2 - 1.0)) + nx * math.sin(math.pi * i / facets) * r_out,
             CMY + ty * (-math.cos(math.pi * i / facets) * (CH / 2 - 1.0)) + ny * math.sin(math.pi * i / facets) * r_out) for i in range(facets + 1)]
     for i in range(facets):
@@ -230,34 +226,51 @@ def chamfer_bay():
         if inx * nx + iny * ny > 0:
             inx, iny = -inx, -iny
         g = C.Face(((ax + bx) / 2, (ay + by) / 2, 0), (ux, uy, 0), (inx, iny, 0), f'bay facet {i}')
-        fh = [hole(f'Bay glazing {i}-{k}', 0.0, zl + .15, length - .9, 2.7) for k, zl in enumerate(LEVELS[:3])]
+        fh = [hole(f'Bay glazing {i}-0', 0.0, LEVELS[0] + .25, length - .9, 3.5),
+              hole(f'Bay window {i}-1', 0.0, LEVELS[1] + .3, length - 1.3, 2.4),
+              hole(f'Bay window {i}-2', 0.0, LEVELS[2] + .3, length - 1.4, 2.0)]
         g.wall(f'bay facet {i} carrier', -length / 2, length / 2, z0, z1, depth=T, role='stone', holes=fh)
         mb = Merge(g)
-        for h in fh:
-            framed(mb, g, h, cols=2, rows=2, occupied='salon', kind='window')
+        framed(mb, g, fh[0], cols=2, rows=2, occupied='salon', kind='window')
+        framed(mb, g, fh[1], cols=2, rows=1, occupied='bedroom', kind='window')
+        framed(mb, g, fh[2], cols=1, rows=1, occupied='attic salon', kind='window')
         mb.box('stone', 0.0, -.05, LEVELS[1] - .2, length - .02, T + .16, .28)
         mb.box('stone', 0.0, -.05, LEVELS[2] - .2, length - .02, T + .16, .28)
+        iron_balcony(mb, g, 0.0, LEVELS[2], length - .3, depth=.7)
         mb.flush('bay')
         for e in (-1, 1):
-            C.box('Bay column', (g.p(e * (length / 2 - .2), -.12, 0)[0], g.p(e * (length / 2 - .2), -.12, 0)[1], (z0 + z1) / 2), (.42, .42, z1 - z0), 'stone', 'bay columns', 0)
-    # Bay floor plates and the bay roof slab; drum, dome and lantern above the bay.
+            cx_, cy_ = g.p(e * (length / 2 - .2), -.12, 0)[:2]
+            C.box('Bay column', (cx_, cy_, (LEVELS[0] + LEVELS[1]) / 2 - .15), (.42, .42, LEVELS[1] - LEVELS[0] - .3), 'stone', 'bay columns', 0)
+    # Bay floors, wrapping cornice ring, drum with oriented windows, dome with oculi and cresting, open lantern.
     cx, cy = CMX + nx * .3, CMY + ny * .3
-    for zl in (LEVELS[0], LEVELS[1], LEVELS[2]):
+    for zl in LEVELS:
         C.rod('Bay floor', (cx, cy, zl - .12), (cx, cy, zl + .08), CH / 2 - .6, 'floor', 'bay floors', 16)
-    C.rod('Bay roof slab', (cx, cy, z1 - .02), (cx, cy, z1 + .25), CH / 2 - .5, 'stone', 'bay roof', 16)
-    C.rod('Bay cornice', (cx, cy, z1 + .25), (cx, cy, z1 + .55), CH / 2 - .2, 'stone', 'bay roof', 16)
-    cz = PAR - .4
-    C.rod('Turret base', (cx, cy, z1 + .55), (cx, cy, cz), DRUM_R + .3, 'stone', 'turret', 20)
+    C.rod('Bay cornice', (cx, cy, z1 - .02), (cx, cy, z1 + .55), CH / 2 + .1, 'stone', 'bay roof', 20)
+    C.rod('Bay parapet', (cx, cy, z1 + .55), (cx, cy, PAR + .1), DRUM_R + .5, 'stone', 'turret', 20)
+    cz = PAR + .1
     C.rod('Drum', (cx, cy, cz), (cx, cy, cz + DRUM_H), DRUM_R, 'stone', 'turret', 20)
     for k in range(8):
         a = math.tau * k / 8 + math.pi / 8
-        C.box('Drum window', (cx + math.cos(a) * (DRUM_R + .02), cy + math.sin(a) * (DRUM_R + .02), cz + DRUM_H / 2), (.9, .9, DRUM_H - .8), 'glass', 'turret', 0)
+        ox, oy = cx + math.cos(a) * DRUM_R, cy + math.sin(a) * DRUM_R
+        wf = C.Face((ox, oy, 0), (-math.sin(a), math.cos(a), 0), (-math.cos(a), -math.sin(a), 0), f'drum window {k}')
+        wf.part('Drum window frame', 0.0, -.03, cz + DRUM_H / 2, .95, .08, DRUM_H - .7, 'pale', 'turret', 0)
+        wf.part('Drum window glass', 0.0, -.08, cz + DRUM_H / 2, .75, .02, DRUM_H - .9, 'glass', 'turret', 0)
     C.rod('Drum cornice', (cx, cy, cz + DRUM_H), (cx, cy, cz + DRUM_H + .3), DRUM_R + .35, 'stone', 'turret', 20)
-    dome(cx, cy, cz + DRUM_H + .3, DRUM_R + .1, 3.6)
-    C.rod('Lantern', (cx, cy, cz + DRUM_H + 3.8), (cx, cy, cz + DRUM_H + 5.4), .75, 'copper', 'turret', 12)
-    C.rod('Lantern cap', (cx, cy, cz + DRUM_H + 5.4), (cx, cy, cz + DRUM_H + 6.2), .4, 'copper', 'turret', 12)
-    C.rod('Finial', (cx, cy, cz + DRUM_H + 6.2), (cx, cy, cz + DRUM_H + 7.0), .08, 'hardware', 'turret', 8)
-    C.CONTACTS.append(dict(name='Bowed bay on the rusticated ground floor; drum and dome on the bay roof', bay_top_m=z1, dome_top_m=cz + DRUM_H + 3.9))
+    dome(cx, cy, cz + DRUM_H + .3, DRUM_R + .1, 3.4)
+    for k in range(3):
+        a = math.tau * k / 3 + math.pi / 4
+        C.box('Dome oculus', (cx + math.cos(a) * (DRUM_R - .4), cy + math.sin(a) * (DRUM_R - .4), cz + DRUM_H + 1.6), (.7, .7, .7), 'pale', 'turret', 0)
+    for k in range(12):
+        a = math.tau * k / 12
+        C.beam('Dome cresting', (cx + math.cos(a) * (DRUM_R + .3), cy + math.sin(a) * (DRUM_R + .3), cz + DRUM_H + .3), (cx + math.cos(a) * (DRUM_R + .3), cy + math.sin(a) * (DRUM_R + .3), cz + DRUM_H + .9), .05, .05, 'hardware', 'turret')
+    lz = cz + DRUM_H + 3.6
+    C.rod('Lantern base', (cx, cy, lz), (cx, cy, lz + .25), .9, 'copper', 'turret', 12)
+    for k in range(8):
+        a = math.tau * k / 8
+        C.beam('Lantern column', (cx + math.cos(a) * .7, cy + math.sin(a) * .7, lz + .25), (cx + math.cos(a) * .7, cy + math.sin(a) * .7, lz + 1.6), .08, .08, 'pale', 'turret')
+    C.rod('Lantern cap', (cx, cy, lz + 1.6), (cx, cy, lz + 2.3), .9, 'copper', 'turret', 12)
+    C.rod('Finial', (cx, cy, lz + 2.3), (cx, cy, lz + 3.1), .08, 'hardware', 'turret', 8)
+    C.CONTACTS.append(dict(name='Bowed bay on the rusticated ground floor; drum and dome on the bay cornice', bay_top_m=z1, dome_top_m=cz + DRUM_H + 3.7))
 
 
 def dome(cx, cy, z0, r, h, rings=5, segs=16):
@@ -294,12 +307,13 @@ def roof_and_interior():
     C.mesh('Pyramid rooflight', vs, [(3, 2, 1, 0), (0, 1, 4), (1, 2, 4), (2, 3, 4), (3, 0, 4)], 'glass', 'rooflights')
     C.box('Pyramid rooflight curb', (px, py, CORNICE + .15), (ps + .2, ps + .2, .30), 'stone', 'rooflights', 0)
     for x, y in ((-3.0, 5.0), (7.0, -4.0)):
-        C.box('Rooflight', (x, y, CORNICE + .35), (1.8, 1.4, .7), 'glass', 'rooflights', 0)
+        C.box('Rooflight curb', (x, y, CORNICE + .2), (1.9, 1.5, .4), 'stone', 'rooflights', 0)
+        C.box('Rooflight', (x, y, CORNICE + .55), (1.7, 1.3, .3), 'glass', 'rooflights', 0)
     for x, y in ((9.0, 8.0), (-9.0, 9.0), (11.0, -8.0)):
         C.box('Chimney stack', (x, y, CORNICE + 1.3), (1.2, 1.2, 2.6), 'stone', 'chimneys', 0)
         C.box('Chimney cap', (x, y, CORNICE + 2.68), (1.5, 1.5, .16), 'pale', 'chimneys', 0)
     zl = LEVELS[0]
-    A.sofa(-6.0, -D / 2 + 4.0, zl)
+    A.sofa(-2.0, -D / 2 + 6.0, zl)
 
 
 def site():
