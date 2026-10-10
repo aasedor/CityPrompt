@@ -24,6 +24,7 @@ PENT_H = 3.2
 RROOF = ROOF + PENT_H                   # 17.3 rear bar roof, level with the wing penthouses
 RLEVELS = LEVELS + [ROOF]                # four residential storeys in the rear bar
 PENT_Y = (-10.5, -1.0)
+SB = 2.0                                # top storey set back from the street face behind a terrace
 STAIR_W = 6.0
 STAIR_RUN = 7.0
 EPS = .002
@@ -53,14 +54,14 @@ def manifest(version):
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='rndsqr_terraced_mixed_use_midrise/variant_0 (rndsqr_midrise_courtyard)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
-            observed_storeys=5, storey_programme='street retail; three residential storeys in the wings and four in the rear bar around a raised courtyard; set-back penthouse storey on the wing fronts',
+            observed_storeys=5, storey_programme='street retail; four residential storeys in the wings and the rear bar around a raised courtyard, the top storey tan and set back from the street',
             plan='38 x 30 m read from the top view (560 x 440 px at 0.068 m/px); wings 13 m wide; courtyard 12 x 20 m open to the south; rear bar 10 m deep and one storey taller than the wings, its roof level with the wing penthouses',
             facade='dark vertically ribbed metal panels; floor-to-ceiling black-framed windows; one recessed cedar-lined balcony per wing face per storey with a glass balustrade; tan rear bar with continuous courtyard balconies and a tan top storey; storefronts at street level; wide concrete stair 6 m wide rising 4.5 m to the courtyard',
             levels_m=[G0] + RLEVELS, roof_m=ROOF, rear_bar_roof_m=RROOF, penthouse_m=ROOF + PENT_H,
-            roof='flat membranes; penthouse boxes 11.5 x 10 m at the wing fronts with roof terraces and glass rails; rooftop units on the rear bar',
+            roof='one flat membrane plane round the U at 17.3 m over a full-length tan top storey on each wing, set back 2 m behind a street terrace; mechanical screens on the roof',
             inferred='the north and west faces are not visible in any source and repeat the grammar; interiors are teaching assumptions'),
         roof_contract=dict(type='flat membranes behind low parapets; penthouses on the wing roofs; terraces with glass rails', datum_m=ROOF, crowns_m=[ROOF + PENT_H, ROOF + PENT_H + .6, RROOF + .5]),
-        identity_contract=dict(owner='dark ribbed U-plan over street retail, raised courtyard with the wide street stair, cedar-lined recessed balconies, set-back penthouses with terraces'),
+        identity_contract=dict(owner='dark ribbed U-plan over street retail, raised courtyard with the wide street stair, cedar-lined recessed balconies, tan set-back top storey with street terraces'),
         material_contract=dict(profile='source-palette clay: charcoal ribbed metal panels, cedar reveals, black frames, clear glass balustrades, board-formed concrete stair and base', textured_keeper=False),
         programme_contract=dict(storeys=5, ground='retail and cafe units along the street faces, residential lobby beside the stair', upper='apartments in two wings and a rear bar around the courtyard', roof='penthouse apartments with terraces'),
         contact_contract=['Grade-zero slab and sidewalks', 'Stair from the sidewalk to the courtyard deck in a concrete slot', 'Courtyard deck over the retail floor', 'Balcony plates within the wing volumes', 'Penthouses on the wing roof slabs'],
@@ -125,9 +126,14 @@ def balcony(m, f, h, depth=1.9):
     m.box('concrete', u, depth / 2 - .03, z - .04, w + .30, depth + .16, .16)
     m.box('glass', u, .08, z + .6, w - .04, .02, 1.08)
     m.box('hardware', u, .08, z + 1.16, w, .06, .05)
-    # Glazed door at the back of the balcony, into the apartment.
-    m.box('trim', u, depth + .02, z + hh / 2 - .1, 2.2, .08, hh - .3)
-    m.box('glass', u, depth + .06, z + hh / 2 - .1, 2.0, .01, hh - .5)
+    # Glazed double door at the back of the balcony: black jambs, head and centre mullion proud of the cedar, pale glass behind.
+    dw, dh = 2.4, hh - .35
+    for e in (-1, 1):
+        m.box('trim', u + e * (dw / 2 - .04), depth - .04, z + dh / 2, .08, .10, dh)
+    m.box('trim', u, depth - .04, z + dh - .04, dw - .16, .10, .08)
+    m.box('trim', u, depth - .03, z + dh / 2, .06, .08, dh - .16)
+    m.box('trim', u, depth - .02, z + .06, dw - .16, .06, .12)
+    m.box('glass', u, depth + .02, z + dh / 2, dw - .16, .01, dh - .16)
     C.OPENINGS.append(dict(id=h['id'], face=f.label, u=u, z=z, width=w, height=hh, kind='recessed balcony', clear_wall_cut=True,
         carrier_depth_m=T, frame_inset_m=None, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='balcony opening onto the living room'))
 
@@ -216,16 +222,16 @@ def stair_and_courtyard():
     y0 = Y0; y1 = Y0 + STAIR_RUN
     rise = L1
     steps = 24
-    profile = [(y0, 0.0)]
+    profile = [(y0 - .02, .015)]
     for i in range(1, steps + 1):
         yy = y0 + STAIR_RUN * (i - 1) / steps; yn = y0 + STAIR_RUN * i / steps
         profile.append((yy, rise * i / steps)); profile.append((yn, rise * i / steps))
-    profile.append((y1 + .6, rise)); profile.append((y1 + .6, 0.0))
+    profile.append((y1 + .6, rise)); profile.append((y1 + .6, .015))
     C.prism('Courtyard stair', profile, 'x', -STAIR_W / 2, STAIR_W / 2, 'concrete', 'stair')
     for s in (-1, 1):
         C.box('Stair cheek wall', (s * (STAIR_W / 2 + .15), (y0 + y1) / 2 + .3 + (T + .01) / 2, (G0 + L1) / 2), (.30, STAIR_RUN + .6 - T - .01, L1 - G0), 'concrete', 'stair', 0)
         C.railing('Stair handrail', (s * (STAIR_W / 2 - .3), y0 + .2, .9), (s * (STAIR_W / 2 - .3), y1, L1 + .9), height=.0, spacing=1.2, role='hardware')
-    C.box('Stair landing', (0, y1 + .9, L1 - .05), (STAIR_W, 1.8, .10), 'concrete', 'stair', 0)
+    C.box('Stair landing', (0, y1 + 1.2 + EPS, L1 - .05), (STAIR_W, 1.2 - 2 * EPS, .10), 'concrete', 'stair', 0)
     C.CONTACTS.append(dict(name='Stair of 24 risers from the sidewalk to the courtyard deck inside concrete cheek walls', grade_m=0, rise_m=L1))
     # Courtyard deck over the retail floor, planters, benches, glass rail at the street edge.
     ys = Y0 + STAIR_RUN + 1.8
@@ -266,46 +272,20 @@ def volumes():
         C.box(f'{name} membrane', ((x0 + x1) / 2, (y0 + y1) / 2, rf + .004), (x1 - x0 - 2 * T - .02, y1 - y0 - 2 * T - .02, .008), 'membrane', 'roof', 0)
         for zl in lv:
             C.qa_room_light(f'{name} apartments {zl:.1f}', ((x0 + x1) / 2, (y0 + y1) / 2 if name == 'rear' else y0 + 6.0, zl + 2.7), 70, 4.5)
-    # Penthouses at the wing fronts, set back from the street face and the courtyard side, flush with the outer face.
-    for name, x0, x1 in (('west', X0 + .12, CX0 - 2.0), ('east', CX1 + 2.0, X1 - .12)):
-        y0, y1 = PENT_Y
-        zp0, zp1 = ROOF + .02, ROOF + .02 + PENT_H
-        west = name == 'west'
-        # Body behind the two glazed carriers (street front and courtyard side); the outer face sits 0.12 m inside the parapet plane.
-        bx0, bx1 = (x0, x1 - T) if west else (x0 + T, x1)
-        C.box(f'{name} penthouse', ((bx0 + bx1) / 2, (y0 + T + y1) / 2, (zp0 + zp1) / 2), (bx1 - bx0, y1 - y0 - T, zp1 - zp0), 'cedar', 'penthouse', 0)
-        pf = C.Face(((x0 + x1) / 2, y0, 0), (1, 0, 0), (0, 1, 0), f'{name} penthouse front')
-        w = x1 - x0
-        holes = [hole(f'{name} penthouse front window {k}', sg * 2.9, zp0 + .42, 3.4, 2.3) for k, sg in enumerate((-1, 1))]
-        pf.wall(f'{name} penthouse front carrier', -w / 2, w / 2 - EPS, zp0, zp1, depth=T, role='cedar', holes=holes)
-        m = Merge(pf)
-        for h in holes:
-            framed(m, pf, h, cols=2, occupied='penthouse apartment')
-        m.flush(f'{name} penthouse front')
-        yc = (y0 + y1) / 2; hh = (y1 - y0) / 2
-        if west:
-            pc = C.Face((x1, yc, 0), (0, 1, 0), (-1, 0, 0), f'{name} penthouse court')
-            lo, hi = -hh + T, hh - EPS
-        else:
-            pc = C.Face((x0, yc, 0), (0, -1, 0), (1, 0, 0), f'{name} penthouse court')
-            lo, hi = -hh, hh - T - EPS
-        holes = [hole(f'{name} penthouse court window {k}', sg * 2.1, zp0 + .42, 2.8, 2.3) for k, sg in enumerate((-1, 1))]
-        pc.wall(f'{name} penthouse court carrier', lo, hi, zp0, zp1, depth=T, role='cedar', holes=holes)
-        m = Merge(pc)
-        for h in holes:
-            framed(m, pc, h, cols=2, occupied='penthouse apartment')
-        m.flush(f'{name} penthouse court')
-        C.box(f'{name} penthouse roof', ((x0 + x1) / 2 + (.45 if west else -.45), yc - .4, zp1 + .10), (x1 - x0 + .9, y1 - y0 + 2.0, .20), 'roof', 'penthouse', 0)
-        # Terrace glass guards just inside the street parapet and the courtyard parapet of the wing roof (never in the parapet planes).
-        ys = Y0 + T + .25
-        xin = CX0 - T - .25 if west else CX1 + T + .25
-        glass_rail((x0 + .3 if west else xin, ys), (xin if west else x1 - .3, ys), ROOF)
-        glass_rail((xin, ys + .02), (xin, y1), ROOF)
-    for x, y, w, d, zr in ((-1.0, 10.5, 7.0, 3.2, RROOF), (13.5, 10.0, 5.0, 3.0, ROOF), (-13.5, 9.0, 4.0, 3.0, ROOF)):
+    # Top storey of each wing: full wing length at the rear-bar roof level, tan with large windows, set back 2 m from the
+    # street face behind a terrace, flush with the outer and courtyard faces (carriers built in build()).
+    for name, (x0, x1) in (('west', (X0, CX0)), ('east', (CX1, X1))):
+        C.box(f'{name} top roof slab', ((x0 + x1) / 2, (Y0 + SB + Y1) / 2, RROOF - .12), (x1 - x0 - 2 * T, Y1 - Y0 - SB - 2 * T, .24), 'floor', 'roof', 0)
+        C.box(f'{name} top membrane', ((x0 + x1) / 2, (Y0 + SB + Y1) / 2, RROOF + .004), (x1 - x0 - 2 * T - .02, Y1 - Y0 - SB - 2 * T - .02, .008), 'membrane', 'roof', 0)
+        C.qa_room_light(f'{name} top apartments', ((x0 + x1) / 2, 0.0, ROOF + 2.7), 70, 4.5)
+        # Street terrace in front of the top storey: pavers and a glass guard just inside the parapet.
+        C.box(f'{name} terrace pavers', ((x0 + x1) / 2, Y0 + T + (SB - T) / 2, ROOF + .012), (x1 - x0 - 2 * T - .1, SB - T - .05, .024), 'sand', 'terrace', 0)
+        glass_rail((x0 + T + .2, Y0 + T + .25), (x1 - T - .2, Y0 + T + .25), ROOF)
+    for x, y, w, d, zr in ((-1.0, 10.5, 7.0, 3.2, RROOF), (13.5, 10.0, 5.0, 3.0, RROOF), (-13.5, 9.0, 4.0, 3.0, RROOF)):
         C.box('Mechanical enclosure', (x, y, zr + .02 + 1.2), (w, d, 2.4), 'wall', 'rooftop plant', 0)
         for k in range(5):
             C.box('Enclosure louvre', (x, y - d / 2 - .02, zr + .5 + k * .4), (w - .3, .04, .06), 'hardware', 'rooftop plant', 0)
-    for x, y, zr in ((3.0, 12.5, RROOF), (4.4, 12.5, RROOF), (-8.0, 12.5, ROOF), (-9.4, 12.5, ROOF), (16.0, 5.0, ROOF), (16.0, 6.4, ROOF)):
+    for x, y, zr in ((3.0, 12.5, RROOF), (4.4, 12.5, RROOF), (-8.0, 12.5, RROOF), (-9.4, 12.5, RROOF), (16.0, 5.0, RROOF), (16.0, 6.4, RROOF)):
         C.box('Condenser', (x, y, zr + .02 + .45), (1.0, 1.0, .9), 'hardware', 'rooftop plant', 0)
     zl = LEVELS[1]
     A.sofa(-16.5, Y0 + 3.5, zl); A.bed(-16.0, Y0 + 12.5, zl)
@@ -317,7 +297,7 @@ def rear_bar_balconies(f):
     span = CX1 - CX0 - 2 * T
     m = Merge(f)
     for zl in RLEVELS:
-        m.box('concrete', 0.0, -.70, zl - .06, span - .2, 1.6, .18)
+        m.box('trim', 0.0, -.70, zl - .06, span - .2, 1.6, .18)
         m.box('glass', 0.0, -1.45, zl + .03 + .55, span - .3, .02, 1.05)
         m.box('hardware', 0.0, -1.45, zl + .03 + 1.1 + .03, span - .26, .06, .05)
         for e in (-1, 1):
@@ -371,12 +351,19 @@ def build():
     ground_face(north, -hw, hw, 'lane')
     # Upper storeys: wing fronts (south), outer faces, north, and the three courtyard faces.
     z0, z1 = L1 - .30 + EPS, ROOF + .5
-    ribbed_face(south, -hw, CX0, z0, z1, [(-17.5, 'window', 1.4), (-15.5, 'window', 1.4), (-13.5, 'window', 1.4), (-10.0, 'balcony', 3.2), (-7.5, 'window', 1.4)], module='west wing south')
-    ribbed_face(south, CX1, hw, z0, z1, [(8.0, 'balcony', 3.2), (11.5, 'window', 1.6), (14.0, 'window', 1.6), (16.5, 'window', 1.6)], module='east wing south')
-    ribbed_face(west, -hd + T, hd - T, z0, z1, [(2.0, 'window', 1.0)], module='west upper', ribs=False)
-    ribbed_face(east, -hd + T, hd - T, z0, z1, [(-11.0, 'window', 1.8), (-7.0, 'window', 1.8), (-3.0, 'window', 1.8), (1.0, 'window', 1.8), (5.0, 'window', 1.8), (9.0, 'window', 1.8)], module='east upper', role='tan', ribs=False)
-    ribbed_face(north, -hw, -CX1 - T, z0, z1, [(-14.0, 'window', 1.6), (-9.0, 'window', 2.4)], module='north east wing upper')
-    ribbed_face(north, -CX0 + T, hw, z0, z1, [(9.0, 'window', 2.4), (14.0, 'window', 1.6)], module='north west wing upper')
+    ribbed_face(south, -hw, CX0, z0, z1, [(-17.6, 'window', 1.3), (-15.6, 'window', 1.3), (-13.6, 'window', 1.3), (-11.6, 'window', 1.3), (-8.6, 'balcony', 3.2)], module='west wing south')
+    C.box('West wing tan end bay', (-6.5, Y0 - .065, (L1 + ROOF) / 2), (.9, .11, ROOF - L1 - .4), 'tan', 'west wing south', 0)
+    ribbed_face(south, CX1, hw, z0, z1, [(8.0, 'balcony', 3.2), (14.2, 'window', 5.4)], module='east wing south')
+    ribbed_face(west, -hd + T, hd - T, z0, ROOF - .30, [(2.0, 'window', 1.0)], module='west upper', ribs=False)
+    ribbed_face(west, -hd + T, hd - SB, ROOF - .30 + EPS, RROOF + .5, [(-6.0, 'window', 2.4), (0.0, 'window', 2.4), (6.0, 'window', 2.4)], module='west top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(west, hd - SB + EPS, hd - T, ROOF - .30 + EPS, ROOF + .5, [], module='west terrace parapet', ribs=False, levels=[])
+    ribbed_face(east, -hd + T, hd - T, z0, ROOF - .30, [(-11.0, 'window', 1.8), (-7.0, 'window', 1.8), (-3.0, 'window', 1.8), (1.0, 'window', 1.8), (5.0, 'window', 1.8), (9.0, 'window', 1.8)], module='east upper', role='tan', ribs=False)
+    ribbed_face(east, -hd + SB, hd - T, ROOF - .30 + EPS, RROOF + .5, [(-7.0, 'window', 2.4), (-1.0, 'window', 2.4), (5.0, 'window', 2.4), (10.0, 'window', 1.8)], module='east top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(east, -hd + T, -hd + SB - EPS, ROOF - .30 + EPS, ROOF + .5, [], module='east terrace parapet', ribs=False, levels=[], role='tan')
+    ribbed_face(north, -hw, -CX1 - T, z0, ROOF - .30, [(-14.0, 'window', 1.6), (-9.0, 'window', 2.4)], module='north east wing upper')
+    ribbed_face(north, -CX0 + T, hw, z0, ROOF - .30, [(9.0, 'window', 2.4), (14.0, 'window', 1.6)], module='north west wing upper')
+    ribbed_face(north, -hw, -CX1 - T, ROOF - .30 + EPS, RROOF + .5, [(-14.0, 'window', 2.4), (-9.0, 'window', 2.4)], module='north east wing top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(north, -CX0 + T, hw, ROOF - .30 + EPS, RROOF + .5, [(9.0, 'window', 2.4), (14.0, 'window', 2.4)], module='north west wing top', role='tan', ribs=False, levels=[ROOF])
     ribbed_face(north, -CX1 - T, -CX0 + T, z0, ROOF - .30, [(-3.0, 'window', 1.6), (3.0, 'window', 1.6)], module='north rear bar upper')
     ribbed_face(north, -CX1 - T, -CX0 + T, ROOF - .30 + EPS, RROOF + .5, [(-3.0, 'window', 2.4), (3.0, 'window', 2.4)], module='north rear bar top', role='tan', ribs=False, levels=[ROOF])
     # Rear bar side walls above the wing roofs (and the hollow between the wing and rear plates below them).
@@ -387,14 +374,22 @@ def build():
             rs = C.Face((sx + T, (CY1 + Y1) / 2, 0), (0, -1, 0), (-1, 0, 0), lbl)
         hs = (Y1 - CY1) / 2
         lo_s, hi_s = (-hs, hs - T - EPS) if sx < 0 else (-hs + T, hs - EPS)
-        rs.wall(lbl + ' carrier', lo_s, hi_s, z0, RROOF + .5, depth=2 * T, role='tan', holes=[])
+        rs.wall(lbl + ' carrier', lo_s, hi_s, z0, ROOF - .30, depth=2 * T, role='tan', holes=[])
     cw = C.Face((CX0, (Y0 + CY1) / 2, 0), (0, 1, 0), (-1, 0, 0), 'courtyard west')
     ce = C.Face((CX1, (Y0 + CY1) / 2, 0), (0, -1, 0), (1, 0, 0), 'courtyard east')
     cr = C.Face(((CX0 + CX1) / 2, CY1, 0), (1, 0, 0), (0, 1, 0), 'courtyard rear')
     hc = (CY1 - Y0) / 2
-    ribbed_face(cw, -hc + T, hc - EPS, z0, z1, [(-5.5, 'balcony', 3.2), (-1.0, 'window', 1.6), (3.0, 'window', 2.2), (7.0, 'window', 1.6)], module='courtyard west upper')
-    ribbed_face(ce, -hc + EPS, hc - T, z0, z1, [(-7.0, 'window', 1.6), (-3.0, 'window', 2.2), (1.0, 'window', 1.6), (5.5, 'balcony', 3.2)], module='courtyard east upper')
-    ribbed_face(cr, -(CX1 - CX0) / 2 + T, (CX1 - CX0) / 2 - T, z0, RROOF + .5, [(-3.8, 'window', 3.2), (0.0, 'window', 3.2), (3.8, 'window', 3.2)], module='courtyard rear upper', role='tan', ribs=False, levels=RLEVELS)
+    ribbed_face(cw, -hc + T, hc - EPS, z0, ROOF - .30, [(-5.5, 'balcony', 3.2), (-1.0, 'window', 1.6), (3.0, 'window', 2.2), (7.0, 'window', 1.6)], module='courtyard west upper')
+    ribbed_face(ce, -hc + EPS, hc - T, z0, ROOF - .30, [(-7.0, 'window', 1.6), (-3.0, 'window', 2.2), (1.0, 'window', 1.6), (5.5, 'balcony', 3.2)], module='courtyard east upper')
+    ribbed_face(cw, -hc + SB, hc - EPS, ROOF - .30 + EPS, RROOF + .5, [(-2.5, 'window', 2.4), (3.0, 'window', 2.4), (7.5, 'window', 1.8)], module='courtyard west top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(ce, -hc + EPS, hc - SB, ROOF - .30 + EPS, RROOF + .5, [(-7.5, 'window', 1.8), (-3.0, 'window', 2.4), (2.5, 'window', 2.4)], module='courtyard east top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(cw, -hc + T, -hc + SB - EPS, ROOF - .30 + EPS, ROOF + .5, [], module='courtyard west terrace parapet', ribs=False, levels=[])
+    ribbed_face(ce, hc - SB + EPS, hc - T, ROOF - .30 + EPS, ROOF + .5, [], module='courtyard east terrace parapet', ribs=False, levels=[])
+    # Set-back street faces of the top storey, behind the terraces.
+    for name, (lo_t, hi_t), pat in (('west', (-hw + T, CX0 - T), [(-15.0, 'window', 3.0), (-10.0, 'window', 3.0)]), ('east', (CX1 + T, hw - T), [(10.0, 'window', 3.0), (15.0, 'window', 3.0)])):
+        st = C.Face((0, Y0 + SB, 0), (1, 0, 0), (0, 1, 0), f'{name} top street')
+        ribbed_face(st, lo_t, hi_t, ROOF - .30 + EPS, RROOF + .5, pat, module=f'{name} top street', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(cr, -(CX1 - CX0) / 2 + T, (CX1 - CX0) / 2 - T, z0, RROOF + .5, [(-3.8, 'window', 3.2), (0.0, 'window', 3.2), (3.8, 'window', 3.2)], module='courtyard rear upper', role='cedar', ribs=False, levels=RLEVELS)
     rear_bar_balconies(cr)
     C.CONTACTS.append(dict(name='U-plan wings and rear bar bearing on the retail floor; courtyard deck at the first residential level', deck_m=L1))
 

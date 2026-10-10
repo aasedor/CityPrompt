@@ -22,14 +22,15 @@ G0 = .15
 LEVELS = [5.0, 9.2, 13.0]        # ground floor, piano nobile, two brick storeys (the sources show ground plus three)
 CORNICE = 16.8
 PAR = CORNICE + 1.3
-DRUM_R, DRUM_H = 2.6, 1.6        # short drum under a wider copper dome
-DOME_R, DOME_H = 3.3, 3.4
+DRUM_R, DRUM_H = 2.6, 1.2        # short drum (about a quarter of the dome height) under a wider copper dome
+DOME_R, DOME_H = 3.3, 4.5
+BAY_OUT = 2.4                    # bow bay projection from the chamfer plane
 EPS = .002
 PALETTE = dict(wall=(.62, .42, .28), joint=(.46, .30, .20), trim=(.18, .26, .22),
     pale=(.76, .70, .58), stone=(.72, .66, .54), roof=(.62, .34, .22), sand=(.70, .64, .52),
     foundation=(.46, .46, .45), glass=(.46, .52, .54), hardware=(.14, .13, .13),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.36, .26, .16), blue=(.14, .22, .28),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), copper=(.56, .30, .18),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), copper=(.44, .33, .28),
     membrane=(.62, .34, .22), rustic=(.66, .60, .48))
 
 # The chamfer face: from the south face end to the west face end at 45 degrees.
@@ -50,7 +51,7 @@ def manifest(version):
         ('ground_arcade', (-26.0, -24.0, 2.0), (CMX, CMY, 2.8), 45),
         ('cornice_contact', (8.0, -26.0, 16.0), (10.0, -D / 2, 16.8), 45),
         ('roof_terrace', (-36.0, -40.0, 38.0), (0.0, 0.0, 18.0), 45),
-        ('interior', (-6.0, -3.0, LEVELS[0] + 1.6), (-8.0, -D / 2 - 1.0, LEVELS[0] + 1.3), 55),
+        ('interior', (1.0, -4.5, LEVELS[0] + 1.6), (1.0, -D / 2 - 1.0, LEVELS[0] + 1.3), 55),
         ('rear_court', (12.0, 32.0, 10.0), (4.0, D / 2, 8.0), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
@@ -61,10 +62,10 @@ def manifest(version):
             plan='30 x 26 m corner block read from the top view (roof 480 x 420 px at 0.062 m/px) with a 9 m chamfer at the south-west corner carrying the bowed bay',
             facade='four bays on the south and west faces of French windows 1.3 x 2.8 m with stone surrounds in brick; continuous iron balcony at the first floor and individual balconies above; flat-headed pier-and-lintel shop openings 3.2 x 4.2 m with transoms in rusticated stone; cornice at 19.6 m with a balustraded parapet to 20.9 m',
             levels_m=[G0] + LEVELS, cornice_m=CORNICE, parapet_m=PAR, storeys_recorded='the sources read ground plus three upper storeys; v001 carried four and was corrected',
-            chamfer='bowed stone bay projecting 1.6 m: two glazed levels between stone pilasters (about 70 percent glass), a solid top storey with small windows and an iron balcony under the wrapping cornice; round drum 5.2 m across and 1.6 m high above the parapet with oriented windows; wider copper dome 6.6 m across with three porthole oculi and cresting on its overhang; open lantern with a copper bulb and finial',
+            chamfer='bowed stone bay projecting 2.4 m: two glazed levels between slender stone pilasters (about 75 percent glass), a solid top storey with small windows and an iron balcony under its own half-elliptical cornice and balustrade; round drum 5.2 m across and 1.2 m high on a pedestal with oriented windows; wider dark-copper dome 6.6 m across and 4.5 m high with three porthole oculi and cresting on its overhang; open lantern with a copper bulb and finial',
             roof='flat terracotta tiles; pyramid rooflight 5 m square; two small rooflights; three chimney stacks',
             inferred='north and east faces are not visible and repeat the grammar without balconies; interiors are teaching assumptions'),
-        roof_contract=dict(type='flat tiled roof behind a balustraded parapet; dome turret on the chamfer bay; rooflights and chimneys on the slab', datum_m=CORNICE, crowns_m=[PAR, PAR + .1 + DRUM_H + .3 + DOME_H, PAR + .1 + DRUM_H + 3.6 + 3.3]),
+        roof_contract=dict(type='flat tiled roof behind a balustraded parapet; dome turret on the chamfer bay; rooflights and chimneys on the slab', datum_m=CORNICE, crowns_m=[PAR, PAR + .28 + DRUM_H + .3 + DOME_H, PAR + .28 + DRUM_H + .3 + DOME_H + .2 + 3.5]),
         identity_contract=dict(owner='chamfered corner with the two-level glazed bow and copper dome, iron balconies on tall French windows in brick, rusticated pier-and-lintel shop floor, cornice and balustrade'),
         material_contract=dict(profile='source-palette clay: warm brick with recessed courses, pale stone ground floor, surrounds and cornice, black iron balconies, dark green frames, terracotta tiles, copper dome', textured_keeper=False),
         programme_contract=dict(storeys=5, ground='shops with the residential entrance on the chamfer', upper='two apartments per floor; a salon in the bow', roof='shared terrace around the rooflights'),
@@ -129,9 +130,10 @@ def iron_balcony(m, f, u, z, w, depth=.8):
     m.box('hardware', u, -depth + .04, z + .98, w, .05, .05)
     for e in (-1, 1):
         m.box('hardware', u + e * (w / 2 - .02), -depth / 2 + .02, z + .98, .05, depth - .04, .05)
-    n = max(3, int(w / .48))
+    m.box('hardware', u, -depth + .04, z + .50, w, .03, .03)
+    n = max(4, int(w / .22))
     for i in range(n + 1):
-        m.box('hardware', u - w / 2 + .02 + (w - .04) * i / n, -depth + .04, z + .55, .025, .025, .86)
+        m.box('hardware', u - w / 2 + .02 + (w - .04) * i / n, -depth + .04, z + .55, .03, .03, .86)
 
 
 def elevation(f, lo, hi, bays, ground='shops', balconies=True, plain=False):
@@ -205,16 +207,16 @@ def chamfer_bay():
             framed(m, f, h, cols=2, occupied='attic salon')
             m.box('stone', h['u'], -.05, h['z'] + h['h'] + .18, h['w'] + .70, T + .16, .26)
     m.box('stone', 0.0, -.06, LEVELS[0] - .15, CH - 2 * EPS, T + .20, .30)
-    m.box('stone', 0.0, T / 2 - .02, PAR + .04, CH - 2 * EPS, T + .12, .14)
-    for i in range(int(CH / .72) + 1):
-        m.box('pale', -half + .2 + (CH - .4) * i / int(CH / .72), T / 2 - .02, (CORNICE + .25 + PAR) / 2, .14, .14, PAR - CORNICE - .27)
     m.flush('chamfer')
-    # Bowed bay over the piano nobile and the two storeys above: five facets projecting 1.6 m.
+    # Bowed bay over the piano nobile and the two storeys above: five facets projecting BAY_OUT, slender pilasters at the
+    # facet joints, the two short end facets solid returns.
     z0, z1 = LEVELS[0], CORNICE - .30
     facets = 5
-    r_out = 1.6
-    pts = [(CMX + tx * (-math.cos(math.pi * i / facets) * (CH / 2 - 1.0)) + nx * math.sin(math.pi * i / facets) * r_out,
-            CMY + ty * (-math.cos(math.pi * i / facets) * (CH / 2 - 1.0)) + ny * math.sin(math.pi * i / facets) * r_out) for i in range(facets + 1)]
+    A0 = CH / 2 - 1.0
+    def arc(Aa, Bb, n=facets, inset=0.0):
+        return [(CMX + tx * (-math.cos(math.pi * i / n) * Aa) + nx * (math.sin(math.pi * i / n) * Bb - inset),
+                 CMY + ty * (-math.cos(math.pi * i / n) * Aa) + ny * (math.sin(math.pi * i / n) * Bb - inset)) for i in range(n + 1)]
+    pts = arc(A0, BAY_OUT)
     for i in range(facets):
         (ax, ay), (bx, by) = pts[i], pts[i + 1]
         length = math.dist((ax, ay), (bx, by))
@@ -223,10 +225,9 @@ def chamfer_bay():
         if inx * nx + iny * ny > 0:
             inx, iny = -inx, -iny
         g = C.Face(((ax + bx) / 2, (ay + by) / 2, 0), (ux, uy, 0), (inx, iny, 0), f'bay facet {i}')
-        # The two short end facets return into the chamfer wall and stay solid stone; the three outer facets carry the glazing.
         end = i in (0, facets - 1)
-        fh = [] if end else [hole(f'Bay glazing {i}-0', 0.0, LEVELS[0] + .25, length - .6, 3.5),
-                             hole(f'Bay glazing {i}-1', 0.0, LEVELS[1] + .25, length - .6, 3.0),
+        fh = [] if end else [hole(f'Bay glazing {i}-0', 0.0, LEVELS[0] + .25, length - .40, 3.5),
+                             hole(f'Bay glazing {i}-1', 0.0, LEVELS[1] + .25, length - .40, 3.0),
                              hole(f'Bay window {i}-2', 0.0, LEVELS[2] + .3, 1.1, 2.0)]
         g.wall(f'bay facet {i} carrier', -length / 2, length / 2, z0, z1, depth=T, role='stone', holes=fh)
         mb = Merge(g)
@@ -238,30 +239,35 @@ def chamfer_bay():
         mb.box('stone', 0.0, -.05, LEVELS[2] - .2, length - .02, T + .16, .28)
         iron_balcony(mb, g, 0.0, LEVELS[2], length - .3, depth=.7)
         mb.flush('bay')
-        for e in (-1, 1):
-            cx_, cy_ = g.p(e * (length / 2 - .2), -.12, 0)[:2]
-            C.box('Bay column', (cx_, cy_, (LEVELS[0] + LEVELS[2]) / 2 - .15), (.42, .42, LEVELS[2] - LEVELS[0] - .3), 'stone', 'bay columns', 0)
-    # Bay floors, wrapping cornice ring, drum with oriented windows, dome with oculi and cresting, open lantern.
-    cx, cy = CMX + nx * .3, CMY + ny * .3
+    for i in range(1, facets):
+        jx, jy = pts[i]
+        d = math.dist((jx, jy), (CMX, CMY)); jx, jy = jx + (CMX - jx) / d * .10, jy + (CMY - jy) / d * .10
+        C.box('Bay pilaster', (jx, jy, (LEVELS[0] + LEVELS[2]) / 2 - .15), (.30, .30, LEVELS[2] - LEVELS[0] - .3), 'stone', 'bay columns', 0)
+    # Bay floors, cornice and balustrade follow the half-ellipse of the bow (never a full disc); their straight edge sits
+    # 0.15 m inside the chamfer carrier so no face shares the chamfer plane.
     for zl in LEVELS:
-        C.rod('Bay floor', (cx, cy, zl - .12), (cx, cy, zl + .08), CH / 2 - .6, 'floor', 'bay floors', 16)
-    C.rod('Bay cornice', (cx, cy, z1 - .02), (cx, cy, z1 + .55), CH / 2 + .1, 'stone', 'bay roof', 20)
-    C.rod('Bay parapet', (cx, cy, z1 + .55), (cx, cy, PAR + .28), DRUM_R + .9, 'stone', 'turret', 20)
+        C.prism('Bay floor', arc(A0 - .2, BAY_OUT - .25, 10, .15), 'z', zl - .12, zl + .08, 'floor', 'bay floors')
+    C.prism('Bay cornice', arc(A0 + .40, BAY_OUT + .40, 12, .15), 'z', z1 - .02, z1 + .55, 'stone', 'bay roof')
+    half_ring('Bay balustrade rail', arc(A0 + .12, BAY_OUT + .12, 14, .15), arc(A0 + .32, BAY_OUT + .32, 14, .15), PAR + .02, PAR + .16, 'stone', 'bay roof')
+    for (bx_, by_) in arc(A0 + .22, BAY_OUT + .22, 20, .15)[1:-1]:
+        C.box('Bay baluster', (bx_, by_, (z1 + .55 + PAR + .02) / 2), (.13, .13, PAR + .02 - z1 - .55), 'pale', 'bay roof', 0)
+    # Drum on a round pedestal centred on the chamfer line, dome wider than the drum with cresting on the overhang, open lantern.
+    cx, cy = CMX, CMY
     cz = PAR + .28
-    C.rod('Drum', (cx, cy, cz), (cx, cy, cz + DRUM_H), DRUM_R, 'stone', 'turret', 20)
+    C.rod('Drum pedestal', (cx, cy, CORNICE - .10), (cx, cy, cz), 2.75, 'stone', 'turret', 24)
+    C.rod('Drum', (cx, cy, cz), (cx, cy, cz + DRUM_H), DRUM_R, 'stone', 'turret', 24)
     for k in range(8):
         a = math.tau * k / 8 + math.pi / 8
         ox, oy = cx + math.cos(a) * DRUM_R, cy + math.sin(a) * DRUM_R
         wf = C.Face((ox, oy, 0), (-math.sin(a), math.cos(a), 0), (-math.cos(a), -math.sin(a), 0), f'drum window {k}')
-        wf.part('Drum window frame', 0.0, -.03, cz + DRUM_H / 2, .95, .08, DRUM_H - .7, 'pale', 'turret', 0)
-        wf.part('Drum window glass', 0.0, -.08, cz + DRUM_H / 2, .75, .02, DRUM_H - .9, 'glass', 'turret', 0)
-    C.rod('Drum cornice', (cx, cy, cz + DRUM_H), (cx, cy, cz + DRUM_H + .3), DOME_R + .15, 'stone', 'turret', 20)
+        wf.part('Drum window frame', 0.0, -.03, cz + DRUM_H / 2, .70, .08, DRUM_H - .25, 'pale', 'turret', 0)
+        wf.part('Drum window glass', 0.0, -.08, cz + DRUM_H / 2, .52, .02, DRUM_H - .40, 'glass', 'turret', 0)
+    C.rod('Drum cornice', (cx, cy, cz + DRUM_H), (cx, cy, cz + DRUM_H + .3), DOME_R + .15, 'stone', 'turret', 24)
     dz = cz + DRUM_H + .3
     dome(cx, cy, dz, DOME_R, DOME_H)
-    # Porthole oculi sit on the dome surface, their rims normal to it (never a box pushed through the shell).
     for k in range(3):
         a = math.tau * k / 3 + math.pi / 4
-        t = math.radians(38)
+        t = math.radians(34)
         px, py, pz = cx + math.cos(a) * DOME_R * math.cos(t), cy + math.sin(a) * DOME_R * math.cos(t), dz + DOME_H * math.sin(t)
         nx_, ny_, nz_ = math.cos(t) * math.cos(a) / DOME_R, math.cos(t) * math.sin(a) / DOME_R, math.sin(t) / DOME_H
         nl = (nx_ ** 2 + ny_ ** 2 + nz_ ** 2) ** .5
@@ -279,13 +285,33 @@ def chamfer_bay():
     C.rod('Lantern cap ring', (cx, cy, lz + 1.6), (cx, cy, lz + 1.8), .95, 'copper', 'turret', 12)
     dome(cx, cy, lz + 1.8, .9, 1.0)
     C.rod('Finial', (cx, cy, lz + 2.75), (cx, cy, lz + 3.5), .07, 'hardware', 'turret', 8)
-    # Corner posts close the mitres where the proud courses, cornice and balustrade of neighbouring faces meet.
-    for (qx, qy) in ((CX0, CY0), (CX1, CY1)):
-        C.rod('Chamfer corner pilaster', (qx, qy, 0.0), (qx, qy, PAR + .16), .44, 'stone', 'corner posts', 16)
-        C.rod('Chamfer corner capital', (qx, qy, CORNICE - .66), (qx, qy, CORNICE + .22), .82, 'stone', 'corner posts', 16)
+    # Square mitred pilasters at the chamfer corners (their faces bisect the corner angle) close the course, cornice and
+    # balustrade ends of both neighbouring faces; square quoins at the three right-angle corners.
+    for (qx, qy), (ox_, oy_) in (((CX0, CY0), (0, -1)), ((CX1, CY1), (-1, 0))):
+        bxv, byv = ox_ + nx, oy_ + ny
+        bl = (bxv ** 2 + byv ** 2) ** .5; bxv, byv = bxv / bl, byv / bl
+        pf = C.Face((qx, qy, 0), (-byv, bxv, 0), (-bxv, -byv, 0), 'corner pilaster')
+        pf.part('Chamfer corner pilaster', 0.0, 0.0, (PAR + .16) / 2, .95, .95, PAR + .16, 'stone', 'corner posts', 0)
+        pf.part('Chamfer corner capital', 0.0, 0.0, CORNICE - .22, 1.55, 1.55, .88, 'stone', 'corner posts', 0)
+        pf.part('Chamfer corner base', 0.0, 0.0, LEVELS[0] - .07, 1.25, 1.25, .46, 'stone', 'corner posts', 0)
     for (qx, qy) in ((-W / 2 - .1, D / 2 + .1), (W / 2 + .1, D / 2 + .1), (W / 2 + .1, -D / 2 - .1)):
         C.box('Corner quoin', (qx, qy, (PAR + .16) / 2), (1.3, 1.3, PAR + .16), 'stone', 'corner posts', 0)
-    C.CONTACTS.append(dict(name='Bowed bay on the rusticated ground floor; drum and dome on the bay cornice; corner posts at every corner', bay_top_m=z1, dome_top_m=dz + DOME_H))
+    C.CONTACTS.append(dict(name='Bowed bay on the rusticated ground floor; drum on a pedestal over the bay cornice; corner posts at every corner', bay_top_m=z1, dome_top_m=dz + DOME_H))
+
+
+def half_ring(name, inner, outer, z0, z1, role, module):
+    """Closed band between two open polylines (same point count) extruded from z0 to z1."""
+    n = len(inner)
+    vs = [(x, y, z0) for x, y in inner] + [(x, y, z0) for x, y in outer] + [(x, y, z1) for x, y in inner] + [(x, y, z1) for x, y in outer]
+    I0, O0, I1, O1 = 0, n, 2 * n, 3 * n
+    fs = []
+    for i in range(n - 1):
+        fs.append((I1 + i, O1 + i, O1 + i + 1, I1 + i + 1))      # top
+        fs.append((I0 + i + 1, O0 + i + 1, O0 + i, I0 + i))      # bottom
+        fs.append((O0 + i, O0 + i + 1, O1 + i + 1, O1 + i))      # outer side
+        fs.append((I0 + i + 1, I0 + i, I1 + i, I1 + i + 1))      # inner side
+    fs.append((I0, O0, O1, I1)); fs.append((O0 + n - 1, I0 + n - 1, I1 + n - 1, O1 + n - 1))
+    C.mesh(name, vs, fs, role, module)
 
 
 def dome(cx, cy, z0, r, h, rings=5, segs=16):
@@ -328,7 +354,8 @@ def roof_and_interior():
         C.box('Chimney stack', (x, y, CORNICE + 1.3), (1.2, 1.2, 2.6), 'stone', 'chimneys', 0)
         C.box('Chimney cap', (x, y, CORNICE + 2.68), (1.5, 1.5, .16), 'pale', 'chimneys', 0)
     zl = LEVELS[0]
-    A.sofa(-2.0, -D / 2 + 6.0, zl)
+    A.sofa(-2.0, -D / 2 + 6.0, zl); A.desk(3.5, -D / 2 + 3.0, zl + .05)
+    C.box('Salon partition', (-4.5, -D / 2 + 5.0, zl + 1.6), (.16, 8.0, 3.2), 'interior', 'partitions', 0)
 
 
 def site():
@@ -336,7 +363,7 @@ def site():
     C.box('South sidewalk', (0, -D / 2 - ext / 2, .0075), (W + 2 * ext, ext, .015), 'foundation', 'sidewalk', 0)
     C.box('West sidewalk', (-W / 2 - ext / 2, ext / 2, .0075), (ext, D + ext, .015), 'foundation', 'sidewalk', 0)
     C.box('Kerb south', (0, -D / 2 - ext + .06, .06), (W + 2 * ext, .12, .12), 'stone', 'sidewalk', 0)
-    C.box('Kerb west', (-W / 2 - ext + .06, 0, .06), (.12, D + 2 * ext, .12), 'stone', 'sidewalk', 0)
+    C.box('Kerb west', (-W / 2 - ext + .06, .06, .06), (.12, D + 2 * ext - .12, .12), 'stone', 'sidewalk', 0)
     C.box('Rear court', (0, D / 2 + 3.0, .0075), (W, 6.0, .015), 'foundation', 'court', 0)
     street_tree(4.0, -D / 2 - 3.6)
     street_tree(-W / 2 - 3.6, 6.0)

@@ -14,7 +14,8 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-arched-mill-mixed-use'
-W, D = 20.0, 22.0                # near-square block: gable faces south and north, four-bay faces along the west street and the rear
+W, D = 22.0, 22.0                # gable faces south and north (four bays plus a narrow blank end bay at the rear corner), four-bay eave faces along the west street and the rear
+END_BAY = 2.0                    # blank end bay at the east end of the gable faces, with the ground-floor door at the rear corner
 T = .34
 G0 = .15
 LEVELS = [4.6, 8.2, 11.8]
@@ -24,9 +25,10 @@ RIDGE = 19.0
 BAYS_LONG = 4
 BAYS_GABLE = 4
 PIL = .9                       # pilaster width
-PAV = (-6.8, 8.7, 7.0, 2.9)     # rooftop pavilion y0, y1 along the west slope (73% of the ridge, open slate to the south), depth from the parapet, front wall height
+PAV = (-6.8, 8.7, 1.8, 2.7)     # rooftop glasshouse y0, y1 along the west slope (73% of the ridge, open slate to the south), deck depth in front of its glass wall, glass wall height
+PAV_BACK = -3.0                  # x where the glazed mono-pitch roof meets its glazed back wall against the slate cut
 DECK = (-7.2, D / 2 - T - .3)     # level deck under the pavilion with a railed terrace beyond its north end
-CHIMNEY = (W / 2 - .9, -D / 2 + 7.0)    # on the rear wall line, a third of the way up from the street gable
+CHIMNEY = (W / 2 - 1.5, -D / 2 + 1.7)   # inside the footprint behind the rear corner of the street gable, rising through the east slope
 EPS = .002
 PALETTE = dict(wall=(.56, .30, .20), joint=(.40, .22, .14), trim=(.12, .12, .13),
     pale=(.72, .68, .60), stone=(.64, .60, .52), roof=(.30, .31, .34), sand=(.60, .56, .48),
@@ -55,10 +57,10 @@ def manifest(version):
         source_archetype='industrial_brick_mixed_use/variant_0 (industrial_brick_original_mill)',
         measurement_contract=dict(dimensions_m=dict(width=W, depth=D, height=h),
             observed_storeys=4, storey_programme='retail ground floor behind arched shopfronts; three loft storeys; glazed rooftop pavilion',
-            plan='22 x 20 m near-square corner block read from the top view and the four-bay rhythm of both street faces; the eaves face runs along the west street and the gable face along the south street; ridge along the long axis',
-            facade='four bays on every face; brick pilasters 0.9 m between recessed panels; segmental-arched shopfronts 3.3 x 3.8 m; arched windows 2.4 x 2.7 m on each upper storey; stone sill band at 4.6 m; dentil cornice at 15.4 m',
+            plan='22 x 22 m corner block read from the top view: four bays plus a 2 m blank end bay on the gable faces, four bays on the eave faces; the eaves face runs along the west street and the gable face along the south street',
+            facade='four bays on every face plus a blank end bay at the rear end of the gables; pilasters run straight into the gables to the raked coping, the dentil cornice is on the eave faces only; brick pilasters 0.9 m between recessed panels; segmental-arched shopfronts 3.3 x 3.8 m; arched windows 2.4 x 2.7 m on each upper storey; stone sill band at 4.6 m; dentil cornice at 15.4 m',
             levels_m=[G0] + LEVELS, eave_m=EAVE, parapet_m=PAR, ridge_m=RIDGE,
-            roof='slate planes to a ridge at 19 m; raked gable parapets on the south and north faces; glazed pavilion 15.5 x 7 m cut into the west slope over a level deck, open slate to the south and a railed terrace beyond its north end; chimney 2.2 m square to 26 m on the rear wall line in the southern third; four rooflights on the east slope',
+            roof='slate planes to a ridge at 19 m; raked gable parapets on the south and north faces; lean-to glasshouse 15.5 m long on the west slope: a 2.7 m glass wall behind a 1.8 m deck, a glazed mono-pitch roof rising to a glazed back wall against the slate cut, open slate to the south and a railed terrace beyond its north end; chimney 2.2 m square to 26 m inside the footprint behind the rear corner of the street gable; four rooflights on the east slope',
             inferred='the north gable and the east (rear) face are not visible in any source and repeat the grammar with a loading door; interiors are teaching assumptions'),
         roof_contract=dict(type='pitched slate with gable parapets; glazed pavilion on the front slope; chimney through the rear slope', datum_m=EAVE, crowns_m=[RIDGE, RIDGE + 7.0]),
         identity_contract=dict(owner='red-brick mill with arched shopfronts and arched windows between pilasters, dentil cornice, slate roof with raked gables, glazed rooftop pavilion, tall corner chimney'),
@@ -120,13 +122,16 @@ def arch_fill(f, u, z_top, w, rise, module='arches'):
     f.panel('Segmental arch spandrel', [(u + a, b) for a, b in pts], -.025, T + .02, 'wall', module)
 
 
-def elevation(f, lo, hi, bays, blind=(), ground='shops', gable=False):
+def elevation(f, lo, hi, bays, blind=(), ground='shops', gable=False, end_bay=0.0, end_door=False, end_lo=False):
     """Brick elevation: pilastered bays with arched openings on every storey; optional raked gable above the cornice."""
     span = hi - lo
-    pitch = span / bays
+    pitch = (span - end_bay) / bays
+    start = lo + (end_bay if end_lo else 0.0)
     holes = []
+    if end_door:
+        holes.append(hole(f'{f.label} end bay door', (lo + end_bay / 2) if end_lo else (hi - end_bay / 2), G0, 1.2, 2.5, kind='door'))
     for i in range(bays):
-        c = lo + pitch * (i + .5)
+        c = start + pitch * (i + .5)
         if i in blind:
             continue
         if ground == 'shops':
@@ -158,17 +163,20 @@ def elevation(f, lo, hi, bays, blind=(), ground='shops', gable=False):
             arch_fill(f, h['u'], h['z'] + h['h'], h['w'], .32)
             m.box('stone', h['u'], -.04, h['z'] - .06, h['w'] + .24, T + .14, .12)
     # Pilasters (proud), recessed-panel reveal lines, stone band, dentil cornice, coping.
-    for i in range(bays + 1):
-        u = lo + pitch * i
-        if i == 0: u += PIL / 2 - .01
-        elif i == bays: u -= PIL / 2 - .01
-        m.box('wall', u, -.06, (LEVELS[0] + EAVE) / 2, PIL, .12 + .04, EAVE - LEVELS[0] - 2 * EPS)
+    hw = span / 2
+    for i in range(bays + 1 + (1 if end_bay else 0)):
+        u = start + pitch * i if i <= bays else (lo if end_lo else hi)
+        if u <= lo + .01: u = lo + PIL / 2 - .01
+        elif u >= hi - .01: u = hi - PIL / 2 + .01
+        # On the gables the pilasters run straight up to the raked coping; on the eave faces they stop under the cornice.
+        ztop = (PAR + (RIDGE + .5 - PAR) * (1 - abs(u) / hw) - .35) if gable else EAVE - 2 * EPS
+        m.box('wall', u, -.06, (LEVELS[0] + ztop) / 2, PIL, .12 + .04, ztop - LEVELS[0])
     m.box('stone', (lo + hi) / 2, -.07, LEVELS[0] + .08, span - 2 * EPS, T + .20, .28)
-    m.box('stone', (lo + hi) / 2, -.09, EAVE - .18, span - 2 * EPS, T + .24, .36)
-    for i in range(int(span / .6)):
-        m.box('wall', lo + .3 + i * .6, -.14, EAVE - .50, .30, .14, .22)
+    if not gable:
+        m.box('stone', (lo + hi) / 2, -.09, EAVE - .18, span - 2 * EPS, T + .24, .36)
+        for i in range(int(span / .6)):
+            m.box('wall', lo + .3 + i * .6, -.14, EAVE - .50, .30, .14, .22)
     if gable:
-        hw = span / 2
         f.panel('Gable parapet', [(-hw, top - EPS), (hw, top - EPS), (0, RIDGE + .5)], 0, T, 'wall', 'gables')
         for s in (-1, 1):
             C.beam('Gable coping', f.p(s * hw, -.04, top + .02), f.p(0, -.04, RIDGE + .52), .20, T + .08, 'stone', 'coping')
@@ -192,39 +200,45 @@ def roof():
     zl = LEVELS[1]
     A.sofa(-5.5, -4.0, zl); A.bed(-6.0, 2.0, zl); A.desk(-6.0, -9.0, zl + .05)
     C.box('Loft partition', (-5.0, -1.0, zl + 1.6), (8.0, .16, 3.2), 'interior', 'partitions', 0)
-    # Rooftop pavilion cut into the west slope: level deck, glazed box with a metal frame, flat roof just above the ridge.
-    py0, py1, depth, ph = PAV
+    # Lean-to glasshouse on the west slope: level deck behind the parapet, glass front wall, glazed mono-pitch roof on purlins
+    # rising to a glazed back wall that stands against the slate cut, glazed end walls.
+    py0, py1, deck, ph = PAV
     dy0, dy1 = DECK
-    x0 = -W / 2 + .6; x1 = x0 + depth
+    x0 = -W / 2 + .6; xw = x0 + deck; xb = PAV_BACK
     zd = EAVE + .9
-    C.cut_box(west, 'Pavilion roof cut', ((x0 + .9 + x1) / 2, (dy0 + dy1) / 2, (EAVE + RIDGE) / 2), (x1 - x0 - .9, dy1 - dy0, RIDGE - EAVE + 2.0))
-    C.box('Pavilion deck', ((x0 + x1) / 2, (dy0 + dy1) / 2, zd - .15), (depth + .6, dy1 - dy0, .30), 'concrete', 'pavilion', 0)
-    C.box('Pavilion base', ((x0 + x1) / 2 - .3, (dy0 + dy1) / 2, (EAVE - .3 + zd - .3) / 2), (depth, dy1 - dy0, zd - .3 - (EAVE - .3)), 'wall', 'pavilion', 0)
-    C.box('Pavilion floor', ((x0 + x1) / 2, (py0 + py1) / 2, zd + .004), (depth, py1 - py0, .008), 'floor', 'pavilion', 0)
-    top = RIDGE + .35
-    for x in (x0 + .9, x1):
-        C.box('Pavilion glazing', (x, (py0 + py1) / 2, (zd + top) / 2), (.03, py1 - py0, top - zd - .1), 'glass', 'pavilion', 0)
+    def slope(x):
+        return EAVE + (RIDGE - EAVE) * (x + W / 2 - .2) / (W / 2 - .2)
+    zt = zd + ph; zr = zt + 1.1
+    C.cut_box(west, 'Glasshouse roof cut', ((x0 + .9 + xb) / 2, (dy0 + dy1) / 2, (EAVE + RIDGE) / 2), (xb - x0 - .9, dy1 - dy0, RIDGE - EAVE + 2.0))
+    C.box('Glasshouse deck', ((x0 + xb) / 2, (dy0 + dy1) / 2, zd - .15), (xb - x0 + .6, dy1 - dy0, .30), 'concrete', 'pavilion', 0)
+    C.box('Glasshouse base', ((x0 + xb) / 2 - .3, (dy0 + dy1) / 2, (EAVE - .3 + zd - .3) / 2), (xb - x0, dy1 - dy0, zd - .3 - (EAVE - .3)), 'wall', 'pavilion', 0)
+    C.box('Glasshouse floor', ((xw + xb) / 2, (py0 + py1) / 2, zd + .004), (xb - xw, py1 - py0, .008), 'floor', 'pavilion', 0)
+    C.box('Glasshouse front glazing', (xw, (py0 + py1) / 2, (zd + zt) / 2), (.03, py1 - py0, zt - zd - .05), 'glass', 'pavilion', 0)
+    C.box('Glasshouse back glazing', (xb, (py0 + py1) / 2, (zd + zr) / 2), (.03, py1 - py0, zr - zd - .05), 'glass', 'pavilion', 0)
+    C.prism('Glasshouse roof glazing', [(xw - .05, zt + .02), (xb + .05, zr + .02), (xb + .05, zr - .02), (xw - .05, zt - .02)], 'y', py0, py1, 'glass', 'pavilion')
     for y in (py0, py1):
-        C.box('Pavilion end glazing', ((x0 + .9 + x1) / 2, y, (zd + top) / 2), (x1 - x0 - .9, .03, top - zd - .1), 'glass', 'pavilion', 0)
+        C.prism('Glasshouse end glazing', [(xw, zd), (xw, zt), (xb, zr), (xb, zd)], 'y', y - .015, y + .015, 'glass', 'pavilion')
     for y in [py0 + (py1 - py0) * k / 8 for k in range(9)]:
-        for x in (x0 + .9, x1):
-            C.box('Pavilion mullion', (x, y, (zd + top) / 2), (.10, .10, top - zd), 'metal', 'pavilion', 0)
-    C.box('Pavilion roof', ((x0 + .9 + x1) / 2, (py0 + py1) / 2, top + .08), (x1 - x0 - .9 + .4, py1 - py0 + .4, .16), 'metal', 'pavilion', 0)
-    C.box('Pavilion roof glazing', ((x0 + .9 + x1) / 2, (py0 + py1) / 2, top + .18), (x1 - x0 - 1.3, py1 - py0 - .4, .03), 'glass', 'pavilion', 0)
+        C.box('Glasshouse front mullion', (xw, y, (zd + zt) / 2), (.10, .10, zt - zd), 'metal', 'pavilion', 0)
+        C.box('Glasshouse back mullion', (xb, y, (zd + zr) / 2), (.10, .10, zr - zd), 'metal', 'pavilion', 0)
+        C.beam('Glasshouse purlin', (xw - .05, y, zt + .06), (xb + .05, y, zr + .06), .10, .10, 'metal', 'pavilion')
+    C.beam('Glasshouse eaves beam', (xw, py0, zt + .05), (xw, py1, zt + .05), .14, .12, 'metal', 'pavilion')
+    C.beam('Glasshouse ridge beam', (xb, py0, zr + .05), (xb, py1, zr + .05), .14, .12, 'metal', 'pavilion')
     C.railing('Terrace rail west', (x0 - .05, dy0 + .1, zd), (x0 - .05, dy1 - .1, zd), height=1.05, spacing=.9, role='hardware')
-    C.railing('Terrace rail north', (x0 - .05, dy1 - .1, zd), (x1 + .25, dy1 - .1, zd), height=1.05, spacing=.9, role='hardware')
-    C.railing('Terrace rail south', (x0 - .05, dy0 + .1, zd), (x1 + .25, dy0 + .1, zd), height=1.05, spacing=.9, role='hardware')
-    C.qa_room_light('Pavilion', ((x0 + x1) / 2, (py0 + py1) / 2, top - .4), 60, 4.0)
+    C.railing('Terrace rail north', (x0 - .05, dy1 - .1, zd), (xb + .25, dy1 - .1, zd), height=1.05, spacing=.9, role='hardware')
+    C.railing('Terrace rail south', (x0 - .05, dy0 + .1, zd), (xb + .25, dy0 + .1, zd), height=1.05, spacing=.9, role='hardware')
+    C.qa_room_light('Glasshouse', ((xw + xb) / 2, (py0 + py1) / 2, zt - .3), 60, 4.0)
     # Rooflights on the east slope, chimney on the rear eave beside the street gable.
-    for y in (-5.0, 3.0):
+    for y in (-2.0, 6.0):
         for x in (3.0, 6.5):
             z = EAVE + (RIDGE - EAVE) * (W / 2 - x) / (W / 2)
             C.box('Rooflight', (x, y, z + .25), (1.4, 1.6, .5), 'metal', 'rooflights', 0)
     cx, cy = CHIMNEY
     C.box('Chimney stack', (cx, cy, (G0 + RIDGE + 6.5) / 2), (2.2, 2.2, RIDGE + 6.5 - G0), 'wall', 'chimney', 0)
+    C.box('Chimney flashing', (cx, cy, slope(-abs(cx)) + .30), (2.6, 2.6, .16), 'stone', 'chimney', 0)
     C.box('Chimney cap', (cx, cy, RIDGE + 6.55), (2.6, 2.6, .30), 'stone', 'chimney', 0)
     C.box('Chimney cap course', (cx, cy, RIDGE + 6.2), (2.45, 2.45, .20), 'stone', 'chimney', 0)
-    C.CONTACTS.append(dict(name='Slate planes on the eaves walls inside the parapet; pavilion on a level deck cut into the west slope; chimney through the east eave', eave_m=EAVE, ridge_m=RIDGE))
+    C.CONTACTS.append(dict(name='Slate planes on the eaves walls inside the parapet; pavilion on a level deck cut into the west slope; chimney through the east slope behind the rear corner of the street gable', eave_m=EAVE, ridge_m=RIDGE))
 
 
 def site():
@@ -252,8 +266,8 @@ def build():
     f_front, f_right, f_rear, f_left = A.faces(W, D)
     elevation(f_left, -D / 2 + T, D / 2 - T, BAYS_LONG, ground='shops')                  # west street face
     elevation(f_right, -D / 2 + T, D / 2 - T, BAYS_LONG, ground='rear')                  # east rear face
-    elevation(f_front, -W / 2, W / 2, BAYS_GABLE, ground='shops', gable=True)            # south street gable
-    elevation(f_rear, -W / 2, W / 2, BAYS_GABLE, blind=(0,), ground='windows', gable=True)  # north gable
+    elevation(f_front, -W / 2, W / 2, BAYS_GABLE, ground='shops', gable=True, end_bay=END_BAY, end_door=True)   # south street gable, blank end bay at the rear corner
+    elevation(f_rear, -W / 2, W / 2, BAYS_GABLE, ground='windows', gable=True, end_bay=END_BAY, end_lo=True)    # north gable, blank end bay at the same rear corner
     roof()
 
 

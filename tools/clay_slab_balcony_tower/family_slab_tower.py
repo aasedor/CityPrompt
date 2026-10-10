@@ -60,7 +60,7 @@ def manifest(version):
             levels_m=[G0, L0] + STOREYS[1:], roof_m=ROOF, parapet_m=PARAPET, storey_height_m=FH,
             penthouse='9 x 8 m concrete box 6.2 m high at the centre-rear of the roof with a louvre, a door and rooftop units',
             inferred='the oblique balcony stacks read as twelve to thirteen storeys; twelve are authored, the most the 1 MiB clay budget carries with every balcony and window band built; north and east faces repeat the grammar; interiors are teaching assumptions'),
-        roof_contract=dict(type='flat membrane behind a 0.7 m parapet; penthouse and rooftop units on curbs', datum_m=ROOF, crowns_m=[PARAPET, ROOF + 6.2, ROOF + 7.0]),
+        roof_contract=dict(type='flat membrane behind a 0.7 m parapet whose projecting slab band caps every fin; penthouse and rooftop units on curbs', datum_m=ROOF, crowns_m=[PARAPET, ROOF + 6.2, ROOF + 7.0]),
         identity_contract=dict(owner='exposed concrete slab edges with projecting balcony plates and glass balustrades, brick spandrel centre bays, full-height concrete fins, recessed glazed base, rooftop penthouse'),
         material_contract=dict(profile='source-palette clay: warm brick spandrels with recessed courses, board-marked concrete slabs and fins, dark aluminium frames, clear glass balustrades, pale membrane roof', textured_keeper=False),
         programme_contract=dict(storeys=N + 1, ground='lobby, mail room and a corner retail unit behind the recessed glazing', upper='four apartments per floor with living rooms opening onto the balconies', roof='mechanical penthouse'),
@@ -133,9 +133,11 @@ def tower_face(f, span, street, inset=0.0, side=False):
         if i < N:
             m.box('concrete', 0.0, -.05, zf - .02, span - 2 * EPS, .40, .30)
         else:
-            # Thick pale concrete roof slab and parapet band over the brick; side faces butt into the front and rear bands.
-            pw = span - 2 * EPS - (2 * (T + .12) if side else 0.0)
-            m.box('concrete', 0.0, (T - .25 + .06) / 2, (ROOF - .17 + PARAPET + .02) / 2, pw, T + .25 + .06, PARAPET + .02 - (ROOF - .17))
+            # Thick pale concrete roof slab projecting like the balcony plates, so it caps every fin and reads as one continuous
+            # coping; the front and rear bands run past the corners and the side bands abut them (no shared faces, no gaps).
+            proj = PLATE - .05
+            pw = span - 2 * .36 - 2 * EPS if side else span + 2 * proj
+            m.box('concrete', 0.0, (-proj + .36) / 2, (ROOF - .17 + PARAPET + .02) / 2, pw, proj + .36, PARAPET + .02 - (ROOF - .17))
         if i < N:
             for s in (-1, 1):
                 bw = half - FIN_U - .3
@@ -146,15 +148,16 @@ def tower_face(f, span, street, inset=0.0, side=False):
     m.flush('facade')
     # Fin walls at the bay lines, grade to parapet, projecting past the balcony plates' inner half.
     for u in (-FIN_U, FIN_U):
-        f.part('Fin wall', u, -(PLATE - .05) / 2 + .05, (G0 + ROOF + .10) / 2, .32, PLATE - .05 + .10, ROOF + .10 - G0, 'concrete', 'fins', 0)
+        f.part('Fin wall', u, -(PLATE - .05) / 2 + .05, (G0 + ROOF - .17 - EPS) / 2, .32, PLATE - .05 + .10, ROOF - .17 - EPS - G0, 'concrete', 'fins', 0)
 
 
 def corner_fins():
     for sx in (-1, 1):
         for sy in (-1, 1):
             x = sx * (W / 2 + PLATE / 2 - .22); y = sy * (D / 2 - .16)
-            C.box('Corner fin', (x, y, (G0 + ROOF + .10) / 2), (PLATE + .18, .32, ROOF + .10 - G0), 'concrete', 'fins', 0)
-            C.box('Corner fin return', (sx * (W / 2 - .16), sy * (D / 2 + PLATE / 2 - .22), (G0 + ROOF + .10) / 2), (.32, PLATE + .18, ROOF + .10 - G0), 'concrete', 'fins', 0)
+            zt = ROOF - .17 - EPS
+            C.box('Corner fin', (x, y, (G0 + zt) / 2), (PLATE + .18, .32, zt - G0), 'concrete', 'fins', 0)
+            C.box('Corner fin return', (sx * (W / 2 - .16), sy * (D / 2 + PLATE / 2 - .22), (G0 + zt) / 2), (.32, PLATE + .18, zt - G0), 'concrete', 'fins', 0)
 
 
 def ground_floor(f_front, f_right, f_rear, f_left):
@@ -183,13 +186,13 @@ def ground_floor(f_front, f_right, f_rear, f_left):
         m.flush('ground glazing')
         if f is f_front:
             f.part('Entrance canopy', -FIN_U - 2.0, -.95, L0 - 1.3, 6.0, 2.3, .22, 'concrete', 'canopy', 0)
-            f.part('Entrance canopy upstand', -FIN_U - 2.0, -2.0, L0 - 1.1, 6.0, .20, .40, 'concrete', 'canopy', 0)
+            f.part('Entrance canopy upstand', -FIN_U - 2.0, -1.95, L0 - 1.19 + .19, 5.9, .20, .38, 'concrete', 'canopy', 0)
             C.CONTACTS.append(dict(name='Lobby doors at slab level under a cantilevered canopy', grade_m=0, canopy_m=L0 - 1.3))
         for u in (-FIN_U, 0.0, FIN_U):
             f.part('Ground column', u, RECESS * .35, (G0 + L0 - .3) / 2, .55, .55, L0 - .3 - G0, 'concrete', 'ground columns', 0)
     for f, span, door, inset in ((f_rear, W, True, 0.0), (f_right, D, False, T)):
         half = span / 2
-        holes = [hole(f.label + ' garage door', -4.0, G0, 4.6, 3.2, kind='door')] if door else [hole(f.label + ' ground window', 2.0, 1.2, 3.0, 1.8)]
+        holes = [hole(f.label + ' garage door', -(FIN_U + (half - FIN_U) / 2), G0, 4.6, 3.2, kind='door')] if door else [hole(f.label + ' ground window', 2.0, 1.2, 3.0, 1.8)]
         f.wall(f.label + ' ground carrier', -half + inset, half - inset - EPS, G0, L0 - .3 + EPS, depth=T, holes=holes)
         G.brick_courses(f, -half + inset + .02, half - inset - .02, G0, L0 - .3, holes, spacing=.075)
         m = Merge(f)
