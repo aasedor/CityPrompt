@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-slab-balcony-tower",
+  "variant_id": "clay-slab-balcony-tower-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "west_end_mid_century_tower/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1359002,
+      "sha256": "2162c09765e0642250189af1e05892839e6b609995a5449fcf806f811378bfad"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 962210,
+      "sha256": "5f73a8002e4e03e73e8ee3e9026e12e30cf9945e54dbabe58be9fc6332239512"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 860456,
+      "sha256": "b5030b8a17f908b961657d9180aec913770a9d7a3ff64da234ecae9ca5ba8851"
+    }
+  ]
+}

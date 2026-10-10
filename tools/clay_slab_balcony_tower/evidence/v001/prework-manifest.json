@@ -1,0 +1,429 @@
+{
+  "candidate": "clay-slab-balcony-tower-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-slab-balcony-tower",
+  "variant_id": "clay-slab-balcony-tower-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "west_end_mid_century_tower/variant_0 (midcentury_concrete_slab)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 25.2,
+      "depth": 25.2,
+      "height": 47.20000000000001
+    },
+    "observed_storeys": 13,
+    "storey_programme": "recessed glazed ground floor with lobby and retail; twelve apartment storeys; mechanical penthouse",
+    "plan": "square 22 x 22 m read from the 600 x 600 px roof in the top view at 0.037 m/px; balcony plates project 1.6 m on the outer bays of every face",
+    "facade": "per face: balcony bay, centre bay with brick spandrel and window band, balcony bay; concrete fin walls at the bay lines and corners; exposed slab edge every storey",
+    "levels_m": [
+      0.15,
+      4.6,
+      7.55,
+      10.5,
+      13.450000000000001,
+      16.4,
+      19.35,
+      22.300000000000004,
+      25.25,
+      28.200000000000003,
+      31.15,
+      34.1,
+      37.050000000000004
+    ],
+    "roof_m": 40.00000000000001,
+    "parapet_m": 40.70000000000001,
+    "storey_height_m": 2.95,
+    "penthouse": "9 x 8 m concrete box 6.2 m high at the centre-rear of the roof with a louvre, a door and rooftop units",
+    "inferred": "the oblique balcony stacks read as twelve to thirteen storeys; twelve are authored, the most the 1 MiB clay budget carries with every balcony and window band built; north and east faces repeat the grammar; interiors are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "flat membrane behind a 0.7 m parapet; penthouse and rooftop units on curbs",
+    "datum_m": 40.00000000000001,
+    "crowns_m": [
+      40.70000000000001,
+      46.20000000000001,
+      47.00000000000001
+    ]
+  },
+  "identity_contract": {
+    "owner": "exposed concrete slab edges with projecting balcony plates and glass balustrades, brick spandrel centre bays, full-height concrete fins, recessed glazed base, rooftop penthouse"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: warm brick spandrels with recessed courses, board-marked concrete slabs and fins, dark aluminium frames, clear glass balustrades, pale membrane roof",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 13,
+    "ground": "lobby, mail room and a corner retail unit behind the recessed glazing",
+    "upper": "four apartments per floor with living rooms opening onto the balconies",
+    "roof": "mechanical penthouse"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Ground-floor columns from slab to the first floor plate",
+    "Balcony plates cast with the slab edge band",
+    "Fin walls from grade to the parapet",
+    "Penthouse on the roof slab"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -42.839999999999996,
+        22.656000000000002
+      ],
+      "target": [
+        0,
+        0,
+        21.240000000000006
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -33.4152,
+        -35.9856,
+        94.40000000000002
+      ],
+      "target": [
+        0,
+        0,
+        21.240000000000006
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        29.987999999999996,
+        -34.272,
+        141.60000000000002
+      ],
+      "target": [
+        0,
+        0,
+        21.240000000000006
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        64.25999999999999
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 35.279999999999994
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -42.839999999999996,
+        0,
+        28.320000000000004
+      ],
+      "target": [
+        0,
+        0,
+        21.240000000000006
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        42.839999999999996,
+        0,
+        28.320000000000004
+      ],
+      "target": [
+        0,
+        0,
+        21.240000000000006
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        42.839999999999996,
+        28.320000000000004
+      ],
+      "target": [
+        0,
+        0,
+        21.240000000000006
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        29.987999999999996,
+        34.272,
+        84.96000000000002
+      ],
+      "target": [
+        0,
+        0,
+        21.240000000000006
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -16.0,
+        -24.0,
+        12.0
+      ],
+      "target": [
+        -4.0,
+        -11.0,
+        16.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -20.0,
+        -20.0,
+        30.0
+      ],
+      "target": [
+        -8.0,
+        -11.0,
+        32.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -6.0,
+        -18.0,
+        20.5
+      ],
+      "target": [
+        -2.0,
+        -11.0,
+        21.5
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "balcony_close",
+      "location": [
+        10.0,
+        -19.0,
+        24.0
+      ],
+      "target": [
+        7.5,
+        -12.0,
+        23.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "fin_contact",
+      "location": [
+        -14.0,
+        -16.0,
+        2.5
+      ],
+      "target": [
+        -5.1,
+        -11.8,
+        3.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "lobby_entry",
+      "location": [
+        -6.0,
+        -22.0,
+        2.0
+      ],
+      "target": [
+        0.0,
+        -8.6,
+        2.2
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_penthouse",
+      "location": [
+        -26.0,
+        -30.0,
+        58.0
+      ],
+      "target": [
+        0.0,
+        3.0,
+        46.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "base_corner",
+      "location": [
+        -24.0,
+        -24.0,
+        4.0
+      ],
+      "target": [
+        -11.0,
+        -11.0,
+        5.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -7.0,
+        -4.0,
+        23.900000000000006
+      ],
+      "target": [
+        -8.0,
+        -12.5,
+        23.500000000000004
+      ],
+      "lens": 60,
+      "whole": false
+    },
+    {
+      "name": "rear_lane",
+      "location": [
+        12.0,
+        30.0,
+        4.0
+      ],
+      "target": [
+        2.0,
+        11.0,
+        3.0
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "balcony_close",
+    "fin_contact",
+    "lobby_entry",
+    "roof_penthouse",
+    "base_corner",
+    "interior",
+    "rear_lane"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1359002,
+        "sha256": "2162c09765e0642250189af1e05892839e6b609995a5449fcf806f811378bfad"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 962210,
+        "sha256": "5f73a8002e4e03e73e8ee3e9026e12e30cf9945e54dbabe58be9fc6332239512"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 860456,
+        "sha256": "b5030b8a17f908b961657d9180aec913770a9d7a3ff64da234ecae9ca5ba8851"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_slab_tower.py",
+        "sha256": "e4d155e1b692b9f948e4039e30fabc6d16dea289f9b053ffee4e06eaa0333aaf"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "3141bd84434979a476a8e2207fd58956ee44df56d55b879b2af66f8b429ff4c1"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "a8e78abf16df6f4d1705444c5f5fb8c53dbeb663e354eee6ab3574005bfd8afb"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T13:29:38.736323+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

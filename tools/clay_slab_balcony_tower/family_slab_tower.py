@@ -21,12 +21,13 @@ FH = 2.95                      # apartment storey
 N = 12
 ROOF = L0 + N * FH             # 42.95
 PARAPET = ROOF + .70
-FIN_U = 5.1                    # fin walls at the bay lines
+FIN_U = 3.4                    # fin walls at the bay lines (centre bay about 31 percent of the face)
 PLATE = 1.6                    # balcony projection
 RECESS = 2.4                   # ground floor set back on the street faces
 PENT = (-4.5, 4.5, -1.0, 7.0)  # penthouse footprint
+ANNEX = (4.5, 8.0, 1.0, 5.0)   # lower annex beside it
 EPS = .002
-PALETTE = dict(wall=(.56, .36, .26), joint=(.42, .26, .18), trim=(.16, .17, .18),
+PALETTE = dict(wall=(.54, .30, .22), joint=(.40, .20, .14), trim=(.16, .17, .18),
     pale=(.70, .68, .64), stone=(.62, .60, .56), roof=(.70, .70, .68), sand=(.58, .56, .52),
     foundation=(.42, .42, .41), glass=(.52, .58, .58), hardware=(.30, .31, .33),
     interior=(.78, .74, .66), floor=(.44, .42, .40), timber=(.40, .28, .16), blue=(.14, .22, .28),
@@ -115,7 +116,7 @@ def tower_face(f, span, street, inset=0.0):
     for i, zf in enumerate(STOREYS):
         for s in (-1, 1):
             holes.append(hole(f'{f.label} balcony glazing {i}{"L" if s < 0 else "R"}', s * (FIN_U + (half - FIN_U) / 2), zf + .08, half - FIN_U - .9, FH - .45, kind='balcony'))
-        holes.append(hole(f'{f.label} window band {i}', 0.0, zf + 1.05, 2 * FIN_U - 1.2, FH - 1.45, kind='band'))
+        holes.append(hole(f'{f.label} window band {i}', 0.0, zf + .78, 2 * FIN_U - 1.0, FH - .78 - .21, kind='band'))
     z0 = L0 - .30
     f.wall(f.label + ' carrier', -half + inset, half - inset - EPS, z0, PARAPET, depth=T, holes=holes)
     m = Merge(f)
@@ -126,7 +127,7 @@ def tower_face(f, span, street, inset=0.0):
             glazing(m, f, h, cols=1, occupied='bedrooms')
     # Brick courses on the centre-bay spandrels only.
     for i, zf in enumerate(STOREYS):
-        G.brick_courses(f, -FIN_U + .35, FIN_U - .35, zf + .14, zf + 1.04, [], spacing=.075)
+        G.brick_courses(f, -FIN_U + .35, FIN_U - .35, zf + .14, zf + .76, [], spacing=.075)
     # Slab edge band every storey and at the roof; balcony plates and balustrades on the outer bays.
     for i, zf in enumerate(STOREYS + [ROOF]):
         m.box('concrete', 0.0, -.05, zf - .02, span - 2 * EPS, .40, .30)
@@ -140,7 +141,7 @@ def tower_face(f, span, street, inset=0.0):
     m.flush('facade')
     # Fin walls at the bay lines, grade to parapet, projecting past the balcony plates' inner half.
     for u in (-FIN_U, FIN_U):
-        f.part('Fin wall', u, -(PLATE - .05) / 2 + .05, (G0 + PARAPET) / 2, .32, PLATE - .05 + .10, PARAPET - G0, 'concrete', 'fins', 0)
+        f.part('Fin wall', u, -(PLATE - .05) / 2 + .05, (G0 + ROOF + .10) / 2, .32, PLATE - .05 + .10, ROOF + .10 - G0, 'concrete', 'fins', 0)
     f.part('Parapet coping', 0.0, T / 2, PARAPET + .03, span - 2 * EPS, T + .08, .06, 'pale', 'coping', 0)
 
 
@@ -148,8 +149,8 @@ def corner_fins():
     for sx in (-1, 1):
         for sy in (-1, 1):
             x = sx * (W / 2 + PLATE / 2 - .22); y = sy * (D / 2 - .16)
-            C.box('Corner fin', (x, y, (G0 + PARAPET) / 2), (PLATE + .18, .32, PARAPET - G0), 'concrete', 'fins', 0)
-            C.box('Corner fin return', (sx * (W / 2 - .16), sy * (D / 2 + PLATE / 2 - .22), (G0 + PARAPET) / 2), (.32, PLATE + .18, PARAPET - G0), 'concrete', 'fins', 0)
+            C.box('Corner fin', (x, y, (G0 + ROOF + .10) / 2), (PLATE + .18, .32, ROOF + .10 - G0), 'concrete', 'fins', 0)
+            C.box('Corner fin return', (sx * (W / 2 - .16), sy * (D / 2 + PLATE / 2 - .22), (G0 + ROOF + .10) / 2), (.32, PLATE + .18, ROOF + .10 - G0), 'concrete', 'fins', 0)
 
 
 def ground_floor(f_front, f_right, f_rear, f_left):
@@ -177,7 +178,9 @@ def ground_floor(f_front, f_right, f_rear, f_left):
                 glazing(m, g, h, cols=3, rows=1, occupied='lobby and retail', kind='storefront')
         m.flush('ground glazing')
         if f is f_front:
-            g.part('Entrance canopy', mid, -RECESS / 2 - .3, L0 - 1.3, 6.0, RECESS + .6, .16, 'concrete', 'canopy', 0)
+            f.part('Entrance canopy', -FIN_U - 2.0, -.9, L0 - 1.3, 6.0, 2.2, .16, 'concrete', 'canopy', 0)
+            for du in (-2.4, 2.4):
+                C.rod('Canopy hanger', f.p(-FIN_U - 2.0 + du, -1.7, L0 - 1.22), f.p(-FIN_U - 2.0 + du, -1.7, L0 - .32), .03, 'hardware', 'canopy', 8)
             C.CONTACTS.append(dict(name='Lobby doors at slab level under a cantilevered canopy', grade_m=0, canopy_m=L0 - 1.3))
         for u in (-FIN_U, 0.0, FIN_U):
             f.part('Ground column', u, RECESS * .35, (G0 + L0 - .3) / 2, .55, .55, L0 - .3 - G0, 'concrete', 'ground columns', 0)
@@ -202,10 +205,11 @@ def ground_floor(f_front, f_right, f_rear, f_left):
 
 def floors_and_roof():
     C.box('Ground slab', (0, 0, G0 / 2), (W + 2 * PLATE, D + 2 * PLATE, G0), 'foundation', 'foundation', 0)
-    for i, zf in enumerate(STOREYS):
+    for i, zf in enumerate(STOREYS[1:], 1):
         C.box(f'Floor plate {i}', (0, 0, zf - .15), (W - 2 * T, D - 2 * T, .30), 'floor', 'occupied floors', 0)
         C.qa_room_light(f'Front apartments {i}', (0, -D / 2 + 3.5, zf + FH - .4), 90, 4.0)
         C.qa_room_light(f'Rear apartments {i}', (0, D / 2 - 3.5, zf + FH - .4), 60, 4.0)
+    C.qa_room_light('Front apartments 0', (0, -D / 2 + 3.5, L0 + FH - .4), 90, 4.0)
     C.box('First floor plate', (0, 0, L0 - .15), (W - 2 * T, D - 2 * T, .30), 'floor', 'occupied floors', 0)
     C.box('Roof slab', (0, 0, ROOF - .12), (W - 2 * T, D - 2 * T, .24), 'floor', 'roof', 0)
     C.box('Roof membrane', (0, 0, ROOF + .004), (W - 2 * T - .02, D - 2 * T - .02, .008), 'membrane', 'roof', 0)
@@ -220,7 +224,10 @@ def floors_and_roof():
         C.box('Penthouse louvre blade', ((x0 + x1) / 2 - 1.5, y0 - .10, ROOF + 3.5 + k * .27), (1.9, .06, .06), 'pale', 'penthouse', 0)
     C.box('Penthouse door', ((x0 + x1) / 2 + 2.0, y0 - .03, ROOF + 1.1), (1.0, .06, 2.2), 'trim', 'penthouse', 0)
     C.box('Elevator overrun', (x1 - 2.0, y1 - 2.0, ROOF + 6.6), (3.5, 3.5, .8), 'concrete', 'penthouse', 0)
-    for x, y in ((-7.5, -6.0), (7.0, -6.5), (7.5, 6.0)):
+    ax0, ax1, ay0, ay1 = ANNEX
+    C.box('Penthouse annex', ((ax0 + ax1) / 2, (ay0 + ay1) / 2, ROOF + 1.6), (ax1 - ax0, ay1 - ay0, 3.2), 'concrete', 'penthouse', 0)
+    C.box('Annex door', (ax1 + .03, (ay0 + ay1) / 2, ROOF + 1.1), (.06, 1.0, 2.2), 'trim', 'penthouse', 0)
+    for x, y in ((-7.5, -6.0), (7.0, -7.0), (-7.5, 6.0)):
         C.box('Rooftop unit curb', (x, y, ROOF + .12), (2.2, 1.6, .24), 'pale', 'rooftop plant', 0)
         C.box('Rooftop unit', (x, y, ROOF + .24 + .55), (2.0, 1.4, 1.1), 'hardware', 'rooftop plant', 0)
     C.rod('Roof vent', (-2.0, -6.0, ROOF), (-2.0, -6.0, ROOF + 1.4), .22, 'hardware', 'rooftop plant', 10)

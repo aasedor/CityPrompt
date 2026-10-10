@@ -1,0 +1,5127 @@
+{
+  "candidate": "clay-slab-balcony-tower-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 204,
+    "vertices": 13808,
+    "polygons": 18866,
+    "triangles": 18866,
+    "path": "clay-slab-balcony-tower-clay-v001-authoring.blend",
+    "bytes": 3135836,
+    "sha256": "7c071cff2f3ff549b514417c1a0d75616493340b8a01af1d1ac9a282124c3a5e"
+  },
+  "runtime": {
+    "path": "clay-slab-balcony-tower-clay-v001.glb",
+    "bytes": 984520,
+    "sha256": "32da6185462fcc018361a238a6ffd01f067303647585e4cd24940948e76ce7a1",
+    "meshes": 15,
+    "materials": 15,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 15,
+    "vertices": 13808,
+    "polygons": 18866,
+    "triangles": 18866
+  },
+  "original_bounds_m": [
+    [
+      -18.75747299194336,
+      -18.600000381469727,
+      0.0
+    ],
+    [
+      18.600000381469727,
+      18.600000381469727,
+      47.0
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -18.75747299194336,
+      -18.600000381469727,
+      0.0
+    ],
+    [
+      18.600000381469727,
+      18.600000381469727,
+      47.0
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 25.2,
+    "depth": 25.2,
+    "height": 47.20000000000001
+  },
+  "native_dimensions_m": {
+    "width": 37.357473373413086,
+    "depth": 37.20000076293945,
+    "height": 47.0
+  },
+  "native_bottom_center_m": [
+    -0.0787363052368164,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 6,
+    "joint": 50,
+    "trim": 23,
+    "pale": 15,
+    "stone": 2,
+    "foundation": 4,
+    "glass": 7,
+    "hardware": 10,
+    "interior": 7,
+    "floor": 14,
+    "timber": 21,
+    "blue": 2,
+    "planting": 9,
+    "concrete": 33,
+    "membrane": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/balcony_close.png",
+    "renders/fin_contact.png",
+    "renders/lobby_entry.png",
+    "renders/roof_penthouse.png",
+    "renders/base_corner.png",
+    "renders/interior.png",
+    "renders/rear_lane.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.23153458535671234,
+      "xmax": 0.7684653997421265,
+      "ymin": 0.0796545073390007,
+      "ymax": 0.9136735200881958
+    },
+    "front_corner": {
+      "xmin": 0.2821859121322632,
+      "xmax": 0.7192885279655457,
+      "ymin": 0.09260540455579758,
+      "ymax": 0.8180285096168518
+    },
+    "aerial": {
+      "xmin": 0.2625570595264435,
+      "xmax": 0.7354719638824463,
+      "ymin": 0.09132885187864304,
+      "ymax": 0.83705735206604
+    },
+    "top": {
+      "xmin": 0.18649083375930786,
+      "xmax": 0.8108772039413452,
+      "ymin": 0.08549705892801285,
+      "ymax": 0.9145029187202454
+    },
+    "left_side": {
+      "xmin": 0.25573381781578064,
+      "xmax": 0.7443040013313293,
+      "ymin": 0.07996653020381927,
+      "ymax": 0.9050706028938293
+    },
+    "right_side": {
+      "xmin": 0.25569599866867065,
+      "xmax": 0.7442662119865417,
+      "ymin": 0.07996653020381927,
+      "ymax": 0.9087455868721008
+    },
+    "rear": {
+      "xmin": 0.25573408603668213,
+      "xmax": 0.7442662715911865,
+      "ymin": 0.07996683567762375,
+      "ymax": 0.910702645778656
+    },
+    "rear_side": {
+      "xmin": 0.27669477462768555,
+      "xmax": 0.7258991599082947,
+      "ymin": 0.07738494873046875,
+      "ymax": 0.8290501832962036
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Penthouse and rooftop units bearing on the roof slab",
+      "roof_m": 40.00000000000001
+    },
+    {
+      "name": "Lobby doors at slab level under a cantilevered canopy",
+      "grade_m": 0,
+      "canopy_m": 3.3
+    },
+    {
+      "name": "Ground columns from the slab to the first floor plate under the recessed street faces",
+      "grade_m": 0,
+      "top_m": 4.3
+    },
+    {
+      "name": "Balcony plates cast with the slab edge band on every apartment storey",
+      "storeys": 12,
+      "projection_m": 1.6
+    },
+    {
+      "name": "Fin walls and corner fins from grade to the parapet",
+      "top_m": 40.70000000000001
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "front balcony glazing 0L",
+      "face": "front",
+      "u": -8.05,
+      "z": 4.68,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 0R",
+      "face": "front",
+      "u": 8.05,
+      "z": 4.68,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 0",
+      "face": "front",
+      "u": 0.0,
+      "z": 5.6499999999999995,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 1L",
+      "face": "front",
+      "u": -8.05,
+      "z": 7.63,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 1R",
+      "face": "front",
+      "u": 8.05,
+      "z": 7.63,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 1",
+      "face": "front",
+      "u": 0.0,
+      "z": 8.6,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 2L",
+      "face": "front",
+      "u": -8.05,
+      "z": 10.58,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 2R",
+      "face": "front",
+      "u": 8.05,
+      "z": 10.58,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 2",
+      "face": "front",
+      "u": 0.0,
+      "z": 11.55,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 3L",
+      "face": "front",
+      "u": -8.05,
+      "z": 13.530000000000001,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 3R",
+      "face": "front",
+      "u": 8.05,
+      "z": 13.530000000000001,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 3",
+      "face": "front",
+      "u": 0.0,
+      "z": 14.500000000000002,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 4L",
+      "face": "front",
+      "u": -8.05,
+      "z": 16.479999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 4R",
+      "face": "front",
+      "u": 8.05,
+      "z": 16.479999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 4",
+      "face": "front",
+      "u": 0.0,
+      "z": 17.45,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 5L",
+      "face": "front",
+      "u": -8.05,
+      "z": 19.43,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 5R",
+      "face": "front",
+      "u": 8.05,
+      "z": 19.43,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 5",
+      "face": "front",
+      "u": 0.0,
+      "z": 20.400000000000002,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 6L",
+      "face": "front",
+      "u": -8.05,
+      "z": 22.380000000000003,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 6R",
+      "face": "front",
+      "u": 8.05,
+      "z": 22.380000000000003,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 6",
+      "face": "front",
+      "u": 0.0,
+      "z": 23.350000000000005,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 7L",
+      "face": "front",
+      "u": -8.05,
+      "z": 25.33,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 7R",
+      "face": "front",
+      "u": 8.05,
+      "z": 25.33,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 7",
+      "face": "front",
+      "u": 0.0,
+      "z": 26.3,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 8L",
+      "face": "front",
+      "u": -8.05,
+      "z": 28.28,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 8R",
+      "face": "front",
+      "u": 8.05,
+      "z": 28.28,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 8",
+      "face": "front",
+      "u": 0.0,
+      "z": 29.250000000000004,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 9L",
+      "face": "front",
+      "u": -8.05,
+      "z": 31.229999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 9R",
+      "face": "front",
+      "u": 8.05,
+      "z": 31.229999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 9",
+      "face": "front",
+      "u": 0.0,
+      "z": 32.199999999999996,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 10L",
+      "face": "front",
+      "u": -8.05,
+      "z": 34.18,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 10R",
+      "face": "front",
+      "u": 8.05,
+      "z": 34.18,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 10",
+      "face": "front",
+      "u": 0.0,
+      "z": 35.15,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 11L",
+      "face": "front",
+      "u": -8.05,
+      "z": 37.13,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front balcony glazing 11R",
+      "face": "front",
+      "u": 8.05,
+      "z": 37.13,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front window band 11",
+      "face": "front",
+      "u": 0.0,
+      "z": 38.1,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 0L",
+      "face": "left",
+      "u": -8.05,
+      "z": 4.68,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 0R",
+      "face": "left",
+      "u": 8.05,
+      "z": 4.68,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 0",
+      "face": "left",
+      "u": 0.0,
+      "z": 5.6499999999999995,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 1L",
+      "face": "left",
+      "u": -8.05,
+      "z": 7.63,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 1R",
+      "face": "left",
+      "u": 8.05,
+      "z": 7.63,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 1",
+      "face": "left",
+      "u": 0.0,
+      "z": 8.6,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 2L",
+      "face": "left",
+      "u": -8.05,
+      "z": 10.58,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 2R",
+      "face": "left",
+      "u": 8.05,
+      "z": 10.58,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 2",
+      "face": "left",
+      "u": 0.0,
+      "z": 11.55,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 3L",
+      "face": "left",
+      "u": -8.05,
+      "z": 13.530000000000001,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 3R",
+      "face": "left",
+      "u": 8.05,
+      "z": 13.530000000000001,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 3",
+      "face": "left",
+      "u": 0.0,
+      "z": 14.500000000000002,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 4L",
+      "face": "left",
+      "u": -8.05,
+      "z": 16.479999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 4R",
+      "face": "left",
+      "u": 8.05,
+      "z": 16.479999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 4",
+      "face": "left",
+      "u": 0.0,
+      "z": 17.45,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 5L",
+      "face": "left",
+      "u": -8.05,
+      "z": 19.43,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 5R",
+      "face": "left",
+      "u": 8.05,
+      "z": 19.43,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 5",
+      "face": "left",
+      "u": 0.0,
+      "z": 20.400000000000002,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 6L",
+      "face": "left",
+      "u": -8.05,
+      "z": 22.380000000000003,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 6R",
+      "face": "left",
+      "u": 8.05,
+      "z": 22.380000000000003,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 6",
+      "face": "left",
+      "u": 0.0,
+      "z": 23.350000000000005,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 7L",
+      "face": "left",
+      "u": -8.05,
+      "z": 25.33,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 7R",
+      "face": "left",
+      "u": 8.05,
+      "z": 25.33,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 7",
+      "face": "left",
+      "u": 0.0,
+      "z": 26.3,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 8L",
+      "face": "left",
+      "u": -8.05,
+      "z": 28.28,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 8R",
+      "face": "left",
+      "u": 8.05,
+      "z": 28.28,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 8",
+      "face": "left",
+      "u": 0.0,
+      "z": 29.250000000000004,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 9L",
+      "face": "left",
+      "u": -8.05,
+      "z": 31.229999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 9R",
+      "face": "left",
+      "u": 8.05,
+      "z": 31.229999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 9",
+      "face": "left",
+      "u": 0.0,
+      "z": 32.199999999999996,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 10L",
+      "face": "left",
+      "u": -8.05,
+      "z": 34.18,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 10R",
+      "face": "left",
+      "u": 8.05,
+      "z": 34.18,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 10",
+      "face": "left",
+      "u": 0.0,
+      "z": 35.15,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 11L",
+      "face": "left",
+      "u": -8.05,
+      "z": 37.13,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left balcony glazing 11R",
+      "face": "left",
+      "u": 8.05,
+      "z": 37.13,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "left window band 11",
+      "face": "left",
+      "u": 0.0,
+      "z": 38.1,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 0L",
+      "face": "right",
+      "u": -8.05,
+      "z": 4.68,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 0R",
+      "face": "right",
+      "u": 8.05,
+      "z": 4.68,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 0",
+      "face": "right",
+      "u": 0.0,
+      "z": 5.6499999999999995,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 1L",
+      "face": "right",
+      "u": -8.05,
+      "z": 7.63,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 1R",
+      "face": "right",
+      "u": 8.05,
+      "z": 7.63,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 1",
+      "face": "right",
+      "u": 0.0,
+      "z": 8.6,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 2L",
+      "face": "right",
+      "u": -8.05,
+      "z": 10.58,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 2R",
+      "face": "right",
+      "u": 8.05,
+      "z": 10.58,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 2",
+      "face": "right",
+      "u": 0.0,
+      "z": 11.55,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 3L",
+      "face": "right",
+      "u": -8.05,
+      "z": 13.530000000000001,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 3R",
+      "face": "right",
+      "u": 8.05,
+      "z": 13.530000000000001,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 3",
+      "face": "right",
+      "u": 0.0,
+      "z": 14.500000000000002,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 4L",
+      "face": "right",
+      "u": -8.05,
+      "z": 16.479999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 4R",
+      "face": "right",
+      "u": 8.05,
+      "z": 16.479999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 4",
+      "face": "right",
+      "u": 0.0,
+      "z": 17.45,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 5L",
+      "face": "right",
+      "u": -8.05,
+      "z": 19.43,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 5R",
+      "face": "right",
+      "u": 8.05,
+      "z": 19.43,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 5",
+      "face": "right",
+      "u": 0.0,
+      "z": 20.400000000000002,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 6L",
+      "face": "right",
+      "u": -8.05,
+      "z": 22.380000000000003,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 6R",
+      "face": "right",
+      "u": 8.05,
+      "z": 22.380000000000003,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 6",
+      "face": "right",
+      "u": 0.0,
+      "z": 23.350000000000005,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 7L",
+      "face": "right",
+      "u": -8.05,
+      "z": 25.33,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 7R",
+      "face": "right",
+      "u": 8.05,
+      "z": 25.33,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 7",
+      "face": "right",
+      "u": 0.0,
+      "z": 26.3,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 8L",
+      "face": "right",
+      "u": -8.05,
+      "z": 28.28,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 8R",
+      "face": "right",
+      "u": 8.05,
+      "z": 28.28,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 8",
+      "face": "right",
+      "u": 0.0,
+      "z": 29.250000000000004,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 9L",
+      "face": "right",
+      "u": -8.05,
+      "z": 31.229999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 9R",
+      "face": "right",
+      "u": 8.05,
+      "z": 31.229999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 9",
+      "face": "right",
+      "u": 0.0,
+      "z": 32.199999999999996,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 10L",
+      "face": "right",
+      "u": -8.05,
+      "z": 34.18,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 10R",
+      "face": "right",
+      "u": 8.05,
+      "z": 34.18,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 10",
+      "face": "right",
+      "u": 0.0,
+      "z": 35.15,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 11L",
+      "face": "right",
+      "u": -8.05,
+      "z": 37.13,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right balcony glazing 11R",
+      "face": "right",
+      "u": 8.05,
+      "z": 37.13,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "right window band 11",
+      "face": "right",
+      "u": 0.0,
+      "z": 38.1,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 0L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 4.68,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 0R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 4.68,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 0",
+      "face": "rear",
+      "u": 0.0,
+      "z": 5.6499999999999995,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 1L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 7.63,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 1R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 7.63,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 1",
+      "face": "rear",
+      "u": 0.0,
+      "z": 8.6,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 2L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 10.58,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 2R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 10.58,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 2",
+      "face": "rear",
+      "u": 0.0,
+      "z": 11.55,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 3L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 13.530000000000001,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 3R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 13.530000000000001,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 3",
+      "face": "rear",
+      "u": 0.0,
+      "z": 14.500000000000002,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 4L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 16.479999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 4R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 16.479999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 4",
+      "face": "rear",
+      "u": 0.0,
+      "z": 17.45,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 5L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 19.43,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 5R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 19.43,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 5",
+      "face": "rear",
+      "u": 0.0,
+      "z": 20.400000000000002,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 6L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 22.380000000000003,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 6R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 22.380000000000003,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 6",
+      "face": "rear",
+      "u": 0.0,
+      "z": 23.350000000000005,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 7L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 25.33,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 7R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 25.33,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 7",
+      "face": "rear",
+      "u": 0.0,
+      "z": 26.3,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 8L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 28.28,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 8R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 28.28,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 8",
+      "face": "rear",
+      "u": 0.0,
+      "z": 29.250000000000004,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 9L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 31.229999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 9R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 31.229999999999997,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 9",
+      "face": "rear",
+      "u": 0.0,
+      "z": 32.199999999999996,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 10L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 34.18,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 10R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 34.18,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 10",
+      "face": "rear",
+      "u": 0.0,
+      "z": 35.15,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 11L",
+      "face": "rear",
+      "u": -8.05,
+      "z": 37.13,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear balcony glazing 11R",
+      "face": "rear",
+      "u": 8.05,
+      "z": 37.13,
+      "width": 5.0,
+      "height": 2.5,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room opening onto the balcony",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "rear window band 11",
+      "face": "rear",
+      "u": 0.0,
+      "z": 38.1,
+      "width": 9.0,
+      "height": 1.5000000000000002,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedrooms",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Lobby doors",
+      "face": "front recessed ground",
+      "u": 1.2000000000000002,
+      "z": 0.15,
+      "width": 2.4,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "front recessed ground storefront L",
+      "face": "front recessed ground",
+      "u": -4.05,
+      "z": 0.15,
+      "width": 7.299999999999999,
+      "height": 3.6999999999999997,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "front recessed ground storefront R",
+      "face": "front recessed ground",
+      "u": 6.45,
+      "z": 0.15,
+      "width": 7.299999999999999,
+      "height": 3.6999999999999997,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "left recessed ground storefront L",
+      "face": "left recessed ground",
+      "u": -5.824999999999999,
+      "z": 0.15,
+      "width": 8.55,
+      "height": 3.6999999999999997,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -8.600000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "left recessed ground storefront R",
+      "face": "left recessed ground",
+      "u": 3.7250000000000005,
+      "z": 0.15,
+      "width": 8.55,
+      "height": 3.6999999999999997,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -8.600000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "rear garage door",
+      "face": "rear",
+      "u": -4.0,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 3.2,
+      "kind": "roll-up door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        11.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking entry"
+    },
+    {
+      "id": "right ground window",
+      "face": "right",
+      "u": 2.0,
+      "z": 1.2,
+      "width": 3.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service room",
+      "cols": 2,
+      "rows": 1
+    }
+  ],
+  "authoring_modules": {
+    "sidewalk": [
+      "South sidewalk",
+      "West sidewalk",
+      "Kerb south",
+      "Kerb west"
+    ],
+    "lane": [
+      "Rear lane"
+    ],
+    "landscape": [
+      "East lawn",
+      "Planter",
+      "Planter soil",
+      "Planter.001",
+      "Planter soil.001"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005"
+    ],
+    "foundation": [
+      "Ground slab"
+    ],
+    "occupied floors": [
+      "Floor plate 0",
+      "Floor plate 1",
+      "Floor plate 2",
+      "Floor plate 3",
+      "Floor plate 4",
+      "Floor plate 5",
+      "Floor plate 6",
+      "Floor plate 7",
+      "Floor plate 8",
+      "Floor plate 9",
+      "Floor plate 10",
+      "Floor plate 11",
+      "First floor plate"
+    ],
+    "roof": [
+      "Roof slab",
+      "Roof membrane"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003"
+    ],
+    "office furniture": [
+      "Desk surface",
+      "Desk leg",
+      "Desk leg.001",
+      "Desk leg.002",
+      "Desk leg.003",
+      "Monitor base",
+      "Monitor stem",
+      "Monitor",
+      "Chair seat",
+      "Chair back",
+      "Chair leg",
+      "Chair leg.001",
+      "Chair leg.002",
+      "Chair leg.003"
+    ],
+    "bedroom furniture": [
+      "Bed grounded foot",
+      "Bed grounded foot.001",
+      "Bed grounded foot.002",
+      "Bed grounded foot.003",
+      "Bed frame",
+      "Mattress",
+      "Duvet",
+      "Headboard",
+      "Pillow",
+      "Pillow.001"
+    ],
+    "penthouse": [
+      "Penthouse",
+      "Penthouse louvre",
+      "Penthouse louvre blade",
+      "Penthouse louvre blade.001",
+      "Penthouse louvre blade.002",
+      "Penthouse louvre blade.003",
+      "Penthouse louvre blade.004",
+      "Penthouse louvre blade.005",
+      "Penthouse door",
+      "Elevator overrun"
+    ],
+    "rooftop plant": [
+      "Rooftop unit curb",
+      "Rooftop unit",
+      "Rooftop unit curb.001",
+      "Rooftop unit.001",
+      "Rooftop unit curb.002",
+      "Rooftop unit.002",
+      "Roof vent"
+    ],
+    "envelope": [
+      "front carrier",
+      "left carrier",
+      "right carrier",
+      "rear carrier",
+      "front recessed ground carrier",
+      "left recessed ground carrier",
+      "rear ground carrier",
+      "right ground carrier"
+    ],
+    "brick joints": [
+      "front measured mortar courses",
+      "front measured mortar courses.001",
+      "front measured mortar courses.002",
+      "front measured mortar courses.003",
+      "front measured mortar courses.004",
+      "front measured mortar courses.005",
+      "front measured mortar courses.006",
+      "front measured mortar courses.007",
+      "front measured mortar courses.008",
+      "front measured mortar courses.009",
+      "front measured mortar courses.010",
+      "front measured mortar courses.011",
+      "left measured mortar courses",
+      "left measured mortar courses.001",
+      "left measured mortar courses.002",
+      "left measured mortar courses.003",
+      "left measured mortar courses.004",
+      "left measured mortar courses.005",
+      "left measured mortar courses.006",
+      "left measured mortar courses.007",
+      "left measured mortar courses.008",
+      "left measured mortar courses.009",
+      "left measured mortar courses.010",
+      "left measured mortar courses.011",
+      "right measured mortar courses",
+      "right measured mortar courses.001",
+      "right measured mortar courses.002",
+      "right measured mortar courses.003",
+      "right measured mortar courses.004",
+      "right measured mortar courses.005",
+      "right measured mortar courses.006",
+      "right measured mortar courses.007",
+      "right measured mortar courses.008",
+      "right measured mortar courses.009",
+      "right measured mortar courses.010",
+      "right measured mortar courses.011",
+      "rear measured mortar courses",
+      "rear measured mortar courses.001",
+      "rear measured mortar courses.002",
+      "rear measured mortar courses.003",
+      "rear measured mortar courses.004",
+      "rear measured mortar courses.005",
+      "rear measured mortar courses.006",
+      "rear measured mortar courses.007",
+      "rear measured mortar courses.008",
+      "rear measured mortar courses.009",
+      "rear measured mortar courses.010",
+      "rear measured mortar courses.011",
+      "rear measured mortar courses.012",
+      "right measured mortar courses.012"
+    ],
+    "facade": [
+      "front facade trim",
+      "front facade glass",
+      "front facade concrete",
+      "front facade hardware",
+      "left facade trim",
+      "left facade glass",
+      "left facade concrete",
+      "left facade hardware",
+      "right facade trim",
+      "right facade glass",
+      "right facade concrete",
+      "right facade hardware",
+      "rear facade trim",
+      "rear facade glass",
+      "rear facade concrete",
+      "rear facade hardware"
+    ],
+    "fins": [
+      "Fin wall",
+      "Fin wall.001",
+      "Fin wall.002",
+      "Fin wall.003",
+      "Fin wall.004",
+      "Fin wall.005",
+      "Fin wall.006",
+      "Fin wall.007",
+      "Corner fin",
+      "Corner fin return",
+      "Corner fin.001",
+      "Corner fin return.001",
+      "Corner fin.002",
+      "Corner fin return.002",
+      "Corner fin.003",
+      "Corner fin return.003"
+    ],
+    "coping": [
+      "Parapet coping",
+      "Parapet coping.001",
+      "Parapet coping.002",
+      "Parapet coping.003"
+    ],
+    "ground glazing": [
+      "front recessed ground ground glazing trim",
+      "front recessed ground ground glazing glass",
+      "left recessed ground ground glazing trim",
+      "left recessed ground ground glazing glass"
+    ],
+    "canopy": [
+      "Entrance canopy"
+    ],
+    "ground columns": [
+      "Ground column",
+      "Ground column.001",
+      "Ground column.002",
+      "Ground column.003",
+      "Ground column.004",
+      "Ground column.005"
+    ],
+    "ground": [
+      "rear ground pale",
+      "rear ground hardware",
+      "right ground trim",
+      "right ground glass"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "finished_utc": "2026-10-10T15:16:24.485274+00:00",
+  "delivery_and_render_seconds": 6401.351020688,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
