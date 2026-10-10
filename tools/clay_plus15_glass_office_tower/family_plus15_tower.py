@@ -26,13 +26,13 @@ COL = 1.0                    # colonnade column
 RECESS = 3.2                 # lobby glazing behind the colonnade
 BRIDGE_X = (-13.0, -8.6)     # Plus 15 bridge leaves the south face here
 BRIDGE_Z = (4.6, 7.8)
-BRIDGE_LEN = 24.0
-PENT = [(-9.0, 9.0, -2.0, 10.0), (-9.0, 1.0, -10.0, -2.0)]   # L-shaped penthouse
+BRIDGE_LEN = 29.0
+PENT = [(-9.0, 9.0, -10.0, 2.0), (1.0, 9.0, 2.0, 10.0)]   # L-shaped penthouse, notch at the north-west
 PENT_H = 5.2
 EPS = .002
 PALETTE = dict(wall=(.74, .75, .74), joint=(.60, .61, .60), trim=(.78, .79, .78),
     pale=(.80, .80, .78), stone=(.70, .69, .66), roof=(.78, .78, .76), sand=(.64, .62, .58),
-    foundation=(.44, .44, .43), glass=(.30, .36, .40), hardware=(.30, .31, .33),
+    foundation=(.44, .44, .43), glass=(.20, .26, .30), hardware=(.30, .31, .33),
     interior=(.80, .78, .72), floor=(.46, .45, .43), timber=(.40, .28, .16), blue=(.14, .22, .28),
     planting=(.30, .42, .18), soil=(.22, .17, .10), concrete=(.68, .66, .62), metal=(.82, .83, .82),
     membrane=(.84, .84, .82), lightglass=(.56, .64, .66))
@@ -50,7 +50,7 @@ def manifest(version):
         ('curtain_grid', (26.0, -30.0, 40.0), (W / 2, -6.0, 42.0), 50),
         ('roof_terrace', (-50.0, -50.0, 82.0), (-6.0, 2.0, 66.0), 45),
         ('crown_penthouse', (30.0, -46.0, 76.0), (0.0, 2.0, 68.0), 45),
-        ('interior', (-4.0, 4.0, FLOORS[8] + 1.6), (-6.0, -D / 2 - 1.0, FLOORS[8] + 1.3), 60),
+        ('interior', (-12.0, 7.0, FLOORS[8] + 1.6), (-9.0, -D / 2 - 1.0, FLOORS[8] + 1.2), 60),
         ('rear_service', (10.0, 40.0, 4.0), (0.0, D / 2, 3.5), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
@@ -126,7 +126,7 @@ def tower_face(f, lo, hi):
         u = lo + .7 + (span - 1.4) * i / n
         m.box('metal', u, -.04, (L1 - .32 + PAR) / 2, .09, .14, PAR - L1 + .30)
     for zf in FLOORS[1:] + [ROOF]:
-        m.box('metal', (lo + hi) / 2, -.05, zf - .02, span - 2 * EPS, .12, .10)
+        m.box('metal', (lo + hi) / 2, -.11, zf - .02, span - 2 * EPS, .12, .10)
     m.flush('curtain wall')
     f.part('Parapet band', (lo + hi) / 2, -.03, PAR - .6 + .02, span - 2 * EPS, T + .08, 1.2, 'pale', 'coping', 0)
 
@@ -158,7 +158,7 @@ def lobby_face(f, lo, hi, doors=False, bridge=False):
     for i in range(7):
         u = lo + .5 + (span - 1.0) * i / 6
         f.part('Colonnade column', u, RECESS * .3, (G0 + L1 - .32) / 2, COL, COL, L1 - .32 - G0, 'concrete', 'colonnade', 0)
-    f.part('First floor edge', 0.0, RECESS / 2, L1 - .16, span - 2 * EPS, RECESS, .32, 'concrete', 'colonnade', 0)
+    f.part('First floor edge', 0.0, (T + RECESS) / 2, L1 - .16, span - 2 * EPS, RECESS - T, .32, 'concrete', 'colonnade', 0)
 
 
 def bridge():
@@ -172,9 +172,11 @@ def bridge():
         C.box('Bridge glazing', (x, yc, (z0 + .4 + z1 - .3) / 2), (.03, BRIDGE_LEN - .4, z1 - .3 - z0 - .4), 'lightglass', 'plus15 bridge', 0)
         for k in range(1, 8):
             C.box('Bridge mullion', (x, y0 - k * BRIDGE_LEN / 8, (z0 + z1) / 2), (.10, .08, z1 - z0 - .4), 'metal', 'plus15 bridge', 0)
-    C.box('Bridge end wall', (xc, y1 + .15, (z0 + z1) / 2), (x1 - x0 + .2, .30, z1 - z0 + .1), 'concrete', 'plus15 bridge', 0)
     for y in (y0 - 7.0, y0 - 17.0):
         C.box('Bridge pier', (xc, y, (G0 + z0) / 2), (1.0, 1.0, z0 - G0), 'concrete', 'plus15 bridge', 0)
+    # The bridge lands in the neighbouring block across the street, authored as a plain stub.
+    C.box('Neighbour block stub', (xc, y1 - 5.0, 4.5), (12.0, 10.0, 9.0), 'concrete', 'context', 0)
+    C.box('Neighbour block opening', (xc, y1 + .02, (z0 + z1) / 2), (x1 - x0 + .4, .06, z1 - z0), 'glass', 'context', 0)
     C.CONTACTS.append(dict(name='Plus 15 bridge bearing on the south face and two street piers', level_m=z0))
 
 
@@ -186,12 +188,17 @@ def roof_and_penthouse():
         C.box('Green roof planting', ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .40), (x1 - x0 - .2, y1 - y0 - .2, .08), 'planting', 'green roof', 0)
     for (x0, x1, y0, y1) in PENT:
         C.box('Penthouse', ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .3 + PENT_H / 2), (x1 - x0, y1 - y0, PENT_H), 'metal', 'penthouse', 0)
-    for s, y in ((-1, PENT[0][2]), (1, PENT[0][3])):
-        C.box('Penthouse glazing', (0.0, y + s * .06, ROOF + .3 + PENT_H / 2 + .3), (16.0, .08, PENT_H - 1.8), 'lightglass', 'penthouse', 0)
-    C.box('Penthouse west louvre', (PENT[0][0] - .06, 4.0, ROOF + .3 + PENT_H / 2), (.08, 10.0, PENT_H - 1.6), 'hardware', 'penthouse', 0)
-    for x, y in ((4.0, -6.0), (7.0, -6.0)):
-        C.box('Rooftop unit', (x, y, ROOF + .9), (2.2, 2.2, 1.6), 'hardware', 'rooftop plant', 0)
-        C.rod('Rooftop fan', (x, y, ROOF + 1.7), (x, y, ROOF + 1.9), .7, 'metal', 'rooftop plant', 14)
+    zc = ROOF + .3 + PENT_H / 2
+    # Glazed and louvred skin: glass on the south, east and north faces of the main block, louvres on the west and the wing.
+    C.box('Penthouse south glazing', (0.0, PENT[0][2] - .06, zc + .2), (16.0, .08, PENT_H - 1.4), 'lightglass', 'penthouse', 0)
+    C.box('Penthouse east glazing', (PENT[0][1] + .06, -4.0, zc + .2), (.08, 10.0, PENT_H - 1.4), 'lightglass', 'penthouse', 0)
+    C.box('Penthouse north glazing', (-4.0, PENT[0][3] + .06, zc + .2), (8.0, .08, PENT_H - 1.4), 'lightglass', 'penthouse', 0)
+    C.box('Penthouse west louvre', (PENT[0][0] - .06, -4.0, zc), (.08, 10.0, PENT_H - 1.6), 'hardware', 'penthouse', 0)
+    C.box('Penthouse wing louvre', (PENT[1][0] - .06, 6.0, zc), (.08, 6.0, PENT_H - 1.6), 'hardware', 'penthouse', 0)
+    C.box('Penthouse wing glazing', (5.0, PENT[1][3] + .06, zc + .2), (6.0, .08, PENT_H - 1.4), 'lightglass', 'penthouse', 0)
+    for x, y in ((-4.0, -4.0), (3.0, -4.0)):
+        C.box('Rooftop unit', (x, y, ROOF + .3 + PENT_H + .8), (2.2, 2.2, 1.6), 'hardware', 'rooftop plant', 0)
+        C.rod('Rooftop fan', (x, y, ROOF + .3 + PENT_H + 1.6), (x, y, ROOF + .3 + PENT_H + 1.8), .7, 'metal', 'rooftop plant', 14)
     C.CONTACTS.append(dict(name='Penthouse and green roof beds bearing on the roof slab', roof_m=ROOF))
 
 
@@ -199,9 +206,8 @@ def floors_and_site():
     C.box('Ground slab', (0, 0, G0 / 2), (W, D, G0), 'foundation', 'foundation', 0)
     for i, zf in enumerate(FLOORS):
         C.box(f'Office floor {i}', (0, 0, zf - .13), (W - 2 * T, D - 2 * T, .26), 'floor', 'occupied floors', 0)
-        if i % 2 == 0:
-            C.qa_room_light(f'Offices south {i}', (0, -D / 2 + 6.0, zf + FH - .4), 120, 7.0)
-            C.qa_room_light(f'Offices north {i}', (0, D / 2 - 6.0, zf + FH - .4), 90, 7.0)
+        C.qa_room_light(f'Offices south {i}', (0, -D / 2 + 6.0, zf + FH - .4), 120, 7.0)
+        C.qa_room_light(f'Offices north {i}', (0, D / 2 - 6.0, zf + FH - .4), 90, 7.0)
     C.box('Core', (0, 0, (G0 + ROOF) / 2), (12.0, 9.0, ROOF - G0), 'concrete', 'core', 0)
     C.qa_room_light('Lobby', (0, -8.0, L1 - .8), 140, 8.0)
     zf = FLOORS[8]
@@ -213,7 +219,7 @@ def floors_and_site():
         A.sofa(x, -D / 2 + 6.0, G0)
     C.box('Reception desk', (3.0, -6.0, G0 + .55), (4.0, .9, 1.1), 'timber', 'lobby', 0)
     for x, y in ((-W / 2 - .35, -D / 2 - .35), (W / 2 + .35, -D / 2 - .35), (-W / 2 - .35, D / 2 + .35), (W / 2 + .35, D / 2 + .35)):
-        C.box('Corner column', (x, y, (G0 + PAR) / 2), (1.0, 1.0, PAR - G0), 'pale', 'corner columns', 0)
+        C.box('Corner column', (x, y, (G0 + PAR - .06) / 2), (1.0, 1.0, PAR - .06 - G0), 'pale', 'corner columns', 0)
     ext = 8.0
     for name, loc, size in (('South sidewalk', (0, -D / 2 - ext / 2, .0075), (W + 2 * ext, ext, .015)), ('North sidewalk', (0, D / 2 + ext / 2, .0075), (W + 2 * ext, ext, .015)),
                             ('West sidewalk', (-W / 2 - ext / 2, 0, .0075), (ext, D, .015)), ('East sidewalk', (W / 2 + ext / 2, 0, .0075), (ext, D, .015))):
