@@ -1,0 +1,552 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "podium south storefront 0",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south ribbon window 0",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south storefront 1",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south ribbon window 1",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south storefront 2",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south ribbon window 2",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south storefront 3",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south ribbon window 3",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south storefront 4",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south ribbon window 4",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south storefront 5",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south ribbon window 5",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south lobby doors",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south lobby glazing",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium south ribbon window 6",
+      "face": "podium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east storefront 0",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east ribbon window 0",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east storefront 1",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east ribbon window 1",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east storefront 2",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east ribbon window 2",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east storefront 3",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east ribbon window 3",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east garage door",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium east ribbon window 4",
+      "face": "podium east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ground window 0",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ribbon window 0",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ribbon window 1",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ground window 2",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ribbon window 2",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north loading door",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ribbon window 3",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ground window 4",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ribbon window 4",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ribbon window 5",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ground window 6",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium north ribbon window 6",
+      "face": "podium north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west storefront 0",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west ribbon window 0",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west storefront 1",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west ribbon window 1",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west storefront 2",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west ribbon window 2",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west storefront 3",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west ribbon window 3",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west storefront 4",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "podium west ribbon window 4",
+      "face": "podium west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 0",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 1",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 2",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 3",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 4",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 5",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 6",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 7",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 8",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 9",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south glazing band 10",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 0",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 1",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 2",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 3",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 4",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 5",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 6",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 7",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 8",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 9",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north glazing band 10",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 0",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 1",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 2",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 3",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 4",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 5",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 6",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 7",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 8",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 9",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east glazing band 10",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 0",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 1",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 2",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 3",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 4",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 5",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 6",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 7",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 8",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 9",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west glazing band 10",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

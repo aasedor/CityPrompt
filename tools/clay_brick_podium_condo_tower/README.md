@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P1: both east-face tower corner columns still pierce the podium cornice and stop about 0.5 m into the second-storey brick with an exposed soffit (the v003 fix started them on the podium roof but the podium face carries a cornice above that level); fix is to start them above the cornice or stop them on it.
+- P1: south-face balconies are a checkerboard on four stacks; both sources show five continuous every-floor stacks on that face (the east face's two continuous stacks conform).
+- P1: tower footprint too small and pushed south-east: the podium runs 27 percent of its length west of the tower where the sources show one bay or less, and the tower covers about 45 percent of the podium plan against most of it in the top source.
+- P1: corner grammar deviates: the source has a double-height glazed corner on a thin mullion with the lobby entry on the east face under a projecting canopy; the render has a wide brick corner pier and the entry on the south face with a transom and no canopy.
+- P1: the interior camera frames only a frosted pane, mullions, a balustrade fragment and a sill band with no legible room.
+- P2 (recorded): podium second-storey windows narrower than the source's near-full-bay glazing; east face flush so the east balconies overhang the sidewalk; penthouse a single box against a stepped source; single-floor interior props and dark smudges in the glazing; loose framing in front_corner, aerial and balcony_stack; no storefront bulkhead; two-wire roof rail.
