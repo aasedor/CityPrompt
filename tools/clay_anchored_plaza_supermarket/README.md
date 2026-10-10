@@ -66,3 +66,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P1: overlap the tower's corner piers into its side walls (no shared coplanar edge) to
+  remove the black sliver at the south-west corner.
+- P1: slide the tower west to the cafe party wall, move the sign band and entrance to the
+  bay east of it and add the lower anchor tier behind the cafe, as all three sources show.
+- P2 carried: asphalt road with lane lines at the site edge, remove the in-court lawn
+  strips, taller pylon pedestal, interior camera inside the anchor.

@@ -1,0 +1,210 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "Anchor storefront west",
+      "face": "anchor south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Anchor storefront east",
+      "face": "anchor south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Anchor entrance doors",
+      "face": "anchor south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Anchor east window",
+      "face": "anchor east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Anchor loading door",
+      "face": "anchor north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Anchor rear door",
+      "face": "anchor north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe storefront",
+      "face": "cafe south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe west window 0",
+      "face": "cafe west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe west window 1",
+      "face": "cafe west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline shop front 0",
+      "face": "inline south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline shop front 1",
+      "face": "inline south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline shop front 2",
+      "face": "inline south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline shop front 3",
+      "face": "inline south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline shop front 4",
+      "face": "inline south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline shop front 5",
+      "face": "inline south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline shop front 6",
+      "face": "inline south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline rear door 0",
+      "face": "inline north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline rear door 1",
+      "face": "inline north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline rear door 2",
+      "face": "inline north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline rear door 3",
+      "face": "inline north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline rear door 4",
+      "face": "inline north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline rear door 5",
+      "face": "inline north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Inline rear door 6",
+      "face": "inline north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap shop front 0",
+      "face": "endcap west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap shop front 1",
+      "face": "endcap west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap shop front 2",
+      "face": "endcap west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap shop front 3",
+      "face": "endcap west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Drive-through window",
+      "face": "endcap west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap south window",
+      "face": "endcap south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap rear door 0",
+      "face": "endcap east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap rear door 1",
+      "face": "endcap east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap rear door 2",
+      "face": "endcap east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Endcap rear door 3",
+      "face": "endcap east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Drive-through service window",
+      "face": "endcap east",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
