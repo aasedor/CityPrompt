@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-craneway-hall-clay-v003",
+  "glb": "clay-craneway-hall-clay-v003.glb",
+  "glb_bytes": 861808,
+  "glb_sha256": "e83d422f574e0da3c3677f54bcba0b1952861bdf0ea6dcf6a34e742c6d3688bf",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "crane_interior.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "gable_mouth.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "monitor_close.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "side_doors.png": 92,
+    "stair_contact.png": 92,
+    "top.png": 92,
+    "yard_sidings.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-craneway-hall-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 31792712
+}

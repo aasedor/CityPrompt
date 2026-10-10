@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P0: re-aim the side_doors camera on the aisle roller door (one bay further east than
+  the current frame).
+- P1: open the west gable full width: full-height open end bay with lattice corner
+  columns and braces in the aisle shoulders, not only over the nave.
+- P1: widen the lattice columns to roughly 0.35 to 0.45 of the bay module.
+- P1: raise the monitor_close camera so the monitor gables are inside the frame.
