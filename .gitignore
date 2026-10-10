@@ -159,3 +159,4 @@ tools/archetype_compiler/sticker_assets/**/.*.tmp.png
 !seed/classroom-streets/**/*.glb
 # Private, extracted portable validation runtime; never commit credentials.
 .validation/
+.drive-sync/

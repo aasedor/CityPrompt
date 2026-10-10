@@ -1,0 +1,51 @@
+# Save the clay building candidates (tools/clay_*/candidates/*.glb) and their evidence to the
+# Google Drive folder on every push that changes a candidate. Needs the repository secrets
+# described in tools/drive_sync/README.md; without them the job stops before uploading.
+name: Drive sync (clay buildings)
+
+on:
+  push:
+    paths:
+      - "tools/clay_*/candidates/**"
+      - "tools/clay_*/evidence/**"
+      - "tools/drive_sync/**"
+      - ".github/workflows/drive-sync.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: drive-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests google-auth
+      - name: Check credentials
+        id: creds
+        env:
+          GDRIVE_OAUTH_REFRESH_TOKEN: ${{ secrets.GDRIVE_OAUTH_REFRESH_TOKEN }}
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$GDRIVE_OAUTH_REFRESH_TOKEN" ] && [ -z "$GDRIVE_SERVICE_ACCOUNT_JSON" ]; then
+            echo "No Drive credentials configured; see tools/drive_sync/README.md" >> "$GITHUB_STEP_SUMMARY"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Sync to Google Drive
+        if: steps.creds.outputs.ready == 'true'
+        env:
+          GDRIVE_OAUTH_CLIENT_ID: ${{ secrets.GDRIVE_OAUTH_CLIENT_ID }}
+          GDRIVE_OAUTH_CLIENT_SECRET: ${{ secrets.GDRIVE_OAUTH_CLIENT_SECRET }}
+          GDRIVE_OAUTH_REFRESH_TOKEN: ${{ secrets.GDRIVE_OAUTH_REFRESH_TOKEN }}
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+          GDRIVE_FOLDER_ID: ${{ vars.GDRIVE_FOLDER_ID }}
+        run: python tools/drive_sync/sync_clay_glbs.py sync --evidence | tee -a "$GITHUB_STEP_SUMMARY"
