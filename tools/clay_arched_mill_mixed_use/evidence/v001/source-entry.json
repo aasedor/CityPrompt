@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-arched-mill-mixed-use",
+  "variant_id": "clay-arched-mill-mixed-use-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "industrial_brick_mixed_use/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1277361,
+      "sha256": "049dffded31d819bbb63a8f99da90487eea5360efbac26945e77bd69901b1d94"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 924408,
+      "sha256": "b19c286b8e77439bbefe0b75cfc933afd45c338173f5a6c9167fee37d23e61b1"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 840178,
+      "sha256": "8f81fee2055fb580d55f58f32a91a165f33e4a6552b8b19411f5a38a170b0807"
+    }
+  ]
+}
