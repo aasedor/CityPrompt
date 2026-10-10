@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-courtyard-mixed-use-midrise",
+  "variant_id": "clay-courtyard-mixed-use-midrise-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "rndsqr_terraced_mixed_use_midrise/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1234206,
+      "sha256": "558a2af42e940e5c8aab606fa2f1d732d4e2c753f2a8fae97167696ac4543c73"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 907543,
+      "sha256": "aa238e6af3c002b1d6cabb579d54f4a38a6d50ee58ee2d00e901520b6e156efe"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 815380,
+      "sha256": "c5fd47f730f1dc2fce1d2c8d49137beb7bfd26a17a78860d85d7797a89dd14a6"
+    }
+  ]
+}

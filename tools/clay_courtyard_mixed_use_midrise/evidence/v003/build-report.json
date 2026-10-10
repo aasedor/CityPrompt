@@ -1,0 +1,4059 @@
+{
+  "candidate": "clay-courtyard-mixed-use-midrise-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 263,
+    "vertices": 11653,
+    "polygons": 16800,
+    "triangles": 16800,
+    "path": "clay-courtyard-mixed-use-midrise-clay-v003-authoring.blend",
+    "bytes": 3480964,
+    "sha256": "b233daf39f6a7bd43bdf9ccc39fc82bcb832908518caaa7153aff9eeded367d3"
+  },
+  "runtime": {
+    "path": "clay-courtyard-mixed-use-midrise-clay-v003.glb",
+    "bytes": 895624,
+    "sha256": "bb9bcb179a4b50b57c4e97d79ab4217cee77e207773cb6d0c2e989f021020191",
+    "meshes": 19,
+    "materials": 19,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 19,
+    "vertices": 11653,
+    "polygons": 16800,
+    "triangles": 16800
+  },
+  "original_bounds_m": [
+    [
+      -25.0,
+      -21.0,
+      0.0
+    ],
+    [
+      25.0,
+      21.0,
+      19.719999313354492
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -25.0,
+      -21.0,
+      0.0
+    ],
+    [
+      25.0,
+      21.0,
+      19.719999313354492
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 38.0,
+    "depth": 30.0,
+    "height": 19.8
+  },
+  "native_dimensions_m": {
+    "width": 50.0,
+    "depth": 42.0,
+    "height": 19.719999313354492
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 15,
+    "joint": 7,
+    "trim": 22,
+    "pale": 2,
+    "stone": 2,
+    "roof": 2,
+    "sand": 3,
+    "foundation": 5,
+    "glass": 25,
+    "hardware": 52,
+    "interior": 8,
+    "floor": 16,
+    "timber": 46,
+    "planting": 27,
+    "soil": 2,
+    "concrete": 11,
+    "cedar": 10,
+    "tan": 5,
+    "membrane": 3
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/courtyard_stair.png",
+    "renders/retail_corner.png",
+    "renders/balcony_close.png",
+    "renders/roof_terrace.png",
+    "renders/cladding_contact.png",
+    "renders/interior.png",
+    "renders/rear_lane.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.09261039644479752,
+      "xmax": 0.9073895812034607,
+      "ymin": 0.302223801612854,
+      "ymax": 0.6772237420082092
+    },
+    "front_corner": {
+      "xmin": 0.1273265779018402,
+      "xmax": 0.8641510009765625,
+      "ymin": 0.09430723637342453,
+      "ymax": 0.7077150940895081
+    },
+    "aerial": {
+      "xmin": 0.18625585734844208,
+      "xmax": 0.8158437013626099,
+      "ymin": 0.09107500314712524,
+      "ymax": 0.7243832945823669
+    },
+    "top": {
+      "xmin": 0.12290836125612259,
+      "xmax": 0.877091646194458,
+      "ymin": 0.07765737920999527,
+      "ymax": 0.9223425984382629
+    },
+    "left_side": {
+      "xmin": 0.07598300278186798,
+      "xmax": 0.9240454435348511,
+      "ymin": 0.22947260737419128,
+      "ymax": 0.7238935232162476
+    },
+    "right_side": {
+      "xmin": 0.07595457881689072,
+      "xmax": 0.9240170121192932,
+      "ymin": 0.22947260737419128,
+      "ymax": 0.7209892868995667
+    },
+    "rear": {
+      "xmin": 0.09471409767866135,
+      "xmax": 0.9052862524986267,
+      "ymin": 0.2867657542228699,
+      "ymax": 0.7031913995742798
+    },
+    "rear_side": {
+      "xmin": 0.11402979493141174,
+      "xmax": 0.882013738155365,
+      "ymin": 0.08455150574445724,
+      "ymax": 0.722842276096344
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Stair of 24 risers from the sidewalk to the courtyard deck inside concrete cheek walls",
+      "grade_m": 0,
+      "rise_m": 4.5
+    },
+    {
+      "name": "U-plan wings and rear bar bearing on the retail floor; courtyard deck at the first residential level",
+      "deck_m": 4.5
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "west penthouse front window 0",
+      "face": "west penthouse front",
+      "u": -2.9,
+      "z": 14.54,
+      "width": 3.4,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -13.4399995803833,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse apartment"
+    },
+    {
+      "id": "west penthouse front window 1",
+      "face": "west penthouse front",
+      "u": 2.9,
+      "z": 14.54,
+      "width": 3.4,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -13.4399995803833,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse apartment"
+    },
+    {
+      "id": "west penthouse court window 0",
+      "face": "west penthouse court",
+      "u": -2.1,
+      "z": 14.54,
+      "width": 2.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -8.0,
+        -5.75,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse apartment"
+    },
+    {
+      "id": "west penthouse court window 1",
+      "face": "west penthouse court",
+      "u": 2.1,
+      "z": 14.54,
+      "width": 2.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -8.0,
+        -5.75,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse apartment"
+    },
+    {
+      "id": "east penthouse front window 0",
+      "face": "east penthouse front",
+      "u": -2.9,
+      "z": 14.54,
+      "width": 3.4,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        13.4399995803833,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse apartment"
+    },
+    {
+      "id": "east penthouse front window 1",
+      "face": "east penthouse front",
+      "u": 2.9,
+      "z": 14.54,
+      "width": 3.4,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        13.4399995803833,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse apartment"
+    },
+    {
+      "id": "east penthouse court window 0",
+      "face": "east penthouse court",
+      "u": -2.1,
+      "z": 14.54,
+      "width": 2.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        8.0,
+        -5.75,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse apartment"
+    },
+    {
+      "id": "east penthouse court window 1",
+      "face": "east penthouse court",
+      "u": 2.1,
+      "z": 14.54,
+      "width": 2.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        8.0,
+        -5.75,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse apartment"
+    },
+    {
+      "id": "south storefront 0",
+      "face": "south",
+      "u": -15.833333333333334,
+      "z": 0.15,
+      "width": 4.933333333333334,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south storefront 1",
+      "face": "south",
+      "u": -9.5,
+      "z": 0.15,
+      "width": 4.933333333333334,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south storefront 4",
+      "face": "south",
+      "u": 9.5,
+      "z": 0.15,
+      "width": 4.933333333333334,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south storefront 5",
+      "face": "south",
+      "u": 15.833333333333336,
+      "z": 0.15,
+      "width": 4.933333333333334,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south stair slot",
+      "face": "south",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 6.4,
+      "height": 4.25,
+      "kind": "open stair slot",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open-air stair to the courtyard"
+    },
+    {
+      "id": "east storefront 0",
+      "face": "east",
+      "u": -11.024999999999999,
+      "z": 0.15,
+      "width": 5.949999999999999,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "east lobby door",
+      "face": "east",
+      "u": -3.6750000000000007,
+      "z": 0.15,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "residential lobby"
+    },
+    {
+      "id": "east ground window 2",
+      "face": "east",
+      "u": 3.6750000000000007,
+      "z": 1.2,
+      "width": 2.0,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "residential lobby"
+    },
+    {
+      "id": "north loading door",
+      "face": "north",
+      "u": 4.0,
+      "z": 0.15,
+      "width": 3.4,
+      "height": 3.6,
+      "kind": "roll-up door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loading"
+    },
+    {
+      "id": "north lobby window",
+      "face": "north",
+      "u": -6.0,
+      "z": 1.0,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "residential lobby"
+    },
+    {
+      "id": "south window 0-0",
+      "face": "south",
+      "u": -17.5,
+      "z": 4.75,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 0-1",
+      "face": "south",
+      "u": -15.5,
+      "z": 4.75,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 0-2",
+      "face": "south",
+      "u": -13.5,
+      "z": 4.75,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south balcony 0-3",
+      "face": "south",
+      "u": -10.0,
+      "z": 4.65,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "south window 0-4",
+      "face": "south",
+      "u": -7.5,
+      "z": 4.75,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 1-0",
+      "face": "south",
+      "u": -17.5,
+      "z": 7.95,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 1-1",
+      "face": "south",
+      "u": -15.5,
+      "z": 7.95,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 1-2",
+      "face": "south",
+      "u": -13.5,
+      "z": 7.95,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south balcony 1-3",
+      "face": "south",
+      "u": -10.0,
+      "z": 7.8500000000000005,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "south window 1-4",
+      "face": "south",
+      "u": -7.5,
+      "z": 7.95,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 2-0",
+      "face": "south",
+      "u": -17.5,
+      "z": 11.15,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 2-1",
+      "face": "south",
+      "u": -15.5,
+      "z": 11.15,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 2-2",
+      "face": "south",
+      "u": -13.5,
+      "z": 11.15,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south balcony 2-3",
+      "face": "south",
+      "u": -10.0,
+      "z": 11.05,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "south window 2-4",
+      "face": "south",
+      "u": -7.5,
+      "z": 11.15,
+      "width": 1.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south balcony 0-0",
+      "face": "south",
+      "u": 8.0,
+      "z": 4.65,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "south window 0-1",
+      "face": "south",
+      "u": 11.5,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 0-2",
+      "face": "south",
+      "u": 14.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 0-3",
+      "face": "south",
+      "u": 16.5,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south balcony 1-0",
+      "face": "south",
+      "u": 8.0,
+      "z": 7.8500000000000005,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "south window 1-1",
+      "face": "south",
+      "u": 11.5,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 1-2",
+      "face": "south",
+      "u": 14.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 1-3",
+      "face": "south",
+      "u": 16.5,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south balcony 2-0",
+      "face": "south",
+      "u": 8.0,
+      "z": 11.05,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "south window 2-1",
+      "face": "south",
+      "u": 11.5,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 2-2",
+      "face": "south",
+      "u": 14.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 2-3",
+      "face": "south",
+      "u": 16.5,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 0-0",
+      "face": "west",
+      "u": 2.0,
+      "z": 4.75,
+      "width": 1.0,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 1-0",
+      "face": "west",
+      "u": 2.0,
+      "z": 7.95,
+      "width": 1.0,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 2-0",
+      "face": "west",
+      "u": 2.0,
+      "z": 11.15,
+      "width": 1.0,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 0-0",
+      "face": "east",
+      "u": -11.0,
+      "z": 4.75,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 0-1",
+      "face": "east",
+      "u": -7.0,
+      "z": 4.75,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 0-2",
+      "face": "east",
+      "u": -3.0,
+      "z": 4.75,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 0-3",
+      "face": "east",
+      "u": 1.0,
+      "z": 4.75,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 0-4",
+      "face": "east",
+      "u": 5.0,
+      "z": 4.75,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 0-5",
+      "face": "east",
+      "u": 9.0,
+      "z": 4.75,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 1-0",
+      "face": "east",
+      "u": -11.0,
+      "z": 7.95,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 1-1",
+      "face": "east",
+      "u": -7.0,
+      "z": 7.95,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 1-2",
+      "face": "east",
+      "u": -3.0,
+      "z": 7.95,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 1-3",
+      "face": "east",
+      "u": 1.0,
+      "z": 7.95,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 1-4",
+      "face": "east",
+      "u": 5.0,
+      "z": 7.95,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 1-5",
+      "face": "east",
+      "u": 9.0,
+      "z": 7.95,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 2-0",
+      "face": "east",
+      "u": -11.0,
+      "z": 11.15,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 2-1",
+      "face": "east",
+      "u": -7.0,
+      "z": 11.15,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 2-2",
+      "face": "east",
+      "u": -3.0,
+      "z": 11.15,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 2-3",
+      "face": "east",
+      "u": 1.0,
+      "z": 11.15,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 2-4",
+      "face": "east",
+      "u": 5.0,
+      "z": 11.15,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 2-5",
+      "face": "east",
+      "u": 9.0,
+      "z": 11.15,
+      "width": 1.8,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-0",
+      "face": "north",
+      "u": -14.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-1",
+      "face": "north",
+      "u": -9.0,
+      "z": 4.75,
+      "width": 2.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 1-0",
+      "face": "north",
+      "u": -14.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 1-1",
+      "face": "north",
+      "u": -9.0,
+      "z": 7.95,
+      "width": 2.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 2-0",
+      "face": "north",
+      "u": -14.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 2-1",
+      "face": "north",
+      "u": -9.0,
+      "z": 11.15,
+      "width": 2.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-0",
+      "face": "north",
+      "u": 9.0,
+      "z": 4.75,
+      "width": 2.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-1",
+      "face": "north",
+      "u": 14.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 1-0",
+      "face": "north",
+      "u": 9.0,
+      "z": 7.95,
+      "width": 2.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 1-1",
+      "face": "north",
+      "u": 14.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 2-0",
+      "face": "north",
+      "u": 9.0,
+      "z": 11.15,
+      "width": 2.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 2-1",
+      "face": "north",
+      "u": 14.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-0",
+      "face": "north",
+      "u": -3.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-1",
+      "face": "north",
+      "u": 3.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 1-0",
+      "face": "north",
+      "u": -3.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 1-1",
+      "face": "north",
+      "u": 3.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 2-0",
+      "face": "north",
+      "u": -3.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 2-1",
+      "face": "north",
+      "u": 3.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-0",
+      "face": "north",
+      "u": -3.0,
+      "z": 14.35,
+      "width": 2.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-1",
+      "face": "north",
+      "u": 3.0,
+      "z": 14.35,
+      "width": 2.4,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west balcony 0-0",
+      "face": "courtyard west",
+      "u": -5.5,
+      "z": 4.65,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "courtyard west window 0-1",
+      "face": "courtyard west",
+      "u": -1.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west window 0-2",
+      "face": "courtyard west",
+      "u": 3.0,
+      "z": 4.75,
+      "width": 2.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west window 0-3",
+      "face": "courtyard west",
+      "u": 7.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west balcony 1-0",
+      "face": "courtyard west",
+      "u": -5.5,
+      "z": 7.8500000000000005,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "courtyard west window 1-1",
+      "face": "courtyard west",
+      "u": -1.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west window 1-2",
+      "face": "courtyard west",
+      "u": 3.0,
+      "z": 7.95,
+      "width": 2.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west window 1-3",
+      "face": "courtyard west",
+      "u": 7.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west balcony 2-0",
+      "face": "courtyard west",
+      "u": -5.5,
+      "z": 11.05,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "courtyard west window 2-1",
+      "face": "courtyard west",
+      "u": -1.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west window 2-2",
+      "face": "courtyard west",
+      "u": 3.0,
+      "z": 11.15,
+      "width": 2.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard west window 2-3",
+      "face": "courtyard west",
+      "u": 7.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east window 0-0",
+      "face": "courtyard east",
+      "u": -7.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east window 0-1",
+      "face": "courtyard east",
+      "u": -3.0,
+      "z": 4.75,
+      "width": 2.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east window 0-2",
+      "face": "courtyard east",
+      "u": 1.0,
+      "z": 4.75,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east balcony 0-3",
+      "face": "courtyard east",
+      "u": 5.5,
+      "z": 4.65,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "courtyard east window 1-0",
+      "face": "courtyard east",
+      "u": -7.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east window 1-1",
+      "face": "courtyard east",
+      "u": -3.0,
+      "z": 7.95,
+      "width": 2.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east window 1-2",
+      "face": "courtyard east",
+      "u": 1.0,
+      "z": 7.95,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east balcony 1-3",
+      "face": "courtyard east",
+      "u": 5.5,
+      "z": 7.8500000000000005,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "courtyard east window 2-0",
+      "face": "courtyard east",
+      "u": -7.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east window 2-1",
+      "face": "courtyard east",
+      "u": -3.0,
+      "z": 11.15,
+      "width": 2.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east window 2-2",
+      "face": "courtyard east",
+      "u": 1.0,
+      "z": 11.15,
+      "width": 1.6,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard east balcony 2-3",
+      "face": "courtyard east",
+      "u": 5.5,
+      "z": 11.05,
+      "width": 3.2,
+      "height": 2.75,
+      "kind": "recessed balcony",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        6.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "balcony opening onto the living room"
+    },
+    {
+      "id": "courtyard rear window 0-0",
+      "face": "courtyard rear",
+      "u": -3.8,
+      "z": 4.75,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 0-1",
+      "face": "courtyard rear",
+      "u": 0.0,
+      "z": 4.75,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 0-2",
+      "face": "courtyard rear",
+      "u": 3.8,
+      "z": 4.75,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 1-0",
+      "face": "courtyard rear",
+      "u": -3.8,
+      "z": 7.95,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 1-1",
+      "face": "courtyard rear",
+      "u": 0.0,
+      "z": 7.95,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 1-2",
+      "face": "courtyard rear",
+      "u": 3.8,
+      "z": 7.95,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 2-0",
+      "face": "courtyard rear",
+      "u": -3.8,
+      "z": 11.15,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 2-1",
+      "face": "courtyard rear",
+      "u": 0.0,
+      "z": 11.15,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 2-2",
+      "face": "courtyard rear",
+      "u": 3.8,
+      "z": 11.15,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 3-0",
+      "face": "courtyard rear",
+      "u": -3.8,
+      "z": 14.35,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 3-1",
+      "face": "courtyard rear",
+      "u": 0.0,
+      "z": 14.35,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "courtyard rear window 3-2",
+      "face": "courtyard rear",
+      "u": 3.8,
+      "z": 14.35,
+      "width": 3.2,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    }
+  ],
+  "authoring_modules": {
+    "sidewalk": [
+      "South sidewalk",
+      "East sidewalk",
+      "Kerb south",
+      "Kerb east"
+    ],
+    "lane": [
+      "Rear lane",
+      "West lot"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Serviceberry rooted trunk",
+      "Serviceberry branch",
+      "Serviceberry leafy crown",
+      "Serviceberry branch.001",
+      "Serviceberry leafy crown.001",
+      "Serviceberry branch.002",
+      "Serviceberry leafy crown.002",
+      "Serviceberry rooted trunk.001",
+      "Serviceberry branch.003",
+      "Serviceberry leafy crown.003",
+      "Serviceberry branch.004",
+      "Serviceberry leafy crown.004",
+      "Serviceberry branch.005",
+      "Serviceberry leafy crown.005",
+      "Serviceberry rooted trunk.002",
+      "Serviceberry branch.006",
+      "Serviceberry leafy crown.006",
+      "Serviceberry branch.007",
+      "Serviceberry leafy crown.007",
+      "Serviceberry branch.008",
+      "Serviceberry leafy crown.008",
+      "Shrub rooted stem",
+      "Leafy shrub crown",
+      "Leafy shrub crown.001",
+      "Leafy shrub crown.002",
+      "Leafy shrub crown.003"
+    ],
+    "foundation": [
+      "Ground slab"
+    ],
+    "occupied floors": [
+      "west retail ceiling",
+      "east retail ceiling",
+      "rear retail ceiling",
+      "west floor 7.7",
+      "west floor 10.9",
+      "east floor 7.7",
+      "east floor 10.9",
+      "rear floor 7.7",
+      "rear floor 10.9",
+      "rear floor 14.1"
+    ],
+    "roof": [
+      "west roof slab",
+      "west membrane",
+      "east roof slab",
+      "east membrane",
+      "rear roof slab",
+      "rear membrane"
+    ],
+    "penthouse": [
+      "west penthouse",
+      "west penthouse roof",
+      "east penthouse",
+      "east penthouse roof"
+    ],
+    "envelope": [
+      "west penthouse front carrier",
+      "west penthouse court carrier",
+      "east penthouse front carrier",
+      "east penthouse court carrier",
+      "south ground carrier",
+      "east ground carrier",
+      "west ground carrier",
+      "north ground carrier",
+      "south west wing south carrier",
+      "south east wing south carrier",
+      "west west upper carrier",
+      "east east upper carrier",
+      "north north east wing upper carrier",
+      "north north west wing upper carrier",
+      "north north rear bar upper carrier",
+      "north north rear bar top carrier",
+      "rear bar west side carrier",
+      "rear bar east side carrier",
+      "courtyard west courtyard west upper carrier",
+      "courtyard east courtyard east upper carrier",
+      "courtyard rear courtyard rear upper carrier"
+    ],
+    "west penthouse front": [
+      "west penthouse front west penthouse front trim",
+      "west penthouse front west penthouse front glass"
+    ],
+    "west penthouse court": [
+      "west penthouse court west penthouse court trim",
+      "west penthouse court west penthouse court glass"
+    ],
+    "terrace rails": [
+      "Terrace glass rail",
+      "Terrace rail cap",
+      "Terrace glass rail.001",
+      "Terrace rail cap.001",
+      "Terrace glass rail.002",
+      "Terrace rail cap.002",
+      "Terrace glass rail.003",
+      "Terrace rail cap.003"
+    ],
+    "east penthouse front": [
+      "east penthouse front east penthouse front trim",
+      "east penthouse front east penthouse front glass"
+    ],
+    "east penthouse court": [
+      "east penthouse court east penthouse court trim",
+      "east penthouse court east penthouse court glass"
+    ],
+    "rooftop plant": [
+      "Mechanical enclosure",
+      "Enclosure louvre",
+      "Enclosure louvre.001",
+      "Enclosure louvre.002",
+      "Enclosure louvre.003",
+      "Enclosure louvre.004",
+      "Mechanical enclosure.001",
+      "Enclosure louvre.005",
+      "Enclosure louvre.006",
+      "Enclosure louvre.007",
+      "Enclosure louvre.008",
+      "Enclosure louvre.009",
+      "Mechanical enclosure.002",
+      "Enclosure louvre.010",
+      "Enclosure louvre.011",
+      "Enclosure louvre.012",
+      "Enclosure louvre.013",
+      "Enclosure louvre.014",
+      "Condenser",
+      "Condenser.001",
+      "Condenser.002",
+      "Condenser.003",
+      "Condenser.004",
+      "Condenser.005"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003"
+    ],
+    "bedroom furniture": [
+      "Bed grounded foot",
+      "Bed grounded foot.001",
+      "Bed grounded foot.002",
+      "Bed grounded foot.003",
+      "Bed frame",
+      "Mattress",
+      "Duvet",
+      "Headboard",
+      "Pillow",
+      "Pillow.001"
+    ],
+    "partitions": [
+      "Apartment partition"
+    ],
+    "stair": [
+      "Courtyard stair",
+      "Stair cheek wall",
+      "Stair cheek wall.001",
+      "Stair landing"
+    ],
+    "Stair handrail": [
+      "Stair handrail top rail",
+      "Stair handrail bottom rail",
+      "Stair handrail picket 0",
+      "Stair handrail picket 1",
+      "Stair handrail picket 2",
+      "Stair handrail picket 3",
+      "Stair handrail picket 4",
+      "Stair handrail picket 5",
+      "Stair handrail picket 6",
+      "Stair handrail picket 7",
+      "Stair handrail top rail.001",
+      "Stair handrail bottom rail.001",
+      "Stair handrail picket 0.001",
+      "Stair handrail picket 1.001",
+      "Stair handrail picket 2.001",
+      "Stair handrail picket 3.001",
+      "Stair handrail picket 4.001",
+      "Stair handrail picket 5.001",
+      "Stair handrail picket 6.001",
+      "Stair handrail picket 7.001"
+    ],
+    "courtyard": [
+      "Courtyard deck",
+      "Courtyard deck wing",
+      "Courtyard deck wing.001",
+      "Courtyard paving",
+      "Deck edge paving",
+      "Street-edge planter",
+      "Street-edge planting",
+      "Deck glass rail",
+      "Deck rail cap",
+      "Deck edge paving.001",
+      "Street-edge planter.001",
+      "Street-edge planting.001",
+      "Deck glass rail.001",
+      "Deck rail cap.001",
+      "Courtyard planter",
+      "Courtyard planter soil",
+      "Courtyard planter.001",
+      "Courtyard planter soil.001",
+      "Courtyard bench",
+      "Courtyard bench.001",
+      "Courtyard table"
+    ],
+    "ground": [
+      "south ground trim",
+      "south ground glass",
+      "east ground trim",
+      "east ground glass",
+      "north ground pale",
+      "north ground trim",
+      "north ground glass"
+    ],
+    "west wing south": [
+      "south west wing south trim",
+      "south west wing south glass",
+      "south west wing south cedar",
+      "south west wing south concrete",
+      "south west wing south hardware",
+      "south west wing south joint"
+    ],
+    "east wing south": [
+      "south east wing south cedar",
+      "south east wing south concrete",
+      "south east wing south glass",
+      "south east wing south hardware",
+      "south east wing south trim",
+      "south east wing south joint"
+    ],
+    "west upper": [
+      "west west upper trim",
+      "west west upper glass"
+    ],
+    "east upper": [
+      "east east upper trim",
+      "east east upper glass"
+    ],
+    "north east wing upper": [
+      "north north east wing upper trim",
+      "north north east wing upper glass",
+      "north north east wing upper joint"
+    ],
+    "north west wing upper": [
+      "north north west wing upper trim",
+      "north north west wing upper glass",
+      "north north west wing upper joint"
+    ],
+    "north rear bar upper": [
+      "north north rear bar upper trim",
+      "north north rear bar upper glass",
+      "north north rear bar upper joint"
+    ],
+    "north rear bar top": [
+      "north north rear bar top trim",
+      "north north rear bar top glass"
+    ],
+    "courtyard west upper": [
+      "courtyard west courtyard west upper cedar",
+      "courtyard west courtyard west upper concrete",
+      "courtyard west courtyard west upper glass",
+      "courtyard west courtyard west upper hardware",
+      "courtyard west courtyard west upper trim",
+      "courtyard west courtyard west upper joint"
+    ],
+    "courtyard east upper": [
+      "courtyard east courtyard east upper trim",
+      "courtyard east courtyard east upper glass",
+      "courtyard east courtyard east upper cedar",
+      "courtyard east courtyard east upper concrete",
+      "courtyard east courtyard east upper hardware",
+      "courtyard east courtyard east upper joint"
+    ],
+    "courtyard rear upper": [
+      "courtyard rear courtyard rear upper trim",
+      "courtyard rear courtyard rear upper glass"
+    ],
+    "rear bar balconies": [
+      "courtyard rear rear bar balconies concrete",
+      "courtyard rear rear bar balconies glass",
+      "courtyard rear rear bar balconies hardware"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "finished_utc": "2026-10-10T20:00:47.408027+00:00",
+  "delivery_and_render_seconds": 6088.294218816998,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

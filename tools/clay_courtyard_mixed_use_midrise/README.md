@@ -67,3 +67,13 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P0: each wing's top storey is a set-back pavilion over the front half of the wing only, so the rear half of each wing is one storey lower and the east face shows three window rows where the front source shows four flush tan rows; the sources show one continuous top-storey roof plane across both wings into the rear bar with the mechanical screens on it. Fix is a full-length tan top storey on each wing at the rear-bar roof level.
+- P0: a black slot runs the full stair width between the top tread and the courtyard deck (stair landing and deck edge do not meet); fix is to extend the landing under the deck edge or the deck over the landing with no coplanar faces.
+- P1: black band at the stair foot where the first tread meets the sidewalk; fix is to seat the stair prism on the sidewalk slab.
+- P1: rear bar courtyard face material inverted (dark piers and light slab edges where the source shows cedar piers and dark fascias); fix is cedar carrier piers and dark balcony fascias.
+- P1: west wing street face still three bays plus balcony plus one where the source shows four narrow bays with the balcony two-thirds across and a tan end bay; east wing has three narrow bays where the source shows one wide bay.
+- P1: the balcony back-wall opening is a flat unframed dark rectangle on all six front balconies; fix is a framed glazed door with a reveal.
+- P2 (recorded): oversized penthouse roof cap, ribs reading as battens with dash rows, half-opaque balustrade glass, stair filling the slot wall to wall without the west planter wall, retail fascia not wrapped on the east face, under-lit interior.
