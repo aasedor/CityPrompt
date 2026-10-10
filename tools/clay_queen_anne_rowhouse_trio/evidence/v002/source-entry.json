@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-queen-anne-rowhouse-trio",
+  "variant_id": "clay-queen-anne-rowhouse-trio-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "brick_rowhouse_terrace/variant_2",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/brick-rowhouse-terrace/variant_2.png",
+      "path": "sources/front.png",
+      "bytes": 1498852,
+      "sha256": "8ceae05a5766013b2cdd6a9b35b4faa4c2e273006cdda5d37692c453cdfa1fc2"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/brick-rowhouse-terrace/variant_2_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 964010,
+      "sha256": "0b7e647668380cd69f4c7d1c10eba2250fb61c75c5348406c4c9aad1448a4b8c"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/brick-rowhouse-terrace/variant_2_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 927428,
+      "sha256": "7e0d7266af5a30bc01563fb9f55a17a0ec207f325a5f9e2484151f49dced5601"
+    }
+  ]
+}

@@ -311,7 +311,7 @@ def roofs():
         C.box('Chimney stack', (x, 0, RIDGE - .6 + 1.2), (.70, 1.10, 2.4), 'wall', 'chimneys', 0)
         C.box('Chimney cap', (x, 0, RIDGE + 1.85), (.82, 1.22, .10), 'pale', 'chimneys', 0)
         for dy in (-.28, .28):
-            C.rod('Chimney pot', (x, dy, RIDGE + 1.9), (x, dy, RIDGE + 2.35), .12, 'sand', 'chimneys', 10)
+            C.rod('Chimney pot', (x, dy, RIDGE + 1.93), (x, dy, RIDGE + 2.35), .12, 'sand', 'chimneys', 10)
 
 
 def sides_and_rear(f_right, f_rear, f_left):
@@ -322,12 +322,12 @@ def sides_and_rear(f_right, f_rear, f_left):
     G.brick_courses(f_right, -span / 2 + .02, span / 2 - .02, G0, EAVE, eh, spacing=.075)
     for h in eh:
         sash(f_right, h['id'], h['u'], h['z'], h['w'], h['h'])
-    f_right.panel('East end gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (0, RIDGE - .05)], 0, T, 'wall', 'gables')
+    f_right.panel('East end gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (0, RIDGE + .02)], 0, T, 'wall', 'gables')
     for z, h in ((3.30, .20), (U + .55, .18), (U + .85 + 1.8 + .30, .14), (.45, .30)):
         band(f_right, -span / 2, span / 2, z, h=h)
     f_left.wall('West party carrier', -span / 2, span / 2, G0, EAVE, depth=T)
     G.brick_courses(f_left, -span / 2 + .02, span / 2 - .02, G0, EAVE, [], spacing=.075)
-    f_left.panel('West party gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (0, RIDGE - .05)], 0, T, 'wall', 'gables')
+    f_left.panel('West party gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (0, RIDGE + .02)], 0, T, 'wall', 'gables')
     rh = []
     for name, xc, kind in UNITS:
         u = -xc

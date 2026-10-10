@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-queen-anne-rowhouse-trio-clay-v002",
+  "glb": "clay-queen-anne-rowhouse-trio-clay-v002.glb",
+  "glb_bytes": 942004,
+  "glb_sha256": "25de62198c525c65830d68b4ef41e4d005117e368bd309aada03c046abbb09a5",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "bay_window.png": 92,
+    "entrance_steps.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "gable_close.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "party_wall.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "rear_yards.png": 92,
+    "right_side.png": 92,
+    "roof_contact.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-queen-anne-rowhouse-trio-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 33654808
+}
