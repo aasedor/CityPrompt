@@ -1,0 +1,570 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "south storefront 0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south storefront 1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south storefront 4",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south storefront 5",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south stair slot",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east storefront 0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east lobby door",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east ground window 2",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north loading door",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north lobby window",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south window 0-0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south balcony 0-1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south window 1-0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south balcony 1-1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south window 2-0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south balcony 2-1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south window 0-0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south balcony 0-1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south window 1-0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south balcony 1-1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south window 2-0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south balcony 2-1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west window 0-0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west window 1-0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west window 2-0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 0-0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 0-1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 0-2",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 0-3",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 0-4",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 0-5",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 1-0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 1-1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 1-2",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 1-3",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 1-4",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 1-5",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 2-0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 2-1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 2-2",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 2-3",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 2-4",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east window 2-5",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 0-0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 0-1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 0-2",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 0-3",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 0-4",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 0-5",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 1-0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 1-1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 1-2",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 1-3",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 1-4",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 1-5",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 2-0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 2-1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 2-2",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 2-3",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 2-4",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 2-5",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west balcony 0-0",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 0-1",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 0-2",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 0-3",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west balcony 1-0",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 1-1",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 1-2",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 1-3",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west balcony 2-0",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 2-1",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 2-2",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard west window 2-3",
+      "face": "courtyard west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 0-0",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 0-1",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 0-2",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east balcony 0-3",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 1-0",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 1-1",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 1-2",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east balcony 1-3",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 2-0",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 2-1",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east window 2-2",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard east balcony 2-3",
+      "face": "courtyard east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 0-0",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 0-1",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 0-2",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 1-0",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 1-1",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 1-2",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 2-0",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 2-1",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "courtyard rear window 2-2",
+      "face": "courtyard rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

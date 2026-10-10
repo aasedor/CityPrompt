@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-chamfer-corner-dome-block",
+  "variant_id": "clay-chamfer-corner-dome-block-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "barcelona_corner_chamfer/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1405636,
+      "sha256": "4b2c66d9cf36c9495339bcdee098d16d050caf9f378aef8e8ccf561934aa9f71"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1000771,
+      "sha256": "205c7e179e1b931df8647fe734de6bd060438a58072e8fba8c1ff02b4eac43b3"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 950494,
+      "sha256": "d85ec8b20ff9e9e49be61e160f8737b3e388880c76a3993ef2a68f8fd4c07af7"
+    }
+  ]
+}

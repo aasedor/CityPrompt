@@ -1,0 +1,433 @@
+{
+  "candidate": "clay-plus15-glass-office-tower-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-plus15-glass-office-tower",
+  "variant_id": "clay-plus15-glass-office-tower-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "calgary_plus_15_connected_tower/variant_2 (plus15_contemporary_glass)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 36.0,
+      "depth": 65.0,
+      "height": 71.7
+    },
+    "observed_storeys": 17,
+    "storey_programme": "double-height lobby on a colonnade, sixteen office floors, mechanical penthouse",
+    "plan": "square 36 x 36 m read from the 520 x 520 px roof in the top view at 0.069 m/px; the Plus 15 bridge leaves the west end of the south face and crosses the street southward",
+    "facade": "every floor: 1.05 m pale spandrel band and a 2.6 m dark vision band with mullions at 1.5 m; pale corner columns and a parapet band; lobby glazing recessed 3.2 m behind a colonnade of 1 m columns on a 6 m bay",
+    "levels_m": [
+      0.15,
+      6.4,
+      10.05,
+      13.7,
+      17.35,
+      21.0,
+      24.65,
+      28.299999999999997,
+      31.950000000000003,
+      35.6,
+      39.25,
+      42.9,
+      46.55,
+      50.199999999999996,
+      53.849999999999994,
+      57.5,
+      61.15
+    ],
+    "roof_m": 64.8,
+    "parapet_m": 66.0,
+    "storey_height_m": 3.65,
+    "bridge": "enclosed glazed bridge 4.4 m wide from 4.6 to 7.8 m, 24 m long on two piers",
+    "roof": "green roof beds around an L-shaped glazed and louvred penthouse 5.2 m high with rooftop units in its yard",
+    "inferred": "sixteen office floors read from the spandrel bands in the oblique view (16 to 18); north and west faces repeat the grammar; interiors are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "flat membrane with vegetated beds behind a 1.2 m parapet band; penthouse on a curb",
+    "datum_m": 64.8,
+    "crowns_m": [
+      66.0,
+      70.3
+    ]
+  },
+  "identity_contract": {
+    "owner": "pale spandrel bands and close mullions over dark glass, corner columns, recessed double-height lobby on a colonnade, Plus 15 bridge, green roof with glazed penthouse"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: pale aluminium spandrels and mullions, dark reflective glass, pale concrete columns, pale metal penthouse with louvres, green roof beds",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 17,
+    "ground": "lobby, elevator bank and retail behind the colonnade",
+    "upper": "open office floors around a central core",
+    "roof": "mechanical penthouse and amenity green roof"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Colonnade columns from the slab to the first floor plate",
+    "Corner columns from grade to the parapet",
+    "Bridge bearing on the tower face and two street piers",
+    "Penthouse on a curb on the roof slab"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -78.2,
+        34.416
+      ],
+      "target": [
+        0,
+        0,
+        32.265
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -60.996,
+        -65.688,
+        143.4
+      ],
+      "target": [
+        0,
+        0,
+        32.265
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        54.74,
+        -62.56,
+        215.10000000000002
+      ],
+      "target": [
+        0,
+        0,
+        32.265
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        117.30000000000001
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 64.39999999999999
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -78.2,
+        0,
+        43.02
+      ],
+      "target": [
+        0,
+        0,
+        32.265
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        78.2,
+        0,
+        43.02
+      ],
+      "target": [
+        0,
+        0,
+        32.265
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        78.2,
+        43.02
+      ],
+      "target": [
+        0,
+        0,
+        32.265
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        54.74,
+        62.56,
+        129.06
+      ],
+      "target": [
+        0,
+        0,
+        32.265
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -10.0,
+        -40.0,
+        20.0
+      ],
+      "target": [
+        0.0,
+        -18.0,
+        24.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -34.0,
+        -34.0,
+        14.0
+      ],
+      "target": [
+        -18.0,
+        -18.0,
+        10.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        8.0,
+        -30.0,
+        30.0
+      ],
+      "target": [
+        10.0,
+        -18.0,
+        31.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "plus15_bridge",
+      "location": [
+        -30.0,
+        -36.0,
+        6.0
+      ],
+      "target": [
+        -10.8,
+        -28.0,
+        6.2
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "lobby_entry",
+      "location": [
+        -6.0,
+        -36.0,
+        2.4
+      ],
+      "target": [
+        2.0,
+        -14.8,
+        3.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "curtain_grid",
+      "location": [
+        26.0,
+        -30.0,
+        40.0
+      ],
+      "target": [
+        18.0,
+        -6.0,
+        42.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "roof_terrace",
+      "location": [
+        -50.0,
+        -50.0,
+        82.0
+      ],
+      "target": [
+        -6.0,
+        2.0,
+        66.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "crown_penthouse",
+      "location": [
+        30.0,
+        -46.0,
+        76.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        68.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -12.0,
+        7.0,
+        37.2
+      ],
+      "target": [
+        -9.0,
+        -19.0,
+        36.800000000000004
+      ],
+      "lens": 60,
+      "whole": false
+    },
+    {
+      "name": "rear_service",
+      "location": [
+        10.0,
+        40.0,
+        4.0
+      ],
+      "target": [
+        0.0,
+        18.0,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "plus15_bridge",
+    "lobby_entry",
+    "curtain_grid",
+    "roof_terrace",
+    "crown_penthouse",
+    "interior",
+    "rear_service"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2.png",
+        "path": "sources/front.png",
+        "bytes": 1238687,
+        "sha256": "71df1f82ca1a50801ec72244ace874eba9351744bd0bb8dbb69c29cf4ef36c61"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 962177,
+        "sha256": "c5063f2e71b7a5f02f34498498b5b3d02054e076e84460d47ada4979f691fcb7"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 810860,
+        "sha256": "7fabe18811a690141b6751eab629e4c6a0530abef1b17e675376846e01dcf9f0"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_plus15_tower.py",
+        "sha256": "87f63ac2cac7945a39dfa634b645e67807f1b3fbca7b0cd62ce8334fdef3e120"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "5a967bdf70ab40b92d6d9a5664cc97a356505f18158f2431b44d7589f5ce8293"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "4331cd823f265e66deece57c36960c4705ecc706e6524d52b51fcd2e0405c32f"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T15:40:01.042949+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

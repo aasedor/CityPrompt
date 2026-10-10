@@ -1,0 +1,462 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "left shopfront 0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 0-0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 0-1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 0-2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left shopfront 1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 1-0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 1-1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 1-2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left shopfront 2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 2-0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 2-1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 2-2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left shopfront 3",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 3-0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 3-1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 3-2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left shopfront 4",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 4-0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 4-1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 4-2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left shopfront 5",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 5-0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 5-1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left window 5-2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right ground window 0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 0-0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 0-1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 0-2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right ground window 1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 1-0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 1-1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 1-2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right ground window 2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 2-0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 2-1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 2-2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right loading door",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 3-0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 3-1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 3-2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right ground window 4",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 4-0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 4-1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 4-2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right ground window 5",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 5-0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 5-1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right window 5-2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front shopfront 0",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 0-0",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 0-1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 0-2",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front shopfront 1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 1-0",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 1-1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 1-2",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front shopfront 2",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 2-0",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 2-1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 2-2",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front shopfront 3",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 3-0",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 3-1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front window 3-2",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear ground window 1",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 1-0",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 1-1",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 1-2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear ground window 2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 2-0",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 2-1",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 2-2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear ground window 3",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 3-0",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 3-1",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear window 3-2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

@@ -109,7 +109,7 @@ def glazing(m, f, h, cols=1, rows=1, inset=.14, occupied='apartment', kind='wind
         face_inward=list(f.n), occupied_space=occupied, cols=cols, rows=rows))
 
 
-def tower_face(f, span, street, inset=0.0):
+def tower_face(f, span, street, inset=0.0, side=False):
     """One face of the apartment storeys: carrier from the first slab to the parapet, three bays per storey."""
     half = span / 2
     holes = []
@@ -117,7 +117,7 @@ def tower_face(f, span, street, inset=0.0):
         for s in (-1, 1):
             holes.append(hole(f'{f.label} balcony glazing {i}{"L" if s < 0 else "R"}', s * (FIN_U + (half - FIN_U) / 2), zf + .08, half - FIN_U - .9, FH - .45, kind='balcony'))
         holes.append(hole(f'{f.label} window band {i}', 0.0, zf + .78, 2 * FIN_U - 1.0, FH - .78 - .21, kind='band'))
-    z0 = L0 - .30
+    z0 = L0 - .16
     f.wall(f.label + ' carrier', -half + inset, half - inset - EPS, z0, PARAPET, depth=T, holes=holes)
     m = Merge(f)
     for h in holes:
@@ -130,7 +130,12 @@ def tower_face(f, span, street, inset=0.0):
         G.brick_courses(f, -FIN_U + .35, FIN_U - .35, zf + .14, zf + .76, [], spacing=.075)
     # Slab edge band every storey and at the roof; balcony plates and balustrades on the outer bays.
     for i, zf in enumerate(STOREYS + [ROOF]):
-        m.box('concrete', 0.0, -.05, zf - .02, span - 2 * EPS, .40, .30)
+        if i < N:
+            m.box('concrete', 0.0, -.05, zf - .02, span - 2 * EPS, .40, .30)
+        else:
+            # Thick pale concrete roof slab and parapet band over the brick; side faces butt into the front and rear bands.
+            pw = span - 2 * EPS - (2 * (T + .12) if side else 0.0)
+            m.box('concrete', 0.0, (T - .25 + .06) / 2, (ROOF - .17 + PARAPET + .02) / 2, pw, T + .25 + .06, PARAPET + .02 - (ROOF - .17))
         if i < N:
             for s in (-1, 1):
                 bw = half - FIN_U - .3
@@ -142,7 +147,6 @@ def tower_face(f, span, street, inset=0.0):
     # Fin walls at the bay lines, grade to parapet, projecting past the balcony plates' inner half.
     for u in (-FIN_U, FIN_U):
         f.part('Fin wall', u, -(PLATE - .05) / 2 + .05, (G0 + ROOF + .10) / 2, .32, PLATE - .05 + .10, ROOF + .10 - G0, 'concrete', 'fins', 0)
-    f.part('Parapet coping', 0.0, T / 2, PARAPET + .03, span - 2 * EPS, T + .08, .06, 'pale', 'coping', 0)
 
 
 def corner_fins():
@@ -178,9 +182,8 @@ def ground_floor(f_front, f_right, f_rear, f_left):
                 glazing(m, g, h, cols=3, rows=1, occupied='lobby and retail', kind='storefront')
         m.flush('ground glazing')
         if f is f_front:
-            f.part('Entrance canopy', -FIN_U - 2.0, -.9, L0 - 1.3, 6.0, 2.2, .16, 'concrete', 'canopy', 0)
-            for du in (-2.4, 2.4):
-                C.rod('Canopy hanger', f.p(-FIN_U - 2.0 + du, -1.7, L0 - 1.22), f.p(-FIN_U - 2.0 + du, -1.7, L0 - .32), .03, 'hardware', 'canopy', 8)
+            f.part('Entrance canopy', -FIN_U - 2.0, -.95, L0 - 1.3, 6.0, 2.3, .22, 'concrete', 'canopy', 0)
+            f.part('Entrance canopy upstand', -FIN_U - 2.0, -2.0, L0 - 1.1, 6.0, .20, .40, 'concrete', 'canopy', 0)
             C.CONTACTS.append(dict(name='Lobby doors at slab level under a cantilevered canopy', grade_m=0, canopy_m=L0 - 1.3))
         for u in (-FIN_U, 0.0, FIN_U):
             f.part('Ground column', u, RECESS * .35, (G0 + L0 - .3) / 2, .55, .55, L0 - .3 - G0, 'concrete', 'ground columns', 0)
@@ -261,8 +264,8 @@ def build():
     site()
     floors_and_roof()
     f_front, f_right, f_rear, f_left = A.faces(W, D)
-    for f, span, street, inset in ((f_front, W, True, 0.0), (f_left, D, True, T), (f_right, D, False, T), (f_rear, W, False, 0.0)):
-        tower_face(f, span, street, inset)
+    for f, span, street, inset, side in ((f_front, W, True, 0.0, False), (f_left, D, True, T, True), (f_right, D, False, T, True), (f_rear, W, False, 0.0, False)):
+        tower_face(f, span, street, inset, side)
     corner_fins()
     ground_floor(f_front, f_right, f_rear, f_left)
     C.CONTACTS.append(dict(name='Balcony plates cast with the slab edge band on every apartment storey', storeys=N, projection_m=PLATE))

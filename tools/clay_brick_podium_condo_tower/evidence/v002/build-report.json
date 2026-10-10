@@ -1,0 +1,3144 @@
+{
+  "candidate": "clay-brick-podium-condo-tower-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 264,
+    "vertices": 14817,
+    "polygons": 18214,
+    "triangles": 18214,
+    "path": "clay-brick-podium-condo-tower-clay-v002-authoring.blend",
+    "bytes": 3592812,
+    "sha256": "ec86dd1157477e67f2639dab778a0b41eeef4ec3aa70c5556413a35a278db8e2"
+  },
+  "runtime": {
+    "path": "clay-brick-podium-condo-tower-clay-v002.glb",
+    "bytes": 979320,
+    "sha256": "8ec92a3b149e3799ad20046567c1d7074a95c29da73c1a68653938e9fbef513a",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 18,
+    "vertices": 14817,
+    "polygons": 18214,
+    "triangles": 18214
+  },
+  "original_bounds_m": [
+    [
+      -27.0,
+      -22.0,
+      0.0
+    ],
+    [
+      27.0,
+      22.0,
+      48.20000076293945
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -27.0,
+      -22.0,
+      0.0
+    ],
+    [
+      27.0,
+      22.0,
+      48.20000076293945
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 42.0,
+    "depth": 32.0,
+    "height": 47.7
+  },
+  "native_dimensions_m": {
+    "width": 54.0,
+    "depth": 44.0,
+    "height": 48.20000076293945
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 4,
+    "joint": 4,
+    "trim": 45,
+    "pale": 15,
+    "stone": 6,
+    "sand": 1,
+    "foundation": 5,
+    "glass": 13,
+    "hardware": 52,
+    "interior": 9,
+    "floor": 14,
+    "timber": 36,
+    "blue": 6,
+    "planting": 35,
+    "concrete": 13,
+    "metal": 1,
+    "membrane": 1,
+    "spandrel": 4
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/podium_retail.png",
+    "renders/podium_setback.png",
+    "renders/balcony_stack.png",
+    "renders/roof_crown.png",
+    "renders/corner_entry.png",
+    "renders/interior.png",
+    "renders/rear_lane.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.12854409217834473,
+      "xmax": 0.8714559078216553,
+      "ymin": 0.09825851023197174,
+      "ymax": 0.9236593246459961
+    },
+    "front_corner": {
+      "xmin": 0.25884461402893066,
+      "xmax": 0.7374253273010254,
+      "ymin": 0.09182879328727722,
+      "ymax": 0.7957199811935425
+    },
+    "aerial": {
+      "xmin": 0.2553045153617859,
+      "xmax": 0.7461398243904114,
+      "ymin": 0.08237823843955994,
+      "ymax": 0.7415872812271118
+    },
+    "top": {
+      "xmin": 0.11494628340005875,
+      "xmax": 0.8850536942481995,
+      "ymin": 0.08167003840208054,
+      "ymax": 0.9183299541473389
+    },
+    "left_side": {
+      "xmin": 0.22160018980503082,
+      "xmax": 0.778424859046936,
+      "ymin": 0.0942128598690033,
+      "ymax": 0.8650822043418884
+    },
+    "right_side": {
+      "xmin": 0.22157512605190277,
+      "xmax": 0.7783998250961304,
+      "ymin": 0.0942128598690033,
+      "ymax": 0.8924652934074402
+    },
+    "rear": {
+      "xmin": 0.13692887127399445,
+      "xmax": 0.8630715012550354,
+      "ymin": 0.07773745059967041,
+      "ymax": 0.9062185287475586
+    },
+    "rear_side": {
+      "xmin": 0.25535446405410767,
+      "xmax": 0.7423656582832336,
+      "ymin": 0.08795718848705292,
+      "ymax": 0.7831397652626038
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Podium roof terrace with glass balustrade on the parapet, planters bearing on the slab",
+      "terrace_m": 9.3
+    },
+    {
+      "name": "Tower corner columns from grade to the parapet; penthouse on a curb on the roof slab",
+      "top_m": 43.0
+    },
+    {
+      "name": "Tower flush with the south and east podium faces; podium terrace wraps the west and north",
+      "tower_m": [
+        -9.0,
+        21.0,
+        -13.0,
+        8.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "podium south storefront 0",
+      "face": "podium south",
+      "u": -18.0,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium south ribbon window 0",
+      "face": "podium south",
+      "u": -18.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium south storefront 1",
+      "face": "podium south",
+      "u": -12.0,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium south ribbon window 1",
+      "face": "podium south",
+      "u": -12.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium south storefront 2",
+      "face": "podium south",
+      "u": -6.0,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium south ribbon window 2",
+      "face": "podium south",
+      "u": -6.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium south storefront 3",
+      "face": "podium south",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium south ribbon window 3",
+      "face": "podium south",
+      "u": 0.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium south storefront 4",
+      "face": "podium south",
+      "u": 6.0,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium south ribbon window 4",
+      "face": "podium south",
+      "u": 6.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium south storefront 5",
+      "face": "podium south",
+      "u": 12.0,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium south ribbon window 5",
+      "face": "podium south",
+      "u": 12.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium south lobby doors",
+      "face": "podium south",
+      "u": 18.4,
+      "z": 0.15,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "residential lobby"
+    },
+    {
+      "id": "podium south lobby glazing",
+      "face": "podium south",
+      "u": 18.4,
+      "z": 3.2,
+      "width": 4.6,
+      "height": 0.8999999999999995,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium south ribbon window 6",
+      "face": "podium south",
+      "u": 18.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium east storefront 0",
+      "face": "podium east",
+      "u": -12.559999999999999,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium east ribbon window 0",
+      "face": "podium east",
+      "u": -12.559999999999999,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium east storefront 1",
+      "face": "podium east",
+      "u": -6.280000000000001,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium east ribbon window 1",
+      "face": "podium east",
+      "u": -6.280000000000001,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium east storefront 2",
+      "face": "podium east",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium east ribbon window 2",
+      "face": "podium east",
+      "u": 0.0,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium east storefront 3",
+      "face": "podium east",
+      "u": 6.279999999999998,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium east ribbon window 3",
+      "face": "podium east",
+      "u": 6.279999999999998,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium east garage door",
+      "face": "podium east",
+      "u": 12.559999999999999,
+      "z": 0.15,
+      "width": 4.0,
+      "height": 4.2,
+      "kind": "roll-up door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "loading"
+    },
+    {
+      "id": "podium east ribbon window 4",
+      "face": "podium east",
+      "u": 12.559999999999999,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ground window 0",
+      "face": "podium north",
+      "u": -18.0,
+      "z": 1.4,
+      "width": 3.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ribbon window 0",
+      "face": "podium north",
+      "u": -18.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ribbon window 1",
+      "face": "podium north",
+      "u": -12.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ground window 2",
+      "face": "podium north",
+      "u": -6.0,
+      "z": 1.4,
+      "width": 3.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ribbon window 2",
+      "face": "podium north",
+      "u": -6.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north loading door",
+      "face": "podium north",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 4.0,
+      "height": 4.2,
+      "kind": "roll-up door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loading"
+    },
+    {
+      "id": "podium north ribbon window 3",
+      "face": "podium north",
+      "u": 0.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ground window 4",
+      "face": "podium north",
+      "u": 6.0,
+      "z": 1.4,
+      "width": 3.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ribbon window 4",
+      "face": "podium north",
+      "u": 6.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ribbon window 5",
+      "face": "podium north",
+      "u": 12.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ground window 6",
+      "face": "podium north",
+      "u": 18.0,
+      "z": 1.4,
+      "width": 3.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium north ribbon window 6",
+      "face": "podium north",
+      "u": 18.0,
+      "z": 6.0,
+      "width": 4.2,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium west storefront 0",
+      "face": "podium west",
+      "u": -12.559999999999999,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium west ribbon window 0",
+      "face": "podium west",
+      "u": -12.559999999999999,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium west storefront 1",
+      "face": "podium west",
+      "u": -6.280000000000001,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium west ribbon window 1",
+      "face": "podium west",
+      "u": -6.280000000000001,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium west storefront 2",
+      "face": "podium west",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium west ribbon window 2",
+      "face": "podium west",
+      "u": 0.0,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium west storefront 3",
+      "face": "podium west",
+      "u": 6.279999999999998,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium west ribbon window 3",
+      "face": "podium west",
+      "u": 6.279999999999998,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "podium west storefront 4",
+      "face": "podium west",
+      "u": 12.559999999999999,
+      "z": 0.15,
+      "width": 4.879999999999999,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "podium west ribbon window 4",
+      "face": "podium west",
+      "u": 12.559999999999999,
+      "z": 6.0,
+      "width": 4.4799999999999995,
+      "height": 2.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "second-floor amenity and offices"
+    },
+    {
+      "id": "tower south glazing band 0",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 9.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 1",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 12.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 2",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 15.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 3",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 18.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 4",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 21.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 5",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 24.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 6",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 27.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 7",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 30.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 8",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 33.919999999999995,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 9",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 36.919999999999995,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower south glazing band 10",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 39.919999999999995,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 0",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 9.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 1",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 12.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 2",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 15.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 3",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 18.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 4",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 21.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 5",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 24.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 6",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 27.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 7",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 30.92,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 8",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 33.919999999999995,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 9",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 36.919999999999995,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower north glazing band 10",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 39.919999999999995,
+      "width": 29.0,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 0",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 10.450000000000001,
+      "width": 19.4,
+      "height": 1.83,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 1",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 12.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 2",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 15.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 3",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 18.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 4",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 21.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 5",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 24.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 6",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 27.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 7",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 30.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 8",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 33.919999999999995,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 9",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 36.919999999999995,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower east glazing band 10",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 39.919999999999995,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        21.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 0",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 9.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 1",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 12.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 2",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 15.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 3",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 18.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 4",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 21.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 5",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 24.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 6",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 27.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 7",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 30.92,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 8",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 33.919999999999995,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 9",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 36.919999999999995,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    },
+    {
+      "id": "tower west glazing band 10",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 39.919999999999995,
+      "width": 19.4,
+      "height": 2.36,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -9.0,
+        -2.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartments around the core"
+    }
+  ],
+  "authoring_modules": {
+    "sidewalk": [
+      "South sidewalk",
+      "East sidewalk",
+      "Kerb south",
+      "Kerb east"
+    ],
+    "lane": [
+      "Rear lane",
+      "West lot"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Shrub rooted stem",
+      "Leafy shrub crown",
+      "Leafy shrub crown.001",
+      "Leafy shrub crown.002",
+      "Leafy shrub crown.003",
+      "Shrub rooted stem.001",
+      "Leafy shrub crown.004",
+      "Leafy shrub crown.005",
+      "Leafy shrub crown.006",
+      "Leafy shrub crown.007",
+      "Shrub rooted stem.002",
+      "Leafy shrub crown.008",
+      "Leafy shrub crown.009",
+      "Leafy shrub crown.010",
+      "Leafy shrub crown.011",
+      "Shrub rooted stem.003",
+      "Leafy shrub crown.012",
+      "Leafy shrub crown.013",
+      "Leafy shrub crown.014",
+      "Leafy shrub crown.015"
+    ],
+    "envelope": [
+      "podium south podium carrier",
+      "podium east podium carrier",
+      "podium north podium carrier",
+      "podium west podium carrier",
+      "tower south spandrel carrier",
+      "tower north spandrel carrier",
+      "tower east spandrel carrier",
+      "tower west spandrel carrier"
+    ],
+    "brick joints": [
+      "podium south measured mortar courses",
+      "podium east measured mortar courses",
+      "podium north measured mortar courses",
+      "podium west measured mortar courses"
+    ],
+    "podium": [
+      "podium south podium trim",
+      "podium south podium glass",
+      "podium south podium stone",
+      "podium east podium trim",
+      "podium east podium glass",
+      "podium east podium stone",
+      "podium east podium pale",
+      "podium north podium trim",
+      "podium north podium glass",
+      "podium north podium stone",
+      "podium north podium pale",
+      "podium west podium trim",
+      "podium west podium glass",
+      "podium west podium stone"
+    ],
+    "foundation": [
+      "Ground slab"
+    ],
+    "occupied floors": [
+      "Second floor",
+      "Tower floor 0",
+      "Tower floor 1",
+      "Tower floor 2",
+      "Tower floor 3",
+      "Tower floor 4",
+      "Tower floor 5",
+      "Tower floor 6",
+      "Tower floor 7",
+      "Tower floor 8",
+      "Tower floor 9",
+      "Tower floor 10"
+    ],
+    "roof": [
+      "Podium roof slab",
+      "Tower roof slab",
+      "Tower roof gravel"
+    ],
+    "terrace": [
+      "Terrace pavers",
+      "Terrace balustrade glass",
+      "Terrace balustrade rail",
+      "Terrace balustrade glass.001",
+      "Terrace balustrade rail.001",
+      "Terrace balustrade glass.002",
+      "Terrace balustrade rail.002",
+      "Terrace balustrade glass.003",
+      "Terrace balustrade rail.003",
+      "Terrace balustrade glass.004",
+      "Terrace balustrade rail.004",
+      "South terrace planter",
+      "South terrace planting",
+      "South terrace planter.001",
+      "South terrace planting.001",
+      "South terrace planter.002",
+      "South terrace planting.002",
+      "Terrace planter",
+      "Terrace planter soil",
+      "Terrace planter.001",
+      "Terrace planter soil.001",
+      "Terrace planter.002",
+      "Terrace planter soil.002",
+      "Terrace planter.003",
+      "Terrace planter soil.003",
+      "Terrace bench"
+    ],
+    "office furniture": [
+      "Desk surface",
+      "Desk leg",
+      "Desk leg.001",
+      "Desk leg.002",
+      "Desk leg.003",
+      "Monitor base",
+      "Monitor stem",
+      "Monitor",
+      "Chair seat",
+      "Chair back",
+      "Chair leg",
+      "Chair leg.001",
+      "Chair leg.002",
+      "Chair leg.003",
+      "Desk surface.001",
+      "Desk leg.004",
+      "Desk leg.005",
+      "Desk leg.006",
+      "Desk leg.007",
+      "Monitor base.001",
+      "Monitor stem.001",
+      "Monitor.001",
+      "Chair seat.001",
+      "Chair back.001",
+      "Chair leg.004",
+      "Chair leg.005",
+      "Chair leg.006",
+      "Chair leg.007",
+      "Desk surface.002",
+      "Desk leg.008",
+      "Desk leg.009",
+      "Desk leg.010",
+      "Desk leg.011",
+      "Monitor base.002",
+      "Monitor stem.002",
+      "Monitor.002",
+      "Chair seat.002",
+      "Chair back.002",
+      "Chair leg.008",
+      "Chair leg.009",
+      "Chair leg.010",
+      "Chair leg.011"
+    ],
+    "curtain wall": [
+      "tower south curtain wall glass",
+      "tower south curtain wall trim",
+      "tower south curtain wall pale",
+      "tower south curtain wall concrete",
+      "tower south curtain wall hardware",
+      "tower north curtain wall glass",
+      "tower north curtain wall trim",
+      "tower north curtain wall pale",
+      "tower north curtain wall concrete",
+      "tower north curtain wall hardware",
+      "tower east curtain wall glass",
+      "tower east curtain wall trim",
+      "tower east curtain wall pale",
+      "tower east curtain wall concrete",
+      "tower east curtain wall hardware",
+      "tower west curtain wall glass",
+      "tower west curtain wall trim",
+      "tower west curtain wall pale",
+      "tower west curtain wall concrete",
+      "tower west curtain wall hardware"
+    ],
+    "coping": [
+      "Tower parapet coping",
+      "Tower parapet coping.001",
+      "Tower parapet coping.002",
+      "Tower parapet coping.003"
+    ],
+    "tower columns": [
+      "Tower corner column",
+      "Tower corner column.001",
+      "Tower corner column.002",
+      "Tower corner column.003"
+    ],
+    "core": [
+      "Tower core"
+    ],
+    "partitions": [
+      "Party wall",
+      "Party wall.001"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003"
+    ],
+    "bedroom furniture": [
+      "Bed grounded foot",
+      "Bed grounded foot.001",
+      "Bed grounded foot.002",
+      "Bed grounded foot.003",
+      "Bed frame",
+      "Mattress",
+      "Duvet",
+      "Headboard",
+      "Pillow",
+      "Pillow.001"
+    ],
+    "penthouse": [
+      "Penthouse curb",
+      "Penthouse",
+      "Penthouse louvre",
+      "Penthouse louvre.001",
+      "Penthouse louvre.002",
+      "Penthouse louvre.003",
+      "Penthouse louvre.004",
+      "Penthouse east louvre",
+      "Penthouse west louvre",
+      "Penthouse north louvre"
+    ],
+    "rooftop plant": [
+      "Penthouse roof unit",
+      "Rooftop unit",
+      "Rooftop unit.001"
+    ],
+    "guard rails": [
+      "Guard rail",
+      "Guard rail mid",
+      "Guard post",
+      "Guard post.001",
+      "Guard post.002",
+      "Guard post.003",
+      "Guard post.004",
+      "Guard post.005",
+      "Guard post.006",
+      "Guard rail.001",
+      "Guard rail mid.001",
+      "Guard post.007",
+      "Guard post.008",
+      "Guard post.009",
+      "Guard post.010",
+      "Guard post.011",
+      "Guard rail.002",
+      "Guard rail mid.002",
+      "Guard post.012",
+      "Guard post.013",
+      "Guard post.014",
+      "Guard post.015",
+      "Guard post.016",
+      "Guard post.017",
+      "Guard post.018",
+      "Guard rail.003",
+      "Guard rail mid.003",
+      "Guard post.019",
+      "Guard post.020",
+      "Guard post.021",
+      "Guard post.022",
+      "Guard post.023"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "finished_utc": "2026-10-10T17:43:23.200524+00:00",
+  "delivery_and_render_seconds": 6360.220336007,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

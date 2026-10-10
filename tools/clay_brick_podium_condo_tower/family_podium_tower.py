@@ -50,6 +50,10 @@ def manifest(version):
         ('corner_entry', (30.0, -26.0, 2.2), (TX[1], TY[0], 2.6), 45),
         ('interior', (-3.0, -8.5, FLOORS[5] + 1.6), (-1.0, TY[0] - 1.5, FLOORS[5] + 1.1), 55),
         ('rear_lane', (0.0, 34.0, 5.0), (-4.0, PY[1], 4.0), 40)])
+    # The locked oblique shows the south-east street corner, so the identity view is taken from there.
+    for c in cams:
+        if c['name'] == 'front_corner':
+            lx, ly, lz = c['location']; c['location'] = (-lx, ly, lz)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -66,7 +70,7 @@ def manifest(version):
         identity_contract=dict(owner='red-brick two-storey podium with double-height storefronts and a roof terrace, glass tower flush with the corner, balcony stacks, pale mechanical penthouse'),
         material_contract=dict(profile='source-palette clay: red brick with recessed courses, precast bands, dark storefront frames, clear curtain-wall glass with pale spandrels and mullions, glass balustrades, pale metal penthouse', textured_keeper=False),
         programme_contract=dict(storeys=N + 2, ground='retail units and the residential lobby at the corner', second='amenity and offices', upper='eight apartments per floor around a central core', roof='mechanical penthouse'),
-        contact_contract=['Grade-zero slab and sidewalks', 'Tower corner columns from grade to the parapet', 'Balcony plates cast with the floor slabs', 'Terrace balustrade on the podium parapet', 'Penthouse on the tower roof slab'],
+        contact_contract=['Grade-zero slab and sidewalks', 'Tower corner columns from the podium roof to the parapet', 'Balcony plates cast with the floor slabs', 'Terrace balustrade on the podium parapet', 'Penthouse on the tower roof slab'],
         runtime_contract=dict(scale='fixed_native_only', installation='not installed', review='NOT TESTED'),
         camera_roster=cams, mandatory_review_views=[c['name'] for c in cams])
 
@@ -159,7 +163,8 @@ def tower():
     tower_face(west, -hd + T, hd - T, (-hd * .45, hd * .45))
     for x in (x0, x1):
         for y in (y0, y1):
-            C.box('Tower corner column', (x, y, (G0 + TPAR) / 2), (.70, .70, TPAR - G0), 'pale', 'tower columns', 0)
+            # Columns belong to the tower only: they start on the podium roof, never run down the brick podium faces.
+            C.box('Tower corner column', (x, y, (PODIUM - .05 + TPAR) / 2), (.70, .70, TPAR - PODIUM + .05), 'pale', 'tower columns', 0)
     # Floors, core and interiors.
     for i, zf in enumerate(FLOORS):
         C.box(f'Tower floor {i}', ((x0 + x1) / 2, (y0 + y1) / 2, zf - .13), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .26), 'floor', 'occupied floors', 0)
@@ -187,7 +192,7 @@ def tower():
         C.box('Rooftop unit', (x, y, TROOF + .9), (2.6, 1.8, 1.6), 'hardware', 'rooftop plant', 0)
     rail_run((x0 + .4, y0 + .4), (x1 - .4, y0 + .4), TPAR); rail_run((x1 - .4, y0 + .4), (x1 - .4, y1 - .4), TPAR)
     rail_run((x1 - .4, y1 - .4), (x0 + .4, y1 - .4), TPAR); rail_run((x0 + .4, y1 - .4), (x0 + .4, y0 + .4), TPAR)
-    C.CONTACTS.append(dict(name='Tower corner columns from grade to the parapet; penthouse on a curb on the roof slab', top_m=TPAR))
+    C.CONTACTS.append(dict(name='Tower corner columns from the podium roof to the parapet; penthouse on a curb on the roof slab', top_m=TPAR, base_m=PODIUM))
 
 
 def rail_run(a, b, z, height=1.05):

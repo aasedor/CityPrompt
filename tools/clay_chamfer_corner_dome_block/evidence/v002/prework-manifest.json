@@ -1,0 +1,421 @@
+{
+  "candidate": "clay-chamfer-corner-dome-block-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-chamfer-corner-dome-block",
+  "variant_id": "clay-chamfer-corner-dome-block-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "barcelona_corner_chamfer/variant_0 (chamfer_classic)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 30.0,
+      "depth": 26.0,
+      "height": 28.5
+    },
+    "observed_storeys": 4,
+    "storey_programme": "stone ground floor of shops; stone piano nobile; two brick residential storeys; flat tiled roof with dome turret",
+    "plan": "30 x 26 m corner block read from the top view (roof 480 x 420 px at 0.062 m/px) with a 9 m chamfer at the south-west corner carrying the bowed bay",
+    "facade": "south face six bays and west face five bays of French windows 1.3 x 2.8 m with stone surrounds; continuous iron balcony at the piano nobile and individual balconies above; arched shop openings 3.2 x 4.2 m in rusticated stone; cornice at 19.6 m with a balustraded parapet to 20.9 m",
+    "levels_m": [
+      0.15,
+      5.0,
+      9.2,
+      13.0
+    ],
+    "cornice_m": 16.8,
+    "parapet_m": 18.1,
+    "storeys_recorded": "the sources read ground plus three upper storeys; v001 carried four and was corrected",
+    "chamfer": "bowed stone bay projecting 1.6 m: tall glazing between columns on the piano nobile, windows above, an iron balcony and short windowed drum on the top storey under the wrapping cornice; round drum 6 m across and 2.4 m high above the parapet with oriented windows; copper dome with three oculi and cresting; open arcaded lantern",
+    "roof": "flat terracotta tiles; pyramid rooflight 5 m square; two small rooflights; three chimney stacks",
+    "inferred": "north and east faces are not visible and repeat the grammar without balconies; interiors are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "flat tiled roof behind a balustraded parapet; dome turret on the chamfer bay; rooflights and chimneys on the slab",
+    "datum_m": 16.8,
+    "crowns_m": [
+      18.1,
+      24.5,
+      27.1
+    ]
+  },
+  "identity_contract": {
+    "owner": "chamfered corner with the bowed bay and copper dome, iron balconies on tall French windows, rusticated arched shop floor, cornice and balustrade"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: warm brick with recessed courses, pale stone ground floor, surrounds and cornice, black iron balconies, dark green frames, terracotta tiles, copper dome",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 5,
+    "ground": "shops with the residential entrance on the chamfer",
+    "upper": "two apartments per floor; a salon in the bow",
+    "roof": "shared terrace around the rooflights"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Bowed bay bearing on the rusticated ground floor",
+    "Balconies cantilevered from the carriers",
+    "Drum and dome bearing on the bay roof",
+    "Chimneys and rooflights on the roof slab"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -51.0,
+        13.68
+      ],
+      "target": [
+        0,
+        0,
+        12.825000000000001
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -39.78,
+        -42.839999999999996,
+        57.0
+      ],
+      "target": [
+        0,
+        0,
+        12.825000000000001
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        35.699999999999996,
+        -40.800000000000004,
+        85.5
+      ],
+      "target": [
+        0,
+        0,
+        12.825000000000001
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        76.5
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 42.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -51.0,
+        0,
+        17.099999999999998
+      ],
+      "target": [
+        0,
+        0,
+        12.825000000000001
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        51.0,
+        0,
+        17.099999999999998
+      ],
+      "target": [
+        0,
+        0,
+        12.825000000000001
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        51.0,
+        17.099999999999998
+      ],
+      "target": [
+        0,
+        0,
+        12.825000000000001
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        35.699999999999996,
+        40.800000000000004,
+        51.300000000000004
+      ],
+      "target": [
+        0,
+        0,
+        12.825000000000001
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -6.0,
+        -28.0,
+        8.0
+      ],
+      "target": [
+        2.0,
+        -13.0,
+        10.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -32.0,
+        -30.0,
+        18.0
+      ],
+      "target": [
+        -11.818019484660535,
+        -9.818019484660535,
+        17.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -4.0,
+        -20.0,
+        2.2
+      ],
+      "target": [
+        0.0,
+        -13.0,
+        2.6
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "chamfer_dome",
+      "location": [
+        -34.0,
+        -34.0,
+        27.0
+      ],
+      "target": [
+        -12.818019484660535,
+        -10.818019484660535,
+        21.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "balcony_ironwork",
+      "location": [
+        -8.0,
+        -22.0,
+        9.0
+      ],
+      "target": [
+        -4.0,
+        -13.0,
+        9.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "ground_arcade",
+      "location": [
+        -26.0,
+        -24.0,
+        2.0
+      ],
+      "target": [
+        -11.818019484660535,
+        -9.818019484660535,
+        2.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "cornice_contact",
+      "location": [
+        8.0,
+        -26.0,
+        16.0
+      ],
+      "target": [
+        10.0,
+        -13.0,
+        16.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_terrace",
+      "location": [
+        -36.0,
+        -40.0,
+        38.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        18.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -6.0,
+        -3.0,
+        6.6
+      ],
+      "target": [
+        -8.0,
+        -14.0,
+        6.3
+      ],
+      "lens": 55,
+      "whole": false
+    },
+    {
+      "name": "rear_court",
+      "location": [
+        12.0,
+        32.0,
+        10.0
+      ],
+      "target": [
+        4.0,
+        13.0,
+        8.0
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "chamfer_dome",
+    "balcony_ironwork",
+    "ground_arcade",
+    "cornice_contact",
+    "roof_terrace",
+    "interior",
+    "rear_court"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1405636,
+        "sha256": "4b2c66d9cf36c9495339bcdee098d16d050caf9f378aef8e8ccf561934aa9f71"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 1000771,
+        "sha256": "205c7e179e1b931df8647fe734de6bd060438a58072e8fba8c1ff02b4eac43b3"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 950494,
+        "sha256": "d85ec8b20ff9e9e49be61e160f8737b3e388880c76a3993ef2a68f8fd4c07af7"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_chamfer.py",
+        "sha256": "fb03bce0d36459a98047dafb5e3a9737d75454baa098b535baccd9301e1272cb"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "1e89ccda2d5fa507e233576c54fb8446f9f84754332727822d03a40e447fe5dc"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "b3359f747be14db8b6829d25e07d87bff306a96121325a6a64050c7f16e215cc"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T16:03:27.088936+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

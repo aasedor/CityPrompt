@@ -14,18 +14,19 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-arched-mill-mixed-use'
-W, D = 20.0, 30.0                # gable faces south and north; the long faces run along the west street and the rear
+W, D = 20.0, 22.0                # near-square block: gable faces south and north, four-bay faces along the west street and the rear
 T = .34
 G0 = .15
 LEVELS = [4.6, 8.2, 11.8]
 EAVE = 15.4
 PAR = 16.0
 RIDGE = 19.0
-BAYS_LONG = 6
+BAYS_LONG = 4
 BAYS_GABLE = 4
 PIL = .9                       # pilaster width
-PAV = (-13.0, 12.5, 7.0, 2.9)   # rooftop pavilion y0, y1 along the west slope, depth from the parapet, front wall height
-CHIMNEY = (W / 2 - 1.3, -D / 2 + 9.5)   # on the rear eave, a third of the way up from the street gable
+PAV = (-6.8, 8.7, 7.0, 2.9)     # rooftop pavilion y0, y1 along the west slope (73% of the ridge, open slate to the south), depth from the parapet, front wall height
+DECK = (-7.2, D / 2 - T - .3)     # level deck under the pavilion with a railed terrace beyond its north end
+CHIMNEY = (W / 2 - .9, -D / 2 + 7.0)    # on the rear wall line, a third of the way up from the street gable
 EPS = .002
 PALETTE = dict(wall=(.56, .30, .20), joint=(.40, .22, .14), trim=(.12, .12, .13),
     pale=(.72, .68, .60), stone=(.64, .60, .52), roof=(.30, .31, .34), sand=(.60, .56, .48),
@@ -47,17 +48,17 @@ def manifest(version):
         ('chimney_contact', (26.0, -26.0, 24.0), (CHIMNEY[0], CHIMNEY[1], 19.0), 45),
         ('shopfront', (-16.0, 4.0, 1.8), (-W / 2, 8.0, 2.2), 45),
         ('interior', (-2.0, -4.0, LEVELS[1] + 1.6), (-W / 2 - 1.0, -6.0, LEVELS[1] + 1.4), 60),
-        ('rear_yard', (30.0, 12.0, 6.0), (W / 2, 4.0, 5.0), 40)])
+        ('rear_yard', (30.0, 10.0, 6.0), (W / 2, 3.0, 5.0), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='industrial_brick_mixed_use/variant_0 (industrial_brick_original_mill)',
         measurement_contract=dict(dimensions_m=dict(width=W, depth=D, height=h),
             observed_storeys=4, storey_programme='retail ground floor behind arched shopfronts; three loft storeys; glazed rooftop pavilion',
-            plan='30 x 20 m corner block read from the top view (roof 560 x 380 px at 0.054 m/px); the long face runs along the west street and the gable face along the south street; ridge along the long axis',
-            facade='long faces six bays, gable faces four bays; brick pilasters 0.9 m between recessed panels; segmental-arched shopfronts 3.3 x 3.8 m; arched windows 2.4 x 2.7 m on each upper storey; stone sill band at 4.6 m; dentil cornice at 15.4 m',
+            plan='22 x 20 m near-square corner block read from the top view and the four-bay rhythm of both street faces; the eaves face runs along the west street and the gable face along the south street; ridge along the long axis',
+            facade='four bays on every face; brick pilasters 0.9 m between recessed panels; segmental-arched shopfronts 3.3 x 3.8 m; arched windows 2.4 x 2.7 m on each upper storey; stone sill band at 4.6 m; dentil cornice at 15.4 m',
             levels_m=[G0] + LEVELS, eave_m=EAVE, parapet_m=PAR, ridge_m=RIDGE,
-            roof='slate planes to a ridge at 19 m; raked gable parapets on the south and north faces; glazed pavilion 25.5 x 7 m cut into the west slope with a terrace rail at the parapet; chimney 2.2 m square to 26 m on the rear eave beside the street gable; four rooflights on the east slope',
+            roof='slate planes to a ridge at 19 m; raked gable parapets on the south and north faces; glazed pavilion 15.5 x 7 m cut into the west slope over a level deck, open slate to the south and a railed terrace beyond its north end; chimney 2.2 m square to 26 m on the rear wall line in the southern third; four rooflights on the east slope',
             inferred='the north gable and the east (rear) face are not visible in any source and repeat the grammar with a loading door; interiors are teaching assumptions'),
         roof_contract=dict(type='pitched slate with gable parapets; glazed pavilion on the front slope; chimney through the rear slope', datum_m=EAVE, crowns_m=[RIDGE, RIDGE + 7.0]),
         identity_contract=dict(owner='red-brick mill with arched shopfronts and arched windows between pilasters, dentil cornice, slate roof with raked gables, glazed rooftop pavilion, tall corner chimney'),
@@ -193,11 +194,12 @@ def roof():
     C.box('Loft partition', (-5.0, -1.0, zl + 1.6), (8.0, .16, 3.2), 'interior', 'partitions', 0)
     # Rooftop pavilion cut into the west slope: level deck, glazed box with a metal frame, flat roof just above the ridge.
     py0, py1, depth, ph = PAV
+    dy0, dy1 = DECK
     x0 = -W / 2 + .6; x1 = x0 + depth
     zd = EAVE + .9
-    C.cut_box(west, 'Pavilion roof cut', ((x0 + .9 + x1) / 2, (py0 + py1) / 2, (EAVE + RIDGE) / 2), (x1 - x0 - .9, py1 - py0, RIDGE - EAVE + 2.0))
-    C.box('Pavilion deck', ((x0 + x1) / 2, (py0 + py1) / 2, zd - .15), (depth + .6, py1 - py0 + 2.0, .30), 'concrete', 'pavilion', 0)
-    C.box('Pavilion base', ((x0 + x1) / 2 - .3, (py0 + py1) / 2, (EAVE - .3 + zd - .3) / 2), (depth, py1 - py0 + 2.0, zd - .3 - (EAVE - .3)), 'wall', 'pavilion', 0)
+    C.cut_box(west, 'Pavilion roof cut', ((x0 + .9 + x1) / 2, (dy0 + dy1) / 2, (EAVE + RIDGE) / 2), (x1 - x0 - .9, dy1 - dy0, RIDGE - EAVE + 2.0))
+    C.box('Pavilion deck', ((x0 + x1) / 2, (dy0 + dy1) / 2, zd - .15), (depth + .6, dy1 - dy0, .30), 'concrete', 'pavilion', 0)
+    C.box('Pavilion base', ((x0 + x1) / 2 - .3, (dy0 + dy1) / 2, (EAVE - .3 + zd - .3) / 2), (depth, dy1 - dy0, zd - .3 - (EAVE - .3)), 'wall', 'pavilion', 0)
     C.box('Pavilion floor', ((x0 + x1) / 2, (py0 + py1) / 2, zd + .004), (depth, py1 - py0, .008), 'floor', 'pavilion', 0)
     top = RIDGE + .35
     for x in (x0 + .9, x1):
@@ -209,10 +211,12 @@ def roof():
             C.box('Pavilion mullion', (x, y, (zd + top) / 2), (.10, .10, top - zd), 'metal', 'pavilion', 0)
     C.box('Pavilion roof', ((x0 + .9 + x1) / 2, (py0 + py1) / 2, top + .08), (x1 - x0 - .9 + .4, py1 - py0 + .4, .16), 'metal', 'pavilion', 0)
     C.box('Pavilion roof glazing', ((x0 + .9 + x1) / 2, (py0 + py1) / 2, top + .18), (x1 - x0 - 1.3, py1 - py0 - .4, .03), 'glass', 'pavilion', 0)
-    C.railing('Terrace rail', (x0 - .05, py0 - .8, zd), (x0 - .05, py1 + .8, zd), height=1.05, spacing=.9, role='hardware')
+    C.railing('Terrace rail west', (x0 - .05, dy0 + .1, zd), (x0 - .05, dy1 - .1, zd), height=1.05, spacing=.9, role='hardware')
+    C.railing('Terrace rail north', (x0 - .05, dy1 - .1, zd), (x1 + .25, dy1 - .1, zd), height=1.05, spacing=.9, role='hardware')
+    C.railing('Terrace rail south', (x0 - .05, dy0 + .1, zd), (x1 + .25, dy0 + .1, zd), height=1.05, spacing=.9, role='hardware')
     C.qa_room_light('Pavilion', ((x0 + x1) / 2, (py0 + py1) / 2, top - .4), 60, 4.0)
     # Rooflights on the east slope, chimney on the rear eave beside the street gable.
-    for y in (-8.0, 2.0):
+    for y in (-5.0, 3.0):
         for x in (3.0, 6.5):
             z = EAVE + (RIDGE - EAVE) * (W / 2 - x) / (W / 2)
             C.box('Rooflight', (x, y, z + .25), (1.4, 1.6, .5), 'metal', 'rooflights', 0)

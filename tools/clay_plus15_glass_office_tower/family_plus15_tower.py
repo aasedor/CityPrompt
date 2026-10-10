@@ -6,7 +6,7 @@ as a pale spandrel band under a dark vision band divided by closely spaced mulli
 columns run the full height. The ground floor is a double-height glazed lobby recessed behind a
 perimeter colonnade. An enclosed glazed Plus 15 bridge leaves the west end of the south face at
 the second level and crosses the street on piers. The roof carries a green roof around an
-L-shaped glazed and louvred mechanical penthouse with rooftop units in its yard.
+L-shaped two-storey glazed mechanical penthouse of close vertical fins, rooftop units on the lower deck in its notch.
 """
 import clay_core as C
 import assemblies as A
@@ -28,7 +28,7 @@ BRIDGE_X = (-13.0, -8.6)     # Plus 15 bridge leaves the south face here
 BRIDGE_Z = (4.6, 7.8)
 BRIDGE_LEN = 29.0
 PENT = [(-9.0, 9.0, -10.0, 2.0), (1.0, 9.0, 2.0, 10.0)]   # L-shaped penthouse, notch at the north-west
-PENT_H = 5.2
+PENT_H = 7.3                 # two storeys, read from the oblique
 EPS = .002
 PALETTE = dict(wall=(.74, .75, .74), joint=(.60, .61, .60), trim=(.78, .79, .78),
     pale=(.80, .80, .78), stone=(.70, .69, .66), roof=(.78, .78, .76), sand=(.64, .62, .58),
@@ -62,7 +62,7 @@ def manifest(version):
             facade='every floor: 1.05 m pale spandrel band and a 2.6 m dark vision band with mullions at 1.5 m; pale corner columns and a parapet band; lobby glazing recessed 3.2 m behind a colonnade of 1 m columns on a 6 m bay',
             levels_m=[G0, L1] + FLOORS[1:], roof_m=ROOF, parapet_m=PAR, storey_height_m=FH,
             bridge='enclosed glazed bridge 4.4 m wide from 4.6 to 7.8 m, 24 m long on two piers',
-            roof='green roof beds around an L-shaped glazed and louvred penthouse 5.2 m high with rooftop units in its yard',
+            roof='green roof beds around an L-shaped glazed penthouse of close vertical fins 7.3 m (two storeys) high with rooftop units on the lower deck in its north-west notch',
             inferred='sixteen office floors read from the spandrel bands in the oblique view (16 to 18); north and west faces repeat the grammar; interiors are teaching assumptions'),
         roof_contract=dict(type='flat membrane with vegetated beds behind a 1.2 m parapet band; penthouse on a curb', datum_m=ROOF, crowns_m=[PAR, ROOF + PENT_H + .3]),
         identity_contract=dict(owner='pale spandrel bands and close mullions over dark glass, corner columns, recessed double-height lobby on a colonnade, Plus 15 bridge, green roof with glazed penthouse'),
@@ -120,6 +120,8 @@ def tower_face(f, lo, hi):
     m = Merge(f)
     for h in holes:
         m.box('glass', h['u'], .10, h['z'] + h['h'] / 2, h['w'] - .02, .012, h['h'] - .02)
+        if abs(h['z'] - (FLOORS[8] + SPANDREL)) > .01:
+            m.box('blue', h['u'], T + .30, h['z'] + h['h'] / 2, h['w'] - .10, .06, h['h'] - .10)
         register(f, h, .06, 'curtain wall', 'open office floor')
     n = round((span - 1.4) / MULLION)
     for i in range(n + 1):
@@ -186,19 +188,36 @@ def roof_and_penthouse():
     for (x0, x1, y0, y1) in ((-15.5, -11.0, -15.0, 15.0), (11.0, 15.5, -15.0, 15.0), (-11.0, 11.0, 11.0, 15.0), (-11.0, 11.0, -15.0, -11.0)):
         C.box('Green roof bed', ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .18), (x1 - x0, y1 - y0, .36), 'soil', 'green roof', 0)
         C.box('Green roof planting', ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .40), (x1 - x0 - .2, y1 - y0 - .2, .08), 'planting', 'green roof', 0)
+    zb = ROOF + .3
     for (x0, x1, y0, y1) in PENT:
-        C.box('Penthouse', ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .3 + PENT_H / 2), (x1 - x0, y1 - y0, PENT_H), 'metal', 'penthouse', 0)
-    zc = ROOF + .3 + PENT_H / 2
-    # Glazed and louvred skin: glass on the south, east and north faces of the main block, louvres on the west and the wing.
-    C.box('Penthouse south glazing', (0.0, PENT[0][2] - .06, zc + .2), (16.0, .08, PENT_H - 1.4), 'lightglass', 'penthouse', 0)
-    C.box('Penthouse east glazing', (PENT[0][1] + .06, -4.0, zc + .2), (.08, 10.0, PENT_H - 1.4), 'lightglass', 'penthouse', 0)
-    C.box('Penthouse north glazing', (-4.0, PENT[0][3] + .06, zc + .2), (8.0, .08, PENT_H - 1.4), 'lightglass', 'penthouse', 0)
-    C.box('Penthouse west louvre', (PENT[0][0] - .06, -4.0, zc), (.08, 10.0, PENT_H - 1.6), 'hardware', 'penthouse', 0)
-    C.box('Penthouse wing louvre', (PENT[1][0] - .06, 6.0, zc), (.08, 6.0, PENT_H - 1.6), 'hardware', 'penthouse', 0)
-    C.box('Penthouse wing glazing', (5.0, PENT[1][3] + .06, zc + .2), (6.0, .08, PENT_H - 1.4), 'lightglass', 'penthouse', 0)
-    for x, y in ((-4.0, -4.0), (3.0, -4.0)):
-        C.box('Rooftop unit', (x, y, ROOF + .3 + PENT_H + .8), (2.2, 2.2, 1.6), 'hardware', 'rooftop plant', 0)
-        C.rod('Rooftop fan', (x, y, ROOF + .3 + PENT_H + 1.6), (x, y, ROOF + .3 + PENT_H + 1.8), .7, 'metal', 'rooftop plant', 14)
+        C.box('Penthouse body', ((x0 + x1) / 2, (y0 + y1) / 2, zb + (PENT_H - .3) / 2), (x1 - x0 - .02, y1 - y0 - .02, PENT_H - .3), 'blue', 'penthouse', 0)
+    # Curb, fascia and roof slab cover the L in three abutting pieces (never overlapping, so no shared faces): the main block,
+    # the wing, and the strip that carries the overhang round the notch corner.
+    (ax0, ax1, ay0, ay1), (bx0, bx1, by0, by1) = PENT
+    def l_cover(name, z, h, role, o):
+        for (x0, x1, y0, y1) in ((ax0 - o, ax1 + o, ay0 - o, ay1), (bx0 - o, bx1 + o, by0, by1 + o), (ax0 - o, bx0 - o, ay1, ay1 + o)):
+            C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, z), (x1 - x0, y1 - y0, h), role, 'penthouse', 0)
+    l_cover('Penthouse curb', zb + .18, .36, 'pale', .08)
+    l_cover('Penthouse fascia', zb + PENT_H - .2, .40, 'pale', .15)
+    l_cover('Penthouse roof', zb + PENT_H + .03, .06, 'membrane', .15)
+    # Exposed faces of the L: (centre, outward normal, length, along axis). Full-height glass between curb and fascia,
+    # with close vertical fins at 1.0 m on every face so the crown reads as the glazed and finned pavilion of the oblique.
+    faces = ((( .0, -10.0), (0, -1), 18.0), ((9.0, .0), (1, 0), 20.0), ((-4.0, 2.0), (0, 1), 10.0),
+             ((-9.0, -4.0), (-1, 0), 12.0), ((5.0, 10.0), (0, 1), 8.0), ((1.0, 6.0), (-1, 0), 8.0))
+    zg0, zg1 = zb + .36, zb + PENT_H - .40
+    for (cx, cy), (nx, ny), ln in faces:
+        along = (abs(ny), abs(nx))
+        gl = (ln - .10) * along[0] + .05 * (1 - along[0]), (ln - .10) * along[1] + .05 * (1 - along[1])
+        C.box('Penthouse glazing', (cx + nx * .03, cy + ny * .03, (zg0 + zg1) / 2), (gl[0], gl[1], zg1 - zg0), 'glass', 'penthouse', 0)
+        n = round(ln / 1.0)
+        for i in range(n + 1):
+            t = -ln / 2 + .06 + (ln - .12) * i / n
+            mx, my = cx + along[0] * t + nx * .12, cy + along[1] * t + ny * .12
+            C.box('Penthouse fin', (mx, my, (zg0 + zg1) / 2), (.10 + .10 * along[1], .10 + .10 * along[0], zg1 - zg0 + .04), 'metal', 'penthouse', 0)
+    # Rooftop units on the lower deck inside the north-west notch, as the top view and the oblique show; the penthouse roof stays clear.
+    for (x, y, sz) in ((-5.0, 4.6, (2.2, 2.2, 1.6)), (-1.8, 7.6, (2.2, 2.2, 1.6)), (-6.6, 8.2, (2.0, 2.0, 3.4))):
+        C.box('Rooftop unit', (x, y, ROOF + .012 + sz[2] / 2), sz, 'hardware', 'rooftop plant', 0)
+        C.rod('Rooftop fan', (x, y, ROOF + .012 + sz[2]), (x, y, ROOF + .012 + sz[2] + .2), .7, 'metal', 'rooftop plant', 14)
     C.CONTACTS.append(dict(name='Penthouse and green roof beds bearing on the roof slab', roof_m=ROOF))
 
 
@@ -211,6 +230,8 @@ def floors_and_site():
     C.box('Core', (0, 0, (G0 + ROOF) / 2), (12.0, 9.0, ROOF - G0), 'concrete', 'core', 0)
     C.qa_room_light('Lobby', (0, -8.0, L1 - .8), 140, 8.0)
     zf = FLOORS[8]
+    for j, (x, y) in enumerate(((-13.0, -6.0), (-13.0, 4.0), (-8.0, -12.0), (-12.0, 12.0))):
+        C.qa_room_light(f'Floor 8 fill {j}', (x, y, zf + FH - .9), 220, 9.0)
     for x in (-10.0, -4.0, 4.0, 10.0):
         A.desk(x, -D / 2 + 3.5, zf + .05)
     for x in (-8.0, 8.0):

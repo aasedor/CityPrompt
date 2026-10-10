@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-brick-podium-condo-tower",
+  "variant_id": "clay-brick-podium-condo-tower-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "condo_podium_tower/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/condo-podium-tower/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1239794,
+      "sha256": "247f085b7d208f1fd80395f5b5d8d7934e696acd4994ec61228255f5d0a8511a"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/condo-podium-tower/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1008232,
+      "sha256": "4fded6c1a678e8d3bd1246e9300fff6950cfa54cd8209212272a0476b68ab1c6"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/condo-podium-tower/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 949163,
+      "sha256": "f1e657ae0de180307adead2cc299184682f2b31fa26f5e58d64b0d5758b7bc4d"
+    }
+  ]
+}
