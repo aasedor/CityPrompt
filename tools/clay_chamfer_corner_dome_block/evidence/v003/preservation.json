@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-chamfer-corner-dome-block-clay-v003",
+  "glb": "clay-chamfer-corner-dome-block-clay-v003.glb",
+  "glb_bytes": 830468,
+  "glb_sha256": "91faa0bd9a3e4641c5b19cbf1461887ba749c4da03f5d8029cfb4ff0e0082692",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "balcony_ironwork.png": 92,
+    "chamfer_dome.png": 92,
+    "cornice_contact.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "ground_arcade.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_court.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_terrace.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-chamfer-corner-dome-block-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 32757095
+}

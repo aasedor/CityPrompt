@@ -67,3 +67,16 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P0 (disputed): the v003 reviewer reads both locked sources as ground plus two upper storeys and the render as ground plus three. The v001 reviewer and the builder read the same sources as ground plus three (front source rows at the first-floor balcony, the second floor and the third floor under the cornice). Recorded as an open storey-count question for a human to settle against the sources; no version changes the count on one reviewer's reading alone.
+- P0: pure-black voids at both ends of the parapet balustrade where it meets the bay cornice ring and drum (roof_terrace, chamfer_dome, rear_side, front_corner); the corner course ends are now clean. Fix is to stop the balustrade runs short of the ring and close the junction with a stone block, or to build the ring and the balustrade as one carrier.
+- P0: the interior camera shows a bare wall, one grey strip and the floor; fix is to re-aim it at a furnished room with a French window.
+- P1: drum about 0.85 of the dome height with square windows and the dome flatter than the sources (height to width about 0.47 against 0.65 to 0.73); fix is a drum of about a third of the dome height with arched windows and a taller dome.
+- P1: bow bay pier-dominant (about 30 percent glazed against about 75 in the oblique), with a squat slot level and a full flat disc at every level reading as a stepped stack; fix is narrow stone pilasters between full-height glazing and floor discs no wider than the bay.
+- P1: two full-height round columns flank the bay where the sources show flat stone pilasters (added in v003 to close the corner mitres); fix is square pilasters that mitre the courses instead.
+- P1: dome colour equal to the roof tiles; fix is a distinct dark copper.
+- P1: balcony ironwork reduced to a top bar on posts with no infill, so the balconies vanish in whole-envelope views; fix is a denser picket lattice.
+- P1: a black cube at the pavement kerb mitre and a dark gap line under the kerb; fix is to mitre the two kerb boxes.
+- P2 (recorded): ghost transparent pyramid rooflight, hairline seam on a bay pilaster, non-concentric ring in the top view, no rear court or lightwell, crest as sticks, squat bay top windows, plain chamfer door, corner piers not wrapped by the cornice, four stacks against three.
