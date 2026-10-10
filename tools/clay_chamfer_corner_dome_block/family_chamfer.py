@@ -223,14 +223,17 @@ def chamfer_bay():
         if inx * nx + iny * ny > 0:
             inx, iny = -inx, -iny
         g = C.Face(((ax + bx) / 2, (ay + by) / 2, 0), (ux, uy, 0), (inx, iny, 0), f'bay facet {i}')
-        fh = [hole(f'Bay glazing {i}-0', 0.0, LEVELS[0] + .25, length - .6, 3.5),
-              hole(f'Bay glazing {i}-1', 0.0, LEVELS[1] + .25, length - .6, 3.0),
-              hole(f'Bay window {i}-2', 0.0, LEVELS[2] + .3, 1.1, 2.0)]
+        # The two short end facets return into the chamfer wall and stay solid stone; the three outer facets carry the glazing.
+        end = i in (0, facets - 1)
+        fh = [] if end else [hole(f'Bay glazing {i}-0', 0.0, LEVELS[0] + .25, length - .6, 3.5),
+                             hole(f'Bay glazing {i}-1', 0.0, LEVELS[1] + .25, length - .6, 3.0),
+                             hole(f'Bay window {i}-2', 0.0, LEVELS[2] + .3, 1.1, 2.0)]
         g.wall(f'bay facet {i} carrier', -length / 2, length / 2, z0, z1, depth=T, role='stone', holes=fh)
         mb = Merge(g)
-        framed(mb, g, fh[0], cols=2, rows=2, occupied='salon', kind='window')
-        framed(mb, g, fh[1], cols=2, rows=2, occupied='bedroom', kind='window')
-        framed(mb, g, fh[2], cols=1, rows=1, occupied='attic salon', kind='window')
+        if not end:
+            framed(mb, g, fh[0], cols=2, rows=2, occupied='salon', kind='window')
+            framed(mb, g, fh[1], cols=2, rows=2, occupied='bedroom', kind='window')
+            framed(mb, g, fh[2], cols=1, rows=1, occupied='attic salon', kind='window')
         mb.box('stone', 0.0, -.05, LEVELS[1] - .2, length - .02, T + .16, .28)
         mb.box('stone', 0.0, -.05, LEVELS[2] - .2, length - .02, T + .16, .28)
         iron_balcony(mb, g, 0.0, LEVELS[2], length - .3, depth=.7)
