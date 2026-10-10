@@ -1,0 +1,1284 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "Room window -0.5 0.1 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -0.5 0.1 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -0.5 4.0 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -0.5 4.0 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -0.5 7.2 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -0.5 7.2 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -0.5 10.4 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -0.5 10.4 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +3.5 0.1 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +3.5 0.1 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +3.5 4.0 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +3.5 4.0 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +3.5 7.2 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +3.5 7.2 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +3.5 10.4 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +3.5 10.4 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +7.5 0.1 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +7.5 0.1 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +7.5 4.0 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +7.5 4.0 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +7.5 7.2 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +7.5 7.2 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +7.5 10.4 -1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +7.5 10.4 1",
+      "face": "south block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -13.5 4.0 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -13.5 4.0 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -13.5 7.2 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -13.5 7.2 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -13.5 10.4 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -13.5 10.4 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -9.5 4.0 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -9.5 4.0 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -9.5 7.2 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -9.5 7.2 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -9.5 10.4 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -9.5 10.4 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -5.5 0.1 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -5.5 0.1 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -5.5 4.0 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -5.5 4.0 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -5.5 7.2 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -5.5 7.2 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -5.5 10.4 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -5.5 10.4 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -1.5 0.1 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -1.5 0.1 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -1.5 4.0 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -1.5 4.0 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -1.5 7.2 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -1.5 7.2 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -1.5 10.4 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -1.5 10.4 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.5 0.1 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.5 0.1 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.5 4.0 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.5 4.0 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.5 7.2 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.5 7.2 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.5 10.4 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.5 10.4 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.5 0.1 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.5 0.1 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.5 4.0 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.5 4.0 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.5 7.2 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.5 7.2 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.5 10.4 -1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.5 10.4 1",
+      "face": "south block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 7.2 -1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 7.2 1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 10.4 -1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 10.4 1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 7.2 -1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 7.2 1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 10.4 -1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 10.4 1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 7.2 -1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 7.2 1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 10.4 -1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 10.4 1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 7.2 -1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 7.2 1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 10.4 -1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 10.4 1",
+      "face": "south block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +9.2 0.1 -1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +9.2 0.1 1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +9.2 4.0 -1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +9.2 4.0 1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +9.2 7.2 -1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +9.2 7.2 1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +9.2 10.4 -1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +9.2 10.4 1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +13.2 0.1 -1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +13.2 0.1 1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +13.2 4.0 -1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +13.2 4.0 1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +13.2 7.2 -1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +13.2 7.2 1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +13.2 10.4 -1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +13.2 10.4 1",
+      "face": "south block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 0.1 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 0.1 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 4.0 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 4.0 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 7.2 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 7.2 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 10.4 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 10.4 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 0.1 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 0.1 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 4.0 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 4.0 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 7.2 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 7.2 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 10.4 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 10.4 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 0.1 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 0.1 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 4.0 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 4.0 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 7.2 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 7.2 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 10.4 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 10.4 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 0.1 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 0.1 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 4.0 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 4.0 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 7.2 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 7.2 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 10.4 -1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 10.4 1",
+      "face": "north wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -8.0 0.1 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -8.0 0.1 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -8.0 4.0 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -8.0 4.0 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -8.0 7.2 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -8.0 7.2 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -8.0 10.4 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -8.0 10.4 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -4.0 0.1 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -4.0 0.1 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -4.0 4.0 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -4.0 4.0 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -4.0 7.2 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -4.0 7.2 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -4.0 10.4 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -4.0 10.4 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +0.0 4.0 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +0.0 4.0 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +0.0 7.2 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +0.0 7.2 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +0.0 10.4 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +0.0 10.4 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +4.0 0.1 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +4.0 0.1 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +4.0 4.0 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +4.0 4.0 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +4.0 7.2 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +4.0 7.2 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +4.0 10.4 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +4.0 10.4 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +8.0 0.1 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +8.0 0.1 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +8.0 4.0 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +8.0 4.0 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +8.0 7.2 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +8.0 7.2 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +8.0 10.4 -1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +8.0 10.4 1",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear entry doors",
+      "face": "north wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 0.1 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 0.1 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 4.0 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 4.0 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 7.2 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 7.2 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 10.4 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -6.0 10.4 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 0.1 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 0.1 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 4.0 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 4.0 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 7.2 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 7.2 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 10.4 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window -2.0 10.4 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 0.1 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 0.1 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 4.0 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 4.0 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 7.2 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 7.2 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 10.4 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +2.0 10.4 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 0.1 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 0.1 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 4.0 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 4.0 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 7.2 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 7.2 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 10.4 -1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Room window +6.0 10.4 1",
+      "face": "north wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing south glazing 0",
+      "face": "wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing south glazing 1",
+      "face": "wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing south glazing 2",
+      "face": "wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing south glazing 3",
+      "face": "wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west glazing 0",
+      "face": "wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west glazing 1",
+      "face": "wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west glazing 2",
+      "face": "wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west glazing 3",
+      "face": "wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing north glazing 0",
+      "face": "wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing north glazing 1",
+      "face": "wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

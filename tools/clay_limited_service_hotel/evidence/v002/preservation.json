@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-limited-service-hotel-clay-v002",
+  "glb": "clay-limited-service-hotel-clay-v002.glb",
+  "glb_bytes": 998552,
+  "glb_sha256": "9a99d6770e6f181d850bce6943e20aac8ae155d16838858515acd0e042b8e331",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "lobby_tower.png": 92,
+    "parapet_corner.png": 92,
+    "porte_cochere.png": 92,
+    "rear.png": 92,
+    "rear_entry.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_plant.png": 92,
+    "top.png": 92,
+    "wing_contact.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-limited-service-hotel-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 30482585
+}

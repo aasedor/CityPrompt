@@ -29,10 +29,10 @@ CANOPY_Z = 4.6
 LOT = (-36.0, 28.0, -33.0, 26.0)   # site extent
 EPS = .002
 PALETTE = dict(wall=(.58, .52, .40), joint=(.46, .41, .32), trim=(.08, .08, .085),
-    pale=(.70, .70, .68), stone=(.50, .45, .38), roof=(.80, .80, .78), sand=(.62, .57, .46),
+    pale=(.70, .70, .68), stone=(.40, .36, .31), roof=(.80, .80, .78), sand=(.62, .57, .46),
     foundation=(.30, .30, .30), glass=(.50, .55, .54), hardware=(.09, .09, .095),
     interior=(.74, .70, .60), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
-    planting=(.46, .40, .20), soil=(.19, .14, .08), charcoal=(.22, .22, .23), accent=(.10, .16, .34),
+    planting=(.30, .42, .18), soil=(.19, .14, .08), charcoal=(.22, .22, .23), accent=(.10, .16, .34), green=(.22, .40, .20),
     cap=(.14, .14, .15), membrane=(.80, .80, .78))
 
 
@@ -41,13 +41,13 @@ def manifest(version):
     cams = G.camera_roster(LOT[1] - LOT[0], LOT[3] - LOT[2], h, [
         ('facade_close', (36.0, -2.0, 5.0), (16.0, -6.0, 5.5), 45),
         ('architecture_close', (30.0, -36.0, 13.0), (12.0, -20.0, 12.0), 50),
-        ('glass_close', (30.0, -4.0, 6.0), (16.0, -6.0, 6.0), 50),
+        ('glass_close', (27.0, -25.0, 6.0), (15.0, -17.0, 6.0), 50),
         ('porte_cochere', (34.0, -20.0, 2.5), (20.0, -12.5, 3.5), 40),
         ('lobby_tower', (26.0, -40.0, 6.0), (12.5, -20.0, 7.0), 40),
         ('wing_contact', (-34.0, -38.0, 4.0), (-18.0, -23.0, 4.0), 40),
         ('parapet_corner', (26.0, -28.0, 17.0), (16.0, -20.0, 13.8), 40),
         ('roof_plant', (-10.0, -36.0, 24.0), (2.0, -8.0, 14.0), 45),
-        ('interior', (30.0, -16.5, 2.2), (12.0, -16.5, 2.0), 30),
+        ('interior', (31.0, -19.8, 2.2), (12.0, -17.5, 2.0), 30),
         ('rear_entry', (-14.0, 34.0, 3.0), (4.0, 20.0, 2.4), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
@@ -127,19 +127,32 @@ def room_rows(lo, hi, floors, exposed=None, z_ground=1.0):
     return holes
 
 
-def elevation(f, lo, hi, holes, charcoal=None, extra=(), z1=CROWN):
-    """EIFS elevation: carrier, panel joints, punched windows, accent band and parapet cap."""
-    f.wall(f.label + ' carrier', lo, hi, G0, z1, depth=T, holes=holes + list(extra))
+def elevation(f, lo, hi, holes, charcoal=None, extra=(), z1=CROWN, field='wall', band='accent'):
+    """EIFS elevation: carrier in the field colour, panel joints, punched windows, accent band, parapet cap, stone base."""
+    f.wall(f.label + ' carrier', lo, hi, G0, z1, depth=T, holes=holes + list(extra), role=field)
     joints(f, lo + .2, hi - .2, G0 + EPS, ROOF - 1.2 if z1 == CROWN else z1 - .5, holes + list(extra))
     for h in holes:
         punched(f, h['id'], h['u'], h['z'], h['w'], h['h'])
-    if charcoal:
-        for a, b in charcoal:
-            f.part('Charcoal panel field', (a + b) / 2, -.012, (G0 + ROOF - 1.2) / 2, b - a, .024, ROOF - 1.2 - G0, 'charcoal', 'charcoal panels', 0)
     if z1 == CROWN:
-        f.part('Accent band', (lo + hi) / 2, -.02, ROOF - .6, hi - lo - 2 * EPS, .04, 1.2 - .02, 'accent', 'accent band', 0)
+        f.part('Accent band', (lo + hi) / 2, -.02, ROOF - .6, hi - lo - 2 * EPS, .04, 1.2 - .02, band, 'accent band', 0)
         f.part('Parapet cap band', (lo + hi) / 2, -.025, (ROOF + CROWN) / 2, hi - lo - 2 * EPS, .05, CROWN - ROOF - .02, 'cap', 'parapet cap', 0)
-    f.part('Base course', (lo + hi) / 2, -.02, .30, hi - lo - 2 * EPS, .04, .60, 'stone', 'base course', 0)
+    stone_base(f, lo, hi, holes + list(extra))
+
+
+def stone_base(f, lo, hi, holes, height=1.0):
+    """Ledgestone base course with recessed coursing, interrupted at openings."""
+    for a, b in subtract_openings(lo + .02, hi - .02, G0, height, holes):
+        if b - a > .1:
+            f.part('Stone base', (a + b) / 2, -.03, (G0 + height) / 2, b - a, .06, height - G0, 'stone', 'base course', 0)
+    vertices, faces = [], []
+    for k in range(1, 5):
+        z = G0 + k * (height - G0) / 5
+        for a, b in subtract_openings(lo + .02, hi - .02, z - .006, z + .006, holes):
+            o = len(vertices)
+            vertices.extend([f.p(a, -.062, z - .006), f.p(b, -.062, z - .006), f.p(b, -.062, z + .006), f.p(a, -.062, z + .006)])
+            faces.append((o, o + 1, o + 2, o + 3))
+    if faces:
+        C.mesh(f.label + ' stone coursing', vertices, faces, 'joint', 'base course')
 
 
 def face(x0, x1, y0, y1, side, label):
@@ -158,15 +171,15 @@ def blocks():
     f = face(*SB, 'east', 'south block east')
     lo = ty1 - (sy0 + sy1) / 2 + EPS
     holes = room_rows(lo + .2, 10.0 - T, [G0] + LV)
-    elevation(f, lo, 10.0 - T, holes, charcoal=[(2.0, 6.0)])
+    elevation(f, lo, 10.0 - T, holes)
     # South block, south face (u = x): exposed x -9.4..16 at ground (wing covers west part) and x -16..9 above; tower occupies x 9..16 at ground and above.
     f = face(*SB, 'south', 'south block south')
     def south_exposed(c, l):
         if c > tx0: return False
-        if l == G0 and c < wx1 + .6: return False
+        if l == G0 and c < wx1 + 2.0: return False
         return True
     holes = room_rows(-16.0, 9.0, [G0] + LV, exposed=south_exposed)
-    elevation(f, -16.0, tx0 - EPS, holes, charcoal=[(-12.0, -8.0)])
+    elevation(f, -16.0, tx0 - EPS, holes)
     # South block, west face (u = -y): ground exposed only for y -4.5..0; upper floors exposed all along.
     f = face(*SB, 'west', 'south block west')
     holes = room_rows(-10.0 + T, 10.0 - T, [G0] + LV, exposed=lambda c, l: (l not in (G0, LV[0])) or (c < -10.0 + 4.5 - 1.0))
@@ -174,38 +187,39 @@ def blocks():
     # South block, north face (u = -x): exposed for x 14..16 and x -16..-6.4 (north wing covers the rest).
     f = face(*SB, 'north', 'south block north')
     holes = room_rows(6.4, 16.0, [G0] + LV)
-    elevation(f, -16.0, 16.0, holes)
+    elevation(f, 6.4 + EPS, 16.0, holes, field='charcoal', band='green')
+    elevation(f, -16.0, -14.0 - EPS, [], field='charcoal', band='green')
     # North wing: east, north and west faces.
     f = face(*NWG, 'east', 'north wing east')
     holes = room_rows(-10.0 + T, 10.0 - T, [G0] + LV)
-    elevation(f, -10.0 + T, 10.0 - T, holes, charcoal=[(-9.0, -3.0), (3.0, 9.0)])
+    elevation(f, -10.0, 10.0 - T, holes, field='charcoal', band='green')
     f = face(*NWG, 'north', 'north wing north')
     holes = room_rows(-10.2, 10.2, [G0] + LV, exposed=lambda c, l: not (l == G0 and abs(c) < 2.5))
     door = hole('Rear entry doors', 0.0, G0, 2.4, 2.8, kind='door')
-    elevation(f, -10.2, 10.2, holes, extra=[door])
+    elevation(f, -10.2, 10.2, holes, extra=[door], field='charcoal', band='green')
     f.window(door['id'], door['u'], door['z'], door['w'], door['h'], cols=2, rows=1, frame='trim', depth=T, sill=False, kind='glazed door')
     lined(f, door)
     f.part('Rear entry canopy', 0.0, -.9, door['z'] + door['h'] + .25, 4.0, 1.8, .16, 'cap', 'rear entry', 0)
     f = face(*NWG, 'west', 'north wing west')
     holes = room_rows(-10.0 + T, 10.0 - T, [G0] + LV)
-    elevation(f, -10.0 + T, 10.0 - T, holes, charcoal=[(-3.0, 3.0)])
+    elevation(f, -10.0 + T, 10.0, holes, field='charcoal', band='green')
     # One-storey wing: south, west and north faces, plus the short east face south of the block.
     for side, lo, hi, label in (('south', -(wx1 - wx0) / 2, (wx1 - wx0) / 2, 'wing south'), ('west', -(wy1 - wy0) / 2 + T, (wy1 - wy0) / 2 - T, 'wing west'),
                                 ('north', -(wx1 - wx0) / 2 + (wx1 - sx0) + EPS, (wx1 - wx0) / 2, 'wing north')):
         f = face(*WG, side, label)
-        n = max(1, int((hi - lo) // 4.2))
-        glz = [hole(f'{label} glazing {i}', lo + (hi - lo) / 2 + (i - (n - 1) / 2) * 4.2, .9, 3.2, 2.6) for i in range(n)]
+        glz = [hole(f'{label} storefront ribbon', (lo + hi) / 2, 1.0, hi - lo - 1.6, WG_ROOF - 1.0 - .9)]
         f.wall(label + ' carrier', lo, hi, G0, WG_CROWN, depth=T, holes=glz)
         joints(f, lo + .2, hi - .2, G0 + EPS, WG_ROOF - .2, glz)
         for h in glz:
-            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=3, rows=2, frame='trim', depth=T, sill=False)
+            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=max(3, int(h['w'] / 1.6)), rows=1, frame='trim', depth=T, sill=False)
             lined(f, h)
         f.part('Wing parapet cap band', (lo + hi) / 2, -.025, (WG_ROOF + WG_CROWN) / 2, hi - lo - 2 * EPS, .05, WG_CROWN - WG_ROOF - .02, 'cap', 'parapet cap', 0)
-        f.part('Base course', (lo + hi) / 2, -.02, .30, hi - lo - 2 * EPS, .04, .60, 'stone', 'base course', 0)
+        stone_base(f, lo, hi, [])
     f = face(*WG, 'east', 'wing east')
     lo, hi = -(wy1 - wy0) / 2 + T, -(wy1 - wy0) / 2 + (sy0 - wy0) - EPS
     f.wall('wing east carrier', lo, hi, G0, WG_CROWN, depth=T, role='wall')
     f.part('Wing parapet cap band', (lo + hi) / 2, -.025, (WG_ROOF + WG_CROWN) / 2, hi - lo - 2 * EPS, .05, WG_CROWN - WG_ROOF - .02, 'cap', 'parapet cap', 0)
+    stone_base(f, lo, hi, [])
 
 
 def tower():
@@ -254,6 +268,8 @@ def canopies():
         piers = ((x1 - .6, y0 + .6), (x1 - .6, y1 - .6)) if label == 'east' else ((x0 + .6, y0 + .6), (x1 - .6, y0 + .6))
         for px, py in piers:
             C.box('Stone-clad pier', (px, py, (G0 + CANOPY_Z) / 2), (.9, .9, CANOPY_Z - G0), 'stone', 'canopies', 0)
+            for k in range(1, 12):
+                C.box('Pier coursing', (px, py, G0 + k * (CANOPY_Z - G0) / 12), (.92, .92, .012), 'joint', 'canopies', 0)
             C.box('Pier cap', (px, py, CANOPY_Z - .02), (1.0, 1.0, .06), 'cap', 'canopies', 0)
     C.CONTACTS.append(dict(name='Porte-cochere canopies on stone piers and the lobby facade', soffit_m=CANOPY_Z, piers=4))
 
@@ -286,7 +302,7 @@ def roofs():
         C.box('Wing roof slab', ((x0 + x1) / 2, (y0 + y1) / 2, WG_ROOF - .12), (x1 - x0, y1 - y0, .24), 'floor', 'roof', 0)
         C.box('Wing membrane', ((x0 + x1) / 2, (y0 + y1) / 2, WG_ROOF + .004), (x1 - x0 - .02, y1 - y0 - .02, .008), 'membrane', 'roof', 0)
     C.box('Wing rooflight curb', (-22.0, -14.0, WG_ROOF + .25), (5.0, 3.6, .50), 'pale', 'roof', 0)
-    C.prism('Wing rooflight glazing', [(-24.4, WG_ROOF + .50), (-22.0, WG_ROOF + 1.3), (-19.6, WG_ROOF + .50), (-19.6, WG_ROOF + .53), (-22.0, WG_ROOF + 1.33), (-24.4, WG_ROOF + .53)], 'y', -15.7, -12.3, 'glass', 'roof')
+    C.box('Wing rooflight glazing', (-22.0, -14.0, WG_ROOF + .52), (4.8, 3.4, .04), 'glass', 'roof', 0)
     wruns = [((wx0, wy0 + T / 2), (wx1, wy0 + T / 2)), ((wx0 + T / 2, wy0 + T), (wx0 + T / 2, wy1 - T)), ((wx0, wy1 - T / 2), (sx0, wy1 - T / 2)), ((wx1 - T / 2, wy0 + T), (wx1 - T / 2, sy0))]
     for (ax, ay), (bx, by) in wruns:
         if abs(bx - ax) > abs(by - ay):
@@ -302,14 +318,33 @@ def floors():
     C.box('Ground slab', ((sx0 + sx1) / 2, (sy0 + ny1) / 2, G0 / 2), (sx1 - sx0, ny1 - sy0, G0), 'foundation', 'foundation', 0)
     C.box('Wing slab', ((wx0 + sx0) / 2, (wy0 + wy1) / 2, G0 / 2), (sx0 - wx0, wy1 - wy0, G0), 'foundation', 'foundation', 0)
     C.box('Wing slab south', ((sx0 + wx1) / 2, (wy0 + sy0) / 2, G0 / 2), (wx1 - sx0, sy0 - wy0, G0), 'foundation', 'foundation', 0)
-    C.box('Parking court', ((LOT[0] + sx1) / 2, (LOT[2] + LOT[3]) / 2, .0075), (sx1 - LOT[0], LOT[3] - LOT[2], .015), 'foundation', 'site', 0)
-    C.box('Drive loop', ((sx1 + LOT[1]) / 2, (LOT[2] + LOT[3]) / 2, .0075), (LOT[1] - sx1, LOT[3] - LOT[2], .015), 'foundation', 'site', 0)
-    C.box('Lawn verge east', (LOT[1] - 1.5, 0, .021), (3.0, LOT[3] - LOT[2], .012), 'planting', 'site', 0)
-    C.box('Lawn panel south', (-4.0, -28.0, .021), (18.0, 5.0, .012), 'planting', 'site', 0)
+    C.box('Parking court', ((LOT[0] + LOT[1]) / 2, (LOT[2] + LOT[3]) / 2, .0075), (LOT[1] - LOT[0], LOT[3] - LOT[2], .015), 'foundation', 'site', 0)
+    C.box('Road', (LOT[1] + 6.0, 0, .0075), (8.0, LOT[3] - LOT[2] + 10.0, .015), 'floor', 'site', 0)
+    C.box('Road kerb', (LOT[1] + 2.0, 0, .06), (.12, LOT[3] - LOT[2], .12), 'stone', 'site', 0)
+    C.box('Lawn verge east', (LOT[1] + 1.0, 0, .021), (1.9, LOT[3] - LOT[2], .012), 'planting', 'site', 0)
+    for (x0, x1, y0, y1) in ((LOT[0] - 2.0, LOT[0], LOT[2] - 2.0, LOT[3] + 2.0), (LOT[0], LOT[1], LOT[3], LOT[3] + 2.0), (LOT[0], LOT[1], LOT[2] - 2.0, LOT[2])):
+        C.box('Lawn verge', ((x0 + x1) / 2, (y0 + y1) / 2, .021), (x1 - x0, y1 - y0, .012), 'planting', 'site', 0)
+    vertices, faces = [], []
+    def stripe(ax, ay, bx, by):
+        o = len(vertices)
+        if abs(bx - ax) > abs(by - ay):
+            vertices.extend([(ax, ay - .06, .016), (bx, ay - .06, .016), (bx, ay + .06, .016), (ax, ay + .06, .016)])
+        else:
+            vertices.extend([(ax - .06, ay, .016), (ax + .06, ay, .016), (ax + .06, by, .016), (ax - .06, by, .016)])
+        faces.append((o, o + 1, o + 2, o + 3))
+    y = LOT[2] + 2.0
+    while y < LOT[3] - 3.0:
+        stripe(LOT[0] + 2.0, y, LOT[0] + 7.0, y); stripe(LOT[0] + 14.0, y, LOT[0] + 19.0, y); y += 2.7
+    x = -6.0
+    while x < 22.0:
+        stripe(x, LOT[3] - 2.0, x, LOT[3] - 7.0); stripe(x, LOT[2] + 2.0, x, LOT[2] + 7.0); x += 2.7
+    C.mesh('Parking stripes', vertices, faces, 'pale', 'site')
+    C.box('Drive loop kerb', (sx1 + 2.0, (TOWER[2] - 8.0 + sy1) / 2, .06), (.12, sy1 - TOWER[2] + 8.0, .12), 'stone', 'site', 0)
     C.rod('Pylon sign post', (26.0, -30.0, 0), (26.0, -30.0, 6.0), .18, 'cap', 'site', 10)
     C.box('Pylon sign board', (26.0, -30.0, 6.8), (3.0, .3, 1.6), 'accent', 'site', 0)
     for lvl in LV:
-        C.box('Guest floor south', ((sx0 + sx1) / 2, (sy0 + sy1) / 2, lvl - .075), (sx1 - sx0 - 2 * T, sy1 - sy0 - 2 * T, .15), 'floor', 'occupied floors', 0)
+        C.box('Guest floor south', ((sx0 + T + TOWER[0]) / 2, (sy0 + sy1) / 2, lvl - .075), (TOWER[0] - sx0 - T, sy1 - sy0 - 2 * T, .15), 'floor', 'occupied floors', 0)
+        C.box('Guest floor south east', ((TOWER[0] + sx1 - T) / 2, (TOWER[3] + sy1 - T) / 2, lvl - .075), (sx1 - T - TOWER[0], sy1 - T - TOWER[3], .15), 'floor', 'occupied floors', 0)
         C.box('Guest floor north', ((nx0 + nx1) / 2, (sy1 + ny1) / 2, lvl - .075), (nx1 - nx0 - 2 * T, ny1 - sy1 - T, .15), 'floor', 'occupied floors', 0)
     for z in LV:
         for x, y in ((-10.0, -10.0), (2.0, -10.0), (4.0, 10.0)):
@@ -321,8 +356,9 @@ def floors():
             A.bed(x, y + 3.0, z)
     C.box('Breakfast counter', (-22.0, -8.0, G0 + .5), (4.0, .8, 1.0), 'timber', 'wing', 0)
     C.box('Pool basin', (-22.0, -17.0, G0 + .02), (8.0, 4.0, .04), 'blue', 'wing', 0)
-    for i in range(6):
-        C.box('Parked car', (LOT[0] + 6.0, -20.0 + i * 6.0, .75), (1.8, 4.4, 1.4), 'charcoal' if i % 2 else 'pale', 'site', 0)
+    for i, (x, y) in enumerate(((LOT[0] + 4.5, -20.0), (LOT[0] + 4.5, -9.0), (LOT[0] + 16.5, 6.0), (LOT[0] + 16.5, -14.0), (4.0, LOT[3] - 4.5), (12.0, LOT[3] - 4.5), (-8.0, LOT[2] + 4.5))):
+        C.box('Parked car body', (x, y, .65), (1.8, 4.4, .9) if i < 4 else (4.4, 1.8, .9), 'charcoal' if i % 2 else 'pale', 'site', 0)
+        C.box('Parked car cabin', (x, y, 1.35), (1.6, 2.4, .6) if i < 4 else (2.4, 1.6, .6), 'trim', 'site', 0)
     A.small_tree(LOT[0] + 2.0, 20.0, .015, height=6.0, spread=1.1)
 
 
