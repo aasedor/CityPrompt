@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "condo_podium_tower",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "brick_podium_glass_tower",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "condo_podium_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "brick_podium_glass_tower",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/condo-podium-tower/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1239794,
+      "sha256": "247f085b7d208f1fd80395f5b5d8d7934e696acd4994ec61228255f5d0a8511a",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "condo_podium_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "brick_podium_glass_tower",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/condo-podium-tower/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1008232,
+      "sha256": "4fded6c1a678e8d3bd1246e9300fff6950cfa54cd8209212272a0476b68ab1c6",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "condo_podium_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "brick_podium_glass_tower",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/condo-podium-tower/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 949163,
+      "sha256": "f1e657ae0de180307adead2cc299184682f2b31fa26f5e58d64b0d5758b7bc4d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

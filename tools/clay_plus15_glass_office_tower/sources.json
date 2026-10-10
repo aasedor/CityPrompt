@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "calgary_plus_15_connected_tower",
+  "variant_id": "variant_2",
+  "catalogue_variant_id": "plus15_contemporary_glass",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "calgary_plus_15_connected_tower",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "plus15_contemporary_glass",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2.png",
+      "file": "variant_2.png",
+      "bytes": 1238687,
+      "sha256": "71df1f82ca1a50801ec72244ace874eba9351744bd0bb8dbb69c29cf4ef36c61",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "calgary_plus_15_connected_tower",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "plus15_contemporary_glass",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2_angle_60.jpg",
+      "file": "variant_2_angle_60.jpg",
+      "bytes": 962177,
+      "sha256": "c5063f2e71b7a5f02f34498498b5b3d02054e076e84460d47ada4979f691fcb7",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "calgary_plus_15_connected_tower",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "plus15_contemporary_glass",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2_angle_90.jpg",
+      "file": "variant_2_angle_90.jpg",
+      "bytes": 810860,
+      "sha256": "7fabe18811a690141b6751eab629e4c6a0530abef1b17e675376846e01dcf9f0",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

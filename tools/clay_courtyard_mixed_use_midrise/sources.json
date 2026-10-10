@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "rndsqr_terraced_mixed_use_midrise",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "rndsqr_midrise_courtyard",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "none (no hero file in this directory)",
+  "records": [
+    {
+      "archetype_id": "rndsqr_terraced_mixed_use_midrise",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "rndsqr_midrise_courtyard",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1234206,
+      "sha256": "558a2af42e940e5c8aab606fa2f1d732d4e2c753f2a8fae97167696ac4543c73",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "rndsqr_terraced_mixed_use_midrise",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "rndsqr_midrise_courtyard",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 907543,
+      "sha256": "aa238e6af3c002b1d6cabb579d54f4a38a6d50ee58ee2d00e901520b6e156efe",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "rndsqr_terraced_mixed_use_midrise",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "rndsqr_midrise_courtyard",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 815380,
+      "sha256": "c5fd47f730f1dc2fce1d2c8d49137beb7bfd26a17a78860d85d7797a89dd14a6",
+      "dimensions_px": [
+        1376,
+        768
+      ]
+    }
+  ]
+}

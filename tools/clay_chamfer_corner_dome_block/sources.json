@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "barcelona_corner_chamfer",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "chamfer_classic",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "barcelona_corner_chamfer",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "chamfer_classic",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1405636,
+      "sha256": "4b2c66d9cf36c9495339bcdee098d16d050caf9f378aef8e8ccf561934aa9f71",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "barcelona_corner_chamfer",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "chamfer_classic",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1000771,
+      "sha256": "205c7e179e1b931df8647fe734de6bd060438a58072e8fba8c1ff02b4eac43b3",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "barcelona_corner_chamfer",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "chamfer_classic",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/barcelona-corner-chamfer/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 950494,
+      "sha256": "d85ec8b20ff9e9e49be61e160f8737b3e388880c76a3993ef2a68f8fd4c07af7",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

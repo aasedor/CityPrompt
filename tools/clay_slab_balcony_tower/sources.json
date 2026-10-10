@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "west_end_mid_century_tower",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "midcentury_concrete_slab",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "west_end_mid_century_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "midcentury_concrete_slab",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1359002,
+      "sha256": "2162c09765e0642250189af1e05892839e6b609995a5449fcf806f811378bfad",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "west_end_mid_century_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "midcentury_concrete_slab",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 962210,
+      "sha256": "5f73a8002e4e03e73e8ee3e9026e12e30cf9945e54dbabe58be9fc6332239512",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "west_end_mid_century_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "midcentury_concrete_slab",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 860456,
+      "sha256": "b5030b8a17f908b961657d9180aec913770a9d7a3ff64da234ecae9ca5ba8851",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

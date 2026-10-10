@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "industrial_brick_mixed_use",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "industrial_brick_original_mill",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_1_thumb.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_2_thumb.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg",
+    "variant_3_thumb.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "industrial_brick_original_mill",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1277361,
+      "sha256": "049dffded31d819bbb63a8f99da90487eea5360efbac26945e77bd69901b1d94",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "industrial_brick_original_mill",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 924408,
+      "sha256": "b19c286b8e77439bbefe0b75cfc933afd45c338173f5a6c9167fee37d23e61b1",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "industrial_brick_original_mill",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 840178,
+      "sha256": "8f81fee2055fb580d55f58f32a91a165f33e4a6552b8b19411f5a38a170b0807",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
