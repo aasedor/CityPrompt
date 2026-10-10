@@ -67,3 +67,13 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P0: seat the entrance threshold slab on the pavement (its base is 0.13 m above the
+  sidewalk plate) or delete it.
+- P0: extend the plant-room riser pipes to the slab (they start 0.2 m above it).
+- P1: remove the concrete fin and canopy and recess the storefront doors about 0.3 m
+  under a dark head panel, as the front source shows.
+- P1: recess the north service bay 1.0 to 1.5 m with concrete reveals, add the door leaf
+  and widen the ribbon glazing above it.

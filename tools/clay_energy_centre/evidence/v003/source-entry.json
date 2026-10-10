@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-energy-centre",
+  "variant_id": "clay-energy-centre-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "central_utilities_plant_energy_centre/variant_1",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1.png",
+      "path": "sources/front.png",
+      "bytes": 1265310,
+      "sha256": "dfd3da0973e43083af84897c60d500d781394c89d2833d327f9d478c35d98263"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 888964,
+      "sha256": "3900dbadbd2854e5b7148f03286c3c38e299edcd70e511dbe1e843bfca8d44e2"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 805970,
+      "sha256": "407ae3df4a3e243f49c26f36a4d94159dc8e02dce049eac29d24c22e037184fa"
+    }
+  ]
+}
