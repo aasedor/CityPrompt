@@ -66,8 +66,23 @@ Requires the `bpy` 4.2 module on Python 3.11.
 |---|---|---|
 | v001 (720 px, 8 spp, 6 views) | first geometry check | silhouette and rhythm correct; newels collided with gate piers; furniture overexposed; roof slab edge exposed as a band |
 | v002 (1440 px, 32 spp, 18 views) | full roster | fixes above verified; coplanar wall overlaps at every corner and parapet corner; cornice crown overhang overlapped the corner block |
-| v003 | aborted before render completed | superseded by v004 |
-| v004 (1440 px, 32 spp, 18 views) | corner topology fix | see independent review record |
+| v003 | aborted before render completed (the cornice fix had not been applied) | superseded by v004 |
+| v004 (1440 px, 32 spp, 18 views) | corner topology fix | builder pass, zero P0: cornice mitre, parapet corners and wing junction clean; 16,394 triangles, 856,808-byte GLB (sha256 a3dff60a40b70668…), aperture audit PASS, 888 s render on 4 CPU cores; independent review in `evidence/v004/independent-review.md` |
+
+## Where the artefacts are
+
+- `candidates/pilot-brownstone-end-rowhouse-clay-v004.glb`: the delivered model,
+  kept as an ordinary Git blob because Git LFS uploads are refused from the
+  cloud build environment (reads work; the batch verify call returns
+  Forbidden). It is under the 1 MiB blob policy. To move it into LFS from a
+  desktop clone: add a `candidates/*.glb` LFS attribute and run
+  `git lfs migrate import --include="tools/pilot_brownstone_rowhouse/candidates/*.glb"`
+  on this branch.
+- `evidence/v004/`: build report, source entry, prework manifest, aperture
+  audit, the independent review record, and sub-megabyte JPEG copies of all
+  18 renders and the 4 phone boards.
+- Full-resolution PNG renders, the locked sources and the GLB were delivered to
+  the user as two zip archives in the session that produced them.
 
 ## Not done, by design
 
