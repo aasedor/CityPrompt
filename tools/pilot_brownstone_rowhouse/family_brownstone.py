@@ -5,7 +5,8 @@ v005 incorporates the independent review of v004: three flank window columns and
 a garden-level side entrance read from the oblique; two mid-depth chimneys and a
 brick-cheeked shed skylight; a solid brownstone stoop with a recessed under-stoop
 entry; the rear wing at the top view's proportion; measured palette (brick field
-lighter than the brownstone base and hoods, light cornice); lined window reveals;
+lighter than the brownstone base and hoods, light cornice); plain brick field without
+groove relief (the v006 review read the grooves as clapboard); lined window reveals;
 butted parapets; bands stopping short of the party-wall plane.
 """
 import math
@@ -28,7 +29,7 @@ EPS = .002                    # bands and wing walls stop this short of a coplan
 # brick ~ (174,126,90), hoods ~ (141,100,66), base/stoop ~ (70,52,40), membrane ~ (163,141,126).
 PALETTE = dict(wall=(.55, .28, .15), joint=(.40, .22, .13), trim=(.10, .08, .07),
     sand=(.45, .30, .19), stone=(.26, .18, .12), pale=(.78, .74, .68),
-    roof=(.50, .40, .33), foundation=(.42, .41, .39),
+    roof=(.40, .32, .26), foundation=(.42, .41, .39),
     glass=(.47, .53, .51), hardware=(.05, .05, .055), interior=(.74, .68, .55),
     floor=(.49, .37, .23), timber=(.28, .16, .09), planting=(.21, .33, .095),
     blue=(.12, .23, .25), soil=(.19, .14, .08), flower=(.78, .69, .23))
@@ -58,10 +59,10 @@ def manifest(version):
             front_bays=5, parlour_bays='window window entrance window window', garden_bays='four grilled windows and an under-stoop passage',
             flank='front half blank; three sash columns per floor in the rear half; garden-level side entrance at the rear corner',
             main_block_m=[W, D1], rear_wing_m=[WW, WD], areaway_m=YARD, levels_m=[G0, P, U],
-            roof_furniture='two double-pot chimneys at 58% depth on both parapets; brick-cheeked shed skylight at 55% width, 35% from rear',
+            roof_furniture='two double-pot chimneys at 37% of the depth from the front on both parapets; brick-cheeked shed skylight at 55% width, 35% from rear',
             inferred='11.6 m frontage calibrates the five-bay rhythm; wing depth from the top view; interiors are teaching assumptions.'),
         roof_contract=dict(type='flat membrane behind a bracketed front cornice; lower flat rear wing', datum_m=ROOF_TOP, parapet_m=.6,
-            lantern='brick-cheeked shed skylight glazed to the east', chimneys='one each on the west and east parapets at 58% depth; one on the wing'),
+            lantern='brick-cheeked shed skylight glazed to the east', chimneys='one each on the west and east parapets at 37% of the depth from the front; one on the wing'),
         identity_contract=dict(owner='five-bay brick front with brownstone hoods, pedimented entrance, solid brownstone stoop with recessed under-stoop entry, urn newels, grilled garden windows, light bracketed cornice, blank right party wall, flank side entrance'),
         material_contract=dict(profile='source-palette clay: orange-red brick field, mid-brown sandstone hoods and sills, dark brownstone base, stoop and string course, light cornice, dark sash, iron rails', textured_keeper=False),
         programme_contract=dict(storeys=3, garden='garden suite with under-stoop entrance, flank side entrance and rear door', parlour='living and dining rooms entered from the stoop', upper='two bedrooms', stairs='straight supported flights on the party-wall side with floor apertures'),
@@ -129,7 +130,6 @@ def front(f):
     gh = [hole(f'Garden window {i}', u, .45, 1.0, 1.0) for i, u in enumerate(BAYS) if u != 0]
     gd = hole('Garden suite door', 0, G0, .95, 1.70)
     f.wall('Front garden storey', -W / 2, W / 2, G0, P, depth=.28, holes=gh + [gd])
-    G.brick_courses(f, -W / 2, W / 2, G0, P, gh + [gd])
     for h in gh:
         f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=2, rows=1, frame='trim', depth=.28, sill=False)
         reveal(f, h['u'], h['z'], h['w'], h['h'])
@@ -140,7 +140,6 @@ def front(f):
     ph = [hole(f'Parlour window {i}', u, P + .65, 1.15, 2.75) for i, u in enumerate(BAYS) if u != 0]
     ed = hole('Entrance double door', 0, P, 1.45, 3.00)
     f.wall('Front parlour storey', -W / 2, W / 2, P, U, depth=.28, holes=ph + [ed])
-    G.brick_courses(f, -W / 2, W / 2, P, U, ph + [ed])
     for i, h in enumerate(ph):
         sash(f, h['id'], h['u'], h['z'], h['w'], h['h'], curtain=i in (0, 3))
     door(f, ed['id'], 0, P, 1.45, 2.55, panels=3, panel_cols=2)
@@ -154,7 +153,6 @@ def front(f):
     C.prism('Entrance pediment', [(-1.15, P + 3.38), (1.15, P + 3.38), (0, P + 3.98)], 'y', FRONT_Y - .50, FRONT_Y + .02, 'sand', 'entrance')
     uh = [hole(f'Upper window {i}', u, U + .85, 1.15, 1.90) for i, u in enumerate(BAYS)]
     f.wall('Front upper storey', -W / 2, W / 2, U, MAIN_WALL_TOP, depth=.28, holes=uh)
-    G.brick_courses(f, -W / 2, W / 2, U, MAIN_WALL_TOP, uh)
     for i, h in enumerate(uh):
         sash(f, h['id'], h['u'], h['z'], h['w'], h['h'], curtain=i in (1, 3))
     cornice(f, -W / 2, W / 2)
@@ -185,7 +183,6 @@ def flank(f):
     holes += [hole(f'Flank parlour window {i}', u, P + .75, .95, 1.95) for i, u in enumerate(cols)]
     holes += [hole(f'Flank upper window {i}', u, U + .85, .95, 1.70) for i, u in enumerate(cols)]
     f.wall('Left flank brick', -span / 2, span / 2, G0, MAIN_WALL_TOP, depth=.28, holes=holes)
-    G.brick_courses(f, -span / 2, span / 2, G0, MAIN_WALL_TOP, holes)
     for h in holes[2:]:
         sash(f, h['id'], h['u'], h['z'], h['w'], h['h'], hood=False)
     g = holes[0]
@@ -196,13 +193,15 @@ def flank(f):
     door(f, sd['id'], sd['u'], G0, .95, 1.95)
     flat_lintel(f, sd['u'], G0, .95, 1.95)
     # Two stone steps and a short iron rail outside the side door.
-    for i, (depth, top) in enumerate(((.34, G0), (.68, G0 / 2))):
-        f.part(f'Side entrance step {i}', sd['u'], -depth / 2 - .004, top / 2, 1.30, depth, top, 'stone', 'entry steps', 0)
-    C.railing('Side entrance rail', f.p(sd['u'] - .70, -.02, G0), f.p(sd['u'] - .70, -.72, 0), height=.95, spacing=.11, role='hardware')
+    # One closed stepped solid (two risers) outside the side door, extruded along the flank.
+    ox, oy, _ = f.p(sd['u'], 0, 0)
+    xs = -W / 2
+    C.prism('Side entrance stepped stone', [(xs, 0), (xs - .70, 0), (xs - .70, G0 / 2), (xs - .36, G0 / 2), (xs - .36, G0), (xs, G0)], 'y', oy - .65, oy + .65, 'stone', 'entry steps')
+    C.railing('Side entrance rail', (xs - .05, oy - .62, G0), (xs - .66, oy - .62, G0 / 2), height=.95, spacing=.11, role='hardware')
     band(f, -D1 / 2, D1 / 2, -.04, P - .02, .36, .16, 'stone', 'water table')
     C.box('Water table corner', (-W / 2 - .12, FRONT_Y - .12, P - .02), (.24, .24, .16), 'stone', 'water table', 0)
     cornice(f, D1 / 2 - 1.1, D1 / 2)
-    chimney(-W / 2 + .36, FRONT_Y + .58 * D1, 9.10, 10.95)
+    chimney(-W / 2 + .36, FRONT_Y + .37 * D1, 9.10, 10.95)
 
 
 def chimney(x, y, z0, z1):
@@ -214,23 +213,19 @@ def chimney(x, y, z0, z1):
 
 def party_wall(f):
     f.wall('Right party wall main', -D1 / 2 + .28, D1 / 2 - .28, G0, MAIN_WALL_TOP, depth=.28, role='wall')
-    G.brick_courses(f, -D1 / 2 + .28, D1 / 2 - .28, G0, MAIN_WALL_TOP, [])
     f.wall('Right party wall wing', D1 / 2 + EPS, D1 / 2 + WD - .28, G0, WING_WALL_TOP, depth=.28, role='wall')
-    G.brick_courses(f, D1 / 2 + EPS, D1 / 2 + WD - .28, G0, WING_WALL_TOP, [])
-    chimney(W / 2 - .36, FRONT_Y + .58 * D1, 9.10, 10.75)
+    chimney(W / 2 - .36, FRONT_Y + .37 * D1, 9.10, 10.75)
 
 
 def rear(f_main, f_wing, f_wing_side):
     holes = [hole(f'Rear upper window {i}', u, U + .85, 1.0, 1.70) for i, u in enumerate((4.0, .8, -2.4, -4.6))]
     passages = [hole('Wing passage garden', -1.0, G0, 1.2, 1.95), hole('Wing passage parlour', -1.0, P, 1.6, 2.4)]
     f_main.wall('Rear main brick', -W / 2, W / 2, G0, MAIN_WALL_TOP, depth=.28, holes=holes + passages)
-    G.brick_courses(f_main, -W / 2, W / 2, G0, MAIN_WALL_TOP, holes)
     for h in holes:
         sash(f_main, h['id'], h['u'], h['z'], h['w'], h['h'], hood=False)
     wh = [hole(f'Wing parlour window {i}', u, P + .75, 1.1, 2.0) for i, u in enumerate((-3.0, 0, 3.0))]
     wh += [hole('Wing garden window 0', 0, .45, .9, 1.0), hole('Wing garden window 1', 3.0, .45, .9, 1.0), hole('Rear garden door', -3.0, G0, .95, 1.95)]
     f_wing.wall('Wing rear brick', -WW / 2, WW / 2, G0, WING_WALL_TOP, depth=.28, holes=wh)
-    G.brick_courses(f_wing, -WW / 2, WW / 2, G0, WING_WALL_TOP, wh)
     for h in wh[:5]:
         sash(f_wing, h['id'], h['u'], h['z'], h['w'], h['h'], hood=False)
     door(f_wing, 'Rear garden door', -3.0, G0, .95, 1.95)
@@ -239,7 +234,6 @@ def rear(f_main, f_wing, f_wing_side):
     C.box('Rear door stone step', (x, y + .17, G0 / 2), (1.3, .34, G0), 'stone', 'entry steps', 0)
     sh = [hole('Wing flank parlour window 0', -1.3, P + .75, 1.0, 2.0), hole('Wing flank parlour window 1', 1.3, P + .75, 1.0, 2.0)]
     f_wing_side.wall('Wing flank brick', -WD / 2 + .28, WD / 2 - EPS, G0, WING_WALL_TOP, depth=.28, holes=sh)
-    G.brick_courses(f_wing_side, -WD / 2 + .28, WD / 2 - EPS, G0, WING_WALL_TOP, sh)
     for h in sh:
         sash(f_wing_side, h['id'], h['u'], h['z'], h['w'], h['h'], hood=False)
 
