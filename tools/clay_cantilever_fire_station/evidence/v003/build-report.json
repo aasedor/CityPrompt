@@ -1,0 +1,1746 @@
+{
+  "candidate": "clay-cantilever-fire-station-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 675,
+    "vertices": 7550,
+    "polygons": 11484,
+    "triangles": 11484,
+    "path": "clay-cantilever-fire-station-clay-v003-authoring.blend",
+    "bytes": 5644060,
+    "sha256": "fd9a2629ef3fb6cd057d93d9785c960fe561cdb9aab818f39aecfbf03f20d833"
+  },
+  "runtime": {
+    "path": "clay-cantilever-fire-station-clay-v003.glb",
+    "bytes": 607452,
+    "sha256": "335089a97a6a3fb039f0bc3065da059cde90236e430bda85d26cc0882753ddbc",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 18,
+    "vertices": 7550,
+    "polygons": 11484,
+    "triangles": 11484
+  },
+  "original_bounds_m": [
+    [
+      -34.0,
+      -34.0,
+      0.0
+    ],
+    [
+      34.0,
+      16.34000015258789,
+      16.107999801635742
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -34.0,
+      -34.0,
+      0.0
+    ],
+    [
+      34.0,
+      16.34000015258789,
+      16.107999801635742
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 50.0,
+    "depth": 50.0,
+    "height": 16.2
+  },
+  "native_dimensions_m": {
+    "width": 68.0,
+    "depth": 50.34000015258789,
+    "height": 16.107999801635742
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -8.829999923706055,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 17,
+    "joint": 16,
+    "trim": 281,
+    "pale": 56,
+    "stone": 9,
+    "roof": 2,
+    "sand": 1,
+    "foundation": 4,
+    "glass": 79,
+    "hardware": 94,
+    "interior": 17,
+    "floor": 5,
+    "timber": 48,
+    "blue": 4,
+    "planting": 12,
+    "glow": 5,
+    "red": 18,
+    "white": 7
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/apparatus_bays.png",
+    "renders/soffit_corner.png",
+    "renders/tower_clock.png",
+    "renders/loggia_close.png",
+    "renders/apron_contact.png",
+    "renders/interior.png",
+    "renders/rear_door.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.15178333222866058,
+      "xmax": 0.9085204601287842,
+      "ymin": 0.3764655292034149,
+      "ymax": 0.6283143758773804
+    },
+    "front_corner": {
+      "xmin": 0.18401338160037994,
+      "xmax": 0.9200239181518555,
+      "ymin": 0.22896236181259155,
+      "ymax": 0.6243333220481873
+    },
+    "aerial": {
+      "xmin": 0.11838608235120773,
+      "xmax": 0.7484491467475891,
+      "ymin": 0.08211057633161545,
+      "ymax": 0.6476494669914246
+    },
+    "top": {
+      "xmin": 0.18723511695861816,
+      "xmax": 0.8127648830413818,
+      "ymin": 0.08298014849424362,
+      "ymax": 0.7004148364067078
+    },
+    "left_side": {
+      "xmin": 0.3014989197254181,
+      "xmax": 0.9112234711647034,
+      "ymin": 0.3559689223766327,
+      "ymax": 0.6095764636993408
+    },
+    "right_side": {
+      "xmin": 0.08351995050907135,
+      "xmax": 0.680034875869751,
+      "ymin": 0.3643380403518677,
+      "ymax": 0.6257253289222717
+    },
+    "rear": {
+      "xmin": 0.17848780751228333,
+      "xmax": 0.9083434343338013,
+      "ymin": 0.3711859881877899,
+      "ymax": 0.6226215958595276
+    },
+    "rear_side": {
+      "xmin": 0.08182042837142944,
+      "xmax": 0.7806671261787415,
+      "ymin": 0.30787941813468933,
+      "ymax": 0.6093932390213013
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Hall to dormitory stair",
+      "x": -18.0,
+      "y": 2.0,
+      "lower": 0.15,
+      "upper": 5.5,
+      "length": 5.2,
+      "width": 1.2,
+      "treads": 31,
+      "rise_m": 0.17258064516129032,
+      "run_m": 0.16774193548387098
+    },
+    {
+      "name": "Apparatus bay thresholds at slab level on the apron",
+      "grade_m": 0,
+      "bays": 4
+    },
+    {
+      "name": "Cantilever soffit over the bay line with light strip",
+      "overhang_m": 2.0,
+      "soffit_m": 5.0
+    },
+    {
+      "name": "Tower on its own slab tied to the east wall at two levels",
+      "grade_m": 0
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "Watch room glazing",
+      "face": "front ground",
+      "u": -13.85,
+      "z": 0.15,
+      "width": 15.3,
+      "height": 5.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 8,
+      "rows": 2
+    },
+    {
+      "id": "Apparatus bay 1",
+      "face": "front ground",
+      "u": -3.4,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.6,
+      "kind": "glazed sectional door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.21000000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apparatus hall beyond door",
+      "cols": 4,
+      "rows": 4
+    },
+    {
+      "id": "Apparatus bay 2",
+      "face": "front ground",
+      "u": 2.2,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.6,
+      "kind": "glazed sectional door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.21000000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apparatus hall beyond door",
+      "cols": 4,
+      "rows": 4
+    },
+    {
+      "id": "Apparatus bay 3",
+      "face": "front ground",
+      "u": 7.8,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.6,
+      "kind": "glazed sectional door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.21000000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apparatus hall beyond door",
+      "cols": 4,
+      "rows": 4
+    },
+    {
+      "id": "Apparatus bay 4",
+      "face": "front ground",
+      "u": 13.4,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 4.6,
+      "kind": "glazed sectional door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.21000000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apparatus hall beyond door",
+      "cols": 4,
+      "rows": 4
+    },
+    {
+      "id": "Bay mullion strip -0.6",
+      "face": "front ground",
+      "u": -0.6000000000000001,
+      "z": 0.15,
+      "width": 1.0,
+      "height": 5.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 2
+    },
+    {
+      "id": "Bay mullion strip +5.0",
+      "face": "front ground",
+      "u": 5.0,
+      "z": 0.15,
+      "width": 1.0,
+      "height": 5.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 2
+    },
+    {
+      "id": "Bay mullion strip +10.6",
+      "face": "front ground",
+      "u": 10.6,
+      "z": 0.15,
+      "width": 1.0,
+      "height": 5.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 2
+    },
+    {
+      "id": "Entrance lobby glazing",
+      "face": "front ground",
+      "u": 18.85,
+      "z": 0.15,
+      "width": 5.300000000000001,
+      "height": 5.1,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 2
+    },
+    {
+      "id": "West loggia",
+      "face": "left",
+      "u": 10.7,
+      "z": 6.7,
+      "width": 9.4,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 1.2,
+      "pane_inset_m": 1.2369999999999999,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 5,
+      "rows": 1
+    },
+    {
+      "id": "West hall glass return",
+      "face": "left",
+      "u": 8.0,
+      "z": 0.15,
+      "width": 10.0,
+      "height": 5.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 5,
+      "rows": 2
+    },
+    {
+      "id": "West staff door",
+      "face": "left",
+      "u": -4.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "opaque operable door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.29,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "enclosed room beyond door"
+    },
+    {
+      "id": "West ground window",
+      "face": "left",
+      "u": -10.0,
+      "z": 1.2,
+      "width": 2.4,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "East upper window 0",
+      "face": "right",
+      "u": 8.0,
+      "z": 6.7,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "East upper window 1",
+      "face": "right",
+      "u": 12.5,
+      "z": 6.7,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "East service door",
+      "face": "right",
+      "u": 6.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "opaque operable door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.29,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "enclosed room beyond door"
+    },
+    {
+      "id": "East ground window",
+      "face": "right",
+      "u": 11.0,
+      "z": 1.2,
+      "width": 2.4,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "Rear upper window 0",
+      "face": "rear",
+      "u": -12.0,
+      "z": 6.7,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "Rear upper window 1",
+      "face": "rear",
+      "u": -4.0,
+      "z": 6.7,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "Rear upper window 2",
+      "face": "rear",
+      "u": 4.0,
+      "z": 6.7,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "Rear upper window 3",
+      "face": "rear",
+      "u": 12.0,
+      "z": 6.7,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "Rear roll-up door",
+      "face": "rear",
+      "u": -8.0,
+      "z": 0.15,
+      "width": 4.0,
+      "height": 4.2,
+      "kind": "roll-up door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apparatus hall"
+    },
+    {
+      "id": "Rear service door",
+      "face": "rear",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "opaque operable door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.29,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "enclosed room beyond door"
+    },
+    {
+      "id": "Rear ground window 0",
+      "face": "rear",
+      "u": 8.0,
+      "z": 1.2,
+      "width": 2.4,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "Rear ground window 1",
+      "face": "rear",
+      "u": 14.0,
+      "z": 1.2,
+      "width": 2.4,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    }
+  ],
+  "authoring_modules": {
+    "foundation": [
+      "Ground slab"
+    ],
+    "apron": [
+      "Apron paving",
+      "West walk",
+      "Hall threshold"
+    ],
+    "landscape": [
+      "Lawn panel",
+      "Lawn panel.001",
+      "Lawn panel.002"
+    ],
+    "occupied floors": [
+      "Upper floor"
+    ],
+    "Stair guard": [
+      "Stair guard top rail",
+      "Stair guard bottom rail",
+      "Stair guard picket 0",
+      "Stair guard picket 1",
+      "Stair guard picket 2",
+      "Stair guard picket 3",
+      "Stair guard picket 4",
+      "Stair guard picket 5",
+      "Stair guard picket 6",
+      "Stair guard picket 7",
+      "Stair guard picket 8",
+      "Stair guard picket 9",
+      "Stair guard picket 10",
+      "Stair guard picket 11",
+      "Stair guard picket 12"
+    ],
+    "Stair end guard": [
+      "Stair end guard top rail",
+      "Stair end guard bottom rail",
+      "Stair end guard picket 0",
+      "Stair end guard picket 1",
+      "Stair end guard picket 2",
+      "Stair end guard picket 3",
+      "Stair end guard picket 4",
+      "Stair end guard picket 5"
+    ],
+    "stairs": [
+      "Hall to dormitory stair",
+      "Hall to dormitory stair landing tongue",
+      "Hall to dormitory stair handrail",
+      "Hall to dormitory stair supported baluster",
+      "Hall to dormitory stair supported baluster.001",
+      "Hall to dormitory stair supported baluster.002",
+      "Hall to dormitory stair supported baluster.003",
+      "Hall to dormitory stair supported baluster.004",
+      "Hall to dormitory stair supported baluster.005",
+      "Hall to dormitory stair supported baluster.006",
+      "Hall to dormitory stair supported baluster.007",
+      "Hall to dormitory stair supported baluster.008",
+      "Hall to dormitory stair supported baluster.009",
+      "Hall to dormitory stair supported baluster.010",
+      "Hall to dormitory stair supported baluster.011",
+      "Hall to dormitory stair supported baluster.012",
+      "Hall to dormitory stair supported baluster.013",
+      "Hall to dormitory stair supported baluster.014",
+      "Hall to dormitory stair supported baluster.015",
+      "Hall to dormitory stair handrail.001",
+      "Hall to dormitory stair supported baluster.016",
+      "Hall to dormitory stair supported baluster.017",
+      "Hall to dormitory stair supported baluster.018",
+      "Hall to dormitory stair supported baluster.019",
+      "Hall to dormitory stair supported baluster.020",
+      "Hall to dormitory stair supported baluster.021",
+      "Hall to dormitory stair supported baluster.022",
+      "Hall to dormitory stair supported baluster.023",
+      "Hall to dormitory stair supported baluster.024",
+      "Hall to dormitory stair supported baluster.025",
+      "Hall to dormitory stair supported baluster.026",
+      "Hall to dormitory stair supported baluster.027",
+      "Hall to dormitory stair supported baluster.028",
+      "Hall to dormitory stair supported baluster.029",
+      "Hall to dormitory stair supported baluster.030",
+      "Hall to dormitory stair supported baluster.031"
+    ],
+    "envelope": [
+      "Hall partition carrier",
+      "South upper carrier",
+      "South ground carrier",
+      "West upper carrier",
+      "West ground carrier",
+      "East upper carrier",
+      "East ground carrier",
+      "North upper carrier",
+      "North ground carrier"
+    ],
+    "reveals": [
+      "Reveal jamb liner",
+      "Reveal jamb liner.001",
+      "Reveal head liner",
+      "Reveal sill liner",
+      "Reveal jamb liner.002",
+      "Reveal jamb liner.003",
+      "Reveal head liner.001",
+      "Reveal sill liner.001",
+      "Reveal jamb liner.004",
+      "Reveal jamb liner.005",
+      "Reveal head liner.002",
+      "Reveal sill liner.002",
+      "Reveal jamb liner.006",
+      "Reveal jamb liner.007",
+      "Reveal head liner.003",
+      "Reveal sill liner.003",
+      "Reveal jamb liner.008",
+      "Reveal jamb liner.009",
+      "Reveal head liner.004",
+      "Reveal sill liner.004",
+      "Reveal jamb liner.010",
+      "Reveal jamb liner.011",
+      "Reveal head liner.005",
+      "Reveal sill liner.005",
+      "Reveal jamb liner.012",
+      "Reveal jamb liner.013",
+      "Reveal head liner.006",
+      "Reveal sill liner.006",
+      "Reveal jamb liner.014",
+      "Reveal jamb liner.015",
+      "Reveal head liner.007",
+      "Reveal sill liner.007",
+      "Reveal jamb liner.016",
+      "Reveal jamb liner.017",
+      "Reveal head liner.008",
+      "Reveal sill liner.008",
+      "Reveal jamb liner.018",
+      "Reveal jamb liner.019",
+      "Reveal head liner.009",
+      "Reveal sill liner.009",
+      "Reveal jamb liner.020",
+      "Reveal jamb liner.021",
+      "Reveal head liner.010",
+      "Reveal sill liner.010",
+      "Reveal jamb liner.022",
+      "Reveal jamb liner.023",
+      "Reveal head liner.011",
+      "Reveal sill liner.011",
+      "Reveal jamb liner.024",
+      "Reveal jamb liner.025",
+      "Reveal head liner.012",
+      "Reveal sill liner.012",
+      "Reveal jamb liner.026",
+      "Reveal jamb liner.027",
+      "Reveal head liner.013",
+      "Reveal sill liner.013",
+      "Reveal jamb liner.028",
+      "Reveal jamb liner.029",
+      "Reveal head liner.014",
+      "Reveal sill liner.014",
+      "Reveal jamb liner.030",
+      "Reveal jamb liner.031",
+      "Reveal head liner.015",
+      "Reveal sill liner.015",
+      "Reveal jamb liner.032",
+      "Reveal jamb liner.033",
+      "Reveal head liner.016",
+      "Reveal sill liner.016",
+      "Reveal jamb liner.034",
+      "Reveal jamb liner.035",
+      "Reveal head liner.017",
+      "Reveal sill liner.017",
+      "Reveal jamb liner.036",
+      "Reveal jamb liner.037",
+      "Reveal head liner.018",
+      "Reveal sill liner.018",
+      "Reveal jamb liner.038",
+      "Reveal jamb liner.039",
+      "Reveal head liner.019",
+      "Reveal sill liner.019",
+      "Reveal jamb liner.040",
+      "Reveal jamb liner.041",
+      "Reveal head liner.020",
+      "Reveal sill liner.020",
+      "Reveal jamb liner.042",
+      "Reveal jamb liner.043",
+      "Reveal head liner.021",
+      "Reveal sill liner.021",
+      "Reveal jamb liner.044",
+      "Reveal jamb liner.045",
+      "Reveal head liner.022",
+      "Reveal sill liner.022"
+    ],
+    "panel joints": [
+      "front panel joints",
+      "left panel joints",
+      "right panel joints",
+      "rear panel joints"
+    ],
+    "cantilever": [
+      "Cantilever soffit slab",
+      "Soffit lining",
+      "Stepped soffit volume",
+      "Stepped soffit lining",
+      "Step light strip",
+      "Step riser light strip",
+      "Stepped soffit volume.001",
+      "Stepped soffit lining.001",
+      "Step light strip.001",
+      "Step riser light strip.001",
+      "Soffit light strip"
+    ],
+    "coping": [
+      "Parapet coping south",
+      "Parapet coping west",
+      "Parapet coping east",
+      "Parapet coping north"
+    ],
+    "front ground.Watch room glazing": [
+      "Watch room glazing recessed jamb",
+      "Watch room glazing recessed jamb.001",
+      "Watch room glazing recessed head or sill",
+      "Watch room glazing recessed head or sill.001",
+      "Watch room glazing mullion 1",
+      "Watch room glazing mullion 2",
+      "Watch room glazing mullion 3",
+      "Watch room glazing mullion 4",
+      "Watch room glazing mullion 5",
+      "Watch room glazing mullion 6",
+      "Watch room glazing mullion 7",
+      "Watch room glazing transom 1",
+      "Watch room glazing optical pane 0-0",
+      "Watch room glazing optical pane 0-1",
+      "Watch room glazing optical pane 1-0",
+      "Watch room glazing optical pane 1-1",
+      "Watch room glazing optical pane 2-0",
+      "Watch room glazing optical pane 2-1",
+      "Watch room glazing optical pane 3-0",
+      "Watch room glazing optical pane 3-1",
+      "Watch room glazing optical pane 4-0",
+      "Watch room glazing optical pane 4-1",
+      "Watch room glazing optical pane 5-0",
+      "Watch room glazing optical pane 5-1",
+      "Watch room glazing optical pane 6-0",
+      "Watch room glazing optical pane 6-1",
+      "Watch room glazing optical pane 7-0",
+      "Watch room glazing optical pane 7-1"
+    ],
+    "apparatus doors": [
+      "Apparatus bay 1 guide",
+      "Apparatus bay 1 guide.001",
+      "Apparatus bay 1 head",
+      "Apparatus bay 1 rail 1",
+      "Apparatus bay 1 rail 2",
+      "Apparatus bay 1 rail 3",
+      "Apparatus bay 1 stile 1",
+      "Apparatus bay 1 stile 2",
+      "Apparatus bay 1 stile 3",
+      "Apparatus bay 1 glazing",
+      "Bay head glazing frame",
+      "Bay head glazing",
+      "Apparatus bay 2 guide",
+      "Apparatus bay 2 guide.001",
+      "Apparatus bay 2 head",
+      "Apparatus bay 2 rail 1",
+      "Apparatus bay 2 rail 2",
+      "Apparatus bay 2 rail 3",
+      "Apparatus bay 2 stile 1",
+      "Apparatus bay 2 stile 2",
+      "Apparatus bay 2 stile 3",
+      "Apparatus bay 2 glazing",
+      "Bay head glazing frame.001",
+      "Bay head glazing.001",
+      "Apparatus bay 3 guide",
+      "Apparatus bay 3 guide.001",
+      "Apparatus bay 3 head",
+      "Apparatus bay 3 rail 1",
+      "Apparatus bay 3 rail 2",
+      "Apparatus bay 3 rail 3",
+      "Apparatus bay 3 stile 1",
+      "Apparatus bay 3 stile 2",
+      "Apparatus bay 3 stile 3",
+      "Apparatus bay 3 glazing",
+      "Bay head glazing frame.002",
+      "Bay head glazing.002",
+      "Apparatus bay 4 guide",
+      "Apparatus bay 4 guide.001",
+      "Apparatus bay 4 head",
+      "Apparatus bay 4 rail 1",
+      "Apparatus bay 4 rail 2",
+      "Apparatus bay 4 rail 3",
+      "Apparatus bay 4 stile 1",
+      "Apparatus bay 4 stile 2",
+      "Apparatus bay 4 stile 3",
+      "Apparatus bay 4 glazing",
+      "Bay head glazing frame.003",
+      "Bay head glazing.003"
+    ],
+    "front ground.Bay mullion strip -0.6": [
+      "Bay mullion strip -0.6 recessed jamb",
+      "Bay mullion strip -0.6 recessed jamb.001",
+      "Bay mullion strip -0.6 recessed head or sill",
+      "Bay mullion strip -0.6 recessed head or sill.001",
+      "Bay mullion strip -0.6 transom 1",
+      "Bay mullion strip -0.6 optical pane 0-0",
+      "Bay mullion strip -0.6 optical pane 0-1"
+    ],
+    "front ground.Bay mullion strip +5.0": [
+      "Bay mullion strip +5.0 recessed jamb",
+      "Bay mullion strip +5.0 recessed jamb.001",
+      "Bay mullion strip +5.0 recessed head or sill",
+      "Bay mullion strip +5.0 recessed head or sill.001",
+      "Bay mullion strip +5.0 transom 1",
+      "Bay mullion strip +5.0 optical pane 0-0",
+      "Bay mullion strip +5.0 optical pane 0-1"
+    ],
+    "front ground.Bay mullion strip +10.6": [
+      "Bay mullion strip +10.6 recessed jamb",
+      "Bay mullion strip +10.6 recessed jamb.001",
+      "Bay mullion strip +10.6 recessed head or sill",
+      "Bay mullion strip +10.6 recessed head or sill.001",
+      "Bay mullion strip +10.6 transom 1",
+      "Bay mullion strip +10.6 optical pane 0-0",
+      "Bay mullion strip +10.6 optical pane 0-1"
+    ],
+    "front ground.Entrance lobby glazing": [
+      "Entrance lobby glazing recessed jamb",
+      "Entrance lobby glazing recessed jamb.001",
+      "Entrance lobby glazing recessed head or sill",
+      "Entrance lobby glazing recessed head or sill.001",
+      "Entrance lobby glazing mullion 1",
+      "Entrance lobby glazing mullion 2",
+      "Entrance lobby glazing transom 1",
+      "Entrance lobby glazing optical pane 0-0",
+      "Entrance lobby glazing optical pane 0-1",
+      "Entrance lobby glazing optical pane 1-0",
+      "Entrance lobby glazing optical pane 1-1",
+      "Entrance lobby glazing optical pane 2-0",
+      "Entrance lobby glazing optical pane 2-1"
+    ],
+    "door hardware": [
+      "Lobby door pull",
+      "Lobby door pull.001"
+    ],
+    "left.West loggia": [
+      "West loggia recessed jamb",
+      "West loggia recessed jamb.001",
+      "West loggia recessed head or sill",
+      "West loggia recessed head or sill.001",
+      "West loggia mullion 1",
+      "West loggia mullion 2",
+      "West loggia mullion 3",
+      "West loggia mullion 4",
+      "West loggia optical pane 0-0",
+      "West loggia optical pane 1-0",
+      "West loggia optical pane 2-0",
+      "West loggia optical pane 3-0",
+      "West loggia optical pane 4-0"
+    ],
+    "left.West hall glass return": [
+      "West hall glass return recessed jamb",
+      "West hall glass return recessed jamb.001",
+      "West hall glass return recessed head or sill",
+      "West hall glass return recessed head or sill.001",
+      "West hall glass return mullion 1",
+      "West hall glass return mullion 2",
+      "West hall glass return mullion 3",
+      "West hall glass return mullion 4",
+      "West hall glass return transom 1",
+      "West hall glass return optical pane 0-0",
+      "West hall glass return optical pane 0-1",
+      "West hall glass return optical pane 1-0",
+      "West hall glass return optical pane 1-1",
+      "West hall glass return optical pane 2-0",
+      "West hall glass return optical pane 2-1",
+      "West hall glass return optical pane 3-0",
+      "West hall glass return optical pane 3-1",
+      "West hall glass return optical pane 4-0",
+      "West hall glass return optical pane 4-1"
+    ],
+    "left.West staff door": [
+      "West staff door jamb",
+      "West staff door jamb.001",
+      "West staff door head",
+      "West staff door recessed leaf",
+      "West staff door door panel 0-0",
+      "West staff door threshold",
+      "West staff door handle"
+    ],
+    "entry steps": [
+      "Door step",
+      "Door step.001",
+      "Door step.002"
+    ],
+    "left.West ground window": [
+      "West ground window recessed jamb",
+      "West ground window recessed jamb.001",
+      "West ground window recessed head or sill",
+      "West ground window recessed head or sill.001",
+      "West ground window mullion 1",
+      "West ground window optical pane 0-0",
+      "West ground window optical pane 1-0"
+    ],
+    "right.East upper window 0": [
+      "East upper window 0 recessed jamb",
+      "East upper window 0 recessed jamb.001",
+      "East upper window 0 recessed head or sill",
+      "East upper window 0 recessed head or sill.001",
+      "East upper window 0 mullion 1",
+      "East upper window 0 optical pane 0-0",
+      "East upper window 0 optical pane 1-0"
+    ],
+    "right.East upper window 1": [
+      "East upper window 1 recessed jamb",
+      "East upper window 1 recessed jamb.001",
+      "East upper window 1 recessed head or sill",
+      "East upper window 1 recessed head or sill.001",
+      "East upper window 1 mullion 1",
+      "East upper window 1 optical pane 0-0",
+      "East upper window 1 optical pane 1-0"
+    ],
+    "right.East service door": [
+      "East service door jamb",
+      "East service door jamb.001",
+      "East service door head",
+      "East service door recessed leaf",
+      "East service door door panel 0-0",
+      "East service door threshold",
+      "East service door handle"
+    ],
+    "right.East ground window": [
+      "East ground window recessed jamb",
+      "East ground window recessed jamb.001",
+      "East ground window recessed head or sill",
+      "East ground window recessed head or sill.001",
+      "East ground window mullion 1",
+      "East ground window optical pane 0-0",
+      "East ground window optical pane 1-0"
+    ],
+    "rear.Rear upper window 0": [
+      "Rear upper window 0 recessed jamb",
+      "Rear upper window 0 recessed jamb.001",
+      "Rear upper window 0 recessed head or sill",
+      "Rear upper window 0 recessed head or sill.001",
+      "Rear upper window 0 mullion 1",
+      "Rear upper window 0 optical pane 0-0",
+      "Rear upper window 0 optical pane 1-0"
+    ],
+    "rear.Rear upper window 1": [
+      "Rear upper window 1 recessed jamb",
+      "Rear upper window 1 recessed jamb.001",
+      "Rear upper window 1 recessed head or sill",
+      "Rear upper window 1 recessed head or sill.001",
+      "Rear upper window 1 mullion 1",
+      "Rear upper window 1 optical pane 0-0",
+      "Rear upper window 1 optical pane 1-0"
+    ],
+    "rear.Rear upper window 2": [
+      "Rear upper window 2 recessed jamb",
+      "Rear upper window 2 recessed jamb.001",
+      "Rear upper window 2 recessed head or sill",
+      "Rear upper window 2 recessed head or sill.001",
+      "Rear upper window 2 mullion 1",
+      "Rear upper window 2 optical pane 0-0",
+      "Rear upper window 2 optical pane 1-0"
+    ],
+    "rear.Rear upper window 3": [
+      "Rear upper window 3 recessed jamb",
+      "Rear upper window 3 recessed jamb.001",
+      "Rear upper window 3 recessed head or sill",
+      "Rear upper window 3 recessed head or sill.001",
+      "Rear upper window 3 mullion 1",
+      "Rear upper window 3 optical pane 0-0",
+      "Rear upper window 3 optical pane 1-0"
+    ],
+    "rear door": [
+      "Rear roll-up door leaf",
+      "Rear roll-up door slat seam",
+      "Rear roll-up door slat seam.001",
+      "Rear roll-up door slat seam.002",
+      "Rear roll-up door slat seam.003",
+      "Rear roll-up door slat seam.004"
+    ],
+    "rear.Rear service door": [
+      "Rear service door jamb",
+      "Rear service door jamb.001",
+      "Rear service door head",
+      "Rear service door recessed leaf",
+      "Rear service door door panel 0-0",
+      "Rear service door threshold",
+      "Rear service door handle"
+    ],
+    "rear.Rear ground window 0": [
+      "Rear ground window 0 recessed jamb",
+      "Rear ground window 0 recessed jamb.001",
+      "Rear ground window 0 recessed head or sill",
+      "Rear ground window 0 recessed head or sill.001",
+      "Rear ground window 0 mullion 1",
+      "Rear ground window 0 optical pane 0-0",
+      "Rear ground window 0 optical pane 1-0"
+    ],
+    "rear.Rear ground window 1": [
+      "Rear ground window 1 recessed jamb",
+      "Rear ground window 1 recessed jamb.001",
+      "Rear ground window 1 recessed head or sill",
+      "Rear ground window 1 recessed head or sill.001",
+      "Rear ground window 1 mullion 1",
+      "Rear ground window 1 optical pane 0-0",
+      "Rear ground window 1 optical pane 1-0"
+    ],
+    "roof": [
+      "Roof slab",
+      "Roof membrane",
+      "Membrane seam",
+      "Membrane seam.001",
+      "Membrane seam.002",
+      "Membrane seam.003",
+      "Membrane seam.004",
+      "Membrane seam.005",
+      "Membrane seam.006",
+      "Roof hatch",
+      "Roof hatch lid"
+    ],
+    "tower": [
+      "Tower slab",
+      "Tower corner column",
+      "Tower corner column.001",
+      "Tower corner column.002",
+      "Tower corner column.003",
+      "Tower floor plate",
+      "Tower floor plate.001",
+      "Tower floor plate.002",
+      "Tower fascia",
+      "Tower roof membrane",
+      "Tower head beam",
+      "Tower tie",
+      "Tower tie.001"
+    ],
+    "tower glazing": [
+      "Tower south glazing",
+      "Tower east glazing",
+      "Tower north glazing",
+      "Tower west glazing"
+    ],
+    "tower frame": [
+      "Tower south mullion",
+      "Tower south mullion.001",
+      "Tower south mullion.002",
+      "Tower south transom",
+      "Tower south transom.001",
+      "Tower south transom.002",
+      "Tower east mullion",
+      "Tower east mullion.001",
+      "Tower east mullion.002",
+      "Tower east mullion.003",
+      "Tower east transom",
+      "Tower east transom.001",
+      "Tower east transom.002",
+      "Tower north mullion",
+      "Tower north mullion.001",
+      "Tower north mullion.002",
+      "Tower north transom",
+      "Tower north transom.001",
+      "Tower north transom.002",
+      "Tower west mullion",
+      "Tower west mullion.001",
+      "Tower west transom",
+      "Tower west transom.001",
+      "Tower west transom.002"
+    ],
+    "clock": [
+      "Clock face",
+      "Clock hour hand",
+      "Clock minute hand",
+      "Sign band",
+      "Clock face.001",
+      "Clock hour hand.001",
+      "Clock minute hand.001",
+      "Sign band.001"
+    ],
+    "bollards": [
+      "Bay bollard",
+      "Bay bollard.001",
+      "Bay bollard.002",
+      "Bay bollard.003",
+      "Bay bollard.004",
+      "Bay bollard.005",
+      "Bay bollard.006",
+      "Bay bollard.007"
+    ],
+    "forecourt": [
+      "Flagpole",
+      "Flagpole base",
+      "Memorial wall",
+      "Memorial plaque",
+      "Bench seat",
+      "Bench leg",
+      "Bench leg.001",
+      "Bench seat.001",
+      "Bench leg.002",
+      "Bench leg.003",
+      "Bench seat.002",
+      "Bench leg.004",
+      "Bench leg.005"
+    ],
+    "shelter": [
+      "Shelter roof",
+      "Shelter post",
+      "Shelter post.001",
+      "Shelter post.002",
+      "Shelter post.003",
+      "Shelter bench",
+      "Shelter bench leg",
+      "Shelter bench leg.001"
+    ],
+    "garden planting": [
+      "Serviceberry rooted trunk",
+      "Serviceberry branch",
+      "Serviceberry leafy crown",
+      "Serviceberry branch.001",
+      "Serviceberry leafy crown.001",
+      "Serviceberry branch.002",
+      "Serviceberry leafy crown.002",
+      "Serviceberry rooted trunk.001",
+      "Serviceberry branch.003",
+      "Serviceberry leafy crown.003",
+      "Serviceberry branch.004",
+      "Serviceberry leafy crown.004",
+      "Serviceberry branch.005",
+      "Serviceberry leafy crown.005",
+      "Serviceberry rooted trunk.002",
+      "Serviceberry branch.006",
+      "Serviceberry leafy crown.006",
+      "Serviceberry branch.007",
+      "Serviceberry leafy crown.007",
+      "Serviceberry branch.008",
+      "Serviceberry leafy crown.008"
+    ],
+    "appliances": [
+      "Appliance body",
+      "Appliance cab",
+      "Cab windscreen",
+      "Appliance ladder",
+      "Appliance bumper",
+      "Appliance wheel",
+      "Appliance wheel.001",
+      "Appliance wheel.002",
+      "Appliance wheel.003",
+      "Appliance wheel.004",
+      "Appliance wheel.005",
+      "Appliance stripe",
+      "Appliance body.001",
+      "Appliance cab.001",
+      "Cab windscreen.001",
+      "Appliance ladder.001",
+      "Appliance bumper.001",
+      "Appliance wheel.006",
+      "Appliance wheel.007",
+      "Appliance wheel.008",
+      "Appliance wheel.009",
+      "Appliance wheel.010",
+      "Appliance wheel.011",
+      "Appliance stripe.001",
+      "Appliance body.002",
+      "Appliance cab.002",
+      "Cab windscreen.002",
+      "Appliance ladder.002",
+      "Appliance bumper.002",
+      "Appliance wheel.012",
+      "Appliance wheel.013",
+      "Appliance wheel.014",
+      "Appliance wheel.015",
+      "Appliance wheel.016",
+      "Appliance wheel.017",
+      "Appliance stripe.002",
+      "Appliance body.003",
+      "Appliance cab.003",
+      "Cab windscreen.003",
+      "Appliance ladder.003",
+      "Appliance bumper.003",
+      "Appliance wheel.018",
+      "Appliance wheel.019",
+      "Appliance wheel.020",
+      "Appliance wheel.021",
+      "Appliance wheel.022",
+      "Appliance wheel.023",
+      "Appliance stripe.003"
+    ],
+    "office furniture": [
+      "Desk surface",
+      "Desk leg",
+      "Desk leg.001",
+      "Desk leg.002",
+      "Desk leg.003",
+      "Monitor base",
+      "Monitor stem",
+      "Monitor",
+      "Chair seat",
+      "Chair back",
+      "Chair leg",
+      "Chair leg.001",
+      "Chair leg.002",
+      "Chair leg.003",
+      "Desk surface.001",
+      "Desk leg.004",
+      "Desk leg.005",
+      "Desk leg.006",
+      "Desk leg.007",
+      "Monitor base.001",
+      "Monitor stem.001",
+      "Monitor.001",
+      "Chair seat.001",
+      "Chair back.001",
+      "Chair leg.004",
+      "Chair leg.005",
+      "Chair leg.006",
+      "Chair leg.007"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003",
+      "Sofa grounded foot.004",
+      "Sofa grounded foot.005",
+      "Sofa grounded foot.006",
+      "Sofa grounded foot.007",
+      "Sofa plinth.001",
+      "Sofa seat.001",
+      "Sofa back.001",
+      "Sofa arm.002",
+      "Sofa arm.003",
+      "Coffee table.001",
+      "Coffee table leg.004",
+      "Coffee table leg.005",
+      "Coffee table leg.006",
+      "Coffee table leg.007"
+    ],
+    "bedroom furniture": [
+      "Bed grounded foot",
+      "Bed grounded foot.001",
+      "Bed grounded foot.002",
+      "Bed grounded foot.003",
+      "Bed frame",
+      "Mattress",
+      "Duvet",
+      "Headboard",
+      "Pillow",
+      "Pillow.001",
+      "Bed grounded foot.004",
+      "Bed grounded foot.005",
+      "Bed grounded foot.006",
+      "Bed grounded foot.007",
+      "Bed frame.001",
+      "Mattress.001",
+      "Duvet.001",
+      "Headboard.001",
+      "Pillow.002",
+      "Pillow.003",
+      "Bed grounded foot.008",
+      "Bed grounded foot.009",
+      "Bed grounded foot.010",
+      "Bed grounded foot.011",
+      "Bed frame.002",
+      "Mattress.002",
+      "Duvet.002",
+      "Headboard.002",
+      "Pillow.004",
+      "Pillow.005"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "finished_utc": "2026-10-10T12:04:07.338153+00:00",
+  "delivery_and_render_seconds": 7450.8194653949995,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

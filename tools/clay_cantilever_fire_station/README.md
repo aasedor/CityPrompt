@@ -67,3 +67,14 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P0: close the south-west corner: give the red leg a solid west return that meets the
+  corner pier with no gap (check face winding and that no coplanar faces remain).
+- P1: deepen and lengthen the west loggia to the sources' C-framed recess with a north
+  return, set-back glazing and a lit frame.
+- P1: move the red leg to the north end of the west face and keep the south soffit
+  continuous from the corner to the east step.
+- P1: widen the apparatus-bay run to about three quarters of the south face starting
+  near the corner, shrinking the glazed office zone.
