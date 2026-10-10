@@ -1,0 +1,432 @@
+{
+  "candidate": "clay-brick-podium-condo-tower-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-brick-podium-condo-tower",
+  "variant_id": "clay-brick-podium-condo-tower-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "condo_podium_tower/variant_0 (brick_podium_glass_tower)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 42.0,
+      "depth": 32.0,
+      "height": 47.7
+    },
+    "observed_storeys": 13,
+    "storey_programme": "double-height retail ground floor, second podium storey, eleven tower storeys, mechanical penthouse",
+    "plan": "podium 42 x 32 m and tower 30 x 24 m read from the top view (podium 640 x 480 px at 0.066 m/px); the tower is flush with the south and east street faces and the podium roof wraps it on the west and north as a terrace",
+    "podium": "brick piers on a 5.5 m bay with double-height storefronts, dark canopy band at 4.3 m, ribbon windows with precast sills on the second storey, precast cornice at 9.3 m, glass balustrade on the terrace",
+    "tower": "glass curtain wall with continuous mullions at 1.5 m and a 0.62 m spandrel at every floor; two balcony stacks per face projecting 1.5 m with glass balustrades; corner columns",
+    "levels_m": [
+      0.15,
+      5.0,
+      9.3,
+      12.3,
+      15.3,
+      18.3,
+      21.3,
+      24.3,
+      27.3,
+      30.3,
+      33.3,
+      36.3,
+      39.3
+    ],
+    "roofs_m": [
+      9.3,
+      42.3
+    ],
+    "parapet_m": 43.0,
+    "penthouse": "22 x 16 m pale metal box 4.2 m high with louvre panels on the tower roof, rooftop units beside it, guard rail at the roof edge",
+    "inferred": "eleven tower storeys counted from the balcony stacks in the front view; north and west faces repeat the grammar; interiors are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "flat membranes: podium terrace with pavers and planters, tower roof with gravel behind a 0.7 m parapet and guard rail, penthouse on a curb",
+    "datum_m": 42.3,
+    "crowns_m": [
+      43.0,
+      46.5
+    ]
+  },
+  "identity_contract": {
+    "owner": "red-brick two-storey podium with double-height storefronts and a roof terrace, glass tower flush with the corner, balcony stacks, pale mechanical penthouse"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red brick with recessed courses, precast bands, dark storefront frames, clear curtain-wall glass with pale spandrels and mullions, glass balustrades, pale metal penthouse",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 13,
+    "ground": "retail units and the residential lobby at the corner",
+    "second": "amenity and offices",
+    "upper": "eight apartments per floor around a central core",
+    "roof": "mechanical penthouse"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Tower corner columns from grade to the parapet",
+    "Balcony plates cast with the floor slabs",
+    "Terrace balustrade on the podium parapet",
+    "Penthouse on the tower roof slab"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -71.39999999999999,
+        22.896
+      ],
+      "target": [
+        0,
+        0,
+        21.465000000000003
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -55.69199999999999,
+        -59.97599999999999,
+        95.4
+      ],
+      "target": [
+        0,
+        0,
+        21.465000000000003
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        49.97999999999999,
+        -57.12,
+        143.10000000000002
+      ],
+      "target": [
+        0,
+        0,
+        21.465000000000003
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        107.1
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 58.8
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -71.39999999999999,
+        0,
+        28.62
+      ],
+      "target": [
+        0,
+        0,
+        21.465000000000003
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        71.39999999999999,
+        0,
+        28.62
+      ],
+      "target": [
+        0,
+        0,
+        21.465000000000003
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        71.39999999999999,
+        28.62
+      ],
+      "target": [
+        0,
+        0,
+        21.465000000000003
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        49.97999999999999,
+        57.12,
+        85.86000000000001
+      ],
+      "target": [
+        0,
+        0,
+        21.465000000000003
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        0.0,
+        -34.0,
+        14.0
+      ],
+      "target": [
+        6.0,
+        -16.0,
+        18.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -30.0,
+        -30.0,
+        12.0
+      ],
+      "target": [
+        -9.0,
+        -16.0,
+        9.3
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        12.0,
+        -26.0,
+        22.0
+      ],
+      "target": [
+        14.0,
+        -16.0,
+        23.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "podium_retail",
+      "location": [
+        -12.0,
+        -28.0,
+        2.2
+      ],
+      "target": [
+        -6.0,
+        -16.0,
+        2.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "podium_setback",
+      "location": [
+        -34.0,
+        2.0,
+        16.0
+      ],
+      "target": [
+        -12.0,
+        2.0,
+        9.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "balcony_stack",
+      "location": [
+        28.0,
+        -30.0,
+        24.0
+      ],
+      "target": [
+        21.0,
+        -4.0,
+        24.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_crown",
+      "location": [
+        -34.0,
+        -40.0,
+        60.0
+      ],
+      "target": [
+        6.0,
+        -4.0,
+        44.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "corner_entry",
+      "location": [
+        30.0,
+        -26.0,
+        2.2
+      ],
+      "target": [
+        21.0,
+        -16.0,
+        2.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        8.0,
+        -2.0,
+        25.900000000000002
+      ],
+      "target": [
+        10.0,
+        -17.5,
+        25.5
+      ],
+      "lens": 60,
+      "whole": false
+    },
+    {
+      "name": "rear_lane",
+      "location": [
+        0.0,
+        34.0,
+        5.0
+      ],
+      "target": [
+        -4.0,
+        16.0,
+        4.0
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "podium_retail",
+    "podium_setback",
+    "balcony_stack",
+    "roof_crown",
+    "corner_entry",
+    "interior",
+    "rear_lane"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/condo-podium-tower/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1239794,
+        "sha256": "247f085b7d208f1fd80395f5b5d8d7934e696acd4994ec61228255f5d0a8511a"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/condo-podium-tower/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 1008232,
+        "sha256": "4fded6c1a678e8d3bd1246e9300fff6950cfa54cd8209212272a0476b68ab1c6"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/condo-podium-tower/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 949163,
+        "sha256": "f1e657ae0de180307adead2cc299184682f2b31fa26f5e58d64b0d5758b7bc4d"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_podium_tower.py",
+        "sha256": "a34a5a9f998d9d45265f7129e7a8bc8b374d5f97f44e6154117164081ec67970"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "3ac358599785ab8aca1ad0becd3096d8da7879454ccabe313117c53e869e0010"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "d4296ecb4718dd49bcb9080f5045afcff403aff18220139df03d909c7ab04592"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T13:34:32.134232+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

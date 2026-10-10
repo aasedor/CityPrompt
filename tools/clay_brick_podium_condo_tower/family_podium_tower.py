@@ -15,7 +15,7 @@ import geometry as G
 
 SLUG = 'clay-brick-podium-condo-tower'
 PX, PY = (-21.0, 21.0), (-16.0, 16.0)      # podium footprint
-TX, TY = (-9.0, 21.0), (-16.0, 8.0)        # tower footprint, flush with the south and east faces
+TX, TY = (-9.0, 21.0), (-13.0, 8.0)        # tower footprint: flush with the east face, a 3 m terrace strip in front of the south face
 T = .30
 G0 = .15
 L1, PODIUM = 5.0, 9.3                      # second-floor level, podium roof
@@ -48,7 +48,7 @@ def manifest(version):
         ('balcony_stack', (28.0, -30.0, 24.0), (TX[1], -4.0, 24.0), 45),
         ('roof_crown', (-34.0, -40.0, 60.0), (6.0, -4.0, 44.0), 45),
         ('corner_entry', (30.0, -26.0, 2.2), (TX[1], TY[0], 2.6), 45),
-        ('interior', (8.0, -2.0, FLOORS[5] + 1.6), (10.0, TY[0] - 1.5, FLOORS[5] + 1.2), 60),
+        ('interior', (-3.0, -8.5, FLOORS[5] + 1.6), (-1.0, TY[0] - 1.5, FLOORS[5] + 1.1), 55),
         ('rear_lane', (0.0, 34.0, 5.0), (-4.0, PY[1], 4.0), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
@@ -56,9 +56,9 @@ def manifest(version):
         source_archetype='condo_podium_tower/variant_0 (brick_podium_glass_tower)',
         measurement_contract=dict(dimensions_m=dict(width=PX[1] - PX[0], depth=PY[1] - PY[0], height=h),
             observed_storeys=N + 2, storey_programme='double-height retail ground floor, second podium storey, eleven tower storeys, mechanical penthouse',
-            plan='podium 42 x 32 m and tower 30 x 24 m read from the top view (podium 640 x 480 px at 0.066 m/px); the tower is flush with the south and east street faces and the podium roof wraps it on the west and north as a terrace',
+            plan='podium 42 x 32 m and tower 30 x 21 m read from the top view (podium 640 x 480 px at 0.066 m/px); the tower is flush with the east street face, a balustraded terrace strip runs in front of its south face and the podium roof wraps it on the west and north',
             podium='brick piers on a 5.5 m bay with double-height storefronts, dark canopy band at 4.3 m, ribbon windows with precast sills on the second storey, precast cornice at 9.3 m, glass balustrade on the terrace',
-            tower='glass curtain wall with continuous mullions at 1.5 m and a 0.62 m spandrel at every floor; two balcony stacks per face projecting 1.5 m with glass balustrades; corner columns',
+            tower='glass curtain wall with continuous mullions at 1.5 m and a 0.62 m spandrel at every floor; five staggered balcony stacks on the south face and two on the other faces, projecting 1.5 m with glass balustrades; corner columns',
             levels_m=[G0, L1, PODIUM] + FLOORS[1:], roofs_m=[PODIUM, TROOF], parapet_m=TPAR,
             penthouse='22 x 16 m pale metal box 4.2 m high with louvre panels on the tower roof, rooftop units beside it, guard rail at the roof edge',
             inferred='eleven tower storeys counted from the balcony stacks in the front view; north and west faces repeat the grammar; interiors are teaching assumptions'),
@@ -111,12 +111,15 @@ def framed(m, f, h, cols=1, rows=1, inset=.14, occupied='room', kind='window'):
     register(f, h, inset, kind, occupied)
 
 
-def tower_face(f, lo, hi, stacks):
+def tower_face(f, lo, hi, stacks, flush=False, stagger=False):
     """Curtain-wall face: spandrel carrier with one glazed band per storey, continuous mullions, balcony stacks."""
     span = hi - lo
-    holes = [hole(f'{f.label} glazing band {i}', (lo + hi) / 2, zf + (SPANDREL if i else 1.15), span - 1.0, FH - (SPANDREL if i else 1.15) - .02, kind='band') for i, zf in enumerate(FLOORS)]
-    # The carrier starts above the podium cornice so no face is coplanar with the podium carriers on the flush sides.
-    f.wall(f.label + ' spandrel carrier', lo, hi - EPS, PODIUM + .92, TPAR, depth=T, role='spandrel', holes=holes)
+    first = 1.15 if flush else SPANDREL
+    holes = [hole(f'{f.label} glazing band {i}', (lo + hi) / 2, zf + (first if i == 0 else SPANDREL), span - 1.0, FH - (first if i == 0 else SPANDREL) - .02, kind='band') for i, zf in enumerate(FLOORS)]
+    # On the flush east face the carrier starts above the podium cornice (no coplanar faces with the podium carrier);
+    # on the terrace faces it starts at the deck so the envelope is closed down to the terrace.
+    z_start = PODIUM + .92 if flush else PODIUM - .02
+    f.wall(f.label + ' spandrel carrier', lo, hi - EPS, z_start, TPAR, depth=T, role='spandrel', holes=holes)
     m = Merge(f)
     for h in holes:
         m.box('glass', h['u'], .10, h['z'] + h['h'] / 2, h['w'] - .02, .012, h['h'] - .02)
@@ -125,13 +128,15 @@ def tower_face(f, lo, hi, stacks):
     n = round(span / MULLION)
     for i in range(n + 1):
         u = lo + .5 + (span - 1.0) * i / n
-        m.box('trim', u, -.03, (PODIUM + .92 + TPAR) / 2, .08, .12, TPAR - PODIUM - .94)
+        m.box('trim', u, -.03, (z_start + TPAR) / 2, .08, .12, TPAR - z_start - .02)
     for zf in FLOORS[1:] + [TROOF]:
-        m.box('pale', (lo + hi) / 2, -.04, zf + .02, span - 2 * EPS, .10, .10)
+        m.box('pale', (lo + hi) / 2, -.11, zf + .02, span - 2 * EPS, .12, .10)
     # Balcony stacks: plate, glass balustrade and rail at every storey.
-    for uc in stacks:
-        bw = 3.6
-        for zf in FLOORS:
+    for si, uc in enumerate(stacks):
+        bw = 3.2 if stagger else 3.6
+        for fi, zf in enumerate(FLOORS):
+            if fi == 0 or (stagger and (fi + si) % 2):
+                continue
             m.box('concrete', uc, -(PLATE + .2) / 2, zf + .05, bw, PLATE - .2 + .3, .20)
             m.box('glass', uc, -PLATE + .08, zf + .15 + .525, bw - .08, .02, 1.05)
             m.box('hardware', uc, -PLATE + .08, zf + .15 + 1.05 + .025, bw - .04, .06, .05)
@@ -148,9 +153,9 @@ def tower():
     north = C.Face(((x0 + x1) / 2, y1, 0), (-1, 0, 0), (0, -1, 0), 'tower north')
     west = C.Face((x0, (y0 + y1) / 2, 0), (0, -1, 0), (1, 0, 0), 'tower west')
     hw, hd = (x1 - x0) / 2, (y1 - y0) / 2
-    tower_face(south, -hw, hw, (-hw * .5, hw * .45))
+    tower_face(south, -hw, hw, tuple(-hw + hw * 2 * (k + .5) / 5 for k in range(5)), stagger=True)
     tower_face(north, -hw, hw, (-hw * .5, hw * .5))
-    tower_face(east, -hd + T, hd - T, (-hd * .45, hd * .45))
+    tower_face(east, -hd + T, hd - T, (-hd * .45, hd * .45), flush=True)
     tower_face(west, -hd + T, hd - T, (-hd * .45, hd * .45))
     for x in (x0, x1):
         for y in (y0, y1):
@@ -175,6 +180,9 @@ def tower():
     for k in range(5):
         C.box('Penthouse louvre', (px0 + 3.0 + k * 3.6, py0 - .05, TROOF + .30 + PENT_H / 2), (2.4, .10, PENT_H - 1.2), 'hardware', 'penthouse', 0)
     C.box('Penthouse east louvre', (px1 + .05, (py0 + py1) / 2, TROOF + .30 + PENT_H / 2), (.10, 8.0, PENT_H - 1.2), 'hardware', 'penthouse', 0)
+    C.box('Penthouse west louvre', (px0 - .05, (py0 + py1) / 2, TROOF + .30 + PENT_H / 2), (.10, 8.0, PENT_H - 1.2), 'hardware', 'penthouse', 0)
+    C.box('Penthouse north louvre', ((px0 + px1) / 2, py1 + .05, TROOF + .30 + PENT_H / 2), (12.0, .10, PENT_H - 1.2), 'hardware', 'penthouse', 0)
+    C.box('Penthouse roof unit', ((px0 + px1) / 2 + 4.0, (py0 + py1) / 2, TROOF + .30 + PENT_H + .7), (2.4, 1.8, 1.4), 'hardware', 'rooftop plant', 0)
     for x, y in ((px0 + 4.0, py1 + 2.5), (px0 + 12.0, py1 + 2.5)):
         C.box('Rooftop unit', (x, y, TROOF + .9), (2.6, 1.8, 1.6), 'hardware', 'rooftop plant', 0)
     rail_run((x0 + .4, y0 + .4), (x1 - .4, y0 + .4), TPAR); rail_run((x1 - .4, y0 + .4), (x1 - .4, y1 - .4), TPAR)
@@ -201,7 +209,7 @@ def glass_balustrade(a, b, z, height=1.1, inward=(0, 1)):
     f.part('Terrace balustrade rail', 0, .0, z + height + .08, length, .06, .05, 'hardware', 'terrace', 0)
 
 
-def podium_face(f, lo, hi, corner_lobby=False, lane=False):
+def podium_face(f, lo, hi, corner_lobby=False, lane=False, garage=False):
     """Brick podium elevation: double-height storefronts between piers, canopy band, ribbon windows above, cornice."""
     span = hi - lo
     bay = 5.5
@@ -215,6 +223,8 @@ def podium_face(f, lo, hi, corner_lobby=False, lane=False):
                 holes.append(hole(f'{f.label} loading door', c, G0, 4.0, 4.2, kind='door'))
             elif i % 2 == 0:
                 holes.append(hole(f'{f.label} ground window {i}', c, 1.4, pitch - 2.2, 2.2))
+        elif garage and i == n - 1:
+            holes.append(hole(f'{f.label} garage door', c, G0, 4.0, 4.2, kind='door'))
         elif corner_lobby and i == n - 1:
             holes.append(hole(f'{f.label} lobby doors', c + .4, G0, 2.6, 3.0, kind='door'))
             holes.append(hole(f'{f.label} lobby glazing', c + .4, 3.2, pitch - 1.4, L1 - .9 - 3.2))
@@ -225,7 +235,7 @@ def podium_face(f, lo, hi, corner_lobby=False, lane=False):
     G.brick_courses(f, lo + .02, hi - .02, G0, PODIUM + .9, holes, spacing=.15)
     m = Merge(f)
     for h in holes:
-        if h.get('kind') == 'door' and lane:
+        if h.get('kind') == 'door' and (lane or 'garage' in h['id']):
             m.box('pale', h['u'], .22, h['z'] + h['h'] / 2, h['w'] - .06, .05, h['h'] - .02)
             C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='roll-up door', clear_wall_cut=True,
                 carrier_depth_m=T, frame_inset_m=.19, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='loading'))
@@ -252,7 +262,7 @@ def podium():
     west = C.Face((x0, (y0 + y1) / 2, 0), (0, -1, 0), (1, 0, 0), 'podium west')
     hw, hd = (x1 - x0) / 2, (y1 - y0) / 2
     podium_face(south, -hw, hw, corner_lobby=True)
-    podium_face(east, -hd + T, hd - T)
+    podium_face(east, -hd + T, hd - T, garage=True)
     podium_face(north, -hw, hw, lane=True)
     podium_face(west, -hd + T, hd - T)
     C.box('Ground slab', (0, 0, G0 / 2), (x1 - x0, y1 - y0, G0), 'foundation', 'foundation', 0)
@@ -269,6 +279,11 @@ def podium():
     glass_balustrade((x0 + .2, y0 + .2), (x0 + .2, y1 - .2), z, inward=(1, 0))
     glass_balustrade((x0 + .2, y1 - .2), (TX[0] - .2, y1 - .2), z, inward=(0, -1))
     glass_balustrade((TX[0] - .2, y1 - .2), (x1 - .2, y1 - .2), z, inward=(0, -1))
+    glass_balustrade((TX[0] - .2, y0 + .2), (x1 - .2, y0 + .2), z, inward=(0, 1))
+    glass_balustrade((x1 - .2, y0 + .2), (x1 - .2, TY[0] - .2), z, inward=(-1, 0))
+    for x in (-4.0, 4.0, 12.0):
+        C.box('South terrace planter', (x, TY[0] - 1.4, PODIUM + .3), (2.2, 1.0, .60), 'concrete', 'terrace', 0)
+        C.box('South terrace planting', (x, TY[0] - 1.4, PODIUM + .62), (2.0, .8, .04), 'planting', 'terrace', 0)
     for x, y in ((x0 + 3.0, 0.0), (x0 + 3.0, 10.0), (0.0, y1 - 3.0), (8.0, y1 - 3.0)):
         C.box('Terrace planter', (x, y, PODIUM + .35), (2.6, 1.2, .70), 'concrete', 'terrace', 0)
         C.box('Terrace planter soil', (x, y, PODIUM + .72), (2.4, 1.0, .04), 'planting', 'terrace', 0)
