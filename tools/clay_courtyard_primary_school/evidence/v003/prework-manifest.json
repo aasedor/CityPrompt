@@ -1,0 +1,453 @@
+{
+  "candidate": "clay-courtyard-primary-school-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-courtyard-primary-school",
+  "variant_id": "clay-courtyard-primary-school-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "ecole_republicaine/variant_3 (ecole-republicaine-art-deco)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 40.0,
+      "depth": 46.0,
+      "height": 13.0
+    },
+    "observed_storeys": 3,
+    "storey_programme": "two-storey brick U with a third corten storey over the north-west block; fixed authored assembly",
+    "plan": "mid-block corner site 570 x 650 px in the top view read as 40 x 46 m; party walls west and north; courtyard 210 x 260 px opening south",
+    "blocks": {
+      "north_west": [
+        -20.0,
+        -3.0,
+        -4.5,
+        23.0
+      ],
+      "west_wing": [
+        -20.0,
+        -8.0,
+        -23.0,
+        -4.5
+      ],
+      "north_hall": [
+        -3.0,
+        20.0,
+        -4.5,
+        17.0
+      ],
+      "entrance_block": [
+        11.0,
+        20.0,
+        -23.0,
+        -4.5
+      ],
+      "courtyard": [
+        -8.0,
+        11.0,
+        -23.0,
+        -4.5
+      ]
+    },
+    "levels_m": [
+      0.15,
+      4.0
+    ],
+    "roof_m": 7.8,
+    "parapet_m": 0.5000000000000009,
+    "penthouse_roof_m": 11.4,
+    "canopy_m": 4.0,
+    "street_faces": "brick with a concrete band at the first floor and at the parapet; ground large windows; upper strip windows with coloured fins",
+    "court_faces": "full-height classroom glazing on the ground floor, strip windows with coloured fins above",
+    "entrance": "open concrete-framed passage at the south-east corner under a corten canopy that continues over the east edge of the playground",
+    "roofs": "gravel with perimeter rails on the wings; paved terrace on the hall block with a gravel panel at the north-east; corten storey with its own gravel roof",
+    "inferred": "40 m street frontage calibrates the plan; the party walls are blank; interiors (classrooms, hall) are teaching assumptions; the catalogue label (Art Deco) conflicts with the pixels and the pixels govern."
+  },
+  "roof_contract": {
+    "type": "flat gravel and paved roofs behind 0.5 m concrete parapets; corten third storey; corten canopy slab",
+    "datum_m": 7.8,
+    "crowns_m": [
+      8.3,
+      11.9
+    ]
+  },
+  "identity_contract": {
+    "owner": "brick U around a south playground, coloured window fins, corten third storey and corner canopy, open concrete entrance passage, street fence"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: warm orange brick with recessed courses, pale concrete bands and columns, corten cladding, dark timber window frames, coloured fins, dark rubber court with a green play panel, gravel and paved roofs",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "ground": "classrooms around the court, hall in the north block, entrance passage",
+    "upper": "classrooms and offices",
+    "penthouse": "staff room with terrace"
+  },
+  "contact_contract": [
+    "Grade-zero slab and court",
+    "Entrance passage open at grade with concrete columns",
+    "Canopy slab bearing on the entrance block and on columns at the court",
+    "Corten storey seated on the north-west roof slab inside its parapet",
+    "Rail posts seated on copings",
+    "Fence on a concrete kerb with a gate"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -78.2,
+        6.24
+      ],
+      "target": [
+        0,
+        0,
+        5.8500000000000005
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -60.996,
+        -65.688,
+        26.0
+      ],
+      "target": [
+        0,
+        0,
+        5.8500000000000005
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        54.74,
+        -62.56,
+        39.0
+      ],
+      "target": [
+        0,
+        0,
+        5.8500000000000005
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        117.30000000000001
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 64.39999999999999
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -78.2,
+        0,
+        7.8
+      ],
+      "target": [
+        0,
+        0,
+        5.8500000000000005
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        78.2,
+        0,
+        7.8
+      ],
+      "target": [
+        0,
+        0,
+        5.8500000000000005
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        78.2,
+        7.8
+      ],
+      "target": [
+        0,
+        0,
+        5.8500000000000005
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        54.74,
+        62.56,
+        23.400000000000002
+      ],
+      "target": [
+        0,
+        0,
+        5.8500000000000005
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        6.0,
+        -40.0,
+        4.0
+      ],
+      "target": [
+        10.0,
+        -23.0,
+        4.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        30.0,
+        -34.0,
+        9.0
+      ],
+      "target": [
+        16.0,
+        -23.0,
+        7.8
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        26.0,
+        -8.0,
+        2.4
+      ],
+      "target": [
+        20.0,
+        -1.0,
+        2.6
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "entrance_passage",
+      "location": [
+        22.0,
+        -36.0,
+        2.0
+      ],
+      "target": [
+        15.5,
+        -23.0,
+        2.2
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "courtyard",
+      "location": [
+        2.0,
+        -36.0,
+        6.0
+      ],
+      "target": [
+        0.0,
+        -8.0,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "fins_close",
+      "location": [
+        -4.0,
+        -20.0,
+        6.0
+      ],
+      "target": [
+        -8.0,
+        -11.0,
+        5.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "canopy_contact",
+      "location": [
+        14.0,
+        -34.0,
+        5.5
+      ],
+      "target": [
+        8.0,
+        -20.0,
+        4.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "penthouse_terrace",
+      "location": [
+        -30.0,
+        -26.0,
+        20.0
+      ],
+      "target": [
+        -6.0,
+        8.0,
+        10.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -2.0,
+        -14.0,
+        2.4
+      ],
+      "target": [
+        -8.0,
+        -14.0,
+        2.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "playground",
+      "location": [
+        -6.0,
+        -32.0,
+        3.2
+      ],
+      "target": [
+        0.0,
+        -14.0,
+        1.2
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "entrance_passage",
+    "courtyard",
+    "fins_close",
+    "canopy_contact",
+    "penthouse_terrace",
+    "interior",
+    "playground"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/ecole-republicaine/variant_3.png",
+        "path": "sources/front.png",
+        "bytes": 1323463,
+        "sha256": "353d70cf1e6d860e840bcb57cf9e10dbdaf558f17c5127e78c8e79655c68e467"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 990119,
+        "sha256": "ad3f15097e602c85aabe104deecfc293a9eb4fbc33bee7de15489d418cb12bf6"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 904476,
+        "sha256": "c833b66c8e3184baeef6f16471dc2693f2f33a235778423333e18814001cbca3"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_school.py",
+        "sha256": "7dc225efca99cc7193b4d75c653fd32426dafa7adc1e203fbee093c83964a0bf"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "e97a15ef02eb01bedb173ff6f0ee79f4a2a0b022fd5138483e2fd6e3d512830f"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "4bc474234d7ddf64812dac828f28d8b0223710ac696ea725f4d4b9b800a3d277"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T10:16:56.996792+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

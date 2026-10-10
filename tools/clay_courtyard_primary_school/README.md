@@ -68,3 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P0: join the south-east entrance block to the passage overhang: run one carrier
+  through the junction (or overlap the two volumes by the wall thickness) so the
+  passage's east jamb is solid from pavement to parapet.
+- P1: make the canopy one solid plate (top plate and fascia overlapping, no coplanar
+  underside) so no black band shows under the corten edge.
