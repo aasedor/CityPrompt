@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P0: move the recessed entrance to the face the sources show under the glasshouse
+  flanks, beds and penthouse (one face east of the current one), and give the south
+  plinth the lit slits; the roof already matches the top view.
+- P1: make the magenta rack light read at oblique and aerial angles (view-independent
+  emissive backboards or stronger wash lights behind the glazing).
+- P1: remove the slit window that cuts through the north plinth roller shutter.
