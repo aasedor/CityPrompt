@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-cantilever-fire-station",
+  "variant_id": "clay-cantilever-fire-station-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "modern_fire_station/variant_2",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/modern_fire_station/variant_2.png",
+      "path": "sources/front.png",
+      "bytes": 1073268,
+      "sha256": "6715ca6d2f3fde8f4ddd12ca6a470cba4d470fbc781c5988ccecb25c5c07340d"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/modern_fire_station/variant_2_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 786954,
+      "sha256": "256755fda932c4d8434cd957d9bb3e9e86ba7cee6c9fc277d70463a11b06daad"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/modern_fire_station/variant_2_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 753818,
+      "sha256": "3936e8d805938931b3fd26eb94360aa5b3e3d98cbaa26ef0ce032d235f3a5d28"
+    }
+  ]
+}

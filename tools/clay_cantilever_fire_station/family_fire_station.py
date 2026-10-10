@@ -23,11 +23,11 @@ SETBACK = 2.0                      # ground-floor south wall sits this far under
 GY = FRONT_Y + SETBACK             # ground south wall plane
 BAYS = [-3.4, 2.2, 7.8, 13.4]      # apparatus bay centres
 BAY_W, BAY_H = 4.6, 4.6
-TW_X0, TW_X1, TW_Y0, TW_Y1, TW_H = EAST_X, EAST_X + 5.5, FRONT_Y - 4.0, FRONT_Y + 4.0, 24.0
+TW_X0, TW_X1, TW_Y0, TW_Y1, TW_H = EAST_X, EAST_X + 5.5, FRONT_Y - 4.0, FRONT_Y + 4.0, 15.6
 APRON = 18.0
 EPS = .002
 PALETTE = dict(wall=(.25, .06, .07), joint=(.17, .04, .045), trim=(.03, .03, .032),
-    pale=(.56, .57, .56), stone=(.33, .33, .32), roof=(.82, .82, .80), sand=(.42, .40, .36),
+    pale=(.56, .57, .56), stone=(.20, .20, .21), roof=(.82, .82, .80), sand=(.42, .40, .36),
     foundation=(.42, .42, .41), glass=(.50, .55, .54), hardware=(.09, .09, .095),
     interior=(.72, .68, .60), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
     planting=(.28, .45, .16), soil=(.19, .14, .08), glow=(.98, .88, .62), red=(.72, .08, .06), white=(.90, .90, .88))
@@ -37,12 +37,12 @@ def manifest(version):
     h = TW_H + .6
     cams = G.camera_roster(W + 6.0, D + APRON, h, [
         ('facade_close', (-16.0, -34.0, 5.0), (0.0, FRONT_Y, 5.0), 45),
-        ('architecture_close', (-34.0, -30.0, 9.5), (-14.0, FRONT_Y, 8.0), 50),
+        ('architecture_close', (-30.0, -32.0, 9.5), (-12.0, FRONT_Y, 7.5), 50),
         ('glass_close', (-14.0, -24.0, 3.2), (-12.0, GY, 3.0), 50),
         ('apparatus_bays', (6.0, -30.0, 3.0), (5.0, GY, 3.2), 40),
         ('soffit_corner', (-30.0, -22.0, 3.0), (WEST_X, FRONT_Y, 5.2), 40),
-        ('tower_clock', (18.0, -40.0, 14.0), ((TW_X0 + TW_X1) / 2, TW_Y0, 17.0), 45),
-        ('loggia_close', (-26.0, -28.0, 10.0), (-15.0, FRONT_Y, 8.2), 45),
+        ('tower_clock', (18.0, -36.0, 10.0), ((TW_X0 + TW_X1) / 2, TW_Y0, 11.5), 45),
+        ('loggia_close', (-34.0, -26.0, 9.0), (WEST_X, -10.0, 8.0), 45),
         ('apron_contact', (16.0, -24.0, 1.6), (8.0, GY, 1.2), 40),
         ('interior', (2.2, -28.0, 2.4), (2.2, -4.0, 2.2), 30),
         ('rear_door', (10.0, 26.0, 2.5), (0.0, REAR_Y, 2.4), 40)])
@@ -127,41 +127,55 @@ def bay_door(f, name, u, z, w, h):
 
 def south_upper(f):
     """Oxblood upper box at the front plane with the deep loggia and the cantilever soffit below."""
-    loggia = hole('South loggia', -14.7, U + 1.2, 13.4, 2.8)
-    f.wall('South upper carrier', WEST_X, EAST_X, U, CROWN, depth=T, holes=[loggia])
-    joints(f, WEST_X + .2, EAST_X - .2, U + EPS, CROWN - EPS, [loggia])
-    # Loggia: 1.2 m deep red returns, glazed wall at the back of the recess, red soffit and sill.
-    lined(f, loggia, inset=1.20, role='wall')
-    f.window(loggia['id'], loggia['u'], loggia['z'], loggia['w'], loggia['h'], cols=7, rows=1, frame='trim', inset=1.20, depth=T, sill=False)
-    # Cantilever soffit slab from the front plane back to the ground-floor wall, with the warm light strip at its edge.
+    f.wall('South upper carrier', WEST_X, EAST_X, U, CROWN, depth=T)
+    joints(f, WEST_X + .2, EAST_X - .2, U + EPS, CROWN - EPS, [])
+    # Cantilever soffit slab from the front plane back to the ground-floor wall, lined pale underneath.
     C.box('Cantilever soffit slab', (0, FRONT_Y + SETBACK / 2 + T / 2, U - .25), (W, SETBACK + T, .50), 'wall', 'cantilever', 0)
-    C.box('Soffit light strip', (0, FRONT_Y + .10, U - .52), (W - .40, .07, .05), 'glow', 'cantilever', 0)
-    C.box('West soffit light return', (WEST_X + .10, FRONT_Y + SETBACK / 2 + .15, U - .52), (.07, SETBACK, .05), 'glow', 'cantilever', 0)
+    C.box('Soffit lining', (0, FRONT_Y + SETBACK / 2 + .10, U - .505), (W - 14.0 - .02, SETBACK - .2, .01), 'pale', 'cantilever', 0)
+    # The red skin steps down at both ends to door-head height; the light strip traces the stepped profile.
+    for x0, x1 in ((WEST_X, WEST_X + 7.0), (EAST_X - 7.0, EAST_X)):
+        cx = (x0 + x1) / 2
+        C.box('Stepped soffit volume', (cx, FRONT_Y + SETBACK / 2 + T / 2, (3.6 + U - .5) / 2), (x1 - x0, SETBACK + T, U - .5 - 3.6), 'wall', 'cantilever', 0)
+        C.box('Stepped soffit lining', (cx, FRONT_Y + SETBACK / 2 + .10, 3.595), (x1 - x0 - .02, SETBACK - .2, .01), 'pale', 'cantilever', 0)
+        C.box('Step light strip', (cx, FRONT_Y + .10, 3.58), (x1 - x0 - .40, .07, .05), 'glow', 'cantilever', 0)
+        sx = x1 if x0 == WEST_X else x0
+        C.box('Step riser light strip', (sx + (.04 if x0 == WEST_X else -.04), FRONT_Y + .10, (3.6 + U - .5) / 2), (.05, .07, U - .5 - 3.6 - .1), 'glow', 'cantilever', 0)
+        C.qa_room_light('Soffit', (cx, FRONT_Y + SETBACK / 2, 3.2), 70, 2.4)
+    C.box('Soffit light strip', (0, FRONT_Y + .10, U - .52), (W - 14.0 - .40, .07, .05), 'glow', 'cantilever', 0)
+    C.qa_room_light('Soffit centre', (0, FRONT_Y + SETBACK / 2, U - .9), 30, 3.0)
     C.box('Parapet coping south', (0, FRONT_Y + T / 2, CROWN + .03), (W, T + .06, .06), 'wall', 'coping', 0)
 
 
 def south_ground(f):
     """Ground-floor south wall 2 m back under the cantilever: curtain wall west, four bays east."""
-    cw = hole('Hall curtain wall', WEST_X + 8.15, G0, 15.7, U - .25 - G0, kind='curtain')
-    bays = [hole(f'Apparatus bay {i + 1}', u, G0, BAY_W, BAY_H, kind='bay') for i, u in enumerate(BAYS)]
-    door = hole('Hall personnel door', 17.6, G0, 1.1, 2.4, kind='door')
-    win = hole('Watch room window', 20.2, 1.0, 1.8, 2.4, kind='window')
-    holes = [cw] + bays + [door, win]
-    f.wall('South ground carrier', WEST_X, EAST_X, G0, U - .25 + EPS, depth=T, role='stone', holes=holes)
-    curtain(f, cw, cols=8, rows=2)
-    for b in bays:
-        bay_door(f, b['id'], b['u'], b['z'], b['w'], b['h'])
-    f.door(door['id'], door['u'], door['z'], door['w'], door['h'], role='trim', panels=1); lined(f, door, inset=.19)
-    curtain(f, win, cols=1, rows=1)
+    cw = hole('Hall curtain wall', 0.0, G0, W - 2 * T - .4, U - .25 - G0, kind='curtain')
+    f.wall('South ground carrier', WEST_X, EAST_X, G0, U - .25 + EPS, depth=T, role='stone', holes=[cw])
+    lined(f, cw)
+    # Glazed segments: watch room to the west, glazed strips between the bays, entrance lobby to the east.
+    west = hole('Watch room glazing', (WEST_X + T + .2 + BAYS[0] - BAY_W / 2 - .5) / 2, G0, (BAYS[0] - BAY_W / 2 - .5) - (WEST_X + T + .2), U - .25 - G0)
+    f.window(west['id'], west['u'], west['z'], west['w'], west['h'], cols=8, rows=2, frame='trim', depth=T, sill=False)
+    for b in BAYS:
+        bay_door(f, f'Apparatus bay {BAYS.index(b) + 1}', b, G0, BAY_W, BAY_H)
+        f.part('Bay head glazing frame', b, .16, (BAY_H + G0 + U - .25) / 2, BAY_W, .10, U - .25 - BAY_H - G0, 'trim', 'apparatus doors', 0)
+        f.part('Bay head glazing', b, .20, (BAY_H + G0 + U - .25) / 2, BAY_W - .14, .008, U - .25 - BAY_H - G0 - .14, 'glass', 'apparatus doors', 0)
+    for u in (BAYS[0] + BAY_W / 2 + .5, BAYS[1] + BAY_W / 2 + .5, BAYS[2] + BAY_W / 2 + .5):
+        f.window(f'Bay mullion strip {u:+.1f}', u, G0, 1.0, U - .25 - G0, cols=1, rows=2, frame='trim', depth=T, sill=False)
+    east = hole('Entrance lobby glazing', (BAYS[3] + BAY_W / 2 + .5 + EAST_X - T - .2) / 2, G0, (EAST_X - T - .2) - (BAYS[3] + BAY_W / 2 + .5), U - .25 - G0)
+    f.window(east['id'], east['u'], east['z'], east['w'], east['h'], cols=3, rows=2, frame='trim', depth=T, sill=False, kind='glazed door')
+    for du in (-.12, .12):
+        C.rod('Lobby door pull', f.p(east['u'] + du, .01, G0 + .9), f.p(east['u'] + du, .01, G0 + 1.5), .018, 'hardware', 'door hardware')
     f.part('Hall threshold', 0, .06, G0 - .005, W - .4, .40, .03, 'sand', 'apron', 0)
 
 
 def west(f):
     """West face: dark concrete ground with a curtain-wall return at the south corner; red upper with a ribbon window."""
-    rib = hole('West ribbon window', 6.0, U + 1.2, 14.0, 2.4)
-    f.wall('West upper carrier', -D / 2 + T, D / 2 - T, U, CROWN, depth=T, holes=[rib])
-    joints(f, -D / 2 + T + .2, D / 2 - .2, U + EPS, CROWN - EPS, [rib])
-    curtain(f, rib, cols=7, rows=1)
+    loggia = hole('West loggia', 10.7, U + 1.2, 9.4, 2.8)
+    f.wall('West upper carrier', -D / 2 + T, D / 2 - T, U, CROWN, depth=T, holes=[loggia])
+    joints(f, -D / 2 + T + .2, D / 2 - .2, U + EPS, CROWN - EPS, [loggia])
+    # Loggia: 1.2 m deep red returns and soffit, glazed wall at the back of the recess.
+    lined(f, loggia, inset=1.20, role='wall')
+    f.window(loggia['id'], loggia['u'], loggia['z'], loggia['w'], loggia['h'], cols=5, rows=1, frame='trim', inset=1.20, depth=T, sill=False)
+    C.qa_room_light('Loggia', f.p(loggia['u'], .6, loggia['z'] + loggia['h'] - .3), 25, 2.0)
     ret = hole('West hall glass return', 8.0, G0, 10.0, U - .25 - G0, kind='curtain')
     sd = hole('West staff door', -4.0, G0, 1.1, 2.4, kind='door')
     gw = hole('West ground window', -10.0, 1.2, 2.4, 2.0)
@@ -219,7 +233,7 @@ def tower():
     C.box('Tower slab', (cx, cy, G0 / 2), (x1 - x0, y1 - y0, G0), 'foundation', 'tower', 0)
     for xx, yy in ((x0 + .22, y0 + .22), (x1 - .22, y0 + .22), (x1 - .22, y1 - .22), (x0 + .22, y1 - .22)):
         C.box('Tower corner column', (xx, yy, G0 + (h - G0) / 2), (.40, .40, h - G0), 'trim', 'tower', 0)
-    for z in (U, 9.5, 13.5, 17.5, 21.5):
+    for z in (U, 9.5, 13.5):
         C.box('Tower floor plate', (cx, cy, z - .10), (x1 - x0 - .5, y1 - y0 - .5, .20), 'floor', 'tower', 0)
     # Glazed faces: south, east, north full; west only where it stands proud of the station box.
     faces = [((cx, y0 + .02), (1, 0), x1 - x0 - .44, 'south'), ((x1 - .02, cy), (0, 1), y1 - y0 - .44, 'east'),
@@ -230,15 +244,16 @@ def tower():
         for i in range(1, n):
             mx, my = px + tx * (-span / 2 + i * span / n), py + ty * (-span / 2 + i * span / n)
             C.box(f'Tower {label} mullion', (mx, my, G0 + (h - G0) / 2), (max(.06, .10 * abs(ty)), max(.06, .10 * abs(tx)), h - G0 - .4), 'pale', 'tower frame', 0)
-        for z in (U, 9.5, 13.5, 17.5, 21.5):
+        for z in (U, 9.5, 13.5):
             C.box(f'Tower {label} transom', (px + tx * 0, py + ty * 0, z), (max(.10, span * abs(tx)), max(.10, span * abs(ty)), .12), 'pale', 'tower frame', 0)
-    C.box('Tower cap', (cx, cy, h + .25), (x1 - x0 + .10, y1 - y0 + .10, .50), 'wall', 'tower', 0)
+    C.box('Tower fascia', (cx, cy, h + .25), (x1 - x0 + .10, y1 - y0 + .10, .50), 'wall', 'tower', 0)
+    C.box('Tower roof membrane', (cx, cy, h + .504), (x1 - x0 - .10, y1 - y0 - .10, .008), 'roof', 'tower', 0)
     C.box('Tower head beam', (cx, cy, h - .20), (x1 - x0 - .40, y1 - y0 - .40, .40), 'trim', 'tower', 0)
-    for (px, py, nx, ny) in ((cx, y0 - .06, 0, -1), (x1 + .06, cy, 1, 0)):
-        C.rod('Clock face', (px - nx * .04, py - ny * .04, 18.5), (px + nx * .04, py + ny * .04, 18.5), 1.6, 'white', 'clock', 24)
-        C.beam('Clock hour hand', (px + nx * .06, py + ny * .06, 18.5), (px + nx * .06 + ny * .9, py + ny * .06 - nx * .9, 19.2), .08, .03, 'trim', 'clock')
-        C.beam('Clock minute hand', (px + nx * .06, py + ny * .06, 18.5), (px + nx * .06, py + ny * .06, 19.9), .06, .03, 'trim', 'clock')
-        C.box('Sign band', (px - nx * .005, py - ny * .005, 15.8), (max(.02, 2.6 * abs(ny)), max(.02, 2.6 * abs(nx)), .9), 'red', 'clock', 0)
+    for (px, py, nx, ny) in ((cx, y0 - .03, 0, -1), (x1 + .03, cy, 1, 0)):
+        C.rod('Clock face', (px - nx * .012, py - ny * .012, 12.4), (px + nx * .012, py + ny * .012, 12.4), 1.3, 'white', 'clock', 48)
+        C.beam('Clock hour hand', (px + nx * .02, py + ny * .02, 12.4), (px + nx * .02 + ny * .75, py + ny * .02 - nx * .75, 13.0), .08, .02, 'trim', 'clock')
+        C.beam('Clock minute hand', (px + nx * .02, py + ny * .02, 12.4), (px + nx * .02, py + ny * .02, 13.55), .06, .02, 'trim', 'clock')
+        C.box('Sign band', (px - nx * .005, py - ny * .005, 10.2), (max(.02, 4.4 * abs(ny)), max(.02, 4.4 * abs(nx)), .9), 'red', 'clock', 0)
     # Tie beams into the station east wall where the tower stands beside it.
     for z in (U, 9.5):
         C.box('Tower tie', (x0 + .15, (FRONT_Y + y1) / 2, z - .10), (.30, y1 - FRONT_Y - .4, .20), 'trim', 'tower', 0)
@@ -251,7 +266,7 @@ def roof():
         C.box('Membrane seam', (xx, 0, ROOF + .010), (.015, D - 2 * T - .2, .004), 'joint', 'roof', 0)
     C.box('Roof hatch', (16.0, 10.0, ROOF + .40), (1.4, 1.2, .80), 'pale', 'roof', 0)
     C.box('Roof hatch lid', (16.0, 10.0, ROOF + .83), (1.5, 1.3, .06), 'trim', 'roof', 0)
-    C.box('Roof vent', (-8.0, 8.0, ROOF + .35), (.8, .8, .70), 'pale', 'roof', 0)
+
 
 
 def floors():
@@ -293,8 +308,8 @@ def forecourt():
     for u in BAYS:
         for s in (-1, 1):
             C.rod('Bay bollard', (u + s * (BAY_W / 2 + .3), GY - 1.2, 0), (u + s * (BAY_W / 2 + .3), GY - 1.2, 1.0), .11, 'red', 'bollards', 10)
-    C.rod('Flagpole', (-19.0, FRONT_Y - 5.0, 0), (-19.0, FRONT_Y - 5.0, 12.0), .07, 'pale', 'forecourt', 10)
-    C.box('Flagpole base', (-19.0, FRONT_Y - 5.0, .20), (.8, .8, .40), 'stone', 'forecourt', 0)
+    C.rod('Flagpole', (-10.0, FRONT_Y - 7.0, 0), (-10.0, FRONT_Y - 7.0, 12.0), .07, 'pale', 'forecourt', 10)
+    C.box('Flagpole base', (-10.0, FRONT_Y - 7.0, .20), (.8, .8, .40), 'stone', 'forecourt', 0)
     C.box('Memorial wall', (-16.0, FRONT_Y - 11.0, 1.1), (8.0, .45, 2.2), 'stone', 'forecourt', 0)
     C.box('Memorial plaque', (-16.0, FRONT_Y - 11.235, 1.2), (6.0, .02, 1.2), 'white', 'forecourt', 0)
     for x, y in ((-10.0, FRONT_Y - 8.0), (-6.0, FRONT_Y - 12.0), (4.0, FRONT_Y - 15.0)):
