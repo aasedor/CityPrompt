@@ -26,7 +26,7 @@ CANOPY = 4.00
 NW = (-20.0, -3.0, -4.5, 23.0)      # north-west block carrying the corten storey on its north part
 WW = (-20.0, -8.0, -23.0, -4.5)     # west wing
 NB = (-3.0, 20.0, -4.5, 17.0)       # north hall block with the roof terrace
-SE = (11.0, 20.0, -14.5, -4.5)      # east wing / entrance block
+SE = (11.0, 20.0, -23.0, -4.5)      # east wing / entrance block, to the street line
 PENT = (NW[0] + T + .4, NW[1] - T - .4, 0.4, NW[3] - T - .4)   # corten third storey
 CX0, CX1, CY0, CY1 = -8.0, 11.0, -23.0, -4.5     # courtyard
 EPS = .002
@@ -142,7 +142,7 @@ def elevation(face, lo, hi, ground, upper, blank=False, court=False):
         else:
             classroom_glazing(face, h, cols=h.get('cols', 4))
     for h in upper:
-        strip_window(face, h, fins=True, cols=h.get('cols', 4))
+        strip_window(face, h, fins=h.get('fins', True), cols=h.get('cols', 4))
     bands(face, lo, hi)
 
 
@@ -154,7 +154,8 @@ def block_faces(x0, x1, y0, y1, label):
 
 
 def wing_roof(x0, x1, y0, y1, gravel=True, crown=CROWN, roof=ROOF, rail=True, name='Roof'):
-    C.box(name + ' slab', ((x0 + x1) / 2, (y0 + y1) / 2, roof - .12), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .24), 'floor', 'roof', 0)
+    """Roof slab tiling the block footprint (1 cm inside its edges so outer faces stay inside the carriers)."""
+    C.box(name + ' slab', ((x0 + x1) / 2, (y0 + y1) / 2, roof - .12), (x1 - x0 - .02, y1 - y0 - .02, .24), 'floor', 'roof', 0)
     C.box(name + (' gravel' if gravel else ' paving'), ((x0 + x1) / 2, (y0 + y1) / 2, roof + .02), (x1 - x0 - 2 * T - .02, y1 - y0 - 2 * T - .02, .04), 'roof' if gravel else 'membrane', 'roof', 0)
 
 
@@ -176,31 +177,31 @@ def blocks():
     # North-west block: party walls west and north; east face exposed only above the hall block (y 17..23); south face onto the court for x -8..-3.
     F = block_faces(*NW, 'nw')
     dy = (NW[3] - NW[2]) / 2
-    elevation(F['west'], -dy + T, dy - T, [], [], blank=True)
+    elevation(F['west'], -dy + T, dy, [], [], blank=True)      # u = -y: south end (u = dy) flush into the west-wing party wall
     elevation(F['north'], -(NW[1] - NW[0]) / 2, (NW[1] - NW[0]) / 2, [], [], blank=True)
     ex = F['east']   # u = y - 9.25
     lo, hi = 17.0 - 9.25 + EPS, dy - T
-    elevation(ex, lo, hi, [hole('NW east ground window', (lo + hi) / 2, 1.0, 3.2, 2.4, cols=3)], [hole('NW east strip', (lo + hi) / 2, U + 1.1, 4.0, 1.9, cols=3)])
+    elevation(ex, lo, hi, [hole('NW east ground window', (lo + hi) / 2, 1.0, 3.2, 2.4, cols=3)], [hole('NW east strip', (lo + hi) / 2, U + 1.1, 4.0, 1.9, cols=3, fins=False)])
     sf = F['south']  # u = x + 11.5; court-facing for x -8..-3 -> u 3.5..8.5
     elevation(sf, CX0 + 11.5 + EPS, 8.5, [hole('NW court glazing', 6.0, G0, 3.8, U - .45, cols=3)], [hole('NW court strip', 6.0, U + 1.1, 3.8, 1.9, cols=3)], court=True)
     # West wing: party wall west; street face south; court face east.
     F = block_faces(*WW, 'ww')
     dy = (WW[3] - WW[2]) / 2
-    elevation(F['west'], -dy + T, dy - T, [], [], blank=True)
-    gs = [hole('West wing south ground window', -2.0, .9, 5.0, 2.6)]
+    elevation(F['west'], -dy, dy - T, [], [], blank=True)      # u = -y: north end (u = -dy) flush into the NW party wall
+    gs = [hole(f'West wing south ground window {i}', u, .9, 2.6, 2.6, cols=3) for i, u in enumerate((-3.6, 0.0, 3.6))]
     us = [hole('West wing south strip', 0.0, U + 1.1, 8.0, 1.9)]
     elevation(F['south'], -(WW[1] - WW[0]) / 2, (WW[1] - WW[0]) / 2, gs, us)
     ce = F['east']   # u = y + 13.75
     gc = [hole(f'West wing court glazing {i}', u, G0, 5.2, U - .45, cols=4) for i, u in enumerate((-6.5, -.5, 5.5))]
     uc = [hole(f'West wing court strip {i}', u, U + 1.1, 5.2, 1.9) for i, u in enumerate((-6.5, -.5, 5.5))]
-    elevation(ce, -dy + T, dy - EPS, gc, uc, court=True)
+    elevation(ce, -dy + T, dy, gc, uc, court=True)
     # North hall block: north face blank; east face to the street; south face to the court for x -3..11.
     F = block_faces(*NB, 'nb')
     dy = (NB[3] - NB[2]) / 2
     elevation(F['north'], -(NB[1] - NB[0]) / 2, (NB[1] - NB[0]) / 2, [], [], blank=True)
     ge = [hole(f'Hall east ground window {i}', u, .9, 4.2, 2.6) for i, u in enumerate((-7.0, -1.0, 5.0))]
     ue = [hole(f'Hall east strip {i}', u, U + 1.1, 6.0, 1.9) for i, u in enumerate((-6.5, 0.5, 7.5))]
-    elevation(F['east'], -dy + T, dy - T, ge, ue)
+    elevation(F['east'], -dy, dy - T, ge, ue)                 # u = y: south end (u = -dy) flush into the entrance block
     sf = F['south']   # u = x - 8.5; court-facing for x -3..11 -> u -11.5..2.5
     gcs = [hole(f'Hall court glazing {i}', u - 8.5, G0, 5.2, U - .45, cols=4) for i, u in enumerate((0.0, 6.5))]
     ucs = [hole(f'Hall court strip {i}', u - 8.5, U + 1.1, 5.2, 1.9) for i, u in enumerate((0.0, 6.5))]
@@ -208,35 +209,37 @@ def blocks():
     # Entrance block: street faces south and east; court face west with a side opening into the passage.
     F = block_faces(*SE, 'se')
     dy = (SE[3] - SE[2]) / 2
-    elevation(F['south'], -(SE[1] - SE[0]) / 2, (SE[1] - SE[0]) / 2, [hole('Entrance passage south', 0.0, G0, 6.4, U - .45, kind='passage')], [hole('Entrance block south strip', 0.0, U + 1.1, 6.6, 1.9)])
-    elevation(F['east'], -dy + T, dy - T, [hole('Entrance block east ground window', 1.5, .9, 4.0, 2.6)], [hole('Entrance block east strip', 0.0, U + 1.1, 6.4, 1.9)])
-    elevation(F['west'], -dy + T, dy - EPS, [hole('Entrance passage court opening', -2.8, G0, 2.8, U - .45, kind='passage'), hole('Entrance block court door', 2.0, G0, 1.6, 2.6, kind='door')], [hole('Entrance block court strip', 0.0, U + 1.1, 6.0, 1.9)])
+    elevation(F['south'], -(SE[1] - SE[0]) / 2, (SE[1] - SE[0]) / 2, [hole('Entrance passage south', -1.6, G0, 3.6, U - .45, kind='passage'), hole('Entrance block south window', 2.6, .9, 2.4, 2.6, cols=2)], [hole('Entrance block south strip', 0.0, U + 1.1, 6.6, 1.9)])
+    elevation(F['east'], -dy + T, dy, [hole(f'Entrance block east ground window {i}', u, .9, 3.0, 2.6, cols=3) for i, u in enumerate((-6.0, 0.0, 6.0))], [hole(f'Entrance block east strip {i}', u, U + 1.1, 5.0, 1.9) for i, u in enumerate((-5.5, 1.0, 7.0))])
+    elevation(F['west'], -dy + T, dy, [hole('Entrance block court window', -4.0, .9, 3.0, 2.6, cols=3), hole('Entrance block court door', 2.0, G0, 1.6, 2.6, kind='door'), hole('Entrance block court window 2', 6.5, .9, 3.0, 2.6, cols=3)], [hole(f'Entrance block court strip {i}', u, U + 1.1, 5.0, 1.9) for i, u in enumerate((-5.5, 1.0, 7.0))])
 
 
 def passage_and_canopy():
     """Open concrete-framed entrance passage at the south-east corner; corten canopy over it and the court's east edge."""
     x0, x1, y0, y1 = SE
     # The passage occupies the south 6.4 m of the entrance block ground floor between concrete columns; the doors sit at its north end.
-    for xx in (x0 + .35, x0 + 4.4, x1 - .35):
-        C.box('Passage concrete column', (xx, y0 + .45, (G0 + U - .25) / 2), (.70, .60, U - .25 - G0), 'pale', 'entrance passage', 0)
-    C.box('Passage concrete beam', ((x0 + x1) / 2, y0 + .45, U - .40), (x1 - x0, .60, .30), 'pale', 'entrance passage', 0)
-    f = C.Face(((x0 + x1) / 2, y0 + 3.6, 0), (1, 0, 0), (0, 1, 0), 'passage doors')
+    for xx in (x0 + .75, x0 + 5.05):
+        C.box('Passage concrete column', (xx, y0 + .45, (G0 + U + .05) / 2), (.70, .60, U + .05 - G0), 'pale', 'entrance passage', 0)
+    C.box('Passage concrete beam', (x0 + 2.9, y0 + .45, U - .22), (5.0, .60, .36), 'pale', 'entrance passage', 0)
+    f = C.Face((x0 + 2.9, y0 + 3.6, 0), (1, 0, 0), (0, 1, 0), 'passage doors')
     dh = hole('Entrance doors', 0.0, G0, 2.4, 2.8)
-    f.wall('Passage rear carrier', -(x1 - x0) / 2 + T, (x1 - x0) / 2 - T, G0, U - .25, depth=.25, holes=[dh])
+    f.wall('Passage rear carrier', -1.8, 1.8, G0, U - .25, depth=.25, holes=[dh])
     f.door(dh['id'], dh['u'], dh['z'], dh['w'], dh['h'], role='timber', panels=2, panel_cols=2, inset=.12); lined(f, dh, inset=.12)
-    f.part('Door sidelight', 2.6, .12, 1.4, 1.2, .02, 2.4, 'glass', 'passage doors', 0)
-    f.part('Sidelight frame', 2.6, .11, 2.65, 1.26, .05, .06, 'trim', 'passage doors', 0)
+    for xx in (x0 + 1.1 - .125, x0 + 4.7 + .125):
+        C.box('Passage side wall', (xx, y0 + T + 1.65, (G0 + U - .25) / 2), (.25, 3.3, U - .25 - G0), 'wall', 'entrance passage', 0)
+    C.qa_room_light('Passage', (x0 + 2.9, y0 + 1.8, U - .5), 40, 2.4)
     # Corten canopy: slab over the passage mouth and along the court's east edge to the hall block.
-    cx0, cx1, cy0, cy1 = 6.0, 19.0, -21.4, y0 - EPS
-    C.box('Corten canopy slab', ((cx0 + cx1) / 2, (cy0 + cy1) / 2, CANOPY + .15), (cx1 - cx0, cy1 - cy0, .30), 'corten', 'corten canopy', 0)
-    C.box('Corten canopy fascia south', ((cx0 + cx1) / 2, cy0 + .03, CANOPY + .05), (cx1 - cx0, .06, .70), 'corten', 'corten canopy', 0)
-    C.box('Corten canopy fascia west', (cx0 + .03, (cy0 + cy1) / 2, CANOPY + .05), (.06, cy1 - cy0, .70), 'corten', 'corten canopy', 0)
-    C.box('Corten canopy fascia east', (cx1 - .03, (cy0 + y0 - 1.0) / 2, CANOPY + .05), (.06, y0 - 1.0 - cy0, .70), 'corten', 'corten canopy', 0)
-    for xx, yy in ((cx0 + .5, cy0 + .5), (cx0 + .5, cy1 - .8), (cx1 - .5, cy0 + .5)):
-        C.box('Canopy concrete column', (xx, yy, (G0 + CANOPY) / 2), (.45, .45, CANOPY - G0), 'pale', 'corten canopy', 0)
-    C.box('Canopy bench', (cx0 + 3.0, cy1 - 1.0, .45), (3.0, .45, .08), 'timber', 'playground', 0)
-    for dx in (-1.2, 1.2):
-        C.box('Canopy bench leg', (cx0 + 3.0 + dx, cy1 - 1.0, .21), (.1, .4, .42), 'hardware', 'playground', 0)
+    # Thin corten plate along the court's east edge from the street line to the hall block, on the block wall and three columns.
+    cx0, cx1, cy0, cy1 = 5.5, x0 - EPS, y0 + .3, y1 - .3
+    C.box('Corten canopy plate', ((cx0 + cx1) / 2, (cy0 + cy1) / 2, CANOPY + .06), (cx1 - cx0, cy1 - cy0, .12), 'corten', 'corten canopy', 0)
+    C.box('Corten canopy fascia west', (cx0 + .03, (cy0 + cy1) / 2, CANOPY + .0), (.06, cy1 - cy0, .28), 'corten', 'corten canopy', 0)
+    C.box('Corten canopy fascia south', ((cx0 + cx1) / 2, cy0 + .03, CANOPY + .0), (cx1 - cx0, .06, .28), 'corten', 'corten canopy', 0)
+    C.box('Corten canopy fascia north', ((cx0 + cx1) / 2, cy1 - .03, CANOPY + .0), (cx1 - cx0, .06, .28), 'corten', 'corten canopy', 0)
+    for yy in (cy0 + .6, (cy0 + cy1) / 2, cy1 - .6):
+        C.box('Canopy concrete column', (cx0 + .5, yy, (G0 + CANOPY) / 2), (.40, .40, CANOPY - G0), 'pale', 'corten canopy', 0)
+    C.box('Canopy bench', (cx0 + 2.6, cy0 + 6.0, .45), (.45, 3.0, .08), 'timber', 'playground', 0)
+    for dy in (-1.2, 1.2):
+        C.box('Canopy bench leg', (cx0 + 2.6, cy0 + 6.0 + dy, .21), (.4, .1, .42), 'hardware', 'playground', 0)
 
 
 def roofs():
@@ -245,6 +248,12 @@ def roofs():
     wing_roof(*NB, gravel=False, name='Hall terrace')
     wing_roof(*NW, gravel=False, name='North-west roof')
     C.box('Hall terrace gravel panel', (NB[1] - 6.5, NB[3] - 6.5, ROOF + .045), (12.0, 12.0, .05), 'roof', 'roof', 0)
+    # Movement-joint cover strips over the block junctions so the tiled slabs read as one roof.
+    for (ax, ay, bx, by) in ((WW[0] + T, WW[3], WW[1] - T, WW[3]), (NW[1], NW[2] + T, NW[1], NB[3] - T), (SE[0] + T, SE[3], SE[1] - T, SE[3])):
+        if ax == bx:
+            C.box('Roof joint cover', (ax, (ay + by) / 2, ROOF + .05), (.36, by - ay, .03), 'pale', 'roof', 0)
+        else:
+            C.box('Roof joint cover', ((ax + bx) / 2, ay, ROOF + .05), (bx - ax, .36, .03), 'pale', 'roof', 0)
     C.box('Hall terrace rooflight', (4.0, 6.0, ROOF + .35), (2.4, 2.4, .62), 'pale', 'roof', 0)
     C.box('Hall terrace rooflight glazing', (4.0, 6.0, ROOF + .68), (2.2, 2.2, .04), 'glass', 'roof', 0)
     h = T / 2
@@ -340,7 +349,7 @@ def floors():
         C.box('Court bench', (x, CY0 + 1.0, .45), (2.4, .45, .08), 'timber', 'playground', 0)
         for dx in (-1.0, 1.0):
             C.box('Court bench leg', (x + dx, CY0 + 1.0, .21), (.1, .4, .42), 'hardware', 'playground', 0)
-    street_tree(-4.0, SY0 - 2.0)
+    street_tree(-13.0, SY0 - 2.4)
     street_tree(SX1 + 2.0, 8.0)
 
 
