@@ -1,0 +1,5494 @@
+{
+  "candidate": "clay-led-grow-block-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 1094,
+    "vertices": 12515,
+    "polygons": 19622,
+    "triangles": 19622,
+    "path": "clay-led-grow-block-clay-v003-authoring.blend",
+    "bytes": 8607908,
+    "sha256": "0519d590458976f208326f115fddf7cdc01412ac5ede48cb94b95f12d85bb546"
+  },
+  "runtime": {
+    "path": "clay-led-grow-block-clay-v003.glb",
+    "bytes": 975684,
+    "sha256": "2c9102d63d7166b1bc905110d05c7337907176105a06a4c1913825dfade34576",
+    "meshes": 17,
+    "materials": 17,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 17,
+    "vertices": 12515,
+    "polygons": 19622,
+    "triangles": 19622
+  },
+  "original_bounds_m": [
+    [
+      -15.696476936340332,
+      -15.7552490234375,
+      0.0
+    ],
+    [
+      14.0,
+      14.5,
+      32.65999984741211
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -15.696476936340332,
+      -15.755247116088867,
+      0.0
+    ],
+    [
+      14.0,
+      14.5,
+      32.65999984741211
+    ]
+  ],
+  "max_roundtrip_delta_m": 1.9073486328125e-06,
+  "design_dimensions_m": {
+    "width": 22.0,
+    "depth": 23.0,
+    "height": 30.400000000000002
+  },
+  "native_dimensions_m": {
+    "width": 29.696476936340332,
+    "depth": 30.255247116088867,
+    "height": 32.65999984741211
+  },
+  "native_bottom_center_m": [
+    -0.848238468170166,
+    -0.6276235580444336,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 9,
+    "joint": 20,
+    "trim": 210,
+    "pale": 171,
+    "stone": 10,
+    "sand": 12,
+    "foundation": 5,
+    "glass": 168,
+    "hardware": 231,
+    "floor": 6,
+    "timber": 9,
+    "planting": 6,
+    "soil": 6,
+    "membrane": 1,
+    "led": 20,
+    "rack": 114,
+    "leaf": 96
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/entrance_contact.png",
+    "renders/slot_close.png",
+    "renders/roof_greenhouses.png",
+    "renders/penthouse_contact.png",
+    "renders/parapet_corner.png",
+    "renders/interior.png",
+    "renders/beds.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.21185743808746338,
+      "xmax": 0.7689242959022522,
+      "ymin": 0.12027644366025925,
+      "ymax": 0.9146419763565063
+    },
+    "front_corner": {
+      "xmin": 0.27834635972976685,
+      "xmax": 0.7350745797157288,
+      "ymin": 0.0832984447479248,
+      "ymax": 0.8553782105445862
+    },
+    "aerial": {
+      "xmin": 0.2595709264278412,
+      "xmax": 0.732323408126831,
+      "ymin": 0.08274830132722855,
+      "ymax": 0.8878313302993774
+    },
+    "top": {
+      "xmin": 0.18610571324825287,
+      "xmax": 0.7799685597419739,
+      "ymin": 0.07990725338459015,
+      "ymax": 0.8866232633590698
+    },
+    "left_side": {
+      "xmin": 0.23661158978939056,
+      "xmax": 0.7815956473350525,
+      "ymin": 0.11932044476270676,
+      "ymax": 0.9239233136177063
+    },
+    "right_side": {
+      "xmin": 0.21840433776378632,
+      "xmax": 0.7633883953094482,
+      "ymin": 0.12697653472423553,
+      "ymax": 0.9143036007881165
+    },
+    "rear": {
+      "xmin": 0.2623639702796936,
+      "xmax": 0.7546467781066895,
+      "ymin": 0.14193284511566162,
+      "ymax": 0.9134089350700378
+    },
+    "rear_side": {
+      "xmin": 0.26858970522880554,
+      "xmax": 0.7308333516120911,
+      "ymin": 0.08548502624034882,
+      "ymax": 0.8563318252563477
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Stair 0",
+      "x": 8.6,
+      "y": 2.0,
+      "lower": 0.15,
+      "upper": 4.8,
+      "length": 6.0,
+      "width": 1.2,
+      "treads": 27,
+      "rise_m": 0.1722222222222222,
+      "run_m": 0.2222222222222222
+    },
+    {
+      "name": "Stair 1",
+      "x": 8.6,
+      "y": 2.0,
+      "lower": 4.8,
+      "upper": 9.0,
+      "length": 6.0,
+      "width": 1.2,
+      "treads": 25,
+      "rise_m": 0.168,
+      "run_m": 0.24
+    },
+    {
+      "name": "Corner entrance threshold at slab level under a plate canopy",
+      "grade_m": 0,
+      "step_m": 0.15
+    },
+    {
+      "name": "Glasshouse curbs, penthouse walls and beds seated on the roof slab",
+      "datum_m": 25.8
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "front slot 0-0",
+      "face": "front",
+      "u": -7.857142857142857,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 0-1",
+      "face": "front",
+      "u": -4.714285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 0-2",
+      "face": "front",
+      "u": -1.5714285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 0-3",
+      "face": "front",
+      "u": 1.5714285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 0-4",
+      "face": "front",
+      "u": 4.714285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 0-5",
+      "face": "front",
+      "u": 7.857142857142857,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 1-0",
+      "face": "front",
+      "u": -7.857142857142857,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 1-1",
+      "face": "front",
+      "u": -4.714285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 1-2",
+      "face": "front",
+      "u": -1.5714285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 1-3",
+      "face": "front",
+      "u": 1.5714285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 1-4",
+      "face": "front",
+      "u": 4.714285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 1-5",
+      "face": "front",
+      "u": 7.857142857142857,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 2-0",
+      "face": "front",
+      "u": -7.857142857142857,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 2-1",
+      "face": "front",
+      "u": -4.714285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 2-2",
+      "face": "front",
+      "u": -1.5714285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 2-3",
+      "face": "front",
+      "u": 1.5714285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 2-4",
+      "face": "front",
+      "u": 4.714285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 2-5",
+      "face": "front",
+      "u": 7.857142857142857,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 3-0",
+      "face": "front",
+      "u": -7.857142857142857,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 3-1",
+      "face": "front",
+      "u": -4.714285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 3-2",
+      "face": "front",
+      "u": -1.5714285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 3-3",
+      "face": "front",
+      "u": 1.5714285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 3-4",
+      "face": "front",
+      "u": 4.714285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 3-5",
+      "face": "front",
+      "u": 7.857142857142857,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 4-0",
+      "face": "front",
+      "u": -7.857142857142857,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 4-1",
+      "face": "front",
+      "u": -4.714285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 4-2",
+      "face": "front",
+      "u": -1.5714285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 4-3",
+      "face": "front",
+      "u": 1.5714285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 4-4",
+      "face": "front",
+      "u": 4.714285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front slot 4-5",
+      "face": "front",
+      "u": 7.857142857142857,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Entrance recess screen",
+      "face": "front",
+      "u": -7.6,
+      "z": 0.15,
+      "width": 5.4,
+      "height": 4.0,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 2.2,
+      "pane_inset_m": 2.237,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 4,
+      "rows": 2
+    },
+    {
+      "id": "front plinth slit -2",
+      "face": "front",
+      "u": -1.5,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "front plinth slit +2",
+      "face": "front",
+      "u": 1.5,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 0-0",
+      "face": "left",
+      "u": -8.214285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 0-1",
+      "face": "left",
+      "u": -4.928571428571429,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 0-2",
+      "face": "left",
+      "u": -1.6428571428571428,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 0-3",
+      "face": "left",
+      "u": 1.6428571428571428,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 0-4",
+      "face": "left",
+      "u": 4.928571428571429,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 0-5",
+      "face": "left",
+      "u": 8.214285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 1-0",
+      "face": "left",
+      "u": -8.214285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 1-1",
+      "face": "left",
+      "u": -4.928571428571429,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 1-2",
+      "face": "left",
+      "u": -1.6428571428571428,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 1-3",
+      "face": "left",
+      "u": 1.6428571428571428,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 1-4",
+      "face": "left",
+      "u": 4.928571428571429,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 1-5",
+      "face": "left",
+      "u": 8.214285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 2-0",
+      "face": "left",
+      "u": -8.214285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 2-1",
+      "face": "left",
+      "u": -4.928571428571429,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 2-2",
+      "face": "left",
+      "u": -1.6428571428571428,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 2-3",
+      "face": "left",
+      "u": 1.6428571428571428,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 2-4",
+      "face": "left",
+      "u": 4.928571428571429,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 2-5",
+      "face": "left",
+      "u": 8.214285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 3-0",
+      "face": "left",
+      "u": -8.214285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 3-1",
+      "face": "left",
+      "u": -4.928571428571429,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 3-2",
+      "face": "left",
+      "u": -1.6428571428571428,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 3-3",
+      "face": "left",
+      "u": 1.6428571428571428,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 3-4",
+      "face": "left",
+      "u": 4.928571428571429,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 3-5",
+      "face": "left",
+      "u": 8.214285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 4-0",
+      "face": "left",
+      "u": -8.214285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 4-1",
+      "face": "left",
+      "u": -4.928571428571429,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 4-2",
+      "face": "left",
+      "u": -1.6428571428571428,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 4-3",
+      "face": "left",
+      "u": 1.6428571428571428,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 4-4",
+      "face": "left",
+      "u": 4.928571428571429,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left slot 4-5",
+      "face": "left",
+      "u": 8.214285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left plinth slit -7",
+      "face": "left",
+      "u": -7.0,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left plinth slit -2",
+      "face": "left",
+      "u": -2.0,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "left plinth slit +3",
+      "face": "left",
+      "u": 3.0,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 0-0",
+      "face": "right",
+      "u": -8.214285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 0-1",
+      "face": "right",
+      "u": -4.928571428571429,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 0-2",
+      "face": "right",
+      "u": -1.6428571428571428,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 0-3",
+      "face": "right",
+      "u": 1.6428571428571428,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 0-4",
+      "face": "right",
+      "u": 4.928571428571429,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 0-5",
+      "face": "right",
+      "u": 8.214285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 1-0",
+      "face": "right",
+      "u": -8.214285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 1-1",
+      "face": "right",
+      "u": -4.928571428571429,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 1-2",
+      "face": "right",
+      "u": -1.6428571428571428,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 1-3",
+      "face": "right",
+      "u": 1.6428571428571428,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 1-4",
+      "face": "right",
+      "u": 4.928571428571429,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 1-5",
+      "face": "right",
+      "u": 8.214285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 2-0",
+      "face": "right",
+      "u": -8.214285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 2-1",
+      "face": "right",
+      "u": -4.928571428571429,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 2-2",
+      "face": "right",
+      "u": -1.6428571428571428,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 2-3",
+      "face": "right",
+      "u": 1.6428571428571428,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 2-4",
+      "face": "right",
+      "u": 4.928571428571429,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 2-5",
+      "face": "right",
+      "u": 8.214285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 3-0",
+      "face": "right",
+      "u": -8.214285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 3-1",
+      "face": "right",
+      "u": -4.928571428571429,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 3-2",
+      "face": "right",
+      "u": -1.6428571428571428,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 3-3",
+      "face": "right",
+      "u": 1.6428571428571428,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 3-4",
+      "face": "right",
+      "u": 4.928571428571429,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 3-5",
+      "face": "right",
+      "u": 8.214285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 4-0",
+      "face": "right",
+      "u": -8.214285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 4-1",
+      "face": "right",
+      "u": -4.928571428571429,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 4-2",
+      "face": "right",
+      "u": -1.6428571428571428,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 4-3",
+      "face": "right",
+      "u": 1.6428571428571428,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 4-4",
+      "face": "right",
+      "u": 4.928571428571429,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right slot 4-5",
+      "face": "right",
+      "u": 8.214285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right plinth slit -5",
+      "face": "right",
+      "u": -5.0,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "right plinth slit +5",
+      "face": "right",
+      "u": 5.0,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 0-0",
+      "face": "rear",
+      "u": -7.857142857142857,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 0-1",
+      "face": "rear",
+      "u": -4.714285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 0-2",
+      "face": "rear",
+      "u": -1.5714285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 0-3",
+      "face": "rear",
+      "u": 1.5714285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 0-4",
+      "face": "rear",
+      "u": 4.714285714285714,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 0-5",
+      "face": "rear",
+      "u": 7.857142857142857,
+      "z": 5.1499999999999995,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 1-0",
+      "face": "rear",
+      "u": -7.857142857142857,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 1-1",
+      "face": "rear",
+      "u": -4.714285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 1-2",
+      "face": "rear",
+      "u": -1.5714285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 1-3",
+      "face": "rear",
+      "u": 1.5714285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 1-4",
+      "face": "rear",
+      "u": 4.714285714285714,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 1-5",
+      "face": "rear",
+      "u": 7.857142857142857,
+      "z": 9.35,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 2-0",
+      "face": "rear",
+      "u": -7.857142857142857,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 2-1",
+      "face": "rear",
+      "u": -4.714285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 2-2",
+      "face": "rear",
+      "u": -1.5714285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 2-3",
+      "face": "rear",
+      "u": 1.5714285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 2-4",
+      "face": "rear",
+      "u": 4.714285714285714,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 2-5",
+      "face": "rear",
+      "u": 7.857142857142857,
+      "z": 13.549999999999999,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 3-0",
+      "face": "rear",
+      "u": -7.857142857142857,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 3-1",
+      "face": "rear",
+      "u": -4.714285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 3-2",
+      "face": "rear",
+      "u": -1.5714285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 3-3",
+      "face": "rear",
+      "u": 1.5714285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 3-4",
+      "face": "rear",
+      "u": 4.714285714285714,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 3-5",
+      "face": "rear",
+      "u": 7.857142857142857,
+      "z": 17.75,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 4-0",
+      "face": "rear",
+      "u": -7.857142857142857,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 4-1",
+      "face": "rear",
+      "u": -4.714285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 4-2",
+      "face": "rear",
+      "u": -1.5714285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 4-3",
+      "face": "rear",
+      "u": 1.5714285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 4-4",
+      "face": "rear",
+      "u": 4.714285714285714,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear slot 4-5",
+      "face": "rear",
+      "u": 7.857142857142857,
+      "z": 21.950000000000003,
+      "width": 0.95,
+      "height": 3.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.28,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "grow rack room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Plinth loading door",
+      "face": "rear",
+      "u": 6.5,
+      "z": 0.15,
+      "width": 3.2,
+      "height": 3.6,
+      "kind": "roll-up door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loading bay"
+    },
+    {
+      "id": "rear plinth slit -6",
+      "face": "rear",
+      "u": -6.0,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear plinth slit +0",
+      "face": "rear",
+      "u": 0.0,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "rear plinth slit +6",
+      "face": "rear",
+      "u": 6.0,
+      "z": 1.4,
+      "width": 0.7,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    }
+  ],
+  "authoring_modules": {
+    "foundation": [
+      "Ground slab"
+    ],
+    "sidewalk": [
+      "Sidewalk",
+      "Sidewalk west",
+      "Kerb",
+      "Kerb west",
+      "Rear lane",
+      "East lane"
+    ],
+    "occupied floors": [
+      "Grow floor",
+      "Grow floor.001",
+      "Grow floor.002",
+      "Grow floor.003",
+      "Grow floor.004"
+    ],
+    "stairs": [
+      "Stair 0",
+      "Stair 0 landing tongue",
+      "Stair 0 handrail",
+      "Stair 0 supported baluster",
+      "Stair 0 supported baluster.001",
+      "Stair 0 supported baluster.002",
+      "Stair 0 supported baluster.003",
+      "Stair 0 supported baluster.004",
+      "Stair 0 supported baluster.005",
+      "Stair 0 supported baluster.006",
+      "Stair 0 supported baluster.007",
+      "Stair 0 supported baluster.008",
+      "Stair 0 supported baluster.009",
+      "Stair 0 supported baluster.010",
+      "Stair 0 supported baluster.011",
+      "Stair 0 supported baluster.012",
+      "Stair 0 supported baluster.013",
+      "Stair 0 handrail.001",
+      "Stair 0 supported baluster.014",
+      "Stair 0 supported baluster.015",
+      "Stair 0 supported baluster.016",
+      "Stair 0 supported baluster.017",
+      "Stair 0 supported baluster.018",
+      "Stair 0 supported baluster.019",
+      "Stair 0 supported baluster.020",
+      "Stair 0 supported baluster.021",
+      "Stair 0 supported baluster.022",
+      "Stair 0 supported baluster.023",
+      "Stair 0 supported baluster.024",
+      "Stair 0 supported baluster.025",
+      "Stair 0 supported baluster.026",
+      "Stair 0 supported baluster.027",
+      "Stair 1",
+      "Stair 1 landing tongue",
+      "Stair 1 handrail",
+      "Stair 1 supported baluster",
+      "Stair 1 supported baluster.001",
+      "Stair 1 supported baluster.002",
+      "Stair 1 supported baluster.003",
+      "Stair 1 supported baluster.004",
+      "Stair 1 supported baluster.005",
+      "Stair 1 supported baluster.006",
+      "Stair 1 supported baluster.007",
+      "Stair 1 supported baluster.008",
+      "Stair 1 supported baluster.009",
+      "Stair 1 supported baluster.010",
+      "Stair 1 supported baluster.011",
+      "Stair 1 supported baluster.012",
+      "Stair 1 handrail.001",
+      "Stair 1 supported baluster.013",
+      "Stair 1 supported baluster.014",
+      "Stair 1 supported baluster.015",
+      "Stair 1 supported baluster.016",
+      "Stair 1 supported baluster.017",
+      "Stair 1 supported baluster.018",
+      "Stair 1 supported baluster.019",
+      "Stair 1 supported baluster.020",
+      "Stair 1 supported baluster.021",
+      "Stair 1 supported baluster.022",
+      "Stair 1 supported baluster.023",
+      "Stair 1 supported baluster.024",
+      "Stair 1 supported baluster.025"
+    ],
+    "lift shaft": [
+      "Goods lift shaft"
+    ],
+    "envelope": [
+      "front plinth carrier",
+      "front clad carrier",
+      "left plinth carrier",
+      "left clad carrier",
+      "right plinth carrier",
+      "right clad carrier",
+      "rear plinth carrier",
+      "rear clad carrier"
+    ],
+    "panel joints": [
+      "front panel joints",
+      "front plinth shadow joint",
+      "left panel joints",
+      "left plinth shadow joint",
+      "right panel joints",
+      "right plinth shadow joint",
+      "rear panel joints",
+      "rear plinth shadow joint"
+    ],
+    "slot frames": [
+      "front slot 0-0 reveal and frame",
+      "front slot 0-1 reveal and frame",
+      "front slot 0-2 reveal and frame",
+      "front slot 0-3 reveal and frame",
+      "front slot 0-4 reveal and frame",
+      "front slot 0-5 reveal and frame",
+      "front slot 1-0 reveal and frame",
+      "front slot 1-1 reveal and frame",
+      "front slot 1-2 reveal and frame",
+      "front slot 1-3 reveal and frame",
+      "front slot 1-4 reveal and frame",
+      "front slot 1-5 reveal and frame",
+      "front slot 2-0 reveal and frame",
+      "front slot 2-1 reveal and frame",
+      "front slot 2-2 reveal and frame",
+      "front slot 2-3 reveal and frame",
+      "front slot 2-4 reveal and frame",
+      "front slot 2-5 reveal and frame",
+      "front slot 3-0 reveal and frame",
+      "front slot 3-1 reveal and frame",
+      "front slot 3-2 reveal and frame",
+      "front slot 3-3 reveal and frame",
+      "front slot 3-4 reveal and frame",
+      "front slot 3-5 reveal and frame",
+      "front slot 4-0 reveal and frame",
+      "front slot 4-1 reveal and frame",
+      "front slot 4-2 reveal and frame",
+      "front slot 4-3 reveal and frame",
+      "front slot 4-4 reveal and frame",
+      "front slot 4-5 reveal and frame",
+      "left slot 0-0 reveal and frame",
+      "left slot 0-1 reveal and frame",
+      "left slot 0-2 reveal and frame",
+      "left slot 0-3 reveal and frame",
+      "left slot 0-4 reveal and frame",
+      "left slot 0-5 reveal and frame",
+      "left slot 1-0 reveal and frame",
+      "left slot 1-1 reveal and frame",
+      "left slot 1-2 reveal and frame",
+      "left slot 1-3 reveal and frame",
+      "left slot 1-4 reveal and frame",
+      "left slot 1-5 reveal and frame",
+      "left slot 2-0 reveal and frame",
+      "left slot 2-1 reveal and frame",
+      "left slot 2-2 reveal and frame",
+      "left slot 2-3 reveal and frame",
+      "left slot 2-4 reveal and frame",
+      "left slot 2-5 reveal and frame",
+      "left slot 3-0 reveal and frame",
+      "left slot 3-1 reveal and frame",
+      "left slot 3-2 reveal and frame",
+      "left slot 3-3 reveal and frame",
+      "left slot 3-4 reveal and frame",
+      "left slot 3-5 reveal and frame",
+      "left slot 4-0 reveal and frame",
+      "left slot 4-1 reveal and frame",
+      "left slot 4-2 reveal and frame",
+      "left slot 4-3 reveal and frame",
+      "left slot 4-4 reveal and frame",
+      "left slot 4-5 reveal and frame",
+      "right slot 0-0 reveal and frame",
+      "right slot 0-1 reveal and frame",
+      "right slot 0-2 reveal and frame",
+      "right slot 0-3 reveal and frame",
+      "right slot 0-4 reveal and frame",
+      "right slot 0-5 reveal and frame",
+      "right slot 1-0 reveal and frame",
+      "right slot 1-1 reveal and frame",
+      "right slot 1-2 reveal and frame",
+      "right slot 1-3 reveal and frame",
+      "right slot 1-4 reveal and frame",
+      "right slot 1-5 reveal and frame",
+      "right slot 2-0 reveal and frame",
+      "right slot 2-1 reveal and frame",
+      "right slot 2-2 reveal and frame",
+      "right slot 2-3 reveal and frame",
+      "right slot 2-4 reveal and frame",
+      "right slot 2-5 reveal and frame",
+      "right slot 3-0 reveal and frame",
+      "right slot 3-1 reveal and frame",
+      "right slot 3-2 reveal and frame",
+      "right slot 3-3 reveal and frame",
+      "right slot 3-4 reveal and frame",
+      "right slot 3-5 reveal and frame",
+      "right slot 4-0 reveal and frame",
+      "right slot 4-1 reveal and frame",
+      "right slot 4-2 reveal and frame",
+      "right slot 4-3 reveal and frame",
+      "right slot 4-4 reveal and frame",
+      "right slot 4-5 reveal and frame",
+      "rear slot 0-0 reveal and frame",
+      "rear slot 0-1 reveal and frame",
+      "rear slot 0-2 reveal and frame",
+      "rear slot 0-3 reveal and frame",
+      "rear slot 0-4 reveal and frame",
+      "rear slot 0-5 reveal and frame",
+      "rear slot 1-0 reveal and frame",
+      "rear slot 1-1 reveal and frame",
+      "rear slot 1-2 reveal and frame",
+      "rear slot 1-3 reveal and frame",
+      "rear slot 1-4 reveal and frame",
+      "rear slot 1-5 reveal and frame",
+      "rear slot 2-0 reveal and frame",
+      "rear slot 2-1 reveal and frame",
+      "rear slot 2-2 reveal and frame",
+      "rear slot 2-3 reveal and frame",
+      "rear slot 2-4 reveal and frame",
+      "rear slot 2-5 reveal and frame",
+      "rear slot 3-0 reveal and frame",
+      "rear slot 3-1 reveal and frame",
+      "rear slot 3-2 reveal and frame",
+      "rear slot 3-3 reveal and frame",
+      "rear slot 3-4 reveal and frame",
+      "rear slot 3-5 reveal and frame",
+      "rear slot 4-0 reveal and frame",
+      "rear slot 4-1 reveal and frame",
+      "rear slot 4-2 reveal and frame",
+      "rear slot 4-3 reveal and frame",
+      "rear slot 4-4 reveal and frame",
+      "rear slot 4-5 reveal and frame"
+    ],
+    "slot glazing": [
+      "front slot 0-0 pane",
+      "front slot 0-1 pane",
+      "front slot 0-2 pane",
+      "front slot 0-3 pane",
+      "front slot 0-4 pane",
+      "front slot 0-5 pane",
+      "front slot 1-0 pane",
+      "front slot 1-1 pane",
+      "front slot 1-2 pane",
+      "front slot 1-3 pane",
+      "front slot 1-4 pane",
+      "front slot 1-5 pane",
+      "front slot 2-0 pane",
+      "front slot 2-1 pane",
+      "front slot 2-2 pane",
+      "front slot 2-3 pane",
+      "front slot 2-4 pane",
+      "front slot 2-5 pane",
+      "front slot 3-0 pane",
+      "front slot 3-1 pane",
+      "front slot 3-2 pane",
+      "front slot 3-3 pane",
+      "front slot 3-4 pane",
+      "front slot 3-5 pane",
+      "front slot 4-0 pane",
+      "front slot 4-1 pane",
+      "front slot 4-2 pane",
+      "front slot 4-3 pane",
+      "front slot 4-4 pane",
+      "front slot 4-5 pane",
+      "left slot 0-0 pane",
+      "left slot 0-1 pane",
+      "left slot 0-2 pane",
+      "left slot 0-3 pane",
+      "left slot 0-4 pane",
+      "left slot 0-5 pane",
+      "left slot 1-0 pane",
+      "left slot 1-1 pane",
+      "left slot 1-2 pane",
+      "left slot 1-3 pane",
+      "left slot 1-4 pane",
+      "left slot 1-5 pane",
+      "left slot 2-0 pane",
+      "left slot 2-1 pane",
+      "left slot 2-2 pane",
+      "left slot 2-3 pane",
+      "left slot 2-4 pane",
+      "left slot 2-5 pane",
+      "left slot 3-0 pane",
+      "left slot 3-1 pane",
+      "left slot 3-2 pane",
+      "left slot 3-3 pane",
+      "left slot 3-4 pane",
+      "left slot 3-5 pane",
+      "left slot 4-0 pane",
+      "left slot 4-1 pane",
+      "left slot 4-2 pane",
+      "left slot 4-3 pane",
+      "left slot 4-4 pane",
+      "left slot 4-5 pane",
+      "right slot 0-0 pane",
+      "right slot 0-1 pane",
+      "right slot 0-2 pane",
+      "right slot 0-3 pane",
+      "right slot 0-4 pane",
+      "right slot 0-5 pane",
+      "right slot 1-0 pane",
+      "right slot 1-1 pane",
+      "right slot 1-2 pane",
+      "right slot 1-3 pane",
+      "right slot 1-4 pane",
+      "right slot 1-5 pane",
+      "right slot 2-0 pane",
+      "right slot 2-1 pane",
+      "right slot 2-2 pane",
+      "right slot 2-3 pane",
+      "right slot 2-4 pane",
+      "right slot 2-5 pane",
+      "right slot 3-0 pane",
+      "right slot 3-1 pane",
+      "right slot 3-2 pane",
+      "right slot 3-3 pane",
+      "right slot 3-4 pane",
+      "right slot 3-5 pane",
+      "right slot 4-0 pane",
+      "right slot 4-1 pane",
+      "right slot 4-2 pane",
+      "right slot 4-3 pane",
+      "right slot 4-4 pane",
+      "right slot 4-5 pane",
+      "rear slot 0-0 pane",
+      "rear slot 0-1 pane",
+      "rear slot 0-2 pane",
+      "rear slot 0-3 pane",
+      "rear slot 0-4 pane",
+      "rear slot 0-5 pane",
+      "rear slot 1-0 pane",
+      "rear slot 1-1 pane",
+      "rear slot 1-2 pane",
+      "rear slot 1-3 pane",
+      "rear slot 1-4 pane",
+      "rear slot 1-5 pane",
+      "rear slot 2-0 pane",
+      "rear slot 2-1 pane",
+      "rear slot 2-2 pane",
+      "rear slot 2-3 pane",
+      "rear slot 2-4 pane",
+      "rear slot 2-5 pane",
+      "rear slot 3-0 pane",
+      "rear slot 3-1 pane",
+      "rear slot 3-2 pane",
+      "rear slot 3-3 pane",
+      "rear slot 3-4 pane",
+      "rear slot 3-5 pane",
+      "rear slot 4-0 pane",
+      "rear slot 4-1 pane",
+      "rear slot 4-2 pane",
+      "rear slot 4-3 pane",
+      "rear slot 4-4 pane",
+      "rear slot 4-5 pane"
+    ],
+    "grow racks": [
+      "front rack shelf 0",
+      "front leaf tray 0",
+      "front rack shelf 1",
+      "front leaf tray 1",
+      "front rack shelf 2",
+      "front leaf tray 2",
+      "front rack shelf 3",
+      "front leaf tray 3",
+      "front LED backboard",
+      "front rack shelf 0.001",
+      "front leaf tray 0.001",
+      "front rack shelf 1.001",
+      "front leaf tray 1.001",
+      "front rack shelf 2.001",
+      "front leaf tray 2.001",
+      "front rack shelf 3.001",
+      "front leaf tray 3.001",
+      "front LED backboard.001",
+      "front rack shelf 0.002",
+      "front leaf tray 0.002",
+      "front rack shelf 1.002",
+      "front leaf tray 1.002",
+      "front rack shelf 2.002",
+      "front leaf tray 2.002",
+      "front rack shelf 3.002",
+      "front leaf tray 3.002",
+      "front LED backboard.002",
+      "front rack shelf 0.003",
+      "front leaf tray 0.003",
+      "front rack shelf 1.003",
+      "front leaf tray 1.003",
+      "front rack shelf 2.003",
+      "front leaf tray 2.003",
+      "front rack shelf 3.003",
+      "front leaf tray 3.003",
+      "front LED backboard.003",
+      "front rack shelf 0.004",
+      "front leaf tray 0.004",
+      "front rack shelf 1.004",
+      "front leaf tray 1.004",
+      "front rack shelf 2.004",
+      "front leaf tray 2.004",
+      "front rack shelf 3.004",
+      "front leaf tray 3.004",
+      "front LED backboard.004",
+      "left rack shelf 0",
+      "left leaf tray 0",
+      "left rack shelf 1",
+      "left leaf tray 1",
+      "left rack shelf 2",
+      "left leaf tray 2",
+      "left rack shelf 3",
+      "left leaf tray 3",
+      "left LED backboard",
+      "left rack shelf 0.001",
+      "left leaf tray 0.001",
+      "left rack shelf 1.001",
+      "left leaf tray 1.001",
+      "left rack shelf 2.001",
+      "left leaf tray 2.001",
+      "left rack shelf 3.001",
+      "left leaf tray 3.001",
+      "left LED backboard.001",
+      "left rack shelf 0.002",
+      "left leaf tray 0.002",
+      "left rack shelf 1.002",
+      "left leaf tray 1.002",
+      "left rack shelf 2.002",
+      "left leaf tray 2.002",
+      "left rack shelf 3.002",
+      "left leaf tray 3.002",
+      "left LED backboard.002",
+      "left rack shelf 0.003",
+      "left leaf tray 0.003",
+      "left rack shelf 1.003",
+      "left leaf tray 1.003",
+      "left rack shelf 2.003",
+      "left leaf tray 2.003",
+      "left rack shelf 3.003",
+      "left leaf tray 3.003",
+      "left LED backboard.003",
+      "left rack shelf 0.004",
+      "left leaf tray 0.004",
+      "left rack shelf 1.004",
+      "left leaf tray 1.004",
+      "left rack shelf 2.004",
+      "left leaf tray 2.004",
+      "left rack shelf 3.004",
+      "left leaf tray 3.004",
+      "left LED backboard.004",
+      "right rack shelf 0",
+      "right leaf tray 0",
+      "right rack shelf 1",
+      "right leaf tray 1",
+      "right rack shelf 2",
+      "right leaf tray 2",
+      "right rack shelf 3",
+      "right leaf tray 3",
+      "right LED backboard",
+      "right rack shelf 0.001",
+      "right leaf tray 0.001",
+      "right rack shelf 1.001",
+      "right leaf tray 1.001",
+      "right rack shelf 2.001",
+      "right leaf tray 2.001",
+      "right rack shelf 3.001",
+      "right leaf tray 3.001",
+      "right LED backboard.001",
+      "right rack shelf 0.002",
+      "right leaf tray 0.002",
+      "right rack shelf 1.002",
+      "right leaf tray 1.002",
+      "right rack shelf 2.002",
+      "right leaf tray 2.002",
+      "right rack shelf 3.002",
+      "right leaf tray 3.002",
+      "right LED backboard.002",
+      "right rack shelf 0.003",
+      "right leaf tray 0.003",
+      "right rack shelf 1.003",
+      "right leaf tray 1.003",
+      "right rack shelf 2.003",
+      "right leaf tray 2.003",
+      "right rack shelf 3.003",
+      "right leaf tray 3.003",
+      "right LED backboard.003",
+      "right rack shelf 0.004",
+      "right leaf tray 0.004",
+      "right rack shelf 1.004",
+      "right leaf tray 1.004",
+      "right rack shelf 2.004",
+      "right leaf tray 2.004",
+      "right rack shelf 3.004",
+      "right leaf tray 3.004",
+      "right LED backboard.004",
+      "rear rack shelf 0",
+      "rear leaf tray 0",
+      "rear rack shelf 1",
+      "rear leaf tray 1",
+      "rear rack shelf 2",
+      "rear leaf tray 2",
+      "rear rack shelf 3",
+      "rear leaf tray 3",
+      "rear LED backboard",
+      "rear rack shelf 0.001",
+      "rear leaf tray 0.001",
+      "rear rack shelf 1.001",
+      "rear leaf tray 1.001",
+      "rear rack shelf 2.001",
+      "rear leaf tray 2.001",
+      "rear rack shelf 3.001",
+      "rear leaf tray 3.001",
+      "rear LED backboard.001",
+      "rear rack shelf 0.002",
+      "rear leaf tray 0.002",
+      "rear rack shelf 1.002",
+      "rear leaf tray 1.002",
+      "rear rack shelf 2.002",
+      "rear leaf tray 2.002",
+      "rear rack shelf 3.002",
+      "rear leaf tray 3.002",
+      "rear LED backboard.002",
+      "rear rack shelf 0.003",
+      "rear leaf tray 0.003",
+      "rear rack shelf 1.003",
+      "rear leaf tray 1.003",
+      "rear rack shelf 2.003",
+      "rear leaf tray 2.003",
+      "rear rack shelf 3.003",
+      "rear leaf tray 3.003",
+      "rear LED backboard.003",
+      "rear rack shelf 0.004",
+      "rear leaf tray 0.004",
+      "rear rack shelf 1.004",
+      "rear leaf tray 1.004",
+      "rear rack shelf 2.004",
+      "rear leaf tray 2.004",
+      "rear rack shelf 3.004",
+      "rear leaf tray 3.004",
+      "rear LED backboard.004",
+      "Central rack",
+      "Central rack.001",
+      "Central rack.002",
+      "Central rack.003",
+      "Central rack.004",
+      "Central rack.005",
+      "Central rack.006",
+      "Central rack.007",
+      "Central rack.008",
+      "Central rack.009",
+      "Central rack.010",
+      "Central rack.011",
+      "Central rack.012",
+      "Central rack.013",
+      "Central rack.014",
+      "Central rack.015",
+      "Central rack.016",
+      "Central rack.017",
+      "Central rack.018",
+      "Central rack.019",
+      "Central rack.020",
+      "Central rack.021",
+      "Central rack.022",
+      "Central rack.023"
+    ],
+    "reveals": [
+      "Reveal jamb liner",
+      "Reveal jamb liner.001",
+      "Reveal head liner",
+      "Reveal sill liner",
+      "Reveal jamb liner.002",
+      "Reveal jamb liner.003",
+      "Reveal head liner.001",
+      "Reveal sill liner.001",
+      "Reveal jamb liner.004",
+      "Reveal jamb liner.005",
+      "Reveal head liner.002",
+      "Reveal sill liner.002",
+      "Reveal jamb liner.006",
+      "Reveal jamb liner.007",
+      "Reveal head liner.003",
+      "Reveal sill liner.003",
+      "Reveal jamb liner.008",
+      "Reveal jamb liner.009",
+      "Reveal head liner.004",
+      "Reveal sill liner.004",
+      "Reveal jamb liner.010",
+      "Reveal jamb liner.011",
+      "Reveal head liner.005",
+      "Reveal sill liner.005",
+      "Reveal jamb liner.012",
+      "Reveal jamb liner.013",
+      "Reveal head liner.006",
+      "Reveal sill liner.006",
+      "Reveal jamb liner.014",
+      "Reveal jamb liner.015",
+      "Reveal head liner.007",
+      "Reveal sill liner.007",
+      "Reveal jamb liner.016",
+      "Reveal jamb liner.017",
+      "Reveal head liner.008",
+      "Reveal sill liner.008",
+      "Reveal jamb liner.018",
+      "Reveal jamb liner.019",
+      "Reveal head liner.009",
+      "Reveal sill liner.009",
+      "Reveal jamb liner.020",
+      "Reveal jamb liner.021",
+      "Reveal head liner.010",
+      "Reveal sill liner.010",
+      "Reveal jamb liner.022",
+      "Reveal jamb liner.023",
+      "Reveal head liner.011",
+      "Reveal sill liner.011"
+    ],
+    "entrance": [
+      "Entrance recess soffit",
+      "Entrance recess paving"
+    ],
+    "front.Entrance recess screen": [
+      "Entrance recess screen recessed jamb",
+      "Entrance recess screen recessed jamb.001",
+      "Entrance recess screen recessed head or sill",
+      "Entrance recess screen recessed head or sill.001",
+      "Entrance recess screen mullion 1",
+      "Entrance recess screen mullion 2",
+      "Entrance recess screen mullion 3",
+      "Entrance recess screen transom 1",
+      "Entrance recess screen optical pane 0-0",
+      "Entrance recess screen optical pane 0-1",
+      "Entrance recess screen optical pane 1-0",
+      "Entrance recess screen optical pane 1-1",
+      "Entrance recess screen optical pane 2-0",
+      "Entrance recess screen optical pane 2-1",
+      "Entrance recess screen optical pane 3-0",
+      "Entrance recess screen optical pane 3-1"
+    ],
+    "door hardware": [
+      "Entrance door pull",
+      "Entrance door pull.001"
+    ],
+    "front.front plinth slit -2": [
+      "front plinth slit -2 recessed jamb",
+      "front plinth slit -2 recessed jamb.001",
+      "front plinth slit -2 recessed head or sill",
+      "front plinth slit -2 recessed head or sill.001",
+      "front plinth slit -2 optical pane 0-0"
+    ],
+    "front.front plinth slit +2": [
+      "front plinth slit +2 recessed jamb",
+      "front plinth slit +2 recessed jamb.001",
+      "front plinth slit +2 recessed head or sill",
+      "front plinth slit +2 recessed head or sill.001",
+      "front plinth slit +2 optical pane 0-0"
+    ],
+    "left.left plinth slit -7": [
+      "left plinth slit -7 recessed jamb",
+      "left plinth slit -7 recessed jamb.001",
+      "left plinth slit -7 recessed head or sill",
+      "left plinth slit -7 recessed head or sill.001",
+      "left plinth slit -7 optical pane 0-0"
+    ],
+    "left.left plinth slit -2": [
+      "left plinth slit -2 recessed jamb",
+      "left plinth slit -2 recessed jamb.001",
+      "left plinth slit -2 recessed head or sill",
+      "left plinth slit -2 recessed head or sill.001",
+      "left plinth slit -2 optical pane 0-0"
+    ],
+    "left.left plinth slit +3": [
+      "left plinth slit +3 recessed jamb",
+      "left plinth slit +3 recessed jamb.001",
+      "left plinth slit +3 recessed head or sill",
+      "left plinth slit +3 recessed head or sill.001",
+      "left plinth slit +3 optical pane 0-0"
+    ],
+    "right.right plinth slit -5": [
+      "right plinth slit -5 recessed jamb",
+      "right plinth slit -5 recessed jamb.001",
+      "right plinth slit -5 recessed head or sill",
+      "right plinth slit -5 recessed head or sill.001",
+      "right plinth slit -5 optical pane 0-0"
+    ],
+    "right.right plinth slit +5": [
+      "right plinth slit +5 recessed jamb",
+      "right plinth slit +5 recessed jamb.001",
+      "right plinth slit +5 recessed head or sill",
+      "right plinth slit +5 recessed head or sill.001",
+      "right plinth slit +5 optical pane 0-0"
+    ],
+    "loading door": [
+      "Plinth loading door leaf",
+      "Plinth loading door slat seam",
+      "Plinth loading door slat seam.001",
+      "Plinth loading door slat seam.002",
+      "Plinth loading door slat seam.003",
+      "Plinth loading door slat seam.004"
+    ],
+    "rear.rear plinth slit -6": [
+      "rear plinth slit -6 recessed jamb",
+      "rear plinth slit -6 recessed jamb.001",
+      "rear plinth slit -6 recessed head or sill",
+      "rear plinth slit -6 recessed head or sill.001",
+      "rear plinth slit -6 optical pane 0-0"
+    ],
+    "rear.rear plinth slit +0": [
+      "rear plinth slit +0 recessed jamb",
+      "rear plinth slit +0 recessed jamb.001",
+      "rear plinth slit +0 recessed head or sill",
+      "rear plinth slit +0 recessed head or sill.001",
+      "rear plinth slit +0 optical pane 0-0"
+    ],
+    "rear.rear plinth slit +6": [
+      "rear plinth slit +6 recessed jamb",
+      "rear plinth slit +6 recessed jamb.001",
+      "rear plinth slit +6 recessed head or sill",
+      "rear plinth slit +6 recessed head or sill.001",
+      "rear plinth slit +6 optical pane 0-0"
+    ],
+    "Stair guard 0": [
+      "Stair guard 0 top rail",
+      "Stair guard 0 bottom rail",
+      "Stair guard 0 picket 0",
+      "Stair guard 0 picket 1",
+      "Stair guard 0 picket 2",
+      "Stair guard 0 picket 3",
+      "Stair guard 0 picket 4",
+      "Stair guard 0 picket 5",
+      "Stair guard 0 picket 6",
+      "Stair guard 0 picket 7",
+      "Stair guard 0 picket 8",
+      "Stair guard 0 picket 9",
+      "Stair guard 0 picket 10",
+      "Stair guard 0 picket 11",
+      "Stair guard 0 picket 12"
+    ],
+    "Stair end guard 0": [
+      "Stair end guard 0 top rail",
+      "Stair end guard 0 bottom rail",
+      "Stair end guard 0 picket 0",
+      "Stair end guard 0 picket 1",
+      "Stair end guard 0 picket 2",
+      "Stair end guard 0 picket 3",
+      "Stair end guard 0 picket 4",
+      "Stair end guard 0 picket 5"
+    ],
+    "Stair guard 1": [
+      "Stair guard 1 top rail",
+      "Stair guard 1 bottom rail",
+      "Stair guard 1 picket 0",
+      "Stair guard 1 picket 1",
+      "Stair guard 1 picket 2",
+      "Stair guard 1 picket 3",
+      "Stair guard 1 picket 4",
+      "Stair guard 1 picket 5",
+      "Stair guard 1 picket 6",
+      "Stair guard 1 picket 7",
+      "Stair guard 1 picket 8",
+      "Stair guard 1 picket 9",
+      "Stair guard 1 picket 10",
+      "Stair guard 1 picket 11",
+      "Stair guard 1 picket 12"
+    ],
+    "Stair end guard 1": [
+      "Stair end guard 1 top rail",
+      "Stair end guard 1 bottom rail",
+      "Stair end guard 1 picket 0",
+      "Stair end guard 1 picket 1",
+      "Stair end guard 1 picket 2",
+      "Stair end guard 1 picket 3",
+      "Stair end guard 1 picket 4",
+      "Stair end guard 1 picket 5"
+    ],
+    "roof": [
+      "Roof slab",
+      "Roof membrane",
+      "Membrane seam",
+      "Membrane seam.001",
+      "Membrane seam.002",
+      "Membrane seam.003",
+      "Membrane seam.004",
+      "Membrane seam.005",
+      "Membrane seam.006"
+    ],
+    "coping": [
+      "Coping south",
+      "Coping north",
+      "Coping west",
+      "Coping east"
+    ],
+    "Parapet rail 0": [
+      "Parapet rail 0 top rail",
+      "Parapet rail 0 bottom rail",
+      "Parapet rail 0 picket 0",
+      "Parapet rail 0 picket 1",
+      "Parapet rail 0 picket 2",
+      "Parapet rail 0 picket 3",
+      "Parapet rail 0 picket 4",
+      "Parapet rail 0 picket 5",
+      "Parapet rail 0 picket 6",
+      "Parapet rail 0 picket 7",
+      "Parapet rail 0 picket 8",
+      "Parapet rail 0 picket 9",
+      "Parapet rail 0 picket 10",
+      "Parapet rail 0 picket 11",
+      "Parapet rail 0 picket 12",
+      "Parapet rail 0 picket 13",
+      "Parapet rail 0 picket 14",
+      "Parapet rail 0 picket 15",
+      "Parapet rail 0 picket 16",
+      "Parapet rail 0 picket 17",
+      "Parapet rail 0 picket 18",
+      "Parapet rail 0 picket 19",
+      "Parapet rail 0 picket 20",
+      "Parapet rail 0 picket 21",
+      "Parapet rail 0 picket 22",
+      "Parapet rail 0 picket 23",
+      "Parapet rail 0 picket 24",
+      "Parapet rail 0 picket 25",
+      "Parapet rail 0 picket 26",
+      "Parapet rail 0 picket 27"
+    ],
+    "Parapet rail 1": [
+      "Parapet rail 1 top rail",
+      "Parapet rail 1 bottom rail",
+      "Parapet rail 1 picket 0",
+      "Parapet rail 1 picket 1",
+      "Parapet rail 1 picket 2",
+      "Parapet rail 1 picket 3",
+      "Parapet rail 1 picket 4",
+      "Parapet rail 1 picket 5",
+      "Parapet rail 1 picket 6",
+      "Parapet rail 1 picket 7",
+      "Parapet rail 1 picket 8",
+      "Parapet rail 1 picket 9",
+      "Parapet rail 1 picket 10",
+      "Parapet rail 1 picket 11",
+      "Parapet rail 1 picket 12",
+      "Parapet rail 1 picket 13",
+      "Parapet rail 1 picket 14",
+      "Parapet rail 1 picket 15",
+      "Parapet rail 1 picket 16",
+      "Parapet rail 1 picket 17",
+      "Parapet rail 1 picket 18",
+      "Parapet rail 1 picket 19",
+      "Parapet rail 1 picket 20",
+      "Parapet rail 1 picket 21",
+      "Parapet rail 1 picket 22",
+      "Parapet rail 1 picket 23",
+      "Parapet rail 1 picket 24",
+      "Parapet rail 1 picket 25",
+      "Parapet rail 1 picket 26",
+      "Parapet rail 1 picket 27",
+      "Parapet rail 1 picket 28"
+    ],
+    "Parapet rail 2": [
+      "Parapet rail 2 top rail",
+      "Parapet rail 2 bottom rail",
+      "Parapet rail 2 picket 0",
+      "Parapet rail 2 picket 1",
+      "Parapet rail 2 picket 2",
+      "Parapet rail 2 picket 3",
+      "Parapet rail 2 picket 4",
+      "Parapet rail 2 picket 5",
+      "Parapet rail 2 picket 6",
+      "Parapet rail 2 picket 7",
+      "Parapet rail 2 picket 8",
+      "Parapet rail 2 picket 9",
+      "Parapet rail 2 picket 10",
+      "Parapet rail 2 picket 11",
+      "Parapet rail 2 picket 12",
+      "Parapet rail 2 picket 13",
+      "Parapet rail 2 picket 14",
+      "Parapet rail 2 picket 15",
+      "Parapet rail 2 picket 16",
+      "Parapet rail 2 picket 17",
+      "Parapet rail 2 picket 18",
+      "Parapet rail 2 picket 19",
+      "Parapet rail 2 picket 20",
+      "Parapet rail 2 picket 21",
+      "Parapet rail 2 picket 22",
+      "Parapet rail 2 picket 23",
+      "Parapet rail 2 picket 24",
+      "Parapet rail 2 picket 25",
+      "Parapet rail 2 picket 26",
+      "Parapet rail 2 picket 27"
+    ],
+    "Parapet rail 3": [
+      "Parapet rail 3 top rail",
+      "Parapet rail 3 bottom rail",
+      "Parapet rail 3 picket 0",
+      "Parapet rail 3 picket 1",
+      "Parapet rail 3 picket 2",
+      "Parapet rail 3 picket 3",
+      "Parapet rail 3 picket 4",
+      "Parapet rail 3 picket 5",
+      "Parapet rail 3 picket 6",
+      "Parapet rail 3 picket 7",
+      "Parapet rail 3 picket 8",
+      "Parapet rail 3 picket 9",
+      "Parapet rail 3 picket 10",
+      "Parapet rail 3 picket 11",
+      "Parapet rail 3 picket 12",
+      "Parapet rail 3 picket 13",
+      "Parapet rail 3 picket 14",
+      "Parapet rail 3 picket 15",
+      "Parapet rail 3 picket 16",
+      "Parapet rail 3 picket 17",
+      "Parapet rail 3 picket 18",
+      "Parapet rail 3 picket 19",
+      "Parapet rail 3 picket 20",
+      "Parapet rail 3 picket 21",
+      "Parapet rail 3 picket 22",
+      "Parapet rail 3 picket 23",
+      "Parapet rail 3 picket 24",
+      "Parapet rail 3 picket 25",
+      "Parapet rail 3 picket 26",
+      "Parapet rail 3 picket 27",
+      "Parapet rail 3 picket 28"
+    ],
+    "glasshouse curbs": [
+      "Glasshouse 0 curb",
+      "Glasshouse 1 curb",
+      "Glasshouse 2 curb",
+      "Glasshouse 3 curb",
+      "Glasshouse 4 curb"
+    ],
+    "glasshouse 0": [
+      "Glasshouse 0 post",
+      "Glasshouse 0 post.001",
+      "Glasshouse 0 rafter",
+      "Glasshouse 0 rafter.001",
+      "Glasshouse 0 post.002",
+      "Glasshouse 0 post.003",
+      "Glasshouse 0 rafter.002",
+      "Glasshouse 0 rafter.003",
+      "Glasshouse 0 post.004",
+      "Glasshouse 0 post.005",
+      "Glasshouse 0 rafter.004",
+      "Glasshouse 0 rafter.005",
+      "Glasshouse 0 post.006",
+      "Glasshouse 0 post.007",
+      "Glasshouse 0 rafter.006",
+      "Glasshouse 0 rafter.007",
+      "Glasshouse 0 post.008",
+      "Glasshouse 0 post.009",
+      "Glasshouse 0 rafter.008",
+      "Glasshouse 0 rafter.009",
+      "Glasshouse 0 eave beam",
+      "Glasshouse 0 side glazing",
+      "Glasshouse 0 eave beam.001",
+      "Glasshouse 0 side glazing.001",
+      "Glasshouse 0 ridge",
+      "Glasshouse 0 roof glazing",
+      "Glasshouse 0 roof glazing.001",
+      "Glasshouse 0 gable glazing",
+      "Glasshouse 0 gable glazing.001",
+      "Glasshouse 0 end door frame"
+    ],
+    "glasshouse benches": [
+      "Glasshouse 0 bench",
+      "Glasshouse 0 tray crop",
+      "Glasshouse 0 bench leg",
+      "Glasshouse 0 bench leg.001",
+      "Glasshouse 0 bench leg.002",
+      "Glasshouse 0 bench.001",
+      "Glasshouse 0 tray crop.001",
+      "Glasshouse 0 bench leg.003",
+      "Glasshouse 0 bench leg.004",
+      "Glasshouse 0 bench leg.005",
+      "Glasshouse 1 bench",
+      "Glasshouse 1 tray crop",
+      "Glasshouse 1 bench leg",
+      "Glasshouse 1 bench leg.001",
+      "Glasshouse 1 bench leg.002",
+      "Glasshouse 1 bench.001",
+      "Glasshouse 1 tray crop.001",
+      "Glasshouse 1 bench leg.003",
+      "Glasshouse 1 bench leg.004",
+      "Glasshouse 1 bench leg.005",
+      "Glasshouse 2 bench",
+      "Glasshouse 2 tray crop",
+      "Glasshouse 2 bench leg",
+      "Glasshouse 2 bench leg.001",
+      "Glasshouse 2 bench leg.002",
+      "Glasshouse 2 bench.001",
+      "Glasshouse 2 tray crop.001",
+      "Glasshouse 2 bench leg.003",
+      "Glasshouse 2 bench leg.004",
+      "Glasshouse 2 bench leg.005",
+      "Glasshouse 3 bench",
+      "Glasshouse 3 tray crop",
+      "Glasshouse 3 bench leg",
+      "Glasshouse 3 bench leg.001",
+      "Glasshouse 3 bench leg.002",
+      "Glasshouse 3 bench.001",
+      "Glasshouse 3 tray crop.001",
+      "Glasshouse 3 bench leg.003",
+      "Glasshouse 3 bench leg.004",
+      "Glasshouse 3 bench leg.005",
+      "Glasshouse 4 bench",
+      "Glasshouse 4 tray crop",
+      "Glasshouse 4 bench leg",
+      "Glasshouse 4 bench leg.001",
+      "Glasshouse 4 bench leg.002",
+      "Glasshouse 4 bench.001",
+      "Glasshouse 4 tray crop.001",
+      "Glasshouse 4 bench leg.003",
+      "Glasshouse 4 bench leg.004",
+      "Glasshouse 4 bench leg.005"
+    ],
+    "glasshouse 1": [
+      "Glasshouse 1 post",
+      "Glasshouse 1 post.001",
+      "Glasshouse 1 rafter",
+      "Glasshouse 1 rafter.001",
+      "Glasshouse 1 post.002",
+      "Glasshouse 1 post.003",
+      "Glasshouse 1 rafter.002",
+      "Glasshouse 1 rafter.003",
+      "Glasshouse 1 post.004",
+      "Glasshouse 1 post.005",
+      "Glasshouse 1 rafter.004",
+      "Glasshouse 1 rafter.005",
+      "Glasshouse 1 post.006",
+      "Glasshouse 1 post.007",
+      "Glasshouse 1 rafter.006",
+      "Glasshouse 1 rafter.007",
+      "Glasshouse 1 post.008",
+      "Glasshouse 1 post.009",
+      "Glasshouse 1 rafter.008",
+      "Glasshouse 1 rafter.009",
+      "Glasshouse 1 eave beam",
+      "Glasshouse 1 side glazing",
+      "Glasshouse 1 eave beam.001",
+      "Glasshouse 1 side glazing.001",
+      "Glasshouse 1 ridge",
+      "Glasshouse 1 roof glazing",
+      "Glasshouse 1 roof glazing.001",
+      "Glasshouse 1 gable glazing",
+      "Glasshouse 1 gable glazing.001",
+      "Glasshouse 1 end door frame"
+    ],
+    "glasshouse 2": [
+      "Glasshouse 2 post",
+      "Glasshouse 2 post.001",
+      "Glasshouse 2 rafter",
+      "Glasshouse 2 rafter.001",
+      "Glasshouse 2 post.002",
+      "Glasshouse 2 post.003",
+      "Glasshouse 2 rafter.002",
+      "Glasshouse 2 rafter.003",
+      "Glasshouse 2 post.004",
+      "Glasshouse 2 post.005",
+      "Glasshouse 2 rafter.004",
+      "Glasshouse 2 rafter.005",
+      "Glasshouse 2 post.006",
+      "Glasshouse 2 post.007",
+      "Glasshouse 2 rafter.006",
+      "Glasshouse 2 rafter.007",
+      "Glasshouse 2 post.008",
+      "Glasshouse 2 post.009",
+      "Glasshouse 2 rafter.008",
+      "Glasshouse 2 rafter.009",
+      "Glasshouse 2 eave beam",
+      "Glasshouse 2 side glazing",
+      "Glasshouse 2 eave beam.001",
+      "Glasshouse 2 side glazing.001",
+      "Glasshouse 2 ridge",
+      "Glasshouse 2 roof glazing",
+      "Glasshouse 2 roof glazing.001",
+      "Glasshouse 2 gable glazing",
+      "Glasshouse 2 gable glazing.001",
+      "Glasshouse 2 end door frame"
+    ],
+    "glasshouse 3": [
+      "Glasshouse 3 post",
+      "Glasshouse 3 post.001",
+      "Glasshouse 3 rafter",
+      "Glasshouse 3 rafter.001",
+      "Glasshouse 3 post.002",
+      "Glasshouse 3 post.003",
+      "Glasshouse 3 rafter.002",
+      "Glasshouse 3 rafter.003",
+      "Glasshouse 3 post.004",
+      "Glasshouse 3 post.005",
+      "Glasshouse 3 rafter.004",
+      "Glasshouse 3 rafter.005",
+      "Glasshouse 3 post.006",
+      "Glasshouse 3 post.007",
+      "Glasshouse 3 rafter.006",
+      "Glasshouse 3 rafter.007",
+      "Glasshouse 3 post.008",
+      "Glasshouse 3 post.009",
+      "Glasshouse 3 rafter.008",
+      "Glasshouse 3 rafter.009",
+      "Glasshouse 3 eave beam",
+      "Glasshouse 3 side glazing",
+      "Glasshouse 3 eave beam.001",
+      "Glasshouse 3 side glazing.001",
+      "Glasshouse 3 ridge",
+      "Glasshouse 3 roof glazing",
+      "Glasshouse 3 roof glazing.001",
+      "Glasshouse 3 gable glazing",
+      "Glasshouse 3 gable glazing.001",
+      "Glasshouse 3 end door frame"
+    ],
+    "glasshouse 4": [
+      "Glasshouse 4 post",
+      "Glasshouse 4 post.001",
+      "Glasshouse 4 rafter",
+      "Glasshouse 4 rafter.001",
+      "Glasshouse 4 post.002",
+      "Glasshouse 4 post.003",
+      "Glasshouse 4 rafter.002",
+      "Glasshouse 4 rafter.003",
+      "Glasshouse 4 post.004",
+      "Glasshouse 4 post.005",
+      "Glasshouse 4 rafter.004",
+      "Glasshouse 4 rafter.005",
+      "Glasshouse 4 post.006",
+      "Glasshouse 4 post.007",
+      "Glasshouse 4 rafter.006",
+      "Glasshouse 4 rafter.007",
+      "Glasshouse 4 post.008",
+      "Glasshouse 4 post.009",
+      "Glasshouse 4 rafter.008",
+      "Glasshouse 4 rafter.009",
+      "Glasshouse 4 eave beam",
+      "Glasshouse 4 side glazing",
+      "Glasshouse 4 eave beam.001",
+      "Glasshouse 4 side glazing.001",
+      "Glasshouse 4 ridge",
+      "Glasshouse 4 roof glazing",
+      "Glasshouse 4 roof glazing.001",
+      "Glasshouse 4 gable glazing",
+      "Glasshouse 4 gable glazing.001",
+      "Glasshouse 4 end door frame"
+    ],
+    "roof planters": [
+      "Planter strip",
+      "Planter strip soil",
+      "Planter strip crop",
+      "Planter strip.001",
+      "Planter strip soil.001",
+      "Planter strip crop.001"
+    ],
+    "penthouse": [
+      "Penthouse south wall",
+      "Penthouse north wall",
+      "Penthouse west wall",
+      "Penthouse east wall",
+      "Penthouse coping south",
+      "Penthouse coping north",
+      "Penthouse coping west",
+      "Penthouse coping east",
+      "Penthouse door",
+      "Penthouse door frame",
+      "Penthouse louvre"
+    ],
+    "rooftop plant": [
+      "Air handling unit",
+      "Air handling fan cowl",
+      "Nutrient tank",
+      "Nutrient tank.001",
+      "Switchgear cabinet"
+    ],
+    "roof beds": [
+      "Raised bed",
+      "Raised bed soil",
+      "Raised bed crop",
+      "Raised bed.001",
+      "Raised bed soil.001",
+      "Raised bed crop.001",
+      "Raised bed.002",
+      "Raised bed soil.002",
+      "Raised bed crop.002",
+      "Raised bed.003",
+      "Raised bed soil.003",
+      "Raised bed crop.003"
+    ],
+    "reception": [
+      "Reception desk"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "finished_utc": "2026-10-10T11:46:30.622163+00:00",
+  "delivery_and_render_seconds": 9109.556598729001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
