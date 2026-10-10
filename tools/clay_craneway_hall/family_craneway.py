@@ -17,11 +17,11 @@ from contract import subtract_openings
 
 SLUG = 'clay-craneway-hall'
 L = 84.0                                 # east-west length
-NAVE, AISLE = 16.0, 10.0
+NAVE, AISLE = 19.5, 8.25
 W = NAVE + 2 * AISLE                     # 36 m across
 T = .25
 G0 = .15
-A_EAVE, A_TOP = 10.0, 13.0               # aisle outer eave and the aisle roof against the nave wall
+A_EAVE, A_TOP = 10.0, 12.6               # aisle outer eave and the aisle roof against the nave wall
 N_EAVE, RIDGE = 17.5, 20.5               # nave eaves and ridge
 CL0, CL1 = 13.4, 16.4                    # nave clerestory band
 BAY = 7.0
@@ -49,8 +49,8 @@ def manifest(version):
         ('monitor_close', (-30.0, -34.0, 22.0), (-18.0, -13.0, 14.5), 45),
         ('stair_contact', (-48.0, -34.0, 5.0), (X0 + 4.0, YA0, 6.0), 40),
         ('yard_sidings', (-30.0, 48.0, 8.0), (-6.0, YA1 + 8.0, 2.0), 40),
-        ('interior', (-60.0, -4.0, 4.0), (X0 + 20.0, 2.0, 5.0), 30),
-        ('side_doors', (20.0, 44.0, 4.0), (10.0, YA1, 4.0), 40)])
+        ('interior', (X0 + 6.0, -3.0, 4.0), (X0 + 40.0, 3.0, 7.0), 30),
+        ('side_doors', (-24.0, -36.0, 4.0), (-14.0, YA0, 4.0), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -109,13 +109,15 @@ def punched(f, name, u, z, w, h, hood=True):
         face_inward=list(f.n), occupied_space='workshop aisle behind carrier', cols=1, rows=1))
 
 
-def lattice_column(f, u, z0, z1, proud=.45, w=.55):
-    f.part('Lattice column flange', u - w / 2 + .05, -proud / 2 + EPS, (z0 + z1) / 2, .10, proud, z1 - z0, 'pale', 'lattice columns', 0)
-    f.part('Lattice column flange', u + w / 2 - .05, -proud / 2 + EPS, (z0 + z1) / 2, .10, proud, z1 - z0, 'pale', 'lattice columns', 0)
-    n = max(1, int((z1 - z0) / 1.4))
-    for i in range(n):
-        za, zb = z0 + .06 + i * (z1 - z0 - .12) / n, z0 + .06 + (i + 1) * (z1 - z0 - .12) / n
-        C.beam('Lattice lacing', f.p(u - w / 2 + .05, -proud / 2, za), f.p(u + w / 2 - .05, -proud / 2, zb), .05, .05, 'pale', 'lattice columns')
+def lattice_column(f, u, z0, z1, proud=.45, w=1.2, panels=3):
+    """Wide lattice pier: two flanges with stacked X-laced panels between them."""
+    f.part('Lattice column flange', u - w / 2 + .06, -proud / 2 + EPS, (z0 + z1) / 2, .12, proud, z1 - z0, 'pale', 'lattice columns', 0)
+    f.part('Lattice column flange', u + w / 2 - .06, -proud / 2 + EPS, (z0 + z1) / 2, .12, proud, z1 - z0, 'pale', 'lattice columns', 0)
+    for i in range(panels):
+        za, zb = z0 + .08 + i * (z1 - z0 - .16) / panels, z0 + .08 + (i + 1) * (z1 - z0 - .16) / panels
+        C.beam('Lattice lacing', f.p(u - w / 2 + .12, -proud / 2, za), f.p(u + w / 2 - .12, -proud / 2, zb), .06, .06, 'pale', 'lattice columns')
+        C.beam('Lattice lacing', f.p(u - w / 2 + .12, -proud / 2, zb), f.p(u + w / 2 - .12, -proud / 2, za), .06, .06, 'pale', 'lattice columns')
+        f.part('Lattice batten', u, -proud / 2 + EPS, zb, w - .24, proud, .08, 'pale', 'lattice columns', 0)
 
 
 def brace(f, u0, u1, z0, z1):
@@ -150,10 +152,7 @@ def aisle_wall(f, doors=(), stair_bay=None):
             punched(f, h['id'], h['u'], h['z'], h['w'], h['h'])
     for i, x in enumerate(bays):
         u = x if f.label == 'south aisle' else -x
-        lattice_column(f, u, 0, A_EAVE + .3)
-    for i in range(12):
-        u0, u1 = (bays[i], bays[i + 1]) if f.label == 'south aisle' else (-bays[i + 1], -bays[i])
-        brace(f, u0, u1, 6.0, A_EAVE - .2)
+        lattice_column(f, u, 0, A_EAVE - .02)
     f.part('Aisle eave channel', 0, -.12, A_EAVE + .10, L, .24, .20, 'pale', 'eaves', 0)
     f.part('Concrete plinth', 0, -.02, .25, L - .4, .20, .50, 'stone', 'plinth', 0)
 
@@ -195,11 +194,17 @@ def gable_end(f, open_frame=True):
                 carrier_depth_m=T, frame_inset_m=.19, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='crane hall'))
         else:
             punched(f, h['id'], h['u'], h['z'], h['w'], h['h'], hood=False)
-    # Aisle lean-to end triangles above the aisle eaves (clad).
+    # Aisle ends above the eaves: clad triangles on the east end, open X-braced frames with a rail on the west end.
     for sign in (-1, 1):
         ya, yb = sign * YN1, sign * YA1
-        poly = [(uu(yb), A_EAVE - EPS), (uu(ya), A_EAVE - EPS), (uu(ya), A_TOP)]
-        f.panel(f'Aisle end crown {sign}', poly, 0, T, 'wall', 'gable crowns')
+        if not open_frame:
+            poly = [(uu(yb), A_EAVE - EPS), (uu(ya), A_EAVE - EPS), (uu(ya), A_TOP)]
+            f.panel(f'Aisle end crown {sign}', poly, 0, T, 'wall', 'gable crowns')
+        else:
+            C.beam('Aisle end rafter', f.p(uu(yb), -.10, A_EAVE), f.p(uu(ya), -.10, A_TOP), .18, .30, 'pale', 'open frame')
+            C.beam('Aisle end brace', f.p(uu(yb) + (.3 if uu(yb) < uu(ya) else -.3), -.12, A_EAVE), f.p(uu(ya) - (.3 if uu(yb) < uu(ya) else -.3), -.12, A_EAVE + .1), .07, .07, 'pale', 'open frame')
+            C.beam('Aisle end brace', f.p(uu(ya) - (.3 if uu(yb) < uu(ya) else -.3), -.12, A_EAVE), f.p(uu((ya + yb) / 2), -.12, A_TOP - 1.3), .07, .07, 'pale', 'open frame')
+            C.railing('Aisle end rail', f.p(uu(yb), -.10, A_EAVE), f.p(uu(ya), -.10, A_EAVE), height=1.0, spacing=.35, role='hardware')
     # Nave end: open lattice frame between the aisle top and the nave eaves (west) or clad (east); clad gable triangle above.
     if open_frame:
         for y in (YN0 + .4, -4.0, 4.0, YN1 - .4):
@@ -259,11 +264,12 @@ def roofs():
         C.prism(f'Aisle roof plate {sign}', [(ya2, za2), (yb2, zb2), (yb2, zb2 - t), (ya2, za2 - t)], 'x', x0 + T, x1 - T, 'roof', 'roofs')
     C.beam('Ridge cap', (x0, 0, RIDGE + .05), (x1, 0, RIDGE + .05), .30, .10, 'pale', 'roofs')
     # Monitors: four per aisle roof, three on the nave ridge.
+    nave_slope = lambda y: RIDGE - abs(y) * (RIDGE - N_EAVE) / YN1
     for sign in (-1, 1):
         for xc in (-28.0, -10.0, 8.0, 26.0):
-            monitor(xc, sign * 13.0, 4.0, 8.0, slope=lambda y, s=sign: A_TOP - (abs(y) - YN1 + T) * (A_TOP - A_EAVE) / AISLE)
+            monitor(xc, sign * 6.2, 3.6, 8.0, slope=nave_slope)
     for xc in (-20.0, 0.0, 20.0):
-        monitor(xc, 0.0, 5.0, 9.0, slope=lambda y: RIDGE - abs(y) * (RIDGE - N_EAVE) / YN1, on_ridge=True)
+        monitor(xc, 0.0, 4.4, 9.0, slope=nave_slope, on_ridge=True)
 
 
 def monitor(xc, yc, w, length, slope, on_ridge=False, h=2.6):
@@ -278,33 +284,40 @@ def monitor(xc, yc, w, length, slope, on_ridge=False, h=2.6):
         for k in range(1, 5):
             C.box('Monitor mullion', (xc - length / 2 + k * length / 5, y + (.08 if y == ya else -.08), top - .7), (.06, .14, 1.2), 'trim', 'monitors', 0)
     for x in (xc - length / 2, xc + length / 2):
-        s = .08 if x < xc else -.08
-        C.prism('Monitor gable end', [(ya, slope(ya) - .3), (yb, slope(yb) - .3), (yb, top), (yc, top + w * .35), (ya, top)], 'x', x + s - .08, x + s + .08, 'wall', 'monitors')
+        lo, hi = (x - .16, x) if x < xc else (x, x + .16)   # end walls stand outside the cheek ends, never coplanar with them
+        C.prism('Monitor gable end', [(ya, slope(ya) - .3), (yb, slope(yb) - .3), (yb, top), (yc, top + w * .35), (ya, top)], 'x', lo, hi, 'wall', 'monitors')
     for sgn in (-1, 1):
         C.prism('Monitor roof plate', [(yc, top + w * .35 + .02), (yc + sgn * (w / 2 + .25), top - .25 * w * .35 / (w / 2) + .02), (yc + sgn * (w / 2 + .25), top - .25 * w * .35 / (w / 2) - .14), (yc, top + w * .35 - .12)],
                 'x', xc - length / 2 - .25, xc + length / 2 + .25, 'roof', 'monitors')
 
 
 def stair():
-    """External steel stair at the south-west corner climbing east along the aisle wall to a roof landing."""
-    x0, y = X0 + 1.0, YA0 - 1.3
-    C.box('Stair landing', (x0 + 9.0, y, A_EAVE + .10), (2.4, 1.4, .20), 'pale', 'external stair', 0)
-    runs = ((x0, 0.0, x0 + 4.0, 5.0), (x0 + 4.4, 5.0, x0 + 8.0, A_EAVE))
+    """Switchback steel stair at the south-west corner: two flights with an intermediate landing onto a railed walkway at the aisle eave."""
+    x0, y = X0 + 2.0, YA0 - 1.3
+    runs = ((x0, 0.0, x0 + 7.0, 5.0), (x0 + 7.0, 5.0, x0, A_EAVE))
     for i, (xa, za, xb, zb) in enumerate(runs):
         n = 14
         for k in range(n):
             xk = xa + (k + .5) * (xb - xa) / n
             zk = za + (k + 1) * (zb - za) / n
-            C.box('Stair tread', (xk, y, zk - .03), ((xb - xa) / n + .02, 1.1, .06), 'pale', 'external stair', 0)
+            C.box('Stair tread', (xk, y, zk - .03), (abs(xb - xa) / n + .02, 1.1, .06), 'pale', 'external stair', 0)
         for s in (-1, 1):
-            C.beam('Stair stringer', (xa + .3, y + s * .55, za + .32), (xb, y + s * .55, zb + .32), .06, .30, 'pale', 'external stair')
-            C.beam('Stair handrail', (xa, y + s * .55, za + 1.05), (xb, y + s * .55, zb + 1.05), .04, .04, 'hardware', 'external stair')
-        if i == 0:
-            C.box('Intermediate landing', (x0 + 4.2, y, 5.0 - .03), (.8, 1.4, .06), 'pale', 'external stair', 0)
-    for x, z in ((x0 + 4.2, 5.0), (x0 + 9.0, A_EAVE)):
+            C.beam('Stair stringer', (xa + (.3 if xb > xa else -.3), y + s * .55, za + .32), (xb, y + s * .55, zb + .32), .06, .30, 'pale', 'external stair')
+            C.railing(f'Stair rail {i}{s}', (xa, y + s * .55, za + .1), (xb, y + s * .55, zb + .1), height=1.0, spacing=.35, role='hardware')
+    C.box('Intermediate landing', (x0 + 7.6, y, 5.0 - .03), (1.2, 1.4, .06), 'pale', 'external stair', 0)
+    C.railing('Intermediate landing rail', (x0 + 7.0, y - .6, 5.1), (x0 + 8.2, y - .6, 5.1), height=1.0, spacing=.35, role='hardware')
+    C.railing('Intermediate landing end rail', (x0 + 8.2, y - .6, 5.1), (x0 + 8.2, y + .6, 5.1), height=1.0, spacing=.35, role='hardware')
+    for x, z in ((x0 + 7.6, 5.0), (x0 - .6, A_EAVE)):
         for s in (-1, 1):
             C.box('Stair post', (x, y + s * .6, z / 2), (.12, .12, z), 'pale', 'external stair', 0)
-    C.CONTACTS.append(dict(name='External stair stringers bear on the apron and the aisle-roof landing', grade_m=0, landing_m=A_EAVE))
+    # Walkway grating along the aisle eave with a continuous rail.
+    wx0, wx1 = x0 - 1.2, x0 + 16.0
+    C.box('Eave walkway grating', ((wx0 + wx1) / 2, y, A_EAVE + .03), (wx1 - wx0, 1.3, .06), 'pale', 'external stair', 0)
+    C.railing('Walkway rail', (wx0, y - .62, A_EAVE + .06), (wx1, y - .62, A_EAVE + .06), height=1.0, spacing=.35, role='hardware')
+    C.railing('Walkway end rail', (wx1, y - .62, A_EAVE + .06), (wx1, y + .62, A_EAVE + .06), height=1.0, spacing=.35, role='hardware')
+    for xx in (wx0 + 2.0, wx0 + 8.0, wx0 + 14.0):
+        C.beam('Walkway bracket', (xx, YA0 - .02, A_EAVE - 1.2), (xx, y - .5, A_EAVE), .07, .07, 'pale', 'external stair')
+    C.CONTACTS.append(dict(name='Switchback stair stringers bear on the apron and the intermediate landing; walkway bracketed from the aisle wall', grade_m=0, landing_m=A_EAVE))
 
 
 def yard_and_programme():
@@ -321,7 +334,7 @@ def yard_and_programme():
             vertices.extend([(xs - .12, yy - 1.2, .015), (xs + .12, yy - 1.2, .015), (xs + .12, yy + 1.2, .015), (xs - .12, yy + 1.2, .015)])
             faces.append((o, o + 1, o + 2, o + 3)); xs += .7
         C.mesh(f'Sleepers {yy:.0f}', vertices, faces, 'rail', 'sidings')
-    bx, by = 18.0, YA1 + 12.0
+    bx, by = 36.0, YA1 + 12.0
     C.box('Boxcar body', (bx, by, 1.3 + 1.6), (14.0, 2.8, 3.2), 'car', 'rolling stock', 0)
     C.box('Boxcar underframe', (bx, by, 1.15), (14.0, 2.4, .30), 'hardware', 'rolling stock', 0)
     for dx in (-4.5, 4.5):
@@ -349,8 +362,8 @@ def build():
     yard_and_programme()
     f_front, f_right, f_rear, f_left = A.faces(L, W)
     f_front.label, f_rear.label = 'south aisle', 'north aisle'
-    aisle_wall(f_front, doors=(4, 8))
-    aisle_wall(f_rear, doors=(2, 9))
+    aisle_wall(f_front, doors=(8,))
+    aisle_wall(f_rear, doors=(3,))
     gable_end(f_left, open_frame=True)
     gable_end(f_right, open_frame=False)
     nave_walls()

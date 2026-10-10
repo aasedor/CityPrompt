@@ -1,0 +1,186 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "south aisle window 0",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 1",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 2",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 3",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle roll-up door 4",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 5",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 6",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 7",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle roll-up door 8",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 9",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 10",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south aisle window 11",
+      "face": "south aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 0",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 1",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle roll-up door 2",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 3",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 4",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 5",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 6",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 7",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 8",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle roll-up door 9",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 10",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north aisle window 11",
+      "face": "north aisle",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Sliding door opening",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Gable personnel door",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Open gable frame",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East roll-up door",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East aisle window 0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East aisle window 1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

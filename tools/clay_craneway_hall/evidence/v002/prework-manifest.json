@@ -1,0 +1,423 @@
+{
+  "candidate": "clay-craneway-hall-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-craneway-hall",
+  "variant_id": "clay-craneway-hall-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "early_20c_megastructure_industrial/variant_1 (heavy_craneway_hall)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 104.0,
+      "depth": 66.0,
+      "height": 23.3
+    },
+    "observed_storeys": 1,
+    "storey_programme": "single-volume crane hall with a crane-rail level; fixed authored assembly",
+    "plan": "long hall 84.0 x 36.0 m: nave 16.0 m between lean-to aisles of 10.0 m; twelve 7.0 m bays; gable end to the west; sidings on the north",
+    "section": {
+      "aisle_eave_m": 10.0,
+      "aisle_top_m": 13.0,
+      "nave_eave_m": 17.5,
+      "ridge_m": 20.5,
+      "clerestory_m": [
+        13.4,
+        16.4
+      ]
+    },
+    "gable_end": "lower storey clad with three green sliding doors across the nave; upper storey an open lattice frame with the crane girder visible; clad gable triangle above",
+    "aisle_walls": "lattice columns with X-bracing every bay, hooded windows between, roll-up doors in two bays",
+    "monitors": "four gabled monitors on each aisle roof and three on the nave ridge, glazed on their long sides",
+    "yard": "concrete apron all round; two rail sidings with a boxcar along the north side; external stair at the south-west corner",
+    "inferred": "84 m length calibrates twelve bays; the east gable end is not visible and repeats the west end without the open frame; the crane and interior are teaching assumptions."
+  },
+  "roof_contract": {
+    "type": "low-pitch gable over the nave, lean-to aisle roofs, eleven gabled monitors; corrugated plates",
+    "datum_m": 10.0,
+    "crowns_m": [
+      20.5,
+      23.3
+    ]
+  },
+  "identity_contract": {
+    "owner": "stepped nave-and-aisle silhouette with glazed clerestory and monitor rows, open-framed gable mouth over green sliding doors, lattice X-braced aisle walls, external stair, rail sidings"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: weathered galvanised corrugated cladding with recessed seams, dark steel lattice, green painted doors, rusty corrugated roofs, concrete apron, dark rails and sleepers",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 1,
+    "nave": "crane hall with an overhead travelling crane on rails at 14 m",
+    "aisles": "workshop bays with benches",
+    "stairs": "external steel stair to the aisle roof at the south-west corner"
+  },
+  "contact_contract": [
+    "Grade-zero slab and apron",
+    "Sliding doors on a floor track",
+    "Aisle roofs bear on the aisle walls and the nave columns",
+    "Monitors seated on the roof plates with cheek walls following the slope",
+    "Crane girder on the nave columns",
+    "Stair stringers bear on the apron and the aisle roof landing"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -176.79999999999998,
+        11.184
+      ],
+      "target": [
+        0,
+        0,
+        10.485000000000001
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -137.904,
+        -148.51199999999997,
+        46.6
+      ],
+      "target": [
+        0,
+        0,
+        10.485000000000001
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        123.75999999999998,
+        -141.44,
+        69.9
+      ],
+      "target": [
+        0,
+        0,
+        10.485000000000001
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        265.2
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 145.6
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -176.79999999999998,
+        0,
+        13.98
+      ],
+      "target": [
+        0,
+        0,
+        10.485000000000001
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        176.79999999999998,
+        0,
+        13.98
+      ],
+      "target": [
+        0,
+        0,
+        10.485000000000001
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        176.79999999999998,
+        13.98
+      ],
+      "target": [
+        0,
+        0,
+        10.485000000000001
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        123.75999999999998,
+        141.44,
+        41.940000000000005
+      ],
+      "target": [
+        0,
+        0,
+        10.485000000000001
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -36.0,
+        -42.0,
+        6.0
+      ],
+      "target": [
+        -22.0,
+        -18.0,
+        6.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -20.0,
+        -40.0,
+        16.0
+      ],
+      "target": [
+        -6.0,
+        -18.0,
+        14.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -12.0,
+        -32.0,
+        3.6
+      ],
+      "target": [
+        -8.0,
+        -18.0,
+        3.6
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "gable_mouth",
+      "location": [
+        -70.0,
+        -22.0,
+        8.0
+      ],
+      "target": [
+        -42.0,
+        0.0,
+        9.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "crane_interior",
+      "location": [
+        -62.0,
+        0.0,
+        14.5
+      ],
+      "target": [
+        -30.0,
+        0.0,
+        14.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "monitor_close",
+      "location": [
+        -30.0,
+        -34.0,
+        22.0
+      ],
+      "target": [
+        -18.0,
+        -13.0,
+        14.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "stair_contact",
+      "location": [
+        -48.0,
+        -34.0,
+        5.0
+      ],
+      "target": [
+        -38.0,
+        -18.0,
+        6.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "yard_sidings",
+      "location": [
+        -30.0,
+        48.0,
+        8.0
+      ],
+      "target": [
+        -6.0,
+        26.0,
+        2.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -60.0,
+        -4.0,
+        4.0
+      ],
+      "target": [
+        -22.0,
+        2.0,
+        5.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "side_doors",
+      "location": [
+        20.0,
+        44.0,
+        4.0
+      ],
+      "target": [
+        10.0,
+        18.0,
+        4.0
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "gable_mouth",
+    "crane_interior",
+    "monitor_close",
+    "stair_contact",
+    "yard_sidings",
+    "interior",
+    "side_doors"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1.png",
+        "path": "sources/front.png",
+        "bytes": 1216317,
+        "sha256": "fb465a8b7cba59a7a4347a68c5ba29d164ac9bb541adc1f59ba27c8e69131647"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 893797,
+        "sha256": "848bf059b331200134b0765e505160f7cfda28dfb7016c0be130bf7682466baa"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 937510,
+        "sha256": "a2d3f265b150e7bc58367e9bb54f691d168b70af34dbf1fe3c1cb18dca64ae2d"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_craneway.py",
+        "sha256": "a1278a1c0ad0fb42ec6d4af8cbc85ae6bd691e2e1cc4c6facddf6166181dc6d9"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "3acc31eca14eef58e2fbc110d7beb54c2466bde143438e1f9f6263323d3a5d53"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "cce1647c65934d723c57d843bef7477593ce4594561590a719b73effceedefc7"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T08:25:29.835610+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
