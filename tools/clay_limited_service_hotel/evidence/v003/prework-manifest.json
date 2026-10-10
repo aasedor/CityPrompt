@@ -1,0 +1,422 @@
+{
+  "candidate": "clay-limited-service-hotel-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-limited-service-hotel",
+  "variant_id": "clay-limited-service-hotel-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "highway_motor_hotel/variant_2 (hotel_limited_service)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 64.0,
+      "depth": 59.0,
+      "height": 15.6
+    },
+    "observed_storeys": 4,
+    "storey_programme": "lobby level and three guest-room floors; one-storey wing; fixed authored assembly",
+    "plan": "L-plan four-storey block (south block 32 x 20 m, north wing 20.4 x 20 m read from the 590 x 540 px top view at 0.075 m/px), one-storey wing 18.6 x 18.5 m at the south-west, glazed lobby tower 7 x 7 m at the south-east corner",
+    "windows": "paired punched guest-room windows per 4 m bay on every floor; beige EIFS with charcoal sections; accent band under the parapet",
+    "canopies": "glass-roofed porte-cocheres on stone piers projecting east (10 m) and south (10 m) from the lobby corner",
+    "levels_m": [
+      0.15,
+      4.0,
+      7.2,
+      10.4
+    ],
+    "roof_m": 13.6,
+    "parapet_m": 0.7000000000000011,
+    "wing_roof_m": 4.8,
+    "tower_m": 15.2,
+    "site": "parking court west and north, drive loop east, pylon sign at the road",
+    "inferred": "32 m south block calibrates the bay cadence; the west and north faces repeat the window grammar; interiors are teaching assumptions."
+  },
+  "roof_contract": {
+    "type": "flat white membrane behind a dark parapet; rooftop units; one-storey wing roof with a rooflight; glass canopies",
+    "datum_m": 13.6,
+    "crowns_m": [
+      14.3,
+      15.2
+    ]
+  },
+  "identity_contract": {
+    "owner": "beige and charcoal EIFS L-block with paired windows, accent band, glazed lobby tower, stone-piered glass porte-cocheres, low glazed wing"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: beige and charcoal EIFS with recessed panel joints, dark parapet cap and accent band, warm stone pier cladding, dark window frames, white membrane",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 4,
+    "ground": "lobby, breakfast room and pool wing, ground-floor rooms",
+    "upper": "double-loaded guest-room corridors",
+    "stairs": "straight supported flights in the lobby tower"
+  },
+  "contact_contract": [
+    "Grade-zero slab and lot",
+    "Lobby doors at slab level under the canopies",
+    "Canopy slabs on stone piers and the facade",
+    "Wing roof seated below the south block windows",
+    "Tower seated on the slab and tied to the block",
+    "Rooftop units on curbs"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -108.8,
+        7.4879999999999995
+      ],
+      "target": [
+        0,
+        0,
+        7.02
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -84.864,
+        -91.392,
+        31.2
+      ],
+      "target": [
+        0,
+        0,
+        7.02
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        76.16,
+        -87.04,
+        46.8
+      ],
+      "target": [
+        0,
+        0,
+        7.02
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        163.2
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 89.6
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -108.8,
+        0,
+        9.36
+      ],
+      "target": [
+        0,
+        0,
+        7.02
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        108.8,
+        0,
+        9.36
+      ],
+      "target": [
+        0,
+        0,
+        7.02
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        108.8,
+        9.36
+      ],
+      "target": [
+        0,
+        0,
+        7.02
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        76.16,
+        87.04,
+        28.08
+      ],
+      "target": [
+        0,
+        0,
+        7.02
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        36.0,
+        -2.0,
+        5.0
+      ],
+      "target": [
+        16.0,
+        -6.0,
+        5.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        30.0,
+        -36.0,
+        13.0
+      ],
+      "target": [
+        12.0,
+        -20.0,
+        12.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        27.0,
+        -25.0,
+        6.0
+      ],
+      "target": [
+        15.0,
+        -17.0,
+        6.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "porte_cochere",
+      "location": [
+        34.0,
+        -20.0,
+        2.5
+      ],
+      "target": [
+        20.0,
+        -12.5,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "lobby_tower",
+      "location": [
+        26.0,
+        -40.0,
+        6.0
+      ],
+      "target": [
+        12.5,
+        -20.0,
+        7.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "wing_contact",
+      "location": [
+        -34.0,
+        -38.0,
+        4.0
+      ],
+      "target": [
+        -18.0,
+        -23.0,
+        4.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "parapet_corner",
+      "location": [
+        26.0,
+        -28.0,
+        17.0
+      ],
+      "target": [
+        16.0,
+        -20.0,
+        13.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "roof_plant",
+      "location": [
+        -10.0,
+        -36.0,
+        24.0
+      ],
+      "target": [
+        2.0,
+        -8.0,
+        14.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        31.0,
+        -19.8,
+        2.2
+      ],
+      "target": [
+        12.0,
+        -17.5,
+        2.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear_entry",
+      "location": [
+        -14.0,
+        34.0,
+        3.0
+      ],
+      "target": [
+        4.0,
+        20.0,
+        2.4
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "porte_cochere",
+    "lobby_tower",
+    "wing_contact",
+    "parapet_corner",
+    "roof_plant",
+    "interior",
+    "rear_entry"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/highway-motor-hotel/variant_2.png",
+        "path": "sources/front.png",
+        "bytes": 1164853,
+        "sha256": "3ef7d1d1b1c82a458abd554de592f225f06ad14c5b56b7ee8e36b71cbce1ae58"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/highway-motor-hotel/variant_2_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 854242,
+        "sha256": "443032c73db67168cf81932d2f6b2f357d7055436ec41764c4ba2c429a891591"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/highway-motor-hotel/variant_2_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 865338,
+        "sha256": "21f4b2c5722cb38843bad22f3523970b8e61e56669225240e92875a8afeda77d"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_hotel.py",
+        "sha256": "c4c848e08f4a20283c6104a109806559a4a67f4a5bb939dd9e1a60f7071f61c2"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "21f2525e60950112f9f935f13f658b4daf373ad5cf6a97fdbf88cff9a7e48cfc"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "d6b2008730ec13c0f10d419a0688fb52b9d27ab7bbc3fad049ec4e7b6cdfb262"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T10:31:27.157795+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

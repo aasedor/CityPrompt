@@ -1,0 +1,7484 @@
+{
+  "candidate": "clay-limited-service-hotel-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 836,
+    "vertices": 12526,
+    "polygons": 20634,
+    "triangles": 20634,
+    "path": "clay-limited-service-hotel-clay-v003-authoring.blend",
+    "bytes": 7077872,
+    "sha256": "37d343166abbac7599050305a8e7dc0bf5743e3a5f507e85afa7de22801c99e5"
+  },
+  "runtime": {
+    "path": "clay-limited-service-hotel-clay-v003.glb",
+    "bytes": 979764,
+    "sha256": "eabe68f43401f5792214700806a323c007268db130d58b691932aa2565bc3374",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 18,
+    "vertices": 12526,
+    "polygons": 20634,
+    "triangles": 20634
+  },
+  "original_bounds_m": [
+    [
+      -38.0,
+      -35.0,
+      0.0
+    ],
+    [
+      38.0,
+      34.5,
+      15.550000190734863
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -38.0,
+      -35.0,
+      0.0
+    ],
+    [
+      38.0,
+      34.5,
+      15.550000190734863
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 64.0,
+    "depth": 59.0,
+    "height": 15.6
+  },
+  "native_dimensions_m": {
+    "width": 76.0,
+    "depth": 69.5,
+    "height": 15.550000190734863
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -0.25,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 7,
+    "joint": 67,
+    "trim": 292,
+    "pale": 24,
+    "stone": 19,
+    "foundation": 4,
+    "glass": 237,
+    "hardware": 32,
+    "interior": 18,
+    "floor": 18,
+    "timber": 49,
+    "blue": 1,
+    "planting": 13,
+    "charcoal": 8,
+    "accent": 4,
+    "green": 5,
+    "cap": 34,
+    "membrane": 4
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/porte_cochere.png",
+    "renders/lobby_tower.png",
+    "renders/wing_contact.png",
+    "renders/parapet_corner.png",
+    "renders/roof_plant.png",
+    "renders/interior.png",
+    "renders/rear_entry.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.09036611020565033,
+      "xmax": 0.9081108570098877,
+      "ymin": 0.39715349674224854,
+      "ymax": 0.6059949398040771
+    },
+    "front_corner": {
+      "xmin": 0.0990915596485138,
+      "xmax": 0.9241363406181335,
+      "ymin": 0.24020452797412872,
+      "ymax": 0.6165210008621216
+    },
+    "aerial": {
+      "xmin": 0.09187992662191391,
+      "xmax": 0.9008277058601379,
+      "ymin": 0.17073073983192444,
+      "ymax": 0.6287891864776611
+    },
+    "top": {
+      "xmin": 0.1596747636795044,
+      "xmax": 0.8403252363204956,
+      "ymin": 0.08205673098564148,
+      "ymax": 0.9119726419448853
+    },
+    "left_side": {
+      "xmin": 0.17352871596813202,
+      "xmax": 0.9080888628959656,
+      "ymin": 0.3784209191799164,
+      "ymax": 0.6043684482574463
+    },
+    "right_side": {
+      "xmin": 0.0977417379617691,
+      "xmax": 0.9022584557533264,
+      "ymin": 0.3781881034374237,
+      "ymax": 0.6050052046775818
+    },
+    "rear": {
+      "xmin": 0.09239127486944199,
+      "xmax": 0.8888447284698486,
+      "ymin": 0.3890131115913391,
+      "ymax": 0.6017212867736816
+    },
+    "rear_side": {
+      "xmin": 0.08094397932291031,
+      "xmax": 0.877781331539154,
+      "ymin": 0.25442299246788025,
+      "ymax": 0.6145297884941101
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Lobby stair",
+      "x": 11.0,
+      "y": -19.2,
+      "lower": 0.15,
+      "upper": 4.0,
+      "length": 5.2,
+      "width": 1.1,
+      "treads": 23,
+      "rise_m": 0.1673913043478261,
+      "run_m": 0.22608695652173913
+    },
+    {
+      "name": "Porte-cochere canopies on stone piers and the lobby facade",
+      "soffit_m": 4.6,
+      "piers": 4
+    },
+    {
+      "name": "Lobby doors at slab level under the canopies",
+      "grade_m": 0,
+      "step_m": 0.15
+    },
+    {
+      "name": "One-storey wing roof seated against the south block below its windows",
+      "roof_m": 4.8
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "Room window -0.5 0.1 -1",
+      "face": "south block east",
+      "u": -1.2990000000000004,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -0.5 0.1 1",
+      "face": "south block east",
+      "u": 0.20099999999999962,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -0.5 4.0 -1",
+      "face": "south block east",
+      "u": -1.2990000000000004,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -0.5 4.0 1",
+      "face": "south block east",
+      "u": 0.20099999999999962,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -0.5 7.2 -1",
+      "face": "south block east",
+      "u": -1.2990000000000004,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -0.5 7.2 1",
+      "face": "south block east",
+      "u": 0.20099999999999962,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -0.5 10.4 -1",
+      "face": "south block east",
+      "u": -1.2990000000000004,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -0.5 10.4 1",
+      "face": "south block east",
+      "u": 0.20099999999999962,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +3.5 0.1 -1",
+      "face": "south block east",
+      "u": 2.7009999999999996,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +3.5 0.1 1",
+      "face": "south block east",
+      "u": 4.201,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +3.5 4.0 -1",
+      "face": "south block east",
+      "u": 2.7009999999999996,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +3.5 4.0 1",
+      "face": "south block east",
+      "u": 4.201,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +3.5 7.2 -1",
+      "face": "south block east",
+      "u": 2.7009999999999996,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +3.5 7.2 1",
+      "face": "south block east",
+      "u": 4.201,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +3.5 10.4 -1",
+      "face": "south block east",
+      "u": 2.7009999999999996,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +3.5 10.4 1",
+      "face": "south block east",
+      "u": 4.201,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +7.5 0.1 -1",
+      "face": "south block east",
+      "u": 6.701,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +7.5 0.1 1",
+      "face": "south block east",
+      "u": 8.201,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +7.5 4.0 -1",
+      "face": "south block east",
+      "u": 6.701,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +7.5 4.0 1",
+      "face": "south block east",
+      "u": 8.201,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +7.5 7.2 -1",
+      "face": "south block east",
+      "u": 6.701,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +7.5 7.2 1",
+      "face": "south block east",
+      "u": 8.201,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +7.5 10.4 -1",
+      "face": "south block east",
+      "u": 6.701,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +7.5 10.4 1",
+      "face": "south block east",
+      "u": 8.201,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -13.5 4.0 -1",
+      "face": "south block south",
+      "u": -14.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -13.5 4.0 1",
+      "face": "south block south",
+      "u": -12.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -13.5 7.2 -1",
+      "face": "south block south",
+      "u": -14.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -13.5 7.2 1",
+      "face": "south block south",
+      "u": -12.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -13.5 10.4 -1",
+      "face": "south block south",
+      "u": -14.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -13.5 10.4 1",
+      "face": "south block south",
+      "u": -12.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -9.5 4.0 -1",
+      "face": "south block south",
+      "u": -10.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -9.5 4.0 1",
+      "face": "south block south",
+      "u": -8.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -9.5 7.2 -1",
+      "face": "south block south",
+      "u": -10.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -9.5 7.2 1",
+      "face": "south block south",
+      "u": -8.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -9.5 10.4 -1",
+      "face": "south block south",
+      "u": -10.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -9.5 10.4 1",
+      "face": "south block south",
+      "u": -8.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -5.5 0.1 -1",
+      "face": "south block south",
+      "u": -6.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -5.5 0.1 1",
+      "face": "south block south",
+      "u": -4.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -5.5 4.0 -1",
+      "face": "south block south",
+      "u": -6.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -5.5 4.0 1",
+      "face": "south block south",
+      "u": -4.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -5.5 7.2 -1",
+      "face": "south block south",
+      "u": -6.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -5.5 7.2 1",
+      "face": "south block south",
+      "u": -4.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -5.5 10.4 -1",
+      "face": "south block south",
+      "u": -6.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -5.5 10.4 1",
+      "face": "south block south",
+      "u": -4.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -1.5 0.1 -1",
+      "face": "south block south",
+      "u": -2.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -1.5 0.1 1",
+      "face": "south block south",
+      "u": -0.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -1.5 4.0 -1",
+      "face": "south block south",
+      "u": -2.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -1.5 4.0 1",
+      "face": "south block south",
+      "u": -0.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -1.5 7.2 -1",
+      "face": "south block south",
+      "u": -2.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -1.5 7.2 1",
+      "face": "south block south",
+      "u": -0.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -1.5 10.4 -1",
+      "face": "south block south",
+      "u": -2.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -1.5 10.4 1",
+      "face": "south block south",
+      "u": -0.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.5 0.1 -1",
+      "face": "south block south",
+      "u": 1.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.5 0.1 1",
+      "face": "south block south",
+      "u": 3.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.5 4.0 -1",
+      "face": "south block south",
+      "u": 1.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.5 4.0 1",
+      "face": "south block south",
+      "u": 3.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.5 7.2 -1",
+      "face": "south block south",
+      "u": 1.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.5 7.2 1",
+      "face": "south block south",
+      "u": 3.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.5 10.4 -1",
+      "face": "south block south",
+      "u": 1.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.5 10.4 1",
+      "face": "south block south",
+      "u": 3.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.5 0.1 -1",
+      "face": "south block south",
+      "u": 5.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.5 0.1 1",
+      "face": "south block south",
+      "u": 7.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.5 4.0 -1",
+      "face": "south block south",
+      "u": 5.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.5 4.0 1",
+      "face": "south block south",
+      "u": 7.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.5 7.2 -1",
+      "face": "south block south",
+      "u": 5.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.5 7.2 1",
+      "face": "south block south",
+      "u": 7.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.5 10.4 -1",
+      "face": "south block south",
+      "u": 5.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.5 10.4 1",
+      "face": "south block south",
+      "u": 7.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 7.2 -1",
+      "face": "south block west",
+      "u": -6.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 7.2 1",
+      "face": "south block west",
+      "u": -5.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 10.4 -1",
+      "face": "south block west",
+      "u": -6.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 10.4 1",
+      "face": "south block west",
+      "u": -5.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 7.2 -1",
+      "face": "south block west",
+      "u": -2.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 7.2 1",
+      "face": "south block west",
+      "u": -1.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 10.4 -1",
+      "face": "south block west",
+      "u": -2.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 10.4 1",
+      "face": "south block west",
+      "u": -1.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 7.2 -1",
+      "face": "south block west",
+      "u": 1.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 7.2 1",
+      "face": "south block west",
+      "u": 2.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 10.4 -1",
+      "face": "south block west",
+      "u": 1.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 10.4 1",
+      "face": "south block west",
+      "u": 2.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 7.2 -1",
+      "face": "south block west",
+      "u": 5.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 7.2 1",
+      "face": "south block west",
+      "u": 6.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 10.4 -1",
+      "face": "south block west",
+      "u": 5.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 10.4 1",
+      "face": "south block west",
+      "u": 6.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -16.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +9.2 0.1 -1",
+      "face": "south block north",
+      "u": 8.45,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +9.2 0.1 1",
+      "face": "south block north",
+      "u": 9.95,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +9.2 4.0 -1",
+      "face": "south block north",
+      "u": 8.45,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +9.2 4.0 1",
+      "face": "south block north",
+      "u": 9.95,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +9.2 7.2 -1",
+      "face": "south block north",
+      "u": 8.45,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +9.2 7.2 1",
+      "face": "south block north",
+      "u": 9.95,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +9.2 10.4 -1",
+      "face": "south block north",
+      "u": 8.45,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +9.2 10.4 1",
+      "face": "south block north",
+      "u": 9.95,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +13.2 0.1 -1",
+      "face": "south block north",
+      "u": 12.45,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +13.2 0.1 1",
+      "face": "south block north",
+      "u": 13.95,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +13.2 4.0 -1",
+      "face": "south block north",
+      "u": 12.45,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +13.2 4.0 1",
+      "face": "south block north",
+      "u": 13.95,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +13.2 7.2 -1",
+      "face": "south block north",
+      "u": 12.45,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +13.2 7.2 1",
+      "face": "south block north",
+      "u": 13.95,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +13.2 10.4 -1",
+      "face": "south block north",
+      "u": 12.45,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +13.2 10.4 1",
+      "face": "south block north",
+      "u": 13.95,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 0.1 -1",
+      "face": "north wing east",
+      "u": -6.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 0.1 1",
+      "face": "north wing east",
+      "u": -5.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 4.0 -1",
+      "face": "north wing east",
+      "u": -6.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 4.0 1",
+      "face": "north wing east",
+      "u": -5.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 7.2 -1",
+      "face": "north wing east",
+      "u": -6.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 7.2 1",
+      "face": "north wing east",
+      "u": -5.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 10.4 -1",
+      "face": "north wing east",
+      "u": -6.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 10.4 1",
+      "face": "north wing east",
+      "u": -5.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 0.1 -1",
+      "face": "north wing east",
+      "u": -2.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 0.1 1",
+      "face": "north wing east",
+      "u": -1.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 4.0 -1",
+      "face": "north wing east",
+      "u": -2.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 4.0 1",
+      "face": "north wing east",
+      "u": -1.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 7.2 -1",
+      "face": "north wing east",
+      "u": -2.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 7.2 1",
+      "face": "north wing east",
+      "u": -1.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 10.4 -1",
+      "face": "north wing east",
+      "u": -2.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 10.4 1",
+      "face": "north wing east",
+      "u": -1.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 0.1 -1",
+      "face": "north wing east",
+      "u": 1.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 0.1 1",
+      "face": "north wing east",
+      "u": 2.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 4.0 -1",
+      "face": "north wing east",
+      "u": 1.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 4.0 1",
+      "face": "north wing east",
+      "u": 2.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 7.2 -1",
+      "face": "north wing east",
+      "u": 1.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 7.2 1",
+      "face": "north wing east",
+      "u": 2.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 10.4 -1",
+      "face": "north wing east",
+      "u": 1.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 10.4 1",
+      "face": "north wing east",
+      "u": 2.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 0.1 -1",
+      "face": "north wing east",
+      "u": 5.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 0.1 1",
+      "face": "north wing east",
+      "u": 6.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 4.0 -1",
+      "face": "north wing east",
+      "u": 5.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 4.0 1",
+      "face": "north wing east",
+      "u": 6.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 7.2 -1",
+      "face": "north wing east",
+      "u": 5.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 7.2 1",
+      "face": "north wing east",
+      "u": 6.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 10.4 -1",
+      "face": "north wing east",
+      "u": 5.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 10.4 1",
+      "face": "north wing east",
+      "u": 6.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        14.0,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -8.0 0.1 -1",
+      "face": "north wing north",
+      "u": -8.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -8.0 0.1 1",
+      "face": "north wing north",
+      "u": -7.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -8.0 4.0 -1",
+      "face": "north wing north",
+      "u": -8.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -8.0 4.0 1",
+      "face": "north wing north",
+      "u": -7.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -8.0 7.2 -1",
+      "face": "north wing north",
+      "u": -8.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -8.0 7.2 1",
+      "face": "north wing north",
+      "u": -7.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -8.0 10.4 -1",
+      "face": "north wing north",
+      "u": -8.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -8.0 10.4 1",
+      "face": "north wing north",
+      "u": -7.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -4.0 0.1 -1",
+      "face": "north wing north",
+      "u": -4.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -4.0 0.1 1",
+      "face": "north wing north",
+      "u": -3.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -4.0 4.0 -1",
+      "face": "north wing north",
+      "u": -4.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -4.0 4.0 1",
+      "face": "north wing north",
+      "u": -3.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -4.0 7.2 -1",
+      "face": "north wing north",
+      "u": -4.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -4.0 7.2 1",
+      "face": "north wing north",
+      "u": -3.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -4.0 10.4 -1",
+      "face": "north wing north",
+      "u": -4.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -4.0 10.4 1",
+      "face": "north wing north",
+      "u": -3.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +0.0 4.0 -1",
+      "face": "north wing north",
+      "u": -0.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +0.0 4.0 1",
+      "face": "north wing north",
+      "u": 0.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +0.0 7.2 -1",
+      "face": "north wing north",
+      "u": -0.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +0.0 7.2 1",
+      "face": "north wing north",
+      "u": 0.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +0.0 10.4 -1",
+      "face": "north wing north",
+      "u": -0.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +0.0 10.4 1",
+      "face": "north wing north",
+      "u": 0.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +4.0 0.1 -1",
+      "face": "north wing north",
+      "u": 3.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +4.0 0.1 1",
+      "face": "north wing north",
+      "u": 4.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +4.0 4.0 -1",
+      "face": "north wing north",
+      "u": 3.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +4.0 4.0 1",
+      "face": "north wing north",
+      "u": 4.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +4.0 7.2 -1",
+      "face": "north wing north",
+      "u": 3.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +4.0 7.2 1",
+      "face": "north wing north",
+      "u": 4.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +4.0 10.4 -1",
+      "face": "north wing north",
+      "u": 3.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +4.0 10.4 1",
+      "face": "north wing north",
+      "u": 4.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +8.0 0.1 -1",
+      "face": "north wing north",
+      "u": 7.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +8.0 0.1 1",
+      "face": "north wing north",
+      "u": 8.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +8.0 4.0 -1",
+      "face": "north wing north",
+      "u": 7.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +8.0 4.0 1",
+      "face": "north wing north",
+      "u": 8.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +8.0 7.2 -1",
+      "face": "north wing north",
+      "u": 7.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +8.0 7.2 1",
+      "face": "north wing north",
+      "u": 8.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +8.0 10.4 -1",
+      "face": "north wing north",
+      "u": 7.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +8.0 10.4 1",
+      "face": "north wing north",
+      "u": 8.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Rear entry doors",
+      "face": "north wing north",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 2.4,
+      "height": 2.8,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.799999952316284,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 0.1 -1",
+      "face": "north wing west",
+      "u": -6.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 0.1 1",
+      "face": "north wing west",
+      "u": -5.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 4.0 -1",
+      "face": "north wing west",
+      "u": -6.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 4.0 1",
+      "face": "north wing west",
+      "u": -5.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 7.2 -1",
+      "face": "north wing west",
+      "u": -6.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 7.2 1",
+      "face": "north wing west",
+      "u": -5.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 10.4 -1",
+      "face": "north wing west",
+      "u": -6.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -6.0 10.4 1",
+      "face": "north wing west",
+      "u": -5.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 0.1 -1",
+      "face": "north wing west",
+      "u": -2.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 0.1 1",
+      "face": "north wing west",
+      "u": -1.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 4.0 -1",
+      "face": "north wing west",
+      "u": -2.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 4.0 1",
+      "face": "north wing west",
+      "u": -1.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 7.2 -1",
+      "face": "north wing west",
+      "u": -2.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 7.2 1",
+      "face": "north wing west",
+      "u": -1.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 10.4 -1",
+      "face": "north wing west",
+      "u": -2.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window -2.0 10.4 1",
+      "face": "north wing west",
+      "u": -1.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 0.1 -1",
+      "face": "north wing west",
+      "u": 1.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 0.1 1",
+      "face": "north wing west",
+      "u": 2.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 4.0 -1",
+      "face": "north wing west",
+      "u": 1.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 4.0 1",
+      "face": "north wing west",
+      "u": 2.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 7.2 -1",
+      "face": "north wing west",
+      "u": 1.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 7.2 1",
+      "face": "north wing west",
+      "u": 2.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 10.4 -1",
+      "face": "north wing west",
+      "u": 1.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +2.0 10.4 1",
+      "face": "north wing west",
+      "u": 2.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 0.1 -1",
+      "face": "north wing west",
+      "u": 5.25,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 0.1 1",
+      "face": "north wing west",
+      "u": 6.75,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 4.0 -1",
+      "face": "north wing west",
+      "u": 5.25,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 4.0 1",
+      "face": "north wing west",
+      "u": 6.75,
+      "z": 4.9,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 7.2 -1",
+      "face": "north wing west",
+      "u": 5.25,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 7.2 1",
+      "face": "north wing west",
+      "u": 6.75,
+      "z": 8.1,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 10.4 -1",
+      "face": "north wing west",
+      "u": 5.25,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Room window +6.0 10.4 1",
+      "face": "north wing west",
+      "u": 6.75,
+      "z": 11.3,
+      "width": 1.0,
+      "height": 1.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.22,
+      "face_origin": [
+        -6.400000095367432,
+        10.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "guest room behind carrier",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "wing south storefront ribbon",
+      "face": "wing south",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 17.0,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -18.700000762939453,
+        -23.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 10,
+      "rows": 1
+    },
+    {
+      "id": "wing west storefront ribbon",
+      "face": "wing west",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 16.299999999999997,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -28.0,
+        -13.75,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 10,
+      "rows": 1
+    },
+    {
+      "id": "wing north storefront ribbon",
+      "face": "wing north",
+      "u": 3.3009999999999997,
+      "z": 1.0,
+      "width": 10.398000000000001,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -18.700000762939453,
+        -4.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 6,
+      "rows": 1
+    }
+  ],
+  "authoring_modules": {
+    "foundation": [
+      "Ground slab",
+      "Wing slab",
+      "Wing slab south"
+    ],
+    "site": [
+      "Parking court",
+      "Road",
+      "Road kerb",
+      "Lawn verge east",
+      "Lawn verge",
+      "Lawn verge.001",
+      "Lawn verge.002",
+      "Parking stripes",
+      "Drive loop kerb",
+      "Pylon sign post",
+      "Pylon sign board",
+      "Parked car body",
+      "Parked car cabin",
+      "Parked car body.001",
+      "Parked car cabin.001",
+      "Parked car body.002",
+      "Parked car cabin.002",
+      "Parked car body.003",
+      "Parked car cabin.003",
+      "Parked car body.004",
+      "Parked car cabin.004",
+      "Parked car body.005",
+      "Parked car cabin.005",
+      "Parked car body.006",
+      "Parked car cabin.006"
+    ],
+    "occupied floors": [
+      "Guest floor south",
+      "Guest floor south east",
+      "Guest floor north",
+      "Guest floor south.001",
+      "Guest floor south east.001",
+      "Guest floor north.001",
+      "Guest floor south.002",
+      "Guest floor south east.002",
+      "Guest floor north.002"
+    ],
+    "bedroom furniture": [
+      "Bed grounded foot",
+      "Bed grounded foot.001",
+      "Bed grounded foot.002",
+      "Bed grounded foot.003",
+      "Bed frame",
+      "Mattress",
+      "Duvet",
+      "Headboard",
+      "Pillow",
+      "Pillow.001",
+      "Bed grounded foot.004",
+      "Bed grounded foot.005",
+      "Bed grounded foot.006",
+      "Bed grounded foot.007",
+      "Bed frame.001",
+      "Mattress.001",
+      "Duvet.001",
+      "Headboard.001",
+      "Pillow.002",
+      "Pillow.003",
+      "Bed grounded foot.008",
+      "Bed grounded foot.009",
+      "Bed grounded foot.010",
+      "Bed grounded foot.011",
+      "Bed frame.002",
+      "Mattress.002",
+      "Duvet.002",
+      "Headboard.002",
+      "Pillow.004",
+      "Pillow.005",
+      "Bed grounded foot.012",
+      "Bed grounded foot.013",
+      "Bed grounded foot.014",
+      "Bed grounded foot.015",
+      "Bed frame.003",
+      "Mattress.003",
+      "Duvet.003",
+      "Headboard.003",
+      "Pillow.006",
+      "Pillow.007",
+      "Bed grounded foot.016",
+      "Bed grounded foot.017",
+      "Bed grounded foot.018",
+      "Bed grounded foot.019",
+      "Bed frame.004",
+      "Mattress.004",
+      "Duvet.004",
+      "Headboard.004",
+      "Pillow.008",
+      "Pillow.009",
+      "Bed grounded foot.020",
+      "Bed grounded foot.021",
+      "Bed grounded foot.022",
+      "Bed grounded foot.023",
+      "Bed frame.005",
+      "Mattress.005",
+      "Duvet.005",
+      "Headboard.005",
+      "Pillow.010",
+      "Pillow.011"
+    ],
+    "wing": [
+      "Breakfast counter",
+      "Pool basin"
+    ],
+    "garden planting": [
+      "Serviceberry rooted trunk",
+      "Serviceberry branch",
+      "Serviceberry leafy crown",
+      "Serviceberry branch.001",
+      "Serviceberry leafy crown.001",
+      "Serviceberry branch.002",
+      "Serviceberry leafy crown.002",
+      "Serviceberry rooted trunk.001",
+      "Serviceberry branch.003",
+      "Serviceberry leafy crown.003",
+      "Serviceberry branch.004",
+      "Serviceberry leafy crown.004",
+      "Serviceberry branch.005",
+      "Serviceberry leafy crown.005",
+      "Serviceberry rooted trunk.002",
+      "Serviceberry branch.006",
+      "Serviceberry leafy crown.006",
+      "Serviceberry branch.007",
+      "Serviceberry leafy crown.007",
+      "Serviceberry branch.008",
+      "Serviceberry leafy crown.008"
+    ],
+    "envelope": [
+      "south block east carrier",
+      "south block south carrier",
+      "south block west carrier",
+      "south block north carrier",
+      "south block north carrier.001",
+      "north wing east carrier",
+      "north wing north carrier",
+      "north wing west carrier",
+      "wing south carrier",
+      "wing west carrier",
+      "wing north carrier",
+      "wing east carrier"
+    ],
+    "panel joints": [
+      "south block east panel joints",
+      "south block south panel joints",
+      "south block west panel joints",
+      "south block north panel joints",
+      "south block north panel joints.001",
+      "north wing east panel joints",
+      "north wing north panel joints",
+      "north wing west panel joints",
+      "wing south panel joints",
+      "wing west panel joints",
+      "wing north panel joints"
+    ],
+    "window frames": [
+      "Room window -0.5 0.1 -1 reveal and frame",
+      "Room window -0.5 0.1 1 reveal and frame",
+      "Room window -0.5 4.0 -1 reveal and frame",
+      "Room window -0.5 4.0 1 reveal and frame",
+      "Room window -0.5 7.2 -1 reveal and frame",
+      "Room window -0.5 7.2 1 reveal and frame",
+      "Room window -0.5 10.4 -1 reveal and frame",
+      "Room window -0.5 10.4 1 reveal and frame",
+      "Room window +3.5 0.1 -1 reveal and frame",
+      "Room window +3.5 0.1 1 reveal and frame",
+      "Room window +3.5 4.0 -1 reveal and frame",
+      "Room window +3.5 4.0 1 reveal and frame",
+      "Room window +3.5 7.2 -1 reveal and frame",
+      "Room window +3.5 7.2 1 reveal and frame",
+      "Room window +3.5 10.4 -1 reveal and frame",
+      "Room window +3.5 10.4 1 reveal and frame",
+      "Room window +7.5 0.1 -1 reveal and frame",
+      "Room window +7.5 0.1 1 reveal and frame",
+      "Room window +7.5 4.0 -1 reveal and frame",
+      "Room window +7.5 4.0 1 reveal and frame",
+      "Room window +7.5 7.2 -1 reveal and frame",
+      "Room window +7.5 7.2 1 reveal and frame",
+      "Room window +7.5 10.4 -1 reveal and frame",
+      "Room window +7.5 10.4 1 reveal and frame",
+      "Room window -13.5 4.0 -1 reveal and frame",
+      "Room window -13.5 4.0 1 reveal and frame",
+      "Room window -13.5 7.2 -1 reveal and frame",
+      "Room window -13.5 7.2 1 reveal and frame",
+      "Room window -13.5 10.4 -1 reveal and frame",
+      "Room window -13.5 10.4 1 reveal and frame",
+      "Room window -9.5 4.0 -1 reveal and frame",
+      "Room window -9.5 4.0 1 reveal and frame",
+      "Room window -9.5 7.2 -1 reveal and frame",
+      "Room window -9.5 7.2 1 reveal and frame",
+      "Room window -9.5 10.4 -1 reveal and frame",
+      "Room window -9.5 10.4 1 reveal and frame",
+      "Room window -5.5 0.1 -1 reveal and frame",
+      "Room window -5.5 0.1 1 reveal and frame",
+      "Room window -5.5 4.0 -1 reveal and frame",
+      "Room window -5.5 4.0 1 reveal and frame",
+      "Room window -5.5 7.2 -1 reveal and frame",
+      "Room window -5.5 7.2 1 reveal and frame",
+      "Room window -5.5 10.4 -1 reveal and frame",
+      "Room window -5.5 10.4 1 reveal and frame",
+      "Room window -1.5 0.1 -1 reveal and frame",
+      "Room window -1.5 0.1 1 reveal and frame",
+      "Room window -1.5 4.0 -1 reveal and frame",
+      "Room window -1.5 4.0 1 reveal and frame",
+      "Room window -1.5 7.2 -1 reveal and frame",
+      "Room window -1.5 7.2 1 reveal and frame",
+      "Room window -1.5 10.4 -1 reveal and frame",
+      "Room window -1.5 10.4 1 reveal and frame",
+      "Room window +2.5 0.1 -1 reveal and frame",
+      "Room window +2.5 0.1 1 reveal and frame",
+      "Room window +2.5 4.0 -1 reveal and frame",
+      "Room window +2.5 4.0 1 reveal and frame",
+      "Room window +2.5 7.2 -1 reveal and frame",
+      "Room window +2.5 7.2 1 reveal and frame",
+      "Room window +2.5 10.4 -1 reveal and frame",
+      "Room window +2.5 10.4 1 reveal and frame",
+      "Room window +6.5 0.1 -1 reveal and frame",
+      "Room window +6.5 0.1 1 reveal and frame",
+      "Room window +6.5 4.0 -1 reveal and frame",
+      "Room window +6.5 4.0 1 reveal and frame",
+      "Room window +6.5 7.2 -1 reveal and frame",
+      "Room window +6.5 7.2 1 reveal and frame",
+      "Room window +6.5 10.4 -1 reveal and frame",
+      "Room window +6.5 10.4 1 reveal and frame",
+      "Room window -6.0 7.2 -1 reveal and frame",
+      "Room window -6.0 7.2 1 reveal and frame",
+      "Room window -6.0 10.4 -1 reveal and frame",
+      "Room window -6.0 10.4 1 reveal and frame",
+      "Room window -2.0 7.2 -1 reveal and frame",
+      "Room window -2.0 7.2 1 reveal and frame",
+      "Room window -2.0 10.4 -1 reveal and frame",
+      "Room window -2.0 10.4 1 reveal and frame",
+      "Room window +2.0 7.2 -1 reveal and frame",
+      "Room window +2.0 7.2 1 reveal and frame",
+      "Room window +2.0 10.4 -1 reveal and frame",
+      "Room window +2.0 10.4 1 reveal and frame",
+      "Room window +6.0 7.2 -1 reveal and frame",
+      "Room window +6.0 7.2 1 reveal and frame",
+      "Room window +6.0 10.4 -1 reveal and frame",
+      "Room window +6.0 10.4 1 reveal and frame",
+      "Room window +9.2 0.1 -1 reveal and frame",
+      "Room window +9.2 0.1 1 reveal and frame",
+      "Room window +9.2 4.0 -1 reveal and frame",
+      "Room window +9.2 4.0 1 reveal and frame",
+      "Room window +9.2 7.2 -1 reveal and frame",
+      "Room window +9.2 7.2 1 reveal and frame",
+      "Room window +9.2 10.4 -1 reveal and frame",
+      "Room window +9.2 10.4 1 reveal and frame",
+      "Room window +13.2 0.1 -1 reveal and frame",
+      "Room window +13.2 0.1 1 reveal and frame",
+      "Room window +13.2 4.0 -1 reveal and frame",
+      "Room window +13.2 4.0 1 reveal and frame",
+      "Room window +13.2 7.2 -1 reveal and frame",
+      "Room window +13.2 7.2 1 reveal and frame",
+      "Room window +13.2 10.4 -1 reveal and frame",
+      "Room window +13.2 10.4 1 reveal and frame",
+      "Room window -6.0 0.1 -1 reveal and frame",
+      "Room window -6.0 0.1 1 reveal and frame",
+      "Room window -6.0 4.0 -1 reveal and frame",
+      "Room window -6.0 4.0 1 reveal and frame",
+      "Room window -6.0 7.2 -1 reveal and frame.001",
+      "Room window -6.0 7.2 1 reveal and frame.001",
+      "Room window -6.0 10.4 -1 reveal and frame.001",
+      "Room window -6.0 10.4 1 reveal and frame.001",
+      "Room window -2.0 0.1 -1 reveal and frame",
+      "Room window -2.0 0.1 1 reveal and frame",
+      "Room window -2.0 4.0 -1 reveal and frame",
+      "Room window -2.0 4.0 1 reveal and frame",
+      "Room window -2.0 7.2 -1 reveal and frame.001",
+      "Room window -2.0 7.2 1 reveal and frame.001",
+      "Room window -2.0 10.4 -1 reveal and frame.001",
+      "Room window -2.0 10.4 1 reveal and frame.001",
+      "Room window +2.0 0.1 -1 reveal and frame",
+      "Room window +2.0 0.1 1 reveal and frame",
+      "Room window +2.0 4.0 -1 reveal and frame",
+      "Room window +2.0 4.0 1 reveal and frame",
+      "Room window +2.0 7.2 -1 reveal and frame.001",
+      "Room window +2.0 7.2 1 reveal and frame.001",
+      "Room window +2.0 10.4 -1 reveal and frame.001",
+      "Room window +2.0 10.4 1 reveal and frame.001",
+      "Room window +6.0 0.1 -1 reveal and frame",
+      "Room window +6.0 0.1 1 reveal and frame",
+      "Room window +6.0 4.0 -1 reveal and frame",
+      "Room window +6.0 4.0 1 reveal and frame",
+      "Room window +6.0 7.2 -1 reveal and frame.001",
+      "Room window +6.0 7.2 1 reveal and frame.001",
+      "Room window +6.0 10.4 -1 reveal and frame.001",
+      "Room window +6.0 10.4 1 reveal and frame.001",
+      "Room window -8.0 0.1 -1 reveal and frame",
+      "Room window -8.0 0.1 1 reveal and frame",
+      "Room window -8.0 4.0 -1 reveal and frame",
+      "Room window -8.0 4.0 1 reveal and frame",
+      "Room window -8.0 7.2 -1 reveal and frame",
+      "Room window -8.0 7.2 1 reveal and frame",
+      "Room window -8.0 10.4 -1 reveal and frame",
+      "Room window -8.0 10.4 1 reveal and frame",
+      "Room window -4.0 0.1 -1 reveal and frame",
+      "Room window -4.0 0.1 1 reveal and frame",
+      "Room window -4.0 4.0 -1 reveal and frame",
+      "Room window -4.0 4.0 1 reveal and frame",
+      "Room window -4.0 7.2 -1 reveal and frame",
+      "Room window -4.0 7.2 1 reveal and frame",
+      "Room window -4.0 10.4 -1 reveal and frame",
+      "Room window -4.0 10.4 1 reveal and frame",
+      "Room window +0.0 4.0 -1 reveal and frame",
+      "Room window +0.0 4.0 1 reveal and frame",
+      "Room window +0.0 7.2 -1 reveal and frame",
+      "Room window +0.0 7.2 1 reveal and frame",
+      "Room window +0.0 10.4 -1 reveal and frame",
+      "Room window +0.0 10.4 1 reveal and frame",
+      "Room window +4.0 0.1 -1 reveal and frame",
+      "Room window +4.0 0.1 1 reveal and frame",
+      "Room window +4.0 4.0 -1 reveal and frame",
+      "Room window +4.0 4.0 1 reveal and frame",
+      "Room window +4.0 7.2 -1 reveal and frame",
+      "Room window +4.0 7.2 1 reveal and frame",
+      "Room window +4.0 10.4 -1 reveal and frame",
+      "Room window +4.0 10.4 1 reveal and frame",
+      "Room window +8.0 0.1 -1 reveal and frame",
+      "Room window +8.0 0.1 1 reveal and frame",
+      "Room window +8.0 4.0 -1 reveal and frame",
+      "Room window +8.0 4.0 1 reveal and frame",
+      "Room window +8.0 7.2 -1 reveal and frame",
+      "Room window +8.0 7.2 1 reveal and frame",
+      "Room window +8.0 10.4 -1 reveal and frame",
+      "Room window +8.0 10.4 1 reveal and frame",
+      "Room window -6.0 0.1 -1 reveal and frame.001",
+      "Room window -6.0 0.1 1 reveal and frame.001",
+      "Room window -6.0 4.0 -1 reveal and frame.001",
+      "Room window -6.0 4.0 1 reveal and frame.001",
+      "Room window -6.0 7.2 -1 reveal and frame.002",
+      "Room window -6.0 7.2 1 reveal and frame.002",
+      "Room window -6.0 10.4 -1 reveal and frame.002",
+      "Room window -6.0 10.4 1 reveal and frame.002",
+      "Room window -2.0 0.1 -1 reveal and frame.001",
+      "Room window -2.0 0.1 1 reveal and frame.001",
+      "Room window -2.0 4.0 -1 reveal and frame.001",
+      "Room window -2.0 4.0 1 reveal and frame.001",
+      "Room window -2.0 7.2 -1 reveal and frame.002",
+      "Room window -2.0 7.2 1 reveal and frame.002",
+      "Room window -2.0 10.4 -1 reveal and frame.002",
+      "Room window -2.0 10.4 1 reveal and frame.002",
+      "Room window +2.0 0.1 -1 reveal and frame.001",
+      "Room window +2.0 0.1 1 reveal and frame.001",
+      "Room window +2.0 4.0 -1 reveal and frame.001",
+      "Room window +2.0 4.0 1 reveal and frame.001",
+      "Room window +2.0 7.2 -1 reveal and frame.002",
+      "Room window +2.0 7.2 1 reveal and frame.002",
+      "Room window +2.0 10.4 -1 reveal and frame.002",
+      "Room window +2.0 10.4 1 reveal and frame.002",
+      "Room window +6.0 0.1 -1 reveal and frame.001",
+      "Room window +6.0 0.1 1 reveal and frame.001",
+      "Room window +6.0 4.0 -1 reveal and frame.001",
+      "Room window +6.0 4.0 1 reveal and frame.001",
+      "Room window +6.0 7.2 -1 reveal and frame.002",
+      "Room window +6.0 7.2 1 reveal and frame.002",
+      "Room window +6.0 10.4 -1 reveal and frame.002",
+      "Room window +6.0 10.4 1 reveal and frame.002"
+    ],
+    "window glazing": [
+      "Room window -0.5 0.1 -1 pane",
+      "Room window -0.5 0.1 1 pane",
+      "Room window -0.5 4.0 -1 pane",
+      "Room window -0.5 4.0 1 pane",
+      "Room window -0.5 7.2 -1 pane",
+      "Room window -0.5 7.2 1 pane",
+      "Room window -0.5 10.4 -1 pane",
+      "Room window -0.5 10.4 1 pane",
+      "Room window +3.5 0.1 -1 pane",
+      "Room window +3.5 0.1 1 pane",
+      "Room window +3.5 4.0 -1 pane",
+      "Room window +3.5 4.0 1 pane",
+      "Room window +3.5 7.2 -1 pane",
+      "Room window +3.5 7.2 1 pane",
+      "Room window +3.5 10.4 -1 pane",
+      "Room window +3.5 10.4 1 pane",
+      "Room window +7.5 0.1 -1 pane",
+      "Room window +7.5 0.1 1 pane",
+      "Room window +7.5 4.0 -1 pane",
+      "Room window +7.5 4.0 1 pane",
+      "Room window +7.5 7.2 -1 pane",
+      "Room window +7.5 7.2 1 pane",
+      "Room window +7.5 10.4 -1 pane",
+      "Room window +7.5 10.4 1 pane",
+      "Room window -13.5 4.0 -1 pane",
+      "Room window -13.5 4.0 1 pane",
+      "Room window -13.5 7.2 -1 pane",
+      "Room window -13.5 7.2 1 pane",
+      "Room window -13.5 10.4 -1 pane",
+      "Room window -13.5 10.4 1 pane",
+      "Room window -9.5 4.0 -1 pane",
+      "Room window -9.5 4.0 1 pane",
+      "Room window -9.5 7.2 -1 pane",
+      "Room window -9.5 7.2 1 pane",
+      "Room window -9.5 10.4 -1 pane",
+      "Room window -9.5 10.4 1 pane",
+      "Room window -5.5 0.1 -1 pane",
+      "Room window -5.5 0.1 1 pane",
+      "Room window -5.5 4.0 -1 pane",
+      "Room window -5.5 4.0 1 pane",
+      "Room window -5.5 7.2 -1 pane",
+      "Room window -5.5 7.2 1 pane",
+      "Room window -5.5 10.4 -1 pane",
+      "Room window -5.5 10.4 1 pane",
+      "Room window -1.5 0.1 -1 pane",
+      "Room window -1.5 0.1 1 pane",
+      "Room window -1.5 4.0 -1 pane",
+      "Room window -1.5 4.0 1 pane",
+      "Room window -1.5 7.2 -1 pane",
+      "Room window -1.5 7.2 1 pane",
+      "Room window -1.5 10.4 -1 pane",
+      "Room window -1.5 10.4 1 pane",
+      "Room window +2.5 0.1 -1 pane",
+      "Room window +2.5 0.1 1 pane",
+      "Room window +2.5 4.0 -1 pane",
+      "Room window +2.5 4.0 1 pane",
+      "Room window +2.5 7.2 -1 pane",
+      "Room window +2.5 7.2 1 pane",
+      "Room window +2.5 10.4 -1 pane",
+      "Room window +2.5 10.4 1 pane",
+      "Room window +6.5 0.1 -1 pane",
+      "Room window +6.5 0.1 1 pane",
+      "Room window +6.5 4.0 -1 pane",
+      "Room window +6.5 4.0 1 pane",
+      "Room window +6.5 7.2 -1 pane",
+      "Room window +6.5 7.2 1 pane",
+      "Room window +6.5 10.4 -1 pane",
+      "Room window +6.5 10.4 1 pane",
+      "Room window -6.0 7.2 -1 pane",
+      "Room window -6.0 7.2 1 pane",
+      "Room window -6.0 10.4 -1 pane",
+      "Room window -6.0 10.4 1 pane",
+      "Room window -2.0 7.2 -1 pane",
+      "Room window -2.0 7.2 1 pane",
+      "Room window -2.0 10.4 -1 pane",
+      "Room window -2.0 10.4 1 pane",
+      "Room window +2.0 7.2 -1 pane",
+      "Room window +2.0 7.2 1 pane",
+      "Room window +2.0 10.4 -1 pane",
+      "Room window +2.0 10.4 1 pane",
+      "Room window +6.0 7.2 -1 pane",
+      "Room window +6.0 7.2 1 pane",
+      "Room window +6.0 10.4 -1 pane",
+      "Room window +6.0 10.4 1 pane",
+      "Room window +9.2 0.1 -1 pane",
+      "Room window +9.2 0.1 1 pane",
+      "Room window +9.2 4.0 -1 pane",
+      "Room window +9.2 4.0 1 pane",
+      "Room window +9.2 7.2 -1 pane",
+      "Room window +9.2 7.2 1 pane",
+      "Room window +9.2 10.4 -1 pane",
+      "Room window +9.2 10.4 1 pane",
+      "Room window +13.2 0.1 -1 pane",
+      "Room window +13.2 0.1 1 pane",
+      "Room window +13.2 4.0 -1 pane",
+      "Room window +13.2 4.0 1 pane",
+      "Room window +13.2 7.2 -1 pane",
+      "Room window +13.2 7.2 1 pane",
+      "Room window +13.2 10.4 -1 pane",
+      "Room window +13.2 10.4 1 pane",
+      "Room window -6.0 0.1 -1 pane",
+      "Room window -6.0 0.1 1 pane",
+      "Room window -6.0 4.0 -1 pane",
+      "Room window -6.0 4.0 1 pane",
+      "Room window -6.0 7.2 -1 pane.001",
+      "Room window -6.0 7.2 1 pane.001",
+      "Room window -6.0 10.4 -1 pane.001",
+      "Room window -6.0 10.4 1 pane.001",
+      "Room window -2.0 0.1 -1 pane",
+      "Room window -2.0 0.1 1 pane",
+      "Room window -2.0 4.0 -1 pane",
+      "Room window -2.0 4.0 1 pane",
+      "Room window -2.0 7.2 -1 pane.001",
+      "Room window -2.0 7.2 1 pane.001",
+      "Room window -2.0 10.4 -1 pane.001",
+      "Room window -2.0 10.4 1 pane.001",
+      "Room window +2.0 0.1 -1 pane",
+      "Room window +2.0 0.1 1 pane",
+      "Room window +2.0 4.0 -1 pane",
+      "Room window +2.0 4.0 1 pane",
+      "Room window +2.0 7.2 -1 pane.001",
+      "Room window +2.0 7.2 1 pane.001",
+      "Room window +2.0 10.4 -1 pane.001",
+      "Room window +2.0 10.4 1 pane.001",
+      "Room window +6.0 0.1 -1 pane",
+      "Room window +6.0 0.1 1 pane",
+      "Room window +6.0 4.0 -1 pane",
+      "Room window +6.0 4.0 1 pane",
+      "Room window +6.0 7.2 -1 pane.001",
+      "Room window +6.0 7.2 1 pane.001",
+      "Room window +6.0 10.4 -1 pane.001",
+      "Room window +6.0 10.4 1 pane.001",
+      "Room window -8.0 0.1 -1 pane",
+      "Room window -8.0 0.1 1 pane",
+      "Room window -8.0 4.0 -1 pane",
+      "Room window -8.0 4.0 1 pane",
+      "Room window -8.0 7.2 -1 pane",
+      "Room window -8.0 7.2 1 pane",
+      "Room window -8.0 10.4 -1 pane",
+      "Room window -8.0 10.4 1 pane",
+      "Room window -4.0 0.1 -1 pane",
+      "Room window -4.0 0.1 1 pane",
+      "Room window -4.0 4.0 -1 pane",
+      "Room window -4.0 4.0 1 pane",
+      "Room window -4.0 7.2 -1 pane",
+      "Room window -4.0 7.2 1 pane",
+      "Room window -4.0 10.4 -1 pane",
+      "Room window -4.0 10.4 1 pane",
+      "Room window +0.0 4.0 -1 pane",
+      "Room window +0.0 4.0 1 pane",
+      "Room window +0.0 7.2 -1 pane",
+      "Room window +0.0 7.2 1 pane",
+      "Room window +0.0 10.4 -1 pane",
+      "Room window +0.0 10.4 1 pane",
+      "Room window +4.0 0.1 -1 pane",
+      "Room window +4.0 0.1 1 pane",
+      "Room window +4.0 4.0 -1 pane",
+      "Room window +4.0 4.0 1 pane",
+      "Room window +4.0 7.2 -1 pane",
+      "Room window +4.0 7.2 1 pane",
+      "Room window +4.0 10.4 -1 pane",
+      "Room window +4.0 10.4 1 pane",
+      "Room window +8.0 0.1 -1 pane",
+      "Room window +8.0 0.1 1 pane",
+      "Room window +8.0 4.0 -1 pane",
+      "Room window +8.0 4.0 1 pane",
+      "Room window +8.0 7.2 -1 pane",
+      "Room window +8.0 7.2 1 pane",
+      "Room window +8.0 10.4 -1 pane",
+      "Room window +8.0 10.4 1 pane",
+      "Room window -6.0 0.1 -1 pane.001",
+      "Room window -6.0 0.1 1 pane.001",
+      "Room window -6.0 4.0 -1 pane.001",
+      "Room window -6.0 4.0 1 pane.001",
+      "Room window -6.0 7.2 -1 pane.002",
+      "Room window -6.0 7.2 1 pane.002",
+      "Room window -6.0 10.4 -1 pane.002",
+      "Room window -6.0 10.4 1 pane.002",
+      "Room window -2.0 0.1 -1 pane.001",
+      "Room window -2.0 0.1 1 pane.001",
+      "Room window -2.0 4.0 -1 pane.001",
+      "Room window -2.0 4.0 1 pane.001",
+      "Room window -2.0 7.2 -1 pane.002",
+      "Room window -2.0 7.2 1 pane.002",
+      "Room window -2.0 10.4 -1 pane.002",
+      "Room window -2.0 10.4 1 pane.002",
+      "Room window +2.0 0.1 -1 pane.001",
+      "Room window +2.0 0.1 1 pane.001",
+      "Room window +2.0 4.0 -1 pane.001",
+      "Room window +2.0 4.0 1 pane.001",
+      "Room window +2.0 7.2 -1 pane.002",
+      "Room window +2.0 7.2 1 pane.002",
+      "Room window +2.0 10.4 -1 pane.002",
+      "Room window +2.0 10.4 1 pane.002",
+      "Room window +6.0 0.1 -1 pane.001",
+      "Room window +6.0 0.1 1 pane.001",
+      "Room window +6.0 4.0 -1 pane.001",
+      "Room window +6.0 4.0 1 pane.001",
+      "Room window +6.0 7.2 -1 pane.002",
+      "Room window +6.0 7.2 1 pane.002",
+      "Room window +6.0 10.4 -1 pane.002",
+      "Room window +6.0 10.4 1 pane.002"
+    ],
+    "accent band": [
+      "Accent band",
+      "Accent band.001",
+      "Accent band.002",
+      "Accent band.003",
+      "Accent band.004",
+      "Accent band.005",
+      "Accent band.006",
+      "Accent band.007"
+    ],
+    "parapet cap": [
+      "Parapet cap band",
+      "Parapet cap band.001",
+      "Parapet cap band.002",
+      "Parapet cap band.003",
+      "Parapet cap band.004",
+      "Parapet cap band.005",
+      "Parapet cap band.006",
+      "Parapet cap band.007",
+      "Wing parapet cap band",
+      "Wing parapet cap band.001",
+      "Wing parapet cap band.002",
+      "Wing parapet cap band.003"
+    ],
+    "base course": [
+      "Stone base",
+      "south block east stone coursing",
+      "Stone base.001",
+      "south block south stone coursing",
+      "Stone base.002",
+      "south block west stone coursing",
+      "Stone base.003",
+      "south block north stone coursing",
+      "Stone base.004",
+      "south block north stone coursing.001",
+      "Stone base.005",
+      "north wing east stone coursing",
+      "Stone base.006",
+      "Stone base.007",
+      "north wing north stone coursing",
+      "Stone base.008",
+      "north wing west stone coursing",
+      "Stone base.009",
+      "wing south stone coursing",
+      "Stone base.010",
+      "wing west stone coursing",
+      "Stone base.011",
+      "wing north stone coursing",
+      "Stone base.012",
+      "wing east stone coursing"
+    ],
+    "north wing north.Rear entry doors": [
+      "Rear entry doors recessed jamb",
+      "Rear entry doors recessed jamb.001",
+      "Rear entry doors recessed head or sill",
+      "Rear entry doors recessed head or sill.001",
+      "Rear entry doors mullion 1",
+      "Rear entry doors optical pane 0-0",
+      "Rear entry doors optical pane 1-0"
+    ],
+    "reveals": [
+      "Reveal jamb liner",
+      "Reveal jamb liner.001",
+      "Reveal head liner",
+      "Reveal sill liner",
+      "Reveal jamb liner.002",
+      "Reveal jamb liner.003",
+      "Reveal head liner.001",
+      "Reveal sill liner.001",
+      "Reveal jamb liner.004",
+      "Reveal jamb liner.005",
+      "Reveal head liner.002",
+      "Reveal sill liner.002",
+      "Reveal jamb liner.006",
+      "Reveal jamb liner.007",
+      "Reveal head liner.003",
+      "Reveal sill liner.003"
+    ],
+    "rear entry": [
+      "Rear entry canopy"
+    ],
+    "wing south.wing south storefront ribbon": [
+      "wing south storefront ribbon recessed jamb",
+      "wing south storefront ribbon recessed jamb.001",
+      "wing south storefront ribbon recessed head or sill",
+      "wing south storefront ribbon recessed head or sill.001",
+      "wing south storefront ribbon mullion 1",
+      "wing south storefront ribbon mullion 2",
+      "wing south storefront ribbon mullion 3",
+      "wing south storefront ribbon mullion 4",
+      "wing south storefront ribbon mullion 5",
+      "wing south storefront ribbon mullion 6",
+      "wing south storefront ribbon mullion 7",
+      "wing south storefront ribbon mullion 8",
+      "wing south storefront ribbon mullion 9",
+      "wing south storefront ribbon optical pane 0-0",
+      "wing south storefront ribbon optical pane 1-0",
+      "wing south storefront ribbon optical pane 2-0",
+      "wing south storefront ribbon optical pane 3-0",
+      "wing south storefront ribbon optical pane 4-0",
+      "wing south storefront ribbon optical pane 5-0",
+      "wing south storefront ribbon optical pane 6-0",
+      "wing south storefront ribbon optical pane 7-0",
+      "wing south storefront ribbon optical pane 8-0",
+      "wing south storefront ribbon optical pane 9-0"
+    ],
+    "wing west.wing west storefront ribbon": [
+      "wing west storefront ribbon recessed jamb",
+      "wing west storefront ribbon recessed jamb.001",
+      "wing west storefront ribbon recessed head or sill",
+      "wing west storefront ribbon recessed head or sill.001",
+      "wing west storefront ribbon mullion 1",
+      "wing west storefront ribbon mullion 2",
+      "wing west storefront ribbon mullion 3",
+      "wing west storefront ribbon mullion 4",
+      "wing west storefront ribbon mullion 5",
+      "wing west storefront ribbon mullion 6",
+      "wing west storefront ribbon mullion 7",
+      "wing west storefront ribbon mullion 8",
+      "wing west storefront ribbon mullion 9",
+      "wing west storefront ribbon optical pane 0-0",
+      "wing west storefront ribbon optical pane 1-0",
+      "wing west storefront ribbon optical pane 2-0",
+      "wing west storefront ribbon optical pane 3-0",
+      "wing west storefront ribbon optical pane 4-0",
+      "wing west storefront ribbon optical pane 5-0",
+      "wing west storefront ribbon optical pane 6-0",
+      "wing west storefront ribbon optical pane 7-0",
+      "wing west storefront ribbon optical pane 8-0",
+      "wing west storefront ribbon optical pane 9-0"
+    ],
+    "wing north.wing north storefront ribbon": [
+      "wing north storefront ribbon recessed jamb",
+      "wing north storefront ribbon recessed jamb.001",
+      "wing north storefront ribbon recessed head or sill",
+      "wing north storefront ribbon recessed head or sill.001",
+      "wing north storefront ribbon mullion 1",
+      "wing north storefront ribbon mullion 2",
+      "wing north storefront ribbon mullion 3",
+      "wing north storefront ribbon mullion 4",
+      "wing north storefront ribbon mullion 5",
+      "wing north storefront ribbon optical pane 0-0",
+      "wing north storefront ribbon optical pane 1-0",
+      "wing north storefront ribbon optical pane 2-0",
+      "wing north storefront ribbon optical pane 3-0",
+      "wing north storefront ribbon optical pane 4-0",
+      "wing north storefront ribbon optical pane 5-0"
+    ],
+    "lobby tower": [
+      "Tower corner column",
+      "Tower corner column.001",
+      "Tower corner column.002",
+      "Tower corner column.003",
+      "Tower floor plate",
+      "Tower floor plate.001",
+      "Tower floor plate.002",
+      "Tower floor plate.003",
+      "Tower head",
+      "Tower roof cap"
+    ],
+    "tower glazing": [
+      "Tower south glazing",
+      "Tower east glazing"
+    ],
+    "tower frame": [
+      "Tower south mullion",
+      "Tower south mullion.001",
+      "Tower south mullion.002",
+      "Tower south transom",
+      "Tower south transom.001",
+      "Tower south transom.002",
+      "Tower south transom.003",
+      "Tower east mullion",
+      "Tower east mullion.001",
+      "Tower east mullion.002",
+      "Tower east transom",
+      "Tower east transom.001",
+      "Tower east transom.002",
+      "Tower east transom.003"
+    ],
+    "lobby doors": [
+      "Lobby door frame",
+      "Lobby door leaf glazing",
+      "Lobby door meeting stile",
+      "Lobby door pull",
+      "Lobby door frame.001",
+      "Lobby door leaf glazing.001",
+      "Lobby door meeting stile.001",
+      "Lobby door pull.001"
+    ],
+    "stairs": [
+      "Lobby stair",
+      "Lobby stair landing tongue",
+      "Lobby stair handrail",
+      "Lobby stair supported baluster",
+      "Lobby stair supported baluster.001",
+      "Lobby stair supported baluster.002",
+      "Lobby stair supported baluster.003",
+      "Lobby stair supported baluster.004",
+      "Lobby stair supported baluster.005",
+      "Lobby stair supported baluster.006",
+      "Lobby stair supported baluster.007",
+      "Lobby stair supported baluster.008",
+      "Lobby stair supported baluster.009",
+      "Lobby stair supported baluster.010",
+      "Lobby stair supported baluster.011",
+      "Lobby stair handrail.001",
+      "Lobby stair supported baluster.012",
+      "Lobby stair supported baluster.013",
+      "Lobby stair supported baluster.014",
+      "Lobby stair supported baluster.015",
+      "Lobby stair supported baluster.016",
+      "Lobby stair supported baluster.017",
+      "Lobby stair supported baluster.018",
+      "Lobby stair supported baluster.019",
+      "Lobby stair supported baluster.020",
+      "Lobby stair supported baluster.021",
+      "Lobby stair supported baluster.022",
+      "Lobby stair supported baluster.023"
+    ],
+    "canopies": [
+      "Canopy east fascia frame",
+      "Canopy east glazing",
+      "Canopy east rafter",
+      "Canopy east rafter.001",
+      "Canopy east rafter.002",
+      "Stone-clad pier",
+      "Pier coursing",
+      "Pier coursing.001",
+      "Pier coursing.002",
+      "Pier coursing.003",
+      "Pier coursing.004",
+      "Pier coursing.005",
+      "Pier coursing.006",
+      "Pier coursing.007",
+      "Pier coursing.008",
+      "Pier coursing.009",
+      "Pier coursing.010",
+      "Pier cap",
+      "Stone-clad pier.001",
+      "Pier coursing.011",
+      "Pier coursing.012",
+      "Pier coursing.013",
+      "Pier coursing.014",
+      "Pier coursing.015",
+      "Pier coursing.016",
+      "Pier coursing.017",
+      "Pier coursing.018",
+      "Pier coursing.019",
+      "Pier coursing.020",
+      "Pier coursing.021",
+      "Pier cap.001",
+      "Canopy south fascia frame",
+      "Canopy south glazing",
+      "Canopy south rafter",
+      "Canopy south rafter.001",
+      "Stone-clad pier.002",
+      "Pier coursing.022",
+      "Pier coursing.023",
+      "Pier coursing.024",
+      "Pier coursing.025",
+      "Pier coursing.026",
+      "Pier coursing.027",
+      "Pier coursing.028",
+      "Pier coursing.029",
+      "Pier coursing.030",
+      "Pier coursing.031",
+      "Pier coursing.032",
+      "Pier cap.002",
+      "Stone-clad pier.003",
+      "Pier coursing.033",
+      "Pier coursing.034",
+      "Pier coursing.035",
+      "Pier coursing.036",
+      "Pier coursing.037",
+      "Pier coursing.038",
+      "Pier coursing.039",
+      "Pier coursing.040",
+      "Pier coursing.041",
+      "Pier coursing.042",
+      "Pier coursing.043",
+      "Pier cap.003"
+    ],
+    "roof": [
+      "South block roof slab",
+      "South block membrane",
+      "North wing roof slab",
+      "North wing membrane",
+      "Wing roof slab",
+      "Wing membrane",
+      "Wing roof slab.001",
+      "Wing membrane.001",
+      "Wing rooflight curb",
+      "Wing rooflight glazing"
+    ],
+    "coping": [
+      "Coping",
+      "Coping.001",
+      "Coping.002",
+      "Coping.003",
+      "Coping.004",
+      "Coping.005",
+      "Coping.006",
+      "Coping.007",
+      "Wing coping",
+      "Wing coping.001",
+      "Wing coping.002",
+      "Wing coping.003"
+    ],
+    "rooftop plant": [
+      "Rooftop unit curb",
+      "Rooftop unit",
+      "Rooftop unit fan",
+      "Rooftop unit curb.001",
+      "Rooftop unit.001",
+      "Rooftop unit fan.001",
+      "Rooftop unit curb.002",
+      "Rooftop unit.002",
+      "Rooftop unit fan.002",
+      "Rooftop unit curb.003",
+      "Rooftop unit.003",
+      "Rooftop unit fan.003",
+      "Roof vent stack",
+      "Roof vent stack.001"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "finished_utc": "2026-10-10T12:19:23.568545+00:00",
+  "delivery_and_render_seconds": 6424.466700618001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

@@ -67,3 +67,13 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P1: boolean the tower footprint out of the guest block, drop the inner window cutters
+  and give the tower plain inner walls and landings instead of full floor plates.
+- P1: drop the low wing's sill to about 0.4 m and raise its head to the fascia underside
+  so it reads as storefront glazing.
+- P1: add raised sidewalks along the facades and entrances with kerb upstands at every
+  asphalt edge, set the north stall row back from the facade and move the car blocks
+  off the rear entry axis.
