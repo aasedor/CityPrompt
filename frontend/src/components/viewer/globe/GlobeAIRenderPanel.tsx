@@ -1,4 +1,3 @@
-import { PromptSpellingSuggestions } from '../PromptSpellingSuggestions';
 import { STYLES } from './imageStyles';
 import { savedRenderNotice, savedRenderIsSource, savedRenderNeedsReview } from '@/utils/renderPresentation';
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
@@ -1250,7 +1249,6 @@ export function GlobeAIRenderPanel({
           rows={2}
           className="w-full resize-y rounded-lg border-2 border-white/20 bg-white/5 px-3 py-2 text-xs text-white placeholder-white/40 focus:border-[#c9ff3d] focus:outline-none"
         />
-        <PromptSpellingSuggestions value={customPrompt} onChange={setCustomPrompt} />
       </div>
       {!direct3DAvailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">{direct3DUnavailableReason}</p>}
       {imageGenerationUnavailable && renderPipeline === 'direct3d' && <p role="status" className="bg-slate-900 px-4 py-2 text-sm text-amber-200">Your selected image engine is unavailable. Choose an available engine in Advanced image controls, or export your current 3D view below. Your engine preference is preserved.</p>}

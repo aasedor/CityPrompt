@@ -97,8 +97,6 @@ export default defineConfig(({ command, mode }) => {
       });
     },
   }],
-  // Prebundle the on-demand worker dependency before the first spelling check.
-  optimizeDeps: { include: ['nspell'] },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

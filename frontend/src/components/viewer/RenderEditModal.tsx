@@ -1,4 +1,3 @@
-import { PromptSpellingSuggestions } from './PromptSpellingSuggestions';
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import toast from 'react-hot-toast';
 import { Brush, Check, Loader2, Minus, Plus, RotateCcw, Undo2, Wand2, X } from 'lucide-react';
@@ -443,7 +442,6 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
                 className="mt-2 min-h-36 flex-1 resize-none rounded-lg border border-white/10 bg-black/35 px-3 py-2 text-sm font-normal text-white placeholder:text-white/30 focus:border-amber-400/70 focus:outline-none"
               />
             </label>
-            <PromptSpellingSuggestions value={prompt} onChange={setPrompt} disabled={submitting} />
 
             <div className="flex gap-2">
               <button
