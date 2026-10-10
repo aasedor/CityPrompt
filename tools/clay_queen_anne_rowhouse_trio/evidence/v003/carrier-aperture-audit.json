@@ -1,0 +1,240 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "Unit A door",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit A bay opening",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit A upper bay window",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit A upper door window",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B door",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B ground window -1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B upper window -1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B ground window 1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B upper window 1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit C door",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit C bay opening",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit C upper bay window",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit C upper door window",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay window +6.5-0",
+      "face": "bay +6.5 face 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay window +6.5-1",
+      "face": "bay +6.5 face 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay window +6.5-2",
+      "face": "bay +6.5 face 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay window -6.5-0",
+      "face": "bay -6.5 face 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay window -6.5-1",
+      "face": "bay -6.5 face 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay window -6.5-2",
+      "face": "bay -6.5 face 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "End wall ground window",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "End wall upper window",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit A rear door",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit A rear ground window",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit A rear upper window",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit A rear upper window 2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B rear door",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B rear ground window",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B rear upper window",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit B rear upper window 2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit C rear door",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit C rear ground window",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit C rear upper window",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Unit C rear upper window 2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Gable window +6.5",
+      "face": "gable +6.5 front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Gable window +6.5",
+      "face": "gable +6.5 front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Dormer window",
+      "face": "dormer front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Dormer window",
+      "face": "dormer front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Gable window -6.5",
+      "face": "gable -6.5 front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Gable window -6.5",
+      "face": "gable -6.5 front",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

@@ -67,3 +67,16 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P1 (decision for the user): the source shows door, window, window, door between the
+  bays; the brief requires three grade entrances, so unit B's door sits in that run.
+  Either accept this as the recorded source-conflict decision or move the third door.
+- P1: build the middle gable as a wall gable in the facade plane with an arched window
+  and green bargeboard instead of a set-back roof dormer.
+- P1: close the eaves line on both end walls (the main roof plates now stop inside the
+  gables but the string course and eaves turn black at the plate ends).
+- P1: close the gable apexes: extend the gable roof prisms to the bargeboard line and
+  let the bargeboards meet at the finial; seat the east chimney on solid roof.
+- P1: carry the rear cross gables to the ridge as full cross wings.
