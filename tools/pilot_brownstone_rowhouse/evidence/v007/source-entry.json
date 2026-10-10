@@ -1,0 +1,29 @@
+{
+  "archetype_id": "pilot-brownstone-end-rowhouse",
+  "variant_id": "pilot-brownstone-end-rowhouse-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "brownstone_rowhouse_frontage/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/brownstone_rowhouse_frontage/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1313577,
+      "sha256": "81b0c505faff936e7063ccd6e96390cb9fa84b6dd573bb25e72a06ba8e5315f1"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/brownstone_rowhouse_frontage/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 883218,
+      "sha256": "ea4ddffe045599af5899a943a5a89525ced637505ad82f401c3f6ee2f5a0ecce"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/brownstone_rowhouse_frontage/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 802789,
+      "sha256": "79d3e4f2dc8b6cfe2da157919ad8652e87063cfb1ceeea747d9aebad87a3774c"
+    }
+  ]
+}
