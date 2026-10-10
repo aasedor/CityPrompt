@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-arched-mill-mixed-use-clay-v003",
+  "glb": "clay-arched-mill-mixed-use-clay-v003.glb",
+  "glb_bytes": 744292,
+  "glb_sha256": "77f202d7ffed2842248ae9fd20ff2f0216be8b504f1737ddd54325a3dfde97ff",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "arched_windows.png": 92,
+    "architecture_close.png": 92,
+    "chimney_contact.png": 92,
+    "corner_entry.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "rear_yard.png": 92,
+    "right_side.png": 92,
+    "roof_pavilion.png": 92,
+    "shopfront.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-arched-mill-mixed-use-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 32172158
+}

@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P0: the external chimney breast on the rear eave face interpenetrates the four sill plates of bay 2 and the bay-2 windows abut it with no pier (right_side, rear_yard). Fix is to pull the shaft inside the footprint (the source rises through the roof about 0.6 bay from the gable) or to leave a pier between it and the openings and stop the sills short.
+- P1: the gable faces carry the horizontal dentil cornice, coping band and kneelers; both sources run the pilasters and recessed panels straight up into the gable to the raked coping with dentils on the eave faces only.
+- P1: the gable face has four equal bays where the source shows four window bays plus a narrow blank end bay with a ground-floor door at the rear corner, so the plan should be about 1.17:1 rather than square; the blank-bay motif was placed on the unseen far gable instead.
+- P1: the chimney shaft stands on the rear eave about 1.3 bays from the gable with slate between it and the gable; the source shaft rises inside the footprint immediately behind the far corner.
+- P1: the rooftop pavilion is a flat-lidded glazed box at about 63 percent of the eave-to-ridge run with a shallow deck; the source is a lean-to glasshouse with a vertical glass wall behind a deeper deck and a mono-pitch glazed roof rising to the slate over about 40 percent of the run, with only a short slate gap before the gable.
+- P2 (recorded): rooflights all on the rear slope against two and two; arch heads reading as projecting flat-topped plates; unjustified blank bay on the far gable; shopfront camera partly blocked by a tree trunk; aerial, front_corner and rear_side framing the asset small; a street tree over the third shopfront in the front elevation.

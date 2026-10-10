@@ -1,0 +1,422 @@
+{
+  "candidate": "clay-arched-mill-mixed-use-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-arched-mill-mixed-use",
+  "variant_id": "clay-arched-mill-mixed-use-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "industrial_brick_mixed_use/variant_0 (industrial_brick_original_mill)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 20.0,
+      "depth": 22.0,
+      "height": 27.0
+    },
+    "observed_storeys": 4,
+    "storey_programme": "retail ground floor behind arched shopfronts; three loft storeys; glazed rooftop pavilion",
+    "plan": "22 x 20 m near-square corner block read from the top view and the four-bay rhythm of both street faces; the eaves face runs along the west street and the gable face along the south street; ridge along the long axis",
+    "facade": "four bays on every face; brick pilasters 0.9 m between recessed panels; segmental-arched shopfronts 3.3 x 3.8 m; arched windows 2.4 x 2.7 m on each upper storey; stone sill band at 4.6 m; dentil cornice at 15.4 m",
+    "levels_m": [
+      0.15,
+      4.6,
+      8.2,
+      11.8
+    ],
+    "eave_m": 15.4,
+    "parapet_m": 16.0,
+    "ridge_m": 19.0,
+    "roof": "slate planes to a ridge at 19 m; raked gable parapets on the south and north faces; glazed pavilion 15.5 x 7 m cut into the west slope over a level deck, open slate to the south and a railed terrace beyond its north end; chimney 2.2 m square to 26 m on the rear wall line in the southern third; four rooflights on the east slope",
+    "inferred": "the north gable and the east (rear) face are not visible in any source and repeat the grammar with a loading door; interiors are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "pitched slate with gable parapets; glazed pavilion on the front slope; chimney through the rear slope",
+    "datum_m": 15.4,
+    "crowns_m": [
+      19.0,
+      26.0
+    ]
+  },
+  "identity_contract": {
+    "owner": "red-brick mill with arched shopfronts and arched windows between pilasters, dentil cornice, slate roof with raked gables, glazed rooftop pavilion, tall corner chimney"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red brick with recessed courses, pale stone band and copings, dark metal frames, dark slate, glazed pavilion",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 4,
+    "ground": "retail and cafe units with the residential lobby at the corner",
+    "upper": "loft apartments",
+    "roof": "shared rooftop pavilion and terrace"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Pilasters from the stone band to the cornice",
+    "Roof planes bearing on the eaves walls inside the parapet",
+    "Pavilion bearing on a level deck over the front slope",
+    "Chimney from grade through the rear slope"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -37.4,
+        12.959999999999999
+      ],
+      "target": [
+        0,
+        0,
+        12.15
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -29.172,
+        -31.415999999999997,
+        54.0
+      ],
+      "target": [
+        0,
+        0,
+        12.15
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        26.179999999999996,
+        -29.92,
+        81.0
+      ],
+      "target": [
+        0,
+        0,
+        12.15
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        56.099999999999994
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 30.799999999999997
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -37.4,
+        0,
+        16.2
+      ],
+      "target": [
+        0,
+        0,
+        12.15
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        37.4,
+        0,
+        16.2
+      ],
+      "target": [
+        0,
+        0,
+        12.15
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        37.4,
+        16.2
+      ],
+      "target": [
+        0,
+        0,
+        12.15
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        26.179999999999996,
+        29.92,
+        48.6
+      ],
+      "target": [
+        0,
+        0,
+        12.15
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -26.0,
+        -8.0,
+        6.0
+      ],
+      "target": [
+        -10.0,
+        0.0,
+        7.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -24.0,
+        -26.0,
+        14.0
+      ],
+      "target": [
+        -10.0,
+        -11.0,
+        13.5
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -16.0,
+        -6.0,
+        2.2
+      ],
+      "target": [
+        -10.0,
+        -4.0,
+        2.4
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "arched_windows",
+      "location": [
+        -6.0,
+        -24.0,
+        9.0
+      ],
+      "target": [
+        -4.0,
+        -11.0,
+        9.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "corner_entry",
+      "location": [
+        -24.0,
+        -24.0,
+        2.4
+      ],
+      "target": [
+        -10.0,
+        -11.0,
+        2.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_pavilion",
+      "location": [
+        -38.0,
+        -26.0,
+        26.0
+      ],
+      "target": [
+        -6.0,
+        -2.0,
+        18.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "chimney_contact",
+      "location": [
+        26.0,
+        -26.0,
+        24.0
+      ],
+      "target": [
+        9.1,
+        -4.0,
+        19.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "shopfront",
+      "location": [
+        -16.0,
+        4.0,
+        1.8
+      ],
+      "target": [
+        -10.0,
+        8.0,
+        2.2
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -2.0,
+        -4.0,
+        9.799999999999999
+      ],
+      "target": [
+        -11.0,
+        -6.0,
+        9.6
+      ],
+      "lens": 60,
+      "whole": false
+    },
+    {
+      "name": "rear_yard",
+      "location": [
+        30.0,
+        10.0,
+        6.0
+      ],
+      "target": [
+        10.0,
+        3.0,
+        5.0
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "arched_windows",
+    "corner_entry",
+    "roof_pavilion",
+    "chimney_contact",
+    "shopfront",
+    "interior",
+    "rear_yard"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1277361,
+        "sha256": "049dffded31d819bbb63a8f99da90487eea5360efbac26945e77bd69901b1d94"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 924408,
+        "sha256": "b19c286b8e77439bbefe0b75cfc933afd45c338173f5a6c9167fee37d23e61b1"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 840178,
+        "sha256": "8f81fee2055fb580d55f58f32a91a165f33e4a6552b8b19411f5a38a170b0807"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_1_thumb.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_2_thumb.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg",
+      "variant_3_thumb.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_mill.py",
+        "sha256": "2e2db847855e82b97cff4931f77f3fbbcb98f18b507648859bf542cdafdbe94d"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "4cba1bfcd078464cef8783eafa5ece34ab6c49c8de4407609648857ca71ac287"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "39d4f936772e120455c189e8e15844cc619cabe08ab7c4ffb939e6f74ad0476a"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T18:20:27.808105+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
