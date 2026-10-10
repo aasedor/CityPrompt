@@ -26,7 +26,7 @@ ROOF = 25.8                                  # roof slab top
 PARAPET = 1.0
 CROWN = ROOF + PARAPET
 FRONT_Y, REAR_Y, WEST_X, EAST_X = -D / 2, D / 2, -W / 2, W / 2
-SLOT_W, SLOT_H = .95, 3.25
+SLOT_W, SLOT_H = .95, 3.6
 EPS = .002
 PALETTE = dict(wall=(.055, .058, .065), joint=(.03, .032, .036), trim=(.03, .03, .032),
     pale=(.52, .53, .52), stone=(.36, .35, .33), roof=(.30, .31, .32), sand=(.40, .40, .38),
@@ -44,11 +44,11 @@ def manifest(version):
         ('glass_close', (-14.0, -20.0, 7.5), (-10.0, FRONT_Y, 7.4), 50),
         ('entrance_contact', (-16.0, -22.0, 2.2), (-6.0, FRONT_Y, 2.0), 40),
         ('slot_close', (-19.0, -16.5, 10.5), (WEST_X, -9.0, 10.6), 40),
-        ('roof_greenhouses', (-22.0, -30.0, 34.0), (-2.0, -4.0, 27.0), 45),
+        ('roof_greenhouses', (-26.0, -34.0, 37.0), (-1.0, -3.0, 27.0), 45),
         ('penthouse_contact', (-24.0, 2.0, 32.0), (-6.0, 7.5, 28.0), 45),
         ('parapet_corner', (-16.0, -17.5, 28.5), (WEST_X, FRONT_Y, 26.5), 40),
         ('interior', (-17.0, -5.0, 10.5), (WEST_X + 2.5, -5.0, 10.6), 30),
-        ('beds', (18.0, 4.0, 31.0), (7.5, 8.5, 26.5), 40)])
+        ('beds', (21.0, 1.0, 34.0), (6.5, 8.0, 26.5), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -109,10 +109,11 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0)):
     holes = []
     for r, lvl in enumerate(LEVELS):
         for i, u in enumerate(cols):
-            holes.append(hole(f'{f.label} slot {r}-{i}', u, lvl + .55, SLOT_W, SLOT_H))
+            holes.append(hole(f'{f.label} slot {r}-{i}', u, lvl + .35, SLOT_W, SLOT_H))
     ph = []
     if entrance:
-        ph.append(hole('Entrance storefront', -span / 2 + 5.0, G0, 4.2, 3.4, kind='storefront'))
+        ph.append(hole('Entrance recess', -span / 2 + 3.4, G0, 5.4, 4.0, kind='storefront'))
+    if f.label == 'rear':
         ph.append(hole('Plinth loading door', span / 2 - 4.5, G0, 3.2, 3.6, kind='rollup'))
     for u in plinth_windows:
         ph.append(hole(f'{f.label} plinth slit {u:+.0f}', u, 1.4, .7, 2.2, kind='slit'))
@@ -124,21 +125,27 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0)):
         slot(f, h['id'], h['u'], h['z'], h['w'], h['h'])
     # Continuous hydroponic racks behind every slot row: three shelves with LED bars and leafy trays.
     for lvl in LEVELS:
-        for k in range(2):
-            zz = lvl + .85 + k * 1.5
+        for k in range(4):
+            zz = lvl + .6 + k * .85
             f.part(f'{f.label} rack shelf {k}', 0, .95, zz, span - 2 * T - 1.0, 1.0, .04, 'rack', 'grow racks', 0)
-            f.part(f'{f.label} LED bar {k}', 0, .60, zz + 1.25, span - 2 * T - 1.2, .10, .12, 'led', 'grow racks', 0)
-            f.part(f'{f.label} leaf tray {k}', 0, .95, zz + .12, span - 2 * T - 1.2, .80, .16, 'leaf', 'grow racks', 0)
-        # Magenta-lit rack backboard behind the slot row so the slots read as LED-lit from the street.
-        f.part(f'{f.label} LED backboard', 0, 1.50, lvl + 2.1, span - 2 * T - 1.0, .04, 3.6, 'led', 'grow racks', 0)
+            f.part(f'{f.label} leaf tray {k}', 0, .95, zz + .13, span - 2 * T - 1.2, .80, .18, 'leaf', 'grow racks', 0)
+        # Magenta-lit rack backboard behind the slot row, washed by one magenta inspection light per face and level.
+        f.part(f'{f.label} LED backboard', 0, 1.50, lvl + 2.1, span - 2 * T - 1.0, .04, 3.8, 'led', 'grow racks', 0)
+        C.bpy.ops.object.light_add(type='AREA', location=f.p(0, .75, lvl + 2.1))
+        light = C.bpy.context.object; light.name = f'QA grow wash {f.label} {lvl:.0f}'
+        light.data.energy = 900; light.data.shape = 'RECTANGLE'; light.data.size = span - 3.0; light.data.size_y = 3.4
+        light.data.color = (1.0, .32, .82)
+        C.look_at(light, f.p(0, 1.5, lvl + 2.1))
     for h in ph:
         if h['kind'] == 'storefront':
-            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=4, rows=2, frame='trim', depth=T, sill=False, kind='glazed door')
-            lined_reveal(f, h)
+            # Recessed glazed entry cut 2.2 m into the plinth: concrete returns, dark soffit, glazed screen with doors at the back.
+            lined_reveal(f, h, inset=2.2, role='stone')
+            f.part('Entrance recess soffit', h['u'], 1.1, h['z'] + h['h'] - .034, h['w'] - .05, 2.2, .025, 'trim', 'entrance', 0)
+            f.window(h['id'] + ' screen', h['u'], h['z'], h['w'], h['h'], cols=4, rows=2, frame='trim', inset=2.2, depth=T, sill=False, kind='glazed door')
             for du in (-.12, .12):
-                C.rod('Entrance door pull', f.p(h['u'] + du, .01, h['z'] + .9), f.p(h['u'] + du, .01, h['z'] + 1.5), .018, 'hardware', 'door hardware')
-            f.part('Entrance threshold', h['u'], .04, G0 - .005, h['w'] + .2, .40, .03, 'sand', 'entrance', 0)
-            f.part('Entrance canopy plate', h['u'], -.55, h['z'] + h['h'] + .25, h['w'] + .8, 1.10, .10, 'trim', 'entrance', 0)
+                C.rod('Entrance door pull', f.p(h['u'] + du, 2.18, h['z'] + .9), f.p(h['u'] + du, 2.18, h['z'] + 1.5), .018, 'hardware', 'door hardware')
+            f.part('Entrance recess paving', h['u'], 1.1, G0 - .005, h['w'] - .05, 2.2, .03, 'sand', 'entrance', 0)
+            C.qa_room_light('Entrance recess', f.p(h['u'], 1.1, h['z'] + h['h'] - .3), 40, 2.0)
         elif h['kind'] == 'rollup':
             f.part(h['id'] + ' leaf', h['u'], .22, h['z'] + h['h'] / 2, h['w'] - .06, .05, h['h'] - .02, 'pale', 'loading door', 0)
             for k in range(1, 6):
@@ -207,9 +214,9 @@ def roof():
         if i % 2:   # side runs stop short of the corner posts of the south and north runs
             d = .3 if a[1] < b[1] else -.3
             a, b = (a[0], a[1] + d), (b[0], b[1] - d)
-        C.railing(f'Parapet rail {i}', (a[0], a[1], CROWN + .06), (b[0], b[1], CROWN + .06), height=1.0, spacing=.60, role='hardware', bottom=.05)
+        C.railing(f'Parapet rail {i}', (a[0], a[1], CROWN + .06), (b[0], b[1], CROWN + .06), height=1.0, spacing=.80, role='hardware', bottom=.05)
     # Five glasshouses on the southern half, with a wider walkway between the third and fourth.
-    xs = [-8.6, -4.3, 0.0, 5.0, 9.3]
+    xs = [-8.6, -4.6, -0.6, 4.2, 8.2]
     y0, y1 = FRONT_Y + 1.4, FRONT_Y + 11.6
     for k, cx in enumerate(xs):
         glasshouse(cx, y0, y1, k=k)
@@ -220,7 +227,7 @@ def roof():
         C.box('Planter strip crop', (cx, y1 + .9, ROOF + .62), (w - .3, .6, .28), 'leaf', 'roof planters', 0)
     # Open-topped mechanical penthouse at the north-west corner.
     px0, px1, py0, py1 = WEST_X + 4.6, WEST_X + 13.2, REAR_Y - 9.0, REAR_Y - T - .4
-    ph = 3.6
+    ph = 6.8
     C.box('Penthouse south wall', ((px0 + px1) / 2, py0 + .15, ROOF + ph / 2), (px1 - px0, .30, ph), 'wall', 'penthouse', 0)
     C.box('Penthouse north wall', ((px0 + px1) / 2, py1 - .15, ROOF + ph / 2), (px1 - px0, .30, ph), 'wall', 'penthouse', 0)
     C.box('Penthouse west wall', (px0 + .15, (py0 + py1) / 2, ROOF + ph / 2), (.30, py1 - py0 - .60 - 2 * EPS, ph), 'wall', 'penthouse', 0)
@@ -253,6 +260,8 @@ def floors():
     C.box('Sidewalk west', (WEST_X - 2.0, 0, .0075), (4.0, D, .015), 'foundation', 'sidewalk', 0)
     C.box('Kerb', (0, FRONT_Y - 3.94, .06), (W + 4.0, .12, .12), 'stone', 'sidewalk', 0)
     C.box('Kerb west', (WEST_X - 3.94, 0, .06), (.12, D, .12), 'stone', 'sidewalk', 0)
+    C.box('Rear lane', (0, REAR_Y + 1.5, .0075), (W + 4.0, 3.0, .015), 'foundation', 'sidewalk', 0)
+    C.box('East lane', (EAST_X + 1.5, 0, .0075), (3.0, D, .015), 'foundation', 'sidewalk', 0)
     for lvl in LEVELS:
         C.box('Grow floor', (0, 0, lvl - .10), (W - 2 * T, D - 2 * T, .20), 'floor', 'occupied floors', 0)
     # Stair on the north-east, with a floor aperture per level.
@@ -286,8 +295,8 @@ def programme():
             for y in (-3.0, 3.0):
                 C.box('Central rack', (x, y, lvl + 1.6), (1.2, 5.0, 3.0), 'rack', 'grow racks', 0)
     C.box('Reception desk', (-3.0, FRONT_Y + 3.0, G0 + .5), (2.4, .8, 1.0), 'timber', 'reception', 0)
-    street_tree(WEST_X - 2.6, 4.0)
-    street_tree(2.0, FRONT_Y - 2.6)
+    street_tree(WEST_X - 3.0, 7.0)
+    street_tree(5.0, FRONT_Y - 3.0)
 
 
 def street_tree(x, y, z=.015, height=6.0, spread=1.3):
