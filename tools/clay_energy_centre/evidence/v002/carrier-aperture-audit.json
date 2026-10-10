@@ -1,0 +1,96 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "west block south glazed bay 0",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block south glazed bay 1",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block south ground glazing 2",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block south upper glazing 2",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west glazed bay 0",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west glazed bay 1",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west glazed bay 2",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west glazed bay 3",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west glazed bay 4",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west entrance bay screen",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "North louvre bay 0",
+      "face": "west block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "North service door",
+      "face": "west block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corten slot window",
+      "face": "east block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East service door",
+      "face": "east block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East louvre",
+      "face": "east block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

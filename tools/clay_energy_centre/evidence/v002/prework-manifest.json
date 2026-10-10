@@ -1,0 +1,420 @@
+{
+  "candidate": "clay-energy-centre-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-energy-centre",
+  "variant_id": "clay-energy-centre-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "central_utilities_plant_energy_centre/variant_1 (transparent_plant_showcase_urban)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 44.0,
+      "depth": 42.0,
+      "height": 22.1
+    },
+    "observed_storeys": 2,
+    "storey_programme": "two tall plant levels in the west block, three in the corten block; fixed authored assembly",
+    "plan": "two abutting blocks read from the 560 x 560 px top view at 0.064 m/px: west glazed block 19 x 34 m, east corten block 17 x 34 m; streets west and south",
+    "west_block": "buff brick piers on a 5.6 m bay with full-height glazed bays and transoms; board-formed concrete panel over the corner bay; recessed entrance bay at the south end of the west face",
+    "east_block": "corten panel cladding 14.2 m to the roof with a narrow slot window on the south face",
+    "roof": "membrane; two three-fan cooling banks on the west edge, duct runs, three slender flues at the centre, one hourglass stack with a dark cap; two rooftop units on the corten block",
+    "levels_m": [
+      0.15,
+      5.6
+    ],
+    "roofs_m": [
+      11.6,
+      14.2
+    ],
+    "inferred": "36 m frontage calibrates the bays; north and east faces are not visible and repeat the grammar with service doors; plant interiors are teaching assumptions."
+  },
+  "roof_contract": {
+    "type": "flat membranes behind low parapets; rooftop plant, flues and stack seated on curbs",
+    "datum_m": 11.6,
+    "crowns_m": [
+      12.2,
+      14.8,
+      22.1
+    ]
+  },
+  "identity_contract": {
+    "owner": "brick-framed glass plant showcase with a concrete corner panel, corten tower block, cooling banks, flue cluster and hourglass stack"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: buff brick with recessed courses, dark curtain-wall mullions, board-formed concrete, corten panels with joints, galvanised steel plant, pale membrane",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 2,
+    "ground": "plant hall with chillers, pumps and pipework visible through the glazing",
+    "upper": "mezzanine with switchgear and air handling",
+    "east": "boiler house and stair"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Entrance threshold at slab level in the recessed bay",
+    "Curtain-wall bays between brick piers from plinth to parapet",
+    "Rooftop plant on curbs; flues and stack on bases",
+    "Corten block abuts the west block along one line"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -74.8,
+        10.608
+      ],
+      "target": [
+        0,
+        0,
+        9.945
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -58.344,
+        -62.831999999999994,
+        44.2
+      ],
+      "target": [
+        0,
+        0,
+        9.945
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        52.35999999999999,
+        -59.84,
+        66.30000000000001
+      ],
+      "target": [
+        0,
+        0,
+        9.945
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        112.19999999999999
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 61.599999999999994
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -74.8,
+        0,
+        13.26
+      ],
+      "target": [
+        0,
+        0,
+        9.945
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        74.8,
+        0,
+        13.26
+      ],
+      "target": [
+        0,
+        0,
+        9.945
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        74.8,
+        13.26
+      ],
+      "target": [
+        0,
+        0,
+        9.945
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        52.35999999999999,
+        59.84,
+        39.78
+      ],
+      "target": [
+        0,
+        0,
+        9.945
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -30.0,
+        -26.0,
+        5.0
+      ],
+      "target": [
+        -10.0,
+        -17.0,
+        5.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -24.0,
+        -30.0,
+        12.0
+      ],
+      "target": [
+        -4.0,
+        -17.0,
+        10.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -28.0,
+        -12.0,
+        3.0
+      ],
+      "target": [
+        -18.0,
+        -4.0,
+        3.2
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "plant_window",
+      "location": [
+        -6.0,
+        -28.0,
+        2.4
+      ],
+      "target": [
+        -6.0,
+        -17.0,
+        2.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "stack_contact",
+      "location": [
+        -30.0,
+        -30.0,
+        20.0
+      ],
+      "target": [
+        -10.0,
+        -6.0,
+        15.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "corten_block",
+      "location": [
+        30.0,
+        -30.0,
+        10.0
+      ],
+      "target": [
+        18.0,
+        -4.0,
+        8.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_plant",
+      "location": [
+        -34.0,
+        10.0,
+        22.0
+      ],
+      "target": [
+        -8.0,
+        2.0,
+        12.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "corner_entry",
+      "location": [
+        -30.0,
+        -22.0,
+        2.2
+      ],
+      "target": [
+        -18.0,
+        -12.0,
+        2.4
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -10.0,
+        -26.0,
+        2.0
+      ],
+      "target": [
+        -10.0,
+        -6.0,
+        2.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear_service",
+      "location": [
+        -10.0,
+        30.0,
+        4.0
+      ],
+      "target": [
+        -4.0,
+        17.0,
+        3.0
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "plant_window",
+    "stack_contact",
+    "corten_block",
+    "roof_plant",
+    "corner_entry",
+    "interior",
+    "rear_service"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1.png",
+        "path": "sources/front.png",
+        "bytes": 1265310,
+        "sha256": "dfd3da0973e43083af84897c60d500d781394c89d2833d327f9d478c35d98263"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 888964,
+        "sha256": "3900dbadbd2854e5b7148f03286c3c38e299edcd70e511dbe1e843bfca8d44e2"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 805970,
+        "sha256": "407ae3df4a3e243f49c26f36a4d94159dc8e02dce049eac29d24c22e037184fa"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_energy.py",
+        "sha256": "ff1fe3d276d20d07feb7f40dce116e484849786404442efcc67293a6dd76dde9"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "b9aabd13720ecd9d5cd51642adbbfc3c3f37d72ce41768e469e5c28d8dbac319"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "829da5be4877829be7743380d2e4fdab03d66ab67912b53c9e2a48304f56e896"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T08:32:49.388660+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
