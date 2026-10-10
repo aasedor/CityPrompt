@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "ecole_republicaine",
+  "variant_id": "variant_3",
+  "catalogue_variant_id": "ecole-republicaine-art-deco",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; depicts the catalogue hero, not enrolled). Catalogue label says Art Deco school; the locked pixels show a contemporary brick courtyard school and govern.",
+  "records": [
+    {
+      "archetype_id": "ecole_republicaine",
+      "variant_id": "variant_3",
+      "catalogue_variant_id": "ecole-republicaine-art-deco",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3.png",
+      "file": "variant_3.png",
+      "bytes": 1323463,
+      "sha256": "353d70cf1e6d860e840bcb57cf9e10dbdaf558f17c5127e78c8e79655c68e467",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "ecole_republicaine",
+      "variant_id": "variant_3",
+      "catalogue_variant_id": "ecole-republicaine-art-deco",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_60.jpg",
+      "file": "variant_3_angle_60.jpg",
+      "bytes": 990119,
+      "sha256": "ad3f15097e602c85aabe104deecfc293a9eb4fbc33bee7de15489d418cb12bf6",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "ecole_republicaine",
+      "variant_id": "variant_3",
+      "catalogue_variant_id": "ecole-republicaine-art-deco",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_90.jpg",
+      "file": "variant_3_angle_90.jpg",
+      "bytes": 904476,
+      "sha256": "c833b66c8e3184baeef6f16471dc2693f2f33a235778423333e18814001cbca3",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

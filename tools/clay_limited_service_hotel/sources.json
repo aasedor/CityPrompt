@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "highway_motor_hotel",
+  "variant_id": "variant_2",
+  "catalogue_variant_id": "hotel_limited_service",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "no hero.png in this folder; the catalogue hero lives in prairie-courtyard-motor-inn and is a sibling, not enrolled",
+  "records": [
+    {
+      "archetype_id": "highway_motor_hotel",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "hotel_limited_service",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/highway-motor-hotel/variant_2.png",
+      "file": "variant_2.png",
+      "bytes": 1164853,
+      "sha256": "3ef7d1d1b1c82a458abd554de592f225f06ad14c5b56b7ee8e36b71cbce1ae58",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "highway_motor_hotel",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "hotel_limited_service",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/highway-motor-hotel/variant_2_angle_60.jpg",
+      "file": "variant_2_angle_60.jpg",
+      "bytes": 854242,
+      "sha256": "443032c73db67168cf81932d2f6b2f357d7055436ec41764c4ba2c429a891591",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "highway_motor_hotel",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "hotel_limited_service",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/highway-motor-hotel/variant_2_angle_90.jpg",
+      "file": "variant_2_angle_90.jpg",
+      "bytes": 865338,
+      "sha256": "21f4b2c5722cb38843bad22f3523970b8e61e56669225240e92875a8afeda77d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

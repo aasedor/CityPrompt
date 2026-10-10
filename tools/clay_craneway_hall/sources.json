@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "early_20c_megastructure_industrial",
+  "variant_id": "variant_1",
+  "catalogue_variant_id": "heavy_craneway_hall",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; depicts variant_0, not enrolled)",
+  "records": [
+    {
+      "archetype_id": "early_20c_megastructure_industrial",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "heavy_craneway_hall",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1.png",
+      "file": "variant_1.png",
+      "bytes": 1216317,
+      "sha256": "fb465a8b7cba59a7a4347a68c5ba29d164ac9bb541adc1f59ba27c8e69131647",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "early_20c_megastructure_industrial",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "heavy_craneway_hall",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1_angle_60.jpg",
+      "file": "variant_1_angle_60.jpg",
+      "bytes": 893797,
+      "sha256": "848bf059b331200134b0765e505160f7cfda28dfb7016c0be130bf7682466baa",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "early_20c_megastructure_industrial",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "heavy_craneway_hall",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1_angle_90.jpg",
+      "file": "variant_1_angle_90.jpg",
+      "bytes": 937510,
+      "sha256": "a2d3f265b150e7bc58367e9bb54f691d168b70af34dbf1fe3c1cb18dca64ae2d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

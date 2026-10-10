@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "brick_rowhouse_terrace",
+  "variant_id": "variant_2",
+  "catalogue_variant_id": "queen_anne_bay_window_terrace",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; depicts the catalogue hero, not enrolled)",
+  "records": [
+    {
+      "archetype_id": "brick_rowhouse_terrace",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "queen_anne_bay_window_terrace",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/brick-rowhouse-terrace/variant_2.png",
+      "file": "variant_2.png",
+      "bytes": 1498852,
+      "sha256": "8ceae05a5766013b2cdd6a9b35b4faa4c2e273006cdda5d37692c453cdfa1fc2",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "brick_rowhouse_terrace",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "queen_anne_bay_window_terrace",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/brick-rowhouse-terrace/variant_2_angle_60.jpg",
+      "file": "variant_2_angle_60.jpg",
+      "bytes": 964010,
+      "sha256": "0b7e647668380cd69f4c7d1c10eba2250fb61c75c5348406c4c9aad1448a4b8c",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "brick_rowhouse_terrace",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "queen_anne_bay_window_terrace",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/brick-rowhouse-terrace/variant_2_angle_90.jpg",
+      "file": "variant_2_angle_90.jpg",
+      "bytes": 927428,
+      "sha256": "7e0d7266af5a30bc01563fb9f55a17a0ec207f325a5f9e2484151f49dced5601",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

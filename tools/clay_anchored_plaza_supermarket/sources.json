@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "commercial_strip_mall",
+  "variant_id": "variant_1",
+  "catalogue_variant_id": "strip_anchored_l_plaza",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "no hero.png in this folder; the catalogue hero lives in contemporary-prairie-retail-strip and is a sibling, not enrolled",
+  "records": [
+    {
+      "archetype_id": "commercial_strip_mall",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "strip_anchored_l_plaza",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_1.png",
+      "file": "variant_1.png",
+      "bytes": 1275376,
+      "sha256": "3f3a08740e09cc7921e52683c6c1bf70ecb3d6307805040cdf8f17227b9aef71",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "commercial_strip_mall",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "strip_anchored_l_plaza",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_1_angle_60.jpg",
+      "file": "variant_1_angle_60.jpg",
+      "bytes": 824868,
+      "sha256": "edde850b2f0e0e0ce81f7ebbaa21a8463f865ec4c15a476f019e338eed15dbb2",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "commercial_strip_mall",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "strip_anchored_l_plaza",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/commercial-strip-mall/variant_1_angle_90.jpg",
+      "file": "variant_1_angle_90.jpg",
+      "bytes": 875913,
+      "sha256": "b5bb02c1baea52cfa585079d67b1c15146c909be1a40156d997f9995097ff775",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
