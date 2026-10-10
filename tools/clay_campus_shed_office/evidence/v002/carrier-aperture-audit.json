@@ -1,0 +1,174 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "Bay 1 studio window",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay 2 roll-up door",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay 3 staff door",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay 3 window",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay 4 dock door",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay 5 dock door",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Bay 6 dock window",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner entrance storefront",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Box upper window",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed ground window 1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed upper window 1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed ground window 2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed upper window 2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed ground window 0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East staff door",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East box ground window",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East box upper window",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed ground window 1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed upper window 1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed ground window 2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Shed upper window 2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear upper window 0",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear upper window 1",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear upper window 2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear upper window 3",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear ground window 0",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear ground window 1",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear service door",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

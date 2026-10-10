@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "corporate_office_campus_headquarters",
+  "variant_id": "variant_3",
+  "catalogue_variant_id": "industrial_warehouse_campus_hq",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; depicts variant_0, not enrolled)",
+  "records": [
+    {
+      "archetype_id": "corporate_office_campus_headquarters",
+      "variant_id": "variant_3",
+      "catalogue_variant_id": "industrial_warehouse_campus_hq",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3.png",
+      "file": "variant_3.png",
+      "bytes": 1138281,
+      "sha256": "3ce78a7c03f7df3149a8f65eec4b94b873b4ef43095ddec1f1eb5cbb93d9d1ef",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "corporate_office_campus_headquarters",
+      "variant_id": "variant_3",
+      "catalogue_variant_id": "industrial_warehouse_campus_hq",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3_angle_60.jpg",
+      "file": "variant_3_angle_60.jpg",
+      "bytes": 855073,
+      "sha256": "bc245ef2958bade88418458fbbcd86ab88d71d5497c6a47ccefbb8d6e495a10b",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "corporate_office_campus_headquarters",
+      "variant_id": "variant_3",
+      "catalogue_variant_id": "industrial_warehouse_campus_hq",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3_angle_90.jpg",
+      "file": "variant_3_angle_90.jpg",
+      "bytes": 806931,
+      "sha256": "5fb4cae8ed1cf21d78edbe77e763541d06ef8f495ccad48e7a8d05918132c4be",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

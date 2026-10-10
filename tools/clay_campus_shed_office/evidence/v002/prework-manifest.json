@@ -1,0 +1,433 @@
+{
+  "candidate": "clay-campus-shed-office-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-campus-shed-office",
+  "variant_id": "clay-campus-shed-office-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "corporate_office_campus_headquarters/variant_3 (industrial_warehouse_campus_hq)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 42.0,
+      "depth": 39.0,
+      "height": 12.0
+    },
+    "observed_storeys": 2,
+    "storey_programme": "two-storey office box along the south edge; single-volume sawtooth shed behind; fixed authored assembly",
+    "plan": "corner lot: street to the west, loading apron and lane to the south; enclosed rectangle 42 x 30 m read as 820 x 550 px in the top view",
+    "south_bays": 6,
+    "south_bay_m": 7.0,
+    "south_ground": "bay 1 multi-lite window under the entrance canopy, bay 2 roll-up door, bay 3 personnel door and small window, bays 4-6 dock doors under the dock canopy",
+    "south_upper": "blank corrugated panels between galvanised portal columns with X-braces in bays 1-2 and single diagonals in bays 3-6",
+    "west_face": "corner entrance and sign canopy at the south end, upper multi-lite window over it, shed windows under the second and third teeth, zigzag gable crown",
+    "teeth": 4,
+    "tooth_pitch_m": 5.4,
+    "tooth_crowns_m": [
+      12.0,
+      10.4,
+      10.4,
+      10.4
+    ],
+    "eave_m": 8.4,
+    "glazing": "vertical clerestory facing south on every tooth; the south-most tooth is the tallest and its clerestory stands above the terrace",
+    "levels_m": [
+      0.15,
+      4.3
+    ],
+    "terrace": "box roof with perimeter rail, one packaged rooftop unit and ducting at the west end, access ladder at the east end",
+    "loading": "cantilevered dock canopy over bays 2-6, raised dock with a west ramp and east steps",
+    "inferred": "42 m length calibrates the six 7 m portal bays; the east gable end and the north wall are not visible and repeat the west/eave grammar without the entrance; interiors are teaching assumptions."
+  },
+  "roof_contract": {
+    "type": "four single-pitch sawtooth monitors glazed to the south, low eaves to the north, plus a flat membrane terrace over the office box",
+    "datum_m": 8.4,
+    "crowns_m": [
+      12.0,
+      10.4,
+      10.4,
+      10.4
+    ],
+    "furniture": "packaged rooftop unit with ducts on the terrace; no chimneys"
+  },
+  "identity_contract": {
+    "owner": "sawtooth silhouette over a braced portal-frame office box, charcoal corrugated skin, galvanised columns and X-braces, corner entrance canopy, cantilevered dock canopy and raised dock"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: charcoal corrugated cladding with recessed seams, galvanised steel frames, warm concrete plinth and dock, tan-grey corrugated monitor roofs, blue-grey terrace membrane, near-black multi-lite frames",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 2,
+    "ground": "reception and open office in the box, open studio in the shed",
+    "upper": "offices over the box with terrace access",
+    "stairs": "straight supported flight in the box with a floor aperture"
+  },
+  "contact_contract": [
+    "Grade-zero slab and apron",
+    "Dock ramp and steps meet the apron at grade",
+    "Dock canopy cantilevered from the portal columns with tie rods",
+    "Entrance canopy wraps the south-west corner",
+    "Tooth roofs bear on the gable walls and clerestory frames",
+    "Terrace rail posts seated on the box roof slab"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -71.39999999999999,
+        5.76
+      ],
+      "target": [
+        0,
+        0,
+        5.4
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -55.69199999999999,
+        -59.97599999999999,
+        24.0
+      ],
+      "target": [
+        0,
+        0,
+        5.4
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        49.97999999999999,
+        -57.12,
+        36.0
+      ],
+      "target": [
+        0,
+        0,
+        5.4
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        107.1
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 58.8
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -71.39999999999999,
+        0,
+        7.199999999999999
+      ],
+      "target": [
+        0,
+        0,
+        5.4
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        71.39999999999999,
+        0,
+        7.199999999999999
+      ],
+      "target": [
+        0,
+        0,
+        5.4
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        71.39999999999999,
+        7.199999999999999
+      ],
+      "target": [
+        0,
+        0,
+        5.4
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        49.97999999999999,
+        57.12,
+        21.6
+      ],
+      "target": [
+        0,
+        0,
+        5.4
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -30.0,
+        -27.0,
+        4.2
+      ],
+      "target": [
+        -14.0,
+        -15.0,
+        3.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -12.0,
+        -24.0,
+        9.5
+      ],
+      "target": [
+        -4.0,
+        -15.0,
+        7.2
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -20.5,
+        -22.0,
+        2.6
+      ],
+      "target": [
+        -17.5,
+        -15.0,
+        2.3
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "entrance_corner",
+      "location": [
+        -31.0,
+        -23.0,
+        2.4
+      ],
+      "target": [
+        -21.0,
+        -12.0,
+        2.4
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "dock_contact",
+      "location": [
+        12.0,
+        -26.0,
+        2.2
+      ],
+      "target": [
+        3.0,
+        -16.0,
+        1.4
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "terrace_roof",
+      "location": [
+        -30.0,
+        -22.0,
+        14.5
+      ],
+      "target": [
+        -10.0,
+        -10.5,
+        8.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "sawtooth_contact",
+      "location": [
+        -34.0,
+        -12.0,
+        12.0
+      ],
+      "target": [
+        -21.0,
+        1.0,
+        9.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "clerestory_close",
+      "location": [
+        -6.0,
+        -15.0,
+        11.2
+      ],
+      "target": [
+        -2.0,
+        -6.6,
+        10.4
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -17.5,
+        -24.0,
+        2.0
+      ],
+      "target": [
+        -17.5,
+        -9.0,
+        1.9
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "stairs",
+      "location": [
+        -9.0,
+        -9.5,
+        3.2
+      ],
+      "target": [
+        -13.5,
+        -10.5,
+        2.8
+      ],
+      "lens": 30,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "entrance_corner",
+    "dock_contact",
+    "terrace_roof",
+    "sawtooth_contact",
+    "clerestory_close",
+    "interior",
+    "stairs"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3.png",
+        "path": "sources/front.png",
+        "bytes": 1138281,
+        "sha256": "3ce78a7c03f7df3149a8f65eec4b94b873b4ef43095ddec1f1eb5cbb93d9d1ef"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 855073,
+        "sha256": "bc245ef2958bade88418458fbbcd86ab88d71d5497c6a47ccefbb8d6e495a10b"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 806931,
+        "sha256": "5fb4cae8ed1cf21d78edbe77e763541d06ef8f495ccad48e7a8d05918132c4be"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "7543abc34b666d497b0e41758e5bcf92cdb41504b2cc3dce0ea36acf6baab527"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_office.py",
+        "sha256": "8c5a13cdf982a47555b87e54c11ddffde1cfaa0d8f9684361f173ab9b7007b5d"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "47633ee148d5cba8e6c7c4054c569ea2ef6a07e07fa0af43d33d42215364f792"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "7fcb1be95d6f39ab5a82167e690a4d3e181e009530cdfcc04ec405f65bae08da"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-10T07:36:28.462021+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
