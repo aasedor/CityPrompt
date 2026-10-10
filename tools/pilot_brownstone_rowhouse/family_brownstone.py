@@ -274,11 +274,9 @@ def roofs():
     lx, ly = FRONT_Y * 0 + (-W / 2 + .55 * W), REAR_Y - .35 * D1
     x0, x1, y0, y1 = lx - .80, lx + .80, ly - .70, ly + .70
     hw, he = 1.55, .45
-    # Hollow shed: low brick curb, tall west brick face, triangular brick cheeks, air beneath the glazing.
-    C.box('Skylight brick curb', ((x0 + x1) / 2, ly, ROOF_TOP + (he - .05) / 2), (x1 - x0, y1 - y0, he - .05), 'wall', 'roof skylight', 0)
-    C.box('Skylight west brick face', (x0 + .12, ly, ROOF_TOP + (hw - .03) / 2), (.24, y1 - y0, hw - .03), 'wall', 'roof skylight', 0)
-    for ya, yb in ((y0, y0 + .22), (y1 - .22, y1)):
-        C.prism('Skylight brick cheek', [(x0 + .24, ROOF_TOP + he - .05), (x1, ROOF_TOP + he - .05), (x0 + .24, ROOF_TOP + hw - .05)], 'y', ya, yb, 'wall', 'roof skylight')
+    # Solid brick shed body with a dark plate beneath the glazing so the slope reads as glass.
+    C.prism('Skylight brick body', [(x0, ROOF_TOP), (x1, ROOF_TOP), (x1, ROOF_TOP + he - .09), (x0, ROOF_TOP + hw - .09)], 'y', y0, y1, 'wall', 'roof skylight')
+    C.prism('Skylight dark glazing backing', [(x0 + .02, ROOF_TOP + hw - .07), (x1 - .02, ROOF_TOP + he - .07), (x1 - .02, ROOF_TOP + he - .045), (x0 + .02, ROOF_TOP + hw - .045)], 'y', y0 + .05, y1 - .05, 'trim', 'roof skylight')
     C.prism('Skylight sloped glazing', [(x0, ROOF_TOP + hw - .03), (x1, ROOF_TOP + he - .03), (x1, ROOF_TOP + he), (x0, ROOF_TOP + hw)], 'y', y0 + .04, y1 - .04, 'glass', 'roof skylight')
     for yy in (y0, (y0 + y1) / 2, y1):
         C.beam('Skylight glazing bar', (x0, yy, ROOF_TOP + hw + .01), (x1, yy, ROOF_TOP + he + .01), .05, .05, 'trim', 'roof skylight')
