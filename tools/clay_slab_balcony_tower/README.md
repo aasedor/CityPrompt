@@ -67,3 +67,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v003 (no further version permitted)
+
+- P1: the entrance canopy fascia carries a continuous black band along its front and sides (two-shell canopy with an unassigned slot between plate and fascia); fix is one solid prism with concrete on every face.
+- P1: black unassigned caps remain at the four parapet corners (shrunk from v002, not removed); fix is concrete on every face of the corner-fin caps and trimming the brick stub beside them.
+- P1: fin stubs stand proud of the parapet at every bay line and corner, so the roofline reads crenellated where the oblique shows a continuous coping; fix is to stop the fins at the roof-slab underside or share one top face with the coping.
+- P1: the rear roller door is split by a full-height fin in front of its middle (a face no source shows); fix is to centre the door inside one bay.
+- P2 (recorded): brick hairline on the first-floor soffit; a stray pipe-like element under the west ground-floor soffit; penthouse annex on the east where the sources put it south, with a shallower roof fascia and no teal strip; brick frames around the balcony-bay windows; slab ends projecting past the fin faces; interior underexposed.
