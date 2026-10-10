@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-campus-shed-office-clay-v003",
+  "glb": "clay-campus-shed-office-clay-v003.glb",
+  "glb_bytes": 1011064,
+  "glb_sha256": "278b03a875725f2958484307ff28f6df1f201f93b9b31868fa6250600a3b4ce8",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "clerestory_close.png": 92,
+    "dock_contact.png": 92,
+    "entrance_corner.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "sawtooth_contact.png": 92,
+    "stairs.png": 92,
+    "terrace_roof.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-campus-shed-office-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 31187923
+}

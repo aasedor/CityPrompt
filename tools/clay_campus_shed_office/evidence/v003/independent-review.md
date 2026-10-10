@@ -1,0 +1,49 @@
+# Independent holistic review — office / v003 (RLASM v6.1 architectural clay)
+
+Reviewer: independent (did not build v003). Judged only rendered pixels in `renders/*.png` against the locked sources `sources/front.png`, `sources/oblique.jpg`, `sources/top.jpg`. All 18 renders, the three sources and the four phone boards were opened at full resolution; matched-role comparisons and detail views were additionally inspected as 2x-5x crops.
+
+## 1. Verdict
+
+**VISUAL_REWORK_REQUIRED** — zero P0, but the west (entrance) face is composed in the wrong order against both elevation sources (X-brace, upper window, entrance door and canopy all in the wrong bay, canopy one bay short) and the entrance-canopy tie rods anchor into the upper window and cross a column, so the candidate cannot be approved at production quality until the west face is rebuilt.
+
+All five v002 defects are verified fixed in the pixels: no brace pierces the dock or entrance canopy (architecture_close, facade_close, entrance_corner); the entrance door is a single glazed leaf-pair inside one bay, not split by a column (entrance_corner, left_side); the west face has two bays (left_side, front_corner); the dock canopy runs along the south face only and ends at the SE corner column (top, aerial, front); X-braces are confined to the south corner bay and the east-end bay with thin tie rods in the four canopy bays (front, facade_close).
+
+## 2. Findings table
+
+| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |
+|---|---|---|---|---|---|
+| 1 | P1 | front_corner, left_side, entrance_corner, facade_close (vs sources front.png, oblique.jpg) | West face is composed in reverse. Render: north bay = X-brace over a ground-floor window; corner bay = upper window over the glazed entrance door. Both sources: north bay = upper window over the CAMPUS HQ entrance door; corner bay = X-brace over a full-height glazed shopfront, so the two corner X-braces meet at the corner column. The entrance door is one bay too close to the corner and the braced corner is lost. | West-face bay list authored from the brief's phrase "corner entrance" rather than from the sources; bay order mirrored. | Swap the two west-face bays: put the X-brace and ground-floor glazed shopfront in the corner bay (adjacent to the south corner X), and the upper window plus entrance door in the north bay. Re-render front_corner, left_side, entrance_corner. |
+| 2 | P1 | top, front_corner, left_side, entrance_corner (vs sources front.png, oblique.jpg) | Entrance canopy covers only the corner bay (top.png: black slab at x≈300-325 spans y≈747-813 of the box's y≈665-820; left_side: canopy x≈975-1065 of the two-bay face x≈870-1070). Both sources show one continuous thin canopy running the full two-bay west face from the north column to just short of the corner column, with the door under its north half. | Canopy sized to the entrance bay only. | Extend the canopy to the full west face width (both bays), keep it thin, keep it on the west face only, keep two thin tie rods per bay. |
+| 3 | P1 | entrance_corner (crop at 4x), front_corner, facade_close | The two entrance-canopy tie rods run from the canopy's front corners up to the lower corners of the upper window: the right rod crosses the window sill and ends on the glazing/frame (entrance_corner x≈815-890, y≈195-350), the left rod passes in front of the intermediate column and ends at the window's lower-left corner. Rods anchored into an opening and crossing a column read as intersecting parts. Source rods anchor on solid cladding below the upper openings. | Rod end points placed at the window corners instead of on cladding/columns. | Anchor each rod on solid cladding or on the column flange at least one rod-width clear of any window frame; with finding 1 fixed the corner bay above the canopy is the braced bay, so the rods should land on the cladding under the brace-bay sill line. |
+| 4 | P2 | architecture_close, facade_close, front | Dock-canopy tie rods start about one third of the way down the upper storey (facade_close: rod top y≈215 vs roof beam y≈95) rather than at the top of the column under the eaves beam as in oblique.jpg / front.png. | Anchor height. | Move the rod top anchors to the column just under the eaves beam. |
+| 5 | P2 | front, front_corner, facade_close (vs front.png, top.jpg) | Ramp starts one full bay east of the corner and is about one bay long with a continuous outer railing; sources show the ramp beginning near the corner column, running roughly two bays with a yellow-edged kerb and a short railing only at its top. | Ramp length/railing authored generically. | Lengthen the ramp to ~2 bays starting near the corner column; replace the full-length railing with a short top railing. |
+| 6 | P2 | front, front_corner, aerial (vs top.jpg) | Second dock stair sits beyond the east end of the box; top.jpg places both stairs along the dock face (one at the ramp top, one about two thirds along). | Stair placement. | Move the east stair to about bay 5 on the dock face. |
+| 7 | P2 | aerial, right_side (vs top.jpg) | Roof-access ladder is mid-way along the box's east face; top.jpg shows it at the NE corner of the box next to the first monitor. | Placement. | Move the ladder to the north end of the east face. |
+| 8 | P2 | front_corner, left_side, right_side, aerial, rear_side | Unseen/partly seen gable walls are inconsistent with the visible grammar: north shed has no windows on its west gable (front.png shows a window on every shed gable in view), and on the east the shed next to the box and the north shed have blank gables while the middle two have two windows each. Coherence only (no source shows these faces). | Window loop skipped first/last strips. | Give every shed gable the same two-storey window pair as the middle sheds. |
+| 9 | P2 | interior | The "interior" role is shot from outside through the corner-bay glass; the interior (one desk, a chair) is only faintly legible behind reflection. `stairs` already shows the interior properly. | Camera placed outside. | Either rename the view or move the camera inside looking toward the entrance glazing. |
+
+No P0 findings.
+
+## 3. Source conformance checklist
+
+| item | status | evidence |
+|---|---|---|
+| Silhouette (four south-glazed sawtooth monitors behind a flat-roofed two-storey box with terrace) | conforms | front_corner / aerial vs oblique.jpg; top vs top.jpg: four strips, box flush with strips, monitors highest on the south edge sloping down north; rear and rear_side read the same grammar from the unseen side. |
+| Storey count (two storeys in box and in shed gables) | conforms | front, left_side, right_side vs front.png: ground + first floor in the box, two window rows on the shed gables, terrace on the box roof. |
+| Bay rhythm — south face (6 bays: corner X, four tie-rod canopy bays, east-end X) | conforms | front, facade_close vs oblique.jpg / top.jpg; dock canopy over bays 2-6. Ground-floor sequence (big corner window, roller shutter, door bay, two shutters, end window) consistent with the visible part of front.png. |
+| Bay rhythm — west face (2 bays) | deviates | Two bays present (left_side), but the X-brace/upper-window and door/shopfront assignment is reversed against front.png and oblique.jpg (finding 1). |
+| Entrance and canopy | deviates | Thin canopy on the west face only (correct) but one bay wide instead of the full two-bay face, door in the corner bay instead of the north bay, rods anchored into the upper window (findings 1-3). entrance_corner, left_side, top. |
+| Dock (raised platform, canopy over it) | conforms | dock_contact, front_corner, aerial vs oblique.jpg / top.jpg: platform at shutter sill level, dark bumper edge, cantilevered canopy with one tie rod per bay. |
+| Ramp and stairs | conforms (with P2 notes) | Ramp at the west end rising east to the dock, two stairs on the apron; ramp ~1 bay long starting one bay in, and second stair beyond the box end (findings 5, 6). |
+| Portal frame and braces | conforms (south/east), deviates (west) | Galvanised columns full height with floor and eaves beams; X in south corner bay and east-end bay, rods in canopy bays (front, facade_close). West-face X in the wrong bay (finding 1). |
+| Monitors and clerestories | conforms | clerestory_close, terrace_roof, aerial vs oblique.jpg: two-row glazing with dark mullions and cap, first monitor rising directly from the terrace, columns on gables stopping at the eave with solid monitor return above (sawtooth_contact vs front.png). |
+| Terrace and rooftop plant | conforms | terrace_roof, top vs top.jpg: rail along south, west and east edges, AC unit with bent duct at the west end on a plinth. |
+| Gable ends (east) and north wall | not visible in any source; coherent | aerial, right_side, rear, rear_side: charcoal cladding, galvanised columns, two-storey windows and a north door; window omissions noted as P2 (finding 8). |
+| Materials hierarchy | conforms | Charcoal vertical cladding, light galvanised frame, near-black canopies, glass with dark frames, tan concrete plinth/dock/apron; clay palette consistent with sources across all views. |
+
+## 4. Camera validity
+
+- All 18 renders have the target in frame, unclipped and legible; no view has an occluded target. front.png is a straight south elevation rather than the source's SW corner view; front_corner covers the matched role.
+- `interior`: valid but weak — exterior camera looking through the corner-bay glass; the interior is only faintly visible (P2, finding 9). `stairs` is the actual interior view and is legible.
+- `sawtooth_contact`: valid and legible, but it frames the four west shed gables with the office box off-frame right, so the first-monitor-to-box junction it is named for is only verified in terrace_roof and clerestory_close.
+- `rear`: the second roof plane visible above the north strip's ridge implies a camera above ridge height; nothing is clipped.
