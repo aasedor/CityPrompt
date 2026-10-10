@@ -1,0 +1,1931 @@
+{
+  "candidate": "clay-anchored-plaza-supermarket-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 627,
+    "vertices": 6516,
+    "polygons": 8980,
+    "triangles": 8980,
+    "path": "clay-anchored-plaza-supermarket-clay-v002-authoring.blend",
+    "bytes": 5215400,
+    "sha256": "dfc86277c741edcfe52dba07e32efeab2e4dbf642fbed04a4ecbad094b8601f6"
+  },
+  "runtime": {
+    "path": "clay-anchored-plaza-supermarket-clay-v002.glb",
+    "bytes": 485484,
+    "sha256": "bfd19bfe29329233ec85dfff4b7ec854ec4969d65eaedfaf60359fd6175c0174",
+    "meshes": 17,
+    "materials": 17,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 17,
+    "vertices": 6516,
+    "polygons": 8980,
+    "triangles": 8980
+  },
+  "original_bounds_m": [
+    [
+      -54.0,
+      -53.0,
+      0.0
+    ],
+    [
+      62.0,
+      34.0,
+      11.300000190734863
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -54.0,
+      -53.0,
+      0.0
+    ],
+    [
+      62.0,
+      34.0,
+      11.300000190734863
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 108.0,
+    "depth": 74.0,
+    "height": 11.6
+  },
+  "native_dimensions_m": {
+    "width": 116.0,
+    "depth": 87.0,
+    "height": 11.300000190734863
+  },
+  "native_bottom_center_m": [
+    4.0,
+    -9.5,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 16,
+    "joint": 12,
+    "trim": 221,
+    "pale": 99,
+    "stone": 82,
+    "roof": 4,
+    "foundation": 6,
+    "glass": 64,
+    "hardware": 25,
+    "floor": 5,
+    "timber": 3,
+    "planting": 6,
+    "cap": 35,
+    "green": 2,
+    "cream": 21,
+    "tan": 20,
+    "car": 6
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/anchor_entrance.png",
+    "renders/inline_shops.png",
+    "renders/endcap_corner.png",
+    "renders/parking_court.png",
+    "renders/roof_units.png",
+    "renders/interior.png",
+    "renders/rear_service.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.1452246606349945,
+      "xmax": 0.9073346257209778,
+      "ymin": 0.45339342951774597,
+      "ymax": 0.5431642532348633
+    },
+    "front_corner": {
+      "xmin": 0.17594416439533234,
+      "xmax": 0.922150194644928,
+      "ymin": 0.38807836174964905,
+      "ymax": 0.5502344369888306
+    },
+    "aerial": {
+      "xmin": 0.088459312915802,
+      "xmax": 0.8712384104728699,
+      "ymin": 0.32472723722457886,
+      "ymax": 0.5665298700332642
+    },
+    "top": {
+      "xmin": 0.18703694641590118,
+      "xmax": 0.8593279719352722,
+      "ymin": 0.09044341742992401,
+      "ymax": 0.7627344131469727
+    },
+    "left_side": {
+      "xmin": 0.2403687983751297,
+      "xmax": 0.9134619235992432,
+      "ymin": 0.4403834939002991,
+      "ymax": 0.5522692799568176
+    },
+    "right_side": {
+      "xmin": 0.09261096268892288,
+      "xmax": 0.7558972239494324,
+      "ymin": 0.44048213958740234,
+      "ymax": 0.54546719789505
+    },
+    "rear": {
+      "xmin": 0.09163986891508102,
+      "xmax": 0.852034866809845,
+      "ymin": 0.44797423481941223,
+      "ymax": 0.5489951372146606
+    },
+    "rear_side": {
+      "xmin": 0.07610466331243515,
+      "xmax": 0.8029383420944214,
+      "ymin": 0.4078159034252167,
+      "ymax": 0.5482766628265381
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Entrance tower piers to grade in front of the anchor doors",
+      "grade_m": 0,
+      "height_m": 11.2
+    },
+    {
+      "name": "Storefront thresholds at slab level under the continuous canopy",
+      "grade_m": 0
+    },
+    {
+      "name": "Pylon sign on a brick base at the road verge",
+      "grade_m": 0
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "Anchor entrance doors",
+      "face": "anchor south",
+      "u": 4.0,
+      "z": 0.15,
+      "width": 5.0,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 4,
+      "rows": 1
+    },
+    {
+      "id": "Anchor storefront west",
+      "face": "anchor south",
+      "u": -4.0,
+      "z": 0.15,
+      "width": 8.0,
+      "height": 3.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 5,
+      "rows": 1
+    },
+    {
+      "id": "Anchor storefront east",
+      "face": "anchor south",
+      "u": 12.0,
+      "z": 0.15,
+      "width": 8.0,
+      "height": 3.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 5,
+      "rows": 1
+    },
+    {
+      "id": "Anchor east window",
+      "face": "anchor east",
+      "u": -11.0,
+      "z": 1.4,
+      "width": 3.0,
+      "height": 2.0,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -4.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Anchor loading door",
+      "face": "anchor north",
+      "u": -8.0,
+      "z": 0.15,
+      "width": 4.0,
+      "height": 4.2,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        -22.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Anchor rear door",
+      "face": "anchor north",
+      "u": 6.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        -22.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Cafe storefront",
+      "face": "cafe south",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Cafe west window 0",
+      "face": "cafe west",
+      "u": -3.5,
+      "z": 1.0,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -46.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Cafe west window 1",
+      "face": "cafe west",
+      "u": 2.5,
+      "z": 1.0,
+      "width": 3.0,
+      "height": 2.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -46.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Inline shop front 0",
+      "face": "inline south",
+      "u": -18.857142857142858,
+      "z": 0.15,
+      "width": 4.685714285714285,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Inline shop front 1",
+      "face": "inline south",
+      "u": -12.571428571428571,
+      "z": 0.15,
+      "width": 4.685714285714285,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Inline shop front 2",
+      "face": "inline south",
+      "u": -6.2857142857142865,
+      "z": 0.15,
+      "width": 4.685714285714285,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Inline shop front 3",
+      "face": "inline south",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 4.685714285714285,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Inline shop front 4",
+      "face": "inline south",
+      "u": 6.285714285714285,
+      "z": 0.15,
+      "width": 4.685714285714285,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Inline shop front 5",
+      "face": "inline south",
+      "u": 12.57142857142857,
+      "z": 0.15,
+      "width": 4.685714285714285,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Inline shop front 6",
+      "face": "inline south",
+      "u": 18.857142857142854,
+      "z": 0.15,
+      "width": 4.685714285714285,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Inline rear door 0",
+      "face": "inline north",
+      "u": -18.857142857142858,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Inline rear door 1",
+      "face": "inline north",
+      "u": -12.571428571428571,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Inline rear door 2",
+      "face": "inline north",
+      "u": -6.2857142857142865,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Inline rear door 3",
+      "face": "inline north",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Inline rear door 4",
+      "face": "inline north",
+      "u": 6.285714285714285,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Inline rear door 5",
+      "face": "inline north",
+      "u": 12.57142857142857,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Inline rear door 6",
+      "face": "inline north",
+      "u": 18.857142857142854,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        30.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Endcap shop front 0",
+      "face": "endcap west",
+      "u": -5.5,
+      "z": 0.15,
+      "width": 5.4,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        40.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Endcap shop front 1",
+      "face": "endcap west",
+      "u": 1.5,
+      "z": 0.15,
+      "width": 5.4,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        40.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Endcap shop front 2",
+      "face": "endcap west",
+      "u": 8.5,
+      "z": 0.15,
+      "width": 5.4,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        40.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Endcap shop front 3",
+      "face": "endcap west",
+      "u": 15.5,
+      "z": 0.15,
+      "width": 5.4,
+      "height": 3.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        40.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Drive-through window",
+      "face": "endcap west",
+      "u": 21.5,
+      "z": 1.0,
+      "width": 1.4,
+      "height": 1.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        40.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": "Endcap south window",
+      "face": "endcap south",
+      "u": -2.0,
+      "z": 1.0,
+      "width": 4.0,
+      "height": 2.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        47.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "id": "Endcap rear door 0",
+      "face": "endcap east",
+      "u": -16.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        54.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Endcap rear door 1",
+      "face": "endcap east",
+      "u": -8.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        54.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Endcap rear door 2",
+      "face": "endcap east",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        54.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Endcap rear door 3",
+      "face": "endcap east",
+      "u": 8.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.19,
+      "pane_inset_m": null,
+      "face_origin": [
+        54.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "back of house"
+    },
+    {
+      "id": "Drive-through service window",
+      "face": "endcap east",
+      "u": 18.0,
+      "z": 1.0,
+      "width": 1.4,
+      "height": 1.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        54.0,
+        7.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "common enclosed room behind carrier; no texture cards",
+      "cols": 1,
+      "rows": 1
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Parking court",
+      "Lawn verge south",
+      "Road",
+      "Parking stripes",
+      "Parked car body",
+      "Parked car cabin",
+      "Parked car body.001",
+      "Parked car cabin.001",
+      "Parked car body.002",
+      "Parked car cabin.002",
+      "Parked car body.003",
+      "Parked car cabin.003",
+      "Parked car body.004",
+      "Parked car cabin.004",
+      "Parked car body.005",
+      "Parked car cabin.005",
+      "Parked car body.006",
+      "Parked car cabin.006",
+      "Parked car body.007",
+      "Parked car cabin.007",
+      "Parked car body.008",
+      "Parked car cabin.008",
+      "Parked car body.009",
+      "Parked car cabin.009",
+      "Pylon sign base",
+      "Pylon sign post",
+      "Pylon sign board",
+      "Pylon sign panel",
+      "Court planter",
+      "Court planter shrubs",
+      "Court planter.001",
+      "Court planter shrubs.001",
+      "Drive-through lane",
+      "Drive-through bollard",
+      "Drive-through bollard.001"
+    ],
+    "street planting": [
+      "Shelterbelt tree trunk",
+      "Shelterbelt tree trunk.001",
+      "Shelterbelt tree trunk.002"
+    ],
+    "garden planting": [
+      "Shelterbelt crown",
+      "Shelterbelt crown.001",
+      "Shelterbelt crown.002"
+    ],
+    "envelope": [
+      "anchor south carrier",
+      "anchor east carrier",
+      "anchor east upper carrier",
+      "anchor west lower carrier",
+      "anchor west upper carrier",
+      "anchor north carrier",
+      "cafe south carrier",
+      "cafe west carrier",
+      "cafe north carrier",
+      "inline south carrier",
+      "inline north carrier",
+      "endcap west carrier",
+      "endcap west rear carrier",
+      "endcap south carrier",
+      "endcap east carrier",
+      "endcap north carrier"
+    ],
+    "panel joints": [
+      "anchor south panel joints",
+      "anchor east panel joints",
+      "anchor north panel joints",
+      "cafe south panel joints",
+      "cafe west panel joints",
+      "cafe north panel joints",
+      "inline south panel joints",
+      "inline north panel joints",
+      "endcap west panel joints",
+      "endcap south panel joints",
+      "endcap east panel joints",
+      "endcap north panel joints"
+    ],
+    "anchor south.Anchor entrance doors": [
+      "Anchor entrance doors recessed jamb",
+      "Anchor entrance doors recessed jamb.001",
+      "Anchor entrance doors recessed head or sill",
+      "Anchor entrance doors recessed head or sill.001",
+      "Anchor entrance doors mullion 1",
+      "Anchor entrance doors mullion 2",
+      "Anchor entrance doors mullion 3",
+      "Anchor entrance doors optical pane 0-0",
+      "Anchor entrance doors optical pane 1-0",
+      "Anchor entrance doors optical pane 2-0",
+      "Anchor entrance doors optical pane 3-0"
+    ],
+    "reveals": [
+      "Reveal jamb liner",
+      "Reveal jamb liner.001",
+      "Reveal head liner",
+      "Reveal sill liner",
+      "Reveal jamb liner.002",
+      "Reveal jamb liner.003",
+      "Reveal head liner.001",
+      "Reveal sill liner.001",
+      "Reveal jamb liner.004",
+      "Reveal jamb liner.005",
+      "Reveal head liner.002",
+      "Reveal sill liner.002",
+      "Reveal jamb liner.006",
+      "Reveal jamb liner.007",
+      "Reveal head liner.003",
+      "Reveal sill liner.003",
+      "Reveal jamb liner.008",
+      "Reveal jamb liner.009",
+      "Reveal head liner.004",
+      "Reveal sill liner.004",
+      "Reveal jamb liner.010",
+      "Reveal jamb liner.011",
+      "Reveal head liner.005",
+      "Reveal sill liner.005",
+      "Reveal jamb liner.012",
+      "Reveal jamb liner.013",
+      "Reveal head liner.006",
+      "Reveal sill liner.006",
+      "Reveal jamb liner.014",
+      "Reveal jamb liner.015",
+      "Reveal head liner.007",
+      "Reveal sill liner.007",
+      "Reveal jamb liner.016",
+      "Reveal jamb liner.017",
+      "Reveal head liner.008",
+      "Reveal sill liner.008",
+      "Reveal jamb liner.018",
+      "Reveal jamb liner.019",
+      "Reveal head liner.009",
+      "Reveal sill liner.009",
+      "Reveal jamb liner.020",
+      "Reveal jamb liner.021",
+      "Reveal head liner.010",
+      "Reveal sill liner.010",
+      "Reveal jamb liner.022",
+      "Reveal jamb liner.023",
+      "Reveal head liner.011",
+      "Reveal sill liner.011",
+      "Reveal jamb liner.024",
+      "Reveal jamb liner.025",
+      "Reveal head liner.012",
+      "Reveal sill liner.012",
+      "Reveal jamb liner.026",
+      "Reveal jamb liner.027",
+      "Reveal head liner.013",
+      "Reveal sill liner.013",
+      "Reveal jamb liner.028",
+      "Reveal jamb liner.029",
+      "Reveal head liner.014",
+      "Reveal sill liner.014",
+      "Reveal jamb liner.030",
+      "Reveal jamb liner.031",
+      "Reveal head liner.015",
+      "Reveal sill liner.015",
+      "Reveal jamb liner.032",
+      "Reveal jamb liner.033",
+      "Reveal head liner.016",
+      "Reveal sill liner.016",
+      "Reveal jamb liner.034",
+      "Reveal jamb liner.035",
+      "Reveal head liner.017",
+      "Reveal sill liner.017",
+      "Reveal jamb liner.036",
+      "Reveal jamb liner.037",
+      "Reveal head liner.018",
+      "Reveal sill liner.018",
+      "Reveal jamb liner.038",
+      "Reveal jamb liner.039",
+      "Reveal head liner.019",
+      "Reveal sill liner.019",
+      "Reveal jamb liner.040",
+      "Reveal jamb liner.041",
+      "Reveal head liner.020",
+      "Reveal sill liner.020",
+      "Reveal jamb liner.042",
+      "Reveal jamb liner.043",
+      "Reveal head liner.021",
+      "Reveal sill liner.021",
+      "Reveal jamb liner.044",
+      "Reveal jamb liner.045",
+      "Reveal head liner.022",
+      "Reveal sill liner.022",
+      "Reveal jamb liner.046",
+      "Reveal jamb liner.047",
+      "Reveal head liner.023",
+      "Reveal sill liner.023",
+      "Reveal jamb liner.048",
+      "Reveal jamb liner.049",
+      "Reveal head liner.024",
+      "Reveal sill liner.024",
+      "Reveal jamb liner.050",
+      "Reveal jamb liner.051",
+      "Reveal head liner.025",
+      "Reveal sill liner.025",
+      "Reveal jamb liner.052",
+      "Reveal jamb liner.053",
+      "Reveal head liner.026",
+      "Reveal sill liner.026",
+      "Reveal jamb liner.054",
+      "Reveal jamb liner.055",
+      "Reveal head liner.027",
+      "Reveal sill liner.027",
+      "Reveal jamb liner.056",
+      "Reveal jamb liner.057",
+      "Reveal head liner.028",
+      "Reveal sill liner.028",
+      "Reveal jamb liner.058",
+      "Reveal jamb liner.059",
+      "Reveal head liner.029",
+      "Reveal sill liner.029",
+      "Reveal jamb liner.060",
+      "Reveal jamb liner.061",
+      "Reveal head liner.030",
+      "Reveal sill liner.030",
+      "Reveal jamb liner.062",
+      "Reveal jamb liner.063",
+      "Reveal head liner.031",
+      "Reveal sill liner.031",
+      "Reveal jamb liner.064",
+      "Reveal jamb liner.065",
+      "Reveal head liner.032",
+      "Reveal sill liner.032",
+      "Reveal jamb liner.066",
+      "Reveal jamb liner.067",
+      "Reveal head liner.033",
+      "Reveal sill liner.033"
+    ],
+    "storefront base": [
+      "Storefront base",
+      "Storefront base.001",
+      "Storefront base.002",
+      "Storefront base.003",
+      "Storefront base.004",
+      "Storefront base.005",
+      "Storefront base.006",
+      "Storefront base.007",
+      "Storefront base.008",
+      "Storefront base.009",
+      "Storefront base.010",
+      "Storefront base.011",
+      "Storefront base.012",
+      "Storefront base.013",
+      "Storefront base.014",
+      "Storefront base.015",
+      "Storefront base.016",
+      "Storefront base.017",
+      "Storefront base.018",
+      "Storefront base.019",
+      "Storefront base.020"
+    ],
+    "anchor south.Anchor storefront west": [
+      "Anchor storefront west recessed jamb",
+      "Anchor storefront west recessed jamb.001",
+      "Anchor storefront west recessed head or sill",
+      "Anchor storefront west recessed head or sill.001",
+      "Anchor storefront west mullion 1",
+      "Anchor storefront west mullion 2",
+      "Anchor storefront west mullion 3",
+      "Anchor storefront west mullion 4",
+      "Anchor storefront west optical pane 0-0",
+      "Anchor storefront west optical pane 1-0",
+      "Anchor storefront west optical pane 2-0",
+      "Anchor storefront west optical pane 3-0",
+      "Anchor storefront west optical pane 4-0"
+    ],
+    "anchor south.Anchor storefront east": [
+      "Anchor storefront east recessed jamb",
+      "Anchor storefront east recessed jamb.001",
+      "Anchor storefront east recessed head or sill",
+      "Anchor storefront east recessed head or sill.001",
+      "Anchor storefront east mullion 1",
+      "Anchor storefront east mullion 2",
+      "Anchor storefront east mullion 3",
+      "Anchor storefront east mullion 4",
+      "Anchor storefront east optical pane 0-0",
+      "Anchor storefront east optical pane 1-0",
+      "Anchor storefront east optical pane 2-0",
+      "Anchor storefront east optical pane 3-0",
+      "Anchor storefront east optical pane 4-0"
+    ],
+    "brick base": [
+      "Brick base",
+      "Brick base.001",
+      "Brick base.002",
+      "Brick base.003",
+      "Brick base.004",
+      "Brick base.005",
+      "Brick base.006",
+      "Brick base.007",
+      "Brick base.008",
+      "Brick base.009",
+      "Brick base.010",
+      "Brick base.011",
+      "Brick base.012",
+      "Brick base.013",
+      "Brick base.014",
+      "Brick base.015",
+      "Brick base.016",
+      "Brick base.017",
+      "Brick base.018",
+      "Brick base.019",
+      "Brick base.020",
+      "Brick base.021",
+      "Brick base.022",
+      "Brick base.023",
+      "Brick base.024",
+      "Brick base.025",
+      "Brick base.026",
+      "Brick base.027",
+      "Brick base.028",
+      "Brick base.029",
+      "Brick base.030",
+      "Brick base.031",
+      "Brick base.032",
+      "Brick base.033",
+      "Brick base.034",
+      "Brick base.035",
+      "Brick base.036",
+      "Brick base.037",
+      "Brick base.038",
+      "Brick base.039",
+      "Brick base.040",
+      "Brick base.041",
+      "Brick base.042",
+      "Brick base.043",
+      "Brick base.044"
+    ],
+    "pilasters": [
+      "Brick pilaster",
+      "Pilaster cap",
+      "Brick pilaster.001",
+      "Pilaster cap.001",
+      "Brick pilaster.002",
+      "Pilaster cap.002",
+      "Brick pilaster.003",
+      "Pilaster cap.003",
+      "Brick pilaster.004",
+      "Pilaster cap.004",
+      "Brick pilaster.005",
+      "Pilaster cap.005",
+      "Brick pilaster.006",
+      "Pilaster cap.006",
+      "Brick pilaster.007",
+      "Pilaster cap.007",
+      "Brick pilaster.008",
+      "Pilaster cap.008",
+      "Brick pilaster.009",
+      "Pilaster cap.009",
+      "Brick pilaster.010",
+      "Pilaster cap.010",
+      "Brick pilaster.011",
+      "Pilaster cap.011",
+      "Brick pilaster.012",
+      "Pilaster cap.012"
+    ],
+    "cornice": [
+      "Cornice cap",
+      "Cornice cap.001",
+      "Cornice cap.002",
+      "Cornice cap.003",
+      "Cornice cap.004",
+      "Cornice cap.005",
+      "Cornice cap.006",
+      "Cornice cap.007",
+      "Cornice cap.008",
+      "Cornice cap.009",
+      "Cornice cap.010",
+      "Cornice cap.011",
+      "Cornice cap.012",
+      "Cornice cap.013"
+    ],
+    "coping": [
+      "Parapet coping",
+      "Parapet coping.001",
+      "Parapet coping.002",
+      "Parapet coping.003",
+      "Parapet coping.004",
+      "Parapet coping.005",
+      "Parapet coping.006",
+      "Parapet coping.007",
+      "Parapet coping.008",
+      "Parapet coping.009",
+      "Parapet coping.010",
+      "Parapet coping.011",
+      "Parapet coping.012",
+      "Parapet coping.013"
+    ],
+    "canopies": [
+      "Anchor canopy",
+      "Cafe canopy",
+      "Inline canopy",
+      "Canopy bracket",
+      "Canopy bracket.001",
+      "Canopy bracket.002",
+      "Canopy bracket.003",
+      "Canopy bracket.004",
+      "Canopy bracket.005",
+      "Canopy bracket.006",
+      "Canopy bracket.007",
+      "Endcap canopy",
+      "Canopy bracket.008",
+      "Canopy bracket.009",
+      "Canopy bracket.010",
+      "Canopy bracket.011",
+      "Canopy bracket.012"
+    ],
+    "entrance tower": [
+      "Tower west pier",
+      "Tower east pier",
+      "Tower head",
+      "Tower cap",
+      "Tower sign panel",
+      "Tower sign lettering bar",
+      "Tower return wall"
+    ],
+    "anchor east.Anchor east window": [
+      "Anchor east window recessed jamb",
+      "Anchor east window recessed jamb.001",
+      "Anchor east window recessed head or sill",
+      "Anchor east window recessed head or sill.001",
+      "Anchor east window mullion 1",
+      "Anchor east window mullion 2",
+      "Anchor east window optical pane 0-0",
+      "Anchor east window optical pane 1-0",
+      "Anchor east window optical pane 2-0"
+    ],
+    "service doors": [
+      "Anchor loading door leaf",
+      "Anchor rear door leaf",
+      "Inline rear door 0 leaf",
+      "Inline rear door 1 leaf",
+      "Inline rear door 2 leaf",
+      "Inline rear door 3 leaf",
+      "Inline rear door 4 leaf",
+      "Inline rear door 5 leaf",
+      "Inline rear door 6 leaf",
+      "Endcap rear door 0 leaf",
+      "Endcap rear door 1 leaf",
+      "Endcap rear door 2 leaf",
+      "Endcap rear door 3 leaf"
+    ],
+    "loading dock": [
+      "Loading dock"
+    ],
+    "cafe south.Cafe storefront": [
+      "Cafe storefront recessed jamb",
+      "Cafe storefront recessed jamb.001",
+      "Cafe storefront recessed head or sill",
+      "Cafe storefront recessed head or sill.001",
+      "Cafe storefront mullion 1",
+      "Cafe storefront mullion 2",
+      "Cafe storefront optical pane 0-0",
+      "Cafe storefront optical pane 1-0",
+      "Cafe storefront optical pane 2-0"
+    ],
+    "sign band": [
+      "Sign band",
+      "Sign band.001",
+      "Sign band.002",
+      "Sign band.003"
+    ],
+    "cafe west.Cafe west window 0": [
+      "Cafe west window 0 recessed jamb",
+      "Cafe west window 0 recessed jamb.001",
+      "Cafe west window 0 recessed head or sill",
+      "Cafe west window 0 recessed head or sill.001",
+      "Cafe west window 0 mullion 1",
+      "Cafe west window 0 mullion 2",
+      "Cafe west window 0 optical pane 0-0",
+      "Cafe west window 0 optical pane 1-0",
+      "Cafe west window 0 optical pane 2-0"
+    ],
+    "cafe west.Cafe west window 1": [
+      "Cafe west window 1 recessed jamb",
+      "Cafe west window 1 recessed jamb.001",
+      "Cafe west window 1 recessed head or sill",
+      "Cafe west window 1 recessed head or sill.001",
+      "Cafe west window 1 mullion 1",
+      "Cafe west window 1 mullion 2",
+      "Cafe west window 1 optical pane 0-0",
+      "Cafe west window 1 optical pane 1-0",
+      "Cafe west window 1 optical pane 2-0"
+    ],
+    "roof": [
+      "Roof slab",
+      "Roof membrane",
+      "Roof slab.001",
+      "Roof membrane.001",
+      "Roof slab.002",
+      "Roof membrane.002",
+      "Roof slab.003",
+      "Roof membrane.003"
+    ],
+    "rooftop plant": [
+      "Rooftop unit curb",
+      "Rooftop unit",
+      "Rooftop unit fan",
+      "Rooftop unit curb.001",
+      "Rooftop unit.001",
+      "Rooftop unit fan.001",
+      "Rooftop unit curb.002",
+      "Rooftop unit.002",
+      "Rooftop unit fan.002",
+      "Rooftop unit curb.003",
+      "Rooftop unit.003",
+      "Rooftop unit fan.003",
+      "Rooftop unit curb.004",
+      "Rooftop unit.004",
+      "Rooftop unit fan.004",
+      "Rooftop unit curb.005",
+      "Rooftop unit.005",
+      "Rooftop unit fan.005",
+      "Rooftop unit curb.006",
+      "Rooftop unit.006",
+      "Rooftop unit fan.006",
+      "Rooftop unit curb.007",
+      "Rooftop unit.007",
+      "Rooftop unit fan.007",
+      "Rooftop unit curb.008",
+      "Rooftop unit.008",
+      "Rooftop unit fan.008",
+      "Rooftop unit curb.009",
+      "Rooftop unit.009",
+      "Rooftop unit fan.009",
+      "Rooftop unit curb.010",
+      "Rooftop unit.010",
+      "Rooftop unit fan.010",
+      "Rooftop unit curb.011",
+      "Rooftop unit.011",
+      "Rooftop unit fan.011"
+    ],
+    "foundation": [
+      "Ground slab",
+      "Ground slab.001",
+      "Ground slab.002",
+      "Ground slab.003"
+    ],
+    "inline south.Inline shop front 0": [
+      "Inline shop front 0 recessed jamb",
+      "Inline shop front 0 recessed jamb.001",
+      "Inline shop front 0 recessed head or sill",
+      "Inline shop front 0 recessed head or sill.001",
+      "Inline shop front 0 mullion 1",
+      "Inline shop front 0 mullion 2",
+      "Inline shop front 0 optical pane 0-0",
+      "Inline shop front 0 optical pane 1-0",
+      "Inline shop front 0 optical pane 2-0"
+    ],
+    "inline south.Inline shop front 1": [
+      "Inline shop front 1 recessed jamb",
+      "Inline shop front 1 recessed jamb.001",
+      "Inline shop front 1 recessed head or sill",
+      "Inline shop front 1 recessed head or sill.001",
+      "Inline shop front 1 mullion 1",
+      "Inline shop front 1 mullion 2",
+      "Inline shop front 1 optical pane 0-0",
+      "Inline shop front 1 optical pane 1-0",
+      "Inline shop front 1 optical pane 2-0"
+    ],
+    "inline south.Inline shop front 2": [
+      "Inline shop front 2 recessed jamb",
+      "Inline shop front 2 recessed jamb.001",
+      "Inline shop front 2 recessed head or sill",
+      "Inline shop front 2 recessed head or sill.001",
+      "Inline shop front 2 mullion 1",
+      "Inline shop front 2 mullion 2",
+      "Inline shop front 2 optical pane 0-0",
+      "Inline shop front 2 optical pane 1-0",
+      "Inline shop front 2 optical pane 2-0"
+    ],
+    "inline south.Inline shop front 3": [
+      "Inline shop front 3 recessed jamb",
+      "Inline shop front 3 recessed jamb.001",
+      "Inline shop front 3 recessed head or sill",
+      "Inline shop front 3 recessed head or sill.001",
+      "Inline shop front 3 mullion 1",
+      "Inline shop front 3 mullion 2",
+      "Inline shop front 3 optical pane 0-0",
+      "Inline shop front 3 optical pane 1-0",
+      "Inline shop front 3 optical pane 2-0"
+    ],
+    "inline south.Inline shop front 4": [
+      "Inline shop front 4 recessed jamb",
+      "Inline shop front 4 recessed jamb.001",
+      "Inline shop front 4 recessed head or sill",
+      "Inline shop front 4 recessed head or sill.001",
+      "Inline shop front 4 mullion 1",
+      "Inline shop front 4 mullion 2",
+      "Inline shop front 4 optical pane 0-0",
+      "Inline shop front 4 optical pane 1-0",
+      "Inline shop front 4 optical pane 2-0"
+    ],
+    "inline south.Inline shop front 5": [
+      "Inline shop front 5 recessed jamb",
+      "Inline shop front 5 recessed jamb.001",
+      "Inline shop front 5 recessed head or sill",
+      "Inline shop front 5 recessed head or sill.001",
+      "Inline shop front 5 mullion 1",
+      "Inline shop front 5 mullion 2",
+      "Inline shop front 5 optical pane 0-0",
+      "Inline shop front 5 optical pane 1-0",
+      "Inline shop front 5 optical pane 2-0"
+    ],
+    "inline south.Inline shop front 6": [
+      "Inline shop front 6 recessed jamb",
+      "Inline shop front 6 recessed jamb.001",
+      "Inline shop front 6 recessed head or sill",
+      "Inline shop front 6 recessed head or sill.001",
+      "Inline shop front 6 mullion 1",
+      "Inline shop front 6 mullion 2",
+      "Inline shop front 6 optical pane 0-0",
+      "Inline shop front 6 optical pane 1-0",
+      "Inline shop front 6 optical pane 2-0"
+    ],
+    "endcap west.Endcap shop front 0": [
+      "Endcap shop front 0 recessed jamb",
+      "Endcap shop front 0 recessed jamb.001",
+      "Endcap shop front 0 recessed head or sill",
+      "Endcap shop front 0 recessed head or sill.001",
+      "Endcap shop front 0 mullion 1",
+      "Endcap shop front 0 mullion 2",
+      "Endcap shop front 0 optical pane 0-0",
+      "Endcap shop front 0 optical pane 1-0",
+      "Endcap shop front 0 optical pane 2-0"
+    ],
+    "endcap west.Endcap shop front 1": [
+      "Endcap shop front 1 recessed jamb",
+      "Endcap shop front 1 recessed jamb.001",
+      "Endcap shop front 1 recessed head or sill",
+      "Endcap shop front 1 recessed head or sill.001",
+      "Endcap shop front 1 mullion 1",
+      "Endcap shop front 1 mullion 2",
+      "Endcap shop front 1 optical pane 0-0",
+      "Endcap shop front 1 optical pane 1-0",
+      "Endcap shop front 1 optical pane 2-0"
+    ],
+    "endcap west.Endcap shop front 2": [
+      "Endcap shop front 2 recessed jamb",
+      "Endcap shop front 2 recessed jamb.001",
+      "Endcap shop front 2 recessed head or sill",
+      "Endcap shop front 2 recessed head or sill.001",
+      "Endcap shop front 2 mullion 1",
+      "Endcap shop front 2 mullion 2",
+      "Endcap shop front 2 optical pane 0-0",
+      "Endcap shop front 2 optical pane 1-0",
+      "Endcap shop front 2 optical pane 2-0"
+    ],
+    "endcap west.Endcap shop front 3": [
+      "Endcap shop front 3 recessed jamb",
+      "Endcap shop front 3 recessed jamb.001",
+      "Endcap shop front 3 recessed head or sill",
+      "Endcap shop front 3 recessed head or sill.001",
+      "Endcap shop front 3 mullion 1",
+      "Endcap shop front 3 mullion 2",
+      "Endcap shop front 3 optical pane 0-0",
+      "Endcap shop front 3 optical pane 1-0",
+      "Endcap shop front 3 optical pane 2-0"
+    ],
+    "endcap west.Drive-through window": [
+      "Drive-through window recessed jamb",
+      "Drive-through window recessed jamb.001",
+      "Drive-through window recessed head or sill",
+      "Drive-through window recessed head or sill.001",
+      "Drive-through window optical pane 0-0"
+    ],
+    "endcap south.Endcap south window": [
+      "Endcap south window recessed jamb",
+      "Endcap south window recessed jamb.001",
+      "Endcap south window recessed head or sill",
+      "Endcap south window recessed head or sill.001",
+      "Endcap south window mullion 1",
+      "Endcap south window mullion 2",
+      "Endcap south window optical pane 0-0",
+      "Endcap south window optical pane 1-0",
+      "Endcap south window optical pane 2-0"
+    ],
+    "endcap east.Drive-through service window": [
+      "Drive-through service window recessed jamb",
+      "Drive-through service window recessed jamb.001",
+      "Drive-through service window recessed head or sill",
+      "Drive-through service window recessed head or sill.001",
+      "Drive-through service window optical pane 0-0"
+    ],
+    "grocery": [
+      "Grocery aisle shelving",
+      "Grocery aisle shelving.001",
+      "Grocery aisle shelving.002",
+      "Grocery aisle shelving.003",
+      "Grocery aisle shelving.004",
+      "Grocery aisle shelving.005",
+      "Checkout",
+      "Checkout.001",
+      "Checkout.002",
+      "Checkout.003"
+    ],
+    "tenants": [
+      "Tenant counter",
+      "Tenant counter.001",
+      "Tenant counter.002",
+      "Tenant counter.003",
+      "Tenant counter.004",
+      "Tenant counter.005",
+      "Tenant counter.006",
+      "Tenant counter.007",
+      "Tenant counter.008",
+      "Tenant counter.009",
+      "Tenant counter.010"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "finished_utc": "2026-10-10T10:24:38.665275+00:00",
+  "delivery_and_render_seconds": 6373.1456378,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

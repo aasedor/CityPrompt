@@ -19,14 +19,14 @@ SLUG = 'clay-anchored-plaza-supermarket'
 T = .30
 G0 = .15
 ANCHOR = (-40.0, -4.0, 0.0, 30.0)        # grocery box
-CAFE = (-46.0, -40.0, 0.0, 14.0)         # low cafe wing
+CAFE = (-56.0, -40.0, 0.0, 14.0)         # low cafe wing (about 45 per cent of the anchor width)
 INLINE = (-4.0, 40.0, 16.0, 30.0)        # inline shops
 ENDCAP = (40.0, 54.0, -16.0, 30.0)       # end-cap wing
 A_ROOF, A_CROWN = 8.0, 8.8
 S_ROOF, S_CROWN = 5.8, 6.5
 TOWER_TOP = 11.2
 CANOPY_Z = 3.9
-LOT = (-50.0, 58.0, -40.0, 34.0)
+LOT = (-58.0, 56.0, -34.0, 32.0)
 EPS = .002
 PALETTE = dict(wall=(.62, .55, .42), joint=(.50, .44, .33), trim=(.09, .09, .09),
     pale=(.70, .70, .68), stone=(.44, .30, .20), roof=(.72, .70, .64), sand=(.68, .60, .46),
@@ -144,19 +144,27 @@ def anchor():
     # South face: storefront glazing flanking the entrance; the tower projects in front of the entrance.
     f = face(*ANCHOR, 'south', 'anchor south')
     tx = -18.0 - (x0 + x1) / 2          # tower centre in face u
-    holes = [hole('Anchor entrance doors', tx, G0, 5.0, 3.2, cols=4), hole('Anchor storefront west', tx - 8.0, G0, 8.0, 3.4, cols=5), hole('Anchor storefront east', tx + 8.0, G0, 8.0, 3.4, cols=5)]
-    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, holes, A_CROWN, pilasters=(tx - 13.0, tx - 4.0, tx + 4.0, tx + 13.0), sign_band=False)
-    f.part('Anchor canopy', tx, -1.2, CANOPY_Z + .2, 24.0, 2.4, .35, 'cap', 'canopies', 0)
-    # Entrance tower: projecting EIFS frame with the green sign panel, rising above the parapet.
-    tw, tp = 10.0, 1.6
+    tw, tp = 10.0, 5.0
     cx = -18.0
-    C.box('Tower west pier', (cx - tw / 2 + .6, y0 - tp / 2, (G0 + TOWER_TOP) / 2), (1.2, tp, TOWER_TOP - G0), 'tan', 'entrance tower', 0)
-    C.box('Tower east pier', (cx + tw / 2 - .6, y0 - tp / 2, (G0 + TOWER_TOP) / 2), (1.2, tp, TOWER_TOP - G0), 'tan', 'entrance tower', 0)
-    C.box('Tower head', (cx, y0 - tp / 2, TOWER_TOP - 1.4), (tw, tp, 2.8), 'tan', 'entrance tower', 0)
+    west = hole('Anchor storefront west', (-(x1 - x0) / 2 + .6 + tx - tw / 2 - .5) / 2, G0, (tx - tw / 2 - .5) - (-(x1 - x0) / 2 + .6), 3.4, cols=8)
+    east = hole('Anchor storefront east', (tx + tw / 2 + .5 + (x1 - x0) / 2 - .6) / 2, G0, ((x1 - x0) / 2 - .6) - (tx + tw / 2 + .5), 3.4, cols=5)
+    doors = hole('Anchor entrance doors', tx, G0, 5.0, 3.2, cols=4)
+    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, [west, east, doors], A_CROWN, pilasters=(west['u'] - west['w'] / 4, west['u'] + west['w'] / 4), sign_band=False)
+    f.part('Anchor canopy west', west['u'], -1.2, CANOPY_Z + .2, west['w'] + .8, 2.4, .30, 'cap', 'canopies', 0)
+    f.part('Anchor canopy east', east['u'], -1.2, CANOPY_Z + .2, east['w'] + .8, 2.4, .30, 'cap', 'canopies', 0)
+    # Entrance tower: one projecting EIFS volume with a cut entrance recess, brick corner pilasters, green sign panel and wrap.
+    tower = C.box('Entrance tower', (cx, y0 - tp / 2, (G0 + TOWER_TOP) / 2), (tw, tp, TOWER_TOP - G0), 'tan', 'entrance tower', 0)
+    C.cut_box(tower, 'Tower entrance recess', (cx, y0 - tp / 2, G0 + 2.0), (tw - 2.4, tp + 1.2, 4.0))
+    C.box('Tower recess soffit', (cx, y0 - tp / 2, G0 + 3.99), (tw - 2.42, tp - .02, .02), 'cap', 'entrance tower', 0)
+    C.qa_room_light('Tower recess', (cx, y0 - tp / 2, G0 + 3.6), 40, 2.4)
+    for sx in (-1, 1):
+        C.box('Tower brick pilaster', (cx + sx * (tw / 2 - .45), y0 - tp - .15, (G0 + TOWER_TOP - .8) / 2), (.9, .50, TOWER_TOP - .8 - G0), 'stone', 'entrance tower', 0)
+        C.box('Tower pilaster cap', (cx + sx * (tw / 2 - .45), y0 - tp - .15, TOWER_TOP - .76), (1.0, .60, .08), 'cream', 'entrance tower', 0)
     C.box('Tower cap', (cx, y0 - tp / 2, TOWER_TOP + .05), (tw + .2, tp + .2, .10), 'cap', 'entrance tower', 0)
+    C.box('Tower cornice band', (cx, y0 - tp - .03, TOWER_TOP - .45), (tw - 1.8, .06, .70), 'cap', 'entrance tower', 0)
     C.box('Tower sign panel', (cx, y0 - tp - .03, 6.4), (tw - 2.4, .06, 2.2), 'green', 'entrance tower', 0)
     C.box('Tower sign lettering bar', (cx, y0 - tp - .07, 6.4), (tw - 4.0, .02, .7), 'cream', 'entrance tower', 0)
-    C.box('Tower return wall', (cx, y0 - .15, (G0 + TOWER_TOP - 2.8) / 2 + 4.2), (tw - 2.4, .30, 2.0), 'tan', 'entrance tower', 0)
+    C.box('Tower green entrance wrap', (cx - tw / 2 + 1.5, y0 - tp - .03, (G0 + 5.3) / 2), (.6, .06, 5.3 - G0 - EPS), 'green', 'entrance tower', 0)
     # Side faces.
     f = face(*ANCHOR, 'east', 'anchor east')
     lo, hi = -(y1 - y0) / 2 + T, (y1 - y0) / 2 - T
@@ -177,16 +185,16 @@ def anchor():
     C.box('Loading dock', (x0 + 8.0 + 0, y1 + 1.4, .55), (6.0, 2.8, 1.1), 'foundation', 'loading dock', 0)
     # Cafe wing.
     f = face(*CAFE, 'south', 'cafe south')
-    ch = [hole('Cafe storefront', 0.0, G0, 4.6, 3.2, cols=3)]
+    ch = [hole('Cafe storefront', 0.0, G0, CAFE[1] - CAFE[0] - 2.4, 3.2, cols=8)]
     elevation(f, -(CAFE[1] - CAFE[0]) / 2, (CAFE[1] - CAFE[0]) / 2 - EPS, ch, S_CROWN, sign_band=True)
-    f.part('Cafe canopy', 0.0, -1.0, CANOPY_Z + .2, 5.6, 2.0, .30, 'cap', 'canopies', 0)
+    f.part('Cafe canopy', 0.0, -1.2, CANOPY_Z + .2, CAFE[1] - CAFE[0] - .4, 2.4, .30, 'cap', 'canopies', 0)
     f = face(*CAFE, 'west', 'cafe west')
     wh = [hole('Cafe west window 0', -3.5, 1.0, 3.0, 2.2), hole('Cafe west window 1', 2.5, 1.0, 3.0, 2.2)]
     elevation(f, -(CAFE[3] - CAFE[2]) / 2 + T, (CAFE[3] - CAFE[2]) / 2 - T, wh, S_CROWN)
     f = face(*CAFE, 'north', 'cafe north')
     elevation(f, -(CAFE[1] - CAFE[0]) / 2, (CAFE[1] - CAFE[0]) / 2 - EPS, [], S_CROWN)
     roof(*ANCHOR, A_ROOF, units=((-30.0, 20.0), (-22.0, 24.0), (-12.0, 20.0), (-30.0, 8.0), (-10.0, 8.0)))
-    roof(*CAFE, S_ROOF, units=((-43.0, 7.0),))
+    roof(*CAFE, S_ROOF, units=((-50.0, 7.0), (-44.0, 7.0)))
     C.CONTACTS.append(dict(name='Entrance tower piers to grade in front of the anchor doors', grade_m=0, height_m=TOWER_TOP))
 
 
@@ -201,7 +209,7 @@ def inline_and_endcap():
         if i:
             pil.append(-(x1 - x0) / 2 + i * (x1 - x0) / n)
     elevation(f, -(x1 - x0) / 2 + EPS, (x1 - x0) / 2, holes, S_CROWN, pilasters=pil, sign_band=True)
-    f.part('Inline canopy', 0, -1.2, CANOPY_Z + .15, x1 - x0 - .4, 2.4, .30, 'cap', 'canopies', 0)
+    f.part('Inline canopy', .2, -1.2, CANOPY_Z + .15, x1 - x0 - EPS, 2.4, .30, 'cap', 'canopies', 0)
     for u in pil + [-(x1 - x0) / 2 + .5, (x1 - x0) / 2 - .5]:
         C.beam('Canopy bracket', f.p(u, -.05, CANOPY_Z + 1.6), f.p(u, -2.2, CANOPY_Z + .3), .06, .06, 'hardware', 'canopies')
     f = face(*INLINE, 'north', 'inline north')
@@ -223,7 +231,7 @@ def inline_and_endcap():
     holes.append(hole('Drive-through window', u_start + 4 * 7.0 + 2.5, 1.0, 1.4, 1.4, cols=1))
     elevation(f, u_start + EPS, span / 2 - T, holes, S_CROWN, pilasters=pil[:-1], sign_band=True)
     f.wall('endcap west rear carrier', -span / 2 + T, u_start - EPS, S_CROWN - .24, S_CROWN, depth=T)
-    f.part('Endcap canopy', u_start + 14.0, -1.2, CANOPY_Z + .15, 27.6, 2.4, .30, 'cap', 'canopies', 0)
+    f.part('Endcap canopy', u_start + 2.4 + 12.6, -1.2, CANOPY_Z + .15, 25.2, 2.4, .30, 'cap', 'canopies', 0)
     for u in pil[:-1] + [u_start + .5, u_start + 27.5]:
         C.beam('Canopy bracket', f.p(u, -.05, CANOPY_Z + 1.6), f.p(u, -2.2, CANOPY_Z + .3), .06, .06, 'hardware', 'canopies')
     f = face(*ENDCAP, 'south', 'endcap south')
@@ -255,8 +263,9 @@ def roof(x0, x1, y0, y1, z, units=()):
 def site():
     lx0, lx1, ly0, ly1 = LOT
     C.box('Parking court', ((lx0 + lx1) / 2, (ly0 + ly1) / 2, .0075), (lx1 - lx0, ly1 - ly0, .015), 'foundation', 'site', 0)
-    C.box('Lawn verge south', ((lx0 + lx1) / 2, ly0 - 3.0, .021), (lx1 - lx0 + 8.0, 6.0, .012), 'planting', 'site', 0)
-    C.box('Road', ((lx0 + lx1) / 2, ly0 - 9.5, .0075), (lx1 - lx0 + 8.0, 7.0, .015), 'floor', 'site', 0)
+    C.box('Lawn verge south', ((lx0 + lx1) / 2, ly0 - 2.0, .021), (lx1 - lx0, 4.0, .012), 'planting', 'site', 0)
+    C.box('Lawn island', (-10.0, -20.0, .021), (2.0, 10.0, .012), 'planting', 'site', 0)
+    C.box('Lawn island', (20.0, -20.0, .021), (2.0, 10.0, .012), 'planting', 'site', 0)
     # Parking stripes as one batched mesh.
     vertices, faces = [], []
     for row_y, length in ((-6.0, 5.0), (-16.0, 5.0), (-30.0, 5.0)):
@@ -269,14 +278,11 @@ def site():
     for i, (x, y) in enumerate(((-30.0, -3.5), (-22.0, -3.5), (-8.0, -3.5), (6.0, -3.5), (-26.0, -13.5), (-4.0, -13.5), (14.0, -13.5), (-18.0, -27.5), (2.0, -27.5), (22.0, -27.5))):
         C.box('Parked car body', (x, y, .65), (1.8, 4.4, .9), 'car' if i % 3 else 'pale', 'site', 0)
         C.box('Parked car cabin', (x, y + .2, 1.35), (1.6, 2.4, .6), 'trim', 'site', 0)
-    C.box('Pylon sign base', (lx0 + 4.0, ly0 + 3.0, .6), (1.6, .8, 1.2), 'stone', 'site', 0)
+    C.box('Pylon sign pedestal', (lx0 + 4.0, ly0 + 3.0, .9), (2.4, 1.2, 1.8), 'stone', 'site', 0)
     C.box('Pylon sign post', (lx0 + 4.0, ly0 + 3.0, 3.6), (.5, .4, 4.8), 'tan', 'site', 0)
     C.box('Pylon sign board', (lx0 + 4.0, ly0 + 3.0, 7.0), (3.2, .3, 2.6), 'green', 'site', 0)
     C.box('Pylon sign panel', (lx0 + 4.0, ly0 + 2.82, 7.0), (2.8, .02, 2.0), 'cream', 'site', 0)
-    for x in (-10.0, 20.0):
-        C.box('Court planter', (x, -20.0, .35), (1.4, 8.0, .7), 'stone', 'site', 0)
-        C.box('Court planter shrubs', (x, -20.0, .95), (1.1, 7.6, .5), 'planting', 'site', 0)
-    for x in (58.0,):
+    for x in (lx1 + 2.0,):
         for y in (-20.0, 0.0, 20.0):
             C.rod('Shelterbelt tree trunk', (x, y, .015), (x, y, 4.0), .15, 'timber', 'street planting', 8)
             A.foliage('Shelterbelt crown', (x, y, 6.0), (1.6, 1.6, 3.2), detail=1)
@@ -292,7 +298,8 @@ def programme():
     for x in (-32.0, -20.0, -8.0):
         for y in (6.0, 18.0, 26.0):
             C.qa_room_light('Sales floor', (x, y, A_ROOF - .6), 150, 5.0)
-    C.qa_room_light('Cafe', (-43.0, 7.0, S_ROOF - .5), 70, 3.5)
+    for x in (-52.0, -44.0):
+        C.qa_room_light('Cafe', (x, 7.0, S_ROOF - .5), 70, 3.5)
     for i in range(7):
         x = INLINE[0] + (i + .5) * (INLINE[1] - INLINE[0]) / 7
         C.box('Tenant counter', (x, INLINE[2] + 5.0, G0 + .5), (3.0, .8, 1.0), 'tan', 'tenants', 0)
