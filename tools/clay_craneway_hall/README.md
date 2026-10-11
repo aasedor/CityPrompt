@@ -68,7 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 rendering)
 
-- P1 both west-gable aisle bays open from the ground to the aisle roof; the sources show one solid lower wall across the full gable width, open only above the eave.
-- P1 aisle-wall hoods thin flat slabs over small mid-wall windows; the sources show deep sloping corrugated pent roofs across every full bay at mid-wall over low wide windows.
+1. **Roof monitors.** Their ridges should cross the hall, in three staggered rows of three.
+2. **Aisle walls.** A full-length railed gallery and a tall mullioned glazed storey are needed above the lattice wall.
+3. **West gable.** It needs a glazed band under the nave triangle and open truss frames in the aisle upper storeys.
