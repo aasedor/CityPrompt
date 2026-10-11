@@ -235,14 +235,16 @@ def stair_and_courtyard():
             yy = y0 + .4 + (y1 - y0 - .5) * k / 4
             zz = rise * (yy - y0) / STAIR_RUN
             C.beam('Stair handrail post', (s * (STAIR_W / 2 - .3), yy, zz + .02), (s * (STAIR_W / 2 - .3), yy, zz + .93), .04, .04, 'hardware', 'stair')
-    C.box('Stair landing', (0, (y1 + .6 + EPS + CY1) / 2, L1 - .05), (STAIR_W, CY1 - y1 - .6 - EPS, .10), 'concrete', 'stair', 0)
+    C.box('Stair landing', (0, (y1 + .6 + EPS + y1 + 1.8 - EPS) / 2, L1 - .05), (STAIR_W, 1.2 - 2 * EPS, .10), 'concrete', 'stair', 0)
+    for x, y in ((-3.0, -3.0), (3.0, -3.0), (0.0, 2.0)):
+        C.qa_room_light('Courtyard deck', (x, y, L1 + 4.0), 160, 7.0)
     C.CONTACTS.append(dict(name='Stair of 24 risers from the sidewalk to the courtyard deck inside concrete cheek walls', grade_m=0, rise_m=L1))
     # Courtyard deck over the retail floor, planters, benches, glass rail at the street edge.
     ys = Y0 + STAIR_RUN + 1.8
-    C.box('Courtyard deck', ((CX0 + CX1) / 2, (ys + CY1) / 2, L1 - .25), (CX1 - CX0, CY1 - ys, .30), 'concrete', 'courtyard', 0)
+    C.box('Courtyard deck', ((CX0 + CX1) / 2, (ys + CY1) / 2, L1 - .15), (CX1 - CX0, CY1 - ys, .30), 'concrete', 'courtyard', 0)
     for sgn in (-1, 1):
         C.box('Courtyard deck wing', (sgn * (STAIR_W / 2 + .3 + (CX1 - STAIR_W / 2 - .3) / 2), (Y0 + ys) / 2, L1 - .15), (CX1 - STAIR_W / 2 - .3, ys - Y0, .30), 'floor', 'courtyard', 0)
-    C.box('Courtyard paving', ((CX0 + CX1) / 2, (Y0 + STAIR_RUN + 1.8 + CY1) / 2, L1 + .004), (CX1 - CX0 - .1, CY1 - Y0 - STAIR_RUN - 1.8 - .05, .008), 'sand', 'courtyard', 0)
+    C.box('Courtyard paving', ((CX0 + CX1) / 2, (Y0 + STAIR_RUN + 1.8 + CY1) / 2, L1 + .004), (CX1 - CX0 - .1, CY1 - Y0 - STAIR_RUN - 1.8, .008), 'sand', 'courtyard', 0)
     for s in (-1, 1):
         C.box('Deck edge paving', (s * (STAIR_W / 2 + .3 + (CX1 - STAIR_W / 2 - .3) / 2), (Y0 + Y0 + STAIR_RUN + 1.8) / 2, L1 + .004), (CX1 - STAIR_W / 2 - .3, STAIR_RUN + 1.8, .008), 'sand', 'courtyard', 0)
         C.box('Street-edge planter', (s * (STAIR_W / 2 + 1.7), Y0 + .9, L1 + .35), (2.6, 1.4, .70), 'concrete', 'courtyard', 0)
