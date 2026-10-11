@@ -1,0 +1,55 @@
+# Independent RLASM v6.1 holistic review: crane-way hall v004
+
+## 1. Verdict
+
+**VISUAL_REWORK_REQUIRED**: the v004 rework opened the west gable's *lower* storey across both aisles, which the locked sources show as solid wall, and the aisle-wall hood/window band still does not match the source.
+
+**Counts: P0 = 0, P1 = 2, P2 = 9**
+
+How this was reviewed: I read all three locked sources (front.png, oblique.jpg, top.jpg), all 18 renders at full resolution and the four phone boards. I also zoomed into crops of the oblique gable, left_side, front_corner, monitor_close, facade_close and stair_contact. I judged pixels only and did not read any build code, notes or reports.
+
+## 2. Findings table
+
+| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |
+|---|---|---|---|---|---|
+| 1 | **P1** | left_side (aisle bays x 440-575 and 865-1000, y 560-715); gable_mouth (x 180-430, y 515-890 and x 1090-1440, y 480-1030); front_corner (x 300-360 and 470-545, y 570-715); phone-02 and phone-03 | Both aisle bays of the west gable are open from the ground up to the aisle roof. Only a lattice frame with X-braces stands in front, and you can see straight into the aisles (crates, the inner aisle walls and their windows). Solid lower wall survives only around the nave door, about 55% of the gable width. **Source:** in oblique.jpg (x 85-215 and 570-750, y 490-880) and front.png (x 480-690, y 315-645), the lower storey is a continuous solid corrugated wall across the **full** gable width, aisles included. It is open only in the upper storey (aisle upper bays x 85-200, y 370-490 and x 560-740, y 470-600, with trusses and X-braces). | The v003 finding "open full width" was applied to the whole height of the aisle bays, not just the upper storey. | Clad the lower storey of both aisle bays with the same solid wall used beside the nave door. Bring it up to the nave lower-wall/door-head line, so the lower storey reads as one continuous solid band across the full width. Keep the lattice corner columns and X-braces only in the upper open storey above that line. |
+| 2 | **P1** | facade_close (hoods x 460-715, 870-1070, 1195-1350, y 570-600; windows y 600-710); glass_close (x 65-680, y 255-600); side_doors (x 0-330, y 395-610); aerial and front_corner (hood band hard to read along the long wall) | The aisle-wall "hooded windows" are thin, almost flat shelf slabs, each about 70% of a bay wide. They sit over small windows placed roughly 31-51% up the wall, and they cast no strong horizontal shadow line. **Source:** in front.png (x 70-330, y 460-610) and along the long facade in top.jpg and oblique.jpg (x 600-1000), the hoods are deep, sloping corrugated pent roofs. They run the full bay width between the lattice columns at about 40-58% of wall height and form a strong continuous shadow band. Below them, wide multi-pane windows sit low (about 12-32% of wall height). | The hood was modelled as a small canopy per window instead of a pent roof per bay, and the window was placed at mid-wall. | Make each hood run the full clear width between lattice columns, project about 1.5-2 m and slope about 25-30°, with its top at about 55-58% of the aisle wall height. Lower the windows to a sill of about 1 m and widen them to almost the full bay, so that the window band, then the hood band, then solid upper wall reads as in the source. |
+| 3 | P2 | left_side (door x 615-825 within the nave, x 575-865); gable_mouth (x 510-1010, y 545-920) | The green doors are three equal leaves, all shut, about 72% of the nave width, with a dark track bar on top. The source shows two wide sliding leaves covering about the full nave width, each with three panel columns, and a dark gap where one leaf is slid partly open (oblique x 160-510; front x 690-1020). | The door set was simplified. | Widen the doors to about the nave width and split them into two large leaves, offsetting one to leave a dark gap about 1 m wide. |
+| 4 | P2 | gable_mouth (x 440-1090, y 210-500); left_side (x 575-865, y 440-560) | Under the clad gable triangle the nave upper storey is fully open. The source has a glazed mullioned screen band directly under the triangle, with the crane-level opening below it (front.png x 690-1005, y 140-280; oblique x 150-500, y 80-200). | The glazed transom was omitted. | Add a mullioned glazing band under the gable triangle. Keep the crane-level band below it open. |
+| 5 | P2 | left_side, right_side, crane_interior | The nave roof pitch measures about 15-18°. The source gable reads at about 25-30°, so the stepped silhouette looks flatter than the source. | The pitch parameter is too low. | Raise the nave pitch to about 25°. Re-seat the monitors and the clerestory head on the new pitch. |
+| 6 | P2 | crane_interior (x 420-1020, y 490-770); gable_mouth (x 750-1090, y 335-430); left_side | The overhead crane is present: a bridge, a trolley block (x 765-870, y 490-530) and a hook block on a cable (x 805-820, y 740-765). However, the bridge reads as a flat dark deck crossed by diagonal struts, and the hook is brown. From outside the building the crane is barely legible. The source shows a girder bridge with railings and a **yellow** hook clearly framed by the gable mouth. | The crane is undersized and the source accent colour was not applied. | Give the bridge two box girders with a walkway railing, and colour the hook block in the source yellow. Hang the hook low enough to be visible from left_side and front_corner. |
+| 7 | P2 | facade_close (x 395-450, y 235-345); stair_contact (x 630-700, y 215-290) | A diagonal knee brace hangs from the underside of the catwalk and ends in mid-air in front of the lattice column. It meets no node. | The strut length or end point is wrong. | Shorten or redirect the brace so it lands on a lattice column node or a wall girt. |
+| 8 | P2 | monitor_close (near monitor x 690-1160, y 0-290; left monitor x 0-255) | The near monitor's gable apex and roof run into the top edge of the frame, the left monitor is cut by the left edge and the far-row monitors are truncated. About 40% of the frame is empty aisle roof. The monitors are still legible, and architecture_close shows a complete monitor (x 760-1180, y 45-280). | The camera target sits too low. | Raise the camera's look-at point by about 3-4 m, or tilt it up, so at least one full monitor (both gables and the ridge) clears the frame edges. |
+| 9 | P2 | oblique.jpg vs gable_mouth and front_corner | In the source, two rail lines on the apron lead into the gable doors (oblique x 150-420, y 760-896; top.jpg x 0-320, y 700-896). The render has no rails into the mouth. | Omitted. | Add two flush rails from the apron into the door opening. |
+| 10 | P2 | interior (ceiling recesses x 610-1080, y 50-390) | Seen from inside, the monitors show as closed, pale pyramid recesses with no glazing light. | The monitor shells are not opened to the nave. | Open the roof under each monitor so its side glazing is visible from below. |
+| 11 | P2 | stair_contact (x 195-395, y 55-270) | At the top of the gable corner there is clutter: short guardrail stubs on the sloped aisle-roof edge, a small separate railing landing and a beam stub that runs into the platform. | Leftover parts from the gable rework. | Merge the stubs into one continuous roof-edge guardrail, or remove them, and trim the beam stub. |
+
+## 3. Source conformance checklist
+
+| item | status | view used |
+|---|---|---|
+| Silhouette (long hall, stepped nave over two lean-to aisles) | **conforms** (the roof pitch is somewhat shallow, P2 #5) | front, left_side, front_corner, aerial |
+| Section (nave and aisles) | **conforms** (proportions are plausible against oblique.jpg) | left_side, crane_interior, top |
+| Bay rhythm and bracing (lattice columns, X-bracing, hooded windows) | **deviates**: the lattice columns now read at the right width, but the hood/window band is wrong (P1 #2) | facade_close, glass_close, side_doors, yard_sidings, front |
+| Gable mouth and doors | **deviates**: the aisle lower storey is open where the source is solid (P1 #1); door width, leaf count and the glazed band are P2s | left_side, gable_mouth, front_corner |
+| Monitors and clerestory | **conforms**: three staggered rows of gabled monitors (4/3/4) and a continuous nave clerestory on both long walls | top, aerial, architecture_close, monitor_close |
+| Crane and interior | **conforms, weakly**: the crane is present but reads poorly (P2 #6); the interior nave and aisle columns are coherent | crane_interior, interior, gable_mouth |
+| Stair | **conforms**: two flights with a landing at the south-west corner, one bay in from the gable, reaching the aisle-eave catwalk; it touches the ground (top clutter is P2 #11) | stair_contact, front, front_corner |
+| Yard and sidings | **conforms**: concrete apron, two sidings and a boxcar on the north side (rails into the mouth missing, P2 #9) | top, yard_sidings, rear, rear_side |
+| Materials hierarchy | **conforms** for clay: warm-grey cladding with panel seams, green doors, red boxcar, dark glazing. The hook lacks the source yellow (P2 #6) | all |
+| East gable (no source shows it) | coherent: plain clad gable, one roller door, aisle windows | right_side, aerial |
+
+## 4. Camera validity
+
+- **monitor_close:** the target is partly clipped at the top and left edges (P2 #8), but the monitors stay legible here and in architecture_close.
+- All other views (front, front_corner, aerial, top, left_side, right_side, rear, rear_side, facade_close, architecture_close, glass_close, gable_mouth, crane_interior, stair_contact, yard_sidings, interior, side_doors) are valid: the target is unoccluded, unclipped and legible.
+- The whole-envelope elevations (front, rear, left_side, right_side) leave the building at only about 50-60% of the frame width. That is legible but could be framed tighter (no severity).
+
+## 5. Prior-version (v003) findings, judged from v004 pixels
+
+| v003 finding | status | evidence |
+|---|---|---|
+| side_doors camera missing the aisle roller door | **resolved** | side_doors: a roller door with sectional panels sits between lattice columns (x 580-860, y 480-830), fully in frame. |
+| West gable not open full width | **partly**: the upper storey is now open across the nave and both aisles, with lattice corner columns and X-braces (resolved), but the aisle *lower* storey was opened too, which contradicts the source's solid lower wall. That is now P1 #1. The sliding doors cover only about 72% of the nave (P2 #3). | left_side, gable_mouth, front_corner vs oblique.jpg and front.png |
+| Lattice columns too narrow | **resolved** | facade_close, side_doors, glass_close: the columns are about 0.4 of the bay module, with double-plane X-lacing visible and a lattice look comparable to the source. |
+| monitor_close camera cutting the monitor gables | **partly** | The near monitor's apex still touches the top edge and the left monitor is cut. One monitor is mostly whole, and architecture_close shows a complete one (P2 #8). |

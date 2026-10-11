@@ -60,7 +60,7 @@ def manifest(version):
             plan=f'long hall {L} x {W} m: nave {NAVE} m between lean-to aisles of {AISLE} m; twelve {BAY} m bays; gable end to the west; sidings on the north',
             section=dict(aisle_eave_m=A_EAVE, aisle_top_m=A_TOP, nave_eave_m=N_EAVE, ridge_m=RIDGE, clerestory_m=[CL0, CL1]),
             gable_end='lower storey clad with three green sliding doors across the nave; upper storey an open lattice frame with the crane girder visible; clad gable triangle above',
-            aisle_walls='lattice columns with X-bracing every bay, hooded windows between, roll-up doors in two bays',
+            aisle_walls='lattice columns with X-bracing every bay, a deep sloping corrugated pent roof across every bay at mid-wall over a low wide window band, roll-up doors in two bays',
             monitors='four gabled monitors on each aisle roof and three on the nave ridge, glazed on their long sides',
             yard='concrete apron all round; two rail sidings with a boxcar along the north side; external stair at the south-west corner',
             inferred='84 m length calibrates twelve bays; the east gable end is not visible and repeats the west end without the open frame; the crane and interior are teaching assumptions.'),
@@ -135,7 +135,7 @@ def aisle_wall(f, doors=(), stair_bay=None):
         if i in doors:
             holes.append(hole(f'{f.label} roll-up door {i}', u, G0, 4.2, 4.6, kind='door'))
         else:
-            holes.append(hole(f'{f.label} window {i}', u, 3.2, 3.6, 2.2))
+            holes.append(hole(f'{f.label} window {i}', u, 1.15, 3.9, 2.05))      # low wide window band (sources: about 12-32 percent of the wall)
     f.wall(f.label + ' carrier', X0, X1, G0, A_EAVE, depth=T, holes=holes)
     seams(f, X0 + .3, X1 - .3, G0 + EPS, A_EAVE - EPS, holes)
     for h in holes:
@@ -149,7 +149,19 @@ def aisle_wall(f, doors=(), stair_bay=None):
             C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='roll-up door', clear_wall_cut=True,
                 carrier_depth_m=T, frame_inset_m=.16, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='workshop aisle'))
         else:
-            punched(f, h['id'], h['u'], h['z'], h['w'], h['h'])
+            punched(f, h['id'], h['u'], h['z'], h['w'], h['h'], hood=False)
+    # Deep corrugated pent roof over every bay, full clear width between the lattice columns, top at about 56 percent of
+    # the wall, projecting 1.7 m at about 27 degrees: one continuous shadow band along the aisle wall.
+    zt, proj = .56 * A_EAVE, 1.7
+    drop = proj * math.tan(math.radians(27))
+    for i in range(12):
+        c = (bays[i] + bays[i + 1]) / 2
+        u = c if f.label == 'south aisle' else -c
+        hw = (BAY - 2.8) / 2 - .02
+        a = f.p(u - hw, -.02, zt); b = f.p(u + hw, -.02, zt); cc = f.p(u + hw, -proj, zt - drop); d = f.p(u - hw, -proj, zt - drop)
+        dz = .12
+        C.mesh(f'{f.label} pent hood {i}', [a, b, cc, d, (a[0], a[1], a[2] - dz), (b[0], b[1], b[2] - dz), (cc[0], cc[1], cc[2] - dz), (d[0], d[1], d[2] - dz)],
+               [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], 'roof', 'window hoods')
     for i, x in enumerate(bays):
         u = x if f.label == 'south aisle' else -x
         lattice_column(f, u, 0, A_EAVE - .02)
@@ -167,21 +179,12 @@ def gable_end(f, open_frame=True):
     else:
         holes.append(hole('East roll-up door', 0.0, G0, 6.0, 6.5, kind='rollup'))
         holes.append(hole('East aisle window 0', uu(-13.0), 3.2, 3.2, 2.2)); holes.append(hole('East aisle window 1', uu(13.0), 3.2, 3.2, 2.2))
+    # Lower storey: one solid corrugated wall across the full gable width on both ends (west: aisles included, sources).
+    f.wall(f.label + ' lower carrier', -W / 2 + T, W / 2 - T, G0, A_EAVE, depth=T, holes=holes)
+    seams(f, -W / 2 + T + .3, W / 2 - T - .3, G0 + EPS, A_EAVE - EPS, holes)
     if open_frame:
-        f.wall(f.label + ' lower carrier', uu(YN1), uu(YN0), G0, A_EAVE, depth=T, holes=holes)
-        seams(f, uu(YN1) + .3, uu(YN0) - .3, G0 + EPS, A_EAVE - EPS, holes)
-        # Open aisle end bays: lattice corner columns at the aisle corners and the nave lines, X-braces between them.
-        for y in (YA0 + 1.5, YN0 - .3, YN1 + .3, YA1 - 1.5):
+        for y in (YA0 + 1.5, YA1 - 1.5):                   # corner lattice columns only
             lattice_column(f, uu(y), 0, A_EAVE - .02, proud=.6, w=2.2, panels=4)
-        for ya, yb in ((YA0 + 2.6, YN0 - 1.4), (YN1 + 1.4, YA1 - 2.6)):
-            brace(f, min(uu(ya), uu(yb)), max(uu(ya), uu(yb)), G0 + .4, A_EAVE - .6)
-            C.beam('Aisle end head beam', f.p(uu(ya), -.10, A_EAVE - .2), f.p(uu(yb), -.10, A_EAVE - .2), .25, .35, 'pale', 'open frame')
-        for ya, yb, tag in ((YA0 + 2.6, YN0 - 1.4, 'south'), (YN1 + 1.4, YA1 - 2.6, 'north')):
-            C.OPENINGS.append(dict(id=f'Open aisle end bay {tag}', face=f.label, u=uu((ya + yb) / 2), z=G0 + .5, width=abs(yb - ya) - .8, height=A_EAVE - 1.4 - G0, kind='open frame', clear_wall_cut=True,
-                carrier_depth_m=0.0, frame_inset_m=None, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='workshop aisle open to the gable'))
-    else:
-        f.wall(f.label + ' lower carrier', -W / 2 + T, W / 2 - T, G0, A_EAVE, depth=T, holes=holes)
-        seams(f, -W / 2 + T + .3, W / 2 - T - .3, G0 + EPS, A_EAVE - EPS, holes)
     for h in holes:
         if h.get('kind') == 'slider':
             # Three green sliding leaves on a head track, the middle one ajar.
