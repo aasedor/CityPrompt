@@ -69,8 +69,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (v007 rendering)
+## Open blockers after v007 (stopped)
 
-1. **Corner box.** It must run from under the pad to the street fence as a narrow wall closing a dark fenced yard.
-2. **Wing south end.** It is blank brick above the canopy in both sources.
-3. **Roofs.** Tan gravel on the wings, the corten storey and the north-east panel; cool grey paving on the hall terrace.
+Stopped at v007 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v005. Open v007 P1, for a human to weigh:
+
+1. **Open passage.** It reads only as a gap south of the east wing, beside the concrete wall.
+2. **Corten canopy.** It reads as a thin plate; the sources show a deep fascia band.
+3. **Coloured fins.** They appear only on the upper storey; the sources carry them on the ground-floor classroom glazing too.
+4. **Corten third storey.** Its opening rhythm differs from the sources on the long glazed face.
