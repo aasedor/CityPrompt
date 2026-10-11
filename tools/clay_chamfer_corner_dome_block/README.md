@@ -68,10 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 in progress)
+## Open blockers after v006 (v007 in progress)
 
-- P0 lantern floats: its base disc is wider than the dome apex and a band of background runs under it in every apex view (no neck between dome and lantern).
-- P1 chamfer entrance is a flat-headed glass panel like the shop windows; the sources show a round-arched glazed door with transom, frieze band over the arch and flanking piers, with a corbelled bow underside.
-- P1 dome squat (height about 0.55 of the diameter) on a tall plain stone cylinder above the balustrade; the sources show a taller ribbed dome whose copper skirt and crest sit directly on the bay cornice with no stone drum (the v004 note about a blind drum with pilaster strips is contradicted by this reviewer's pixel reading: that band is the top-storey frieze below the cornice).
-- P1 cornice a flat fascia with almost no projection; the sources show a heavily projecting bracketed cornice with a shadowed soffit under the balustrade.
-- P2: bow balconies segmented per panel instead of one continuous curved balcony per level; dome colour mauve-grey instead of copper red-brown; pyramid rooflight reads flat and ghostly; flat bow soffit; brick too pale; no rear light-well; front camera a wing elevation instead of the chamfer axis; balustrade without intermediate dies.
+- P1 dome base: the dome stands on a plain stone drum set back behind a curved balustrade ring with T-shaped cresting posts; the sources show the bow wall and frieze rising solid to a strongly projecting cornice with continuous pierced copper cresting at the dome foot.
+- P1 the dome has no dormers; all three sources show round hooded dormers at about 45 percent of the dome height, three on the street half.
+- P2: twelve polish items recorded in the review.
