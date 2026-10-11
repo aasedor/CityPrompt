@@ -68,15 +68,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (no further version permitted)
+## Open blockers after v004 (v005 in progress)
 
-- P1 (decision for the user): the source shows door, window, window, door between the
-  bays; the brief requires three grade entrances, so unit B's door sits in that run.
-  Either accept this as the recorded source-conflict decision or move the third door.
-- P1: build the middle gable as a wall gable in the facade plane with an arched window
-  and green bargeboard instead of a set-back roof dormer.
-- P1: close the eaves line on both end walls (the main roof plates now stop inside the
-  gables but the string course and eaves turn black at the plate ends).
-- P1: close the gable apexes: extend the gable roof prisms to the bargeboard line and
-  let the bargeboards meet at the finial; seat the east chimney on solid roof.
-- P1: carry the rear cross gables to the ridge as full cross wings.
+- P1 a slate slab and the rear cross-gable verge project past the west party-wall plane.
+- P1 the front slate pent wraps the east corner and stops half way along the flank over a black slot.
+- P1 a slate band at the eaves runs through the base of every gable and the bargeboard feet hang below it; the sources land the bargeboards on kneelers at the eaves.
+- P1 every gable apex shows a black notch between the bargeboards.
+- P1 front brick a uniform red field; the sources band each storey in cream with buff quoins and surrounds.
+- P1 one gable treatment reused for all three with an undersized infill and shutters; the sources give the end gables full-height timber infill with a round-headed window and the middle gable brick with a blind arch.
+- P1 the canted bays stop at the ground floor; the sources carry them through the first floor under the end gables.
