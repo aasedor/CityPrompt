@@ -1,0 +1,96 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "west block south bay 0 corner bay ground glazing",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block south bay 0 corner bay glazing strip",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block south bay 1 curtain wall",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west bay 0 roller door",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west bay 0 ribbon glazing",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west bay 1 curtain wall",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west bay 1 entrance doors",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west bay 1 glazing over doors",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west bay 2 corner bay ground glazing",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west block west bay 2 corner bay glazing strip",
+      "face": "west block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "North louvre bay 0",
+      "face": "west block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "North service door",
+      "face": "west block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corten slot window",
+      "face": "east block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East service door",
+      "face": "east block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East louvre",
+      "face": "east block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

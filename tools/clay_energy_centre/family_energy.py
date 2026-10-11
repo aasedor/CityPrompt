@@ -27,7 +27,7 @@ PALETTE = dict(wall=(.56, .42, .26), joint=(.42, .30, .18), trim=(.08, .08, .085
     pale=(.60, .60, .58), stone=(.48, .47, .44), roof=(.66, .66, .64), sand=(.60, .56, .48),
     foundation=(.36, .36, .36), glass=(.50, .55, .54), hardware=(.10, .10, .11),
     interior=(.74, .70, .62), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
-    planting=(.24, .42, .14), soil=(.19, .14, .08), corten=(.46, .22, .10), concrete=(.52, .51, .48),
+    planting=(.24, .42, .14), soil=(.19, .14, .08), corten=(.10, .072, .058), concrete=(.52, .51, .48),
     steel=(.62, .64, .66), teal=(.18, .48, .46), membrane=(.66, .66, .64))
 
 
@@ -124,13 +124,14 @@ def frame_face(f, lo, hi, bays):
             holes.append(hole(tag + ' curtain wall', c, G0, w, top - G0, kind='tall'))
         elif kind == 'corner':
             holes.append(hole(tag + ' corner bay', c, G0, w, top - G0, kind='corner'))
+        elif kind == 'corner_south':
+            holes.append(hole(tag + ' corner bay', c, G0, w, top - G0, kind='corner', panel_top=8.2, door=True))
         elif kind == 'service':
             holes.append(hole(tag + ' roller door', c - w / 2 + 2.3, G0, 4.0, 4.5, kind='recessed door'))
             holes.append(hole(tag + ' ribbon glazing', c, 6.6, w, 3.6, kind='ribbon'))
         elif kind == 'entrance':
-            holes.append(hole(tag + ' curtain wall', c - 1.5, G0, w - 3.0, top - G0, kind='tall'))
-            holes.append(hole(tag + ' entrance doors', c + w / 2 - 1.5, G0, 2.4, 3.0, kind='entrance'))
-            holes.append(hole(tag + ' glazing over doors', c + w / 2 - 1.5, 4.1, 2.4, top - 4.1, kind='tall'))
+            holes.append(hole(tag + ' entrance doors and sidelights', c, G0, w, 3.85, kind='entrance'))
+            holes.append(hole(tag + ' curtain wall over the head band', c, 4.35, w, top - 4.35, kind='tall'))
     f.wall(f.label + ' carrier', lo, hi, G0, W_CROWN, depth=T, holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, G0, W_CROWN, holes, spacing=.075)
     for h in holes:
@@ -142,17 +143,27 @@ def frame_face(f, lo, hi, bays):
             f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=4, rows=1, frame='trim', depth=T, sill=False)
             lined(f, h)
         elif k == 'corner':
+            pt = h.get('panel_top', 9.4)
             g = hole(h['id'] + ' ground glazing', h['u'], G0, h['w'], L1 - .3 - G0)
-            u = hole(h['id'] + ' glazing strip', h['u'], 9.4, h['w'], top - 9.4)
+            u = hole(h['id'] + ' upper glazing', h['u'], pt, h['w'], top - pt)
             f.window(g['id'], g['u'], g['z'], g['w'], g['h'], cols=round(h['w'] / 1.5), rows=2, frame='trim', depth=T, sill=False)
             lined(f, g)
-            f.window(u['id'], u['u'], u['z'], u['w'], u['h'], cols=round(h['w'] / 1.5), rows=1, frame='trim', depth=T, sill=False)
+            f.window(u['id'], u['u'], u['z'], u['w'], u['h'], cols=round(h['w'] / 1.5), rows=2 if u['h'] > 2.2 else 1, frame='trim', depth=T, sill=False)
             lined(f, u)
-            # Board-formed concrete panel filling the bay between the ground glazing and the strip, a touch proud of the brick.
-            z0, z1 = L1 - .3, 9.4
+            # Board-formed concrete panel between the ground glazing and the upper glazing, a touch proud of the brick:
+            # large panels with vertical joints at about 1.2 m and one horizontal mid joint (no lap lines).
+            z0, z1 = L1 - .3, pt
             f.part('Board-formed concrete panel', h['u'], T / 2, (z0 + z1) / 2, h['w'] + .02, T + .02, z1 - z0, 'concrete', 'concrete panel', 0)
-            for kk in range(1, 10):
-                f.part('Board mark', h['u'], -.016, z0 + kk * (z1 - z0) / 10, h['w'] - .1, .008, .012, 'joint', 'concrete panel', 0)
+            n = max(2, round(h['w'] / 1.2))
+            for kk in range(1, n):
+                f.part('Panel joint', h['u'] - h['w'] / 2 + kk * h['w'] / n, -.016, (z0 + z1) / 2, .014, .008, z1 - z0 - .04, 'joint', 'concrete panel', 0)
+            f.part('Panel mid joint', h['u'], -.016, (z0 + z1) / 2, h['w'] - .04, .008, .014, 'joint', 'concrete panel', 0)
+            if h.get('door'):
+                # One concrete column splits the ground glazing; a glazed door in the right-hand pane.
+                f.part('Corner bay concrete column', h['u'], -.05, (G0 + L1 - .3) / 2, .60, .10, L1 - .3 - G0, 'concrete', 'concrete panel', 0)
+                du = h['u'] + h['w'] / 2 - 1.2
+                f.part('Corner bay door leaf', du, .16, G0 + 1.3, 1.1, .03, 2.5, 'trim', 'entrance', 0)
+                f.part('Corner bay door glass', du, .18, G0 + 1.4, .8, .01, 2.1, 'glass', 'entrance', 0)
         elif k == 'recessed door':
             f.part(h['id'] + ' leaf', h['u'], 1.22, h['z'] + h['h'] / 2, h['w'] - .06, .05, h['h'] - .02, 'pale', 'service door', 0)
             for kk in range(1, 6):
@@ -167,15 +178,21 @@ def frame_face(f, lo, hi, bays):
             C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='roll-up door', clear_wall_cut=True,
                 carrier_depth_m=T, frame_inset_m=.19, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='plant hall'))
         elif k == 'entrance':
-            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=2, rows=1, frame='trim', inset=.30, depth=T, sill=False, kind='glazed door')
+            # Recessed double doors with sidelights directly under a dark head band; the tall bay's glazing continues above it.
+            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=4, rows=1, frame='trim', inset=.30, depth=T, sill=False, kind='glazed door')
             lined(f, h, inset=.30, role='concrete')
             for du in (-.12, .12):
                 C.rod('Entrance door pull', f.p(h['u'] + du, .28, h['z'] + .9), f.p(h['u'] + du, .28, h['z'] + 1.5), .018, 'hardware', 'door hardware')
-            f.part('Entrance head panel', h['u'], .16, (h['z'] + h['h'] + 4.1) / 2, h['w'] + .02, .30, 4.1 - h['z'] - h['h'], 'trim', 'entrance', 0)
-            f.part('Entrance step', h['u'], -.4, (.015 + G0) / 2, h['w'] + .4, .8, G0 - .015, 'concrete', 'entrance', 0)
-            C.CONTACTS.append(dict(name='Glazed entrance doors recessed 0.3 m under a dark head panel, one step up from the pavement', grade_m=0, step_m=G0))
+            f.part('Entrance head band', h['u'], -.04, h['z'] + h['h'] + .25, h['w'] + .30, .08, .62, 'trim', 'entrance', 0)
+            f.part('Entrance granite base', h['u'], -.04, (.015 + G0) / 2, h['w'] + .30, .08, G0 - .015, 'stone', 'entrance', 0)
+            C.CONTACTS.append(dict(name='Glazed entrance doors and sidelights recessed 0.3 m under a dark head band, on a flush granite base course', grade_m=0, step_m=G0))
     f.part('Parapet coping', (lo + hi) / 2, T / 2, W_CROWN + .03, hi - lo - 2 * EPS, T + .06, .06, 'pale', 'coping', 0)
-    f.part('Plinth', (lo + hi) / 2, -.02, .25, hi - lo - 2 * EPS, .04, .50, 'concrete', 'plinth', 0)
+    cuts = sorted((h['u'] - h['w'] / 2, h['u'] + h['w'] / 2) for h in holes if h['z'] < .5)
+    a = lo + EPS
+    for c0, c1 in cuts + [(hi - EPS, hi - EPS)]:
+        if c0 - a > .05:
+            f.part('Plinth', (a + c0) / 2, -.02, .25, c0 - a, .04, .50, 'concrete', 'plinth', 0)
+        a = max(a, c1)
 
 
 def west_block():
@@ -183,11 +200,11 @@ def west_block():
     # South face (u = x relative to the face centre), west to east: pier, corner bay 12 m, pier, glazed bay 4 m, pier (19 m).
     f = face(*WB, 'south', 'west block south')
     half = (x1 - x0) / 2
-    frame_face(f, -half, half - EPS, [(-half + 1.0 + 6.0, 12.0, 'corner'), (-half + 14.0 + 2.0, 4.0, 'tall')])
+    frame_face(f, -half, half - EPS, [(-half + 1.0 + 8.85, 17.7, 'corner_south')])
     # West face (u = -y), north to south: pier, service bay 7 m, pier, entrance curtain-wall bay 9 m, pier, corner bay 14 m, pier (34 m).
     f = face(*WB, 'west', 'west block west')
     half = (y1 - y0) / 2
-    frame_face(f, -half + T, half - T, [(-half + 1.0 + 3.5, 7.0, 'service'), (-half + 9.0 + 4.5, 9.0, 'entrance'), (-half + 19.0 + 7.0, 14.0, 'corner')])
+    frame_face(f, -half + T, half - T, [(-half + 1.0 + 3.5, 7.0, 'service'), (-half + 9.0 + 3.0, 6.0, 'entrance'), (-half + 19.0 + 7.0, 14.0, 'corner')])
     # North face: brick with service openings.
     f = face(*WB, 'north', 'west block north')
     nh = [hole('North louvre bay 0', -4.0, 1.0, 3.0, 2.5), hole('North service door', 4.0, G0, 2.4, 3.2, kind='door')]
@@ -225,7 +242,7 @@ def east_block():
             lo, hi = -span / 2, span / 2 - EPS
         holes = []
         if side == 'south':
-            holes = [hole('Corten slot window', 2.5, 2.0, 1.2, 9.0, cols=1, rows=3)]
+            holes = [hole('Corten slot window', 2.5, 1.6, 1.2, E_CROWN - .5 - 1.6, cols=1, rows=4)]
         elif side == 'east':
             holes = [hole('East service door', -8.0, G0, 2.4, 3.2, kind='door'), hole('East louvre', 6.0, 3.0, 4.0, 2.4)]
         f.wall(f'east block {side} carrier', lo, hi, G0, E_CROWN, depth=T, role='corten', holes=holes)
@@ -243,7 +260,7 @@ def east_block():
                 C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='louvre', clear_wall_cut=True,
                     carrier_depth_m=T, frame_inset_m=.16, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='boiler house'))
             else:
-                f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=1, rows=3, frame='trim', depth=T, sill=False)
+                f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=1, rows=4, frame='trim', depth=T, sill=False)
                 lined(f, h, role='corten')
         f.part('Corten parapet coping', (lo + hi) / 2, T / 2, E_CROWN + .03, hi - lo - 2 * EPS, T + .06, .06, 'corten', 'coping', 0)
     # West side of the corten block above the west block roof.

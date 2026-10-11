@@ -68,12 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (no further version permitted)
+## Open blockers after v004 (v005 in progress)
 
-- P0: seat the entrance threshold slab on the pavement (its base is 0.13 m above the
-  sidewalk plate) or delete it.
-- P0: extend the plant-room riser pipes to the slab (they start 0.2 m above it).
-- P1: remove the concrete fin and canopy and recess the storefront doors about 0.3 m
-  under a dark head panel, as the front source shows.
-- P1: recess the north service bay 1.0 to 1.5 m with concrete reveals, add the door leaf
-  and widen the ribbon glazing above it.
+- P1 south face has an extra pier and second glazed bay where the sources run one concrete-and-glass corner bay to the corten wall, with a tall two-tier upper curtain and a concrete column and door in the ground glazing.
+- P1 entrance in a separate narrow bay under a brick spandrel; the sources put recessed doors with sidelights under a dark head band inside the tall glazed bay, with solid brick beside it.
+- P1 threshold slab detached from the recessed door line.
+- P1 concrete panel drawn as horizontal lap siding; the sources show board-formed panels with vertical joints at about 1.2 m and one mid joint.
+- P1 corten a saturated orange where the sources show dark weathered near-bronze steel, the darkest mass in every view.
+- P1 slot window starts about a quarter of the block height below the parapet; the sources hang it from just under the coping.
