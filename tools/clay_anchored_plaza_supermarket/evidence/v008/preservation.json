@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-anchored-plaza-supermarket-clay-v008",
+  "glb": "clay-anchored-plaza-supermarket-clay-v008.glb",
+  "glb_bytes": 554720,
+  "glb_sha256": "eea80e8debdc8e27f9a8540ea11c21e7dc083f1232c4ad32227aef92650ed78e",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "anchor_entrance.png": 92,
+    "architecture_close.png": 92,
+    "endcap_corner.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "inline_shops.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "parking_court.png": 92,
+    "rear.png": 92,
+    "rear_service.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_units.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-anchored-plaza-supermarket-clay-v008-renders-and-glb.zip",
+  "zip_bytes": 29685357
+}

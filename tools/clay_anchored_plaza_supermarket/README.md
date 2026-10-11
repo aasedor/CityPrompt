@@ -67,6 +67,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v007 (v008 rendering, the last version under the hard cap)
+## Open blockers after v008 (hard cap reached)
 
-1. **Cafe west face.** About five brick pilasters are needed across it.
+Ended at v008, the hard cap of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v007. Open v008 P1, for a human to weigh:
+
+1. **Anchor sign band.** Two thin green stripes plus a white fascia, where both sources show one green panel taking about half the upper facade.
+2. **Cafe west face.** Pilasters cover only the south part; the north part is blank with a different parapet line.
+3. **End-cap south face.** A punched window, where the sources show a three-bay glazed storefront.
+4. **Front camera.** It clips the end-cap's south-east corner at the frame edge.

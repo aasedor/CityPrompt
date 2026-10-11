@@ -1,0 +1,67 @@
+# Independent RLASM v6.1 holistic review — plaza v008 (clay-anchored-plaza-supermarket)
+
+Reviewer: independent (did not build). Evidence used: `sources/front.png`, `sources/oblique.jpg`, `sources/top.jpg`; all 18 `renders/*.png`; `boards/phone-01..04`. No build code, reports or notes were read. Pixel coordinates below are in each file's native resolution (renders 1440x1080; source front 1024x768; source oblique/top 1195x896).
+
+## 1. Verdict
+
+**VISUAL_REWORK_REQUIRED** — 0 P0, 4 P1, 9 P2: the L-plan, tower, court, canopy, brick base and pylon are all there and read as this building, but the anchor's green sign band is a quarter of its source height, the cafe wing's west face still has a blank pilaster-free north half, the end-cap's south face has a punched window where both sources show a glazed storefront, and the whole-envelope front camera clips the end-cap at the right frame edge.
+
+Counts: **P0 = 0, P1 = 4, P2 = 9.**
+
+## 2. Findings table
+
+| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |
+|---|---|---|---|---|---|
+| 1 | **P1** | `facade_close.png` x 0–1300, y 300–630; `architecture_close.png` y 640–1000; `front.png` x 450–740, y 475–560; `anchor_entrance.png` x 1180–1440, y 215–520 | The anchor's green sign band is rendered as two thin elements: a green stripe about 45 px tall sitting directly on the brown canopy (facade_close y 550–600) and a thin green line set into an invented white fascia panel (facade_close y 340–430). Between them is plain cream EIFS. Both locked sources show one bold green panel running the full storefront width from the glazing-head lintel up to roughly half the upper facade (source `front.png` x 310–490, y 345–400: ~44 % of the cornice-to-glazing height; `oblique.jpg` x 420–580, y 365–410: ~57 %), with the lettering on cream EIFS above it — no white panel. The rendered green covers ~12–14 % of that height and the identity element reads as pinstripes, not a sign band. | Band modelled as a trim strip plus a text stand-in bar instead of as the facade-scale green panel. | Raise the top of the glazing-head green stripe until the green panel spans ~50 % of the cornice-to-glazing height across the full storefront width (keep the existing green east pier, which already matches the source's wrap); delete the white fascia panel on the anchor and leave the upper area cream EIFS; the thin green bar may stay on cream as the lettering stand-in. |
+| 2 | **P1** | `left_side.png` x 380–565 vs x 565–720, y 520–600; `top.png` x 315–430, y 325–540; `rear.png` x 1025–1150, y 520–585; `front_corner.png` x 250–330, y 530–600 | The cafe wing's west face is two different boxes: the north ~55 % (left_side x 380–565) is a taller blank EIFS wall with one punched window and no pilasters; the south ~45 % (x 565–720) has five brick pilasters with glazing between, at a lower parapet. The oblique source (`oblique.jpg` x 40–170, y 400–540) shows one west face at one parapet height with brick pilasters spread evenly along its entire length and small ground-storey openings between them. The pilaster rhythm therefore stops halfway along the only source-visible side of the wing, and the two parapets add a step the oblique and top do not show (the locked front does show an intermediate parapet behind the cafe front, so the step itself is treated as a source conflict and not penalised; the blank half-face is not a conflict). | v007 fix added pilasters only to the south module; the north module was left as-is. | Carry the same brick pilasters (source shows ~5 across the whole face — i.e. redistribute the five at roughly double the present spacing, or keep five and add three more) along the full west face including the north module, with a small window/door between each pair at the ground storey as in the oblique; run each pilaster to its own parapet or equalise the two parapets. |
+| 3 | **P1** | `endcap_corner.png` x 830–1130, y 300–830 (window at x 920–990, y 600–720); `aerial.png` x 880–1140, y 575–630; `top.png` x 1010–1175, y 630–655 | The end-cap's south face carries a single small punched window (~20 % of face width, ~⅓ storefront height) on a stepped brick plinth, with cream EIFS everywhere else. Both sources show a three-bay glazed storefront on the west ~40 % of that face, full storefront height from brick base to lintel (`oblique.jpg` x 1050–1150, y 370–430; `top.jpg` x 880–960, y 590–620), with cream and brick filling the east part. Opening type and rhythm are wrong on a source-visible face. | South face treated as a service face with one window instead of as the end tenant's wrap-around shopfront. | Replace the punched window with a three-bay glazed storefront on the west ~40 % of the south face, brick-base sill to the fascia lintel, matching the court-face bay module; keep the brick base and corner pilasters; remove the stepped plinth block under the present window. |
+| 4 | **P1** | `front.png` x 1395–1440, y 490–620 | The whole-envelope front view cuts the asset at the right frame edge: the end-cap's south face enters the frame at x ≈ 1395 and its punched window and SE brick corner are sliced by the border, roughly 40 % of that face out of frame. The lot is also cropped on both sides and the pylon sign is outside the frame to the west. Everything else in the view is legible, so this is a framing defect, but under the method's camera rule (asset clipped) it must be re-shot. | Camera centred ~3 % too far west / FOV too tight for the full L. | Shift the front camera east or widen its FOV until the end-cap's SE corner and the pylon are inside the frame with a margin; re-render `front.png` and phone board 01. |
+| 5 | P2 | `inline_shops.png`, `facade_close.png`, `endcap_corner.png` | Shop and anchor canopy is a thick brown slab on tension rods; sources show a thin dark (charcoal) eyebrow at the glazing head with small brackets. | Clay substitution. | Thin the canopy and recolour it to the cornice's dark bronze. |
+| 6 | P2 | `inline_shops.png` y 280–430; `endcap_corner.png` x 420–1010, y 320–440; `aerial.png` | Sign fascia above the shopfronts is bright white; source fascia is the same cream as the EIFS. | Palette drift. | Set fascia to the EIFS cream. |
+| 7 | P2 | all exterior views | Brick is a flat tan/pink; source brick is a distinctly red-brown. | Palette drift. | Shift brick hue toward the source red-brown. |
+| 8 | P2 | `top.png`, `aerial.png`, `parking_court.png` | Only a beige strip along the south boundary stands in for landscape; sources show lawn verges on all sides of the lot, a road with bike lane, and the east tree line (three trees present). | Clay simplification. | Add lawn verges west/north/east and a road strip south; acceptable to leave as-is for clay. |
+| 9 | P2 | `endcap_corner.png` x 200–390, y 880–1080 | Odd L-shaped brick block with a cream inset under the south-face window. | Sill detail artefact. | Disappears with finding 3. |
+| 10 | P2 | `endcap_corner.png` x 600–760, y 100–290; `right_side.png` | The white sign fascia continues around the end-cap's blank east face, which has no shopfronts. | Fascia loop not trimmed. | Trim the fascia to the court and south faces. |
+| 11 | P2 | `front_corner.png`, `aerial.png`, `left_side.png`, `right_side.png`, `rear.png`, `rear_side.png` | Asset occupies ~10–15 % of frame height in these whole-envelope views; legible but wasteful on the phone boards (board 01 oblique/aerial panels). | Camera distance. | Move cameras ~40 % closer. |
+| 12 | P2 | `aerial.png` x 715–735, y 545–560; `front.png` x 700–730, y 560–580 | Small punched window on the anchor's south face east of the green pier; source shows plain EIFS there. | Extra opening. | Remove. |
+| 13 | P2 | `top.png` y 590–775 | Three east–west parking rows where the source court has two plus the hatched accessible stalls (hatch is present in `anchor_entrance.png`). | Layout. | Optional; drop the middle row. |
+
+### 2.1 Prior-version findings, judged from the v008 pixels
+
+| version | finding | status in v008 | evidence |
+|---|---|---|---|
+| v007 P1 | Cafe wing west face had no brick pilasters; oblique shows about five | **partly resolved** | `left_side.png` x 565–720: five pilasters now exist, but only on the south module; x 380–565 (north ~55 % of the face) remains blank EIFS with one window at a different parapet height. Oblique shows pilasters along the whole face. See finding 2. |
+| v006 P1 | End-cap depth | **resolved** | `top.png`: end-cap x 1010–1175 (165 px) vs inline run depth y 325–430 (105 px), ratio 1.6 against the source's 1.8; `aerial.png` x 870–1200 shows the deep box. |
+| v006 P1 | Wrap-around asphalt and drive-through route with a west parking row | **resolved** | `top.png`: west row x 240–275, y 370–700; asphalt and lane lines wrap north (y 240–325) and east (x 1180–1200, y 265–690) then turn west at y 690; `right_side.png` x 1005–1020, y 580–595 shows the drive-through window on the east face. |
+| v006 P1 | Brick cafe ground storey under a dark lintel | **resolved** | `anchor_entrance.png` x 0–350: brick base y 690–790, glazing above, brown lintel band y 520–545 under the cream fascia and dark cornice; matches source `front.png` x 60–200, y 450–500. |
+| v006 P1 | End-cap south-face brick | **resolved** (brick) | `aerial.png` x 870–1145, y 580–630 and `endcap_corner.png`: brick base and brick corner pilasters on the south face. The face's glazing is a separate, new finding (3). |
+
+## 3. Source conformance checklist
+
+| item | status | view used / note |
+|---|---|---|
+| Silhouette (single storey, flat roofs, taller anchor box, projecting tower highest) | conforms | `front.png` vs source `front.png`; `rear.png`, `left_side.png`. One extra step at the cafe (north module taller than south) follows the locked front's intermediate parapet but not the oblique/top; accepted as a source conflict. |
+| L-plan and wings (anchor west, inline run north edge, end-cap turning south on east edge, cafe on anchor's west flank) | conforms | `top.png` vs source `top.jpg`; `aerial.png` vs `oblique.jpg`. |
+| Anchor tower (projecting, brick corner piers, cream centre, cornice cap, green entrance slab beneath with dark door canopy) | conforms | `anchor_entrance.png`, `roof_units.png`. |
+| Anchor green sign band | **deviates** | `facade_close.png`: ~12–14 % of upper-facade height in two stripes vs 44–57 % single panel in both sources; invented white fascia. Finding 1. |
+| Shop-front rhythm and canopy (brick pilasters with caps, glazed bays, continuous canopy, fascia above) | conforms | `inline_shops.png`, `endcap_corner.png`: continuous canopy turns the inside corner; pilaster bay module matches source `front.png` x 540–1024. Canopy thickness/colour is P2 (finding 5). |
+| End-cap: court face | conforms | `endcap_corner.png` x 0–830. |
+| End-cap: south face and drive-through | **deviates** | South face has a punched window, no storefront (finding 3). Drive-through lane, sidewalk bulb and east-face window conform (`top.png`, `right_side.png`). |
+| Cafe wing: south (SUNSET CAFE) face | conforms | `anchor_entrance.png` x 0–350; brick base, glazing, lintel, fascia, cornice. |
+| Cafe wing: west face | **deviates** | North half blank, no pilasters, higher parapet (finding 2). |
+| Parking court (striped rows, cars, islands, accessible hatch near anchor entrance) | conforms | `parking_court.png`, `top.png`, `anchor_entrance.png` y 830–980. |
+| Pylon sign (brick base, tall cabinet, SW corner by road) | conforms | `front_corner.png` x 470–495, y 555–635; `top.png` x 245–270, y 720–770. |
+| Roof units (boxes on all four roofs, more on anchor) | conforms | `roof_units.png`, `top.png`. Source duct runs omitted; acceptable clay. |
+| Materials hierarchy (cream EIFS over brick base, brick pilasters, dark cornice bands, green accent) | conforms with P2 drift | Hierarchy correct in every view; brick hue and white fascia are off-palette (findings 6, 7). |
+| Rear faces (no source) | coherent | `rear.png`, `rear_service.png`, `rear_side.png`: blank EIFS over brick base, doors, dumpsters touching the wall, nothing floating. |
+| Openings with depth/returns | conforms | `glass_close.png`: glazing recessed behind green pier with brick return; `inline_shops.png`: shadow line at glazing head. |
+| Contact / floating / intersecting parts | conforms | Tension rods meet the wall, RTUs sit on roof, trees/pylon/cars on ground, dumpsters against the wall (`r_rear` x 940–1000 is a dumpster, not a notch). |
+
+## 4. Camera validity
+
+- `front.png` — **asset clipped** at the right frame edge (end-cap south face and SE corner cut at x ≈ 1395–1440; pylon out of frame to the west). Must be re-shot. Recorded as finding 4 (P1 framing); under a strict reading of the method's camera rule this whole-envelope view is invalid regardless of severity label.
+- `front_corner.png`, `aerial.png`, `left_side.png`, `right_side.png`, `rear.png`, `rear_side.png` — target fully in frame and legible, but small (building ≈ 10–15 % of frame height); P2 only.
+- `top.png` — valid; whole lot in frame.
+- Detail views (`facade_close`, `architecture_close`, `glass_close`, `anchor_entrance`, `inline_shops`, `endcap_corner`, `parking_court`, `roof_units`, `rear_service`) — targets unoccluded, in frame and legible.
+- `interior.png` — legible (shelving blocks, rear door, storefront opening); no occlusion.
+- Phone boards 01–04 — faithful tilings of the above; board 01 inherits the clipped front panel.
