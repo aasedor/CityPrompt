@@ -68,7 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 rendering)
 
-- P1 outer-bay balcony plates stop at the fin fronts and the corner piers, so the tower reads as a framed box with recessed loggias; the sources show trays cantilevering past the fins and round the corners with glass end returns, notching the roof outline.
-- P2: soft white highlights in the glazing; rooftop units far from the penthouse; penthouse annex; brick ringing every centre-bay window instead of spandrel bands only; tree in front of the base corner; interior camera too close to the glass.
+1. **Crown.** The roof edge should follow the floor plan: a thin ledge over the outer bays only, stepping back over the centre bay. A low brick parapet with a teal stripe should sit behind it, with fin heads rising above.

@@ -21,6 +21,7 @@ FH = 2.95                      # apartment storey
 N = 12
 ROOF = L0 + N * FH             # 42.95
 PARAPET = ROOF + .70
+FIN_TOP = PARAPET + .70            # bay-line fins and corner piers rise about 0.7 m above the parapet as fin heads
 FIN_U = 3.4                    # fin walls at the bay lines (centre bay about 31 percent of the face)
 PLATE = 1.6                    # fin depth (balcony recess between the fins)
 OUT = 2.2                      # balcony trays cantilever 0.6 m past the fin fronts and round the corners
@@ -131,15 +132,10 @@ def tower_face(f, span, street, inset=0.0, side=False):
         G.brick_courses(f, -FIN_U + .35, FIN_U - .35, zf + .14, zf + .76, [], spacing=.075)
     # Slab edge band every storey and at the roof; balcony plates and balustrades on the outer bays.
     for i, zf in enumerate(STOREYS + [ROOF]):
-        if i < N:
-            m.box('concrete', 0.0, -.05, zf - .02, span - 2 * EPS, .40, .30)
-        else:
-            # Thick pale concrete roof slab projecting like the balcony plates, so it caps every fin and reads as one continuous
-            # coping; the front and rear bands run past the corners and the side bands abut them (no shared faces, no gaps).
-            proj = PLATE - .05
-            pw = span - 2 * .36 - 2 * EPS if side else span + 2 * proj
-            m.box('concrete', 0.0, (-proj + .36) / 2, (ROOF - .17 + PARAPET + .02) / 2, pw, proj + .36, PARAPET + .02 - (ROOF - .17))
-        if i < N:
+        # Slab edge band every storey and at the roof. The roof edge follows the floor plan below: a thin ledge projects
+        # only over the outer bays and wraps the corners like the trays; over the centre bay it steps back to the brick face.
+        m.box('concrete', 0.0, -.05, zf - .02, span - 2 * EPS, .40, .30)
+        if True:
             for s in (-1, 1):
                 # Cantilevered tray: runs from just inside the bay fin past the fin's front and, on the street and rear faces,
                 # round the building corner; side-face trays abut the street/rear trays' inner face (no overlap, no slot).
@@ -149,20 +145,26 @@ def tower_face(f, span, street, inset=0.0, side=False):
                 bw = b - a
                 uc = s * (a + bw / 2)
                 m.box('concrete', uc, -(OUT + .23) / 2, zf - .07, bw, OUT - .23, .22)
+                if i == N:
+                    continue
                 m.box('glass', uc, -OUT + .06, zf + .60, bw - .04, .02, 1.12)
                 for e in ((a + .03, b - .03) if not side else (a + .03,)):
                     m.box('glass', s * e, -(OUT + .23) / 2 - .03, zf + .60, .02, OUT - .23 - .10, 1.12)
+    # Low brick parapet on the building line with a thin teal stripe and a pale coping; fin heads rise above it.
+    cw = span - 2 * EPS if not side else span - 2 * inset - .08
+    m.box('accent', 0.0, -.012, ROOF + .45, cw, .024, .10)
+    m.box('pale', 0.0, T / 2, PARAPET + .03, cw, T + .06, .06)
     m.flush('facade')
     # Fin walls at the bay lines, grade to parapet, projecting past the balcony plates' inner half.
     for u in (-FIN_U, FIN_U):
-        f.part('Fin wall', u, -(PLATE - .05) / 2 + .05, (G0 + ROOF - .17 - EPS) / 2, .32, PLATE - .05 + .10, ROOF - .17 - EPS - G0, 'concrete', 'fins', 0)
+        f.part('Fin wall', u, -(PLATE - .05) / 2 + .05, (G0 + FIN_TOP) / 2, .32, PLATE - .05 + .10, FIN_TOP - G0, 'concrete', 'fins', 0)
 
 
 def corner_fins():
     for sx in (-1, 1):
         for sy in (-1, 1):
             x = sx * (W / 2 + PLATE / 2 - .22); y = sy * (D / 2 - .16)
-            zt = ROOF - .17 - EPS
+            zt = FIN_TOP
             C.box('Corner fin', (x, y, (G0 + zt) / 2), (PLATE + .18, .32, zt - G0), 'concrete', 'fins', 0)
             C.box('Corner fin return', (sx * (W / 2 - .16), sy * (D / 2 + PLATE / 2 - .22), (G0 + zt) / 2), (.32, PLATE + .18, zt - G0), 'concrete', 'fins', 0)
 
