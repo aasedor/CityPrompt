@@ -68,13 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 in progress)
 
-- P0: a black square at the south-west corner at the top of the ground pier under the red box: the south ground carrier's end plane and the cantilever slab's end plane coincide. v005 stops the ground carrier under the slab and makes the slab one solid volume up to the upper box.
-- P1: the west loggia spans only 40 percent of the face with a thick pale frame; the sources show about 80 percent with the oxblood panel as the frame and a lit edge. v005 opens it to 26 m with red reveals and lit edges.
-- P1: the south hall reads as six identical headed glazed bay modules; the sources show four doors over about 59 percent of the face inside a glazed hall that runs to the corner. v005 uses four 5.2 m doors with glass-to-glass ends.
-- P1: the cantilever is about 1 m deep against 2.5 to 3 m. v005 sets it to 2.8 m.
-- P1: the north leg is a proud plate. v005 runs it flush over the ground wall for 43 percent of the face.
-- P1: the three-window cluster on the south upper face is missing. v005 adds it at the east end and removes the east-face windows the sources do not show.
-- P1: the memorial wall and flagpole stand on the apron. v005 moves them to the west plaza beside the south-west corner.
-- P2 (recorded): north leg length, shelter and rooftop unit positions, wide grey corner pier (v005 goes glass-to-glass), thin seam at the north box and base junction, interior partition windows through the loggia glass, under-framed elevations, flagpole crossing facade_close, interior camera outside (v005 moves it into the hall).
+- P1 no lit line along the south cantilever's lower edge, the east step or round the south-west notch (the strips sat inside the slab volume); the sources show one continuous glowing line.
+- P1 glass clock tower stands wholly outside the south-east corner; the sources build it into the corner, straddling the east roof edge and proud of the south face.
+- P1 the small south upper windows sit at 66 to 82 percent of the face and are square; the sources show a staggered portrait group at about 30 to 45 percent, above bays 2 and 3.
+- P1 the south-west notch reads as a pasted-on red cube with seam lines; the sources show one folded red return with the lit edge.
+- P2: nine polish items recorded in the review.

@@ -23,7 +23,7 @@ SETBACK = 2.8                      # ground-floor south wall sits this far under
 GY = FRONT_Y + SETBACK             # ground south wall plane
 BAYS = [-6.75, -.25, 6.25, 12.75]  # four apparatus bays over about 59 percent of the south face, glazed hall west of them to the corner
 BAY_W, BAY_H = 5.2, 4.6
-TW_X0, TW_X1, TW_Y0, TW_Y1, TW_H = EAST_X, EAST_X + 5.5, FRONT_Y - 4.0, FRONT_Y + 4.0, 15.6
+TW_X0, TW_X1, TW_Y0, TW_Y1, TW_H = EAST_X - 1.8, EAST_X + 3.7, FRONT_Y - 1.8, FRONT_Y + 6.2, 15.6   # straddles the south-east corner, 1.8 m proud of the south face
 APRON = 18.0
 EPS = .002
 PALETTE = dict(wall=(.25, .06, .07), joint=(.17, .04, .045), trim=(.03, .03, .032),
@@ -127,7 +127,7 @@ def bay_door(f, name, u, z, w, h):
 
 def south_upper(f):
     """Oxblood upper box at the front plane with the deep loggia and the cantilever soffit below."""
-    sw = [hole(f'South upper window {i}', x, U + 2.4, 1.8, 1.6) for i, x in enumerate((8.0, 10.6, 13.2))]
+    sw = [hole(f'South upper window {i}', x, U + (2.0 if i % 2 == 0 else 2.5), 1.0, 1.8) for i, x in enumerate((-8.2, -6.6, -5.0, -3.4))]
     f.wall('South upper carrier', WEST_X, EAST_X, U, CROWN, depth=T, holes=sw)
     joints(f, WEST_X + .2, EAST_X - .2, U + EPS, CROWN - EPS, sw)
     for h in sw:
@@ -140,11 +140,14 @@ def south_upper(f):
         cx = (x0 + x1) / 2
         C.box('Stepped soffit volume', (cx, FRONT_Y + SETBACK / 2 + T / 2, (3.6 + U - .75 - EPS) / 2), (x1 - x0, SETBACK + T, U - .75 - EPS - 3.6), 'wall', 'cantilever', 0)
         C.box('Stepped soffit lining', (cx, FRONT_Y + SETBACK / 2 + .10, 3.595), (x1 - x0 - .02, SETBACK - .2, .01), 'pale', 'cantilever', 0)
-        C.box('Step light strip', (cx, FRONT_Y + .10, 3.58), (x1 - x0 - .40, .07, .05), 'glow', 'cantilever', 0)
+        C.box('Step light strip', (cx, FRONT_Y - .035, 3.6 + .04), (x1 - x0 - .04, .07, .08), 'glow', 'cantilever', 0)
         sx = x1 if x0 == WEST_X else x0
-        C.box('Step riser light strip', (sx + (.04 if x0 == WEST_X else -.04), FRONT_Y + .10, (3.6 + U - .75) / 2), (.05, .07, U - .75 - 3.6 - .1), 'glow', 'cantilever', 0)
+        C.box('Step riser light strip', (sx - .04, FRONT_Y - .035, (3.6 + U - .75) / 2), (.08, .07, U - .75 - 3.6 + .08), 'glow', 'cantilever', 0)
         C.qa_room_light('Soffit', (cx, FRONT_Y + SETBACK / 2, 3.2), 70, 2.4)
-    C.box('Soffit light strip', ((WEST_X + EAST_X - 7.0) / 2, FRONT_Y + .10, U - .52), (W - 7.0 - .40, .07, .05), 'glow', 'cantilever', 0)
+    C.box('Soffit light strip', ((WEST_X - .07 + EAST_X - 7.0 - .08) / 2, FRONT_Y - .035, U - .75 + .04), (EAST_X - 7.0 - .08 - WEST_X + .07, .07, .08), 'glow', 'cantilever', 0)
+    # South-west notch: one folded red return over the slab end (no seam cube), with the lit edge running round it.
+    C.box('South-west notch return', (WEST_X - .02, FRONT_Y + (SETBACK + T) / 2 - .02, (U - .75 + U + .6) / 2), (.04, SETBACK + T + .04, U + .6 - (U - .75)), 'wall', 'cantilever', 0)
+    C.box('South-west notch light strip', (WEST_X - .075, FRONT_Y + (SETBACK + T) / 2, U - .75 + .04), (.07, SETBACK + T - .07, .08), 'glow', 'cantilever', 0)
     C.qa_room_light('Soffit centre', (0, FRONT_Y + SETBACK / 2, U - .9), 30, 3.0)
     C.box('Parapet coping south', (0, FRONT_Y + T / 2, CROWN + .03), (W, T + .06, .06), 'wall', 'coping', 0)
 
@@ -244,7 +247,7 @@ def tower():
     """Glass clock tower: corner columns, floor plates, glazed faces with mullions, clock faces, sign band, red cap."""
     x0, x1, y0, y1, h = TW_X0, TW_X1, TW_Y0, TW_Y1, TW_H
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
-    C.box('Tower slab', (cx, cy, G0 / 2), (x1 - x0, y1 - y0, G0), 'foundation', 'tower', 0)
+    C.box('Tower slab', (cx, cy, (G0 + .01) / 2), (x1 - x0, y1 - y0, G0 + .01), 'foundation', 'tower', 0)
     for xx, yy in ((x0 + .22, y0 + .22), (x1 - .22, y0 + .22), (x1 - .22, y1 - .22), (x0 + .22, y1 - .22)):
         C.box('Tower corner column', (xx, yy, G0 + (h - G0) / 2), (.40, .40, h - G0), 'trim', 'tower', 0)
     for z in (U, 9.5, 13.5):
@@ -269,8 +272,7 @@ def tower():
         C.beam('Clock minute hand', (px + nx * .02, py + ny * .02, 12.4), (px + nx * .02, py + ny * .02, 13.55), .06, .02, 'trim', 'clock')
         C.box('Sign band', (px - nx * .005, py - ny * .005, 10.2), (max(.02, 4.4 * abs(ny)), max(.02, 4.4 * abs(nx)), .9), 'red', 'clock', 0)
     # Tie beams into the station east wall where the tower stands beside it.
-    for z in (U, 9.5):
-        C.box('Tower tie', (x0 + .15, (FRONT_Y + y1) / 2, z - .10), (.30, y1 - FRONT_Y - .4, .20), 'trim', 'tower', 0)
+
 
 
 def roof():
