@@ -68,9 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 in progress)
 
-- P0: a black slot cuts the roof plane along both wing and rear-bar junctions for the rear bar's depth; the hollow between the wing and rear plates was filled only up to the lower storeys. v005 spans the rear roof slab across the hollow, fills it to the slab and returns the parapet at the courtyard corner.
-- P1: a dark band sits across the stair head in the street-level stair view and the courtyard deck reads dark in the front view; the geometry touches, so the cause is the deck lying in the west wing's shadow. v005 adds courtyard fill lights and a light concrete deck.
-- P1: the source's thin dark roof slab projecting about 1 m beyond each wing's top storey is absent. v005 adds a floating dark slab with a pale fascia over each wing, with the wing plant on it.
-- P2 (recorded): shallow wing terraces against the top source, six east-face window columns against three, equal narrow window pairs, spandrel tick ribbing, light top slab edge on the rear bar, two dark slab elements at the stair head (the old handrail ends, replaced in v005), tree canopy intrusion in three detail views, blank west wall.
+- P1 rear-bar floating roof slab still not visible in front, front_corner or aerial: no slab, fascia, soffit or posts project past the top-storey glazing.
+- P1 wing roof terraces are a 1.5 m ledge under the eave; the sources show decks 5 to 6 m deep with the penthouse glazing set well back.
+- P1 wing courtyard faces are dark ribbed metal; both sources show tan panel and cedar on the courtyard faces.
+- P1 pure-black crevice under the right wing's roof slab where it overhangs the rear-bar roof.
+- P2: rear walkway top near-black from above; three roof tones; penthouse walls beige not cedar and pale slab edges; sparse ribs; stair lacks wood seating tiers and mid-flight landing; plant positions; tree in the glass close-up; corner bay rhythm.
