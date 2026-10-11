@@ -22,8 +22,8 @@ L1, PODIUM = 5.0, 9.3                      # second-floor level, podium roof
 FH, N = 3.0, 11
 TROOF = PODIUM + N * FH                    # 42.3
 TPAR = TROOF + .7
-PENT = (-5.0, 17.0, -12.0, 4.0)            # penthouse footprint on the tower roof
-PENT_H = 4.2
+PENT = (-10.6, 15.6, -9.0, 10.5)           # louvred screen enclosure: about 75 percent of the tower roof each way, nudged north
+PENT_H = 7.5                               # about 2.5 floor pitches
 SPANDREL = .62                             # opaque band at each tower floor
 MULLION = 1.5
 PLATE = 1.5
@@ -64,7 +64,7 @@ def manifest(version):
             podium='brick piers on a 5.5 m bay with double-height storefronts, dark canopy band at 4.3 m, ribbon windows with precast sills on the second storey, precast cornice at 9.3 m, glass balustrade on the terrace',
             tower='glass curtain wall with continuous mullions at 1.5 m and a 0.62 m spandrel at every floor; five continuous balcony stacks on the south face and two on the other faces, projecting 1.5 m with glass balustrades; corner columns',
             levels_m=[G0, L1, PODIUM] + FLOORS[1:], roofs_m=[PODIUM, TROOF], parapet_m=TPAR,
-            penthouse='22 x 16 m pale metal box 4.2 m high with louvre panels on the tower roof, rooftop units beside it, guard rail at the roof edge',
+            penthouse='26 x 19.5 m pale louvred screen enclosure 7.5 m high (about 75 percent of the tower roof each way) with continuous horizontal louvre bands, a narrow walkable perimeter inside the guard rail',
             inferred='eleven tower storeys counted from the balcony stacks in the front view; north and west faces repeat the grammar; interiors are teaching assumptions'),
         roof_contract=dict(type='flat membranes: podium terrace with pavers and planters, tower roof with gravel behind a 0.7 m parapet and guard rail, penthouse on a curb', datum_m=TROOF, crowns_m=[TPAR, TROOF + PENT_H]),
         identity_contract=dict(owner='red-brick two-storey podium with double-height storefronts and a roof terrace, glass tower flush with the corner, balcony stacks, pale mechanical penthouse'),
@@ -183,14 +183,14 @@ def tower():
     px0, px1, py0, py1 = PENT
     C.box('Penthouse curb', ((px0 + px1) / 2, (py0 + py1) / 2, TROOF + .15), (px1 - px0 + .3, py1 - py0 + .3, .30), 'concrete', 'penthouse', 0)
     C.box('Penthouse', ((px0 + px1) / 2, (py0 + py1) / 2, TROOF + .30 + PENT_H / 2), (px1 - px0, py1 - py0, PENT_H), 'metal', 'penthouse', 0)
-    for k in range(5):
-        C.box('Penthouse louvre', (px0 + 3.0 + k * 3.6, py0 - .05, TROOF + .30 + PENT_H / 2), (2.4, .10, PENT_H - 1.2), 'hardware', 'penthouse', 0)
-    C.box('Penthouse east louvre', (px1 + .05, (py0 + py1) / 2, TROOF + .30 + PENT_H / 2), (.10, 8.0, PENT_H - 1.2), 'hardware', 'penthouse', 0)
-    C.box('Penthouse west louvre', (px0 - .05, (py0 + py1) / 2, TROOF + .30 + PENT_H / 2), (.10, 8.0, PENT_H - 1.2), 'hardware', 'penthouse', 0)
-    C.box('Penthouse north louvre', ((px0 + px1) / 2, py1 + .05, TROOF + .30 + PENT_H / 2), (12.0, .10, PENT_H - 1.2), 'hardware', 'penthouse', 0)
-    C.box('Penthouse roof unit', ((px0 + px1) / 2 + 4.0, (py0 + py1) / 2, TROOF + .30 + PENT_H + .7), (2.4, 1.8, 1.4), 'hardware', 'rooftop plant', 0)
-    for x, y in ((px0 + 4.0, py1 + 2.5), (px0 + 12.0, py1 + 2.5)):
-        C.box('Rooftop unit', (x, y, TROOF + .9), (2.6, 1.8, 1.6), 'hardware', 'rooftop plant', 0)
+    zc = TROOF + .30
+    for k in range(7):                                    # continuous horizontal louvre bands round all four faces
+        z = zc + .7 + k * (PENT_H - 1.2) / 6
+        C.box('Penthouse louvre band', ((px0 + px1) / 2, py0 - .06, z), (px1 - px0 + .24, .12, .16), 'hardware', 'penthouse', 0)
+        C.box('Penthouse louvre band', ((px0 + px1) / 2, py1 + .06, z), (px1 - px0 + .24, .12, .16), 'hardware', 'penthouse', 0)
+        C.box('Penthouse louvre band', (px0 - .06, (py0 + py1) / 2, z), (.12, py1 - py0, .16), 'hardware', 'penthouse', 0)
+        C.box('Penthouse louvre band', (px1 + .06, (py0 + py1) / 2, z), (.12, py1 - py0, .16), 'hardware', 'penthouse', 0)
+    C.box('Penthouse roof unit', ((px0 + px1) / 2 + 4.0, (py0 + py1) / 2, zc + PENT_H + .7), (2.4, 1.8, 1.4), 'hardware', 'rooftop plant', 0)
     rail_run((x0 + .4, y0 + .4), (x1 - .4, y0 + .4), TPAR); rail_run((x1 - .4, y0 + .4), (x1 - .4, y1 - .4), TPAR)
     rail_run((x1 - .4, y1 - .4), (x0 + .4, y1 - .4), TPAR); rail_run((x0 + .4, y1 - .4), (x0 + .4, y0 + .4), TPAR)
     C.CONTACTS.append(dict(name='Tower corner columns from the podium roof to the parapet; penthouse on a curb on the roof slab', top_m=TPAR, base_m=PODIUM))
@@ -232,13 +232,17 @@ def podium_face(f, lo, hi, corner_end=False, corner_lobby=False, lane=False, gar
         elif garage and i == n - 1:
             holes.append(hole(f'{f.label} garage door', c, G0, 4.0, 4.2, kind='door'))
         elif corner_lobby and i == 0:
-            # Double-height lobby glazing running to the corner mullion, entry doors inside it under a projecting canopy.
-            a, b = lo + .15, c + pitch / 2 - .7
-            holes.append(hole(f'{f.label} lobby glazing', (a + b) / 2, G0, b - a, L1 - .6, kind='lobby'))
+            # Corner bay: glass from grade to the cornice on both faces, meeting on a slim corner mullion (sources).
+            a, b = lo + .02, c + pitch / 2 - .7
+            holes.append(hole(f'{f.label} corner glazing', (a + b) / 2, G0, b - a, PODIUM + .35 - G0, kind='corner'))
+            continue
+        elif corner_lobby and i == 1:
+            # Residential lobby portal in the second east bay: stone surround and its own canopy.
+            holes.append(hole(f'{f.label} lobby portal', c, G0, pitch - 2.4, L1 - .9, kind='lobby'))
         elif corner_end and i == n - 1:
-            # Last storefront runs to the corner so the two faces meet on a thin mullion, as the sources show.
-            a, b = c - pitch / 2 + .7, hi - .15
-            holes.append(hole(f'{f.label} storefront {i}', (a + b) / 2, G0, b - a, L1 - .6, kind='storefront'))
+            a, b = c - pitch / 2 + .7, hi - .05
+            holes.append(hole(f'{f.label} corner glazing', (a + b) / 2, G0, b - a, PODIUM + .35 - G0, kind='corner'))
+            continue
         else:
             holes.append(hole(f'{f.label} storefront {i}', c, G0, pitch - 1.4, L1 - .6, kind='storefront'))
         holes.append(hole(f'{f.label} ribbon window {i}', c, L1 + 1.0, pitch - 1.8, 2.1))
@@ -252,9 +256,13 @@ def podium_face(f, lo, hi, corner_end=False, corner_lobby=False, lane=False, gar
                 carrier_depth_m=T, frame_inset_m=.19, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='loading'))
         elif h.get('kind') == 'lobby':
             framed(m, f, h, cols=3, rows=2, occupied='residential lobby', kind='glazed lobby')
-            m.box('trim', h['u'], -1.16, 3.3, h['w'] + .8, 2.28, .16)   # projecting entry canopy
-            for e in (-1, 1):
-                m.box('hardware', h['u'] + e * (h['w'] / 2 - .2), -2.0, 3.3 + .08 + .55, .05, .05, 1.1)
+            for e in (-1, 1):                                                  # pale stone portal surround
+                m.box('stone', h['u'] + e * (h['w'] / 2 + .22), -.06, h['z'] + (h['h'] + .44) / 2, .44, .12, h['h'] + .44)
+            m.box('stone', h['u'], -.06, h['z'] + h['h'] + .22, h['w'] + .88, .12, .44)
+            m.box('trim', h['u'], -1.0, h['z'] + h['h'] + .52, h['w'] + 1.4, 2.0, .16)   # the portal's own canopy
+        elif h.get('kind') == 'corner':
+            framed(m, f, h, cols=3, rows=4, occupied='retail unit', kind='storefront')
+            m.box('trim', h['u'], -.04, L1 - .30, h['w'] - .02, .08, .70)      # dark spandrel at the second-floor line
         elif h.get('kind') == 'storefront':
             framed(m, f, h, cols=3, rows=2, occupied='retail unit', kind='storefront')
         else:
@@ -263,7 +271,10 @@ def podium_face(f, lo, hi, corner_end=False, corner_lobby=False, lane=False, gar
             m.box('stone', h['u'], -.05, h['z'] - .06, h['w'] + .30, .36, .12)
     # Canopy band over the storefronts, cornice at the podium roof.
     if not lane:
-        m.box('trim', (lo + hi) / 2, -.45, L1 - .55, span - 2 * EPS, .90, .22)
+        # Canopy band over the storefronts, stopping short of the glazed corner bay.
+        clo = lo + pitch if corner_lobby else lo
+        chi = hi - pitch if corner_end else hi
+        m.box('trim', (clo + chi) / 2, -.45, L1 - .55, chi - clo - 2 * EPS, .90, .22)
     m.box('stone', (lo + hi) / 2, -.08, PODIUM + .95, span - 2 * EPS, T + .22, .32)
     m.flush('podium')
 
@@ -279,6 +290,7 @@ def podium():
     podium_face(east, -hd + T, hd - T, corner_lobby=True, garage=True)
     podium_face(north, -hw, hw, lane=True)
     podium_face(west, -hd + T, hd - T)
+    C.box('Corner mullion', (x1 - .06, y0 + .06, (G0 + PODIUM + .5) / 2), (.20, .20, PODIUM + .5 - G0), 'trim', 'podium', 0)
     C.box('Ground slab', (0, 0, G0 / 2), (x1 - x0, y1 - y0, G0), 'foundation', 'foundation', 0)
     C.box('Second floor', (0, 0, L1 - .13), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .26), 'floor', 'occupied floors', 0)
     C.box('Podium roof slab', (0, 0, PODIUM - .13), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .26), 'floor', 'roof', 0)
