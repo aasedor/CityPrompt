@@ -68,7 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (v007 in progress)
+## Open blockers after v007 (v008 rendering, the last version under the hard cap)
 
-- P1 the plan is symmetrical; both sources show the west wing about 1.4 times wider than the east wing, with the courtyard and stair east of centre.
-- P1 the glass_close camera is blocked by a street tree trunk and canopy.
+Open after v007:
+
+1. **Rooftop units.** The wing units floated 0.94 m above the deck (P0). v008 seats them.
+2. **Reviewer disagreement on the east and courtyard walls.** It is recorded and not chased: v005 asked for tan/cedar courtyard faces; v006 sampled the source east face as warm taupe; v007 asks for dark ribbed metal on both. A human should arbitrate against the locked sources.

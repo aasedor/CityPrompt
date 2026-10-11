@@ -294,11 +294,11 @@ def volumes():
         # Street terrace in front of the top storey: pavers and a glass guard just inside the parapet.
         C.box(f'{name} terrace pavers', ((x0 + x1) / 2, Y0 + T + (SB - T) / 2, ROOF + .012), (x1 - x0 - 2 * T - .1, SB - T - .05, .024), 'sand', 'terrace', 0)
         glass_rail((x0 + T + .2, Y0 + T + .25), (x1 - T - .2, Y0 + T + .25), ROOF)
-    for x, y, w, d, zr in ((CC - 1.0, 10.5, 7.0, 3.2, RROOF), (13.5, 10.0, 5.0, 3.0, RROOF + .94), (-13.5, 9.0, 4.0, 3.0, RROOF + .94)):
+    for x, y, w, d, zr in ((CC - 1.0, 10.5, 7.0, 3.2, RROOF), (13.5, 10.0, 5.0, 3.0, RROOF), (-13.5, 9.0, 4.0, 3.0, RROOF)):
         C.box('Mechanical enclosure', (x, y, zr + .02 + 1.2), (w, d, 2.4), 'wall', 'rooftop plant', 0)
         for k in range(5):
             C.box('Enclosure louvre', (x, y - d / 2 - .02, zr + .5 + k * .4), (w - .3, .04, .06), 'hardware', 'rooftop plant', 0)
-    for x, y, zr in ((3.0, 12.5, RROOF), (4.4, 12.5, RROOF), (-8.0, 12.5, RROOF + .94), (-9.4, 12.5, RROOF + .94), (16.0, 5.0, RROOF + .94), (16.0, 6.4, RROOF + .94)):
+    for x, y, zr in ((3.0, 12.5, RROOF), (4.4, 12.5, RROOF), (-8.0, 12.5, RROOF), (-9.4, 12.5, RROOF), (16.0, 5.0, RROOF), (16.0, 6.4, RROOF)):
         C.box('Condenser', (x, y, zr + .02 + .45), (1.0, 1.0, .9), 'hardware', 'rooftop plant', 0)
     zl = LEVELS[1]
     A.sofa(-16.5, Y0 + 3.5, zl); A.bed(-16.0, Y0 + 12.5, zl)
