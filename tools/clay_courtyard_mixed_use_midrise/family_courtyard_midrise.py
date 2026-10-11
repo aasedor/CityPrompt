@@ -230,15 +230,19 @@ def stair_and_courtyard():
     C.prism('Courtyard stair', profile, 'x', -STAIR_W / 2, STAIR_W / 2, 'concrete', 'stair')
     for s in (-1, 1):
         C.box('Stair cheek wall', (s * (STAIR_W / 2 + .15), (y0 + y1) / 2 + .3 + (T + .01) / 2, (G0 + L1) / 2), (.30, STAIR_RUN + .6 - T - .01, L1 - G0), 'concrete', 'stair', 0)
-        C.railing('Stair handrail', (s * (STAIR_W / 2 - .3), y0 + .2, .9), (s * (STAIR_W / 2 - .3), y1, L1 + .9), height=.0, spacing=1.2, role='hardware')
-    C.box('Stair landing', (0, y1 + 1.2 + EPS, L1 - .05), (STAIR_W, 1.2 - 2 * EPS, .10), 'concrete', 'stair', 0)
+        C.beam('Stair handrail', (s * (STAIR_W / 2 - .3), y0 + .2, .95), (s * (STAIR_W / 2 - .3), y1 + .3, L1 + .95), .05, .05, 'hardware', 'stair')
+        for k in range(5):
+            yy = y0 + .4 + (y1 - y0 - .5) * k / 4
+            zz = rise * (yy - y0) / STAIR_RUN
+            C.beam('Stair handrail post', (s * (STAIR_W / 2 - .3), yy, zz + .02), (s * (STAIR_W / 2 - .3), yy, zz + .93), .04, .04, 'hardware', 'stair')
+    C.box('Stair landing', (0, (y1 + .6 + EPS + CY1) / 2, L1 - .05), (STAIR_W, CY1 - y1 - .6 - EPS, .10), 'concrete', 'stair', 0)
     C.CONTACTS.append(dict(name='Stair of 24 risers from the sidewalk to the courtyard deck inside concrete cheek walls', grade_m=0, rise_m=L1))
     # Courtyard deck over the retail floor, planters, benches, glass rail at the street edge.
     ys = Y0 + STAIR_RUN + 1.8
-    C.box('Courtyard deck', ((CX0 + CX1) / 2, (ys + CY1) / 2, L1 - .15), (CX1 - CX0, CY1 - ys, .30), 'floor', 'courtyard', 0)
+    C.box('Courtyard deck', ((CX0 + CX1) / 2, (ys + CY1) / 2, L1 - .25), (CX1 - CX0, CY1 - ys, .30), 'concrete', 'courtyard', 0)
     for sgn in (-1, 1):
         C.box('Courtyard deck wing', (sgn * (STAIR_W / 2 + .3 + (CX1 - STAIR_W / 2 - .3) / 2), (Y0 + ys) / 2, L1 - .15), (CX1 - STAIR_W / 2 - .3, ys - Y0, .30), 'floor', 'courtyard', 0)
-    C.box('Courtyard paving', ((CX0 + CX1) / 2, (Y0 + STAIR_RUN + 1.8 + CY1) / 2, L1 + .004), (CX1 - CX0 - .1, CY1 - Y0 - STAIR_RUN - 1.8, .008), 'sand', 'courtyard', 0)
+    C.box('Courtyard paving', ((CX0 + CX1) / 2, (Y0 + STAIR_RUN + 1.8 + CY1) / 2, L1 + .004), (CX1 - CX0 - .1, CY1 - Y0 - STAIR_RUN - 1.8 - .05, .008), 'sand', 'courtyard', 0)
     for s in (-1, 1):
         C.box('Deck edge paving', (s * (STAIR_W / 2 + .3 + (CX1 - STAIR_W / 2 - .3) / 2), (Y0 + Y0 + STAIR_RUN + 1.8) / 2, L1 + .004), (CX1 - STAIR_W / 2 - .3, STAIR_RUN + 1.8, .008), 'sand', 'courtyard', 0)
         C.box('Street-edge planter', (s * (STAIR_W / 2 + 1.7), Y0 + .9, L1 + .35), (2.6, 1.4, .70), 'concrete', 'courtyard', 0)
@@ -268,8 +272,9 @@ def volumes():
         lv, rf = (RLEVELS, RROOF) if rear else (LEVELS, ROOF)
         for zl in lv[1:]:
             C.box(f'{name} floor {zl:.1f}', ((x0 + x1) / 2, (y0 + y1) / 2, zl - .13), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .26), 'floor', 'occupied floors', 0)
-        C.box(f'{name} roof slab', ((x0 + x1) / 2, (y0 + y1) / 2, rf - .12), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .24), 'floor', 'roof', 0)
-        C.box(f'{name} membrane', ((x0 + x1) / 2, (y0 + y1) / 2, rf + .004), (x1 - x0 - 2 * T - .02, y1 - y0 - 2 * T - .02, .008), 'membrane', 'roof', 0)
+        rw = (x1 - x0 + 2 * T - 2 * EPS) if rear else (x1 - x0 - 2 * T)
+        C.box(f'{name} roof slab', ((x0 + x1) / 2, (y0 + y1) / 2, rf - .12), (rw, y1 - y0 - 2 * T, .24), 'floor', 'roof', 0)
+        C.box(f'{name} membrane', ((x0 + x1) / 2, (y0 + y1) / 2, rf + .004), (rw - .02, y1 - y0 - 2 * T - .02, .008), 'membrane', 'roof', 0)
         for zl in lv:
             C.qa_room_light(f'{name} apartments {zl:.1f}', ((x0 + x1) / 2, (y0 + y1) / 2 if name == 'rear' else y0 + 6.0, zl + 2.7), 70, 4.5)
     # Top storey of each wing: full wing length at the rear-bar roof level, tan with large windows, set back 2 m from the
@@ -278,14 +283,17 @@ def volumes():
         C.box(f'{name} top roof slab', ((x0 + x1) / 2, (Y0 + SB + Y1) / 2, RROOF - .12), (x1 - x0 - 2 * T, Y1 - Y0 - SB - 2 * T, .24), 'floor', 'roof', 0)
         C.box(f'{name} top membrane', ((x0 + x1) / 2, (Y0 + SB + Y1) / 2, RROOF + .004), (x1 - x0 - 2 * T - .02, Y1 - Y0 - SB - 2 * T - .02, .008), 'membrane', 'roof', 0)
         C.qa_room_light(f'{name} top apartments', ((x0 + x1) / 2, 0.0, ROOF + 2.7), 70, 4.5)
+        ox0, ox1 = (x0 - 1.0, x1 + 1.0) if name == 'west' else (x0 - 1.0, x1 + 1.0)
+        C.box(f'{name} floating roof slab', ((ox0 + ox1) / 2, (Y0 + SB - 1.2 + Y1 + .6) / 2, RROOF + .5 + EPS + .18), (ox1 - ox0, Y1 + .6 - Y0 - SB + 1.2, .36), 'trim', 'roof', 0)
+        C.box(f'{name} floating roof fascia', ((ox0 + ox1) / 2, (Y0 + SB - 1.2 + Y1 + .6) / 2, RROOF + .5 + EPS + .36 + .04), (ox1 - ox0 + .04, Y1 + .6 - Y0 - SB + 1.2 + .04, .08), 'pale', 'roof', 0)
         # Street terrace in front of the top storey: pavers and a glass guard just inside the parapet.
         C.box(f'{name} terrace pavers', ((x0 + x1) / 2, Y0 + T + (SB - T) / 2, ROOF + .012), (x1 - x0 - 2 * T - .1, SB - T - .05, .024), 'sand', 'terrace', 0)
         glass_rail((x0 + T + .2, Y0 + T + .25), (x1 - T - .2, Y0 + T + .25), ROOF)
-    for x, y, w, d, zr in ((-1.0, 10.5, 7.0, 3.2, RROOF), (13.5, 10.0, 5.0, 3.0, RROOF), (-13.5, 9.0, 4.0, 3.0, RROOF)):
+    for x, y, w, d, zr in ((-1.0, 10.5, 7.0, 3.2, RROOF), (13.5, 10.0, 5.0, 3.0, RROOF + .94), (-13.5, 9.0, 4.0, 3.0, RROOF + .94)):
         C.box('Mechanical enclosure', (x, y, zr + .02 + 1.2), (w, d, 2.4), 'wall', 'rooftop plant', 0)
         for k in range(5):
             C.box('Enclosure louvre', (x, y - d / 2 - .02, zr + .5 + k * .4), (w - .3, .04, .06), 'hardware', 'rooftop plant', 0)
-    for x, y, zr in ((3.0, 12.5, RROOF), (4.4, 12.5, RROOF), (-8.0, 12.5, RROOF), (-9.4, 12.5, RROOF), (16.0, 5.0, RROOF), (16.0, 6.4, RROOF)):
+    for x, y, zr in ((3.0, 12.5, RROOF), (4.4, 12.5, RROOF), (-8.0, 12.5, RROOF + .94), (-9.4, 12.5, RROOF + .94), (16.0, 5.0, RROOF + .94), (16.0, 6.4, RROOF + .94)):
         C.box('Condenser', (x, y, zr + .02 + .45), (1.0, 1.0, .9), 'hardware', 'rooftop plant', 0)
     zl = LEVELS[1]
     A.sofa(-16.5, Y0 + 3.5, zl); A.bed(-16.0, Y0 + 12.5, zl)
@@ -375,6 +383,10 @@ def build():
         hs = (Y1 - CY1) / 2
         lo_s, hi_s = (-hs, hs - T - EPS) if sx < 0 else (-hs + T, hs - EPS)
         rs.wall(lbl + ' carrier', lo_s, hi_s, z0, ROOF - .30, depth=2 * T, role='tan', holes=[])
+        # Fill the hollow between the wing and rear-bar plates up to the continuous roof slab, and return the parapet at the courtyard corner.
+        fx = sx - T if sx < 0 else sx + T
+        C.box(lbl + ' hollow filler', ((sx + fx) / 2, (CY1 + T + Y1 - T) / 2, (ROOF - .30 + RROOF - .12 - EPS) / 2), (2 * T, Y1 - CY1 - 2 * T, RROOF - .12 - EPS - ROOF + .30), 'tan', 'roof', 0)
+        C.box(lbl + ' parapet return', ((sx + fx) / 2, CY1 + T / 2, (ROOF - .30 + RROOF + .5) / 2), (2 * T, T, RROOF + .5 - ROOF + .30), 'tan', 'roof', 0)
     cw = C.Face((CX0, (Y0 + CY1) / 2, 0), (0, 1, 0), (-1, 0, 0), 'courtyard west')
     ce = C.Face((CX1, (Y0 + CY1) / 2, 0), (0, -1, 0), (1, 0, 0), 'courtyard east')
     cr = C.Face(((CX0 + CX1) / 2, CY1, 0), (1, 0, 0), (0, 1, 0), 'courtyard rear')

@@ -68,12 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (no further version permitted)
+## Open blockers after v004 (v005 in progress)
 
-- P0: each wing's top storey is a set-back pavilion over the front half of the wing only, so the rear half of each wing is one storey lower and the east face shows three window rows where the front source shows four flush tan rows; the sources show one continuous top-storey roof plane across both wings into the rear bar with the mechanical screens on it. Fix is a full-length tan top storey on each wing at the rear-bar roof level.
-- P0: a black slot runs the full stair width between the top tread and the courtyard deck (stair landing and deck edge do not meet); fix is to extend the landing under the deck edge or the deck over the landing with no coplanar faces.
-- P1: black band at the stair foot where the first tread meets the sidewalk; fix is to seat the stair prism on the sidewalk slab.
-- P1: rear bar courtyard face material inverted (dark piers and light slab edges where the source shows cedar piers and dark fascias); fix is cedar carrier piers and dark balcony fascias.
-- P1: west wing street face still three bays plus balcony plus one where the source shows four narrow bays with the balcony two-thirds across and a tan end bay; east wing has three narrow bays where the source shows one wide bay.
-- P1: the balcony back-wall opening is a flat unframed dark rectangle on all six front balconies; fix is a framed glazed door with a reveal.
-- P2 (recorded): oversized penthouse roof cap, ribs reading as battens with dash rows, half-opaque balustrade glass, stair filling the slot wall to wall without the west planter wall, retail fascia not wrapped on the east face, under-lit interior.
+- P0: a black slot cuts the roof plane along both wing and rear-bar junctions for the rear bar's depth; the hollow between the wing and rear plates was filled only up to the lower storeys. v005 spans the rear roof slab across the hollow, fills it to the slab and returns the parapet at the courtyard corner.
+- P1: a dark band sits across the stair head in the street-level stair view and the courtyard deck reads dark in the front view; the geometry touches, so the cause is the deck lying in the west wing's shadow. v005 adds courtyard fill lights and a light concrete deck.
+- P1: the source's thin dark roof slab projecting about 1 m beyond each wing's top storey is absent. v005 adds a floating dark slab with a pale fascia over each wing, with the wing plant on it.
+- P2 (recorded): shallow wing terraces against the top source, six east-face window columns against three, equal narrow window pairs, spandrel tick ribbing, light top slab edge on the rear bar, two dark slab elements at the stair head (the old handrail ends, replaced in v005), tree canopy intrusion in three detail views, blank west wall.
