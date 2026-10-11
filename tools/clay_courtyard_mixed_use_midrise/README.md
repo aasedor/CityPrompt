@@ -68,10 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 in progress)
+## Open blockers after v006 (v007 in progress)
 
-- P1 rear-bar floating roof slab still not visible in front, front_corner or aerial: no slab, fascia, soffit or posts project past the top-storey glazing.
-- P1 wing roof terraces are a 1.5 m ledge under the eave; the sources show decks 5 to 6 m deep with the penthouse glazing set well back.
-- P1 wing courtyard faces are dark ribbed metal; both sources show tan panel and cedar on the courtyard faces.
-- P1 pure-black crevice under the right wing's roof slab where it overhangs the rear-bar roof.
-- P2: rear walkway top near-black from above; three roof tones; penthouse walls beige not cedar and pale slab edges; sparse ribs; stair lacks wood seating tiers and mid-flight landing; plant positions; tree in the glass close-up; corner bay rhythm.
+- P1 the plan is symmetrical; both sources show the west wing about 1.4 times wider than the east wing, with the courtyard and stair east of centre.
+- P1 the glass_close camera is blocked by a street tree trunk and canopy.
