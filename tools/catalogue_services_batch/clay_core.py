@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import os
 import json
 import math
 from pathlib import Path
@@ -383,10 +384,15 @@ def deliver(out,manifest,cameras):
     bpy.context.view_layer.update();actual=bounds(imported)
     delta=max(abs(original[a][b]-actual[a][b]) for a in range(2) for b in range(3));assert delta<.0001,delta
     # No material override is permitted after export: all QA shows delivered geometry AND material.
+    kept=[]
     for spec in manifest['camera_roster']:
         name=spec['name'];scene.camera=cameras[name]
         if spec.get('whole',True):camera_report[name]=fit(scene.camera,spec['target'])
-        path=out/'renders'/(name+'.png');assert not path.exists()
+        path=out/'renders'/(name+'.png')
+        if path.exists() and os.environ.get('RLASM_RESUME_RENDERS'):
+            # Same version, same scripts, same deterministic GLB: a render finished before the host restart is kept, and recorded.
+            kept.append(name);print('RENDER_KEPT '+name,flush=True);continue
+        assert not path.exists()
         scene.render.filepath=str(path);bpy.ops.render.render(write_still=True)
         print('RENDER_COMPLETE '+name,flush=True)
     report=dict(candidate=manifest['candidate'],status='build_valid',representation_kind='architectural_clay',
@@ -401,6 +407,7 @@ def deliver(out,manifest,cameras):
         render_resolution=[scene.render.resolution_x,scene.render.resolution_y],render_engine=scene.render.engine,render_device=scene.cycles.device,camera_safety_margin=camera_report,detail_camera_landmarks=detail_report,
         contacts=CONTACTS,opening_sections=OPENINGS,authoring_modules=MODULES,
         carrier_aperture_audit=aperture_report['status'],
+        renders_kept_from_interrupted_pass=kept,
         finished_utc=utc(),delivery_and_render_seconds=time.monotonic()-started,
         keeper_claimed=False,runtime_seed_allowed=False,runtime_imported=False,scaling_verified=False,
         independent_review='pending',builder_visual_review='pending')

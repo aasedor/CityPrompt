@@ -7,6 +7,7 @@ manifest and re-hashed; the build refuses to start if any locked pixel changed.
 import argparse
 import hashlib
 import json
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -36,9 +37,18 @@ def prepare(a, manifest, lock):
         print(json.dumps(dict(dry_run=True, no_geometry_written=True, sources=len(lock['records']),
                               cameras=len(manifest['camera_roster']), candidate=manifest['candidate'])), flush=True)
         return None
-    out.mkdir(parents=True, exist_ok=False)
+    resume = bool(os.environ.get('RLASM_RESUME_RENDERS')) and out.exists()
+    out.mkdir(parents=True, exist_ok=resume)
     for name in ('sources', 'scripts', 'renders', 'review', 'evidence', 'boards'):
+        if resume and name == 'renders':
+            (out / name).mkdir(exist_ok=True)     # finished renders of the interrupted pass are kept (recorded in the build report)
+            continue
+        if resume and (out / name).exists():
+            shutil.rmtree(out / name)
         (out / name).mkdir()
+    if resume:
+        for stale in list(out.glob('*.json')) + list(out.glob('*.glb')) + list(out.glob('*.blend')):
+            stale.unlink()                       # rewritten by this pass; only renders/ is kept
     sources = []
     for r in lock['records']:
         src = ROOT / r['path']; dest = out / 'sources' / (r['role'] + Path(r['file']).suffix)
