@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 rendering)
+## Open blockers after v006 (passed)
 
-1. **Penthouse form.** It should be a louvred screen ring open to the sky, with two wells of rooftop units, condensers and ducts either side of a roofed core.
+None at P0 or P1. The nine P2 notes are in evidence/v006/independent-review.md. Keeper approval, runtime acceptance and publication remain separate checkpoints.
