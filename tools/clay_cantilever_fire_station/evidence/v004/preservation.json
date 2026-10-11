@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-cantilever-fire-station-clay-v004",
+  "glb": "clay-cantilever-fire-station-clay-v004.glb",
+  "glb_bytes": 655920,
+  "glb_sha256": "a547c4fa5445573aec0a8ea6e9b6df18cf91a3e486b9c4605b44754d27fd12af",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "apparatus_bays.png": 92,
+    "apron_contact.png": 92,
+    "architecture_close.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "loggia_close.png": 92,
+    "rear.png": 92,
+    "rear_door.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "soffit_corner.png": 92,
+    "top.png": 92,
+    "tower_clock.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-cantilever-fire-station-clay-v004-renders-and-glb.zip",
+  "zip_bytes": 30791342
+}
