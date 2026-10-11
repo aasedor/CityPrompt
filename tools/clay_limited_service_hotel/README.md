@@ -68,10 +68,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (stopped)
 
-- P1 pure-black rectangles in the ground at the sidewalk ends and corners (overlapping sidewalk slabs with coplanar tops).
-- P1 fieldstone only as a knee-high wainscot; the sources clad the whole ground storey in grey-brown fieldstone to the second-floor sill line, and the canopy piers read as EIFS.
-- P1 no drive loop: the sources show a curved drive through both porte-cocheres with an island between them and a driveway opening in the road verge.
-- P1 cars float above the asphalt and straddle two stalls across the lines.
-- P1 front camera a distant square elevation; the sources' front is a low south-east view with wing, beige block, tower and charcoal block in that order.
+Stopped at v005 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v003 (0 P0 / 3 P1 in its own review). Open v005 P1, for a human to weigh:
+
+1. **Black slot.** One pure-black slot remains across the east drive apron, a z-fight where the drive crosses the sidewalk and verge.
+2. **Frontage order.** The sequence along the road is inverted against the top source, and the pylon sign blocks the hero front view.
+3. **Accent band.** The band under the parapet reads royal blue and lime green; the sources show a dark navy band.
+4. **Breakfast wing.** It is glazed as one even ribbon; the sources show three large glazed bays.
+5. **Parked cars.** Some overhang the green verge strips.
