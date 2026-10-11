@@ -32,10 +32,10 @@ PENT = (NW[0] + T + .4, NW[1] - T - .4, 0.4, NW[3] - T - .4)   # corten third st
 CX0, CX1, CY0, CY1 = -8.0, 11.0, -23.0, -4.5     # courtyard
 EPS = .002
 PALETTE = dict(wall=(.52, .36, .24), joint=(.38, .25, .16), trim=(.16, .11, .07),
-    pale=(.58, .57, .54), stone=(.52, .51, .48), roof=(.52, .48, .42), sand=(.60, .58, .54),
+    pale=(.58, .57, .54), stone=(.52, .51, .48), roof=(.50, .36, .22), sand=(.60, .58, .54),
     foundation=(.34, .34, .33), glass=(.50, .55, .54), hardware=(.09, .09, .095),
     interior=(.74, .70, .60), floor=(.42, .42, .40), timber=(.45, .32, .20), blue=(.14, .22, .28),
-    planting=(.24, .42, .14), soil=(.19, .14, .08), corten=(.48, .22, .09), membrane=(.60, .59, .56),
+    planting=(.24, .42, .14), soil=(.19, .14, .08), corten=(.48, .22, .09), membrane=(.44, .48, .52),
     fin_red=(.70, .18, .14), fin_yellow=(.85, .68, .16), fin_green=(.36, .56, .20), fin_teal=(.14, .48, .50),
     court=(.16, .16, .17), play=(.26, .46, .18))
 
@@ -210,8 +210,8 @@ def blocks():
     # Entrance block: street faces south and east; court face west with a side opening into the passage.
     F = block_faces(*SE, 'se')
     dy = (SE[3] - SE[2]) / 2
-    # South face of the two-storey wing, under the corten pad: entrance doors and a window below, strip window above.
-    elevation(F['south'], -(SE[1] - SE[0]) / 2, (SE[1] - SE[0]) / 2, [hole('Entrance doors', -1.6, G0, 3.0, 2.8, kind='door'), hole('Entrance block south window', 2.6, .9, 2.4, 2.6, cols=2)], [hole('Entrance block south strip', 0.0, U + 1.1, 6.6, 1.9)])
+    # South face of the two-storey wing, under the corten pad: entrance doors and a window below, blank brick above.
+    elevation(F['south'], -(SE[1] - SE[0]) / 2, (SE[1] - SE[0]) / 2, [hole('Entrance doors', -1.6, G0, 3.0, 2.8, kind='door'), hole('Entrance block south window', 2.6, .9, 2.4, 2.6, cols=2)], [])   # blank brick above the canopy (both sources)
     elevation(F['east'], -dy + T, dy, [hole(f'Entrance block east ground window {i}', u, .9, 3.0, 2.6, cols=3) for i, u in enumerate((-2.4, 2.4))], [hole(f'Entrance block east strip {i}', u, U + 1.1, 3.6, 1.9) for i, u in enumerate((-2.2, 2.4))])
     elevation(F['west'], -dy + T, dy - T, [hole('Entrance block court window', -2.2, .9, 3.0, 2.6, cols=3), hole('Entrance block court door', 2.2, G0, 1.6, 2.6, kind='door')], [hole(f'Entrance block court strip {i}', u, U + 1.1, 3.6, 1.9) for i, u in enumerate((-2.2, 2.4))])
 
@@ -236,19 +236,25 @@ def passage_and_canopy():
         C.box('Corten pad slat joint', (xx, (by0 + by1) / 2, zt + .002), (.04, by1 - by0 - .2, .004), 'joint', 'corten canopy', 0)
     # Solid board-formed concrete box under the pad's street corner (sources: closed south and east faces, lit), slightly
     # inside the fascias so no face is shared; slender post at the court end.
-    cbw, cbd = 3.75, 3.0
-    C.box('Corner concrete box', (bx1 - .08 - cbw / 2, by0 + .08 + cbd / 2, (G0 + CANOPY - EPS) / 2), (cbw, cbd, CANOPY - EPS - G0), 'pale', 'corten canopy', 0)
+    # The box is the yard's east enclosure: a narrow, long board-formed wall from under the pad's corner to the street fence,
+    # its east face on the canopy's east edge.
+    cx0, cx1, cy0, cy1 = bx1 - .1 - 1.55, bx1 - .1, CY0 + .15, PAD_Y0 + 3.0
+    C.box('Corner concrete box', ((cx0 + cx1) / 2, (cy0 + cy1) / 2, (G0 + CANOPY - EPS) / 2), (cx1 - cx0, cy1 - cy0, CANOPY - EPS - G0), 'pale', 'corten canopy', 0)
     for k in range(1, 4):
-        C.box('Board-form joint', (bx1 - .08 - cbw / 2, by0 + .08 - .004, G0 + k * (CANOPY - G0) / 4), (cbw - .1, .01, .02), 'joint', 'corten canopy', 0)
+        zz = G0 + k * (CANOPY - G0) / 4
+        C.box('Board-form joint', ((cx0 + cx1) / 2, cy0 - .004, zz), (cx1 - cx0 - .1, .01, .02), 'joint', 'corten canopy', 0)
+        C.box('Board-form joint', (cx1 + .004, (cy0 + cy1) / 2, zz), (.01, cy1 - cy0 - .1, .02), 'joint', 'corten canopy', 0)
     C.box('Canopy court post', (ax0 + .5, ay0 + .6, (G0 + CANOPY) / 2), (.30, .30, CANOPY - G0), 'pale', 'corten canopy', 0)
     for yy in ((ay0 + ay1) / 2, ay1 - .6):
         C.box('Canopy concrete column', (ax0 + .5, yy, (G0 + CANOPY) / 2), (.40, .40, CANOPY - G0), 'pale', 'corten canopy', 0)
     C.qa_room_light('Canopy pad', ((x0 + x1) / 2, (by0 + by1) / 2, CANOPY - .5), 60, 3.0)
     # Open yard paving from the pad to the street line, with the street fence and a gate.
-    C.box('Yard paving', ((CX1 + 20.0) / 2, (CY0 + PAD_Y0) / 2, G0 + .01), (20.0 - CX1 - EPS, PAD_Y0 - CY0, .02), 'membrane', 'playground', 0)   # east of the court surface, never overlapping it
+    # Dark rubber yard paving south of the pad, matching the court, closed by the box on the east and the fence on the street.
+    C.box('Yard paving', ((CX1 + cx0) / 2, (CY0 + PAD_Y0) / 2, G0 + .01), (cx0 - CX1 - EPS, PAD_Y0 - CY0, .02), 'court', 'playground', 0)   # east of the court surface, never overlapping it
+    C.box('Yard kerb', ((CX1 + cx0) / 2, CY0 + .15, G0 + .12), (cx0 - CX1 - EPS, .30, .24), 'pale', 'playground', 0)
     C.railing('Yard fence', (6.2, CY0 + .15, G0 + .24), (12.0, CY0 + .15, G0 + .24), height=1.3, spacing=.22, role='hardware')
     C.railing('Yard gate', (12.2, CY0 + .15, G0 + .24), (14.2, CY0 + .15, G0 + .24), height=1.3, spacing=.22, role='fin_red')
-    C.railing('Yard fence east', (14.4, CY0 + .15, G0 + .24), (19.8, CY0 + .15, G0 + .24), height=1.3, spacing=.22, role='hardware')
+    C.railing('Yard fence east', (14.4, CY0 + .15, G0 + .24), (cx0 - .05, CY0 + .15, G0 + .24), height=1.3, spacing=.22, role='hardware')
     C.box('Canopy bench', (ax0 + 2.6, -10.0, .45), (.45, 3.0, .08), 'timber', 'playground', 0)
     for dy in (-1.2, 1.2):
         C.box('Canopy bench leg', (ax0 + 2.6, -10.0 + dy, .21), (.4, .1, .42), 'hardware', 'playground', 0)

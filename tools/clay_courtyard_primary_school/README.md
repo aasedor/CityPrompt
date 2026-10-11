@@ -69,8 +69,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 in progress)
+## Open blockers after v006 (v007 rendering)
 
-- P0 the two-storey east wing reaches the street line with the passage cut into its ground floor; the locked top and oblique show the wing stopping about 47 percent of the court depth short of the street, with a one-storey slatted corten canopy pad over the court strip and the wing width, and open fenced yard paving beyond it.
-- P1 the canopy's street corner rests on a slender post where the sources show a solid board-formed concrete box with closed south and east faces under the corten band.
-- P2: seven polish items recorded in the review.
+1. **Corner box.** It must run from under the pad to the street fence as a narrow wall closing a dark fenced yard.
+2. **Wing south end.** It is blank brick above the canopy in both sources.
+3. **Roofs.** Tan gravel on the wings, the corten storey and the north-east panel; cool grey paving on the hall terrace.
