@@ -68,7 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (rework stops here: independent review passed)
 
-- P1 top-storey windows on both eave faces read as plain rectangles: the 2.7 m openings run up into the dentil course, which hides the segmental arch and brick head the sources show.
-- P2: glasshouse roof pitch about 12 degrees against about 18; rooflights not placed as in the top view; cornice ends cut square past the gable plane; small gap at the slate cut beside the pavilion; main roof pitch about 18 degrees against 22 to 25 and slate too light; no street-level south-west three-quarter front camera; small dark sliver at an interior window head.
+- None at P0 or P1. The independent v005 review verified the v004 P1 resolved in the pixels: the top-storey windows on both eave faces show segmental arched heads with a brick head under the dentil course.
+- P2 polish recorded, not chased under the stopping rule: gable pitch slightly low; slate lighter than the source charcoal; glasshouse roof reads nearly flat; rooflight positions; a small terracotta wedge at the slate cut; front camera a square gable elevation instead of the street-level corner view; a dark sliver in one interior arch head; a small notch at the gable coping apex.
+- Keeper status, runtime acceptance and publication remain separate checkpoints for the user.
