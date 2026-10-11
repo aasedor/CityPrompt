@@ -68,10 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 rendering)
+## Open blockers after v006 (v007 rendering)
 
-1. **Hourglass stack.** One slender tube in a square hourglass cage is required; v005 shows stacked drums.
-2. **West corner pier.** It must be about as wide as the inner pier, with a narrower corner bay.
-3. **North service bay.** It needs a seven-light clerestory over a board-formed concrete panel with the door in it.
-4. **Roof ducts.** Each bank needs paired rectangular trunks to the corten wall, with a wide N-S trunk.
-5. **South storey split.** Ground glazing, concrete panel and upper curtain should each be about a third of the wall.
+1. **West corner bay.** It needs a brick head band of about 1/7 of the wall over one row of about six lights, with the panel and ground glazing each about 36 percent.
+2. **South corner return.** It should be about 1.2-1.8 m, with the corner bay widened westward.
+3. **Duct spine.** It belongs beside the corten wall with a stub into it, the flues west of it.

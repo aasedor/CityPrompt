@@ -20,6 +20,7 @@ G0 = .15
 WB = (-18.0, 1.0, -17.0, 17.0)       # west glazed plant block
 EB = (1.0, 18.0, -17.0, 17.0)        # east corten block
 L1, W_ROOF, W_CROWN = 5.6, 11.6, 12.2
+WEST_HEAD = W_CROWN - 1.5          # west corner bay window head: brick head band of about 1/7 of the wall above it
 E_ROOF, E_CROWN = 14.2, 14.8
 BAY = 5.6
 EPS = .002
@@ -124,7 +125,9 @@ def frame_face(f, lo, hi, bays):
         if kind == 'tall':
             holes.append(hole(tag + ' curtain wall', c, G0, w, top - G0, kind='tall'))
         elif kind == 'corner':
-            holes.append(hole(tag + ' corner bay', c, G0, w, top - G0, kind='corner'))
+            # West corner bay: ground glazing and board-formed panel each about 36 percent, one row of six lights above,
+            # and a solid brick head band about 1/7 of the wall from the window head to the coping.
+            holes.append(hole(tag + ' corner bay', c, G0, w, WEST_HEAD - G0, kind='corner'))
         elif kind == 'corner_south':
             holes.append(hole(tag + ' corner bay', c, G0, w, top - G0, kind='corner', door=True))
         elif kind == 'service':
@@ -146,12 +149,15 @@ def frame_face(f, lo, hi, bays):
             f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=4, rows=1, frame='trim', depth=T, sill=False)
             lined(f, h)
         elif k == 'corner':
-            head, pt = G0 + third, G0 + 2 * third
+            if h.get('door'):
+                head, pt, utop, ucols = G0 + third, G0 + 2 * third, top, round(h['w'] / 1.5)
+            else:
+                head, pt, utop, ucols = G0 + .36 * (WEST_HEAD + 1.5 - G0), WEST_HEAD - 1.75, WEST_HEAD, 6
             g = hole(h['id'] + ' ground glazing', h['u'], G0, h['w'], head - G0)
-            u = hole(h['id'] + ' upper glazing', h['u'], pt, h['w'], top - pt)
+            u = hole(h['id'] + ' upper glazing', h['u'], pt, h['w'], utop - pt)
             f.window(g['id'], g['u'], g['z'], g['w'], g['h'], cols=round(h['w'] / 1.5), rows=2, frame='trim', depth=T, sill=False)
             lined(f, g)
-            f.window(u['id'], u['u'], u['z'], u['w'], u['h'], cols=round(h['w'] / 1.5), rows=2 if u['h'] > 2.2 else 1, frame='trim', depth=T, sill=False)
+            f.window(u['id'], u['u'], u['z'], u['w'], u['h'], cols=ucols, rows=2 if (u['h'] > 2.2 and h.get('door')) else 1, frame='trim', depth=T, sill=False)
             lined(f, u)
             # Board-formed concrete panel between the ground glazing and the upper glazing, a touch proud of the brick:
             # large panels with vertical joints at about 1.2 m and one horizontal mid joint (no lap lines).
@@ -230,7 +236,7 @@ def west_block():
     # South face (u = x relative to the face centre), west to east: pier, corner bay 12 m, pier, glazed bay 4 m, pier (19 m).
     f = face(*WB, 'south', 'west block south')
     half = (x1 - x0) / 2
-    frame_face(f, -half, half - EPS, [(-half + 3.8 + 7.45, 14.9, 'corner_south')])
+    frame_face(f, -half, half - EPS, [(-half + 1.5 + 8.6, 17.2, 'corner_south')])
     # West face (u = -y), north to south: pier, service bay 7 m, pier, entrance curtain-wall bay 9 m, pier, corner bay 14 m, pier (34 m).
     f = face(*WB, 'west', 'west block west')
     half = (y1 - y0) / 2
@@ -336,17 +342,20 @@ def rooftop_plant():
             for xx in (xa + 1.0, xa + 4.4, xa + 8.0, xb - .8):
                 C.box('Duct support', (xx, yc + dy, z + tz / 2 - z / 2 + .0), (.20, tw - .2, tz - z), 'hardware', 'rooftop plant', 0)
         C.box('Duct take-off box', (x1 - .9 - EPS, yc, z + 1.05), (1.8, 5.6, 2.1), 'steel', 'rooftop plant', 0)
-    C.box('Duct N-S trunk', (x0 + 10.0, 0.0, tz + .5 + .02), (2.0, (y1 - 7.0 - 1.65) - (y0 + 7.0 + 1.65), 1.0), 'steel', 'rooftop plant', 0)
+    SPX = x1 - 2.9                       # 0.1 m clear of the take-off boxes so no faces coincide
+    C.box('Duct N-S trunk', (SPX, 0.0, tz + .5 + .02), (2.0, (y1 - 7.0 - 1.65) - (y0 + 7.0 + 1.65), 1.0), 'steel', 'rooftop plant', 0)
     for yy in (-5.0, 0.0, 5.0):
-        C.box('Duct flange', (x0 + 10.0, yy, tz + .52), (2.08, .10, 1.08), 'pale', 'rooftop plant', 0)
+        C.box('Duct flange', (SPX, yy, tz + .52), (2.08, .10, 1.08), 'pale', 'rooftop plant', 0)
     for yy in (-6.5, -1.5, 3.5):
-        C.box('Duct support', (x0 + 10.0, yy, z + (tz + .02 - z) / 2), (1.8, .20, tz + .02 - z), 'hardware', 'rooftop plant', 0)
-    # Flue cluster: three slender flues on a common base at the centre.
-    C.box('Flue base', (x0 + 12.5, 0.0, z + .25), (2.6, 1.4, .50), 'concrete', 'flues', 0)
+        C.box('Duct support', (SPX, yy, z + (tz + .02 - z) / 2), (1.8, .20, tz + .02 - z), 'hardware', 'rooftop plant', 0)
+    C.box('Duct stub into the corten wall', ((SPX + 1.0 + x1) / 2, 0.0, tz + .52), (x1 - SPX - 1.0 - EPS, 1.4, 1.0), 'steel', 'rooftop plant', 0)
+    # Flue cluster: three slender flues on a common base west of the duct spine, just north of the south bank.
+    FY = -4.5
+    C.box('Flue base', (x0 + 12.5, FY, z + .25), (2.6, 1.4, .50), 'concrete', 'flues', 0)
     for k in (-1, 0, 1):
-        C.rod('Slender flue', (x0 + 12.5 + k * .8, 0.0, z + .5), (x0 + 12.5 + k * .8, 0.0, z + 6.5), .22, 'steel', 'flues', 12)
-        C.rod('Flue cap', (x0 + 12.5 + k * .8, 0.0, z + 6.5), (x0 + 12.5 + k * .8, 0.0, z + 6.7), .30, 'hardware', 'flues', 12)
-    C.box('Flue brace', (x0 + 12.5, 0.0, z + 4.0), (2.2, .10, .10), 'pale', 'flues', 0)
+        C.rod('Slender flue', (x0 + 12.5 + k * .8, FY, z + .5), (x0 + 12.5 + k * .8, FY, z + 6.5), .22, 'steel', 'flues', 12)
+        C.rod('Flue cap', (x0 + 12.5 + k * .8, FY, z + 6.5), (x0 + 12.5 + k * .8, FY, z + 6.7), .30, 'hardware', 'flues', 12)
+    C.box('Flue brace', (x0 + 12.5, FY, z + 4.0), (2.2, .10, .10), 'pale', 'flues', 0)
     # Exhaust stack midway between the banks: one slender constant tube with an open top inside a square
     # hourglass cage. Four corner struts run from a collar platform near the top, pinch in to the tube at
     # mid-height and splay back out to a square plinth, tied by a ring at about a third of the height.
