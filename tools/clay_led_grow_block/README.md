@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (v007 rendering)
+## Open blockers after v007 (passed)
 
-1. **Slot rhythm.** Each slot should be one continuous channel from under the parapet to grade, broken only by staggered dark transoms about every 1.5 storeys.
+None at P0 or P1. The eight P2 notes are in evidence/v007/independent-review.md. Keeper approval, runtime acceptance and publication remain separate checkpoints.

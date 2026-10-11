@@ -140,3 +140,37 @@ under 1 MiB (Git LFS uploads are refused from the build host; earlier versions' 
 were removed from the tree once superseded and remain in the branch history). Full-
 resolution renders, boards and the GLB were sent to the user as a compact JPEG zip per
 version. `tools/clay_evidence_preserve.py` is the shared preservation step.
+
+## Rework outcome, 2026-10-11 (versions v004 to v008)
+
+The user lifted the three-version cap on 2026-10-11 and asked for every building to be
+carried to an independent review with zero P0 and zero P1, under the stopping rule in
+`docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md`: stop at a pass, after two consecutive
+reviews that fail to lower the P0+P1 count or a finding that survives two targeted fixes,
+or at the v008 hard cap. Each version was rendered as the full 18-view roster and reviewed
+by a fresh independent reviewer that saw only the locked sources, renders and boards. When a
+building stopped, the version that reviewed best stays as its candidate GLB in
+`tools/<family>/candidates/`; every later version's renders and review are preserved as
+evidence only. Nothing is keeper-approved, enrolled, published or activated.
+
+Candidate GLBs stay under the 1 MiB ordinary-blob limit, which caps them at roughly 18,000
+to 20,000 triangles. The Victorian railway station benchmark the user cited has about
+234,000 triangles, so these candidates cannot match its close-up detail; several open
+findings (the chamfer dome's pierced cresting and swept ribs, the rowhouse gable trim) are
+detail that does not fit the budget.
+
+| building | family | outcome | candidate | triangles | GLB bytes | last review P0 / P1 |
+|---|---|---|---|---|---|---|
+| slab balcony tower | `tools/clay_slab_balcony_tower` | stopped, rule 2 (count held at 1 for three reviews) | v006 | 19,652 | 1,018,348 | v006: 0 / 1 |
+| brick podium condo tower | `tools/clay_brick_podium_condo_tower` | **PASS_ZERO_P0_P1** | v006 | 19,194 | 1,024,756 | v006: 0 / 0 |
+| Plus 15 glass office tower | `tools/clay_plus15_glass_office_tower` | **PASS_ZERO_P0_P1** | v006 | 16,500 | 910,328 | v006: 0 / 0 |
+| arched mill mixed-use | `tools/clay_arched_mill_mixed_use` | **PASS_ZERO_P0_P1** | v005 | 14,088 | 744,024 | v005: 0 / 0 |
+| courtyard mixed-use mid-rise | `tools/clay_courtyard_mixed_use_midrise` | ended at the v008 hard cap (wall-material reviewer disagreement settled by pixel sampling) | v008 | 18,000 | 955,360 | v008: 0 / 1 |
+| chamfered corner dome block | `tools/clay_chamfer_corner_dome_block` | stopped, rule 2 (dome-foot cresting survived two fixes) | v006 | 18,052 | 971,772 | v007: 0 / 5 (v006: 0 / 2) |
+
+Open findings for each stopped or capped building are listed under "Open blockers" in its
+`tools/<family>/README.md`, with the reviewer's pixel locations in
+`tools/<family>/evidence/<version>/independent-review.md`. Three findings are recorded as
+reviewer disagreements rather than chased: the chamfer drum reading, the courtyard mid-rise
+wall material (settled in v008 by sampling the locked source pixels), and the energy centre
+v008 massing-proportion reading.

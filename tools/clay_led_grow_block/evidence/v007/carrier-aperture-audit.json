@@ -1,0 +1,264 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "front slot 0-0",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front slot 0-1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front slot 0-2",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front slot 0-3",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front slot 0-4",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front slot 0-5",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front ground slot 0",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front ground slot 1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front ground slot 2",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front ground slot 3",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front ground slot 4",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front ground slot 5",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left slot 0-0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left slot 0-1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left slot 0-2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left slot 0-3",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left slot 0-4",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left slot 0-5",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left ground slot 0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left ground slot 1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left ground slot 2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left ground slot 3",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left ground slot 4",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left ground slot 5",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right slot 0-0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right slot 0-1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right slot 0-2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right slot 2-3",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right slot 0-4",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right slot 0-5",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right slot 0-6",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance recess screen",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right plinth slit +2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right plinth slit +6",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear slot 0-0",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear slot 0-1",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear slot 0-2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear slot 0-3",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear slot 0-4",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear slot 0-5",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Plinth loading door",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear plinth slit -6",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear plinth slit +0",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

@@ -149,3 +149,40 @@ under 1 MiB (Git LFS uploads are refused from the build host). Full-resolution r
 sources and the GLB were sent to the user as a zip per version (compact JPEG zips where
 the PNG zip exceeded the 30 MiB upload limit). `tools/clay_evidence_preserve.py` is the
 shared preservation step.
+
+## Rework outcome, 2026-10-11 (versions v004 to v008)
+
+The user lifted the three-version cap on 2026-10-11 and asked for every building to be
+carried to an independent review with zero P0 and zero P1, under the stopping rule in
+`docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md`: stop at a pass, after two consecutive
+reviews that fail to lower the P0+P1 count or a finding that survives two targeted fixes,
+or at the v008 hard cap. Each version was rendered as the full 18-view roster and reviewed
+by a fresh independent reviewer that saw only the locked sources, renders and boards. When a
+building stopped, the version that reviewed best stays as its candidate GLB in
+`tools/<family>/candidates/`; every later version's renders and review are preserved as
+evidence only. Nothing is keeper-approved, enrolled, published or activated.
+
+Candidate GLBs stay under the 1 MiB ordinary-blob limit, which caps them at roughly 18,000
+to 20,000 triangles. The Victorian railway station benchmark the user cited has about
+234,000 triangles, so these candidates cannot match its close-up detail; several open
+findings (the chamfer dome's pierced cresting and swept ribs, the rowhouse gable trim) are
+detail that does not fit the budget.
+
+| building | family | outcome | candidate | triangles | GLB bytes | last review P0 / P1 |
+|---|---|---|---|---|---|---|
+| campus shed office | `tools/clay_campus_shed_office` | ended at the v008 hard cap | v007 | 19,482 | 1,042,776 | v008: 0 / 3 (v007: 0 / 1) |
+| LED grow block | `tools/clay_led_grow_block` | **PASS_ZERO_P0_P1** | v007 | 14,820 | 790,632 | v007: 0 / 0 |
+| cantilever fire station | `tools/clay_cantilever_fire_station` | stopped, rule 2 (west-face continuity survived two fixes) | v007 | 11,674 | 616,292 | v007: 1 / 2 |
+| courtyard primary school | `tools/clay_courtyard_primary_school` | stopped, rule 2 (two reviews without a lower count) | v005 | 18,724 | 1,015,860 | v007: 0 / 4 (v005: 1 / 1) |
+| limited-service hotel | `tools/clay_limited_service_hotel` | stopped, rule 2 (two reviews without a lower count) | v003 | 20,634 | 979,764 | v005: 0 / 5 (v003: 0 / 3) |
+| Queen Anne rowhouse trio | `tools/clay_queen_anne_rowhouse_trio` | stopped, rule 2 (rake strip survived two fixes) | v006 | 19,082 | 1,037,600 | v007: 0 / 5 (v006: 0 / 2) |
+| crane-way hall | `tools/clay_craneway_hall` | stopped, rule 2 (two reviews without a lower count) | v004 | 17,624 | 960,044 | v006: 0 / 3 (v004: 0 / 2) |
+| energy centre | `tools/clay_energy_centre` | ended at the v008 hard cap | v008 | 11,632 | 609,440 | v008: 0 / 1 |
+| anchored plaza supermarket | `tools/clay_anchored_plaza_supermarket` | ended at the v008 hard cap | v007 | 10,284 | 549,536 | v008: 0 / 4 (v007: 0 / 1) |
+
+Open findings for each stopped or capped building are listed under "Open blockers" in its
+`tools/<family>/README.md`, with the reviewer's pixel locations in
+`tools/<family>/evidence/<version>/independent-review.md`. Three findings are recorded as
+reviewer disagreements rather than chased: the chamfer drum reading, the courtyard mid-rise
+wall material (settled in v008 by sampling the locked source pixels), and the energy centre
+v008 massing-proportion reading.
