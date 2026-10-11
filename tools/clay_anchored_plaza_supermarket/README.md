@@ -67,12 +67,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 rendering)
 
-- P1 green only a narrow post and band on the tower; the sources show a green portal wrapping the tower base and a continuous green lintel over the east-bay storefront to a green pier, with the sign band above and the tower pilasters stopping on the green base.
-- P1 the entrance under the tower is an empty niche with no doors or canopy.
-- P1 a pure-black element at the west end of the anchor-bay canopy (two canopy slabs overlapping at one height).
-- P1 west wing open: a full-height slot between the rear tier and the cafe block, and a dark trough between the low roofs and the anchor's west wall.
-- P1 pylon a lollipop pole sign where the sources show a brick monolith with stacked tenant panels.
-- P1 anchor_entrance and interior cameras miss their targets.
-- P1 front camera distant and low; the sources' front is elevated with the plaza across the frame.
+1. **Tower green.** It should be one band level with the east-bay lintel, with beige above and no sign on the tower.
+2. **Tower entrance.** Glazed doors should sit about 0.3 m behind the green face under a dark canopy, not in a deep recess.
+3. **Frontage walk.** A raised walk and an entrance apron should run along every front, with the stalls clear of it.
+4. **Brick.** A full-height brick mass belongs at the anchor's east end, with brick corner piers and a sill-height base on the cafe.

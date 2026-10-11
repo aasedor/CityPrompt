@@ -128,6 +128,9 @@ def elevation(f, lo, hi, holes, crown, brick_base=True, pilasters=(), sign_band=
             lined(f, h, inset=.19, role='pale')
             C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='service door', clear_wall_cut=True,
                 carrier_depth_m=T, frame_inset_m=.19, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='back of house'))
+        elif h.get('kind') == 'entry':
+            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=1, rows=1, frame='trim', depth=T, sill=False, kind='glazed door')
+            lined(f, h)
         else:
             storefront(f, h)
     if brick_base:
@@ -153,34 +156,38 @@ def anchor():
     cx = x0 + tw / 2
     tx = cx - (x0 + x1) / 2             # tower centre in face u
     dx = tx + tw / 2 + 3.0               # entrance bay centre in face u
-    b0, b1 = tx + tw / 2, (x1 - x0) / 2 - 1.6          # east bay: from the tower's east face to a green pier at its east end
+    b0, b1 = tx + tw / 2, (x1 - x0) / 2 - 3.6          # east bay: from the tower's east face to a green pier, then a full-height brick mass to the corner
+    GZ = G0 + 3.4 + 1.1                 # one green band level: top of the east-bay lintel, the tower's green base and the pier
     east = hole('Anchor storefront east', (b0 + .6 + b1 - .4) / 2, G0, (b1 - .4) - (b0 + .6), 3.4, cols=12)
-    doors = hole('Tower entrance doors', tx, G0, tw - 3.0, 3.2, cols=4)
-    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, [east, doors], A_CROWN, pilasters=(), sign_band=False)
+    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, [east], A_CROWN, pilasters=(), sign_band=False)
+    f.part('Anchor east brick mass', (b1 + .9 + (x1 - x0) / 2 - EPS) / 2, -.07, (G0 + A_CROWN - .8) / 2, (x1 - x0) / 2 - EPS - b1 - .9, .14, A_CROWN - .8 - G0, 'stone', 'brick mass', 0)
     f.part('Green lintel band', (b0 + EPS + b1) / 2, -.04, G0 + 3.4 + .55, b1 - b0 - EPS, .08, 1.1, 'green', 'green portal', 0)
-    f.part('Green pier', b1 + .45, -.10, (G0 + 5.3) / 2, .9, .20, 5.3 - G0, 'green', 'green portal', 0)
+    f.part('Green pier', b1 + .45, -.10, (G0 + GZ) / 2, .9, .20, GZ - G0, 'green', 'green portal', 0)
     f.part('Anchor sign band', (b0 + EPS + b1) / 2, -.03, A_CROWN - 1.6, b1 - b0 - .4, .06, 1.0, 'cream', 'sign band', 0)
     f.part('Anchor sign lettering', (b0 + b1) / 2, -.07, A_CROWN - 1.6, min(14.0, b1 - b0 - 2.0), .02, .45, 'green', 'sign band', 0)
     f.part('Anchor canopy', (b0 + EPS + b1) / 2, -1.2, CANOPY_Z + .2, b1 - b0 - EPS, 2.4, .30, 'cap', 'canopies', 0)
     for k in range(1, 4):                                   # tie rods from the wall above the canopy down to its fascia
         u = b0 + k * (b1 - b0) / 4
         C.beam('Canopy tie rod', f.p(u, -.05, CANOPY_Z + 2.2), f.p(u, -2.2, CANOPY_Z + .32), .04, .04, 'hardware', 'canopies')
-    # Entrance tower: one projecting EIFS volume with a cut entrance recess, brick corner pilasters, green sign panel and wrap.
+    # Entrance tower: one projecting beige EIFS volume. Green wraps its base to the same level as the east-bay lintel,
+    # the brick pilasters stop on it, and glazed doors with sidelights sit 0.3 m behind the green face under a dark canopy.
     tower = C.box('Entrance tower', (cx, y0 - tp / 2, (G0 + TOWER_TOP) / 2), (tw, tp, TOWER_TOP - G0), 'tan', 'entrance tower', 0)
-    C.cut_box(tower, 'Tower entrance recess', (cx, y0 - tp / 2, G0 + 2.0), (tw - 2.4, tp + 1.2, 4.0))
-    C.box('Tower recess soffit', (cx, y0 - tp / 2, G0 + 3.99), (tw - 2.42, tp - .02, .02), 'cap', 'entrance tower', 0)
-    C.qa_room_light('Tower recess', (cx, y0 - tp / 2, G0 + 3.6), 40, 2.4)
+    dw, dh = tw - 3.0, 3.2
+    C.cut_box(tower, 'Tower entrance vestibule', (cx, (y0 - tp - .01 + y0 - .3) / 2, G0 + dh / 2), (dw, tp - .29, dh))   # glazed doors 0.3 m behind the green face, a lit vestibule behind them
+    tf = C.Face((cx, y0 - tp, 0), (1, 0, 0), (0, 1, 0), 'tower front')
+    tf.window('Tower entrance doors', 0.0, G0, dw, dh, cols=4, rows=1, frame='trim', inset=.30, depth=.32, sill=False, kind='glazed door')
+    for du in (-.12, .12):
+        C.rod('Tower door pull', tf.p(du, .26, G0 + .9), tf.p(du, .26, G0 + 1.5), .018, 'hardware', 'door hardware')
+    C.qa_room_light('Tower vestibule', (cx, y0 - tp + 1.2, G0 + 2.6), 30, 2.0)
     for sx in (-1, 1):
-        C.box('Tower brick pilaster', (cx + sx * (tw / 2 - .40), y0 - tp - .15, (5.3 + TOWER_TOP - .8) / 2), (.9, .50, TOWER_TOP - .8 - 5.3), 'stone', 'entrance tower', 0)
-        C.box('Tower green portal pier', (cx + sx * (tw / 2 - .60), y0 - tp - .04, (G0 + 5.3) / 2), (1.2, .08, 5.3 - G0), 'green', 'green portal', 0)
-        C.box('Tower green portal side', (cx + sx * (tw / 2 + .04), y0 - tp / 2 - .02, (G0 + 5.3) / 2), (.08, tp - .04, 5.3 - G0), 'green', 'green portal', 0)
+        C.box('Tower brick pilaster', (cx + sx * (tw / 2 - .40), y0 - tp - .15, (GZ + TOWER_TOP - .8) / 2), (.9, .50, TOWER_TOP - .8 - GZ), 'stone', 'entrance tower', 0)
+        C.box('Tower green portal pier', (cx + sx * (tw / 2 - .75), y0 - tp - .04, (G0 + GZ) / 2), (1.5, .08, GZ - G0), 'green', 'green portal', 0)
+        C.box('Tower green portal side', (cx + sx * (tw / 2 + .04), y0 - tp / 2 - .02, (G0 + GZ) / 2), (.08, tp - .04, GZ - G0), 'green', 'green portal', 0)
         C.box('Tower pilaster cap', (cx + sx * (tw / 2 - .40), y0 - tp - .15, TOWER_TOP - .76), (1.0, .60, .08), 'cream', 'entrance tower', 0)
     C.box('Tower cap', (cx, y0 - tp / 2, TOWER_TOP + .05), (tw + .2, tp + .2, .10), 'cap', 'entrance tower', 0)
     C.box('Tower cornice band', (cx, y0 - tp - .03, TOWER_TOP - .45), (tw - 1.8, .06, .70), 'cap', 'entrance tower', 0)
-    C.box('Tower sign panel', (cx, y0 - tp - .03, 6.4), (tw - 2.4, .06, 2.2), 'green', 'entrance tower', 0)
-    C.box('Tower sign lettering bar', (cx, y0 - tp - .07, 6.4), (tw - 4.0, .02, .7), 'cream', 'entrance tower', 0)
-    C.box('Tower green portal lintel', (cx, y0 - tp - .04, (G0 + 4.0 + 5.3) / 2), (tw - 2.4, .08, 5.3 - G0 - 4.0), 'green', 'green portal', 0)
-    C.box('Tower door canopy', (cx, y0 - .45, G0 + 3.45), (tw - 3.4, .90, .14), 'trim', 'green portal', 0)
+    C.box('Tower green portal lintel', (cx, y0 - tp - .04, (G0 + dh + GZ) / 2), (dw, .08, GZ - G0 - dh), 'green', 'green portal', 0)
+    C.box('Tower door canopy', (cx, y0 - tp - .6, G0 + 2.95), (dw + .4, 1.2, .14), 'trim', 'green portal', 0)
     # Side faces.
     f = face(*ANCHOR, 'east', 'anchor east')
     lo, hi = -(y1 - y0) / 2 + T, (y1 - y0) / 2 - T
@@ -201,12 +208,13 @@ def anchor():
     C.box('Loading dock', (x0 + 8.0 + 0, y1 + 1.4, .55), (6.0, 2.8, 1.1), 'foundation', 'loading dock', 0)
     # Cafe wing.
     f = face(*CAFE, 'south', 'cafe south')
-    ch = [hole('Cafe storefront', 0.0, G0, CAFE[1] - CAFE[0] - 2.4, 3.2, cols=8)]
-    elevation(f, -(CAFE[1] - CAFE[0]) / 2, (CAFE[1] - CAFE[0]) / 2 - EPS, ch, S_CROWN, sign_band=True)
+    ch = [hole('Cafe storefront', -1.4, 1.2, 10.6, 2.1, cols=6), hole('Cafe entry door', 5.6, G0, 2.0, 2.8, kind='entry')]
+    cw = (CAFE[1] - CAFE[0]) / 2
+    elevation(f, -cw, cw - EPS, ch, S_CROWN, sign_band=True, pilasters=(-cw + .45, cw - .45))
     f.part('Cafe canopy', 0.0, -1.2, CANOPY_Z + .2, CAFE[1] - CAFE[0] - .4, 2.4, .30, 'cap', 'canopies', 0)
     f = face(*CAFE, 'west', 'cafe west')
     wh = [hole('Cafe west window 0', -3.5, 1.0, 3.0, 2.2), hole('Cafe west window 1', 2.5, 1.0, 3.0, 2.2)]
-    elevation(f, -(CAFE[3] - CAFE[2]) / 2 + T, (CAFE[3] - CAFE[2]) / 2 - T, wh, S_CROWN)
+    elevation(f, -(CAFE[3] - CAFE[2]) / 2 + T, (CAFE[3] - CAFE[2]) / 2 - T, wh, S_CROWN, pilasters=((CAFE[3] - CAFE[2]) / 2 - T - .45,))
     f = face(*CAFE, 'north', 'cafe north')
     elevation(f, -(CAFE[1] - CAFE[0]) / 2, (CAFE[1] - CAFE[0]) / 2 - EPS, [], S_CROWN)
     roof(*ANCHOR, A_ROOF, units=((-30.0, 20.0), (-22.0, 24.0), (-12.0, 20.0), (-30.0, 8.0), (-10.0, 8.0)))
@@ -291,19 +299,24 @@ def roof(x0, x1, y0, y1, z, units=(), open_east=False):
 def site():
     lx0, lx1, ly0, ly1 = LOT
     C.box('Parking court', ((lx0 + lx1) / 2, (ly0 + ly1) / 2, .0075), (lx1 - lx0, ly1 - ly0, .015), 'foundation', 'site', 0)
+    # Raised concrete frontage walk with a kerb edge along every court-facing front, widened into an apron at the grocery door.
+    for name, (wx0, wx1, wy0, wy1) in (('Frontage walk cafe and anchor', (-56.0, -4.0, -4.5, 0.0)), ('Grocery entrance apron', (-40.0, -27.0, -7.0, -4.5)),
+                                       ('Frontage walk anchor east', (-4.0, .5, -4.5, 11.5)), ('Frontage walk inline', (-4.0, 35.5, 11.5, 16.0)),
+                                       ('Frontage walk end-cap', (35.5, 40.0, -3.5, 16.0))):
+        C.box(name, ((wx0 + wx1) / 2, (wy0 + wy1) / 2, (.02 + G0) / 2), (wx1 - wx0, wy1 - wy0, G0 - .02), 'pale', 'frontage walk', 0)
     C.box('Lawn verge south', ((lx0 + lx1) / 2, ly0 - 2.0, .021), (lx1 - lx0, 4.0, .012), 'planting', 'site', 0)
     C.box('Lawn island', (-10.0, -20.0, .021), (2.0, 10.0, .012), 'planting', 'site', 0)
     C.box('Lawn island', (20.0, -20.0, .021), (2.0, 10.0, .012), 'planting', 'site', 0)
     # Parking stripes as one batched mesh.
     vertices, faces = [], []
-    for row_y, length in ((-6.0, 5.0), (-16.0, 5.0), (-30.0, 5.0)):
+    for row_y, length in ((-12.0, 5.0), (-22.0, 5.0), (-32.0, 5.0)):
         x = -36.0
         while x < 36.0:
             o = len(vertices)
             vertices.extend([(x - .06, row_y, .016), (x + .06, row_y, .016), (x + .06, row_y + length, .016), (x - .06, row_y + length, .016)])
             faces.append((o, o + 1, o + 2, o + 3)); x += 2.8
     C.mesh('Parking stripes', vertices, faces, 'cream', 'site')
-    for i, (x, y) in enumerate(((-30.0, -3.5), (-22.0, -3.5), (-8.0, -3.5), (6.0, -3.5), (-26.0, -13.5), (-4.0, -13.5), (14.0, -13.5), (-18.0, -27.5), (2.0, -27.5), (22.0, -27.5))):
+    for i, (x, y) in enumerate(((-1.0, -9.5), (-22.0, -9.5), (-15.0, -9.5), (6.0, -9.5), (-26.0, -19.5), (-4.0, -19.5), (14.0, -19.5), (-18.0, -29.5), (2.0, -29.5), (22.0, -29.5))):
         C.box('Parked car body', (x, y, .65), (1.8, 4.4, .9), 'car' if i % 3 else 'pale', 'site', 0)
         C.box('Parked car cabin', (x, y + .2, 1.35), (1.6, 2.4, .6), 'trim', 'site', 0)
     px, py = lx0 + 4.0, ly0 + 3.0
