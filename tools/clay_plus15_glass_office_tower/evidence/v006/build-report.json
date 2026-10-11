@@ -1,0 +1,3215 @@
+{
+  "candidate": "clay-plus15-glass-office-tower-clay-v006",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 690,
+    "vertices": 10268,
+    "polygons": 16500,
+    "triangles": 16500,
+    "path": "clay-plus15-glass-office-tower-clay-v006-authoring.blend",
+    "bytes": 6029892,
+    "sha256": "c09c8608e335572c82f6800ccdf0bb5a9f422a1c3c31198a48cdcdd3da0463e2"
+  },
+  "runtime": {
+    "path": "clay-plus15-glass-office-tower-clay-v006.glb",
+    "bytes": 910328,
+    "sha256": "1f12b3c94ed7405e43fde35450b31a7e5561b937fd854ff8a0c92bc65db35851",
+    "meshes": 15,
+    "materials": 15,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 15,
+    "vertices": 10268,
+    "polygons": 16500,
+    "triangles": 16500
+  },
+  "original_bounds_m": [
+    [
+      -26.0,
+      -57.0,
+      0.0
+    ],
+    [
+      26.0,
+      26.0,
+      82.66000366210938
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -26.0,
+      -57.0,
+      0.0
+    ],
+    [
+      26.0,
+      26.0,
+      82.66000366210938
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 36.0,
+    "depth": 65.0,
+    "height": 84.00000000000001
+  },
+  "native_dimensions_m": {
+    "width": 52.0,
+    "depth": 83.0,
+    "height": 82.66000366210938
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -15.5,
+    0.0
+  ],
+  "source_components_by_role": {
+    "trim": 74,
+    "pale": 34,
+    "foundation": 6,
+    "glass": 23,
+    "hardware": 9,
+    "interior": 8,
+    "floor": 17,
+    "timber": 61,
+    "blue": 18,
+    "planting": 121,
+    "soil": 5,
+    "concrete": 37,
+    "metal": 267,
+    "membrane": 4,
+    "lightglass": 6
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/plus15_bridge.png",
+    "renders/lobby_entry.png",
+    "renders/curtain_grid.png",
+    "renders/roof_terrace.png",
+    "renders/crown_penthouse.png",
+    "renders/interior.png",
+    "renders/rear_service.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.3073800206184387,
+      "xmax": 0.6926199793815613,
+      "ymin": 0.09837932139635086,
+      "ymax": 0.8669105768203735
+    },
+    "front_corner": {
+      "xmin": 0.3428853452205658,
+      "xmax": 0.741593062877655,
+      "ymin": 0.07501552253961563,
+      "ymax": 0.7787925004959106
+    },
+    "aerial": {
+      "xmin": 0.2521461844444275,
+      "xmax": 0.6643534898757935,
+      "ymin": 0.07723754644393921,
+      "ymax": 0.7766616940498352
+    },
+    "top": {
+      "xmin": 0.3596228361129761,
+      "xmax": 0.6403771638870239,
+      "ymin": 0.08966675400733948,
+      "ymax": 0.6871695518493652
+    },
+    "left_side": {
+      "xmin": 0.31064721941947937,
+      "xmax": 0.8845807313919067,
+      "ymin": 0.09746409207582474,
+      "ymax": 0.9099557399749756
+    },
+    "right_side": {
+      "xmin": 0.12129509449005127,
+      "xmax": 0.689352810382843,
+      "ymin": 0.09746409207582474,
+      "ymax": 0.9099557399749756
+    },
+    "rear": {
+      "xmin": 0.3106476366519928,
+      "xmax": 0.6893527507781982,
+      "ymin": 0.09746485948562622,
+      "ymax": 0.9097104072570801
+    },
+    "rear_side": {
+      "xmin": 0.2139011025428772,
+      "xmax": 0.7060343623161316,
+      "ymin": 0.07790173590183258,
+      "ymax": 0.8812987804412842
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Plus 15 bridge bearing on the south face and two street piers",
+      "level_m": 4.6
+    },
+    {
+      "name": "Penthouse and green roof beds bearing on the roof slab",
+      "roof_m": 72.4
+    },
+    {
+      "name": "Corner columns from grade to the parapet; colonnade columns from the slab to the first floor edge",
+      "top_m": 73.60000000000001
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "front vision band 0",
+      "face": "front",
+      "u": 0.0,
+      "z": 15.05,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 1",
+      "face": "front",
+      "u": 0.0,
+      "z": 18.7,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 2",
+      "face": "front",
+      "u": 0.0,
+      "z": 22.35,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 3",
+      "face": "front",
+      "u": 0.0,
+      "z": 26.0,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 4",
+      "face": "front",
+      "u": 0.0,
+      "z": 29.650000000000002,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 5",
+      "face": "front",
+      "u": 0.0,
+      "z": 33.3,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 6",
+      "face": "front",
+      "u": 0.0,
+      "z": 36.949999999999996,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 7",
+      "face": "front",
+      "u": 0.0,
+      "z": 40.599999999999994,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 8",
+      "face": "front",
+      "u": 0.0,
+      "z": 44.25,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 9",
+      "face": "front",
+      "u": 0.0,
+      "z": 47.9,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 10",
+      "face": "front",
+      "u": 0.0,
+      "z": 51.55,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 11",
+      "face": "front",
+      "u": 0.0,
+      "z": 55.199999999999996,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 12",
+      "face": "front",
+      "u": 0.0,
+      "z": 58.849999999999994,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 13",
+      "face": "front",
+      "u": 0.0,
+      "z": 62.49999999999999,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 14",
+      "face": "front",
+      "u": 0.0,
+      "z": 66.14999999999999,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front vision band 15",
+      "face": "front",
+      "u": 0.0,
+      "z": 69.8,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -18.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 0",
+      "face": "rear",
+      "u": 0.0,
+      "z": 15.05,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 1",
+      "face": "rear",
+      "u": 0.0,
+      "z": 18.7,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 2",
+      "face": "rear",
+      "u": 0.0,
+      "z": 22.35,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 3",
+      "face": "rear",
+      "u": 0.0,
+      "z": 26.0,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 4",
+      "face": "rear",
+      "u": 0.0,
+      "z": 29.650000000000002,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 5",
+      "face": "rear",
+      "u": 0.0,
+      "z": 33.3,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 6",
+      "face": "rear",
+      "u": 0.0,
+      "z": 36.949999999999996,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 7",
+      "face": "rear",
+      "u": 0.0,
+      "z": 40.599999999999994,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 8",
+      "face": "rear",
+      "u": 0.0,
+      "z": 44.25,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 9",
+      "face": "rear",
+      "u": 0.0,
+      "z": 47.9,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 10",
+      "face": "rear",
+      "u": 0.0,
+      "z": 51.55,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 11",
+      "face": "rear",
+      "u": 0.0,
+      "z": 55.199999999999996,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 12",
+      "face": "rear",
+      "u": 0.0,
+      "z": 58.849999999999994,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 13",
+      "face": "rear",
+      "u": 0.0,
+      "z": 62.49999999999999,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 14",
+      "face": "rear",
+      "u": 0.0,
+      "z": 66.14999999999999,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "rear vision band 15",
+      "face": "rear",
+      "u": 0.0,
+      "z": 69.8,
+      "width": 34.6,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 0",
+      "face": "right",
+      "u": 0.0,
+      "z": 15.05,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 1",
+      "face": "right",
+      "u": 0.0,
+      "z": 18.7,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 2",
+      "face": "right",
+      "u": 0.0,
+      "z": 22.35,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 3",
+      "face": "right",
+      "u": 0.0,
+      "z": 26.0,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 4",
+      "face": "right",
+      "u": 0.0,
+      "z": 29.650000000000002,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 5",
+      "face": "right",
+      "u": 0.0,
+      "z": 33.3,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 6",
+      "face": "right",
+      "u": 0.0,
+      "z": 36.949999999999996,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 7",
+      "face": "right",
+      "u": 0.0,
+      "z": 40.599999999999994,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 8",
+      "face": "right",
+      "u": 0.0,
+      "z": 44.25,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 9",
+      "face": "right",
+      "u": 0.0,
+      "z": 47.9,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 10",
+      "face": "right",
+      "u": 0.0,
+      "z": 51.55,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 11",
+      "face": "right",
+      "u": 0.0,
+      "z": 55.199999999999996,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 12",
+      "face": "right",
+      "u": 0.0,
+      "z": 58.849999999999994,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 13",
+      "face": "right",
+      "u": 0.0,
+      "z": 62.49999999999999,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 14",
+      "face": "right",
+      "u": 0.0,
+      "z": 66.14999999999999,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "right vision band 15",
+      "face": "right",
+      "u": 0.0,
+      "z": 69.8,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 0",
+      "face": "left",
+      "u": 0.0,
+      "z": 15.05,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 1",
+      "face": "left",
+      "u": 0.0,
+      "z": 18.7,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 2",
+      "face": "left",
+      "u": 0.0,
+      "z": 22.35,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 3",
+      "face": "left",
+      "u": 0.0,
+      "z": 26.0,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 4",
+      "face": "left",
+      "u": 0.0,
+      "z": 29.650000000000002,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 5",
+      "face": "left",
+      "u": 0.0,
+      "z": 33.3,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 6",
+      "face": "left",
+      "u": 0.0,
+      "z": 36.949999999999996,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 7",
+      "face": "left",
+      "u": 0.0,
+      "z": 40.599999999999994,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 8",
+      "face": "left",
+      "u": 0.0,
+      "z": 44.25,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 9",
+      "face": "left",
+      "u": 0.0,
+      "z": 47.9,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 10",
+      "face": "left",
+      "u": 0.0,
+      "z": 51.55,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 11",
+      "face": "left",
+      "u": 0.0,
+      "z": 55.199999999999996,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 12",
+      "face": "left",
+      "u": 0.0,
+      "z": 58.849999999999994,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 13",
+      "face": "left",
+      "u": 0.0,
+      "z": 62.49999999999999,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 14",
+      "face": "left",
+      "u": 0.0,
+      "z": 66.14999999999999,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "left vision band 15",
+      "face": "left",
+      "u": 0.0,
+      "z": 69.8,
+      "width": 34.0,
+      "height": 2.5799999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -18.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "open office floor"
+    },
+    {
+      "id": "front lobby glazing 0",
+      "face": "front lobby",
+      "u": -9.866666666666667,
+      "z": 0.15,
+      "width": 8.666666666666668,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "front lobby doors",
+      "face": "front lobby",
+      "u": 1.7763568394002505e-15,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 3.0,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "front lobby glazing over doors",
+      "face": "front lobby",
+      "u": 1.7763568394002505e-15,
+      "z": 3.2,
+      "width": 8.666666666666668,
+      "height": 10.2,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "front lobby door side glazing -1",
+      "face": "front lobby",
+      "u": -3.0666666666666655,
+      "z": 0.15,
+      "width": 2.333333333333334,
+      "height": 3.0,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "front lobby door side glazing 1",
+      "face": "front lobby",
+      "u": 3.066666666666669,
+      "z": 0.15,
+      "width": 2.333333333333334,
+      "height": 3.0,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "front lobby glazing 2",
+      "face": "front lobby",
+      "u": 9.866666666666667,
+      "z": 0.15,
+      "width": 8.666666666666668,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "left lobby glazing 0",
+      "face": "left lobby",
+      "u": -9.666666666666668,
+      "z": 0.15,
+      "width": 8.466666666666667,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -14.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "left lobby glazing 1",
+      "face": "left lobby",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 8.466666666666667,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -14.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "left lobby glazing 2",
+      "face": "left lobby",
+      "u": 9.666666666666668,
+      "z": 0.15,
+      "width": 8.466666666666667,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -14.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "right lobby glazing 0",
+      "face": "right lobby",
+      "u": -9.666666666666668,
+      "z": 0.15,
+      "width": 8.466666666666667,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "right lobby glazing 1",
+      "face": "right lobby",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 8.466666666666667,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "right lobby glazing 2",
+      "face": "right lobby",
+      "u": 9.666666666666668,
+      "z": 0.15,
+      "width": 8.466666666666667,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "rear lobby glazing 0",
+      "face": "rear lobby",
+      "u": -9.866666666666667,
+      "z": 0.15,
+      "width": 8.666666666666668,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "rear lobby glazing 1",
+      "face": "rear lobby",
+      "u": 1.7763568394002505e-15,
+      "z": 0.15,
+      "width": 8.666666666666668,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    },
+    {
+      "id": "rear lobby glazing 2",
+      "face": "rear lobby",
+      "u": 9.866666666666667,
+      "z": 0.15,
+      "width": 8.666666666666668,
+      "height": 13.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        14.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby and retail"
+    }
+  ],
+  "authoring_modules": {
+    "foundation": [
+      "Ground slab"
+    ],
+    "occupied floors": [
+      "Office floor 0",
+      "Office floor 1",
+      "Office floor 2",
+      "Office floor 3",
+      "Office floor 4",
+      "Office floor 5",
+      "Office floor 6",
+      "Office floor 7",
+      "Office floor 8",
+      "Office floor 9",
+      "Office floor 10",
+      "Office floor 11",
+      "Office floor 12",
+      "Office floor 13",
+      "Office floor 14",
+      "Office floor 15"
+    ],
+    "core": [
+      "Core"
+    ],
+    "office furniture": [
+      "Desk surface",
+      "Desk leg",
+      "Desk leg.001",
+      "Desk leg.002",
+      "Desk leg.003",
+      "Monitor base",
+      "Monitor stem",
+      "Monitor",
+      "Chair seat",
+      "Chair back",
+      "Chair leg",
+      "Chair leg.001",
+      "Chair leg.002",
+      "Chair leg.003",
+      "Desk surface.001",
+      "Desk leg.004",
+      "Desk leg.005",
+      "Desk leg.006",
+      "Desk leg.007",
+      "Monitor base.001",
+      "Monitor stem.001",
+      "Monitor.001",
+      "Chair seat.001",
+      "Chair back.001",
+      "Chair leg.004",
+      "Chair leg.005",
+      "Chair leg.006",
+      "Chair leg.007",
+      "Desk surface.002",
+      "Desk leg.008",
+      "Desk leg.009",
+      "Desk leg.010",
+      "Desk leg.011",
+      "Monitor base.002",
+      "Monitor stem.002",
+      "Monitor.002",
+      "Chair seat.002",
+      "Chair back.002",
+      "Chair leg.008",
+      "Chair leg.009",
+      "Chair leg.010",
+      "Chair leg.011",
+      "Desk surface.003",
+      "Desk leg.012",
+      "Desk leg.013",
+      "Desk leg.014",
+      "Desk leg.015",
+      "Monitor base.003",
+      "Monitor stem.003",
+      "Monitor.003",
+      "Chair seat.003",
+      "Chair back.003",
+      "Chair leg.012",
+      "Chair leg.013",
+      "Chair leg.014",
+      "Chair leg.015",
+      "Desk surface.004",
+      "Desk leg.016",
+      "Desk leg.017",
+      "Desk leg.018",
+      "Desk leg.019",
+      "Monitor base.004",
+      "Monitor stem.004",
+      "Monitor.004",
+      "Chair seat.004",
+      "Chair back.004",
+      "Chair leg.016",
+      "Chair leg.017",
+      "Chair leg.018",
+      "Chair leg.019",
+      "Desk surface.005",
+      "Desk leg.020",
+      "Desk leg.021",
+      "Desk leg.022",
+      "Desk leg.023",
+      "Monitor base.005",
+      "Monitor stem.005",
+      "Monitor.005",
+      "Chair seat.005",
+      "Chair back.005",
+      "Chair leg.020",
+      "Chair leg.021",
+      "Chair leg.022",
+      "Chair leg.023"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003",
+      "Sofa grounded foot.004",
+      "Sofa grounded foot.005",
+      "Sofa grounded foot.006",
+      "Sofa grounded foot.007",
+      "Sofa plinth.001",
+      "Sofa seat.001",
+      "Sofa back.001",
+      "Sofa arm.002",
+      "Sofa arm.003",
+      "Coffee table.001",
+      "Coffee table leg.004",
+      "Coffee table leg.005",
+      "Coffee table leg.006",
+      "Coffee table leg.007"
+    ],
+    "lobby": [
+      "Reception desk"
+    ],
+    "corner columns": [
+      "Corner column",
+      "Corner column.001",
+      "Corner column.002",
+      "Corner column.003"
+    ],
+    "sidewalk": [
+      "South sidewalk",
+      "North sidewalk",
+      "West sidewalk",
+      "East sidewalk",
+      "Far sidewalk"
+    ],
+    "street": [
+      "South street"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Shrub rooted stem",
+      "Leafy shrub crown",
+      "Leafy shrub crown.001",
+      "Leafy shrub crown.002",
+      "Leafy shrub crown.003",
+      "Shrub rooted stem.001",
+      "Leafy shrub crown.004",
+      "Leafy shrub crown.005",
+      "Leafy shrub crown.006",
+      "Leafy shrub crown.007",
+      "Shrub rooted stem.002",
+      "Leafy shrub crown.008",
+      "Leafy shrub crown.009",
+      "Leafy shrub crown.010",
+      "Leafy shrub crown.011",
+      "Shrub rooted stem.003",
+      "Leafy shrub crown.012",
+      "Leafy shrub crown.013",
+      "Leafy shrub crown.014",
+      "Leafy shrub crown.015",
+      "Shrub rooted stem.004",
+      "Leafy shrub crown.016",
+      "Leafy shrub crown.017",
+      "Leafy shrub crown.018",
+      "Leafy shrub crown.019",
+      "Shrub rooted stem.005",
+      "Leafy shrub crown.020",
+      "Leafy shrub crown.021",
+      "Leafy shrub crown.022",
+      "Leafy shrub crown.023",
+      "Shrub rooted stem.006",
+      "Leafy shrub crown.024",
+      "Leafy shrub crown.025",
+      "Leafy shrub crown.026",
+      "Leafy shrub crown.027",
+      "Shrub rooted stem.007",
+      "Leafy shrub crown.028",
+      "Leafy shrub crown.029",
+      "Leafy shrub crown.030",
+      "Leafy shrub crown.031",
+      "Shrub rooted stem.008",
+      "Leafy shrub crown.032",
+      "Leafy shrub crown.033",
+      "Leafy shrub crown.034",
+      "Leafy shrub crown.035",
+      "Shrub rooted stem.009",
+      "Leafy shrub crown.036",
+      "Leafy shrub crown.037",
+      "Leafy shrub crown.038",
+      "Leafy shrub crown.039",
+      "Shrub rooted stem.010",
+      "Leafy shrub crown.040",
+      "Leafy shrub crown.041",
+      "Leafy shrub crown.042",
+      "Leafy shrub crown.043",
+      "Shrub rooted stem.011",
+      "Leafy shrub crown.044",
+      "Leafy shrub crown.045",
+      "Leafy shrub crown.046",
+      "Leafy shrub crown.047",
+      "Shrub rooted stem.012",
+      "Leafy shrub crown.048",
+      "Leafy shrub crown.049",
+      "Leafy shrub crown.050",
+      "Leafy shrub crown.051",
+      "Shrub rooted stem.013",
+      "Leafy shrub crown.052",
+      "Leafy shrub crown.053",
+      "Leafy shrub crown.054",
+      "Leafy shrub crown.055",
+      "Shrub rooted stem.014",
+      "Leafy shrub crown.056",
+      "Leafy shrub crown.057",
+      "Leafy shrub crown.058",
+      "Leafy shrub crown.059",
+      "Shrub rooted stem.015",
+      "Leafy shrub crown.060",
+      "Leafy shrub crown.061",
+      "Leafy shrub crown.062",
+      "Leafy shrub crown.063",
+      "Shrub rooted stem.016",
+      "Leafy shrub crown.064",
+      "Leafy shrub crown.065",
+      "Leafy shrub crown.066",
+      "Leafy shrub crown.067",
+      "Shrub rooted stem.017",
+      "Leafy shrub crown.068",
+      "Leafy shrub crown.069",
+      "Leafy shrub crown.070",
+      "Leafy shrub crown.071",
+      "Shrub rooted stem.018",
+      "Leafy shrub crown.072",
+      "Leafy shrub crown.073",
+      "Leafy shrub crown.074",
+      "Leafy shrub crown.075",
+      "Shrub rooted stem.019",
+      "Leafy shrub crown.076",
+      "Leafy shrub crown.077",
+      "Leafy shrub crown.078",
+      "Leafy shrub crown.079",
+      "Shrub rooted stem.020",
+      "Leafy shrub crown.080",
+      "Leafy shrub crown.081",
+      "Leafy shrub crown.082",
+      "Leafy shrub crown.083",
+      "Shrub rooted stem.021",
+      "Leafy shrub crown.084",
+      "Leafy shrub crown.085",
+      "Leafy shrub crown.086",
+      "Leafy shrub crown.087",
+      "Shrub rooted stem.022",
+      "Leafy shrub crown.088",
+      "Leafy shrub crown.089",
+      "Leafy shrub crown.090",
+      "Leafy shrub crown.091",
+      "Shrub rooted stem.023",
+      "Leafy shrub crown.092",
+      "Leafy shrub crown.093",
+      "Leafy shrub crown.094",
+      "Leafy shrub crown.095",
+      "Shrub rooted stem.024",
+      "Leafy shrub crown.096",
+      "Leafy shrub crown.097",
+      "Leafy shrub crown.098",
+      "Leafy shrub crown.099",
+      "Shrub rooted stem.025",
+      "Leafy shrub crown.100",
+      "Leafy shrub crown.101",
+      "Leafy shrub crown.102",
+      "Leafy shrub crown.103"
+    ],
+    "envelope": [
+      "front spandrel carrier",
+      "rear spandrel carrier",
+      "right spandrel carrier",
+      "left spandrel carrier",
+      "front lobby carrier",
+      "left lobby carrier",
+      "right lobby carrier",
+      "rear lobby carrier"
+    ],
+    "curtain wall": [
+      "front curtain wall glass",
+      "front curtain wall blue",
+      "front curtain wall metal",
+      "rear curtain wall glass",
+      "rear curtain wall blue",
+      "rear curtain wall metal",
+      "right curtain wall glass",
+      "right curtain wall blue",
+      "right curtain wall metal",
+      "left curtain wall glass",
+      "left curtain wall blue",
+      "left curtain wall metal"
+    ],
+    "coping": [
+      "Parapet band",
+      "Parapet band.001",
+      "Parapet band.002",
+      "Parapet band.003"
+    ],
+    "lobby glazing": [
+      "front lobby lobby glazing hardware",
+      "front lobby lobby glazing lightglass",
+      "left lobby lobby glazing hardware",
+      "left lobby lobby glazing lightglass",
+      "right lobby lobby glazing hardware",
+      "right lobby lobby glazing lightglass",
+      "rear lobby lobby glazing hardware",
+      "rear lobby lobby glazing lightglass"
+    ],
+    "colonnade": [
+      "Mezzanine band",
+      "Colonnade column",
+      "Colonnade column.001",
+      "Colonnade column.002",
+      "Colonnade column.003",
+      "Colonnade column.004",
+      "First floor edge",
+      "Mezzanine band.001",
+      "Colonnade column.005",
+      "Colonnade column.006",
+      "Colonnade column.007",
+      "Colonnade column.008",
+      "Colonnade column.009",
+      "First floor edge.001",
+      "Mezzanine band.002",
+      "Colonnade column.010",
+      "Colonnade column.011",
+      "Colonnade column.012",
+      "Colonnade column.013",
+      "Colonnade column.014",
+      "First floor edge.002",
+      "Mezzanine band.003",
+      "Colonnade column.015",
+      "Colonnade column.016",
+      "Colonnade column.017",
+      "Colonnade column.018",
+      "Colonnade column.019",
+      "First floor edge.003"
+    ],
+    "plus15 bridge": [
+      "Bridge deck",
+      "Bridge roof",
+      "Bridge glazing",
+      "Bridge mullion",
+      "Bridge mullion.001",
+      "Bridge mullion.002",
+      "Bridge mullion.003",
+      "Bridge mullion.004",
+      "Bridge mullion.005",
+      "Bridge mullion.006",
+      "Bridge glazing.001",
+      "Bridge mullion.007",
+      "Bridge mullion.008",
+      "Bridge mullion.009",
+      "Bridge mullion.010",
+      "Bridge mullion.011",
+      "Bridge mullion.012",
+      "Bridge mullion.013",
+      "Bridge pier",
+      "Bridge pier.001"
+    ],
+    "context": [
+      "Neighbour block stub",
+      "Neighbour block opening"
+    ],
+    "roof": [
+      "Roof slab",
+      "Roof membrane"
+    ],
+    "green roof": [
+      "Green roof bed",
+      "Green roof planting",
+      "Green roof bed.001",
+      "Green roof planting.001",
+      "Green roof bed.002",
+      "Green roof planting.002",
+      "Green roof bed.003",
+      "Green roof planting.003",
+      "Green roof bed.004",
+      "Green roof planting.004",
+      "Walkway ring west",
+      "Walkway ring east",
+      "Walkway ring north",
+      "Walkway ring south",
+      "Roof path north",
+      "Roof path west"
+    ],
+    "penthouse": [
+      "Penthouse body",
+      "Penthouse body.001",
+      "Penthouse curb",
+      "Penthouse curb.001",
+      "Penthouse curb.002",
+      "Penthouse transom",
+      "Penthouse transom.001",
+      "Penthouse transom.002",
+      "Penthouse fascia",
+      "Penthouse fascia.001",
+      "Penthouse fascia.002",
+      "Penthouse roof",
+      "Penthouse roof.001",
+      "Penthouse roof.002",
+      "Penthouse glazing",
+      "Penthouse fin",
+      "Penthouse fin.001",
+      "Penthouse fin.002",
+      "Penthouse fin.003",
+      "Penthouse fin.004",
+      "Penthouse fin.005",
+      "Penthouse fin.006",
+      "Penthouse fin.007",
+      "Penthouse fin.008",
+      "Penthouse fin.009",
+      "Penthouse fin.010",
+      "Penthouse fin.011",
+      "Penthouse fin.012",
+      "Penthouse fin.013",
+      "Penthouse fin.014",
+      "Penthouse fin.015",
+      "Penthouse fin.016",
+      "Penthouse fin.017",
+      "Penthouse fin.018",
+      "Penthouse fin.019",
+      "Penthouse fin.020",
+      "Penthouse fin.021",
+      "Penthouse fin.022",
+      "Penthouse fin.023",
+      "Penthouse glazing.001",
+      "Penthouse fin.024",
+      "Penthouse fin.025",
+      "Penthouse fin.026",
+      "Penthouse fin.027",
+      "Penthouse fin.028",
+      "Penthouse fin.029",
+      "Penthouse fin.030",
+      "Penthouse fin.031",
+      "Penthouse fin.032",
+      "Penthouse fin.033",
+      "Penthouse fin.034",
+      "Penthouse fin.035",
+      "Penthouse fin.036",
+      "Penthouse fin.037",
+      "Penthouse fin.038",
+      "Penthouse fin.039",
+      "Penthouse fin.040",
+      "Penthouse fin.041",
+      "Penthouse fin.042",
+      "Penthouse fin.043",
+      "Penthouse fin.044",
+      "Penthouse fin.045",
+      "Penthouse fin.046",
+      "Penthouse fin.047",
+      "Penthouse glazing.002",
+      "Penthouse fin.048",
+      "Penthouse fin.049",
+      "Penthouse fin.050",
+      "Penthouse fin.051",
+      "Penthouse fin.052",
+      "Penthouse fin.053",
+      "Penthouse fin.054",
+      "Penthouse fin.055",
+      "Penthouse fin.056",
+      "Penthouse fin.057",
+      "Penthouse fin.058",
+      "Penthouse fin.059",
+      "Penthouse fin.060",
+      "Penthouse glazing.003",
+      "Penthouse fin.061",
+      "Penthouse fin.062",
+      "Penthouse fin.063",
+      "Penthouse fin.064",
+      "Penthouse fin.065",
+      "Penthouse fin.066",
+      "Penthouse fin.067",
+      "Penthouse fin.068",
+      "Penthouse fin.069",
+      "Penthouse fin.070",
+      "Penthouse fin.071",
+      "Penthouse fin.072",
+      "Penthouse fin.073",
+      "Penthouse glazing.004",
+      "Penthouse fin.074",
+      "Penthouse fin.075",
+      "Penthouse fin.076",
+      "Penthouse fin.077",
+      "Penthouse fin.078",
+      "Penthouse fin.079",
+      "Penthouse fin.080",
+      "Penthouse fin.081",
+      "Penthouse fin.082",
+      "Penthouse fin.083",
+      "Penthouse fin.084",
+      "Penthouse fin.085",
+      "Penthouse fin.086",
+      "Penthouse fin.087",
+      "Penthouse fin.088",
+      "Penthouse fin.089",
+      "Penthouse fin.090",
+      "Penthouse fin.091",
+      "Penthouse fin.092",
+      "Penthouse glazing.005",
+      "Penthouse fin.093",
+      "Penthouse fin.094",
+      "Penthouse fin.095",
+      "Penthouse fin.096",
+      "Penthouse fin.097",
+      "Penthouse fin.098",
+      "Penthouse fin.099",
+      "Penthouse fin.100",
+      "Penthouse fin.101",
+      "Penthouse fin.102",
+      "Penthouse fin.103",
+      "Penthouse fin.104",
+      "Penthouse fin.105",
+      "Penthouse fin.106",
+      "Penthouse fin.107",
+      "Penthouse fin.108",
+      "Penthouse fin.109",
+      "Penthouse fin.110",
+      "Penthouse fin.111",
+      "Penthouse glazing.006",
+      "Penthouse fin.112",
+      "Penthouse fin.113",
+      "Penthouse fin.114",
+      "Penthouse fin.115",
+      "Penthouse fin.116",
+      "Penthouse fin.117",
+      "Penthouse fin.118",
+      "Penthouse fin.119",
+      "Penthouse fin.120",
+      "Penthouse fin.121",
+      "Penthouse glazing.007",
+      "Penthouse fin.122",
+      "Penthouse fin.123",
+      "Penthouse fin.124",
+      "Penthouse fin.125",
+      "Penthouse fin.126",
+      "Penthouse fin.127",
+      "Penthouse fin.128",
+      "Penthouse fin.129",
+      "Penthouse fin.130",
+      "Penthouse fin.131",
+      "Penthouse glazing.008",
+      "Penthouse fin.132",
+      "Penthouse fin.133",
+      "Penthouse fin.134",
+      "Penthouse fin.135",
+      "Penthouse fin.136",
+      "Penthouse fin.137",
+      "Penthouse glazing.009",
+      "Penthouse fin.138",
+      "Penthouse fin.139",
+      "Penthouse fin.140",
+      "Penthouse fin.141",
+      "Penthouse fin.142",
+      "Penthouse fin.143",
+      "Penthouse glazing.010",
+      "Penthouse fin.144",
+      "Penthouse fin.145",
+      "Penthouse fin.146",
+      "Penthouse fin.147",
+      "Penthouse glazing.011",
+      "Penthouse fin.148",
+      "Penthouse fin.149",
+      "Penthouse fin.150",
+      "Penthouse fin.151",
+      "Penthouse glazing.012",
+      "Penthouse fin.152",
+      "Penthouse fin.153",
+      "Penthouse fin.154",
+      "Penthouse fin.155",
+      "Penthouse fin.156",
+      "Penthouse fin.157",
+      "Penthouse fin.158",
+      "Penthouse fin.159",
+      "Penthouse fin.160",
+      "Penthouse fin.161",
+      "Penthouse fin.162",
+      "Penthouse fin.163",
+      "Penthouse fin.164",
+      "Penthouse fin.165",
+      "Penthouse fin.166",
+      "Penthouse fin.167",
+      "Penthouse fin.168",
+      "Penthouse fin.169",
+      "Penthouse fin.170",
+      "Penthouse fin.171",
+      "Penthouse fin.172",
+      "Penthouse fin.173",
+      "Penthouse fin.174",
+      "Penthouse fin.175",
+      "Penthouse glazing.013",
+      "Penthouse fin.176",
+      "Penthouse fin.177",
+      "Penthouse fin.178",
+      "Penthouse fin.179",
+      "Penthouse fin.180",
+      "Penthouse fin.181",
+      "Penthouse fin.182",
+      "Penthouse fin.183",
+      "Penthouse fin.184",
+      "Penthouse fin.185",
+      "Penthouse fin.186",
+      "Penthouse fin.187",
+      "Penthouse fin.188",
+      "Penthouse fin.189",
+      "Penthouse fin.190",
+      "Penthouse fin.191",
+      "Penthouse fin.192",
+      "Penthouse fin.193",
+      "Penthouse fin.194",
+      "Penthouse fin.195",
+      "Penthouse fin.196",
+      "Penthouse fin.197",
+      "Penthouse fin.198",
+      "Penthouse fin.199",
+      "Penthouse glazing.014",
+      "Penthouse fin.200",
+      "Penthouse fin.201",
+      "Penthouse fin.202",
+      "Penthouse fin.203",
+      "Penthouse fin.204",
+      "Penthouse fin.205",
+      "Penthouse fin.206",
+      "Penthouse fin.207",
+      "Penthouse fin.208",
+      "Penthouse fin.209",
+      "Penthouse fin.210",
+      "Penthouse glazing.015",
+      "Penthouse fin.211",
+      "Penthouse fin.212",
+      "Penthouse fin.213",
+      "Penthouse fin.214",
+      "Penthouse fin.215",
+      "Penthouse fin.216",
+      "Penthouse fin.217",
+      "Penthouse fin.218",
+      "Penthouse fin.219",
+      "Penthouse fin.220",
+      "Penthouse fin.221",
+      "Penthouse glazing.016",
+      "Penthouse fin.222",
+      "Penthouse fin.223",
+      "Penthouse fin.224",
+      "Penthouse fin.225",
+      "Penthouse fin.226",
+      "Penthouse fin.227",
+      "Penthouse fin.228",
+      "Penthouse fin.229",
+      "Penthouse fin.230",
+      "Penthouse fin.231",
+      "Penthouse fin.232",
+      "Penthouse glazing.017",
+      "Penthouse fin.233",
+      "Penthouse fin.234",
+      "Penthouse fin.235",
+      "Penthouse fin.236",
+      "Penthouse fin.237",
+      "Penthouse fin.238",
+      "Penthouse fin.239",
+      "Penthouse fin.240",
+      "Penthouse fin.241",
+      "Penthouse fin.242",
+      "Penthouse fin.243",
+      "Deck screen transom",
+      "Deck screen transom.001",
+      "Deck screen transom.002",
+      "Deck screen fascia",
+      "Deck screen fascia.001",
+      "Deck screen fascia.002"
+    ],
+    "rooftop plant": [
+      "Deck curb",
+      "Rooftop unit",
+      "Rooftop fan",
+      "Rooftop unit.001",
+      "Rooftop fan.001",
+      "Rooftop unit.002",
+      "Rooftop fan.002",
+      "Rooftop unit.003",
+      "Rooftop fan.003"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-11T14:53:24.528870+00:00",
+  "delivery_and_render_seconds": 15604.343775877998,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

@@ -1,0 +1,480 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "front vision band 0",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 1",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 2",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 3",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 4",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 5",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 6",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 7",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 8",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 9",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 10",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 11",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 12",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 13",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 14",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front vision band 15",
+      "face": "front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 0",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 1",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 2",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 3",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 4",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 5",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 6",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 7",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 8",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 9",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 10",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 11",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 12",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 13",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 14",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear vision band 15",
+      "face": "rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 0",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 1",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 2",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 3",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 4",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 5",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 6",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 7",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 8",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 9",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 10",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 11",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 12",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 13",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 14",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right vision band 15",
+      "face": "right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 0",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 1",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 2",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 3",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 4",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 5",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 6",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 7",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 8",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 9",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 10",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 11",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 12",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 13",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 14",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left vision band 15",
+      "face": "left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front lobby glazing 0",
+      "face": "front lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front lobby doors",
+      "face": "front lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front lobby glazing over doors",
+      "face": "front lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front lobby door side glazing -1",
+      "face": "front lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front lobby door side glazing 1",
+      "face": "front lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front lobby glazing 2",
+      "face": "front lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left lobby glazing 0",
+      "face": "left lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left lobby glazing 1",
+      "face": "left lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "left lobby glazing 2",
+      "face": "left lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right lobby glazing 0",
+      "face": "right lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right lobby glazing 1",
+      "face": "right lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "right lobby glazing 2",
+      "face": "right lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear lobby glazing 0",
+      "face": "rear lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear lobby glazing 1",
+      "face": "rear lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear lobby glazing 2",
+      "face": "rear lobby",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

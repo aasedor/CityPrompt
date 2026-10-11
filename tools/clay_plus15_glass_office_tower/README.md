@@ -68,7 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 rendering)
+## Open blockers after v006 (passed)
 
-1. **Bridge position.** The top source places it just west of the middle of the south face.
-2. **Colonnade corner.** The lobby glazing ran past the recessed carrier at every corner, and the soffit slabs overlapped there and rendered black.
+None at P0 or P1. The eleven P2 notes are in evidence/v006/independent-review.md. Keeper approval, runtime acceptance and publication remain separate checkpoints.
