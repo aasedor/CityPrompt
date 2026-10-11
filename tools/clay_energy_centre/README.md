@@ -68,11 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 rendering)
 
-- P1 south face has an extra pier and second glazed bay where the sources run one concrete-and-glass corner bay to the corten wall, with a tall two-tier upper curtain and a concrete column and door in the ground glazing.
-- P1 entrance in a separate narrow bay under a brick spandrel; the sources put recessed doors with sidelights under a dark head band inside the tall glazed bay, with solid brick beside it.
-- P1 threshold slab detached from the recessed door line.
-- P1 concrete panel drawn as horizontal lap siding; the sources show board-formed panels with vertical joints at about 1.2 m and one mid joint.
-- P1 corten a saturated orange where the sources show dark weathered near-bronze steel, the darkest mass in every view.
-- P1 slot window starts about a quarter of the block height below the parapet; the sources hang it from just under the coping.
+1. **Hourglass stack.** One slender tube in a square hourglass cage is required; v005 shows stacked drums.
+2. **West corner pier.** It must be about as wide as the inner pier, with a narrower corner bay.
+3. **North service bay.** It needs a seven-light clerestory over a board-formed concrete panel with the door in it.
+4. **Roof ducts.** Each bank needs paired rectangular trunks to the corten wall, with a wide N-S trunk.
+5. **South storey split.** Ground glazing, concrete panel and upper curtain should each be about a third of the wall.

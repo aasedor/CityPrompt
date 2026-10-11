@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-energy-centre-clay-v005",
+  "glb": "clay-energy-centre-clay-v005.glb",
+  "glb_bytes": 571772,
+  "glb_sha256": "fb8701112e8d7ee71e78c6f776da6d39c3485f82bbf26c2d36d537cca7f319ad",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "corner_entry.png": 92,
+    "corten_block.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "plant_window.png": 92,
+    "rear.png": 92,
+    "rear_service.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_plant.png": 92,
+    "stack_contact.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-energy-centre-clay-v005-renders-and-glb.zip",
+  "zip_bytes": 31792711
+}
