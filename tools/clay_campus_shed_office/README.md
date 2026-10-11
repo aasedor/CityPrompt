@@ -64,7 +64,8 @@ python tools/clay_evidence_preserve.py --candidate <artefact dir> --family tools
 | v002 (1440 px, 32 spp, 18 views) | full roster | builder pass, aperture audit PASS, 18,490 triangles, 991,228-byte GLB; independent review **VISUAL_REWORK_REQUIRED**: 2 P0 (X-braces piercing the dock canopy; north door split by a column), 3 P1 (one-bay west face, canopy wrapped onto the south face, X-braces in every bay), 6 P2; record in `evidence/v002/independent-review.md` |
 | v003 (1440 px, 32 spp, 18 views) | rework from the v002 review: braces only in the corner and east-end bays with tie rods in the canopy bays, thin canopies, two west bays with a column and upper window, west-only entrance canopy, north door off the grid, duct on a mullion line, second dock stair | builder pass, aperture audit PASS, 18,872 triangles, 1,011,064-byte GLB; independent review **VISUAL_REWORK_REQUIRED**: 0 P0, 3 P1 (west face bays composed in mirror order against both elevation sources; entrance canopy spans one bay where the sources show one thin canopy across both west bays; entrance-canopy tie rods anchor into the upper window), 6 P2. All five v002 blockers verified fixed in the pixels. v003 is the last version permitted by the brief, so these three P1 stay open as recorded blockers; the candidate is not keeper-approved |
 | v004 (1440 px, 32 spp, 18 views + 4 phone boards) | rework of every open v003 finding (version cap lifted by the user; iterate to a clean review) | builder pass, aperture audit PASS, 18,898 triangles, 1,012,396-byte GLB; VISUAL_REWORK_REQUIRED, 0 P0 / 5 P1 / 7 P2 |
-| v005 (1440 px, 32 spp, 18 views) | rework of every v004 P1: terrace over the corner X-brace bay only with the tallest monitor rising off the box top beam over the window bay (west face five bays), transom glazing band over the shopfront and entrance under a lowered canopy, canopy hangers anchored at the upper-storey base rail, light precast lower storey in the dock bays and under the corner window, interior camera inside the box; yellow dock nosing, dock-canopy rods from the top beam, window in the north gable bay, chair pedestals; roof ribs and clerestory panes thinned to stay under 1 MiB | roster rendering |
+| v005 (1440 px, 32 spp, 18 views) | rework of every v004 P1: terrace over the corner X-brace bay only with the tallest monitor rising off the box top beam over the window bay (west face five bays), transom glazing band over the shopfront and entrance under a lowered canopy, canopy hangers anchored at the upper-storey base rail, light precast lower storey in the dock bays and under the corner window, interior camera inside the box; yellow dock nosing, dock-canopy rods from the top beam, window in the north gable bay, chair pedestals; roof ribs and clerestory panes thinned to stay under 1 MiB | builder pass, aperture audit PASS, 19,632 triangles, 1,046,712-byte GLB; VISUAL_REWORK_REQUIRED, 0 P0 / 4 P1 / 8 P2 |
+| v006 (1440 px, 32 spp, 18 views) | rework of every v005 P1: one portal column per line on the west face (the coincident pair z-fought black), dock ramp running out from the dock front clear of the roller door, light precast across the whole ground storey from the corner bay with the corner sill raised, north upper windows centred between the portal columns; membrane seams, roof ribs, interior columns and chair pedestals thinned to stay under 1 MiB | roster rendering |
 
 ## Where the artefacts are
 
@@ -81,11 +82,9 @@ python tools/clay_evidence_preserve.py --candidate <artefact dir> --family tools
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 in progress)
 
-- P1 southernmost sawtooth monitor sits one bay north of the office box; the sources raise it off the box over the window bay, with the terrace only over the X-brace corner bay (west face five bays, not six).
-- P1 entrance transom glazing band missing between the upper storey and the canopy in both west bays.
-- P1 canopy tie rod still crosses the upper window; anchors must sit at the upper-storey base rail.
-- P1 south ground storey charcoal cladding; the sources show light grey precast in the dock bays and under the corner window.
-- P1 interior camera outside the envelope, interior not legible.
-- P2: second south X-brace bay index; north gable bay without windows; no yellow dock nosing; dock-canopy rod anchors; shallow clerestory reveal; floating task chair; no downpipes.
+- P1 a black strip hides the galvanised portal column between the west window bay and the corner bay (two coincident column boxes z-fighting).
+- P1 the sloped ramp crosses the roller door in the bay east of the corner, so the door cannot meet a level surface.
+- P1 the corner-window bay and the roller-door bay are still charcoal; the sources show light-grey precast to about 35 to 40 percent of the ground storey with precast jambs.
+- P1 north-wall upper windows in the end bays run into the portal columns.

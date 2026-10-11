@@ -149,7 +149,7 @@ def brace(f, u0, u1, z0, z1, both=True):
 def south(f):
     """Street-side office box: six portal bays, ground openings, dock and entrance canopies."""
     b = BAYS
-    gh = [hole('Bay 1 studio window', b[0] + 3.5, .95, 5.0, 2.9, cols=4),
+    gh = [hole('Bay 1 studio window', b[0] + 3.5, 1.60, 5.0, 2.25, cols=4),
           hole('Bay 2 roll-up door', b[1] + 3.5, G0, 4.2, 3.8),
           hole('Bay 3 staff door', b[2] + 1.9, G0, 1.05, 2.25), hole('Bay 3 window', b[2] + 5.0, 1.30, 1.6, 1.5, cols=2),
           hole('Bay 4 dock door', b[3] + 3.5, DOCK_H + .02, 3.2, 3.0), hole('Bay 5 dock door', b[4] + 3.5, DOCK_H + .02, 3.2, 3.0),
@@ -175,8 +175,7 @@ def south(f):
     brace(f, b[0], b[1], U + .12, EAVE - .08)                 # corner bay: full-height X
     brace(f, b[5], b[6], CANOPY_Z + .75, EAVE - .08)          # east-end bay: X above the dock canopy
     plinth(f, WEST_X, EAST_X, gh)
-    precast(f, BAYS[2], EAST_X - .30, .60, U - .21, gh)          # light precast lower storey in the dock bays
-    precast(f, BAYS[0] + .30, BAYS[1], .60, gh[0]['z'], gh)        # panel under the corner-bay window
+    precast(f, BAYS[0] + .30, EAST_X - .30, .60, U - .21, gh)     # light precast ground storey: corner bay, roller-door bay and dock bays
     dock(f)
 
 
@@ -205,11 +204,12 @@ def dock(f):
     f.part('Dock platform', (d0 + d1) / 2, -DOCK_OUT / 2 - .004, DOCK_H / 2, d1 - d0, DOCK_OUT, DOCK_H, 'stone', 'loading dock', 0)
     f.part('Dock edge bumper', (d0 + d1) / 2, -DOCK_OUT - .04, DOCK_H - .10, d1 - d0, .08, .16, 'trim', 'loading dock', 0)
     f.part('Dock safety nosing', (d0 + d1) / 2, -DOCK_OUT + .06, DOCK_H + .004, d1 - d0, .12, .008, 'safety', 'loading dock', 0)
-    ramp_len = BAYS[2] - BAYS[1]
-    x0 = BAYS[1]
-    C.prism('Dock ramp', [(x0, 0), (x0 + ramp_len, DOCK_H), (x0 + ramp_len, 0)], 'y', FRONT_Y - DOCK_OUT, FRONT_Y - .004, 'stone', 'loading dock')
-    C.railing('Ramp guard rail', (x0 + .3, FRONT_Y - DOCK_OUT + .10, DOCK_H * .3 / ramp_len), (x0 + ramp_len, FRONT_Y - DOCK_OUT + .10, DOCK_H), height=1.0, spacing=.25, role='hardware')
-    C.railing('Dock guard rail', (d0, FRONT_Y - DOCK_OUT + .10, DOCK_H), (d0 + 1.6, FRONT_Y - DOCK_OUT + .10, DOCK_H), height=1.0, spacing=.25, role='hardware')
+    ramp_len = 7.0
+    yt, yb = FRONT_Y - DOCK_OUT, FRONT_Y - DOCK_OUT - ramp_len
+    rx0, rx1 = d0 + .10, d0 + 1.70
+    C.prism('Dock ramp', [(yt, DOCK_H), (yb, 0), (yt, 0)], 'x', rx0, rx1, 'stone', 'loading dock')
+    for xx in (rx0 + .05, rx1 - .05):
+        C.railing('Ramp guard rail', (xx, yb + .3, DOCK_H * .3 / ramp_len), (xx, yt, DOCK_H), height=1.0, spacing=.25, role='hardware')
     for i in range(4):
         h = DOCK_H * (4 - i) / 4
         C.box('Dock step', (d1 + .20 + i * .30, FRONT_Y - DOCK_OUT / 2, h / 2), (.30, DOCK_OUT, h), 'stone', 'loading dock', 0)
@@ -217,7 +217,7 @@ def dock(f):
     for i in range(4):
         h = DOCK_H * (4 - i) / 4
         C.box('Dock front step', (d0 + 6.0, FRONT_Y - DOCK_OUT - .15 - i * .30, h / 2), (1.2, .30, h), 'stone', 'loading dock', 0)
-    C.CONTACTS.append(dict(name='Dock ramp from apron grade to dock level', grade_m=0, rise_m=DOCK_H, run_m=ramp_len))
+    C.CONTACTS.append(dict(name='Dock ramp from apron grade to dock level, running out from the dock front clear of the roller door', grade_m=0, rise_m=DOCK_H, run_m=ramp_len))
     C.CONTACTS.append(dict(name='Dock steps at the east end', steps=4, grade_m=0))
 
 
@@ -261,7 +261,7 @@ def gable_end(f, entrance):
         else:
             multilite(f, h['id'], h['u'], h['z'], h['w'], h['h'], cols=h.get('cols', 3), rows=2 if h['h'] > 2.1 else 1, curtain=h['id'].startswith('Box upper'))
     # Galvanised columns at the box corner line, every tooth valley, the bay line and the street corner; girts on the box portion.
-    for y in [BOX_N] + TEETH_Y[1:] + ([-10.8, FRONT_Y + .20] if entrance else []):
+    for y in sorted(set(round(v, 3) for v in [BOX_N] + TEETH_Y[1:] + ([-10.8, FRONT_Y + .20] if entrance else []))):
         column(f, uu(y), 0, EAVE + .25)
     girt(f, min(uu(FRONT_Y), uu(OFFICE_N)), max(uu(FRONT_Y), uu(OFFICE_N)), U - .05)
     girt(f, min(uu(FRONT_Y), uu(OFFICE_N)), max(uu(FRONT_Y), uu(OFFICE_N)), EAVE + .10)     # box top beam the tallest monitor's gable stands on
@@ -310,7 +310,7 @@ def entrance_canopy_west(f):
 
 
 def north(f):
-    holes = [hole(f'Rear upper window {i}', u, 5.3, 2.4, 1.8, cols=3) for i, u in enumerate((-15.0, -5.0, 5.0, 15.0))]
+    holes = [hole(f'Rear upper window {i}', u, 5.3, 2.4, 1.8, cols=3) for i, u in enumerate((-17.5, -10.5, 10.5, 17.5))]   # bay centres between the columns
     holes += [hole('Rear ground window 0', -12.0, 1.2, 2.4, 2.0, cols=3), hole('Rear ground window 1', 10.0, 1.2, 2.4, 2.0, cols=3),
               hole('Rear service door', 3.5, G0, 1.05, 2.25, kind='door')]
     f.wall('North shed carrier', WEST_X, EAST_X, G0, EAVE, depth=T, holes=holes)
@@ -336,7 +336,7 @@ def roofs():
         # Sloped corrugated monitor roof: thick plate from the clerestory crown down to the north eave.
         z_end = top - (top - EAVE - .02) * (y_end - y_hi) / TOOTH
         C.prism(f'Tooth {k} monitor roof', [(y_hi, top), (y_end, z_end), (y_end, z_end - .24), (y_hi, top - .24)], 'x', x0, x1, 'roof', 'sawtooth roofs')
-        for xx in range(int(x0) + 1, int(x1), 4):
+        for xx in range(int(x0) + 2, int(x1), 6):
             C.beam('Roof corrugation rib', (xx, y_hi, top + .006), (xx, y_end, z_end + .006), .02, .012, 'joint', 'sawtooth roofs')
         # Clerestory band on the south edge of the tooth: frame, mullions and panes above the lower eave.
         clerestory(k, y_hi, EAVE, top - .24, x0, x1)
@@ -347,8 +347,6 @@ def roofs():
     ry0, ry1 = FRONT_Y + T, BOX_N + .28
     C.box('Box roof slab', (0, (ry0 + ry1) / 2, EAVE - .12), (L - 2 * T, ry1 - ry0, .24), 'floor', 'roof', 0)
     C.box('Terrace membrane', (0, (ry0 + BOX_N - .01) / 2, EAVE + .004), (L - 2 * T - .02, BOX_N - .01 - ry0, .008), 'membrane', 'roof', 0)
-    for xx in range(-18, 19, 4):
-        C.box('Membrane seam', (xx, (ry0 + BOX_N) / 2, EAVE + .010), (.015, BOX_N - ry0 - .1, .004), 'joint', 'roof', 0)
     rail_y = FRONT_Y + .30
     terrace_rail('Terrace south rail', (WEST_X + .30, rail_y, EAVE + .008), (EAST_X - .30, rail_y, EAVE + .008))
     terrace_rail('Terrace west rail', (WEST_X + .30, rail_y, EAVE + .008), (WEST_X + .30, BOX_N - .30, EAVE + .008))
@@ -375,7 +373,6 @@ def desk(x, y, z):
     C.box('Monitor', (x, y + .2, z + 1.05), (.6, .05, .36), 'trim', 'office furniture', 0)
     C.box('Chair seat', (x, y - .85, z + .46), (.48, .48, .10), 'blue', 'office furniture', 0)
     C.box('Chair back', (x, y - 1.05, z + .78), (.48, .07, .5), 'blue', 'office furniture', 0)
-    C.rod('Chair pedestal', (x, y - .85, z + .0), (x, y - .85, z + .41), .05, 'hardware', 'office furniture', 6)
 
 
 def terrace_rail(name, a, b, height=1.10):
@@ -424,7 +421,7 @@ def floors():
         reveal(f, h['u'], h['z'], h['w'], h['h'], inset=.10, role='pale')
     # Shed interior columns at the tooth valleys, read through the clerestories.
     for xx in (-14.0, -7.0, 0.0, 7.0, 14.0):
-        for y in TEETH_Y[2:]:
+        for y in TEETH_Y[2:3]:
             C.box('Shed interior column', (xx, y, (G0 + EAVE) / 2), (.30, .30, EAVE - G0), 'pale', 'interior structure', 0)
 
 
