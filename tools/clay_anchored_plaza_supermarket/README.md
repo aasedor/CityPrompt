@@ -67,9 +67,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 rendering)
+## Open blockers after v006 (v007 rendering)
 
-1. **Tower green.** It should be one band level with the east-bay lintel, with beige above and no sign on the tower.
-2. **Tower entrance.** Glazed doors should sit about 0.3 m behind the green face under a dark canopy, not in a deep recess.
-3. **Frontage walk.** A raised walk and an entrance apron should run along every front, with the stalls clear of it.
-4. **Brick.** A full-height brick mass belongs at the anchor's east end, with brick corner piers and a sill-height base on the cafe.
+1. **End-cap depth.** About 1.6 times the inline depth.
+2. **Site.** Asphalt should wrap the building, with a rear drive, an east drive-through route round the end-cap's south end and a west parking row.
+3. **Cafe.** It needs a brick ground storey under a dark lintel with wide piers at both ends and no canopy.
+4. **End-cap south face.** It needs a brick west corner pier and a full-height brick south-east panel.

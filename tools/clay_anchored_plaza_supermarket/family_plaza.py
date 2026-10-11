@@ -23,12 +23,12 @@ CAFE = (-56.0, -40.0, 0.0, 14.0)         # low cafe wing (about 45 per cent of t
 LOWER = (-56.0, -40.0, 14.0, 30.0)       # lower anchor tier behind the cafe wing
 L_ROOF, L_CROWN = 6.6, 7.3
 INLINE = (-4.0, 40.0, 16.0, 30.0)        # inline shops
-ENDCAP = (40.0, 54.0, -16.0, 30.0)       # end-cap wing
+ENDCAP = (40.0, 62.0, -16.0, 30.0)       # end-cap wing: the second-largest volume, about 1.6x the inline depth (source top)
 A_ROOF, A_CROWN = 8.0, 8.8
 S_ROOF, S_CROWN = 5.8, 6.5
 TOWER_TOP = 11.2
 CANOPY_Z = 3.9
-LOT = (-58.0, 56.0, -34.0, 32.0)
+LOT = (-68.0, 74.0, -34.0, 42.0)          # asphalt wraps the building: west parking row, rear drive, east drive-through drive
 EPS = .002
 PALETTE = dict(wall=(.62, .55, .42), joint=(.50, .44, .33), trim=(.09, .09, .09),
     pale=(.70, .70, .68), stone=(.44, .30, .20), roof=(.72, .70, .64), sand=(.68, .60, .46),
@@ -119,8 +119,14 @@ def storefront(f, h):
     f.part('Storefront base', h['u'], -.02, G0 + .2, h['w'] + .1, .04, .40, 'stone', 'storefront base', 0)
 
 
-def elevation(f, lo, hi, holes, crown, brick_base=True, pilasters=(), sign_band=False, cornice=True):
-    f.wall(f.label + ' carrier', lo, hi, G0, crown, depth=T, holes=holes)
+def elevation(f, lo, hi, holes, crown, brick_base=True, pilasters=(), sign_band=False, cornice=True, brick_to=None):
+    if brick_to:
+        # Brick ground storey to a dark lintel; beige EIFS only above it as the sign band.
+        f.wall(f.label + ' brick carrier', lo, hi, G0, brick_to, depth=T, holes=holes, role='stone')
+        f.wall(f.label + ' carrier', lo, hi, brick_to, crown, depth=T)
+        f.part(f.label + ' dark lintel', (lo + hi) / 2, -.04, brick_to + .15, hi - lo - 2 * EPS, .08, .30, 'cap', 'lintel', 0)
+    else:
+        f.wall(f.label + ' carrier', lo, hi, G0, crown, depth=T, holes=holes)
     joints(f, lo + .3, hi - .3, 1.3, crown - .9, holes)
     for h in holes:
         if h.get('kind') == 'door':
@@ -138,7 +144,7 @@ def elevation(f, lo, hi, holes, crown, brick_base=True, pilasters=(), sign_band=
             if b - a > .1:
                 f.part('Brick base', (a + b) / 2, -.03, (G0 + 1.2) / 2, b - a, .06, 1.2 - G0, 'stone', 'brick base', 0)
     for u in pilasters:
-        f.part('Brick pilaster', u, -.12, (G0 + crown - .9) / 2, .9, .24, crown - .9 - G0, 'stone', 'pilasters', 0)
+        f.part('Brick pilaster', u, -.12, (G0 + crown - .9) / 2, 1.2 if brick_to else .9, .24, crown - .9 - G0, 'stone', 'pilasters', 0)
         f.part('Pilaster cap', u, -.14, crown - .86, 1.0, .28, .08, 'cream', 'pilasters', 0)
     if sign_band:
         f.part('Sign band', (lo + hi) / 2, -.03, crown - 1.6, hi - lo - .2, .06, 1.0, 'cream', 'sign band', 0)
@@ -208,10 +214,9 @@ def anchor():
     C.box('Loading dock', (x0 + 8.0 + 0, y1 + 1.4, .55), (6.0, 2.8, 1.1), 'foundation', 'loading dock', 0)
     # Cafe wing.
     f = face(*CAFE, 'south', 'cafe south')
-    ch = [hole('Cafe storefront', -1.4, 1.2, 10.6, 2.1, cols=6), hole('Cafe entry door', 5.6, G0, 2.0, 2.8, kind='entry')]
+    ch = [hole('Cafe entry door', -4.6, G0, 2.0, 2.8, kind='entry'), hole('Cafe storefront', 1.6, 1.0, 9.0, 2.2, cols=5)]
     cw = (CAFE[1] - CAFE[0]) / 2
-    elevation(f, -cw, cw - EPS, ch, S_CROWN, sign_band=True, pilasters=(-cw + .45, cw - .45))
-    f.part('Cafe canopy', 0.0, -1.2, CANOPY_Z + .2, CAFE[1] - CAFE[0] - .4, 2.4, .30, 'cap', 'canopies', 0)
+    elevation(f, -cw, cw - EPS, ch, S_CROWN, sign_band=True, pilasters=(-cw + .6, cw - .6), brick_to=3.6)
     f = face(*CAFE, 'west', 'cafe west')
     wh = [hole('Cafe west window 0', -3.5, 1.0, 3.0, 2.2), hole('Cafe west window 1', 2.5, 1.0, 3.0, 2.2)]
     elevation(f, -(CAFE[3] - CAFE[2]) / 2 + T, (CAFE[3] - CAFE[2]) / 2 - T, wh, S_CROWN, pilasters=((CAFE[3] - CAFE[2]) / 2 - T - .45,))
@@ -270,14 +275,15 @@ def inline_and_endcap():
         C.beam('Canopy bracket', f.p(u, -.05, CANOPY_Z + 1.6), f.p(u, -2.2, CANOPY_Z + .3), .06, .06, 'hardware', 'canopies')
     f = face(*ENDCAP, 'south', 'endcap south')
     sh = [hole('Endcap south window', -2.0, 1.0, 4.0, 2.2, cols=3)]
-    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, sh, S_CROWN, sign_band=True)
+    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, sh, S_CROWN, sign_band=True, pilasters=(-(x1 - x0) / 2 + .45,))
+    f.part('Endcap south-east brick panel', (x1 - x0) / 2 - 1.6, -.07, (G0 + S_CROWN - .8) / 2, 3.2 - EPS, .14, S_CROWN - .8 - G0, 'stone', 'brick mass', 0)
     f = face(*ENDCAP, 'east', 'endcap east')
     eh = [hole(f'Endcap rear door {i}', -16.0 + i * 8.0, G0, 1.1, 2.4, kind='door') for i in range(4)]
     eh.append(hole('Drive-through service window', 18.0, 1.0, 1.4, 1.4, cols=1))
     elevation(f, -span / 2 + T, span / 2 - T, eh, S_CROWN)
     f = face(*ENDCAP, 'north', 'endcap north')
     elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, [], S_CROWN)
-    roof(*ENDCAP, S_ROOF, units=((47.0, 20.0), (47.0, 6.0), (47.0, -8.0)))
+    roof(*ENDCAP, S_ROOF, units=((47.0, 20.0), (47.0, 6.0), (47.0, -8.0), (56.0, 14.0), (56.0, -2.0)))
     # Drive-through lane markings and a bollard pair at the south end.
     C.box('Drive-through lane', (x0 - 2.5, (y0 + 0.0) / 2 - 2.0, .018), (3.5, 12.0, .006), 'cream', 'site', 0)
     for dy in (-1.2, 1.2):
@@ -315,6 +321,20 @@ def site():
             o = len(vertices)
             vertices.extend([(x - .06, row_y, .016), (x + .06, row_y, .016), (x + .06, row_y + length, .016), (x - .06, row_y + length, .016)])
             faces.append((o, o + 1, o + 2, o + 3)); x += 2.8
+    for x0s, x1s, yl in ((-66.5, -61.5, -30.0),):       # west perimeter row along the cafe, stalls nose-in from the west drive
+        yy = yl
+        while yy < 26.0:
+            o = len(vertices)
+            vertices.extend([(x0s, yy - .06, .016), (x1s, yy - .06, .016), (x1s, yy + .06, .016), (x0s, yy + .06, .016)])
+            faces.append((o, o + 1, o + 2, o + 3)); yy += 2.8
+    ex0, ex1 = ENDCAP[0], ENDCAP[1]
+    for a, b in (((ex0 - 4.5, -20.0), (ex1 + 4.5, -20.0)), ((ex1 + 4.5, -20.0), (ex1 + 4.5, 38.0)), ((ex1 + 1.0, -16.5), (ex1 + 1.0, 30.0)), ((ex0 - 1.0, -16.5), (ex1 + 1.0, -16.5))):
+        o = len(vertices)
+        if a[1] == b[1]:
+            vertices.extend([(a[0], a[1] - .06, .016), (b[0], b[1] - .06, .016), (b[0], b[1] + .06, .016), (a[0], a[1] + .06, .016)])
+        else:
+            vertices.extend([(a[0] - .06, a[1], .016), (a[0] + .06, a[1], .016), (b[0] + .06, b[1], .016), (b[0] - .06, b[1], .016)])
+        faces.append((o, o + 1, o + 2, o + 3))
     C.mesh('Parking stripes', vertices, faces, 'cream', 'site')
     for i, (x, y) in enumerate(((-1.0, -9.5), (-22.0, -9.5), (-15.0, -9.5), (6.0, -9.5), (-26.0, -19.5), (-4.0, -19.5), (14.0, -19.5), (-18.0, -29.5), (2.0, -29.5), (22.0, -29.5))):
         C.box('Parked car body', (x, y, .65), (1.8, 4.4, .9), 'car' if i % 3 else 'pale', 'site', 0)
