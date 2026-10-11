@@ -68,8 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 rendering)
 
-- P1 solid brick pier at the south-east corner with single-height storefronts under a canopy and the lobby in the first east bay; the sources show a double-height glazed corner bay on a thin mullion with a dark spandrel, and a stone-framed lobby portal with its own canopy in the second east bay.
-- P1 penthouse a one-storey box over about 60 percent of the roof, pushed south-east; the sources show a large pale louvred screen enclosure about 2 to 3 storeys tall over about 75 percent of the roof each way.
-- P2: wide west terrace; tower plan ratio about 1.34 against 1.6 to 2; no balcony on the lowest tower floor; flat white service doors; short retail storey; opaque glass in the interior view.
+1. **Penthouse form.** It should be a louvred screen ring open to the sky, with two wells of rooftop units, condensers and ducts either side of a roofed core.

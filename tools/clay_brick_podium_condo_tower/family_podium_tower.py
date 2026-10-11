@@ -182,15 +182,39 @@ def tower():
     # Penthouse and rooftop plant.
     px0, px1, py0, py1 = PENT
     C.box('Penthouse curb', ((px0 + px1) / 2, (py0 + py1) / 2, TROOF + .15), (px1 - px0 + .3, py1 - py0 + .3, .30), 'concrete', 'penthouse', 0)
-    C.box('Penthouse', ((px0 + px1) / 2, (py0 + py1) / 2, TROOF + .30 + PENT_H / 2), (px1 - px0, py1 - py0, PENT_H), 'metal', 'penthouse', 0)
+    # Louvred screen ring, open to the sky, around two equipment wells either side of a roofed central core.
     zc = TROOF + .30
+    RW = 1.6
+    for name, (bx0, bx1, by0, by1) in (('south', (px0, px1, py0, py0 + RW)), ('north', (px0, px1, py1 - RW, py1)),
+                                       ('west', (px0, px0 + RW, py0 + RW, py1 - RW)), ('east', (px1 - RW, px1, py0 + RW, py1 - RW))):
+        C.box(f'Penthouse screen {name}', ((bx0 + bx1) / 2, (by0 + by1) / 2, zc + PENT_H / 2), (bx1 - bx0, by1 - by0, PENT_H), 'metal', 'penthouse', 0)
+    ix0, ix1, iy0, iy1 = px0 + RW, px1 - RW, py0 + RW, py1 - RW
+    cw = .25 * (px1 - px0)
+    kx0, kx1 = (px0 + px1) / 2 - cw / 2, (px0 + px1) / 2 + cw / 2
+    C.box('Penthouse core', ((kx0 + kx1) / 2, (iy0 + iy1) / 2, zc + (PENT_H - .3) / 2), (kx1 - kx0, iy1 - iy0 - EPS, PENT_H - .3), 'concrete', 'penthouse', 0)
+    C.box('Penthouse core lid', ((kx0 + kx1) / 2, (iy0 + iy1) / 2, zc + PENT_H - .3 + .06), (kx1 - kx0 + .3, iy1 - iy0 - .02, .12), 'metal', 'penthouse', 0)
+    C.box('Penthouse plant room', (kx1 + 1.4, iy1 - 3.0, zc + 2.6), (2.8, 6.0 - EPS, 5.2), 'concrete', 'penthouse', 0)
+    C.box('Penthouse plant room lid', (kx1 + 1.4, iy1 - 3.0, zc + 5.26), (3.0, 6.0 - .02, .12), 'metal', 'penthouse', 0)
+    # Rooftop units, twin-fan condensers and duct runs in the two wells.
+    units = [(ix0 + 1.8, iy0 + 1.6, 'rtu'), (ix0 + 1.8, iy0 + 5.0, 'cond'), (ix0 + 5.6, iy0 + 1.6, 'rtu'), (ix0 + 5.6, iy0 + 5.4, 'cond'),
+             (ix0 + 1.8, iy1 - 4.6, 'rtu'), (ix0 + 5.6, iy1 - 4.2, 'cond'), (ix0 + 3.7, iy1 - 1.4, 'rtu'),
+             (kx1 + 4.4, iy0 + 1.6, 'rtu'), (kx1 + 4.4, iy0 + 5.0, 'cond'), (ix1 - 1.8, iy0 + 1.6, 'cond'), (ix1 - 1.8, iy0 + 5.4, 'rtu'),
+             (ix1 - 1.8, iy1 - 4.0, 'cond'), (kx1 + 4.4, iy1 - 4.6, 'rtu')]
+    for ux, uy, kind in units:
+        if kind == 'rtu':
+            C.box('Penthouse rooftop unit', (ux, uy, zc + .75), (2.4, 1.8, 1.5), 'pale', 'rooftop plant', 0)
+        else:
+            C.box('Penthouse condenser', (ux, uy, zc + .6), (1.4, 2.6, 1.2), 'pale', 'rooftop plant', 0)
+            for dy in (-.6, .6):
+                C.rod('Condenser fan', (ux, uy + dy, zc + 1.2), (ux, uy + dy, zc + 1.28), .5, 'hardware', 'rooftop plant', 10)
+    for x_a, x_b in ((ix0 + .4, kx0), (kx1, ix1 - .4)):
+        C.box('Penthouse duct run', ((x_a + x_b) / 2, (iy0 + iy1) / 2, zc + .45), (x_b - x_a, .9, .7), 'metal', 'rooftop plant', 0)
     for k in range(7):                                    # continuous horizontal louvre bands round all four faces
         z = zc + .7 + k * (PENT_H - 1.2) / 6
         C.box('Penthouse louvre band', ((px0 + px1) / 2, py0 - .06, z), (px1 - px0 + .24, .12, .16), 'hardware', 'penthouse', 0)
         C.box('Penthouse louvre band', ((px0 + px1) / 2, py1 + .06, z), (px1 - px0 + .24, .12, .16), 'hardware', 'penthouse', 0)
         C.box('Penthouse louvre band', (px0 - .06, (py0 + py1) / 2, z), (.12, py1 - py0, .16), 'hardware', 'penthouse', 0)
         C.box('Penthouse louvre band', (px1 + .06, (py0 + py1) / 2, z), (.12, py1 - py0, .16), 'hardware', 'penthouse', 0)
-    C.box('Penthouse roof unit', ((px0 + px1) / 2 + 4.0, (py0 + py1) / 2, zc + PENT_H + .7), (2.4, 1.8, 1.4), 'hardware', 'rooftop plant', 0)
     rail_run((x0 + .4, y0 + .4), (x1 - .4, y0 + .4), TPAR); rail_run((x1 - .4, y0 + .4), (x1 - .4, y1 - .4), TPAR)
     rail_run((x1 - .4, y1 - .4), (x0 + .4, y1 - .4), TPAR); rail_run((x0 + .4, y1 - .4), (x0 + .4, y0 + .4), TPAR)
     C.CONTACTS.append(dict(name='Tower corner columns from the podium roof to the parapet; penthouse on a curb on the roof slab', top_m=TPAR, base_m=PODIUM))
