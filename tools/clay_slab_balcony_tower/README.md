@@ -68,6 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 rendering)
+## Open blockers after v006 (stopped)
 
-1. **Crown.** The roof edge should follow the floor plan: a thin ledge over the outer bays only, stepping back over the centre bay. A low brick parapet with a teal stripe should sit behind it, with fin heads rising above.
+Stopped at v006 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v006. Open v006 P1, for a human to weigh:
+
+1. **Corner fin heads.** Where the two corner fin plates meet above the parapet, a small black void shows at each of the four corners: the hollow corner pier has no top cap. The fix is one solid cap box per corner at fin-head height, about 2.6 KB of GLB.
