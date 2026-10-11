@@ -28,7 +28,7 @@ CROWN = ROOF + PARAPET
 FRONT_Y, REAR_Y, WEST_X, EAST_X = -D / 2, D / 2, -W / 2, W / 2
 SLOT_W, SLOT_H = .95, 3.6
 EPS = .002
-PALETTE = dict(wall=(.055, .058, .065), joint=(.03, .032, .036), trim=(.03, .03, .032),
+PALETTE = dict(darkslot=(.012, .014, .018), wall=(.055, .058, .065), joint=(.03, .032, .036), trim=(.03, .03, .032),
     pale=(.52, .53, .52), stone=(.36, .35, .33), roof=(.30, .31, .32), sand=(.40, .40, .38),
     foundation=(.30, .31, .32), glass=(.52, .56, .55), hardware=(.08, .085, .09),
     interior=(.72, .68, .60), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
@@ -103,13 +103,24 @@ def slot(f, name, u, z, w, h):
         face_inward=list(f.n), occupied_space='grow rack room behind carrier', cols=1, rows=1))
 
 
-def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0), clad_to_grade=False, corner_pier=False):
-    """One clad elevation: plinth level, five slot rows of six columns, parapet band."""
-    cols = [(-2.5 + i) * span / 7.0 for i in range(6)]
-    holes = []
+# East (entrance) face slot schedule read from the sources: seven columns; the outer columns are lit full height, the middle
+# three are lit only on their lower or upper floors and continue as dark, unlit slots of the same width.
+EAST_LIT = [range(5), range(5), range(0, 2), range(2, 5), range(0, 3), range(5), range(5)]
+
+
+def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0), clad_to_grade=False, corner_pier=False, schedule=None):
+    """One clad elevation: plinth level, five slot rows of six columns (or a per-column schedule), parapet band."""
+    cols = [(-2.5 + i) * span / 7.0 for i in range(6)] if schedule is None else [(-3 + i) * span / 8.0 for i in range(len(schedule))]
+    holes, dark = [], []
     for r, lvl in enumerate(LEVELS):
         for i, u in enumerate(cols):
-            holes.append(hole(f'{f.label} slot {r}-{i}', u, lvl + .35, SLOT_W, SLOT_H))
+            if schedule is None or r in schedule[i]:
+                holes.append(hole(f'{f.label} slot {r}-{i}', u, lvl + .35, SLOT_W, SLOT_H))
+    if schedule is not None:
+        for i, u in enumerate(cols):
+            unlit = [r for r in range(len(LEVELS)) if r not in schedule[i]]
+            if unlit:
+                dark.append((u, LEVELS[min(unlit)] + .35, LEVELS[max(unlit)] + .35 + SLOT_H))
     ph = []
     if entrance:
         ph.append(hole('Entrance recess', -span / 2 + 3.4, G0, 5.4, 4.0, kind='storefront'))
@@ -123,15 +134,23 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0), clad_to_gr
         for u in plinth_windows:
             ph.append(hole(f'{f.label} plinth slit {u:+.0f}', u, 1.4, .7, 2.2, kind='slit'))
     # Plinth carrier (concrete) and clad carrier above it, both cut by their own openings.
-    f.wall(f.label + ' plinth carrier', -span / 2 + (0 if f.label in ('front', 'rear') else T), span / 2 - (0 if f.label in ('front', 'rear') else T), G0, LEVELS[0], depth=T, role='wall' if clad_to_grade else 'stone', holes=ph)
-    if clad_to_grade:
-        seams(f, -span / 2 + .3, span / 2 - .3, G0 + EPS, LEVELS[0] - EPS, ph)
+    plo, phi = -span / 2 + (0 if f.label in ('front', 'rear') else T), span / 2 - (0 if f.label in ('front', 'rear') else T)
     if corner_pier:
-        f.part(f.label + ' concrete corner pier', span / 2 - 1.30, -.03, (G0 + LEVELS[0]) / 2, 2.60, .06, LEVELS[0] - G0, 'stone', 'plinth', 0)
+        # The concrete plinth wraps the entrance corner: the last 2.6 m of this face's plinth is concrete in the same plane as
+        # the charcoal beside it, meeting the concrete east plinth at the arris (no proud panel, no dark strip to grade).
+        f.wall(f.label + ' plinth carrier', plo, phi - 2.6, G0, LEVELS[0], depth=T, role='wall', holes=ph)
+        f.wall(f.label + ' corner plinth carrier', phi - 2.6, phi, G0, LEVELS[0], depth=T, role='stone')
+        seams(f, plo + .3, phi - 2.6 - .05, G0 + EPS, LEVELS[0] - EPS, ph)
+    else:
+        f.wall(f.label + ' plinth carrier', plo, phi, G0, LEVELS[0], depth=T, role='wall' if clad_to_grade else 'stone', holes=ph)
+        if clad_to_grade:
+            seams(f, -span / 2 + .3, span / 2 - .3, G0 + EPS, LEVELS[0] - EPS, ph)
     f.wall(f.label + ' clad carrier', -span / 2 + (0 if f.label in ('front', 'rear') else T), span / 2 - (0 if f.label in ('front', 'rear') else T), LEVELS[0], CROWN, depth=T, role='wall', holes=holes)
     seams(f, -span / 2 + .3, span / 2 - .3, LEVELS[0] + EPS, CROWN - EPS, holes)
     for h in holes:
         slot(f, h['id'], h['u'], h['z'], h['w'], h['h'])
+    for u, z0, z1 in dark:
+        f.part(f'{f.label} dark unlit slot', u, -.012, (z0 + z1) / 2, SLOT_W, .024, z1 - z0, 'darkslot', 'dark slots', 0)
     # Continuous hydroponic racks behind every slot row: three shelves with LED bars and leafy trays.
     for lvl in LEVELS:
         for k in range(4):
@@ -321,7 +340,7 @@ def build():
     f_front, f_right, f_rear, f_left = A.faces(W, D)
     face_grammar(f_front, W, clad_to_grade=True, corner_pier=True)
     face_grammar(f_left, D, clad_to_grade=True)
-    face_grammar(f_right, D, entrance=True, plinth_windows=(2.0, 6.0))
+    face_grammar(f_right, D, entrance=True, plinth_windows=(2.0, 6.0), schedule=EAST_LIT)
     face_grammar(f_rear, W, plinth_windows=(-6.0, 0.0))
     cut_stair_apertures()
     roof()

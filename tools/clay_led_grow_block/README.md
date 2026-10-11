@@ -68,8 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 rendering)
 
-- P1 lit slot glass near-white pink (median saturation 0.13 at value 0.97) against the sources' magenta (saturation about 0.40 at value about 0.80); only the reveals carry the colour.
-- P1 south face a full-height grey concrete plinth with small slits; the sources carry the charcoal cladding to grade with each slot column continuing as unlit glazing, concrete only as a corner pier and on the east and north faces.
-- P1 the roof guard rail stops short of every corner, leaving gaps.
+1. **East face slots.** Seven columns are needed; the middle three are lit only on lower or upper floors and continue as dark unlit slots.
+2. **Entrance corner.** The concrete plinth must wrap the corner flush, with no proud panel and no charcoal to grade.
