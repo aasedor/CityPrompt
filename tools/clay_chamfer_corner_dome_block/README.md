@@ -68,10 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 in progress)
 
-- P0: one storey too many. Both locked sources show a rusticated ground floor, a brick storey with the continuous balcony and a brick storey with individual balconies under the cornice; the taller blocks in the sources are neighbours. v005 rebuilds the envelope on three storeys.
-- P1: four small rectangular windows pierce the drum; the sources show a blind drum with the cresting ring and oculi only on the dome. v005 makes the drum blind.
-- P1: the bow bay's glazed storeys have no iron railing at their sills; both sources show a continuous railing there. v005 adds a railing at each glazed sill.
-- P1: ground-floor shop openings near-square at about 75 percent of the bay; the sources show tall narrow openings about 1:2.9 on wide rusticated piers. v005 uses 1.6 x 4.4 m openings.
-- P2 (recorded): hairline slivers at the bay balustrade and terrace junction, dome a little lighter than the source copper, scribed-only rustication, stocky windows, flat centred pyramid rooflight, south wing four bays against five in the oblique, rear and right_side labels, tiny notches at the bay balcony slab joints, rear_court view without a court.
+- P0 lantern floats: its base disc is wider than the dome apex and a band of background runs under it in every apex view (no neck between dome and lantern).
+- P1 chamfer entrance is a flat-headed glass panel like the shop windows; the sources show a round-arched glazed door with transom, frieze band over the arch and flanking piers, with a corbelled bow underside.
+- P1 dome squat (height about 0.55 of the diameter) on a tall plain stone cylinder above the balustrade; the sources show a taller ribbed dome whose copper skirt and crest sit directly on the bay cornice with no stone drum (the v004 note about a blind drum with pilaster strips is contradicted by this reviewer's pixel reading: that band is the top-storey frieze below the cornice).
+- P1 cornice a flat fascia with almost no projection; the sources show a heavily projecting bracketed cornice with a shadowed soffit under the balustrade.
+- P2: bow balconies segmented per panel instead of one continuous curved balcony per level; dome colour mauve-grey instead of copper red-brown; pyramid rooflight reads flat and ghostly; flat bow soffit; brick too pale; no rear light-well; front camera a wing elevation instead of the chamfer axis; balustrade without intermediate dies.
