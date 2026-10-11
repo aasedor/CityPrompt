@@ -67,11 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (no further version permitted)
+## Open blockers after v004 (v005 in progress)
 
-- P1: overlap the tower's corner piers into its side walls (no shared coplanar edge) to
-  remove the black sliver at the south-west corner.
-- P1: slide the tower west to the cafe party wall, move the sign band and entrance to the
-  bay east of it and add the lower anchor tier behind the cafe, as all three sources show.
-- P2 carried: asphalt road with lane lines at the site edge, remove the in-court lawn
-  strips, taller pylon pedestal, interior camera inside the anchor.
+- P1 green only a narrow post and band on the tower; the sources show a green portal wrapping the tower base and a continuous green lintel over the east-bay storefront to a green pier, with the sign band above and the tower pilasters stopping on the green base.
+- P1 the entrance under the tower is an empty niche with no doors or canopy.
+- P1 a pure-black element at the west end of the anchor-bay canopy (two canopy slabs overlapping at one height).
+- P1 west wing open: a full-height slot between the rear tier and the cafe block, and a dark trough between the low roofs and the anchor's west wall.
+- P1 pylon a lollipop pole sign where the sources show a brick monolith with stacked tenant panels.
+- P1 anchor_entrance and interior cameras miss their targets.
+- P1 front camera distant and low; the sources' front is elevated with the plaza across the frame.
