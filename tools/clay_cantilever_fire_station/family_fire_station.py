@@ -44,7 +44,7 @@ def manifest(version):
         ('tower_clock', (18.0, -36.0, 10.0), ((TW_X0 + TW_X1) / 2, TW_Y0, 11.5), 45),
         ('loggia_close', (-34.0, -26.0, 9.0), (WEST_X, -10.0, 8.0), 45),
         ('apron_contact', (16.0, -24.0, 1.6), (8.0, GY, 1.2), 40),
-        ('interior', (-14.0, -4.0, 2.0), (4.0, GY, 2.6), 40),
+        ('interior', (-9.4, 9.6, 2.4), (12.0, GY + .8, 2.6), 40),
         ('rear_door', (10.0, 26.0, 2.5), (0.0, REAR_Y, 2.4), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
@@ -346,7 +346,8 @@ def programme():
     for u in BAYS:
         appliance(u, GY + .8)
     for x in (-3.4, 7.8):
-        C.qa_room_light('Apparatus hall', (x, -6.0, U - .5), 120, 4.0)
+        C.qa_room_light('Apparatus hall', (x, -6.0, U - .5), 260, 5.0)
+        C.qa_room_light('Apparatus hall rear', (x, 8.0, U - .5), 220, 5.0)
     C.qa_room_light('Watch room', (-14.0, -8.0, U - .5), 80, 3.5)
     for x in (-18.0, -12.0):
         A.desk(x, -9.0, G0)
