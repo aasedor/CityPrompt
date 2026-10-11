@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-plus15-glass-office-tower",
+  "variant_id": "clay-plus15-glass-office-tower-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "calgary_plus_15_connected_tower/variant_2",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2.png",
+      "path": "sources/front.png",
+      "bytes": 1238687,
+      "sha256": "71df1f82ca1a50801ec72244ace874eba9351744bd0bb8dbb69c29cf4ef36c61"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 962177,
+      "sha256": "c5063f2e71b7a5f02f34498498b5b3d02054e076e84460d47ada4979f691fcb7"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 810860,
+      "sha256": "7fabe18811a690141b6751eab629e4c6a0530abef1b17e675376846e01dcf9f0"
+    }
+  ]
+}

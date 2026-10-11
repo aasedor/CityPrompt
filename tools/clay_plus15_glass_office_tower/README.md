@@ -68,9 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 rendering)
 
-- P1 colonnade base about 1.5 floor pitches where the sources show about four to five with an intermediate band; the bridge docks into the first office floor instead of inside the colonnade.
-- P1 only the north part of the penthouse is a full-height glazed volume; the units stand behind a low picket rail where the sources wrap them in the same full-height glazed fins (one glazed box over about 0.6 of the roof).
-- P1 green roof beds are narrow planters covering about 14 percent of the roof; the sources fill the band from the walkway to the penthouse wall (about 35 percent), with a path through the west bed and a continuous south bed.
-- P2: shallow parapet band; loose glass leaf at the rear corner; doubled corner columns; transom gap at the lobby doors; flat interior window wall; coarse bridge mullions; front and board framing.
+1. **Bridge position.** The top source places it just west of the middle of the south face.
+2. **Colonnade corner.** The lobby glazing ran past the recessed carrier at every corner, and the soffit slabs overlapped there and rendered black.

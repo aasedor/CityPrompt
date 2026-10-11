@@ -4,7 +4,7 @@ calgary_plus_15_connected_tower / variant_2 (plus15_contemporary_glass).
 Read from the pixels: a square curtain-wall tower on a downtown corner. Every office floor reads
 as a pale spandrel band under a dark vision band divided by closely spaced mullions; pale corner
 columns run the full height. The ground floor is a double-height glazed lobby recessed behind a
-perimeter colonnade. An enclosed glazed Plus 15 bridge leaves the west end of the south face at
+perimeter colonnade. An enclosed glazed Plus 15 bridge leaves the south face just west of centre at
 the second level and crosses the street on piers. The roof carries a green roof around an
 tall glazed mechanical penthouse of close vertical fins over the north of the roof, units on a lower south deck inside a fin screen.
 """
@@ -24,7 +24,7 @@ SPANDREL = 1.05
 MULLION = 1.5
 COL = 1.0                    # colonnade column
 RECESS = 3.2                 # lobby glazing behind the colonnade
-BRIDGE_X = (-13.0, -8.6)     # Plus 15 bridge leaves the south face here
+BRIDGE_X = (-4.8, -0.4)      # Plus 15 bridge leaves the south face just west of centre (top source: about 0.43-0.48 of the face from the west corner), in the colonnade bay west of the centre column
 BRIDGE_Z = (4.6, 7.8)
 BRIDGE_LEN = 29.0
 PENT = [(-11.5, 11.5, -1.0, 11.0), (-11.5, -6.5, 8.0, 11.0)]   # tall penthouse block (second entry is the north-west notch, cut out)
@@ -46,7 +46,7 @@ def manifest(version):
         ('facade_close', (-10.0, -40.0, 20.0), (0.0, -D / 2, 24.0), 45),
         ('architecture_close', (-34.0, -34.0, 14.0), (-W / 2, -D / 2, 10.0), 50),
         ('glass_close', (8.0, -30.0, 30.0), (10.0, -D / 2, 31.0), 50),
-        ('plus15_bridge', (-30.0, -36.0, 6.0), (-10.8, -D / 2 - 10.0, 6.2), 45),
+        ('plus15_bridge', (-21.8, -36.0, 6.0), (-2.6, -D / 2 - 10.0, 6.2), 45),
         ('lobby_entry', (-6.0, -36.0, 2.4), (2.0, -D / 2 + RECESS, 3.0), 45),
         ('curtain_grid', (26.0, -30.0, 40.0), (W / 2, -6.0, 42.0), 50),
         ('roof_terrace', (-50.0, -50.0, 82.0 + L1 - 6.4), (-6.0, 2.0, 66.0 + L1 - 6.4), 45),
@@ -59,7 +59,7 @@ def manifest(version):
         source_archetype='calgary_plus_15_connected_tower/variant_2 (plus15_contemporary_glass)',
         measurement_contract=dict(dimensions_m=dict(width=W, depth=D + BRIDGE_LEN, height=h),
             observed_storeys=N + 1, storey_programme='four-pitch colonnade base with a mezzanine, sixteen office floors, mechanical penthouse',
-            plan='square 36 x 36 m read from the 520 x 520 px roof in the top view at 0.069 m/px; the Plus 15 bridge leaves the west end of the south face and crosses the street southward',
+            plan='square 36 x 36 m read from the 520 x 520 px roof in the top view at 0.069 m/px; the Plus 15 bridge leaves the south face just west of centre and crosses the street southward',
             facade='every floor: 1.05 m pale spandrel band and a 2.6 m dark vision band with mullions at 1.5 m; pale corner columns and a parapet band; lobby glazing recessed 3.2 m behind a colonnade of 1 m columns on a 6 m bay',
             levels_m=[G0, L1] + FLOORS[1:], roof_m=ROOF, parapet_m=PAR, storey_height_m=FH,
             bridge='enclosed glazed bridge 4.4 m wide from 4.6 to 7.8 m, 24 m long on two piers',
@@ -133,15 +133,17 @@ def tower_face(f, lo, hi):
     f.part('Parapet band', (lo + hi) / 2, -.03, PAR - .6 + .02, span - 2 * EPS, T + .08, 1.2, 'pale', 'coping', 0)
 
 
-def lobby_face(f, lo, hi, doors=False, bridge=False):
+def lobby_face(f, lo, hi, doors=False, bridge=False, side_full=True):
     """Recessed double-height lobby glazing behind the colonnade."""
     g = C.Face(f.o + f.n * RECESS, f.t, f.n, f.label + ' lobby')
     span = hi - lo
+    # Glazing bays are spaced over the recessed carrier only, so no frame runs past the lobby corner.
+    a, b = lo + RECESS, hi - RECESS
     holes = []
     n = 3
     for i in range(n):
-        c = lo + span * (i + .5) / n
-        w = span / n - 1.2
+        c = a + (b - a) * (i + .5) / n
+        w = (b - a) / n - 1.2
         if doors and i == 1:
             holes.append(hole(g.label + ' doors', c, G0, 3.6, 3.0, kind='door'))
             holes.append(hole(g.label + ' glazing over doors', c, 3.2, w, L1 - .6 - 3.2))
@@ -161,7 +163,10 @@ def lobby_face(f, lo, hi, doors=False, bridge=False):
     for i in range(1, 6):
         u = lo + .5 + (span - 1.0) * i / 6
         f.part('Colonnade column', u, RECESS * .3, (G0 + L1 - .32) / 2, COL, COL, L1 - .32 - G0, 'concrete', 'colonnade', 0)
-    f.part('First floor edge', 0.0, (T + RECESS) / 2, L1 - .16, span - 2 * EPS, RECESS - T, .32, 'concrete', 'colonnade', 0)
+    # Soffit between the facade and the recessed lobby line. The south and north soffits run corner to corner;
+    # the east and west soffits stop where they meet them, so no two soffit slabs overlap at a corner.
+    es = span - 2 * EPS if side_full else D - 2 * RECESS
+    f.part('First floor edge', 0.0, (T + RECESS) / 2, L1 - .16, es, RECESS - T, .32, 'concrete', 'colonnade', 0)
 
 
 def bridge():
@@ -274,7 +279,7 @@ def floors_and_site():
         C.box(name, loc, size, 'foundation', 'sidewalk', 0)
     C.box('South street', (0, -D / 2 - ext - 10.0, .004), (W + 2 * ext, 20.0, .008), 'hardware', 'street', 0)
     C.box('Far sidewalk', (0, -D / 2 - ext - 20.0 - 3.0, .0075), (W + 2 * ext, 6.0, .015), 'foundation', 'sidewalk', 0)
-    for x in (-12.0, 2.0, 14.0):
+    for x in (-12.0, 5.0, 14.0):
         street_tree(x, -D / 2 - 5.5)
     street_tree(W / 2 + 5.5, 6.0)
 
@@ -293,8 +298,8 @@ def build():
     for f, inset in ((f_front, 0.0), (f_rear, 0.0), (f_right, T), (f_left, T)):
         tower_face(f, -W / 2 + inset, W / 2 - inset)
     lobby_face(f_front, -W / 2, W / 2, doors=True, bridge=True)
-    lobby_face(f_left, -D / 2 + T, D / 2 - T)
-    lobby_face(f_right, -D / 2 + T, D / 2 - T)
+    lobby_face(f_left, -D / 2 + T, D / 2 - T, side_full=False)
+    lobby_face(f_right, -D / 2 + T, D / 2 - T, side_full=False)
     lobby_face(f_rear, -W / 2, W / 2)
     bridge()
     roof_and_penthouse()
