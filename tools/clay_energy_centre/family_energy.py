@@ -240,7 +240,7 @@ def west_block():
     # West face (u = -y), north to south: pier, service bay 7 m, pier, entrance curtain-wall bay 9 m, pier, corner bay 14 m, pier (34 m).
     f = face(*WB, 'west', 'west block west')
     half = (y1 - y0) / 2
-    frame_face(f, -half + T, half - T, [(-half + 1.0 + 3.5, 7.0, 'service'), (-half + 9.0 + 3.5, 7.0, 'entrance'), (-half + 19.0 + 5.6, 11.2, 'corner')])
+    frame_face(f, -half + T, half - T, [(-half + 1.0 + 5.4, 10.8, 'service'), (-half + 12.8 + 3.6, 7.2, 'entrance'), (-half + 21.2 + 4.5, 9.0, 'corner')])   # north bay ~32 %, entrance ~22 %, corner ~27 % of the face (sources)
     # North face: brick with service openings.
     f = face(*WB, 'north', 'west block north')
     nh = [hole('North louvre bay 0', -4.0, 1.0, 3.0, 2.5), hole('North service door', 4.0, G0, 2.4, 3.2, kind='door')]

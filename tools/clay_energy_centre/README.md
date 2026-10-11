@@ -68,8 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (v007 rendering)
+## Open blockers after v007 (v008 rendering, the last version under the hard cap)
 
-1. **West corner bay.** It needs a brick head band of about 1/7 of the wall over one row of about six lights, with the panel and ground glazing each about 36 percent.
-2. **South corner return.** It should be about 1.2-1.8 m, with the corner bay widened westward.
-3. **Duct spine.** It belongs beside the corten wall with a stub into it, the flues west of it.
+1. **West-face bays.** The north service bay should be about 28-30 percent of the face, nearly as wide as the corner bay (about 26-27 percent).
