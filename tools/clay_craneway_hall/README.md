@@ -68,8 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 rendering)
+## Open blockers after v006 (stopped)
 
-1. **Roof monitors.** Their ridges should cross the hall, in three staggered rows of three.
-2. **Aisle walls.** A full-length railed gallery and a tall mullioned glazed storey are needed above the lattice wall.
-3. **West gable.** It needs a glazed band under the nave triangle and open truss frames in the aisle upper storeys.
+Stopped at v006 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v004. Open v006 P1, for a human to weigh:
+
+1. **Aisle roof.** It still reads as a wide blank lean-to above the gallery; the sources show a tall glazed band and only a narrow roof strip.
+2. **West aisle upper storeys.** They are short lean-to wedges; the sources show upright full-height open frames.
+3. **Monitors.** They are small, near-square tall boxes; the sources show wider, lower monitors.
