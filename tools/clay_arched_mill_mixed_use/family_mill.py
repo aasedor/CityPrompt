@@ -58,7 +58,7 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=W, depth=D, height=h),
             observed_storeys=4, storey_programme='retail ground floor behind arched shopfronts; three loft storeys; glazed rooftop pavilion',
             plan='22 x 22 m corner block read from the top view: four bays plus a 2 m blank end bay on the gable faces, four bays on the eave faces; the eaves face runs along the west street and the gable face along the south street',
-            facade='four bays on every face plus a blank end bay at the rear end of the gables; pilasters run straight into the gables to the raked coping, the dentil cornice is on the eave faces only; brick pilasters 0.9 m between recessed panels; segmental-arched shopfronts 3.3 x 3.8 m; arched windows 2.4 x 2.7 m on each upper storey; stone sill band at 4.6 m; dentil cornice at 15.4 m',
+            facade='four bays on every face plus a blank end bay at the rear end of the gables; pilasters run straight into the gables to the raked coping, the dentil cornice is on the eave faces only; brick pilasters 0.9 m between recessed panels; segmental-arched shopfronts 3.3 x 3.8 m; arched windows 2.4 x 2.7 m on the first two upper storeys and 2.4 x 2.2 m on the top storey under the dentil cornice; stone sill band at 4.6 m; dentil cornice at 15.4 m',
             levels_m=[G0] + LEVELS, eave_m=EAVE, parapet_m=PAR, ridge_m=RIDGE,
             roof='slate planes to a ridge at 19 m; raked gable parapets on the south and north faces; lean-to glasshouse 15.5 m long on the west slope: a 2.7 m glass wall behind a 1.8 m deck, a glazed mono-pitch roof rising to a glazed back wall against the slate cut, open slate to the south and a railed terrace beyond its north end; chimney 2.2 m square to 26 m inside the footprint behind the rear corner of the street gable; four rooflights on the east slope',
             inferred='the north gable and the east (rear) face are not visible in any source and repeat the grammar with a loading door; interiors are teaching assumptions'),
@@ -141,7 +141,8 @@ def elevation(f, lo, hi, bays, blind=(), ground='shops', gable=False, end_bay=0.
         else:
             holes.append(hole(f'{f.label} ground window {i}', c, 1.0, pitch - 2 * PIL - .4, 2.6))
         for k, zl in enumerate(LEVELS):
-            holes.append(hole(f'{f.label} window {i}-{k}', c, zl + .55, 2.4, 2.7))
+            # Top storey 2.2 m so its segmental arch and brick head sit clear below the dentil course (sources: arched on every storey).
+            holes.append(hole(f'{f.label} window {i}-{k}', c, zl + .55, 2.4, 2.7 if k < len(LEVELS) - 1 else 2.2))
     top = PAR
     f.wall(f.label + ' carrier', lo, hi - EPS, G0, top, depth=T, holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, G0, top, holes, spacing=.30)
