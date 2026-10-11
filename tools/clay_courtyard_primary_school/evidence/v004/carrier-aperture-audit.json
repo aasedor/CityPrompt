@@ -1,0 +1,276 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "NW east ground window",
+      "face": "nw east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW east strip",
+      "face": "nw east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW court glazing",
+      "face": "nw south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW court strip",
+      "face": "nw south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing south ground window 0",
+      "face": "ww south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing south ground window 1",
+      "face": "ww south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing south ground window 2",
+      "face": "ww south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing south strip",
+      "face": "ww south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing court glazing 0",
+      "face": "ww east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing court glazing 1",
+      "face": "ww east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing court glazing 2",
+      "face": "ww east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing court strip 0",
+      "face": "ww east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing court strip 1",
+      "face": "ww east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West wing court strip 2",
+      "face": "ww east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall east ground window 0",
+      "face": "nb east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall east ground window 1",
+      "face": "nb east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall east ground window 2",
+      "face": "nb east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall east strip 0",
+      "face": "nb east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall east strip 1",
+      "face": "nb east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall east strip 2",
+      "face": "nb east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall court glazing 0",
+      "face": "nb south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall court glazing 1",
+      "face": "nb south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall court strip 0",
+      "face": "nb south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Hall court strip 1",
+      "face": "nb south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance passage south",
+      "face": "se south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block south window",
+      "face": "se south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block south strip",
+      "face": "se south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block east ground window 0",
+      "face": "se east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block east ground window 1",
+      "face": "se east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block east ground window 2",
+      "face": "se east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block east strip 0",
+      "face": "se east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block east strip 1",
+      "face": "se east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block east strip 2",
+      "face": "se east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block court window",
+      "face": "se west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block court door",
+      "face": "se west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block court window 2",
+      "face": "se west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block court strip 0",
+      "face": "se west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block court strip 1",
+      "face": "se west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance block court strip 2",
+      "face": "se west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance doors",
+      "face": "passage doors",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Penthouse south window",
+      "face": "penthouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Penthouse terrace door",
+      "face": "penthouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Penthouse east window 0",
+      "face": "penthouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Penthouse east window 1",
+      "face": "penthouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Penthouse east window 2",
+      "face": "penthouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
