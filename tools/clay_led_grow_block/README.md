@@ -68,7 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 rendering)
+## Open blockers after v006 (v007 rendering)
 
-1. **East face slots.** Seven columns are needed; the middle three are lit only on lower or upper floors and continue as dark unlit slots.
-2. **Entrance corner.** The concrete plinth must wrap the corner flush, with no proud panel and no charcoal to grade.
+1. **Slot rhythm.** Each slot should be one continuous channel from under the parapet to grade, broken only by staggered dark transoms about every 1.5 storeys.

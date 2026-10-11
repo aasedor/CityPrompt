@@ -111,16 +111,26 @@ EAST_LIT = [range(5), range(5), range(0, 2), range(2, 5), range(0, 3), range(5),
 def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0), clad_to_grade=False, corner_pier=False, schedule=None):
     """One clad elevation: plinth level, five slot rows of six columns (or a per-column schedule), parapet band."""
     cols = [(-2.5 + i) * span / 7.0 for i in range(6)] if schedule is None else [(-3 + i) * span / 8.0 for i in range(len(schedule))]
+    # Each slot is one continuous recessed channel from the plinth line to just under the parapet (sources), broken only by
+    # dark glazed transom inserts at staggered heights; on the east face the unlit lengths continue as dark slots.
+    top = ROOF - .40
+    def zr(r0, r1):
+        return LEVELS[r0] + .05, min(LEVELS[r1] + 4.15, top)
     holes, dark = [], []
-    for r, lvl in enumerate(LEVELS):
-        for i, u in enumerate(cols):
-            if schedule is None or r in schedule[i]:
-                holes.append(hole(f'{f.label} slot {r}-{i}', u, lvl + .35, SLOT_W, SLOT_H))
-    if schedule is not None:
-        for i, u in enumerate(cols):
+    for i, u in enumerate(cols):
+        lit = sorted(range(len(LEVELS))) if schedule is None else sorted(schedule[i])
+        runs = []
+        for r in lit:
+            if runs and r == runs[-1][-1] + 1: runs[-1].append(r)
+            else: runs.append([r])
+        for run in runs:
+            z0, z1 = zr(run[0], run[-1])
+            holes.append(hole(f'{f.label} slot {run[0]}-{i}', u, z0, SLOT_W, z1 - z0, col=i))
+        if schedule is not None:
             unlit = [r for r in range(len(LEVELS)) if r not in schedule[i]]
             if unlit:
-                dark.append((u, LEVELS[min(unlit)] + .35, LEVELS[max(unlit)] + .35 + SLOT_H))
+                z0, z1 = zr(min(unlit), max(unlit))
+                dark.append((u, z0, z1))
     ph = []
     if entrance:
         ph.append(hole('Entrance recess', -span / 2 + 3.4, G0, 5.4, 4.0, kind='storefront'))
@@ -129,7 +139,7 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0), clad_to_gr
     if clad_to_grade:
         for i, u in enumerate(cols):
             if not (corner_pier and u > span / 2 - 2.9):
-                ph.append(hole(f'{f.label} ground slot {i}', u, .55, SLOT_W, SLOT_H, kind='slit'))
+                ph.append(hole(f'{f.label} ground slot {i}', u, .55, SLOT_W, LEVELS[0] - .55 - .06, kind='slit'))   # unlit glazed slot continuing the channel to grade
     else:
         for u in plinth_windows:
             ph.append(hole(f'{f.label} plinth slit {u:+.0f}', u, 1.4, .7, 2.2, kind='slit'))
@@ -149,6 +159,13 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0), clad_to_gr
     seams(f, -span / 2 + .3, span / 2 - .3, LEVELS[0] + EPS, CROWN - EPS, holes)
     for h in holes:
         slot(f, h['id'], h['u'], h['z'], h['w'], h['h'])
+        # Dark glazed transom inserts about every 1.5 storeys, staggered from column to column.
+        k0 = LEVELS[0] + 2.4 + (h['col'] % 3) * 2.1
+        zt = k0
+        while zt < h['z'] + h['h'] - .8:
+            if zt > h['z'] + .6:
+                f.part(h['id'] + ' transom insert', h['u'], .14, zt, h['w'] - .18, .04, .45, 'darkslot', 'slot transoms', 0)
+            zt += 6.3
     for u, z0, z1 in dark:
         f.part(f'{f.label} dark unlit slot', u, -.012, (z0 + z1) / 2, SLOT_W, .024, z1 - z0, 'darkslot', 'dark slots', 0)
     # Continuous hydroponic racks behind every slot row: three shelves with LED bars and leafy trays.
@@ -158,12 +175,13 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0), clad_to_gr
             f.part(f'{f.label} rack shelf {k}', 0, .95, zz, span - 2 * T - 1.0, 1.0, .04, 'rack', 'grow racks', 0)
             f.part(f'{f.label} leaf tray {k}', 0, .95, zz + .13, span - 2 * T - 1.2, .80, .18, 'leaf', 'grow racks', 0)
         # Magenta-lit rack backboard behind the slot row, washed by one magenta inspection light per face and level.
-        f.part(f'{f.label} LED backboard', 0, .62, lvl + 2.1, span - 2 * T - 1.0, .04, 3.8, 'led', 'grow racks', 0)
+
         C.bpy.ops.object.light_add(type='AREA', location=f.p(0, .45, lvl + 2.1))
         light = C.bpy.context.object; light.name = f'QA grow wash {f.label} {lvl:.0f}'
         light.data.energy = 550; light.data.shape = 'RECTANGLE'; light.data.size = span - 3.0; light.data.size_y = 3.4
         light.data.color = (1.0, .18, .85)
         C.look_at(light, f.p(0, 1.5, lvl + 2.1))
+    f.part(f'{f.label} LED backboard', 0, .62, (LEVELS[0] + ROOF - .3) / 2, span - 2 * T - 1.0, .04, ROOF - .3 - LEVELS[0], 'led', 'grow racks', 0)
     for h in ph:
         if h['kind'] == 'storefront':
             # Recessed glazed entry cut 2.2 m into the plinth: concrete returns, dark soffit, glazed screen with doors at the back.
@@ -291,7 +309,7 @@ def floors():
     C.box('Rear lane', (0, REAR_Y + 1.5, .0075), (W + 4.0, 3.0, .015), 'foundation', 'sidewalk', 0)
     C.box('East lane', (EAST_X + 1.5, 0, .0075), (3.0, D, .015), 'foundation', 'sidewalk', 0)
     for lvl in LEVELS:
-        C.box('Grow floor', (0, 0, lvl - .10), (W - 2 * T, D - 2 * T, .20), 'floor', 'occupied floors', 0)
+        C.box('Grow floor', (0, 0, lvl - .10), (W - 2 * T - 2.0, D - 2 * T - 2.0, .20), 'floor', 'occupied floors', 0)   # held 1 m off the walls, behind the lit backboard
     # Stair on the north-east, with a floor aperture per level.
     for i, lvl in enumerate(LEVELS[:2]):
         lower = G0 if i == 0 else LEVELS[i - 1]
