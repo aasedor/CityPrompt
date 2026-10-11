@@ -67,9 +67,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (v007 rendering)
+## Open blockers after v007 (v008 rendering, the last version under the hard cap)
 
-1. **End-cap depth.** About 1.6 times the inline depth.
-2. **Site.** Asphalt should wrap the building, with a rear drive, an east drive-through route round the end-cap's south end and a west parking row.
-3. **Cafe.** It needs a brick ground storey under a dark lintel with wide piers at both ends and no canopy.
-4. **End-cap south face.** It needs a brick west corner pier and a full-height brick south-east panel.
+1. **Cafe west face.** About five brick pilasters are needed across it.

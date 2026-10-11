@@ -218,8 +218,11 @@ def anchor():
     cw = (CAFE[1] - CAFE[0]) / 2
     elevation(f, -cw, cw - EPS, ch, S_CROWN, sign_band=True, pilasters=(-cw + .6, cw - .6), brick_to=3.6)
     f = face(*CAFE, 'west', 'cafe west')
-    wh = [hole('Cafe west window 0', -3.5, 1.0, 3.0, 2.2), hole('Cafe west window 1', 2.5, 1.0, 3.0, 2.2)]
-    elevation(f, -(CAFE[3] - CAFE[2]) / 2 + T, (CAFE[3] - CAFE[2]) / 2 - T, wh, S_CROWN, pilasters=((CAFE[3] - CAFE[2]) / 2 - T - .45,))
+    # Five brick pilasters evenly across the cafe's west face (oblique source) with the windows between them.
+    wl = (CAFE[3] - CAFE[2]) / 2 - T - .45
+    wp = [-wl + k * wl / 2 for k in range(5)]
+    wh = [hole('Cafe west window 0', (wp[0] + wp[1]) / 2, 1.0, 2.0, 2.2), hole('Cafe west window 1', (wp[2] + wp[3]) / 2, 1.0, 2.0, 2.2)]
+    elevation(f, -(CAFE[3] - CAFE[2]) / 2 + T, (CAFE[3] - CAFE[2]) / 2 - T, wh, S_CROWN, pilasters=tuple(wp))
     f = face(*CAFE, 'north', 'cafe north')
     elevation(f, -(CAFE[1] - CAFE[0]) / 2, (CAFE[1] - CAFE[0]) / 2 - EPS, [], S_CROWN)
     roof(*ANCHOR, A_ROOF, units=((-30.0, 20.0), (-22.0, 24.0), (-12.0, 20.0), (-30.0, 8.0), (-10.0, 8.0)))
