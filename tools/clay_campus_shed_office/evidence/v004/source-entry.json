@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-campus-shed-office",
+  "variant_id": "clay-campus-shed-office-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "corporate_office_campus_headquarters/variant_3",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3.png",
+      "path": "sources/front.png",
+      "bytes": 1138281,
+      "sha256": "3ce78a7c03f7df3149a8f65eec4b94b873b4ef43095ddec1f1eb5cbb93d9d1ef"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 855073,
+      "sha256": "bc245ef2958bade88418458fbbcd86ab88d71d5497c6a47ccefbb8d6e495a10b"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 806931,
+      "sha256": "5fb4cae8ed1cf21d78edbe77e763541d06ef8f495ccad48e7a8d05918132c4be"
+    }
+  ]
+}

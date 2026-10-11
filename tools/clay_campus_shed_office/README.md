@@ -63,7 +63,7 @@ python tools/clay_evidence_preserve.py --candidate <artefact dir> --family tools
 | v001 (720 px, 8 spp, 8 views) | first geometry check | silhouette and sawtooth rhythm correct; 1.66 MB GLB over budget; palette too light |
 | v002 (1440 px, 32 spp, 18 views) | full roster | builder pass, aperture audit PASS, 18,490 triangles, 991,228-byte GLB; independent review **VISUAL_REWORK_REQUIRED**: 2 P0 (X-braces piercing the dock canopy; north door split by a column), 3 P1 (one-bay west face, canopy wrapped onto the south face, X-braces in every bay), 6 P2; record in `evidence/v002/independent-review.md` |
 | v003 (1440 px, 32 spp, 18 views) | rework from the v002 review: braces only in the corner and east-end bays with tie rods in the canopy bays, thin canopies, two west bays with a column and upper window, west-only entrance canopy, north door off the grid, duct on a mullion line, second dock stair | builder pass, aperture audit PASS, 18,872 triangles, 1,011,064-byte GLB; independent review **VISUAL_REWORK_REQUIRED**: 0 P0, 3 P1 (west face bays composed in mirror order against both elevation sources; entrance canopy spans one bay where the sources show one thin canopy across both west bays; entrance-canopy tie rods anchor into the upper window), 6 P2. All five v002 blockers verified fixed in the pixels. v003 is the last version permitted by the brief, so these three P1 stay open as recorded blockers; the candidate is not keeper-approved |
-| v004 (1440 px, 32 spp, 18 views + 4 phone boards) | rework of every open v003 finding (version cap lifted by the user; iterate to a clean review) | west face in source order (door and upper window in the north bay, shopfront under the X-brace in the corner bay meeting a corner column), one canopy across both bays with hangers on the column lines; review pending |
+| v004 (1440 px, 32 spp, 18 views + 4 phone boards) | rework of every open v003 finding (version cap lifted by the user; iterate to a clean review) | builder pass, aperture audit PASS, 18,898 triangles, 1,012,396-byte GLB; VISUAL_REWORK_REQUIRED, 0 P0 / 5 P1 / 7 P2 |
 
 ## Where the artefacts are
 
@@ -80,10 +80,11 @@ python tools/clay_evidence_preserve.py --candidate <artefact dir> --family tools
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (no further version permitted)
+## Open blockers after v004 (v005 in progress)
 
-- P1: rebuild the west face in source order: upper window plus entrance door in the
-  north bay, X-brace plus glazed shopfront in the corner bay, so the corner braces meet
-  at the corner column.
-- P1: one continuous thin entrance canopy across both west bays.
-- P1: canopy tie rods must land on solid cladding, not cross the upper window.
+- P1 southernmost sawtooth monitor sits one bay north of the office box; the sources raise it off the box over the window bay, with the terrace only over the X-brace corner bay (west face five bays, not six).
+- P1 entrance transom glazing band missing between the upper storey and the canopy in both west bays.
+- P1 canopy tie rod still crosses the upper window; anchors must sit at the upper-storey base rail.
+- P1 south ground storey charcoal cladding; the sources show light grey precast in the dock bays and under the corner window.
+- P1 interior camera outside the envelope, interior not legible.
+- P2: second south X-brace bay index; north gable bay without windows; no yellow dock nosing; dock-canopy rod anchors; shallow clerestory reveal; floating task chair; no downpipes.
