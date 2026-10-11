@@ -16,7 +16,7 @@ SLUG = 'clay-plus15-glass-office-tower'
 W = D = 36.0
 T = .30
 G0 = .15
-L1 = 6.4                     # lobby storey (double height)
+L1 = 14.0                    # colonnade base about four floor pitches tall with a mezzanine band (source front: columns span 4-5 pitches; the bridge docks inside it)
 FH, N = 3.65, 16
 ROOF = L1 + N * FH           # 64.8
 PAR = ROOF + 1.2
@@ -30,7 +30,6 @@ BRIDGE_LEN = 29.0
 PENT = [(-11.5, 11.5, -1.0, 11.0), (-11.5, -6.5, 8.0, 11.0)]   # tall penthouse block (second entry is the north-west notch, cut out)
 DECK = (-11.5, 11.5, -11.0, -1.0)                               # lower mechanical deck on the south side inside the fin screen
 PENT_H = 9.9                 # about 2.7 floor pitches, read from the oblique
-SCREEN_H = 2.2               # fin screen round the lower deck
 EPS = .002
 PALETTE = dict(wall=(.74, .75, .74), joint=(.60, .61, .60), trim=(.78, .79, .78),
     pale=(.80, .80, .78), stone=(.70, .69, .66), roof=(.78, .78, .76), sand=(.64, .62, .58),
@@ -50,8 +49,8 @@ def manifest(version):
         ('plus15_bridge', (-30.0, -36.0, 6.0), (-10.8, -D / 2 - 10.0, 6.2), 45),
         ('lobby_entry', (-6.0, -36.0, 2.4), (2.0, -D / 2 + RECESS, 3.0), 45),
         ('curtain_grid', (26.0, -30.0, 40.0), (W / 2, -6.0, 42.0), 50),
-        ('roof_terrace', (-50.0, -50.0, 82.0), (-6.0, 2.0, 66.0), 45),
-        ('crown_penthouse', (30.0, -46.0, 76.0), (0.0, 2.0, 68.0), 45),
+        ('roof_terrace', (-50.0, -50.0, 82.0 + L1 - 6.4), (-6.0, 2.0, 66.0 + L1 - 6.4), 45),
+        ('crown_penthouse', (30.0, -46.0, 76.0 + L1 - 6.4), (0.0, 2.0, 68.0 + L1 - 6.4), 45),
         ('interior', (-12.0, 7.0, FLOORS[8] + 1.6), (-9.0, -D / 2 - 1.0, FLOORS[8] + 1.2), 60),
         ('rear_service', (10.0, 40.0, 4.0), (0.0, D / 2, 3.5), 40)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -59,7 +58,7 @@ def manifest(version):
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='calgary_plus_15_connected_tower/variant_2 (plus15_contemporary_glass)',
         measurement_contract=dict(dimensions_m=dict(width=W, depth=D + BRIDGE_LEN, height=h),
-            observed_storeys=N + 1, storey_programme='double-height lobby on a colonnade, sixteen office floors, mechanical penthouse',
+            observed_storeys=N + 1, storey_programme='four-pitch colonnade base with a mezzanine, sixteen office floors, mechanical penthouse',
             plan='square 36 x 36 m read from the 520 x 520 px roof in the top view at 0.069 m/px; the Plus 15 bridge leaves the west end of the south face and crosses the street southward',
             facade='every floor: 1.05 m pale spandrel band and a 2.6 m dark vision band with mullions at 1.5 m; pale corner columns and a parapet band; lobby glazing recessed 3.2 m behind a colonnade of 1 m columns on a 6 m bay',
             levels_m=[G0, L1] + FLOORS[1:], roof_m=ROOF, parapet_m=PAR, storey_height_m=FH,
@@ -67,7 +66,7 @@ def manifest(version):
             roof='green roof beds around an glazed penthouse of close vertical fins 9.9 m high (about 0.65 of the roof) with a notch at the north-west, mechanical units on a lower south deck inside a fin screen, beds on three sides with an open east deck and a walkway ring',
             inferred='sixteen office floors read from the spandrel bands in the oblique view (16 to 18); north and west faces repeat the grammar; interiors are teaching assumptions'),
         roof_contract=dict(type='flat membrane with vegetated beds behind a 1.2 m parapet band; penthouse on a curb', datum_m=ROOF, crowns_m=[PAR, ROOF + PENT_H + .3]),
-        identity_contract=dict(owner='pale spandrel bands and close mullions over dark glass, corner columns, recessed double-height lobby on a colonnade, Plus 15 bridge, green roof with glazed penthouse'),
+        identity_contract=dict(owner='pale spandrel bands and close mullions over dark glass, corner columns, recessed four-pitch colonnade base with a mezzanine, Plus 15 bridge, green roof with glazed penthouse'),
         material_contract=dict(profile='source-palette clay: pale aluminium spandrels and mullions, dark reflective glass, pale concrete columns, pale metal penthouse with louvres, green roof beds', textured_keeper=False),
         programme_contract=dict(storeys=N + 1, ground='lobby, elevator bank and retail behind the colonnade', upper='open office floors around a central core', roof='mechanical penthouse and amenity green roof'),
         contact_contract=['Grade-zero slab and sidewalks', 'Colonnade columns from the slab to the first floor plate', 'Corner columns from grade to the parapet', 'Bridge bearing on the tower face and two street piers', 'Penthouse on a curb on the roof slab'],
@@ -158,7 +157,8 @@ def lobby_face(f, lo, hi, doors=False, bridge=False):
         else:
             framed(m, g, h, cols=4, rows=2 if h['h'] > 4 else 1, occupied='lobby and retail', kind='storefront')
     m.flush('lobby glazing')
-    for i in range(7):
+    g.part('Mezzanine band', (lo + hi) / 2, -.06, L1 * .52, span - 2 * RECESS - .02, .12, .55, 'concrete', 'colonnade', 0)
+    for i in range(1, 6):
         u = lo + .5 + (span - 1.0) * i / 6
         f.part('Colonnade column', u, RECESS * .3, (G0 + L1 - .32) / 2, COL, COL, L1 - .32 - G0, 'concrete', 'colonnade', 0)
     f.part('First floor edge', 0.0, (T + RECESS) / 2, L1 - .16, span - 2 * EPS, RECESS - T, .32, 'concrete', 'colonnade', 0)
@@ -188,15 +188,18 @@ def roof_and_penthouse():
     C.box('Roof membrane', (0, 0, ROOF + .004), (W - 2 * T - .02, D - 2 * T - .02, .008), 'membrane', 'roof', 0)
     # Green roof as the top view shows it: beds on the north (split by a path), west and south, an open deck on the east,
     # a walkway ring inside the parapet and paths between the beds and the penthouse.
-    beds = ((-15.0, -12.2, -12.6, 12.6), (-12.2, -1.0, 12.2, 15.0), (1.0, 12.2, 12.2, 15.0), (-12.2, -1.0, -15.0, -12.2), (1.0, 12.2, -15.0, -12.2))
+    # Beds fill the band from the walkway ring up to the penthouse and deck screens (top view): NW bed into the notch,
+    # shallower NE bed, and one L-bed down the west side and along the south, with a path cut through the west strip.
+    beds = ((-15.0, -1.0, 11.25, 15.0), (-15.0, -6.75, 8.25, 11.25), (1.0, 12.2, 11.25, 15.0),
+            (-15.0, -11.75, -15.0, 6.6), (-11.75, 8.0, -15.0, -11.25))
     for (x0, x1, y0, y1) in beds:
         C.box('Green roof bed', ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .18), (x1 - x0, y1 - y0, .36), 'soil', 'green roof', 0)
         C.box('Green roof planting', ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .40), (x1 - x0 - .2, y1 - y0 - .2, .08), 'planting', 'green roof', 0)
-        for k in range(int((x1 - x0) * (y1 - y0) / 6.0)):
+        for k in range(int((x1 - x0) * (y1 - y0) / 9.0)):
             A.shrub(x0 + .6 + ((k * 37) % 100) / 100 * (x1 - x0 - 1.2), y0 + .6 + ((k * 61) % 100) / 100 * (y1 - y0 - 1.2), ROOF + .40, .55)
     for name, (x0, x1, y0, y1) in (('Walkway ring west', (-17.6, -15.0, -17.6, 17.6)), ('Walkway ring east', (12.2, 17.6, -17.6, 17.6)),
                                     ('Walkway ring north', (-15.0, 12.2, 15.0, 17.6)), ('Walkway ring south', (-15.0, 12.2, -17.6, -15.0)),
-                                    ('Roof path north', (-1.0, 1.0, 11.0, 15.0)), ('Roof path south', (-1.0, 1.0, -15.0, -11.0))):
+                                    ('Roof path north', (-1.0, 1.0, 11.25, 15.0)), ('Roof path west', (-15.0, -11.75, 6.6, 8.25))):
         C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .02), (x1 - x0, y1 - y0, .04), 'pale', 'green roof', 0)
     zb = ROOF + .3
     (ax0, ax1, ay0, ay1), (nx0, nx1, ny0, ny1) = PENT
@@ -229,13 +232,16 @@ def roof_and_penthouse():
     # Lower mechanical deck on the south side: a fin screen on three sides (the fourth is the penthouse), units inside.
     dx0, dx1, dy0, dy1 = DECK
     C.box('Deck curb', ((dx0 + dx1) / 2, (dy0 + dy1) / 2, ROOF + .09), (dx1 - dx0 + .16, dy1 - dy0 + .16, .18), 'pale', 'rooftop plant', 0)
-    for (cx, cy), (nx, ny), ln in (((0.0, dy0), (0, -1), dx1 - dx0), ((dx1, (dy0 + dy1) / 2), (1, 0), dy1 - dy0), ((dx0, (dy0 + dy1) / 2), (-1, 0), dy1 - dy0)):
-        along = (abs(ny), abs(nx))
-        n = round(ln / 1.0)
-        for i in range(n + 1):
-            t = -ln / 2 + .06 + (ln - .12) * i / n
-            C.box('Screen fin', (cx + along[0] * t + nx * .10, cy + along[1] * t + ny * .10, ROOF + .18 + SCREEN_H / 2), (.10 + .08 * along[1], .10 + .08 * along[0], SCREEN_H), 'metal', 'rooftop plant', 0)
-        C.box('Screen rail', (cx + nx * .10, cy + ny * .10, ROOF + .18 + SCREEN_H + .04), (ln * along[0] + .12 * along[1], ln * along[1] + .12 * along[0], .08), 'metal', 'rooftop plant', 0)
+    deck_sides = (((0.0, dy0), (0, -1), dx1 - dx0), ((dx1, (dy0 + dy1) / 2), (1, 0), dy1 - dy0), ((dx0, (dy0 + dy1) / 2), (-1, 0), dy1 - dy0))
+    for (cx, cy), (nx, ny), ln in deck_sides:
+        finned_face(cx, cy, nx, ny, ln, zb + .36, zb + PENT_H / 2 - .15)
+        finned_face(cx, cy, nx, ny, ln, zb + PENT_H / 2 + .15, zb + PENT_H - .40)
+    # Bands round the deck screen at the penthouse transom and fascia heights; the side bands stop at the penthouse bands.
+    for name, z, h in (('Deck screen transom', zb + PENT_H / 2, .30), ('Deck screen fascia', zb + PENT_H - .2, .40)):
+        C.box(name, ((dx0 + dx1) / 2, dy0, z), (dx1 - dx0 + .28, .28, h), 'pale', 'penthouse', 0)
+        for xx in (dx0, dx1):
+            ya, yb = dy0 + .14 + EPS, ay0 - .14 - EPS
+            C.box(name, (xx, (ya + yb) / 2, z), (.28, yb - ya, h), 'pale', 'penthouse', 0)
     for (x, y, sz) in ((-3.2, -6.0, (2.6, 2.6, 1.7)), (3.2, -6.0, (2.6, 2.6, 1.7)), (-7.5, -4.5, (2.2, 3.0, 3.2)), (7.0, -8.0, (3.0, 2.0, 1.4))):
         C.box('Rooftop unit', (x, y, ROOF + .18 + sz[2] / 2), sz, 'hardware', 'rooftop plant', 0)
         C.rod('Rooftop fan', (x, y, ROOF + .18 + sz[2]), (x, y, ROOF + .18 + sz[2] + .2), .7, 'metal', 'rooftop plant', 14)

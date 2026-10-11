@@ -68,10 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (no further version permitted)
+## Open blockers after v004 (v005 in progress)
 
-- P1: floor 9 (the furnished interior floor) renders as a transparent lit band on all four faces because it has no shadow-box backing; every other floor is opaque dark glass. Fix is to back floor 9 too and light the interior for its camera only.
-- P1: penthouse still under-height and under-sized (about 1.8 storeys and 0.55 of the roof width against about 2.7 storeys and 0.65 in the oblique and top sources). Fix is a penthouse of about 2.7 floor pitches with two fin tiers and a transom, footprint about 0.65 of the roof.
-- P1: mechanical lower deck and units sit in a north-west notch; both sources put the units on the south (bridge) side inside a fin screen enclosing the full rectangle. The v002 review wording said north-west and the builder followed the wording rather than the pixels. Fix is units on a south deck inside a full-rectangle fin screen.
-- P1: green roof modelled as a continuous four-sided bed ring abutting the penthouse; the top source shows beds on the north (split by a path), west and south only, an open deck on the east, a walkway ring inside the parapet and paths. Fix is to model that layout.
-- P2 (recorded): black hairline gaps at a lobby transom and the rear corner glazing head; corner columns overshoot the parapet; lobby and bridge glass pale against the source's dark glass; bridge section slimmer than the locked front; flat beds without shrub masses; mullion bays slightly finer than the source; top camera frames the asset small.
+- P1 colonnade base about 1.5 floor pitches where the sources show about four to five with an intermediate band; the bridge docks into the first office floor instead of inside the colonnade.
+- P1 only the north part of the penthouse is a full-height glazed volume; the units stand behind a low picket rail where the sources wrap them in the same full-height glazed fins (one glazed box over about 0.6 of the roof).
+- P1 green roof beds are narrow planters covering about 14 percent of the roof; the sources fill the band from the walkway to the penthouse wall (about 35 percent), with a path through the west bed and a continuous south bed.
+- P2: shallow parapet band; loose glass leaf at the rear corner; doubled corner columns; transom gap at the lobby doors; flat interior window wall; coarse bridge mullions; front and board framing.
