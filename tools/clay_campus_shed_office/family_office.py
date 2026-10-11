@@ -18,12 +18,12 @@ from contract import subtract_openings
 
 SLUG = 'clay-campus-shed-office'
 L, D = 42.0, 30.0                # east-west length, north-south depth of the enclosed building
-BOX_D = 4.2                      # terrace (flat box roof) over the corner X-brace bay only; the tallest monitor rises off the box over the window bay
-TOOTH = (30.0 - BOX_D) / 4       # sawtooth monitor pitch (four teeth, 6.45 m)
+TOOTH = 30.0 / 5.45              # sawtooth monitor pitch (four teeth, 5.5 m)
+BOX_D = 1.45 * TOOTH             # terrace (flat box roof) about 1.45 monitor pitches deep (source top)
 T = .28                          # carrier thickness
 G0, U = .15, 4.30                # slab top, upper office floor
 EAVE = 8.40                      # box roof / terrace top and the low eave of every tooth
-TOP = [12.0, 10.4, 10.4, 10.4]   # clerestory crown per tooth, south to north
+TOP = [10.4, 10.4, 10.4, 10.4]   # clerestory crown per tooth, south to north (one consistent height)
 FRONT_Y, REAR_Y = -D / 2, D / 2
 WEST_X, EAST_X = -L / 2, L / 2
 BOX_N = FRONT_Y + BOX_D          # north edge of the terrace = south (clerestory) edge of tooth 0
@@ -204,12 +204,13 @@ def dock(f):
     f.part('Dock platform', (d0 + d1) / 2, -DOCK_OUT / 2 - .004, DOCK_H / 2, d1 - d0, DOCK_OUT, DOCK_H, 'stone', 'loading dock', 0)
     f.part('Dock edge bumper', (d0 + d1) / 2, -DOCK_OUT - .04, DOCK_H - .10, d1 - d0, .08, .16, 'trim', 'loading dock', 0)
     f.part('Dock safety nosing', (d0 + d1) / 2, -DOCK_OUT + .06, DOCK_H + .004, d1 - d0, .12, .008, 'safety', 'loading dock', 0)
-    ramp_len = 7.0
-    yt, yb = FRONT_Y - DOCK_OUT, FRONT_Y - DOCK_OUT - ramp_len
-    rx0, rx1 = d0 + .10, d0 + 1.70
-    C.prism('Dock ramp', [(yt, DOCK_H), (yb, 0), (yt, 0)], 'x', rx0, rx1, 'stone', 'loading dock')
-    for xx in (rx0 + .05, rx1 - .05):
-        C.railing('Ramp guard rail', (xx, yb + .3, DOCK_H * .3 / ramp_len), (xx, yt, DOCK_H), height=1.0, spacing=.25, role='hardware')
+    # Ramp parallel to the facade: from the dock's west end down westward to grade at the corner-bay column, set outboard
+    # of the roller-door bay with a 1 m level strip between the door and the ramp's yellow-edged outer kerb.
+    ramp_len = d0 - BAYS[1]
+    ry0, ry1 = FRONT_Y - DOCK_OUT, FRONT_Y - 1.0
+    C.prism('Dock ramp', [(d0, DOCK_H - EPS), (d0 - ramp_len, 0), (d0, 0)], 'y', ry0, ry1, 'stone', 'loading dock')
+    C.beam('Ramp safety kerb', (d0 - ramp_len + .3, ry0 + .06, .02 + .3 * DOCK_H / ramp_len), (d0, ry0 + .06, DOCK_H + .01), .10, .03, 'safety', 'loading dock')
+    C.railing('Ramp guard rail', (d0 - ramp_len + .4, ry0 + .06, .4 * DOCK_H / ramp_len), (d0, ry0 + .06, DOCK_H), height=1.0, spacing=.5, role='hardware')
     for i in range(4):
         h = DOCK_H * (4 - i) / 4
         C.box('Dock step', (d1 + .20 + i * .30, FRONT_Y - DOCK_OUT / 2, h / 2), (.30, DOCK_OUT, h), 'stone', 'loading dock', 0)
@@ -217,7 +218,7 @@ def dock(f):
     for i in range(4):
         h = DOCK_H * (4 - i) / 4
         C.box('Dock front step', (d0 + 6.0, FRONT_Y - DOCK_OUT - .15 - i * .30, h / 2), (1.2, .30, h), 'stone', 'loading dock', 0)
-    C.CONTACTS.append(dict(name='Dock ramp from apron grade to dock level, running out from the dock front clear of the roller door', grade_m=0, rise_m=DOCK_H, run_m=ramp_len))
+    C.CONTACTS.append(dict(name='Dock ramp from apron grade to dock level, parallel to the facade outboard of the roller door', grade_m=0, rise_m=DOCK_H, run_m=ramp_len))
     C.CONTACTS.append(dict(name='Dock steps at the east end', steps=4, grade_m=0))
 
 
@@ -228,15 +229,15 @@ def gable_end(f, entrance):
     holes = []
     if entrance:
         holes.append(hole('Corner bay shopfront', uu(-12.8), G0, 3.2, 2.70, cols=3, rows=2, kind='glazing'))
-        holes.append(hole('Entrance door', uu(-8.2), G0, 2.0, 2.6, kind='storefront'))
+        holes.append(hole('Entrance door', uu(-8.9), G0, 2.0, 2.6, kind='storefront'))
         holes.append(hole('Corner bay transom', uu(-12.8), 3.05, 3.2, .95, cols=4))       # transom tier between the canopy and the upper rail
-        holes.append(hole('Entrance bay transom', uu(-7.6), 3.05, 5.2, .95, cols=6))
-        holes.append(hole('Box upper window', uu(-7.6), U + .85, 3.4, 2.3, cols=3))     # under the tallest monitor's gable
+        holes.append(hole('Entrance bay transom', uu(-8.9), 3.05, 3.2, .95, cols=4))
+        holes.append(hole('Box upper window', uu(-8.9), U + .85, 3.0, 2.3, cols=3))
     else:
         holes.append(hole('East staff door', uu(-11.5), G0, 1.05, 2.25, kind='door'))
-        holes.append(hole('East box ground window', uu(-6.6), 1.1, 2.6, 2.2, cols=3))
+        holes.append(hole('East box ground window', uu(-4.2), 1.1, 2.6, 2.2, cols=3))
         holes.append(hole('East box upper window', uu(-12.9), U + .85, 3.0, 2.0, cols=3))
-        holes.append(hole('East monitor bay upper window', uu(-6.6), U + .85, 3.0, 2.0, cols=3))
+        holes.append(hole('East monitor bay upper window', uu(-4.2), U + .85, 3.0, 2.0, cols=3))
     # Shed windows under the second and third teeth, ground and upper, as read from the front view.
     for k in ((1, 2, 3) if entrance else (1, 2)):
         yc = TEETH_Y[k] + TOOTH / 2
@@ -268,6 +269,7 @@ def gable_end(f, entrance):
     if entrance:
         brace(f, uu(-10.8), uu(FRONT_Y + .20), U + .12, EAVE - .08)     # corner bay X-brace meeting the corner column
     plinth(f, u0, u1, holes)
+    precast(f, u0 + .30, u1 - .30, .60, 1.20, holes)     # light precast base up to the ground-window sills on every bay
     if not entrance:
         access_ladder(f, uu(-9.5))
     # Sawtooth gable crowns: one trapezoid per tooth, bearing on the carrier top.
@@ -304,7 +306,7 @@ def entrance_canopy_west(f):
     zc = 2.92
     f.part('Entrance canopy slab', (u0 + u1) / 2, -.80, zc, u1 - u0, 1.60, .10, 'trim', 'entrance canopy', 0)
     f.part('Entrance canopy fascia', (u0 + u1) / 2, -1.58, zc + .13, u1 - u0, .04, .32, 'trim', 'entrance canopy', 0)
-    f.part('Sign board', 8.2, -1.605, zc + .13, 2.6, .02, .24, 'pale', 'entrance canopy', 0)
+    f.part('Sign board', 8.9, -1.605, zc + .13, 2.6, .02, .24, 'pale', 'entrance canopy', 0)
     for uu in (u0 + .10, 10.8, -FRONT_Y - .20):        # hangers anchored at the upper-storey base rail, below every upper window
         C.beam('Canopy hanger rod', f.p(uu, -.05, U - .12), f.p(uu, -1.45, zc + .06), .035, .035, 'pale', 'entrance canopy')
 
@@ -336,8 +338,6 @@ def roofs():
         # Sloped corrugated monitor roof: thick plate from the clerestory crown down to the north eave.
         z_end = top - (top - EAVE - .02) * (y_end - y_hi) / TOOTH
         C.prism(f'Tooth {k} monitor roof', [(y_hi, top), (y_end, z_end), (y_end, z_end - .24), (y_hi, top - .24)], 'x', x0, x1, 'roof', 'sawtooth roofs')
-        for xx in range(int(x0) + 2, int(x1), 6):
-            C.beam('Roof corrugation rib', (xx, y_hi, top + .006), (xx, y_end, z_end + .006), .02, .012, 'joint', 'sawtooth roofs')
         # Clerestory band on the south edge of the tooth: frame, mullions and panes above the lower eave.
         clerestory(k, y_hi, EAVE, top - .24, x0, x1)
         if k:
@@ -351,7 +351,7 @@ def roofs():
     terrace_rail('Terrace south rail', (WEST_X + .30, rail_y, EAVE + .008), (EAST_X - .30, rail_y, EAVE + .008))
     terrace_rail('Terrace west rail', (WEST_X + .30, rail_y, EAVE + .008), (WEST_X + .30, BOX_N - .30, EAVE + .008))
     terrace_rail('Terrace east rail', (EAST_X - .30, rail_y, EAVE + .008), (EAST_X - .30, BOX_N - .30, EAVE + .008))
-    ux, uy = -15.5, FRONT_Y + 2.1
+    ux, uy = -15.5, FRONT_Y + BOX_D / 2
     C.box('Rooftop unit plinth', (ux, uy, EAVE + .15), (3.2, 2.4, .30), 'pale', 'rooftop plant', 0)
     C.box('Packaged rooftop unit', (ux, uy, EAVE + .30 + 1.05), (3.0, 2.2, 2.1), 'pale', 'rooftop plant', 0)
     C.rod('Rooftop unit fan cowl', (ux - .6, uy, EAVE + 2.40), (ux - .6, uy, EAVE + 2.62), .55, 'hardware', 'rooftop plant', 16)
@@ -370,8 +370,8 @@ def desk(x, y, z):
     C.box('Desk top', (x, y, z + .74), (1.8, .8, .05), 'timber', 'office furniture', 0)
     for dx in (-.8, .8):
         C.box('Desk leg panel', (x + dx, y, z + .36), (.05, .7, .72), 'trim', 'office furniture', 0)
-    C.box('Monitor', (x, y + .2, z + 1.05), (.6, .05, .36), 'trim', 'office furniture', 0)
-    C.box('Chair seat', (x, y - .85, z + .46), (.48, .48, .10), 'blue', 'office furniture', 0)
+    C.box('Monitor', (x, y + .2, z + .765 + .20), (.6, .05, .40), 'trim', 'office furniture', 0)      # seated on the desk top
+    C.box('Chair seat', (x, y - .85, z + .255), (.48, .48, .51), 'blue', 'office furniture', 0)         # solid seat block on the floor
     C.box('Chair back', (x, y - 1.05, z + .78), (.48, .07, .5), 'blue', 'office furniture', 0)
 
 
@@ -390,13 +390,17 @@ def clerestory(k, y, z0, z1, x0, x1):
     h = z1 - z0
     C.box(f'Tooth {k} clerestory sill', (0, y + .14, z0 + .08), (x1 - x0, .28, .16), 'trim', f'clerestory {k}', 0)
     C.box(f'Tooth {k} clerestory head', (0, y + .14, z1 - .06), (x1 - x0, .28, .12), 'trim', f'clerestory {k}', 0)
-    n = 8
+    n = 26                                   # narrow lights (sources: about 25-30 per monitor run)
     w = (x1 - x0) / n
+    verts, faces = [], []
     for i in range(n + 1):
-        xx = x0 + i * w
-        C.box(f'Tooth {k} clerestory mullion', (xx, y + .14, (z0 + z1) / 2), (.08 if i in (0, n) else .06, .20, h - .28), 'trim', f'clerestory {k}', 0)
-    for i in range(n):
-        C.box(f'Tooth {k} clerestory pane', (x0 + (i + .5) * w, y + .17, (z0 + z1) / 2), (w - .07, .01, h - .30), 'glass', f'clerestory {k}', 0)
+        cx, cy, cz = x0 + i * w, y + .14, (z0 + z1) / 2
+        sx, sy, sz = (.08 if i in (0, n) else .05) / 2, .10, (h - .28) / 2
+        o = len(verts)
+        verts.extend((cx + dx * sx, cy + dy * sy, cz + dz * sz) for dz in (-1, 1) for dx, dy in ((-1, -1), (1, -1), (1, 1), (-1, 1)))
+        faces.extend(tuple(o + j for j in face) for face in C.BOX_FACES)
+    C.mesh(f'Tooth {k} clerestory mullions', verts, faces, 'trim', f'clerestory {k}')
+    C.box(f'Tooth {k} clerestory glazing', (0, y + .17, (z0 + z1) / 2), (x1 - x0 - .08, .01, h - .30), 'glass', f'clerestory {k}', 0)
     C.box(f'Tooth {k} clerestory transom', (0, y + .12, (z0 + z1) / 2), (x1 - x0, .16, .05), 'trim', f'clerestory {k}', 0)
 
 
