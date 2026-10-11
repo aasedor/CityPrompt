@@ -68,10 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (no further version permitted)
+## Open blockers after v004 (v005 in progress)
 
-- P1: the entrance canopy fascia carries a continuous black band along its front and sides (two-shell canopy with an unassigned slot between plate and fascia); fix is one solid prism with concrete on every face.
-- P1: black unassigned caps remain at the four parapet corners (shrunk from v002, not removed); fix is concrete on every face of the corner-fin caps and trimming the brick stub beside them.
-- P1: fin stubs stand proud of the parapet at every bay line and corner, so the roofline reads crenellated where the oblique shows a continuous coping; fix is to stop the fins at the roof-slab underside or share one top face with the coping.
-- P1: the rear roller door is split by a full-height fin in front of its middle (a face no source shows); fix is to centre the door inside one bay.
-- P2 (recorded): brick hairline on the first-floor soffit; a stray pipe-like element under the west ground-floor soffit; penthouse annex on the east where the sources put it south, with a shallower roof fascia and no teal strip; brick frames around the balcony-bay windows; slab ends projecting past the fin faces; interior underexposed.
+- P1 outer-bay balcony plates stop at the fin fronts and the corner piers, so the tower reads as a framed box with recessed loggias; the sources show trays cantilevering past the fins and round the corners with glass end returns, notching the roof outline.
+- P2: soft white highlights in the glazing; rooftop units far from the penthouse; penthouse annex; brick ringing every centre-bay window instead of spandrel bands only; tree in front of the base corner; interior camera too close to the glass.

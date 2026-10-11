@@ -22,7 +22,8 @@ N = 12
 ROOF = L0 + N * FH             # 42.95
 PARAPET = ROOF + .70
 FIN_U = 3.4                    # fin walls at the bay lines (centre bay about 31 percent of the face)
-PLATE = 1.6                    # balcony projection
+PLATE = 1.6                    # fin depth (balcony recess between the fins)
+OUT = 2.2                      # balcony trays cantilever 0.6 m past the fin fronts and round the corners
 RECESS = 2.4                   # ground floor set back on the street faces
 PENT = (-4.5, 4.5, -1.0, 7.0)  # penthouse footprint
 ANNEX = (4.5, 8.0, 1.0, 5.0)   # lower annex beside it
@@ -140,11 +141,17 @@ def tower_face(f, span, street, inset=0.0, side=False):
             m.box('concrete', 0.0, (-proj + .36) / 2, (ROOF - .17 + PARAPET + .02) / 2, pw, proj + .36, PARAPET + .02 - (ROOF - .17))
         if i < N:
             for s in (-1, 1):
-                bw = half - FIN_U - .3
-                uc = s * (FIN_U + .15 + bw / 2)
-                m.box('concrete', uc, -(PLATE + .23) / 2, zf - .07, bw, PLATE - .23, .22)
-                m.box('glass', uc, -PLATE + .06, zf + .565, bw - .10, .02, 1.05)
-                m.box('hardware', uc, -PLATE + .06, zf + 1.115, bw - .06, .06, .05)
+                # Cantilevered tray: runs from just inside the bay fin past the fin's front and, on the street and rear faces,
+                # round the building corner; side-face trays abut the street/rear trays' inner face (no overlap, no slot).
+                # Glass balustrade along the front with glass returns at both ends (sources: serrated trays with glass returns).
+                a = FIN_U - .45
+                b = (half + OUT - .02) if not side else (half + .23 - EPS)
+                bw = b - a
+                uc = s * (a + bw / 2)
+                m.box('concrete', uc, -(OUT + .23) / 2, zf - .07, bw, OUT - .23, .22)
+                m.box('glass', uc, -OUT + .06, zf + .60, bw - .04, .02, 1.12)
+                for e in ((a + .03, b - .03) if not side else (a + .03,)):
+                    m.box('glass', s * e, -(OUT + .23) / 2 - .03, zf + .60, .02, OUT - .23 - .10, 1.12)
     m.flush('facade')
     # Fin walls at the bay lines, grade to parapet, projecting past the balcony plates' inner half.
     for u in (-FIN_U, FIN_U):
