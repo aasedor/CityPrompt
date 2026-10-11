@@ -228,11 +228,14 @@ def gable_end(f, entrance):
         return -y if entrance else y
     holes = []
     if entrance:
-        holes.append(hole('Corner bay shopfront', uu(-12.8), G0, 3.2, 2.70, cols=3, rows=2, kind='glazing'))
-        holes.append(hole('Entrance door', uu(-8.9), G0, 2.0, 2.6, kind='storefront'))
-        holes.append(hole('Corner bay transom', uu(-12.8), 3.05, 3.2, .95, cols=4))       # transom tier between the canopy and the upper rail
-        holes.append(hole('Entrance bay transom', uu(-8.9), 3.05, 3.2, .95, cols=4))
-        holes.append(hole('Box upper window', uu(-8.9), U + .85, 3.0, 2.3, cols=3))
+        # Two west bays on the office box (sources): one wide X-braced terrace bay with strip glazing over a glazed lower panel,
+        # and the bay under the south monitor's gable with the entrance doors and an upper multi-light window.
+        tb = (FRONT_Y + .20 + BOX_N) / 2; gb = (BOX_N + OFFICE_N) / 2
+        holes.append(hole('Corner bay shopfront', uu(tb), G0, 6.6, 2.70, cols=5, rows=2, kind='glazing'))
+        holes.append(hole('Entrance door', uu(gb), G0, 2.0, 2.6, kind='storefront'))
+        holes.append(hole('Corner bay transom', uu(tb), 3.05, 6.6, .95, cols=6))          # strip glazing between the canopy and the upper rail
+        holes.append(hole('Entrance bay transom', uu(gb), 3.05, 3.2, .95, cols=4))
+        holes.append(hole('Box upper window', uu(gb), U + .85, 3.0, 2.3, cols=3))
     else:
         holes.append(hole('East staff door', uu(-11.5), G0, 1.05, 2.25, kind='door'))
         holes.append(hole('East box ground window', uu(-4.2), 1.1, 2.6, 2.2, cols=3))
@@ -262,12 +265,12 @@ def gable_end(f, entrance):
         else:
             multilite(f, h['id'], h['u'], h['z'], h['w'], h['h'], cols=h.get('cols', 3), rows=2 if h['h'] > 2.1 else 1, curtain=h['id'].startswith('Box upper'))
     # Galvanised columns at the box corner line, every tooth valley, the bay line and the street corner; girts on the box portion.
-    for y in sorted(set(round(v, 3) for v in [BOX_N] + TEETH_Y[1:] + ([-10.8, FRONT_Y + .20] if entrance else []))):
+    for y in sorted(set(round(v, 3) for v in [BOX_N] + TEETH_Y[1:] + ([FRONT_Y + .20] if entrance else []))):
         column(f, uu(y), 0, EAVE + .25)
     girt(f, min(uu(FRONT_Y), uu(OFFICE_N)), max(uu(FRONT_Y), uu(OFFICE_N)), U - .05)
     girt(f, min(uu(FRONT_Y), uu(OFFICE_N)), max(uu(FRONT_Y), uu(OFFICE_N)), EAVE + .10)     # box top beam the tallest monitor's gable stands on
     if entrance:
-        brace(f, uu(-10.8), uu(FRONT_Y + .20), U + .12, EAVE - .08)     # corner bay X-brace meeting the corner column
+        brace(f, uu(BOX_N), uu(FRONT_Y + .20), U + .12, EAVE - .08)     # one X-braced terrace bay from the box column to the corner column
     plinth(f, u0, u1, holes)
     precast(f, u0 + .30, u1 - .30, .60, 1.20, holes)     # light precast base up to the ground-window sills on every bay
     if not entrance:
@@ -302,12 +305,12 @@ def access_ladder(f, u):
 
 def entrance_canopy_west(f):
     """Thin steel canopy over the entrance bay only, dying into the corner column."""
-    u0, u1 = 4.9, -FRONT_Y - .36
+    u0, u1 = -OFFICE_N + .20, -FRONT_Y - .36          # across both west bays, from the sawtooth/box junction to the corner column
     zc = 2.92
     f.part('Entrance canopy slab', (u0 + u1) / 2, -.80, zc, u1 - u0, 1.60, .10, 'trim', 'entrance canopy', 0)
     f.part('Entrance canopy fascia', (u0 + u1) / 2, -1.58, zc + .13, u1 - u0, .04, .32, 'trim', 'entrance canopy', 0)
-    f.part('Sign board', 8.9, -1.605, zc + .13, 2.6, .02, .24, 'pale', 'entrance canopy', 0)
-    for uu in (u0 + .10, 10.8, -FRONT_Y - .20):        # hangers anchored at the upper-storey base rail, below every upper window
+    f.part('Sign board', -(BOX_N + OFFICE_N) / 2, -1.605, zc + .13, 2.6, .02, .24, 'pale', 'entrance canopy', 0)
+    for uu in (u0 + .10, -BOX_N, -FRONT_Y - .20):        # hangers anchored at the upper-storey base rail, below every upper window
         C.beam('Canopy hanger rod', f.p(uu, -.05, U - .12), f.p(uu, -1.45, zc + .06), .035, .035, 'pale', 'entrance canopy')
 
 
