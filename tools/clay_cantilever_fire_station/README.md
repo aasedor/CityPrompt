@@ -68,9 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (v007 rendering)
+## Open blockers after v007 (stopped)
 
-1. **South-west corner.** It is a separate proud block; the sources fold the west sill band into the south cantilever.
-2. **Lit line.** It must run unbroken along the parapet, down the north-west corner, round the notch and along the sill band.
-3. **Clocks.** The sources show clocks with sign bands on the south and west faces.
-4. **South ground storey.** It needs four bays between solid grey piers from about 17 to 79 percent of the face.
+Stopped at v007 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v007. Open v007 findings, for a human to weigh:
+
+1. **Massing height (P0, new).** The reviewer reads the whole massing as too low. The sources give about 2.6 bay pitches of total height, with the red box about 1.5 times the ground storey; the render gives about 1.44 pitches. No earlier review raised this.
+2. **Loggia (P1).** A red head band sits over a shallow recess. The sources run the opening from the lit parapet line to the sill, with a deep soffit and floor.
+3. **West face (P1).** The north part below the loggia sill is an applied slab with a seam, so the lit line jogs and leaves a small gap at the notch riser. This survived the v006 and v007 fixes.
