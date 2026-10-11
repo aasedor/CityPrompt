@@ -68,9 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 rendering)
+## Open blockers after v006 (v007 rendering)
 
-1. **End gable base.** Remove the slate hip inside each end gable and bring the infill down to a fascia on the first-floor head.
-2. **Bay caps.** Each between-floor cap needs to be one hipped slate roof round the bay with mitred hips.
-3. **Rake trim.** The floating inner trim strip on every gable should go.
-4. **Side gable apexes.** Close the black holes at the east and west apexes.
+1. **Rake strip.** One bargeboard per rake must run cleanly from the finial to the foot.
+2. **Below-eave slate.** Clip the cross-gable roofs to the main eave line.

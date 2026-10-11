@@ -279,9 +279,8 @@ def gable(xc, y_wall, width, apex, eave, face_dir=-1, infill=True, finial=True, 
             f.panel('Blind recess arch surround', half_disc(bw / 2 + .10, bz + bh), -.03, -.008, 'pale', 'gables')
             f.part('Blind recess sill', 0.0, -.04, bz - .05, bw + .26, .12, .10, 'pale', 'gables', 0)
     for side in (-1, 1):
-        a = f.p(side * (hw + .15), -.22, eave + .12)
-        b = f.p(0, -.22, apex + .34)
-        C.beam('Bargeboard', a, b, .05, .30, barge_role, 'bargeboards')
+        # Flat bargeboard in the gable plane (a parallelogram band), identical on both rakes, foot to apex.
+        f.panel('Bargeboard', [(side * (hw + .15), eave + .12), (0.0, apex + .34), (0.0, apex + .02), (side * (hw + .15), eave - .20)][::side], -.27, -.20, barge_role, 'bargeboards')
         f.part('Gable kneeler', side * (hw + .05), -.14, eave - .05, .50, .44, .34, 'pale', 'bargeboards', 0)
     f.part('Gable apex block', 0.0, -.20, apex + .30, .34, .46, .46, barge_role, 'bargeboards', 0)
     if finial:
@@ -356,22 +355,22 @@ def roofs():
             gw, apex = GW, GAPEX
             slope = (apex - EAVE) / (gw / 2)
             gable(gx, FRONT_Y, gw, apex, EAVE, face_dir=-1, infill_role='green' if name == 'A' else 'sand', batten_role='pale' if name == 'A' else 'green')
-            C.prism(f'Cross gable roof {name}', [(gx - gw / 2 - .25, EAVE - .25 * slope), (gx, apex + .30), (gx + gw / 2 + .25, EAVE - .25 * slope),
-                                                 (gx + gw / 2 + .25, EAVE - .25 * slope - t), (gx, apex + .30 - t), (gx - gw / 2 - .25, EAVE - .25 * slope - t)],
+            C.prism(f'Cross gable roof {name}', [(gx - gw / 2 - .25, EAVE), (gx, apex + .30), (gx + gw / 2 + .25, EAVE),
+                                                 (gx + gw / 2 + .25, EAVE - t), (gx, apex + .30 - t), (gx - gw / 2 - .25, EAVE - t)],
                     'y', FRONT_Y - .30, FRONT_Y + (apex - EAVE) / PITCH + .3, 'roof', 'cross gables')
         else:
             gw, apex = 2.8, GAPEX - .5
             slope = (apex - EAVE) / (gw / 2)
             gable(xc, FRONT_Y, gw, apex, EAVE, face_dir=-1, infill=False, blind=True, barge_role='green')
-            C.prism(f'Cross gable roof {name}', [(xc - gw / 2 - .25, EAVE - .25 * slope), (xc, apex + .30), (xc + gw / 2 + .25, EAVE - .25 * slope),
-                                                 (xc + gw / 2 + .25, EAVE - .25 * slope - t), (xc, apex + .30 - t), (xc - gw / 2 - .25, EAVE - .25 * slope - t)],
+            C.prism(f'Cross gable roof {name}', [(xc - gw / 2 - .25, EAVE), (xc, apex + .30), (xc + gw / 2 + .25, EAVE),
+                                                 (xc + gw / 2 + .25, EAVE - t), (xc, apex + .30 - t), (xc - gw / 2 - .25, EAVE - t)],
                     'y', FRONT_Y - .30, FRONT_Y + (apex - EAVE) / PITCH + .3, 'roof', 'cross gables')
         # Rear cross gable over the rear wing of every unit, carried up to the ridge as a full cross wing.
         rw, rapex = 3.6, RIDGE - .2                          # every verge, kneeler and roof edge stays inside the party-wall plane
         xr = xc + (.8 if kind == 'bay_east' else -.8 if kind == 'bay_west' else 0.0)
         gable(xr, REAR_Y, rw, rapex, EAVE, face_dir=1, infill=False, finial=False)
-        C.prism(f'Rear gable roof {name}', [(xr - rw / 2 - .2, EAVE - .2 * (rapex - EAVE) / (rw / 2)), (xr, rapex + .30), (xr + rw / 2 + .2, EAVE - .2 * (rapex - EAVE) / (rw / 2)),
-                                           (xr + rw / 2 + .2, EAVE - .2 * (rapex - EAVE) / (rw / 2) - t), (xr, rapex + .30 - t), (xr - rw / 2 - .2, EAVE - .2 * (rapex - EAVE) / (rw / 2) - t)],
+        C.prism(f'Rear gable roof {name}', [(xr - rw / 2 - .2, EAVE), (xr, rapex + .30), (xr + rw / 2 + .2, EAVE),
+                                           (xr + rw / 2 + .2, EAVE - t), (xr, rapex + .30 - t), (xr - rw / 2 - .2, EAVE - t)],
                 'y', REAR_Y - (rapex - EAVE) / PITCH, REAR_Y + .30, 'roof', 'cross gables')
     for x in CHIMNEYS:
         C.box('Chimney stack', (x, 0, RIDGE - .6 + 1.2), (.70, 1.10, 2.4), 'wall', 'chimneys', 0)
