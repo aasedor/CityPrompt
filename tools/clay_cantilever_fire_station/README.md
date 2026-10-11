@@ -68,10 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 in progress)
+## Open blockers after v006 (v007 rendering)
 
-- P1 no lit line along the south cantilever's lower edge, the east step or round the south-west notch (the strips sat inside the slab volume); the sources show one continuous glowing line.
-- P1 glass clock tower stands wholly outside the south-east corner; the sources build it into the corner, straddling the east roof edge and proud of the south face.
-- P1 the small south upper windows sit at 66 to 82 percent of the face and are square; the sources show a staggered portrait group at about 30 to 45 percent, above bays 2 and 3.
-- P1 the south-west notch reads as a pasted-on red cube with seam lines; the sources show one folded red return with the lit edge.
-- P2: nine polish items recorded in the review.
+1. **South-west corner.** It is a separate proud block; the sources fold the west sill band into the south cantilever.
+2. **Lit line.** It must run unbroken along the parapet, down the north-west corner, round the notch and along the sill band.
+3. **Clocks.** The sources show clocks with sign bands on the south and west faces.
+4. **South ground storey.** It needs four bays between solid grey piers from about 17 to 79 percent of the face.
