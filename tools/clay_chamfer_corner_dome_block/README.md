@@ -68,8 +68,14 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (v007 in progress)
+## Open blockers after v007 (stopped)
 
-- P1 dome base: the dome stands on a plain stone drum set back behind a curved balustrade ring with T-shaped cresting posts; the sources show the bow wall and frieze rising solid to a strongly projecting cornice with continuous pierced copper cresting at the dome foot.
-- P1 the dome has no dormers; all three sources show round hooded dormers at about 45 percent of the dome height, three on the street half.
-- P2: twelve polish items recorded in the review.
+Stopped at v007 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB stays at v006 (0 P0 / 2 P1). Open v007 P1, for a human to weigh:
+
+1. **Dome foot.** The cresting is a ring of opaque dark panels over a plain stone band. The sources show a strongly projecting cornice disc with pierced copper scroll cresting on its lip. This survived the v006 and v007 fixes.
+2. **Dormers.** They are cream toothed rings with flat hood plates. The sources show smooth copper round dormers with curved bonnet hoods merging into the dome.
+3. **Dome ribs.** They are segmented and stand off the shell at the silhouette. The sources show about eight continuous seated ribs.
+4. **Chamfer bay.** It has three flat facets with brick strips beside it. The sources show a continuously bowed stone bay with five lights per level and one curved railing.
+5. **Front camera.** The front render is a wing elevation, not an eye-level view centred on the chamfer.
+
+The first three are partly a budget limit: a swept, pierced copper dome at source fidelity does not fit the 1 MiB GLB limit alongside the rest of the block.
