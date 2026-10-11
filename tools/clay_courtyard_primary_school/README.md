@@ -69,10 +69,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 in progress)
 
-- P0 pure-black vertical slot the full upper-window-band height at the entrance block's south-west upper corner above the canopy attachment (open-faced box dressed as a corner window; no source shows a window there).
-- P0 pure-black slot the full height of the main entrance recess between the concrete frame and the clay reveal, plus a sliver along the lintel soffit.
-- P1 entrance block ground floor is a solid clay box with a shallow recessed porch where the sources show an open concrete-framed passage under the overhanging upper floor (about 58 percent of the block width, post and lintel band, door deep inside, open west to the canopy bay; canopy lacks its south leg over the passage mouth).
-- P1 canopy west end face pure black (missing or inward-facing end face).
-- P2: shadowed inner north-east courtyard corner; fins over glass instead of on piers and none on the courtyard ground floor; corten storey glazing, coping and rails simplified; gravel and paved roofs indistinguishable, north-east patch lacks its inner rail; small black mitre notches at window-frame corners; one to two pixel black kerb and slab-edge lines.
+- P0 the two-storey east wing reaches the street line with the passage cut into its ground floor; the locked top and oblique show the wing stopping about 47 percent of the court depth short of the street, with a one-storey slatted corten canopy pad over the court strip and the wing width, and open fenced yard paving beyond it.
+- P1 the canopy's street corner rests on a slender post where the sources show a solid board-formed concrete box with closed south and east faces under the corten band.
+- P2: seven polish items recorded in the review.
