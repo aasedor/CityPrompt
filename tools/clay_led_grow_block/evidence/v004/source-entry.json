@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-led-grow-block",
+  "variant_id": "clay-led-grow-block-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "vertical_farm_indoor_agriculture/variant_1",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1.png",
+      "path": "sources/front.png",
+      "bytes": 1127172,
+      "sha256": "dcc6de1743ecbe970748a9330ef4242aad3cc9c7955c69681954c06ea14637c6"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 922578,
+      "sha256": "198be7669524d9cb1d9f34e73c2aa2e1514ac3fac9120b5c9a9c421906c80fa2"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 879218,
+      "sha256": "d30ef53d33d3f5d8dc43c236b394a09d664991038f4cac329294ae81127c1aca"
+    }
+  ]
+}

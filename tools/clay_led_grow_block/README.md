@@ -68,11 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (no further version permitted)
+## Open blockers after v004 (v005 in progress)
 
-- P0: move the recessed entrance to the face the sources show under the glasshouse
-  flanks, beds and penthouse (one face east of the current one), and give the south
-  plinth the lit slits; the roof already matches the top view.
-- P1: make the magenta rack light read at oblique and aerial angles (view-independent
-  emissive backboards or stronger wash lights behind the glazing).
-- P1: remove the slit window that cuts through the north plinth roller shutter.
+- P1 lit slot glass near-white pink (median saturation 0.13 at value 0.97) against the sources' magenta (saturation about 0.40 at value about 0.80); only the reveals carry the colour.
+- P1 south face a full-height grey concrete plinth with small slits; the sources carry the charcoal cladding to grade with each slot column continuing as unlit glazing, concrete only as a corner pier and on the east and north faces.
+- P1 the roof guard rail stops short of every corner, leaving gaps.

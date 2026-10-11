@@ -33,7 +33,7 @@ PALETTE = dict(wall=(.055, .058, .065), joint=(.03, .032, .036), trim=(.03, .03,
     foundation=(.30, .31, .32), glass=(.52, .56, .55), hardware=(.08, .085, .09),
     interior=(.72, .68, .60), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
     planting=(.24, .40, .14), soil=(.19, .14, .08), membrane=(.34, .36, .38),
-    led=(.95, .25, .80), rack=(.60, .62, .62), leaf=(.30, .55, .18))
+    led=(.62, .06, .55), rack=(.30, .16, .30), leaf=(.30, .55, .18))
 
 
 def manifest(version):
@@ -57,7 +57,7 @@ def manifest(version):
             observed_storeys=6, storey_programme='concrete plinth level plus five clad grow levels; fixed authored assembly',
             plan='near-square corner block, 540 x 560 px in the top view, streets to the west and south',
             slot_columns_per_face=6, slot_rows=5, slot_m=[SLOT_W, SLOT_H],
-            plinth='concrete ground floor 4.8 m with a glazed entrance near the south-west corner and narrow lit slits',
+            plinth='charcoal cladding to grade on the south and west faces with the slot columns continuing as unlit glazing and a concrete pier at the south-east corner; concrete plinth on the east face (entrance) and the north face (shutter)',
             roof='five gabled glasshouses with north-south ridges on the southern half, planter strip, open-topped mechanical penthouse at the north-west, four raised beds at the north-east, perimeter rail',
             levels_m=[G0] + LEVELS, roof_m=ROOF, parapet_m=PARAPET,
             source_conflict='front view shows four slot rows, oblique shows five; oblique governs. Oblique places the penthouse toward the north-east, top view at the north-west; top view governs plan.',
@@ -103,7 +103,7 @@ def slot(f, name, u, z, w, h):
         face_inward=list(f.n), occupied_space='grow rack room behind carrier', cols=1, rows=1))
 
 
-def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0)):
+def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0), clad_to_grade=False, corner_pier=False):
     """One clad elevation: plinth level, five slot rows of six columns, parapet band."""
     cols = [(-2.5 + i) * span / 7.0 for i in range(6)]
     holes = []
@@ -115,10 +115,19 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0)):
         ph.append(hole('Entrance recess', -span / 2 + 3.4, G0, 5.4, 4.0, kind='storefront'))
     if f.label == 'rear':
         ph.append(hole('Plinth loading door', span / 2 - 4.5, G0, 3.2, 3.6, kind='rollup'))
-    for u in plinth_windows:
-        ph.append(hole(f'{f.label} plinth slit {u:+.0f}', u, 1.4, .7, 2.2, kind='slit'))
+    if clad_to_grade:
+        for i, u in enumerate(cols):
+            if not (corner_pier and u > span / 2 - 2.9):
+                ph.append(hole(f'{f.label} ground slot {i}', u, .55, SLOT_W, SLOT_H, kind='slit'))
+    else:
+        for u in plinth_windows:
+            ph.append(hole(f'{f.label} plinth slit {u:+.0f}', u, 1.4, .7, 2.2, kind='slit'))
     # Plinth carrier (concrete) and clad carrier above it, both cut by their own openings.
-    f.wall(f.label + ' plinth carrier', -span / 2 + (0 if f.label in ('front', 'rear') else T), span / 2 - (0 if f.label in ('front', 'rear') else T), G0, LEVELS[0], depth=T, role='stone', holes=ph)
+    f.wall(f.label + ' plinth carrier', -span / 2 + (0 if f.label in ('front', 'rear') else T), span / 2 - (0 if f.label in ('front', 'rear') else T), G0, LEVELS[0], depth=T, role='wall' if clad_to_grade else 'stone', holes=ph)
+    if clad_to_grade:
+        seams(f, -span / 2 + .3, span / 2 - .3, G0 + EPS, LEVELS[0] - EPS, ph)
+    if corner_pier:
+        f.part(f.label + ' concrete corner pier', span / 2 - 1.30, -.03, (G0 + LEVELS[0]) / 2, 2.60, .06, LEVELS[0] - G0, 'stone', 'plinth', 0)
     f.wall(f.label + ' clad carrier', -span / 2 + (0 if f.label in ('front', 'rear') else T), span / 2 - (0 if f.label in ('front', 'rear') else T), LEVELS[0], CROWN, depth=T, role='wall', holes=holes)
     seams(f, -span / 2 + .3, span / 2 - .3, LEVELS[0] + EPS, CROWN - EPS, holes)
     for h in holes:
@@ -133,8 +142,8 @@ def face_grammar(f, span, entrance=False, plinth_windows=(-6.0, 6.0)):
         f.part(f'{f.label} LED backboard', 0, .62, lvl + 2.1, span - 2 * T - 1.0, .04, 3.8, 'led', 'grow racks', 0)
         C.bpy.ops.object.light_add(type='AREA', location=f.p(0, .45, lvl + 2.1))
         light = C.bpy.context.object; light.name = f'QA grow wash {f.label} {lvl:.0f}'
-        light.data.energy = 2600; light.data.shape = 'RECTANGLE'; light.data.size = span - 3.0; light.data.size_y = 3.4
-        light.data.color = (1.0, .32, .82)
+        light.data.energy = 550; light.data.shape = 'RECTANGLE'; light.data.size = span - 3.0; light.data.size_y = 3.4
+        light.data.color = (1.0, .18, .85)
         C.look_at(light, f.p(0, 1.5, lvl + 2.1))
     for h in ph:
         if h['kind'] == 'storefront':
@@ -211,10 +220,10 @@ def roof():
     pts = [(WEST_X + T / 2, FRONT_Y + T / 2), (EAST_X - T / 2, FRONT_Y + T / 2), (EAST_X - T / 2, REAR_Y - T / 2), (WEST_X + T / 2, REAR_Y - T / 2)]
     for i in range(4):
         a, b = pts[i], pts[(i + 1) % 4]
-        if i % 2:   # side runs stop short of the corner posts of the south and north runs
-            d = .3 if a[1] < b[1] else -.3
+        if i % 2:   # side runs meet the south and north runs' corner posts: only a 3 cm shortening so top rails never overlap
+            d = .03 if a[1] < b[1] else -.03
             a, b = (a[0], a[1] + d), (b[0], b[1] - d)
-        C.railing(f'Parapet rail {i}', (a[0], a[1], CROWN + .06), (b[0], b[1], CROWN + .06), height=1.0, spacing=.80, role='hardware', bottom=.05)
+        C.railing(f'Parapet rail {i}', (a[0], a[1], CROWN + .06), (b[0], b[1], CROWN + .06), height=1.0, spacing=.80, role='hardware', bottom=.05, end_posts=not (i % 2))
     # Five glasshouses on the southern half, with a wider walkway between the third and fourth.
     xs = [-8.6, -4.6, -0.6, 4.2, 8.2]
     y0, y1 = FRONT_Y + 1.4, FRONT_Y + 11.6
@@ -274,9 +283,9 @@ def floors():
     for lvl in [G0] + LEVELS:
         top = LEVELS[0] if lvl == G0 else lvl + 4.2
         for x, y in ((-7.0, -9.0), (7.0, -9.0), (-9.0, 0.0), (9.0, 0.0), (-7.0, 9.0), (7.0, 9.0)):
-            light = C.qa_room_light('Grow room', (x, y, top - .5), 140 if lvl != G0 else 60, 3.5)
+            light = C.qa_room_light('Grow room', (x, y, top - .5), 45 if lvl != G0 else 60, 3.5)
             if lvl != G0:
-                light.data.color = (1.0, .40, .85)
+                light.data.color = (1.0, .20, .85)
 
 
 def cut_stair_apertures():
@@ -310,8 +319,8 @@ def street_tree(x, y, z=.015, height=6.0, spread=1.3):
 def build():
     floors()
     f_front, f_right, f_rear, f_left = A.faces(W, D)
-    face_grammar(f_front, W, plinth_windows=(-7.5, -4.5, -1.5, 1.5, 4.5, 7.5))
-    face_grammar(f_left, D, plinth_windows=(-7.0, -2.0, 3.0))
+    face_grammar(f_front, W, clad_to_grade=True, corner_pier=True)
+    face_grammar(f_left, D, clad_to_grade=True)
     face_grammar(f_right, D, entrance=True, plinth_windows=(2.0, 6.0))
     face_grammar(f_rear, W, plinth_windows=(-6.0, 0.0))
     cut_stair_apertures()
