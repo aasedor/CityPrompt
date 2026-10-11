@@ -29,7 +29,7 @@ CANOPY_Z = 4.6
 LOT = (-36.0, 28.0, -33.0, 26.0)   # site extent
 EPS = .002
 PALETTE = dict(wall=(.58, .52, .40), joint=(.46, .41, .32), trim=(.08, .08, .085),
-    pale=(.70, .70, .68), stone=(.40, .36, .31), roof=(.80, .80, .78), sand=(.62, .57, .46),
+    pale=(.70, .70, .68), stone=(.30, .26, .22), roof=(.80, .80, .78), sand=(.62, .57, .46),
     foundation=(.30, .30, .30), glass=(.50, .55, .54), hardware=(.09, .09, .095),
     interior=(.74, .70, .60), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
     planting=(.30, .42, .18), soil=(.19, .14, .08), charcoal=(.22, .22, .23), accent=(.10, .16, .34), green=(.22, .40, .20),
@@ -49,6 +49,9 @@ def manifest(version):
         ('roof_plant', (-10.0, -36.0, 24.0), (2.0, -8.0, 14.0), 45),
         ('interior', (31.0, -19.8, 2.2), (12.0, -17.5, 2.0), 30),
         ('rear_entry', (-14.0, 34.0, 3.0), (4.0, 20.0, 2.4), 40)])
+    for c in cams:
+        if c['name'] == 'front':
+            c['location'] = (30.0, -50.0, 2.4); c['target'] = (-1.0, -6.0, 6.5); c['lens'] = 26; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -129,14 +132,37 @@ def room_rows(lo, hi, floors, exposed=None, z_ground=1.0):
 
 def elevation(f, lo, hi, holes, charcoal=None, extra=(), z1=CROWN, field='wall', band='accent'):
     """EIFS elevation: carrier in the field colour, panel joints, punched windows, accent band, parapet cap, stone base."""
-    f.wall(f.label + ' carrier', lo, hi, G0, z1, depth=T, holes=holes + list(extra), role=field)
-    joints(f, lo + .2, hi - .2, G0 + EPS, ROOF - 1.2 if z1 == CROWN else z1 - .5, holes + list(extra))
+    allh = holes + list(extra)
+    if z1 == CROWN:
+        zs = LV[0] - .05
+        low = [h for h in allh if h['z'] < zs]
+        f.wall(f.label + ' fieldstone storey carrier', lo, hi, G0, zs, depth=T, holes=low, role='stone')
+        f.wall(f.label + ' carrier', lo, hi, zs, z1, depth=T, holes=[h for h in allh if h['z'] >= zs], role=field)
+        joints(f, lo + .2, hi - .2, zs + .05, ROOF - 1.2, allh)
+        coursing(f, lo, hi, G0, zs, low)
+    else:
+        f.wall(f.label + ' carrier', lo, hi, G0, z1, depth=T, holes=allh, role=field)
+        joints(f, lo + .2, hi - .2, G0 + EPS, z1 - .5, allh)
     for h in holes:
         punched(f, h['id'], h['u'], h['z'], h['w'], h['h'])
     if z1 == CROWN:
         f.part('Accent band', (lo + hi) / 2, -.02, ROOF - .6, hi - lo - 2 * EPS, .04, 1.2 - .02, band, 'accent band', 0)
         f.part('Parapet cap band', (lo + hi) / 2, -.025, (ROOF + CROWN) / 2, hi - lo - 2 * EPS, .05, CROWN - ROOF - .02, 'cap', 'parapet cap', 0)
-    stone_base(f, lo, hi, holes + list(extra))
+    if z1 != CROWN:
+        stone_base(f, lo, hi, holes + list(extra))
+
+
+def coursing(f, lo, hi, z0, z1, holes, rows=5):
+    """Recessed fieldstone coursing lines on the stone storey, interrupted at openings (one mesh per face)."""
+    vertices, faces = [], []
+    for k in range(1, rows):
+        z = z0 + k * (z1 - z0) / rows
+        for a, b in subtract_openings(lo + .02, hi - .02, z - .007, z + .007, holes):
+            o = len(vertices)
+            vertices.extend([f.p(a, -.004, z - .007), f.p(b, -.004, z - .007), f.p(b, -.004, z + .007), f.p(a, -.004, z + .007)])
+            faces.append((o, o + 1, o + 2, o + 3))
+    if faces:
+        C.mesh(f.label + ' fieldstone coursing', vertices, faces, 'joint', 'stone storey')
 
 
 def stone_base(f, lo, hi, holes, height=1.0):
@@ -327,15 +353,57 @@ def floors():
              ('Sidewalk wing west', (wx0 - SW, wx0, wy0 - SW, wy1 + SW)), ('Sidewalk west', (sx0 - SW, sx0, wy1 + SW, ny0)),
              ('Sidewalk north wing west', (nx0 - SW, nx0, sy1, ny1 + SW)), ('Sidewalk north', (nx0 - SW, nx1 + SW, ny1, ny1 + SW)),
              ('Sidewalk north wing east', (nx1, nx1 + SW, sy1, ny1)), ('Sidewalk east', (sx1, sx1 + SW, sy0 - SW, sy1)))
-    for name, (x0, x1, y0, y1) in walks:
-        C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, .015 + .06), (x1 - x0, y1 - y0, .12), 'pale', 'site', 0)
+    for i, (name, (x0, x1, y0, y1)) in enumerate(walks):
+        hh = .12 + .004 * i
+        C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, .015 + hh / 2), (x1 - x0, y1 - y0, hh), 'pale', 'site', 0)
     for name, (ax, ay, bx, by) in (('Kerb south', (wx0 - SW, sy0 - SW, sx1 + SW, sy0 - SW)), ('Kerb east', (sx1 + SW, sy0 - SW, sx1 + SW, sy1)),
                                    ('Kerb wing south', (wx0 - SW, wy0 - SW, sx0, wy0 - SW)), ('Kerb wing west', (wx0 - SW, wy0 - SW, wx0 - SW, wy1 + SW)),
                                    ('Kerb north', (nx0 - SW, ny1 + SW, nx1 + SW, ny1 + SW)), ('Kerb north wing east', (nx1 + SW, sy1, nx1 + SW, ny1 + SW))):
         C.box(name, ((ax + bx) / 2, (ay + by) / 2, .015 + .07), (max(.12, abs(bx - ax)), max(.12, abs(by - ay)), .14), 'stone', 'site', 0)
     C.box('Road', (LOT[1] + 6.0, 0, .0075), (8.0, LOT[3] - LOT[2] + 10.0, .015), 'floor', 'site', 0)
-    C.box('Road kerb', (LOT[1] + 2.0, 0, .06), (.12, LOT[3] - LOT[2], .12), 'stone', 'site', 0)
-    C.box('Lawn verge east', (LOT[1] + 1.0, 0, .021), (1.9, LOT[3] - LOT[2], .012), 'planting', 'site', 0)
+    gy0, gy1 = -16.0, -9.5                                   # driveway opening in the verge and kerb, in line with the east canopy
+    for (ya, yb) in ((LOT[2], gy0), (gy1, LOT[3])):
+        C.box('Road kerb', (LOT[1] + 2.0, (ya + yb) / 2, .06), (.12, yb - ya, .12), 'stone', 'site', 0)
+        C.box('Lawn verge east', (LOT[1] + 1.0, (ya + yb) / 2, .021), (1.9, yb - ya, .012), 'planting', 'site', 0)
+    C.box('Driveway apron', (LOT[1] + 1.0, (gy0 + gy1) / 2, .017), (2.0, gy1 - gy0, .004), 'sand', 'site', 0)
+    # Drive lane centreline: in from the road under the east canopy, south past the tower (clear of the sidewalk kerb),
+    # west under the south canopy; corners filleted with quadratic curves so no quad folds back on itself.
+    corners = [(LOT[1] + .5, -12.75), (22.5, -12.75), (22.5, -25.3), (4.0, -25.3)]
+    pts = [corners[0]]
+    for i in range(1, len(corners) - 1):
+        (ax, ay), (bx, by), (cx_, cy_) = corners[i - 1], corners[i], corners[i + 1]
+        la, lc = math.hypot(ax - bx, ay - by), math.hypot(cx_ - bx, cy_ - by)
+        t1 = (bx + 5.5 * (ax - bx) / la, by + 5.5 * (ay - by) / la)   # tangent 5.5 m: curve radius stays above the 2.6 m half-width
+        t2 = (bx + 5.5 * (cx_ - bx) / lc, by + 5.5 * (cy_ - by) / lc)
+        for k in range(7):
+            t = k / 6
+            pts.append(((1 - t) ** 2 * t1[0] + 2 * (1 - t) * t * bx + t * t * t2[0], (1 - t) ** 2 * t1[1] + 2 * (1 - t) * t * by + t * t * t2[1]))
+    pts.append(corners[-1])
+    # One continuous strip with shared, mitred edge vertices: consecutive quads share an edge and never overlap.
+    clean = [pts[0]]
+    for p_ in pts[1:]:
+        if math.hypot(p_[0] - clean[-1][0], p_[1] - clean[-1][1]) > .05:
+            clean.append(p_)
+    hw = 2.6
+    vs, fs = [], []
+    for i, (px, py) in enumerate(clean):
+        ds = []
+        if i > 0:
+            ds.append((px - clean[i - 1][0], py - clean[i - 1][1]))
+        if i < len(clean) - 1:
+            ds.append((clean[i + 1][0] - px, clean[i + 1][1] - py))
+        nx = sum(-d[1] / math.hypot(*d) for d in ds); ny = sum(d[0] / math.hypot(*d) for d in ds)
+        ln = math.hypot(nx, ny); nx, ny = nx / ln, ny / ln
+        if len(ds) == 2:                                     # mitre: keep the strip's true width through the bend
+            d0 = (ds[0][0] / math.hypot(*ds[0]), ds[0][1] / math.hypot(*ds[0]))
+            cosh = max(.5, abs(nx * -d0[1] + ny * d0[0]))
+            nx, ny = nx / cosh, ny / cosh
+        vs += [(px - nx * hw, py - ny * hw, .019), (px + nx * hw, py + ny * hw, .019)]
+    for i in range(len(clean) - 1):
+        r0, l0, r1, l1 = 2 * i, 2 * i + 1, 2 * i + 2, 2 * i + 3
+        fs.append((r0, r1, l1, l0))
+    C.mesh('Drive loop paving', vs, fs, 'sand', 'site')
+    C.box('Drive island', (26.6, -21.0, .022), (2.4, 9.0, .010), 'planting', 'site', 0)
     for (x0, x1, y0, y1) in ((LOT[0] - 2.0, LOT[0], LOT[2] - 2.0, LOT[3] + 2.0), (LOT[0], LOT[1], LOT[3], LOT[3] + 2.0), (LOT[0], LOT[1], LOT[2] - 2.0, LOT[2])):
         C.box('Lawn verge', ((x0 + x1) / 2, (y0 + y1) / 2, .021), (x1 - x0, y1 - y0, .012), 'planting', 'site', 0)
     vertices, faces = [], []
@@ -353,7 +421,6 @@ def floors():
     while x < 22.0:
         stripe(x, LOT[3] - .3, x, LOT[3] - 3.3); stripe(x, LOT[2] + 2.0, x, LOT[2] + 7.0); x += 2.7
     C.mesh('Parking stripes', vertices, faces, 'pale', 'site')
-    C.box('Drive loop kerb', (sx1 + 2.0, (TOWER[2] - 8.0 + sy1) / 2, .06), (.12, sy1 - TOWER[2] + 8.0, .12), 'stone', 'site', 0)
     C.rod('Pylon sign post', (26.0, -30.0, 0), (26.0, -30.0, 6.0), .18, 'cap', 'site', 10)
     C.box('Pylon sign board', (26.0, -30.0, 6.8), (3.0, .3, 1.6), 'accent', 'site', 0)
     for lvl in LV:
@@ -370,9 +437,13 @@ def floors():
             A.bed(x, y + 3.0, z)
     C.box('Breakfast counter', (-22.0, -8.0, G0 + .5), (4.0, .8, 1.0), 'timber', 'wing', 0)
     C.box('Pool basin', (-22.0, -17.0, G0 + .02), (8.0, 4.0, .04), 'blue', 'wing', 0)
-    for i, (x, y) in enumerate(((LOT[0] + 4.5, -20.0), (LOT[0] + 4.5, -9.0), (LOT[0] + 16.5, 6.0), (LOT[0] + 16.5, -14.0), (9.4, LOT[3] - 1.8), (14.8, LOT[3] - 1.8), (-8.0, LOT[2] + 4.5))):
-        C.box('Parked car body', (x, y, .65), (1.8, 4.4, .9) if i < 4 else (4.4, 1.8, .9), 'charcoal' if i % 2 else 'pale', 'site', 0)
-        C.box('Parked car cabin', (x, y, 1.35), (1.6, 2.4, .6) if i < 4 else (2.4, 1.6, .6), 'trim', 'site', 0)
+    stall_y = lambda k: LOT[2] + 2.0 + 2.7 * k + 1.35        # west rows: stripes run east-west, cars nose-in along x
+    stall_x = lambda k: -6.0 + 2.7 * k + 1.35                  # north and south rows: stripes run north-south, cars along y
+    cars = [(LOT[0] + 4.5, stall_y(4), 'x'), (LOT[0] + 4.5, stall_y(8), 'x'), (LOT[0] + 16.5, stall_y(13), 'x'), (LOT[0] + 16.5, stall_y(6), 'x'),
+            (stall_x(5), LOT[3] - 1.8, 'y'), (stall_x(7), LOT[3] - 1.8, 'y'), (stall_x(0), LOT[2] + 4.5, 'y')]
+    for i, (x, y, ax) in enumerate(cars):
+        C.box('Parked car body', (x, y, .016 + .45), (4.4, 1.8, .9) if ax == 'x' else (1.8, 4.4, .9), 'charcoal' if i % 2 else 'pale', 'site', 0)
+        C.box('Parked car cabin', (x, y, .016 + .9 + .3), (2.4, 1.6, .6) if ax == 'x' else (1.6, 2.4, .6), 'trim', 'site', 0)
     A.small_tree(LOT[0] + 2.0, 20.0, .015, height=6.0, spread=1.1)
 
 

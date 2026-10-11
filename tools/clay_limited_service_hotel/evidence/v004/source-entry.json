@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-limited-service-hotel",
+  "variant_id": "clay-limited-service-hotel-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "highway_motor_hotel/variant_2",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/highway-motor-hotel/variant_2.png",
+      "path": "sources/front.png",
+      "bytes": 1164853,
+      "sha256": "3ef7d1d1b1c82a458abd554de592f225f06ad14c5b56b7ee8e36b71cbce1ae58"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/highway-motor-hotel/variant_2_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 854242,
+      "sha256": "443032c73db67168cf81932d2f6b2f357d7055436ec41764c4ba2c429a891591"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/highway-motor-hotel/variant_2_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 865338,
+      "sha256": "21f4b2c5722cb38843bad22f3523970b8e61e56669225240e92875a8afeda77d"
+    }
+  ]
+}
