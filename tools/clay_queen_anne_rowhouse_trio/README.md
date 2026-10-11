@@ -68,12 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 in progress)
+## Open blockers after v005 (v006 rendering)
 
-- P1 a slate slab and the rear cross-gable verge project past the west party-wall plane.
-- P1 the front slate pent wraps the east corner and stops half way along the flank over a black slot.
-- P1 a slate band at the eaves runs through the base of every gable and the bargeboard feet hang below it; the sources land the bargeboards on kneelers at the eaves.
-- P1 every gable apex shows a black notch between the bargeboards.
-- P1 front brick a uniform red field; the sources band each storey in cream with buff quoins and surrounds.
-- P1 one gable treatment reused for all three with an undersized infill and shutters; the sources give the end gables full-height timber infill with a round-headed window and the middle gable brick with a blind arch.
-- P1 the canted bays stop at the ground floor; the sources carry them through the first floor under the end gables.
+1. **End gable base.** Remove the slate hip inside each end gable and bring the infill down to a fascia on the first-floor head.
+2. **Bay caps.** Each between-floor cap needs to be one hipped slate roof round the bay with mitred hips.
+3. **Rake trim.** The floating inner trim strip on every gable should go.
+4. **Side gable apexes.** Close the black holes at the east and west apexes.

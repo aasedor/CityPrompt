@@ -34,7 +34,7 @@ DOOR_Z = .60                      # raised ground floor: three 200 mm risers fro
 DOOR_X = {'A': EAST_X - UW / 2 - 2.15, 'B': 0.0, 'C': WEST_X + UW / 2 + 2.15}
 BAY_X = {'A': EAST_X - UW / 2 + .7, 'C': WEST_X + UW / 2 - .7}
 GW, GAPEX = 3.6, RIDGE - .6       # front cross gables span the bay only (source), apex just below the main ridge
-CHIMNEYS = (EAST_X - T - .45, -UW / 2)  # east end and the party line between units B and C, as the sources show
+CHIMNEYS = (EAST_X - T - .35, -UW / 2)  # east end and the party line between units B and C, as the sources show
 EPS = .002
 PALETTE = dict(wall=(.36, .14, .09), joint=(.24, .10, .06), trim=(.30, .20, .10),
     pale=(.76, .70, .56), stone=(.42, .40, .36), roof=(.15, .16, .19), sand=(.62, .56, .44),
@@ -160,21 +160,40 @@ def bay_window(xc, y_wall, z1=EAVE - .25):
         sash(f, h[0]['id'], 0.0, .95, bw, 1.9, curtain=i == 1, lintel=False)
         sash(f, h[1]['id'], 0.0, U + .85, bw, 1.7, curtain=i == 1, lintel=False)
         f.part('Bay plinth band', 0.0, -.03, .45, length - .04, .34, .30, 'pale', 'string courses', 0)
-        f.part('Bay floor slate band', 0.0, -.10, U - .10, length + .10, .40, .22, 'roof', 'bay caps', 0)
         f.part('Bay head band', 0.0, -.04, z1 - .12, length - .04, .36, .22, 'pale', 'string courses', 0)
         faces.append(f)
     # Cream stone piers on the two outer bay corners (identity: banded brick with stone piers).
     for (px, py) in (pts[1], pts[2]):
         C.box(f'Bay pier {xc:+.1f}', (px, py, (G0 + z1 - .23) / 2), (.26, .26, z1 - .23 - G0), 'pale', 'bay piers', 0)
-    # Slate hip cap: ridge against the house wall, slopes falling to the three bay edges.
-    z0, zt = z1, z1 + .75
-    verts = [(pts[0][0], pts[0][1], z0), (pts[1][0], pts[1][1], z0), (pts[2][0], pts[2][1], z0), (pts[3][0], pts[3][1], z0),
-             (xc - half - .2, y_wall - .02, zt), (xc + half + .2, y_wall - .02, zt)]
-    tops = [(0, 1, 4), (1, 2, 5, 4), (2, 3, 5)]
-    base = [(3, 2, 1, 0)]
-    back = [(0, 4, 5, 3)]
-    C.mesh(f'Bay hip cap {xc:+.1f}', verts, tops + base + back, 'roof', 'bay caps')
-    C.box(f'Bay cap fascia {xc:+.1f}', (xc, y_wall - out + .05, z1 - .02), (2 * half + .10, .12, .16), 'green', 'bay caps', 0)
+    # Hipped slate cap between the floors: one mesh round the bay polygon, projecting 0.3 m with mitred hips at the cant
+    # corners, a fascia edge and its back edge on the facet faces.
+    off, zt, zb, fz = .30, U + .30, U - .12, .14
+    def outward(i):
+        (ax, ay), (bx, by) = pts[i], pts[i + 1]
+        l = math.dist((ax, ay), (bx, by)); return ((by - ay) / l, -(bx - ax) / l)
+    def meet(p1, d1, p2, d2):
+        den = d1[0] * d2[1] - d1[1] * d2[0]
+        t_ = ((p2[0] - p1[0]) * d2[1] - (p2[1] - p1[1]) * d2[0]) / den
+        return (p1[0] + d1[0] * t_, p1[1] + d1[1] * t_)
+    lines = []
+    for i in range(3):
+        nx_, ny_ = outward(i)
+        (ax, ay), (bx, by) = pts[i], pts[i + 1]
+        lines.append(((ax + nx_ * off, ay + ny_ * off), (bx - ax, by - ay)))
+    outer = [meet(lines[0][0], lines[0][1], (0, y_wall), (1, 0)), meet(*lines[0], *lines[1]), meet(*lines[1], *lines[2]), meet(lines[2][0], lines[2][1], (0, y_wall), (1, 0))]
+    verts = [(x, y, zt) for x, y in pts] + [(x, y, zb) for x, y in outer] + [(x, y, zb - fz) for x, y in outer] + [(x, y, zb - fz) for x, y in pts]
+    faces_ = []
+    for i in range(3):
+        faces_ += [(i, i + 1, 4 + i + 1, 4 + i), (4 + i, 4 + i + 1, 8 + i + 1, 8 + i), (8 + i, 8 + i + 1, 12 + i + 1, 12 + i)]
+    faces_ += [(0, 4, 8, 12), (3, 15, 11, 7)]
+    C.mesh(f'Bay hip cap {xc:+.1f}', verts, faces_, 'roof', 'bay caps')
+    # Under the end gable the bay finishes flat at the first-floor head with a green fascia board; the gable's timber infill
+    # comes down onto it (no slate inside the gable).
+    tv = [(x, y, z1) for x, y in pts] + [(x, y, z1 + .06) for x, y in pts]
+    C.mesh(f'Bay top {xc:+.1f}', tv, [(3, 2, 1, 0), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)], 'lead', 'bay caps')
+    for i in range(3):
+        (ax, ay), (bx, by) = pts[i], pts[i + 1]
+        C.beam(f'Bay head fascia {xc:+.1f}', (ax, ay - (.06 if i != 1 else 0), z1 + .06), (bx, by - .06, z1 + .06), .24, .10, 'green', 'bay caps')
 
 
 def front(f):
@@ -239,10 +258,9 @@ def gable(xc, y_wall, width, apex, eave, face_dir=-1, infill=True, finial=True, 
     f = C.Face((xc, y_wall, 0), (1 if s < 0 else -1, 0, 0), (0, -s, 0), f'gable {xc:+.1f} {"front" if s < 0 else "rear"}')
     hwz = lambda z: hw * (apex - z) / (apex - eave)
     if infill:
-        zc = eave + .35
-        f.panel('Gable brick', [(-hw, eave - EPS), (hw, eave - EPS), (hwz(zc), zc), (-hwz(zc), zc)], 0, T, 'wall', 'gables')
-        panel = f.panel('Gable timber infill', [(-hwz(zc), zc), (hwz(zc), zc), (0, apex)], .02, T, infill_role, 'gables')
-        f.part('Gable base cornice', 0.0, -.05, zc, 2 * hwz(zc) + .30, .16, .16, 'pale', 'gables', 0)
+        zc = eave
+        panel = f.panel('Gable timber infill', [(-hw, eave - EPS), (hw, eave - EPS), (0, apex)], .02, T, infill_role, 'gables')
+        f.part('Gable fascia board', 0.0, -.05, zc, 2 * hw + .30, .16, .20, 'green', 'gables', 0)
         ww, wh, wz = .7, 1.2, zc + .40
         f.cut(panel, f'Gable window {xc:+.1f} cut', 0.0, wz, ww, wh, depth=T)
         f.window(f'Gable window {xc:+.1f}', 0.0, wz, ww, wh, cols=1, rows=2, frame='trim', depth=T, sill=False)
@@ -264,7 +282,6 @@ def gable(xc, y_wall, width, apex, eave, face_dir=-1, infill=True, finial=True, 
         a = f.p(side * (hw + .15), -.22, eave + .12)
         b = f.p(0, -.22, apex + .34)
         C.beam('Bargeboard', a, b, .05, .30, barge_role, 'bargeboards')
-        C.beam('Rake trim', f.p(side * (hw + .1), -.10, eave + .14), f.p(0, -.10, apex + .30), .04, .12, 'green', 'bargeboards')
         f.part('Gable kneeler', side * (hw + .05), -.14, eave - .05, .50, .44, .34, 'pale', 'bargeboards', 0)
     f.part('Gable apex block', 0.0, -.20, apex + .30, .34, .46, .46, barge_role, 'bargeboards', 0)
     if finial:
@@ -372,13 +389,15 @@ def sides_and_rear(f_right, f_rear, f_left):
     for h in eh:
         sash(f_right, h['id'], h['u'], h['z'], h['w'], h['h'])
     f_right.panel('East end gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (span / 2, EAVE + .30), (0, RIDGE + .32), (-span / 2, EAVE + .30)], 0, T, 'wall', 'gables')
-    C.beam('East gable coping', f_right.p(-span / 2 - .05, -.02, EAVE + .34), f_right.p(0, -.02, RIDGE + .36), .14, T + .08, 'sand', 'gables')
-    C.beam('East gable coping', f_right.p(span / 2 + .05, -.02, EAVE + .34), f_right.p(0, -.02, RIDGE + .36), .14, T + .08, 'sand', 'gables')
+    C.beam('East gable coping', f_right.p(-span / 2 - .05, -.02, EAVE + .34), f_right.p(.12, -.02, RIDGE + .36 - .12 * PITCH), .14, T + .08, 'sand', 'gables')
+    C.beam('East gable coping', f_right.p(span / 2 + .05, -.02, EAVE + .34), f_right.p(-.12, -.02, RIDGE + .36 - .12 * PITCH), .14, T + .08, 'sand', 'gables')
+    f_right.part('East gable apex block', 0.0, -.02, RIDGE + .24, .62, .42, .56, 'sand', 'gables', 0)
     for z, h in ((3.30, .20), (U + .55, .18), (U + .85 + 1.8 + .30, .14), (.45, .30)):
         band(f_right, -span / 2, span / 2, z, h=h)
     f_left.wall('West party carrier', -span / 2, span / 2, G0, EAVE, depth=T)
     G.brick_courses(f_left, -span / 2 + .02, span / 2 - .02, G0, EAVE, [], spacing=.10)
     f_left.panel('West party gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (span / 2, EAVE + .30), (0, RIDGE + .32), (-span / 2, EAVE + .30)], 0, T, 'wall', 'gables')
+    f_left.part('West party gable apex block', 0.0, T / 2, RIDGE + .18, .70, T + .06, .44, 'wall', 'gables', 0)
     rh = []
     for name, xc, kind in UNITS:
         u = -xc
