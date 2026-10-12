@@ -33,7 +33,7 @@ PALETTE = dict(wall=(.17, .17, .18), joint=(.10, .10, .11), trim=(.08, .08, .09)
     pale=(.70, .68, .64), stone=(.62, .60, .56), roof=(.24, .24, .25), sand=(.60, .56, .50),
     foundation=(.46, .46, .45), glass=(.50, .56, .58), hardware=(.26, .27, .29),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.62, .42, .22), blue=(.14, .22, .28),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), cedar=(.66, .44, .22), tan=(.50, .40, .30),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), cedar=(.55, .33, .17), tan=(.50, .40, .30),
     membrane=(.30, .30, .31))
 
 
@@ -285,14 +285,17 @@ def volumes():
     for name, (x0, x1) in (('west', (X0, CX0)), ('east', (CX1, X1))):
         C.box(f'{name} top roof slab', ((x0 + x1) / 2, (Y0 + SB + Y1) / 2, RROOF - .12), (x1 - x0 - 2 * T, Y1 - Y0 - SB - 2 * T, .24), 'floor', 'roof', 0)
         C.box(f'{name} top membrane', ((x0 + x1) / 2, (Y0 + SB + Y1) / 2, RROOF + .004), (x1 - x0 - 2 * T - .02, Y1 - Y0 - SB - 2 * T - .02, .008), 'membrane', 'roof', 0)
+        C.box(f'{name} top fascia', ((x0 + x1) / 2, (Y0 + SB + Y1) / 2, RROOF + .30), (x1 - x0 + .10, Y1 - Y0 - SB + .10, .40), 'trim', 'roof', 0)
         C.qa_room_light(f'{name} top apartments', ((x0 + x1) / 2, 0.0, ROOF + 2.7), 70, 4.5)
         # Roof overhang 1.3 m past the top-storey street glazing; the outer part of the terrace stays open to the sky.
         # It abuts the set-back street carrier (never enters it) and stops 1 cm inside the wing's side planes.
-        oy0, oy1 = Y0 + SB - 1.3, Y0 + SB - EPS
-        C.box(f'{name} terrace overhang', ((x0 + x1) / 2, (oy0 + oy1) / 2, RROOF + .35), (x1 - x0 - .02, oy1 - oy0, .30), 'pale', 'roof', 0)
-        C.box(f'{name} terrace overhang fascia', ((x0 + x1) / 2, oy0 - .02, RROOF + .35), (x1 - x0 - .02, .04, .38), 'trim', 'roof', 0)
+        # Deep dark canopy cantilevering 2.2 m over the terrace, with a cedar soffit (source penthouses).
+        oy0, oy1 = Y0 + SB - 2.2, Y0 + SB - EPS
+        C.box(f'{name} terrace overhang', ((x0 + x1) / 2, (oy0 + oy1) / 2, RROOF + .40), (x1 - x0 - .02, oy1 - oy0, .40), 'trim', 'roof', 0)
+        C.box(f'{name} terrace overhang soffit', ((x0 + x1) / 2, (oy0 + oy1) / 2 + .02, RROOF + .195), (x1 - x0 - .06, oy1 - oy0 - .06, .01), 'cedar', 'roof', 0)
+        C.box(f'{name} terrace overhang fascia', ((x0 + x1) / 2, oy0 - .02, RROOF + .40), (x1 - x0 - .02, .04, .48), 'trim', 'roof', 0)
         # Street terrace in front of the top storey: pavers and a glass guard just inside the parapet.
-        C.box(f'{name} terrace pavers', ((x0 + x1) / 2, Y0 + T + (SB - T) / 2, ROOF + .012), (x1 - x0 - 2 * T - .1, SB - T - .05, .024), 'sand', 'terrace', 0)
+        C.box(f'{name} terrace decking', ((x0 + x1) / 2, Y0 + T + (SB - T) / 2, ROOF + .012), (x1 - x0 - 2 * T - .1, SB - T - .05, .024), 'cedar', 'terrace', 0)
         glass_rail((x0 + T + .2, Y0 + T + .25), (x1 - T - .2, Y0 + T + .25), ROOF)
     for x, y, w, d, zr in ((CC - 1.0, 10.5, 7.0, 3.2, RROOF), (13.5, 10.0, 5.0, 3.0, RROOF), (-13.5, 9.0, 4.0, 3.0, RROOF)):
         C.box('Mechanical enclosure', (x, y, zr + .02 + 1.2), (w, d, 2.4), 'wall', 'rooftop plant', 0)
@@ -368,17 +371,17 @@ def build():
     C.box('West wing tan end bay', (CX0 - .5, Y0 - .065, (L1 + ROOF) / 2), (.9, .11, ROOF - L1 - .4), 'tan', 'west wing south', 0)
     ribbed_face(south, CX1, hw, z0, z1, [(10.6, 'balcony', 3.2), (15.6, 'window', 4.4)], module='east wing south')
     ribbed_face(west, -hd + T, hd - T, z0, ROOF - .30, [(2.0, 'window', 1.0)], module='west upper', ribs=False)
-    ribbed_face(west, -hd + T, hd - SB, ROOF - .30 + EPS, RROOF + .5, [(-6.0, 'window', 2.4), (0.0, 'window', 2.4), (6.0, 'window', 2.4)], module='west top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(west, -hd + T, hd - SB, ROOF - .30 + EPS, RROOF + .5, [(-6.0, 'window', 2.4), (0.0, 'window', 2.4), (6.0, 'window', 2.4)], module='west top', role='cedar', ribs=False, levels=[ROOF])
     ribbed_face(west, hd - SB + EPS, hd - T, ROOF - .30 + EPS, ROOF + .5, [], module='west terrace parapet', ribs=False, levels=[])
     ribbed_face(east, -hd + T, hd - T, z0, ROOF - .30, [(-11.0, 'window', 1.8), (-7.0, 'window', 1.8), (-3.0, 'window', 1.8), (1.0, 'window', 1.8), (5.0, 'window', 1.8), (9.0, 'window', 1.8)], module='east upper', role='tan', ribs=False)
-    ribbed_face(east, -hd + SB, hd - T, ROOF - .30 + EPS, RROOF + .5, [(-7.0, 'window', 2.4), (-1.0, 'window', 2.4), (5.0, 'window', 2.4), (10.0, 'window', 1.8)], module='east top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(east, -hd + SB, hd - T, ROOF - .30 + EPS, RROOF + .5, [(-7.0, 'window', 2.4), (-1.0, 'window', 2.4), (5.0, 'window', 2.4), (10.0, 'window', 1.8)], module='east top', role='cedar', ribs=False, levels=[ROOF])
     ribbed_face(east, -hd + T, -hd + SB - EPS, ROOF - .30 + EPS, ROOF + .5, [], module='east terrace parapet', ribs=False, levels=[], role='tan')
     ribbed_face(north, -hw, -CX1 - T, z0, ROOF - .30, [(-15.0, 'window', 1.6), (-11.5, 'window', 2.4)], module='north east wing upper')
     ribbed_face(north, -CX0 + T, hw, z0, ROOF - .30, [(9.0, 'window', 2.4), (14.0, 'window', 1.6)], module='north west wing upper')
-    ribbed_face(north, -hw, -CX1 - T, ROOF - .30 + EPS, RROOF + .5, [(-15.0, 'window', 2.4), (-11.5, 'window', 2.4)], module='north east wing top', role='tan', ribs=False, levels=[ROOF])
-    ribbed_face(north, -CX0 + T, hw, ROOF - .30 + EPS, RROOF + .5, [(9.0, 'window', 2.4), (14.0, 'window', 2.4)], module='north west wing top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(north, -hw, -CX1 - T, ROOF - .30 + EPS, RROOF + .5, [(-15.0, 'window', 2.4), (-11.5, 'window', 2.4)], module='north east wing top', role='cedar', ribs=False, levels=[ROOF])
+    ribbed_face(north, -CX0 + T, hw, ROOF - .30 + EPS, RROOF + .5, [(9.0, 'window', 2.4), (14.0, 'window', 2.4)], module='north west wing top', role='cedar', ribs=False, levels=[ROOF])
     ribbed_face(north, -CX1 - T, -CX0 + T, z0, ROOF - .30, [(-5.0, 'window', 1.6), (0.0, 'window', 1.6)], module='north rear bar upper')
-    ribbed_face(north, -CX1 - T, -CX0 + T, ROOF - .30 + EPS, RROOF + .5, [(-5.0, 'window', 2.4), (0.0, 'window', 2.4)], module='north rear bar top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(north, -CX1 - T, -CX0 + T, ROOF - .30 + EPS, RROOF + .5, [(-5.0, 'window', 2.4), (0.0, 'window', 2.4)], module='north rear bar top', role='cedar', ribs=False, levels=[ROOF])
     # Rear bar side walls above the wing roofs (and the hollow between the wing and rear plates below them).
     for sx, lbl in ((CX0, 'rear bar west side'), (CX1, 'rear bar east side')):
         if sx < 0:
@@ -398,8 +401,8 @@ def build():
     hc = (CY1 - Y0) / 2
     ribbed_face(cw, -hc + T, hc - EPS, z0, ROOF - .30, [(-5.5, 'balcony', 3.2), (-1.0, 'window', 1.6), (3.0, 'window', 2.2), (7.0, 'window', 1.6)], module='courtyard west upper', role='tan', ribs=False)
     ribbed_face(ce, -hc + EPS, hc - T, z0, ROOF - .30, [(-7.0, 'window', 1.6), (-3.0, 'window', 2.2), (1.0, 'window', 1.6), (5.5, 'balcony', 3.2)], module='courtyard east upper', role='tan', ribs=False)
-    ribbed_face(cw, -hc + SB, hc - EPS, ROOF - .30 + EPS, RROOF + .5, [(-2.5, 'window', 2.4), (3.0, 'window', 2.4), (7.5, 'window', 1.8)], module='courtyard west top', role='tan', ribs=False, levels=[ROOF])
-    ribbed_face(ce, -hc + EPS, hc - SB, ROOF - .30 + EPS, RROOF + .5, [(-7.5, 'window', 1.8), (-3.0, 'window', 2.4), (2.5, 'window', 2.4)], module='courtyard east top', role='tan', ribs=False, levels=[ROOF])
+    ribbed_face(cw, -hc + SB, hc - EPS, ROOF - .30 + EPS, RROOF + .5, [(-2.5, 'window', 2.4), (3.0, 'window', 2.4), (7.5, 'window', 1.8)], module='courtyard west top', role='cedar', ribs=False, levels=[ROOF])
+    ribbed_face(ce, -hc + EPS, hc - SB, ROOF - .30 + EPS, RROOF + .5, [(-7.5, 'window', 1.8), (-3.0, 'window', 2.4), (2.5, 'window', 2.4)], module='courtyard east top', role='cedar', ribs=False, levels=[ROOF])
     ribbed_face(cw, -hc + T, -hc + SB - EPS, ROOF - .30 + EPS, ROOF + .5, [], module='courtyard west terrace parapet', ribs=False, levels=[])
     ribbed_face(ce, hc - SB + EPS, hc - T, ROOF - .30 + EPS, ROOF + .5, [], module='courtyard east terrace parapet', ribs=False, levels=[])
     # Set-back street faces of the top storey, behind the terraces.

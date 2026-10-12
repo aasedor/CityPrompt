@@ -169,6 +169,8 @@ def south(f):
     for x, y in ((WEST_X, FRONT_Y), (EAST_X, FRONT_Y)):
         sx = 1 if x < 0 else -1
         C.box('Galvanised corner column', (x - sx * .07, y - .07, (EAVE + .25) / 2), (.50, .50, EAVE + .25), 'pale', 'portal frame', 0)
+        # Corner cap plate: closes the plan notch between the column head, the box top beams and the roof slab edge.
+        C.box('Corner cap plate', (x + sx * .22, y + .22, EAVE + .03), (.95, .95, .48), 'pale', 'portal frame', 0)   # top 2 cm proud of the column and beam tops: no coplanar faces
     for i in range(6):
         girt(f, b[i], b[i + 1], U - .05)
         girt(f, b[i], b[i + 1], EAVE + .10)
@@ -196,9 +198,10 @@ def dock(f):
     u0, u1 = BAYS[1], EAST_X
     f.part('Dock canopy slab', (u0 + u1) / 2, -CANOPY_OUT / 2, CANOPY_Z + .06, u1 - u0, CANOPY_OUT, .12, 'trim', 'dock canopy', 0)
     f.part('Dock canopy fascia', (u0 + u1) / 2, -CANOPY_OUT + .03, CANOPY_Z + .20, u1 - u0, .06, .36, 'trim', 'dock canopy', 0)
-    for u in BAYS[1:]:
-        uu = min(u, EAST_X - .40)
-        C.beam('Canopy tie rod', f.p(uu, -.07, EAVE - .10), f.p(uu, -CANOPY_OUT + .30, CANOPY_Z + .14), .05, .05, 'pale', 'dock canopy')
+    # In-plane full-bay diagonal rods over the canopy, column head to the next column at canopy level (locked front).
+    for i in range(1, 6):
+        a, b2 = BAYS[i], min(BAYS[i + 1], EAST_X - .40)
+        C.beam('Canopy bay diagonal', f.p(a + .20, -.10, EAVE - .12), f.p(b2 - .20, -.10, CANOPY_Z + .32), .05, .05, 'pale', 'dock canopy')
     # Raised dock from bay 3 to bay 6 with a ramp rising eastward across bay 2 and steps at the east end.
     d0, d1 = BAYS[2], EAST_X - 1.6
     f.part('Dock platform', (d0 + d1) / 2, -DOCK_OUT / 2 - .004, DOCK_H / 2, d1 - d0, DOCK_OUT, DOCK_H, 'stone', 'loading dock', 0)
@@ -206,7 +209,7 @@ def dock(f):
     f.part('Dock safety nosing', (d0 + d1) / 2, -DOCK_OUT + .06, DOCK_H + .004, d1 - d0, .12, .008, 'safety', 'loading dock', 0)
     # Ramp parallel to the facade: from the dock's west end down westward to grade at the corner-bay column, set outboard
     # of the roller-door bay with a 1 m level strip between the door and the ramp's yellow-edged outer kerb.
-    ramp_len = d0 - BAYS[1]
+    ramp_len = 2.0 * 7.0                 # two bays long, down westward to the corner-bay column (sources: 2 to 2.5 bays)
     ry0, ry1 = FRONT_Y - DOCK_OUT, FRONT_Y - 1.0
     C.prism('Dock ramp', [(d0, DOCK_H - EPS), (d0 - ramp_len, 0), (d0, 0)], 'y', ry0, ry1, 'stone', 'loading dock')
     C.beam('Ramp safety kerb', (d0 - ramp_len + .3, ry0 + .06, .02 + .3 * DOCK_H / ramp_len), (d0, ry0 + .06, DOCK_H + .01), .10, .03, 'safety', 'loading dock')
@@ -342,6 +345,8 @@ def roofs():
         z_end = top - (top - EAVE - .02) * (y_end - y_hi) / TOOTH
         C.prism(f'Tooth {k} monitor roof', [(y_hi, top), (y_end, z_end), (y_end, z_end - .24), (y_hi, top - .24)], 'x', x0, x1, 'roof', 'sawtooth roofs')
         # Clerestory band on the south edge of the tooth: frame, mullions and panes above the lower eave.
+        for xx in range(int(x0) + 1, int(x1), 2):
+            C.beam('Roof corrugation rib', (xx, y_hi, top + .006), (xx, y_end, z_end + .006), .02, .012, 'joint', 'sawtooth roofs')
         clerestory(k, y_hi, EAVE, top - .24, x0, x1)
         if k:
             C.box(f'Tooth {k - 1} eave gutter', (0, y_hi - .13, EAVE - .32), (L - 2 * T, .26, .16), 'pale', 'gutters', 0)

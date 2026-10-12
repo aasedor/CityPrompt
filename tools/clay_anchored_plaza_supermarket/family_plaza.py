@@ -53,7 +53,7 @@ def manifest(version):
         ('rear_service', (10.0, 46.0, 4.0), (-10.0, ANCHOR[3], 3.0), 40)])
     for c in cams:
         if c['name'] == 'front':                    # source front: elevated, the plaza across the frame, anchor and tower dominant
-            c['location'] = (-12.0, -96.0, 14.0); c['target'] = (-8.0, 4.0, 4.0); c['lens'] = 30; c['whole'] = False
+            c['location'] = (-8.0, -98.0, 14.0); c['target'] = (-1.0, 4.0, 4.0); c['lens'] = 26; c['whole'] = False   # whole L including the end-cap's south-east corner
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -169,8 +169,9 @@ def anchor():
     f.part('Anchor east brick mass', (b1 + .9 + (x1 - x0) / 2 - EPS) / 2, -.07, (G0 + A_CROWN - .8) / 2, (x1 - x0) / 2 - EPS - b1 - .9, .14, A_CROWN - .8 - G0, 'stone', 'brick mass', 0)
     f.part('Green lintel band', (b0 + EPS + b1) / 2, -.04, G0 + 3.4 + .55, b1 - b0 - EPS, .08, 1.1, 'green', 'green portal', 0)
     f.part('Green pier', b1 + .45, -.10, (G0 + GZ) / 2, .9, .20, GZ - G0, 'green', 'green portal', 0)
-    f.part('Anchor sign band', (b0 + EPS + b1) / 2, -.03, A_CROWN - 1.6, b1 - b0 - .4, .06, 1.0, 'cream', 'sign band', 0)
-    f.part('Anchor sign lettering', (b0 + b1) / 2, -.07, A_CROWN - 1.6, min(14.0, b1 - b0 - 2.0), .02, .45, 'green', 'sign band', 0)
+    # One green sign panel over the east bay taking about half the upper facade (sources), cream lettering bar on it.
+    f.part('Anchor sign panel', (b0 + EPS + b1) / 2, -.03, (G0 + 3.4 + 1.1 + .6 + A_CROWN - .9) / 2, b1 - b0 - .4, .06, A_CROWN - .9 - (G0 + 3.4 + 1.1 + .6), 'green', 'sign band', 0)
+    f.part('Anchor sign lettering', (b0 + b1) / 2, -.07, (G0 + 3.4 + 1.1 + .6 + A_CROWN - .9) / 2, min(14.0, b1 - b0 - 2.0), .02, .55, 'cream', 'sign band', 0)
     f.part('Anchor canopy', (b0 + EPS + b1) / 2, -1.2, CANOPY_Z + .2, b1 - b0 - EPS, 2.4, .30, 'cap', 'canopies', 0)
     for k in range(1, 4):                                   # tie rods from the wall above the canopy down to its fascia
         u = b0 + k * (b1 - b0) / 4
@@ -228,7 +229,10 @@ def anchor():
     roof(*ANCHOR, A_ROOF, units=((-30.0, 20.0), (-22.0, 24.0), (-12.0, 20.0), (-30.0, 8.0), (-10.0, 8.0)))
     lx0, lx1, ly0, ly1 = LOWER
     f = face(*LOWER, 'west', 'lower tier west')
-    elevation(f, -(ly1 - ly0) / 2 + T, (ly1 - ly0) / 2 - EPS, [hole('Lower tier west window', 2.0, 1.4, 3.0, 2.0)], L_CROWN)   # runs to the cafe's north wall line
+    # The lower tier's west face continues the cafe's pilaster rhythm northward (the sources read both as one west face).
+    lw0, lw1 = -(ly1 - ly0) / 2 + T, (ly1 - ly0) / 2 - EPS
+    lp = [lw0 + .45 + k * (lw1 - lw0 - .9) / 4 for k in range(5)]
+    elevation(f, lw0, lw1, [hole('Lower tier west window', (lp[1] + lp[2]) / 2, 1.4, 2.0, 2.0), hole('Lower tier west window 1', (lp[3] + lp[4]) / 2, 1.4, 2.0, 2.0)], L_CROWN, pilasters=tuple(lp))
     f = face(*LOWER, 'north', 'lower tier north')
     elevation(f, -(lx1 - lx0) / 2, (lx1 - lx0) / 2 - EPS, [hole('Lower tier rear door', 3.0, G0, 1.1, 2.4, kind='door')], L_CROWN)
     f = face(*LOWER, 'south', 'lower tier south')
@@ -277,8 +281,9 @@ def inline_and_endcap():
     for u in pil[:-1] + [u_start + .5, u_start + 27.5]:
         C.beam('Canopy bracket', f.p(u, -.05, CANOPY_Z + 1.6), f.p(u, -2.2, CANOPY_Z + .3), .06, .06, 'hardware', 'canopies')
     f = face(*ENDCAP, 'south', 'endcap south')
-    sh = [hole('Endcap south window', -2.0, 1.0, 4.0, 2.2, cols=3)]
-    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, sh, S_CROWN, sign_band=True, pilasters=(-(x1 - x0) / 2 + .45,))
+    # Three-bay glazed storefront on the south face (oblique and top sources), brick piers between and at the west corner.
+    sh = [hole(f'Endcap south storefront {i}', u, G0, 4.6, 3.2, cols=3) for i, u in enumerate((-5.5, 0.0, 5.5))]
+    elevation(f, -(x1 - x0) / 2, (x1 - x0) / 2, sh, S_CROWN, sign_band=True, pilasters=(-(x1 - x0) / 2 + .45, -2.75, 2.75))
     f.part('Endcap south-east brick panel', (x1 - x0) / 2 - 1.6, -.07, (G0 + S_CROWN - .8) / 2, 3.2 - EPS, .14, S_CROWN - .8 - G0, 'stone', 'brick mass', 0)
     f = face(*ENDCAP, 'east', 'endcap east')
     eh = [hole(f'Endcap rear door {i}', -16.0 + i * 8.0, G0, 1.1, 2.4, kind='door') for i in range(4)]

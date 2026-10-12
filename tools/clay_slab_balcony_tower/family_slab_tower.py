@@ -167,6 +167,8 @@ def corner_fins():
             zt = FIN_TOP
             C.box('Corner fin', (x, y, (G0 + zt) / 2), (PLATE + .18, .32, zt - G0), 'concrete', 'fins', 0)
             C.box('Corner fin return', (sx * (W / 2 - .16), sy * (D / 2 + PLATE / 2 - .22), (G0 + zt) / 2), (.32, PLATE + .18, zt - G0), 'concrete', 'fins', 0)
+            # Solid cap over the L where the two corner plates meet, so the hollow corner pier is closed at fin-head height.
+            C.box('Corner fin cap', (sx * (W / 2 + (PLATE + .18) / 2 - .32), sy * (D / 2 + (PLATE + .18) / 2 - .32), zt + .04), (PLATE + .50, PLATE + .50, .08), 'concrete', 'fins', 0)
 
 
 def ground_floor(f_front, f_right, f_rear, f_left):

@@ -31,8 +31,8 @@ FRONT_Y, REAR_Y, WEST_X, EAST_X = -D / 2, D / 2, -W / 2, W / 2
 GARDEN, YARD = 4.2, 6.0
 UNITS = [('A', EAST_X - UW / 2, 'bay_east'), ('B', 0.0, 'middle'), ('C', WEST_X + UW / 2, 'bay_west')]
 DOOR_Z = .60                      # raised ground floor: three 200 mm risers from grade
-DOOR_X = {'A': EAST_X - UW / 2 - 2.15, 'B': 0.0, 'C': WEST_X + UW / 2 + 2.15}
-BAY_X = {'A': EAST_X - UW / 2 + .7, 'C': WEST_X + UW / 2 - .7}
+DOOR_X = {'A': EAST_X - UW / 2 - 2.15, 'B': -2.05, 'C': WEST_X + UW / 2 - 2.15}   # every door west of its bay or windows (sources)
+BAY_X = {'A': EAST_X - UW / 2 + .7, 'C': WEST_X + UW / 2 + .7}
 GW, GAPEX = 3.6, RIDGE - .6       # front cross gables span the bay only (source), apex just below the main ridge
 CHIMNEYS = (EAST_X - T - .35, -UW / 2)  # east end and the party line between units B and C, as the sources show
 EPS = .002
@@ -206,13 +206,14 @@ def front(f):
             holes.append(hole(f'Unit {name} upper door window', DOOR_X[name], U + .85, 1.0, 1.8))
         elif kind == 'bay_west':
             holes.append(hole(f'Unit {name} door', DOOR_X[name], DOOR_Z, .95, 2.35, kind='door', role='door_brown'))
-            holes.append(hole(f'Unit {name} bay opening', xc - .7, G0, 3.0, EAVE - .25 - G0, kind='bay'))
+            holes.append(hole(f'Unit {name} bay opening', xc + .7, G0, 3.0, EAVE - .25 - G0, kind='bay'))
             holes.append(hole(f'Unit {name} upper door window', DOOR_X[name], U + .85, 1.0, 1.8))
         else:
             holes.append(hole(f'Unit {name} door', DOOR_X[name], DOOR_Z, .95, 2.35, kind='door', role='door_brown'))
-            for s in (-1, 1):
-                holes.append(hole(f'Unit {name} ground window {s}', xc + s * 1.8, .95, 1.1, 2.0))
-                holes.append(hole(f'Unit {name} upper window {s}', xc + s * 1.5, U + .85, 1.0, 1.8))
+            for s, ux in enumerate((xc - .35, xc + 1.6)):
+                holes.append(hole(f'Unit {name} ground window {s}', ux, .95, 1.1, 2.0))
+            for s, ux in enumerate((xc - 1.95, xc, xc + 1.95)):
+                holes.append(hole(f'Unit {name} upper window {s}', ux, U + .85, 1.0, 1.8))
     f.wall('Front carrier', WEST_X, EAST_X, G0, EAVE, depth=T, holes=holes)
     G.brick_courses(f, WEST_X + .02, EAST_X - .02, G0, EAVE, holes, spacing=.10)
     for h in holes:
@@ -230,7 +231,7 @@ def front(f):
     bay_edge = 1.3 + .7 + .02
     band(f, BAY_X['C'] + bay_edge, BAY_X['A'] - bay_edge, 3.30, h=.20)
     for z, hh in ((.45, .30), (.85, .12), (2.05, .12), (U + .55, .18), (U + 1.75, .12), (U + .85 + 1.8 + .30, .14)):
-        band_cut(f, WEST_X, EAST_X, z, holes, h=hh)
+        band_cut(f, WEST_X, EAST_X - .58, z, holes, h=hh)   # stops at the quoin stack
     quoins(f, EAST_X, G0 + .3, EAVE - .1, 1)
     for name in ('A', 'C'):
         bay_window(BAY_X[name], FRONT_Y)
@@ -271,18 +272,24 @@ def gable(xc, y_wall, width, apex, eave, face_dir=-1, infill=True, finial=True, 
         C.OPENINGS.append(dict(id=f'Gable window {xc:+.1f}', face=f.label, u=0.0, z=wz, width=ww, height=wh, kind='window', clear_wall_cut=True,
             carrier_depth_m=T, frame_inset_m=.14, pane_inset_m=.177, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='attic gable room'))
     else:
-        f.panel('Gable brick', [(-hw, eave - EPS), (hw, eave - EPS), (0, apex)], 0, T, 'wall', 'gables')
+        panel = f.panel('Gable brick', [(-hw, eave - EPS), (hw, eave - EPS), (0, apex)], 0, T, 'wall', 'gables')
         if blind:
-            bw, bz, bh = .70, eave + .55, 1.0
-            f.part('Blind recess', 0.0, -.004, bz + bh / 2, bw, .008, bh, 'joint', 'gables', 0)
-            f.panel('Blind recess arch', half_disc(bw / 2, bz + bh), -.008, 0.0, 'joint', 'gables')
-            f.panel('Blind recess arch surround', half_disc(bw / 2 + .10, bz + bh), -.03, -.008, 'pale', 'gables')
-            f.part('Blind recess sill', 0.0, -.04, bz - .05, bw + .26, .12, .10, 'pale', 'gables', 0)
+            # Small glazed round-headed sash in the brick gable (sources), not a blind recess.
+            ww, wh, wz = .70, 1.0, eave + .55
+            f.cut(panel, f'Gable window {xc:+.1f} cut', 0.0, wz, ww, wh, depth=T)
+            f.window(f'Gable window {xc:+.1f}', 0.0, wz, ww, wh, cols=1, rows=2, frame='trim', depth=T, sill=False)
+            reveal(f, 0.0, wz, ww, wh, inset=.10, role='pale')
+            f.panel('Gable window round head', half_disc(ww / 2 + .12, wz + wh), -.04, .0, 'pale', 'gables')
+            f.panel('Gable window head light', half_disc(ww / 2 - .05, wz + wh), -.05, -.04, 'glass', 'gables')
+            f.part('Gable window sill', 0.0, -.04, wz - .06, ww + .30, .14, .10, 'pale', 'gables', 0)
+            C.OPENINGS.append(dict(id=f'Gable window {xc:+.1f}', face=f.label, u=0.0, z=wz, width=ww, height=wh, kind='window', clear_wall_cut=True,
+                carrier_depth_m=T, frame_inset_m=.14, pane_inset_m=.177, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='attic gable room'))
     for side in (-1, 1):
         # Flat bargeboard in the gable plane (a parallelogram band), identical on both rakes, foot to apex.
-        f.panel('Bargeboard', [(side * (hw + .15), eave + .12), (0.0, apex + .34), (0.0, apex + .02), (side * (hw + .15), eave - .20)][::side], -.27, -.20, barge_role, 'bargeboards')
+        # The board's top edge lies on the roof plate's top line, so nothing of it rises above the slate behind it.
+        f.panel('Bargeboard', [(side * (hw + .15), eave), (0.0, apex + .30), (0.0, apex - .04), (side * (hw + .15), eave - .34)][::side], -.27, -.20, barge_role, 'bargeboards')
         f.part('Gable kneeler', side * (hw + .05), -.14, eave - .05, .50, .44, .34, 'pale', 'bargeboards', 0)
-    f.part('Gable apex block', 0.0, -.20, apex + .30, .34, .46, .46, barge_role, 'bargeboards', 0)
+    f.part('Gable apex block', 0.0, -.20, apex + .26, .34, .46, .46, barge_role, 'bargeboards', 0)
     if finial:
         C.rod('Finial', (xc, y_wall + s * .22, apex + .53), (xc, y_wall + s * .22, apex + 1.3), .05, 'pale', 'bargeboards', 8)
 
@@ -357,21 +364,21 @@ def roofs():
             gable(gx, FRONT_Y, gw, apex, EAVE, face_dir=-1, infill_role='green' if name == 'A' else 'sand', batten_role='pale' if name == 'A' else 'green')
             C.prism(f'Cross gable roof {name}', [(gx - gw / 2 - .25, EAVE), (gx, apex + .30), (gx + gw / 2 + .25, EAVE),
                                                  (gx + gw / 2 + .25, EAVE - t), (gx, apex + .30 - t), (gx - gw / 2 - .25, EAVE - t)],
-                    'y', FRONT_Y - .30, FRONT_Y + (apex - EAVE) / PITCH + .3, 'roof', 'cross gables')
+                    'y', FRONT_Y - .17, FRONT_Y + (apex - EAVE) / PITCH + .3, 'roof', 'cross gables')
         else:
             gw, apex = 2.8, GAPEX - .5
             slope = (apex - EAVE) / (gw / 2)
             gable(xc, FRONT_Y, gw, apex, EAVE, face_dir=-1, infill=False, blind=True, barge_role='green')
             C.prism(f'Cross gable roof {name}', [(xc - gw / 2 - .25, EAVE), (xc, apex + .30), (xc + gw / 2 + .25, EAVE),
                                                  (xc + gw / 2 + .25, EAVE - t), (xc, apex + .30 - t), (xc - gw / 2 - .25, EAVE - t)],
-                    'y', FRONT_Y - .30, FRONT_Y + (apex - EAVE) / PITCH + .3, 'roof', 'cross gables')
+                    'y', FRONT_Y - .17, FRONT_Y + (apex - EAVE) / PITCH + .3, 'roof', 'cross gables')
         # Rear cross gable over the rear wing of every unit, carried up to the ridge as a full cross wing.
         rw, rapex = 3.6, RIDGE - .2                          # every verge, kneeler and roof edge stays inside the party-wall plane
         xr = xc + (.8 if kind == 'bay_east' else -.8 if kind == 'bay_west' else 0.0)
         gable(xr, REAR_Y, rw, rapex, EAVE, face_dir=1, infill=False, finial=False)
         C.prism(f'Rear gable roof {name}', [(xr - rw / 2 - .2, EAVE), (xr, rapex + .30), (xr + rw / 2 + .2, EAVE),
                                            (xr + rw / 2 + .2, EAVE - t), (xr, rapex + .30 - t), (xr - rw / 2 - .2, EAVE - t)],
-                'y', REAR_Y - (rapex - EAVE) / PITCH, REAR_Y + .30, 'roof', 'cross gables')
+                'y', REAR_Y - (rapex - EAVE) / PITCH, REAR_Y + .17, 'roof', 'cross gables')
     for x in CHIMNEYS:
         C.box('Chimney stack', (x, 0, RIDGE - .6 + 1.2), (.70, 1.10, 2.4), 'wall', 'chimneys', 0)
         C.box('Chimney cap', (x, 0, RIDGE + 1.85), (.82, 1.22, .10), 'pale', 'chimneys', 0)

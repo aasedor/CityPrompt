@@ -32,7 +32,7 @@ PALETTE = dict(wall=(.58, .52, .40), joint=(.46, .41, .32), trim=(.08, .08, .085
     pale=(.70, .70, .68), stone=(.30, .26, .22), roof=(.80, .80, .78), sand=(.62, .57, .46),
     foundation=(.30, .30, .30), glass=(.50, .55, .54), hardware=(.09, .09, .095),
     interior=(.74, .70, .60), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
-    planting=(.30, .42, .18), soil=(.19, .14, .08), charcoal=(.22, .22, .23), accent=(.10, .16, .34), green=(.22, .40, .20),
+    planting=(.30, .42, .18), soil=(.19, .14, .08), charcoal=(.22, .22, .23), accent=(.05, .07, .16), green=(.22, .40, .20),
     cap=(.14, .14, .15), membrane=(.80, .80, .78))
 
 
@@ -213,31 +213,33 @@ def blocks():
     # South block, north face (u = -x): exposed for x 14..16 and x -16..-6.4 (north wing covers the rest).
     f = face(*SB, 'north', 'south block north')
     holes = room_rows(6.4, 16.0, [G0] + LV)
-    elevation(f, 6.4 + EPS, 16.0, holes, field='charcoal', band='green')
-    elevation(f, -16.0, -14.0 - EPS, [], field='charcoal', band='green')
+    elevation(f, 6.4 + EPS, 16.0, holes, field='charcoal', band='accent')
+    elevation(f, -16.0, -14.0 - EPS, [], field='charcoal', band='accent')
     # North wing: east, north and west faces.
     f = face(*NWG, 'east', 'north wing east')
     holes = room_rows(-10.0 + T, 10.0 - T, [G0] + LV)
-    elevation(f, -10.0, 10.0 - T, holes, field='charcoal', band='green')
+    elevation(f, -10.0, 10.0 - T, holes, field='charcoal', band='accent')
     f = face(*NWG, 'north', 'north wing north')
     holes = room_rows(-10.2, 10.2, [G0] + LV, exposed=lambda c, l: not (l == G0 and abs(c) < 2.5))
     door = hole('Rear entry doors', 0.0, G0, 2.4, 2.8, kind='door')
-    elevation(f, -10.2, 10.2, holes, extra=[door], field='charcoal', band='green')
+    elevation(f, -10.2, 10.2, holes, extra=[door], field='charcoal', band='accent')
     f.window(door['id'], door['u'], door['z'], door['w'], door['h'], cols=2, rows=1, frame='trim', depth=T, sill=False, kind='glazed door')
     lined(f, door)
     f.part('Rear entry canopy', 0.0, -.9, door['z'] + door['h'] + .25, 4.0, 1.8, .16, 'cap', 'rear entry', 0)
     f = face(*NWG, 'west', 'north wing west')
     holes = room_rows(-10.0 + T, 10.0 - T, [G0] + LV)
-    elevation(f, -10.0 + T, 10.0, holes, field='charcoal', band='green')
+    elevation(f, -10.0 + T, 10.0, holes, field='charcoal', band='accent')
     # One-storey wing: south, west and north faces, plus the short east face south of the block.
     for side, lo, hi, label in (('south', -(wx1 - wx0) / 2, (wx1 - wx0) / 2, 'wing south'), ('west', -(wy1 - wy0) / 2 + T, (wy1 - wy0) / 2 - T, 'wing west'),
                                 ('north', -(wx1 - wx0) / 2 + (wx1 - sx0) + EPS, (wx1 - wx0) / 2, 'wing north')):
         f = face(*WG, side, label)
-        glz = [hole(f'{label} storefront ribbon', (lo + hi) / 2, .4, hi - lo - 1.6, WG_ROOF - .4 - .35)]
+        nb = 3 if hi - lo > 12.0 else 2
+        pitch = (hi - lo - 1.6) / nb
+        glz = [hole(f'{label} glazed bay {i}', lo + .8 + (i + .5) * pitch, .4, pitch - 1.1, WG_ROOF - .4 - .35) for i in range(nb)]
         f.wall(label + ' carrier', lo, hi, G0, WG_CROWN, depth=T, holes=glz)
         joints(f, lo + .2, hi - .2, G0 + EPS, WG_ROOF - .2, glz)
         for h in glz:
-            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=max(3, int(h['w'] / 1.6)), rows=1, frame='trim', depth=T, sill=False)
+            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=max(2, int(h['w'] / 1.8)), rows=1, frame='trim', depth=T, sill=False)
             lined(f, h)
         f.part('Wing parapet cap band', (lo + hi) / 2, -.025, (WG_ROOF + WG_CROWN) / 2, hi - lo - 2 * EPS, .05, WG_CROWN - WG_ROOF - .02, 'cap', 'parapet cap', 0)
         stone_base(f, lo, hi, [])
@@ -361,49 +363,56 @@ def floors():
                                    ('Kerb north', (nx0 - SW, ny1 + SW, nx1 + SW, ny1 + SW)), ('Kerb north wing east', (nx1 + SW, sy1, nx1 + SW, ny1 + SW))):
         C.box(name, ((ax + bx) / 2, (ay + by) / 2, .015 + .07), (max(.12, abs(bx - ax)), max(.12, abs(by - ay)), .14), 'stone', 'site', 0)
     C.box('Road', (LOT[1] + 6.0, 0, .0075), (8.0, LOT[3] - LOT[2] + 10.0, .015), 'floor', 'site', 0)
-    gy0, gy1 = -16.0, -9.5                                   # driveway opening in the verge and kerb, in line with the east canopy
+    gy0, gy1 = -28.0, -22.6                                  # driveway opening in the verge and kerb, south of the island (top source: pylon, east canopy, island, opening)
     for (ya, yb) in ((LOT[2], gy0), (gy1, LOT[3])):
         C.box('Road kerb', (LOT[1] + 2.0, (ya + yb) / 2, .06), (.12, yb - ya, .12), 'stone', 'site', 0)
         C.box('Lawn verge east', (LOT[1] + 1.0, (ya + yb) / 2, .021), (1.9, yb - ya, .012), 'planting', 'site', 0)
-    C.box('Driveway apron', (LOT[1] + 1.0, (gy0 + gy1) / 2, .017), (2.0, gy1 - gy0, .004), 'sand', 'site', 0)
+    C.box('Driveway apron', (LOT[1] + 1.0, (gy0 + gy1) / 2, .0195), (2.0, gy1 - gy0, .005), 'sand', 'site', 0)   # top above the drive strip, below the verges: no coplanar faces
     # Drive lane centreline: in from the road under the east canopy, south past the tower (clear of the sidewalk kerb),
     # west under the south canopy; corners filleted with quadratic curves so no quad folds back on itself.
-    corners = [(LOT[1] + .5, -12.75), (22.5, -12.75), (22.5, -25.3), (4.0, -25.3)]
-    pts = [corners[0]]
-    for i in range(1, len(corners) - 1):
-        (ax, ay), (bx, by), (cx_, cy_) = corners[i - 1], corners[i], corners[i + 1]
-        la, lc = math.hypot(ax - bx, ay - by), math.hypot(cx_ - bx, cy_ - by)
-        t1 = (bx + 5.5 * (ax - bx) / la, by + 5.5 * (ay - by) / la)   # tangent 5.5 m: curve radius stays above the 2.6 m half-width
-        t2 = (bx + 5.5 * (cx_ - bx) / lc, by + 5.5 * (cy_ - by) / lc)
-        for k in range(7):
-            t = k / 6
-            pts.append(((1 - t) ** 2 * t1[0] + 2 * (1 - t) * t * bx + t * t * t2[0], (1 - t) ** 2 * t1[1] + 2 * (1 - t) * t * by + t * t * t2[1]))
-    pts.append(corners[-1])
-    # One continuous strip with shared, mitred edge vertices: consecutive quads share an edge and never overlap.
-    clean = [pts[0]]
-    for p_ in pts[1:]:
-        if math.hypot(p_[0] - clean[-1][0], p_[1] - clean[-1][1]) > .05:
-            clean.append(p_)
-    hw = 2.6
-    vs, fs = [], []
-    for i, (px, py) in enumerate(clean):
-        ds = []
-        if i > 0:
-            ds.append((px - clean[i - 1][0], py - clean[i - 1][1]))
-        if i < len(clean) - 1:
-            ds.append((clean[i + 1][0] - px, clean[i + 1][1] - py))
-        nx = sum(-d[1] / math.hypot(*d) for d in ds); ny = sum(d[0] / math.hypot(*d) for d in ds)
-        ln = math.hypot(nx, ny); nx, ny = nx / ln, ny / ln
-        if len(ds) == 2:                                     # mitre: keep the strip's true width through the bend
-            d0 = (ds[0][0] / math.hypot(*ds[0]), ds[0][1] / math.hypot(*ds[0]))
-            cosh = max(.5, abs(nx * -d0[1] + ny * d0[0]))
-            nx, ny = nx / cosh, ny / cosh
-        vs += [(px - nx * hw, py - ny * hw, .019), (px + nx * hw, py + ny * hw, .019)]
-    for i in range(len(clean) - 1):
-        r0, l0, r1, l1 = 2 * i, 2 * i + 1, 2 * i + 2, 2 * i + 3
-        fs.append((r0, r1, l1, l0))
+    def lane_strip(corners):
+        pts = [corners[0]]
+        for i in range(1, len(corners) - 1):
+            (ax, ay), (bx, by), (cx_, cy_) = corners[i - 1], corners[i], corners[i + 1]
+            la, lc = math.hypot(ax - bx, ay - by), math.hypot(cx_ - bx, cy_ - by)
+            t1 = (bx + 5.5 * (ax - bx) / la, by + 5.5 * (ay - by) / la)   # tangent 5.5 m: curve radius stays above the 2.6 m half-width
+            t2 = (bx + 5.5 * (cx_ - bx) / lc, by + 5.5 * (cy_ - by) / lc)
+            for k in range(7):
+                t = k / 6
+                pts.append(((1 - t) ** 2 * t1[0] + 2 * (1 - t) * t * bx + t * t * t2[0], (1 - t) ** 2 * t1[1] + 2 * (1 - t) * t * by + t * t * t2[1]))
+        pts.append(corners[-1])
+        # One continuous strip with shared, mitred edge vertices: consecutive quads share an edge and never overlap.
+        clean = [pts[0]]
+        for p_ in pts[1:]:
+            if math.hypot(p_[0] - clean[-1][0], p_[1] - clean[-1][1]) > .05:
+                clean.append(p_)
+        hw = 2.6
+        vs, fs = [], []
+        for i, (px, py) in enumerate(clean):
+            ds = []
+            if i > 0:
+                ds.append((px - clean[i - 1][0], py - clean[i - 1][1]))
+            if i < len(clean) - 1:
+                ds.append((clean[i + 1][0] - px, clean[i + 1][1] - py))
+            nx = sum(-d[1] / math.hypot(*d) for d in ds); ny = sum(d[0] / math.hypot(*d) for d in ds)
+            ln = math.hypot(nx, ny); nx, ny = nx / ln, ny / ln
+            if len(ds) == 2:                                     # mitre: keep the strip's true width through the bend
+                d0 = (ds[0][0] / math.hypot(*ds[0]), ds[0][1] / math.hypot(*ds[0]))
+                cosh = max(.5, abs(nx * -d0[1] + ny * d0[0]))
+                nx, ny = nx / cosh, ny / cosh
+            vs += [(px - nx * hw, py - ny * hw, .019), (px + nx * hw, py + ny * hw, .019)]
+        for i in range(len(clean) - 1):
+            r0, l0, r1, l1 = 2 * i, 2 * i + 1, 2 * i + 2, 2 * i + 3
+            fs.append((r0, r1, l1, l0))
+
+        return vs, fs
+    # Entry lane from the south opening west under the south canopy; a second strip north from it under the east canopy.
+    # The north strip starts on the entry strip's north edge, so the two never overlap.
+    vs, fs = lane_strip([(LOT[1] + .5, -25.3), (4.0, -25.3)])
+    C.mesh('Drive entry paving', vs, fs, 'sand', 'site')
+    vs, fs = lane_strip([(22.5, -22.7), (22.5, -12.75), (22.5, -3.0)])
     C.mesh('Drive loop paving', vs, fs, 'sand', 'site')
-    C.box('Drive island', (26.6, -21.0, .022), (2.4, 9.0, .010), 'planting', 'site', 0)
+    C.box('Drive island', (26.6, -19.5, .022), (2.4, 5.0, .010), 'planting', 'site', 0)   # between the east canopy and the opening
     for (x0, x1, y0, y1) in ((LOT[0] - 2.0, LOT[0], LOT[2] - 2.0, LOT[3] + 2.0), (LOT[0], LOT[1], LOT[3], LOT[3] + 2.0), (LOT[0], LOT[1], LOT[2] - 2.0, LOT[2])):
         C.box('Lawn verge', ((x0 + x1) / 2, (y0 + y1) / 2, .021), (x1 - x0, y1 - y0, .012), 'planting', 'site', 0)
     vertices, faces = [], []
@@ -421,8 +430,8 @@ def floors():
     while x < 22.0:
         stripe(x, LOT[3] - .3, x, LOT[3] - 3.3); stripe(x, LOT[2] + 2.0, x, LOT[2] + 7.0); x += 2.7
     C.mesh('Parking stripes', vertices, faces, 'pale', 'site')
-    C.rod('Pylon sign post', (26.0, -30.0, 0), (26.0, -30.0, 6.0), .18, 'cap', 'site', 10)
-    C.box('Pylon sign board', (26.0, -30.0, 6.8), (3.0, .3, 1.6), 'accent', 'site', 0)
+    C.rod('Pylon sign post', (26.6, -3.5, 0), (26.6, -3.5, 6.0), .18, 'cap', 'site', 10)   # north of the east porte-cochere (top source)
+    C.box('Pylon sign board', (26.6, -3.5, 6.8), (3.0, .3, 1.6), 'accent', 'site', 0)
     for lvl in LV:
         C.box('Guest floor south', ((sx0 + T + TOWER[0]) / 2, (sy0 + sy1) / 2, lvl - .075), (TOWER[0] - sx0 - T, sy1 - sy0 - 2 * T, .15), 'floor', 'occupied floors', 0)
         C.box('Guest floor south east', ((TOWER[0] + sx1 - T) / 2, (TOWER[3] + sy1 - T) / 2, lvl - .075), (sx1 - T - TOWER[0], sy1 - T - TOWER[3], .15), 'floor', 'occupied floors', 0)
@@ -440,7 +449,7 @@ def floors():
     stall_y = lambda k: LOT[2] + 2.0 + 2.7 * k + 1.35        # west rows: stripes run east-west, cars nose-in along x
     stall_x = lambda k: -6.0 + 2.7 * k + 1.35                  # north and south rows: stripes run north-south, cars along y
     cars = [(LOT[0] + 4.5, stall_y(4), 'x'), (LOT[0] + 4.5, stall_y(8), 'x'), (LOT[0] + 16.5, stall_y(13), 'x'), (LOT[0] + 16.5, stall_y(6), 'x'),
-            (stall_x(5), LOT[3] - 1.8, 'y'), (stall_x(7), LOT[3] - 1.8, 'y'), (stall_x(0), LOT[2] + 4.5, 'y')]
+            (stall_x(5), LOT[3] - 2.6, 'y'), (stall_x(7), LOT[3] - 2.6, 'y'), (stall_x(0), LOT[2] + 4.5, 'y')]
     for i, (x, y, ax) in enumerate(cars):
         C.box('Parked car body', (x, y, .016 + .45), (4.4, 1.8, .9) if ax == 'x' else (1.8, 4.4, .9), 'charcoal' if i % 2 else 'pale', 'site', 0)
         C.box('Parked car cabin', (x, y, .016 + .9 + .3), (2.4, 1.6, .6) if ax == 'x' else (1.6, 2.4, .6), 'trim', 'site', 0)
