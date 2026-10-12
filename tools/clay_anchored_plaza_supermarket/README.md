@@ -67,11 +67,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v008 (hard cap reached)
+## Open blockers after v009 (reopened, v010 in progress)
 
-Ended at v008, the hard cap of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v007. Open v008 P1, for a human to weigh:
+Reopened run, v009 reviewed 0 P0 / 2 P1; v010 in progress. Open v009 P1:
 
-1. **Anchor sign band.** Two thin green stripes plus a white fascia, where both sources show one green panel taking about half the upper facade.
-2. **Cafe west face.** Pilasters cover only the south part; the north part is blank with a different parapet line.
-3. **End-cap south face.** A punched window, where the sources show a three-bay glazed storefront.
-4. **Front camera.** It clips the end-cap's south-east corner at the frame edge.
+1. **Front camera.** The end-cap's south-east corner still runs off the right frame edge.
+2. **West flank.** Two parapet tiers (the lower tier behind the cafe is higher than the cafe) where all three sources show one cafe parapet with only the set-back full-height anchor box behind it.

@@ -21,7 +21,7 @@ G0 = .15
 ANCHOR = (-40.0, -4.0, 0.0, 30.0)        # grocery box
 CAFE = (-56.0, -40.0, 0.0, 14.0)         # low cafe wing (about 45 per cent of the anchor width)
 LOWER = (-56.0, -40.0, 14.0, 30.0)       # lower anchor tier behind the cafe wing
-L_ROOF, L_CROWN = 6.6, 7.3
+L_ROOF, L_CROWN = 5.8, 6.5                # v010: one parapet with the cafe wing; only the set-back anchor box rises behind it (v009 P1)
 INLINE = (-4.0, 40.0, 16.0, 30.0)        # inline shops
 ENDCAP = (40.0, 62.0, -16.0, 30.0)       # end-cap wing: the second-largest volume, about 1.6x the inline depth (source top)
 A_ROOF, A_CROWN = 8.0, 8.8
@@ -53,7 +53,7 @@ def manifest(version):
         ('rear_service', (10.0, 46.0, 4.0), (-10.0, ANCHOR[3], 3.0), 40)])
     for c in cams:
         if c['name'] == 'front':                    # source front: elevated, the plaza across the frame, anchor and tower dominant
-            c['location'] = (-8.0, -98.0, 14.0); c['target'] = (-1.0, 4.0, 4.0); c['lens'] = 26; c['whole'] = False   # whole L including the end-cap's south-east corner
+            c['location'] = (-4.0, -104.0, 14.0); c['target'] = (4.0, 4.0, 4.0); c['lens'] = 23; c['whole'] = False   # whole L with clear margin past the end-cap's south-east corner (v009 P1)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -225,7 +225,7 @@ def anchor():
     wh = [hole('Cafe west window 0', (wp[0] + wp[1]) / 2, 1.0, 2.0, 2.2), hole('Cafe west window 1', (wp[2] + wp[3]) / 2, 1.0, 2.0, 2.2)]
     elevation(f, -(CAFE[3] - CAFE[2]) / 2 + T, (CAFE[3] - CAFE[2]) / 2 - T, wh, S_CROWN, pilasters=tuple(wp))
     f = face(*CAFE, 'north', 'cafe north')
-    elevation(f, -(CAFE[1] - CAFE[0]) / 2, (CAFE[1] - CAFE[0]) / 2 - EPS, [], S_CROWN)
+    elevation(f, -(CAFE[1] - CAFE[0]) / 2, (CAFE[1] - CAFE[0]) / 2 - EPS, [], S_CROWN, brick_base=False, cornice=False)   # party wall inside the merged west flank
     roof(*ANCHOR, A_ROOF, units=((-30.0, 20.0), (-22.0, 24.0), (-12.0, 20.0), (-30.0, 8.0), (-10.0, 8.0)))
     lx0, lx1, ly0, ly1 = LOWER
     f = face(*LOWER, 'west', 'lower tier west')
@@ -235,11 +235,7 @@ def anchor():
     elevation(f, lw0, lw1, [hole('Lower tier west window', (lp[1] + lp[2]) / 2, 1.4, 2.0, 2.0), hole('Lower tier west window 1', (lp[3] + lp[4]) / 2, 1.4, 2.0, 2.0)], L_CROWN, pilasters=tuple(lp))
     f = face(*LOWER, 'north', 'lower tier north')
     elevation(f, -(lx1 - lx0) / 2, (lx1 - lx0) / 2 - EPS, [hole('Lower tier rear door', 3.0, G0, 1.1, 2.4, kind='door')], L_CROWN)
-    f = face(*LOWER, 'south', 'lower tier south')
-    f.wall('lower tier south upper carrier', -(lx1 - lx0) / 2, (lx1 - lx0) / 2 - EPS, S_CROWN - .24, L_CROWN, depth=T)
-    f.part('Cornice cap', 0, -.06, L_CROWN - .40, lx1 - lx0 - 2 * EPS, .12, .80, 'cap', 'cornice', 0)
-    f.part('Parapet coping', 0, T / 2, L_CROWN + .03, lx1 - lx0 - 2 * EPS, T + .06, .06, 'cap', 'coping', 0)
-    roof(*LOWER, L_ROOF, units=((-48.0, 22.0),), open_east=True)
+    roof(*LOWER, L_ROOF, units=(), open_east=True)
     roof(*CAFE, S_ROOF, units=((-50.0, 7.0), (-44.0, 7.0)), open_east=True)
     C.CONTACTS.append(dict(name='Entrance tower piers to grade in front of the anchor doors', grade_m=0, height_m=TOWER_TOP))
 
