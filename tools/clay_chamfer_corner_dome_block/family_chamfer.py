@@ -72,7 +72,7 @@ def manifest(version):
             plan='30 x 26 m corner block read from the top view (roof 480 x 420 px at 0.062 m/px) with a 9 m chamfer at the south-west corner carrying the bowed bay',
             facade='four bays on the south and west faces of French windows 1.3 x 2.8 m with stone surrounds in brick; continuous iron balcony at the first floor and individual balconies above; tall narrow flat-headed shop openings 1.6 x 4.4 m with transoms on wide rusticated stone piers; round-arched glazed entrance on the chamfer between projecting piers; heavy bracketed cornice projecting about 0.85 m at 13.1 m with a balustraded parapet to 14.4 m',
             levels_m=[G0] + LEVELS, cornice_m=CORNICE, parapet_m=PAR, storeys_recorded='both locked sources show ground plus two upper storeys; v001 to v004 carried one storey too many and v005 corrects it',
-            chamfer='continuously bowed stone bay projecting 2.4 m on seven close facets: five tall lights per level between round stone columns, one curved iron railing on a curved stone sill at each level, solid stone returns; bow wall and frieze rising solid to a round dome-foot cornice disc projecting about 1 m with a bed mould, copper eave and skirt, pierced copper arch cresting on the disc lip (no balustrade, no recessed drum); copper dome 6.6 m across and 5.8 m high with a pointed profile, eight continuous seated ribs and four smooth copper round dormers with bonnet hoods at 45 percent of its height; open lantern on a solid octagonal neck out of the apex, copper bulb and finial',
+            chamfer='continuously bowed stone bay projecting 2.4 m on seven close facets: five tall lights per level between round stone columns, one curved iron railing on a curved stone sill at each level, solid stone returns; bow wall and frieze rising solid to a round dome-foot cornice disc projecting about 1 m with a bed mould, copper eave and skirt, tall pierced copper scroll cresting standing at the dome base on the copper-faced disc (no balustrade, no recessed drum); copper dome 6.6 m across and 5.8 m high with a pointed profile, eight continuous swept ribs and four copper round dormers with glazed oculi in moulded ring frames and bonnet hoods at 45 percent of its height; open lantern on a solid octagonal neck out of the apex, copper bulb and finial',
             roof='flat terracotta tiles; pyramid rooflight 5 m square; two small rooflights; three chimney stacks',
             inferred='north and east faces are not visible and repeat the grammar without balconies; interiors are teaching assumptions'),
         roof_contract=dict(type='flat tiled roof behind a balustraded parapet; dome turret on the chamfer bay; rooflights and chimneys on the slab', datum_m=CORNICE, crowns_m=[PAR, PAR + CZ_UP + SKIRT_H + DOME_H, PAR + CZ_UP + SKIRT_H + DOME_H + .45 + 3.5]),
@@ -295,28 +295,34 @@ def chamfer_bay():
     C.rod('Copper eave', (cx, cy, cz - .05), (cx, cy, cz + .16), DOME_R + .22, 'copper', 'turret', 32)
     C.rod('Copper skirt', (cx, cy, cz + .16), (cx, cy, cz + SKIRT_H), DOME_R + .04, 'copper', 'turret', 32)
     dz = cz + SKIRT_H
-    # Pierced copper cresting on the disc lip: 28 small open arches on slender posts with ball finials, light between them.
-    rc, nc, zb_, zt_ = DISC_R - .28, 28, cz - .05, cz + .60
-    ring = [(cx + rc * math.cos(math.tau * k / nc), cy + rc * math.sin(math.tau * k / nc)) for k in range(nc + 1)]
+    # Copper facing on the cornice disc edge, and tall pierced copper scroll cresting standing at the dome base on the
+    # disc, about a fifth of the dome height: 24 open panels, each a pair of C-scrolls between slender posts under a
+    # top rail, with ball finials (v008 P1).
+    C.rod('Disc copper fascia', (cx, cy, cz - .50), (cx, cy, cz - .04), DISC_R + .015, 'copper', 'turret', 32)
+    rc, nc, zb_, zt_ = DOME_R + .34, 24, cz - .04, cz - .04 + .20 * DOME_H
+    def ring_pt(a, r=rc): return (cx + r * math.cos(a), cy + r * math.sin(a))
     for k in range(nc):
-        pa, pb = ring[k], ring[k + 1]
-        am = math.tau * (k + .5) / nc; pm = (cx + rc * math.cos(am), cy + rc * math.sin(am))
-        C.rod('Cresting post', (pa[0], pa[1], zb_), (pa[0], pa[1], zt_ - .16), .035, 'copper', 'turret', 6)
-        C.rod('Cresting finial', (pa[0], pa[1], zt_ - .16), (pa[0], pa[1], zt_ + .10), .07, 'copper', 'turret', 6)
-        C.beam('Cresting arch', (pa[0], pa[1], zt_ - .18), (pm[0], pm[1], zt_ + .02), .05, .05, 'copper', 'turret')
-        C.beam('Cresting arch', (pm[0], pm[1], zt_ + .02), (pb[0], pb[1], zt_ - .18), .05, .05, 'copper', 'turret')
-        C.beam('Cresting rail', (pa[0], pa[1], zb_ + .14), (pb[0], pb[1], zb_ + .14), .04, .04, 'copper', 'turret')
+        a0, a1 = math.tau * k / nc, math.tau * (k + 1) / nc
+        pa, pb = ring_pt(a0), ring_pt(a1)
+        C.rod('Cresting post', (pa[0], pa[1], zb_), (pa[0], pa[1], zt_), .045, 'copper', 'turret', 6)
+        C.rod('Cresting finial', (pa[0], pa[1], zt_), (pa[0], pa[1], zt_ + .16), .085, 'copper', 'turret', 6)
+        C.beam('Cresting top rail', (pa[0], pa[1], zt_ - .03), (pb[0], pb[1], zt_ - .03), .05, .05, 'copper', 'turret')
+        C.beam('Cresting base rail', (pa[0], pa[1], zb_ + .10), (pb[0], pb[1], zb_ + .10), .05, .05, 'copper', 'turret')
+        # Two C-scrolls back to back: polylines in the panel plane (angle along the ring, height), open between them.
+        for sgn in (-1, 1):
+            am = (a0 + a1) / 2 + sgn * (a1 - a0) * .24
+            pts = [(am - sgn * (a1 - a0) * .20, zb_ + .14), (am - sgn * (a1 - a0) * .06, zb_ + .22), (am, zb_ + .40), (am - sgn * (a1 - a0) * .09, zb_ + .58),
+                   (am - sgn * (a1 - a0) * .20, zb_ + .66), (am - sgn * (a1 - a0) * .09, zb_ + .76), (am, zb_ + .92), (am - sgn * (a1 - a0) * .07, zt_ - .10), (am - sgn * (a1 - a0) * .20, zt_ - .04)]
+            for (aa, za), (ab, zb2) in zip(pts, pts[1:]):
+                qa, qb = ring_pt(aa), ring_pt(ab)
+                C.beam('Cresting scroll', (qa[0], qa[1], za), (qb[0], qb[1], zb2), .045, .045, 'copper', 'turret')
     dome(cx, cy, dz, DOME_R, DOME_H, segs=48, profile=DOME_PROFILE)
     # Eight continuous ribs seated on the shell: each follows the meridian profile in 27 short beams from the foot to
     # the lantern collar, its section half-embedded in the copper so no daylight shows between rib and shell (v007 P1 3).
-    sp = smooth_profile(DOME_PROFILE, 30)
+    sp = smooth_profile(DOME_PROFILE, 40)
     base = math.atan2(CN[1], CN[0])
     for k in range(RIBS):
-        a = base + math.tau * k / RIBS                     # between the dormers, which sit at odd multiples of 22.5 degrees
-        prof = [(rf * DOME_R, zf * DOME_H) for rf, zf in sp if zf <= .905]
-        for (r0, h0), (r1, h1) in zip(prof, prof[1:]):
-            C.beam('Dome rib', (cx + math.cos(a) * (r0 + .07), cy + math.sin(a) * (r0 + .07), dz + h0 - .015),
-                   (cx + math.cos(a) * (r1 + .07), cy + math.sin(a) * (r1 + .07), dz + h1 + .015), .17, .17, 'copper', 'turret')
+        rib_mesh(cx, cy, dz, base + math.tau * k / RIBS, [(rf * DOME_R, zf * DOME_H) for rf, zf in sp if zf <= .965], .17, .07)
     # Four smooth copper round dormers at 45 percent of the dome height with curved bonnet hoods merging into the shell (v007 P1 2).
     nr, nz = .91, .42                                       # dome surface normal at 45 percent height (radial, vertical)
     for da in (-67.5, -22.5, 22.5, 67.5):
@@ -327,10 +333,12 @@ def chamfer_bay():
         q = lambda d: (px + n[0] * d, py + n[1] * d, pz + n[2] * d)
         tx_, ty_ = -uy, ux                                  # tangent; up vector on the surface
         up = (-ux * nz, -uy * nz, nr)
-        C.rod('Dome dormer', q(-.40), q(.26), .52, 'copper', 'turret', 20)
-        C.rod('Dome dormer rim', q(.24), q(.32), .56, 'copper', 'turret', 20)
-        C.rod('Dome dormer glass', q(.26), q(.29), .42, 'trim', 'turret', 20)
-        bonnet(q, (tx_, ty_, 0.0), up, .64, .74, .36, -.60)
+        C.rod('Dome dormer', q(-.40), q(.22), .52, 'copper', 'turret', 20)
+        C.rod('Dome dormer frame', q(.20), q(.34), .58, 'copper', 'turret', 20)          # moulded ring frame
+        C.rod('Dome dormer frame bead', q(.34), q(.38), .50, 'copper', 'turret', 20)
+        C.rod('Dome dormer reveal', q(.10), q(.345), .43, 'hardware', 'turret', 20)      # dark reveal behind the ring
+        C.rod('Dome dormer oculus', q(.12), q(.14), .40, 'glass', 'turret', 20)          # recessed glazed oculus
+        bonnet(q, (tx_, ty_, 0.0), up, .66, .72, .40, -.45)
     # Solid octagonal neck out of the apex carries the lantern; the base disc sits on the neck, never on daylight.
     lz = dz + DOME_H + .45
     C.rod('Lantern neck', (cx, cy, dz + DOME_H * .80), (cx, cy, lz + .02), NECK_R, 'copper', 'turret', 8)
@@ -356,14 +364,38 @@ def chamfer_bay():
     C.CONTACTS.append(dict(name='Bowed bay on the rusticated ground floor; copper skirt on the bay cornice pedestal; lantern on a solid neck out of the dome apex; corner posts at every corner', bay_top_m=z1, dome_top_m=dz + DOME_H))
 
 
+def rib_mesh(cx, cy, z0, a, prof, width, stand):
+    """One continuous copper rib: a rectangular section swept along the meridian profile (radius, height), its inner face
+    sunk into the shell and its outer face standing `stand` + `width` proud, so it never segments or lifts off (v008 P1)."""
+    ux, uy = math.cos(a), math.sin(a)
+    tx, ty = -uy, ux
+    vs, fs = [], []
+    n = len(prof)
+    for i, (r, h) in enumerate(prof):
+        # local outward normal of the profile in the (radial, vertical) plane
+        r0, h0 = prof[max(i - 1, 0)]; r1, h1 = prof[min(i + 1, n - 1)]
+        dr, dh = r1 - r0, h1 - h0
+        L = math.hypot(dr, dh) or 1.0
+        nr, nz = dh / L, -dr / L                           # perpendicular to the meridian, pointing outward (dh>0 going up, dr<0)
+        if nr < 0: nr, nz = -nr, -nz
+        for dn in (-.06, stand + width):                  # inner (sunk) and outer faces
+            for dt in (-width / 2, width / 2):
+                vs.append((cx + ux * (r + nr * dn) + tx * dt, cy + uy * (r + nr * dn) + ty * dt, z0 + h + nz * dn))
+    for i in range(n - 1):
+        o = i * 4
+        fs += [(o + 2, o + 3, o + 7, o + 6), (o + 1, o + 0, o + 4, o + 5), (o + 0, o + 2, o + 6, o + 4), (o + 3, o + 1, o + 5, o + 7)]
+    fs += [(0, 1, 3, 2), ((n - 1) * 4 + 2, (n - 1) * 4 + 3, (n - 1) * 4 + 1, (n - 1) * 4 + 0)]
+    C.mesh('Dome rib', vs, fs, 'copper', 'turret')
+
+
 def bonnet(q, t, up, r0, r1, d0, d1, steps=6, arcs=11):
     """Copper bonnet hood over a round dormer: the upper half of a flaring shell from radius r0 at depth d0 (the dormer
     rim) back and outward to radius r1 at depth d1 (into the dome), with a small thickness."""
     def ring(d, r, lift):
         c = q(d)
         return [tuple(c[i] + up[i] * lift + (t[i] * math.cos(math.pi * j / (arcs - 1)) + up[i] * math.sin(math.pi * j / (arcs - 1))) * r for i in range(3)) for j in range(arcs)]
-    rings_o = [ring(d0 + (d1 - d0) * j / steps, r0 + (r1 - r0) * j / steps, .55 * (j / steps) ** 2) for j in range(steps + 1)]
-    rings_i = [ring(d0 + (d1 - d0) * j / steps, r0 + (r1 - r0) * j / steps - .07, .55 * (j / steps) ** 2) for j in range(steps + 1)]
+    rings_o = [ring(d0 + (d1 - d0) * j / steps, r0 + (r1 - r0) * j / steps, .40 * (j / steps) ** 2) for j in range(steps + 1)]
+    rings_i = [ring(d0 + (d1 - d0) * j / steps, r0 + (r1 - r0) * j / steps - .07, .40 * (j / steps) ** 2) for j in range(steps + 1)]
     vs, fs = [], []
     for rg in rings_o + rings_i:
         vs.extend(rg)
