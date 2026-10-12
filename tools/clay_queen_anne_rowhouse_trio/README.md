@@ -68,12 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v007 (stopped)
+## Open blockers after v008 (reopened, v009 in progress)
 
-Stopped at v007 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v006. Open v007 P1, for a human to weigh:
+Reopened run, v008 reviewed 0 P0 / 4 P1 (candidate); v009 in progress. Open v008 P1:
 
-1. **Rake strip.** A thin pale strip still shows on both rakes of the two end front gables (the middle and rear gables are clean). This survived the v006 and v007 fixes.
-2. **Middle unit front.** Its door is centred between two windows; the sources put the door at the west end with two ground windows and three upper windows.
-3. **West unit door.** It sits east of its bay, mirrored; the sources put every door west of its bay.
-4. **Middle gable window.** It is a blind panel; the sources show a glazed arched sash.
-5. **East bay sill band.** A black void shows where the sill band meets the quoin stack.
+1. **Upper bay.** The storey above each end bay is not a set-back canted bay with angled flank sashes under the gable.
+2. **Rake gap.** A dark gap runs inside both rakes of both end gables between the bargeboard and the infill.
+3. **Reveal corners.** Small black voids at the corners of every window and door reveal.
+4. **East elevation.** Blank gable and one column of windows where the sources show two attic sashes, a first-floor window and two ground windows.
