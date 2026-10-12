@@ -174,3 +174,29 @@ Open findings for each stopped or capped building are listed under "Open blocker
 reviewer disagreements rather than chased: the chamfer drum reading, the courtyard mid-rise
 wall material (settled in v008 by sampling the locked source pixels), and the energy centre
 v008 massing-proportion reading.
+
+## Reopened run, 2026-10-12 (limit lifted)
+
+The user lifted the GLB size limit (candidate cap 1 MiB to 4 MiB as ordinary blobs;
+`docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md`, "Limit lifted"). The three buildings of
+this report that had stopped or reached the hard cap were reopened with their rule-2
+counters reset and a cap of two further versions each; the condo tower, the Plus 15 tower
+and the mill had already passed and are unchanged. Nothing here grants keeper approval.
+
+| building | family | outcome | candidate | triangles | GLB bytes | last review P0 / P1 |
+|---|---|---|---|---|---|---|
+| slab balcony tower | `tools/clay_slab_balcony_tower` | **PASS_ZERO_P0_P1** at v007 | v007 | 19,700 | 1,020,940 | v007: 0 / 0 |
+| brick podium condo tower | `tools/clay_brick_podium_condo_tower` | passed earlier, unchanged | v006 | 19,194 | 1,024,756 | v006: 0 / 0 |
+| Plus 15 glass office tower | `tools/clay_plus15_glass_office_tower` | passed earlier, unchanged | v006 | 16,500 | 910,328 | v006: 0 / 0 |
+| arched mill mixed-use | `tools/clay_arched_mill_mixed_use` | passed earlier, unchanged | v005 | 14,088 | 744,024 | v005: 0 / 0 |
+| courtyard mixed-use mid-rise | `tools/clay_courtyard_mixed_use_midrise` | ended at the two-version cap | v009 | 18,048 | 958,528 | v010: 0 / 2 (v009: 0 / 1, the candidate) |
+| chamfered corner dome block | `tools/clay_chamfer_corner_dome_block` | ended at the two-version cap | v006 | 18,052 | 971,772 | v009: 0 / 4 (v006: 0 / 2, the candidate) |
+
+The slab tower's corner fin-plate void closed with cap slabs. The courtyard mid-rise gained
+cedar penthouses with a cantilevered canopy and one dark roof plane round the U, but the
+v010 reviewer then read the cedar top-storey band and the east window rhythm as new P1, so
+v009 stays the candidate. The chamfer block gained the bowed bay with five lights per level,
+the eye-level front view, the projecting dome-foot disc, continuous swept ribs and tall copper
+scroll cresting; the dormer oculi, the rib and dormer alignment, the lantern and the rooflights
+remain open, so v006 stays the candidate. Across both reports nine of the fifteen candidates
+now carry a zero-P0, zero-P1 review.

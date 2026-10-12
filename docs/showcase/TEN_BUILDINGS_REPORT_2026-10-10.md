@@ -186,3 +186,41 @@ Open findings for each stopped or capped building are listed under "Open blocker
 reviewer disagreements rather than chased: the chamfer drum reading, the courtyard mid-rise
 wall material (settled in v008 by sampling the locked source pixels), and the energy centre
 v008 massing-proportion reading.
+
+## Reopened run, 2026-10-12 (limit lifted)
+
+The user lifted the GLB size limit (candidate cap 1 MiB to 4 MiB as ordinary blobs;
+`docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md`, "Limit lifted"). The nine buildings of
+this report that had stopped or reached the hard cap were reopened with their rule-2
+counters reset and a cap of two further versions each; the grow block had already passed.
+Every version carries its own independent review under `evidence/vNNN/independent-review.md`.
+Nothing here grants keeper approval; RLASM asset review, runtime acceptance and publication
+approval are separate checkpoints.
+
+| building | family | outcome | candidate | triangles | GLB bytes | last review P0 / P1 |
+|---|---|---|---|---|---|---|
+| campus shed office | `tools/clay_campus_shed_office` | **PASS_ZERO_P0_P1** at v009 | v009 | 20,692 | 1,111,200 | v009: 0 / 0 |
+| LED grow block | `tools/clay_led_grow_block` | passed earlier, unchanged | v007 | 14,820 | 790,632 | v007: 0 / 0 |
+| cantilever fire station | `tools/clay_cantilever_fire_station` | ended at the two-version cap | v009 | 14,762 | 781,440 | v009: 0 / 1 (black bay headers where the source has glazed transoms) |
+| courtyard primary school | `tools/clay_courtyard_primary_school` | **PASS_ZERO_P0_P1** at v009 | v009 | 18,568 | 1,009,176 | v009: 0 / 0 |
+| limited-service hotel | `tools/clay_limited_service_hotel` | ended at the two-version cap | v007 | 22,008 | 1,055,852 | v007: 0 / 1 (tower header proud of the parapet) |
+| Queen Anne rowhouse trio | `tools/clay_queen_anne_rowhouse_trio` | ended at the two-version cap | v009 | 20,164 | 1,091,912 | v009: 0 / 2 (4 px frame-corner voids from the shared window helper's bevelled bars; a double-eave reading) |
+| crane-way hall | `tools/clay_craneway_hall` | ended at the two-version cap | v007 | 21,404 | 1,167,908 | v008: 0 / 3 (v007: 0 / 2, the candidate) |
+| energy centre | `tools/clay_energy_centre` | **PASS_ZERO_P0_P1** at v010 | v010 | 12,442 | 653,220 | v010: 0 / 0 |
+| anchored plaza supermarket | `tools/clay_anchored_plaza_supermarket` | ended at the two-version cap | v010 | 10,984 | 587,736 | v010: 0 / 1 (interior-only open strip at the cafe roof junction) |
+
+What the reopened versions fixed, in the reviewers' pixels: the office's two-bay dock ramp,
+closed terrace corner and in-plane canopy diagonals; the fire station's massing (the v007 P0),
+full-height loggia, flush west face, storey split, tower size and loggia soffit; the school's
+open passage with street entry doors, deep corten fascia, ground-floor fins, corten storey
+glazing and the corner wall under the canopy; the hotel's tower height and two-colour band; the
+rowhouse's door rhythm, set-back canted upper bays, solid bargeboards and east elevation; the
+crane hall's glazed aisle storey, upright aisle-end frames and long low monitors in three rows;
+the energy centre's corner bands, flues, slot, louvre and piers; the plaza's sign panel,
+end-cap storefront, west-flank parapet and front framing.
+
+Two findings are method-level rather than per-building: the 4 px black corner at every window
+and door frame comes from the bevelled frame bars in the shared window helper
+(`tools/catalogue_services_batch/clay_core.py`), and the crane hall's aisle monitors need the
+source's 90-degree turn that the contract text did not carry. Both are recorded in the
+families' README open-blocker sections for a human to weigh.
